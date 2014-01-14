@@ -45,6 +45,7 @@ import java.util.Map;
 
 import javax.swing.UIManager;
 
+import org.openflexo.swing.layout.MultiSplitLayoutFactory.DefaultMultiSplitLayoutFactory;
 import org.openflexo.toolbox.StringUtils;
 
 /**
@@ -109,6 +110,28 @@ public class MultiSplitLayout implements LayoutManager, Serializable {
 	public MultiSplitLayout(boolean layoutByWeight, MultiSplitLayoutFactory factory) {
 		this(factory.makeLeaf("default"), factory);
 		this.layoutByWeight = layoutByWeight;
+	}
+
+	/**
+	 * Create a MultiSplitLayout with a default model with a single Leaf node named "default", and using the
+	 * {@link DefaultMultiSplitLayoutFactory}
+	 * 
+	 * #see setModel
+	 */
+	public MultiSplitLayout() {
+		this(new DefaultMultiSplitLayoutFactory());
+	}
+
+	/**
+	 * Create a MultiSplitLayout with a default model with a single Leaf node named "default", and using the
+	 * {@link DefaultMultiSplitLayoutFactory}
+	 * 
+	 * @param layoutByWeight
+	 *            if true the layout is initialized in proportion to the node weights rather than the component preferred sizes. #see
+	 *            setModel
+	 */
+	public MultiSplitLayout(boolean layoutByWeight) {
+		this(layoutByWeight, new DefaultMultiSplitLayoutFactory());
 	}
 
 	/**

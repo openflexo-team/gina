@@ -383,6 +383,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 	@DeserializationFinalizer
 	public void finalizeDeserialization();
 
+	public void setBindingFactory(BindingFactory bindingFactory);
+
 	public static abstract class FIBComponentImpl extends FIBModelObjectImpl implements FIBComponent {
 
 		private static final Logger logger = Logger.getLogger(FIBComponent.class.getPackage().getName());
@@ -1663,6 +1665,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 			return FIBLibrary.instance().getBindingFactory();
 		}
 
+		@Override
 		public void setBindingFactory(BindingFactory bindingFactory) {
 			this.bindingFactory = bindingFactory;
 		}

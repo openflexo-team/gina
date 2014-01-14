@@ -102,6 +102,10 @@ public class FIBModelFactory extends ModelFactory {
 		return newInstance(FIBNumber.class);
 	}
 
+	public FIBCheckBox newFIBCheckBox() {
+		return newInstance(FIBCheckBox.class);
+	}
+
 	public FIBRadioButtonList newFIBRadioButtonList() {
 		return newInstance(FIBRadioButtonList.class);
 	}
