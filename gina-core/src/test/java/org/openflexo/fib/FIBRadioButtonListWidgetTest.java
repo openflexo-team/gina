@@ -62,7 +62,7 @@ public class FIBRadioButtonListWidgetTest extends FIBTestCase {
 	 * Create an initial component
 	 */
 	@Test
-	public void test1CreateComponent() {
+	public void aTest1CreateComponent() {
 
 		component = newFIBPanel();
 		component.setLayout(Layout.twocols);
@@ -134,7 +134,7 @@ public class FIBRadioButtonListWidgetTest extends FIBTestCase {
 	 * Instanciate component, while instanciating view AFTER data has been set
 	 */
 	@Test
-	public void test2InstanciateComponent() {
+	public void bTest2InstanciateComponent() {
 		controller = FIBController.instanciateController(component, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);
 		family = new Family();
@@ -169,7 +169,7 @@ public class FIBRadioButtonListWidgetTest extends FIBTestCase {
 	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
-	public void test3ModifyValueInModel() {
+	public void cTest3ModifyValueInModel() {
 
 		family.setBiggestChild(family.getChildren().get(0));
 		family.getFather().setGender(Gender.Female);
@@ -181,7 +181,7 @@ public class FIBRadioButtonListWidgetTest extends FIBTestCase {
 	 * Update the widget, and check that model has well reacted
 	 */
 	@Test
-	public void test4ModifyValueInWidget() {
+	public void dTest4ModifyValueInWidget() {
 		FIBRadioButtonListWidget<Person> w5 = (FIBRadioButtonListWidget<Person>) controller.viewForComponent(radioButtonList5);
 		FIBRadioButtonListWidget<Gender> w6 = (FIBRadioButtonListWidget<Gender>) controller.viewForComponent(radioButtonList6);
 
@@ -197,7 +197,7 @@ public class FIBRadioButtonListWidgetTest extends FIBTestCase {
 	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
-	public void test5ModifyListValueInModel() {
+	public void eTest5ModifyListValueInModel() {
 
 		FIBRadioButtonListWidget<?> w5 = (FIBRadioButtonListWidget<?>) controller.viewForComponent(radioButtonList5);
 

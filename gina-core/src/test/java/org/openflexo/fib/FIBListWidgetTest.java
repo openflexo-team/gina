@@ -64,7 +64,7 @@ public class FIBListWidgetTest extends FIBTestCase {
 	 * Create an initial component
 	 */
 	@Test
-	public void test1CreateComponent() {
+	public void aTest1CreateComponent() {
 
 		component = newFIBPanel();
 		component.setLayout(Layout.twocols);
@@ -134,7 +134,7 @@ public class FIBListWidgetTest extends FIBTestCase {
 	 * Instanciate component, while instanciating view AFTER data has been set
 	 */
 	@Test
-	public void test2InstanciateComponent() {
+	public void bTest2InstanciateComponent() {
 		controller = FIBController.instanciateController(component, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);
 		family = new Family();
@@ -169,7 +169,7 @@ public class FIBListWidgetTest extends FIBTestCase {
 	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
-	public void test3ModifyValueInModel() {
+	public void cTest3ModifyValueInModel() {
 
 		family.setBiggestChild(family.getChildren().get(0));
 		family.getFather().setGender(Gender.Female);
@@ -181,7 +181,7 @@ public class FIBListWidgetTest extends FIBTestCase {
 	 * Update the widget, and check that model has well reacted
 	 */
 	@Test
-	public void test4ModifyValueInWidget() {
+	public void dTest4ModifyValueInWidget() {
 		FIBListWidget<?> w5 = (FIBListWidget<?>) controller.viewForComponent(list5);
 		FIBListWidget<?> w6 = (FIBListWidget<?>) controller.viewForComponent(list6);
 
@@ -197,7 +197,7 @@ public class FIBListWidgetTest extends FIBTestCase {
 	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
-	public void test5ModifyListValueInModel() {
+	public void eTest5ModifyListValueInModel() {
 
 		FIBListWidget<?> w5 = (FIBListWidget<?>) controller.viewForComponent(list5);
 
@@ -220,7 +220,7 @@ public class FIBListWidgetTest extends FIBTestCase {
 	 * Try to select some objects, check that selection is in sync with it
 	 */
 	@Test
-	public void test6PerfomSomeTestsWithSelection() {
+	public void fTest6PerfomSomeTestsWithSelection() {
 
 		FIBListWidget<?> w7 = (FIBListWidget<?>) controller.viewForComponent(list7);
 		assertEquals(6, w7.getDynamicJComponent().getModel().getSize());

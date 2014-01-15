@@ -49,7 +49,7 @@ public class FIBTextAreaWidgetTest extends FIBTestCase {
 	 * Create an initial component
 	 */
 	@Test
-	public void test1CreateComponent() {
+	public void aTest1CreateComponent() {
 
 		component = newFIBPanel();
 		component.setLayout(Layout.twocols);
@@ -83,7 +83,7 @@ public class FIBTextAreaWidgetTest extends FIBTestCase {
 	 * Instanciate component, while instanciating view AFTER data has been set
 	 */
 	@Test
-	public void test2InstanciateComponent() {
+	public void bTest2InstanciateComponent() {
 		controller = FIBController.instanciateController(component, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);
 		family1 = new Family();
@@ -111,7 +111,7 @@ public class FIBTextAreaWidgetTest extends FIBTestCase {
 	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
-	public void test3ModifyValueInModel() {
+	public void cTest3ModifyValueInModel() {
 		family1.getFather().setFirstName("Roger");
 		family1.getFather().setLastName("Rabbit");
 		assertEquals("Roger", controller.viewForComponent(firstNameTF).getData());
@@ -123,7 +123,7 @@ public class FIBTextAreaWidgetTest extends FIBTestCase {
 	 * Update the widget, and check that model has well reacted
 	 */
 	@Test
-	public void test4ModifyValueInWidget() {
+	public void dTest4ModifyValueInWidget() {
 		FIBTextAreaWidget w1 = (FIBTextAreaWidget) controller.viewForComponent(firstNameTF);
 		FIBTextAreaWidget w2 = (FIBTextAreaWidget) controller.viewForComponent(lastNameTF);
 		FIBTextAreaWidget w3 = (FIBTextAreaWidget) controller.viewForComponent(fullNameTF);
@@ -142,7 +142,7 @@ public class FIBTextAreaWidgetTest extends FIBTestCase {
 	 * Instanciate component, while instanciating view BEFORE to set data
 	 */
 	@Test
-	public void test5InstanciateComponent() {
+	public void eTest5InstanciateComponent() {
 		component.setDataClass(Family.class);
 		FIBController controller = FIBController.instanciateController(component, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);

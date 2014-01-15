@@ -72,7 +72,7 @@ public class FIBBrowserWidgetSelectionTest2 extends FIBTestCase {
 	 * Create an initial component
 	 */
 	@Test
-	public void test1CreateComponent() {
+	public void aTest1CreateComponent() {
 
 		component = newFIBPanel();
 		component.setLayout(Layout.border);
@@ -187,7 +187,7 @@ public class FIBBrowserWidgetSelectionTest2 extends FIBTestCase {
 	 * Instanciate component, while instanciating view AFTER data has been set
 	 */
 	@Test
-	public void test2InstanciateComponent() {
+	public void bTest2InstanciateComponent() {
 		controller = FIBController.instanciateController(component, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);
 		family = new Family();
@@ -208,7 +208,7 @@ public class FIBBrowserWidgetSelectionTest2 extends FIBTestCase {
 	 * Select some values, check that master/details scheme works
 	 */
 	@Test
-	public void test3SelectSomeValues() {
+	public void cTest3SelectSomeValues() {
 
 		FIBBrowserWidget<?> w = (FIBBrowserWidget<?>) controller.viewForComponent(browser);
 		FIBPanelView<?, ?> details1 = (FIBPanelView<?, ?>) controller.viewForComponent(detailsPanel1);

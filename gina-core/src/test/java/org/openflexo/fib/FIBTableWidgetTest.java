@@ -53,7 +53,7 @@ public class FIBTableWidgetTest extends FIBTestCase {
 	 * Create an initial component
 	 */
 	@Test
-	public void test1CreateComponent() {
+	public void aTest1CreateComponent() {
 
 		component = newFIBPanel();
 		component.setLayout(Layout.twocols);
@@ -91,7 +91,7 @@ public class FIBTableWidgetTest extends FIBTestCase {
 	 * Instanciate component, while instanciating view AFTER data has been set
 	 */
 	@Test
-	public void test2InstanciateComponent() {
+	public void bTest2InstanciateComponent() {
 		controller = FIBController.instanciateController(component, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);
 		family = new Family();
@@ -112,7 +112,7 @@ public class FIBTableWidgetTest extends FIBTestCase {
 	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
-	public void test3ModifyValueInModel() {
+	public void cTest3ModifyValueInModel() {
 
 		FIBTableWidget<?> w = (FIBTableWidget<?>) controller.viewForComponent(table);
 
@@ -146,7 +146,7 @@ public class FIBTableWidgetTest extends FIBTestCase {
 	 * Update the widget, and check that model has well reacted
 	 */
 	@Test
-	public void test4ModifyValueInWidget() {
+	public void dTest4ModifyValueInWidget() {
 
 		FIBTableWidget<?> w = (FIBTableWidget<?>) controller.viewForComponent(table);
 
@@ -169,7 +169,7 @@ public class FIBTableWidgetTest extends FIBTestCase {
 	 * Try to select some objects, check that selection is in sync with it
 	 */
 	@Test
-	public void test5PerfomSomeTestsWithSelection() {
+	public void eTest5PerfomSomeTestsWithSelection() {
 
 		FIBTableWidget<?> w = (FIBTableWidget<?>) controller.viewForComponent(table);
 		assertEquals(6, w.getDynamicJComponent().getModel().getRowCount());

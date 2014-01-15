@@ -60,7 +60,7 @@ public class FIBDropDownWidgetTest extends FIBTestCase {
 	 * Create an initial component
 	 */
 	@Test
-	public void test1CreateComponent() {
+	public void aTest1CreateComponent() {
 
 		component = newFIBPanel();
 		component.setLayout(Layout.twocols);
@@ -125,7 +125,7 @@ public class FIBDropDownWidgetTest extends FIBTestCase {
 	 * Instanciate component, while instanciating view AFTER data has been set
 	 */
 	@Test
-	public void test2InstanciateComponent() {
+	public void bTest2InstanciateComponent() {
 		controller = FIBController.instanciateController(component, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);
 		family = new Family();
@@ -160,7 +160,7 @@ public class FIBDropDownWidgetTest extends FIBTestCase {
 	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
-	public void test3ModifyValueInModel() {
+	public void cTest3ModifyValueInModel() {
 
 		family.setBiggestChild(family.getChildren().get(0));
 		family.getFather().setGender(Gender.Female);
@@ -172,7 +172,7 @@ public class FIBDropDownWidgetTest extends FIBTestCase {
 	 * Update the widget, and check that model has well reacted
 	 */
 	@Test
-	public void test4ModifyValueInWidget() {
+	public void dTest4ModifyValueInWidget() {
 		FIBDropDownWidget<?> w5 = (FIBDropDownWidget<?>) controller.viewForComponent(dropDown5);
 		FIBDropDownWidget<?> w6 = (FIBDropDownWidget<?>) controller.viewForComponent(dropDown6);
 
@@ -188,7 +188,7 @@ public class FIBDropDownWidgetTest extends FIBTestCase {
 	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
-	public void test5ModifyListValueInModel() {
+	public void eTest5ModifyListValueInModel() {
 
 		FIBDropDownWidget<?> w5 = (FIBDropDownWidget<?>) controller.viewForComponent(dropDown5);
 

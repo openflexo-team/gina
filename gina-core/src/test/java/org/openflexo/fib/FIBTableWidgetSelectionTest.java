@@ -63,7 +63,7 @@ public class FIBTableWidgetSelectionTest extends FIBTestCase {
 	 * Create an initial component
 	 */
 	@Test
-	public void test1CreateComponent() {
+	public void aTest1CreateComponent() {
 
 		component = newFIBPanel();
 		component.setLayout(Layout.border);
@@ -130,7 +130,7 @@ public class FIBTableWidgetSelectionTest extends FIBTestCase {
 	 * Instanciate component, while instanciating view AFTER data has been set
 	 */
 	@Test
-	public void test2InstanciateComponent() {
+	public void bTest2InstanciateComponent() {
 		controller = FIBController.instanciateController(component, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);
 		family = new Family();
@@ -151,7 +151,7 @@ public class FIBTableWidgetSelectionTest extends FIBTestCase {
 	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
-	public void test3SelectEditAndCheckValues() {
+	public void cTest3SelectEditAndCheckValues() {
 
 		FIBTableWidget<?> w = (FIBTableWidget<?>) controller.viewForComponent(table);
 
@@ -177,7 +177,7 @@ public class FIBTableWidgetSelectionTest extends FIBTestCase {
 	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
-	public void test3SelectMultipleValues() {
+	public void dTest4SelectMultipleValues() {
 
 		FIBTableWidget<?> w = (FIBTableWidget<?>) controller.viewForComponent(table);
 

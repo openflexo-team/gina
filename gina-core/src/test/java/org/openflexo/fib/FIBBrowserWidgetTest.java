@@ -50,7 +50,7 @@ public class FIBBrowserWidgetTest extends FIBTestCase {
 	 * Create an initial component
 	 */
 	@Test
-	public void test1CreateComponent() {
+	public void aTest1CreateComponent() {
 
 		component = newFIBPanel();
 		component.setLayout(Layout.twocols);
@@ -91,7 +91,7 @@ public class FIBBrowserWidgetTest extends FIBTestCase {
 	 * Instanciate component, while instanciating view AFTER data has been set
 	 */
 	@Test
-	public void test2InstanciateComponent() {
+	public void bTest2InstanciateComponent() {
 		controller = FIBController.instanciateController(component, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);
 		family = new Family();
@@ -112,7 +112,7 @@ public class FIBBrowserWidgetTest extends FIBTestCase {
 	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
-	public void test3ModifyValueInModel() {
+	public void cTest3ModifyValueInModel() {
 
 		FIBBrowserWidget<?> w = (FIBBrowserWidget<?>) controller.viewForComponent(browser);
 
@@ -136,7 +136,7 @@ public class FIBBrowserWidgetTest extends FIBTestCase {
 	 * Try to select some objects, check that selection is in sync with it
 	 */
 	@Test
-	public void test5PerfomSomeTestsWithSelection() {
+	public void dTest4PerfomSomeTestsWithSelection() {
 
 		FIBBrowserWidget<?> w = (FIBBrowserWidget<?>) controller.viewForComponent(browser);
 

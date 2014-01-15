@@ -58,7 +58,7 @@ public class FIBCheckboxListWidgetTest extends FIBTestCase {
 	 * Create an initial component
 	 */
 	@Test
-	public void test1CreateComponent() {
+	public void aTest1CreateComponent() {
 
 		component = newFIBPanel();
 		component.setLayout(Layout.twocols);
@@ -111,7 +111,7 @@ public class FIBCheckboxListWidgetTest extends FIBTestCase {
 	 * Instanciate component, while instanciating view AFTER data has been set
 	 */
 	@Test
-	public void test2InstanciateComponent() {
+	public void bTest2InstanciateComponent() {
 		controller = FIBController.instanciateController(component, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);
 		family = new Family();
@@ -142,7 +142,7 @@ public class FIBCheckboxListWidgetTest extends FIBTestCase {
 	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
-	public void test3ModifyValueInModel() {
+	public void cTest3ModifyValueInModel() {
 
 		FIBCheckboxListWidget<?> w5 = (FIBCheckboxListWidget<?>) controller.viewForComponent(checkboxList5);
 
@@ -173,7 +173,7 @@ public class FIBCheckboxListWidgetTest extends FIBTestCase {
 	 * Update the widget, and check that model has well reacted
 	 */
 	@Test
-	public void test4ModifyValueInWidget() {
+	public void dTest4ModifyValueInWidget() {
 		FIBCheckboxListWidget<?> w5 = (FIBCheckboxListWidget<?>) controller.viewForComponent(checkboxList5);
 
 		w5.getCheckboxAtIndex(1).doClick();
@@ -197,7 +197,7 @@ public class FIBCheckboxListWidgetTest extends FIBTestCase {
 	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
-	public void test5ModifyListValueInModel() {
+	public void eTest5ModifyListValueInModel() {
 
 		FIBCheckboxListWidget<?> w5 = (FIBCheckboxListWidget<?>) controller.viewForComponent(checkboxList5);
 
