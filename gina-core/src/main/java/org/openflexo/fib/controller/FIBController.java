@@ -282,6 +282,7 @@ public class FIBController extends Observable implements BindingEvaluationContex
 
 	public static FIBController instanciateController(FIBComponent fibComponent, LocalizedDelegate parentLocalizer) {
 		FIBController returned = null;
+		System.out.println("Instanciate controller for component: " + fibComponent);
 		if (fibComponent.getControllerClass() != null) {
 			try {
 				// System.out.println("Class=" + fibComponent.getControllerClass());
@@ -371,8 +372,8 @@ public class FIBController extends Observable implements BindingEvaluationContex
 
 		private boolean wasDoubleClick = false;
 		private Timer timer;
-		private FIBWidgetView widgetView;
-		private FIBWidget fibWidget;
+		private final FIBWidgetView widgetView;
+		private final FIBWidget fibWidget;
 		private boolean isPopupTrigger = false;
 
 		public FIBMouseAdapter(FIBWidgetView widgetView, FIBWidget fibWidget) {
@@ -935,8 +936,8 @@ public class FIBController extends Observable implements BindingEvaluationContex
 	}
 
 	private static class EditorLauncher extends MouseAdapter {
-		private FIBComponent component;
-		private FIBController controller;
+		private final FIBComponent component;
+		private final FIBController controller;
 
 		public EditorLauncher(FIBController controller, FIBComponent component) {
 			logger.fine("make EditorLauncher for component: " + component.getDefinitionFile());
