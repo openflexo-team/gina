@@ -72,7 +72,7 @@ public class FIBNumberWidgetTest extends FIBTestCase {
 	 * Create an initial component
 	 */
 	@Test
-	public void test1CreateComponent() {
+	public void aTest1CreateComponent() {
 
 		log("FIBNumberWidgetTest test1CreateComponent() on thread " + Thread.currentThread());
 
@@ -205,11 +205,11 @@ public class FIBNumberWidgetTest extends FIBTestCase {
 	 * Instanciate component, while instanciating view AFTER data has been set
 	 */
 	@Test
-	public void test2InstanciateComponent() {
+	public void bTest2InstanciateComponent() {
 
-		log("FIBNumberWidgetTest test2CreateComponent() on thread " + Thread.currentThread());
+		log("FIBNumberWidgetTest test2InstanciateComponent() on thread " + Thread.currentThread());
 
-		System.out.println("FIBNumberWidgetTest test2CreateComponent() on thread " + Thread.currentThread());
+		System.out.println("FIBNumberWidgetTest test2InstanciateComponent() on thread " + Thread.currentThread());
 
 		controller = FIBController.instanciateController(component, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);
