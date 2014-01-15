@@ -74,6 +74,10 @@ public class FIBNumberWidgetTest extends FIBTestCase {
 	@Test
 	public void test1CreateComponent() {
 
+		log("FIBNumberWidgetTest test1CreateComponent() on thread " + Thread.currentThread());
+
+		System.out.println("FIBNumberWidgetTest test1CreateComponent() on thread " + Thread.currentThread());
+
 		component = newFIBPanel();
 		component.setLayout(Layout.grid);
 		component.setRows(6);
@@ -202,6 +206,11 @@ public class FIBNumberWidgetTest extends FIBTestCase {
 	 */
 	@Test
 	public void test2InstanciateComponent() {
+
+		log("FIBNumberWidgetTest test2CreateComponent() on thread " + Thread.currentThread());
+
+		System.out.println("FIBNumberWidgetTest test2CreateComponent() on thread " + Thread.currentThread());
+
 		controller = FIBController.instanciateController(component, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);
 		numbers = new Numbers();
