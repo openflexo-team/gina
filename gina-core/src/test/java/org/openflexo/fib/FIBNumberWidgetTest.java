@@ -277,7 +277,7 @@ public class FIBNumberWidgetTest extends FIBTestCase {
 	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
-	public void test3ModifyValueInModel() {
+	public void cTest3ModifyValueInModel() {
 		numbers.setByteP((byte) 101);
 		numbers.setByteO(Byte.valueOf((byte) 107));
 		assertEquals((byte) 101, controller.viewForComponent(bytePWidget).getData());
@@ -320,7 +320,7 @@ public class FIBNumberWidgetTest extends FIBTestCase {
 	 * Update the widget, and check that model has well reacted
 	 */
 	@Test
-	public void test4ModifyValueInWidget() {
+	public void dTest4ModifyValueInWidget() {
 
 		FIBNumberWidget<Byte> bytePWidgetView = (FIBNumberWidget<Byte>) controller.viewForComponent(bytePWidget);
 		bytePWidgetView.getDynamicJComponent().setValue((byte) 201);
