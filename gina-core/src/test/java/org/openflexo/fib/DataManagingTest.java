@@ -9,6 +9,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.fib.controller.FIBController;
@@ -21,6 +22,8 @@ import org.openflexo.fib.model.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.fib.sampleData.Family;
 import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.test.OrderedRunner;
+import org.openflexo.test.TestOrder;
 
 /**
  * Test some data manipulation
@@ -28,6 +31,7 @@ import org.openflexo.localization.FlexoLocalization;
  * @author sylvain
  * 
  */
+@RunWith(OrderedRunner.class)
 public class DataManagingTest extends FIBTestCase {
 
 	private static GraphicalContextDelegate gcDelegate;
@@ -49,6 +53,7 @@ public class DataManagingTest extends FIBTestCase {
 	 * Create an initial component
 	 */
 	@Test
+	@TestOrder(1)
 	public void test1CreateComponent() {
 
 		component = newFIBPanel();
@@ -83,6 +88,7 @@ public class DataManagingTest extends FIBTestCase {
 	 * Instanciate component, while instanciating view AFTER data has been set
 	 */
 	@Test
+	@TestOrder(2)
 	public void test2InstanciateComponent() {
 		controller = FIBController.instanciateController(component, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);
@@ -112,6 +118,7 @@ public class DataManagingTest extends FIBTestCase {
 	 * Check that widgets have well reacted
 	 */
 	@Test
+	@TestOrder(3)
 	public void test3ModifyValueInModel() {
 
 		family2 = new Family();
@@ -128,6 +135,7 @@ public class DataManagingTest extends FIBTestCase {
 	 * Check that widgets have well reacted
 	 */
 	@Test
+	@TestOrder(4)
 	public void test4ModifyValueInModel() {
 
 		family3 = new Family();
