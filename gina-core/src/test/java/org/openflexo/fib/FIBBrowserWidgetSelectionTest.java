@@ -9,6 +9,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.fib.controller.FIBController;
@@ -29,6 +30,8 @@ import org.openflexo.fib.sampleData.Person;
 import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.fib.view.widget.FIBBrowserWidget;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.test.OrderedRunner;
+import org.openflexo.test.TestOrder;
 
 /**
  * Test the structural and behavioural features of a simple master-detail pattern driven by a browser widget
@@ -36,6 +39,7 @@ import org.openflexo.localization.FlexoLocalization;
  * @author sylvain
  * 
  */
+@RunWith(OrderedRunner.class)
 public class FIBBrowserWidgetSelectionTest extends FIBTestCase {
 
 	private static GraphicalContextDelegate gcDelegate;
@@ -58,8 +62,11 @@ public class FIBBrowserWidgetSelectionTest extends FIBTestCase {
 	 * Create an initial component
 	 */
 	@Test
-	public void aTest1CreateComponent() {
+	@TestOrder(1)
+	public void test1CreateComponent() {
 
+		log("test1CreateComponent()");
+		
 		component = newFIBPanel();
 		component.setLayout(Layout.border);
 		component.setDataClass(Family.class);
@@ -129,7 +136,11 @@ public class FIBBrowserWidgetSelectionTest extends FIBTestCase {
 	 * Instanciate component, while instanciating view AFTER data has been set
 	 */
 	@Test
-	public void bTest2InstanciateComponent() {
+	@TestOrder(2)
+	public void test2InstanciateComponent() {
+
+		log("test2InstanciateComponent()");
+
 		controller = FIBController.instanciateController(component, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);
 		family = new Family();
@@ -150,7 +161,10 @@ public class FIBBrowserWidgetSelectionTest extends FIBTestCase {
 	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
-	public void cTest3SelectEditAndCheckValues() {
+	@TestOrder(3)
+	public void test3SelectEditAndCheckValues() {
+
+		log("test3SelectEditAndCheckValues()");
 
 		FIBBrowserWidget<?> w = (FIBBrowserWidget<?>) controller.viewForComponent(browser);
 
@@ -176,7 +190,10 @@ public class FIBBrowserWidgetSelectionTest extends FIBTestCase {
 	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
-	public void dTest3SelectMultipleValues() {
+	@TestOrder(4)
+	public void test4SelectMultipleValues() {
+
+		log("test4SelectMultipleValues()");
 
 		FIBBrowserWidget<?> w = (FIBBrowserWidget<?>) controller.viewForComponent(browser);
 
