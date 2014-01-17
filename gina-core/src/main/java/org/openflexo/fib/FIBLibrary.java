@@ -100,6 +100,11 @@ public class FIBLibrary {
 
 	public FIBComponent retrieveFIBComponent(File fibFile) {
 		try {
+			if (!fibFile.exists()) {
+				System.out.println("N'existe pas: " + fibFile);
+				System.exit(-1);
+			}
+
 			return retrieveFIBComponent(fibFile, true, new FIBModelFactory(fibFile.getParentFile()));
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();
@@ -114,6 +119,8 @@ public class FIBLibrary {
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("Load " + fibFile.getAbsolutePath());
 			}
+
+			System.out.println("Loading " + fibFile.getAbsolutePath());
 
 			FileInputStream fis = null;
 

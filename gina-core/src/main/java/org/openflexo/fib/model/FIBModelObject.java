@@ -134,10 +134,28 @@ public interface FIBModelObject extends Bindable, AccessibleProxyObject, Cloneab
 
 		public static final String DELETED_PROPERTY = "Deleted";
 
-		// Instanciate a new localizer in directory src/dev/resources/FIBLocalizer
-		// Little hack to be removed: linked to parent localizer (which is Openflexo main localizer)
-		public static LocalizedDelegateGUIImpl LOCALIZATION = new LocalizedDelegateGUIImpl(new FileResource("FIBLocalized"),
-				new LocalizedDelegateGUIImpl(new FileResource("Localized"), null, false), true);
+		// TODO: Localizer for the FIB, should be refactored
+		public static LocalizedDelegateGUIImpl LOCALIZATION;
+
+		static {
+			FileResource generalLocalizedDelegate = new FileResource("Localized");
+			FileResource fibLocalizedDelegate = new FileResource("FIBLocalized");
+
+			if (fibLocalizedDelegate.exists()) {
+				if (generalLocalizedDelegate.exists()) {
+					LOCALIZATION = new LocalizedDelegateGUIImpl(fibLocalizedDelegate, new LocalizedDelegateGUIImpl(
+							generalLocalizedDelegate, null, false), true);
+				} else {
+					LOCALIZATION = new LocalizedDelegateGUIImpl(fibLocalizedDelegate, null, true);
+				}
+			} else {
+				if (generalLocalizedDelegate.exists()) {
+					LOCALIZATION = new LocalizedDelegateGUIImpl(generalLocalizedDelegate, null, true);
+				} else {
+					LOCALIZATION = new LocalizedDelegateGUIImpl(generalLocalizedDelegate, null, false);
+				}
+			}
+		}
 
 		// private String name;
 		// private String description;
