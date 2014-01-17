@@ -13,6 +13,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.fib.controller.FIBController;
@@ -32,6 +33,8 @@ import org.openflexo.fib.sampleData.Person;
 import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.fib.view.widget.FIBTableWidget;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.test.OrderedRunner;
+import org.openflexo.test.TestOrder;
 
 /**
  * Test the structural and behavioural features of FIBTable widget
@@ -39,6 +42,7 @@ import org.openflexo.localization.FlexoLocalization;
  * @author sylvain
  * 
  */
+@RunWith(OrderedRunner.class)
 public class FIBTableWidgetTest extends FIBTestCase {
 
 	private static GraphicalContextDelegate gcDelegate;
@@ -53,7 +57,8 @@ public class FIBTableWidgetTest extends FIBTestCase {
 	 * Create an initial component
 	 */
 	@Test
-	public void aTest1CreateComponent() {
+	@TestOrder(1)
+	public void test1CreateComponent() {
 
 		component = newFIBPanel();
 		component.setLayout(Layout.twocols);
@@ -91,7 +96,8 @@ public class FIBTableWidgetTest extends FIBTestCase {
 	 * Instanciate component, while instanciating view AFTER data has been set
 	 */
 	@Test
-	public void bTest2InstanciateComponent() {
+	@TestOrder(2)
+	public void test2InstanciateComponent() {
 		controller = FIBController.instanciateController(component, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);
 		family = new Family();
@@ -112,7 +118,8 @@ public class FIBTableWidgetTest extends FIBTestCase {
 	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
-	public void cTest3ModifyValueInModel() {
+	@TestOrder(3)
+	public void test3ModifyValueInModel() {
 
 		FIBTableWidget<?> w = (FIBTableWidget<?>) controller.viewForComponent(table);
 
@@ -146,7 +153,8 @@ public class FIBTableWidgetTest extends FIBTestCase {
 	 * Update the widget, and check that model has well reacted
 	 */
 	@Test
-	public void dTest4ModifyValueInWidget() {
+	@TestOrder(4)
+	public void test4ModifyValueInWidget() {
 
 		FIBTableWidget<?> w = (FIBTableWidget<?>) controller.viewForComponent(table);
 
@@ -169,7 +177,8 @@ public class FIBTableWidgetTest extends FIBTestCase {
 	 * Try to select some objects, check that selection is in sync with it
 	 */
 	@Test
-	public void eTest5PerfomSomeTestsWithSelection() {
+	@TestOrder(5)
+	public void test5PerfomSomeTestsWithSelection() {
 
 		FIBTableWidget<?> w = (FIBTableWidget<?>) controller.viewForComponent(table);
 		assertEquals(6, w.getDynamicJComponent().getModel().getRowCount());

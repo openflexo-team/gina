@@ -9,6 +9,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.fib.controller.FIBController;
@@ -22,6 +23,8 @@ import org.openflexo.fib.sampleData.Numbers;
 import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.fib.view.widget.FIBNumberWidget;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.test.OrderedRunner;
+import org.openflexo.test.TestOrder;
 
 /**
  * Test the structural and behavioural features of FIBNumber widget
@@ -29,6 +32,7 @@ import org.openflexo.localization.FlexoLocalization;
  * @author sylvain
  * 
  */
+@RunWith(OrderedRunner.class)
 public class FIBNumberWidgetTest extends FIBTestCase {
 
 	private static GraphicalContextDelegate gcDelegate;
@@ -72,7 +76,8 @@ public class FIBNumberWidgetTest extends FIBTestCase {
 	 * Create an initial component
 	 */
 	@Test
-	public void aTest1CreateComponent() {
+	@TestOrder(1)
+	public void test1CreateComponent() {
 
 		log("FIBNumberWidgetTest test1CreateComponent() on thread " + Thread.currentThread());
 
@@ -205,7 +210,8 @@ public class FIBNumberWidgetTest extends FIBTestCase {
 	 * Instanciate component, while instanciating view AFTER data has been set
 	 */
 	@Test
-	public void bTest2InstanciateComponent() {
+	@TestOrder(2)
+	public void test2InstanciateComponent() {
 
 		log("FIBNumberWidgetTest test2InstanciateComponent() on thread " + Thread.currentThread());
 
@@ -277,7 +283,8 @@ public class FIBNumberWidgetTest extends FIBTestCase {
 	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
-	public void cTest3ModifyValueInModel() {
+	@TestOrder(3)
+	public void test3ModifyValueInModel() {
 		numbers.setByteP((byte) 101);
 		numbers.setByteO(Byte.valueOf((byte) 107));
 		assertEquals((byte) 101, controller.viewForComponent(bytePWidget).getData());
@@ -320,7 +327,8 @@ public class FIBNumberWidgetTest extends FIBTestCase {
 	 * Update the widget, and check that model has well reacted
 	 */
 	@Test
-	public void dTest4ModifyValueInWidget() {
+	@TestOrder(4)
+	public void test4ModifyValueInWidget() {
 
 		FIBNumberWidget<Byte> bytePWidgetView = (FIBNumberWidget<Byte>) controller.viewForComponent(bytePWidget);
 		bytePWidgetView.getDynamicJComponent().setValue((byte) 201);

@@ -12,6 +12,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.fib.controller.FIBController;
@@ -37,6 +38,8 @@ import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.fib.view.container.FIBPanelView;
 import org.openflexo.fib.view.widget.FIBTableWidget;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.test.OrderedRunner;
+import org.openflexo.test.TestOrder;
 
 /**
  * Test the structural and behavioural features of a simple master-detail pattern driven by a table widget, and where details panel are
@@ -45,6 +48,7 @@ import org.openflexo.localization.FlexoLocalization;
  * @author sylvain
  * 
  */
+@RunWith(OrderedRunner.class)
 public class FIBTableWidgetSelectionTest2 extends FIBTestCase {
 
 	private static GraphicalContextDelegate gcDelegate;
@@ -78,7 +82,8 @@ public class FIBTableWidgetSelectionTest2 extends FIBTestCase {
 	 * Create an initial component
 	 */
 	@Test
-	public void aTest1CreateComponent() {
+	@TestOrder(1)
+	public void test1CreateComponent() {
 
 		component = newFIBPanel();
 		component.setLayout(Layout.border);
@@ -188,7 +193,8 @@ public class FIBTableWidgetSelectionTest2 extends FIBTestCase {
 	 * Instanciate component, while instanciating view AFTER data has been set
 	 */
 	@Test
-	public void bTest2InstanciateComponent() {
+	@TestOrder(2)
+	public void test2InstanciateComponent() {
 		controller = FIBController.instanciateController(component, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);
 		family = new Family();
@@ -209,7 +215,8 @@ public class FIBTableWidgetSelectionTest2 extends FIBTestCase {
 	 * Select some values, check that master/details scheme works
 	 */
 	@Test
-	public void cTest3SelectSomeValues() {
+	@TestOrder(3)
+	public void test3SelectSomeValues() {
 
 		FIBTableWidget<?> w = (FIBTableWidget<?>) controller.viewForComponent(table);
 		FIBPanelView<?, ?> details1 = (FIBPanelView<?, ?>) controller.viewForComponent(detailsPanel1);

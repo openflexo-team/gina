@@ -13,6 +13,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.fib.controller.FIBController;
@@ -28,6 +29,8 @@ import org.openflexo.fib.sampleData.Person;
 import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.fib.view.widget.FIBListWidget;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.test.OrderedRunner;
+import org.openflexo.test.TestOrder;
 
 import com.google.common.reflect.TypeToken;
 
@@ -37,6 +40,7 @@ import com.google.common.reflect.TypeToken;
  * @author sylvain
  * 
  */
+@RunWith(OrderedRunner.class)
 public class FIBListWidgetTest extends FIBTestCase {
 
 	private static GraphicalContextDelegate gcDelegate;
@@ -64,7 +68,8 @@ public class FIBListWidgetTest extends FIBTestCase {
 	 * Create an initial component
 	 */
 	@Test
-	public void aTest1CreateComponent() {
+	@TestOrder(1)
+	public void test1CreateComponent() {
 
 		component = newFIBPanel();
 		component.setLayout(Layout.twocols);
@@ -134,7 +139,8 @@ public class FIBListWidgetTest extends FIBTestCase {
 	 * Instanciate component, while instanciating view AFTER data has been set
 	 */
 	@Test
-	public void bTest2InstanciateComponent() {
+	@TestOrder(2)
+	public void test2InstanciateComponent() {
 		controller = FIBController.instanciateController(component, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);
 		family = new Family();
@@ -169,7 +175,8 @@ public class FIBListWidgetTest extends FIBTestCase {
 	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
-	public void cTest3ModifyValueInModel() {
+	@TestOrder(3)
+	public void test3ModifyValueInModel() {
 
 		family.setBiggestChild(family.getChildren().get(0));
 		family.getFather().setGender(Gender.Female);
@@ -181,7 +188,8 @@ public class FIBListWidgetTest extends FIBTestCase {
 	 * Update the widget, and check that model has well reacted
 	 */
 	@Test
-	public void dTest4ModifyValueInWidget() {
+	@TestOrder(4)
+	public void test4ModifyValueInWidget() {
 		FIBListWidget<?> w5 = (FIBListWidget<?>) controller.viewForComponent(list5);
 		FIBListWidget<?> w6 = (FIBListWidget<?>) controller.viewForComponent(list6);
 
@@ -197,7 +205,8 @@ public class FIBListWidgetTest extends FIBTestCase {
 	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
-	public void eTest5ModifyListValueInModel() {
+	@TestOrder(5)
+	public void test5ModifyListValueInModel() {
 
 		FIBListWidget<?> w5 = (FIBListWidget<?>) controller.viewForComponent(list5);
 

@@ -11,6 +11,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.fib.controller.FIBController;
@@ -34,6 +35,8 @@ import org.openflexo.fib.sampleData.Person;
 import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.fib.view.widget.FIBTableWidget;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.test.OrderedRunner;
+import org.openflexo.test.TestOrder;
 
 /**
  * Test the structural and behavioural features of a simple master-detail pattern driven by a table widget
@@ -41,6 +44,7 @@ import org.openflexo.localization.FlexoLocalization;
  * @author sylvain
  * 
  */
+@RunWith(OrderedRunner.class)
 public class FIBTableWidgetSelectionTest extends FIBTestCase {
 
 	private static GraphicalContextDelegate gcDelegate;
@@ -63,7 +67,8 @@ public class FIBTableWidgetSelectionTest extends FIBTestCase {
 	 * Create an initial component
 	 */
 	@Test
-	public void aTest1CreateComponent() {
+	@TestOrder(1)
+	public void test1CreateComponent() {
 
 		component = newFIBPanel();
 		component.setLayout(Layout.border);
@@ -130,7 +135,8 @@ public class FIBTableWidgetSelectionTest extends FIBTestCase {
 	 * Instanciate component, while instanciating view AFTER data has been set
 	 */
 	@Test
-	public void bTest2InstanciateComponent() {
+	@TestOrder(2)
+	public void test2InstanciateComponent() {
 		controller = FIBController.instanciateController(component, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);
 		family = new Family();
@@ -151,7 +157,8 @@ public class FIBTableWidgetSelectionTest extends FIBTestCase {
 	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
-	public void cTest3SelectEditAndCheckValues() {
+	@TestOrder(3)
+	public void test3SelectEditAndCheckValues() {
 
 		FIBTableWidget<?> w = (FIBTableWidget<?>) controller.viewForComponent(table);
 
@@ -177,7 +184,8 @@ public class FIBTableWidgetSelectionTest extends FIBTestCase {
 	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
-	public void dTest4SelectMultipleValues() {
+	@TestOrder(4)
+	public void test4SelectMultipleValues() {
 
 		FIBTableWidget<?> w = (FIBTableWidget<?>) controller.viewForComponent(table);
 

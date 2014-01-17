@@ -9,6 +9,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.fib.controller.FIBController;
@@ -22,6 +23,8 @@ import org.openflexo.fib.sampleData.Family;
 import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.fib.view.widget.FIBTextFieldWidget;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.test.OrderedRunner;
+import org.openflexo.test.TestOrder;
 
 /**
  * Test the structural and behavioural features of FIBTextField widget
@@ -29,6 +32,7 @@ import org.openflexo.localization.FlexoLocalization;
  * @author sylvain
  * 
  */
+@RunWith(OrderedRunner.class)
 public class FIBTextFieldWidgetTest extends FIBTestCase {
 
 	private static GraphicalContextDelegate gcDelegate;
@@ -49,7 +53,8 @@ public class FIBTextFieldWidgetTest extends FIBTestCase {
 	 * Create an initial component
 	 */
 	@Test
-	public void aTest1CreateComponent() {
+	@TestOrder(1)
+	public void test1CreateComponent() {
 
 		component = newFIBPanel();
 		component.setLayout(Layout.twocols);
@@ -83,7 +88,8 @@ public class FIBTextFieldWidgetTest extends FIBTestCase {
 	 * Instanciate component, while instanciating view AFTER data has been set
 	 */
 	@Test
-	public void bTest2InstanciateComponent() {
+	@TestOrder(2)
+	public void test2InstanciateComponent() {
 		controller = FIBController.instanciateController(component, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);
 		family1 = new Family();
@@ -111,7 +117,8 @@ public class FIBTextFieldWidgetTest extends FIBTestCase {
 	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
-	public void cTest3ModifyValueInModel() {
+	@TestOrder(3)
+	public void test3ModifyValueInModel() {
 		family1.getFather().setFirstName("Roger");
 		family1.getFather().setLastName("Rabbit");
 		assertEquals("Roger", controller.viewForComponent(firstNameTF).getData());
@@ -123,7 +130,8 @@ public class FIBTextFieldWidgetTest extends FIBTestCase {
 	 * Update the widget, and check that model has well reacted
 	 */
 	@Test
-	public void dTest4ModifyValueInWidget() {
+	@TestOrder(4)
+	public void test4ModifyValueInWidget() {
 		FIBTextFieldWidget w1 = (FIBTextFieldWidget) controller.viewForComponent(firstNameTF);
 		FIBTextFieldWidget w2 = (FIBTextFieldWidget) controller.viewForComponent(lastNameTF);
 		FIBTextFieldWidget w3 = (FIBTextFieldWidget) controller.viewForComponent(fullNameTF);
@@ -142,7 +150,8 @@ public class FIBTextFieldWidgetTest extends FIBTestCase {
 	 * Instanciate component, while instanciating view BEFORE to set data
 	 */
 	@Test
-	public void eTest5InstanciateComponent() {
+	@TestOrder(5)
+	public void test5InstanciateComponent() {
 		component.setDataClass(Family.class);
 		FIBController controller = FIBController.instanciateController(component, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);

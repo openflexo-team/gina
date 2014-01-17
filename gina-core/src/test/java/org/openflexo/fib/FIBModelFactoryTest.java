@@ -24,9 +24,11 @@ import static org.junit.Assert.fail;
 import java.util.logging.Logger;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openflexo.fib.model.FIBModelFactory;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.test.OrderedRunner;
 
 /**
  * Test instanciation of FIBModelFactory<br>
