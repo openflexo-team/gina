@@ -30,6 +30,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.openflexo</groupId>
+			<artifactId>flexoutils</artifactId>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openflexo</groupId>
 			<artifactId>flexographicutils</artifactId>
 		</dependency>
 		<dependency>
