@@ -229,7 +229,8 @@ public class FIBListWidgetTest extends FIBTestCase {
 	 * Try to select some objects, check that selection is in sync with it
 	 */
 	@Test
-	public void fTest6PerfomSomeTestsWithSelection() {
+	@TestOrder(6)
+	public void test6PerfomSomeTestsWithSelection() {
 
 		FIBListWidget<?> w7 = (FIBListWidget<?>) controller.viewForComponent(list7);
 		assertEquals(6, w7.getDynamicJComponent().getModel().getSize());
