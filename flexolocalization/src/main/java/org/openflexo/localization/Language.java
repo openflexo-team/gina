@@ -19,6 +19,7 @@
  */
 package org.openflexo.localization;
 
+import java.util.Locale;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -168,6 +169,15 @@ public abstract class Language implements ChoiceList {
 	@Override
 	public Vector<Language> getAvailableValues() {
 		return getAvailableLanguages();
+	}
+
+	public static Language get(Locale locale) {
+		if (locale == Locale.ENGLISH || locale == Locale.UK || locale == Locale.US) {
+			return ENGLISH;
+		} else if (locale == Locale.FRANCE || locale == Locale.FRENCH) {
+			return FRENCH;
+		}
+		return ENGLISH;
 	}
 
 	public static Language get(String languageAsString) {

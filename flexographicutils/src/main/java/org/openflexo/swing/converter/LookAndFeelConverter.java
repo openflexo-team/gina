@@ -6,7 +6,6 @@ import org.openflexo.model.StringConverterLibrary.Converter;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.swing.LookAndFeel;
 
-@Deprecated
 public class LookAndFeelConverter extends Converter<LookAndFeel> {
 
 	public LookAndFeelConverter() {

@@ -4,7 +4,6 @@ import org.openflexo.model.StringConverterLibrary.Converter;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.swing.FlexoFont;
 
-@Deprecated
 public class FlexoFontConverter extends Converter<FlexoFont> {
 
 	public FlexoFontConverter() {
