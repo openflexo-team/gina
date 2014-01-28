@@ -385,6 +385,12 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 	public void setBindingFactory(BindingFactory bindingFactory);
 
+	public List<FIBComponent> getMayDepends();
+
+	public FIBDependancy createNewExplicitDependancy();
+
+	public void deleteExplicitDependancy(FIBDependancy p);
+
 	public static abstract class FIBComponentImpl extends FIBModelObjectImpl implements FIBComponent {
 
 		private static final Logger logger = Logger.getLogger(FIBComponent.class.getPackage().getName());
@@ -941,7 +947,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 			}
 		}
 
-		public Vector<FIBComponent> getMayDepends() {
+		@Override
+		public List<FIBComponent> getMayDepends() {
 			return mayDepends;
 		}
 
@@ -1524,12 +1531,14 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 			getPropertyChangeSupport().firePropertyChange(EXPLICIT_DEPENDANCIES_KEY, null, explicitDependancies);
 		}
 
+		@Override
 		public FIBDependancy createNewExplicitDependancy() {
 			FIBDependancy returned = getFactory().newInstance(FIBDependancy.class);
 			addToExplicitDependancies(returned);
 			return returned;
 		}
 
+		@Override
 		public void deleteExplicitDependancy(FIBDependancy p) {
 			removeFromExplicitDependancies(p);
 		}

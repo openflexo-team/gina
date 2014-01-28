@@ -125,6 +125,10 @@ public interface FIBCustom extends FIBWidget {
 
 	public BindingModel getCustomComponentBindingModel();
 
+	public FIBCustomAssignment createAssignment();
+
+	public FIBCustomAssignment deleteAssignment(FIBCustomAssignment assignment);
+
 	public static abstract class FIBCustomImpl extends FIBWidgetImpl implements FIBCustom {
 
 		private static final Logger logger = Logger.getLogger(FIBCustom.class.getPackage().getName());
@@ -282,6 +286,7 @@ public interface FIBCustom extends FIBWidget {
 			return true;
 		}
 
+		@Override
 		public FIBCustomAssignment createAssignment() {
 			logger.info("Called createAssignment()");
 			FIBCustomAssignment newAssignment = getFactory().newInstance(FIBCustomAssignment.class);
@@ -289,6 +294,7 @@ public interface FIBCustom extends FIBWidget {
 			return newAssignment;
 		}
 
+		@Override
 		public FIBCustomAssignment deleteAssignment(FIBCustomAssignment assignment) {
 			logger.info("Called deleteAssignment() with " + assignment);
 			removeFromAssignments(assignment);

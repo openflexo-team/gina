@@ -174,6 +174,12 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 
 	public Type getDataClass();
 
+	public ColumnType getColumnType();
+
+	public boolean getHasSpecificFont();
+
+	public void setHasSpecificFont(boolean aFlag);
+
 	public static abstract class FIBTableColumnImpl extends FIBModelObjectImpl implements FIBTableColumn {
 
 		private static final Logger logger = Logger.getLogger(FIBTableColumn.class.getPackage().getName());
@@ -368,10 +374,12 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 			}
 		}
 
+		@Override
 		public boolean getHasSpecificFont() {
 			return getFont() != null;
 		}
 
+		@Override
 		public void setHasSpecificFont(boolean aFlag) {
 			if (aFlag) {
 				setFont(retrieveValidFont());
@@ -380,6 +388,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 			}
 		}
 
+		@Override
 		public abstract ColumnType getColumnType();
 
 		@Override

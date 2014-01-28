@@ -52,6 +52,8 @@
 'right_click_action'_binding_is_not_valid_description='right click action' binding is not valid description
 'root'_binding_is_not_valid='root'_binding_is_not_valid
 'root'_binding_is_not_valid_description='root'_binding_is_not_valid_description
+'selected'_binding_is_not_valid='selected'_binding_is_not_valid
+'selected'_binding_is_not_valid_description='selected'_binding_is_not_valid_description
 'tooltip'_binding_is_not_valid='tooltip' binding is not valid
 'tooltip'_binding_is_not_valid_description='tooltip' binding is not valid description
 'value_change_acion'_binding_is_not_valid='value change acion' binding is not valid

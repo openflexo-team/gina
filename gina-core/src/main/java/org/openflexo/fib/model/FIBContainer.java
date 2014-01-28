@@ -20,6 +20,7 @@
 package org.openflexo.fib.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
@@ -31,6 +32,7 @@ import javax.swing.tree.TreeNode;
 
 import org.openflexo.fib.model.FIBPanel.Layout;
 import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.Embedded;
 import org.openflexo.model.annotations.Finder;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
@@ -50,6 +52,7 @@ public abstract interface FIBContainer extends FIBComponent {
 
 	@Getter(value = SUB_COMPONENTS_KEY, cardinality = Cardinality.LIST, inverse = FIBComponent.PARENT_KEY)
 	@XMLElement
+	@Embedded
 	public List<FIBComponent> getSubComponents();
 
 	@Setter(SUB_COMPONENTS_KEY)
@@ -83,6 +86,16 @@ public abstract interface FIBContainer extends FIBComponent {
 	@Deprecated
 	// TODO: check if this is still required
 	public void notifyComponentMoved(FIBComponent aComponent);
+
+	public Layout getLayout();
+
+	public void componentFirst(FIBComponent c);
+
+	public void componentUp(FIBComponent c);
+
+	public void componentDown(FIBComponent c);
+
+	public void componentLast(FIBComponent c);
 
 	public static abstract class FIBContainerImpl extends FIBComponentImpl implements FIBContainer {
 
@@ -505,6 +518,7 @@ public abstract interface FIBContainer extends FIBComponent {
 
 		// Default layout is built-in: only FIBPanel manage a custom layout,
 		// where this method is overriden
+		@Override
 		public Layout getLayout() {
 			return null;
 		}
@@ -514,6 +528,7 @@ public abstract interface FIBContainer extends FIBComponent {
 		public void setLayout(Layout layout) {
 		}
 
+		@Override
 		public void componentFirst(FIBComponent c) {
 			if (c == null) {
 				return;
@@ -524,6 +539,7 @@ public abstract interface FIBContainer extends FIBComponent {
 			notifyComponentIndexChanged(c);
 		}
 
+		@Override
 		public void componentUp(FIBComponent c) {
 			if (c == null) {
 				return;
@@ -537,6 +553,7 @@ public abstract interface FIBContainer extends FIBComponent {
 			}
 		}
 
+		@Override
 		public void componentDown(FIBComponent c) {
 			if (c == null) {
 				return;
@@ -550,6 +567,7 @@ public abstract interface FIBContainer extends FIBComponent {
 			notifyComponentIndexChanged(c);
 		}
 
+		@Override
 		public void componentLast(FIBComponent c) {
 			if (c == null) {
 				return;
@@ -610,6 +628,11 @@ public abstract interface FIBContainer extends FIBComponent {
 				}
 			});
 			notifySubcomponentsIndexChanged();
+		}
+
+		@Override
+		public Collection<? extends FIBModelObject> getEmbeddedObjects() {
+			return getSubComponents();
 		}
 
 	}

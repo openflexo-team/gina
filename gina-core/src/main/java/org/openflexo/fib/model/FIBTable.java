@@ -48,6 +48,7 @@ import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.toolbox.ChainedCollection;
 
 @ModelEntity
 @ImplementationClass(FIBTable.FIBTableImpl.class)
@@ -217,6 +218,48 @@ public interface FIBTable extends FIBWidget {
 	public FIBTableColumn getColumnWithTitle(String title);
 
 	public BindingModel getTableBindingModel();
+
+	public FIBAddAction createAddAction();
+
+	public FIBRemoveAction createRemoveAction();
+
+	public FIBCustomAction createCustomAction();
+
+	public FIBTableAction deleteAction(FIBTableAction actionToDelete);
+
+	public FIBLabelColumn createLabelColumn();
+
+	public FIBTextFieldColumn createTextFieldColumn();
+
+	public FIBCheckBoxColumn createCheckBoxColumn();
+
+	public FIBDropDownColumn createDropDownColumn();
+
+	public FIBNumberColumn createNumberColumn();
+
+	public FIBIconColumn createIconColumn();
+
+	public FIBCustomColumn createCustomColumn();
+
+	public FIBButtonColumn createButtonColumn();
+
+	public FIBTableColumn deleteColumn(FIBTableColumn columnToDelete);
+
+	public void moveToTop(FIBTableColumn c);
+
+	public void moveUp(FIBTableColumn c);
+
+	public void moveDown(FIBTableColumn c);
+
+	public void moveToBottom(FIBTableColumn c);
+
+	public void moveToTop(FIBTableAction a);
+
+	public void moveUp(FIBTableAction a);
+
+	public void moveDown(FIBTableAction a);
+
+	public void moveToBottom(FIBTableAction a);
 
 	public static abstract class FIBTableImpl extends FIBWidgetImpl implements FIBTable {
 
@@ -599,6 +642,7 @@ public interface FIBTable extends FIBWidget {
 			}
 		}
 
+		@Override
 		public FIBAddAction createAddAction() {
 			FIBAddAction newAction = getFactory().newInstance(FIBAddAction.class);
 			newAction.setName("add_action");
@@ -606,6 +650,7 @@ public interface FIBTable extends FIBWidget {
 			return newAction;
 		}
 
+		@Override
 		public FIBRemoveAction createRemoveAction() {
 			FIBRemoveAction newAction = getFactory().newInstance(FIBRemoveAction.class);
 			newAction.setName("delete_action");
@@ -613,6 +658,7 @@ public interface FIBTable extends FIBWidget {
 			return newAction;
 		}
 
+		@Override
 		public FIBCustomAction createCustomAction() {
 			FIBCustomAction newAction = getFactory().newInstance(FIBCustomAction.class);
 			newAction.setName("custom_action");
@@ -620,12 +666,56 @@ public interface FIBTable extends FIBWidget {
 			return newAction;
 		}
 
+		@Override
 		public FIBTableAction deleteAction(FIBTableAction actionToDelete) {
 			logger.info("Called deleteAction() with " + actionToDelete);
 			removeFromActions(actionToDelete);
 			return actionToDelete;
 		}
 
+		@Override
+		public void moveToTop(FIBTableAction c) {
+			if (c == null) {
+				return;
+			}
+			getActions().remove(c);
+			getActions().add(0, c);
+			getPropertyChangeSupport().firePropertyChange(ACTIONS_KEY, null, getActions());
+		}
+
+		@Override
+		public void moveUp(FIBTableAction a) {
+			if (a == null) {
+				return;
+			}
+			int index = getActions().indexOf(a);
+			getActions().remove(a);
+			getActions().add(index - 1, a);
+			getPropertyChangeSupport().firePropertyChange(ACTIONS_KEY, null, getActions());
+		}
+
+		@Override
+		public void moveDown(FIBTableAction a) {
+			if (a == null) {
+				return;
+			}
+			int index = getActions().indexOf(a);
+			getActions().remove(a);
+			getActions().add(index + 1, a);
+			getPropertyChangeSupport().firePropertyChange(ACTIONS_KEY, null, getActions());
+		}
+
+		@Override
+		public void moveToBottom(FIBTableAction a) {
+			if (a == null) {
+				return;
+			}
+			getActions().remove(a);
+			getActions().add(a);
+			getPropertyChangeSupport().firePropertyChange(ACTIONS_KEY, null, getActions());
+		}
+
+		@Override
 		public FIBLabelColumn createLabelColumn() {
 			FIBLabelColumn newColumn = getFactory().newInstance(FIBLabelColumn.class);
 			newColumn.setName("label");
@@ -634,6 +724,7 @@ public interface FIBTable extends FIBWidget {
 			return newColumn;
 		}
 
+		@Override
 		public FIBTextFieldColumn createTextFieldColumn() {
 			FIBTextFieldColumn newColumn = getFactory().newInstance(FIBTextFieldColumn.class);
 			newColumn.setName("textfield");
@@ -642,6 +733,7 @@ public interface FIBTable extends FIBWidget {
 			return newColumn;
 		}
 
+		@Override
 		public FIBCheckBoxColumn createCheckBoxColumn() {
 			FIBCheckBoxColumn newColumn = getFactory().newInstance(FIBCheckBoxColumn.class);
 			newColumn.setName("checkbox");
@@ -650,6 +742,7 @@ public interface FIBTable extends FIBWidget {
 			return newColumn;
 		}
 
+		@Override
 		public FIBDropDownColumn createDropDownColumn() {
 			FIBDropDownColumn newColumn = getFactory().newInstance(FIBDropDownColumn.class);
 			newColumn.setName("dropdown");
@@ -658,6 +751,7 @@ public interface FIBTable extends FIBWidget {
 			return newColumn;
 		}
 
+		@Override
 		public FIBNumberColumn createNumberColumn() {
 			FIBNumberColumn newColumn = getFactory().newInstance(FIBNumberColumn.class);
 			newColumn.setName("number");
@@ -666,6 +760,7 @@ public interface FIBTable extends FIBWidget {
 			return newColumn;
 		}
 
+		@Override
 		public FIBIconColumn createIconColumn() {
 			FIBIconColumn newColumn = getFactory().newInstance(FIBIconColumn.class);
 			newColumn.setName("icon");
@@ -674,6 +769,7 @@ public interface FIBTable extends FIBWidget {
 			return newColumn;
 		}
 
+		@Override
 		public FIBCustomColumn createCustomColumn() {
 			FIBCustomColumn newColumn = getFactory().newInstance(FIBCustomColumn.class);
 			newColumn.setName("custom");
@@ -682,6 +778,7 @@ public interface FIBTable extends FIBWidget {
 			return newColumn;
 		}
 
+		@Override
 		public FIBButtonColumn createButtonColumn() {
 			FIBButtonColumn newColumn = getFactory().newInstance(FIBButtonColumn.class);
 			newColumn.setName("button");
@@ -690,12 +787,14 @@ public interface FIBTable extends FIBWidget {
 			return newColumn;
 		}
 
+		@Override
 		public FIBTableColumn deleteColumn(FIBTableColumn columnToDelete) {
 			logger.info("Called deleteColumn() with " + columnToDelete);
 			removeFromColumns(columnToDelete);
 			return columnToDelete;
 		}
 
+		@Override
 		public void moveToTop(FIBTableColumn c) {
 			if (c == null) {
 				return;
@@ -705,6 +804,7 @@ public interface FIBTable extends FIBWidget {
 			getPropertyChangeSupport().firePropertyChange(COLUMNS_KEY, null, getColumns());
 		}
 
+		@Override
 		public void moveUp(FIBTableColumn c) {
 			if (c == null) {
 				return;
@@ -715,6 +815,7 @@ public interface FIBTable extends FIBWidget {
 			getPropertyChangeSupport().firePropertyChange(COLUMNS_KEY, null, getColumns());
 		}
 
+		@Override
 		public void moveDown(FIBTableColumn c) {
 			if (c == null) {
 				return;
@@ -725,6 +826,7 @@ public interface FIBTable extends FIBWidget {
 			getPropertyChangeSupport().firePropertyChange(COLUMNS_KEY, null, getColumns());
 		}
 
+		@Override
 		public void moveToBottom(FIBTableColumn c) {
 			if (c == null) {
 				return;
@@ -829,6 +931,11 @@ public interface FIBTable extends FIBWidget {
 			List<DataBinding<?>> returned = super.getDeclaredBindings();
 			returned.add(getSelected());
 			return returned;
+		}
+
+		@Override
+		public Collection<? extends FIBModelObject> getEmbeddedObjects() {
+			return new ChainedCollection<FIBModelObject>(getColumns(), getActions());
 		}
 
 	}

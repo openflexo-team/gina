@@ -108,6 +108,18 @@ public interface FIBNumber extends FIBWidget {
 
 	public Number retrieveIncrement();
 
+	public int getIncrementAsInteger();
+
+	public void setIncrementAsInteger(int incrementAsInteger);
+
+	public int getMinValueAsInteger();
+
+	public void setMinValueAsInteger(int minValueAsInteger);
+
+	public int getMaxValueAsInteger();
+
+	public void setMaxValueAsInteger(int maxValueAsInteger);
+
 	public static abstract class FIBNumberImpl extends FIBWidgetImpl implements FIBNumber {
 
 		private boolean allowsNull = false;
@@ -319,26 +331,32 @@ public interface FIBNumber extends FIBWidget {
 			}
 		}
 
+		@Override
 		public int getIncrementAsInteger() {
 			return getIncrement().intValue();
 		}
 
+		@Override
 		public void setIncrementAsInteger(int incrementAsInteger) {
 			setIncrement(incrementAsInteger);
 		}
 
+		@Override
 		public int getMinValueAsInteger() {
 			return getMinValue().intValue();
 		}
 
+		@Override
 		public void setMinValueAsInteger(int minValueAsInteger) {
 			setMinValue(minValueAsInteger);
 		}
 
+		@Override
 		public int getMaxValueAsInteger() {
 			return getMaxValue().intValue();
 		}
 
+		@Override
 		public void setMaxValueAsInteger(int maxValueAsInteger) {
 			setMaxValue(maxValueAsInteger);
 		}

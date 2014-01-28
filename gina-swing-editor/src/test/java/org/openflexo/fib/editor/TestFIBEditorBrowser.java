@@ -1,4 +1,4 @@
-package org.openflexo.fib.testutils;
+package org.openflexo.fib.editor;
 
 import static org.junit.Assert.assertEquals;
 
@@ -10,6 +10,7 @@ import org.openflexo.fib.model.FIBLabel;
 import org.openflexo.fib.model.FIBModelFactory;
 import org.openflexo.fib.model.FIBPanel;
 import org.openflexo.fib.model.validation.ValidationReport;
+import org.openflexo.fib.testutils.FIBComponentGraphicalContextDelegate;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 
 /**

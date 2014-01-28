@@ -187,13 +187,13 @@
     </Tab>
     <Tab title="Depends" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="5" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="DependenciesTab">
       <Panel layout="border" border="titled" borderTitle="Dynamic dependencies" titleFont="SansSerif,0,11" darkLevel="0" constraints="twocols(expandHorizontally=true;expandVertically=true;location=center)">
-        <Table iteratorClassName="org.openflexo.fib.model.FIBComponent" visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="DependenciesTable" data="data.mayDepends" constraints="border(location=center)">
+        <Table iteratorClassName="org.openflexo.fib.model.FIBComponent" visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="AllDependenciesTable" data="data.mayDepends" constraints="border(location=center)">
           <LabelColumn data="data.toString" title="owner" columnWidth="200" resizable="true" displayTitle="true" />
           <LabelColumn data="iterator.toString" title="dependency" columnWidth="200" resizable="true" displayTitle="true" />
         </Table>
       </Panel>
       <Panel layout="border" border="titled" borderTitle="Explicit dependencies" titleFont="SansSerif,0,11" darkLevel="0" constraints="twocols(expandHorizontally=true;expandVertically=true;location=center)">
-        <Table iteratorClassName="org.openflexo.fib.model.FIBDependancy" visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="DependenciesTable" data="data.explicitDependancies" constraints="border(location=center)">
+        <Table iteratorClassName="org.openflexo.fib.model.FIBDependancy" visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="ExplicitDependenciesTable" data="data.explicitDependancies" constraints="border(location=center)">
           <LabelColumn data="iterator.owner.toString" title="owner" columnWidth="200" resizable="true" displayTitle="true" />
           <DropDownColumn list="iterator.component.rootComponent.namedComponents" data="iterator.masterComponent" title="dependency" columnWidth="200" resizable="true" displayTitle="true" />
           <AddAction method="data.createNewExplicitDependancy()" name="make_new_dependency" />

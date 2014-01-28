@@ -103,6 +103,20 @@ public interface FIBHtmlEditor extends FIBWidget {
 
 	public void indexChanged();
 
+	public void makeFullHtmlEditor();
+
+	public void makeEmbeddedHtmlEditor();
+
+	public void makeLightHtmlEditor();
+
+	public void makeUltraLightHtmlEditor();
+
+	public Vector<FIBHtmlEditorOption> getFirstLevelOptionsInLine1();
+
+	public Vector<FIBHtmlEditorOption> getFirstLevelOptionsInLine2();
+
+	public Vector<FIBHtmlEditorOption> getFirstLevelOptionsInLine3();
+
 	public static abstract class FIBHtmlEditorImpl extends FIBWidgetImpl implements FIBHtmlEditor {
 
 		@SuppressWarnings("unused")
@@ -187,6 +201,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 			return "HTMLEditor";
 		}
 
+		@Override
 		public void makeFullHtmlEditor() {
 			for (String s : option_keys) {
 				FIBHtmlEditorOption option = getOption(s);
@@ -218,6 +233,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 
 		}
 
+		@Override
 		public void makeEmbeddedHtmlEditor() {
 			for (String s : option_keys) {
 				FIBHtmlEditorOption option = getOption(s);
@@ -250,6 +266,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 
 		}
 
+		@Override
 		public void makeLightHtmlEditor() {
 			for (String s : option_keys) {
 				FIBHtmlEditorOption option = getOption(s);
@@ -283,6 +300,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 			addToOptionsInLine2(getOption(MetaphaseEditorPanel.COLOR_PANEL_KEY));
 		}
 
+		@Override
 		public void makeUltraLightHtmlEditor() {
 			for (String s : option_keys) {
 				FIBHtmlEditorOption option = getOption(s);
@@ -360,6 +378,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 			return optionsInLine1.contains(option) || optionsInLine2.contains(option) || optionsInLine3.contains(option);
 		}
 
+		@Override
 		public Vector<FIBHtmlEditorOption> getFirstLevelOptionsInLine1() {
 			return firstLevelOptionsInLine1;
 		}
@@ -430,6 +449,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 			}
 		}
 
+		@Override
 		public Vector<FIBHtmlEditorOption> getFirstLevelOptionsInLine2() {
 			return firstLevelOptionsInLine2;
 		}
@@ -500,6 +520,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 			}
 		}
 
+		@Override
 		public Vector<FIBHtmlEditorOption> getFirstLevelOptionsInLine3() {
 			return firstLevelOptionsInLine3;
 		}

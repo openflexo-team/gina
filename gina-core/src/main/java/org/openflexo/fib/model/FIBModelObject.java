@@ -54,7 +54,6 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.model.factory.AccessibleProxyObject;
 import org.openflexo.model.factory.CloneableProxyObject;
 import org.openflexo.model.factory.DeletableProxyObject;
-import org.openflexo.model.factory.EmbeddingType;
 import org.openflexo.toolbox.FileResource;
 import org.openflexo.toolbox.StringUtils;
 
@@ -127,6 +126,12 @@ public interface FIBModelObject extends Bindable, AccessibleProxyObject, Cloneab
 	public FIBComponent getComponent();
 
 	public void notify(FIBModelNotification notification);
+
+	public void deleteParameter(FIBParameter p);
+
+	public boolean isParameterAddable();
+
+	public boolean isParameterDeletable(FIBParameter p);
 
 	public static abstract class FIBModelObjectImpl implements FIBModelObject {
 
@@ -268,14 +273,17 @@ public interface FIBModelObject extends Bindable, AccessibleProxyObject, Cloneab
 			return returned;
 		}
 
+		@Override
 		public void deleteParameter(FIBParameter p) {
 			removeFromParameters(p);
 		}
 
+		@Override
 		public boolean isParameterAddable() {
 			return true;
 		}
 
+		@Override
 		public boolean isParameterDeletable(FIBParameter p) {
 			return true;
 		}
@@ -406,10 +414,16 @@ public interface FIBModelObject extends Bindable, AccessibleProxyObject, Cloneab
 
 		@Override
 		public void validate(ValidationReport report) {
+			// System.out.println("Validating " + this);
 			applyValidation(report);
-			if (getEmbeddedObjects() != null) {
-				for (FIBModelObject o : getEmbeddedObjects()) {
-					o.validate(report);
+			Collection<? extends FIBModelObject> embeddedObjects = getEmbeddedObjects();
+			if (embeddedObjects != null) {
+				System.out.println("Embedded for " + this + " are (" + embeddedObjects.size() + ") " + embeddedObjects);
+				for (FIBModelObject o : embeddedObjects) {
+					// System.out.println("Validating embedded " + o);
+					if (o != this) {
+						o.validate(report);
+					}
 				}
 			}
 		}
@@ -511,8 +525,12 @@ public interface FIBModelObject extends Bindable, AccessibleProxyObject, Cloneab
 		}
 
 		@Override
-		public final Collection<? extends FIBModelObject> getEmbeddedObjects() {
-			return (Collection<? extends FIBModelObject>) getFactory().getEmbeddedObjects(this, EmbeddingType.CLOSURE);
+		public Collection<? extends FIBModelObject> getEmbeddedObjects() {
+			// TODO: HUGE perfs issues, please investigate
+			// Before this will be fixed, we implement this method manually
+
+			// return (Collection<? extends FIBModelObject>) getFactory().getEmbeddedObjects(this, EmbeddingType.CLOSURE);
+			return null;
 		}
 
 		@Override

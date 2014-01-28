@@ -21,6 +21,7 @@ package org.openflexo.fib.model;
 
 import java.awt.Color;
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
@@ -231,6 +232,18 @@ public interface FIBBrowser extends FIBWidget {
 	public void setBorderSelectionColor(Color borderSelectionColor);
 
 	public FIBBrowserElement elementForClass(Class<?> aClass);
+
+	public FIBBrowserElement createElement();
+
+	public FIBBrowserElement deleteElement(FIBBrowserElement elementToDelete);
+
+	public void moveToTop(FIBBrowserElement e);
+
+	public void moveUp(FIBBrowserElement e);
+
+	public void moveDown(FIBBrowserElement e);
+
+	public void moveToBottom(FIBBrowserElement e);
 
 	public static abstract class FIBBrowserImpl extends FIBWidgetImpl implements FIBBrowser {
 
@@ -448,6 +461,7 @@ public interface FIBBrowser extends FIBWidget {
 			updateElementsForClasses();
 		}
 
+		@Override
 		public FIBBrowserElement createElement() {
 			logger.info("Called createElement()");
 			FIBBrowserElement newElement = getFactory().newInstance(FIBBrowserElement.class);
@@ -456,12 +470,14 @@ public interface FIBBrowser extends FIBWidget {
 			return newElement;
 		}
 
+		@Override
 		public FIBBrowserElement deleteElement(FIBBrowserElement elementToDelete) {
 			logger.info("Called elementToDelete() with " + elementToDelete);
 			removeFromElements(elementToDelete);
 			return elementToDelete;
 		}
 
+		@Override
 		public void moveToTop(FIBBrowserElement e) {
 			if (e == null) {
 				return;
@@ -471,6 +487,7 @@ public interface FIBBrowser extends FIBWidget {
 			getPropertyChangeSupport().firePropertyChange(ELEMENTS_KEY, null, getElements());
 		}
 
+		@Override
 		public void moveUp(FIBBrowserElement e) {
 			if (e == null) {
 				return;
@@ -481,6 +498,7 @@ public interface FIBBrowser extends FIBWidget {
 			getPropertyChangeSupport().firePropertyChange(ELEMENTS_KEY, null, getElements());
 		}
 
+		@Override
 		public void moveDown(FIBBrowserElement e) {
 			if (e == null) {
 				return;
@@ -491,6 +509,7 @@ public interface FIBBrowser extends FIBWidget {
 			getPropertyChangeSupport().firePropertyChange(ELEMENTS_KEY, null, getElements());
 		}
 
+		@Override
 		public void moveToBottom(FIBBrowserElement e) {
 			if (e == null) {
 				return;
@@ -711,6 +730,7 @@ public interface FIBBrowser extends FIBWidget {
 		protected void applyValidation(ValidationReport report) {
 			super.applyValidation(report);
 			performValidation(RootBindingMustBeValid.class, report);
+			performValidation(SelectedBindingMustBeValid.class, report);
 		}
 
 		/**
@@ -726,29 +746,35 @@ public interface FIBBrowser extends FIBWidget {
 			return returned;
 		}
 
-		public static class RootBindingMustBeValid extends BindingMustBeValid<FIBBrowser> {
-			public RootBindingMustBeValid() {
-				super("'root'_binding_is_not_valid", FIBBrowser.class);
-			}
-
-			@Override
-			public DataBinding<?> getBinding(FIBBrowser object) {
-				return object.getRoot();
-			}
-
-		}
-
-		public static class SelectedBindingMustBeValid extends BindingMustBeValid<FIBBrowser> {
-			public SelectedBindingMustBeValid() {
-				super("'selected'_binding_is_not_valid", FIBBrowser.class);
-			}
-
-			@Override
-			public DataBinding<?> getBinding(FIBBrowser object) {
-				return object.getSelected();
-			}
-
+		@Override
+		public Collection<? extends FIBModelObject> getEmbeddedObjects() {
+			return getElements();
 		}
 
 	}
+
+	public static class RootBindingMustBeValid extends BindingMustBeValid<FIBBrowser> {
+		public RootBindingMustBeValid() {
+			super("'root'_binding_is_not_valid", FIBBrowser.class);
+		}
+
+		@Override
+		public DataBinding<?> getBinding(FIBBrowser object) {
+			return object.getRoot();
+		}
+
+	}
+
+	public static class SelectedBindingMustBeValid extends BindingMustBeValid<FIBBrowser> {
+		public SelectedBindingMustBeValid() {
+			super("'selected'_binding_is_not_valid", FIBBrowser.class);
+		}
+
+		@Override
+		public DataBinding<?> getBinding(FIBBrowser object) {
+			return object.getSelected();
+		}
+
+	}
+
 }

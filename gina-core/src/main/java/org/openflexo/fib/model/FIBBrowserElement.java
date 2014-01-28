@@ -23,6 +23,7 @@ import java.awt.Font;
 import java.io.File;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Logger;
@@ -223,6 +224,30 @@ public interface FIBBrowserElement extends FIBModelObject {
 	public BindingModel getActionBindingModel();
 
 	public Font retrieveValidFont();
+
+	public FIBAddAction createAddAction();
+
+	public FIBRemoveAction createRemoveAction();
+
+	public FIBCustomAction createCustomAction();
+
+	public FIBBrowserAction deleteAction(FIBBrowserAction actionToDelete);
+
+	public void moveToTop(FIBBrowserElementChildren e);
+
+	public void moveUp(FIBBrowserElementChildren e);
+
+	public void moveDown(FIBBrowserElementChildren e);
+
+	public void moveToBottom(FIBBrowserElementChildren e);
+
+	public File getImageIconFile();
+
+	public void setImageIconFile(File imageIconFile);
+
+	public FIBBrowserElementChildren createChildren();
+
+	public FIBBrowserElementChildren deleteChildren(FIBBrowserElementChildren elementToDelete);
 
 	public static abstract class FIBBrowserElementImpl extends FIBModelObjectImpl implements FIBBrowserElement {
 
@@ -562,10 +587,12 @@ public interface FIBBrowserElement extends FIBModelObject {
 			this.dynamicFont = dynamicFont;
 		}
 
+		@Override
 		public File getImageIconFile() {
 			return imageIconFile;
 		}
 
+		@Override
 		public void setImageIconFile(File imageIconFile) {
 			FIBPropertyNotification<File> notification = requireChange(IMAGE_ICON_FILE_KEY, imageIconFile);
 			if (notification != null) {
@@ -675,6 +702,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 			getPropertyChangeSupport().firePropertyChange(ACTIONS_KEY, null, actions);
 		}*/
 
+		@Override
 		public FIBAddAction createAddAction() {
 			FIBAddAction newAction = getFactory().newInstance(FIBAddAction.class);
 			newAction.setName("add_action");
@@ -682,6 +710,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 			return newAction;
 		}
 
+		@Override
 		public FIBRemoveAction createRemoveAction() {
 			FIBRemoveAction newAction = getFactory().newInstance(FIBRemoveAction.class);
 			newAction.setName("delete_action");
@@ -689,6 +718,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 			return newAction;
 		}
 
+		@Override
 		public FIBCustomAction createCustomAction() {
 			FIBCustomAction newAction = getFactory().newInstance(FIBCustomAction.class);
 			newAction.setName("custom_action");
@@ -696,6 +726,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 			return newAction;
 		}
 
+		@Override
 		public FIBBrowserAction deleteAction(FIBBrowserAction actionToDelete) {
 			logger.info("Called deleteAction() with " + actionToDelete);
 			removeFromActions(actionToDelete);
@@ -726,6 +757,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 			getPropertyChangeSupport().firePropertyChange(CHILDREN_KEY, null, children);
 		}*/
 
+		@Override
 		public FIBBrowserElementChildren createChildren() {
 			logger.info("Called createChildren()");
 			FIBBrowserElementChildren newChildren = getFactory().newInstance(FIBBrowserElementChildren.class);
@@ -734,12 +766,14 @@ public interface FIBBrowserElement extends FIBModelObject {
 			return newChildren;
 		}
 
+		@Override
 		public FIBBrowserElementChildren deleteChildren(FIBBrowserElementChildren elementToDelete) {
 			logger.info("Called elementToDelete() with " + elementToDelete);
 			removeFromChildren(elementToDelete);
 			return elementToDelete;
 		}
 
+		@Override
 		public void moveToTop(FIBBrowserElementChildren e) {
 			if (e == null) {
 				return;
@@ -749,6 +783,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 			getPropertyChangeSupport().firePropertyChange(CHILDREN_KEY, null, getChildren());
 		}
 
+		@Override
 		public void moveUp(FIBBrowserElementChildren e) {
 			if (e == null) {
 				return;
@@ -759,6 +794,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 			getPropertyChangeSupport().firePropertyChange(CHILDREN_KEY, null, getChildren());
 		}
 
+		@Override
 		public void moveDown(FIBBrowserElementChildren e) {
 			if (e == null) {
 				return;
@@ -769,6 +805,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 			getPropertyChangeSupport().firePropertyChange(CHILDREN_KEY, null, getChildren());
 		}
 
+		@Override
 		public void moveToBottom(FIBBrowserElementChildren e) {
 			if (e == null) {
 				return;
@@ -795,81 +832,9 @@ public interface FIBBrowserElement extends FIBModelObject {
 			performValidation(DynamicFontBindingMustBeValid.class, report);
 		}
 
-		public static class LabelBindingMustBeValid extends BindingMustBeValid<FIBBrowserElement> {
-			public LabelBindingMustBeValid() {
-				super("'label'_binding_is_not_valid", FIBBrowserElement.class);
-			}
-
-			@Override
-			public DataBinding<?> getBinding(FIBBrowserElement object) {
-				return object.getLabel();
-			}
-		}
-
-		public static class IconBindingMustBeValid extends BindingMustBeValid<FIBBrowserElement> {
-			public IconBindingMustBeValid() {
-				super("'icon'_binding_is_not_valid", FIBBrowserElement.class);
-			}
-
-			@Override
-			public DataBinding<?> getBinding(FIBBrowserElement object) {
-				return object.getIcon();
-			}
-		}
-
-		public static class TooltipBindingMustBeValid extends BindingMustBeValid<FIBBrowserElement> {
-			public TooltipBindingMustBeValid() {
-				super("'tooltip'_binding_is_not_valid", FIBBrowserElement.class);
-			}
-
-			@Override
-			public DataBinding<?> getBinding(FIBBrowserElement object) {
-				return object.getTooltip();
-			}
-		}
-
-		public static class EnabledBindingMustBeValid extends BindingMustBeValid<FIBBrowserElement> {
-			public EnabledBindingMustBeValid() {
-				super("'enabled'_binding_is_not_valid", FIBBrowserElement.class);
-			}
-
-			@Override
-			public DataBinding<?> getBinding(FIBBrowserElement object) {
-				return object.getEnabled();
-			}
-		}
-
-		public static class VisibleBindingMustBeValid extends BindingMustBeValid<FIBBrowserElement> {
-			public VisibleBindingMustBeValid() {
-				super("'visible'_binding_is_not_valid", FIBBrowserElement.class);
-			}
-
-			@Override
-			public DataBinding<?> getBinding(FIBBrowserElement object) {
-				return object.getVisible();
-			}
-		}
-
-		public static class EditableLabelBindingMustBeValid extends BindingMustBeValid<FIBBrowserElement> {
-			public EditableLabelBindingMustBeValid() {
-				super("'editable_label'_binding_is_not_valid", FIBBrowserElement.class);
-			}
-
-			@Override
-			public DataBinding<?> getBinding(FIBBrowserElement object) {
-				return object.getEditableLabel();
-			}
-		}
-
-		public static class DynamicFontBindingMustBeValid extends BindingMustBeValid<FIBBrowserElement> {
-			public DynamicFontBindingMustBeValid() {
-				super("'dynamic_font'_binding_is_not_valid", FIBBrowserElement.class);
-			}
-
-			@Override
-			public DataBinding<?> getBinding(FIBBrowserElement object) {
-				return object.getDynamicFont();
-			}
+		@Override
+		public Collection<? extends FIBModelObject> getEmbeddedObjects() {
+			return getChildren();
 		}
 
 	}
@@ -1140,39 +1105,118 @@ public interface FIBBrowserElement extends FIBModelObject {
 				performValidation(CastBindingMustBeValid.class, report);
 			}
 
-			public static class DataBindingMustBeValid extends BindingMustBeValid<FIBBrowserElementChildren> {
-				public DataBindingMustBeValid() {
-					super("'data'_binding_is_not_valid", FIBBrowserElementChildren.class);
-				}
+		}
 
-				@Override
-				public DataBinding<?> getBinding(FIBBrowserElementChildren object) {
-					return object.getData();
-				}
+		public static class DataBindingMustBeValid extends BindingMustBeValid<FIBBrowserElementChildren> {
+			public DataBindingMustBeValid() {
+				super("'data'_binding_is_not_valid", FIBBrowserElementChildren.class);
 			}
 
-			public static class VisibleBindingMustBeValid extends BindingMustBeValid<FIBBrowserElementChildren> {
-				public VisibleBindingMustBeValid() {
-					super("'visible'_binding_is_not_valid", FIBBrowserElementChildren.class);
-				}
+			@Override
+			public DataBinding<?> getBinding(FIBBrowserElementChildren object) {
+				return object.getData();
+			}
+		}
 
-				@Override
-				public DataBinding<?> getBinding(FIBBrowserElementChildren object) {
-					return object.getVisible();
-				}
+		public static class VisibleBindingMustBeValid extends BindingMustBeValid<FIBBrowserElementChildren> {
+			public VisibleBindingMustBeValid() {
+				super("'visible'_binding_is_not_valid", FIBBrowserElementChildren.class);
 			}
 
-			public static class CastBindingMustBeValid extends BindingMustBeValid<FIBBrowserElementChildren> {
-				public CastBindingMustBeValid() {
-					super("'cast'_binding_is_not_valid", FIBBrowserElementChildren.class);
-				}
+			@Override
+			public DataBinding<?> getBinding(FIBBrowserElementChildren object) {
+				return object.getVisible();
+			}
+		}
 
-				@Override
-				public DataBinding<?> getBinding(FIBBrowserElementChildren object) {
-					return object.getCast();
-				}
+		public static class CastBindingMustBeValid extends BindingMustBeValid<FIBBrowserElementChildren> {
+			public CastBindingMustBeValid() {
+				super("'cast'_binding_is_not_valid", FIBBrowserElementChildren.class);
 			}
 
+			@Override
+			public DataBinding<?> getBinding(FIBBrowserElementChildren object) {
+				return object.getCast();
+			}
+		}
+
+	}
+
+	public static class LabelBindingMustBeValid extends BindingMustBeValid<FIBBrowserElement> {
+		public LabelBindingMustBeValid() {
+			super("'label'_binding_is_not_valid", FIBBrowserElement.class);
+		}
+
+		@Override
+		public DataBinding<?> getBinding(FIBBrowserElement object) {
+			return object.getLabel();
+		}
+
+	}
+
+	public static class IconBindingMustBeValid extends BindingMustBeValid<FIBBrowserElement> {
+		public IconBindingMustBeValid() {
+			super("'icon'_binding_is_not_valid", FIBBrowserElement.class);
+		}
+
+		@Override
+		public DataBinding<?> getBinding(FIBBrowserElement object) {
+			return object.getIcon();
+		}
+	}
+
+	public static class TooltipBindingMustBeValid extends BindingMustBeValid<FIBBrowserElement> {
+		public TooltipBindingMustBeValid() {
+			super("'tooltip'_binding_is_not_valid", FIBBrowserElement.class);
+		}
+
+		@Override
+		public DataBinding<?> getBinding(FIBBrowserElement object) {
+			return object.getTooltip();
+		}
+	}
+
+	public static class EnabledBindingMustBeValid extends BindingMustBeValid<FIBBrowserElement> {
+		public EnabledBindingMustBeValid() {
+			super("'enabled'_binding_is_not_valid", FIBBrowserElement.class);
+		}
+
+		@Override
+		public DataBinding<?> getBinding(FIBBrowserElement object) {
+			return object.getEnabled();
+		}
+	}
+
+	public static class VisibleBindingMustBeValid extends BindingMustBeValid<FIBBrowserElement> {
+		public VisibleBindingMustBeValid() {
+			super("'visible'_binding_is_not_valid", FIBBrowserElement.class);
+		}
+
+		@Override
+		public DataBinding<?> getBinding(FIBBrowserElement object) {
+			return object.getVisible();
+		}
+	}
+
+	public static class EditableLabelBindingMustBeValid extends BindingMustBeValid<FIBBrowserElement> {
+		public EditableLabelBindingMustBeValid() {
+			super("'editable_label'_binding_is_not_valid", FIBBrowserElement.class);
+		}
+
+		@Override
+		public DataBinding<?> getBinding(FIBBrowserElement object) {
+			return object.getEditableLabel();
+		}
+	}
+
+	public static class DynamicFontBindingMustBeValid extends BindingMustBeValid<FIBBrowserElement> {
+		public DynamicFontBindingMustBeValid() {
+			super("'dynamic_font'_binding_is_not_valid", FIBBrowserElement.class);
+		}
+
+		@Override
+		public DataBinding<?> getBinding(FIBBrowserElement object) {
+			return object.getDynamicFont();
 		}
 	}
 

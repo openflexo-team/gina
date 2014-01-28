@@ -78,6 +78,10 @@ public interface FIBReferencedComponent extends FIBWidget {
 	@Remover(ASSIGNMENTS_KEY)
 	public void removeFromAssignments(FIBReferenceAssignment aAssignment);
 
+	public FIBReferenceAssignment createAssignment();
+
+	public FIBReferenceAssignment deleteAssignment(FIBReferenceAssignment assignment);
+
 	public static abstract class FIBReferencedComponentImpl extends FIBWidgetImpl implements FIBReferencedComponent {
 
 		private static final Logger logger = Logger.getLogger(FIBReferencedComponent.class.getPackage().getName());
@@ -229,6 +233,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 		}
 		 */
 
+		@Override
 		public FIBReferenceAssignment createAssignment() {
 			logger.info("Called createAssignment()");
 			FIBReferenceAssignment newAssignment = getFactory().newInstance(FIBReferenceAssignment.class);
@@ -236,6 +241,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 			return newAssignment;
 		}
 
+		@Override
 		public FIBReferenceAssignment deleteAssignment(FIBReferenceAssignment assignment) {
 			logger.info("Called deleteAssignment() with " + assignment);
 			removeFromAssignments(assignment);

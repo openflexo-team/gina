@@ -74,6 +74,8 @@ public abstract interface FIBTableAction extends FIBModelObject {
 	@Setter(IS_AVAILABLE_KEY)
 	public void setIsAvailable(DataBinding<Boolean> isAvailable);
 
+	public abstract ActionType getActionType();
+
 	@DeserializationFinalizer
 	public void finalizeDeserialization();
 
@@ -148,6 +150,7 @@ public abstract interface FIBTableAction extends FIBModelObject {
 			}
 		}
 
+		@Override
 		public abstract ActionType getActionType();
 
 		@Override
