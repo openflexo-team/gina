@@ -282,7 +282,7 @@ public class FIBController extends Observable implements BindingEvaluationContex
 
 	public static FIBController instanciateController(FIBComponent fibComponent, LocalizedDelegate parentLocalizer) {
 		FIBController returned = null;
-		System.out.println("Instanciate controller for component: " + fibComponent);
+		// System.out.println("Instanciate controller for component: " + fibComponent);
 		if (fibComponent != null) {
 			fibComponent.getFactory().stringRepresentation(fibComponent);
 		}

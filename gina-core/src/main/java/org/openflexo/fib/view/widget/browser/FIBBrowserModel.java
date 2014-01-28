@@ -279,13 +279,12 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 
 			if (browserElementType != null) {
 
-				System.out.println("Build BrowserCell for " + representedObject);
-
-				System.out.println("elementType=" + browserElementType.getBrowserElement().getName());
+				// System.out.println("Build BrowserCell for " + representedObject);
+				// System.out.println("elementType=" + browserElementType.getBrowserElement().getName());
 
 				final List<?> newChildrenObjects = browserElementType.getChildrenFor(getRepresentedObject());
 
-				System.out.println("newChildrenObjects=" + newChildrenObjects);
+				// System.out.println("newChildrenObjects=" + newChildrenObjects);
 
 				if (newChildrenObjects.size() > 0) {
 					// System.out.println("For " + representedObject + " found " + newChildrenObjects.size() + " children: " +
@@ -337,8 +336,8 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 					if (children.getData().isValid()) {
 						BindingValueChangeListener<?> l;
 						if (children.isMultipleAccess()) {
-							l = new BindingValueListChangeListener<Object, List<Object>>(
-									(DataBinding<List<Object>>) (DataBinding) children.getData(), browserElementType) {
+							l = new BindingValueListChangeListener<Object, List<Object>>((DataBinding) children.getData(),
+									browserElementType) {
 								@Override
 								public void bindingValueChanged(Object source, List<Object> newValue) {
 									System.out.println(" bindingValueChanged() detected for data (as list) of children "

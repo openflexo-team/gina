@@ -1440,6 +1440,7 @@ public class MultiSplitLayout implements LayoutManager, Serializable {
 	 */
 	@Override
 	public void layoutContainer(Container parent) {
+
 		if (layoutByWeight && floatingDividers) {
 			doLayoutByWeight(parent);
 		}

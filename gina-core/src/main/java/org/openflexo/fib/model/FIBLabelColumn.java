@@ -23,9 +23,11 @@ import java.lang.reflect.Type;
 
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.XMLElement;
 
 @ModelEntity
 @ImplementationClass(FIBLabelColumn.FIBLabelColumnImpl.class)
+@XMLElement(xmlTag = "LabelColumn")
 public interface FIBLabelColumn extends FIBTableColumn {
 
 	public static abstract class FIBLabelColumnImpl extends FIBTableColumnImpl implements FIBLabelColumn {

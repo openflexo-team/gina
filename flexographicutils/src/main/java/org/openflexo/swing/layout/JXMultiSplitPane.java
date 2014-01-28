@@ -483,4 +483,5 @@ public class JXMultiSplitPane extends JPanel {
 			return AccessibleRole.SPLIT_PANE;
 		}
 	}
+
 }

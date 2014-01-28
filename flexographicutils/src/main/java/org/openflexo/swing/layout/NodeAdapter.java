@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.openflexo.swing.layout.MultiSplitLayout.DefaultDivider;
+import org.openflexo.swing.layout.MultiSplitLayout.DefaultLeaf;
+import org.openflexo.swing.layout.MultiSplitLayout.DefaultSplit;
 import org.openflexo.swing.layout.MultiSplitLayout.Divider;
 import org.openflexo.swing.layout.MultiSplitLayout.Leaf;
 import org.openflexo.swing.layout.MultiSplitLayout.Node;
@@ -18,7 +21,7 @@ import com.google.gson.stream.JsonWriter;
 public class NodeAdapter extends TypeAdapter<Node> {
 
 	private static enum Types {
-		LEAF(Leaf.class), SPLIT(Split.class), DIVIDER(Divider.class);
+		LEAF(DefaultLeaf.class), SPLIT(DefaultSplit.class), DIVIDER(DefaultDivider.class);
 
 		private Class<? extends Node> type;
 
@@ -40,7 +43,7 @@ public class NodeAdapter extends TypeAdapter<Node> {
 		}
 	}
 
-	private TypeAdapter<List<Node>> listAdapter;
+	private final TypeAdapter<List<Node>> listAdapter;
 
 	public NodeAdapter(TypeAdapter<List<Node>> collectionAdapter) {
 		super();
