@@ -62,7 +62,7 @@ public class FIBInspectorController implements Observer, ChangeListener {
 	private Hashtable<Class<?>, FIBInspector> inspectors;
 	private Hashtable<FIBInspector, FIBView> inspectorViews;
 
-	private FIBModelFactory INSPECTOR_FACTORY;
+	public FIBModelFactory INSPECTOR_FACTORY;
 
 	public FIBInspectorController(JFrame frame) {
 		inspectors = new Hashtable<Class<?>, FIBInspector>();

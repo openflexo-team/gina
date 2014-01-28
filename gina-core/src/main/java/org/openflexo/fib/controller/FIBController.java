@@ -951,7 +951,6 @@ public class FIBController extends Observable implements BindingEvaluationContex
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			System.out.println("Hop, on clique sur " + e.getSource());
 			super.mouseClicked(e);
 			if (e.isAltDown()) {
 				controller.openFIBEditor(component, e);
