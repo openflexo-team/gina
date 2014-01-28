@@ -293,6 +293,7 @@ public class FIBEditorController /*extends FIBController*/extends Observable {
 
 	public void setSelectedObject(FIBComponent aComponent) {
 		// logger.info("setSelectedObject "+aComponent);
+		// System.out.println("Switch from " + selectedObject + " to " + aComponent);
 		if (aComponent != selectedObject) {
 			SelectedObjectChange change = new SelectedObjectChange(selectedObject, aComponent);
 			selectedObject = aComponent;

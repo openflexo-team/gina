@@ -437,7 +437,7 @@ public interface FIBBrowser extends FIBWidget {
 		@Override
 		public void addToElements(FIBBrowserElement anElement) {
 			performSuperAdder(ELEMENTS_KEY, anElement);
-			System.out.println("**** Adding element " + anElement.getName() + " for class " + anElement.getDataClass());
+			// System.out.println("**** Adding element " + anElement.getName() + " for class " + anElement.getDataClass());
 			// Thread.dumpStack();
 			updateElementsForClasses();
 		}

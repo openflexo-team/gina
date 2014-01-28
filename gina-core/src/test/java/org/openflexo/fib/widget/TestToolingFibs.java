@@ -2,7 +2,7 @@ package org.openflexo.fib.widget;
 
 import java.io.File;
 
-import org.openflexo.fib.utils.FIBTestCase;
+import org.openflexo.fib.utils.GenericFIBTestCase;
 
 /**
  * Test that FIBs defined in tooling context are valid
@@ -10,7 +10,7 @@ import org.openflexo.fib.utils.FIBTestCase;
  * @author sylvain
  * 
  */
-public class TestToolingFibs extends FIBTestCase {
+public class TestToolingFibs extends GenericFIBTestCase {
 
 	public static void main(String[] args) {
 		System.out.println(generateFIBTestCaseClass(new File(System.getProperty("user.dir") + "/src/main/resources/Fib"), "Fib/"));

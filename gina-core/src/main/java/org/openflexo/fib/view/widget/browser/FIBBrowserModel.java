@@ -119,6 +119,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 	 * @return flag indicating if change was required
 	 */
 	public boolean updateRootObject(Object root) {
+
 		if (root == null) {
 			// TODO: check this
 			logger.warning("Not implemented: please check this");

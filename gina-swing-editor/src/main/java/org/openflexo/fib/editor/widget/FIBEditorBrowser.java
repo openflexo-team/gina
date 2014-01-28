@@ -46,6 +46,7 @@ public class FIBEditorBrowser extends DefaultFIBCustomComponent<FIBComponent> {
 	public FIBEditorBrowser(FIBComponent fibComponent, FIBEditorController editorController) {
 		super(FIB_FILE, fibComponent, FlexoLocalization.getMainLocalizer());
 		this.editorController = editorController;
+		getController().setEditorController(editorController);
 	}
 
 	@Override

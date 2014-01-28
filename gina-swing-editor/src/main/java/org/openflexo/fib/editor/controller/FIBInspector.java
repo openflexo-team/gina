@@ -40,6 +40,7 @@ public interface FIBInspector extends FIBPanel {
 
 		@Override
 		public void appendSuperInspectors(FIBInspectorController controller) {
+
 			if (getDataType() == null) {
 				return;
 			}
@@ -48,6 +49,13 @@ public interface FIBInspector extends FIBPanel {
 				if (superInspector != null) {
 					superInspector.appendSuperInspectors(controller);
 					appendSuperInspector(superInspector);
+				}
+				for (Class superInterface : ((Class) getDataType()).getInterfaces()) {
+					FIBInspector superInterfaceInspector = controller.inspectorForClass(superInterface);
+					if (superInterfaceInspector != null) {
+						superInterfaceInspector.appendSuperInspectors(controller);
+						appendSuperInspector(superInterfaceInspector);
+					}
 				}
 			}
 		}

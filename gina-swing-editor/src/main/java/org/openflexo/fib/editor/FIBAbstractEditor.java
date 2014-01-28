@@ -392,13 +392,15 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 
 	public abstract File getFIBFile();
 
+	private FIBController controller;
+
 	/**
 	 * Override when required
 	 * 
 	 * @return
 	 */
 	public FIBController getController() {
-		return null;
+		return controller;
 	}
 
 	/**
@@ -431,6 +433,11 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 		if (data != null && data.length > 0) {
 			dataObject = data[0];
 		}
+
+		if (getController() == null) {
+			controller = makeNewController(fibComponent);
+		}
+
 		if (getController() != null) {
 			editorController = new FIBEditorController(factory, fibComponent, this, dataObject, getController());
 		} else {

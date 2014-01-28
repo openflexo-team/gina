@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Browser root="data" iteratorClassName="org.openflexo.fib.model.FIBComponent" boundToSelectionManager="true" selectionMode="DiscontiguousTreeSelection" selected="controller.selectedComponent" showFooter="true" rootVisible="true" showRootsHandle="true" dataClassName="org.openflexo.fib.model.FIBComponent" controllerClassName="org.openflexo.fib.editor.widget.FIBBrowserController" name="ComponentBrowser" localize="true" manageDynamicModel="true" rightClickAction="controller.rightClick(ComponentBrowser.selected,controller.mouseEvent)">
-  <BrowserElement dataClassName="org.openflexo.fib.model.FIBComponent" label="controller.textFor(element)" icon="controller.iconFor(element)" isEditable="false" filtered="false" defaultVisible="true" name="element" />
-  <BrowserElement dataClassName="org.openflexo.fib.model.FIBContainer" label="controller.textFor(container)" icon="controller.iconFor(container)" isEditable="false" filtered="false" defaultVisible="true" name="container">
-    <Children data="container.subComponents" name="children" />
-  </BrowserElement>
-</Browser>
-
+<Panel id="0" darkLevel="0" useScrollBar="false" protectContent="false" height="500" name="main" layout="border" controllerClassName="org.openflexo.fib.editor.widget.FIBBrowserController" border="empty" trackViewPortWidth="true" width="600" dataClassName="org.openflexo.fib.model.FIBComponent" titleFont="Lucida Grande,0,13" trackViewPortHeight="true">
+  <Browser id="1" showFooter="true" showRootsHandle="true" manageDynamicModel="true" root="data" selectionMode="DiscontiguousTreeSelection" rightClickAction="controller.rightClick(ComponentBrowser.selected,controller.mouseEvent)" boundToSelectionManager="true" localize="true" constraints="border(location=center;x=0;y=0)" iteratorClassName="org.openflexo.fib.model.FIBComponent" useScrollBar="false" selected="controller.selectedComponent" name="ComponentBrowser" dataClassName="org.openflexo.fib.model.FIBComponent" rootVisible="true" readOnly="false">
+    <BrowserElement id="2" icon="controller.iconFor(element)" filtered="false" label="controller.textFor(element)" defaultVisible="true" dataClassName="org.openflexo.fib.model.FIBComponent" name="element" isEditable="false" />
+    <BrowserElement id="3" icon="controller.iconFor(container)" filtered="false" label="controller.textFor(container)" defaultVisible="true" dataClassName="org.openflexo.fib.model.FIBContainer" name="container" isEditable="false">
+      <Children id="4" name="children" data="container.subComponents" />
+    </BrowserElement>
+  </Browser>
+  <Panel id="5" darkLevel="0" vGap="5" useScrollBar="false" protectContent="false" hGap="5" layout="border" border="empty" flowAlignment="LEADING" trackViewPortWidth="true" constraints="border(location=north)" trackViewPortHeight="true">
+    <TextField id="6" passwd="false" manageDynamicModel="false" useScrollBar="false" data="controller.searchedLabel" columns="7" text="TextField" localize="true" constraints="border(location=center)" readOnly="false" validateOnReturn="false" />
+    <Button id="7" manageDynamicModel="false" useScrollBar="false" buttonType="Trigger" action="controller.search()" localize="true" constraints="border(location=east)" label="search" readOnly="false" />
+  </Panel>
+</Panel>

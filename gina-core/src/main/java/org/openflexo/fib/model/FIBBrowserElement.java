@@ -641,7 +641,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 		@Override
 		public void setDataClass(Class<?> dataClass) {
-			System.out.println("For browser element " + getName() + " set data class " + dataClass);
+			// System.out.println("For browser element " + getName() + " set data class " + dataClass);
 			performSuperSetter(DATA_CLASS_KEY, dataClass);
 			/*FIBPropertyNotification<Class> notification = requireChange(DATA_CLASS_KEY, dataClass);
 			if (notification != null) {

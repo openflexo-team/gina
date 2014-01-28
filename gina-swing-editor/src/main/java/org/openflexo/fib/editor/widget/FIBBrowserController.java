@@ -32,8 +32,18 @@ public class FIBBrowserController extends FIBController implements Observer {
 
 	private FIBEditorController editorController;
 
+	private String searchedLabel;
+
 	public FIBBrowserController(FIBComponent rootComponent, FIBEditorController editorController) {
 		this(rootComponent);
+		setEditorController(editorController);
+	}
+
+	public FIBEditorController getEditorController() {
+		return editorController;
+	}
+
+	public void setEditorController(FIBEditorController editorController) {
 		this.editorController = editorController;
 		if (editorController != null) {
 			editorController.addObserver(this);
@@ -52,7 +62,7 @@ public class FIBBrowserController extends FIBController implements Observer {
 	}
 
 	public void setSelectedComponent(FIBComponent selectedComponent) {
-		// logger.info("setSelectedComponent with " + selectedComponent);
+		logger.info("setSelectedComponent with " + selectedComponent + " editorController=" + editorController);
 		if (editorController != null) {
 			editorController.setSelectedObject(selectedComponent);
 		}
@@ -115,6 +125,18 @@ public class FIBBrowserController extends FIBController implements Observer {
 
 	public void rightClick(FIBComponent component, MouseEvent event) {
 		editorController.getContextualMenu().displayPopupMenu(component, getRootView().getJComponent(), event);
+	}
+
+	public String getSearchedLabel() {
+		return searchedLabel;
+	}
+
+	public void setSearchedLabel(String searchedLabel) {
+		this.searchedLabel = searchedLabel;
+	}
+
+	public void search() {
+		System.out.println("Searching " + getSearchedLabel());
 	}
 
 }
