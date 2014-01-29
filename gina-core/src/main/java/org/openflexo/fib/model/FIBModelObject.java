@@ -601,7 +601,7 @@ public interface FIBModelObject extends Bindable, AccessibleProxyObject, Cloneab
 				if (!getBinding(object).isValid()) {
 					DeleteBinding<C> deleteBinding = new DeleteBinding<C>(this);
 					return new ValidationError<BindingMustBeValid<C>, C>(this, object, BindingMustBeValid.this.getNameKey() + " '"
-							+ getBinding(object) + "'", deleteBinding);
+							+ getBinding(object) + "' reason: " + getBinding(object).invalidBindingReason(), deleteBinding);
 				}
 			}
 			return null;
