@@ -70,18 +70,18 @@ public class FIBDialogGraphicalContextDelegate {
 
 				@Override
 				public void run() {
-					System.out.println("Juste avant d'ouvir la fenetre");
+					// System.out.println("Juste avant d'ouvir la fenetre");
 					waitGUI();
 					dialog.dispose();
 				}
 			})).start();
 
-			System.out.println("Hop, je l'affiche");
+			// System.out.println("Hop, je l'affiche");
 
 			dialog.pack();
 			dialog.setVisible(true);
 
-			System.out.println("Hop, je viens d'etre disposee, dontDestroyMe=" + dontDestroyMe);
+			// System.out.println("Hop, je viens d'etre disposee, dontDestroyMe=" + dontDestroyMe);
 
 			if (dontDestroyMe) {
 				while (true) {

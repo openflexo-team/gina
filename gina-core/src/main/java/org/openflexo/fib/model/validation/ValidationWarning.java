@@ -51,6 +51,7 @@ public class ValidationWarning<R extends ValidationRule<R, C>, C extends FIBMode
 		super(rule, anObject, aMessage, fixProposals);
 	}
 
+	// TODO: Avoid infinite loop
 	@Override
 	public String toString() {
 		return "VALIDATION / WARNING: " + getLocalizedMessage();

@@ -30,6 +30,7 @@ import org.openflexo.fib.editor.view.FIBEditableViewDelegate.FIBDropTarget;
 import org.openflexo.fib.editor.view.PlaceHolder;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelObject;
+import org.openflexo.fib.model.FIBMultiSplitLayoutFactory.FIBLeaf;
 import org.openflexo.fib.model.FIBMultiSplitLayoutFactory.FIBNode;
 import org.openflexo.fib.model.FIBMultiSplitLayoutFactory.FIBSplit;
 import org.openflexo.fib.model.FIBSplitPanel;
@@ -37,9 +38,7 @@ import org.openflexo.fib.model.SplitLayoutConstraints;
 import org.openflexo.fib.view.container.FIBSplitPanelView;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.swing.layout.JXMultiSplitPane;
-import org.openflexo.swing.layout.MultiSplitLayout.Leaf;
 import org.openflexo.swing.layout.MultiSplitLayout.Node;
-import org.openflexo.swing.layout.MultiSplitLayout.Split;
 
 public class FIBEditableSplitPanelView<T> extends FIBSplitPanelView<T> implements FIBEditableView<FIBSplitPanel, JXMultiSplitPane> {
 
@@ -73,7 +72,7 @@ public class FIBEditableSplitPanelView<T> extends FIBSplitPanelView<T> implement
 		super.delete();
 	}
 
-	private void appendPlaceHolder(final Leaf n) {
+	private void appendPlaceHolder(final FIBLeaf n) {
 		boolean found = false;
 		for (FIBComponent subComponent : getComponent().getSubComponents()) {
 			if (n.getName().equals(((SplitLayoutConstraints) subComponent.getConstraints()).getSplitIdentifier())) {
@@ -105,10 +104,10 @@ public class FIBEditableSplitPanelView<T> extends FIBSplitPanelView<T> implement
 	}
 
 	private void appendPlaceHolders(Node n) {
-		if (n instanceof Split) {
-			appendPlaceHolders((Split) n);
-		} else if (n instanceof Leaf) {
-			appendPlaceHolder((Leaf) n);
+		if (n instanceof FIBSplit) {
+			appendPlaceHolders((FIBSplit) n);
+		} else if (n instanceof FIBLeaf) {
+			appendPlaceHolder((FIBLeaf) n);
 		}
 	}
 

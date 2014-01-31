@@ -81,7 +81,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 	private final JPanel _dynamicComponent;
 	private final FIBBrowser _fibBrowser;
 	private FIBBrowserModel _browserModel;
-	private FIBBrowserWidgetFooter _footer;
+	private final FIBBrowserWidgetFooter _footer;
 	// private ListSelectionModel _listSelectionModel;
 	private JScrollPane scrollPane;
 
@@ -89,6 +89,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 	private List<T> selection;
 
 	private BindingValueChangeListener<T> selectedBindingValueChangeListener;
+	private BindingValueChangeListener<Object> rootBindingValueChangeListener;
 
 	public FIBBrowserWidget(FIBBrowser fibBrowser, FIBController controller) {
 		super(fibBrowser, controller);
@@ -100,6 +101,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 		_footer = new FIBBrowserWidgetFooter(this);
 		buildBrowser();
 		listenSelectedValueChange();
+		listenRootValueChange();
 	}
 
 	private void listenSelectedValueChange() {
@@ -113,9 +115,27 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
-					System.out.println(" bindingValueChanged() detected for selected=" + getComponent().getEnable() + " with newValue="
-							+ newValue + " source=" + source);
+					// System.out.println(" bindingValueChanged() detected for selected=" + getComponent().getSelected() + " with newValue="
+					// + newValue + " source=" + source);
 					performSelect(newValue);
+				}
+			};
+		}
+	}
+
+	private void listenRootValueChange() {
+		if (rootBindingValueChangeListener != null) {
+			rootBindingValueChangeListener.stopObserving();
+			rootBindingValueChangeListener.delete();
+		}
+		if (getComponent().getRoot() != null && getComponent().getRoot().isValid()) {
+			rootBindingValueChangeListener = new BindingValueChangeListener<Object>(getComponent().getRoot(), getBindingEvaluationContext()) {
+
+				@Override
+				public void bindingValueChanged(Object source, Object newValue) {
+					// System.out.println(" bindingValueChanged() detected for root=" + getComponent().getRoot() + " with newValue="
+					// + newValue + " source=" + source);
+					processRootChanged();
 				}
 			};
 		}
@@ -165,6 +185,17 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 
 	// private static final Vector EMPTY_VECTOR = new Vector();
 
+	private boolean processRootChanged() {
+		boolean returned = getBrowserModel().updateRootObject(getRootValue());
+		if (returned)
+			try {
+				_tree.fireTreeWillExpand(new TreePath(_tree.getModel().getRoot()));
+			} catch (ExpandVetoException e1) {
+				e1.printStackTrace();
+			}
+		return returned;
+	}
+
 	@Override
 	public synchronized boolean updateWidgetFromModel() {
 		// List valuesBeforeUpdating = getBrowserModel().getValues();
@@ -191,13 +222,8 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 			logger.fine(getComponent().getName() + " updateWidgetFromModel() with " + getValue() + " dataObject=" + getDataObject());
 		}
 
-		boolean returned = getBrowserModel().updateRootObject(getRootValue());
-		if (returned)
-			try {
-				_tree.fireTreeWillExpand(new TreePath(_tree.getModel().getRoot()));
-			} catch (ExpandVetoException e1) {
-				e1.printStackTrace();
-			}
+		boolean returned = processRootChanged();
+
 		/*if (!getBrowser().getRootVisible() && ((BrowserCell) getBrowserModel().getRoot()).getChildCount() == 1) {
 			// Only one cell and roots are hidden, expand this first cell
 			SwingUtilities.invokeLater(new Runnable() {

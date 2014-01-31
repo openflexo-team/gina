@@ -120,6 +120,8 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 	 */
 	public boolean updateRootObject(Object root) {
 
+		System.out.println("updateRootObject with " + root);
+
 		if (root == null) {
 			// TODO: check this
 			logger.warning("Not implemented: please check this");
