@@ -28,6 +28,7 @@ public abstract class GenericFIBTestCase {
 
 	public void validateFIB(File fibFile) {
 		try {
+			System.out.println("Validating fib file "+fibFile);
 			FIBComponent component = FIBLibrary.instance().retrieveFIBComponent(fibFile);
 			if (component == null) {
 				fail("Component not found: " + fibFile.getAbsolutePath());

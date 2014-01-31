@@ -418,7 +418,7 @@ public interface FIBModelObject extends Bindable, AccessibleProxyObject, Cloneab
 			applyValidation(report);
 			Collection<? extends FIBModelObject> embeddedObjects = getEmbeddedObjects();
 			if (embeddedObjects != null) {
-				System.out.println("Embedded for " + this + " are (" + embeddedObjects.size() + ") " + embeddedObjects);
+				//System.out.println("Embedded for " + this + " are (" + embeddedObjects.size() + ") " + embeddedObjects);
 				for (FIBModelObject o : embeddedObjects) {
 					// System.out.println("Validating embedded " + o);
 					if (o != this) {
