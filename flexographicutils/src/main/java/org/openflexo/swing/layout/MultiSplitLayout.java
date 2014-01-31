@@ -1400,14 +1400,14 @@ public class MultiSplitLayout implements LayoutManager, Serializable {
 
 	private void checkLayout(Node root) {
 		if (root instanceof Split) {
-			Split split = (Split) root;
+			Split<?> split = (Split) root;
 			if (split.getChildren().size() <= 2) {
 				throwInvalidLayout("Split must have > 2 children", root);
 			}
-			Iterator<Node> splitChildren = split.getChildren().iterator();
+			Iterator<?> splitChildren = split.getChildren().iterator();
 			double weight = 0.0;
 			while (splitChildren.hasNext()) {
-				Node splitChild = splitChildren.next();
+				Node splitChild = (Node) splitChildren.next();
 				if (!splitChild.isVisible()) {
 					if (splitChildren.hasNext()) {
 						splitChildren.next();
@@ -1419,7 +1419,7 @@ public class MultiSplitLayout implements LayoutManager, Serializable {
 					// throwInvalidLayout("expected a Split or Leaf Node", splitChild);
 				}
 				if (splitChildren.hasNext()) {
-					Node dividerChild = splitChildren.next();
+					Node dividerChild = (Node) splitChildren.next();
 					if (!(dividerChild instanceof Divider)) {
 						throwInvalidLayout("expected a Divider Node", dividerChild);
 					}
@@ -1993,7 +1993,7 @@ public class MultiSplitLayout implements LayoutManager, Serializable {
 	 */
 	public static class DefaultSplit<N extends Node<N>> extends DefaultNode<N> implements Split<N> {
 
-		private List<N> children = Collections.emptyList();
+		private List<N> children = new ArrayList<N>();
 		private boolean rowLayout = true;
 		private String name;
 

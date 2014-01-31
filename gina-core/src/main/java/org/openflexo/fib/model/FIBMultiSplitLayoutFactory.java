@@ -124,7 +124,7 @@ public class FIBMultiSplitLayoutFactory implements MultiSplitLayoutFactory {
 	@ModelEntity
 	@ImplementationClass(FIBLeaf.FIBLeafImpl.class)
 	@XMLElement(xmlTag = "Leaf")
-	public static interface FIBLeaf extends FIBNode, Leaf {
+	public static interface FIBLeaf extends FIBNode<FIBLeaf>, Leaf<FIBLeaf> {
 
 		@PropertyIdentifier(type = String.class)
 		public static final String NAME_KEY = "name";
@@ -142,7 +142,7 @@ public class FIBMultiSplitLayoutFactory implements MultiSplitLayoutFactory {
 		public void setName(String name);
 
 		@Override
-		@Getter(WEIGHT_KEY)
+		@Getter(value = WEIGHT_KEY, defaultValue = "0.5")
 		@XMLAttribute
 		public double getWeight();
 
@@ -151,8 +151,7 @@ public class FIBMultiSplitLayoutFactory implements MultiSplitLayoutFactory {
 		public void setWeight(double weight);
 
 		@SuppressWarnings("serial")
-		public static abstract class FIBLeafImpl extends MultiSplitLayout.DefaultLeaf implements FIBLeaf {
-
+		public static abstract class FIBLeafImpl extends MultiSplitLayout.DefaultLeaf<FIBLeaf> implements FIBLeaf {
 		}
 	}
 
@@ -182,7 +181,7 @@ public class FIBMultiSplitLayoutFactory implements MultiSplitLayoutFactory {
 		public void setName(String name);
 
 		@Override
-		@Getter(WEIGHT_KEY)
+		@Getter(value = WEIGHT_KEY, defaultValue = "0.5")
 		@XMLAttribute
 		public double getWeight();
 
@@ -192,6 +191,7 @@ public class FIBMultiSplitLayoutFactory implements MultiSplitLayoutFactory {
 
 		@Override
 		@Getter(value = CHILDREN_KEY, cardinality = Cardinality.LIST)
+		@XMLElement
 		public List<N> getChildren();
 
 		@Override
@@ -209,6 +209,10 @@ public class FIBMultiSplitLayoutFactory implements MultiSplitLayoutFactory {
 		@SuppressWarnings("serial")
 		public static abstract class FIBSplitImpl<N extends FIBNode<N>> extends MultiSplitLayout.DefaultSplit<N> implements FIBSplit<N> {
 
+			@Override
+			public String toString() {
+				return getClass().getSimpleName() + ":" + super.toString();
+			}
 		}
 
 	}

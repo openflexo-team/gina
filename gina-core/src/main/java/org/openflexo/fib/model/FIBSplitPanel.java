@@ -55,6 +55,7 @@ public interface FIBSplitPanel extends FIBContainer {
 	public static final String SPLIT_KEY = "split";
 
 	@Getter(value = SPLIT_KEY)
+	@XMLElement
 	public FIBSplit getSplit();
 
 	@Setter(SPLIT_KEY)

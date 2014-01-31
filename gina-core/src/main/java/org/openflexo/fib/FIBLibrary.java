@@ -101,8 +101,8 @@ public class FIBLibrary {
 	public FIBComponent retrieveFIBComponent(File fibFile) {
 		try {
 			if (!fibFile.exists()) {
-				System.out.println("N'existe pas: " + fibFile);
-				System.exit(-1);
+				logger.warning("FIB file does not exists: " + fibFile);
+				return null;
 			}
 
 			return retrieveFIBComponent(fibFile, true, new FIBModelFactory(fibFile.getParentFile()));

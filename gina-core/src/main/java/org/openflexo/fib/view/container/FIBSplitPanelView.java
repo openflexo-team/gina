@@ -66,6 +66,11 @@ public class FIBSplitPanelView<T> extends FIBContainerView<FIBSplitPanel, JXMult
 		layout.setLayoutByWeight(false);
 		layout.setFloatingDividers(true);
 
+		System.out.println("OK, on a cree le layout");
+		System.out.println("Maintenant on lui dit que le layaout c'est " + getComponent().getSplit());
+
+		layout.setModel(getComponent().getSplit());
+
 		splitPane = new JXMultiSplitPane(layout)/* {
 
 												@Override
@@ -93,8 +98,6 @@ public class FIBSplitPanelView<T> extends FIBContainerView<FIBSplitPanel, JXMult
 												}
 
 												}*/;
-
-		layout.setModel(getComponent().getSplit());
 
 		splitPane.setDividerPainter(new KnobDividerPainter());
 		// splitPane.setPreferredSize(new Dimension(200, 200));
