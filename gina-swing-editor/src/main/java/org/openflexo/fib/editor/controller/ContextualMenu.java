@@ -47,7 +47,7 @@ import org.openflexo.fib.model.SplitLayoutConstraints;
 import org.openflexo.fib.model.TwoColsLayoutConstraints;
 import org.openflexo.fib.model.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.fib.utils.BindingSelector;
-import org.openflexo.fib.view.FIBWidgetView;
+import org.openflexo.fib.view.widget.FIBReferencedComponentWidget;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.toolbox.StringUtils;
@@ -155,9 +155,19 @@ public class ContextualMenu {
 			@Override
 			public FIBModelObject performAction(FIBModelObject object) {
 				FIBReferencedComponent referencedComponent = (FIBReferencedComponent) object;
-				Object dataObject = ((FIBWidgetView) editorController.getController().viewForComponent(referencedComponent)).getValue();
-				// We only manage statically defined component, until now
-				new FIBEmbeddedEditor(referencedComponent.getComponentFile(), dataObject);
+
+				FIBReferencedComponentWidget widgetView = (FIBReferencedComponentWidget) editorController.getController().viewForComponent(
+						referencedComponent);
+
+				Object dataObject = widgetView.getValue();
+				File componentFile = widgetView.getComponentFile();
+
+				if (componentFile != null && componentFile.exists()) {
+					new FIBEmbeddedEditor(componentFile, dataObject);
+				} else {
+					logger.warning("Not found component file : " + componentFile);
+				}
+
 				return referencedComponent;
 			}
 		}, new ActionAvailability() {

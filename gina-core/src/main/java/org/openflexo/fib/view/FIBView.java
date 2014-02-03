@@ -73,7 +73,7 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 
 	private FIBReferencedComponentWidget embeddingComponent;
 
-	private PropertyChangeSupport pcSupport;
+	private final PropertyChangeSupport pcSupport;
 
 	private BindingValueChangeListener<T> dataBindingValueChangeListener;
 	private BindingValueChangeListener<Boolean> visibleBindingValueChangeListener;
@@ -255,9 +255,6 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 	 * @return
 	 */
 	public BindingEvaluationContext getBindingEvaluationContext() {
-		if (getParentView() != null) {
-			return getParentView().getBindingEvaluationContext();
-		}
 		/*
 		if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("DropSchemePanel")) {
 			if (getEmbeddingComponent() == null) {
@@ -269,6 +266,9 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 		}*/
 		if (getEmbeddingComponent() != null) {
 			return getEmbeddingComponent().getEmbeddedBindingEvaluationContext();
+		}
+		if (getParentView() != null) {
+			return getParentView().getBindingEvaluationContext();
 		}
 		return getController();
 	}

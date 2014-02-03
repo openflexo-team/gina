@@ -635,5 +635,25 @@ public abstract interface FIBContainer extends FIBComponent {
 			return getSubComponents();
 		}
 
+		@Override
+		public void setDataClass(Class<?> dataClass) {
+			FIBPropertyNotification<Class> notification = requireChange(DATA_CLASS_KEY, (Class) dataClass);
+			if (notification != null) {
+				// System.out.println("data=" + getData() + " valid=" + getData().isValid() + " reason: " +
+				// getData().invalidBindingReason());
+				this.dataClass = dataClass;
+				getData().markedAsToBeReanalized();
+				// All bindings should be marked as reanalized
+				// TODO: do it for all bindings, not only data
+				for (FIBComponent c : retrieveAllSubComponents()) {
+					c.getData().markedAsToBeReanalized();
+				}
+				// System.out.println("data=" + getData() + " valid=" + getData().isValid() + " reason: " +
+				// getData().invalidBindingReason());
+				updateBindingModel();
+				hasChanged(notification);
+			}
+		}
+
 	}
 }

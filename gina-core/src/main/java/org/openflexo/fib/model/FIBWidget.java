@@ -86,12 +86,12 @@ public abstract interface FIBWidget extends FIBComponent {
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String VALUE_VALIDATOR_KEY = "valueValidator";
 
-	@Getter(value = READ_ONLY_KEY)
+	@Getter(value = READ_ONLY_KEY, defaultValue = "false")
 	@XMLAttribute
-	public Boolean getReadOnly();
+	public boolean getReadOnly();
 
 	@Setter(READ_ONLY_KEY)
-	public void setReadOnly(Boolean readOnly);
+	public void setReadOnly(boolean readOnly);
 
 	@Getter(value = FORMAT_KEY)
 	@XMLAttribute
@@ -411,12 +411,12 @@ public abstract interface FIBWidget extends FIBComponent {
 		}
 
 		@Override
-		public Boolean getReadOnly() {
+		public boolean getReadOnly() {
 			return readOnly;
 		}
 
 		@Override
-		public void setReadOnly(Boolean readOnly) {
+		public void setReadOnly(boolean readOnly) {
 			FIBPropertyNotification<Boolean> notification = requireChange(READ_ONLY_KEY, readOnly);
 			if (notification != null) {
 				this.readOnly = readOnly;

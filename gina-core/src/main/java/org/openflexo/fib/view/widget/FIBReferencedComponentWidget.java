@@ -27,7 +27,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.openflexo.antar.binding.BindingEvaluationContext;
-import org.openflexo.antar.binding.BindingVariable;
+import org.openflexo.antar.binding.BindingValueChangeListener;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.expr.NotSettableContextException;
 import org.openflexo.antar.expr.NullReferenceException;
@@ -45,13 +45,15 @@ import org.openflexo.fib.view.FIBView;
 import org.openflexo.fib.view.FIBWidgetView;
 
 /**
- * Defines an abstract custom widget
+ * This component allows to reuse an other component, and embed it into a widget<br>
+ * 
+ * Referenced component may be statically or dynamically referenced
  * 
  * @author sguerin
  * 
  */
-public class FIBReferencedComponentWidget extends FIBWidgetView<FIBReferencedComponent, JComponent, Object> implements
-		BindingEvaluationContext {
+public class FIBReferencedComponentWidget extends FIBWidgetView<FIBReferencedComponent, JComponent, Object> /* implements
+BindingEvaluationContext*/{
 
 	private static final Logger logger = Logger.getLogger(FIBReferencedComponentWidget.class.getPackage().getName());
 
@@ -59,16 +61,40 @@ public class FIBReferencedComponentWidget extends FIBWidgetView<FIBReferencedCom
 
 	private FIBComponent referencedComponent = null;
 	private FIBView<FIBComponent, JComponent, ?> referencedComponentView;
-	private FIBViewFactory factory;
+
+	private FIBController embeddedFIBController;
+	// private final FIBViewFactory factory;
 	private boolean isComponentLoading = false;
 
-	private JLabel NOT_FOUND_LABEL;
+	private final JLabel NOT_FOUND_LABEL;
+
+	private BindingValueChangeListener<File> dynamicComponentFileBindingValueChangeListener;
 
 	public FIBReferencedComponentWidget(FIBReferencedComponent model, FIBController controller, FIBViewFactory factory) {
 		super(model, controller);
-		this.factory = factory;
+		// this.factory = factory;
 		NOT_FOUND_LABEL = new JLabel(""/*"<" + model.getName() + ": not found component>"*/);
 		updateFont();
+		listenDynamicComponentFileValueChange();
+	}
+
+	private void listenDynamicComponentFileValueChange() {
+		if (dynamicComponentFileBindingValueChangeListener != null) {
+			dynamicComponentFileBindingValueChangeListener.stopObserving();
+			dynamicComponentFileBindingValueChangeListener.delete();
+		}
+		if (getComponent().getDynamicComponentFile() != null && getComponent().getDynamicComponentFile().isValid()) {
+			dynamicComponentFileBindingValueChangeListener = new BindingValueChangeListener<File>(getComponent().getDynamicComponentFile(),
+					getBindingEvaluationContext()) {
+
+				@Override
+				public void bindingValueChanged(Object source, File newValue) {
+					System.out.println(" bindingValueChanged() detected for dynamicComponentFile="
+							+ getComponent().getDynamicComponentFile() + " with newValue=" + newValue + " source=" + source);
+					updateReferencedComponentView();
+				}
+			};
+		}
 	}
 
 	/**
@@ -92,17 +118,14 @@ public class FIBReferencedComponentWidget extends FIBWidgetView<FIBReferencedCom
 
 	}
 
-	private FIBComponent retrieveReferencedComponent() {
+	public File getComponentFile() {
 
 		if (getWidget().getDynamicComponentFile() != null && getWidget().getDynamicComponentFile().isSet()
 				&& getWidget().getDynamicComponentFile().isValid()) {
 			// The component file is dynamically defined, use it
 			File componentFile;
 			try {
-				componentFile = getWidget().getDynamicComponentFile().getBindingValue(getBindingEvaluationContext());
-				if (componentFile != null) {
-					return FIBLibrary.instance().retrieveFIBComponent(componentFile);
-				}
+				return getWidget().getDynamicComponentFile().getBindingValue(getBindingEvaluationContext());
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
@@ -114,9 +137,18 @@ public class FIBReferencedComponentWidget extends FIBWidgetView<FIBReferencedCom
 
 		else if (getWidget().getComponentFile() != null) {
 			// The component file is statically defined, use it
-			return FIBLibrary.instance().retrieveFIBComponent(getWidget().getComponentFile());
+			return getWidget().getComponentFile();
 		}
 
+		return null;
+	}
+
+	private FIBComponent retrieveReferencedComponent() {
+
+		File componentFile = getComponentFile();
+		if (componentFile != null && componentFile.exists()) {
+			return FIBLibrary.instance().retrieveFIBComponent(componentFile);
+		}
 		return null;
 	}
 
@@ -159,6 +191,8 @@ public class FIBReferencedComponentWidget extends FIBWidgetView<FIBReferencedCom
 				referencedComponentView.delete();
 				referencedComponentView = null;
 			}
+
+			// Call the parent view for a complete layout: the referencedComponentView will be computed during this loop
 			getParentView().updateLayout();
 			return true;
 		}
@@ -168,19 +202,39 @@ public class FIBReferencedComponentWidget extends FIBWidgetView<FIBReferencedCom
 
 	public FIBView<FIBComponent, JComponent, ?> getReferencedComponentView() {
 		if (referencedComponentView == null && !isComponentLoading) {
-			isComponentLoading = true;
 			// System.out.println(">>>>>>> Making new FIBView for " + getWidget() + " for " + getWidget().getComponent());
 
+			isComponentLoading = true;
 			FIBComponent loaded = getReferencedComponent();
 
-			if (loaded instanceof FIBWidget) {
-				referencedComponentView = factory.makeWidget((FIBWidget) loaded);
-				referencedComponentView.setEmbeddingComponent(this);
-			} else if (loaded instanceof FIBContainer) {
-				referencedComponentView = factory.makeContainer((FIBContainer) loaded);
-				referencedComponentView.setEmbeddingComponent(this);
+			// If an embedded FIBController is already declared, delete it
+			if (embeddedFIBController != null) {
+				embeddedFIBController.delete();
+				embeddedFIBController = null;
 			}
+
+			if (loaded != null) {
+
+				// Now, we instantiate a new embedded FIBController
+
+				embeddedFIBController = FIBController.instanciateController(loaded, getController().getLocalizer());
+
+				embeddedFIBController.setDataObject(getValue());
+
+				if (loaded instanceof FIBWidget) {
+					referencedComponentView = embeddedFIBController.getViewFactory().makeWidget((FIBWidget) loaded);
+					referencedComponentView.setEmbeddingComponent(this);
+				} else if (loaded instanceof FIBContainer) {
+					referencedComponentView = embeddedFIBController.getViewFactory().makeContainer((FIBContainer) loaded);
+					referencedComponentView.setEmbeddingComponent(this);
+				}
+			} else {
+				logger.warning("ReferencedComponent = null");
+
+			}
+
 			isComponentLoading = false;
+
 		}
 		return referencedComponentView;
 	}
@@ -190,8 +244,8 @@ public class FIBReferencedComponentWidget extends FIBWidgetView<FIBReferencedCom
 		if (getReferencedComponentView() != null) {
 			JComponent returned = getReferencedComponentView().getJComponent();
 			/*if (returned != null && getWidget().getOpaque() != null) {
-				returned.setOpaque(getWidget().getOpaque());
-			}*/
+					returned.setOpaque(getWidget().getOpaque());
+				}*/
 			return returned;
 		}
 		return NOT_FOUND_LABEL;
@@ -212,7 +266,7 @@ public class FIBReferencedComponentWidget extends FIBWidgetView<FIBReferencedCom
 					value = valueDB.getBindingValue(getBindingEvaluationContext());
 					if (variableDB.isValid()) {
 						// System.out.println("Assignment " + assign + " set value with " + value);
-						variableDB.setBindingValue(value, this);
+						variableDB.setBindingValue(value, embeddedFIBController);
 					}
 				} catch (TypeMismatchException e) {
 					e.printStackTrace();
@@ -227,59 +281,36 @@ public class FIBReferencedComponentWidget extends FIBWidgetView<FIBReferencedCom
 		}
 	}
 
-	@Override
-	public boolean updateWidgetFromModel() {
+	private boolean updateReferencedComponentView() {
 
-		updateDynamicallyReferencedComponentWhenRequired();
+		if (updateDynamicallyReferencedComponentWhenRequired()) {
 
-		// We need here to "force" update while some assignments may be required
+			// We need here to "force" update while some assignments may be required
 
-		// if (notEquals(getValue(), customComponent.getEditedObject())) {
+			// if (notEquals(getValue(), customComponent.getEditedObject())) {
 
-		/*if (getWidget().getComponentClass().getName().endsWith("FIBForegroundStyleSelector")) {
-			logger.info("GET updateWidgetFromModel() with " + getValue() + " for " + customComponent);
-		}*/
+			/*if (getWidget().getComponentClass().getName().endsWith("FIBForegroundStyleSelector")) {
+					logger.info("GET updateWidgetFromModel() with " + getValue() + " for " + customComponent);
+				}*/
 
-		if (getReferencedComponentView() != null) {
+			if (getReferencedComponentView() != null) {
 
-			// getReferencedComponentView().getDynamicModel().setData(getValue());
+				performAssignments();
 
-			performAssignments();
-			// logger.info("********* Update FIBReferenceComponentWidget " + getWidget().getComponentFile() + " with " + getValue());
-			// logger.info("getData()=" + getWidget().getData());
-			// logger.info("valid=" + getWidget().getData().isValid());
-			((FIBView) referencedComponentView).setData(getValue());
-			// referencedComponentView.updateDataObject(getValue());
-			referencedComponentView.update();
+				embeddedFIBController.setDataObject(getValue(), true);
+
+				referencedComponentView.update();
+			}
+			return true;
 		}
-		return true;
-
+		return false;
 	}
 
 	@Override
-	public Object getValue(BindingVariable variable) {
-		if (variable.getVariableName().equals(DATA)) {
-			/*if (getWidget().getName() != null && getWidget().getName().equals("DropSchemePanel")) {
-				System.out.println("Returns data for DropSchemePanel as " + referencedComponentView.getDynamicModel().getData());
-			}
-			if (getWidget() != null && getWidget().getName() != null && getWidget().getName().equals("EditionSchemeWidget")) {
-				System.out.println("Returns data for EditionSchemeWidget as " + referencedComponentView.getDynamicModel().getData());
-			}*/
-			if (referencedComponentView != null) {
-				return referencedComponentView.getData();
-			}
-			return null;
-		}
-		if (variable.getVariableName().equals(COMPONENT)) {
-			return referencedComponentView.getComponent();
-		}
-		BindingEvaluationContext evCtxt = getBindingEvaluationContext();
-		// NPE Protection
-		if (evCtxt != null && variable != null) {
-			return getBindingEvaluationContext().getValue(variable);
-		} else {
-			return null;
-		}
+	public boolean updateWidgetFromModel() {
+
+		return updateReferencedComponentView();
+
 	}
 
 	public void updateComponent() {
@@ -291,15 +322,9 @@ public class FIBReferencedComponentWidget extends FIBWidgetView<FIBReferencedCom
 	}
 
 	public BindingEvaluationContext getEmbeddedBindingEvaluationContext() {
-		return this;
+		// return getBindingEvaluationContext();
+		// return this;
+		return embeddedFIBController;
 	}
 
-	@Override
-	public String toString() {
-		if (referencedComponentView != null) {
-			return super.toString() + " referencedComponentView=" + referencedComponentView + " data=" + referencedComponentView.getData();
-		} else {
-			return super.toString();
-		}
-	}
 }

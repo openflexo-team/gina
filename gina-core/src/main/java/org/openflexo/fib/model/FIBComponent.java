@@ -442,7 +442,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 		private final Vector<FIBComponent> mayDepends;
 		private final Vector<FIBComponent> mayAlters;
 
-		private Class dataClass;
+		protected Class dataClass;
 		private Class<? extends FIBController> controllerClass;
 
 		private FIBContainer parent;
@@ -457,6 +457,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 		@Override
 		public void setParent(FIBContainer parent) {
 			this.parent = parent;
+			getData().markedAsToBeReanalized();
 		}
 
 		@Override
@@ -542,7 +543,9 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 			ComponentConstraints normalizedConstraints = _normalizeConstraintsWhenRequired(someConstraints);
 			FIBPropertyNotification<ComponentConstraints> notification = requireChange(CONSTRAINTS_KEY, normalizedConstraints);
 			if (notification != null) {
-				normalizedConstraints.setComponent(this);
+				if (normalizedConstraints != null) {
+					normalizedConstraints.setComponent(this);
+				}
 				this.constraints = normalizedConstraints;
 				hasChanged(notification);
 			}
@@ -871,82 +874,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 		}
 
-		public Vector<FIBComponent> getNamedComponents() {
-			Vector<FIBComponent> returned = new Vector<FIBComponent>();
-			for (FIBComponent c : retrieveAllSubComponents()) {
-				if (StringUtils.isNotEmpty(c.getName())) {
-					returned.add(c);
-				}
-			}
-			return returned;
-		}
-
-		@Override
-		public FIBComponent getComponentNamed(String name) {
-			if (StringUtils.isNotEmpty(this.getName()) && this.getName().equals(name)) {
-				return this;
-			}
-			for (FIBComponent c : retrieveAllSubComponents()) {
-				if (StringUtils.isNotEmpty(c.getName()) && c.getName().equals(name)) {
-					return c;
-				}
-			}
-			return null;
-		}
-
-		public Vector<FIBComponent> retrieveAllSubComponents() {
-			if (this instanceof FIBContainer) {
-				Vector<FIBComponent> returned = new Vector<FIBComponent>();
-				addAllSubComponents((FIBContainer) this, returned);
-				return returned;
-			}
-			return null;
-		}
-
-		private void addAllSubComponents(FIBContainer c, Vector<FIBComponent> returned) {
-			for (FIBComponent c2 : c.getSubComponents()) {
-				returned.add(c2);
-				if (c2 instanceof FIBContainer) {
-					addAllSubComponents((FIBContainer) c2, returned);
-				}
-				/*else if (c2 instanceof FIBReferencedComponent){
-					FIBComponent referenced =((FIBReferencedComponent) c2).getComponent();
-					
-					// TEST
-					FIBReferencedComponent ref = ((FIBReferencedComponent) c2);
-					
-					
-					if (referenced instanceof FIBContainer){
-						returned.add((FIBContainer) referenced);
-						addAllSubComponents((FIBContainer) referenced, returned);
-					}
-				}*/
-			}
-		}
-
-		public Iterator<FIBComponent> subComponentIterator() {
-			Vector<FIBComponent> allSubComponents = retrieveAllSubComponents();
-			if (allSubComponents == null) {
-				return new Iterator<FIBComponent>() {
-					@Override
-					public boolean hasNext() {
-						return false;
-					}
-
-					@Override
-					public FIBComponentImpl next() {
-						return null;
-					}
-
-					@Override
-					public void remove() {
-					}
-				};
-			} else {
-				return allSubComponents.iterator();
-			}
-		}
-
 		@Override
 		public List<FIBComponent> getMayDepends() {
 			return mayDepends;
@@ -1058,7 +985,9 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 						return getDataType();
 					}
 				};
+
 				data.setBindingName("data");
+
 			} else {
 				this.data = null;
 			}
@@ -1126,7 +1055,12 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 		public void setDataClass(Class<?> dataClass) {
 			FIBPropertyNotification<Class> notification = requireChange(DATA_CLASS_KEY, (Class) dataClass);
 			if (notification != null) {
+				// System.out.println("data=" + getData() + " valid=" + getData().isValid() + " reason: " +
+				// getData().invalidBindingReason());
 				this.dataClass = dataClass;
+				getData().markedAsToBeReanalized();
+				// System.out.println("data=" + getData() + " valid=" + getData().isValid() + " reason: " +
+				// getData().invalidBindingReason());
 				updateBindingModel();
 				hasChanged(notification);
 			}
@@ -1678,6 +1612,88 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 		public void setBindingFactory(BindingFactory bindingFactory) {
 			this.bindingFactory = bindingFactory;
 		}
+
+		// TODO: move to FIBContainer
+		public Vector<FIBComponent> retrieveAllSubComponents() {
+			if (this instanceof FIBContainer) {
+				Vector<FIBComponent> returned = new Vector<FIBComponent>();
+				addAllSubComponents((FIBContainer) this, returned);
+				return returned;
+			}
+			return null;
+		}
+
+		// TODO: move to FIBContainer
+		private void addAllSubComponents(FIBContainer c, Vector<FIBComponent> returned) {
+			for (FIBComponent c2 : c.getSubComponents()) {
+				returned.add(c2);
+				if (c2 instanceof FIBContainer) {
+					addAllSubComponents((FIBContainer) c2, returned);
+				}
+				/*else if (c2 instanceof FIBReferencedComponent){
+					FIBComponent referenced =((FIBReferencedComponent) c2).getComponent();
+					
+					// TEST
+					FIBReferencedComponent ref = ((FIBReferencedComponent) c2);
+					
+					
+					if (referenced instanceof FIBContainer){
+						returned.add((FIBContainer) referenced);
+						addAllSubComponents((FIBContainer) referenced, returned);
+					}
+				}*/
+			}
+		}
+
+		// TODO: move to FIBContainer
+		public Iterator<FIBComponent> subComponentIterator() {
+			Vector<FIBComponent> allSubComponents = retrieveAllSubComponents();
+			if (allSubComponents == null) {
+				return new Iterator<FIBComponent>() {
+					@Override
+					public boolean hasNext() {
+						return false;
+					}
+
+					@Override
+					public FIBComponentImpl next() {
+						return null;
+					}
+
+					@Override
+					public void remove() {
+					}
+				};
+			} else {
+				return allSubComponents.iterator();
+			}
+		}
+
+		// TODO: move to FIBContainer
+		public Vector<FIBComponent> getNamedComponents() {
+			Vector<FIBComponent> returned = new Vector<FIBComponent>();
+			for (FIBComponent c : retrieveAllSubComponents()) {
+				if (StringUtils.isNotEmpty(c.getName())) {
+					returned.add(c);
+				}
+			}
+			return returned;
+		}
+
+		// TODO: move to FIBContainer
+		@Override
+		public FIBComponent getComponentNamed(String name) {
+			if (StringUtils.isNotEmpty(this.getName()) && this.getName().equals(name)) {
+				return this;
+			}
+			for (FIBComponent c : retrieveAllSubComponents()) {
+				if (StringUtils.isNotEmpty(c.getName()) && c.getName().equals(name)) {
+					return c;
+				}
+			}
+			return null;
+		}
+
 	}
 
 	public static class RootComponentShouldHaveDataClass extends ValidationRule<RootComponentShouldHaveDataClass, FIBComponent> {

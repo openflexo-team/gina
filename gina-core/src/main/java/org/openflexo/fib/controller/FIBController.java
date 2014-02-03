@@ -362,7 +362,13 @@ public class FIBController extends Observable implements BindingEvaluationContex
 	}
 
 	protected final FIBView makeContainer(FIBContainer fibContainer) {
-		return getViewFactory().makeContainer(fibContainer);
+		try {
+			return getViewFactory().makeContainer(fibContainer);
+		} catch (RuntimeException e) {
+			logger.warning("Unexpected exception " + e.getMessage() + ". See logs for details.");
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	/**
@@ -476,7 +482,13 @@ public class FIBController extends Observable implements BindingEvaluationContex
 	}
 
 	protected final FIBWidgetView makeWidget(FIBWidget fibWidget) {
-		return getViewFactory().makeWidget(fibWidget);
+		try {
+			return getViewFactory().makeWidget(fibWidget);
+		} catch (RuntimeException e) {
+			logger.warning("Unexpected exception " + e.getMessage() + ". See logs for details.");
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override

@@ -260,6 +260,17 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 				System.out.println("hop3");
 
 			}*/
+
+			/*if (getWidget().getData().toString().equals("data.userIdentifier")) {
+				System.out.println("hop, data=" + getWidget().getData() + " valid=" + getWidget().getData().isValid());
+				System.out.println("getBindingEvaluationContext()=" + getBindingEvaluationContext());
+				Object data = getBindingEvaluationContext().getValue(new BindingVariable("data", null));
+				System.out.println("data=" + data);
+				System.out.println("userId=" + ((KeyValueCoding) data).objectForKey("userIdentifier"));
+				value = getWidget().getData().getBindingValue(getBindingEvaluationContext());
+				System.out.println("value=" + value + " of " + value.getClass());
+			}*/
+
 			value = getWidget().getData().getBindingValue(getBindingEvaluationContext());
 			T returned = (T) value;
 			setData(returned);
@@ -611,6 +622,9 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 
 	public final boolean isComponentEnabled() {
 		boolean componentEnabled = true;
+		if (getComponent() == null) {
+			return false;
+		}
 		if (getComponent().getReadOnly()) {
 			return false;
 		}

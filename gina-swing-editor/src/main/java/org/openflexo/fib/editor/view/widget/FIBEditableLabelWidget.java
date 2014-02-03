@@ -75,6 +75,9 @@ public class FIBEditableLabelWidget extends FIBLabelWidget implements FIBEditabl
 
 	@Override
 	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
+		if (isDeleted()) {
+			return;
+		}
 		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
 		if (propertyName.equals(FIBLabel.ALIGN_KEY)) {
 			updateAlign();
@@ -87,9 +90,13 @@ public class FIBEditableLabelWidget extends FIBLabelWidget implements FIBEditabl
 
 	protected void relayoutParentBecauseLabelChanged() {
 		FIBContainerView<?, ?, ?> parentView = getParentView();
+		if (parentView != null) {
+			parentView.updateLayout();
+		}
 		FIBEditorController controller = getEditorController();
-		parentView.updateLayout();
-		controller.notifyFocusedAndSelectedObject();
+		if (controller != null) {
+			controller.notifyFocusedAndSelectedObject();
+		}
 	}
 
 }

@@ -81,10 +81,19 @@ public class FIBLabelWidget extends FIBWidgetView<FIBLabel, JLabel, String> {
 	}
 
 	protected void updateAlign() {
+		if (labelWidget == null || getWidget() == null) {
+			return;
+		}
+		if (getWidget().getAlign() == null) {
+			return;
+		}
 		labelWidget.setHorizontalAlignment(getWidget().getAlign().getAlign());
 	}
 
 	protected void updateLabel() {
+		if (labelWidget == null || getWidget() == null) {
+			return;
+		}
 		if (getWidget().getData().isValid()) {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
