@@ -39,6 +39,7 @@ import javax.swing.Icon;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import org.openflexo.antar.binding.BindingValueChangeListener;
@@ -79,7 +80,6 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			addToElementTypes(browserElement, buildBrowserElementType(browserElement, controller));
 		}
 
-		//
 	}
 
 	public void delete() {
@@ -98,6 +98,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 
 	public FIBBrowserElementType elementTypeForClass(Class aClass) {
 		FIBBrowserElement element = elementForClass(aClass);
+
 		if (element != null) {
 			return _elementTypes.get(element);
 		} else {
@@ -133,6 +134,12 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 
 		BrowserCell rootCell = retrieveBrowserCell(root, null);
 		if (getRoot() != rootCell) {
+
+			System.out.println("Pour " + hashCode() + ", le root object passe de " + getRoot() + " a " + rootCell);
+			// Thread.dumpStack();
+			/*System.out
+					.println("Et donc de: " + ((BrowserCell) getRoot()).getRepresentedObject() + " a: " + rootCell.getRepresentedObject());
+			*/
 			if (getRoot() != null) {
 				((BrowserCell) getRoot()).delete();
 			}

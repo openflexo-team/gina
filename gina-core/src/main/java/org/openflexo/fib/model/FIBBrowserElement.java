@@ -817,7 +817,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 		@Override
 		public String toString() {
-			return "FIBBrowserElement(name" + getName() + ",type=" + getDataClass() + ")";
+			return "FIBBrowserElement(name=" + getName() + ",type=" + getDataClass() + ")";
 		}
 
 		@Override

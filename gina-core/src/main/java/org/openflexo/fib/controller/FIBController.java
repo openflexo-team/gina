@@ -283,9 +283,9 @@ public class FIBController extends Observable implements BindingEvaluationContex
 	public static FIBController instanciateController(FIBComponent fibComponent, LocalizedDelegate parentLocalizer) {
 		FIBController returned = null;
 		// System.out.println("Instanciate controller for component: " + fibComponent);
-		if (fibComponent != null) {
+		/*if (fibComponent != null) {
 			fibComponent.getFactory().stringRepresentation(fibComponent);
-		}
+		}*/
 		if (fibComponent.getControllerClass() != null) {
 			try {
 				// System.out.println("Class=" + fibComponent.getControllerClass());
@@ -296,7 +296,7 @@ public class FIBController extends Observable implements BindingEvaluationContex
 			} catch (SecurityException e) {
 				logger.warning("SecurityException: Could not instanciate " + fibComponent.getControllerClass());
 			} catch (NoSuchMethodException e) {
-				Thread.dumpStack();
+				// Thread.dumpStack();
 				logger.warning("NoSuchMethodException: Could not instanciate " + fibComponent.getControllerClass());
 			} catch (IllegalArgumentException e) {
 				logger.warning("IllegalArgumentException: Could not instanciate " + fibComponent.getControllerClass());

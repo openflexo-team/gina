@@ -545,50 +545,6 @@ public interface FIBBrowser extends FIBWidget {
 		@Override
 		public FIBBrowserElement elementForClass(Class<?> aClass) {
 			return TypeUtils.objectForClass(aClass, elementsForClasses);
-
-			// Old code, to be removed
-			/*FIBBrowserElement returned = elementsForClasses.get(aClass);
-			if (returned != null) {
-				return returned;
-			} else {
-				Class<?> superclass = aClass.getSuperclass();
-				if (superclass != null) {
-					returned = elementsForClasses.get(superclass);
-					if (returned != null) {
-						return returned;
-					} else {
-						for (Class<?> superInterface : aClass.getInterfaces()) {
-							returned = elementsForClasses.get(superInterface);
-							if (returned != null) {
-								return returned;
-							}
-						}
-						returned = elementForClass(superclass);
-						if (returned != null) {
-							elementsForClasses.put(aClass, returned);
-							return returned;
-						} else {
-							for (Class<?> superInterface : aClass.getInterfaces()) {
-								returned = elementForClass(superInterface);
-								if (returned != null) {
-									elementsForClasses.put(aClass, returned);
-									return returned;
-								}
-							}
-						}
-					}
-				}
-			}
-			List<Class<?>> matchingClasses = new ArrayList<Class<?>>();
-			for (Class<?> cl : elementsForClasses.keySet()) {
-				if (cl.isAssignableFrom(aClass)) {
-					matchingClasses.add(cl);
-				}
-			}
-			if (matchingClasses.size() > 0) {
-				return elementsForClasses.get(TypeUtils.getMostSpecializedClass(matchingClasses));
-			}
-			return null;*/
 		}
 
 		@Override

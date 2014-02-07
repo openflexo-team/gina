@@ -187,12 +187,14 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 
 	private boolean processRootChanged() {
 		boolean returned = getBrowserModel().updateRootObject(getRootValue());
-		if (returned)
+		if (returned) {
+			System.out.println("########### Le root change pour " + getRootValue());
 			try {
 				_tree.fireTreeWillExpand(new TreePath(_tree.getModel().getRoot()));
 			} catch (ExpandVetoException e1) {
 				e1.printStackTrace();
 			}
+		}
 		return returned;
 	}
 
