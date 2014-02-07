@@ -21,8 +21,10 @@ package org.openflexo.fib.model;
 
 import java.io.File;
 
+import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.model.FIBBrowserElement.FIBBrowserElementChildren;
+import org.openflexo.fib.model.FIBCustom.FIBCustomAssignment;
 import org.openflexo.fib.model.converter.ComponentConstraintsConverter;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.converter.DataBindingConverter;
@@ -150,12 +152,30 @@ public class FIBModelFactory extends ModelFactory {
 		return newInstance(FIBCustom.class);
 	}
 
+	public FIBCustomAssignment newFIBCustomAssignment() {
+		return newInstance(FIBCustomAssignment.class);
+	}
+
+	public FIBCustomAssignment newFIBCustomAssignment(FIBCustom owner, DataBinding<?> variable, DataBinding<?> value, boolean b) {
+		FIBCustomAssignment returned = newFIBCustomAssignment();
+		returned.setOwner(owner);
+		returned.setVariable(variable);
+		returned.setValue(value);
+		return returned;
+	}
+
 	public FIBButton newFIBButton() {
 		return newInstance(FIBButton.class);
 	}
 
 	public FIBTab newFIBTab() {
 		return newInstance(FIBTab.class);
+	}
+
+	public FIBDependancy newFIBDependancy(FIBComponent masterComponent) {
+		FIBDependancy returned = newInstance(FIBDependancy.class);
+		returned.setMasterComponent(masterComponent);
+		return returned;
 	}
 
 }

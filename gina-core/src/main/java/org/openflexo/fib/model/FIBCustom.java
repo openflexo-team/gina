@@ -376,17 +376,17 @@ public interface FIBCustom extends FIBWidget {
 
 		@Getter(value = VARIABLE_KEY)
 		@XMLAttribute
-		public DataBinding<Object> getVariable();
+		public DataBinding<?> getVariable();
 
 		@Setter(VARIABLE_KEY)
-		public void setVariable(DataBinding<Object> variable);
+		public void setVariable(DataBinding<?> variable);
 
 		@Getter(value = VALUE_KEY)
 		@XMLAttribute
-		public DataBinding<Object> getValue();
+		public DataBinding<?> getValue();
 
 		@Setter(VALUE_KEY)
-		public void setValue(DataBinding<Object> value);
+		public void setValue(DataBinding<?> value);
 
 		@Getter(value = MANDATORY_KEY, defaultValue = "false")
 		@XMLAttribute
@@ -405,8 +405,8 @@ public interface FIBCustom extends FIBWidget {
 			@Deprecated
 			public BindingDefinition VALUE = new BindingDefinition("value", Object.class, DataBinding.BindingDefinitionType.GET, true);
 
-			private DataBinding<Object> variable;
-			private DataBinding<Object> value;
+			private DataBinding<?> variable;
+			private DataBinding<?> value;
 
 			private final boolean mandatory = true;
 
@@ -443,7 +443,7 @@ public interface FIBCustom extends FIBWidget {
 			}
 
 			@Override
-			public DataBinding<Object> getVariable() {
+			public DataBinding<?> getVariable() {
 				if (variable == null) {
 					variable = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.GET_SET);
 				}
@@ -451,7 +451,7 @@ public interface FIBCustom extends FIBWidget {
 			}
 
 			@Override
-			public void setVariable(DataBinding<Object> variable) {
+			public void setVariable(DataBinding<?> variable) {
 				if (variable != null) {
 					variable.setOwner(this);
 					variable.setDeclaredType(Object.class);
@@ -470,7 +470,7 @@ public interface FIBCustom extends FIBWidget {
 			}
 
 			@Override
-			public DataBinding<Object> getValue() {
+			public DataBinding<?> getValue() {
 				if (value == null) {
 					value = new DataBinding<Object>(getOwner(), Object.class, DataBinding.BindingDefinitionType.GET);
 				}
@@ -478,7 +478,7 @@ public interface FIBCustom extends FIBWidget {
 			}
 
 			@Override
-			public void setValue(DataBinding<Object> value) {
+			public void setValue(DataBinding<?> value) {
 				if (value != null) {
 					value.setOwner(getOwner()); // Warning, still null while deserializing
 					value.setDeclaredType(Object.class);

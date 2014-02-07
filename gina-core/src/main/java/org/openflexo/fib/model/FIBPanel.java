@@ -138,6 +138,7 @@ public interface FIBPanel extends FIBContainer {
 	@PropertyIdentifier(type = boolean.class)
 	public static final String TRACK_VIEW_PORT_HEIGHT_KEY = "trackViewPortHeight";
 
+	@Override
 	@Getter(value = LAYOUT_KEY)
 	@XMLAttribute
 	public Layout getLayout();

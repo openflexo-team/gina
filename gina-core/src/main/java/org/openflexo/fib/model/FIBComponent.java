@@ -363,6 +363,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 	public Type getDataType();
 
+	public void setDataType(Type type);
+
 	public boolean definePreferredDimensions();
 
 	public boolean defineMaxDimensions();
@@ -778,8 +780,12 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 		 * Creates binding variable identified by "data"<br>
 		 * Default behavior is to generate a binding variable with the java type identified by data class
 		 */
-		protected void createDataBindingVariable() {
-			_bindingModel.addToBindingVariables(new BindingVariable("data", dataClass != null ? dataClass : Object.class));
+		protected void updateDataBindingVariable() {
+			BindingVariable dataBV = _bindingModel.bindingVariableNamed("data");
+			if (dataBV == null) {
+				_bindingModel.addToBindingVariables(dataBV = new BindingVariable("data", getDataType()));
+			}
+			dataBV.setType(getDataType());
 		}
 
 		protected void createBindingModel() {
@@ -805,7 +811,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 				}*/
 				// if (dataClass == null) dataClass = Object.class;
 
-				createDataBindingVariable();
+				updateDataBindingVariable();
 
 				if (StringUtils.isNotEmpty(getName()) && getDynamicAccessType() != null) {
 					_bindingModel.addToBindingVariables(new BindingVariable(getName(), getDynamicAccessType()));
@@ -1025,24 +1031,27 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 			return this;
 		}
 
+		private Type dataType;
+
 		@Override
 		public Type getDataType() {
+			if (dataType != null) {
+				return dataType;
+			}
 			if (dataClass == null) {
 				return Object.class;
 			}
 			return dataClass;
+		}
 
-			/*if (dataClassName == null) return null;
-			if (dataClass == null) {
-				try {
-					dataClass = Class.forName(dataClassName);
-				} catch (ClassNotFoundException e) {
-					logger.warning("Not found: "+dataClassName);
-					dataClass = Object.class;
-				}
+		@Override
+		public void setDataType(Type type) {
+			if (type != null && !type.equals(this.dataType)) {
+				Type oldType = this.dataType;
+				this.dataType = type;
+				updateDataBindingVariable();
+				getPropertyChangeSupport().firePropertyChange("dataType", oldType, type);
 			}
-			return dataClass;*/
-
 		}
 
 		@Override

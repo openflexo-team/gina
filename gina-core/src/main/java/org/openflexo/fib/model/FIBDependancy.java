@@ -95,15 +95,6 @@ public interface FIBDependancy extends FIBModelObject {
 			}
 		}
 
-		public FIBDependancyImpl() {
-			super();
-		}
-
-		public FIBDependancyImpl(FIBComponent masterComponent) {
-			super();
-			this.masterComponent = masterComponent;
-		}
-
 		@Override
 		public String getMasterComponentName() {
 			if (getMasterComponent() != null) {
