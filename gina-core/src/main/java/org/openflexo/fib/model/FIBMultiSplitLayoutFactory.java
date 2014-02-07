@@ -35,6 +35,8 @@ import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.swing.layout.MultiSplitLayout;
 import org.openflexo.swing.layout.MultiSplitLayout.ColSplit;
+import org.openflexo.swing.layout.MultiSplitLayout.DefaultColSplit;
+import org.openflexo.swing.layout.MultiSplitLayout.DefaultRowSplit;
 import org.openflexo.swing.layout.MultiSplitLayout.Divider;
 import org.openflexo.swing.layout.MultiSplitLayout.Leaf;
 import org.openflexo.swing.layout.MultiSplitLayout.Node;
@@ -221,20 +223,26 @@ public class FIBMultiSplitLayoutFactory implements MultiSplitLayoutFactory {
 	 * Defines a horizontal subdivision into two or more tiles.
 	 */
 	@ModelEntity
-	// @ImplementationClass(MultiSplitLayout.DefaultRowSplit.class)
+	@ImplementationClass(FIBRowSplit.FIBRowSplitImpl.class)
 	@XMLElement(xmlTag = "RowSplit")
 	public static interface FIBRowSplit<N extends FIBNode<N>> extends FIBSplit<N>, RowSplit<N> {
 
+		public static abstract class FIBRowSplitImpl<N extends FIBNode<N>> extends DefaultRowSplit<N> implements FIBRowSplit<N> {
+
+		}
 	}
 
 	/**
 	 * Defines a vertical subdivision into two or more tiles.
 	 */
 	@ModelEntity
-	@ImplementationClass(MultiSplitLayout.DefaultColSplit.class)
+	@ImplementationClass(FIBColSplit.FIBColSplitImpl.class)
 	@XMLElement(xmlTag = "ColSplit")
 	public static interface FIBColSplit<N extends FIBNode<N>> extends FIBSplit<N>, ColSplit<N> {
 
+		public static abstract class FIBColSplitImpl<N extends FIBNode<N>> extends DefaultColSplit<N> implements FIBColSplit<N> {
+
+		}
 	}
 
 }

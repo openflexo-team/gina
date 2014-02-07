@@ -283,27 +283,26 @@ BindingEvaluationContext*/{
 
 	private boolean updateReferencedComponentView() {
 
-		if (updateDynamicallyReferencedComponentWhenRequired()) {
+		boolean returned = updateDynamicallyReferencedComponentWhenRequired();
 
-			// We need here to "force" update while some assignments may be required
+		// We need here to "force" update while some assignments may be required
 
-			// if (notEquals(getValue(), customComponent.getEditedObject())) {
+		// if (notEquals(getValue(), customComponent.getEditedObject())) {
 
-			/*if (getWidget().getComponentClass().getName().endsWith("FIBForegroundStyleSelector")) {
-					logger.info("GET updateWidgetFromModel() with " + getValue() + " for " + customComponent);
-				}*/
+		/*if (getWidget().getComponentClass().getName().endsWith("FIBForegroundStyleSelector")) {
+				logger.info("GET updateWidgetFromModel() with " + getValue() + " for " + customComponent);
+			}*/
 
-			if (getReferencedComponentView() != null) {
+		if (getReferencedComponentView() != null) {
 
-				performAssignments();
+			performAssignments();
 
-				embeddedFIBController.setDataObject(getValue(), true);
+			embeddedFIBController.setDataObject(getValue(), true);
 
-				referencedComponentView.update();
-			}
-			return true;
+			referencedComponentView.update();
 		}
-		return false;
+
+		return returned;
 	}
 
 	@Override

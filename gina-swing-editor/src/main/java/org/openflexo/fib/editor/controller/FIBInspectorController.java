@@ -23,6 +23,7 @@ import java.awt.BorderLayout;
 import java.awt.Rectangle;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Observable;
 import java.util.Observer;
@@ -100,7 +101,7 @@ public class FIBInspectorController implements Observer, ChangeListener {
 			}
 		}
 
-		for (FIBInspector inspector : inspectors.values()) {
+		for (FIBInspector inspector : new ArrayList<FIBInspector>(inspectors.values())) {
 			inspector.appendSuperInspectors(this);
 		}
 
