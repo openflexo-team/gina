@@ -169,7 +169,7 @@ public class FIBTextFieldWidget extends FIBWidgetView<FIBTextField, JTextField, 
 	// DEBUG
 	/*@Override
 	public String getValue() {
-		if (getWidget().getData().toString().equals("data.getEditionPatternInstance(\"CityGR\").city.cityInModel1.name")) {
+		if (getWidget().getData().toString().equals("data.getFlexoConceptInstance(\"CityGR\").city.cityInModel1.name")) {
 
 			System.out.println("getWidget().getData()=" + getWidget().getData());
 			System.out.println("getWidget().getData().isValid()=" + getWidget().getData().isValid());
@@ -177,13 +177,13 @@ public class FIBTextFieldWidget extends FIBWidgetView<FIBTextField, JTextField, 
 			System.out.println("getBindingEvaluationContext()=" + getBindingEvaluationContext());
 
 			DataBinding db1 = new DataBinding("data", getWidget().getData().getOwner(), Object.class, BindingDefinitionType.GET);
-			DataBinding db2 = new DataBinding("data.getEditionPatternInstance(\"CityGR\")", getWidget().getData().getOwner(), Object.class,
+			DataBinding db2 = new DataBinding("data.getFlexoConceptInstance(\"CityGR\")", getWidget().getData().getOwner(), Object.class,
 					BindingDefinitionType.GET);
-			DataBinding db3 = new DataBinding("data.getEditionPatternInstance(\"CityGR\").city", getWidget().getData().getOwner(),
+			DataBinding db3 = new DataBinding("data.getFlexoConceptInstance(\"CityGR\").city", getWidget().getData().getOwner(),
 					Object.class, BindingDefinitionType.GET);
-			DataBinding db4 = new DataBinding("data.getEditionPatternInstance(\"CityGR\").city.cityInModel1", getWidget().getData()
+			DataBinding db4 = new DataBinding("data.getFlexoConceptInstance(\"CityGR\").city.cityInModel1", getWidget().getData()
 					.getOwner(), Object.class, BindingDefinitionType.GET);
-			DataBinding db5 = new DataBinding("data.getEditionPatternInstance(\"CityGR\").city.cityInModel1.name", getWidget().getData()
+			DataBinding db5 = new DataBinding("data.getFlexoConceptInstance(\"CityGR\").city.cityInModel1.name", getWidget().getData()
 					.getOwner(), Object.class, BindingDefinitionType.GET);
 
 			try {

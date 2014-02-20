@@ -45,7 +45,7 @@ public class FMLTokenMarker extends CTokenMarker {
 			javaKeywords.add("ViewDefinition", Token.KEYWORD1);
 			javaKeywords.add("ModelSlot", Token.KEYWORD1);
 			javaKeywords.add("VirtualModel", Token.KEYWORD1);
-			javaKeywords.add("EditionPattern", Token.KEYWORD1);
+			javaKeywords.add("FlexoConcept", Token.KEYWORD1);
 			javaKeywords.add("PatternRole", Token.KEYWORD1);
 
 			javaKeywords.add("ActionScheme", Token.KEYWORD3);
@@ -56,8 +56,8 @@ public class FMLTokenMarker extends CTokenMarker {
 			javaKeywords.add("LinkScheme", Token.KEYWORD3);
 			javaKeywords.add("CloningScheme", Token.KEYWORD3);
 
-			javaKeywords.add("MatchEditionPatternInstance", Token.KEYWORD4);
-			javaKeywords.add("SelectEditionPatternInstance", Token.KEYWORD4);
+			javaKeywords.add("MatchFlexoConceptInstance", Token.KEYWORD4);
+			javaKeywords.add("SelectFlexoConceptInstance", Token.KEYWORD4);
 
 			javaKeywords.add("conformTo", Token.KEYWORD2);
 			javaKeywords.add("type", Token.KEYWORD2);
