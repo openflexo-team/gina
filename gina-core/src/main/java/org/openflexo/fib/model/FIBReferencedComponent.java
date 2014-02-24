@@ -67,6 +67,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 	public void setDynamicComponentFile(DataBinding<File> dynamicComponentFile);
 
 	@Getter(value = ASSIGNMENTS_KEY, cardinality = Cardinality.LIST, inverse = FIBReferenceAssignment.OWNER_KEY)
+	@XMLElement
 	public List<FIBReferenceAssignment> getAssignments();
 
 	@Setter(ASSIGNMENTS_KEY)
@@ -91,10 +92,10 @@ public interface FIBReferencedComponent extends FIBWidget {
 
 		// TODO: Should be moved to FIBReferencedComponent widget
 		// private FIBComponent referencedComponent;
-		private Vector<FIBReferenceAssignment> assignments;
+		// private Vector<FIBReferenceAssignment> assignments;
 
 		public FIBReferencedComponentImpl() {
-			assignments = new Vector<FIBReferenceAssignment>();
+			// assignments = new Vector<FIBReferenceAssignment>();
 		}
 
 		@Override
@@ -172,7 +173,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 		}
 
 		public FIBReferenceAssignment getAssignment(String variableName) {
-			for (FIBReferenceAssignment a : assignments) {
+			for (FIBReferenceAssignment a : getAssignments()) {
 				if (variableName != null && variableName.equals(a.getVariable().toString())) {
 					return a;
 				}
@@ -180,7 +181,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 			return null;
 		}
 
-		@Override
+		/*@Override
 		public Vector<FIBReferenceAssignment> getAssignments() {
 			return assignments;
 		}
@@ -194,17 +195,17 @@ public interface FIBReferencedComponent extends FIBWidget {
 			if (getAssignment(a.getVariable().toString()) != null) {
 				removeFromAssignments(getAssignment(a.getVariable().toString()));
 			}
-			a.setOwner(this);
+			// a.setOwner(this);
 			assignments.add(a);
 			getPropertyChangeSupport().firePropertyChange(ASSIGNMENTS_KEY, null, assignments);
 		}
 
 		@Override
 		public void removeFromAssignments(FIBReferenceAssignment a) {
-			a.setOwner(null);
+			// a.setOwner(null);
 			assignments.remove(a);
 			getPropertyChangeSupport().firePropertyChange(ASSIGNMENTS_KEY, null, assignments);
-		}
+		}*/
 
 		@Override
 		public void finalizeDeserialization() {
