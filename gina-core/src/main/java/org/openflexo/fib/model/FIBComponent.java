@@ -63,6 +63,7 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
+import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.toolbox.StringUtils;
 
 @ModelEntity(isAbstract = true)
@@ -317,6 +318,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 	public void removeFromExplicitDependancies(FIBDependancy aExplicitDependancie);
 
 	@Getter(value = LOCALIZED_DICTIONARY_KEY, inverse = FIBLocalizedDictionary.OWNER_KEY)
+	@XMLElement
 	public FIBLocalizedDictionary getLocalizedDictionary();
 
 	@Setter(LOCALIZED_DICTIONARY_KEY)
