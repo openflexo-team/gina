@@ -58,7 +58,7 @@ public interface FIBCustomColumn extends FIBTableColumn {
 	public static final String DISABLE_TERMINATE_EDIT_ON_FOCUS_LOST = "disableTerminateEditOnFocusLost";
 
 	@Getter(value = COMPONENT_CLASS_KEY)
-	@XMLAttribute
+	@XMLAttribute(xmlTag = "componentClassName")
 	public Class<?> getComponentClass();
 
 	@Setter(value = COMPONENT_CLASS_KEY)
