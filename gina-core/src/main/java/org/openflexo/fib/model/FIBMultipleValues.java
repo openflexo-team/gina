@@ -25,6 +25,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
+
 import org.openflexo.antar.binding.BindingDefinition;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.GenericArrayTypeImpl;
@@ -117,6 +119,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 
 	public boolean isEnumType();
 
+	@Override
 	public Type getDataType();
 
 	public static abstract class FIBMultipleValuesImpl extends FIBWidgetImpl implements FIBMultipleValues {
@@ -419,9 +422,11 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 
 		@Override
 		public Type getDynamicAccessType() {
-			Type[] args = new Type[2];
-			args[0] = getDataType();
-			args[1] = getIteratorType();
+			Type[] args = new Type[4];
+			args[0] = new WilcardTypeImpl(FIBMultipleValues.class);
+			args[1] = new WilcardTypeImpl(JComponent.class);
+			args[2] = getDataType();
+			args[3] = getIteratorType();
 			return new ParameterizedTypeImpl(FIBMultipleValueWidget.class, args);
 		}
 
