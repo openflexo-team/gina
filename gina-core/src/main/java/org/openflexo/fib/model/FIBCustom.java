@@ -109,6 +109,7 @@ public interface FIBCustom extends FIBWidget {
 	public void setComponentClass(Class componentClass);
 
 	@Getter(value = ASSIGNMENTS_KEY, cardinality = Cardinality.LIST, inverse = FIBCustomAssignment.OWNER_KEY)
+	@XMLElement
 	public List<FIBCustomAssignment> getAssignments();
 
 	@Setter(ASSIGNMENTS_KEY)
