@@ -128,7 +128,9 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 			rootBindingValueChangeListener.stopObserving();
 			rootBindingValueChangeListener.delete();
 		}
+
 		if (getComponent().getRoot() != null && getComponent().getRoot().isValid()) {
+
 			rootBindingValueChangeListener = new BindingValueChangeListener<Object>(getComponent().getRoot(), getBindingEvaluationContext()) {
 
 				@Override
@@ -138,6 +140,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 					processRootChanged();
 				}
 			};
+
 		}
 	}
 
@@ -188,7 +191,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 	private boolean processRootChanged() {
 		boolean returned = getBrowserModel().updateRootObject(getRootValue());
 		if (returned) {
-			System.out.println("########### Le root change pour " + getRootValue());
+			logger.fine("RootValue changed for FIBBrowserWidget " + getRootValue());
 			try {
 				_tree.fireTreeWillExpand(new TreePath(_tree.getModel().getRoot()));
 			} catch (ExpandVetoException e1) {
