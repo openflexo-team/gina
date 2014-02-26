@@ -30,6 +30,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -126,7 +127,8 @@ import org.openflexo.toolbox.ToolBox;
  * @author sylvain
  * 
  */
-public class FIBController extends Observable implements BindingEvaluationContext, Observer, PropertyChangeListener {
+public class FIBController /*extends Observable*/implements BindingEvaluationContext, Observer, PropertyChangeListener,
+		HasPropertyChangeSupport {
 
 	private static final Logger logger = Logger.getLogger(FIBController.class.getPackage().getName());
 
@@ -155,12 +157,16 @@ public class FIBController extends Observable implements BindingEvaluationContex
 
 	private boolean deleted = false;
 
+	private final PropertyChangeSupport pcSupport;
+	public static final String DELETED = "deleted";
+
 	public FIBController(FIBComponent rootComponent) {
 		this.rootComponent = rootComponent;
 		views = new Hashtable<FIBComponent, FIBView<?, ?, ?>>();
 		selectionListeners = new Vector<FIBSelectionListener>();
 		mouseClickListeners = new Vector<FIBMouseClickListener>();
 		viewFactory = new DefaultFIBViewFactory();
+		pcSupport = new PropertyChangeSupport(this);
 	}
 
 	public void delete() {
@@ -177,11 +183,22 @@ public class FIBController extends Observable implements BindingEvaluationContex
 			}
 			dataObject = null;
 			deleted = true;
+			getPropertyChangeSupport().firePropertyChange(DELETED, false, true);
 		}
 	}
 
 	public boolean isDeleted() {
 		return deleted;
+	}
+
+	@Override
+	public PropertyChangeSupport getPropertyChangeSupport() {
+		return pcSupport;
+	}
+
+	@Override
+	public String getDeletedProperty() {
+		return DELETED;
 	}
 
 	public FIBView<FIBComponent, ?, ?> buildView() {
@@ -263,10 +280,11 @@ public class FIBController extends Observable implements BindingEvaluationContex
 
 	public void setDataObject(Object anObject, boolean forceUpdate) {
 		if (forceUpdate || anObject != dataObject) {
-			if (dataObject instanceof HasPropertyChangeSupport) {
-				((HasPropertyChangeSupport) dataObject).getPropertyChangeSupport().removePropertyChangeListener(this);
-			} else if (dataObject instanceof Observable) {
-				((Observable) dataObject).deleteObserver(this);
+			Object oldDataObject = dataObject;
+			if (oldDataObject instanceof HasPropertyChangeSupport) {
+				((HasPropertyChangeSupport) oldDataObject).getPropertyChangeSupport().removePropertyChangeListener(this);
+			} else if (oldDataObject instanceof Observable) {
+				((Observable) oldDataObject).deleteObserver(this);
 			}
 			dataObject = anObject;
 			if (getRootView() != null) {
@@ -277,6 +295,9 @@ public class FIBController extends Observable implements BindingEvaluationContex
 			} else if (dataObject instanceof Observable) {
 				((Observable) dataObject).addObserver(this);
 			}
+			// setChanged();
+			// notifyObservers();
+			getPropertyChangeSupport().firePropertyChange("data", oldDataObject, anObject);
 		}
 	}
 
@@ -659,13 +680,14 @@ public class FIBController extends Observable implements BindingEvaluationContex
 		getRootComponent().retrieveFIBLocalizedDictionary().endSearchNewLocalizationEntries();
 		getRootComponent().retrieveFIBLocalizedDictionary().refresh();
 		switchToLanguage(currentLanguage);
-		setChanged();
-		notifyObservers();
+		// setChanged();
+		// notifyObservers();
 	}
 
 	public void refreshLocalized() {
-		setChanged();
-		notifyObservers();
+		logger.warning("refreshLocalized() not implemented yet");
+		// setChanged();
+		// notifyObservers();
 	}
 
 	public FIBSelectable getSelectionLeader() {
