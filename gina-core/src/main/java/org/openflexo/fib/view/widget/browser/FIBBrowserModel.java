@@ -39,7 +39,6 @@ import javax.swing.Icon;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import org.openflexo.antar.binding.BindingValueChangeListener;
@@ -121,11 +120,11 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 	 */
 	public boolean updateRootObject(Object root) {
 
-		System.out.println("updateRootObject with " + root);
+		// System.out.println("updateRootObject with " + root);
 
 		if (root == null) {
 			// TODO: check this
-			logger.warning("Not implemented: please check this");
+			// logger.warning("Not implemented: please check this");
 			setRoot(null);
 			return false;
 		}
@@ -135,10 +134,10 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 		BrowserCell rootCell = retrieveBrowserCell(root, null);
 		if (getRoot() != rootCell) {
 
-			System.out.println("Pour " + hashCode() + ", le root object passe de " + getRoot() + " a " + rootCell);
+			// System.out.println("For " + hashCode() + ", root object switch from " + getRoot() + " to " + rootCell);
 			// Thread.dumpStack();
 			/*System.out
-					.println("Et donc de: " + ((BrowserCell) getRoot()).getRepresentedObject() + " a: " + rootCell.getRepresentedObject());
+					.println("From: " + ((BrowserCell) getRoot()).getRepresentedObject() + " to: " + rootCell.getRepresentedObject());
 			*/
 			if (getRoot() != null) {
 				((BrowserCell) getRoot()).delete();
