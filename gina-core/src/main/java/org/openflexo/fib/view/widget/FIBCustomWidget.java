@@ -207,12 +207,20 @@ public class FIBCustomWidget<J extends JComponent, T> extends FIBWidgetView<FIBC
 		for (FIBCustomAssignment assign : getWidget().getAssignments()) {
 			DataBinding<?> variableDB = assign.getVariable();
 			DataBinding<?> valueDB = assign.getValue();
+			// System.out.println("Assignement " + variableDB + " with " + valueDB);
+			if (!valueDB.isValid()) {
+				logger.warning("Assignment value not valid: " + valueDB + " reason: " + valueDB.invalidBindingReason());
+			}
+			if (!variableDB.isValid()) {
+				logger.warning("Assignment variable not valid: " + variableDB + " reason: " + variableDB.invalidBindingReason());
+			}
 			if (valueDB != null && valueDB.isValid()) {
 				Object value = null;
 				try {
 					value = valueDB.getBindingValue(getBindingEvaluationContext());
+					// System.out.println("value=" + value);
 					if (variableDB.isValid()) {
-						// System.out.println("Assignment " + assign + " set value with " + value);
+						// System.out.println("Assignment " + variableDB + " set value with " + value);
 						variableDB.setBindingValue(value, this);
 					}
 				} catch (TypeMismatchException e) {
@@ -244,9 +252,9 @@ public class FIBCustomWidget<J extends JComponent, T> extends FIBWidgetView<FIBC
 
 			try {
 				T val = getValue();
-				if (val != null) {
-					customComponent.setEditedObject(getValue());
-				}
+				// if (val != null) {
+				customComponent.setEditedObject(getValue());
+				// }
 			} catch (ClassCastException e) {
 				customComponent.setEditedObject(null);
 				logger.warning("Unexpected ClassCastException in " + customComponent + ": " + e.getMessage());
@@ -255,6 +263,7 @@ public class FIBCustomWidget<J extends JComponent, T> extends FIBWidgetView<FIBC
 
 			// Perform assignement AFTER the edited value was set !!!
 			// Tried to to it before raised to severe issues
+
 			performAssignments();
 
 			try {
