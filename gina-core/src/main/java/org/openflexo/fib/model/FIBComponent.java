@@ -306,6 +306,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 	public void setVerticalScrollbarPolicy(VerticalScrollBarPolicy verticalScrollbarPolicy);
 
 	@Getter(value = EXPLICIT_DEPENDANCIES_KEY, cardinality = Cardinality.LIST, inverse = FIBDependancy.OWNER_KEY)
+	@XMLElement
 	public List<FIBDependancy> getExplicitDependancies();
 
 	@Setter(EXPLICIT_DEPENDANCIES_KEY)
