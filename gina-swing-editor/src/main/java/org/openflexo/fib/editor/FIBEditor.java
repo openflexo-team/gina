@@ -74,7 +74,6 @@ import org.openflexo.logging.FlexoLoggingManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.swing.ComponentBoundSaver;
 import org.openflexo.swing.FlexoFileChooser;
-import org.openflexo.toolbox.FileResource;
 import org.openflexo.toolbox.ToolBox;
 
 // TODO: switch to the right editor controller when switching tab
@@ -83,7 +82,7 @@ public class FIBEditor implements FIBGenericEditor {
 
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditor.class.getPackage().getName());
 
-	public static File COMPONENT_LOCALIZATION_FIB = new FileResource("Fib/ComponentLocalization.fib");
+	public static String COMPONENT_LOCALIZATION_FIB_NAME =  "Fib/ComponentLocalization.fib";
 
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
 			UnsupportedLookAndFeelException {
@@ -369,7 +368,7 @@ public class FIBEditor implements FIBGenericEditor {
 			return;
 		}
 
-		FIBComponent componentLocalizationComponent = FIBLibrary.instance().retrieveFIBComponent(COMPONENT_LOCALIZATION_FIB);
+		FIBComponent componentLocalizationComponent = FIBLibrary.instance().retrieveFIBComponent(COMPONENT_LOCALIZATION_FIB_NAME,true);
 
 		FIBView view = FIBController.makeView(componentLocalizationComponent, FIBAbstractEditor.LOCALIZATION);
 		view.getController().setDataObject(editorController.getController());

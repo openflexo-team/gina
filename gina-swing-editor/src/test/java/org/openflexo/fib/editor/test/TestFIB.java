@@ -19,6 +19,7 @@
  */
 package org.openflexo.fib.editor.test;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,7 +33,7 @@ import org.openflexo.fib.editor.FIBAbstractEditor;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.logging.FlexoLoggingManager;
-import org.openflexo.toolbox.FileResource;
+import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * Dialog allowing to automatically ask and edit parameters
@@ -97,7 +98,7 @@ public class TestFIB extends JPanel {
 
 		JFrame frame = new JFrame();
 
-		FileResource fibFile = new FileResource("TestFIB/Test.fib");
+		File fibFile = ResourceLocator.locateFile("TestFIB/Test.fib");
 		System.out.println("Fib: " + fibFile.getAbsolutePath());
 
 		FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(fibFile);

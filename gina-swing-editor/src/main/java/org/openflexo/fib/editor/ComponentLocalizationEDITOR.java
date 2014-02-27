@@ -20,7 +20,7 @@
 package org.openflexo.fib.editor;
 
 import java.io.File;
-
+import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.controller.FIBController;
 
@@ -30,12 +30,12 @@ public class ComponentLocalizationEDITOR {
 		FIBAbstractEditor editor = new FIBAbstractEditor() {
 			@Override
 			public Object[] getData() {
-				return makeArray(new FIBController(FIBLibrary.instance().retrieveFIBComponent(FIBEditor.COMPONENT_LOCALIZATION_FIB)));
+				return makeArray(new FIBController(FIBLibrary.instance().retrieveFIBComponent(FIBEditor.COMPONENT_LOCALIZATION_FIB_NAME,true)));
 			}
 
 			@Override
 			public File getFIBFile() {
-				return FIBEditor.COMPONENT_LOCALIZATION_FIB;
+				return ResourceLocator.locateFile(FIBEditor.COMPONENT_LOCALIZATION_FIB_NAME);
 			}
 		};
 		editor.launch();

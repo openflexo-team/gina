@@ -40,7 +40,7 @@ import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.utils.FIBIconLibrary;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.swing.ComponentBoundSaver;
-import org.openflexo.toolbox.FileResource;
+import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.toolbox.ToolBox;
 
 public class FIBEditorPalette extends JDialog {
@@ -64,7 +64,7 @@ public class FIBEditorPalette extends JDialog {
 
 		paletteContent = new JPanel(null);
 
-		File dir = new FileResource("FIBEditorPalette");
+		File dir = ResourceLocator.locateDirectory("FIBEditorPalette");
 
 		for (File f : dir.listFiles(new FilenameFilter() {
 			@Override

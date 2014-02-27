@@ -20,7 +20,7 @@
 package org.openflexo.fib.editor;
 
 import java.io.File;
-
+import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.fib.FIBLibrary;
 
 public class ComponentValidationEDITOR {
@@ -29,13 +29,13 @@ public class ComponentValidationEDITOR {
 		FIBAbstractEditor editor = new FIBAbstractEditor() {
 			@Override
 			public Object[] getData() {
-				return makeArray(FIBLibrary.instance().retrieveFIBComponent(ValidationWindow.COMPONENT_VALIDATION_FIB).validate(),
-						FIBLibrary.instance().retrieveFIBComponent(FIBEditor.COMPONENT_LOCALIZATION_FIB).validate());
+				return makeArray(FIBLibrary.instance().retrieveFIBComponent(ValidationWindow.COMPONENT_VALIDATION_FIB_NAME,true).validate(),
+						FIBLibrary.instance().retrieveFIBComponent(FIBEditor.COMPONENT_LOCALIZATION_FIB_NAME,true).validate());
 			}
 
 			@Override
 			public File getFIBFile() {
-				return ValidationWindow.COMPONENT_VALIDATION_FIB;
+				return ResourceLocator.locateFile(ValidationWindow.COMPONENT_VALIDATION_FIB_NAME);
 			}
 		};
 		editor.launch();

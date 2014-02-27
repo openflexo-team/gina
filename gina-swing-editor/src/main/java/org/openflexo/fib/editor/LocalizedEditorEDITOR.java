@@ -20,7 +20,7 @@
 package org.openflexo.fib.editor;
 
 import java.io.File;
-
+import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.fib.utils.LocalizedDelegateGUIImpl;
 
 public class LocalizedEditorEDITOR {
@@ -35,7 +35,7 @@ public class LocalizedEditorEDITOR {
 
 			@Override
 			public File getFIBFile() {
-				return LocalizedDelegateGUIImpl.LOCALIZED_EDITOR_FIB;
+				return ResourceLocator.locateFile(LocalizedDelegateGUIImpl.LOCALIZED_EDITOR_FIB_NAME);
 			}
 		};
 		editor.launch();

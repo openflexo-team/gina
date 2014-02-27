@@ -27,12 +27,12 @@ import java.io.File;
 import java.util.Vector;
 
 import org.openflexo.fib.editor.FIBAbstractEditor;
-import org.openflexo.toolbox.FileResource;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
+import org.openflexo.toolbox.ResourceLocator;
 
 public class TestFIBBrowser2 {
 
-	public static FileResource FIB_FILE = new FileResource("TestFIB/TestBrowser2.fib");
+	public static File  FIB_FILE = ResourceLocator.locateFile("TestFIB/TestBrowser2.fib");
 
 	public static void main(String[] args) {
 		final TestClass mainClass = new TestClass("Main");

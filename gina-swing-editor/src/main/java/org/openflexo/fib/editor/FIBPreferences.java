@@ -11,7 +11,7 @@ import org.openflexo.model.StringConverterLibrary;
 import org.openflexo.model.StringConverterLibrary.Converter;
 import org.openflexo.model.converter.AWTRectangleConverter;
 import org.openflexo.model.exceptions.InvalidDataException;
-import org.openflexo.toolbox.FileResource;
+import org.openflexo.toolbox.ResourceLocator;
 
 public class FIBPreferences {
 
@@ -90,7 +90,7 @@ public class FIBPreferences {
 	}
 
 	public static File getLastDirectory() {
-		return getPreferredFile(LAST_DIR, new FileResource("TestFIB"));
+		return getPreferredFile(LAST_DIR, ResourceLocator.locateDirectory("TestFIB"));
 	}
 
 	public static void setLastDirectory(File file) {

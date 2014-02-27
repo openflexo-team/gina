@@ -50,7 +50,7 @@ import org.openflexo.fib.view.container.FIBTabPanelView;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.swing.ComponentBoundSaver;
-import org.openflexo.toolbox.FileResource;
+import org.openflexo.toolbox.ResourceLocator;
 
 public class FIBInspectorController implements Observer, ChangeListener {
 
@@ -76,7 +76,7 @@ public class FIBInspectorController implements Observer, ChangeListener {
 			e.printStackTrace();
 		}
 
-		File dir = new FileResource("EditorInspectors");
+		File dir = ResourceLocator.locateDirectory("EditorInspectors");
 
 		for (File f : dir.listFiles(new FilenameFilter() {
 			@Override

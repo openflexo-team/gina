@@ -74,8 +74,8 @@ public abstract class DefaultFIBCustomComponent<T> extends JPanel implements FIB
 		applyCancelListener = new Vector<ApplyCancelListener>();
 	}
 
-	public DefaultFIBCustomComponent(File fibFile, T editedObject, LocalizedDelegate parentLocalizer) {
-		this(FIBLibrary.instance().retrieveFIBComponent(fibFile), editedObject, parentLocalizer);
+	public DefaultFIBCustomComponent(String fibFileName, T editedObject, LocalizedDelegate parentLocalizer) {
+		this(FIBLibrary.instance().retrieveFIBComponent(fibFileName,true), editedObject, parentLocalizer);
 	}
 
 	@Override
