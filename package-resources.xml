@@ -12,6 +12,10 @@
 			<excludes>
 				<exclude>Resources/Sounds</exclude>
 				<exclude>META-INF/</exclude>
+				<exclude>Fib/</exclude>
+				<exclude>Icons/</exclude>
+				<exclude>Models/</exclude>
+				<exclude>EditorInspectors/</exclude>
 			</excludes>
 		</fileSet>
 	</fileSets>

@@ -32,7 +32,7 @@ import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.swing.TextFieldCustomPopup;
-import org.openflexo.toolbox.FileResource;
+import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * Widget allowing to edit a binding
@@ -44,7 +44,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 	@SuppressWarnings("hiding")
 	static final Logger logger = Logger.getLogger(ClassSelector.class.getPackage().getName());
 
-	public static FileResource FIB_FILE = new FileResource("Fib/ClassSelector.fib");
+	public static String FIB_FILE_NAME = "Fib/ClassSelector.fib";
 
 	private static final Color DEFAULT_COLOR1 = Color.RED;
 	private static final Color DEFAULT_COLOR2 = Color.WHITE;
@@ -117,7 +117,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 		protected ClassSelectorDetailsPanel(Class aClass) {
 			super();
 
-			fibComponent = FIBLibrary.instance().retrieveFIBComponent(FIB_FILE);
+			fibComponent = FIBLibrary.instance().retrieveFIBComponent(FIB_FILE_NAME, true);
 			controller = new CustomFIBController(fibComponent);
 			fibView = controller.buildView(fibComponent);
 

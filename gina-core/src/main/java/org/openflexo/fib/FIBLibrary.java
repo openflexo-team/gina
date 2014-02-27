@@ -40,6 +40,7 @@ import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelFactory;
 import org.openflexo.model.exceptions.InvalidDataException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.toolbox.ResourceLocator;
 
 public class FIBLibrary {
 
@@ -120,7 +121,6 @@ public class FIBLibrary {
 				logger.fine("Load " + fibFile.getAbsolutePath());
 			}
 
-			System.out.println("Loading " + fibFile.getAbsolutePath());
 
 			FileInputStream fis = null;
 
@@ -164,7 +164,7 @@ public class FIBLibrary {
 	}
 
 	public FIBComponent retrieveFIBComponent(String fibResourcePath, boolean useCache) {
-		InputStream inputStream = getClass().getResourceAsStream(fibResourcePath);
+		InputStream inputStream = ResourceLocator.retrieveResource(fibResourcePath);
 		try {
 			return retrieveFIBComponent(fibResourcePath, inputStream, useCache);
 		} finally {
@@ -216,6 +216,7 @@ public class FIBLibrary {
 		}
 		return _fibDefinitions.get(fibIdentifier);
 	}
+
 
 	public static boolean save(FIBComponent component, File file) {
 		logger.info("Save to file " + file.getAbsolutePath());

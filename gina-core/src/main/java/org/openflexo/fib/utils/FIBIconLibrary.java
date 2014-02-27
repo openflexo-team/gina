@@ -2,7 +2,6 @@ package org.openflexo.fib.utils;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.toolbox.FileResource;
 import org.openflexo.toolbox.ImageIconResource;
 
 /**
@@ -44,9 +43,8 @@ public class FIBIconLibrary {
 	public static final ImageIcon ENUM_ICON = new ImageIconResource("Icons/ClassSelector/Enumeration.gif");
 
 	// Icons used in BindingSelector
-	public static final ImageIcon ARROW_RIGHT_ICON = new ImageIcon(
-			new FileResource("Icons/BindingSelector/SmallArrowRight.gif").getAbsolutePath());
-	public static final ImageIcon CONNECTED_ICON = new ImageIcon(new FileResource("Icons/BindingSelector/Connected.gif").getAbsolutePath());
+	public static final ImageIcon ARROW_RIGHT_ICON = new ImageIcon("Icons/BindingSelector/SmallArrowRight.gif");
+	public static final ImageIcon CONNECTED_ICON = new ImageIcon("Icons/BindingSelector/Connected.gif");
 	public static final ImageIcon METHOD_ICON = new ImageIconResource("Icons/BindingSelector/Method.gif");
 	public static final ImageIcon TOGGLE_ARROW_BOTTOM_ICON = new ImageIconResource("Icons/BindingSelector/toggleArrowBottom.gif");
 	public static final ImageIcon TOGGLE_ARROW_BOTTOM_SELECTED_ICON = new ImageIconResource(
@@ -85,7 +83,7 @@ public class FIBIconLibrary {
 	public static final ImageIcon SQRT_ICON = new ImageIconResource("Icons/BindingSelector/Operators/SQRT.gif");
 
 	// Misc
-	public static final ImageIconResource LOCALIZATION_ICON = new ImageIconResource("Icons/Model/VPM/LocalizationIcon.png");
+	public static final ImageIconResource LOCALIZATION_ICON = new ImageIconResource("Icons/GUI/LocalizationIcon.png");
 	public static final ImageIcon DROP_OK_CURSOR = new ImageIconResource("Icons/Cursors/DropOKCursor.gif");
 	public static final ImageIcon DROP_KO_CURSOR = new ImageIconResource("Icons/Cursors/DropKOCursor.gif");
 

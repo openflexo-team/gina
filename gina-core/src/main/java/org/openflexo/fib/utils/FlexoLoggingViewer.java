@@ -22,7 +22,6 @@ import org.openflexo.logging.LogRecord;
 import org.openflexo.logging.LogRecords;
 import org.openflexo.logging.LoggingFilter;
 import org.openflexo.logging.LoggingFilter.FilterType;
-import org.openflexo.toolbox.FileResource;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.ImageIconResource;
 import org.openflexo.toolbox.StringUtils;
@@ -31,7 +30,7 @@ public class FlexoLoggingViewer implements HasPropertyChangeSupport {
 
 	static final Logger logger = Logger.getLogger(FlexoLoggingViewer.class.getPackage().getName());
 
-	public static final File LOGGING_VIEWER_FIB = new FileResource("Fib/LoggingViewer.fib");
+	public static final String LOGGING_VIEWER_FIB_NAME = "Fib/LoggingViewer.fib";
 
 	public static final ImageIcon FILTER_ICON = new ImageIconResource("Icons/Utils/Search.png");
 
@@ -56,7 +55,7 @@ public class FlexoLoggingViewer implements HasPropertyChangeSupport {
 
 	public static void showLoggingViewer(FlexoLoggingManager loggingManager, Window parent) {
 		System.out.println("showLoggingViewer with " + loggingManager);
-		FIBComponent loggingViewerComponent = FIBLibrary.instance().retrieveFIBComponent(LOGGING_VIEWER_FIB);
+		FIBComponent loggingViewerComponent = FIBLibrary.instance().retrieveFIBComponent(LOGGING_VIEWER_FIB_NAME,true);
 		if (instance == null || dialog == null) {
 			instance = new FlexoLoggingViewer(loggingManager);
 			dialog = FIBDialog.instanciateAndShowDialog(loggingViewerComponent, instance, parent, false,

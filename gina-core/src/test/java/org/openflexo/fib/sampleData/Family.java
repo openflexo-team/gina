@@ -22,7 +22,8 @@ package org.openflexo.fib.sampleData;
 import java.io.File;
 import java.util.Vector;
 
-import org.openflexo.toolbox.FileResource;
+import org.openflexo.toolbox.ResourceLocator;
+
 
 public class Family extends SampleData {
 
@@ -102,9 +103,9 @@ public class Family extends SampleData {
 			return null;
 		}
 		if (person.getGender() == Gender.Male) {
-			return new FileResource("src/dev/resources/TestFIB/TestMalePerson.fib");
+			return ResourceLocator.locateFile("src/dev/resources/TestFIB/TestMalePerson.fib");
 		} else if (person.getGender() == Gender.Female) {
-			return new FileResource("src/dev/resources/TestFIB/TestFemalePerson.fib");
+			return ResourceLocator.locateFile("src/dev/resources/TestFIB/TestFemalePerson.fib");
 		}
 		return null;
 	}

@@ -10,7 +10,7 @@ import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.validation.ValidationError;
 import org.openflexo.fib.model.validation.ValidationReport;
-import org.openflexo.toolbox.FileResource;
+import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * Generic test case allowing to test a FIB component
@@ -23,7 +23,7 @@ public abstract class GenericFIBTestCase {
 	static final Logger logger = Logger.getLogger(GenericFIBTestCase.class.getPackage().getName());
 
 	public void validateFIB(String fibRelativePath) {
-		validateFIB(new FileResource(fibRelativePath));
+		validateFIB(ResourceLocator.locateFile(fibRelativePath));
 	}
 
 	public void validateFIB(File fibFile) {

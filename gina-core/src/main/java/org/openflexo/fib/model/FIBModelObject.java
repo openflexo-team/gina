@@ -19,6 +19,8 @@
  */
 package org.openflexo.fib.model;
 
+import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -54,7 +56,7 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.model.factory.AccessibleProxyObject;
 import org.openflexo.model.factory.CloneableProxyObject;
 import org.openflexo.model.factory.DeletableProxyObject;
-import org.openflexo.toolbox.FileResource;
+import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.toolbox.StringUtils;
 
 @ModelEntity(isAbstract = true)
@@ -143,8 +145,8 @@ public interface FIBModelObject extends Bindable, AccessibleProxyObject, Cloneab
 		public static LocalizedDelegateGUIImpl LOCALIZATION;
 
 		static {
-			FileResource generalLocalizedDelegate = new FileResource("Localized");
-			FileResource fibLocalizedDelegate = new FileResource("FIBLocalized");
+			File generalLocalizedDelegate = ResourceLocator.locateDirectory("Localized");
+			File fibLocalizedDelegate = ResourceLocator.locateDirectory("FIBLocalized");
 
 			if (fibLocalizedDelegate.exists()) {
 				if (generalLocalizedDelegate.exists()) {
