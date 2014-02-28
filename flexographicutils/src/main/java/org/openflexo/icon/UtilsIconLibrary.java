@@ -21,8 +21,8 @@ public class UtilsIconLibrary {
 	public static final ImageIcon CUSTOM_POPUP_OPEN_BUTTON = new ImageIconResource("Icons/CustomPopupOpenButton.png");
 
 	public static final ImageIcon CLOSE_TAB_ICON = new ImageIconResource("Icons/Actions/CloseTab.png");
-	public static final ImageIcon CLOSE_HOVER_ICON = new ImageIconResource("Icons/Actions/CloseTabHover.png");
-	public static final ImageIcon CLOSE_PRESSED_ICON = new ImageIconResource("Icons/Actions/CloseTabPressed.png");
+	public static final ImageIcon CLOSE_TAB_HOVER_ICON = new ImageIconResource("Icons/Actions/CloseTabHover.png");
+	public static final ImageIcon CLOSE_TAB_PRESSED_ICON = new ImageIconResource("Icons/Actions/CloseTabPressed.png");
 
 	public static final ImageIcon ARROW_DOWN = new ImageIconResource("Icons/ArrowDown.gif");
 	public static final ImageIcon ARROW_UP = new ImageIconResource("Icons/ArrowUp.gif");
