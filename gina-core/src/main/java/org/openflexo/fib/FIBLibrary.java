@@ -159,6 +159,10 @@ public class FIBLibrary {
 		fibFileDefinitions.remove(fibFile);
 	}
 
+	public void removeFIBComponentFromCache(String fibFileName) {
+		_fibDefinitions.remove(fibFileName);
+	}
+
 	public FIBComponent retrieveFIBComponent(String fibResourcePath) {
 		return retrieveFIBComponent(fibResourcePath, true);
 	}

@@ -20,7 +20,7 @@ import javax.swing.WindowConstants;
 import org.openflexo.swing.layout.MultiSplitLayout.Leaf;
 import org.openflexo.swing.layout.MultiSplitLayout.Node;
 import org.openflexo.swing.layout.MultiSplitLayout.Split;
-import org.openflexo.toolbox.FileResource;
+import org.openflexo.toolbox.ResourceLocator;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -170,7 +170,7 @@ public class TestMultiSplitPane {
 	}
 
 	protected File getLayoutFile() {
-		return new FileResource("testlayout");
+		return ResourceLocator.locateFile("testlayout");
 	}
 
 	public static void main(String[] args) {

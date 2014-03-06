@@ -59,6 +59,15 @@ public class FIBDialog<T> extends JDialog {
 		return instanciateDialog(fibComponent, data, frame, modal, localizer);
 	}
 
+	public static <T> FIBDialog<T> instanciateDialog(String fibFileName, T data, Window frame, boolean modal, LocalizedDelegate localizer) {
+		FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(fibFileName,true);
+		if (fibComponent == null) {
+			logger.warning("FileNotFoundException: " + fibFileName);
+			return null;
+		}
+		return instanciateDialog(fibComponent, data, frame, modal, localizer);
+	}
+	
 	public static <T> FIBDialog<T> instanciateDialog(FIBComponent fibComponent, T data, Window frame, boolean modal,
 			LocalizedDelegate localizer) {
 		return new FIBDialog<T>(fibComponent, data, frame, modal, localizer);

@@ -21,6 +21,8 @@ package org.openflexo.fib.editor;
 
 import java.io.File;
 
+import org.openflexo.toolbox.ResourceLocator;
+
 public class FIBEmbeddedEditor {
 
 	private File fibFile;
@@ -48,6 +50,14 @@ public class FIBEmbeddedEditor {
 	public FIBEmbeddedEditor(File aFile, Object object) {
 		super();
 		this.fibFile = aFile;
+		this.data = new Object[1];
+		this.data[0] = object;
+		FIBAbstractEditor.init(new Editor());
+	}
+	
+	public FIBEmbeddedEditor(String aFileName, Object object) {
+		super();
+		this.fibFile = ResourceLocator.locateFile(aFileName);
 		this.data = new Object[1];
 		this.data[0] = object;
 		FIBAbstractEditor.init(new Editor());

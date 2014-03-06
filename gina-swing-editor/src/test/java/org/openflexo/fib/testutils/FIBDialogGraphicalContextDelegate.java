@@ -27,7 +27,7 @@ public class FIBDialogGraphicalContextDelegate {
 	private final EventProcessor eventProcessor;
 	private boolean dontDestroyMe = false;
 
-	public FIBDialogGraphicalContextDelegate(final FIBDialog<?> dialog, final File componentFile) {
+	public FIBDialogGraphicalContextDelegate(final FIBDialog<?> dialog, final String componentFileName) {
 		eventProcessor = new EventProcessor();
 
 		try {
@@ -52,7 +52,7 @@ public class FIBDialogGraphicalContextDelegate {
 							SwingUtilities.invokeLater(new Runnable() {
 								@Override
 								public void run() {
-									new FIBEmbeddedEditor(componentFile, dialog.getData());
+									new FIBEmbeddedEditor(componentFileName, dialog.getData());
 								}
 							});
 

@@ -24,7 +24,7 @@ package com.metaphaseeditor;
 
 import java.io.File;
 
-import org.openflexo.toolbox.FileResource;
+import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * 
@@ -41,7 +41,7 @@ public enum SpellCheckDictionaryVersion {
 	}
 
 	public File getFile() {
-		return new FileResource(filename);
+		return ResourceLocator.locateFile(filename);
 	}
 
 	@Override
