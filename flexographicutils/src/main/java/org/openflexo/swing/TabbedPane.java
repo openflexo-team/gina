@@ -143,12 +143,12 @@ public class TabbedPane<J> {
 				title.setBorder(null);
 				addMouseListener(this);
 				title.addMouseListener(this);
-				add(close = new JButton(UtilsIconLibrary.CLOSE_ICON), BorderLayout.EAST);
+				add(close = new JButton(UtilsIconLibrary.CLOSE_TAB_ICON), BorderLayout.EAST);
 				close.setContentAreaFilled(false);
 				close.setOpaque(false);
 				close.setBorderPainted(false);
-				close.setRolloverIcon(UtilsIconLibrary.CLOSE_HOVER_ICON);
-				close.setPressedIcon(UtilsIconLibrary.CLOSE_PRESSED_ICON);
+				close.setRolloverIcon(UtilsIconLibrary.CLOSE_TAB_HOVER_ICON);
+				close.setPressedIcon(UtilsIconLibrary.CLOSE_TAB_PRESSED_ICON);
 				close.addActionListener(this);
 				close.setFocusable(false);
 				close.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
@@ -310,10 +310,10 @@ public class TabbedPane<J> {
 
 		}
 
-		private Map<J, TabHeader> headerComponents = new HashMap<J, TabHeader>();
+		private final Map<J, TabHeader> headerComponents = new HashMap<J, TabHeader>();
 
-		private JButton extraTabsButton;
-		private JPopupMenu extraTabsPopup;
+		private final JButton extraTabsButton;
+		private final JPopupMenu extraTabsPopup;
 
 		private int xBorderStart = 0;
 
