@@ -74,6 +74,10 @@ import org.openflexo.logging.FlexoLoggingManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.swing.ComponentBoundSaver;
 import org.openflexo.swing.FlexoFileChooser;
+import org.openflexo.toolbox.ClasspathResourceLocator;
+import org.openflexo.toolbox.FileSystemResourceLocator;
+import org.openflexo.toolbox.ResourceLocation;
+import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.toolbox.ToolBox;
 
 // TODO: switch to the right editor controller when switching tab
@@ -81,12 +85,14 @@ import org.openflexo.toolbox.ToolBox;
 public class FIBEditor implements FIBGenericEditor {
 
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditor.class.getPackage().getName());
-
-	public static String COMPONENT_LOCALIZATION_FIB_NAME =  "Fib/ComponentLocalization.fib";
+	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+	
+	public static ResourceLocation COMPONENT_LOCALIZATION_FIB =  rl.locateResource("Fib/ComponentLocalization.fib");
 
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
 			UnsupportedLookAndFeelException {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		
 		// UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		/*DefaultExpressionParser parser = new DefaultExpressionParser();
 			try {
@@ -368,7 +374,7 @@ public class FIBEditor implements FIBGenericEditor {
 			return;
 		}
 
-		FIBComponent componentLocalizationComponent = FIBLibrary.instance().retrieveFIBComponent(COMPONENT_LOCALIZATION_FIB_NAME,true);
+		FIBComponent componentLocalizationComponent = FIBLibrary.instance().retrieveFIBComponent(COMPONENT_LOCALIZATION_FIB,true);
 
 		FIBView view = FIBController.makeView(componentLocalizationComponent, FIBAbstractEditor.LOCALIZATION);
 		view.getController().setDataObject(editorController.getController());
@@ -725,4 +731,6 @@ public class FIBEditor implements FIBGenericEditor {
 			editedFIB = editedComponents.get(index);
 		}
 	}
+
+
 }

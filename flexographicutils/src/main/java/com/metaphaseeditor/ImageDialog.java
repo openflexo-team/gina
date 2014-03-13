@@ -27,12 +27,15 @@ import java.awt.Window;
 import javax.swing.JOptionPane;
 
 import org.openflexo.toolbox.ImageIconResource;
+import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * 
  * @author Rudolf Visagie
  */
 public class ImageDialog extends javax.swing.JDialog {
+
+	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
 
 	private enum Alignment {
 		NONE("None", null), TOP("Top", "top"), BOTTOM("Bottom", "bottom"), MIDDLE("Middle", "middle"), LEFT("Left", "left"), RIGHT(
@@ -69,7 +72,7 @@ public class ImageDialog extends javax.swing.JDialog {
 		super(parent);
 		setModal(modal);
 		initComponents();
-		setIconImage(new ImageIconResource("Icons/MetaphaseEditor/icons/metaphase16x16.png").getImage());
+		setIconImage(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/metaphase16x16.png")).getImage());
 
 		setLocationRelativeTo(parent);
 

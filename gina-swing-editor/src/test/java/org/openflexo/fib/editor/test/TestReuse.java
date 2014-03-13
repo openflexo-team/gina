@@ -36,7 +36,9 @@ public class TestReuse extends FIBAbstractEditor {
 
 	@Override
 	public File getFIBFile() {
-		return ResourceLocator.locateFile("TestFIB/TestReuse.fib");
+		final ResourceLocator rl = ResourceLocator.getResourceLocator();
+
+		return rl.retrieveResourceAsFile(rl.locateResource("TestFIB/TestReuse.fib"));
 	}
 
 	public static void main(String[] args) {

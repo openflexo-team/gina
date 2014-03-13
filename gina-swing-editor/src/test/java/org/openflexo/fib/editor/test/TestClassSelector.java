@@ -26,8 +26,9 @@ import org.openflexo.fib.editor.FIBAbstractEditor;
 import org.openflexo.toolbox.ResourceLocator;
 
 public class TestClassSelector extends FIBAbstractEditor {
+	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
-	public static File FIB_FILE = ResourceLocator.locateFile("TestFIB/TestClassSelector.fib");
+	public static File FIB_FILE = rl.retrieveResourceAsFile(rl.locateResource("TestFIB/TestClassSelector.fib"));
 
 	@Override
 	public Object[] getData() {

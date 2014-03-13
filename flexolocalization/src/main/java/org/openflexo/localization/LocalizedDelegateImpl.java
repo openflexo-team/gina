@@ -25,6 +25,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.text.Collator;
 import java.util.Collections;
 import java.util.Comparator;
@@ -40,6 +42,8 @@ import org.apache.commons.io.IOUtils;
 import org.openflexo.toolbox.FlexoProperties;
 import org.openflexo.toolbox.HTMLUtils;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
+import org.openflexo.toolbox.ResourceLocation;
+import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.toolbox.StringUtils;
 
 /**
@@ -55,9 +59,10 @@ import org.openflexo.toolbox.StringUtils;
 public class LocalizedDelegateImpl extends Observable implements LocalizedDelegate {
 
 	private static final Logger logger = Logger.getLogger(LocalizedDelegateImpl.class.getPackage().getName());
-
+	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+	
 	private LocalizedDelegate parent;
-	private File _localizedDirectory;
+	private ResourceLocation _localizedDirectory;
 	private Hashtable<Language, Properties> _localizedDictionaries;
 
 	private boolean automaticSaving = false;
@@ -70,7 +75,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		Contains, BeginsWith, EndsWith
 	}
 
-	public LocalizedDelegateImpl(File localizedDirectory, LocalizedDelegate parent, boolean automaticSaving) {
+	public LocalizedDelegateImpl(ResourceLocation localizedDirectory, LocalizedDelegate parent, boolean automaticSaving) {
 		this.automaticSaving = automaticSaving;
 		this.parent = parent;
 		_localizedDirectory = localizedDirectory;
@@ -92,9 +97,14 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		return newDict;
 	}
 
-	private File getDictionaryFileForLanguage(Language language) {
-		return new File(_localizedDirectory, language.getName() + ".dict");
+	private InputStream getDictionaryForLanguage(Language language) {
+		return rl.retrieveResourceAsInputStream(rl.locateResourceWithBaseLocation(_localizedDirectory, language.getName() + ".dict"));
 	}
+
+	private File getDictionaryFileForLanguage(Language language) {
+		return rl.retrieveResourceAsFile(rl.locateResourceWithBaseLocation(_localizedDirectory, language.getName() + ".dict"));
+	}
+	
 
 	private void saveDictionary(Language language, Properties dict) {
 		File dictFile = getDictionaryFileForLanguage(language);
@@ -120,13 +130,13 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	}
 
 	private Properties loadDictionary(Language language) {
-		File dictFile = getDictionaryFileForLanguage(language);
+		InputStream dict = getDictionaryForLanguage(language);
 		Properties loadedDict = new FlexoProperties();
 		try {
-			loadedDict.load(new FileInputStream(dictFile));
+			loadedDict.load(dict);
 		} catch (IOException e) {
 			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Unable to load file " + dictFile.getName());
+				logger.warning("Unable to load Dictionary Resource for Language" + language.getName() );
 			}
 		}
 		return loadedDict;
@@ -136,16 +146,19 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		_localizedDictionaries = new Hashtable<Language, Properties>();
 
 		for (Language language : Language.availableValues()) {
-			File dictFile = getDictionaryFileForLanguage(language);
+			InputStream dict = getDictionaryForLanguage(language);
 			if (logger.isLoggable(Level.INFO)) {
-				logger.info("Checking dictionary for language " + language.getName() + " file=" + dictFile.getAbsolutePath());
+				logger.info("Checking dictionary for language " + language.getName() + " Dir=" + _localizedDirectory.toString());
 			}
 			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Looking for file " + dictFile.getAbsolutePath());
+				logger.fine("Looking for dictionary in  " + _localizedDirectory.toString());
 			}
-			if (!dictFile.exists()) {
+			/* TODO This should not be done unless _localizedDirectoryURL is on the file System */
+			/*
+			if (!dict.exists()) {
 				createNewDictionary(language);
-			} else {
+			} */
+			else {
 				Properties loadedDict = loadDictionary(language);
 				_localizedDictionaries.put(language, loadedDict);
 			}
@@ -156,8 +169,8 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		Properties dict = getDictionary(language);
 		if (!required && dict.getProperty(key) == null || required) {
 			if (logger.isLoggable(Level.INFO)) {
-				logger.info("Adding entry '" + key + "' in " + language + " dictionary, file "
-						+ getDictionaryFileForLanguage(language).getAbsolutePath());
+				logger.info("Adding entry '" + key + "' in " + language + " dictionary, in directory "
+						+ _localizedDirectory.toString());
 			}
 			dict.setProperty(key, value);
 			// saveDictionary(language, dict);
@@ -595,7 +608,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	}
 
 	public File getLocalizedDirectory() {
-		return _localizedDirectory;
+		return rl.retrieveResourceAsFile(_localizedDirectory);
 	}
 
 	public String getParentDelegateDescription() {

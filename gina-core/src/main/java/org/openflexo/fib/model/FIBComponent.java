@@ -64,6 +64,7 @@ import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.toolbox.ResourceLocation;
 import org.openflexo.toolbox.StringUtils;
 
 @ModelEntity(isAbstract = true)
@@ -358,9 +359,9 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 	public void setLastModified(Date lastModified);
 
-	public String getDefinitionFile();
+	public ResourceLocation getDefinitionFile();
 
-	public void setDefinitionFile(String definitionFile);
+	public void setDefinitionFile(ResourceLocation definitionFile);
 
 	public FIBLocalizedDictionary retrieveFIBLocalizedDictionary();
 
@@ -409,7 +410,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 		@Deprecated
 		private BindingDefinition DATA;
 
-		private String definitionFile;
+		private ResourceLocation definitionFile;
 
 		private Date lastModified;
 
@@ -1499,12 +1500,12 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 		}
 
 		@Override
-		public String getDefinitionFile() {
+		public ResourceLocation getDefinitionFile() {
 			return definitionFile;
 		}
 
 		@Override
-		public void setDefinitionFile(String definitionFile) {
+		public void setDefinitionFile(ResourceLocation definitionFile) {
 			this.definitionFile = definitionFile;
 		}
 

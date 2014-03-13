@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.editor.controller.FIBInspector;
@@ -14,6 +15,8 @@ import org.openflexo.fib.model.validation.ValidationError;
 import org.openflexo.fib.model.validation.ValidationReport;
 import org.openflexo.fib.utils.GenericFIBTestCase;
 import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.toolbox.ResourceLocation;
+import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * Generic test case allowing to test a FIB component used as an inspector (a .inspector file)
@@ -36,11 +39,11 @@ public abstract class FIBInspectorTestCase extends GenericFIBTestCase {
 	}
 
 	@Override
-	public void validateFIB(File fibFile) {
+	public void validateFIB(ResourceLocation fibFile) {
 		try {
 			FIBComponent component = FIBLibrary.instance().retrieveFIBComponent(fibFile, false, INSPECTOR_FACTORY);
 			if (component == null) {
-				fail("Component not found: " + fibFile.getAbsolutePath());
+				fail("Component not found: " + fibFile.getURL());
 			}
 			ValidationReport validationReport = component.validate();
 			for (ValidationError error : validationReport.getErrors()) {
@@ -52,16 +55,15 @@ public abstract class FIBInspectorTestCase extends GenericFIBTestCase {
 		}
 	}
 
-	public static String generateInspectorTestCaseClass(File directory, String relativePath) {
+	public static String generateInspectorTestCaseClass(ResourceLocation directory, String relativePath) {
 		StringBuffer sb = new StringBuffer();
-		for (File f : directory.listFiles()) {
-			if (f.getName().endsWith(".inspector")) {
+		for (ResourceLocation rloc : ResourceLocator.getResourceLocator().listResources(directory, Pattern.compile(".*[.]inspector"))) {
+				File f = ResourceLocator.getResourceLocator().retrieveResourceAsFile(rloc);
 				String fibName = f.getName().substring(0, f.getName().indexOf(".inspector"));
 				sb.append("@Test\n");
 				sb.append("public void test" + fibName + "Inspector() {\n");
 				sb.append("  validateFIB(\"" + relativePath + f.getName() + "\");\n");
 				sb.append("}\n\n");
-			}
 		}
 		return sb.toString();
 	}

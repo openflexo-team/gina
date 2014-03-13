@@ -13,17 +13,20 @@ import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.validation.ValidationReport;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.toolbox.ResourceLocation;
+import org.openflexo.toolbox.ResourceLocator;
  
 public class ValidationWindow {
+	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
 
-	public static String COMPONENT_VALIDATION_FIB_NAME =  "Fib/ComponentValidation.fib";
+	public static ResourceLocation COMPONENT_VALIDATION_FIB =  rl.locateResource("Fib/ComponentValidation.fib");
 
 	private FIBView validationView = null;
 	private JDialog validationDialog = null;
 	private FIBValidationController validationController = null;
 
 	public ValidationWindow(JFrame frame, FIBEditorController controller) {
-		FIBComponent componentValidationComponent = FIBLibrary.instance().retrieveFIBComponent(COMPONENT_VALIDATION_FIB_NAME,true);
+		FIBComponent componentValidationComponent = FIBLibrary.instance().retrieveFIBComponent(COMPONENT_VALIDATION_FIB,true);
 		validationController = new FIBValidationController(componentValidationComponent, controller);
 		validationView = FIBController.makeView(componentValidationComponent, validationController);
 		validationDialog = new JDialog(frame, FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, "component_validation"),

@@ -34,6 +34,9 @@ public enum SpellCheckDictionaryVersion {
 	STRICT_UK("Spellcheck/dictionary/eng_uk_strict.zip"), LIBERAL_UK("Spellcheck/dictionary/eng_uk_liberal.zip"), STRICT_US(
 			"Spellcheck/dictionary/eng_us_strict.zip"), LIBERAL_US("Spellcheck/dictionary/eng_us_liberal.zip"), CUSTOM(null);
 
+
+	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+	
 	private String filename;
 
 	SpellCheckDictionaryVersion(String filename) {
@@ -41,7 +44,7 @@ public enum SpellCheckDictionaryVersion {
 	}
 
 	public File getFile() {
-		return ResourceLocator.locateFile(filename);
+		return rl.retrieveResourceAsFile(rl.locateResource(filename));
 	}
 
 	@Override

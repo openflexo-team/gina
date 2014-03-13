@@ -26,16 +26,19 @@ import org.openflexo.fib.FIBLibrary;
 public class ComponentValidationEDITOR {
 
 	public static void main(String[] args) {
+
+		final ResourceLocator rl = ResourceLocator.getResourceLocator();
+		
 		FIBAbstractEditor editor = new FIBAbstractEditor() {
 			@Override
 			public Object[] getData() {
-				return makeArray(FIBLibrary.instance().retrieveFIBComponent(ValidationWindow.COMPONENT_VALIDATION_FIB_NAME,true).validate(),
-						FIBLibrary.instance().retrieveFIBComponent(FIBEditor.COMPONENT_LOCALIZATION_FIB_NAME,true).validate());
+				return makeArray(FIBLibrary.instance().retrieveFIBComponent(ValidationWindow.COMPONENT_VALIDATION_FIB,true).validate(),
+						FIBLibrary.instance().retrieveFIBComponent(FIBEditor.COMPONENT_LOCALIZATION_FIB,true).validate());
 			}
 
 			@Override
 			public File getFIBFile() {
-				return ResourceLocator.locateFile(ValidationWindow.COMPONENT_VALIDATION_FIB_NAME);
+				return rl.retrieveResourceAsFile(ValidationWindow.COMPONENT_VALIDATION_FIB);
 			}
 		};
 		editor.launch();

@@ -32,7 +32,9 @@ import org.openflexo.toolbox.ResourceLocator;
 
 public class TestFIBBrowser2 {
 
-	public static File  FIB_FILE = ResourceLocator.locateFile("TestFIB/TestBrowser2.fib");
+	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
+
+	public static File FIB_FILE = rl.retrieveResourceAsFile(rl.locateResource("TestFIB/TestBrowser2.fib"));
 
 	public static void main(String[] args) {
 		final TestClass mainClass = new TestClass("Main");

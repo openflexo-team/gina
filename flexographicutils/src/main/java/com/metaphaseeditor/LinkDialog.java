@@ -27,12 +27,14 @@ import java.awt.FlowLayout;
 import javax.swing.JOptionPane;
 
 import org.openflexo.toolbox.ImageIconResource;
+import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * 
  * @author Rudolf Visagie
  */
 public class LinkDialog extends javax.swing.JDialog {
+	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
 
 	// TODO: other targets
 	// TODO: test
@@ -65,7 +67,7 @@ public class LinkDialog extends javax.swing.JDialog {
 	public LinkDialog(java.awt.Frame parent, boolean modal) {
 		super(parent, modal);
 		initComponents();
-		setIconImage(new ImageIconResource("Icons/MetaphaseEditor/icons/metaphase16x16.png").getImage());
+		setIconImage(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/metaphase16x16.png")).getImage());
 
 		setLocationRelativeTo(null);
 		mainPanel.setLayout(new FlowLayout());

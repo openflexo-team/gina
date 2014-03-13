@@ -24,15 +24,19 @@ import org.openflexo.logging.LoggingFilter;
 import org.openflexo.logging.LoggingFilter.FilterType;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.ImageIconResource;
+import org.openflexo.toolbox.ResourceLocation;
+import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.toolbox.StringUtils;
 
 public class FlexoLoggingViewer implements HasPropertyChangeSupport {
 
+	public static ResourceLocator rl = ResourceLocator.getResourceLocator();
+
 	static final Logger logger = Logger.getLogger(FlexoLoggingViewer.class.getPackage().getName());
 
-	public static final String LOGGING_VIEWER_FIB_NAME = "Fib/LoggingViewer.fib";
+	public static final ResourceLocation LOGGING_VIEWER_FIB_NAME = rl.locateResource("Fib/LoggingViewer.fib");
 
-	public static final ImageIcon FILTER_ICON = new ImageIconResource("Icons/Utils/Search.png");
+	public static final ImageIcon FILTER_ICON = new ImageIconResource(rl.locateResource("Icons/Utils/Search.png"));
 
 	private FlexoLoggingManager loggingManager;
 
@@ -144,21 +148,24 @@ public class FlexoLoggingViewer implements HasPropertyChangeSupport {
 		loggingManager.setKeepLogTrace(keepLogTraceInMemory);
 	}
 
-	private File configurationFile;
+	private ResourceLocation configurationFile;
 
 	public File getConfigurationFile() {
 		if (configurationFile == null) {
 			String loggingFileName = loggingManager.getConfigurationFileName();
+			configurationFile = rl.locateResource(loggingFileName);
+			/*
 			if (loggingFileName != null && new File(loggingFileName).exists()) {
 				configurationFile = new File(loggingFileName);
 			}
+			*/
 		}
-		return configurationFile;
+		return rl.retrieveResourceAsFile(configurationFile);
 	}
 
-	public void setConfigurationFile(File configurationFile) {
+	public void setConfigurationFile(ResourceLocation configurationFile) {
 		this.configurationFile = configurationFile;
-		loggingManager.setConfigurationFileName(configurationFile.getAbsolutePath());
+		loggingManager.setConfigurationFileLocation(configurationFile);
 		_pcSupport.firePropertyChange("configurationFile", null, configurationFile);
 	}
 

@@ -99,13 +99,16 @@ public class Family extends SampleData {
 	}
 
 	public File fibForPerson(Person person) {
+
+		ResourceLocator rl = ResourceLocator.getResourceLocator();
+
 		if (person == null) {
 			return null;
 		}
 		if (person.getGender() == Gender.Male) {
-			return ResourceLocator.locateFile("src/dev/resources/TestFIB/TestMalePerson.fib");
+			return rl.retrieveResourceAsFile(rl.locateResource("src/dev/resources/TestFIB/TestMalePerson.fib"));
 		} else if (person.getGender() == Gender.Female) {
-			return ResourceLocator.locateFile("src/dev/resources/TestFIB/TestFemalePerson.fib");
+			return rl.retrieveResourceAsFile(rl.locateResource("src/dev/resources/TestFIB/TestFemalePerson.fib"));
 		}
 		return null;
 	}

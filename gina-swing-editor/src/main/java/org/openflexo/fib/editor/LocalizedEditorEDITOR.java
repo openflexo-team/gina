@@ -26,6 +26,9 @@ import org.openflexo.fib.utils.LocalizedDelegateGUIImpl;
 public class LocalizedEditorEDITOR {
 
 	public static void main(String[] args) {
+
+		final ResourceLocator rl = ResourceLocator.getResourceLocator();
+		
 		FIBAbstractEditor editor = new FIBAbstractEditor() {
 			@Override
 			public Object[] getData() {
@@ -35,7 +38,7 @@ public class LocalizedEditorEDITOR {
 
 			@Override
 			public File getFIBFile() {
-				return ResourceLocator.locateFile(LocalizedDelegateGUIImpl.LOCALIZED_EDITOR_FIB_NAME);
+				return rl.retrieveResourceAsFile(LocalizedDelegateGUIImpl.LOCALIZED_EDITOR_FIB);
 			}
 		};
 		editor.launch();

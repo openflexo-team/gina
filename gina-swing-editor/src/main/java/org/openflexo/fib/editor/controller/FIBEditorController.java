@@ -107,10 +107,16 @@ import org.openflexo.fib.view.FIBWidgetView;
 import org.openflexo.localization.Language;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.swing.NoInsetsBorder;
+import org.openflexo.toolbox.FileSystemResourceLocator;
+import org.openflexo.toolbox.ResourceLocator;
 
 public class FIBEditorController /*extends FIBController*/extends Observable {
 
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditorController.class.getPackage().getName());
+	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+
+	private static FileSystemResourceLocator fsrl = new FileSystemResourceLocator();
+
 
 	private final FIBController controller;
 
@@ -201,6 +207,10 @@ public class FIBEditorController /*extends FIBController*/extends Observable {
 
 	public FIBEditorController(FIBModelFactory factory, FIBComponent fibComponent, FIBGenericEditor editor, Object dataObject,
 			FIBController controller) {
+
+		fsrl.appendToDirectories(System.getProperty("user.dir"));
+		rl.appendDelegate(fsrl);
+		
 		this.controller = controller;
 		this.factory = factory;
 		viewDelegates = new HashMap<FIBComponent, FIBEditableViewDelegate<?, ?>>();
@@ -469,6 +479,10 @@ public class FIBEditorController /*extends FIBController*/extends Observable {
 
 	public DropListener buildPaletteDropListener(FIBEditableView<?, ?> editableView, PlaceHolder placeHolder) {
 		return new DropListener(editableView, placeHolder);
+	}
+
+	public static FileSystemResourceLocator getFSResourceLocator() {
+		return fsrl;
 	}
 
 }

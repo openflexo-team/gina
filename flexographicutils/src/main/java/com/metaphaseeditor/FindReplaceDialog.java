@@ -30,6 +30,7 @@ import javax.swing.text.Element;
 import javax.swing.text.html.HTMLDocument;
 
 import org.openflexo.toolbox.ImageIconResource;
+import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * 
@@ -40,12 +41,14 @@ public class FindReplaceDialog extends javax.swing.JDialog {
 	private JTextPane htmlTextPane;
 	private int lastMatchPos = -1;
 	private boolean replacePerformed = false;
+	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+
 
 	/** Creates new form FindReplaceDialog */
 	public FindReplaceDialog(java.awt.Frame parent, boolean modal, JTextPane htmlTextPane) {
 		super(parent, modal);
 		initComponents();
-		setIconImage(new ImageIconResource("Icons/MetaphaseEditor/icons/metaphase16x16.png").getImage());
+		setIconImage(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/metaphase16x16.png")).getImage());
 		this.htmlTextPane = htmlTextPane;
 
 		setLocationRelativeTo(null);

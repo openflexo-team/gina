@@ -117,6 +117,7 @@ import org.openflexo.fib.view.widget.FIBTextFieldWidget;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
 import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.toolbox.FileResourceLocation;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.StringUtils;
 import org.openflexo.toolbox.ToolBox;
@@ -996,7 +997,8 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 		if (component.getDefinitionFile() == null) {
 			try {
 				File fibFile = File.createTempFile("FIBComponent", ".fib");
-				component.setDefinitionFile(fibFile.getAbsolutePath());
+				FileResourceLocation fibLocation = new FileResourceLocation(null, fibFile.getCanonicalPath(), fibFile.toURI().toURL(), fibFile);
+				component.setDefinitionFile(fibLocation);
 				FIBLibrary.save(component, fibFile);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -1009,7 +1011,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 		try {
 			embeddedEditor = Class.forName("org.openflexo.fib.editor.FIBEmbeddedEditor");
 			c = embeddedEditor.getConstructors()[0];
-			File fibFile = new File(component.getDefinitionFile());
+			File fibFile = ((FileResourceLocation) component.getDefinitionFile()).getFile();
 			if (!fibFile.exists()) {
 				logger.warning("Cannot find FIB file definition for component, aborting FIB edition");
 				return;

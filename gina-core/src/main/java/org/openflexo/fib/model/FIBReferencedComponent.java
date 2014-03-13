@@ -39,6 +39,7 @@ import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.toolbox.ResourceLocation;
 
 @ModelEntity
 @ImplementationClass(FIBReferencedComponent.FIBReferencedComponentImpl.class)
@@ -54,17 +55,17 @@ public interface FIBReferencedComponent extends FIBWidget {
 
 	@Getter(value = COMPONENT_FILE_KEY)
 	@XMLAttribute
-	public File getComponentFile();
+	public ResourceLocation getComponentFile();
 
 	@Setter(COMPONENT_FILE_KEY)
-	public void setComponentFile(File componentFile);
+	public void setComponentFile(ResourceLocation componentFile);
 
 	@Getter(value = DYNAMIC_COMPONENT_FILE_KEY)
 	@XMLAttribute
-	public DataBinding<File> getDynamicComponentFile();
+	public DataBinding<ResourceLocation> getDynamicComponentFile();
 
 	@Setter(DYNAMIC_COMPONENT_FILE_KEY)
-	public void setDynamicComponentFile(DataBinding<File> dynamicComponentFile);
+	public void setDynamicComponentFile(DataBinding<ResourceLocation> dynamicComponentFile);
 
 	@Getter(value = ASSIGNMENTS_KEY, cardinality = Cardinality.LIST, inverse = FIBReferenceAssignment.OWNER_KEY)
 	@XMLElement
@@ -87,8 +88,8 @@ public interface FIBReferencedComponent extends FIBWidget {
 
 		private static final Logger logger = Logger.getLogger(FIBReferencedComponent.class.getPackage().getName());
 
-		private File componentFile;
-		private DataBinding<File> dynamicComponentFile;
+		private ResourceLocation componentFile;
+		private DataBinding<ResourceLocation> dynamicComponentFile;
 
 		// TODO: Should be moved to FIBReferencedComponent widget
 		// private FIBComponent referencedComponent;
@@ -112,13 +113,13 @@ public interface FIBReferencedComponent extends FIBWidget {
 		}
 
 		@Override
-		public File getComponentFile() {
+		public ResourceLocation getComponentFile() {
 			return componentFile;
 		}
 
 		@Override
-		public void setComponentFile(File componentFile) {
-			FIBPropertyNotification<File> notification = requireChange(COMPONENT_FILE_KEY, componentFile);
+		public void setComponentFile(ResourceLocation componentFile) {
+			FIBPropertyNotification<ResourceLocation> notification = requireChange(COMPONENT_FILE_KEY, componentFile);
 			if (notification != null) {
 				this.componentFile = componentFile;
 				// component = null;
@@ -127,10 +128,10 @@ public interface FIBReferencedComponent extends FIBWidget {
 		}
 
 		@Override
-		public DataBinding<File> getDynamicComponentFile() {
+		public DataBinding<ResourceLocation> getDynamicComponentFile() {
 
 			if (dynamicComponentFile == null) {
-				dynamicComponentFile = new DataBinding<File>(this, File.class, DataBinding.BindingDefinitionType.GET);
+				dynamicComponentFile = new DataBinding<ResourceLocation>(this, File.class, DataBinding.BindingDefinitionType.GET);
 				dynamicComponentFile.setBindingName("componentFile");
 				dynamicComponentFile.setCacheable(true);
 			}
@@ -138,9 +139,9 @@ public interface FIBReferencedComponent extends FIBWidget {
 		}
 
 		@Override
-		public void setDynamicComponentFile(DataBinding<File> dynamicComponentFile) {
+		public void setDynamicComponentFile(DataBinding<ResourceLocation> dynamicComponentFile) {
 
-			FIBPropertyNotification<DataBinding<File>> notification = requireChange(DYNAMIC_COMPONENT_FILE_KEY, dynamicComponentFile);
+			FIBPropertyNotification<DataBinding<ResourceLocation>> notification = requireChange(DYNAMIC_COMPONENT_FILE_KEY, dynamicComponentFile);
 
 			if (notification != null) {
 
@@ -404,7 +405,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 		}
 
 		@Override
-		public DataBinding<File> getBinding(FIBReferencedComponent object) {
+		public DataBinding<ResourceLocation> getBinding(FIBReferencedComponent object) {
 			return object.getDynamicComponentFile();
 		}
 

@@ -35,7 +35,8 @@ public class ValidationLocalizedEditorEDITOR {
 
 			@Override
 			public File getFIBFile() {
-				return ResourceLocator.locateFile("Fib/LocalizedEditor.fib");
+				ResourceLocator rl = ResourceLocator.getResourceLocator();
+				return rl.retrieveResourceAsFile(rl.locateResource("Fib/LocalizedEditor.fib"));
 			}
 		};
 		editor.launch();

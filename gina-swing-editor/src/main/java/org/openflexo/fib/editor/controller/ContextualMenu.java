@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.Hashtable;
 import java.util.logging.Logger;
 
@@ -21,6 +22,7 @@ import org.openflexo.antar.binding.TypeUtils;
 import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.controller.FIBController.Status;
 import org.openflexo.fib.controller.FIBDialog;
+import org.openflexo.fib.editor.FIBEditor;
 import org.openflexo.fib.editor.FIBEmbeddedEditor;
 import org.openflexo.fib.editor.FIBPreferences;
 import org.openflexo.fib.editor.controller.EditorAction.ActionAvailability;
@@ -50,10 +52,14 @@ import org.openflexo.fib.utils.BindingSelector;
 import org.openflexo.fib.view.widget.FIBReferencedComponentWidget;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.toolbox.FileResourceLocation;
+import org.openflexo.toolbox.ResourceLocation;
+import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.toolbox.StringUtils;
 
 public class ContextualMenu {
 	private static final Logger logger = FlexoLogger.getLogger(ContextualMenu.class.getPackage().getName());
+	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
 	private FIBEditorController editorController;
 	private Hashtable<EditorAction, PopupMenuItem> actions;
@@ -160,9 +166,9 @@ public class ContextualMenu {
 						referencedComponent);
 
 				Object dataObject = widgetView.getValue();
-				File componentFile = widgetView.getComponentFile();
+				File componentFile = rl.retrieveResourceAsFile(widgetView.getComponentFile());
 
-				if (componentFile != null && componentFile.exists()) {
+				if (componentFile != null ) {
 					new FIBEmbeddedEditor(componentFile, dataObject);
 				} else {
 					logger.warning("Not found component file : " + componentFile);
@@ -257,7 +263,12 @@ public class ContextualMenu {
 				// String relativeFilePath = relativePathFileConverter.convertToString(params.reusableComponentFile);
 				// logger.info("Relative file path: " + relativeFilePath);
 				FIBReferencedComponent widget = dialogFactory.newFIBReferencedComponent();
-				widget.setComponentFile(params.reusableComponentFile);
+				try {
+					widget.setComponentFile(new FileResourceLocation(this.editorController.getFSResourceLocator(),params.reusableComponentFile));
+				} catch (MalformedURLException e) {
+					logger.severe("Unable to create FileResourceLocation from File: " + params.reusableComponentFile.getName());
+					e.printStackTrace();
+				}
 				widget.setData(params.data);
 				widget.setVisible(visible);
 				parent.addToSubComponents(widget, reusableComponent.getConstraints());

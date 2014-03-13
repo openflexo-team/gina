@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.Frame;
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.TableColumn;
 
 import org.openflexo.antar.binding.BindingEvaluator;
+import org.openflexo.toolbox.ResourceLocation;
 
 /**
  * This utility class implement localization support <br>
@@ -106,13 +108,13 @@ public class FlexoLocalization {
 	}
 
 	/**
-	 * Initialize localization given a supplied directory<br>
+	 * Initialize localization given a supplied directory URL <br>
 	 * This directory will be used as the location of a main localizer that will be instanciated here, as an instance of
 	 * LocalizedDelegateImpl
 	 * 
 	 * @param localizedDirectory
 	 */
-	public static void initWith(File localizedDirectory) {
+	public static void initWith(ResourceLocation localizedDirectory) {
 		mainLocalizer = new LocalizedDelegateImpl(localizedDirectory, null, false);
 	}
 

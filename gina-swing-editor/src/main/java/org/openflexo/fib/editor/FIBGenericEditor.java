@@ -27,7 +27,7 @@ import org.openflexo.fib.editor.controller.FIBEditorPalette;
 import org.openflexo.fib.editor.controller.FIBInspectorController;
 
 public interface FIBGenericEditor {
-
+	
 	public JFrame getFrame();
 
 	public FIBEditorPalette getPalette();

@@ -23,6 +23,7 @@
 package com.metaphaseeditor;
 
 import org.openflexo.toolbox.ImageIconResource;
+import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * 
@@ -31,12 +32,14 @@ import org.openflexo.toolbox.ImageIconResource;
 public class DivDialog extends javax.swing.JDialog {
 
 	private String divHtml = null;
+	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+
 
 	/** Creates new form DivDialog */
 	public DivDialog(java.awt.Frame parent, boolean modal) {
 		super(parent, modal);
 		initComponents();
-		setIconImage(new ImageIconResource("Icons/MetaphaseEditor/icons/metaphase16x16.png").getImage());
+		setIconImage(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/metaphase16x16.png")).getImage());
 
 		setLocationRelativeTo(null);
 

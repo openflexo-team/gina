@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
@@ -56,6 +57,7 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.model.factory.AccessibleProxyObject;
 import org.openflexo.model.factory.CloneableProxyObject;
 import org.openflexo.model.factory.DeletableProxyObject;
+import org.openflexo.toolbox.ResourceLocation;
 import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.toolbox.StringUtils;
 
@@ -145,18 +147,19 @@ public interface FIBModelObject extends Bindable, AccessibleProxyObject, Cloneab
 		public static LocalizedDelegateGUIImpl LOCALIZATION;
 
 		static {
-			File generalLocalizedDelegate = ResourceLocator.locateDirectory("Localized");
-			File fibLocalizedDelegate = ResourceLocator.locateDirectory("FIBLocalized");
+			ResourceLocator rl = ResourceLocator.getResourceLocator();
+			ResourceLocation generalLocalizedDelegate = rl.locateResource("Localized");
+			ResourceLocation fibLocalizedDelegate = rl.locateResource("FIBLocalized");
 
-			if (fibLocalizedDelegate.exists()) {
-				if (generalLocalizedDelegate.exists()) {
+			if (fibLocalizedDelegate != null) {
+				if (generalLocalizedDelegate != null) {
 					LOCALIZATION = new LocalizedDelegateGUIImpl(fibLocalizedDelegate, new LocalizedDelegateGUIImpl(
 							generalLocalizedDelegate, null, false), true);
 				} else {
 					LOCALIZATION = new LocalizedDelegateGUIImpl(fibLocalizedDelegate, null, true);
 				}
 			} else {
-				if (generalLocalizedDelegate.exists()) {
+				if (generalLocalizedDelegate !=null) {
 					LOCALIZATION = new LocalizedDelegateGUIImpl(generalLocalizedDelegate, null, true);
 				} else {
 					LOCALIZATION = new LocalizedDelegateGUIImpl(generalLocalizedDelegate, null, false);

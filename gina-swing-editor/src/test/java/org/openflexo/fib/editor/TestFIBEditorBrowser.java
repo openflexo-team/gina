@@ -38,7 +38,7 @@ public class TestFIBEditorBrowser {
 		ValidationReport validationReport = browser.getFIBComponent().validate();
 		assertEquals(0, validationReport.getErrorNb());
 
-		gcDelegate = new FIBComponentGraphicalContextDelegate(TestFIBEditorBrowser.class.getSimpleName(), ResourceLocator.locateFile(FIBEditorBrowser.FIB_FILE_NAME),
+		gcDelegate = new FIBComponentGraphicalContextDelegate(TestFIBEditorBrowser.class.getSimpleName(), ResourceLocator.getResourceLocator().retrieveResourceAsFile(FIBEditorBrowser.FIB_FILE),
 				component);
 		gcDelegate.addTab("FIBEditorBrowser", browser.getController());
 	}

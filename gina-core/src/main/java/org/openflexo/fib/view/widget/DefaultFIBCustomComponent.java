@@ -36,6 +36,7 @@ import org.openflexo.fib.view.FIBView;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
+import org.openflexo.toolbox.ResourceLocation;
 
 public abstract class DefaultFIBCustomComponent<T> extends JPanel implements FIBCustomComponent<T, DefaultFIBCustomComponent<T>>,
 		HasPropertyChangeSupport {
@@ -74,14 +75,15 @@ public abstract class DefaultFIBCustomComponent<T> extends JPanel implements FIB
 		applyCancelListener = new Vector<ApplyCancelListener>();
 	}
 
-	public DefaultFIBCustomComponent(String fibFileName, T editedObject, LocalizedDelegate parentLocalizer) {
+	public DefaultFIBCustomComponent(ResourceLocation fibFileName, T editedObject, LocalizedDelegate parentLocalizer) {
 		this(FIBLibrary.instance().retrieveFIBComponent(fibFileName,true), editedObject, parentLocalizer);
 	}
 
+	/*
 	public DefaultFIBCustomComponent(File fibFile, T editedObject, LocalizedDelegate parentLocalizer) {
 		this(FIBLibrary.instance().retrieveFIBComponent(fibFile), editedObject, parentLocalizer);
 	}
-
+*/
 	@Override
 	public PropertyChangeSupport getPropertyChangeSupport() {
 		return pcSupport;

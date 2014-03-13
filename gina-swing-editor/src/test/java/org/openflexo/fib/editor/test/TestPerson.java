@@ -37,7 +37,9 @@ public class TestPerson extends FIBAbstractEditor {
 
 	@Override
 	public File getFIBFile() {
-		return ResourceLocator.locateFile("TestFIB/TestPerson.fib");
+		final ResourceLocator rl = ResourceLocator.getResourceLocator();
+
+		return rl.retrieveResourceAsFile(rl.locateResource("TestFIB/TestPerson.fib"));
 	}
 
 	public static void main(String[] args) {

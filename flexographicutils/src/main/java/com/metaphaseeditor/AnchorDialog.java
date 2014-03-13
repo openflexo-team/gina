@@ -25,6 +25,7 @@ package com.metaphaseeditor;
 import javax.swing.JOptionPane;
 
 import org.openflexo.toolbox.ImageIconResource;
+import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * 
@@ -32,12 +33,14 @@ import org.openflexo.toolbox.ImageIconResource;
  */
 public class AnchorDialog extends javax.swing.JDialog {
 	private String anchorHtml;
+	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+
 
 	/** Creates new form AnchorDialog */
 	public AnchorDialog(java.awt.Frame parent, boolean modal) {
 		super(parent, modal);
 		initComponents();
-		setIconImage(new ImageIconResource("Icons/MetaphaseEditor/icons/metaphase16x16.png").getImage());
+		setIconImage(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/metaphase16x16.png")).getImage());
 		setLocationRelativeTo(null);
 	}
 

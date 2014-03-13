@@ -97,8 +97,11 @@ public class TestFIB extends JPanel {
 		}
 
 		JFrame frame = new JFrame();
+		
+		final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
-		File fibFile = ResourceLocator.locateFile("TestFIB/Test.fib");
+
+		File fibFile = rl.retrieveResourceAsFile(rl.locateResource("TestFIB/Test.fib"));
 		System.out.println("Fib: " + fibFile.getAbsolutePath());
 
 		FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(fibFile);

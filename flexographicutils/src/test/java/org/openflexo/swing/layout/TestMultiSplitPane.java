@@ -170,7 +170,8 @@ public class TestMultiSplitPane {
 	}
 
 	protected File getLayoutFile() {
-		return ResourceLocator.locateFile("testlayout");
+		ResourceLocator rl = ResourceLocator.getResourceLocator();
+		return rl.retrieveResourceAsFile(rl.locateResource("testlayout"));
 	}
 
 	public static void main(String[] args) {

@@ -38,7 +38,9 @@ public class TestList {
 
 	private static final Logger logger = Logger.getLogger(TestList.class.getPackage().getName());
 
-	public static File FIB_FILE = ResourceLocator.locateFile("TestFIB/TestList.fib");
+	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
+
+	public static File FIB_FILE = rl.retrieveResourceAsFile(rl.locateResource("TestFIB/TestList.fib"));
 
 	public static void main(String[] args) {
 		final User user1 = new User("John", "Doe", "john.doe@yahoo.com");

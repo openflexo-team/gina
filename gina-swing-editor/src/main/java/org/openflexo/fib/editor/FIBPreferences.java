@@ -24,6 +24,8 @@ public class FIBPreferences {
 	public static final String LAST_FILES_COUNT = "LAST_FILES_COUNT";
 	public static final String LAST_FILE = "LAST_FILE";
 
+	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+
 	private static final Preferences prefs = Preferences.userRoot().node(FIB);
 
 	private static AWTRectangleConverter RECTANGLE_CONVERTER = new AWTRectangleConverter();
@@ -90,7 +92,7 @@ public class FIBPreferences {
 	}
 
 	public static File getLastDirectory() {
-		return getPreferredFile(LAST_DIR, ResourceLocator.locateDirectory("TestFIB"));
+		return getPreferredFile(LAST_DIR, rl.retrieveResourceAsFile(rl.locateResource("Fib")));
 	}
 
 	public static void setLastDirectory(File file) {

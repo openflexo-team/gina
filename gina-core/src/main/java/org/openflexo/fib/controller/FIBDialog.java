@@ -38,6 +38,7 @@ import org.openflexo.fib.model.FIBButton;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.toolbox.ResourceLocation;
 
 @SuppressWarnings("serial")
 public class FIBDialog<T> extends JDialog {
@@ -46,19 +47,20 @@ public class FIBDialog<T> extends JDialog {
 
 	private FIBView view;
 
-	public static <T> FIBDialog<T> instanciateDialog(File componentFile, T data, Window frame, boolean modal) {
+	public static <T> FIBDialog<T> instanciateDialog(ResourceLocation componentFile, T data, Window frame, boolean modal) {
 		return instanciateDialog(componentFile, data, frame, modal, null);
 	}
 
-	public static <T> FIBDialog<T> instanciateDialog(File componentFile, T data, Window frame, boolean modal, LocalizedDelegate localizer) {
+	public static <T> FIBDialog<T> instanciateDialog(ResourceLocation componentFile, T data, Window frame, boolean modal, LocalizedDelegate localizer) {
 		FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(componentFile);
 		if (fibComponent == null) {
-			logger.warning("FileNotFoundException: " + componentFile.getAbsolutePath());
+			logger.warning("FileNotFoundException: " + componentFile.getURL());
 			return null;
 		}
 		return instanciateDialog(fibComponent, data, frame, modal, localizer);
 	}
 
+	/*
 	public static <T> FIBDialog<T> instanciateDialog(String fibFileName, T data, Window frame, boolean modal, LocalizedDelegate localizer) {
 		FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(fibFileName,true);
 		if (fibComponent == null) {
@@ -67,6 +69,7 @@ public class FIBDialog<T> extends JDialog {
 		}
 		return instanciateDialog(fibComponent, data, frame, modal, localizer);
 	}
+	*/
 	
 	public static <T> FIBDialog<T> instanciateDialog(FIBComponent fibComponent, T data, Window frame, boolean modal,
 			LocalizedDelegate localizer) {
@@ -96,16 +99,17 @@ public class FIBDialog<T> extends JDialog {
 		return dialog;
 	}
 
-	public static <T> FIBDialog<T> instanciateAndShowDialog(File componentFile, T data, Window frame, boolean modal,
+	public static <T> FIBDialog<T> instanciateAndShowDialog(ResourceLocation componentFile, T data, Window frame, boolean modal,
 			LocalizedDelegate localizer) {
 		FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(componentFile);
 		if (fibComponent == null) {
-			logger.warning("FileNotFoundException: " + componentFile.getAbsolutePath());
+			logger.warning("FileNotFoundException: " + componentFile.getURL());
 			return null;
 		}
 		return instanciateAndShowDialog(fibComponent, data, frame, modal, localizer);
 	}
-
+	
+/*
 	public static <T> FIBDialog<T> instanciateAndShowDialog(String fibResourcePath, T data, Window frame, boolean modal,
 			LocalizedDelegate localizer) {
 		FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(fibResourcePath);
@@ -115,6 +119,7 @@ public class FIBDialog<T> extends JDialog {
 		}
 		return instanciateAndShowDialog(fibComponent, data, frame, modal, localizer);
 	}
+	*/
 
 	protected FIBDialog(FIBComponent fibComponent, T data, Window frame, boolean modal, LocalizedDelegate localizer) {
 		this(frame, modal, fibComponent, localizer);

@@ -36,7 +36,9 @@ public class TestDynamicReuse extends FIBAbstractEditor {
 
 	@Override
 	public File getFIBFile() {
-		return ResourceLocator.locateFile("TestFIB/TestDynamicReuse.fib");
+		final ResourceLocator rl = ResourceLocator.getResourceLocator();
+
+		return rl.retrieveResourceAsFile(rl.locateResource("TestFIB/TestDynamicReuse.fib"));
 	}
 
 	public static void main(String[] args) {

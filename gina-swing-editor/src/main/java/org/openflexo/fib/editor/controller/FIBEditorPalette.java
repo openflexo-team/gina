@@ -1,5 +1,6 @@
 /*
  * (c) Copyright 2010-2011 AgileBirds
+ * (c) Copyright 2013-2014 Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -27,7 +28,10 @@ import java.awt.Toolkit;
 import java.awt.dnd.DragSource;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -40,6 +44,7 @@ import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.utils.FIBIconLibrary;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.swing.ComponentBoundSaver;
+import org.openflexo.toolbox.ResourceLocation;
 import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.toolbox.ToolBox;
 
@@ -47,76 +52,74 @@ public class FIBEditorPalette extends JDialog {
 
 	static final Logger logger = FlexoLogger.getLogger(FIBEditor.class.getPackage().getName());
 
+	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
+
 	private static final Image DROP_OK_IMAGE = FIBIconLibrary.DROP_OK_CURSOR.getImage();
 	private static final Image DROP_KO_IMAGE = FIBIconLibrary.DROP_KO_CURSOR.getImage();
 
 	public static final Cursor dropOK = ToolBox.getPLATFORM() == ToolBox.MACOS ? Toolkit.getDefaultToolkit().createCustomCursor(
 			DROP_OK_IMAGE, new Point(16, 16), "Drop OK") : DragSource.DefaultMoveDrop;
-	public static final Cursor dropKO = ToolBox.getPLATFORM() == ToolBox.MACOS ? Toolkit.getDefaultToolkit().createCustomCursor(
-			DROP_KO_IMAGE, new Point(16, 16), "Drop KO") : DragSource.DefaultMoveNoDrop;
 
-	private final JPanel paletteContent;
+			public static final Cursor dropKO = ToolBox.getPLATFORM() == ToolBox.MACOS ? Toolkit.getDefaultToolkit().createCustomCursor(
+					DROP_KO_IMAGE, new Point(16, 16), "Drop KO") : DragSource.DefaultMoveNoDrop;
 
-	private FIBEditorController editorController;
+					private final JPanel paletteContent;
 
-	public FIBEditorPalette(JFrame frame) {
-		super(frame, "Palette", false);
+					private FIBEditorController editorController;
 
-		paletteContent = new JPanel(null);
+					public FIBEditorPalette(JFrame frame) {
+						super(frame, "Palette", false);
 
-		File dir = ResourceLocator.locateDirectory("FIBEditorPalette");
+						paletteContent = new JPanel(null);
 
-		for (File f : dir.listFiles(new FilenameFilter() {
-			@Override
-			public boolean accept(File dir, String name) {
-				return dir.isDirectory();
-			}
-		})) {
-			// System.out.println("Read "+f.getAbsolutePath());
+						ResourceLocation dir = rl.locateResource("FIBEditorPalette");
 
-			File modelFIBFile = new File(f, f.getName() + ".fib");
-			if (modelFIBFile.exists()) {
-				FIBComponent modelComponent = FIBLibrary.instance().retrieveFIBComponent(modelFIBFile);
-				if (modelComponent != null) {
-					File representationFIBFile = new File(f, f.getName() + ".palette");
-					FIBComponent representationComponent = null;
-					if (representationFIBFile.exists()) {
-						representationComponent = FIBLibrary.instance().retrieveFIBComponent(representationFIBFile);
-					} else {
-						representationComponent = FIBLibrary.instance().retrieveFIBComponent(modelFIBFile);
+						for (ResourceLocation modelFIBFile : rl.listResources(dir, Pattern.compile(".*[.]fib"))) {
+							String paletteURL = modelFIBFile.getURL().getPath().replace(".fib", ".palette");
+							
+							FIBComponent modelComponent = FIBLibrary.instance().retrieveFIBComponent(modelFIBFile);
+
+							int ind = paletteURL.indexOf("FIBEditorPalette");
+							if (ind > 0){
+								paletteURL = paletteURL.substring(ind);
+							}
+							ResourceLocation representationFIBFile = rl.locateResource(paletteURL);
+
+							FIBComponent representationComponent = null;
+							if (representationFIBFile != null){
+								representationComponent = FIBLibrary.instance().retrieveFIBComponent(representationFIBFile);
+
+							}else{
+								representationComponent = FIBLibrary.instance().retrieveFIBComponent(modelFIBFile);
+							}
+							addPaletteElement(modelComponent, representationComponent);
+
+						}
+
+						getContentPane().add(paletteContent);
+						setBounds(FIBPreferences.getPaletteBounds());
+						new ComponentBoundSaver(this) {
+
+							@Override
+							public void saveBounds(Rectangle bounds) {
+								FIBPreferences.setPaletteBounds(bounds);
+							}
+						};
+
 					}
-					addPaletteElement(modelComponent, representationComponent);
-					logger.info("Loaded palette element: " + modelComponent + " file: " + f.getName());
-				} else {
-					logger.warning("Not found: " + f.getAbsolutePath());
-				}
-			}
-		}
 
-		getContentPane().add(paletteContent);
-		setBounds(FIBPreferences.getPaletteBounds());
-		new ComponentBoundSaver(this) {
+					private PaletteElement addPaletteElement(FIBComponent modelComponent, FIBComponent representationComponent) {
+						PaletteElement el = new PaletteElement(modelComponent, representationComponent, this);
+						paletteContent.add(el.getView().getResultingJComponent());
+						return el;
+					}
 
-			@Override
-			public void saveBounds(Rectangle bounds) {
-				FIBPreferences.setPaletteBounds(bounds);
-			}
-		};
+					public FIBEditorController getEditorController() {
+						return editorController;
+					}
 
-	}
-
-	private PaletteElement addPaletteElement(FIBComponent modelComponent, FIBComponent representationComponent) {
-		PaletteElement el = new PaletteElement(modelComponent, representationComponent, this);
-		paletteContent.add(el.getView().getResultingJComponent());
-		return el;
-	}
-
-	public FIBEditorController getEditorController() {
-		return editorController;
-	}
-
-	public void setEditorController(FIBEditorController editorController) {
-		this.editorController = editorController;
-	}
+					public void setEditorController(FIBEditorController editorController) {
+						this.editorController = editorController;
+					}
 
 }

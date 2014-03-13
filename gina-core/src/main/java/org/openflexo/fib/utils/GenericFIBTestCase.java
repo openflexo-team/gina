@@ -10,6 +10,7 @@ import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.validation.ValidationError;
 import org.openflexo.fib.model.validation.ValidationReport;
+import org.openflexo.toolbox.ResourceLocation;
 import org.openflexo.toolbox.ResourceLocator;
 
 /**
@@ -21,17 +22,19 @@ import org.openflexo.toolbox.ResourceLocator;
 public abstract class GenericFIBTestCase {
 
 	static final Logger logger = Logger.getLogger(GenericFIBTestCase.class.getPackage().getName());
+	static final ResourceLocator rl = ResourceLocator.getResourceLocator();
+
 
 	public void validateFIB(String fibRelativePath) {
-		validateFIB(ResourceLocator.locateFile(fibRelativePath));
+		validateFIB(rl.locateResource(fibRelativePath));
 	}
 
-	public void validateFIB(File fibFile) {
+	public void validateFIB(ResourceLocation fibFile) {
 		try {
 			System.out.println("Validating fib file "+fibFile);
 			FIBComponent component = FIBLibrary.instance().retrieveFIBComponent(fibFile);
 			if (component == null) {
-				fail("Component not found: " + fibFile.getAbsolutePath());
+				fail("Component not found: " + fibFile.getURL());
 			}
 			ValidationReport validationReport = component.validate();
 			for (ValidationError error : validationReport.getErrors()) {

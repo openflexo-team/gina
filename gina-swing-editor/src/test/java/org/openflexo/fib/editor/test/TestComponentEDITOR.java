@@ -36,7 +36,9 @@ public class TestComponentEDITOR {
 
 			@Override
 			public File getFIBFile() {
-				return ResourceLocator.locateFile("TestFIB/TestComponent.fib");
+				final ResourceLocator rl = ResourceLocator.getResourceLocator();
+
+				return rl.retrieveResourceAsFile(rl.locateResource("TestFIB/TestComponent.fib"));
 			}
 		};
 		editor.launch();

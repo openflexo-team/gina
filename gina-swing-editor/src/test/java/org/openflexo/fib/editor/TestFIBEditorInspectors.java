@@ -13,7 +13,7 @@ import org.openflexo.toolbox.ResourceLocator;
 public class TestFIBEditorInspectors extends FIBInspectorTestCase {
 
 	public static void main(String[] args) {
-		System.out.println(generateInspectorTestCaseClass(ResourceLocator.locateDirectory("EditorInspectors"), "EditorInspectors/"));
+		System.out.println(generateInspectorTestCaseClass(ResourceLocator.getResourceLocator().locateResource("EditorInspectors"), "EditorInspectors/"));
 	}
 
 	@Test
