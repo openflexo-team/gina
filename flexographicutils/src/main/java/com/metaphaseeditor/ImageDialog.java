@@ -26,8 +26,8 @@ import java.awt.Window;
 
 import javax.swing.JOptionPane;
 
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 import org.openflexo.toolbox.ImageIconResource;
-import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * 
@@ -35,7 +35,7 @@ import org.openflexo.toolbox.ResourceLocator;
  */
 public class ImageDialog extends javax.swing.JDialog {
 
-	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 
 	private enum Alignment {
 		NONE("None", null), TOP("Top", "top"), BOTTOM("Bottom", "bottom"), MIDDLE("Middle", "middle"), LEFT("Left", "left"), RIGHT(

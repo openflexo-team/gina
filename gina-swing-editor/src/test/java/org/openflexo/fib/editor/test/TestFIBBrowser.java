@@ -27,11 +27,11 @@ import java.util.Observable;
 import java.util.Vector;
 
 import org.openflexo.fib.editor.FIBAbstractEditor;
-import org.openflexo.toolbox.ResourceLocator;
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 
 public class TestFIBBrowser {
 
-	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
+	private static final CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 
 	public static File FIB_FILE = rl.retrieveResourceAsFile(rl.locateResource("TestFIB/TestBrowser.fib"));
 

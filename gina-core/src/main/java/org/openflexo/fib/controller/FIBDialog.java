@@ -38,7 +38,7 @@ import org.openflexo.fib.model.FIBButton;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.localization.LocalizedDelegate;
-import org.openflexo.toolbox.ResourceLocation;
+import org.openflexo.rm.Resource;
 
 @SuppressWarnings("serial")
 public class FIBDialog<T> extends JDialog {
@@ -47,14 +47,14 @@ public class FIBDialog<T> extends JDialog {
 
 	private FIBView view;
 
-	public static <T> FIBDialog<T> instanciateDialog(ResourceLocation componentFile, T data, Window frame, boolean modal) {
+	public static <T> FIBDialog<T> instanciateDialog(Resource componentFile, T data, Window frame, boolean modal) {
 		return instanciateDialog(componentFile, data, frame, modal, null);
 	}
 
-	public static <T> FIBDialog<T> instanciateDialog(ResourceLocation componentFile, T data, Window frame, boolean modal, LocalizedDelegate localizer) {
+	public static <T> FIBDialog<T> instanciateDialog(Resource componentFile, T data, Window frame, boolean modal, LocalizedDelegate localizer) {
 		FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(componentFile);
 		if (fibComponent == null) {
-			logger.warning("FileNotFoundException: " + componentFile.getURL());
+			logger.warning("FileNotFoundException: " + componentFile.getURI());
 			return null;
 		}
 		return instanciateDialog(fibComponent, data, frame, modal, localizer);
@@ -99,11 +99,11 @@ public class FIBDialog<T> extends JDialog {
 		return dialog;
 	}
 
-	public static <T> FIBDialog<T> instanciateAndShowDialog(ResourceLocation componentFile, T data, Window frame, boolean modal,
+	public static <T> FIBDialog<T> instanciateAndShowDialog(Resource componentFile, T data, Window frame, boolean modal,
 			LocalizedDelegate localizer) {
 		FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(componentFile);
 		if (fibComponent == null) {
-			logger.warning("FileNotFoundException: " + componentFile.getURL());
+			logger.warning("FileNotFoundException: " + componentFile.getURI());
 			return null;
 		}
 		return instanciateAndShowDialog(fibComponent, data, frame, modal, localizer);

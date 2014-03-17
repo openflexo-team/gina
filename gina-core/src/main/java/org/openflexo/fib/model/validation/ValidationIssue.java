@@ -28,7 +28,7 @@ import org.openflexo.fib.model.FIBModelObject;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.localization.LocalizedDelegateImpl;
-import org.openflexo.toolbox.ResourceLocator;
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 
 /**
  * Represents a validation issue embedded in a validation report
@@ -41,7 +41,7 @@ public abstract class ValidationIssue<R extends ValidationRule<R, C>, C extends 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ValidationIssue.class.getPackage().getName());
 
-	public static LocalizedDelegate VALIDATION_LOCALIZATION = new LocalizedDelegateImpl(ResourceLocator.getResourceLocator().locateResource("FIBValidationLocalized"), null,
+	public static LocalizedDelegate VALIDATION_LOCALIZATION = new LocalizedDelegateImpl(CompositeResourceLocatorImpl.getResourceLocator().locateResource("FIBValidationLocalized"), null,
 			true);
 
 	private C _object;

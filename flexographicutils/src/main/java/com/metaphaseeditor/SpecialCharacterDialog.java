@@ -29,15 +29,15 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 import org.openflexo.toolbox.ImageIconResource;
-import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * 
  * @author Rudolf Visagie
  */
 public class SpecialCharacterDialog extends javax.swing.JDialog {
-	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 
 	String selectedChars = null;
 

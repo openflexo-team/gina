@@ -72,12 +72,12 @@ import org.openflexo.localization.Language;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.logging.FlexoLoggingManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.rm.ClasspathResourceLocatorImpl;
+import org.openflexo.rm.FileSystemResourceLocatorImpl;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 import org.openflexo.swing.ComponentBoundSaver;
 import org.openflexo.swing.FlexoFileChooser;
-import org.openflexo.toolbox.ClasspathResourceLocator;
-import org.openflexo.toolbox.FileSystemResourceLocator;
-import org.openflexo.toolbox.ResourceLocation;
-import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.toolbox.ToolBox;
 
 // TODO: switch to the right editor controller when switching tab
@@ -85,9 +85,9 @@ import org.openflexo.toolbox.ToolBox;
 public class FIBEditor implements FIBGenericEditor {
 
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditor.class.getPackage().getName());
-	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 	
-	public static ResourceLocation COMPONENT_LOCALIZATION_FIB =  rl.locateResource("Fib/ComponentLocalization.fib");
+	public static Resource COMPONENT_LOCALIZATION_FIB =  rl.locateResource("Fib/ComponentLocalization.fib");
 
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
 			UnsupportedLookAndFeelException {

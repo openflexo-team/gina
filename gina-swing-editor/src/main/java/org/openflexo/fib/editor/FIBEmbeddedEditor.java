@@ -21,14 +21,14 @@ package org.openflexo.fib.editor;
 
 import java.io.File;
 
-import org.openflexo.toolbox.ResourceLocator;
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 
 public class FIBEmbeddedEditor {
 
 	private File fibFile;
 	private Object[] data;
 	
-	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 
 	private class Editor extends FIBAbstractEditor {
 

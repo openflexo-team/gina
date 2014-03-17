@@ -2,8 +2,8 @@ package org.openflexo.fib.utils;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 import org.openflexo.toolbox.ImageIconResource;
-import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * Utility class containing all icons used in FIB
@@ -12,7 +12,7 @@ import org.openflexo.toolbox.ResourceLocator;
  * 
  */
 public class FIBIconLibrary {
-	public static ResourceLocator rl = ResourceLocator.getResourceLocator();
+	public static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 	// GUI
 	public static final ImageIcon BROWSER_PLUS_ICON = new ImageIconResource(rl.locateResource("Icons/GUI/BrowserPlus.gif"));
 	public static final ImageIcon BROWSER_PLUS_DISABLED_ICON = new ImageIconResource(rl.locateResource("Icons/GUI/BrowserPlusDisabled.gif"));

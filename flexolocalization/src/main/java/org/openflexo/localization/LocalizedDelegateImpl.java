@@ -39,11 +39,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.io.IOUtils;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 import org.openflexo.toolbox.FlexoProperties;
 import org.openflexo.toolbox.HTMLUtils;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
-import org.openflexo.toolbox.ResourceLocation;
-import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.toolbox.StringUtils;
 
 /**
@@ -59,10 +59,10 @@ import org.openflexo.toolbox.StringUtils;
 public class LocalizedDelegateImpl extends Observable implements LocalizedDelegate {
 
 	private static final Logger logger = Logger.getLogger(LocalizedDelegateImpl.class.getPackage().getName());
-	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 	
 	private LocalizedDelegate parent;
-	private ResourceLocation _localizedDirectory;
+	private Resource _localizedDirectory;
 	private Hashtable<Language, Properties> _localizedDictionaries;
 
 	private boolean automaticSaving = false;
@@ -75,7 +75,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		Contains, BeginsWith, EndsWith
 	}
 
-	public LocalizedDelegateImpl(ResourceLocation localizedDirectory, LocalizedDelegate parent, boolean automaticSaving) {
+	public LocalizedDelegateImpl(Resource localizedDirectory, LocalizedDelegate parent, boolean automaticSaving) {
 		this.automaticSaving = automaticSaving;
 		this.parent = parent;
 		_localizedDirectory = localizedDirectory;
@@ -98,7 +98,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	}
 
 	private InputStream getDictionaryForLanguage(Language language) {
-		return rl.retrieveResourceAsInputStream(rl.locateResourceWithBaseLocation(_localizedDirectory, language.getName() + ".dict"));
+		return (rl.locateResourceWithBaseLocation(_localizedDirectory, language.getName() + ".dict")).openInputStream();
 	}
 
 	private File getDictionaryFileForLanguage(Language language) {

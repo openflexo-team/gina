@@ -21,8 +21,8 @@ package org.openflexo.icon;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 import org.openflexo.toolbox.FileFormat;
-import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.toolbox.FileFormat.BinaryFileFormat;
 import org.openflexo.toolbox.FileFormat.DirectoryFormat;
 import org.openflexo.toolbox.FileFormat.ImageFileFormat;
@@ -37,7 +37,7 @@ import org.openflexo.toolbox.ImageIconResource;
  * 
  */
 public class FilesIconLibrary {
-	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 
 	// Big files
 	public static final ImageIcon BIG_JAVA_FILE_ICON = new ImageIconResource(rl.locateResource("Icons/MimeTypes/64x64/text-x-java-2.png"));

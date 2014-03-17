@@ -26,15 +26,15 @@ import java.awt.FlowLayout;
 
 import javax.swing.JOptionPane;
 
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 import org.openflexo.toolbox.ImageIconResource;
-import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * 
  * @author Rudolf Visagie
  */
 public class LinkDialog extends javax.swing.JDialog {
-	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 
 	// TODO: other targets
 	// TODO: test

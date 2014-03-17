@@ -43,7 +43,7 @@ import org.openflexo.fib.model.FIBWidget;
 import org.openflexo.fib.view.FIBContainerView;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.fib.view.FIBWidgetView;
-import org.openflexo.toolbox.ResourceLocation;
+import org.openflexo.rm.Resource;
 
 /**
  * This component allows to reuse an other component, and embed it into a widget<br>
@@ -69,7 +69,7 @@ BindingEvaluationContext*/{
 
 	private final JLabel NOT_FOUND_LABEL;
 
-	private BindingValueChangeListener<ResourceLocation> dynamicComponentFileBindingValueChangeListener;
+	private BindingValueChangeListener<Resource> dynamicComponentFileBindingValueChangeListener;
 
 	public FIBReferencedComponentWidget(FIBReferencedComponent model, FIBController controller, FIBViewFactory factory) {
 		super(model, controller);
@@ -85,11 +85,11 @@ BindingEvaluationContext*/{
 			dynamicComponentFileBindingValueChangeListener.delete();
 		}
 		if (getComponent().getDynamicComponentFile() != null && getComponent().getDynamicComponentFile().isValid()) {
-			dynamicComponentFileBindingValueChangeListener = new BindingValueChangeListener<ResourceLocation>(getComponent().getDynamicComponentFile(),
+			dynamicComponentFileBindingValueChangeListener = new BindingValueChangeListener<Resource>(getComponent().getDynamicComponentFile(),
 					getBindingEvaluationContext()) {
 
 				@Override
-				public void bindingValueChanged(Object source, ResourceLocation newValue) {
+				public void bindingValueChanged(Object source, Resource newValue) {
 					System.out.println(" bindingValueChanged() detected for dynamicComponentFile="
 							+ getComponent().getDynamicComponentFile() + " with newValue=" + newValue + " source=" + source);
 					updateReferencedComponentView();
@@ -119,7 +119,7 @@ BindingEvaluationContext*/{
 
 	}
 
-	public ResourceLocation getComponentFile() {
+	public Resource getComponentFile() {
 
 		if (getWidget().getDynamicComponentFile() != null && getWidget().getDynamicComponentFile().isSet()
 				&& getWidget().getDynamicComponentFile().isValid()) {
@@ -146,7 +146,7 @@ BindingEvaluationContext*/{
 
 	private FIBComponent retrieveReferencedComponent() {
 
-		ResourceLocation componentFile = getComponentFile();
+		Resource componentFile = getComponentFile();
 		if (componentFile != null ) {
 			return FIBLibrary.instance().retrieveFIBComponent(componentFile);
 		}

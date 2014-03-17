@@ -17,8 +17,8 @@ import org.openflexo.icon.UtilsIconLibrary;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.localization.LocalizedDelegateImpl;
-import org.openflexo.toolbox.ResourceLocation;
-import org.openflexo.toolbox.ResourceLocator;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 
 /**
  * Provides a default implementation for a localized delegate enriched with the possibility to connect it with a SWING graphical editor
@@ -31,12 +31,12 @@ public class LocalizedDelegateGUIImpl extends LocalizedDelegateImpl {
 
 	private static final Logger logger = Logger.getLogger(FlexoLocalization.class.getPackage().getName());
 
-	public static final ResourceLocation LOCALIZED_EDITOR_FIB = ResourceLocator.getResourceLocator().locateResource("Fib/LocalizedEditor.fib");
+	public static final Resource LOCALIZED_EDITOR_FIB = CompositeResourceLocatorImpl.getResourceLocator().locateResource("Fib/LocalizedEditor.fib");
 
 	private SearchMode searchMode = SearchMode.Contains;
 	private String searchedString;
 
-	public LocalizedDelegateGUIImpl(ResourceLocation localizedDirectoryURL, LocalizedDelegate parent, boolean automaticSaving) {
+	public LocalizedDelegateGUIImpl(Resource localizedDirectoryURL, LocalizedDelegate parent, boolean automaticSaving) {
 		super(localizedDirectoryURL, parent, automaticSaving);
 	}
 

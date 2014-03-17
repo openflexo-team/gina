@@ -2,8 +2,8 @@ package org.openflexo.icon;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 import org.openflexo.toolbox.ImageIconResource;
-import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * Utility class containing all icons used in context of utils
@@ -13,7 +13,7 @@ import org.openflexo.toolbox.ResourceLocator;
  */
 public class UtilsIconLibrary {
 
-	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 	// Common icons used in the context of utils
 
 	public static final ImageIcon CUSTOM_POPUP_DOWN = new ImageIconResource(rl.locateResource("Icons/CustomPopupDown.png"));

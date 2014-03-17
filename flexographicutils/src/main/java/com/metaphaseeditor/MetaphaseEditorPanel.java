@@ -104,10 +104,10 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 import org.openflexo.swing.layout.WrapLayout;
 import org.openflexo.toolbox.HTMLUtils;
 import org.openflexo.toolbox.ImageIconResource;
-import org.openflexo.toolbox.ResourceLocator;
 
 import com.metaphaseeditor.action.AddAttributesAction;
 import com.metaphaseeditor.action.ClearFormattingAction;
@@ -129,7 +129,7 @@ import com.swabunga.spell.swing.JTextComponentSpellChecker;
  */
 public class MetaphaseEditorPanel extends JPanel {
 
-	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 	
 	public static final String SOURCE_PANEL_KEY = "SourcePanel";
 	public static final String SOURCE_BUTTON_KEY = "SourcePanel.SourceButton";

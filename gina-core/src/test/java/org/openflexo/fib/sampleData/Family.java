@@ -22,7 +22,7 @@ package org.openflexo.fib.sampleData;
 import java.io.File;
 import java.util.Vector;
 
-import org.openflexo.toolbox.ResourceLocator;
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 
 
 public class Family extends SampleData {
@@ -100,7 +100,7 @@ public class Family extends SampleData {
 
 	public File fibForPerson(Person person) {
 
-		ResourceLocator rl = ResourceLocator.getResourceLocator();
+		CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 
 		if (person == null) {
 			return null;

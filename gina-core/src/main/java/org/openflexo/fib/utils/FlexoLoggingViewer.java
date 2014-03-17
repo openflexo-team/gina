@@ -22,19 +22,19 @@ import org.openflexo.logging.LogRecord;
 import org.openflexo.logging.LogRecords;
 import org.openflexo.logging.LoggingFilter;
 import org.openflexo.logging.LoggingFilter.FilterType;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.ImageIconResource;
-import org.openflexo.toolbox.ResourceLocation;
-import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.toolbox.StringUtils;
 
 public class FlexoLoggingViewer implements HasPropertyChangeSupport {
 
-	public static ResourceLocator rl = ResourceLocator.getResourceLocator();
+	public static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 
 	static final Logger logger = Logger.getLogger(FlexoLoggingViewer.class.getPackage().getName());
 
-	public static final ResourceLocation LOGGING_VIEWER_FIB_NAME = rl.locateResource("Fib/LoggingViewer.fib");
+	public static final Resource LOGGING_VIEWER_FIB_NAME = rl.locateResource("Fib/LoggingViewer.fib");
 
 	public static final ImageIcon FILTER_ICON = new ImageIconResource(rl.locateResource("Icons/Utils/Search.png"));
 
@@ -148,7 +148,7 @@ public class FlexoLoggingViewer implements HasPropertyChangeSupport {
 		loggingManager.setKeepLogTrace(keepLogTraceInMemory);
 	}
 
-	private ResourceLocation configurationFile;
+	private Resource configurationFile;
 
 	public File getConfigurationFile() {
 		if (configurationFile == null) {
@@ -163,7 +163,7 @@ public class FlexoLoggingViewer implements HasPropertyChangeSupport {
 		return rl.retrieveResourceAsFile(configurationFile);
 	}
 
-	public void setConfigurationFile(ResourceLocation configurationFile) {
+	public void setConfigurationFile(Resource configurationFile) {
 		this.configurationFile = configurationFile;
 		loggingManager.setConfigurationFileLocation(configurationFile);
 		_pcSupport.firePropertyChange("configurationFile", null, configurationFile);

@@ -15,8 +15,8 @@ import org.openflexo.fib.model.validation.ValidationError;
 import org.openflexo.fib.model.validation.ValidationReport;
 import org.openflexo.fib.utils.GenericFIBTestCase;
 import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.toolbox.ResourceLocation;
-import org.openflexo.toolbox.ResourceLocator;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 
 /**
  * Generic test case allowing to test a FIB component used as an inspector (a .inspector file)
@@ -39,11 +39,11 @@ public abstract class FIBInspectorTestCase extends GenericFIBTestCase {
 	}
 
 	@Override
-	public void validateFIB(ResourceLocation fibFile) {
+	public void validateFIB(Resource fibFile) {
 		try {
 			FIBComponent component = FIBLibrary.instance().retrieveFIBComponent(fibFile, false, INSPECTOR_FACTORY);
 			if (component == null) {
-				fail("Component not found: " + fibFile.getURL());
+				fail("Component not found: " + fibFile.getURI());
 			}
 			ValidationReport validationReport = component.validate();
 			for (ValidationError error : validationReport.getErrors()) {
@@ -55,10 +55,10 @@ public abstract class FIBInspectorTestCase extends GenericFIBTestCase {
 		}
 	}
 
-	public static String generateInspectorTestCaseClass(ResourceLocation directory, String relativePath) {
+	public static String generateInspectorTestCaseClass(Resource directory, String relativePath) {
 		StringBuffer sb = new StringBuffer();
-		for (ResourceLocation rloc : ResourceLocator.getResourceLocator().listResources(directory, Pattern.compile(".*[.]inspector"))) {
-				File f = ResourceLocator.getResourceLocator().retrieveResourceAsFile(rloc);
+		for (Resource rloc : CompositeResourceLocatorImpl.getResourceLocator().listResources(directory, Pattern.compile(".*[.]inspector"))) {
+				File f = CompositeResourceLocatorImpl.getResourceLocator().retrieveResourceAsFile(rloc);
 				String fibName = f.getName().substring(0, f.getName().indexOf(".inspector"));
 				sb.append("@Test\n");
 				sb.append("public void test" + fibName + "Inspector() {\n");

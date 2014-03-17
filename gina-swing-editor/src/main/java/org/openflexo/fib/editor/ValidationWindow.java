@@ -13,13 +13,13 @@ import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.validation.ValidationReport;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.localization.FlexoLocalization;
-import org.openflexo.toolbox.ResourceLocation;
-import org.openflexo.toolbox.ResourceLocator;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.CompositeResourceLocatorImpl;
  
 public class ValidationWindow {
-	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 
-	public static ResourceLocation COMPONENT_VALIDATION_FIB =  rl.locateResource("Fib/ComponentValidation.fib");
+	public static Resource COMPONENT_VALIDATION_FIB =  rl.locateResource("Fib/ComponentValidation.fib");
 
 	private FIBView validationView = null;
 	private JDialog validationDialog = null;

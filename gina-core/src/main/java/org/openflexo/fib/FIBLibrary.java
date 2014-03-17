@@ -41,18 +41,18 @@ import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelFactory;
 import org.openflexo.model.exceptions.InvalidDataException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.toolbox.FileResourceLocation;
-import org.openflexo.toolbox.ResourceLocation;
-import org.openflexo.toolbox.ResourceLocator;
+import org.openflexo.rm.FileResourceImpl;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 
 public class FIBLibrary {
 
 	static final Logger logger = Logger.getLogger(FIBLibrary.class.getPackage().getName());
-	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 
 	private static FIBLibrary _current;
 
-	private final Map<ResourceLocation, FIBComponent> _fibDefinitions;
+	private final Map<Resource, FIBComponent> _fibDefinitions;
 
 	private final BindingFactory bindingFactory = new JavaBindingFactory();
 
@@ -60,7 +60,7 @@ public class FIBLibrary {
 
 	private FIBLibrary() {
 		super();
-		_fibDefinitions = new Hashtable<ResourceLocation, FIBComponent>();
+		_fibDefinitions = new Hashtable<Resource, FIBComponent>();
 		try {
 			fibModelFactory = new FIBModelFactory();
 		} catch (ModelDefinitionException e) {
@@ -94,7 +94,7 @@ public class FIBLibrary {
 	}
 
 
-	public boolean componentIsLoaded(ResourceLocation fibResourcePath) {
+	public boolean componentIsLoaded(Resource fibResourcePath) {
 		return _fibDefinitions.get(fibResourcePath) != null;
 	}
 
@@ -114,9 +114,9 @@ public class FIBLibrary {
 			logger.warning("FIB file does not exists: " + fibFile);
 			return null;
 		}
-		FileResourceLocation fibLocation = null;
+		FileResourceImpl fibLocation = null;
 		try {
-			fibLocation = new FileResourceLocation(rl.getDefaultFSResourceLocator(), fibFile.getCanonicalPath(),fibFile.toURI().toURL(),fibFile);
+			fibLocation = new FileResourceImpl(rl.getDefaultFSResourceLocator(), fibFile.getCanonicalPath(),fibFile.toURI().toURL(),fibFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -124,21 +124,21 @@ public class FIBLibrary {
 		return retrieveFIBComponent(fibLocation, useCache, factory);
 	}
 	
-	public FIBComponent retrieveFIBComponent(ResourceLocation fibFile, boolean useCache, FIBModelFactory factory) {
+	public FIBComponent retrieveFIBComponent(Resource fibFile, boolean useCache, FIBModelFactory factory) {
 		FIBComponent fibComponent = _fibDefinitions.get(fibFile);
-		if (!useCache || fibComponent == null || fibComponent.getLastModified().getTime() < fibFile.lastModified()) {
+		if (!useCache || fibComponent == null || fibComponent.getLastModified().before(fibFile.getLastUpdate())) {
 
 			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Load " + fibFile.getURL());
+				logger.fine("Load " + fibFile.getURI());
 			}
 
 
 			InputStream fis = null;
 
 			try {
-				fis = fibFile.openStream();
+				fis = fibFile.openInputStream();
 				FIBComponent component = (FIBComponent) factory.deserialize(fis);
-				component.setLastModified(new Date(fibFile.lastModified()));
+				component.setLastModified(fibFile.getLastUpdate());
 				component.setDefinitionFile(fibFile);
 				_fibDefinitions.put(fibFile, component);
 				return component;
@@ -166,7 +166,7 @@ public class FIBLibrary {
 		return fibComponent;
 	}
 
-	public void removeFIBComponentFromCache(ResourceLocation fibFile) {
+	public void removeFIBComponentFromCache(Resource fibFile) {
 		_fibDefinitions.remove(fibFile);
 	}
 
@@ -176,12 +176,12 @@ public class FIBLibrary {
 	}
 	 */
 
-	public FIBComponent retrieveFIBComponent(ResourceLocation fibResourceLocation) {
+	public FIBComponent retrieveFIBComponent(Resource fibResourceLocation) {
 		return retrieveFIBComponent(fibResourceLocation, true);
 	}
 
-	public FIBComponent retrieveFIBComponent(ResourceLocation fibResourceLocation, boolean useCache) {
-		InputStream inputStream = rl.retrieveResourceAsInputStream(fibResourceLocation);
+	public FIBComponent retrieveFIBComponent(Resource fibResourceLocation, boolean useCache) {
+		InputStream inputStream = fibResourceLocation.openInputStream();
 		try {
 			return retrieveFIBComponent(fibResourceLocation, inputStream, useCache);
 		} finally {
@@ -189,7 +189,7 @@ public class FIBLibrary {
 		}
 	}
 
-	private FIBComponent retrieveFIBComponent(ResourceLocation fibIdentifier, InputStream inputStream, boolean useCache) {
+	private FIBComponent retrieveFIBComponent(Resource fibIdentifier, InputStream inputStream, boolean useCache) {
 		if (!useCache || _fibDefinitions.get(fibIdentifier) == null) {
 
 			try {

@@ -57,8 +57,8 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.model.factory.AccessibleProxyObject;
 import org.openflexo.model.factory.CloneableProxyObject;
 import org.openflexo.model.factory.DeletableProxyObject;
-import org.openflexo.toolbox.ResourceLocation;
-import org.openflexo.toolbox.ResourceLocator;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 import org.openflexo.toolbox.StringUtils;
 
 @ModelEntity(isAbstract = true)
@@ -147,9 +147,9 @@ public interface FIBModelObject extends Bindable, AccessibleProxyObject, Cloneab
 		public static LocalizedDelegateGUIImpl LOCALIZATION;
 
 		static {
-			ResourceLocator rl = ResourceLocator.getResourceLocator();
-			ResourceLocation generalLocalizedDelegate = rl.locateResource("Localized");
-			ResourceLocation fibLocalizedDelegate = rl.locateResource("FIBLocalized");
+			CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
+			Resource generalLocalizedDelegate = rl.locateResource("Localized");
+			Resource fibLocalizedDelegate = rl.locateResource("FIBLocalized");
 
 			if (fibLocalizedDelegate != null) {
 				if (generalLocalizedDelegate != null) {

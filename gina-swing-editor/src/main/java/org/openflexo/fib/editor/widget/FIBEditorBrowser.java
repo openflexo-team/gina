@@ -26,8 +26,8 @@ import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.view.widget.DefaultFIBCustomComponent;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
-import org.openflexo.toolbox.ResourceLocation;
-import org.openflexo.toolbox.ResourceLocator;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 
 /**
  * Browser for FIBEditor elements
@@ -40,9 +40,9 @@ public class FIBEditorBrowser extends DefaultFIBCustomComponent<FIBComponent> {
 
 	protected static final Logger logger = Logger.getLogger(FIBEditorBrowser.class.getPackage().getName());
 
-	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
  
-	public static ResourceLocation FIB_FILE = rl.locateResource("Fib/Browser.fib");
+	public static Resource FIB_FILE = rl.locateResource("Fib/Browser.fib");
 	
 	private final FIBEditorController editorController;
 

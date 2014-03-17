@@ -22,8 +22,8 @@
 
 package com.metaphaseeditor;
 
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 import org.openflexo.toolbox.ImageIconResource;
-import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * 
@@ -33,7 +33,7 @@ public class TableDialog extends javax.swing.JDialog {
 
 	private String tableHtml;
 
-	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 
 	private enum Alignment {
 		NONE("None", null), LEFT("Left", "left"), CENTER("Center", "center"), RIGHT("Right", "right");

@@ -52,14 +52,14 @@ import org.openflexo.fib.utils.BindingSelector;
 import org.openflexo.fib.view.widget.FIBReferencedComponentWidget;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.toolbox.FileResourceLocation;
-import org.openflexo.toolbox.ResourceLocation;
-import org.openflexo.toolbox.ResourceLocator;
+import org.openflexo.rm.FileResourceImpl;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 import org.openflexo.toolbox.StringUtils;
 
 public class ContextualMenu {
 	private static final Logger logger = FlexoLogger.getLogger(ContextualMenu.class.getPackage().getName());
-	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
+	private static final CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 
 	private FIBEditorController editorController;
 	private Hashtable<EditorAction, PopupMenuItem> actions;
@@ -264,7 +264,7 @@ public class ContextualMenu {
 				// logger.info("Relative file path: " + relativeFilePath);
 				FIBReferencedComponent widget = dialogFactory.newFIBReferencedComponent();
 				try {
-					widget.setComponentFile(new FileResourceLocation(this.editorController.getFSResourceLocator(),params.reusableComponentFile));
+					widget.setComponentFile(new FileResourceImpl(this.editorController.getFSResourceLocator(),params.reusableComponentFile));
 				} catch (MalformedURLException e) {
 					logger.severe("Unable to create FileResourceLocation from File: " + params.reusableComponentFile.getName());
 					e.printStackTrace();

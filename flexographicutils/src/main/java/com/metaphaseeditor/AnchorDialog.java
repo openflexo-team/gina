@@ -24,8 +24,8 @@ package com.metaphaseeditor;
 
 import javax.swing.JOptionPane;
 
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 import org.openflexo.toolbox.ImageIconResource;
-import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * 
@@ -33,7 +33,7 @@ import org.openflexo.toolbox.ResourceLocator;
  */
 public class AnchorDialog extends javax.swing.JDialog {
 	private String anchorHtml;
-	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 
 
 	/** Creates new form AnchorDialog */

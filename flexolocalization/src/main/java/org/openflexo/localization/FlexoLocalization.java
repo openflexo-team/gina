@@ -43,7 +43,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.TableColumn;
 
 import org.openflexo.antar.binding.BindingEvaluator;
-import org.openflexo.toolbox.ResourceLocation;
+import org.openflexo.rm.Resource;
 
 /**
  * This utility class implement localization support <br>
@@ -114,7 +114,7 @@ public class FlexoLocalization {
 	 * 
 	 * @param localizedDirectory
 	 */
-	public static void initWith(ResourceLocation localizedDirectory) {
+	public static void initWith(Resource localizedDirectory) {
 		mainLocalizer = new LocalizedDelegateImpl(localizedDirectory, null, false);
 	}
 

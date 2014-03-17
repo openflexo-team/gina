@@ -50,15 +50,15 @@ import org.openflexo.fib.view.FIBView;
 import org.openflexo.fib.view.container.FIBTabPanelView;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 import org.openflexo.swing.ComponentBoundSaver;
-import org.openflexo.toolbox.ResourceLocation;
-import org.openflexo.toolbox.ResourceLocator;
 
 public class FIBInspectorController implements Observer, ChangeListener {
 
 	static final Logger logger = Logger.getLogger(FIBInspectorController.class.getPackage().getName());
 
-	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
+	private static final CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 
 	private JDialog inspectorDialog;
 	private JPanel EMPTY_CONTENT;
@@ -80,23 +80,23 @@ public class FIBInspectorController implements Observer, ChangeListener {
 			e.printStackTrace();
 		}
 
-		ResourceLocation dir = rl.locateResource("EditorInspectors");
+		Resource dir = rl.locateResource("EditorInspectors");
 
-		for (ResourceLocation f : rl.listResources(dir,Pattern.compile(".*[.]inspector"))) {
+		for (Resource f : rl.listResources(dir,Pattern.compile(".*[.]inspector"))) {
 			// System.out.println("Read "+f.getAbsolutePath());
-			logger.info("Loading " + f.getURL());
+			logger.info("Loading " + f.getURI());
 			FIBInspector inspector = (FIBInspector) FIBLibrary.instance().retrieveFIBComponent(f, false, INSPECTOR_FACTORY);
 			if (inspector != null) {
 				if (inspector.getDataClass() != null) {
 					// try {
 					inspectors.put(inspector.getDataClass(), inspector);
-					logger.info("Loaded inspector: " + f.getURL() + " for " + inspector.getDataClass());
+					logger.info("Loaded inspector: " + f.getURI() + " for " + inspector.getDataClass());
 					/*} catch (ClassNotFoundException e) {
 						logger.warning("Not found: " + inspector.getDataClassName());
 					}*/
 				}
 			} else {
-				logger.warning("Not found: " + f.getURL());
+				logger.warning("Not found: " + f.getURI());
 			}
 		}
 

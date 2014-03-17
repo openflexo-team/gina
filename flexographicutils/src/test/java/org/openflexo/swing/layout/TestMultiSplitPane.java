@@ -17,10 +17,10 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 import org.openflexo.swing.layout.MultiSplitLayout.Leaf;
 import org.openflexo.swing.layout.MultiSplitLayout.Node;
 import org.openflexo.swing.layout.MultiSplitLayout.Split;
-import org.openflexo.toolbox.ResourceLocator;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -170,7 +170,7 @@ public class TestMultiSplitPane {
 	}
 
 	protected File getLayoutFile() {
-		ResourceLocator rl = ResourceLocator.getResourceLocator();
+		CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 		return rl.retrieveResourceAsFile(rl.locateResource("testlayout"));
 	}
 

@@ -24,7 +24,7 @@ package com.metaphaseeditor;
 
 import java.io.File;
 
-import org.openflexo.toolbox.ResourceLocator;
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 
 /**
  * 
@@ -35,7 +35,7 @@ public enum SpellCheckDictionaryVersion {
 			"Spellcheck/dictionary/eng_us_strict.zip"), LIBERAL_US("Spellcheck/dictionary/eng_us_liberal.zip"), CUSTOM(null);
 
 
-	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 	
 	private String filename;
 

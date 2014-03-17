@@ -23,10 +23,10 @@ package org.openflexo.fib.editor.test;
 import java.io.File;
 
 import org.openflexo.fib.editor.FIBAbstractEditor;
-import org.openflexo.toolbox.ResourceLocator;
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 
 public class TestClassSelector extends FIBAbstractEditor {
-	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
+	private static final CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 
 	public static File FIB_FILE = rl.retrieveResourceAsFile(rl.locateResource("TestFIB/TestClassSelector.fib"));
 

@@ -43,16 +43,16 @@ import org.openflexo.fib.editor.FIBPreferences;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.utils.FIBIconLibrary;
 import org.openflexo.logging.FlexoLogger;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 import org.openflexo.swing.ComponentBoundSaver;
-import org.openflexo.toolbox.ResourceLocation;
-import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.toolbox.ToolBox;
 
 public class FIBEditorPalette extends JDialog {
 
 	static final Logger logger = FlexoLogger.getLogger(FIBEditor.class.getPackage().getName());
 
-	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
+	private static final CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 
 	private static final Image DROP_OK_IMAGE = FIBIconLibrary.DROP_OK_CURSOR.getImage();
 	private static final Image DROP_KO_IMAGE = FIBIconLibrary.DROP_KO_CURSOR.getImage();
@@ -72,10 +72,10 @@ public class FIBEditorPalette extends JDialog {
 
 						paletteContent = new JPanel(null);
 
-						ResourceLocation dir = rl.locateResource("FIBEditorPalette");
+						Resource dir = rl.locateResource("FIBEditorPalette");
 
-						for (ResourceLocation modelFIBFile : rl.listResources(dir, Pattern.compile(".*[.]fib"))) {
-							String paletteURL = modelFIBFile.getURL().getPath().replace(".fib", ".palette");
+						for (Resource modelFIBFile : rl.listResources(dir, Pattern.compile(".*[.]fib"))) {
+							String paletteURL = modelFIBFile.getURI().replace(".fib", ".palette");
 							
 							FIBComponent modelComponent = FIBLibrary.instance().retrieveFIBComponent(modelFIBFile);
 
@@ -83,7 +83,7 @@ public class FIBEditorPalette extends JDialog {
 							if (ind > 0){
 								paletteURL = paletteURL.substring(ind);
 							}
-							ResourceLocation representationFIBFile = rl.locateResource(paletteURL);
+							Resource representationFIBFile = rl.locateResource(paletteURL);
 
 							FIBComponent representationComponent = null;
 							if (representationFIBFile != null){

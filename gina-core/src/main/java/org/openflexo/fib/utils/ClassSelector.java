@@ -31,9 +31,9 @@ import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
 import org.openflexo.fib.view.FIBView;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 import org.openflexo.swing.TextFieldCustomPopup;
-import org.openflexo.toolbox.ResourceLocation;
-import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * Widget allowing to edit a binding
@@ -45,7 +45,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 	@SuppressWarnings("hiding")
 	static final Logger logger = Logger.getLogger(ClassSelector.class.getPackage().getName());
 
-	public static ResourceLocation FIB_FILE_NAME = ResourceLocator.getResourceLocator().locateResource("Fib/ClassSelector.fib");
+	public static Resource FIB_FILE_NAME = CompositeResourceLocatorImpl.getResourceLocator().locateResource("Fib/ClassSelector.fib");
 
 	private static final Color DEFAULT_COLOR1 = Color.RED;
 	private static final Color DEFAULT_COLOR2 = Color.WHITE;

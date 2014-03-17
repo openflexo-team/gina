@@ -11,7 +11,7 @@ import org.openflexo.model.StringConverterLibrary;
 import org.openflexo.model.StringConverterLibrary.Converter;
 import org.openflexo.model.converter.AWTRectangleConverter;
 import org.openflexo.model.exceptions.InvalidDataException;
-import org.openflexo.toolbox.ResourceLocator;
+import org.openflexo.rm.CompositeResourceLocatorImpl;
 
 public class FIBPreferences {
 
@@ -24,7 +24,7 @@ public class FIBPreferences {
 	public static final String LAST_FILES_COUNT = "LAST_FILES_COUNT";
 	public static final String LAST_FILE = "LAST_FILE";
 
-	private static ResourceLocator rl = ResourceLocator.getResourceLocator();
+	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 
 	private static final Preferences prefs = Preferences.userRoot().node(FIB);
 
