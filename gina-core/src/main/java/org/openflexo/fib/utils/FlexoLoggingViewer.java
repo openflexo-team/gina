@@ -23,20 +23,20 @@ import org.openflexo.logging.LogRecords;
 import org.openflexo.logging.LoggingFilter;
 import org.openflexo.logging.LoggingFilter.FilterType;
 import org.openflexo.rm.Resource;
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.ImageIconResource;
 import org.openflexo.toolbox.StringUtils;
 
 public class FlexoLoggingViewer implements HasPropertyChangeSupport {
 
-	public static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
+	public static ResourceLocator rl = ResourceLocator.getResourceLocator();
 
 	static final Logger logger = Logger.getLogger(FlexoLoggingViewer.class.getPackage().getName());
 
-	public static final Resource LOGGING_VIEWER_FIB_NAME = rl.locateResource("Fib/LoggingViewer.fib");
+	public static final Resource LOGGING_VIEWER_FIB_NAME = ResourceLocator.locateResource("Fib/LoggingViewer.fib");
 
-	public static final ImageIcon FILTER_ICON = new ImageIconResource(rl.locateResource("Icons/Utils/Search.png"));
+	public static final ImageIcon FILTER_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Utils/Search.png"));
 
 	private FlexoLoggingManager loggingManager;
 
@@ -153,7 +153,7 @@ public class FlexoLoggingViewer implements HasPropertyChangeSupport {
 	public File getConfigurationFile() {
 		if (configurationFile == null) {
 			String loggingFileName = loggingManager.getConfigurationFileName();
-			configurationFile = rl.locateResource(loggingFileName);
+			configurationFile = ResourceLocator.locateResource(loggingFileName);
 			/*
 			if (loggingFileName != null && new File(loggingFileName).exists()) {
 				configurationFile = new File(loggingFileName);

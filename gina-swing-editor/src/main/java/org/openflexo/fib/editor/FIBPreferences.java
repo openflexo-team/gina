@@ -11,7 +11,7 @@ import org.openflexo.model.StringConverterLibrary;
 import org.openflexo.model.StringConverterLibrary.Converter;
 import org.openflexo.model.converter.AWTRectangleConverter;
 import org.openflexo.model.exceptions.InvalidDataException;
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 
 public class FIBPreferences {
 
@@ -24,7 +24,7 @@ public class FIBPreferences {
 	public static final String LAST_FILES_COUNT = "LAST_FILES_COUNT";
 	public static final String LAST_FILE = "LAST_FILE";
 
-	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
+	
 
 	private static final Preferences prefs = Preferences.userRoot().node(FIB);
 
@@ -92,7 +92,7 @@ public class FIBPreferences {
 	}
 
 	public static File getLastDirectory() {
-		return getPreferredFile(LAST_DIR, rl.retrieveResourceAsFile(rl.locateResource("Fib")));
+		return getPreferredFile(LAST_DIR, rl.retrieveResourceAsFile(ResourceLocator.locateResource("Fib")));
 	}
 
 	public static void setLastDirectory(File file) {

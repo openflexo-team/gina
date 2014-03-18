@@ -44,7 +44,7 @@ import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.utils.FIBIconLibrary;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.rm.Resource;
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.swing.ComponentBoundSaver;
 import org.openflexo.toolbox.ToolBox;
 
@@ -52,7 +52,7 @@ public class FIBEditorPalette extends JDialog {
 
 	static final Logger logger = FlexoLogger.getLogger(FIBEditor.class.getPackage().getName());
 
-	private static final CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
+	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
 	private static final Image DROP_OK_IMAGE = FIBIconLibrary.DROP_OK_CURSOR.getImage();
 	private static final Image DROP_KO_IMAGE = FIBIconLibrary.DROP_KO_CURSOR.getImage();
@@ -72,7 +72,7 @@ public class FIBEditorPalette extends JDialog {
 
 						paletteContent = new JPanel(null);
 
-						Resource dir = rl.locateResource("FIBEditorPalette");
+						Resource dir = ResourceLocator.locateResource("FIBEditorPalette");
 
 						for (Resource modelFIBFile : rl.listResources(dir, Pattern.compile(".*[.]fib"))) {
 							String paletteURL = modelFIBFile.getURI().replace(".fib", ".palette");
@@ -83,7 +83,7 @@ public class FIBEditorPalette extends JDialog {
 							if (ind > 0){
 								paletteURL = paletteURL.substring(ind);
 							}
-							Resource representationFIBFile = rl.locateResource(paletteURL);
+							Resource representationFIBFile = ResourceLocator.locateResource(paletteURL);
 
 							FIBComponent representationComponent = null;
 							if (representationFIBFile != null){

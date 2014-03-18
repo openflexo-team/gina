@@ -21,14 +21,14 @@ package org.openflexo.fib.editor;
 
 import java.io.File;
 
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.fib.utils.LocalizedDelegateGUIImpl;
 
 public class LocalizedEditorEDITOR {
 
 	public static void main(String[] args) {
 
-		final CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
+		final ResourceLocator rl = ResourceLocator.getResourceLocator();
 		
 		FIBAbstractEditor editor = new FIBAbstractEditor() {
 			@Override

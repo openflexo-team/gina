@@ -29,7 +29,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.ImageIconResource;
 
 /**
@@ -37,7 +37,7 @@ import org.openflexo.toolbox.ImageIconResource;
  * @author Rudolf Visagie
  */
 public class SpecialCharacterDialog extends javax.swing.JDialog {
-	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
+	
 
 	String selectedChars = null;
 
@@ -45,7 +45,7 @@ public class SpecialCharacterDialog extends javax.swing.JDialog {
 	public SpecialCharacterDialog(java.awt.Frame parent, boolean modal) {
 		super(parent, modal);
 		initComponents();
-		setIconImage(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/metaphase16x16.png")).getImage());
+		setIconImage(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/metaphase16x16.png")).getImage());
 
 		setLocationRelativeTo(null);
 

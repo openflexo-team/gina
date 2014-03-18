@@ -75,7 +75,7 @@ import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.ClasspathResourceLocatorImpl;
 import org.openflexo.rm.FileSystemResourceLocatorImpl;
 import org.openflexo.rm.Resource;
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.swing.ComponentBoundSaver;
 import org.openflexo.swing.FlexoFileChooser;
 import org.openflexo.toolbox.ToolBox;
@@ -85,9 +85,9 @@ import org.openflexo.toolbox.ToolBox;
 public class FIBEditor implements FIBGenericEditor {
 
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditor.class.getPackage().getName());
-	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
 	
-	public static Resource COMPONENT_LOCALIZATION_FIB =  rl.locateResource("Fib/ComponentLocalization.fib");
+	
+	public static Resource COMPONENT_LOCALIZATION_FIB =  ResourceLocator.locateResource("Fib/ComponentLocalization.fib");
 
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
 			UnsupportedLookAndFeelException {

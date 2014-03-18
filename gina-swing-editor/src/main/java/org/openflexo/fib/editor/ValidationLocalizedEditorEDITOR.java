@@ -22,7 +22,7 @@ package org.openflexo.fib.editor;
 import java.io.File;
 
 import org.openflexo.fib.model.validation.ValidationIssue;
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 
 public class ValidationLocalizedEditorEDITOR {
 
@@ -35,8 +35,8 @@ public class ValidationLocalizedEditorEDITOR {
 
 			@Override
 			public File getFIBFile() {
-				CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
-				return rl.retrieveResourceAsFile(rl.locateResource("Fib/LocalizedEditor.fib"));
+				ResourceLocator rl = ResourceLocator.getResourceLocator();
+				return rl.retrieveResourceAsFile(ResourceLocator.locateResource("Fib/LocalizedEditor.fib"));
 			}
 		};
 		editor.launch();

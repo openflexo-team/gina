@@ -63,7 +63,7 @@ import org.openflexo.logging.FlexoLogger;
 import org.openflexo.logging.FlexoLoggingManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.Resource;
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.ToolBox;
 
 //TODO: switch to the right editor controller when switching tab
@@ -71,7 +71,7 @@ import org.openflexo.toolbox.ToolBox;
 public abstract class FIBAbstractEditor implements FIBGenericEditor {
 
 
-	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
+	
 	
 	/*public static <T extends FIBAbstractEditor> void main(final Class<T> editor) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -96,10 +96,10 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 
 	// Instanciate a new localizer in directory src/dev/resources/FIBEditorLocalizer
 	// linked to parent localizer (which is Openflexo main localizer)
-	public static LocalizedDelegateGUIImpl LOCALIZATION = new LocalizedDelegateGUIImpl(rl.locateResource("FIBEditorLocalized"),
-			new LocalizedDelegateGUIImpl(rl.locateResource("Localized"), null, false), true);
+	public static LocalizedDelegateGUIImpl LOCALIZATION = new LocalizedDelegateGUIImpl(ResourceLocator.locateResource("FIBEditorLocalized"),
+			new LocalizedDelegateGUIImpl(ResourceLocator.locateResource("Localized"), null, false), true);
 
-	public static Resource COMPONENT_LOCALIZATION_FIB=  rl.locateResource("Fib/ComponentLocalization.fib");
+	public static Resource COMPONENT_LOCALIZATION_FIB=  ResourceLocator.locateResource("Fib/ComponentLocalization.fib");
 
 	final JFrame frame;
 	// private JPanel mainPanel;

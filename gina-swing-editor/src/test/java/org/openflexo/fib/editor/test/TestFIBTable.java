@@ -28,16 +28,16 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.openflexo.fib.editor.FIBAbstractEditor;
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 public class TestFIBTable {
 
 	private static final Logger logger = Logger.getLogger(TestFIBTable.class.getPackage().getName());
 
-	private static final CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
+	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
-	public static File FIB_FILE = rl.retrieveResourceAsFile(rl.locateResource("TestFIB/TestTable2.fib"));
+	public static File FIB_FILE = rl.retrieveResourceAsFile(ResourceLocator.locateResource("TestFIB/TestTable2.fib"));
 
 	public static void main(String[] args) {
 		final User user1 = new User("John", "Doe", "john.doe@yahoo.com");

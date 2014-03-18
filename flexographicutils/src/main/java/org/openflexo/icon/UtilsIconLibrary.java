@@ -2,7 +2,7 @@ package org.openflexo.icon;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.ImageIconResource;
 
 /**
@@ -13,76 +13,76 @@ import org.openflexo.toolbox.ImageIconResource;
  */
 public class UtilsIconLibrary {
 
-	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
+	
 	// Common icons used in the context of utils
 
-	public static final ImageIcon CUSTOM_POPUP_DOWN = new ImageIconResource(rl.locateResource("Icons/CustomPopupDown.png"));
-	public static final ImageIcon CUSTOM_POPUP_DOWN_DISABLED = new ImageIconResource(rl.locateResource("Icons/CustomPopupDownDisabled.png"));
+	public static final ImageIcon CUSTOM_POPUP_DOWN = new ImageIconResource(ResourceLocator.locateResource("Icons/CustomPopupDown.png"));
+	public static final ImageIcon CUSTOM_POPUP_DOWN_DISABLED = new ImageIconResource(ResourceLocator.locateResource("Icons/CustomPopupDownDisabled.png"));
 
-	public static final ImageIcon CUSTOM_POPUP_BUTTON = new ImageIconResource(rl.locateResource("Icons/CustomPopupButton.png"));
-	public static final ImageIcon CUSTOM_POPUP_OPEN_BUTTON = new ImageIconResource(rl.locateResource("Icons/CustomPopupOpenButton.png"));
+	public static final ImageIcon CUSTOM_POPUP_BUTTON = new ImageIconResource(ResourceLocator.locateResource("Icons/CustomPopupButton.png"));
+	public static final ImageIcon CUSTOM_POPUP_OPEN_BUTTON = new ImageIconResource(ResourceLocator.locateResource("Icons/CustomPopupOpenButton.png"));
 
-	public static final ImageIcon CLOSE_TAB_ICON = new ImageIconResource(rl.locateResource("Icons/Actions/CloseTab.png"));
-	public static final ImageIcon CLOSE_TAB_HOVER_ICON = new ImageIconResource(rl.locateResource("Icons/Actions/CloseTabHover.png"));
-	public static final ImageIcon CLOSE_TAB_PRESSED_ICON = new ImageIconResource(rl.locateResource("Icons/Actions/CloseTabPressed.png"));
+	public static final ImageIcon CLOSE_TAB_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Actions/CloseTab.png"));
+	public static final ImageIcon CLOSE_TAB_HOVER_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Actions/CloseTabHover.png"));
+	public static final ImageIcon CLOSE_TAB_PRESSED_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Actions/CloseTabPressed.png"));
 
-	public static final ImageIcon ARROW_DOWN = new ImageIconResource(rl.locateResource("Icons/ArrowDown.gif"));
-	public static final ImageIcon ARROW_UP = new ImageIconResource(rl.locateResource("Icons/ArrowUp.gif"));
-	public static final ImageIcon ARROW_LEFT = new ImageIconResource(rl.locateResource("Icons/ArrowLeft.gif"));
-	public static final ImageIcon ARROW_RIGHT = new ImageIconResource(rl.locateResource("Icons/ArrowRight.gif"));
+	public static final ImageIcon ARROW_DOWN = new ImageIconResource(ResourceLocator.locateResource("Icons/ArrowDown.gif"));
+	public static final ImageIcon ARROW_UP = new ImageIconResource(ResourceLocator.locateResource("Icons/ArrowUp.gif"));
+	public static final ImageIcon ARROW_LEFT = new ImageIconResource(ResourceLocator.locateResource("Icons/ArrowLeft.gif"));
+	public static final ImageIcon ARROW_RIGHT = new ImageIconResource(ResourceLocator.locateResource("Icons/ArrowRight.gif"));
 
-	public static final ImageIcon ARROW_DOWN_2 = new ImageIconResource(rl.locateResource("Icons/Arrows/Down.png"));
-	public static final ImageIcon ARROW_UP_2 = new ImageIconResource(rl.locateResource("Icons/Arrows/Up.png"));
-	public static final ImageIcon ARROW_BOTTOM_2 = new ImageIconResource(rl.locateResource("Icons/Arrows/Bottom.png"));
-	public static final ImageIcon ARROW_TOP_2 = new ImageIconResource(rl.locateResource("Icons/Arrows/Top.png"));
+	public static final ImageIcon ARROW_DOWN_2 = new ImageIconResource(ResourceLocator.locateResource("Icons/Arrows/Down.png"));
+	public static final ImageIcon ARROW_UP_2 = new ImageIconResource(ResourceLocator.locateResource("Icons/Arrows/Up.png"));
+	public static final ImageIcon ARROW_BOTTOM_2 = new ImageIconResource(ResourceLocator.locateResource("Icons/Arrows/Bottom.png"));
+	public static final ImageIcon ARROW_TOP_2 = new ImageIconResource(ResourceLocator.locateResource("Icons/Arrows/Top.png"));
 
 	// Diff icons
 
-	public static final ImageIcon ADDITION_ICON = new ImageIconResource(rl.locateResource("Icons/IconsDiff/Addition.gif"));
-	public static final ImageIcon REMOVAL_ICON = new ImageIconResource(rl.locateResource("Icons/IconsDiff/Removal.gif"));
-	public static final ImageIcon ADDITION_LEFT_ICON = new ImageIconResource(rl.locateResource("Icons/IconsDiff/Addition-left.gif"));
-	public static final ImageIcon REMOVAL_LEFT_ICON = new ImageIconResource(rl.locateResource("Icons/IconsDiff/Removal-left.gif"));
-	public static final ImageIcon MODIFICATION_LEFT_ICON = new ImageIconResource(rl.locateResource("Icons/IconsDiff/Modification-left.gif"));
-	public static final ImageIcon ADDITION_RIGHT_ICON = new ImageIconResource(rl.locateResource("Icons/IconsDiff/Addition-right.gif"));
-	public static final ImageIcon REMOVAL_RIGHT_ICON = new ImageIconResource(rl.locateResource("Icons/IconsDiff/Removal-right.gif"));
-	public static final ImageIcon MODIFICATION_RIGHT_ICON = new ImageIconResource(rl.locateResource("Icons/IconsDiff/Modification-right.gif"));
+	public static final ImageIcon ADDITION_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsDiff/Addition.gif"));
+	public static final ImageIcon REMOVAL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsDiff/Removal.gif"));
+	public static final ImageIcon ADDITION_LEFT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsDiff/Addition-left.gif"));
+	public static final ImageIcon REMOVAL_LEFT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsDiff/Removal-left.gif"));
+	public static final ImageIcon MODIFICATION_LEFT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsDiff/Modification-left.gif"));
+	public static final ImageIcon ADDITION_RIGHT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsDiff/Addition-right.gif"));
+	public static final ImageIcon REMOVAL_RIGHT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsDiff/Removal-right.gif"));
+	public static final ImageIcon MODIFICATION_RIGHT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsDiff/Modification-right.gif"));
 
-	public static final ImageIcon RIGHT_UPDATE_ICON = new ImageIconResource(rl.locateResource("Icons/IconsDiff/RightUpdate.gif"));
-	public static final ImageIcon LEFT_UPDATE_ICON = new ImageIconResource(rl.locateResource("Icons/IconsDiff/LeftUpdate.gif"));
+	public static final ImageIcon RIGHT_UPDATE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsDiff/RightUpdate.gif"));
+	public static final ImageIcon LEFT_UPDATE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsDiff/LeftUpdate.gif"));
 
 	// Merge icons
 
-	public static final ImageIcon LEFT_ADDITION_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/r_outadd_ov2.gif"));
-	public static final ImageIcon LEFT_MODIFICATION_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/r_outchg_ov2.gif"));
-	public static final ImageIcon LEFT_REMOVAL_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/r_outdel_ov2.gif"));
-	public static final ImageIcon RIGHT_ADDITION_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/r_inadd_ov2.gif"));
-	public static final ImageIcon RIGHT_MODIFICATION_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/r_inchg_ov2.gif"));
-	public static final ImageIcon RIGHT_REMOVAL_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/r_indel_ov2.gif"));
-	public static final ImageIcon CONFLICT_ADDITION_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/confadd_ov2.gif"));
-	public static final ImageIcon CONFLICT_MODIFICATION_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/confchg_ov2.gif"));
-	public static final ImageIcon CONFLICT_REMOVAL_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/confdel_ov2.gif"));
-	public static final ImageIcon CONFLICT_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/ConflictUnresolved.gif"));
-	public static final ImageIcon RIGHT_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/r_inchg_ov.gif"));
-	public static final ImageIcon LEFT_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/r_outchg_ov.gif"));
-	public static final ImageIcon ACCEPT_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/Accept.gif"));
-	public static final ImageIcon REFUSE_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/Refuse.gif"));
-	public static final ImageIcon CHOOSE_LEFT_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/Left.gif"));
-	public static final ImageIcon CHOOSE_RIGHT_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/Right.gif"));
-	public static final ImageIcon CHOOSE_NONE = new ImageIconResource(rl.locateResource("Icons/IconsMerge/Refuse.gif"));
-	public static final ImageIcon CHOOSE_BOTH_LEFT_FIRST = new ImageIconResource(rl.locateResource("Icons/IconsMerge/LeftRight.gif"));
-	public static final ImageIcon CHOOSE_BOTH_RIGHT_FIRST = new ImageIconResource(rl.locateResource("Icons/IconsMerge/RightLeft.gif"));
-	public static final ImageIcon CUSTOM_EDITING_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/CustomEditing.gif"));
-	public static final ImageIcon AUTOMATIC_MERGE_RESOLVING_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/SmartConflictResolving.gif"));
-	public static final ImageIcon SMART_CONFLICT_RESOLVED_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/SmartConflictResolved.gif"));
-	public static final ImageIcon SMART_CONFLICT_UNRESOLVED_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/SmartConflictUnresolved.gif"));
-	public static final ImageIcon CUSTOM_EDITING_RESOLVED_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/CustomEditingResolved.gif"));
-	public static final ImageIcon CUSTOM_EDITING_UNRESOLVED_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/CustomEditingUnresolved.gif"));
-	public static final ImageIcon CONFLICT_RESOLVED_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/ConflictResolved.gif"));
-	public static final ImageIcon CONFLICT_UNRESOLVED_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/ConflictUnresolved.gif"));
-	public static final ImageIcon ADD_CONFLICT_RESOLVED_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/AddConflictResolved.gif"));
-	public static final ImageIcon ADD_CONFLICT_UNRESOLVED_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/AddConflictUnresolved.gif"));
-	public static final ImageIcon DEL_CONFLICT_RESOLVED_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/DeleteConflictResolved.gif"));
-	public static final ImageIcon DEL_CONFLICT_UNRESOLVED_ICON = new ImageIconResource(rl.locateResource("Icons/IconsMerge/DeleteConflictUnresolved.gif"));
+	public static final ImageIcon LEFT_ADDITION_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/r_outadd_ov2.gif"));
+	public static final ImageIcon LEFT_MODIFICATION_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/r_outchg_ov2.gif"));
+	public static final ImageIcon LEFT_REMOVAL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/r_outdel_ov2.gif"));
+	public static final ImageIcon RIGHT_ADDITION_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/r_inadd_ov2.gif"));
+	public static final ImageIcon RIGHT_MODIFICATION_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/r_inchg_ov2.gif"));
+	public static final ImageIcon RIGHT_REMOVAL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/r_indel_ov2.gif"));
+	public static final ImageIcon CONFLICT_ADDITION_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/confadd_ov2.gif"));
+	public static final ImageIcon CONFLICT_MODIFICATION_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/confchg_ov2.gif"));
+	public static final ImageIcon CONFLICT_REMOVAL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/confdel_ov2.gif"));
+	public static final ImageIcon CONFLICT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/ConflictUnresolved.gif"));
+	public static final ImageIcon RIGHT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/r_inchg_ov.gif"));
+	public static final ImageIcon LEFT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/r_outchg_ov.gif"));
+	public static final ImageIcon ACCEPT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/Accept.gif"));
+	public static final ImageIcon REFUSE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/Refuse.gif"));
+	public static final ImageIcon CHOOSE_LEFT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/Left.gif"));
+	public static final ImageIcon CHOOSE_RIGHT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/Right.gif"));
+	public static final ImageIcon CHOOSE_NONE = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/Refuse.gif"));
+	public static final ImageIcon CHOOSE_BOTH_LEFT_FIRST = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/LeftRight.gif"));
+	public static final ImageIcon CHOOSE_BOTH_RIGHT_FIRST = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/RightLeft.gif"));
+	public static final ImageIcon CUSTOM_EDITING_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/CustomEditing.gif"));
+	public static final ImageIcon AUTOMATIC_MERGE_RESOLVING_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/SmartConflictResolving.gif"));
+	public static final ImageIcon SMART_CONFLICT_RESOLVED_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/SmartConflictResolved.gif"));
+	public static final ImageIcon SMART_CONFLICT_UNRESOLVED_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/SmartConflictUnresolved.gif"));
+	public static final ImageIcon CUSTOM_EDITING_RESOLVED_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/CustomEditingResolved.gif"));
+	public static final ImageIcon CUSTOM_EDITING_UNRESOLVED_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/CustomEditingUnresolved.gif"));
+	public static final ImageIcon CONFLICT_RESOLVED_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/ConflictResolved.gif"));
+	public static final ImageIcon CONFLICT_UNRESOLVED_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/ConflictUnresolved.gif"));
+	public static final ImageIcon ADD_CONFLICT_RESOLVED_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/AddConflictResolved.gif"));
+	public static final ImageIcon ADD_CONFLICT_UNRESOLVED_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/AddConflictUnresolved.gif"));
+	public static final ImageIcon DEL_CONFLICT_RESOLVED_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/DeleteConflictResolved.gif"));
+	public static final ImageIcon DEL_CONFLICT_UNRESOLVED_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IconsMerge/DeleteConflictUnresolved.gif"));
 
 	/* Icon markers */
 	public static final IconMarker LEFT_ADDITION = new IconMarker(LEFT_ADDITION_ICON, 12, 7);
@@ -95,22 +95,22 @@ public class UtilsIconLibrary {
 
 	// Utils icons
 
-	public static final ImageIcon OK_ICON = new ImageIconResource(rl.locateResource("Icons/Utils/OK.gif"));
-	public static final ImageIcon WARNING_ICON = new ImageIconResource(rl.locateResource("Icons/Utils/Warning.gif"));
-	public static final ImageIcon ERROR_ICON = new ImageIconResource(rl.locateResource("Icons/Utils/Error.gif"));
+	public static final ImageIcon OK_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Utils/OK.gif"));
+	public static final ImageIcon WARNING_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Utils/Warning.gif"));
+	public static final ImageIcon ERROR_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Utils/Error.gif"));
 
-	public static final ImageIcon MOVE_UP_ICON = new ImageIconResource(rl.locateResource("Icons/Utils/Up.gif"));
-	public static final ImageIcon MOVE_DOWN_ICON = new ImageIconResource(rl.locateResource("Icons/Utils/Down.gif"));
-	public static final ImageIcon MOVE_LEFT_ICON = new ImageIconResource(rl.locateResource("Icons/Utils/Left.gif"));
-	public static final ImageIcon MOVE_RIGHT_ICON = new ImageIconResource(rl.locateResource("Icons/Utils/Right.gif"));
-	public static final ImageIcon CLOCK_ICON = new ImageIconResource(rl.locateResource("Icons/Clock.gif"));
-	public static final ImageIcon SEPARATOR_ICON = new ImageIconResource(rl.locateResource("Icons/Utils/Separator.gif"));
-	public static final ImageIcon SEARCH_ICON = new ImageIconResource(rl.locateResource("Icons/Utils/Search.png"));
-	public static final ImageIcon CANCEL_ICON = new ImageIconResource(rl.locateResource("Icons/Utils/Cancel.png"));
+	public static final ImageIcon MOVE_UP_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Utils/Up.gif"));
+	public static final ImageIcon MOVE_DOWN_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Utils/Down.gif"));
+	public static final ImageIcon MOVE_LEFT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Utils/Left.gif"));
+	public static final ImageIcon MOVE_RIGHT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Utils/Right.gif"));
+	public static final ImageIcon CLOCK_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Clock.gif"));
+	public static final ImageIcon SEPARATOR_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Utils/Separator.gif"));
+	public static final ImageIcon SEARCH_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Utils/Search.png"));
+	public static final ImageIcon CANCEL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Utils/Cancel.png"));
 
 	// Flags
-	public static final ImageIcon UK_FLAG = new ImageIconResource(rl.locateResource("Icons/Lang/uk-flag.gif"));
-	public static final ImageIcon FR_FLAG = new ImageIconResource(rl.locateResource("Icons/Lang/fr-flag.gif"));
-	public static final ImageIcon NE_FLAG = new ImageIconResource(rl.locateResource("Icons/Lang/ne-flag.gif"));
+	public static final ImageIcon UK_FLAG = new ImageIconResource(ResourceLocator.locateResource("Icons/Lang/uk-flag.gif"));
+	public static final ImageIcon FR_FLAG = new ImageIconResource(ResourceLocator.locateResource("Icons/Lang/fr-flag.gif"));
+	public static final ImageIcon NE_FLAG = new ImageIconResource(ResourceLocator.locateResource("Icons/Lang/ne-flag.gif"));
 
 }

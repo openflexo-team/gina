@@ -21,14 +21,14 @@ package org.openflexo.fib.editor;
 
 import java.io.File;
 
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 
 public class FIBEmbeddedEditor {
 
 	private File fibFile;
 	private Object[] data;
 	
-	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
+	
 
 	private class Editor extends FIBAbstractEditor {
 
@@ -59,7 +59,7 @@ public class FIBEmbeddedEditor {
 	
 	public FIBEmbeddedEditor(String aFileName, Object object) {
 		super();
-		this.fibFile = rl.retrieveResourceAsFile(rl.locateResource(aFileName));
+		this.fibFile = rl.retrieveResourceAsFile(ResourceLocator.locateResource(aFileName));
 		this.data = new Object[1];
 		this.data[0] = object;
 		FIBAbstractEditor.init(new Editor());

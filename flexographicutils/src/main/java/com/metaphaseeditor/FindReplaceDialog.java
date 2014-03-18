@@ -29,7 +29,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import javax.swing.text.html.HTMLDocument;
 
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.ImageIconResource;
 
 /**
@@ -41,14 +41,14 @@ public class FindReplaceDialog extends javax.swing.JDialog {
 	private JTextPane htmlTextPane;
 	private int lastMatchPos = -1;
 	private boolean replacePerformed = false;
-	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
+	
 
 
 	/** Creates new form FindReplaceDialog */
 	public FindReplaceDialog(java.awt.Frame parent, boolean modal, JTextPane htmlTextPane) {
 		super(parent, modal);
 		initComponents();
-		setIconImage(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/metaphase16x16.png")).getImage());
+		setIconImage(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/metaphase16x16.png")).getImage());
 		this.htmlTextPane = htmlTextPane;
 
 		setLocationRelativeTo(null);

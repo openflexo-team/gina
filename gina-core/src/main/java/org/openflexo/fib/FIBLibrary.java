@@ -43,12 +43,12 @@ import org.openflexo.model.exceptions.InvalidDataException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 
 public class FIBLibrary {
 
 	static final Logger logger = Logger.getLogger(FIBLibrary.class.getPackage().getName());
-	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
+	
 
 	private static FIBLibrary _current;
 
@@ -116,7 +116,7 @@ public class FIBLibrary {
 		}
 		FileResourceImpl fibLocation = null;
 		try {
-			fibLocation = new FileResourceImpl(rl.getDefaultFSResourceLocator(), fibFile.getCanonicalPath(),fibFile.toURI().toURL(),fibFile);
+			fibLocation = new FileResourceImpl(fibFile.getCanonicalPath(),fibFile.toURI().toURL(),fibFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

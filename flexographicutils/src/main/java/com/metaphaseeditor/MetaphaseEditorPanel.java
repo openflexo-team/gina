@@ -104,7 +104,7 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.swing.layout.WrapLayout;
 import org.openflexo.toolbox.HTMLUtils;
 import org.openflexo.toolbox.ImageIconResource;
@@ -129,7 +129,7 @@ import com.swabunga.spell.swing.JTextComponentSpellChecker;
  */
 public class MetaphaseEditorPanel extends JPanel {
 
-	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
+	
 	
 	public static final String SOURCE_PANEL_KEY = "SourcePanel";
 	public static final String SOURCE_BUTTON_KEY = "SourcePanel.SourceButton";
@@ -465,114 +465,114 @@ public class MetaphaseEditorPanel extends JPanel {
 		findReplaceAction = new FindReplaceAction("Find/Replace", htmlTextPane);
 
 		cutButton.setAction(cutAction);
-		cutButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/cut.png")));
+		cutButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/cut.png")));
 		cutButton.setText("");
 		cutButton.setToolTipText("Cut");
 
 		copyButton.setAction(copyAction);
-		copyButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/copy.png")));
+		copyButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/copy.png")));
 		copyButton.setText("");
 		copyButton.setToolTipText("Copy");
 
 		pasteButton.setAction(pasteAction);
-		pasteButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/paste.png")));
+		pasteButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/paste.png")));
 		pasteButton.setText("");
 		pasteButton.setToolTipText("Paste");
 
 		undoButton.setAction(undoAction);
-		undoButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/undo.png")));
+		undoButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/undo.png")));
 		undoButton.setText("");
 		undoButton.setToolTipText("Undo");
 
 		redoButton.setAction(redoAction);
-		redoButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/redo.png")));
+		redoButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/redo.png")));
 		redoButton.setText("");
 		redoButton.setToolTipText("Redo");
 
 		findButton.setAction(findReplaceAction);
-		findButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/find.png")));
+		findButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/find.png")));
 		findButton.setText("");
 		findButton.setToolTipText("Find");
 
 		replaceButton.setAction(findReplaceAction);
-		replaceButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/replace.png")));
+		replaceButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/replace.png")));
 		replaceButton.setText("");
 		replaceButton.setToolTipText("Replace");
 
 		clearFormattingButton.setAction(new ClearFormattingAction(this, "Remove Format"));
-		clearFormattingButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/removeformat.png")));
+		clearFormattingButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/removeformat.png")));
 		clearFormattingButton.setText("");
 		clearFormattingButton.setToolTipText("Remove Format");
 
 		boldButton.setAction(new HTMLEditorKit.BoldAction());
-		boldButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/bold.png")));
+		boldButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/bold.png")));
 		boldButton.setText("");
 		boldButton.setToolTipText("Bold");
 
 		italicButton.setAction(new HTMLEditorKit.ItalicAction());
-		italicButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/italic.png")));
+		italicButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/italic.png")));
 		italicButton.setText("");
 		italicButton.setToolTipText("Italic");
 
 		underlineButton.setAction(new HTMLEditorKit.UnderlineAction());
-		underlineButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/underline.png")));
+		underlineButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/underline.png")));
 		underlineButton.setText("");
 		underlineButton.setToolTipText("Underline");
 
 		strikethroughButton.setAction(new StrikeThroughAction());
-		strikethroughButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/strikethrough.png")));
+		strikethroughButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/strikethrough.png")));
 		strikethroughButton.setText("");
 		strikethroughButton.setToolTipText("Strike Through");
 
 		subscriptButton.setAction(new SubscriptAction());
-		subscriptButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/subscript.png")));
+		subscriptButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/subscript.png")));
 		subscriptButton.setText("");
 		subscriptButton.setToolTipText("Subscript");
 
 		superscriptButton.setAction(new SuperscriptAction());
-		superscriptButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/superscript.png")));
+		superscriptButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/superscript.png")));
 		superscriptButton.setText("");
 		superscriptButton.setToolTipText("Superscript");
 
 		// TODO: change increase and decrease indent to add inner <li> when
 		// inside bulleted or numbered list
 		increaseIndentButton.setAction(new IncreaseIndentAction("Increase Indent", this));
-		increaseIndentButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/incindent.png")));
+		increaseIndentButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/incindent.png")));
 		increaseIndentButton.setText("");
 		increaseIndentButton.setToolTipText("Increase Indent");
 
 		decreaseIndentButton.setAction(new DecreaseIndentAction("Decrease Indent", this));
-		decreaseIndentButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/decindent.png")));
+		decreaseIndentButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/decindent.png")));
 		decreaseIndentButton.setText("");
 		decreaseIndentButton.setToolTipText("Decrease Indent");
 
 		blockQuoteButton.setAction(new FormatAction(this, "Block Quote", Tag.BLOCKQUOTE));
-		blockQuoteButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/blockquote.png")));
+		blockQuoteButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/blockquote.png")));
 		blockQuoteButton.setText("");
 		blockQuoteButton.setToolTipText("Block Quote");
 
 		leftJustifyButton.setAction(new HTMLEditorKit.AlignmentAction("Left Align", StyleConstants.ALIGN_LEFT));
-		leftJustifyButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/leftjustify.png")));
+		leftJustifyButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/leftjustify.png")));
 		leftJustifyButton.setText("");
 		leftJustifyButton.setToolTipText("Left Justify");
 
 		centerJustifyButton.setAction(new HTMLEditorKit.AlignmentAction("Center Align", StyleConstants.ALIGN_CENTER));
-		centerJustifyButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/centerjustify.png")));
+		centerJustifyButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/centerjustify.png")));
 		centerJustifyButton.setText("");
 		centerJustifyButton.setToolTipText("Center Justify");
 
 		rightJustifyButton.setAction(new HTMLEditorKit.AlignmentAction("Left Align", StyleConstants.ALIGN_RIGHT));
-		rightJustifyButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/rightjustify.png")));
+		rightJustifyButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/rightjustify.png")));
 		rightJustifyButton.setText("");
 		rightJustifyButton.setToolTipText("Right Justify");
 
 		blockJustifyButton.setAction(new HTMLEditorKit.AlignmentAction("Justified Align", StyleConstants.ALIGN_JUSTIFIED));
-		blockJustifyButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/blockjustify.png")));
+		blockJustifyButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/blockjustify.png")));
 		blockJustifyButton.setText("");
 		blockJustifyButton.setToolTipText("Block Justify");
 
 		unlinkButton.setAction(new UnlinkAction(this, "Unlink"));
-		unlinkButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/unlink.png")));
+		unlinkButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/unlink.png")));
 		unlinkButton.setText("");
 		unlinkButton.setToolTipText("Unlink");
 
@@ -580,7 +580,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		// other than P, ie. TD or H1
 		insertHorizontalLineButton.setAction(new HTMLEditorKit.InsertHTMLTextAction("Insert Horizontal Line", "<hr/>", Tag.P, Tag.HR,
 				Tag.BODY, Tag.HR));
-		insertHorizontalLineButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/horizontalline.png")));
+		insertHorizontalLineButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/horizontalline.png")));
 		insertHorizontalLineButton.setText("");
 		insertHorizontalLineButton.setToolTipText("Insert Horizontal Line");
 
@@ -624,17 +624,17 @@ public class MetaphaseEditorPanel extends JPanel {
 		cutMenuItem.setAction(cutAction);
 		cutMenuItem.setText("Cut");
 		cutMenuItem.setMnemonic('C');
-		cutMenuItem.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/cut.png")));
+		cutMenuItem.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/cut.png")));
 		JMenuItem copyMenuItem = new JMenuItem();
 		copyMenuItem.setAction(copyAction);
 		copyMenuItem.setText("Copy");
 		copyMenuItem.setMnemonic('o');
-		copyMenuItem.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/copy.png")));
+		copyMenuItem.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/copy.png")));
 		JMenuItem pasteMenuItem = new JMenuItem();
 		pasteMenuItem.setAction(pasteAction);
 		pasteMenuItem.setText("Paste");
 		pasteMenuItem.setMnemonic('P');
-		pasteMenuItem.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/paste.png")));
+		pasteMenuItem.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/paste.png")));
 		contextMenu.add(cutMenuItem);
 		contextMenu.add(copyMenuItem);
 		contextMenu.add(pasteMenuItem);
@@ -741,15 +741,15 @@ public class MetaphaseEditorPanel extends JPanel {
 
 		htmlTextPane = new javax.swing.JTextPane();
 
-		cutButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/cut.png"))); // NOI18N
+		cutButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/cut.png"))); // NOI18N
 		cutButton.setToolTipText("Cut");
 		cutButton.setName(CUT_BUTTON_KEY);
 
-		copyButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/copy.png"))); // NOI18N
+		copyButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/copy.png"))); // NOI18N
 		copyButton.setToolTipText("Copy");
 		copyButton.setName(COPY_BUTTON_KEY);
 
-		pasteAsTextButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/paste_as_text.png"))); // NOI18N
+		pasteAsTextButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/paste_as_text.png"))); // NOI18N
 		pasteAsTextButton.setToolTipText("Paste as plain text");
 		pasteAsTextButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -759,11 +759,11 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		pasteAsTextButton.setName(PASTE_AS_TEXT_BUTTON_KEY);
 
-		pasteButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/paste.png"))); // NOI18N
+		pasteButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/paste.png"))); // NOI18N
 		pasteButton.setToolTipText("Paste");
 		pasteButton.setName(PASTE_BUTTON_KEY);
 
-		saveButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/save.png"))); // NOI18N
+		saveButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/save.png"))); // NOI18N
 		saveButton.setToolTipText("Save");
 		saveButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -773,7 +773,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		saveButton.setName(SAVE_BUTTON_KEY);
 
-		newButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/newpage.png"))); // NOI18N
+		newButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/newpage.png"))); // NOI18N
 		newButton.setToolTipText("New");
 		newButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -783,7 +783,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		newButton.setName(NEW_BUTTON_KEY);
 
-		previewButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/preview.png"))); // NOI18N
+		previewButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/preview.png"))); // NOI18N
 		previewButton.setToolTipText("Preview");
 		previewButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -793,7 +793,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		previewButton.setName(PREVIEW_BUTTON_KEY);
 
-		openButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/open.png"))); // NOI18N
+		openButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/open.png"))); // NOI18N
 		openButton.setToolTipText("Open");
 		openButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -803,7 +803,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		openButton.setName(OPEN_BUTTON_KEY);
 
-		printButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/print.png"))); // NOI18N
+		printButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/print.png"))); // NOI18N
 		printButton.setToolTipText("Print");
 		printButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -813,7 +813,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		printButton.setName(PRINT_BUTTON_KEY);
 
-		spellcheckButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/spellcheck.png"))); // NOI18N
+		spellcheckButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/spellcheck.png"))); // NOI18N
 		spellcheckButton.setToolTipText("Check Spelling");
 		spellcheckButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -823,23 +823,23 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		spellcheckButton.setName(SPELL_CHECK_BUTTON_KEY);
 
-		undoButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/undo.png"))); // NOI18N
+		undoButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/undo.png"))); // NOI18N
 		undoButton.setToolTipText("Undo");
 		undoButton.setName(UNDO_BUTTON_KEY);
 
-		redoButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/redo.png"))); // NOI18N
+		redoButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/redo.png"))); // NOI18N
 		redoButton.setToolTipText("Redo");
 		redoButton.setName(REDO_BUTTON_KEY);
 
-		findButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/find.png"))); // NOI18N
+		findButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/find.png"))); // NOI18N
 		findButton.setToolTipText("Find");
 		findButton.setName(FIND_BUTTON_KEY);
 
-		replaceButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/replace.png"))); // NOI18N
+		replaceButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/replace.png"))); // NOI18N
 		replaceButton.setToolTipText("Replace");
 		replaceButton.setName(REPLACE_BUTTON_KEY);
 
-		selectAllButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/selectall.png"))); // NOI18N
+		selectAllButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/selectall.png"))); // NOI18N
 		selectAllButton.setToolTipText("Select All");
 		selectAllButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -849,35 +849,35 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		selectAllButton.setName(SELECT_ALL_BUTTON_KEY);
 
-		clearFormattingButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/removeformat.png"))); // NOI18N
+		clearFormattingButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/removeformat.png"))); // NOI18N
 		clearFormattingButton.setToolTipText("Remove Format");
 		clearFormattingButton.setName(CLEAR_FORMATTING_BUTTON_KEY);
 
-		boldButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/bold.png"))); // NOI18N
+		boldButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/bold.png"))); // NOI18N
 		boldButton.setToolTipText("Bold");
 		boldButton.setName(BOLD_BUTTON_KEY);
 
-		italicButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/italic.png"))); // NOI18N
+		italicButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/italic.png"))); // NOI18N
 		italicButton.setToolTipText("Italic");
 		italicButton.setName(ITALIC_BUTTON_KEY);
 
-		strikethroughButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/strikethrough.png"))); // NOI18N
+		strikethroughButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/strikethrough.png"))); // NOI18N
 		strikethroughButton.setToolTipText("Strike Through");
 		strikethroughButton.setName(STRIKE_BUTTON_KEY);
 
-		underlineButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/underline.png"))); // NOI18N
+		underlineButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/underline.png"))); // NOI18N
 		underlineButton.setToolTipText("Underline");
 		underlineButton.setName(UNDERLINE_BUTTON_KEY);
 
-		subscriptButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/subscript.png"))); // NOI18N
+		subscriptButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/subscript.png"))); // NOI18N
 		subscriptButton.setToolTipText("Subscript");
 		subscriptButton.setName(SUB_SCRIPT_BUTTON_KEY);
 
-		superscriptButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/superscript.png"))); // NOI18N
+		superscriptButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/superscript.png"))); // NOI18N
 		superscriptButton.setToolTipText("Superscript");
 		superscriptButton.setName(SUPER_SCRIPT_BUTTON_KEY);
 
-		insertRemoveNumberedListButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/numberlist.png"))); // NOI18N
+		insertRemoveNumberedListButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/numberlist.png"))); // NOI18N
 		insertRemoveNumberedListButton.setToolTipText("Insert/Remove Numbered List");
 		insertRemoveNumberedListButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -887,7 +887,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		insertRemoveNumberedListButton.setName(NUMBERED_LIST_BUTTON_KEY);
 
-		insertRemoveBulletedListButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/bulletlist.png"))); // NOI18N
+		insertRemoveBulletedListButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/bulletlist.png"))); // NOI18N
 		insertRemoveBulletedListButton.setToolTipText("Insert/Remove Bulleted List");
 		insertRemoveBulletedListButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -897,15 +897,15 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		insertRemoveBulletedListButton.setName(BULLETED_BUTTON_KEY);
 
-		decreaseIndentButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/decindent.png"))); // NOI18N
+		decreaseIndentButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/decindent.png"))); // NOI18N
 		decreaseIndentButton.setToolTipText("Decrease Indent");
 		decreaseIndentButton.setName(DECREASE_INDENT_BUTTON_KEY);
 
-		increaseIndentButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/incindent.png"))); // NOI18N
+		increaseIndentButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/incindent.png"))); // NOI18N
 		increaseIndentButton.setToolTipText("Increase Indent");
 		increaseIndentButton.setName(INCREASE_INDENT_BUTTON_KEY);
 
-		createDivButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/creatediv.png"))); // NOI18N
+		createDivButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/creatediv.png"))); // NOI18N
 		createDivButton.setToolTipText("Create Div Container");
 		createDivButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -915,11 +915,11 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		createDivButton.setName(DIV_BUTTON_KEY);
 
-		blockQuoteButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/blockquote.png"))); // NOI18N
+		blockQuoteButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/blockquote.png"))); // NOI18N
 		blockQuoteButton.setToolTipText("Block Quote");
 		blockQuoteButton.setName(BLOCK_QUOTE_BUTTON_KEY);
 
-		createParagraphButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/createparagraph.png"))); // NOI18N
+		createParagraphButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/createparagraph.png"))); // NOI18N
 		createParagraphButton.setToolTipText("Create Paragraph");
 		createParagraphButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -929,23 +929,23 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		createParagraphButton.setName(PARAGRAPH_BUTTON_KEY);
 
-		leftJustifyButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/leftjustify.png"))); // NOI18N
+		leftJustifyButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/leftjustify.png"))); // NOI18N
 		leftJustifyButton.setToolTipText("Left Justify");
 		leftJustifyButton.setName(LEFT_JUSTIFY_BUTTON_KEY);
 
-		centerJustifyButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/centerjustify.png"))); // NOI18N
+		centerJustifyButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/centerjustify.png"))); // NOI18N
 		centerJustifyButton.setToolTipText("Center Justify");
 		centerJustifyButton.setName(CENTER_JUSTIFY_BUTTON_KEY);
 
-		blockJustifyButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/blockjustify.png"))); // NOI18N
+		blockJustifyButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/blockjustify.png"))); // NOI18N
 		blockJustifyButton.setToolTipText("Block Justify");
 		blockJustifyButton.setName(BLOCK_JUSTIFY_BUTTON_KEY);
 
-		rightJustifyButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/rightjustify.png"))); // NOI18N
+		rightJustifyButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/rightjustify.png"))); // NOI18N
 		rightJustifyButton.setToolTipText("Right Justify");
 		rightJustifyButton.setName(RIGHT_JUSTIFY_BUTTON_KEY);
 
-		insertTableButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/table.png"))); // NOI18N
+		insertTableButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/table.png"))); // NOI18N
 		insertTableButton.setToolTipText("Table");
 		insertTableButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -955,7 +955,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		insertTableButton.setName(TABLE_BUTTON_KEY);
 
-		insertHorizontalLineButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/horizontalline.png"))); // NOI18N
+		insertHorizontalLineButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/horizontalline.png"))); // NOI18N
 		insertHorizontalLineButton.setToolTipText("Insert Horizontal Line");
 		insertHorizontalLineButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -965,7 +965,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		insertHorizontalLineButton.setName(HORIZONTAL_LINE_BUTTON_KEY);
 
-		insertSpecialCharButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/symbol.png"))); // NOI18N
+		insertSpecialCharButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/symbol.png"))); // NOI18N
 		insertSpecialCharButton.setToolTipText("Insert Special Character");
 		insertSpecialCharButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -975,7 +975,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		insertSpecialCharButton.setName(SPECIAL_CHAR_BUTTON_KEY);
 
-		insertImage.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/image.png"))); // NOI18N
+		insertImage.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/image.png"))); // NOI18N
 		insertImage.setToolTipText("Image");
 		insertImage.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -1018,7 +1018,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		fontSizeComboBox.setName(FONT_SIZE_PANEL_KEY);
 
-		textColorButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/textcolor.png"))); // NOI18N
+		textColorButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/textcolor.png"))); // NOI18N
 		textColorButton.setToolTipText("Text Color");
 		textColorButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -1028,7 +1028,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		textColorButton.setName(TEXT_COLOR_BUTTON_KEY);
 
-		backgroundColorButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/backgroundcolor.png"))); // NOI18N
+		backgroundColorButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/backgroundcolor.png"))); // NOI18N
 		backgroundColorButton.setToolTipText("Background Color");
 		backgroundColorButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -1038,7 +1038,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		backgroundColorButton.setName(BACKGROUND_COLOR_BUTTON_KEY);
 
-		aboutButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/about.png"))); // NOI18N
+		aboutButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/about.png"))); // NOI18N
 		aboutButton.setToolTipText("About Metaphase Editor");
 		aboutButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -1048,7 +1048,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		aboutButton.setName(ABOUT_BUTTON_KEY);
 
-		sourceButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/source.png"))); // NOI18N
+		sourceButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/source.png"))); // NOI18N
 		sourceButton.setText("Source");
 		sourceButton.setToolTipText("Source");
 		// sourceButton.setPreferredSize(new java.awt.Dimension(87, 24));
@@ -1060,7 +1060,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		sourceButton.setName(SOURCE_BUTTON_KEY);
 
-		linkButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/link.png"))); // NOI18N
+		linkButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/link.png"))); // NOI18N
 		linkButton.setToolTipText("Link");
 		linkButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -1070,11 +1070,11 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		linkButton.setName(LINK_BUTTON_KEY);
 
-		unlinkButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/unlink.png"))); // NOI18N
+		unlinkButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/unlink.png"))); // NOI18N
 		unlinkButton.setToolTipText("Unlink");
 		unlinkButton.setName(UNLINK_BUTTON_KEY);
 
-		anchorButton.setIcon(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/anchor.png"))); // NOI18N
+		anchorButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/anchor.png"))); // NOI18N
 		anchorButton.setToolTipText("Anchor");
 		anchorButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -1814,7 +1814,7 @@ public class MetaphaseEditorPanel extends JPanel {
 				}
 				inputStream = new FileInputStream(customDictionaryFilename);
 			} else {
-				inputStream = new FileInputStream(spellCheckDictionaryVersion.getFile());// this.getClass().getResourceAsStream(spellCheckDictionaryVersion.getFilename());
+				inputStream = spellCheckDictionaryVersion.openStream();// this.getClass().getResourceAsStream(spellCheckDictionaryVersion.getFilename());
 			}
 			zipInputStream = new ZipInputStream(inputStream);
 			zipInputStream.getNextEntry();

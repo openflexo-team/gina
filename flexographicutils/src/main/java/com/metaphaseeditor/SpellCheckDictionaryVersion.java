@@ -23,8 +23,9 @@
 package com.metaphaseeditor;
 
 import java.io.File;
+import java.io.InputStream;
 
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 
 /**
  * 
@@ -35,7 +36,7 @@ public enum SpellCheckDictionaryVersion {
 			"Spellcheck/dictionary/eng_us_strict.zip"), LIBERAL_US("Spellcheck/dictionary/eng_us_liberal.zip"), CUSTOM(null);
 
 
-	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
+	
 	
 	private String filename;
 
@@ -43,12 +44,12 @@ public enum SpellCheckDictionaryVersion {
 		this.filename = filename;
 	}
 
-	public File getFile() {
-		return rl.retrieveResourceAsFile(rl.locateResource(filename));
-	}
-
 	@Override
 	public String toString() {
 		return filename;
+	}
+
+	public InputStream openStream() {
+		return ResourceLocator.locateResource(filename).openInputStream();
 	}
 }

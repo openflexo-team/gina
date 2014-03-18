@@ -11,7 +11,7 @@ import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.validation.ValidationError;
 import org.openflexo.fib.model.validation.ValidationReport;
 import org.openflexo.rm.Resource;
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 
 /**
  * Generic test case allowing to test a FIB component
@@ -22,11 +22,11 @@ import org.openflexo.rm.CompositeResourceLocatorImpl;
 public abstract class GenericFIBTestCase {
 
 	static final Logger logger = Logger.getLogger(GenericFIBTestCase.class.getPackage().getName());
-	static final CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
+	static final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
 
 	public void validateFIB(String fibRelativePath) {
-		validateFIB(rl.locateResource(fibRelativePath));
+		validateFIB(ResourceLocator.locateResource(fibRelativePath));
 	}
 
 	public void validateFIB(Resource fibFile) {

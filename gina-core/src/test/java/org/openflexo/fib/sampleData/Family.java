@@ -22,7 +22,7 @@ package org.openflexo.fib.sampleData;
 import java.io.File;
 import java.util.Vector;
 
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 
 
 public class Family extends SampleData {
@@ -100,15 +100,15 @@ public class Family extends SampleData {
 
 	public File fibForPerson(Person person) {
 
-		CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
+		ResourceLocator rl = ResourceLocator.getResourceLocator();
 
 		if (person == null) {
 			return null;
 		}
 		if (person.getGender() == Gender.Male) {
-			return rl.retrieveResourceAsFile(rl.locateResource("src/dev/resources/TestFIB/TestMalePerson.fib"));
+			return rl.retrieveResourceAsFile(ResourceLocator.locateResource("src/dev/resources/TestFIB/TestMalePerson.fib"));
 		} else if (person.getGender() == Gender.Female) {
-			return rl.retrieveResourceAsFile(rl.locateResource("src/dev/resources/TestFIB/TestFemalePerson.fib"));
+			return rl.retrieveResourceAsFile(ResourceLocator.locateResource("src/dev/resources/TestFIB/TestFemalePerson.fib"));
 		}
 		return null;
 	}

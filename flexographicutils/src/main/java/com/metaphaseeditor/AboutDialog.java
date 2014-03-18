@@ -22,7 +22,7 @@
 
 package com.metaphaseeditor;
 
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.ImageIconResource;
 
 /**
@@ -31,13 +31,13 @@ import org.openflexo.toolbox.ImageIconResource;
  */
 public class AboutDialog extends javax.swing.JDialog {
 	
-	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
+	
 
 	/** Creates new form AboutDialog */
 	public AboutDialog(java.awt.Frame parent, boolean modal) {
 		super(parent, modal);
 		initComponents();
-		setIconImage(new ImageIconResource(rl.locateResource("Icons/MetaphaseEditor/icons/metaphase16x16.png")).getImage());
+		setIconImage(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/metaphase16x16.png")).getImage());
 		setLocationRelativeTo(null);
 	}
 
@@ -77,7 +77,7 @@ public class AboutDialog extends javax.swing.JDialog {
 
 		appDescLabel.setText("<html>Metaphase is an open-source WYSIWYG HTML editor.");
 
-		imageLabel.setIcon(new ImageIconResource(rl.locateResource("MetaphaseEditor/images/Metaphase-flourescent.JPG"))); // NOI18N
+		imageLabel.setIcon(new ImageIconResource(ResourceLocator.locateResource("MetaphaseEditor/images/Metaphase-flourescent.JPG"))); // NOI18N
 
 		versionLabel.setFont(versionLabel.getFont().deriveFont(versionLabel.getFont().getStyle() | java.awt.Font.BOLD));
 		versionLabel.setText("Product Version:");

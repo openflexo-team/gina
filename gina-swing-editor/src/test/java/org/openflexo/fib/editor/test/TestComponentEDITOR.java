@@ -23,7 +23,7 @@ import java.io.File;
 import java.util.Vector;
 
 import org.openflexo.fib.editor.FIBAbstractEditor;
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 
 public class TestComponentEDITOR {
 
@@ -36,9 +36,9 @@ public class TestComponentEDITOR {
 
 			@Override
 			public File getFIBFile() {
-				final CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
+				final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
-				return rl.retrieveResourceAsFile(rl.locateResource("TestFIB/TestComponent.fib"));
+				return rl.retrieveResourceAsFile(ResourceLocator.locateResource("TestFIB/TestComponent.fib"));
 			}
 		};
 		editor.launch();

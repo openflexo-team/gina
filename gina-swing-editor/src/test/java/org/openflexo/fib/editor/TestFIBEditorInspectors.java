@@ -2,7 +2,7 @@ package org.openflexo.fib.editor;
 
 import org.junit.Test;
 import org.openflexo.fib.testutils.FIBInspectorTestCase;
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 
 /**
  * Test all inspectors used in FIBEditor
@@ -13,7 +13,7 @@ import org.openflexo.rm.CompositeResourceLocatorImpl;
 public class TestFIBEditorInspectors extends FIBInspectorTestCase {
 
 	public static void main(String[] args) {
-		System.out.println(generateInspectorTestCaseClass(CompositeResourceLocatorImpl.getResourceLocator().locateResource("EditorInspectors"), "EditorInspectors/"));
+		System.out.println(generateInspectorTestCaseClass(ResourceLocator.getResourceLocator().locateResource("EditorInspectors"), "EditorInspectors/"));
 	}
 
 	@Test

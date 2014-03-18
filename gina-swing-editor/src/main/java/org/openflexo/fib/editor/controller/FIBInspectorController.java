@@ -51,14 +51,14 @@ import org.openflexo.fib.view.container.FIBTabPanelView;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.Resource;
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.swing.ComponentBoundSaver;
 
 public class FIBInspectorController implements Observer, ChangeListener {
 
 	static final Logger logger = Logger.getLogger(FIBInspectorController.class.getPackage().getName());
 
-	private static final CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
+	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
 	private JDialog inspectorDialog;
 	private JPanel EMPTY_CONTENT;
@@ -80,7 +80,7 @@ public class FIBInspectorController implements Observer, ChangeListener {
 			e.printStackTrace();
 		}
 
-		Resource dir = rl.locateResource("EditorInspectors");
+		Resource dir = ResourceLocator.locateResource("EditorInspectors");
 
 		for (Resource f : rl.listResources(dir,Pattern.compile(".*[.]inspector"))) {
 			// System.out.println("Read "+f.getAbsolutePath());

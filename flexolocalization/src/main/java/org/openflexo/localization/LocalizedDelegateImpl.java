@@ -40,7 +40,7 @@ import java.util.logging.Logger;
 
 import org.apache.commons.io.IOUtils;
 import org.openflexo.rm.Resource;
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.FlexoProperties;
 import org.openflexo.toolbox.HTMLUtils;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
@@ -59,7 +59,7 @@ import org.openflexo.toolbox.StringUtils;
 public class LocalizedDelegateImpl extends Observable implements LocalizedDelegate {
 
 	private static final Logger logger = Logger.getLogger(LocalizedDelegateImpl.class.getPackage().getName());
-	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
+	
 	
 	private LocalizedDelegate parent;
 	private Resource _localizedDirectory;
@@ -98,11 +98,11 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	}
 
 	private InputStream getDictionaryForLanguage(Language language) {
-		return (rl.locateResourceWithBaseLocation(_localizedDirectory, language.getName() + ".dict")).openInputStream();
+		return (ResourceLocator.locateResourceWithBaseLocation(_localizedDirectory, language.getName() + ".dict")).openInputStream();
 	}
 
 	private File getDictionaryFileForLanguage(Language language) {
-		return rl.retrieveResourceAsFile(rl.locateResourceWithBaseLocation(_localizedDirectory, language.getName() + ".dict"));
+		return ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResourceWithBaseLocation(_localizedDirectory, language.getName() + ".dict"));
 	}
 	
 
@@ -607,8 +607,9 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		return _localizedDictionaries;
 	}
 
+	@Deprecated
 	public File getLocalizedDirectory() {
-		return rl.retrieveResourceAsFile(_localizedDirectory);
+		return ResourceLocator.retrieveResourceAsFile(_localizedDirectory);
 	}
 
 	public String getParentDelegateDescription() {

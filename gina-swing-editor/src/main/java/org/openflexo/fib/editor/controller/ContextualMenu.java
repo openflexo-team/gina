@@ -54,12 +54,12 @@ import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.StringUtils;
 
 public class ContextualMenu {
 	private static final Logger logger = FlexoLogger.getLogger(ContextualMenu.class.getPackage().getName());
-	private static final CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
+	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
 	private FIBEditorController editorController;
 	private Hashtable<EditorAction, PopupMenuItem> actions;

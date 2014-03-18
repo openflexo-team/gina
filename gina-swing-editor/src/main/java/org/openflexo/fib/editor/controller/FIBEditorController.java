@@ -107,13 +107,13 @@ import org.openflexo.fib.view.FIBWidgetView;
 import org.openflexo.localization.Language;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.rm.FileSystemResourceLocatorImpl;
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.swing.NoInsetsBorder;
 
 public class FIBEditorController /*extends FIBController*/extends Observable {
 
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditorController.class.getPackage().getName());
-	private static CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
+	
 
 	private static FileSystemResourceLocatorImpl fsrl = new FileSystemResourceLocatorImpl();
 

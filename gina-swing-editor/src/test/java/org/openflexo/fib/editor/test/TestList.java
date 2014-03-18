@@ -31,16 +31,16 @@ import javax.swing.ImageIcon;
 
 import org.openflexo.fib.editor.FIBAbstractEditor;
 import org.openflexo.fib.editor.controller.FIBEditorIconLibrary;
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 public class TestList {
 
 	private static final Logger logger = Logger.getLogger(TestList.class.getPackage().getName());
 
-	private static final CompositeResourceLocatorImpl rl = CompositeResourceLocatorImpl.getResourceLocator();
+	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
-	public static File FIB_FILE = rl.retrieveResourceAsFile(rl.locateResource("TestFIB/TestList.fib"));
+	public static File FIB_FILE = rl.retrieveResourceAsFile(ResourceLocator.locateResource("TestFIB/TestList.fib"));
 
 	public static void main(String[] args) {
 		final User user1 = new User("John", "Doe", "john.doe@yahoo.com");

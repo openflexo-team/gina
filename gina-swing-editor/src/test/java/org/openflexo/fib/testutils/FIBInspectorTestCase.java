@@ -16,7 +16,7 @@ import org.openflexo.fib.model.validation.ValidationReport;
 import org.openflexo.fib.utils.GenericFIBTestCase;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.Resource;
-import org.openflexo.rm.CompositeResourceLocatorImpl;
+import org.openflexo.rm.ResourceLocator;
 
 /**
  * Generic test case allowing to test a FIB component used as an inspector (a .inspector file)
@@ -57,8 +57,8 @@ public abstract class FIBInspectorTestCase extends GenericFIBTestCase {
 
 	public static String generateInspectorTestCaseClass(Resource directory, String relativePath) {
 		StringBuffer sb = new StringBuffer();
-		for (Resource rloc : CompositeResourceLocatorImpl.getResourceLocator().listResources(directory, Pattern.compile(".*[.]inspector"))) {
-				File f = CompositeResourceLocatorImpl.getResourceLocator().retrieveResourceAsFile(rloc);
+		for (Resource rloc : ResourceLocator.getResourceLocator().listResources(directory, Pattern.compile(".*[.]inspector"))) {
+				File f = ResourceLocator.getResourceLocator().retrieveResourceAsFile(rloc);
 				String fibName = f.getName().substring(0, f.getName().indexOf(".inspector"));
 				sb.append("@Test\n");
 				sb.append("public void test" + fibName + "Inspector() {\n");
