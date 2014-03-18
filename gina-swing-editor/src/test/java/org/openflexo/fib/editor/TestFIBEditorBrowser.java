@@ -45,18 +45,26 @@ public class TestFIBEditorBrowser {
 
 	@Test
 	public void test2AddSubComponents() throws ModelDefinitionException {
+
+		factory = new FIBModelFactory();
+		component = factory.newInstance(FIBPanel.class);
+
 		FIBLabel newLabel = factory.newFIBLabel("Hello world");
 		component.addToSubComponents(newLabel);
 	}
 
 	@AfterClass
 	public static void waitGUI() {
-		gcDelegate.waitGUI();
+		if (gcDelegate != null){
+			gcDelegate.waitGUI();
+		}
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		gcDelegate.tearDown();
+		if (gcDelegate != null){
+			gcDelegate.tearDown();
+		}
 	}
 
 }

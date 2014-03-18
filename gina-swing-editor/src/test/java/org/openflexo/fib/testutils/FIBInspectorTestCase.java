@@ -57,7 +57,7 @@ public abstract class FIBInspectorTestCase extends GenericFIBTestCase {
 
 	public static String generateInspectorTestCaseClass(Resource directory, String relativePath) {
 		StringBuffer sb = new StringBuffer();
-		for (Resource rloc : ResourceLocator.getResourceLocator().listResources(directory, Pattern.compile(".*[.]inspector"))) {
+		for (Resource rloc : directory.getContents(Pattern.compile(".*[.]inspector"))) {
 				File f = ResourceLocator.getResourceLocator().retrieveResourceAsFile(rloc);
 				String fibName = f.getName().substring(0, f.getName().indexOf(".inspector"));
 				sb.append("@Test\n");
