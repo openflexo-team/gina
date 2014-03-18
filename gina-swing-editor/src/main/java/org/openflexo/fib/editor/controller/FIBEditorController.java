@@ -115,8 +115,6 @@ public class FIBEditorController /*extends FIBController*/extends Observable {
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditorController.class.getPackage().getName());
 	
 
-	private static FileSystemResourceLocatorImpl fsrl = new FileSystemResourceLocatorImpl();
-
 
 	private final FIBController controller;
 
@@ -208,8 +206,6 @@ public class FIBEditorController /*extends FIBController*/extends Observable {
 	public FIBEditorController(FIBModelFactory factory, FIBComponent fibComponent, FIBGenericEditor editor, Object dataObject,
 			FIBController controller) {
 
-		fsrl.appendToDirectories(System.getProperty("user.dir"));
-		ResourceLocator.appendDelegate(fsrl);
 		
 		this.controller = controller;
 		this.factory = factory;
@@ -479,10 +475,6 @@ public class FIBEditorController /*extends FIBController*/extends Observable {
 
 	public DropListener buildPaletteDropListener(FIBEditableView<?, ?> editableView, PlaceHolder placeHolder) {
 		return new DropListener(editableView, placeHolder);
-	}
-
-	public static FileSystemResourceLocatorImpl getFSResourceLocator() {
-		return fsrl;
 	}
 
 }

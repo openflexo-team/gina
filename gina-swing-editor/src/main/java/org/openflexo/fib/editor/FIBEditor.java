@@ -92,6 +92,13 @@ public class FIBEditor implements FIBGenericEditor {
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
 			UnsupportedLookAndFeelException {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+		// Needs a FileSystemResourceLocator to locate Files
+		
+		final FileSystemResourceLocatorImpl fsrl = new FileSystemResourceLocatorImpl();
+		fsrl.appendToDirectories(System.getProperty("user.dir"));
+		ResourceLocator.appendDelegate(fsrl);
+
 		
 		// UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		/*DefaultExpressionParser parser = new DefaultExpressionParser();

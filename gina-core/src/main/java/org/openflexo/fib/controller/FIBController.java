@@ -117,6 +117,7 @@ import org.openflexo.fib.view.widget.FIBTextFieldWidget;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
 import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.StringUtils;
@@ -997,7 +998,13 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 		if (component.getDefinitionFile() == null) {
 			try {
 				File fibFile = File.createTempFile("FIBComponent", ".fib");
-				FileResourceImpl fibLocation = new FileResourceImpl(null, fibFile.getCanonicalPath(), fibFile.toURI().toURL(), fibFile);
+				FileResourceImpl fibLocation = null;
+				try {
+					fibLocation = new FileResourceImpl(fibFile.getCanonicalPath(), fibFile.toURI().toURL(), fibFile);
+				} catch (LocatorNotFoundException e) {
+					logger.severe("No Locator found for managing FileResources!! ");
+					e.printStackTrace();
+				}
 				component.setDefinitionFile(fibLocation);
 				FIBLibrary.save(component, fibFile);
 			} catch (IOException e) {

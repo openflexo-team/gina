@@ -52,6 +52,7 @@ import org.openflexo.fib.utils.BindingSelector;
 import org.openflexo.fib.view.widget.FIBReferencedComponentWidget;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
@@ -264,11 +265,11 @@ public class ContextualMenu {
 				// logger.info("Relative file path: " + relativeFilePath);
 				FIBReferencedComponent widget = dialogFactory.newFIBReferencedComponent();
 				try {
-					widget.setComponentFile(new FileResourceImpl(this.editorController.getFSResourceLocator(),params.reusableComponentFile));
-				} catch (MalformedURLException e) {
+					widget.setComponentFile(new FileResourceImpl(params.reusableComponentFile));
+				} catch (Exception e) {
 					logger.severe("Unable to create FileResourceLocation from File: " + params.reusableComponentFile.getName());
 					e.printStackTrace();
-				}
+				} 
 				widget.setData(params.data);
 				widget.setVisible(visible);
 				parent.addToSubComponents(widget, reusableComponent.getConstraints());
