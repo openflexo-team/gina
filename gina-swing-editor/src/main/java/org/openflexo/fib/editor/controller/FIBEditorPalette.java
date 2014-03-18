@@ -74,7 +74,7 @@ public class FIBEditorPalette extends JDialog {
 
 						Resource dir = ResourceLocator.locateResource("FIBEditorPalette");
 
-						for (Resource modelFIBFile : rl.listResources(dir, Pattern.compile(".*[.]fib"))) {
+						for (Resource modelFIBFile : dir.getContents(Pattern.compile(".*[.]fib"))) {
 							String paletteURL = modelFIBFile.getURI().replace(".fib", ".palette");
 							
 							FIBComponent modelComponent = FIBLibrary.instance().retrieveFIBComponent(modelFIBFile);

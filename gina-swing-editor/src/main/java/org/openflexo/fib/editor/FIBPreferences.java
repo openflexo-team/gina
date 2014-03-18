@@ -92,7 +92,7 @@ public class FIBPreferences {
 	}
 
 	public static File getLastDirectory() {
-		return getPreferredFile(LAST_DIR, rl.retrieveResourceAsFile(ResourceLocator.locateResource("Fib")));
+		return getPreferredFile(LAST_DIR, ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResource("Fib")));
 	}
 
 	public static void setLastDirectory(File file) {

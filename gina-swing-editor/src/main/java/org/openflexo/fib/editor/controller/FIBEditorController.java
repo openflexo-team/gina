@@ -209,7 +209,7 @@ public class FIBEditorController /*extends FIBController*/extends Observable {
 			FIBController controller) {
 
 		fsrl.appendToDirectories(System.getProperty("user.dir"));
-		rl.appendDelegate(fsrl);
+		ResourceLocator.appendDelegate(fsrl);
 		
 		this.controller = controller;
 		this.factory = factory;

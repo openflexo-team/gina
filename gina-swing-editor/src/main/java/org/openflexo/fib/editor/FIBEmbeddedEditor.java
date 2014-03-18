@@ -59,7 +59,7 @@ public class FIBEmbeddedEditor {
 	
 	public FIBEmbeddedEditor(String aFileName, Object object) {
 		super();
-		this.fibFile = rl.retrieveResourceAsFile(ResourceLocator.locateResource(aFileName));
+		this.fibFile = ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResource(aFileName));
 		this.data = new Object[1];
 		this.data[0] = object;
 		FIBAbstractEditor.init(new Editor());

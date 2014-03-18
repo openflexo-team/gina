@@ -82,7 +82,7 @@ public class FIBInspectorController implements Observer, ChangeListener {
 
 		Resource dir = ResourceLocator.locateResource("EditorInspectors");
 
-		for (Resource f : rl.listResources(dir,Pattern.compile(".*[.]inspector"))) {
+		for (Resource f : dir.getContents(Pattern.compile(".*[.]inspector"))) {
 			// System.out.println("Read "+f.getAbsolutePath());
 			logger.info("Loading " + f.getURI());
 			FIBInspector inspector = (FIBInspector) FIBLibrary.instance().retrieveFIBComponent(f, false, INSPECTOR_FACTORY);
