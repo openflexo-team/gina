@@ -229,8 +229,10 @@ BindingEvaluationContext*/{
 					referencedComponentView = embeddedFIBController.getViewFactory().makeContainer((FIBContainer) loaded);
 					referencedComponentView.setEmbeddingComponent(this);
 				}
-			} else {
-				logger.warning("ReferencedComponent = null");
+			} else { 
+				if (!isComponentLoading){
+				logger.warning("ReferencedComponent = null and I'm NOT loading anything... : " + this.getComponentFile().getURI());
+				}
 
 			}
 
