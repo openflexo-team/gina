@@ -21,6 +21,7 @@ package org.openflexo.fib.model;
 
 import java.io.File;
 import java.lang.reflect.Type;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
@@ -39,6 +40,8 @@ import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
+import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;
 
 @ModelEntity
@@ -56,6 +59,9 @@ public interface FIBReferencedComponent extends FIBWidget {
 	@Getter(value = COMPONENT_FILE_KEY)
 	@XMLAttribute
 	public Resource getComponentFile();
+	// TODO : this is a  Workaround for Fib File selector...It has to be fixed in a more efficient way
+	public File getComponentActualFile();
+	public void setComponentActualFile(File file) throws MalformedURLException, LocatorNotFoundException;
 
 	@Setter(COMPONENT_FILE_KEY)
 	public void setComponentFile(Resource componentFile);
@@ -126,6 +132,19 @@ public interface FIBReferencedComponent extends FIBWidget {
 				notify(notification);
 			}
 		}
+		
+		// TODO : this is a  Workaround for Fib File selector...It has to be fixed in a more efficient way
+		public File getComponentActualFile() {
+			if (componentFile instanceof FileResourceImpl){
+				return ((FileResourceImpl) componentFile).getFile();
+			}
+			else return null;
+		}		
+		public void setComponentActualFile(File file) throws MalformedURLException, LocatorNotFoundException {
+
+			this.setComponentFile(new FileResourceImpl(file));
+		}
+
 
 		@Override
 		public DataBinding<Resource> getDynamicComponentFile() {
