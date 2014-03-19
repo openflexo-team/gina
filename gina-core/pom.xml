@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>gina</artifactId>
-        <version>1.0-SNAPSHOT</version>
+		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>gina-core</artifactId>
 	<name>Gina-Core</name>
@@ -27,10 +26,6 @@
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexoutils</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.openflexo</groupId>
-			<artifactId>flexoutils</artifactId>
 			<classifier>tests</classifier>
 			<scope>test</scope>
 		</dependency>
@@ -43,15 +38,15 @@
 			<artifactId>flexolocalization</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.openflexo</groupId>
-			<artifactId>flexolocalization</artifactId>
-			<classifier>resources</classifier>
-			<type>zip</type>
-		</dependency>
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
+		<!-- SWINGX -->
+		<dependency>
+			<groupId>org.swinglabs.swingx</groupId>
+			<artifactId>swingx-core</artifactId>
+		</dependency>
+
 	</dependencies>
 </project>
 

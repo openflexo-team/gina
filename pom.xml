@@ -36,43 +36,13 @@
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
-				<excludes>
-					<exclude>Localized</exclude>
-					<exclude>FIBLocalized</exclude>
-					<exclude>FIBValidationLocalized</exclude>
-					<exclude>FIBEditorLocalized</exclude>
-				</excludes> 
 				<includes>
 					<include>**/*</include>
 				</includes>
-			</resource><!-- 
-			<resource>
-				<directory>src/main/resources</directory>
-				<includes>
-					<include>META-INF/**/*</include>
-				</includes>
-			</resource> -->
+			</resource>
 		</resources>
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-assembly-plugin</artifactId>
-					<configuration>
-						<descriptors>
-							<descriptor>package-resources.xml</descriptor>
-						</descriptors>
-					</configuration>
-					<executions>
-						<execution>
-							<id>build-resources</id>
-							<phase>package</phase>
-							<goals>
-								<goal>single</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
@@ -114,18 +84,6 @@
 			   <artifactId>pamela-core</artifactId>
 			   <version>${pamela.version}</version>
 		    </dependency>
-		    <dependency>
-			   <groupId>org.openflexo</groupId>
-			   <artifactId>flexoutils</artifactId>
-			   <version>${connie.version}</version>
-		    </dependency>
-		    <dependency>
-			   <groupId>org.openflexo</groupId>
-			   <artifactId>flexoutils</artifactId>
-			   <version>${connie.version}</version>
-				<classifier>resources</classifier>
-				<type>zip</type>
-		    </dependency>
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexoutils</artifactId>
@@ -133,21 +91,8 @@
 			<classifier>tests</classifier>
 			<scope>test</scope>
 		</dependency>
-		    <dependency>
-			   <groupId>org.openflexo</groupId>
-			   <artifactId>connie-core</artifactId>
-			   <version>${connie.version}</version>
-		    </dependency>
-
 	
 			<!-- Declare dependancies for flexographicutils -->
-			<dependency>
-				<groupId>org.openflexo</groupId>
-				<artifactId>flexographicutils</artifactId>
-				<version>${project.version}</version>
-				<classifier>resources</classifier>
-				<type>zip</type>
-			</dependency>
 			<dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>flexographicutils</artifactId>
@@ -159,23 +104,9 @@
 				<groupId>org.openflexo</groupId>
 				<artifactId>flexolocalization</artifactId>
 				<version>${project.version}</version>
-				<classifier>resources</classifier>
-				<type>zip</type>
-			</dependency>
-			<dependency>
-				<groupId>org.openflexo</groupId>
-				<artifactId>flexolocalization</artifactId>
-				<version>${project.version}</version>
 			</dependency>
 			
 			<!-- Declare dependancies for gina -->
-			<dependency>
-				<groupId>org.openflexo</groupId>
-				<artifactId>gina-core</artifactId>
-				<version>${project.version}</version>
-				<classifier>resources</classifier>
-				<type>zip</type>
-			</dependency>
 			<dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>gina-core</artifactId>
@@ -191,20 +122,6 @@
 				<groupId>org.openflexo</groupId>
 				<artifactId>gina-swing</artifactId>
 				<version>${project.version}</version>
-				<classifier>resources</classifier>
-				<type>zip</type>
-			</dependency>
-			<dependency>
-				<groupId>org.openflexo</groupId>
-				<artifactId>gina-swing</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.openflexo</groupId>
-				<artifactId>gina-swing-editor</artifactId>
-				<version>${project.version}</version>
-				<classifier>resources</classifier>
-				<type>zip</type>
 			</dependency>
 			<dependency>
 				<groupId>org.openflexo</groupId>
@@ -222,7 +139,7 @@
 				<groupId>org.swinglabs.swingx</groupId>
 				<artifactId>swingx-core</artifactId>
 				<version>${swingx.version}</version>
-			</dependency>
+			</dependency> 
 			
 			<!-- Misc -->
 			<dependency>
