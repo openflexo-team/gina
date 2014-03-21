@@ -150,7 +150,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 		public DataBinding<Resource> getDynamicComponentFile() {
 
 			if (dynamicComponentFile == null) {
-				dynamicComponentFile = new DataBinding<Resource>(this, File.class, DataBinding.BindingDefinitionType.GET);
+				dynamicComponentFile = new DataBinding<Resource>(this, Resource.class, DataBinding.BindingDefinitionType.GET);
 				dynamicComponentFile.setBindingName("componentFile");
 				dynamicComponentFile.setCacheable(true);
 			}
@@ -166,7 +166,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 
 				if (dynamicComponentFile != null) {
 					dynamicComponentFile.setOwner(this);
-					dynamicComponentFile.setDeclaredType(File.class);
+					dynamicComponentFile.setDeclaredType(Resource.class);
 					dynamicComponentFile.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 					dynamicComponentFile.setBindingName("dynamicComponentFile");
 					dynamicComponentFile.setCacheable(true);
