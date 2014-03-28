@@ -174,14 +174,16 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 	}
 
 	public Object getRootValue() {
-		try {
-			return getWidget().getRoot().getBindingValue(getBindingEvaluationContext());
-		} catch (TypeMismatchException e) {
-			e.printStackTrace();
-		} catch (NullReferenceException e) {
-			// e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
+		if (getWidget() != null && getWidget().getRoot() != null) {
+			try {
+				return getWidget().getRoot().getBindingValue(getBindingEvaluationContext());
+			} catch (TypeMismatchException e) {
+				e.printStackTrace();
+			} catch (NullReferenceException e) {
+				// e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
