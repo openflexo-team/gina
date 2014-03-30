@@ -59,8 +59,8 @@ import org.openflexo.toolbox.StringUtils;
 public class LocalizedDelegateImpl extends Observable implements LocalizedDelegate {
 
 	private static final Logger logger = Logger.getLogger(LocalizedDelegateImpl.class.getPackage().getName());
-	
-	
+
+
 	private LocalizedDelegate parent;
 	private Resource _localizedDirectory;
 	private Hashtable<Language, Properties> _localizedDictionaries;
@@ -104,7 +104,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	private File getDictionaryFileForLanguage(Language language) {
 		return ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResourceWithBaseLocation(_localizedDirectory, language.getName() + ".dict"));
 	}
-	
+
 
 	private void saveDictionary(Language language, Properties dict) {
 		File dictFile = getDictionaryFileForLanguage(language);
@@ -153,12 +153,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("Looking for dictionary in  " + _localizedDirectory.toString());
 			}
-			/* TODO This should not be done unless _localizedDirectoryURL is on the file System */
-			/*
-			if (!dict.exists()) {
-				createNewDictionary(language);
-			} */
-			else {
+			if (dict != null) {
 				Properties loadedDict = loadDictionary(language);
 				_localizedDictionaries.put(language, loadedDict);
 			}
