@@ -44,10 +44,12 @@ public class FlexoCollabsiblePanel extends JPanel {
 	private final FlexoCollabsiblePanelHeader header;
 	private final JXCollapsiblePane collabsiblePane;
 	private final String title;
+	private final JComponent contents;
 
 	public FlexoCollabsiblePanel(String title, JComponent contents) {
 		super(new BorderLayout());
 		this.title = title;
+		this.contents = contents;
 		header = new FlexoCollabsiblePanelHeader(title);
 		add(header, BorderLayout.NORTH);
 		collabsiblePane = new JXCollapsiblePane(Direction.DOWN);
@@ -75,6 +77,10 @@ public class FlexoCollabsiblePanel extends JPanel {
 
 	public String getTitle() {
 		return title;
+	}
+
+	public JComponent getContents() {
+		return contents;
 	}
 
 	public class FlexoCollabsiblePanelHeader extends JPanel {

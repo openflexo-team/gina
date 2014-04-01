@@ -37,7 +37,7 @@ public class FlexoCollabsiblePanelGroup extends JPanel {
 	}
 
 	public void addContents(final String title, JComponent contents) {
-		FlexoCollabsiblePanel newPanel = new FlexoCollabsiblePanel(title, contents) {
+		FlexoCollabsiblePanel collabsiblePanel = new FlexoCollabsiblePanel(title, contents) {
 			@Override
 			public void setCollapsed(boolean val) {
 				if (!val) {
@@ -46,9 +46,13 @@ public class FlexoCollabsiblePanelGroup extends JPanel {
 				super.setCollapsed(val);
 			}
 		};
-		panels.add(newPanel);
-		add(newPanel);
-		setOpenedPanel(newPanel);
+		addContents(collabsiblePanel);
+	}
+
+	public void addContents(FlexoCollabsiblePanel collabsiblePanel) {
+		panels.add(collabsiblePanel);
+		add(collabsiblePanel);
+		setOpenedPanel(collabsiblePanel);
 	}
 
 	public void setOpenedPanel(FlexoCollabsiblePanel p) {

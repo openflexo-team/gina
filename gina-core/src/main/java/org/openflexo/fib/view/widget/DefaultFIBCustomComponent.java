@@ -21,7 +21,6 @@ package org.openflexo.fib.view.widget;
 
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeSupport;
-import java.io.File;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -76,14 +75,14 @@ public abstract class DefaultFIBCustomComponent<T> extends JPanel implements FIB
 	}
 
 	public DefaultFIBCustomComponent(Resource fibFileName, T editedObject, LocalizedDelegate parentLocalizer) {
-		this(FIBLibrary.instance().retrieveFIBComponent(fibFileName,true), editedObject, parentLocalizer);
+		this(FIBLibrary.instance().retrieveFIBComponent(fibFileName, true), editedObject, parentLocalizer);
 	}
 
 	/*
 	public DefaultFIBCustomComponent(File fibFile, T editedObject, LocalizedDelegate parentLocalizer) {
 		this(FIBLibrary.instance().retrieveFIBComponent(fibFile), editedObject, parentLocalizer);
 	}
-*/
+	*/
 	@Override
 	public PropertyChangeSupport getPropertyChangeSupport() {
 		return pcSupport;
@@ -152,5 +151,4 @@ public abstract class DefaultFIBCustomComponent<T> extends JPanel implements FIB
 	public FIBController getController() {
 		return controller;
 	}
-
 }
