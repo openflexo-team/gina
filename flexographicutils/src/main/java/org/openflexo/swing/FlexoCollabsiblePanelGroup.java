@@ -66,4 +66,10 @@ public class FlexoCollabsiblePanelGroup extends JPanel {
 			p.setCollapsed(false);
 		}
 	}
+
+	public void setOpenedPanel(int index) {
+		if (index >= 0 && index < panels.size()) {
+			setOpenedPanel(panels.get(index));
+		}
+	}
 }
