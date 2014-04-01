@@ -70,11 +70,11 @@ import org.openflexo.toolbox.StringUtils;
 @ModelEntity(isAbstract = true)
 @ImplementationClass(FIBComponent.FIBComponentImpl.class)
 @Imports({ @Import(FIBPanel.class), @Import(FIBTab.class), @Import(FIBSplitPanel.class), @Import(FIBTabPanel.class),
-	@Import(FIBBrowser.class), @Import(FIBButton.class), @Import(FIBCheckBox.class), @Import(FIBColor.class), @Import(FIBCustom.class),
-	@Import(FIBFile.class), @Import(FIBFont.class), @Import(FIBHtmlEditor.class), @Import(FIBImage.class), @Import(FIBLabel.class),
-	@Import(FIBCheckboxList.class), @Import(FIBDropDown.class), @Import(FIBList.class), @Import(FIBRadioButtonList.class),
-	@Import(FIBNumber.class), @Import(FIBReferencedComponent.class), @Import(FIBTable.class), @Import(FIBEditor.class),
-	@Import(FIBEditorPane.class), @Import(FIBTextArea.class), @Import(FIBTextField.class) })
+		@Import(FIBBrowser.class), @Import(FIBButton.class), @Import(FIBCheckBox.class), @Import(FIBColor.class), @Import(FIBCustom.class),
+		@Import(FIBFile.class), @Import(FIBFont.class), @Import(FIBHtmlEditor.class), @Import(FIBImage.class), @Import(FIBLabel.class),
+		@Import(FIBCheckboxList.class), @Import(FIBDropDown.class), @Import(FIBList.class), @Import(FIBRadioButtonList.class),
+		@Import(FIBNumber.class), @Import(FIBReferencedComponent.class), @Import(FIBTable.class), @Import(FIBEditor.class),
+		@Import(FIBEditorPane.class), @Import(FIBTextArea.class), @Import(FIBTextField.class) })
 public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 	public static enum VerticalScrollBarPolicy {
@@ -785,9 +785,9 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 		 * Default behavior is to generate a binding variable with the java type identified by data class
 		 */
 		protected void updateDataBindingVariable() {
-			BindingVariable dataBV = _bindingModel.bindingVariableNamed("data");
+			BindingVariable dataBV = getBindingModel().bindingVariableNamed("data");
 			if (dataBV == null) {
-				_bindingModel.addToBindingVariables(dataBV = new BindingVariable("data", getDataType()));
+				getBindingModel().addToBindingVariables(dataBV = new BindingVariable("data", getDataType()));
 			}
 			dataBV.setType(getDataType());
 		}
@@ -826,7 +826,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 					FIBComponent subComponent = it.next();
 					if (StringUtils.isNotEmpty(subComponent.getName()) && subComponent.getDynamicAccessType() != null) {
 						_bindingModel
-						.addToBindingVariables(new BindingVariable(subComponent.getName(), subComponent.getDynamicAccessType()));
+								.addToBindingVariables(new BindingVariable(subComponent.getName(), subComponent.getDynamicAccessType()));
 					}
 				}
 
@@ -902,7 +902,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 		@Override
 		public void declareDependantOf(FIBComponent aComponent) /*throws DependancyLoopException*/{
 			// logger.info("Component "+this+" depends of "+aComponent);
-			if (aComponent != null){
+			if (aComponent != null) {
 				if (aComponent == this) {
 					logger.warning("Forbidden reflexive dependencies");
 					return;
@@ -912,10 +912,10 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 				Vector<FIBComponent> dependancies = new Vector<FIBComponent>();
 				dependancies.add(aComponent);
 				searchLoopInDependenciesWith(aComponent, dependancies);
-			} catch (DependencyLoopException e) {
+				} catch (DependencyLoopException e) {
 				logger.warning("Forbidden loop in dependencies: " + e.getMessage());
 				throw e;
-			}*/
+				}*/
 
 				if (!mayDepends.contains(aComponent)) {
 					mayDepends.add(aComponent);
@@ -924,8 +924,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 				if (!((FIBComponentImpl) aComponent).mayAlters.contains(this)) {
 					((FIBComponentImpl) aComponent).mayAlters.add(this);
 				}
-			}
-			else {
+			} else {
 				logger.warning("Trying to test dependency against a NULL Fib Component");
 			}
 		}
@@ -1731,7 +1730,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 	}
 
 	public static class NonRootComponentShouldNotHaveLocalizedDictionary extends
-	ValidationRule<NonRootComponentShouldNotHaveLocalizedDictionary, FIBComponent> {
+			ValidationRule<NonRootComponentShouldNotHaveLocalizedDictionary, FIBComponent> {
 		public NonRootComponentShouldNotHaveLocalizedDictionary() {
 			super(FIBModelObject.class, "non_root_component_should_not_have_localized_dictionary");
 		}
@@ -1762,7 +1761,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 	}
 
 	public static class RootComponentShouldHaveMaximumOneDefaultButton extends
-	ValidationRule<RootComponentShouldHaveMaximumOneDefaultButton, FIBComponent> {
+			ValidationRule<RootComponentShouldHaveMaximumOneDefaultButton, FIBComponent> {
 		public RootComponentShouldHaveMaximumOneDefaultButton() {
 			super(FIBModelObject.class, "root_component_should_have_maximum_one_default_button");
 		}
