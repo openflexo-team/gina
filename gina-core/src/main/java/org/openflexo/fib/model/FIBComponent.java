@@ -167,7 +167,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 	public static final String LOCALIZED_DICTIONARY_KEY = "localizedDictionary";
 
 	@Override
-	@Getter(value = PARENT_KEY, inverse = FIBContainer.SUB_COMPONENTS_KEY)
+	@Getter(value = PARENT_KEY/*, inverse = FIBContainer.SUB_COMPONENTS_KEY*/)
 	public FIBContainer getParent();
 
 	@Setter(PARENT_KEY)

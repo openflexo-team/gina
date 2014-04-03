@@ -32,6 +32,8 @@ import javax.swing.tree.TreeNode;
 
 import org.openflexo.fib.model.FIBPanel.Layout;
 import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Embedded;
 import org.openflexo.model.annotations.Finder;
 import org.openflexo.model.annotations.Getter;
@@ -53,6 +55,8 @@ public abstract interface FIBContainer extends FIBComponent {
 	@Getter(value = SUB_COMPONENTS_KEY, cardinality = Cardinality.LIST, inverse = FIBComponent.PARENT_KEY)
 	@XMLElement
 	@Embedded
+	// REALLY IMPORTANT !!!!
+	@CloningStrategy(StrategyType.CLONE)
 	public List<FIBComponent> getSubComponents();
 
 	@Setter(SUB_COMPONENTS_KEY)
@@ -74,6 +78,24 @@ public abstract interface FIBContainer extends FIBComponent {
 
 	public void reorderComponents();
 
+	/**
+	 * Merge supplied container with this container<br>
+	 * Containers should be of same type.<br>
+	 * Merge is recursively performed. Lookup and merge strategy is based on names given to sub-components
+	 * 
+	 * Merging Policy: We append the children of the container to this.subComponents<br>
+	 * 1. If child has no index, we insert it after all subcomponents with a negative index<br>
+	 * 2. If child has a negative index, we insert before any subcomponent with a null or positive index, or a negative index that is equal
+	 * or greater than the child index<br>
+	 * 3. If the child has a positive index, we insert after all subcomponents with a negative or null index, or a positive index which is
+	 * smaller or equal to the child index
+	 * 
+	 * Moreover, when inserting, we always verify that we are not inserting ourselves in a consecutive series of indexed components.
+	 * Finally, when we insert the child, we also insert all the consecutive indexed components (two components with a null index are
+	 * considered to be consecutive)
+	 * 
+	 * @param container
+	 */
 	public void append(FIBContainer container);
 
 	/**
@@ -96,6 +118,8 @@ public abstract interface FIBContainer extends FIBComponent {
 	public void componentDown(FIBComponent c);
 
 	public void componentLast(FIBComponent c);
+
+	public boolean checkContainmentIntegrity();
 
 	public static abstract class FIBContainerImpl extends FIBComponentImpl implements FIBContainer {
 
@@ -303,19 +327,26 @@ public abstract interface FIBContainer extends FIBComponent {
 			return getSubComponents().size() == 0;
 		}
 
-		// public static final String INHERITED = "Inherited";
-
+		/**
+		 * Merge supplied container with this container<br>
+		 * Containers should be of same type.<br>
+		 * Merge is recursively performed. Lookup and merge strategy is based on names given to sub-components
+		 * 
+		 * Merging Policy: We append the children of the container to this.subComponents<br>
+		 * 1. If child has no index, we insert it after all subcomponents with a negative index<br>
+		 * 2. If child has a negative index, we insert before any subcomponent with a null or positive index, or a negative index that is
+		 * equal or greater than the child index<br>
+		 * 3. If the child has a positive index, we insert after all subcomponents with a negative or null index, or a positive index which
+		 * is smaller or equal to the child index
+		 * 
+		 * Moreover, when inserting, we always verify that we are not inserting ourselves in a consecutive series of indexed components.
+		 * Finally, when we insert the child, we also insert all the consecutive indexed components (two components with a null index are
+		 * considered to be consecutive)
+		 * 
+		 * @param container
+		 */
 		@Override
 		public void append(FIBContainer container) {
-			// logger.info(toString()+" append "+container);
-
-			// boolean debug = false;
-
-			/*if (container.getName().equals("ControlsTab")) {
-				debug = true;
-			}*/
-
-			// if (this instanceof FIBTab && ())
 			List<FIBComponent> mergedComponents = new ArrayList<FIBComponent>();
 			for (int i = container.getSubComponents().size() - 1; i >= 0; i--) {
 				FIBComponent c2 = container.getSubComponents().get(i);
@@ -323,24 +354,10 @@ public abstract interface FIBContainer extends FIBComponent {
 					for (FIBComponent c1 : getSubComponents()) {
 						if (c2.getName().equals(c1.getName()) && c1 instanceof FIBContainer) {
 
-							/*if (c2.getName().equals("ControlsTab")) {
-								System.out.println("J'y suis, je veux merger: ");
-								System.out.println(container.getFactory().stringRepresentation(c1));
-								System.out.println("avec:");
-								System.out.println(container.getFactory().stringRepresentation(c2));
-							}*/
-
 							((FIBContainer) c1).append((FIBContainer) c2);
-
-							/*if (c2.getName().equals("ControlsTab")) {
-								System.out.println("J'obtiens: ");
-								System.out.println(container.getFactory().stringRepresentation(c1));
-							}*/
 
 							mergedComponents.add(c2);
 							logger.fine("Merged " + c1 + " and " + c2);
-
-							// System.out.println("Merged " + c1 + " and " + c2);
 
 							break;
 						}
@@ -349,8 +366,9 @@ public abstract interface FIBContainer extends FIBComponent {
 			}
 
 			for (int i = 0; i < container.getSubComponents().size(); i++) {
+
 				FIBComponent child = container.getSubComponents().get(i);
-				// System.out.println("On s'occupe de " + child);
+
 				if (mergedComponents.contains(child)) {
 					continue;
 				}
@@ -363,6 +381,7 @@ public abstract interface FIBContainer extends FIBComponent {
 				}
 
 				if (overridingComponent == null) {
+
 					/**
 					 * Merging Policy: We append the children of the container to this.subComponents<br>
 					 * 1. If child has no index, we insert it after all subcomponents with a negative index<br>
@@ -418,7 +437,9 @@ public abstract interface FIBContainer extends FIBComponent {
 								break;
 							}
 						}
+
 					} else {
+
 						indexInsertion = getSubComponents().size();
 						for (int j = 0; j < getSubComponents().size(); j++) {
 							FIBComponent c = getSubComponents().get(j);
@@ -449,13 +470,17 @@ public abstract interface FIBContainer extends FIBComponent {
 								break;
 							}
 						}
+
 					}
 					boolean insert = true;
 					Integer startIndex = child.getIndex();
+
 					while (insert) {
+
 						getSubComponents().add(indexInsertion, child);
 						child.setParent(this);
 						indexInsertion++;
+
 						if (i + 1 < container.getSubComponents().size()) {
 							Integer previousInteger = child.getIndex();
 							child = container.getSubComponents().get(i + 1);
@@ -485,7 +510,6 @@ public abstract interface FIBContainer extends FIBComponent {
 						} else {
 							break;
 						}
-
 					}
 				} else {
 					if (overridingComponent.getParameter("hidden") != null
@@ -505,6 +529,7 @@ public abstract interface FIBContainer extends FIBComponent {
 				recursivelyFinalizeDeserialization(c);
 			}
 			finalizeDeserialization();
+
 		}
 
 		private void recursivelyFinalizeDeserialization(FIBComponent c) {
@@ -653,6 +678,25 @@ public abstract interface FIBContainer extends FIBComponent {
 				updateBindingModel();
 				hasChanged(notification);
 			}
+		}
+
+		@Override
+		public boolean checkContainmentIntegrity() {
+			for (FIBComponent c : getSubComponents()) {
+				if (c.getParent() != this) {
+					System.out.println("!!!!!! Ca chie car le child " + c + " n'a pas pour parent " + this + " (hash=" + hashCode()
+							+ ") mais " + c.getParent() + " (hash=" + c.getParent().hashCode() + ")");
+					System.out.println("root component for c = " + c.getRootComponent());
+					System.out.println("root component for this = " + getRootComponent());
+					return false;
+				}
+				if (c instanceof FIBContainer) {
+					if (!((FIBContainer) c).checkContainmentIntegrity()) {
+						return false;
+					}
+				}
+			}
+			return true;
 		}
 
 	}
