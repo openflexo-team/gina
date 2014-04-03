@@ -37,6 +37,8 @@ import org.openflexo.fib.model.FIBNumber;
 import org.openflexo.fib.model.FIBNumberColumn;
 import org.openflexo.fib.model.FIBPanel;
 import org.openflexo.fib.model.FIBRadioButtonList;
+import org.openflexo.fib.model.FIBTab;
+import org.openflexo.fib.model.FIBTabPanel;
 import org.openflexo.fib.model.FIBTable;
 import org.openflexo.fib.model.FIBTextArea;
 import org.openflexo.fib.model.FIBTextField;
@@ -66,6 +68,14 @@ public abstract class FIBTestCase {
 
 	public FIBPanel newFIBPanel() {
 		return factory.newInstance(FIBPanel.class);
+	}
+
+	public FIBTabPanel newFIBTabPanel() {
+		return factory.newInstance(FIBTabPanel.class);
+	}
+
+	public FIBTab newFIBTab() {
+		return factory.newInstance(FIBTab.class);
 	}
 
 	public FIBLabel newFIBLabel() {
