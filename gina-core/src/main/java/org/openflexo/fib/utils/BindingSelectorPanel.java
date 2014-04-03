@@ -284,7 +284,9 @@ public class BindingSelectorPanel extends AbstractBindingSelectorPanel implement
 						getFunctionPathElement().setParameter(arg, aValue);
 						if (bindingSelector.getEditedObject().isBindingValue()) {
 							BindingValue bv = (BindingValue) bindingSelector.getEditedObject().getExpression();
-							bv.markedAsToBeReanalized();
+							if (bv.getDataBinding() != null) {
+								bv.getDataBinding().markedAsToBeReanalized();
+							}
 						}
 					}
 
