@@ -83,7 +83,7 @@ public interface FIBDependancy extends FIBModelObject {
 		@Override
 		public void setMasterComponent(FIBComponent masterComponent) {
 			FIBPropertyNotification<FIBComponent> notification = requireChange(MASTER_COMPONENT_NAME_KEY, masterComponent);
-			if (notification != null) {
+			if (notification != null && getOwner()!=null) {
 				this.masterComponent = masterComponent;
 				// try {
 				getOwner().declareDependantOf(masterComponent);
