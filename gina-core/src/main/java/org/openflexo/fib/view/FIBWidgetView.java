@@ -553,7 +553,11 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 			// logger.info("###### Component " + getWidget() + ", has been updated, now update " + c);
 			FIBView<?, ?, ?> v = getController().viewForComponent(c);
 			if (v != null) {
-				v.update();
+				// We want to avoid to update components that depends on me, when they are not visible
+				v.updateVisibility();
+				if (v.isComponentVisible()) {
+					v.update();
+				}
 			} else {
 				logger.warning("Cannot find FIBView for component " + c);
 			}
