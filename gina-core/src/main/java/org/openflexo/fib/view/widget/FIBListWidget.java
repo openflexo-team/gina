@@ -202,8 +202,8 @@ public class FIBListWidget<T> extends FIBMultipleValueWidget<FIBList, JList, T, 
 					e.printStackTrace();
 				}
 			}
-			if ((getWidget().getData() == null || !getWidget().getData().isValid()) && getWidget().getAutoSelectFirstRow()
-					&& _list.getModel().getSize() > 0) {
+			if ((objectToSelect == null) && (getWidget().getData() == null || !getWidget().getData().isValid())
+					&& getWidget().getAutoSelectFirstRow() && _list.getModel().getSize() > 0) {
 				objectToSelect = _list.getModel().getElementAt(0);
 			}
 			if (objectToSelect != null) {
