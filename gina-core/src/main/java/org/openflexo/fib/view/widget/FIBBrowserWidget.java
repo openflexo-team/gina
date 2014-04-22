@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -433,10 +432,6 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 		_dynamicComponent.add(scrollPane, BorderLayout.CENTER);
 
 		if (getWidget().getBoundToSelectionManager()) {
-			InputMap inputMap = _tree.getInputMap(JComponent.WHEN_FOCUSED);
-			for (KeyStroke ks : inputMap.allKeys()) {
-				System.out.println(ks + ": " + inputMap.get(ks));
-			}
 			_tree.registerKeyboardAction(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -455,10 +450,6 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 					getController().performPasteAction(getSelected(), getSelection());
 				}
 			}, KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.META_MASK, false), JComponent.WHEN_FOCUSED);
-			System.out.println("Apres:");
-			for (KeyStroke ks : inputMap.allKeys()) {
-				System.out.println(ks + ": " + inputMap.get(ks));
-			}
 		}
 
 		if (_fibBrowser.getShowFooter()) {
