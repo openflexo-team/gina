@@ -437,19 +437,19 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 				public void actionPerformed(ActionEvent e) {
 					getController().performCopyAction(getSelected(), getSelection());
 				}
-			}, KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.META_MASK, false), JComponent.WHEN_FOCUSED);
+			}, KeyStroke.getKeyStroke(KeyEvent.VK_C, META_MASK, false), JComponent.WHEN_FOCUSED);
 			_tree.registerKeyboardAction(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					getController().performCutAction(getSelected(), getSelection());
 				}
-			}, KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.META_MASK, false), JComponent.WHEN_FOCUSED);
+			}, KeyStroke.getKeyStroke(KeyEvent.VK_X, META_MASK, false), JComponent.WHEN_FOCUSED);
 			_tree.registerKeyboardAction(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					getController().performPasteAction(getSelected(), getSelection());
 				}
-			}, KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.META_MASK, false), JComponent.WHEN_FOCUSED);
+			}, KeyStroke.getKeyStroke(KeyEvent.VK_V, META_MASK, false), JComponent.WHEN_FOCUSED);
 		}
 
 		if (_fibBrowser.getShowFooter()) {

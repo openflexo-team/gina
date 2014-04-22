@@ -507,19 +507,19 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 				public void actionPerformed(ActionEvent e) {
 					getController().performCopyAction(getSelected(), getSelection());
 				}
-			}, KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+			}, KeyStroke.getKeyStroke(KeyEvent.VK_C, META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 			_table.registerKeyboardAction(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					getController().performCutAction(getSelected(), getSelection());
 				}
-			}, KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+			}, KeyStroke.getKeyStroke(KeyEvent.VK_X, META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 			_table.registerKeyboardAction(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					getController().performPasteAction(getSelected(), getSelection());
 				}
-			}, KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+			}, KeyStroke.getKeyStroke(KeyEvent.VK_V, META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		}
 
 		scrollPane = new JScrollPane(_table);

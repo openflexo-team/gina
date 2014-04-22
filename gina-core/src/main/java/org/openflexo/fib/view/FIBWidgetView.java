@@ -25,6 +25,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -49,6 +50,7 @@ import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelObject;
 import org.openflexo.fib.model.FIBWidget;
+import org.openflexo.toolbox.ToolBox;
 
 /**
  * Abstract class representing a widget view
@@ -59,6 +61,8 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 		PropertyChangeListener /*, HasDependencyBinding*/{
 
 	private static final Logger logger = Logger.getLogger(FIBWidgetView.class.getPackage().getName());
+
+	public static final int META_MASK = ToolBox.getPLATFORM() == ToolBox.MACOS ? InputEvent.META_MASK : InputEvent.CTRL_MASK;
 
 	public static final String ENABLED = "enabled";
 
