@@ -23,6 +23,8 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -36,9 +38,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SortOrder;
 import javax.swing.event.ListSelectionEvent;
@@ -496,6 +500,27 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 
 		// _listSelectionModel = _table.getSelectionModel();
 		// _listSelectionModel.addListSelectionListener(this);
+
+		if (getWidget().getBoundToSelectionManager()) {
+			_table.registerKeyboardAction(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					getController().performCopyAction(getSelected(), getSelection());
+				}
+			}, KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+			_table.registerKeyboardAction(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					getController().performCutAction(getSelected(), getSelection());
+				}
+			}, KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+			_table.registerKeyboardAction(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					getController().performPasteAction(getSelected(), getSelection());
+				}
+			}, KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		}
 
 		scrollPane = new JScrollPane(_table);
 		scrollPane.setOpaque(false);

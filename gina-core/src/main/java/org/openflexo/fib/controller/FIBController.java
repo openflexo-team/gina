@@ -1066,4 +1066,16 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 		t.printStackTrace();
 		return false;
 	}
+
+	public void performCopyAction(Object focused, List<?> selection) {
+		logger.warning("COPY action not implemented. Please override this method");
+	}
+
+	public void performCutAction(Object focused, List<?> selection) {
+		logger.warning("CUT action not implemented. Please override this method");
+	}
+
+	public void performPasteAction(Object focused, List<?> selection) {
+		logger.warning("PASTE action not implemented. Please override this method");
+	}
 }

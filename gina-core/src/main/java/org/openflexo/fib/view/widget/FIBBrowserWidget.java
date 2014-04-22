@@ -24,6 +24,9 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -32,9 +35,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.event.TreeExpansionEvent;
@@ -425,6 +431,35 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 
 		_dynamicComponent.removeAll();
 		_dynamicComponent.add(scrollPane, BorderLayout.CENTER);
+
+		if (getWidget().getBoundToSelectionManager()) {
+			InputMap inputMap = _tree.getInputMap(JComponent.WHEN_FOCUSED);
+			for (KeyStroke ks : inputMap.allKeys()) {
+				System.out.println(ks + ": " + inputMap.get(ks));
+			}
+			_tree.registerKeyboardAction(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					getController().performCopyAction(getSelected(), getSelection());
+				}
+			}, KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.META_MASK, false), JComponent.WHEN_FOCUSED);
+			_tree.registerKeyboardAction(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					getController().performCutAction(getSelected(), getSelection());
+				}
+			}, KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.META_MASK, false), JComponent.WHEN_FOCUSED);
+			_tree.registerKeyboardAction(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					getController().performPasteAction(getSelected(), getSelection());
+				}
+			}, KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.META_MASK, false), JComponent.WHEN_FOCUSED);
+			System.out.println("Apres:");
+			for (KeyStroke ks : inputMap.allKeys()) {
+				System.out.println(ks + ": " + inputMap.get(ks));
+			}
+		}
 
 		if (_fibBrowser.getShowFooter()) {
 			_dynamicComponent.add(getFooter(), BorderLayout.SOUTH);
