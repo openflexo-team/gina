@@ -21,12 +21,10 @@ package org.openflexo.localization;
 
 import java.beans.PropertyChangeSupport;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.text.Collator;
 import java.util.Collections;
 import java.util.Comparator;
@@ -60,9 +58,8 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 	private static final Logger logger = Logger.getLogger(LocalizedDelegateImpl.class.getPackage().getName());
 
-
-	private LocalizedDelegate parent;
-	private Resource _localizedDirectory;
+	private final LocalizedDelegate parent;
+	private final Resource _localizedDirectory;
 	private Hashtable<Language, Properties> _localizedDictionaries;
 
 	private boolean automaticSaving = false;
@@ -102,9 +99,9 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	}
 
 	private File getDictionaryFileForLanguage(Language language) {
-		return ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResourceWithBaseLocation(_localizedDirectory, language.getName() + ".dict"));
+		return ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResourceWithBaseLocation(_localizedDirectory,
+				language.getName() + ".dict"));
 	}
-
 
 	private void saveDictionary(Language language, Properties dict) {
 		File dictFile = getDictionaryFileForLanguage(language);
@@ -136,7 +133,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			loadedDict.load(dict);
 		} catch (IOException e) {
 			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Unable to load Dictionary Resource for Language" + language.getName() );
+				logger.warning("Unable to load Dictionary Resource for Language" + language.getName());
 			}
 		}
 		return loadedDict;
@@ -163,9 +160,8 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	private void addEntryInDictionary(Language language, String key, String value, boolean required) {
 		Properties dict = getDictionary(language);
 		if (!required && dict.getProperty(key) == null || required) {
-			if (logger.isLoggable(Level.INFO)) {
-				logger.info("Adding entry '" + key + "' in " + language + " dictionary, in directory "
-						+ _localizedDirectory.toString());
+			if (logger.isLoggable(Level.FINE)) {
+				logger.fine("Adding entry '" + key + "' in " + language + " dictionary, in directory " + _localizedDirectory.toString());
 			}
 			dict.setProperty(key, value);
 			// saveDictionary(language, dict);
@@ -238,7 +234,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	public class Entry implements HasPropertyChangeSupport {
 		private static final String DELETED_PROPERTY = "deleted";
 		private String key;
-		private PropertyChangeSupport pcSupport;
+		private final PropertyChangeSupport pcSupport;
 
 		public Entry(String aKey) {
 			key = aKey;
