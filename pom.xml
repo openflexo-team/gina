@@ -147,6 +147,11 @@
 				<artifactId>gson</artifactId>
 				<version>2.2.2</version>
 			</dependency>
+			<dependency>
+				<groupId>batik</groupId>
+				<artifactId>batik-svggen</artifactId>
+				<version>1.6-1</version>
+			</dependency>
 			
 		</dependencies>
   	</dependencyManagement>
