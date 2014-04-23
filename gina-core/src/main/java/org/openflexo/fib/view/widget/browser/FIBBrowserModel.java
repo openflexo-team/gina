@@ -349,9 +349,9 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 									browserElementType) {
 								@Override
 								public void bindingValueChanged(Object source, List<Object> newValue) {
-									System.out.println(" bindingValueChanged() detected for data (as list) of children "
+									/*System.out.println(" bindingValueChanged() detected for data (as list) of children "
 											+ children.getName() + " of " + browserElementType + " " + children.getData()
-											+ " with newValue=" + newValue + " source=" + source);
+											+ " with newValue=" + newValue + " source=" + source);*/
 									if (!isDeleted) {
 										BrowserCell.this.update(false);
 									}
@@ -361,9 +361,9 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 							l = new BindingValueChangeListener<Object>(children.getData(), browserElementType) {
 								@Override
 								public void bindingValueChanged(Object source, Object newValue) {
-									System.out.println(" bindingValueChanged() detected for data of children " + children.getName()
+									/*System.out.println(" bindingValueChanged() detected for data of children " + children.getName()
 											+ " of " + browserElementType + " " + children.getData() + " with newValue=" + newValue
-											+ " source=" + source);
+											+ " source=" + source);*/
 									if (!isDeleted) {
 										BrowserCell.this.update(false);
 									}
@@ -392,9 +392,9 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 						BindingValueChangeListener<?> l = new BindingValueChangeListener<Object>(children.getCast(), browserElementType) {
 							@Override
 							public void bindingValueChanged(Object source, Object newValue) {
-								System.out.println(" bindingValueChanged() detected for cast of children " + children.getName() + " of "
+								/*System.out.println(" bindingValueChanged() detected for cast of children " + children.getName() + " of "
 										+ browserElementType + " " + children.getCast() + " with newValue=" + newValue + " source="
-										+ source);
+										+ source);*/
 								if (!isDeleted) {
 									BrowserCell.this.update(false);
 								}
@@ -423,9 +423,9 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 								browserElementType) {
 							@Override
 							public void bindingValueChanged(Object source, Boolean newValue) {
-								System.out.println(" bindingValueChanged() detected for visble of children " + children.getName() + " of "
+								/*System.out.println(" bindingValueChanged() detected for visble of children " + children.getName() + " of "
 										+ browserElementType + " " + children.getVisible() + " with newValue=" + newValue + " source="
-										+ source);
+										+ source);*/
 								if (!isDeleted) {
 									BrowserCell.this.update(false);
 								}
@@ -447,8 +447,8 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 						browserElementType) {
 					@Override
 					public void bindingValueChanged(Object source, String newValue) {
-						System.out.println(" bindingValueChanged() detected for label of " + browserElementType + " "
-								+ browserElementType.getBrowserElement().getLabel() + " with newValue=" + newValue + " source=" + source);
+						/*System.out.println(" bindingValueChanged() detected for label of " + browserElementType + " "
+								+ browserElementType.getBrowserElement().getLabel() + " with newValue=" + newValue + " source=" + source);*/
 						if (!isDeleted) {
 							BrowserCell.this.update(false);
 						}
@@ -467,8 +467,8 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 						browserElementType) {
 					@Override
 					public void bindingValueChanged(Object source, Icon newValue) {
-						System.out.println(" bindingValueChanged() detected for icon of " + browserElementType + " "
-								+ browserElementType.getBrowserElement().getIcon() + " with newValue=" + newValue + " source=" + source);
+						// System.out.println(" bindingValueChanged() detected for icon of " + browserElementType + " "
+						// + browserElementType.getBrowserElement().getIcon() + " with newValue=" + newValue + " source=" + source);
 						if (!isDeleted) {
 							BrowserCell.this.update(false);
 						}
@@ -487,8 +487,8 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 						.getTooltip(), browserElementType) {
 					@Override
 					public void bindingValueChanged(Object source, String newValue) {
-						System.out.println(" bindingValueChanged() detected for tooltip of " + browserElementType + " "
-								+ browserElementType.getBrowserElement().getTooltip() + " with newValue=" + newValue + " source=" + source);
+						/*System.out.println(" bindingValueChanged() detected for tooltip of " + browserElementType + " "
+								+ browserElementType.getBrowserElement().getTooltip() + " with newValue=" + newValue + " source=" + source);*/
 						if (!isDeleted) {
 							BrowserCell.this.update(false);
 						}
@@ -507,8 +507,8 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 						.getEnabled(), browserElementType) {
 					@Override
 					public void bindingValueChanged(Object source, Boolean newValue) {
-						System.out.println(" bindingValueChanged() detected for enabled of " + browserElementType + " "
-								+ browserElementType.getBrowserElement().getEnabled() + " with newValue=" + newValue + " source=" + source);
+						// System.out.println(" bindingValueChanged() detected for enabled of " + browserElementType + " "
+						// + browserElementType.getBrowserElement().getEnabled() + " with newValue=" + newValue + " source=" + source);
 						if (!isDeleted) {
 							BrowserCell.this.update(false);
 						}
@@ -527,8 +527,8 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 						.getVisible(), browserElementType) {
 					@Override
 					public void bindingValueChanged(Object source, Boolean newValue) {
-						System.out.println(" bindingValueChanged() detected for visible of " + browserElementType + " "
-								+ browserElementType.getBrowserElement().getVisible() + " with newValue=" + newValue + " source=" + source);
+						// System.out.println(" bindingValueChanged() detected for visible of " + browserElementType + " "
+						// + browserElementType.getBrowserElement().getVisible() + " with newValue=" + newValue + " source=" + source);
 						if (!isDeleted) {
 							BrowserCell.this.update(false);
 						}

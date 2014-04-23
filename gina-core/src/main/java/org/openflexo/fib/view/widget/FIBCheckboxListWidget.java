@@ -47,7 +47,7 @@ public class FIBCheckboxListWidget<T> extends FIBMultipleValueWidget<FIBCheckbox
 	private JCheckBox[] checkboxesArray;
 	private JLabel[] labelsArray;
 
-	private JPanel panel;
+	private final JPanel panel;
 
 	private List<T> selectedValues;
 
@@ -69,13 +69,13 @@ public class FIBCheckboxListWidget<T> extends FIBMultipleValueWidget<FIBCheckbox
 			listenerToDataAsListValue.delete();
 		}
 		if (getComponent().getData() != null && getComponent().getData().isValid()) {
-			listenerToDataAsListValue = new BindingValueListChangeListener<T, List<T>>((DataBinding<List<T>>) ((DataBinding) getComponent()
-					.getData()), getBindingEvaluationContext()) {
+			listenerToDataAsListValue = new BindingValueListChangeListener<T, List<T>>(((DataBinding) getComponent().getData()),
+					getBindingEvaluationContext()) {
 
 				@Override
 				public void bindingValueChanged(Object source, List<T> newValue) {
-					System.out.println(" bindingValueChanged() detected for data list=" + getComponent().getEnable() + " with newValue="
-							+ newValue + " source=" + source);
+					// System.out.println(" bindingValueChanged() detected for data list=" + getComponent().getEnable() + " with newValue="
+					// + newValue + " source=" + source);
 					updateData();
 				}
 			};
@@ -118,7 +118,7 @@ public class FIBCheckboxListWidget<T> extends FIBMultipleValueWidget<FIBCheckbox
 			checkboxesArray = new JCheckBox[getMultipleValueModel().getSize()];
 			labelsArray = new JLabel[getMultipleValueModel().getSize()];
 			for (int i = 0; i < getMultipleValueModel().getSize(); i++) {
-				T object = (T) getMultipleValueModel().getElementAt(i);
+				T object = getMultipleValueModel().getElementAt(i);
 				String text = getStringRepresentation(object);
 				JCheckBox cb = new JCheckBox(text, containsObject(object));
 				cb.setOpaque(false);
@@ -142,7 +142,7 @@ public class FIBCheckboxListWidget<T> extends FIBMultipleValueWidget<FIBCheckbox
 			if ((getWidget().getData() == null || !getWidget().getData().isValid()) && getWidget().getAutoSelectFirstRow()
 					&& getMultipleValueModel().getSize() > 0) {
 				checkboxesArray[0].setSelected(true);
-				List<T> newList = Collections.singletonList((T) getMultipleValueModel().getElementAt(0));
+				List<T> newList = Collections.singletonList(getMultipleValueModel().getElementAt(0));
 				setSelected(newList);
 				setValue(newList);
 			}

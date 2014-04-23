@@ -85,13 +85,13 @@ BindingEvaluationContext*/{
 			dynamicComponentFileBindingValueChangeListener.delete();
 		}
 		if (getComponent().getDynamicComponentFile() != null && getComponent().getDynamicComponentFile().isValid()) {
-			dynamicComponentFileBindingValueChangeListener = new BindingValueChangeListener<Resource>(getComponent().getDynamicComponentFile(),
-					getBindingEvaluationContext()) {
+			dynamicComponentFileBindingValueChangeListener = new BindingValueChangeListener<Resource>(getComponent()
+					.getDynamicComponentFile(), getBindingEvaluationContext()) {
 
 				@Override
 				public void bindingValueChanged(Object source, Resource newValue) {
-					System.out.println(" bindingValueChanged() detected for dynamicComponentFile="
-							+ getComponent().getDynamicComponentFile() + " with newValue=" + newValue + " source=" + source);
+					// System.out.println(" bindingValueChanged() detected for dynamicComponentFile="
+					// + getComponent().getDynamicComponentFile() + " with newValue=" + newValue + " source=" + source);
 					updateReferencedComponentView();
 				}
 			};
@@ -147,7 +147,7 @@ BindingEvaluationContext*/{
 	private FIBComponent retrieveReferencedComponent() {
 
 		Resource componentFile = getComponentFile();
-		if (componentFile != null ) {
+		if (componentFile != null) {
 			return FIBLibrary.instance().retrieveFIBComponent(componentFile);
 		}
 		return null;
@@ -229,9 +229,9 @@ BindingEvaluationContext*/{
 					referencedComponentView = embeddedFIBController.getViewFactory().makeContainer((FIBContainer) loaded);
 					referencedComponentView.setEmbeddingComponent(this);
 				}
-			} else { 
-				if (!isComponentLoading){
-				logger.warning("ReferencedComponent = null and I'm NOT loading anything... : " + this.getComponentFile().getURI());
+			} else {
+				if (!isComponentLoading) {
+					logger.warning("ReferencedComponent = null and I'm NOT loading anything... : " + this.getComponentFile().getURI());
 				}
 
 			}

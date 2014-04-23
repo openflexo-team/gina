@@ -121,8 +121,8 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 
 				@Override
 				public void bindingValueChanged(Object source, List<T> newValue) {
-					System.out.println(" bindingValueChanged() detected for data list=" + getComponent().getEnable() + " with newValue="
-							+ newValue + " source=" + source);
+					// System.out.println(" bindingValueChanged() detected for data list=" + getComponent().getEnable() + " with newValue="
+					// + newValue + " source=" + source);
 					updateData();
 				}
 			};
@@ -140,8 +140,8 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
-					System.out.println(" bindingValueChanged() detected for selected=" + getComponent().getEnable() + " with newValue="
-							+ newValue + " source=" + source);
+					// System.out.println(" bindingValueChanged() detected for selected=" + getComponent().getEnable() + " with newValue="
+					// + newValue + " source=" + source);
 					performSelect(newValue);
 				}
 			};
