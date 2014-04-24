@@ -165,7 +165,7 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 	@Override
 	public void updateData() {
 		super.updateData();
-		if (!widgetUpdating && !isDeleted() && getDynamicJComponent() != null) {
+		if (!widgetUpdating && !isDeleted() && getDynamicJComponent() != null && isComponentVisible()) {
 			updateWidgetFromModel();
 		}
 	}
