@@ -21,6 +21,8 @@ package org.openflexo.fib.model;
 
 import java.util.logging.Logger;
 
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.DeserializationFinalizer;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -42,6 +44,7 @@ public interface FIBDependancy extends FIBModelObject {
 	public static final String MASTER_COMPONENT_NAME_KEY = "masterComponentName";
 
 	@Getter(value = OWNER_KEY, inverse = FIBComponent.EXPLICIT_DEPENDANCIES_KEY)
+	@CloningStrategy(StrategyType.IGNORE)
 	public FIBComponent getOwner();
 
 	@Setter(OWNER_KEY)
@@ -83,7 +86,7 @@ public interface FIBDependancy extends FIBModelObject {
 		@Override
 		public void setMasterComponent(FIBComponent masterComponent) {
 			FIBPropertyNotification<FIBComponent> notification = requireChange(MASTER_COMPONENT_NAME_KEY, masterComponent);
-			if (notification != null && getOwner()!=null) {
+			if (notification != null && getOwner() != null) {
 				this.masterComponent = masterComponent;
 				// try {
 				getOwner().declareDependantOf(masterComponent);

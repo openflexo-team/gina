@@ -33,6 +33,8 @@ import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.fib.model.validation.ValidationReport;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.DeserializationFinalizer;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -63,6 +65,7 @@ public abstract interface FIBBrowserAction extends FIBModelObject {
 	public static final String IS_AVAILABLE_KEY = "isAvailable";
 
 	@Getter(value = OWNER_KEY, inverse = FIBBrowserElement.ACTIONS_KEY)
+	@CloningStrategy(StrategyType.IGNORE)
 	public FIBBrowserElement getOwner();
 
 	@Setter(OWNER_KEY)

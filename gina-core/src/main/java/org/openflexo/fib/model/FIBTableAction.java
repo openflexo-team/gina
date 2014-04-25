@@ -25,6 +25,8 @@ import org.openflexo.antar.binding.BindingDefinition;
 import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.fib.model.validation.ValidationReport;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.DeserializationFinalizer;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -55,6 +57,7 @@ public abstract interface FIBTableAction extends FIBModelObject {
 	public static final String IS_AVAILABLE_KEY = "isAvailable";
 
 	@Getter(value = OWNER_KEY, inverse = FIBTable.ACTIONS_KEY)
+	@CloningStrategy(StrategyType.IGNORE)
 	public FIBTable getOwner();
 
 	@Setter(OWNER_KEY)

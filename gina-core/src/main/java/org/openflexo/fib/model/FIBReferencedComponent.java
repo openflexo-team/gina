@@ -30,6 +30,8 @@ import org.openflexo.antar.binding.BindingDefinition;
 import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.DeserializationFinalizer;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
@@ -59,8 +61,10 @@ public interface FIBReferencedComponent extends FIBWidget {
 	@Getter(value = COMPONENT_FILE_KEY)
 	@XMLAttribute
 	public Resource getComponentFile();
-	// TODO : this is a  Workaround for Fib File selector...It has to be fixed in a more efficient way
+
+	// TODO : this is a Workaround for Fib File selector...It has to be fixed in a more efficient way
 	public File getComponentActualFile();
+
 	public void setComponentActualFile(File file) throws MalformedURLException, LocatorNotFoundException;
 
 	@Setter(COMPONENT_FILE_KEY)
@@ -132,19 +136,21 @@ public interface FIBReferencedComponent extends FIBWidget {
 				notify(notification);
 			}
 		}
-		
-		// TODO : this is a  Workaround for Fib File selector...It has to be fixed in a more efficient way
+
+		// TODO : this is a Workaround for Fib File selector...It has to be fixed in a more efficient way
+		@Override
 		public File getComponentActualFile() {
-			if (componentFile instanceof FileResourceImpl){
+			if (componentFile instanceof FileResourceImpl) {
 				return ((FileResourceImpl) componentFile).getFile();
-			}
-			else return null;
-		}		
+			} else
+				return null;
+		}
+
+		@Override
 		public void setComponentActualFile(File file) throws MalformedURLException, LocatorNotFoundException {
 
 			this.setComponentFile(new FileResourceImpl(file));
 		}
-
 
 		@Override
 		public DataBinding<Resource> getDynamicComponentFile() {
@@ -285,6 +291,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 		public static final String MANDATORY_KEY = "mandatory";
 
 		@Getter(value = OWNER_KEY, inverse = FIBReferencedComponent.ASSIGNMENTS_KEY)
+		@CloningStrategy(StrategyType.IGNORE)
 		public FIBReferencedComponent getOwner();
 
 		@Setter(OWNER_KEY)

@@ -51,6 +51,8 @@ import org.openflexo.fib.model.validation.ValidationWarning;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.DeserializationFinalizer;
 import org.openflexo.model.annotations.DeserializationInitializer;
 import org.openflexo.model.annotations.Getter;
@@ -168,6 +170,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 	@Override
 	@Getter(value = PARENT_KEY/*, inverse = FIBContainer.SUB_COMPONENTS_KEY*/)
+	@CloningStrategy(StrategyType.IGNORE)
 	public FIBContainer getParent();
 
 	@Setter(PARENT_KEY)
@@ -321,6 +324,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 	@Getter(value = LOCALIZED_DICTIONARY_KEY, inverse = FIBLocalizedDictionary.OWNER_KEY)
 	@XMLElement
+	@CloningStrategy(StrategyType.IGNORE)
 	public FIBLocalizedDictionary getLocalizedDictionary();
 
 	@Setter(LOCALIZED_DICTIONARY_KEY)

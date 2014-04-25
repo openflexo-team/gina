@@ -32,6 +32,8 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent.CustomComponentParameter;
 import org.openflexo.fib.model.FIBCustom.FIBCustomImpl;
 import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.DeserializationFinalizer;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
@@ -248,6 +250,7 @@ public interface FIBCustomColumn extends FIBTableColumn {
 		public static final String MANDATORY_KEY = "mandatory";
 
 		@Getter(value = OWNER_KEY, inverse = FIBCustomColumn.ASSIGNMENTS_KEY)
+		@CloningStrategy(StrategyType.IGNORE)
 		public FIBCustomColumn getOwner();
 
 		@Setter(OWNER_KEY)

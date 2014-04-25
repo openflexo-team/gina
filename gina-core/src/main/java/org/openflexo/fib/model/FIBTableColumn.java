@@ -31,6 +31,8 @@ import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.fib.model.validation.ValidationReport;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.Import;
@@ -79,6 +81,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 	public static final String VALUE_CHANGED_ACTION_KEY = "valueChangedAction";
 
 	@Getter(value = OWNER_KEY, inverse = FIBTable.COLUMNS_KEY)
+	@CloningStrategy(StrategyType.IGNORE)
 	public FIBTable getOwner();
 
 	@Setter(OWNER_KEY)

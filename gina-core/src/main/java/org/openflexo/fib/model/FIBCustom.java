@@ -41,6 +41,8 @@ import org.openflexo.antar.binding.ParameterizedTypeImpl;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.view.widget.FIBCustomWidget;
 import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.DeserializationFinalizer;
 import org.openflexo.model.annotations.Finder;
 import org.openflexo.model.annotations.Getter;
@@ -370,6 +372,7 @@ public interface FIBCustom extends FIBWidget {
 		public static final String MANDATORY_KEY = "mandatory";
 
 		@Getter(value = OWNER_KEY, inverse = FIBCustom.ASSIGNMENTS_KEY)
+		@CloningStrategy(StrategyType.IGNORE)
 		public FIBCustom getOwner();
 
 		@Setter(OWNER_KEY)
