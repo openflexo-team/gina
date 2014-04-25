@@ -30,6 +30,8 @@ import java.util.logging.Logger;
 import org.openflexo.localization.Language;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -58,6 +60,7 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 	public void setOwner(FIBComponent owner);
 
 	@Getter(value = ENTRIES_KEY, cardinality = Cardinality.LIST, inverse = FIBLocalizedEntry.DICTIONARY_KEY)
+	@CloningStrategy(StrategyType.CLONE)
 	public List<FIBLocalizedEntry> getEntries();
 
 	@Setter(ENTRIES_KEY)

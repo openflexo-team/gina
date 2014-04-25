@@ -19,11 +19,8 @@
  */
 package org.openflexo.fib.model;
 
-import java.io.File;
-import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
@@ -45,6 +42,8 @@ import org.openflexo.fib.model.validation.ValidationRule;
 import org.openflexo.fib.model.validation.ValidationWarning;
 import org.openflexo.fib.utils.LocalizedDelegateGUIImpl;
 import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -88,6 +87,7 @@ public interface FIBModelObject extends Bindable, AccessibleProxyObject, Cloneab
 
 	@Getter(value = PARAMETERS_KEY, cardinality = Cardinality.LIST)
 	@XMLElement
+	@CloningStrategy(StrategyType.CLONE)
 	public List<FIBParameter> getParameters();
 
 	@Setter(PARAMETERS_KEY)
@@ -159,7 +159,7 @@ public interface FIBModelObject extends Bindable, AccessibleProxyObject, Cloneab
 					LOCALIZATION = new LocalizedDelegateGUIImpl(fibLocalizedDelegate, null, true);
 				}
 			} else {
-				if (generalLocalizedDelegate !=null) {
+				if (generalLocalizedDelegate != null) {
 					LOCALIZATION = new LocalizedDelegateGUIImpl(generalLocalizedDelegate, null, true);
 				} else {
 					LOCALIZATION = new LocalizedDelegateGUIImpl(generalLocalizedDelegate, null, false);

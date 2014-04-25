@@ -24,6 +24,8 @@ package org.openflexo.fib.model;
 import java.util.List;
 
 import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -194,6 +196,7 @@ public class FIBMultiSplitLayoutFactory implements MultiSplitLayoutFactory {
 		@Override
 		@Getter(value = CHILDREN_KEY, cardinality = Cardinality.LIST)
 		@XMLElement
+		@CloningStrategy(StrategyType.CLONE)
 		public List<N> getChildren();
 
 		@Override

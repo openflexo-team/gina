@@ -38,6 +38,8 @@ import org.openflexo.fib.model.FIBTableAction.FIBCustomAction;
 import org.openflexo.fib.model.FIBTableAction.FIBRemoveAction;
 import org.openflexo.fib.view.widget.FIBTableWidget;
 import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Finder;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
@@ -153,6 +155,7 @@ public interface FIBTable extends FIBWidget {
 
 	@Getter(value = COLUMNS_KEY, cardinality = Cardinality.LIST, inverse = FIBTableColumn.OWNER_KEY)
 	@XMLElement
+	@CloningStrategy(StrategyType.CLONE)
 	public List<FIBTableColumn> getColumns();
 
 	@Setter(COLUMNS_KEY)
@@ -166,6 +169,7 @@ public interface FIBTable extends FIBWidget {
 
 	@Getter(value = ACTIONS_KEY, cardinality = Cardinality.LIST, inverse = FIBTableAction.OWNER_KEY)
 	@XMLElement
+	@CloningStrategy(StrategyType.CLONE)
 	public List<FIBTableAction> getActions();
 
 	@Setter(ACTIONS_KEY)

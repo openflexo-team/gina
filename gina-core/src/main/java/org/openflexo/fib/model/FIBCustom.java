@@ -112,6 +112,7 @@ public interface FIBCustom extends FIBWidget {
 
 	@Getter(value = ASSIGNMENTS_KEY, cardinality = Cardinality.LIST, inverse = FIBCustomAssignment.OWNER_KEY)
 	@XMLElement
+	@CloningStrategy(StrategyType.CLONE)
 	public List<FIBCustomAssignment> getAssignments();
 
 	@Setter(ASSIGNMENTS_KEY)

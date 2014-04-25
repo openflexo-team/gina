@@ -190,6 +190,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 	@Getter(value = CHILDREN_KEY, cardinality = Cardinality.LIST, inverse = FIBBrowserElementChildren.OWNER_KEY)
 	@XMLElement
+	@CloningStrategy(StrategyType.CLONE)
 	public List<FIBBrowserElementChildren> getChildren();
 
 	@Setter(CHILDREN_KEY)
@@ -203,6 +204,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 	@Getter(value = ACTIONS_KEY, cardinality = Cardinality.LIST, inverse = FIBBrowserAction.OWNER_KEY)
 	@XMLElement
+	@CloningStrategy(StrategyType.CLONE)
 	public List<FIBBrowserAction> getActions();
 
 	@Setter(ACTIONS_KEY)

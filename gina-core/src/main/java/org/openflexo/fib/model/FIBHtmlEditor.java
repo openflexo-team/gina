@@ -25,6 +25,8 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -51,6 +53,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 	public static final String VISIBLE_AND_UNUSED_OPTIONS_KEY = "visibleAndUnusedOptions";
 
 	@Getter(value = OPTIONS_IN_LINE1_KEY, cardinality = Cardinality.LIST, inverse = FIBHtmlEditorOption.EDITOR_KEY)
+	@CloningStrategy(StrategyType.CLONE)
 	public List<FIBHtmlEditorOption> getOptionsInLine1();
 
 	@Setter(OPTIONS_IN_LINE1_KEY)
@@ -63,6 +66,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 	public void removeFromOptionsInLine1(FIBHtmlEditorOption aOptionsInLine1);
 
 	@Getter(value = OPTIONS_IN_LINE2_KEY, cardinality = Cardinality.LIST, inverse = FIBHtmlEditorOption.EDITOR_KEY)
+	@CloningStrategy(StrategyType.CLONE)
 	public List<FIBHtmlEditorOption> getOptionsInLine2();
 
 	@Setter(OPTIONS_IN_LINE2_KEY)
@@ -75,6 +79,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 	public void removeFromOptionsInLine2(FIBHtmlEditorOption aOptionsInLine2);
 
 	@Getter(value = OPTIONS_IN_LINE3_KEY, cardinality = Cardinality.LIST, inverse = FIBHtmlEditorOption.EDITOR_KEY)
+	@CloningStrategy(StrategyType.CLONE)
 	public List<FIBHtmlEditorOption> getOptionsInLine3();
 
 	@Setter(OPTIONS_IN_LINE3_KEY)
@@ -93,6 +98,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 	public Vector<FIBHtmlEditorOption> getAvailableOptions();
 
 	@Getter(value = VISIBLE_AND_UNUSED_OPTIONS_KEY, cardinality = Cardinality.LIST, inverse = FIBHtmlEditorOption.EDITOR_KEY)
+	@CloningStrategy(StrategyType.CLONE)
 	public Vector<FIBHtmlEditorOption> getVisibleAndUnusedOptions();
 
 	@Adder(VISIBLE_AND_UNUSED_OPTIONS_KEY)

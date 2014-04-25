@@ -79,6 +79,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 
 	@Getter(value = ASSIGNMENTS_KEY, cardinality = Cardinality.LIST, inverse = FIBReferenceAssignment.OWNER_KEY)
 	@XMLElement
+	@CloningStrategy(StrategyType.CLONE)
 	public List<FIBReferenceAssignment> getAssignments();
 
 	@Setter(ASSIGNMENTS_KEY)
