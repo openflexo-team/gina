@@ -308,14 +308,16 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 				// dependingObjects = new DependingObjects(this);
 				// dependingObjects.refreshObserving(browserElementType);
 
-				listenLabelBindingValueChange();
-				listenIconBindingValueChange();
-				listenTooltipBindingValueChange();
-				listenEnabledBindingValueChange();
-				listenVisibleBindingValueChange();
-				listenChildrenDataBindingValueChange();
-				listenChildrenCastBindingValueChange();
-				listenChildrenVisibleBindingValueChange();
+				browserElementType.getLabelFor(representedObject);
+
+				listenLabelBindingValueChange(representedObject);
+				listenIconBindingValueChange(representedObject);
+				listenTooltipBindingValueChange(representedObject);
+				listenEnabledBindingValueChange(representedObject);
+				listenVisibleBindingValueChange(representedObject);
+				listenChildrenDataBindingValueChange(representedObject);
+				listenChildrenCastBindingValueChange(representedObject);
+				listenChildrenVisibleBindingValueChange(representedObject);
 
 			}
 
@@ -330,7 +332,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 		private Map<FIBBrowserElementChildren, BindingValueChangeListener<?>> childrenCastBindingValueChangeListeners;
 		private Map<FIBBrowserElementChildren, BindingValueChangeListener<Boolean>> childrenVisibleBindingValueChangeListeners;
 
-		private void listenChildrenDataBindingValueChange() {
+		private void listenChildrenDataBindingValueChange(Object representedObject) {
 			if (childrenDataBindingValueChangeListeners != null) {
 				for (BindingValueChangeListener<?> l : childrenDataBindingValueChangeListeners.values()) {
 					l.stopObserving();
@@ -340,6 +342,9 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			} else {
 				childrenDataBindingValueChangeListeners = new HashMap<FIBBrowserElement.FIBBrowserElementChildren, BindingValueChangeListener<?>>();
 			}
+			// This is really important to this now
+			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
+			browserElementType.getChildrenFor(representedObject);
 			if (browserElementType.getBrowserElement() != null) {
 				for (final FIBBrowserElementChildren children : browserElementType.getBrowserElement().getChildren()) {
 					if (children.getData().isValid()) {
@@ -376,7 +381,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			}
 		}
 
-		private void listenChildrenCastBindingValueChange() {
+		private void listenChildrenCastBindingValueChange(Object representedObject) {
 			if (childrenCastBindingValueChangeListeners != null) {
 				for (BindingValueChangeListener<?> l : childrenCastBindingValueChangeListeners.values()) {
 					l.stopObserving();
@@ -386,6 +391,9 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			} else {
 				childrenCastBindingValueChangeListeners = new HashMap<FIBBrowserElement.FIBBrowserElementChildren, BindingValueChangeListener<?>>();
 			}
+			// This is really important to this now
+			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
+			browserElementType.getChildrenFor(representedObject);
 			if (browserElementType.getBrowserElement() != null) {
 				for (final FIBBrowserElementChildren children : browserElementType.getBrowserElement().getChildren()) {
 					if (children.getCast().isValid()) {
@@ -406,7 +414,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			}
 		}
 
-		private void listenChildrenVisibleBindingValueChange() {
+		private void listenChildrenVisibleBindingValueChange(Object representedObject) {
 			if (childrenVisibleBindingValueChangeListeners != null) {
 				for (BindingValueChangeListener<?> l : childrenVisibleBindingValueChangeListeners.values()) {
 					l.stopObserving();
@@ -416,6 +424,11 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			} else {
 				childrenVisibleBindingValueChangeListeners = new HashMap<FIBBrowserElement.FIBBrowserElementChildren, BindingValueChangeListener<Boolean>>();
 			}
+
+			// This is really important to this now
+			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
+			browserElementType.getChildrenFor(representedObject);
+
 			if (browserElementType.getBrowserElement() != null) {
 				for (final FIBBrowserElementChildren children : browserElementType.getBrowserElement().getChildren()) {
 					if (children.getVisible().isValid()) {
@@ -437,19 +450,25 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			}
 		}
 
-		private void listenLabelBindingValueChange() {
+		private void listenLabelBindingValueChange(Object representedObject) {
 			if (labelBindingValueChangeListener != null) {
 				labelBindingValueChangeListener.stopObserving();
 				labelBindingValueChangeListener.delete();
 			}
+
+			// This is really important to this now
+			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
+			browserElementType.getLabelFor(representedObject);
+
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getLabel().isValid()) {
 				labelBindingValueChangeListener = new BindingValueChangeListener<String>(browserElementType.getBrowserElement().getLabel(),
 						browserElementType) {
 					@Override
 					public void bindingValueChanged(Object source, String newValue) {
-						/*System.out.println(" bindingValueChanged() detected for label of " + browserElementType + " "
-								+ browserElementType.getBrowserElement().getLabel() + " with newValue=" + newValue + " source=" + source);*/
+						// System.out.println(" bindingValueChanged() detected for label of " + browserElementType + " "
+						// + browserElementType.getBrowserElement().getLabel() + " with newValue=" + newValue + " source=" + source);
 						if (!isDeleted) {
+							// Label has changed, update the cell
 							BrowserCell.this.update(false);
 						}
 					}
@@ -457,11 +476,14 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			}
 		}
 
-		private void listenIconBindingValueChange() {
+		private void listenIconBindingValueChange(Object representedObject) {
 			if (iconBindingValueChangeListener != null) {
 				iconBindingValueChangeListener.stopObserving();
 				iconBindingValueChangeListener.delete();
 			}
+			// This is really important to this now
+			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
+			browserElementType.getIconFor(representedObject);
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getIcon().isValid()) {
 				iconBindingValueChangeListener = new BindingValueChangeListener<Icon>(browserElementType.getBrowserElement().getIcon(),
 						browserElementType) {
@@ -477,11 +499,14 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			}
 		}
 
-		private void listenTooltipBindingValueChange() {
+		private void listenTooltipBindingValueChange(Object representedObject) {
 			if (tooltipBindingValueChangeListener != null) {
 				tooltipBindingValueChangeListener.stopObserving();
 				tooltipBindingValueChangeListener.delete();
 			}
+			// This is really important to this now
+			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
+			browserElementType.getTooltipFor(representedObject);
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getTooltip().isValid()) {
 				tooltipBindingValueChangeListener = new BindingValueChangeListener<String>(browserElementType.getBrowserElement()
 						.getTooltip(), browserElementType) {
@@ -497,11 +522,14 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			}
 		}
 
-		private void listenEnabledBindingValueChange() {
+		private void listenEnabledBindingValueChange(Object representedObject) {
 			if (enabledBindingValueChangeListener != null) {
 				enabledBindingValueChangeListener.stopObserving();
 				enabledBindingValueChangeListener.delete();
 			}
+			// This is really important to this now
+			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
+			browserElementType.isEnabled(representedObject);
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getEnabled().isValid()) {
 				enabledBindingValueChangeListener = new BindingValueChangeListener<Boolean>(browserElementType.getBrowserElement()
 						.getEnabled(), browserElementType) {
@@ -517,11 +545,14 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			}
 		}
 
-		private void listenVisibleBindingValueChange() {
+		private void listenVisibleBindingValueChange(Object representedObject) {
 			if (visibleBindingValueChangeListener != null) {
 				visibleBindingValueChangeListener.stopObserving();
 				visibleBindingValueChangeListener.delete();
 			}
+			// This is really important to this now
+			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
+			browserElementType.isVisible(representedObject);
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getVisible().isValid()) {
 				visibleBindingValueChangeListener = new BindingValueChangeListener<Boolean>(browserElementType.getBrowserElement()
 						.getVisible(), browserElementType) {
