@@ -153,9 +153,6 @@ public class FIBCheckboxListWidget<T> extends FIBMultipleValueWidget<FIBCheckbox
 
 	@Override
 	public synchronized boolean updateWidgetFromModel() {
-		System.out.println("On est bien la, dans updateWidgetFromModel()");
-		System.out.println("value=" + getValue());
-		System.out.println("selectedValues=" + selectedValues);
 		List<T> value = getValue();
 		if (notEquals(value, selectedValues) /*|| listModelRequireChange()*/|| multipleValueModel == null) {
 			if (logger.isLoggable(Level.FINE)) {
