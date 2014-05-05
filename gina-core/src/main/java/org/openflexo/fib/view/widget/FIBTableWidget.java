@@ -185,7 +185,8 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 		boolean returned = false;
 
 		// logger.info("----------> updateWidgetFromModel() for " + getTable().getName());
-		if (_fibTable.getEnable().isSet() && _fibTable.getEnable().isValid()) {
+		// Not to be done anymore, this is performed by updateEnability()
+		/*if (_fibTable.getEnable().isSet() && _fibTable.getEnable().isValid()) {
 			Boolean enabledValue = true;
 			try {
 				enabledValue = _fibTable.getEnable().getBindingValue(getBindingEvaluationContext());
@@ -197,7 +198,7 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 				e.printStackTrace();
 			}
 			_table.setEnabled(enabledValue != null && enabledValue);
-		}
+		}*/
 		if (notEquals(getValue(), getTableModel().getValues())) {
 
 			returned = true;
