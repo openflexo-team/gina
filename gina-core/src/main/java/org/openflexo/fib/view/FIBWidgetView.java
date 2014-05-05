@@ -833,7 +833,9 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 				return;
 			}
 		}
-		component.setEnabled(false);
+		if (component != null) {
+			component.setEnabled(false);
+		}
 		if (component instanceof Container) {
 			for (Component c : ((Container) component).getComponents()) {
 				disableComponent(c);
