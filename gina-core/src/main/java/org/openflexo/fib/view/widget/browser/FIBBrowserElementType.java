@@ -82,6 +82,12 @@ public class FIBBrowserElementType implements BindingEvaluationContext, Property
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getSource() == browserElementDefinition) {
+			if (evt.getPropertyName().equals(FIBBrowserElement.ACTIONS_KEY)) {
+				// There was here a huge perf issue caused by FIBBrowserElement.addToActions() call
+				// in FIBBrowserView
+				// Please investigate this issue
+				return;
+			}
 			((FIBBrowserWidget) controller.viewForComponent(browserElementDefinition.getOwner())).updateBrowser();
 		}
 	}
