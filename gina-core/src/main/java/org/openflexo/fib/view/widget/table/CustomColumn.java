@@ -233,7 +233,7 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V> implements Editable
 
 	protected FIBCustomComponent<V, ?> getViewCustomWidget(T rowObject) {
 		if (_viewCustomWidget != null) {
-			V value = getValueFor(rowObject, getBindingEvaluationContext());
+			V value = getValueFor(rowObject/*, getBindingEvaluationContext()*/);
 			_viewCustomWidget.setEditedObject(value);
 			_viewCustomWidget.setRevertValue(value);
 			logger.fine("Return _viewCustomWidget for model rowObject=" + rowObject + " value=" + value);
@@ -243,7 +243,7 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V> implements Editable
 
 	protected FIBCustomComponent<V, ?> getEditCustomWidget(T rowObject) {
 		if (_editCustomWidget != null) {
-			V value = getValueFor(rowObject, getBindingEvaluationContext());
+			V value = getValueFor(rowObject/*, getBindingEvaluationContext()*/);
 			_editCustomWidget.setEditedObject(value);
 			_editCustomWidget.setRevertValue(value);
 			logger.fine("Return _editCustomWidget for model rowObject=" + rowObject + " value=" + value);
@@ -308,7 +308,7 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V> implements Editable
 				table.putClientProperty("terminateEditOnFocusLost", Boolean.FALSE);
 			}
 			setEditedRowObject(elementAt(row));
-			_customWidget.setEditedObject(getValueFor(elementAt(row), getBindingEvaluationContext()));
+			_customWidget.setEditedObject(getValueFor(elementAt(row)/*, getBindingEvaluationContext()*/));
 			if (disableTerminateEditOnFocusLost) {
 				_customWidget.addApplyCancelListener(new ApplyCancelListener() {
 
@@ -378,8 +378,8 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V> implements Editable
 	@Override
 	public void fireApplyPerformed() {
 		logger.fine("fireApplyPerformed() for " + _editedRowObject);
-		setValueFor(_editedRowObject, _editCustomWidget.getEditedObject(), getBindingEvaluationContext());
-		notifyValueChangedFor(_editedRowObject, _editCustomWidget.getEditedObject(), getBindingEvaluationContext());
+		setValueFor(_editedRowObject, _editCustomWidget.getEditedObject()/*, getBindingEvaluationContext()*/);
+		notifyValueChangedFor(_editedRowObject, _editCustomWidget.getEditedObject()/*, getBindingEvaluationContext()*/);
 	}
 
 	@Override

@@ -30,6 +30,7 @@ import org.openflexo.antar.binding.BindingFactory;
 import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.antar.binding.DataBinding;
+import org.openflexo.antar.binding.DataBinding.CachingStrategy;
 import org.openflexo.fib.model.validation.ValidationReport;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -256,6 +257,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		public DataBinding<?> getData() {
 			if (data == null) {
 				data = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.GET);
+				data.setCachingStrategy(CachingStrategy.NO_CACHING);
 			}
 			return data;
 		}
@@ -266,6 +268,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 				data.setOwner(this);
 				data.setDeclaredType(Object.class);
 				data.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				data.setCachingStrategy(CachingStrategy.NO_CACHING);
 			}
 			this.data = data;
 		}
@@ -398,6 +401,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		public DataBinding<String> getFormat() {
 			if (format == null) {
 				format = new DataBinding<String>(formatter, String.class, DataBinding.BindingDefinitionType.GET);
+				format.setCachingStrategy(CachingStrategy.NO_CACHING);
 			}
 			return format;
 		}
@@ -408,6 +412,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 				format.setOwner(formatter);
 				format.setDeclaredType(String.class);
 				format.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				format.setCachingStrategy(CachingStrategy.NO_CACHING);
 			}
 			this.format = format;
 		}
@@ -481,6 +486,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		public DataBinding<String> getTooltip() {
 			if (tooltip == null) {
 				tooltip = new DataBinding<String>(this, String.class, DataBinding.BindingDefinitionType.GET);
+				tooltip.setCachingStrategy(CachingStrategy.NO_CACHING);
 			}
 			return tooltip;
 		}
@@ -491,6 +497,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 				tooltip.setOwner(this);
 				tooltip.setDeclaredType(String.class);
 				tooltip.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				tooltip.setCachingStrategy(CachingStrategy.NO_CACHING);
 			}
 			this.tooltip = tooltip;
 		}
@@ -499,6 +506,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		public DataBinding<Color> getColor() {
 			if (color == null) {
 				color = new DataBinding<Color>(this, Color.class, DataBinding.BindingDefinitionType.GET);
+				color.setCachingStrategy(CachingStrategy.NO_CACHING);
 			}
 			return color;
 		}
@@ -509,6 +517,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 				color.setOwner(this);
 				color.setDeclaredType(Color.class);
 				color.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				color.setCachingStrategy(CachingStrategy.NO_CACHING);
 			}
 			this.color = color;
 		}
@@ -517,6 +526,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		public DataBinding<Color> getBgColor() {
 			if (bgColor == null) {
 				bgColor = new DataBinding<Color>(this, Color.class, DataBinding.BindingDefinitionType.GET);
+				bgColor.setCachingStrategy(CachingStrategy.NO_CACHING);
 			}
 			return bgColor;
 		}
@@ -527,6 +537,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 				bgColor.setOwner(this);
 				bgColor.setDeclaredType(Color.class);
 				bgColor.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				bgColor.setCachingStrategy(CachingStrategy.NO_CACHING);
 			}
 			this.bgColor = bgColor;
 		}
@@ -535,6 +546,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		public DataBinding<?> getValueChangedAction() {
 			if (valueChangedAction == null) {
 				valueChangedAction = new DataBinding<Void>(this, Void.class, DataBinding.BindingDefinitionType.EXECUTE);
+				valueChangedAction.setCachingStrategy(CachingStrategy.NO_CACHING);
 			}
 			return valueChangedAction;
 		}
@@ -545,6 +557,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 				valueChangedAction.setOwner(this);
 				valueChangedAction.setDeclaredType(Void.class);
 				valueChangedAction.setBindingDefinitionType(DataBinding.BindingDefinitionType.EXECUTE);
+				valueChangedAction.setCachingStrategy(CachingStrategy.NO_CACHING);
 			}
 			this.valueChangedAction = valueChangedAction;
 		}

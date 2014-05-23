@@ -187,8 +187,8 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 	public abstract Class<V> getValueClass();
 
 	@SuppressWarnings("unchecked")
-	public synchronized V getValueFor(final T object, BindingEvaluationContext evaluationContext) {
-		bindingEvaluationContext = evaluationContext;
+	public synchronized V getValueFor(final T object /*, BindingEvaluationContext evaluationContext*/) {
+		// bindingEvaluationContext = evaluationContext;
 		setIteratorObject(object);
 		/*
 		 * System.out.println("column: "+columnModel);
@@ -213,12 +213,12 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 		}
 	}
 
-	public synchronized void setValueFor(final T object, V value, BindingEvaluationContext evaluationContext) {
-		bindingEvaluationContext = evaluationContext;
+	public synchronized void setValueFor(final T object, V value/*, BindingEvaluationContext evaluationContext*/) {
+		// bindingEvaluationContext = evaluationContext;
 		setIteratorObject(object);
 		try {
 			columnModel.getData().setBindingValue(value, this);
-			notifyValueChangedFor(object, value, bindingEvaluationContext);
+			notifyValueChangedFor(object, value/*, bindingEvaluationContext*/);
 		} catch (TypeMismatchException e) {
 			e.printStackTrace();
 		} catch (NullReferenceException e) {
@@ -235,10 +235,6 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 	private void setIteratorObject(T iteratorObject) {
 		T oldIteratorObject = this.iteratorObject;
 		this.iteratorObject = iteratorObject;
-		System.out.println("hop, on set iteratorObject a " + iteratorObject + " pour " + getBindingEvaluationContext());
-		// PropertyChangeSupport prout = ((HasPropertyChangeSupport) getBindingEvaluationContext()).getPropertyChangeSupport();
-		// ((HasPropertyChangeSupport) getBindingEvaluationContext()).getPropertyChangeSupport().firePropertyChange(FIBTable.ITERATOR_NAME,
-		// null, iteratorObject);
 		getPropertyChangeSupport().firePropertyChange(FIBTable.ITERATOR_NAME, oldIteratorObject, iteratorObject);
 	}
 
@@ -247,18 +243,18 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 		if (variable.getVariableName().equals(FIBTable.ITERATOR_NAME)) {
 			return iteratorObject;
 		} else {
-			return getBindingEvaluationContext().getValue(variable);
+			return tableModel.getWidget().getBindingEvaluationContext().getValue(variable);
 		}
 	}
 
-	private BindingEvaluationContext bindingEvaluationContext;
+	/*private BindingEvaluationContext bindingEvaluationContext;
 
 	public BindingEvaluationContext getBindingEvaluationContext() {
 		if (bindingEvaluationContext != null) {
 			return bindingEvaluationContext;
 		}
 		return getController();
-	}
+	}*/
 
 	/**
 	 * Must be overriden if required
@@ -358,11 +354,11 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 		return getTableModel().getPropertyListColumnWithTitle(title);
 	}
 
-	public void notifyValueChangedFor(T object, V value, BindingEvaluationContext evaluationContext) {
+	public void notifyValueChangedFor(T object, V value /*, BindingEvaluationContext evaluationContext*/) {
 		if (logger.isLoggable(Level.FINE)) {
 			logger.fine("notifyValueChangedFor " + object);
 		}
-		bindingEvaluationContext = evaluationContext;
+		// bindingEvaluationContext = evaluationContext;
 		// Following will force the whole row where object was modified to be
 		// updated
 		// (In case of some computed cells are to be updated according to ths
@@ -445,7 +441,7 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 			if (variable.getVariableName().equals(OBJECT)) {
 				return value;
 			} else {
-				return getBindingEvaluationContext().getValue(variable);
+				return AbstractColumn.this.getValue(variable);
 			}
 		}
 

@@ -49,11 +49,11 @@ public abstract class AbstractModel<M extends Observable, D> extends DefaultTabl
 
 	private M _model;
 
-	private Vector<AbstractColumn<D, ?>> _columns;
+	private final Vector<AbstractColumn<D, ?>> _columns;
 
 	private int _rowHeight = -1;
 
-	private Vector<D> _observedObjects;
+	private final Vector<D> _observedObjects;
 
 	public AbstractModel(M model) {
 		super();
@@ -105,9 +105,9 @@ public abstract class AbstractModel<M extends Observable, D> extends DefaultTabl
 	}
 
 	public class ModelObjectHasChanged extends TableModelEvent {
-		private M _oldModel;
+		private final M _oldModel;
 
-		private M _newModel;
+		private final M _newModel;
 
 		public ModelObjectHasChanged(TableModel source, M oldModel, M newModel) {
 			super(source);
@@ -125,7 +125,7 @@ public abstract class AbstractModel<M extends Observable, D> extends DefaultTabl
 	}
 
 	public class SelectObjectEvent extends TableModelEvent {
-		private D _selectedObject;
+		private final D _selectedObject;
 
 		public SelectObjectEvent(TableModel source, D selectedObject) {
 			super(source);
@@ -138,9 +138,9 @@ public abstract class AbstractModel<M extends Observable, D> extends DefaultTabl
 	}
 
 	public class RowMoveForObjectEvent extends TableModelEvent {
-		private D _editedObject;
-		private int _newRow;
-		private int _column;
+		private final D _editedObject;
+		private final int _newRow;
+		private final int _column;
 
 		public RowMoveForObjectEvent(TableModel source, D editedObject, int newRow, int column) {
 			super(source);
@@ -367,7 +367,7 @@ public abstract class AbstractModel<M extends Observable, D> extends DefaultTabl
 		AbstractColumn column = columnAt(col);
 		if (column != null && column instanceof EditableColumn) {
 			D object = elementAt(row);
-			((EditableColumn) column).setValueFor(object, value, getBindingEvaluationContext());
+			((EditableColumn) column).setValueFor(object, value/*, getBindingEvaluationContext()*/);
 			fireCellUpdated(object, row, col);
 		}
 	}

@@ -355,7 +355,7 @@ public class FIBTableModel<T> extends AbstractTableModel {
 		AbstractColumn<T, ?> column = columnAt(col);
 		if (column != null) {
 			T object = elementAt(row);
-			return column.getValueFor(object, _widget.getBindingEvaluationContext());
+			return column.getValueFor(object/*, _widget.getBindingEvaluationContext()*/);
 		}
 		return null;
 
@@ -366,7 +366,7 @@ public class FIBTableModel<T> extends AbstractTableModel {
 		AbstractColumn<T, ?> column = columnAt(col);
 		if (column != null && column instanceof EditableColumn) {
 			T object = elementAt(row);
-			((EditableColumn<T, Object>) column).setValueFor(object, value, _widget.getBindingEvaluationContext());
+			((EditableColumn<T, Object>) column).setValueFor(object, value/*, _widget.getBindingEvaluationContext()*/);
 			fireCellUpdated(object, row, col);
 		}
 	}
