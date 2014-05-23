@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,10 +37,11 @@ import org.openflexo.antar.expr.NotSettableContextException;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBComponent;
+import org.openflexo.fib.model.FIBTable;
 import org.openflexo.fib.model.FIBTableColumn;
 import org.openflexo.fib.view.widget.FIBTableWidget;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 /**
  * Represents a column in a table
@@ -51,7 +53,7 @@ import org.openflexo.localization.FlexoLocalization;
  * @param <V>
  *            type of value beeing managed by column's cells
  */
-public abstract class AbstractColumn<T, V> implements BindingEvaluationContext, PropertyChangeListener {
+public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, BindingEvaluationContext, PropertyChangeListener {
 
 	private static final Logger logger = Logger.getLogger(AbstractColumn.class.getPackage().getName());
 
@@ -71,21 +73,35 @@ public abstract class AbstractColumn<T, V> implements BindingEvaluationContext, 
 
 	private FIBTableModel<T> tableModel;
 
-	private final DynamicFormatter formatter;
+	private final ColumnDynamicFormatter formatter;
+
+	private final PropertyChangeSupport pcSupport;
 
 	public AbstractColumn(FIBTableColumn columnModel, FIBTableModel<T> tableModel, FIBController controller) {
 		super();
 		this.controller = controller;
 		this.tableModel = tableModel;
 		this.columnModel = columnModel;
-		formatter = new DynamicFormatter();
+		formatter = new ColumnDynamicFormatter();
 		title = columnModel.getTitle();
 		defaultWidth = columnModel.getColumnWidth();
 		isResizable = columnModel.getResizable();
 		displayTitle = columnModel.getDisplayTitle();
 
+		pcSupport = new PropertyChangeSupport(this);
+
 		columnModel.getPropertyChangeSupport().addPropertyChangeListener(this);
 
+	}
+
+	@Override
+	public PropertyChangeSupport getPropertyChangeSupport() {
+		return pcSupport;
+	}
+
+	@Override
+	public String getDeletedProperty() {
+		return null;
 	}
 
 	public void delete() {
@@ -104,8 +120,8 @@ public abstract class AbstractColumn<T, V> implements BindingEvaluationContext, 
 					|| (evt.getPropertyName().equals(FIBTableColumn.FONT_KEY))
 					|| (evt.getPropertyName().equals(FIBTableColumn.RESIZABLE_KEY))
 					|| (evt.getPropertyName().equals(FIBTableColumn.TITLE_KEY))) {
-				if (controller.viewForComponent((FIBComponent) columnModel.getOwner()) != null) {
-					((FIBTableWidget) controller.viewForComponent((FIBComponent) columnModel.getOwner())).updateTable();
+				if (controller.viewForComponent(columnModel.getOwner()) != null) {
+					((FIBTableWidget) controller.viewForComponent(columnModel.getOwner())).updateTable();
 				}
 			}
 		}
@@ -118,8 +134,7 @@ public abstract class AbstractColumn<T, V> implements BindingEvaluationContext, 
 
 	public String getLocalized(String key) {
 		if (getController() != null) {
-			return FlexoLocalization.localizedForKey(getController().getLocalizerForComponent((FIBComponent) getColumnModel().getOwner()),
-					key);
+			return FlexoLocalization.localizedForKey(getController().getLocalizerForComponent(getColumnModel().getOwner()), key);
 		} else {
 			logger.warning("Controller not defined");
 			return key;
@@ -173,8 +188,8 @@ public abstract class AbstractColumn<T, V> implements BindingEvaluationContext, 
 
 	@SuppressWarnings("unchecked")
 	public synchronized V getValueFor(final T object, BindingEvaluationContext evaluationContext) {
-		iteratorObject = object;
 		bindingEvaluationContext = evaluationContext;
+		setIteratorObject(object);
 		/*
 		 * System.out.println("column: "+columnModel);
 		 * System.out.println("binding: "
@@ -199,8 +214,8 @@ public abstract class AbstractColumn<T, V> implements BindingEvaluationContext, 
 	}
 
 	public synchronized void setValueFor(final T object, V value, BindingEvaluationContext evaluationContext) {
-		iteratorObject = object;
 		bindingEvaluationContext = evaluationContext;
+		setIteratorObject(object);
 		try {
 			columnModel.getData().setBindingValue(value, this);
 			notifyValueChangedFor(object, value, bindingEvaluationContext);
@@ -217,9 +232,19 @@ public abstract class AbstractColumn<T, V> implements BindingEvaluationContext, 
 
 	protected T iteratorObject;
 
+	private void setIteratorObject(T iteratorObject) {
+		T oldIteratorObject = this.iteratorObject;
+		this.iteratorObject = iteratorObject;
+		System.out.println("hop, on set iteratorObject a " + iteratorObject + " pour " + getBindingEvaluationContext());
+		// PropertyChangeSupport prout = ((HasPropertyChangeSupport) getBindingEvaluationContext()).getPropertyChangeSupport();
+		// ((HasPropertyChangeSupport) getBindingEvaluationContext()).getPropertyChangeSupport().firePropertyChange(FIBTable.ITERATOR_NAME,
+		// null, iteratorObject);
+		getPropertyChangeSupport().firePropertyChange(FIBTable.ITERATOR_NAME, oldIteratorObject, iteratorObject);
+	}
+
 	@Override
 	public Object getValue(BindingVariable variable) {
-		if (variable.getVariableName().equals("iterator")) {
+		if (variable.getVariableName().equals(FIBTable.ITERATOR_NAME)) {
 			return iteratorObject;
 		} else {
 			return getBindingEvaluationContext().getValue(variable);
@@ -274,7 +299,7 @@ public abstract class AbstractColumn<T, V> implements BindingEvaluationContext, 
 
 	public String getTooltip(T object) {
 		if (columnModel.getTooltip().isSet() && columnModel.getTooltip().isValid()) {
-			iteratorObject = object;
+			setIteratorObject(object);
 			try {
 				return columnModel.getTooltip().getBindingValue(this);
 			} catch (TypeMismatchException e) {
@@ -290,7 +315,7 @@ public abstract class AbstractColumn<T, V> implements BindingEvaluationContext, 
 
 	public Color getSpecificColor(T object) {
 		if (columnModel.getColor().isSet() && columnModel.getColor().isValid()) {
-			iteratorObject = object;
+			setIteratorObject(object);
 			try {
 				return columnModel.getColor().getBindingValue(this);
 			} catch (TypeMismatchException e) {
@@ -306,7 +331,7 @@ public abstract class AbstractColumn<T, V> implements BindingEvaluationContext, 
 
 	public Color getSpecificBgColor(T object) {
 		if (columnModel.getBgColor().isSet() && columnModel.getBgColor().isValid()) {
-			iteratorObject = object;
+			setIteratorObject(object);
 			try {
 				return columnModel.getBgColor().getBindingValue(this);
 			} catch (TypeMismatchException e) {
@@ -390,19 +415,37 @@ public abstract class AbstractColumn<T, V> implements BindingEvaluationContext, 
 		return value.toString();
 	}
 
-	protected class DynamicFormatter implements BindingEvaluationContext {
+	protected class ColumnDynamicFormatter implements BindingEvaluationContext, HasPropertyChangeSupport {
 		private Object value;
+		protected final static String OBJECT = "object";
+		private final PropertyChangeSupport pcSupport;
+
+		public ColumnDynamicFormatter() {
+			pcSupport = new PropertyChangeSupport(this);
+		}
+
+		@Override
+		public PropertyChangeSupport getPropertyChangeSupport() {
+			return pcSupport;
+		}
+
+		@Override
+		public String getDeletedProperty() {
+			return null;
+		}
 
 		private void setValue(Object aValue) {
+			Object oldValue = value;
 			value = aValue;
+			getPropertyChangeSupport().firePropertyChange(OBJECT, oldValue, aValue);
 		}
 
 		@Override
 		public Object getValue(BindingVariable variable) {
-			if (variable.getVariableName().equals("object")) {
+			if (variable.getVariableName().equals(OBJECT)) {
 				return value;
 			} else {
-				return controller.getValue(variable);
+				return getBindingEvaluationContext().getValue(variable);
 			}
 		}
 

@@ -29,6 +29,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -50,6 +51,7 @@ import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelObject;
 import org.openflexo.fib.model.FIBWidget;
+import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.ToolBox;
 
 /**
@@ -843,16 +845,39 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 		}
 	}
 
-	protected class DynamicValueBindingContext implements BindingEvaluationContext {
+	public abstract class FIBDynamicBindingEvaluationContext implements BindingEvaluationContext, HasPropertyChangeSupport {
 		private Object value;
+		private final PropertyChangeSupport pcSupport;
+
+		public FIBDynamicBindingEvaluationContext() {
+			pcSupport = new PropertyChangeSupport(this);
+		}
+
+		@Override
+		public PropertyChangeSupport getPropertyChangeSupport() {
+			return pcSupport;
+		}
+
+		@Override
+		public String getDeletedProperty() {
+			return null;
+		}
+
+	}
+
+	protected class DynamicValueBindingContext extends FIBDynamicBindingEvaluationContext {
+		private Object value;
+		protected final static String VALUE = "value";
 
 		private void setValue(Object aValue) {
+			Object oldValue = value;
 			value = aValue;
+			getPropertyChangeSupport().firePropertyChange(VALUE, oldValue, aValue);
 		}
 
 		@Override
 		public Object getValue(BindingVariable variable) {
-			if (variable.getVariableName().equals("value")) {
+			if (variable.getVariableName().equals(VALUE)) {
 				return value;
 			} else {
 				return getBindingEvaluationContext().getValue(variable);
@@ -860,16 +885,19 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 		}
 	}
 
-	protected class DynamicFormatter implements BindingEvaluationContext {
+	protected class DynamicFormatter extends FIBDynamicBindingEvaluationContext {
 		private Object value;
+		protected final static String OBJECT = "object";
 
 		private void setValue(Object aValue) {
+			Object oldValue = value;
 			value = aValue;
+			getPropertyChangeSupport().firePropertyChange(OBJECT, oldValue, aValue);
 		}
 
 		@Override
 		public Object getValue(BindingVariable variable) {
-			if (variable.getVariableName().equals("object")) {
+			if (variable.getVariableName().equals(OBJECT)) {
 				return value;
 			} else {
 				return getBindingEvaluationContext().getValue(variable);
@@ -877,16 +905,19 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 		}
 	}
 
-	protected class DynamicEventListener implements BindingEvaluationContext {
+	protected class DynamicEventListener extends FIBDynamicBindingEvaluationContext {
 		private MouseEvent mouseEvent;
+		protected final static String EVENT = "event";
 
 		private void setEvent(MouseEvent mouseEvent) {
+			MouseEvent oldEvent = this.mouseEvent;
 			this.mouseEvent = mouseEvent;
+			getPropertyChangeSupport().firePropertyChange(EVENT, oldEvent, mouseEvent);
 		}
 
 		@Override
 		public Object getValue(BindingVariable variable) {
-			if (variable.getVariableName().equals("event")) {
+			if (variable.getVariableName().equals(EVENT)) {
 				return mouseEvent;
 			} else {
 				return getBindingEvaluationContext().getValue(variable);

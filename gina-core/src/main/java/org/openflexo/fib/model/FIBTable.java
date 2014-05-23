@@ -57,6 +57,8 @@ import org.openflexo.toolbox.ChainedCollection;
 @XMLElement(xmlTag = "Table")
 public interface FIBTable extends FIBWidget {
 
+	public static final String ITERATOR_NAME = "iterator";
+
 	@PropertyIdentifier(type = Class.class)
 	public static final String ITERATOR_CLASS_KEY = "iteratorClass";
 	@PropertyIdentifier(type = Integer.class)
@@ -392,7 +394,7 @@ public interface FIBTable extends FIBWidget {
 		private void createTableBindingModel() {
 			tableBindingModel = new BindingModel(getBindingModel());
 
-			tableBindingModel.addToBindingVariables(new BindingVariable("iterator", getIteratorType()));
+			tableBindingModel.addToBindingVariables(new BindingVariable(ITERATOR_NAME, getIteratorType()));
 			// System.out.println("dataClass="+getDataClass()+" dataClassName="+dataClassName);
 
 			// logger.info("******** Table: "+getName()+" Add BindingVariable: iterator type="+getIteratorClass());

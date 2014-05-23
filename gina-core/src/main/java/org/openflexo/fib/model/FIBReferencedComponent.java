@@ -159,7 +159,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 			if (dynamicComponentFile == null) {
 				dynamicComponentFile = new DataBinding<Resource>(this, Resource.class, DataBinding.BindingDefinitionType.GET);
 				dynamicComponentFile.setBindingName("componentFile");
-				dynamicComponentFile.setCacheable(true);
+				// dynamicComponentFile.setCacheable(true);
 			}
 			return dynamicComponentFile;
 		}
@@ -176,7 +176,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 					dynamicComponentFile.setDeclaredType(Resource.class);
 					dynamicComponentFile.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 					dynamicComponentFile.setBindingName("dynamicComponentFile");
-					dynamicComponentFile.setCacheable(true);
+					// dynamicComponentFile.setCacheable(true);
 				}
 
 				this.dynamicComponentFile = dynamicComponentFile;
