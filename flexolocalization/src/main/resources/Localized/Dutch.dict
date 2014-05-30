@@ -1570,6 +1570,7 @@ create_default_status_for_process_($object.process.name)=Richt standaard status 
 create_delete_instance_port=Richt "delete instance" poort op
 create_diagram=create_diagram
 create_diagram_from_ppt_slide=create_diagram_from_ppt_slide
+create_diagram_specification=create_diagram_specification
 create_edge=Richt rand op
 create_end_node=Richt END node op
 create_entity_diagram=Richt schema entiteit op
