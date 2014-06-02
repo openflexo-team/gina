@@ -20,13 +20,11 @@
 package org.openflexo.fib;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Map;
@@ -36,25 +34,22 @@ import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
 import org.jdom2.JDOMException;
 import org.openflexo.antar.binding.BindingFactory;
-import org.openflexo.antar.binding.JavaBindingFactory;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelFactory;
 import org.openflexo.model.exceptions.InvalidDataException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;
-import org.openflexo.rm.ResourceLocator;
 
 public class FIBLibrary {
 
 	static final Logger logger = Logger.getLogger(FIBLibrary.class.getPackage().getName());
-	
 
 	private static FIBLibrary _current;
 
 	private final Map<Resource, FIBComponent> _fibDefinitions;
 
-	private final BindingFactory bindingFactory = new JavaBindingFactory();
+	private final BindingFactory bindingFactory = new FIBBindingFactory();
 
 	private FIBModelFactory fibModelFactory;
 
@@ -93,11 +88,9 @@ public class FIBLibrary {
 		return bindingFactory;
 	}
 
-
 	public boolean componentIsLoaded(Resource fibResourcePath) {
 		return _fibDefinitions.get(fibResourcePath) != null;
 	}
-
 
 	public FIBComponent retrieveFIBComponent(File fibFile) {
 		try {
@@ -108,22 +101,21 @@ public class FIBLibrary {
 		}
 	}
 
-
-	public FIBComponent retrieveFIBComponent(File fibFile,boolean useCache, FIBModelFactory factory) {
+	public FIBComponent retrieveFIBComponent(File fibFile, boolean useCache, FIBModelFactory factory) {
 		if (!fibFile.exists()) {
 			logger.warning("FIB file does not exists: " + fibFile);
 			return null;
 		}
 		FileResourceImpl fibLocation = null;
 		try {
-			fibLocation = new FileResourceImpl(fibFile.getCanonicalPath(),fibFile.toURI().toURL(),fibFile);
+			fibLocation = new FileResourceImpl(fibFile.getCanonicalPath(), fibFile.toURI().toURL(), fibFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 		return retrieveFIBComponent(fibLocation, useCache, factory);
 	}
-	
+
 	public FIBComponent retrieveFIBComponent(Resource fibFile, boolean useCache, FIBModelFactory factory) {
 		FIBComponent fibComponent = _fibDefinitions.get(fibFile);
 		if (!useCache || fibComponent == null || fibComponent.getLastModified().before(fibFile.getLastUpdate())) {
@@ -131,7 +123,6 @@ public class FIBLibrary {
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("Load " + fibFile.getURI());
 			}
-
 
 			InputStream fis = null;
 
@@ -233,7 +224,6 @@ public class FIBLibrary {
 		}
 		return _fibDefinitions.get(fibIdentifier);
 	}
-
 
 	public static boolean save(FIBComponent component, File file) {
 		logger.info("Save to file " + file.getAbsolutePath());

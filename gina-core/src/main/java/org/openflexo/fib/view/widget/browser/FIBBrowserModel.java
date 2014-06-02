@@ -357,6 +357,10 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 									/*System.out.println(" bindingValueChanged() detected for data (as list) of children "
 											+ children.getName() + " of " + browserElementType + " " + children.getData()
 											+ " with newValue=" + newValue + " source=" + source);*/
+									if (source == browserElementType) {
+										// Ignore setIteratorObject() notification
+										return;
+									}
 									if (!isDeleted) {
 										BrowserCell.this.update(false);
 									}
@@ -369,6 +373,10 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 									/*System.out.println(" bindingValueChanged() detected for data of children " + children.getName()
 											+ " of " + browserElementType + " " + children.getData() + " with newValue=" + newValue
 											+ " source=" + source);*/
+									if (source == browserElementType) {
+										// Ignore setIteratorObject() notification
+										return;
+									}
 									if (!isDeleted) {
 										BrowserCell.this.update(false);
 									}
@@ -403,6 +411,10 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 								/*System.out.println(" bindingValueChanged() detected for cast of children " + children.getName() + " of "
 										+ browserElementType + " " + children.getCast() + " with newValue=" + newValue + " source="
 										+ source);*/
+								if (source == browserElementType) {
+									// Ignore setIteratorObject() notification
+									return;
+								}
 								if (!isDeleted) {
 									BrowserCell.this.update(false);
 								}
@@ -439,6 +451,10 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 								/*System.out.println(" bindingValueChanged() detected for visble of children " + children.getName() + " of "
 										+ browserElementType + " " + children.getVisible() + " with newValue=" + newValue + " source="
 										+ source);*/
+								if (source == browserElementType) {
+									// Ignore setIteratorObject() notification
+									return;
+								}
 								if (!isDeleted) {
 									BrowserCell.this.update(false);
 								}
@@ -467,6 +483,10 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 					public void bindingValueChanged(Object source, String newValue) {
 						// System.out.println(" bindingValueChanged() detected for label of " + browserElementType + " "
 						// + browserElementType.getBrowserElement().getLabel() + " with newValue=" + newValue + " source=" + source);
+						if (source == browserElementType) {
+							// Ignore setIteratorObject() notification
+							return;
+						}
 						if (!isDeleted) {
 							// Label has changed, update the cell
 							BrowserCell.this.update(false);
@@ -491,6 +511,10 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 					public void bindingValueChanged(Object source, Icon newValue) {
 						// System.out.println(" bindingValueChanged() detected for icon of " + browserElementType + " "
 						// + browserElementType.getBrowserElement().getIcon() + " with newValue=" + newValue + " source=" + source);
+						if (source == browserElementType) {
+							// Ignore setIteratorObject() notification
+							return;
+						}
 						if (!isDeleted) {
 							BrowserCell.this.update(false);
 						}
@@ -514,6 +538,10 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 					public void bindingValueChanged(Object source, String newValue) {
 						/*System.out.println(" bindingValueChanged() detected for tooltip of " + browserElementType + " "
 								+ browserElementType.getBrowserElement().getTooltip() + " with newValue=" + newValue + " source=" + source);*/
+						if (source == browserElementType) {
+							// Ignore setIteratorObject() notification
+							return;
+						}
 						if (!isDeleted) {
 							BrowserCell.this.update(false);
 						}
@@ -537,6 +565,10 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 					public void bindingValueChanged(Object source, Boolean newValue) {
 						// System.out.println(" bindingValueChanged() detected for enabled of " + browserElementType + " "
 						// + browserElementType.getBrowserElement().getEnabled() + " with newValue=" + newValue + " source=" + source);
+						if (source == browserElementType) {
+							// Ignore setIteratorObject() notification
+							return;
+						}
 						if (!isDeleted) {
 							BrowserCell.this.update(false);
 						}
@@ -560,6 +592,10 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 					public void bindingValueChanged(Object source, Boolean newValue) {
 						// System.out.println(" bindingValueChanged() detected for visible of " + browserElementType + " "
 						// + browserElementType.getBrowserElement().getVisible() + " with newValue=" + newValue + " source=" + source);
+						if (source == browserElementType) {
+							// Ignore setIteratorObject() notification
+							return;
+						}
 						if (!isDeleted) {
 							BrowserCell.this.update(false);
 						}

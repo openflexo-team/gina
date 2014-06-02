@@ -159,6 +159,11 @@ public abstract interface FIBBrowserAction extends FIBModelObject {
 						public Type getType() {
 							return FIBBrowserActionImpl.this.getClass();
 						}
+
+						@Override
+						public boolean isCacheable() {
+							return false;
+						}
 					});
 				}
 				return actionBindingModel;

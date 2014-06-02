@@ -107,8 +107,8 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
-					// System.out.println(" bindingValueChanged() detected for data=" + getComponent().getData() + " with newValue="
-					// + newValue + " source=" + source);
+					//System.out.println(" bindingValueChanged() detected for data=" + getComponent().getData() + " with newValue="
+					//		+ newValue + " source=" + source);
 					updateData();
 				}
 			};

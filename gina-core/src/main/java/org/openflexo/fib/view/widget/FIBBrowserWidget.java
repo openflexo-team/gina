@@ -613,7 +613,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 	}
 
 	public void setSelected(T object) {
-		// logger.info("Select " + object);
+		logger.info("Select " + object);
 		if (getRootValue() == null) {
 			return;
 		}
@@ -644,9 +644,9 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 					_tree.scrollPathToVisible(scrollTo);
 				}
 			}
-		} else {
+			} else {
 			clearSelection();
-		}*/
+			}*/
 
 		getPropertyChangeSupport().firePropertyChange(SELECTED, oldSelectedObject, object);
 	}

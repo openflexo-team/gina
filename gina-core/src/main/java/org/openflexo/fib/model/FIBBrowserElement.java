@@ -527,7 +527,9 @@ public interface FIBBrowserElement extends FIBModelObject {
 		private void createActionBindingModel() {
 			actionBindingModel = new BindingModel(getBindingModel());
 
-			actionBindingModel.addToBindingVariables(new BindingVariable("selected", getDataClass()));
+			BindingVariable selectedVariable = new BindingVariable("selected", getDataClass());
+			selectedVariable.setCacheable(false);
+			actionBindingModel.addToBindingVariables(selectedVariable);
 			// System.out.println("dataClass="+getDataClass()+" dataClassName="+dataClassName);
 
 			// logger.info("******** Table: "+getName()+" Add BindingVariable: iterator type="+getIteratorClass());
@@ -639,6 +641,11 @@ public interface FIBBrowserElement extends FIBModelObject {
 					@Override
 					public String getVariableName() {
 						return FIBBrowserElementImpl.this.getName();
+					}
+
+					@Override
+					public boolean isCacheable() {
+						return false;
 					}
 				});
 			}
@@ -948,6 +955,12 @@ public interface FIBBrowserElement extends FIBModelObject {
 							}
 							return Object.class;
 						}
+
+						@Override
+						public boolean isCacheable() {
+							return false;
+						}
+
 					});
 				}
 

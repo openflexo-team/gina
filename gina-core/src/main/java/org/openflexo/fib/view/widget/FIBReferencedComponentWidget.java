@@ -29,6 +29,7 @@ import javax.swing.JLabel;
 import org.openflexo.antar.binding.BindingEvaluationContext;
 import org.openflexo.antar.binding.BindingValueChangeListener;
 import org.openflexo.antar.binding.DataBinding;
+import org.openflexo.antar.binding.TypeUtils;
 import org.openflexo.antar.expr.NotSettableContextException;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
@@ -298,11 +299,19 @@ BindingEvaluationContext*/{
 
 		if (getReferencedComponentView() != null) {
 
-			performAssignments();
+			if ((getValue() == null)
+					|| (TypeUtils.isTypeAssignableFrom(embeddedFIBController.getRootComponent().getDataType(), getValue().getClass()))) {
 
-			embeddedFIBController.setDataObject(getValue(), true);
+				performAssignments();
 
-			referencedComponentView.update();
+				embeddedFIBController.setDataObject(getValue(), true);
+
+				referencedComponentView.update();
+			} else {
+				System.out.println("Dis donc, on dirait que " + getValue() + "n'est pas un "
+						+ embeddedFIBController.getRootComponent().getDataType());
+			}
+
 		}
 
 		return returned;

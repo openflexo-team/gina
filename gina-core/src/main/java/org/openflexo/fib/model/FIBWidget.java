@@ -35,6 +35,7 @@ import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
+import org.openflexo.antar.binding.DataBinding.CachingStrategy;
 import org.openflexo.antar.binding.ParameterizedTypeImpl;
 import org.openflexo.antar.binding.WilcardTypeImpl;
 import org.openflexo.fib.model.validation.FixProposal;
@@ -473,7 +474,8 @@ public abstract interface FIBWidget extends FIBComponent {
 		@Override
 		public DataBinding<String> getFormat() {
 			if (format == null) {
-				format = new DataBinding<String>(this, String.class, DataBinding.BindingDefinitionType.GET);
+				format = new DataBinding<String>(formatter, String.class, DataBinding.BindingDefinitionType.GET);
+				format.setCachingStrategy(CachingStrategy.NO_CACHING);
 			}
 			return format;
 		}
@@ -486,6 +488,7 @@ public abstract interface FIBWidget extends FIBComponent {
 					format.setOwner(formatter);
 					format.setDeclaredType(String.class);
 					format.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+					format.setCachingStrategy(CachingStrategy.NO_CACHING);
 				}
 				this.format = format;
 				hasChanged(notification);
@@ -496,6 +499,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		public DataBinding<Icon> getIcon() {
 			if (icon == null) {
 				icon = new DataBinding<Icon>(formatter, Icon.class, DataBinding.BindingDefinitionType.GET);
+				icon.setCachingStrategy(CachingStrategy.NO_CACHING);
 			}
 			return icon;
 		}
@@ -508,6 +512,7 @@ public abstract interface FIBWidget extends FIBComponent {
 					icon.setOwner(formatter);
 					icon.setDeclaredType(Icon.class);
 					icon.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+					icon.setCachingStrategy(CachingStrategy.NO_CACHING);
 				}
 				this.icon = icon;
 				hasChanged(notification);
@@ -566,6 +571,11 @@ public abstract interface FIBWidget extends FIBComponent {
 					public Type getType() {
 						return getFormattedObjectType();
 					}
+
+					@Override
+					public boolean isCacheable() {
+						return false;
+					}
 				});
 			}
 
@@ -620,6 +630,11 @@ public abstract interface FIBWidget extends FIBComponent {
 					@Override
 					public Type getType() {
 						return getDataType();
+					}
+
+					@Override
+					public boolean isCacheable() {
+						return false;
 					}
 				});
 			}
@@ -686,7 +701,9 @@ public abstract interface FIBWidget extends FIBComponent {
 
 			private void createEventListenerBindingModel() {
 				eventListenerBindingModel = new BindingModel(FIBWidgetImpl.this.getBindingModel());
-				eventListenerBindingModel.addToBindingVariables(new BindingVariable("event", MouseEvent.class));
+				BindingVariable eventVariable = new BindingVariable("event", MouseEvent.class);
+				eventVariable.setCacheable(false);
+				eventListenerBindingModel.addToBindingVariables(eventVariable);
 			}
 
 			public FIBComponent getComponent() {

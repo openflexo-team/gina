@@ -439,6 +439,11 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 					public Type getType() {
 						return getDataClass();
 					}
+
+					@Override
+					public boolean isCacheable() {
+						return false;
+					}
 				});
 			}
 

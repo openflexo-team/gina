@@ -394,7 +394,10 @@ public interface FIBTable extends FIBWidget {
 		private void createTableBindingModel() {
 			tableBindingModel = new BindingModel(getBindingModel());
 
-			tableBindingModel.addToBindingVariables(new BindingVariable(ITERATOR_NAME, getIteratorType()));
+			BindingVariable iteratorVariable = new BindingVariable(ITERATOR_NAME, getIteratorType());
+			iteratorVariable.setCacheable(false);
+
+			tableBindingModel.addToBindingVariables(iteratorVariable);
 			// System.out.println("dataClass="+getDataClass()+" dataClassName="+dataClassName);
 
 			// logger.info("******** Table: "+getName()+" Add BindingVariable: iterator type="+getIteratorClass());
@@ -411,7 +414,9 @@ public interface FIBTable extends FIBWidget {
 		private void createActionBindingModel() {
 			actionBindingModel = new BindingModel(getBindingModel());
 
-			actionBindingModel.addToBindingVariables(new BindingVariable("selected", getIteratorType()));
+			BindingVariable selectedVariable = new BindingVariable("selected", getIteratorType());
+			selectedVariable.setCacheable(false);
+			actionBindingModel.addToBindingVariables(selectedVariable);
 			// System.out.println("dataClass="+getDataClass()+" dataClassName="+dataClassName);
 
 			// logger.info("******** Table: "+getName()+" Add BindingVariable: iterator type="+getIteratorClass());

@@ -22,6 +22,7 @@ package org.openflexo.fib.view.widget.browser;
 import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,12 +43,13 @@ import org.openflexo.fib.model.FIBBrowserElement;
 import org.openflexo.fib.model.FIBBrowserElement.FIBBrowserElementChildren;
 import org.openflexo.fib.view.widget.FIBBrowserWidget;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.ToolBox;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
-public class FIBBrowserElementType implements BindingEvaluationContext, PropertyChangeListener {
+public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingEvaluationContext, PropertyChangeListener {
 
 	private static final Logger logger = Logger.getLogger(FIBBrowserElementType.class.getPackage().getName());
 
@@ -57,13 +59,27 @@ public class FIBBrowserElementType implements BindingEvaluationContext, Property
 
 	private FIBController controller;
 
+	private final PropertyChangeSupport pcSupport;
+
 	public FIBBrowserElementType(FIBBrowserElement browserElementDefinition, FIBBrowserModel browserModel, FIBController controller) {
 		super();
 		this.controller = controller;
 		this.fibBrowserModel = browserModel;
 		this.browserElementDefinition = browserElementDefinition;
 
+		pcSupport = new PropertyChangeSupport(this);
+
 		browserElementDefinition.getPropertyChangeSupport().addPropertyChangeListener(this);
+	}
+
+	@Override
+	public PropertyChangeSupport getPropertyChangeSupport() {
+		return pcSupport;
+	}
+
+	@Override
+	public String getDeletedProperty() {
+		return null;
 	}
 
 	public void delete() {
@@ -140,7 +156,7 @@ public class FIBBrowserElementType implements BindingEvaluationContext, Property
 			return "???" + object.toString();
 		}
 		if (browserElementDefinition.getLabel().isSet()) {
-			iteratorObject = object;
+			setIteratorObject(object);
 			try {
 				return browserElementDefinition.getLabel().getBindingValue(this);
 			} catch (TypeMismatchException e) {
@@ -160,7 +176,7 @@ public class FIBBrowserElementType implements BindingEvaluationContext, Property
 			return "???" + object.toString();
 		}
 		if (browserElementDefinition.getTooltip().isSet()) {
-			iteratorObject = object;
+			setIteratorObject(object);
 			try {
 				return browserElementDefinition.getTooltip().getBindingValue(this);
 			} catch (TypeMismatchException e) {
@@ -179,7 +195,7 @@ public class FIBBrowserElementType implements BindingEvaluationContext, Property
 			return null;
 		}
 		if (browserElementDefinition.getIcon().isSet()) {
-			iteratorObject = object;
+			setIteratorObject(object);
 			Object returned = null;
 			try {
 				returned = browserElementDefinition.getIcon().getBindingValue(this);
@@ -204,7 +220,7 @@ public class FIBBrowserElementType implements BindingEvaluationContext, Property
 			return false;
 		}
 		if (browserElementDefinition.getEnabled().isSet()) {
-			iteratorObject = object;
+			setIteratorObject(object);
 			Object enabledValue = null;
 			try {
 				enabledValue = browserElementDefinition.getEnabled().getBindingValue(this);
@@ -232,7 +248,7 @@ public class FIBBrowserElementType implements BindingEvaluationContext, Property
 			return false;
 		}
 		if (browserElementDefinition.getVisible().isSet()) {
-			iteratorObject = object;
+			setIteratorObject(object);
 			try {
 				Boolean returned = browserElementDefinition.getVisible().getBindingValue(this);
 				if (returned != null) {
@@ -288,7 +304,7 @@ public class FIBBrowserElementType implements BindingEvaluationContext, Property
 
 	protected Object getChildrenFor(FIBBrowserElementChildren children, final Object object) {
 		if (children.getData().isSet()) {
-			iteratorObject = object;
+			setIteratorObject(object);
 			if (children.getVisible().isSet()) {
 				boolean visible;
 				try {
@@ -329,7 +345,7 @@ public class FIBBrowserElementType implements BindingEvaluationContext, Property
 
 	protected List<?> getChildrenListFor(final FIBBrowserElementChildren children, final Object object) {
 		if (children.getData().isSet() && children.isMultipleAccess()) {
-			iteratorObject = object;
+			setIteratorObject(object);
 			if (children.getVisible().isSet()) {
 				boolean visible;
 				try {
@@ -393,7 +409,7 @@ public class FIBBrowserElementType implements BindingEvaluationContext, Property
 
 	public synchronized String getEditableLabelFor(final Object object) {
 		if (isLabelEditable()) {
-			iteratorObject = object;
+			setIteratorObject(object);
 			try {
 				return browserElementDefinition.getEditableLabel().getBindingValue(this);
 			} catch (TypeMismatchException e) {
@@ -409,7 +425,7 @@ public class FIBBrowserElementType implements BindingEvaluationContext, Property
 
 	public synchronized void setEditableLabelFor(final Object object, String value) {
 		if (isLabelEditable()) {
-			iteratorObject = object;
+			setIteratorObject(object);
 			try {
 				browserElementDefinition.getEditableLabel().setBindingValue(value, this);
 			} catch (TypeMismatchException e) {
@@ -425,6 +441,13 @@ public class FIBBrowserElementType implements BindingEvaluationContext, Property
 	}
 
 	protected Object iteratorObject;
+
+	private void setIteratorObject(Object iteratorObject) {
+		Object oldIteratorObject = this.iteratorObject;
+		this.iteratorObject = iteratorObject;
+		// getPropertyChangeSupport().firePropertyChange("object", oldIteratorObject, iteratorObject);
+		getPropertyChangeSupport().firePropertyChange(browserElementDefinition.getName(), oldIteratorObject, iteratorObject);
+	}
 
 	@Override
 	public synchronized Object getValue(BindingVariable variable) {
@@ -443,7 +466,7 @@ public class FIBBrowserElementType implements BindingEvaluationContext, Property
 
 	public Font getFont(final Object object) {
 		if (browserElementDefinition.getDynamicFont().isSet()) {
-			iteratorObject = object;
+			setIteratorObject(object);
 			try {
 				return browserElementDefinition.getDynamicFont().getBindingValue(this);
 			} catch (TypeMismatchException e) {
