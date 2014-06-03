@@ -595,7 +595,7 @@ public class MultiSplitLayout implements LayoutManager, Serializable {
 	 * @param visible
 	 *            the new node visible state
 	 */
-	public void displayNode(String name, boolean visible) {
+	public void displayNode(String name, boolean visible, boolean floatingDivider) {
 		Node node = getNodeForName(name);
 		if (node != null) {
 			Component comp = getComponentForNode(node);
@@ -626,7 +626,9 @@ public class MultiSplitLayout implements LayoutManager, Serializable {
 				p.restoreDividers(p);
 			}
 		}
-		setFloatingDividers(false);
+
+		setFloatingDividers(floatingDivider);
+
 	}
 
 	private Component childForNode(Node node) {
