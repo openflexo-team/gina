@@ -776,7 +776,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			activateCompoundBindingMode();
 		}
 		if (_selectorPanel != null) {
-			//logger.info("Updating custom panel with " + editedObject.getExpression());
+			// logger.info("Updating custom panel with " + editedObject.getExpression());
 			_selectorPanel.update();
 		}
 		if (editedObject != null) {
@@ -903,6 +903,12 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equals(BindingModelChanged.BINDING_MODEL_CHANGED)) {
+			// System.out.println("!!!!!!!!!!!!!! propertyChange() " + evt.getPropertyName() + " evt=" + evt + " called in " + this);
+
+			if (_selectorPanel != null && _selectorPanel instanceof BindingSelectorPanel) {
+				((BindingSelectorPanel) _selectorPanel).updateRootColumnListModel();
+			}
+
 			logger.fine("Refreshing Binding Model");
 			refreshBindingModel();
 		} /*else if (evt.getPropertyName().equals(BindingDefinitionTypeChanged.BINDING_DEFINITION_TYPE_CHANGED)) {
@@ -1363,8 +1369,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 	}
 
 	public static class TestBindable implements Bindable {
-		private BindingFactory bindingFactory = new JavaBindingFactory();
-		private BindingModel bindingModel = new BindingModel();
+		private final BindingFactory bindingFactory = new JavaBindingFactory();
+		private final BindingModel bindingModel = new BindingModel();
 
 		public TestBindable() {
 			bindingModel.addToBindingVariables(new BindingVariable("aString", String.class));

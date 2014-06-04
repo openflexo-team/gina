@@ -33,8 +33,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
@@ -1103,6 +1107,10 @@ public class BindingSelectorPanel extends AbstractBindingSelectorPanel implement
 		return editTranstypedBinding;
 	}
 
+	protected void updateRootColumnListModel() {
+		_rootBindingColumnListModel = buildRootColumnListModel();
+	}
+
 	protected BindingColumnListModel getRootColumnListModel() {
 		if (_rootBindingColumnListModel == null) {
 			_rootBindingColumnListModel = buildRootColumnListModel();
@@ -1154,8 +1162,8 @@ public class BindingSelectorPanel extends AbstractBindingSelectorPanel implement
 	}
 
 	protected class BindingColumnElement {
-		private final BindingPathElement _element;
-		private final Type _resultingType;
+		private BindingPathElement _element;
+		private Type _resultingType;
 
 		protected BindingColumnElement(BindingPathElement element, Type resultingType) {
 			_element = element;
@@ -1165,10 +1173,16 @@ public class BindingSelectorPanel extends AbstractBindingSelectorPanel implement
 			}
 		}
 
+		private void delete() {
+			_element = null;
+			_resultingType = null;
+		}
+
 		public BindingPathElement getElement() {
 			return _element;
 		}
 
+		// TODO: we also need to observe BindingPathElement to track type modifications !!!
 		public Type getResultingType() {
 			return _resultingType;
 		}
@@ -1289,7 +1303,7 @@ public class BindingSelectorPanel extends AbstractBindingSelectorPanel implement
 
 	}
 
-	abstract class BindingColumnListModel extends AbstractListModel {
+	abstract class BindingColumnListModel extends AbstractListModel implements PropertyChangeListener {
 		public void fireModelChanged() {
 			fireContentsChanged(this, 0, getUnfilteredSize() - 1);
 		}
@@ -1323,7 +1337,9 @@ public class BindingSelectorPanel extends AbstractBindingSelectorPanel implement
 			return null;
 		}
 
-		public void updateValues() {
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			System.out.println("*** propertyChange() called in " + this);
 		}
 
 		private String filter = null;
@@ -1533,15 +1549,17 @@ public class BindingSelectorPanel extends AbstractBindingSelectorPanel implement
 			_accessibleProperties = new Vector<BindingPathElement>();
 			_accessibleMethods = new Vector<BindingPathElement>();
 			_elements = new Vector<BindingColumnElement>();
-			/*
-			 * if(_type.getBaseEntity()!=null)
-			 * _type.getBaseEntity().addObserver(this);
-			 */
-			updateValues();
+			updatePathElements();
 		}
 
 		@Override
-		public void updateValues() {
+		public void propertyChange(PropertyChangeEvent evt) {
+			super.propertyChange(evt);
+			updatePathElements();
+		}
+
+		private void updatePathElements() {
+			// System.out.println("*** updatePathElements() called in " + this);
 			_accessibleProperties.clear();
 			_accessibleMethods.clear();
 
@@ -1623,19 +1641,43 @@ public class BindingSelectorPanel extends AbstractBindingSelectorPanel implement
 			super();
 			_myBindingModel = bindingModel;
 			_elements = new Vector<BindingColumnElement>();
-			updateValues();
+			bindingModel.getPropertyChangeSupport().addPropertyChangeListener(this);
+			updateBindingVariables();
 		}
 
 		@Override
-		public void updateValues() {
+		public void propertyChange(PropertyChangeEvent evt) {
+			super.propertyChange(evt);
+			if (evt.getSource() == _myBindingModel) {
+				updateBindingVariables();
+			} else if (evt.getSource() instanceof BindingVariable) {
+				BindingVariable bv = (BindingVariable) evt.getSource();
+				System.out.println("-------> YES, j'ai vu que la variable: " + bv + " a ete modifiee: " + evt);
+			}
+		}
+
+		private final List<BindingVariable> observedBindingVariables = new ArrayList<BindingVariable>();
+
+		private void updateBindingVariables() {
+			// System.out.println("*** updateBindingVariables() called in " + this);
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("BindingModel is: " + _myBindingModel + " with " + _myBindingModel.getBindingVariablesCount());
 			}
-
+			for (BindingVariable bv : observedBindingVariables) {
+				if (bv.getPropertyChangeSupport() != null) {
+					bv.getPropertyChangeSupport().removePropertyChangeListener(this);
+				}
+			}
+			for (BindingColumnElement e : _elements) {
+				e.delete();
+			}
 			_elements.clear();
 			for (int i = 0; i < _myBindingModel.getBindingVariablesCount(); i++) {
-				_elements.add(new BindingColumnElement(_myBindingModel.getBindingVariableAt(i), _myBindingModel.getBindingVariableAt(i)
-						.getType()));
+				BindingVariable bv = _myBindingModel.getBindingVariableAt(i);
+				_elements.add(new BindingColumnElement(bv, bv.getType()));
+				if (bv.getPropertyChangeSupport() != null) {
+					bv.getPropertyChangeSupport().addPropertyChangeListener(this);
+				}
 			}
 		}
 
