@@ -67,6 +67,7 @@ public interface FIBCustomColumn extends FIBTableColumn {
 	public void setComponentClass(Class<?> componentClass);
 
 	@Getter(value = ASSIGNMENTS_KEY, cardinality = Cardinality.LIST, inverse = FIBCustomAssignment.OWNER_KEY)
+	@XMLElement
 	@CloningStrategy(StrategyType.CLONE)
 	public List<FIBCustomAssignment> getAssignments();
 
