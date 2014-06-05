@@ -105,6 +105,12 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V> implements Editable
 					if (TypeUtils.isTypeAssignableFrom(c.getGenericParameterTypes()[0], dataClass)) {
 						constructor = (Constructor<FIBCustomComponent<V, ?>>) c;
 						break;
+					} else {
+						// There is no guarantee that the component support this type
+						// Anyway we warn and continue as returning null will be even worse
+						logger.warning("Non-compatible types while instanciating component " + customComponentClass
+								+ " with declared dataClass=" + dataClass + " instead of " + c.getGenericParameterTypes()[0]);
+						constructor = (Constructor<FIBCustomComponent<V, ?>>) c;
 					}
 				}
 			}
@@ -336,13 +342,15 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V> implements Editable
 		// logger.info("setEditedRowObject with " + anObject);
 		_editedRowObject = anObject;
 
+		//System.out.println("Performing assignments for " + _customColumn.getComponentClass());
+
 		for (FIBCustomAssignment assign : getColumnModel().getAssignments()) {
 			DataBinding<Object> variableDB = assign.getVariable();
 			DataBinding<Object> valueDB = assign.getValue();
 
-			// logger.info("Assignment");
-			// logger.info("variableDB="+variableDB+" valid="+variableDB.getBinding().isBindingValid());
-			// logger.info("valueDB="+valueDB+" valid="+valueDB.getBinding().isBindingValid());
+			//logger.info("Assignment " + variableDB + " to " + valueDB);
+			//logger.info("variableDB=" + variableDB + " valid=" + variableDB.isValid() + " reason=" + variableDB.invalidBindingReason());
+			//logger.info("valueDB=" + valueDB + " valid=" + valueDB.isValid() + " reason=" + valueDB.invalidBindingReason());
 			if (valueDB.isValid()) {
 				Object value = null;
 				try {
