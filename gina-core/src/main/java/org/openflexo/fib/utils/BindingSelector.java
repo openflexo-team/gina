@@ -906,7 +906,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			// System.out.println("!!!!!!!!!!!!!! propertyChange() " + evt.getPropertyName() + " evt=" + evt + " called in " + this);
 
 			if (_selectorPanel != null && _selectorPanel instanceof BindingSelectorPanel) {
-				((BindingSelectorPanel) _selectorPanel).updateRootColumnListModel();
+				((BindingSelectorPanel) _selectorPanel).updateListModels();
 			}
 
 			logger.fine("Refreshing Binding Model");

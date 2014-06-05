@@ -1107,8 +1107,14 @@ public class BindingSelectorPanel extends AbstractBindingSelectorPanel implement
 		return editTranstypedBinding;
 	}
 
-	protected void updateRootColumnListModel() {
+	protected void updateListModels() {
 		_rootBindingColumnListModel = buildRootColumnListModel();
+
+		for (Hashtable<Type, BindingColumnListModel> h : _listModels.values()) {
+			for (BindingColumnListModel columnListModel : h.values()) {
+				columnListModel.updateListModel();
+			}
+		}
 	}
 
 	protected BindingColumnListModel getRootColumnListModel() {
@@ -1339,7 +1345,11 @@ public class BindingSelectorPanel extends AbstractBindingSelectorPanel implement
 
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			System.out.println("*** propertyChange() called in " + this);
+			// System.out.println("*** propertyChange() called in " + this);
+		}
+
+		public void updateListModel() {
+			// System.out.println("*** updateListModel() called in " + this);
 		}
 
 		private String filter = null;
@@ -1553,8 +1563,8 @@ public class BindingSelectorPanel extends AbstractBindingSelectorPanel implement
 		}
 
 		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
-			super.propertyChange(evt);
+		public void updateListModel() {
+			super.updateListModel();
 			updatePathElements();
 		}
 
@@ -1654,6 +1664,12 @@ public class BindingSelectorPanel extends AbstractBindingSelectorPanel implement
 				BindingVariable bv = (BindingVariable) evt.getSource();
 				System.out.println("-------> YES, j'ai vu que la variable: " + bv + " a ete modifiee: " + evt);
 			}
+		}
+
+		@Override
+		public void updateListModel() {
+			super.updateListModel();
+			updateBindingVariables();
 		}
 
 		private final List<BindingVariable> observedBindingVariables = new ArrayList<BindingVariable>();
