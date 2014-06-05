@@ -238,13 +238,10 @@ public class FIBCustomWidget<J extends JComponent, T> extends FIBWidgetView<FIBC
 
 	@Override
 	public boolean updateWidgetFromModel() {
-		// We need here to "force" update while some assignments may be required
 
-		// if (notEquals(getValue(), customComponent.getEditedObject())) {
-
-		/*if (getWidget().getComponentClass().getName().endsWith("FIBForegroundStyleSelector")) {
-			logger.info("GET updateWidgetFromModel() with " + getValue() + " for " + customComponent);
-		}*/
+		if (!isComponentVisible()) {
+			return false;
+		}
 
 		if (customComponent != null) {
 
