@@ -43,217 +43,226 @@ import org.openflexo.rm.Resource;
 
 public class FIBLibrary {
 
-	static final Logger logger = Logger.getLogger(FIBLibrary.class.getPackage().getName());
+    static final Logger                       logger         = Logger.getLogger(FIBLibrary.class.getPackage().getName());
 
-	private static FIBLibrary _current;
+    private static FIBLibrary                 _current;
 
-	private final Map<Resource, FIBComponent> _fibDefinitions;
+    private final Map<Resource, FIBComponent> _fibDefinitions;
 
-	private final BindingFactory bindingFactory = new FIBBindingFactory();
+    private final BindingFactory              bindingFactory = new FIBBindingFactory();
 
-	private FIBModelFactory fibModelFactory;
+    private FIBModelFactory                   fibModelFactory;
 
-	private FIBLibrary() {
-		super();
-		_fibDefinitions = new Hashtable<Resource, FIBComponent>();
-		try {
-			fibModelFactory = new FIBModelFactory();
-		} catch (ModelDefinitionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+    private FIBLibrary() {
+        super();
+        _fibDefinitions = new Hashtable<Resource, FIBComponent>();
+        try {
+            fibModelFactory = new FIBModelFactory();
+        } catch (ModelDefinitionException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
-	protected static FIBLibrary createInstance() {
-		_current = new FIBLibrary();
-		return _current;
-	}
+    protected static FIBLibrary createInstance() {
+        _current = new FIBLibrary();
+        return _current;
+    }
 
-	public static FIBLibrary instance() {
-		if (_current == null) {
-			createInstance();
-		}
-		return _current;
-	}
+    public static FIBLibrary instance() {
+        if (_current == null) {
+            createInstance();
+        }
+        return _current;
+    }
 
-	public static boolean hasInstance() {
-		return _current != null;
-	}
+    public static boolean hasInstance() {
+        return _current != null;
+    }
 
-	public FIBModelFactory getFIBModelFactory() {
-		return fibModelFactory;
-	}
+    public FIBModelFactory getFIBModelFactory() {
+        return fibModelFactory;
+    }
 
-	public BindingFactory getBindingFactory() {
-		return bindingFactory;
-	}
+    public BindingFactory getBindingFactory() {
+        return bindingFactory;
+    }
 
-	public boolean componentIsLoaded(Resource fibResourcePath) {
-		return _fibDefinitions.get(fibResourcePath) != null;
-	}
+    public boolean componentIsLoaded(Resource fibResourcePath) {
+        return _fibDefinitions.get(fibResourcePath) != null;
+    }
 
-	public FIBComponent retrieveFIBComponent(File fibFile) {
-		try {
-			return retrieveFIBComponent(fibFile, true, new FIBModelFactory(fibFile.getParentFile()));
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+    public FIBComponent retrieveFIBComponent(File fibFile) {
+        try {
+            return retrieveFIBComponent(fibFile, true, new FIBModelFactory(fibFile.getParentFile()));
+        } catch (ModelDefinitionException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-	public FIBComponent retrieveFIBComponent(File fibFile, boolean useCache, FIBModelFactory factory) {
-		if (!fibFile.exists()) {
-			logger.warning("FIB file does not exists: " + fibFile);
-			return null;
-		}
-		FileResourceImpl fibLocation = null;
-		try {
-			fibLocation = new FileResourceImpl(fibFile.getCanonicalPath(), fibFile.toURI().toURL(), fibFile);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		return retrieveFIBComponent(fibLocation, useCache, factory);
-	}
+    public FIBComponent retrieveFIBComponent(File fibFile, boolean useCache, FIBModelFactory factory) {
+        if (!fibFile.exists()) {
+            logger.warning("FIB file does not exists: " + fibFile);
+            return null;
+        }
+        FileResourceImpl fibLocation = null;
+        try {
+            fibLocation = new FileResourceImpl(fibFile.getCanonicalPath(), fibFile.toURI().toURL(), fibFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return retrieveFIBComponent(fibLocation, useCache, factory);
+    }
 
-	public FIBComponent retrieveFIBComponent(Resource fibFile, boolean useCache, FIBModelFactory factory) {
-		FIBComponent fibComponent = _fibDefinitions.get(fibFile);
-		if (!useCache || fibComponent == null || fibComponent.getLastModified().before(fibFile.getLastUpdate())) {
+    public FIBComponent retrieveFIBComponent(Resource fibFile, boolean useCache, FIBModelFactory factory) {
+        FIBComponent fibComponent = _fibDefinitions.get(fibFile);
+        if (!useCache || fibComponent == null || fibComponent.getLastModified().before(fibFile.getLastUpdate())) {
 
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Load " + fibFile.getURI());
-			}
+            if (logger.isLoggable(Level.FINE)) {
+                logger.fine("Load " + fibFile.getURI());
+            }
 
-			InputStream fis = null;
+            InputStream fis = null;
 
-			try {
-				fis = fibFile.openInputStream();
-				FIBComponent component = (FIBComponent) factory.deserialize(fis);
-				component.setLastModified(fibFile.getLastUpdate());
-				component.setDefinitionFile(fibFile);
-				_fibDefinitions.put(fibFile, component);
-				return component;
-			} catch (ModelDefinitionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JDOMException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvalidDataException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} finally {
-				if (fis != null) {
-					IOUtils.closeQuietly(fis);
-				}
-			}
-		}
-		return fibComponent;
-	}
+            try {
+                fis = fibFile.openInputStream();
+                FIBComponent component = (FIBComponent) factory.deserialize(fis);
+                component.setLastModified(fibFile.getLastUpdate());
+                component.setDefinitionFile(fibFile);
+                _fibDefinitions.put(fibFile, component);
+                return component;
+            } catch (ModelDefinitionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (JDOMException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (InvalidDataException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.warning("Unhandled Exception");
+            } finally {
+                if (fis != null) {
+                    IOUtils.closeQuietly(fis);
+                }
+            }
+        }
+        return fibComponent;
+    }
 
-	public void removeFIBComponentFromCache(Resource fibFile) {
-		_fibDefinitions.remove(fibFile);
-	}
+    public void removeFIBComponentFromCache(Resource fibFile) {
+        _fibDefinitions.remove(fibFile);
+    }
 
-	/*
-	public void removeFIBComponentFromCache(String fibFileName) {
-		_fibDefinitions.remove(fibFileName);
-	}
-	 */
+    /*
+    public void removeFIBComponentFromCache(String fibFileName) {
+    	_fibDefinitions.remove(fibFileName);
+    }
+     */
 
-	public FIBComponent retrieveFIBComponent(Resource fibResourceLocation) {
-		return retrieveFIBComponent(fibResourceLocation, true);
-	}
+    public FIBComponent retrieveFIBComponent(Resource fibResourceLocation) {
+        return retrieveFIBComponent(fibResourceLocation, true);
+    }
 
-	public FIBComponent retrieveFIBComponent(Resource fibResourceLocation, boolean useCache) {
-		InputStream inputStream = fibResourceLocation.openInputStream();
-		try {
-			return retrieveFIBComponent(fibResourceLocation, inputStream, useCache);
-		} finally {
-			IOUtils.closeQuietly(inputStream);
-		}
-	}
+    public FIBComponent retrieveFIBComponent(Resource fibResourceLocation, boolean useCache) {
+        InputStream inputStream = fibResourceLocation.openInputStream();
+        try {
+            return retrieveFIBComponent(fibResourceLocation, inputStream, useCache);
+        } finally {
+            IOUtils.closeQuietly(inputStream);
+        }
+    }
 
-	private FIBComponent retrieveFIBComponent(Resource fibIdentifier, InputStream inputStream, boolean useCache) {
-		if (!useCache || _fibDefinitions.get(fibIdentifier) == null) {
+    private FIBComponent retrieveFIBComponent(Resource fibIdentifier, InputStream inputStream, boolean useCache) {
+        if (!useCache || _fibDefinitions.get(fibIdentifier) == null) {
 
-			try {
-				FIBModelFactory factory = new FIBModelFactory();
+            try {
+                FIBModelFactory factory = new FIBModelFactory();
 
-				FIBComponent component = (FIBComponent) factory.deserialize(inputStream);
-				component.setLastModified(new Date());
-				component.setDefinitionFile(fibIdentifier);
-				_fibDefinitions.put(fibIdentifier, component);
-				return component;
-			} catch (ModelDefinitionException e) {
-				if (logger.isLoggable(Level.WARNING)) {
-					logger.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
-				}
-				e.printStackTrace();
-			} catch (FileNotFoundException e) {
-				if (logger.isLoggable(Level.WARNING)) {
-					logger.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
-				}
-				e.printStackTrace();
-			} catch (IOException e) {
-				if (logger.isLoggable(Level.WARNING)) {
-					logger.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
-				}
-				e.printStackTrace();
-			} catch (JDOMException e) {
-				if (logger.isLoggable(Level.WARNING)) {
-					logger.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
-				}
-				e.printStackTrace();
-			} catch (InvalidDataException e) {
-				if (logger.isLoggable(Level.WARNING)) {
-					logger.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
-				}
-				e.printStackTrace();
-			} finally {
-				if (inputStream != null) {
-					IOUtils.closeQuietly(inputStream);
-				}
-			}
-		}
-		return _fibDefinitions.get(fibIdentifier);
-	}
+                FIBComponent component = (FIBComponent) factory.deserialize(inputStream);
+                component.setLastModified(new Date());
+                component.setDefinitionFile(fibIdentifier);
+                _fibDefinitions.put(fibIdentifier, component);
+                return component;
+            } catch (ModelDefinitionException e) {
+                if (logger.isLoggable(Level.WARNING)) {
+                    logger.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
+                }
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                if (logger.isLoggable(Level.WARNING)) {
+                    logger.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
+                }
+                e.printStackTrace();
+            } catch (IOException e) {
+                if (logger.isLoggable(Level.WARNING)) {
+                    logger.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
+                }
+                e.printStackTrace();
+            } catch (JDOMException e) {
+                if (logger.isLoggable(Level.WARNING)) {
+                    logger.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
+                }
+                e.printStackTrace();
+            } catch (InvalidDataException e) {
+                if (logger.isLoggable(Level.WARNING)) {
+                    logger.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
+                }
+                e.printStackTrace();
+            } catch (Exception e) {
+                if (logger.isLoggable(Level.WARNING)) {
+                    logger.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
+                }
+                e.printStackTrace();
+                logger.warning("Unhandled Exception");
+            } finally {
+                if (inputStream != null) {
+                    IOUtils.closeQuietly(inputStream);
+                }
+            }
+        }
+        return _fibDefinitions.get(fibIdentifier);
+    }
 
-	public static boolean save(FIBComponent component, File file) {
-		logger.info("Save to file " + file.getAbsolutePath());
+    public static boolean save(FIBComponent component, File file) {
+        logger.info("Save to file " + file.getAbsolutePath());
 
-		FileOutputStream out = null;
-		try {
-			out = new FileOutputStream(file);
-			saveComponentToStream(component, file, out);
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			IOUtils.closeQuietly(out);
-		}
-		return false;
-	}
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(file);
+            saveComponentToStream(component, file, out);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(out);
+        }
+        return false;
+    }
 
-	public static void saveComponentToStream(FIBComponent component, File fibFile, OutputStream stream) {
+    public static void saveComponentToStream(FIBComponent component, File fibFile, OutputStream stream) {
 
-		try {
-			FIBModelFactory factory = new FIBModelFactory(fibFile.getParentFile());
+        try {
+            FIBModelFactory factory = new FIBModelFactory(fibFile.getParentFile());
 
-			factory.serialize(component, stream);
-			logger.info("Succeeded to save: " + fibFile);
-		} catch (Exception e) {
-			logger.warning("Failed to save: " + fibFile + " unexpected exception: " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			IOUtils.closeQuietly(stream);
-		}
-	}
+            factory.serialize(component, stream);
+            logger.info("Succeeded to save: " + fibFile);
+        } catch (Exception e) {
+            logger.warning("Failed to save: " + fibFile + " unexpected exception: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(stream);
+        }
+    }
 
 }
