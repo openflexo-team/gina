@@ -19,6 +19,7 @@
  */
 package org.openflexo.fib.view.widget.browser;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,6 +42,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
+import org.openflexo.antar.binding.BindingEvaluationContext;
 import org.openflexo.antar.binding.BindingValueChangeListener;
 import org.openflexo.antar.binding.BindingValueListChangeListener;
 import org.openflexo.antar.binding.DataBinding;
@@ -138,7 +140,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			// Thread.dumpStack();
 			/*System.out
 					.println("From: " + ((BrowserCell) getRoot()).getRepresentedObject() + " to: " + rootCell.getRepresentedObject());
-			*/
+			 */
 			if (getRoot() != null) {
 				((BrowserCell) getRoot()).delete();
 			}
@@ -367,21 +369,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 								}
 							};
 						} else {
-							l = new BindingValueChangeListener<Object>(children.getData(), browserElementType) {
-								@Override
-								public void bindingValueChanged(Object source, Object newValue) {
-									/*System.out.println(" bindingValueChanged() detected for data of children " + children.getName()
-											+ " of " + browserElementType + " " + children.getData() + " with newValue=" + newValue
-											+ " source=" + source);*/
-									if (source == browserElementType) {
-										// Ignore setIteratorObject() notification
-										return;
-									}
-									if (!isDeleted) {
-										BrowserCell.this.update(false);
-									}
-								}
-							};
+							l = new BrowserCellBindingValueChangeListener<Object>(children.getData(), browserElementType);
 						}
 						childrenDataBindingValueChangeListeners.put(children, l);
 					}
@@ -405,21 +393,8 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			if (browserElementType.getBrowserElement() != null) {
 				for (final FIBBrowserElementChildren children : browserElementType.getBrowserElement().getChildren()) {
 					if (children.getCast().isValid()) {
-						BindingValueChangeListener<?> l = new BindingValueChangeListener<Object>(children.getCast(), browserElementType) {
-							@Override
-							public void bindingValueChanged(Object source, Object newValue) {
-								/*System.out.println(" bindingValueChanged() detected for cast of children " + children.getName() + " of "
-										+ browserElementType + " " + children.getCast() + " with newValue=" + newValue + " source="
-										+ source);*/
-								if (source == browserElementType) {
-									// Ignore setIteratorObject() notification
-									return;
-								}
-								if (!isDeleted) {
-									BrowserCell.this.update(false);
-								}
-							}
-						};
+						BindingValueChangeListener<?> l = new BrowserCellBindingValueChangeListener<Object>(children.getCast(),
+								browserElementType);
 						childrenCastBindingValueChangeListeners.put(children, l);
 					}
 				}
@@ -444,22 +419,8 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			if (browserElementType.getBrowserElement() != null) {
 				for (final FIBBrowserElementChildren children : browserElementType.getBrowserElement().getChildren()) {
 					if (children.getVisible().isValid()) {
-						BindingValueChangeListener<Boolean> l = new BindingValueChangeListener<Boolean>(children.getVisible(),
-								browserElementType) {
-							@Override
-							public void bindingValueChanged(Object source, Boolean newValue) {
-								/*System.out.println(" bindingValueChanged() detected for visble of children " + children.getName() + " of "
-										+ browserElementType + " " + children.getVisible() + " with newValue=" + newValue + " source="
-										+ source);*/
-								if (source == browserElementType) {
-									// Ignore setIteratorObject() notification
-									return;
-								}
-								if (!isDeleted) {
-									BrowserCell.this.update(false);
-								}
-							}
-						};
+						BindingValueChangeListener<Boolean> l = new BrowserCellBindingValueChangeListener<Boolean>(children.getVisible(),
+								browserElementType);
 						childrenVisibleBindingValueChangeListeners.put(children, l);
 					}
 				}
@@ -477,22 +438,10 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			browserElementType.getLabelFor(representedObject);
 
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getLabel().isValid()) {
-				labelBindingValueChangeListener = new BindingValueChangeListener<String>(browserElementType.getBrowserElement().getLabel(),
-						browserElementType) {
-					@Override
-					public void bindingValueChanged(Object source, String newValue) {
-						// System.out.println(" bindingValueChanged() detected for label of " + browserElementType + " "
-						// + browserElementType.getBrowserElement().getLabel() + " with newValue=" + newValue + " source=" + source);
-						if (source == browserElementType) {
-							// Ignore setIteratorObject() notification
-							return;
-						}
-						if (!isDeleted) {
-							// Label has changed, update the cell
-							BrowserCell.this.update(false);
-						}
-					}
-				};
+
+				labelBindingValueChangeListener = new BrowserCellBindingValueChangeListener<String>(browserElementType.getBrowserElement()
+						.getLabel(), browserElementType);
+
 			}
 		}
 
@@ -505,21 +454,8 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
 			browserElementType.getIconFor(representedObject);
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getIcon().isValid()) {
-				iconBindingValueChangeListener = new BindingValueChangeListener<Icon>(browserElementType.getBrowserElement().getIcon(),
-						browserElementType) {
-					@Override
-					public void bindingValueChanged(Object source, Icon newValue) {
-						// System.out.println(" bindingValueChanged() detected for icon of " + browserElementType + " "
-						// + browserElementType.getBrowserElement().getIcon() + " with newValue=" + newValue + " source=" + source);
-						if (source == browserElementType) {
-							// Ignore setIteratorObject() notification
-							return;
-						}
-						if (!isDeleted) {
-							BrowserCell.this.update(false);
-						}
-					}
-				};
+				iconBindingValueChangeListener = new BrowserCellBindingValueChangeListener<Icon>(browserElementType.getBrowserElement()
+						.getIcon(), browserElementType);
 			}
 		}
 
@@ -532,21 +468,8 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
 			browserElementType.getTooltipFor(representedObject);
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getTooltip().isValid()) {
-				tooltipBindingValueChangeListener = new BindingValueChangeListener<String>(browserElementType.getBrowserElement()
-						.getTooltip(), browserElementType) {
-					@Override
-					public void bindingValueChanged(Object source, String newValue) {
-						/*System.out.println(" bindingValueChanged() detected for tooltip of " + browserElementType + " "
-								+ browserElementType.getBrowserElement().getTooltip() + " with newValue=" + newValue + " source=" + source);*/
-						if (source == browserElementType) {
-							// Ignore setIteratorObject() notification
-							return;
-						}
-						if (!isDeleted) {
-							BrowserCell.this.update(false);
-						}
-					}
-				};
+				tooltipBindingValueChangeListener = new BrowserCellBindingValueChangeListener<String>(browserElementType
+						.getBrowserElement().getTooltip(), browserElementType);
 			}
 		}
 
@@ -559,21 +482,8 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
 			browserElementType.isEnabled(representedObject);
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getEnabled().isValid()) {
-				enabledBindingValueChangeListener = new BindingValueChangeListener<Boolean>(browserElementType.getBrowserElement()
-						.getEnabled(), browserElementType) {
-					@Override
-					public void bindingValueChanged(Object source, Boolean newValue) {
-						// System.out.println(" bindingValueChanged() detected for enabled of " + browserElementType + " "
-						// + browserElementType.getBrowserElement().getEnabled() + " with newValue=" + newValue + " source=" + source);
-						if (source == browserElementType) {
-							// Ignore setIteratorObject() notification
-							return;
-						}
-						if (!isDeleted) {
-							BrowserCell.this.update(false);
-						}
-					}
-				};
+				enabledBindingValueChangeListener = new BrowserCellBindingValueChangeListener<Boolean>(browserElementType
+						.getBrowserElement().getEnabled(), browserElementType);
 			}
 		}
 
@@ -586,21 +496,50 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
 			browserElementType.isVisible(representedObject);
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getVisible().isValid()) {
-				visibleBindingValueChangeListener = new BindingValueChangeListener<Boolean>(browserElementType.getBrowserElement()
-						.getVisible(), browserElementType) {
-					@Override
-					public void bindingValueChanged(Object source, Boolean newValue) {
-						// System.out.println(" bindingValueChanged() detected for visible of " + browserElementType + " "
-						// + browserElementType.getBrowserElement().getVisible() + " with newValue=" + newValue + " source=" + source);
-						if (source == browserElementType) {
-							// Ignore setIteratorObject() notification
-							return;
-						}
-						if (!isDeleted) {
-							BrowserCell.this.update(false);
-						}
-					}
-				};
+				visibleBindingValueChangeListener = new BrowserCellBindingValueChangeListener<Boolean>(browserElementType
+						.getBrowserElement().getVisible(), browserElementType);
+			}
+		}
+
+		/**
+		 * Specific implementation of {@link BindingValueChangeListener} for BrowserCell<br>
+		 * 
+		 * The main difficulty is caused by the fact that iterator object is really dynamic<br>
+		 * To efficiently observe modifications of values, we should here ignore the setIteratorObject() calls
+		 * 
+		 * @author sylvain
+		 * 
+		 * @param <T>
+		 */
+		protected class BrowserCellBindingValueChangeListener<T> extends BindingValueChangeListener<T> {
+
+			public BrowserCellBindingValueChangeListener(DataBinding<T> dataBinding, BindingEvaluationContext context) {
+				super(dataBinding, context);
+			}
+
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (evt.getSource() == browserElementType) {
+					// Ignore setIteratorObject() notification
+					return;
+				}
+				super.propertyChange(evt);
+			}
+
+			@Override
+			public void bindingValueChanged(Object source, T newValue) {
+				if (source == browserElementType) {
+					// Ignore setIteratorObject() notification
+					return;
+				}
+				if (!isDeleted) {
+					updateBrowserCell();
+				}
+			}
+
+			// Might be overriden when required
+			public void updateBrowserCell() {
+				BrowserCell.this.update(false);
 			}
 		}
 
