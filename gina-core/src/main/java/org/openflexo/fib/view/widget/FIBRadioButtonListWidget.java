@@ -55,9 +55,11 @@ public class FIBRadioButtonListWidget<T> extends FIBMultipleValueWidget<FIBRadio
 				radioButtonArray[0].setSelected(true);
 				setSelected(getMultipleValueModel().getElementAt(0));
 			}*/
-		selectFirstRowIfRequired();
 		
-
+		if ((getWidget().getData() == null || !getWidget().getData().isValid()) && getWidget().getAutoSelectFirstRow()
+				&& getMultipleValueModel().getSize() > 0) {
+			setSelectedValue(getMultipleValueModel().getElementAt(0));
+		}
 	}
 
 	private void selectFirstRowIfRequired(){
