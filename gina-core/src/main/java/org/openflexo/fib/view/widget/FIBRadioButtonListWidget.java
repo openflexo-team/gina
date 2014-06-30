@@ -55,14 +55,18 @@ public class FIBRadioButtonListWidget<T> extends FIBMultipleValueWidget<FIBRadio
 				radioButtonArray[0].setSelected(true);
 				setSelected(getMultipleValueModel().getElementAt(0));
 			}*/
-
-		if ((getWidget().getData() == null || !getWidget().getData().isValid()) && getWidget().getAutoSelectFirstRow()
-				&& getMultipleValueModel().getSize() > 0) {
-			setSelectedValue(getMultipleValueModel().getElementAt(0));
-		}
+		selectFirstRowIfRequired();
+		
 
 	}
 
+	private void selectFirstRowIfRequired(){
+		if (selectedValue==null && (getWidget().getData() != null && getWidget().getData().isValid()) && getWidget().getAutoSelectFirstRow()
+				&& getMultipleValueModel().getSize() > 0) {
+			setSelectedValue(getMultipleValueModel().getElementAt(0));
+		}
+	}
+	
 	@Override
 	protected FIBMultipleValueModel<T> createMultipleValueModel() {
 		return new FIBMultipleValueModel<T>();
@@ -98,6 +102,7 @@ public class FIBRadioButtonListWidget<T> extends FIBMultipleValueWidget<FIBRadio
 			}
 			updateFont();
 			panel.revalidate();
+			selectFirstRowIfRequired();
 		}
 	}
 
