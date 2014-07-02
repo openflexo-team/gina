@@ -612,17 +612,17 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			firstList.setSelectedIndex(0);
 		}
 
-		disableFocus(this);
+		// disableFocus(this);
 	}
 
-	private void disableFocus(Component c) {
+	/*private void disableFocus(Component c) {
 		c.setFocusable(false);
 		if (c instanceof Container) {
 			for (Component c2 : ((Container) c).getComponents()) {
 				disableFocus(c2);
 			}
 		}
-	}
+	}*/
 
 	protected void updateSearchedTypeLabel() {
 		searchedTypeLabel.setText("[" + getTypeStringRepresentation() + "]");
@@ -736,10 +736,12 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			@Override
 			public void keyTyped(KeyEvent e) {
 				// processAnyKeyTyped(e);
+				System.out.println("typed on " + e);
 			}
 
 			@Override
 			public void keyPressed(KeyEvent e) {
+				System.out.println("pressed on " + e.getKeyCode());
 				if (e.getKeyChar() == '\n') {
 					bindingSelector._selectorPanel.processEnterPressed();
 					e.consume();
@@ -1902,6 +1904,9 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			return;
 		}
 		int newSelectedIndex = list.getSelectedIndex();
+
+		System.out.println("I select something from list at index " + index + " selected=" + newSelectedIndex);
+
 		if (logger.isLoggable(Level.FINE)) {
 			logger.fine("I select something from list at index " + index + " selected=" + newSelectedIndex);
 		}
@@ -2170,6 +2175,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 	protected void processTabPressed() {
 		logger.fine("Pressed on TAB, completionInfo=" + completionInfo);
 		if (completionInfo != null) {
+			System.out.println("GO pour l'auto completion !!!");
 			completionInfo.autoComplete();
 		}
 	}

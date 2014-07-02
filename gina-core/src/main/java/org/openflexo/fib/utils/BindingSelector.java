@@ -113,10 +113,14 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 	protected KeyEventDispatcher tabDispatcher = new KeyEventDispatcher() {
 		@Override
 		public boolean dispatchKeyEvent(KeyEvent e) {
+
+			System.out.println("dispatchKeyEvent for " + e.getKeyCode());
+
 			if (e.getID() == KeyEvent.KEY_TYPED && (e.getKeyChar() == KeyEvent.VK_RIGHT || e.getKeyChar() == KeyEvent.VK_TAB)) {
 				if (logger.isLoggable(Level.FINE)) {
 					logger.fine("Calling tab pressed " + e);
 				}
+				System.out.println("TAB or RIGHT pressed !!!");
 				getCustomPanel().processTabPressed();
 				e.consume();
 			}
@@ -189,55 +193,9 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 				if (!popupIsShown() && getTextField().getText() != null
 						&& !isAcceptableAsBeginningOfStaticBindingValue(getTextField().getText()) && isSignificativeKey) {
 
-					boolean requestFocus = getTextField().hasFocus();
-
 					// Open the popup
 					openPopup();
 
-					if (requestFocus) {
-
-						// Tricky area
-						// The goal here is to retrieve the same state of textfield before opening the panel
-						// Basically we request the focus, but just before to do it, we save textfield selection parameters
-
-						logger.info("Request focus in " + getTextField());
-
-						// We should embedd all this code in an InvokeLater block, because we should do all this stuff after the
-						// EventDispatchThread has processed the popup windiw opening
-						SwingUtilities.invokeLater(new Runnable() {
-							@Override
-							public void run() {
-
-								// We first store the required values
-								final int selectionStart = getTextField().getSelectionStart();
-								final int selectionEnd = getTextField().getSelectionEnd();
-								final int caretPosition = getTextField().getCaretPosition();
-
-								// Then we create a register a temporary FocusListener which is in charge
-								// of detecting the actual focus retrieving (because the focus requesting is also delayed for further
-								// processing by the EventDispatchThread
-								getTextField().addFocusListener(new FocusListener() {
-									@Override
-									public void focusLost(FocusEvent arg0) {
-										// Don't care
-									}
-
-									@Override
-									public void focusGained(FocusEvent arg0) {
-										// Now, the could set the values
-										getTextField().setSelectionStart(selectionStart);
-										getTextField().setSelectionEnd(selectionEnd);
-										getTextField().setCaretPosition(caretPosition);
-										// And remove this FocusListener
-										getTextField().removeFocusListener(this);
-									}
-								});
-
-								// And we request the focus
-								getTextField().requestFocus(false);
-							}
-						});
-					}
 				}
 
 				// This code was added to allow direct typing without opening selector panel (sic !)
@@ -571,8 +529,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		Object obj = null;
 		int i = 0;
 		while (token.hasMoreTokens()) {
-			obj = ((BindingValueSelectorPanel) _selectorPanel).findElementEquals(((BindingValueSelectorPanel) _selectorPanel).listAtIndex(i)
-					.getModel(), token.nextToken());
+			obj = ((BindingValueSelectorPanel) _selectorPanel).findElementEquals(((BindingValueSelectorPanel) _selectorPanel)
+					.listAtIndex(i).getModel(), token.nextToken());
 			if (obj == null) {
 				return false;
 			}
@@ -1095,7 +1053,21 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 	Bindable _bindable;
 
 	@Override
+	protected CustomJPopupMenu makePopup() {
+		CustomJPopupMenu returned = super.makePopup();
+
+		// This call is very important, because during popup creation (opening), we don't want
+		// the popup retrieve the focus
+		// FocusableWindowState will be set to true again later during textfield focus retrieving
+		returned.setFocusableWindowState(false);
+		return returned;
+	}
+
+	@Override
 	protected void openPopup() {
+
+		boolean requestFocus = getTextField().hasFocus();
+
 		if (_selectorPanel != null) {
 			if (_selectorPanel instanceof BindingValueSelectorPanel) {
 				JList list = ((BindingValueSelectorPanel) _selectorPanel).listAtIndex(0);
@@ -1105,6 +1077,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			}
 		}
 		super.openPopup();
+
 		if (_selectorPanel != null) {
 			ButtonsControlPanel controlPanel = null;
 			if (_selectorPanel instanceof BindingValueSelectorPanel) {
@@ -1116,6 +1089,59 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 				controlPanel.applyFocusTraversablePolicyTo(controlPanel, false);
 			}
 		}
+
+		if (requestFocus) {
+
+			// Tricky area
+			// The goal here is to retrieve the same state of textfield before opening the panel
+			// Basically we request the focus, but just before to do it, we save textfield selection parameters
+
+			logger.info("Request focus in " + getTextField());
+
+			// We should embedd all this code in an InvokeLater block, because we should do all this stuff after the
+			// EventDispatchThread has processed the popup windiw opening
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+
+					// We first store the required values
+					final int selectionStart = getTextField().getSelectionStart();
+					final int selectionEnd = getTextField().getSelectionEnd();
+					final int caretPosition = getTextField().getCaretPosition();
+
+					// Then we create a register a temporary FocusListener which is in charge
+					// of detecting the actual focus retrieving (because the focus requesting is also delayed for further
+					// processing by the EventDispatchThread
+					getTextField().addFocusListener(new FocusListener() {
+						@Override
+						public void focusLost(FocusEvent arg0) {
+							// Don't care
+						}
+
+						@Override
+						public void focusGained(FocusEvent arg0) {
+							// Now, the could set the values
+							getTextField().setSelectionStart(selectionStart);
+							getTextField().setSelectionEnd(selectionEnd);
+							getTextField().setCaretPosition(caretPosition);
+							// And remove this FocusListener
+							getTextField().removeFocusListener(this);
+							_popup.setFocusableWindowState(true);
+
+						}
+					});
+
+					// And we request the focus
+					getTextField().requestFocus(false);
+				}
+			});
+		}
+
+		else {
+			_popup.setFocusableWindowState(true);
+
+		}
+
 	}
 
 	@Override
@@ -1213,7 +1239,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		if (logger.isLoggable(Level.FINE)) {
 			logger.fine("Value selected: index=" + index + " list=" + list + " bindingValue=" + bindingValue);
 		}
-		BindingValueSelectorPanel.BindingColumnElement selectedValue = (BindingValueSelectorPanel.BindingColumnElement) list.getSelectedValue();
+		BindingValueSelectorPanel.BindingColumnElement selectedValue = (BindingValueSelectorPanel.BindingColumnElement) list
+				.getSelectedValue();
 		if (selectedValue == null) {
 			return;
 		}
@@ -1378,11 +1405,17 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 	}
 
 	DataBinding makeBindingFromString(String stringValue) {
-		if (getEditedObject() != null) {
+
+		DataBinding<?> returned = new DataBinding<Object>(stringValue, getBindable(), getEditedObject().getDeclaredType(),
+				getEditedObject().getBindingDefinitionType());
+		returned.decode();
+		return returned;
+
+		/*if (getEditedObject() != null) {
 			getEditedObject().setUnparsedBinding(stringValue);
 			getEditedObject().decode();
 			return getEditedObject();
-		}
+		}*/
 		/*
 				if (getBindable() != null) {
 					DataBinding<?> returned = new DataBinding<Object>(stringValue, getBindable(), getBindingDefinition().getType(),
@@ -1390,8 +1423,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 					returned.decode();
 					return returned;
 				}*/
-		logger.warning("Cannot build binding: null DataBinding !");
-		return null;
+		// logger.warning("Cannot build binding: null DataBinding !");
+		// return null;
 	}
 
 	boolean textFieldSynchWithEditedObject() {

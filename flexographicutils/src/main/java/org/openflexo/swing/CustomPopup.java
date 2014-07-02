@@ -229,7 +229,7 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 		return getWidth();
 	}
 
-	private void makePopup() {
+	protected CustomJPopupMenu makePopup() {
 		if (logger.isLoggable(Level.FINE)) {
 			logger.fine("makePopup()");
 		}
@@ -273,6 +273,8 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 
 		Rectangle union = thisRectangle.union(popupRectangle);
 		popupLiveArea = union;
+
+		return _popup;
 	}
 
 	protected class CustomJPopupMenu extends JDialog {
@@ -325,8 +327,6 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			_childs = new Vector<CustomJPopupMenu>();
 			parentListener = new ParentPopupMoveListener();
 			setUndecorated(true);
-			// Following line is very important for the focus management in BindingSelector
-			setFocusableWindowState(false);
 			getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			getContentPane().add(invoker.getCustomPanel());
 
