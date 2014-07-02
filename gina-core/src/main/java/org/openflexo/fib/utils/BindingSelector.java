@@ -33,6 +33,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -76,6 +77,8 @@ import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
 import org.openflexo.icon.UtilsIconLibrary;
 import org.openflexo.logging.FlexoLoggingManager;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.swing.ButtonsControlPanel;
 import org.openflexo.swing.SwingUtils;
 import org.openflexo.swing.TextFieldCustomPopup;
@@ -185,14 +188,53 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 
 				if (!popupIsShown() && getTextField().getText() != null
 						&& !isAcceptableAsBeginningOfStaticBindingValue(getTextField().getText()) && isSignificativeKey) {
+
 					boolean requestFocus = getTextField().hasFocus();
+
+					// Open the popup
 					openPopup();
+
 					if (requestFocus) {
+
+						// Tricky area
+						// The goal here is to retrieve the same state of textfield before opening the panel
+						// Basically we request the focus, but just before to do it, we save textfield selection parameters
+
 						logger.info("Request focus in " + getTextField());
+
+						// We should embedd all this code in an InvokeLater block, because we should do all this stuff after the
+						// EventDispatchThread has processed the popup windiw opening
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
 							public void run() {
-								getTextField().requestFocusInWindow();
+
+								// We first store the required values
+								final int selectionStart = getTextField().getSelectionStart();
+								final int selectionEnd = getTextField().getSelectionEnd();
+								final int caretPosition = getTextField().getCaretPosition();
+
+								// Then we create a register a temporary FocusListener which is in charge
+								// of detecting the actual focus retrieving (because the focus requesting is also delayed for further
+								// processing by the EventDispatchThread
+								getTextField().addFocusListener(new FocusListener() {
+									@Override
+									public void focusLost(FocusEvent arg0) {
+										// Don't care
+									}
+
+									@Override
+									public void focusGained(FocusEvent arg0) {
+										// Now, the could set the values
+										getTextField().setSelectionStart(selectionStart);
+										getTextField().setSelectionEnd(selectionEnd);
+										getTextField().setCaretPosition(caretPosition);
+										// And remove this FocusListener
+										getTextField().removeFocusListener(this);
+									}
+								});
+
+								// And we request the focus
+								getTextField().requestFocus(false);
 							}
 						});
 					}
@@ -1397,7 +1439,17 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		}
 	}
 
-	public static void main(String[] args) {
+	/**
+	 * This main allows to launch an application testing the BindingSelector
+	 * 
+	 * @param args
+	 * @throws SecurityException
+	 * @throws IOException
+	 */
+	public static void main(String[] args) throws SecurityException, IOException {
+
+		Resource loggingFile = ResourceLocator.locateResource("Config/logging_INFO.properties");
+		FlexoLoggingManager.initialize(-1, true, loggingFile, Level.INFO, null);
 		final JDialog dialog = new JDialog((Frame) null, false);
 
 		JButton closeButton = new JButton("Close");

@@ -318,13 +318,15 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 
 		protected boolean _popupIsShown = false;
 
-		private ParentPopupMoveListener parentListener;
+		private final ParentPopupMoveListener parentListener;
 
 		public CustomJPopupMenu(CustomPopup<?> invoker) {
 			super((Window) SwingUtilities.getAncestorOfClass(Window.class, invoker));
 			_childs = new Vector<CustomJPopupMenu>();
 			parentListener = new ParentPopupMoveListener();
 			setUndecorated(true);
+			// Following line is very important for the focus management in BindingSelector
+			setFocusableWindowState(false);
 			getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			getContentPane().add(invoker.getCustomPanel());
 
