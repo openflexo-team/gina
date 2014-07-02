@@ -106,22 +106,34 @@ public class BindingSelectorPanel extends AbstractBindingSelectorPanel implement
 
 	static final Logger logger = Logger.getLogger(BindingSelectorPanel.class.getPackage().getName());
 
+	private static final String SPECIFY_BASIC_BINDING = "specify_basic_binding";
+	private static final String SPECIFY_COMPOUND_BINDING = "specify_complex_binding";
+
+	/**
+	 * References the master {@link BindingSelector}
+	 */
 	final BindingSelector bindingSelector;
 
+	/**
+	 * This is the panel where the browser is defined
+	 */
 	protected JPanel browserPanel;
 
-	ButtonsControlPanel _controlPanel;
+	/**
+	 * Panel where buttons are defined
+	 */
+	protected ButtonsControlPanel _controlPanel;
 
-	JButton connectButton;
-	JButton cancelButton;
-	JButton resetButton;
-	JButton expressionButton;
+	protected JButton connectButton;
+	protected JButton cancelButton;
+	protected JButton resetButton;
+	protected JButton expressionButton;
 
-	JButton createsButton;
+	protected JButton createsButton;
 
 	private final Map<BindingPathElement, Hashtable<Type, BindingColumnListModel>> _listModels;
 
-	Vector<FilteredJList> _lists;
+	private final Vector<FilteredJList> _lists;
 
 	protected int defaultVisibleColCount = 3;
 
@@ -504,16 +516,16 @@ public class BindingSelectorPanel extends AbstractBindingSelectorPanel implement
 				showHideCompoundBindingsButton.setNormalIcon(FIBIconLibrary.TOGGLE_ARROW_TOP_ICON);
 				showHideCompoundBindingsButton.setMouseOverIcon(FIBIconLibrary.TOGGLE_ARROW_TOP_SELECTED_ICON);
 				showHideCompoundBindingsButton.setToolTipText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION,
-						"specify_basic_binding"));
+						SPECIFY_BASIC_BINDING));
 				showHideCompoundBindingsButtonLabel.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION,
-						"specify_basic_binding") + "  ");
+						SPECIFY_BASIC_BINDING) + "  ");
 			} else {
 				showHideCompoundBindingsButton.setNormalIcon(FIBIconLibrary.TOGGLE_ARROW_BOTTOM_ICON);
 				showHideCompoundBindingsButton.setMouseOverIcon(FIBIconLibrary.TOGGLE_ARROW_BOTTOM_SELECTED_ICON);
 				showHideCompoundBindingsButton.setToolTipText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION,
-						"specify_compound_binding"));
+						SPECIFY_COMPOUND_BINDING));
 				showHideCompoundBindingsButtonLabel.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION,
-						"specify_compound_binding") + "  ");
+						SPECIFY_COMPOUND_BINDING) + "  ");
 			}
 
 			JPanel showHideCompoundBindingsButtonPanel = new JPanel();
@@ -598,6 +610,17 @@ public class BindingSelectorPanel extends AbstractBindingSelectorPanel implement
 		FilteredJList firstList = listAtIndex(0);
 		if (firstList != null && firstList.getModel().getSize() == 1) {
 			firstList.setSelectedIndex(0);
+		}
+
+		disableFocus(this);
+	}
+
+	private void disableFocus(Component c) {
+		c.setFocusable(false);
+		if (c instanceof Container) {
+			for (Component c2 : ((Container) c).getComponents()) {
+				disableFocus(c2);
+			}
 		}
 	}
 
