@@ -95,16 +95,16 @@ import org.openflexo.toolbox.StringUtils;
 import org.openflexo.toolbox.ToolBox;
 
 /**
- * This class encodes the panel representing a BindingValue<br>
- * Such a panel is always used in a context of a BindingSelector and thus always provides access to its {@link BindingSelector}
+ * This class encodes the panel representing a {@link BindingValue}<br>
+ * Such a panel is always used in a context of a {@link BindingSelector} and thus always provides access to its {@link BindingSelector}
  * 
  * @author sylvain
  * 
  */
 @SuppressWarnings("serial")
-public class BindingSelectorPanel extends AbstractBindingSelectorPanel implements ListSelectionListener {
+public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel implements ListSelectionListener {
 
-	static final Logger logger = Logger.getLogger(BindingSelectorPanel.class.getPackage().getName());
+	static final Logger logger = Logger.getLogger(BindingValueSelectorPanel.class.getPackage().getName());
 
 	private static final String SPECIFY_BASIC_BINDING = "specify_basic_binding";
 	private static final String SPECIFY_COMPOUND_BINDING = "specify_complex_binding";
@@ -146,7 +146,7 @@ public class BindingSelectorPanel extends AbstractBindingSelectorPanel implement
 	private JTextArea bindingValueRepresentation;
 	protected BindingColumnElement currentFocused = null;
 
-	protected BindingSelectorPanel(BindingSelector bindingSelector) {
+	protected BindingValueSelectorPanel(BindingSelector bindingSelector) {
 		super();
 		this.bindingSelector = bindingSelector;
 		_listModels = new Hashtable<BindingPathElement, Hashtable<Type, BindingColumnListModel>>();
@@ -935,7 +935,7 @@ public class BindingSelectorPanel extends AbstractBindingSelectorPanel implement
 			logger.fine("update with " + binding);
 		}
 
-		// logger.info("Update in BindingSelectorPanel with binding " + binding);
+		// logger.info("Update in BindingValueSelectorPanel with binding " + binding);
 
 		if (binding == null || binding.isConstant() || binding.isUnset()) {
 			clearColumns();

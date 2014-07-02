@@ -87,7 +87,7 @@ import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.StringUtils;
 
 /**
- * Widget allowing to edit a binding
+ * Widget allowing to edit a {@link DataBinding}
  * 
  * @author sguerin
  * 
@@ -250,8 +250,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 
 					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 						if (StringUtils.isNotEmpty(getTextField().getText()) && textFieldNotSynchWithEditedObject()) {
-							if (_selectorPanel instanceof BindingSelectorPanel) {
-								BindingSelectorPanel selectorPanel = (BindingSelectorPanel) _selectorPanel;
+							if (_selectorPanel instanceof BindingValueSelectorPanel) {
+								BindingValueSelectorPanel selectorPanel = (BindingValueSelectorPanel) _selectorPanel;
 								if (selectorPanel.isKeyPathFromTextASubKeyPath(getTextField().getText())
 										&& selectorPanel.isKeyPathFromPanelValid()) {
 									getEditedObject().setExpression(selectorPanel.makeBindingValueFromPanel());
@@ -564,14 +564,14 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 	}
 
 	boolean isKeyPathValid(String pathIgnoringLastPart) {
-		if (!(_selectorPanel instanceof BindingSelectorPanel)) {
+		if (!(_selectorPanel instanceof BindingValueSelectorPanel)) {
 			return false;
 		}
 		StringTokenizer token = new StringTokenizer(pathIgnoringLastPart, ".", false);
 		Object obj = null;
 		int i = 0;
 		while (token.hasMoreTokens()) {
-			obj = ((BindingSelectorPanel) _selectorPanel).findElementEquals(((BindingSelectorPanel) _selectorPanel).listAtIndex(i)
+			obj = ((BindingValueSelectorPanel) _selectorPanel).findElementEquals(((BindingValueSelectorPanel) _selectorPanel).listAtIndex(i)
 					.getModel(), token.nextToken());
 			if (obj == null) {
 				return false;
@@ -790,7 +790,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			if (editedObject == null || editedObject.isConstant()) {
 				editionMode = EditionMode.NORMAL_BINDING;
 			}
-			_selectorPanel = new BindingSelectorPanel(this);
+			_selectorPanel = new BindingValueSelectorPanel(this);
 			_selectorPanel.init();
 		}
 		refreshBindingModel();
@@ -861,8 +861,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 	}
 
 	public void resetMethodCallPanel() {
-		if (_selectorPanel != null && _selectorPanel instanceof BindingSelectorPanel) {
-			((BindingSelectorPanel) _selectorPanel).resetMethodCallPanel();
+		if (_selectorPanel != null && _selectorPanel instanceof BindingValueSelectorPanel) {
+			((BindingValueSelectorPanel) _selectorPanel).resetMethodCallPanel();
 		}
 	}
 
@@ -947,8 +947,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		if (evt.getPropertyName().equals(BindingModelChanged.BINDING_MODEL_CHANGED)) {
 			// System.out.println("!!!!!!!!!!!!!! propertyChange() " + evt.getPropertyName() + " evt=" + evt + " called in " + this);
 
-			if (_selectorPanel != null && _selectorPanel instanceof BindingSelectorPanel) {
-				((BindingSelectorPanel) _selectorPanel).updateListModels();
+			if (_selectorPanel != null && _selectorPanel instanceof BindingValueSelectorPanel) {
+				((BindingValueSelectorPanel) _selectorPanel).updateListModels();
 			}
 
 			logger.fine("Refreshing Binding Model");
@@ -1097,8 +1097,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 	@Override
 	protected void openPopup() {
 		if (_selectorPanel != null) {
-			if (_selectorPanel instanceof BindingSelectorPanel) {
-				JList list = ((BindingSelectorPanel) _selectorPanel).listAtIndex(0);
+			if (_selectorPanel instanceof BindingValueSelectorPanel) {
+				JList list = ((BindingValueSelectorPanel) _selectorPanel).listAtIndex(0);
 				if (list.getModel().getSize() == 1) {
 					list.setSelectedIndex(0);
 				}
@@ -1107,8 +1107,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		super.openPopup();
 		if (_selectorPanel != null) {
 			ButtonsControlPanel controlPanel = null;
-			if (_selectorPanel instanceof BindingSelectorPanel) {
-				controlPanel = ((BindingSelectorPanel) _selectorPanel)._controlPanel;
+			if (_selectorPanel instanceof BindingValueSelectorPanel) {
+				controlPanel = ((BindingValueSelectorPanel) _selectorPanel)._controlPanel;
 			} else if (_selectorPanel instanceof BindingExpressionSelectorPanel) {
 				controlPanel = ((BindingExpressionSelectorPanel) _selectorPanel)._controlPanel;
 			}
@@ -1182,15 +1182,15 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 	}
 
 	protected AbstractListModel getRootListModel() {
-		if (_selectorPanel != null && _selectorPanel instanceof BindingSelectorPanel) {
-			return ((BindingSelectorPanel) _selectorPanel).getRootColumnListModel();
+		if (_selectorPanel != null && _selectorPanel instanceof BindingValueSelectorPanel) {
+			return ((BindingValueSelectorPanel) _selectorPanel).getRootColumnListModel();
 		}
 		return null;
 	}
 
 	protected final AbstractListModel getListModelFor(BindingPathElement element, Type resultingType) {
-		if (_selectorPanel != null && _selectorPanel instanceof BindingSelectorPanel) {
-			return ((BindingSelectorPanel) _selectorPanel).getColumnListModel(element, resultingType);
+		if (_selectorPanel != null && _selectorPanel instanceof BindingValueSelectorPanel) {
+			return ((BindingValueSelectorPanel) _selectorPanel).getColumnListModel(element, resultingType);
 		}
 		return null;
 	}
@@ -1213,7 +1213,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		if (logger.isLoggable(Level.FINE)) {
 			logger.fine("Value selected: index=" + index + " list=" + list + " bindingValue=" + bindingValue);
 		}
-		BindingSelectorPanel.BindingColumnElement selectedValue = (BindingSelectorPanel.BindingColumnElement) list.getSelectedValue();
+		BindingValueSelectorPanel.BindingColumnElement selectedValue = (BindingValueSelectorPanel.BindingColumnElement) list.getSelectedValue();
 		if (selectedValue == null) {
 			return;
 		}
