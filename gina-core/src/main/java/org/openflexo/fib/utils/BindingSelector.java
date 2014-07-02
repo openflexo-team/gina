@@ -1126,6 +1126,9 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 							getTextField().setCaretPosition(caretPosition);
 							// And remove this FocusListener
 							getTextField().removeFocusListener(this);
+
+							// Back to focusable window state
+							// (which has been set to false during popup creation)
 							_popup.setFocusableWindowState(true);
 
 						}
@@ -1138,6 +1141,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		}
 
 		else {
+			// Back to focusable window state
+			// (which has been set to false during popup creation)
 			_popup.setFocusableWindowState(true);
 
 		}
@@ -1241,6 +1246,10 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		}
 		BindingValueSelectorPanel.BindingColumnElement selectedValue = (BindingValueSelectorPanel.BindingColumnElement) list
 				.getSelectedValue();
+
+		System.out.println("element: " + selectedValue.getElement() + " of " + selectedValue.getElement().getClass());
+		System.out.println("editionMode=" + editionMode);
+
 		if (selectedValue == null) {
 			return;
 		}
@@ -1264,6 +1273,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 					fireEditedObjectChanged();
 				}
 			} else if (selectedValue.getElement() instanceof FunctionPathElement && editionMode == EditionMode.COMPOUND_BINDING) {
+
+				System.out.println("ok on y va");
 				BindingPathElement currentElement = bindingValue.getBindingPathElementAtIndex(index - 1);
 				/*System.out.println("selectedValue.getElement()=" + selectedValue.getElement() + " of "
 						+ selectedValue.getElement().getClass());
@@ -1281,6 +1292,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 					logger.info("Selecting function " + function);
 					FunctionPathElement newFunctionPathElement = getBindable().getBindingFactory().makeFunctionPathElement(
 							bindingValue.getLastBindingPathElement(), function, new ArrayList<DataBinding<?>>());
+					System.out.println("newFunctionPathElement=" + newFunctionPathElement);
+
 					if (newFunctionPathElement != null) {
 						// TODO: we need to handle here generic FunctionPathElement and not only JavaMethodPathElement
 						/*JavaMethodPathElement newMethodCall = new JavaMethodPathElement(bindingValue.getLastBindingPathElement(),
@@ -1289,6 +1302,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 						bindingValue.setBindingPathElementAtIndex(newFunctionPathElement, index - 1);
 						getEditedObject().setExpression(bindingValue);
 						fireEditedObjectChanged();
+						System.out.println("Hop, bv=" + bindingValue);
 					} else {
 						logger.warning("Cannot retrieve new FunctionPathElement for " + bindingValue.getLastBindingPathElement()
 								+ " function=" + function);
@@ -1369,7 +1383,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			// In this case, any of matching is enough
 			return isAcceptableStaticBindingValue(stringValue)
 					&& !stringValue.endsWith(".") // Special case to handle float on-the-fly
-													// typing
+					// typing
 					|| isAcceptableAsBeginningOfBooleanStaticBindingValue(stringValue)
 					|| isAcceptableAsBeginningOfStringStaticBindingValue(stringValue);
 		}
