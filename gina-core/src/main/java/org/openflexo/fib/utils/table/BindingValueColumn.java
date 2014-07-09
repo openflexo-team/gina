@@ -19,6 +19,8 @@
  */
 package org.openflexo.fib.utils.table;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,6 +39,10 @@ public abstract class BindingValueColumn<D> extends CustomColumn<D, DataBinding>
 
 	protected static final Logger logger = Logger.getLogger(BindingValueColumn.class.getPackage().getName());
 
+	private Map<DataBinding, BindingSelector> viewSelectors;
+
+	private Map<DataBinding, BindingSelector> editSelectors;
+
 	public BindingValueColumn(String title, int defaultWidth, boolean allowsCompoundBinding) {
 		super(title, defaultWidth);
 	}
@@ -50,13 +56,10 @@ public abstract class BindingValueColumn<D> extends CustomColumn<D, DataBinding>
 		return DataBinding.class;
 	}
 
-	private BindingSelector _viewSelector;
-
-	private BindingSelector _editSelector;
-
 	private void updateSelectorWith(BindingSelector selector, D rowObject, DataBinding<?> value) {
 		DataBinding oldBV = selector.getEditedObject();
-		if (oldBV == null || !oldBV.equals(value)) {
+		// if (oldBV == null || !oldBV.equals(value)) {
+		if (oldBV != value) {
 			// logger.info("updateSelectorWith value=" + (value != null ? value + " (" + value.getBindingName() + ")" : "null"));
 			// selector.setEditedObjectAndUpdateBDAndOwner(value);
 			selector.setEditedObject(value);
@@ -82,7 +85,22 @@ public abstract class BindingValueColumn<D> extends CustomColumn<D, DataBinding>
 
 	@Override
 	protected BindingSelector getViewSelector(D rowObject, DataBinding value) {
-		if (_viewSelector == null) {
+		if (viewSelectors == null) {
+			viewSelectors = new HashMap<DataBinding, BindingSelector>();
+		}
+		BindingSelector returned = viewSelectors.get(value);
+		if (returned == null) {
+			returned = new BindingSelector(value);
+			returned.setFont(MEDIUM_FONT);
+			updateSelectorWith(returned, rowObject, value);
+			viewSelectors.put(value, returned);
+		}
+
+		System.out.println("VIEW / Pour " + rowObject + " je retourne " + returned.hashCode());
+
+		return returned;
+
+		/*if (_viewSelector == null) {
 			_viewSelector = new BindingSelector(value) {
 				@Override
 				public String toString() {
@@ -92,12 +110,59 @@ public abstract class BindingValueColumn<D> extends CustomColumn<D, DataBinding>
 			_viewSelector.setFont(MEDIUM_FONT);
 		}
 		updateSelectorWith(_viewSelector, rowObject, value);
-		return _viewSelector;
+		return _viewSelector;*/
 	}
 
 	@Override
-	protected BindingSelector getEditSelector(D rowObject, DataBinding value) {
-		if (_editSelector == null) {
+	protected BindingSelector getEditSelector(final D rowObject, DataBinding value) {
+		if (editSelectors == null) {
+			editSelectors = new HashMap<DataBinding, BindingSelector>();
+		}
+		BindingSelector returned = editSelectors.get(value);
+		if (returned == null) {
+			returned = new BindingSelector(value) {
+				@Override
+				public void apply() {
+					super.apply();
+					if (logger.isLoggable(Level.FINE)) {
+						logger.fine("Apply");
+					}
+					if (rowObject != null) {
+						setValue(rowObject, getEditedObject());
+						System.out.println("SET / Pour " + rowObject + " je set " + getEditedObject());
+					}
+				}
+
+				/*@Override
+				public void fireEditedObjectChanged() {
+					System.out.println("Tiens, j'ai vu que la valeur a change pour " + getEditedObject());
+					super.fireEditedObjectChanged();
+					if (rowObject != null) {
+						setValue(rowObject, getEditedObject());
+					}
+				}*/
+
+				@Override
+				public void cancel() {
+					super.cancel();
+					if (logger.isLoggable(Level.FINE)) {
+						logger.fine("Cancel");
+					}
+					if (rowObject != null) {
+						setValue(rowObject, getRevertValue());
+					}
+				}
+			};
+			returned.setFont(MEDIUM_FONT);
+			updateSelectorWith(returned, rowObject, value);
+			editSelectors.put(value, returned);
+		}
+
+		System.out.println("EDIT / Pour " + rowObject + " je retourne " + returned.hashCode());
+
+		return returned;
+
+		/*if (_editSelector == null) {
 			_editSelector = new BindingSelector(value) {
 				@Override
 				public void apply() {
@@ -105,6 +170,15 @@ public abstract class BindingValueColumn<D> extends CustomColumn<D, DataBinding>
 					if (logger.isLoggable(Level.FINE)) {
 						logger.fine("Apply");
 					}
+					if (_editedRowObject != null) {
+						setValue(_editedRowObject, getEditedObject());
+					}
+				}
+
+				@Override
+				public void fireEditedObjectChanged() {
+					System.out.println("Tiens, j'ai vu que la valeur a change pour " + getEditedObject());
+					super.fireEditedObjectChanged();
 					if (_editedRowObject != null) {
 						setValue(_editedRowObject, getEditedObject());
 					}
@@ -121,22 +195,16 @@ public abstract class BindingValueColumn<D> extends CustomColumn<D, DataBinding>
 					}
 				}
 
-				/*@Override
-				public void setEditedObject(AbstractBinding object) {
-				   setBindable(getBindableFor(object,_editedRowObject));
-				   setBindingDefinition(getBindingDefinitionFor(object,_editedRowObject));
-					super.setEditedObject(object);
-				}*/
 				@Override
 				public String toString() {
 					return "EDIT";
 				}
 			};
-			_editSelector.setFont(NORMAL_FONT);
+			//_editSelector.setFont(NORMAL_FONT);
+			//logger.info("Build EditSelector for " + rowObject + " value=" + value);
 		}
-		logger.info("Build EditSelector for " + rowObject + " value=" + value);
 		updateSelectorWith(_editSelector, rowObject, value);
-		return _editSelector;
+		return _editSelector;*/
 	}
 
 }

@@ -35,14 +35,12 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.AbstractListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JList;
@@ -55,13 +53,9 @@ import org.openflexo.antar.binding.Bindable;
 import org.openflexo.antar.binding.BindingFactory;
 import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.BindingModelChanged;
-import org.openflexo.antar.binding.BindingPathElement;
 import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.antar.binding.DataBinding;
-import org.openflexo.antar.binding.Function;
-import org.openflexo.antar.binding.FunctionPathElement;
 import org.openflexo.antar.binding.JavaBindingFactory;
-import org.openflexo.antar.binding.SimplePathElement;
 import org.openflexo.antar.binding.TypeUtils;
 import org.openflexo.antar.expr.BindingValue;
 import org.openflexo.antar.expr.Constant;
@@ -114,13 +108,10 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		@Override
 		public boolean dispatchKeyEvent(KeyEvent e) {
 
-			System.out.println("dispatchKeyEvent for " + e.getKeyCode());
-
-			if (e.getID() == KeyEvent.KEY_TYPED && (e.getKeyChar() == KeyEvent.VK_RIGHT || e.getKeyChar() == KeyEvent.VK_TAB)) {
+			if (e.getID() == KeyEvent.KEY_TYPED && (e.getKeyChar() == KeyEvent.VK_TAB)) {
 				if (logger.isLoggable(Level.FINE)) {
 					logger.fine("Calling tab pressed " + e);
 				}
-				System.out.println("TAB or RIGHT pressed !!!");
 				getCustomPanel().processTabPressed();
 				e.consume();
 			}
@@ -214,7 +205,9 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 										&& selectorPanel.isKeyPathFromPanelValid()) {
 									getEditedObject().setExpression(selectorPanel.makeBindingValueFromPanel());
 									fireEditedObjectChanged();
-									apply();
+									if (getEditedObject().isValid()) {
+										apply();
+									}
 								} else {
 									String input = getTextField().getText();
 									if (input.indexOf(".") > -1) {
@@ -237,13 +230,15 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 					} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 						_selectorPanel.processDownPressed();
 						e.consume();
-					} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+					} /*else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+						System.out.println("a gauche");
 						_selectorPanel.processLeftPressed();
 						e.consume();
-					} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+						} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+						System.out.println("a droite");
 						_selectorPanel.processRightPressed();
 						e.consume();
-					}
+						}*/
 				}
 			}
 		};
@@ -447,18 +442,23 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		}
 	}
 
-	DataBinding<?> checkIfDisplayModeShouldChange(DataBinding<?> dataBinding, boolean setValueAsNewEditedValue) {
-		DataBinding<?> returned = dataBinding;
-
+	/**
+	 * This method is called as a hook allowing to change display mode
+	 * 
+	 * @param newDataBinding
+	 * @param setValueAsNewEditedValue
+	 * @return
+	 */
+	protected DataBinding<?> checkIfDisplayModeShouldChange(DataBinding<?> newDataBinding, boolean setValueAsNewEditedValue) {
 		EditionMode oldEditionMode = editionMode;
 		EditionMode newEditionMode = editionMode;
 
-		if (dataBinding != null && dataBinding.isSet()) {
-			if (dataBinding.isConstant()) {
+		if (newDataBinding != null && newDataBinding.isSet()) {
+			if (newDataBinding.isConstant()) {
 				newEditionMode = EditionMode.STATIC_BINDING;
-			} else if (dataBinding.isBindingValue()) {
-				if (((BindingValue) dataBinding.getExpression()).isCompoundBinding()
-						|| dataBinding.getBindingDefinitionType() == DataBinding.BindingDefinitionType.EXECUTE) {
+			} else if (newDataBinding.isBindingValue()) {
+				if (((BindingValue) newDataBinding.getExpression()).isCompoundBinding()
+						|| newDataBinding.getBindingDefinitionType() == DataBinding.BindingDefinitionType.EXECUTE) {
 					newEditionMode = EditionMode.COMPOUND_BINDING;
 				} else if (oldEditionMode != EditionMode.NORMAL_BINDING && oldEditionMode != EditionMode.COMPOUND_BINDING) {
 					newEditionMode = EditionMode.NORMAL_BINDING;
@@ -466,7 +466,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			} else {
 				newEditionMode = EditionMode.BINDING_EXPRESSION;
 			}
-			if (returned == null) {
+			if (newDataBinding == null) {
 				newEditionMode = EditionMode.NORMAL_BINDING;
 			}
 		} else {
@@ -476,6 +476,18 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		if (logger.isLoggable(Level.FINE)) {
 			logger.fine("DISPLAY_MODE was: " + oldEditionMode + " is now " + newEditionMode);
 		}
+
+		boolean editedObjectChanged = false;
+
+		// Should i change edited object ???
+		if (getEditedObject() != newDataBinding && setValueAsNewEditedValue) {
+			if (logger.isLoggable(Level.FINE)) {
+				logger.fine("Switching edited object from " + _editedObject + " to " + newDataBinding);
+			}
+			_editedObject = newDataBinding;
+			editedObjectChanged = true;
+		}
+
 		if (oldEditionMode.useCommonPanel() != newEditionMode.useCommonPanel()) {
 			if (newEditionMode.useCommonPanel()) {
 				if (newEditionMode == EditionMode.COMPOUND_BINDING) {
@@ -483,7 +495,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 				} else {
 					activateNormalBindingMode();
 				}
-			} else if (dataBinding.isExpression()) {
+			} else if (newDataBinding.isExpression()) {
 				activateBindingExpressionMode();
 			}
 		}
@@ -494,15 +506,18 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		editionMode = newEditionMode;
 
 		// Should i change edited object ???
-		if (returned != dataBinding && setValueAsNewEditedValue) {
+		/*if (returned != dataBinding && setValueAsNewEditedValue) {
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("Switching edited object from " + dataBinding + " to " + returned);
 			}
 			_editedObject = returned;
 			updateCustomPanel(getEditedObject());
+		}*/
+		if (editedObjectChanged) {
+			updateCustomPanel(getEditedObject());
 		}
 
-		return returned;
+		return newDataBinding;
 	}
 
 	public boolean isConnected() {
@@ -625,6 +640,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 	}
 
 	public void activateCompoundBindingMode() {
+
 		if (logger.isLoggable(Level.FINE)) {
 			logger.fine("ActivateCompoundBindingMode() getEditedObject()=" + getEditedObject() + " editionMode=" + editionMode
 					+ " popupIsShown()=" + popupIsShown() + " _selectorPanel=" + _selectorPanel);
@@ -761,19 +777,10 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		}
 	}
 
-	/*public void refreshBindingDefinitionType() {
-		if (_selectorPanel != null) {
-			_selectorPanel.fireBindingDefinitionChanged();
-		}
-	}*/
-
 	@Override
 	public void updateCustomPanel(DataBinding editedObject) {
 		if (logger.isLoggable(Level.FINE)) {
 			logger.fine("updateCustomPanel() with " + editedObject);
-		}
-		if (editedObject != null && editedObject.isBindingValue() && ((BindingValue) editedObject.getExpression()).isCompoundBinding()) {
-			activateCompoundBindingMode();
 		}
 		if (_selectorPanel != null) {
 			// logger.info("Updating custom panel with " + editedObject.getExpression());
@@ -1210,107 +1217,6 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 
 	public void setUpdatingModel(boolean isUpdatingModelFlag) {
 		this.isUpdatingModel = isUpdatingModelFlag;
-	}
-
-	protected AbstractListModel getRootListModel() {
-		if (_selectorPanel != null && _selectorPanel instanceof BindingValueSelectorPanel) {
-			return ((BindingValueSelectorPanel) _selectorPanel).getRootColumnListModel();
-		}
-		return null;
-	}
-
-	protected final AbstractListModel getListModelFor(BindingPathElement element, Type resultingType) {
-		if (_selectorPanel != null && _selectorPanel instanceof BindingValueSelectorPanel) {
-			return ((BindingValueSelectorPanel) _selectorPanel).getColumnListModel(element, resultingType);
-		}
-		return null;
-	}
-
-	protected void valueSelected(int index, JList list, DataBinding binding) {
-
-		boolean bindingRecreated = false;
-
-		if (!binding.isBindingValue()) {
-
-			editionMode = EditionMode.NORMAL_BINDING;
-			binding.setExpression(makeBinding()); // Should create a BindingValue instance !!!
-			bindingRecreated = true;
-			if (!binding.isBindingValue()) {
-				logger.severe("Should never happen: valueSelected() called for a non-BindingValue instance !");
-				return;
-			}
-		}
-		BindingValue bindingValue = (BindingValue) binding.getExpression();
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("Value selected: index=" + index + " list=" + list + " bindingValue=" + bindingValue);
-		}
-		BindingValueSelectorPanel.BindingColumnElement selectedValue = (BindingValueSelectorPanel.BindingColumnElement) list
-				.getSelectedValue();
-
-		System.out.println("element: " + selectedValue.getElement() + " of " + selectedValue.getElement().getClass());
-		System.out.println("editionMode=" + editionMode);
-
-		if (selectedValue == null) {
-			return;
-		}
-		if (index == 0 && selectedValue.getElement() instanceof BindingVariable) { // ICI
-			if (list.getSelectedValue() != bindingValue.getBindingVariable()) {
-				disconnect();
-				bindingValue.setBindingVariable((BindingVariable) selectedValue.getElement());
-				getEditedObject().setExpression(bindingValue);
-				fireEditedObjectChanged();
-			}
-		} else {
-			if (selectedValue.getElement() instanceof SimplePathElement) {
-				// FIXED invalid type object comparison
-				if (selectedValue.getElement() != bindingValue.getBindingPathElementAtIndex(index - 1)) {
-					// System.out.println("bindingValue was " + bindingValue);
-					// System.out.println("select " + selectedValue.getElement());
-					disconnect();
-					bindingValue.setBindingPathElementAtIndex(selectedValue.getElement(), index - 1);
-					// System.out.println("bindingValue is now " + bindingValue);
-					getEditedObject().setExpression(bindingValue);
-					fireEditedObjectChanged();
-				}
-			} else if (selectedValue.getElement() instanceof FunctionPathElement && editionMode == EditionMode.COMPOUND_BINDING) {
-
-				System.out.println("ok on y va");
-				BindingPathElement currentElement = bindingValue.getBindingPathElementAtIndex(index - 1);
-				/*System.out.println("selectedValue.getElement()=" + selectedValue.getElement() + " of "
-						+ selectedValue.getElement().getClass());
-				System.out.println("currentElement=" + currentElement + " of " + currentElement != null ? currentElement.getClass() : null);*/
-
-				logger.info("Selecting currentElement " + currentElement + " selectedValue=" + selectedValue);
-				// if (currentElement != null) {
-				if (currentElement == null
-						|| !(currentElement instanceof FunctionPathElement)
-						|| ((FunctionPathElement) currentElement).getFunction() == null
-						|| !((FunctionPathElement) currentElement).getFunction().equals(
-								((FunctionPathElement) selectedValue.getElement()).getFunction())) {
-					disconnect();
-					Function function = ((FunctionPathElement) selectedValue.getElement()).getFunction();
-					logger.info("Selecting function " + function);
-					FunctionPathElement newFunctionPathElement = getBindable().getBindingFactory().makeFunctionPathElement(
-							bindingValue.getLastBindingPathElement(), function, new ArrayList<DataBinding<?>>());
-					System.out.println("newFunctionPathElement=" + newFunctionPathElement);
-
-					if (newFunctionPathElement != null) {
-						// TODO: we need to handle here generic FunctionPathElement and not only JavaMethodPathElement
-						/*JavaMethodPathElement newMethodCall = new JavaMethodPathElement(bindingValue.getLastBindingPathElement(),
-								(MethodDefinition) ((FunctionPathElement) selectedValue.getElement()).getFunction(),
-								new ArrayList<DataBinding<?>>());*/
-						bindingValue.setBindingPathElementAtIndex(newFunctionPathElement, index - 1);
-						getEditedObject().setExpression(bindingValue);
-						fireEditedObjectChanged();
-						System.out.println("Hop, bv=" + bindingValue);
-					} else {
-						logger.warning("Cannot retrieve new FunctionPathElement for " + bindingValue.getLastBindingPathElement()
-								+ " function=" + function);
-					}
-				}
-				// }
-			}
-		}
 	}
 
 	boolean isAcceptableStaticBindingValue(String stringValue) {

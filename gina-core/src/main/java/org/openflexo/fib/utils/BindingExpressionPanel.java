@@ -30,11 +30,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -71,7 +68,6 @@ import org.openflexo.antar.expr.SymbolicConstant;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.antar.expr.UnaryOperator;
 import org.openflexo.antar.expr.UnaryOperatorExpression;
-import org.openflexo.antar.expr.parser.ExpressionParser;
 import org.openflexo.antar.pp.ExpressionPrettyPrinter;
 import org.openflexo.fib.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.localization.FlexoLocalization;
@@ -138,7 +134,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 
 	public BindingExpressionPanel(DataBinding<?> aDataBinding) {
 		super();
-		logger.info("Instanciate BindingExpressionPanel with " + aDataBinding);
+		// logger.info("Instanciate BindingExpressionPanel with " + aDataBinding);
 		setLayout(new BorderLayout());
 		dataBinding = aDataBinding;
 		init();
@@ -152,7 +148,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 		dataBinding = null;
 	}
 
-	private JTextArea expressionTA;
+	// private JTextArea expressionTA;
 	private JPanel controls;
 	private ExpressionInnerPanel rootExpressionPanel;
 
@@ -326,32 +322,31 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 			return;
 		}
 
-		try {
-			Expression newExpression;
-			if (expressionTA.getText().trim().equals("")) {
-				newExpression = new BindingValue();
-				((BindingValue) newExpression).setDataBinding(dataBinding);
-				// newExpression = new BindingExpression.BindingValueVariable("", _bindingExpression.getOwner());
-			} else {
-				newExpression = ExpressionParser.parse(expressionTA.getText());
-			}
-			if (!newExpression.equals(dataBinding.getExpression()) || status == ExpressionParsingStatus.INVALID) {
-				_setEditedExpression(newExpression);
-				rootExpressionPanel.setRepresentedExpression(dataBinding.getExpression());
-				update();
-				fireEditedExpressionChanged(dataBinding);
-			}
-		} catch (org.openflexo.antar.expr.parser.ParseException e) {
-			message = "ERROR: cannot parse " + expressionTA.getText();
+		// try {
+		Expression newExpression = null;
+		/*if (expressionTA.getText().trim().equals("")) {
+			newExpression = new BindingValue();
+			((BindingValue) newExpression).setDataBinding(dataBinding);
+			// newExpression = new BindingExpression.BindingValueVariable("", _bindingExpression.getOwner());
+		} else {
+			newExpression = ExpressionParser.parse(expressionTA.getText());
+		}*/
+		if (!newExpression.equals(dataBinding.getExpression()) || status == ExpressionParsingStatus.INVALID) {
+			_setEditedExpression(newExpression);
+			rootExpressionPanel.setRepresentedExpression(dataBinding.getExpression());
+			update();
+			fireEditedExpressionChanged(dataBinding);
+		}
+		/*} catch (org.openflexo.antar.expr.parser.ParseException e) {
+			message = "ERROR: cannot parse ";// + expressionTA.getText();
 			status = ExpressionParsingStatus.INVALID;
 			updateAdditionalInformations();
-		}
+		}*/
 	}
 
 	private void init() {
-		expressionTA = new JTextArea(3, 50);
+		/*expressionTA = new JTextArea(3, 50);
 		expressionTA.setLineWrap(true);
-		// expressionTA.setWrapStyleWord(true);
 		expressionTA.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -368,7 +363,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 			public void focusLost(FocusEvent e) {
 				expressionMayHaveBeenEdited();
 			}
-		});
+		});*/
 		/*expressionTA.addMouseListener(new MouseAdapter(){
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -420,7 +415,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 		statusAndMessageLabel.add(showEvaluationButton, BorderLayout.EAST);
 
 		JPanel topPanel = new JPanel(new BorderLayout());
-		topPanel.add(expressionTA, BorderLayout.NORTH);
+		// topPanel.add(expressionTA, BorderLayout.NORTH);
 		topPanel.add(statusAndMessageLabel, BorderLayout.CENTER);
 		topPanel.add(evaluationPanel, BorderLayout.SOUTH);
 
@@ -549,7 +544,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 		if (dataBinding == null) {
 			return;
 		}
-		expressionTA.setText(pp.getStringRepresentation(dataBinding.getExpression()));
+		// expressionTA.setText(pp.getStringRepresentation(dataBinding.getExpression()));
 		if (status == ExpressionParsingStatus.UNDEFINED) {
 			statusIcon.setIcon(FIBIconLibrary.WARNING_ICON);
 		} else if (status == ExpressionParsingStatus.INVALID) {

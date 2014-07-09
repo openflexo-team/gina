@@ -27,9 +27,9 @@ public abstract class AbstractBindingSelectorPanel extends ResizablePanel {
 
 	protected abstract void processUpPressed();
 
-	protected abstract void processLeftPressed();
+	// protected abstract void processLeftPressed();
 
-	protected abstract void processRightPressed();
+	// protected abstract void processRightPressed();
 
 	protected abstract void processEnterPressed();
 

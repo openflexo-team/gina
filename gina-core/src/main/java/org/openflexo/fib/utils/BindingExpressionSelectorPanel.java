@@ -174,16 +174,6 @@ public class BindingExpressionSelectorPanel extends AbstractBindingSelectorPanel
 	}
 
 	@Override
-	protected void processLeftPressed() {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	protected void processRightPressed() {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	protected void synchronizePanelWithTextFieldValue(String textValue) {
 	}
 
