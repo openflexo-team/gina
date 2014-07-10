@@ -535,7 +535,10 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 		super.update();
 		updateSelected();
 		// TODO: this should be not necessary
-		getBrowserModel().fireTreeRestructured();
+		// Vincent : It causes many notifications and for big browsers such as archimate emf metamodel one
+		// it is tool long to produce the browser (35 seconds for this one).
+		// Thus according to the TODO above, I commented it
+		//getBrowserModel().fireTreeRestructured();
 		if (selectedBindingValueChangeListener != null) {
 			selectedBindingValueChangeListener.refreshObserving();
 		}

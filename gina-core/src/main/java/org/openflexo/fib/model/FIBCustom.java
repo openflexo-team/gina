@@ -235,8 +235,8 @@ public interface FIBCustom extends FIBWidget {
 		@Override
 		public void addToAssignments(FIBCustomAssignment a) {
 			if (getAssignent(a.getVariable().toString()) != null) {
-				performSuperAdder(ASSIGNMENTS_KEY, a);
 				removeFromAssignments(getAssignent(a.getVariable().toString()));
+				performSuperAdder(ASSIGNMENTS_KEY, a);
 				return;
 			}
 			/*a.setOwner(this);
