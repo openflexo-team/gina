@@ -156,6 +156,10 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 	@Override
 	public void delete() {
+		if (_methodCallBindingsModel != null) {
+			_methodCallBindingsModel.delete();
+			_methodCallBindingsModel = null;
+		}
 		for (JList list : _lists) {
 			list.removeListSelectionListener(this);
 			list.setModel(null);
@@ -382,7 +386,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 		@Override
 		public void setModel(FunctionPathElement model) {
-			// logger.info("On set le modele du MethodCallBindingsModel avec " + model);
+			// logger.info("Setting MethodCallBindingsModel with " + model);
 			if (model != null) {
 				model.instanciateParameters(bindingSelector.getBindable());
 			}
@@ -392,6 +396,12 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		@Override
 		public BindingEvaluationContext getBindingEvaluationContext() {
 			return null;
+		}
+
+		public void delete() {
+			for (int i = 0; i < getColumnCount(); i++) {
+				columnAt(i).delete();
+			}
 		}
 	}
 
@@ -2288,7 +2298,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		BindingColumnElement last = null;
 		while (listAtIndex(i) != null && listAtIndex(i).getSelectedValue() != null) {
 			last = (BindingColumnElement) listAtIndex(i).getSelectedValue();
-			//System.out.println("Selecting " + last.getElement());
+			// System.out.println("Selecting " + last.getElement());
 			((BindingValue) bindingSelector.getEditedObject().getExpression()).setBindingPathElementAtIndex(last.getElement(), i - 1);
 			i++;
 		}
@@ -2321,8 +2331,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		BindingValueSelectorPanel.BindingColumnElement selectedValue = (BindingValueSelectorPanel.BindingColumnElement) list
 				.getSelectedValue();
 
-		//System.out.println("element: " + selectedValue.getElement() + " of " + selectedValue.getElement().getClass());
-		//System.out.println("editionMode=" + bindingSelector.editionMode);
+		// System.out.println("element: " + selectedValue.getElement() + " of " + selectedValue.getElement().getClass());
+		// System.out.println("editionMode=" + bindingSelector.editionMode);
 
 		if (selectedValue == null) {
 			return;
@@ -2366,7 +2376,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					logger.info("Selecting function " + function);
 					FunctionPathElement newFunctionPathElement = bindingSelector.getBindable().getBindingFactory()
 							.makeFunctionPathElement(bindingValue.getLastBindingPathElement(), function, new ArrayList<DataBinding<?>>());
-					//System.out.println("newFunctionPathElement=" + newFunctionPathElement);
+					// System.out.println("newFunctionPathElement=" + newFunctionPathElement);
 
 					if (newFunctionPathElement != null) {
 						// TODO: we need to handle here generic FunctionPathElement and not only JavaMethodPathElement

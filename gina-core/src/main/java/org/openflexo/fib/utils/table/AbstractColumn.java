@@ -241,4 +241,8 @@ public abstract class AbstractColumn<D, T> {
 		System.out.println("Value changed for " + object + " with value " + value);
 	}
 
+	public void delete() {
+		_model = null;
+	}
+
 }

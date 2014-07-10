@@ -207,4 +207,27 @@ public abstract class BindingValueColumn<D> extends CustomColumn<D, DataBinding>
 		return _editSelector;*/
 	}
 
+	@Override
+	public void delete() {
+
+		super.delete();
+
+		for (DataBinding<?> db : viewSelectors.keySet()) {
+			BindingSelector bs = viewSelectors.get(db);
+			if (bs != null) {
+				bs.delete();
+			}
+		}
+		for (DataBinding<?> db : editSelectors.keySet()) {
+			BindingSelector bs = editSelectors.get(db);
+			if (bs != null) {
+				bs.delete();
+			}
+		}
+		viewSelectors.clear();
+		editSelectors.clear();
+		viewSelectors = null;
+		editSelectors = null;
+	}
+
 }

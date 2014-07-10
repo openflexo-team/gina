@@ -716,6 +716,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 
 	@Override
 	public void delete() {
+		// System.out.println("Deleting BindingSelector for " + getEditedObject());
 		super.delete();
 		unregisterListenerForBindable();
 		// unregisterListenerForBindingDefinition();
@@ -1405,30 +1406,13 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		FlexoLoggingManager.initialize(-1, true, loggingFile, Level.INFO, null);
 		final JDialog dialog = new JDialog((Frame) null, false);
 
-		JButton closeButton = new JButton("Close");
-		closeButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				dialog.dispose();
-				System.exit(0);
-			}
-		});
-
-		JButton logButton = new JButton("Logs");
-		logButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				FlexoLoggingViewer.showLoggingViewer(FlexoLoggingManager.instance(), dialog);
-			}
-		});
-
 		Bindable testBindable = new TestBindable();
 
 		BindingFactory factory = new JavaBindingFactory();
 		DataBinding binding = new DataBinding<String>("aString.toString", testBindable, String.class, DataBinding.BindingDefinitionType.GET);
 		// DataBinding binding = new DataBinding<String>(testBindable, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
 
-		BindingSelector _selector = new BindingSelector(null) {
+		final BindingSelector _selector = new BindingSelector(null) {
 			@Override
 			public void apply() {
 				super.apply();
@@ -1444,6 +1428,24 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		_selector.setBindable(testBindable);
 		_selector.setEditedObject(binding);
 		_selector.setRevertValue(binding.clone());
+
+		JButton closeButton = new JButton("Close");
+		closeButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				_selector.delete();
+				dialog.dispose();
+				System.exit(0);
+			}
+		});
+
+		JButton logButton = new JButton("Logs");
+		logButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				FlexoLoggingViewer.showLoggingViewer(FlexoLoggingManager.instance(), dialog);
+			}
+		});
 
 		JPanel panel = new JPanel(new VerticalLayout());
 		panel.add(_selector);
