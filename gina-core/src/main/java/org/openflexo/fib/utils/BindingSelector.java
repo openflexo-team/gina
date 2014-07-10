@@ -198,7 +198,11 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 				if (_selectorPanel != null) {
 
 					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-						if (StringUtils.isNotEmpty(getTextField().getText()) && textFieldNotSynchWithEditedObject()) {
+						if (StringUtils.isEmpty(getTextField().getText().trim())) {
+							getEditedObject().reset();
+							fireEditedObjectChanged();
+							apply();
+						} else if (StringUtils.isNotEmpty(getTextField().getText()) && textFieldNotSynchWithEditedObject()) {
 							if (_selectorPanel instanceof BindingValueSelectorPanel) {
 								BindingValueSelectorPanel selectorPanel = (BindingValueSelectorPanel) _selectorPanel;
 								if (selectorPanel.isKeyPathFromTextASubKeyPath(getTextField().getText())
