@@ -96,21 +96,8 @@ public abstract class BindingValueColumn<D> extends CustomColumn<D, DataBinding>
 			viewSelectors.put(value, returned);
 		}
 
-		System.out.println("VIEW / Pour " + rowObject + " je retourne " + returned.hashCode());
-
 		return returned;
 
-		/*if (_viewSelector == null) {
-			_viewSelector = new BindingSelector(value) {
-				@Override
-				public String toString() {
-					return "VIEW";
-				}
-			};
-			_viewSelector.setFont(MEDIUM_FONT);
-		}
-		updateSelectorWith(_viewSelector, rowObject, value);
-		return _viewSelector;*/
 	}
 
 	@Override
@@ -129,18 +116,8 @@ public abstract class BindingValueColumn<D> extends CustomColumn<D, DataBinding>
 					}
 					if (rowObject != null) {
 						setValue(rowObject, getEditedObject());
-						System.out.println("SET / Pour " + rowObject + " je set " + getEditedObject());
 					}
 				}
-
-				/*@Override
-				public void fireEditedObjectChanged() {
-					System.out.println("Tiens, j'ai vu que la valeur a change pour " + getEditedObject());
-					super.fireEditedObjectChanged();
-					if (rowObject != null) {
-						setValue(rowObject, getEditedObject());
-					}
-				}*/
 
 				@Override
 				public void cancel() {
@@ -158,53 +135,7 @@ public abstract class BindingValueColumn<D> extends CustomColumn<D, DataBinding>
 			editSelectors.put(value, returned);
 		}
 
-		System.out.println("EDIT / Pour " + rowObject + " je retourne " + returned.hashCode());
-
 		return returned;
-
-		/*if (_editSelector == null) {
-			_editSelector = new BindingSelector(value) {
-				@Override
-				public void apply() {
-					super.apply();
-					if (logger.isLoggable(Level.FINE)) {
-						logger.fine("Apply");
-					}
-					if (_editedRowObject != null) {
-						setValue(_editedRowObject, getEditedObject());
-					}
-				}
-
-				@Override
-				public void fireEditedObjectChanged() {
-					System.out.println("Tiens, j'ai vu que la valeur a change pour " + getEditedObject());
-					super.fireEditedObjectChanged();
-					if (_editedRowObject != null) {
-						setValue(_editedRowObject, getEditedObject());
-					}
-				}
-
-				@Override
-				public void cancel() {
-					super.cancel();
-					if (logger.isLoggable(Level.FINE)) {
-						logger.fine("Cancel");
-					}
-					if (_editedRowObject != null) {
-						setValue(_editedRowObject, getRevertValue());
-					}
-				}
-
-				@Override
-				public String toString() {
-					return "EDIT";
-				}
-			};
-			//_editSelector.setFont(NORMAL_FONT);
-			//logger.info("Build EditSelector for " + rowObject + " value=" + value);
-		}
-		updateSelectorWith(_editSelector, rowObject, value);
-		return _editSelector;*/
 	}
 
 	@Override

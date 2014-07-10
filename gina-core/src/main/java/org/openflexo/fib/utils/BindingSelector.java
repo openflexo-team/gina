@@ -327,8 +327,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			DataBinding newEditedBinding = makeBindingFromString(textValue);
 
 			if (newEditedBinding != null) {
-				logger.info("Decoding binding as " + newEditedBinding + " valid=" + newEditedBinding.isValid());
-				// if (newEditedBinding instanceof BindingValue) logger.info("BV="+((BindingValue)newEditedBinding).getBindingVariable());
+				// logger.info("Decoding binding as " + newEditedBinding + " valid=" + newEditedBinding.isValid());
 				if (newEditedBinding.isValid()) {
 					if (logger.isLoggable(Level.FINE)) {
 						logger.fine("Decoded as VALID binding: " + newEditedBinding);
