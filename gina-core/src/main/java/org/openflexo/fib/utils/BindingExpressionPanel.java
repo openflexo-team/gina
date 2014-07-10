@@ -173,13 +173,20 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 
 	private ExpressionInnerPanel focusReceiver = null;
 
+	private boolean avoidLoop = false;
+
 	public void setEditedExpression(DataBinding bindingExpression) {
+		if (avoidLoop) {
+			return;
+		}
 		dataBinding = bindingExpression;
 		if (bindingExpression != null) {
 			_setEditedExpression(bindingExpression.getExpression());
 			if (rootExpressionPanel.getRepresentedExpression() == null
 					|| !rootExpressionPanel.getRepresentedExpression().equals(bindingExpression.getExpression())) {
+				avoidLoop = true;
 				rootExpressionPanel.setRepresentedExpression(bindingExpression.getExpression());
+				avoidLoop = false;
 			}
 		}
 		update();
@@ -1006,49 +1013,10 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 				add(symbolicConstantLabel);
 			}
 
-			/*else if (_representedExpression instanceof Variable || _representedExpression instanceof Constant) {
-				GridBagLayout gridbag = new GridBagLayout();
-				GridBagConstraints c = new GridBagConstraints();
-				setLayout(gridbag);
-				variableOrConstantTextField = new JTextField();
-				variableOrConstantTextField.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent e) {
-						textChanged();
-					}
-				});
-				variableOrConstantTextField.addFocusListener(new FocusAdapter(){
-					public void focusLost(FocusEvent e) {
-						textChanged();
-					}
-				});
-				c.weightx = 1.0;               
-				c.weighty = 1.0;               
-				c.anchor = GridBagConstraints.NORTH;
-			    c.fill = GridBagConstraints.HORIZONTAL;
-				c.gridwidth = GridBagConstraints.REMAINDER;
-				gridbag.setConstraints(variableOrConstantTextField, c);
-				add(variableOrConstantTextField);
-
-				if (_representedExpression instanceof Variable) {
-					variableOrConstantTextField.setText(((Variable)_representedExpression).getName());
-				}
-				else if (_representedExpression instanceof Constant) {
-					variableOrConstantTextField.setText(((Constant)_representedExpression).toString());
-				}
-			}*/
-
 			else if (_representedExpression instanceof BindingValue || _representedExpression instanceof Constant) {
 				GridBagLayout gridbag = new GridBagLayout();
 				GridBagConstraints c = new GridBagConstraints();
 				setLayout(gridbag);
-				/*AbstractBinding binding = null;
-				if (_representedExpression instanceof BindingExpression.BindingValueVariable) {
-					binding = ((BindingExpression.BindingValueVariable) _representedExpression).getBindingValue();
-				} else if (_representedExpression instanceof BindingExpression.BindingValueFunction) {
-					binding = ((BindingExpression.BindingValueFunction) _representedExpression).getBindingValue();
-				} else if (_representedExpression instanceof BindingExpression.BindingValueConstant) {
-					binding = ((BindingExpression.BindingValueConstant) _representedExpression).getStaticBinding();
-				}*/
 
 				if (logger.isLoggable(Level.FINE)) {
 					logger.fine("Building BindingSelector with " + _representedExpression);
@@ -1056,16 +1024,15 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 				_bindingSelector = new BindingSelector(innerDataBinding) {
 					@Override
 					public void apply() {
+
+						// This method is called whenever the inner DataBinding has been applied
+
 						super.apply();
-						setRepresentedExpression(innerDataBinding.getExpression());
-						/*AbstractBinding newEditedBinding = getEditedObject();
-						if (newEditedBinding instanceof StaticBinding) {
-							setRepresentedExpression(new BindingValueConstant((StaticBinding) newEditedBinding));
-						} else if (newEditedBinding instanceof BindingValue) {
-							setRepresentedExpression(new BindingValueVariable((BindingValue) newEditedBinding));
-						} else if (newEditedBinding instanceof BindingExpression) {
-							setRepresentedExpression(((BindingExpression) newEditedBinding).getExpression());
-						}*/
+
+						innerDataBinding.setExpression(_bindingSelector.getEditedObject().getExpression());
+						setRepresentedExpression(_bindingSelector.getEditedObject().getExpression());
+
+						fireEditedExpressionChanged(dataBinding);
 					}
 
 					@Override
@@ -1080,35 +1047,10 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 					}
 				};
 
-				/*if (_representedExpression instanceof BindingExpression.BindingValueVariable
-						&& (binding==null || !binding.isBindingValid())) {
-					// This binding could not be resolved, just set text
-					_bindingSelector.getTextField().setText(((BindingExpression.BindingValueVariable)_representedExpression).getVariable().getName());
-					System.out.println("setting textfield to be "+((BindingExpression.BindingValueVariable)_representedExpression).getVariable().getName());
-				}*/
-
-				/*if (binding != null) {
-					_bindingSelector.setBindingDefinition(binding.getBindingDefinition());
-				} else {
-					_bindingSelector.setBindingDefinition(new BindingDefinition("common", Object.class, BindingDefinitionType.GET, true));
-				}
-				_bindingSelector.setBindable(_bindingExpression);*/
-
-				// _bindingSelector.setEditedObject(binding);
 				if (innerDataBinding != null) {
 					_bindingSelector.setRevertValue(innerDataBinding.clone());
 				}
-				/*variableOrConstantTextField = new JTextField();
-				variableOrConstantTextField.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent e) {
-						textChanged();
-					}
-				});
-				variableOrConstantTextField.addFocusListener(new FocusAdapter(){
-					public void focusLost(FocusEvent e) {
-						textChanged();
-					}
-				});*/
+
 				c.weightx = 1.0;
 				c.weighty = 1.0;
 				c.anchor = GridBagConstraints.NORTH;
@@ -1117,12 +1059,6 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 				gridbag.setConstraints(_bindingSelector, c);
 				add(_bindingSelector);
 
-				/*if (_representedExpression instanceof BindingValueVariable) {
-					variableOrConstantTextField.setText(((BindingValueVariable)_representedExpression).getName());
-				}
-				else if (_representedExpression instanceof BindingValueConstant) {
-					variableOrConstantTextField.setText(((BindingValueConstant)_representedExpression).toString());
-				}*/
 			}
 
 			else if (_representedExpression instanceof BinaryOperatorExpression) {

@@ -125,9 +125,11 @@ public class BindingExpressionSelectorPanel extends AbstractBindingSelectorPanel
 		_expressionPanel = new BindingExpressionPanel(bindingSelector.getEditedObject()) {
 			@Override
 			protected void fireEditedExpressionChanged(DataBinding expression) {
+				// Called when the binding represented by the panel has changed
 				super.fireEditedExpressionChanged(expression);
+				bindingSelector.fireEditedObjectChanged();
 				updateApplyButtonStatus();
-				BindingExpressionSelectorPanel.this.bindingSelector.checkIfDisplayModeShouldChange(expression, true);
+
 			}
 		};
 
