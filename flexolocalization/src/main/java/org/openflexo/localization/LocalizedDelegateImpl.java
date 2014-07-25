@@ -105,6 +105,10 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 	private void saveDictionary(Language language, Properties dict) {
 		File dictFile = getDictionaryFileForLanguage(language);
+		if (dictFile == null) {
+			// IN Jar dict file is null;
+			return;
+		}
 		try {
 			final FileOutputStream fos = new FileOutputStream(dictFile);
 			try {
@@ -193,7 +197,10 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	public void saveAllDictionaries() {
 		for (Language language : Language.availableValues()) {
 			Properties dict = getDictionary(language);
-			saveDictionary(language, dict);
+			// NPE if not dev and using jar
+			if (dict != null){
+				saveDictionary(language, dict);
+			}
 		}
 	}
 
