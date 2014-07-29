@@ -577,6 +577,9 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			}
 			_isProgrammaticalySet = false;
 		}
+		if (getEditedObject() !=null && getEditedObject().getOwner() != null){
+			getEditedObject().getOwner().notifiedBindingChanged(getEditedObject());
+		}
 	}
 
 	public boolean areCompoundBindingAllowed() {
