@@ -364,7 +364,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 										return;
 									}
 									if (!isDeleted) {
-										BrowserCell.this.update(false);
+										BrowserCell.this.update(true);
 									}
 								}
 							};
