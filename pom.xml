@@ -35,11 +35,20 @@
 				</excludes>
 			</resource>
 			<resource>
+				<directory>src/main/java</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/*.properties</include>
+				</includes>
+			</resource>
+			<resource>
 				<directory>src/main/resources</directory>
-				<!--  <filtering>true</filtering>-->
 				<includes>
 					<include>**/*</include>
 				</includes>
+				<excludes>
+					<exclude>**/*.properties</exclude>
+				</excludes>
 			</resource>
 		</resources>
 		<pluginManagement>
