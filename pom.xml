@@ -34,21 +34,22 @@
 					<exclude>**/*.java</exclude>
 				</excludes>
 			</resource>
-			<!--<resource>
+			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 				<includes>
-					<include>**/*.properties</include>
-				</includes> 
-			</resource>-->
+					<include>**/gina.properties</include>
+				</includes>
+			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
-				<!--  <excludes>
-					<exclude>**/*.properties</exclude>
-				</excludes> -->
-				<includes>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>**/gina.properties</exclude>
+				</excludes>
+				<!--  <includes>
 					<include>**/*</include>
-				</includes>
+				</includes>-->
 			</resource>
 		</resources>
 		<pluginManagement>
