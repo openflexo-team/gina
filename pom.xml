@@ -34,7 +34,7 @@
 					<exclude>**/*.java</exclude>
 				</excludes>
 			</resource>
-			<!--  <resource>
+			<!--<resource>
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 				<includes>
@@ -43,7 +43,9 @@
 			</resource>-->
 			<resource>
 				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
+				<!--  <excludes>
+					<exclude>**/*.properties</exclude>
+				</excludes> -->
 				<includes>
 					<include>**/*</include>
 				</includes>
