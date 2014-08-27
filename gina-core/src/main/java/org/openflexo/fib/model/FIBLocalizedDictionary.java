@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.annotations.Adder;
@@ -39,6 +40,7 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.toolbox.StringUtils;
 
@@ -61,6 +63,7 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 
 	@Getter(value = ENTRIES_KEY, cardinality = Cardinality.LIST, inverse = FIBLocalizedEntry.DICTIONARY_KEY)
 	@CloningStrategy(StrategyType.CLONE)
+	@XMLElement
 	public List<FIBLocalizedEntry> getEntries();
 
 	@Setter(ENTRIES_KEY)
@@ -95,6 +98,7 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 		public FIBLocalizedDictionaryImpl() {
 			_entries = new Vector<FIBLocalizedEntry>();
 			_values = new Hashtable<Language, Hashtable<String, String>>();
+			setParent(FlexoLocalization.getMainLocalizer());
 		}
 
 		@Override
@@ -113,6 +117,7 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 
 		@Override
 		public void addToEntries(FIBLocalizedEntry entry) {
+			
 			entry.setLocalizedDictionary(this);
 			_entries.add(entry);
 			// logger.info("Add entry key:"+entry.getKey()+" lang="+entry.getLanguage()+" value:"+entry.getValue());
@@ -121,7 +126,10 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 				logger.warning("Undefined language: " + entry.getLanguage());
 				return;
 			}
-			getDictForLang(lang).put(entry.getKey(), entry.getValue());
+			if(entry.getValue()!=null && entry.getKey()!=null){
+				getDictForLang(lang).put(entry.getKey(), entry.getValue());
+			}
+			
 		}
 
 		@Override

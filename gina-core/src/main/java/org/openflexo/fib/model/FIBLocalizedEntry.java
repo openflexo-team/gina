@@ -62,6 +62,7 @@ public interface FIBLocalizedEntry extends FIBModelObject {
 	public void setLanguage(String language);
 
 	@Getter(value = VALUE_KEY)
+	@XMLAttribute(xmlTag = "value")
 	public String getValue();
 
 	@Setter(VALUE_KEY)
