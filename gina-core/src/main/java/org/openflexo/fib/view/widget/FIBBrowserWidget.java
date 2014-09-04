@@ -224,7 +224,8 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 				logger.fine(getComponent().getName() + " - Tree is currently editing");
 			}
 			_tree.getCellEditor().cancelCellEditing();
-		} else {
+		}
+		else {
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine(getComponent().getName() + " - Tree is NOT currently edited ");
 			}
@@ -416,7 +417,8 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 
 		if (_fibBrowser.getRowHeight() != null) {
 			_tree.setRowHeight(_fibBrowser.getRowHeight());
-		} else {
+		}
+		else {
 			_tree.setRowHeight(0);
 		}
 		if (_fibBrowser.getVisibleRowCount() != null) {
@@ -538,7 +540,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 		// Vincent : It causes many notifications and for big browsers such as archimate emf metamodel one
 		// it is tool long to produce the browser (35 seconds for this one).
 		// Thus according to the TODO above, I commented it
-		//getBrowserModel().fireTreeRestructured();
+		// getBrowserModel().fireTreeRestructured();
 		if (selectedBindingValueChangeListener != null) {
 			selectedBindingValueChangeListener.refreshObserving();
 		}
@@ -610,7 +612,8 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 					_tree.scrollPathToVisible(scrollTo);
 				}
 			}
-		} else {
+		}
+		else {
 			clearSelection();
 		}
 	}
@@ -720,7 +723,8 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 
 		if (e.getNewLeadSelectionPath() == null || e.getNewLeadSelectionPath().getLastPathComponent() == null) {
 			newSelectedObject = null;
-		} else if (e.getNewLeadSelectionPath().getLastPathComponent() instanceof BrowserCell) {
+		}
+		else if (e.getNewLeadSelectionPath().getLastPathComponent() instanceof BrowserCell) {
 			newSelectedObject = (T) ((BrowserCell) e.getNewLeadSelectionPath().getLastPathComponent()).getRepresentedObject();
 			for (TreePath tp : e.getPaths()) {
 				if (tp.getLastPathComponent() instanceof BrowserCell) {
@@ -731,13 +735,15 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 							if (!newSelection.contains(obj)) {
 								newSelection.add(obj);
 							}
-						} else {
+						}
+						else {
 							newSelection.remove(obj);
 						}
 					}
 				}
 			}
-		} else {
+		}
+		else {
 			newSelectedObject = null;
 		}
 
@@ -748,10 +754,11 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 
 		if (newSelectedObject == null) {
 			setSelected(null);
-		} else if (getBrowser().getIteratorClass() == null
-				|| getBrowser().getIteratorClass().isAssignableFrom(newSelectedObject.getClass())) {
+		}
+		else if (getBrowser().getIteratorClass() == null || getBrowser().getIteratorClass().isAssignableFrom(newSelectedObject.getClass())) {
 			setSelected(newSelectedObject);
-		} else {
+		}
+		else {
 			// If selected element is not of expected class, set selected to be null
 			// (we want to be sure that selected is an instance of IteratorClass)
 			setSelected(null);
@@ -784,7 +791,13 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 		updateFont();
 
 		if (!ignoreNotifications) {
-			getController().updateSelection(this, oldSelection, selection);
+			FIBController ctrl = this.getController();
+			if (ctrl != null) {
+				ctrl.updateSelection(this, oldSelection, selection);
+			}
+			else {
+				logger.warning("INVESTIGATE: trying to update selection on a widget withour controlller! " + this.toString());
+			}
 		}
 
 		_footer.setFocusedObject(newSelectedObject);
