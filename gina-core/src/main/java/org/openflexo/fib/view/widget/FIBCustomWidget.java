@@ -21,6 +21,8 @@ package org.openflexo.fib.view.widget;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,6 +30,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.openflexo.antar.binding.BindingEvaluationContext;
+import org.openflexo.antar.binding.BindingValueChangeListener;
 import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.TypeUtils;
@@ -71,6 +74,10 @@ public class FIBCustomWidget<J extends JComponent, T> extends FIBWidgetView<FIBC
 		if (customComponent != null) {
 			customComponent.addApplyCancelListener(this);
 		}
+
+		// We need here to "listen" all assignment values that may change
+		assignmentValueBindingValueChangeListeners = new ArrayList<BindingValueChangeListener<?>>();
+		listenAssignmentValuesChange();
 
 		updateFont();
 	}
@@ -232,6 +239,61 @@ public class FIBCustomWidget<J extends JComponent, T> extends FIBWidgetView<FIBC
 				} catch (NotSettableContextException e) {
 					e.printStackTrace();
 				}
+			}
+		}
+	}
+
+	private final List<BindingValueChangeListener<?>> assignmentValueBindingValueChangeListeners;
+
+	/**
+	 * Internally called to listen to an assignment change
+	 * 
+	 * @param variableDB
+	 * @param valueDB
+	 * @return
+	 */
+	private <T2> BindingValueChangeListener<T2> makeAssignmentValueBindingValueChangeListener(final DataBinding<?> variableDB,
+			final DataBinding<T2> valueDB) {
+		return new BindingValueChangeListener<T2>(valueDB, getBindingEvaluationContext()) {
+			@Override
+			public void bindingValueChanged(Object source, T2 newValue) {
+				// System.out.println(" bindingValueChanged() detected for assignment value =" + valueDB + " with newValue=" + newValue);
+				if (variableDB.isValid()) {
+					// System.out.println("Assignment " + variableDB + " set value with " + newValue);
+					try {
+						variableDB.setBindingValue(newValue, FIBCustomWidget.this);
+					} catch (TypeMismatchException e) {
+						e.printStackTrace();
+					} catch (NullReferenceException e) {
+						// e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						e.printStackTrace();
+					} catch (NotSettableContextException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		};
+	}
+
+	/**
+	 * Internally called to listen all data changes of assignment values
+	 */
+	private void listenAssignmentValuesChange() {
+		for (BindingValueChangeListener<?> l : assignmentValueBindingValueChangeListeners) {
+			if (l != null) {
+				l.stopObserving();
+				l.delete();
+			}
+		}
+		assignmentValueBindingValueChangeListeners.clear();
+
+		for (FIBCustomAssignment assign : getWidget().getAssignments()) {
+			DataBinding<?> variableDB = assign.getVariable();
+			DataBinding<?> valueDB = assign.getValue();
+			if (valueDB != null && valueDB.isValid()) {
+				BindingValueChangeListener<?> l = makeAssignmentValueBindingValueChangeListener(variableDB, valueDB);
+				assignmentValueBindingValueChangeListeners.add(l);
 			}
 		}
 	}
