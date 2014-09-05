@@ -25,8 +25,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -60,6 +59,9 @@ public class FIBTableWidgetFooter<T> extends JPanel {
 	protected JButton optionsButton;
 
 	protected JPopupMenu popupMenu = null;
+	private List<FIBTableAction> sortedAddKeys;
+	private List<FIBTableAction> sortedRemoveKeys;
+	private List<FIBTableAction> sortedOtherKeys;
 
 	/**
 	 * Stores controls: key is the JButton and value the FIBTableActionListener
@@ -278,7 +280,7 @@ public class FIBTableWidgetFooter<T> extends JPanel {
 				logger.fine("Build plus menu");
 			}
 
-			for (FIBTableAction action : _addActions.keySet()) {
+			for (FIBTableAction action : sortedAddKeys) {
 				FIBTableActionListener<T> actionListener = _addActions.get(action);
 				actionListener.setSelectedObject(_widget.getSelected());
 				// actionListener.setSelectedObjects(_tableModel.getSelectedObjects());
@@ -297,7 +299,7 @@ public class FIBTableWidgetFooter<T> extends JPanel {
 		if (minusActionMenuNeedsRecomputed) {
 			minusActionMenu = new JPopupMenu();
 
-			for (FIBTableAction action : _removeActions.keySet()) {
+			for (FIBTableAction action : sortedRemoveKeys) {
 				FIBTableActionListener<T> actionListener = _removeActions.get(action);
 				actionListener.setSelectedObject(_widget.getSelected());
 				// actionListener.setSelectedObjects(_tableModel.getSelectedObjects());
@@ -319,7 +321,7 @@ public class FIBTableWidgetFooter<T> extends JPanel {
 				logger.fine("Build plus menu");
 			}
 
-			for (FIBTableAction action : _otherActions.keySet()) {
+			for (FIBTableAction action : sortedOtherKeys) {
 				FIBTableActionListener<T> actionListener = _otherActions.get(action);
 				actionListener.setSelectedObject(_widget.getSelected());
 				// actionListener.setSelectedObjects(_tableModel.getSelectedObjects());
@@ -342,15 +344,21 @@ public class FIBTableWidgetFooter<T> extends JPanel {
 		_addActions = new Hashtable<FIBTableAction, FIBTableActionListener<T>>();
 		_removeActions = new Hashtable<FIBTableAction, FIBTableActionListener<T>>();
 		_otherActions = new Hashtable<FIBTableAction, FIBTableActionListener<T>>();
+		sortedAddKeys = new ArrayList<FIBTableAction>();
+		sortedRemoveKeys = new ArrayList<FIBTableAction>();
+		sortedOtherKeys = new ArrayList<FIBTableAction>();
 
 		for (FIBTableAction plAction : tableWidget.getComponent().getActions()) {
 			FIBTableActionListener<T> plActionListener = new FIBTableActionListener<T>(plAction, tableWidget);
 			if (plActionListener.isAddAction()) {
 				_addActions.put(plAction, plActionListener);
+				sortedAddKeys.add(plAction);
 			} else if (plActionListener.isRemoveAction()) {
 				_removeActions.put(plAction, plActionListener);
+				sortedRemoveKeys.add(plAction);
 			} else if (plActionListener.isCustomAction()) {
 				_otherActions.put(plAction, plActionListener);
+				sortedOtherKeys.add(plAction);
 			}
 		}
 	}
