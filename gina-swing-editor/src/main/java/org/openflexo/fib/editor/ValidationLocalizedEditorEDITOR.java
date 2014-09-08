@@ -19,9 +19,8 @@
  */
 package org.openflexo.fib.editor;
 
-import java.io.File;
-
 import org.openflexo.fib.model.validation.ValidationIssue;
+import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 
 public class ValidationLocalizedEditorEDITOR {
@@ -34,9 +33,8 @@ public class ValidationLocalizedEditorEDITOR {
 			}
 
 			@Override
-			public File getFIBFile() {
-				ResourceLocator rl = ResourceLocator.getResourceLocator();
-				return rl.retrieveResourceAsFile(ResourceLocator.locateResource("Fib/LocalizedEditor.fib"));
+			public Resource getFIBResource() {
+				return ResourceLocator.locateSourceCodeResource(ResourceLocator.locateResource("Fib/LocalizedEditor.fib"));
 			}
 		};
 		editor.launch();

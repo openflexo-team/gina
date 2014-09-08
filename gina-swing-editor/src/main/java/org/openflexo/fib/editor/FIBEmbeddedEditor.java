@@ -19,16 +19,20 @@
  */
 package org.openflexo.fib.editor;
 
-import java.io.File;
-
+import org.openflexo.rm.FileResourceImpl;
+import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 
+/**
+ * This class is used to generate a live FIB editor
+ * 
+ * @author sylvain
+ * 
+ */
 public class FIBEmbeddedEditor {
 
-	private File fibFile;
+	private FileResourceImpl fibResource;
 	private Object[] data;
-	
-	
 
 	private class Editor extends FIBAbstractEditor {
 
@@ -38,8 +42,8 @@ public class FIBEmbeddedEditor {
 		}
 
 		@Override
-		public File getFIBFile() {
-			return FIBEmbeddedEditor.this.getFIBFile();
+		public FileResourceImpl getFIBResource() {
+			return FIBEmbeddedEditor.this.getFIBResource();
 		}
 
 		@Override
@@ -49,27 +53,40 @@ public class FIBEmbeddedEditor {
 
 	}
 
-	public FIBEmbeddedEditor(File aFile, Object object) {
+	public FIBEmbeddedEditor(Resource fibResource, Object object) {
+		super();
+		Resource sourceCodeResource = ResourceLocator.locateSourceCodeResource(fibResource);
+		if (sourceCodeResource instanceof FileResourceImpl) {
+			this.fibResource = (FileResourceImpl) sourceCodeResource;
+			this.data = new Object[1];
+			this.data[0] = object;
+			FIBAbstractEditor.init(new Editor());
+		} else {
+			throw new IllegalArgumentException("Resource " + fibResource + " is not a file");
+		}
+	}
+
+	/*public FIBEmbeddedEditor(File aFile, Object object) {
 		super();
 		this.fibFile = aFile;
 		this.data = new Object[1];
 		this.data[0] = object;
 		FIBAbstractEditor.init(new Editor());
 	}
-	
+
 	public FIBEmbeddedEditor(String aFileName, Object object) {
 		super();
 		this.fibFile = ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResource(aFileName));
 		this.data = new Object[1];
 		this.data[0] = object;
 		FIBAbstractEditor.init(new Editor());
-	}
+	}*/
 
 	public Object[] getData() {
 		return data;
 	}
 
-	public File getFIBFile() {
-		return fibFile;
+	public FileResourceImpl getFIBResource() {
+		return fibResource;
 	}
 }

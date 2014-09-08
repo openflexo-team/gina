@@ -62,6 +62,7 @@ import org.openflexo.localization.Language;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.logging.FlexoLoggingManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.ToolBox;
@@ -70,9 +71,6 @@ import org.openflexo.toolbox.ToolBox;
 //	getPalette().setEditorController(editorController);
 public abstract class FIBAbstractEditor implements FIBGenericEditor {
 
-
-	
-	
 	/*public static <T extends FIBAbstractEditor> void main(final Class<T> editor) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -96,10 +94,11 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 
 	// Instanciate a new localizer in directory src/dev/resources/FIBEditorLocalizer
 	// linked to parent localizer (which is Openflexo main localizer)
-	public static LocalizedDelegateGUIImpl LOCALIZATION = new LocalizedDelegateGUIImpl(ResourceLocator.locateResource("FIBEditorLocalized"),
-			new LocalizedDelegateGUIImpl(ResourceLocator.locateResource("Localized"), null, false), true);
+	public static LocalizedDelegateGUIImpl LOCALIZATION = new LocalizedDelegateGUIImpl(
+			ResourceLocator.locateResource("FIBEditorLocalized"), new LocalizedDelegateGUIImpl(ResourceLocator.locateResource("Localized"),
+					null, false), true);
 
-	public static Resource COMPONENT_LOCALIZATION_FIB=  ResourceLocator.locateResource("Fib/ComponentLocalization.fib");
+	public static Resource COMPONENT_LOCALIZATION_FIB = ResourceLocator.locateResource("Fib/ComponentLocalization.fib");
 
 	final JFrame frame;
 	// private JPanel mainPanel;
@@ -107,7 +106,7 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 
 	private final FIBInspectorController inspector;
 
-	private File fibFile;
+	// private Resource fibResource;
 	private FIBComponent fibComponent;
 	private FIBEditorController editorController;
 
@@ -398,7 +397,7 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 
 	public abstract Object[] getData();
 
-	public abstract File getFIBFile();
+	public abstract Resource getFIBResource();
 
 	private FIBController controller;
 
@@ -421,19 +420,22 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 	}
 
 	public void loadFIB() {
-		fibFile = getFIBFile();
-
 		try {
-			factory = new FIBModelFactory(fibFile.getParentFile());
+			if (getFIBResource() instanceof FileResourceImpl) {
+				factory = new FIBModelFactory(((FileResourceImpl) getFIBResource()).getFile().getParentFile());
+			} else {
+				factory = new FIBModelFactory();
+			}
 		} catch (ModelDefinitionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		fibComponent = FIBLibrary.instance().retrieveFIBComponent(fibFile);
+		// System.out.println("fibResource=" + getFIBResource());
+		fibComponent = FIBLibrary.instance().retrieveFIBComponent(getFIBResource());
 
 		if (fibComponent == null) {
-			logger.log(Level.SEVERE, "Fib component not found ! Path: '" + fibFile.getAbsolutePath() + "'");
-			throw new RuntimeException("Fib component not found ! Path: '" + fibFile.getAbsolutePath() + "'");
+			logger.log(Level.SEVERE, "Fib component not found ! Path: '" + getFIBResource() + "'");
+			throw new RuntimeException("Fib component not found ! Path: '" + getFIBResource() + "'");
 		}
 
 		Object dataObject = null;
@@ -455,7 +457,9 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 		frame.getContentPane().add(editorController.getEditorPanel());
 		frame.pack();
 
-		FIBPreferences.setLastFile(fibFile);
+		if (getEditedComponentFile() != null) {
+			FIBPreferences.setLastFile(getEditedComponentFile());
+		}
 	}
 
 	public void switchToData(Object data) {
@@ -463,8 +467,13 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 	}
 
 	public boolean saveFIB() {
-		logger.info("Save to file " + fibFile.getAbsolutePath());
-		return FIBLibrary.save(fibComponent, fibFile);
+		if (getEditedComponentFile() != null) {
+			logger.info("Save to file " + getEditedComponentFile().getAbsolutePath());
+			return FIBLibrary.save(fibComponent, getEditedComponentFile());
+		} else {
+			logger.warning("Cannot save READ-ONLY resource: " + getFIBResource());
+			return false;
+		}
 	}
 
 	public void testFIB() {
@@ -483,7 +492,7 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 	}
 
 	public void localizeFIB() {
-		FIBComponent componentLocalizationComponent = FIBLibrary.instance().retrieveFIBComponent(COMPONENT_LOCALIZATION_FIB,true);
+		FIBComponent componentLocalizationComponent = FIBLibrary.instance().retrieveFIBComponent(COMPONENT_LOCALIZATION_FIB, true);
 
 		FIBView view = FIBController.makeView(componentLocalizationComponent, LOCALIZATION);
 		view.getController().setDataObject(editorController.getController());
@@ -566,7 +575,10 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 
 	@Override
 	public File getEditedComponentFile() {
-		return getFIBFile();
+		if (getFIBResource() instanceof FileResourceImpl) {
+			return ((FileResourceImpl) getFIBResource()).getFile();
+		}
+		return null;
 	}
 
 	public static <T extends FIBAbstractEditor> void init(T abstractEditor) {

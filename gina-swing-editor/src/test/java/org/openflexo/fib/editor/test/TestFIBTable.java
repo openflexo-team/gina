@@ -23,11 +23,11 @@ package org.openflexo.fib.editor.test;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeSupport;
-import java.io.File;
 import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.openflexo.fib.editor.FIBAbstractEditor;
+import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
@@ -37,7 +37,7 @@ public class TestFIBTable {
 
 	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
-	public static File FIB_FILE = rl.retrieveResourceAsFile(ResourceLocator.locateResource("TestFIB/TestTable2.fib"));
+	public static Resource FIB_FILE = ResourceLocator.locateSourceCodeResource("TestFIB/TestTable2.fib");
 
 	public static void main(String[] args) {
 		final User user1 = new User("John", "Doe", "john.doe@yahoo.com");
@@ -53,7 +53,7 @@ public class TestFIBTable {
 			}
 
 			@Override
-			public File getFIBFile() {
+			public Resource getFIBResource() {
 				return FIB_FILE;
 			}
 		};
@@ -79,7 +79,7 @@ public class TestFIBTable {
 	}
 
 	public static class UserList implements HasPropertyChangeSupport {
-		private PropertyChangeSupport pcSupport;
+		private final PropertyChangeSupport pcSupport;
 
 		public Vector<User> users;
 
@@ -130,7 +130,7 @@ public class TestFIBTable {
 	}
 
 	public static class User implements HasPropertyChangeSupport {
-		private PropertyChangeSupport pcSupport;
+		private final PropertyChangeSupport pcSupport;
 		private String firstName;
 		private String lastName;
 		private String email;

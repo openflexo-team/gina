@@ -6,7 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JButton;
@@ -16,7 +15,6 @@ import javax.swing.SwingUtilities;
 import org.openflexo.fib.controller.FIBDialog;
 import org.openflexo.fib.editor.FIBEmbeddedEditor;
 import org.openflexo.rm.Resource;
-import org.openflexo.rm.FileResourceImpl;
 
 /**
  * Utility test class used to both interactively and automatically test FIBDialog components
@@ -54,12 +52,7 @@ public class FIBDialogGraphicalContextDelegate {
 							SwingUtilities.invokeLater(new Runnable() {
 								@Override
 								public void run() {
-									if (componentResource instanceof FileResourceImpl) {
-									new FIBEmbeddedEditor(((FileResourceImpl) componentResource).getFile(), dialog.getData());
-									}
-									else {
-										System.out.println("WARNING:: Unable to launch FibEmbeddedEditor on Readonly Resource");
-									}
+									new FIBEmbeddedEditor(componentResource, dialog.getData());
 								}
 							});
 

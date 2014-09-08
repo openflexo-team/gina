@@ -364,9 +364,9 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 	public void setLastModified(Date lastModified);
 
-	public Resource getDefinitionFile();
+	public Resource getResource();
 
-	public void setDefinitionFile(Resource definitionFile);
+	public void setResource(Resource resource);
 
 	public FIBLocalizedDictionary retrieveFIBLocalizedDictionary();
 
@@ -1509,12 +1509,12 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 		}
 
 		@Override
-		public Resource getDefinitionFile() {
+		public Resource getResource() {
 			return definitionFile;
 		}
 
 		@Override
-		public void setDefinitionFile(Resource definitionFile) {
+		public void setResource(Resource definitionFile) {
 			this.definitionFile = definitionFile;
 		}
 

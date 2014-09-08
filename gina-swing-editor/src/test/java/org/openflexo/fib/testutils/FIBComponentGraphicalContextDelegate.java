@@ -7,7 +7,6 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JButton;
@@ -18,6 +17,7 @@ import javax.swing.SwingUtilities;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.editor.FIBEmbeddedEditor;
+import org.openflexo.rm.Resource;
 
 /**
  * Utility test class used to both interactively and automatically test FIBDialog components
@@ -31,7 +31,7 @@ public class FIBComponentGraphicalContextDelegate {
 	private JTabbedPane tabbedPane;
 	private boolean dontDestroyMe = false;
 
-	public FIBComponentGraphicalContextDelegate(final String frameTitle, final File componentFile, final Object data) {
+	public FIBComponentGraphicalContextDelegate(final String frameTitle, final Resource componentResource, final Object data) {
 		eventProcessor = new EventProcessor();
 
 		try {
@@ -60,7 +60,7 @@ public class FIBComponentGraphicalContextDelegate {
 							SwingUtilities.invokeLater(new Runnable() {
 								@Override
 								public void run() {
-									new FIBEmbeddedEditor(componentFile, data);
+									new FIBEmbeddedEditor(componentResource, data);
 								}
 							});
 

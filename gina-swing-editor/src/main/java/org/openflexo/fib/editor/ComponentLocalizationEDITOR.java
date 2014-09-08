@@ -19,12 +19,10 @@
  */
 package org.openflexo.fib.editor;
 
-import java.io.File;
-
-import org.openflexo.rm.ClasspathResourceLocatorImpl;
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.controller.FIBController;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.ResourceLocator;
 
 public class ComponentLocalizationEDITOR {
 
@@ -33,12 +31,12 @@ public class ComponentLocalizationEDITOR {
 		FIBAbstractEditor editor = new FIBAbstractEditor() {
 			@Override
 			public Object[] getData() {
-				return makeArray(new FIBController(FIBLibrary.instance().retrieveFIBComponent(FIBEditor.COMPONENT_LOCALIZATION_FIB,true)));
+				return makeArray(new FIBController(FIBLibrary.instance().retrieveFIBComponent(getFIBResource(), true)));
 			}
 
 			@Override
-			public File getFIBFile() {
-				return rl.retrieveResourceAsFile(FIBEditor.COMPONENT_LOCALIZATION_FIB);
+			public Resource getFIBResource() {
+				return ResourceLocator.locateSourceCodeResource(FIBEditor.COMPONENT_LOCALIZATION_FIB);
 			}
 		};
 		editor.launch();

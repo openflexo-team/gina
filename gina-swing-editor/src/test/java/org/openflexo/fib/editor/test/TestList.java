@@ -23,7 +23,6 @@ package org.openflexo.fib.editor.test;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeSupport;
-import java.io.File;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -31,6 +30,7 @@ import javax.swing.ImageIcon;
 
 import org.openflexo.fib.editor.FIBAbstractEditor;
 import org.openflexo.fib.editor.controller.FIBEditorIconLibrary;
+import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
@@ -40,7 +40,7 @@ public class TestList {
 
 	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
-	public static File FIB_FILE = rl.retrieveResourceAsFile(ResourceLocator.locateResource("TestFIB/TestList.fib"));
+	public static Resource FIB_FILE = ResourceLocator.locateSourceCodeResource("TestFIB/TestList.fib");
 
 	public static void main(String[] args) {
 		final User user1 = new User("John", "Doe", "john.doe@yahoo.com");
@@ -56,7 +56,7 @@ public class TestList {
 			}
 
 			@Override
-			public File getFIBFile() {
+			public Resource getFIBResource() {
 				return FIB_FILE;
 			}
 		};

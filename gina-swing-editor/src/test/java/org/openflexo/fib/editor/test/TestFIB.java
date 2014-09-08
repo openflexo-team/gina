@@ -19,7 +19,6 @@
  */
 package org.openflexo.fib.editor.test;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,6 +32,7 @@ import org.openflexo.fib.editor.FIBAbstractEditor;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.logging.FlexoLoggingManager;
+import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 
 /**
@@ -97,14 +97,13 @@ public class TestFIB extends JPanel {
 		}
 
 		JFrame frame = new JFrame();
-		
+
 		final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
+		Resource fibResource = ResourceLocator.locateSourceCodeResource("TestFIB/Test.fib");
+		System.out.println("Fib: " + fibResource);
 
-		File fibFile = rl.retrieveResourceAsFile(ResourceLocator.locateResource("TestFIB/Test.fib"));
-		System.out.println("Fib: " + fibFile.getAbsolutePath());
-
-		FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(fibFile);
+		FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(fibResource);
 
 		Coucou coucou = new Coucou();
 

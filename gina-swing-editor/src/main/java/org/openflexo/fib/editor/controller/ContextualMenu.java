@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.net.MalformedURLException;
 import java.util.Hashtable;
 import java.util.logging.Logger;
 
@@ -22,7 +21,6 @@ import org.openflexo.antar.binding.TypeUtils;
 import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.controller.FIBController.Status;
 import org.openflexo.fib.controller.FIBDialog;
-import org.openflexo.fib.editor.FIBEditor;
 import org.openflexo.fib.editor.FIBEmbeddedEditor;
 import org.openflexo.fib.editor.FIBPreferences;
 import org.openflexo.fib.editor.controller.EditorAction.ActionAvailability;
@@ -52,9 +50,7 @@ import org.openflexo.fib.utils.BindingSelector;
 import org.openflexo.fib.view.widget.FIBReferencedComponentWidget;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
 import org.openflexo.rm.FileResourceImpl;
-import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.StringUtils;
 
@@ -167,13 +163,13 @@ public class ContextualMenu {
 						referencedComponent);
 
 				Object dataObject = widgetView.getValue();
-				File componentFile = rl.retrieveResourceAsFile(widgetView.getComponentFile());
+				// File componentFile = rl.retrieveResourceAsFile(widgetView.getComponentFile());
 
-				if (componentFile != null ) {
-					new FIBEmbeddedEditor(componentFile, dataObject);
-				} else {
+				// if (componentFile != null) {
+				new FIBEmbeddedEditor(widgetView.getComponentFile(), dataObject);
+				/*} else {
 					logger.warning("Not found component file : " + componentFile);
-				}
+				}*/
 
 				return referencedComponent;
 			}
@@ -269,7 +265,7 @@ public class ContextualMenu {
 				} catch (Exception e) {
 					logger.severe("Unable to create FileResourceLocation from File: " + params.reusableComponentFile.getName());
 					e.printStackTrace();
-				} 
+				}
 				widget.setData(params.data);
 				widget.setVisible(visible);
 				parent.addToSubComponents(widget, reusableComponent.getConstraints());

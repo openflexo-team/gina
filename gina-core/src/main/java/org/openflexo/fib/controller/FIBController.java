@@ -980,7 +980,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 		private final FIBController controller;
 
 		public EditorLauncher(FIBController controller, FIBComponent component) {
-			logger.fine("make EditorLauncher for component: " + component.getDefinitionFile());
+			logger.fine("make EditorLauncher for component: " + component.getResource());
 			this.component = component;
 			this.controller = controller;
 		}
@@ -995,7 +995,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 	}
 
 	protected void openFIBEditor(final FIBComponent component, MouseEvent event) {
-		if (component.getDefinitionFile() == null) {
+		if (component.getResource() == null) {
 			try {
 				File fibFile = File.createTempFile("FIBComponent", ".fib");
 				FileResourceImpl fibLocation = null;
@@ -1005,7 +1005,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 					logger.severe("No Locator found for managing FileResources!! ");
 					e.printStackTrace();
 				}
-				component.setDefinitionFile(fibLocation);
+				component.setResource(fibLocation);
 				FIBLibrary.save(component, fibFile);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -1018,15 +1018,15 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 		try {
 			embeddedEditor = Class.forName("org.openflexo.fib.editor.FIBEmbeddedEditor");
 			c = embeddedEditor.getConstructors()[0];
-			File fibFile = ((FileResourceImpl) component.getDefinitionFile()).getFile();
+			/*File fibFile = ((FileResourceImpl) component.getResource()).getFile();
 			if (!fibFile.exists()) {
 				logger.warning("Cannot find FIB file definition for component, aborting FIB edition");
 				return;
-			}
+			}*/
 			Object[] args = new Object[2];
-			args[0] = fibFile;
+			args[0] = component.getResource();
 			args[1] = getDataObject();
-			logger.info("Opening FIB editor for " + component.getDefinitionFile());
+			logger.info("Opening FIB editor for " + component.getResource());
 			c.newInstance(args);
 		} catch (ClassNotFoundException e) {
 			logger.warning("Cannot open FIB Editor, please add org.openflexo.fib.editor.FIBEmbeddedEditor in the class path");

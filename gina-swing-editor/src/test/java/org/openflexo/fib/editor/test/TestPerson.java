@@ -19,10 +19,9 @@
  */
 package org.openflexo.fib.editor.test;
 
-import java.io.File;
-
 import org.openflexo.fib.editor.FIBAbstractEditor;
 import org.openflexo.fib.sampleData.Family;
+import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 
 public class TestPerson extends FIBAbstractEditor {
@@ -36,10 +35,10 @@ public class TestPerson extends FIBAbstractEditor {
 	}
 
 	@Override
-	public File getFIBFile() {
+	public Resource getFIBResource() {
 		final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
-		return rl.retrieveResourceAsFile(ResourceLocator.locateResource("TestFIB/TestPerson.fib"));
+		return ResourceLocator.locateSourceCodeResource("TestFIB/TestPerson.fib");
 	}
 
 	public static void main(String[] args) {

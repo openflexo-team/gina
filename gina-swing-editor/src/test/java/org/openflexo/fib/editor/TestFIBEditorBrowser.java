@@ -12,7 +12,6 @@ import org.openflexo.fib.model.FIBPanel;
 import org.openflexo.fib.model.validation.ValidationReport;
 import org.openflexo.fib.testutils.FIBComponentGraphicalContextDelegate;
 import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.rm.ResourceLocator;
 
 /**
  * Test the structural and behavioural features of FIBEditorBrowser
@@ -38,7 +37,7 @@ public class TestFIBEditorBrowser {
 		ValidationReport validationReport = browser.getFIBComponent().validate();
 		assertEquals(0, validationReport.getErrorNb());
 
-		gcDelegate = new FIBComponentGraphicalContextDelegate(TestFIBEditorBrowser.class.getSimpleName(), ResourceLocator.getResourceLocator().retrieveResourceAsFile(FIBEditorBrowser.FIB_FILE),
+		gcDelegate = new FIBComponentGraphicalContextDelegate(TestFIBEditorBrowser.class.getSimpleName(), FIBEditorBrowser.FIB_FILE,
 				component);
 		gcDelegate.addTab("FIBEditorBrowser", browser.getController());
 	}
@@ -55,14 +54,14 @@ public class TestFIBEditorBrowser {
 
 	@AfterClass
 	public static void waitGUI() {
-		if (gcDelegate != null){
+		if (gcDelegate != null) {
 			gcDelegate.waitGUI();
 		}
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		if (gcDelegate != null){
+		if (gcDelegate != null) {
 			gcDelegate.tearDown();
 		}
 	}

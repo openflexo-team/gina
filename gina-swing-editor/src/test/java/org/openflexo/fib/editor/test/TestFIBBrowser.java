@@ -22,18 +22,18 @@ package org.openflexo.fib.editor.test;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.util.Observable;
 import java.util.Vector;
 
 import org.openflexo.fib.editor.FIBAbstractEditor;
+import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 
 public class TestFIBBrowser {
 
 	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
-	public static File FIB_FILE = rl.retrieveResourceAsFile(ResourceLocator.locateResource("TestFIB/TestBrowser.fib"));
+	public static Resource FIB_FILE = ResourceLocator.locateSourceCodeResource("TestFIB/TestBrowser.fib");
 
 	public static void main(String[] args) {
 		final TestClass mainClass = new TestClass("Main");
@@ -61,7 +61,7 @@ public class TestFIBBrowser {
 			}
 
 			@Override
-			public File getFIBFile() {
+			public Resource getFIBResource() {
 				return FIB_FILE;
 			}
 		};

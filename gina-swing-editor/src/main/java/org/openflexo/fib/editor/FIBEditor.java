@@ -72,7 +72,7 @@ import org.openflexo.localization.Language;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.logging.FlexoLoggingManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.rm.ClasspathResourceLocatorImpl;
+import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.FileSystemResourceLocatorImpl;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
@@ -85,21 +85,19 @@ import org.openflexo.toolbox.ToolBox;
 public class FIBEditor implements FIBGenericEditor {
 
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditor.class.getPackage().getName());
-	
-	
-	public static Resource COMPONENT_LOCALIZATION_FIB =  ResourceLocator.locateResource("Fib/ComponentLocalization.fib");
+
+	public static Resource COMPONENT_LOCALIZATION_FIB = ResourceLocator.locateResource("Fib/ComponentLocalization.fib");
 
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
 			UnsupportedLookAndFeelException {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 		// Needs a FileSystemResourceLocator to locate Files
-		
+
 		final FileSystemResourceLocatorImpl fsrl = new FileSystemResourceLocatorImpl();
 		fsrl.appendToDirectories(System.getProperty("user.dir"));
 		ResourceLocator.appendDelegate(fsrl);
 
-		
 		// UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		/*DefaultExpressionParser parser = new DefaultExpressionParser();
 			try {
@@ -150,6 +148,8 @@ public class FIBEditor implements FIBGenericEditor {
 	private FIBEditorController editorController;
 
 	private ValidationWindow validationWindow;
+
+	final FileSystemResourceLocatorImpl resourceLocator;
 
 	@Override
 	public FIBInspectorController getInspector() {
@@ -220,6 +220,11 @@ public class FIBEditor implements FIBGenericEditor {
 			}
 		});
 		fileChooser.setCurrentDirectory(FIBPreferences.getLastDirectory());
+
+		resourceLocator = new FileSystemResourceLocatorImpl();
+		resourceLocator.appendToDirectories(FIBPreferences.getLastDirectory().getAbsolutePath());
+		resourceLocator.appendToDirectories(System.getProperty("user.home"));
+		ResourceLocator.appendDelegate(resourceLocator);
 
 		inspector = new FIBInspectorController(frame);
 
@@ -298,11 +303,20 @@ public class FIBEditor implements FIBGenericEditor {
 	}
 
 	public void loadFIB(File fibFile) {
+
 		if (!fibFile.exists()) {
 			JOptionPane.showMessageDialog(frame, "File " + fibFile.getAbsolutePath() + " does not exist anymore");
 			return;
 		}
 		FIBPreferences.setLastFile(fibFile);
+
+		FileResourceImpl fibResource = null;
+		try {
+			fibResource = new FileResourceImpl(resourceLocator, fibFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
 
 		FIBModelFactory factory = null;
 		try {
@@ -311,7 +325,7 @@ public class FIBEditor implements FIBGenericEditor {
 			e.printStackTrace();
 			return;
 		}
-		FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(fibFile, false, factory);
+		FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(fibResource, false, factory);
 		EditedFIB newEditedFIB = new EditedFIB(fibFile.getName(), fibFile, fibComponent, factory);
 		editorController = new FIBEditorController(factory, fibComponent, this);
 		getPalette().setEditorController(editorController);
@@ -381,7 +395,7 @@ public class FIBEditor implements FIBGenericEditor {
 			return;
 		}
 
-		FIBComponent componentLocalizationComponent = FIBLibrary.instance().retrieveFIBComponent(COMPONENT_LOCALIZATION_FIB,true);
+		FIBComponent componentLocalizationComponent = FIBLibrary.instance().retrieveFIBComponent(COMPONENT_LOCALIZATION_FIB, true);
 
 		FIBView view = FIBController.makeView(componentLocalizationComponent, FIBAbstractEditor.LOCALIZATION);
 		view.getController().setDataObject(editorController.getController());
@@ -738,6 +752,5 @@ public class FIBEditor implements FIBGenericEditor {
 			editedFIB = editedComponents.get(index);
 		}
 	}
-
 
 }

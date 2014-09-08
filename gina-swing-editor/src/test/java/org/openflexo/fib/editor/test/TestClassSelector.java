@@ -20,15 +20,14 @@ package org.openflexo.fib.editor.test;
  *
  */
 
-import java.io.File;
-
 import org.openflexo.fib.editor.FIBAbstractEditor;
+import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 
 public class TestClassSelector extends FIBAbstractEditor {
 	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
-	public static File FIB_FILE = rl.retrieveResourceAsFile(ResourceLocator.locateResource("TestFIB/TestClassSelector.fib"));
+	public static Resource FIB_FILE = ResourceLocator.locateResource("TestFIB/TestClassSelector.fib");
 
 	@Override
 	public Object[] getData() {
@@ -36,7 +35,7 @@ public class TestClassSelector extends FIBAbstractEditor {
 	}
 
 	@Override
-	public File getFIBFile() {
+	public Resource getFIBResource() {
 		return FIB_FILE;
 	}
 

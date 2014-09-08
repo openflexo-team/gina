@@ -19,27 +19,26 @@
  */
 package org.openflexo.fib.editor;
 
-import java.io.File;
-
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.fib.FIBLibrary;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.ResourceLocator;
 
 public class ComponentValidationEDITOR {
 
 	public static void main(String[] args) {
 
 		final ResourceLocator rl = ResourceLocator.getResourceLocator();
-		
+
 		FIBAbstractEditor editor = new FIBAbstractEditor() {
 			@Override
 			public Object[] getData() {
-				return makeArray(FIBLibrary.instance().retrieveFIBComponent(ValidationWindow.COMPONENT_VALIDATION_FIB,true).validate(),
-						FIBLibrary.instance().retrieveFIBComponent(FIBEditor.COMPONENT_LOCALIZATION_FIB,true).validate());
+				return makeArray(FIBLibrary.instance().retrieveFIBComponent(ValidationWindow.COMPONENT_VALIDATION_FIB, true).validate(),
+						FIBLibrary.instance().retrieveFIBComponent(FIBEditor.COMPONENT_LOCALIZATION_FIB, true).validate());
 			}
 
 			@Override
-			public File getFIBFile() {
-				return rl.retrieveResourceAsFile(ValidationWindow.COMPONENT_VALIDATION_FIB);
+			public Resource getFIBResource() {
+				return ResourceLocator.locateSourceCodeResource(ValidationWindow.COMPONENT_VALIDATION_FIB);
 			}
 		};
 		editor.launch();

@@ -23,10 +23,10 @@ package org.openflexo.fib.editor.test;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeSupport;
-import java.io.File;
 import java.util.Vector;
 
 import org.openflexo.fib.editor.FIBAbstractEditor;
+import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
@@ -34,7 +34,7 @@ public class TestFIBBrowser2 {
 
 	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
-	public static File FIB_FILE = rl.retrieveResourceAsFile(ResourceLocator.locateResource("TestFIB/TestBrowser2.fib"));
+	public static Resource FIB_FILE = ResourceLocator.locateSourceCodeResource("TestFIB/TestBrowser2.fib");
 
 	public static void main(String[] args) {
 		final TestClass mainClass = new TestClass("Main");
@@ -62,7 +62,7 @@ public class TestFIBBrowser2 {
 			}
 
 			@Override
-			public File getFIBFile() {
+			public Resource getFIBResource() {
 				return FIB_FILE;
 			}
 		};
@@ -113,7 +113,7 @@ public class TestFIBBrowser2 {
 	}
 
 	public abstract static class TestObject implements HasPropertyChangeSupport {
-		private PropertyChangeSupport pcSupport;
+		private final PropertyChangeSupport pcSupport;
 
 		public TestObject() {
 			pcSupport = new PropertyChangeSupport(this);

@@ -19,17 +19,16 @@
  */
 package org.openflexo.fib.editor;
 
-import java.io.File;
-
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.fib.utils.LocalizedDelegateGUIImpl;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.ResourceLocator;
 
 public class LocalizedEditorEDITOR {
 
 	public static void main(String[] args) {
 
 		final ResourceLocator rl = ResourceLocator.getResourceLocator();
-		
+
 		FIBAbstractEditor editor = new FIBAbstractEditor() {
 			@Override
 			public Object[] getData() {
@@ -38,8 +37,8 @@ public class LocalizedEditorEDITOR {
 			}
 
 			@Override
-			public File getFIBFile() {
-				return rl.retrieveResourceAsFile(LocalizedDelegateGUIImpl.LOCALIZED_EDITOR_FIB);
+			public Resource getFIBResource() {
+				return ResourceLocator.locateSourceCodeResource(LocalizedDelegateGUIImpl.LOCALIZED_EDITOR_FIB);
 			}
 		};
 		editor.launch();
