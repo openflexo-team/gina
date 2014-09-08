@@ -200,6 +200,12 @@ public abstract interface FIBWidget extends FIBComponent {
 
 	public boolean hasEnterPressedAction();
 
+	public Bindable getFormatter();
+
+	public Bindable getValueBindable();
+
+	public Bindable getEventListener();
+
 	public static abstract class FIBWidgetImpl extends FIBComponentImpl implements FIBWidget {
 
 		@Deprecated
@@ -467,6 +473,7 @@ public abstract interface FIBWidget extends FIBComponent {
 			}
 		}
 
+		@Override
 		public FIBValueBindable getValueBindable() {
 			return valueBindable;
 		}
@@ -533,6 +540,7 @@ public abstract interface FIBWidget extends FIBComponent {
 			}
 		}
 
+		@Override
 		public FIBFormatter getFormatter() {
 			return formatter;
 		}
@@ -684,6 +692,7 @@ public abstract interface FIBWidget extends FIBComponent {
 			}
 		}
 
+		@Override
 		public FIBEventListener getEventListener() {
 			return eventListener;
 		}

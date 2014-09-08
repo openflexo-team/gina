@@ -184,6 +184,8 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 
 	public void setHasSpecificFont(boolean aFlag);
 
+	public Bindable getFormatter();
+
 	public static abstract class FIBTableColumnImpl extends FIBModelObjectImpl implements FIBTableColumn {
 
 		private static final Logger logger = Logger.getLogger(FIBTableColumn.class.getPackage().getName());
@@ -417,6 +419,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 			this.format = format;
 		}
 
+		@Override
 		public FIBFormatter getFormatter() {
 			return formatter;
 		}

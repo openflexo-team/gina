@@ -902,6 +902,8 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 		public Type getAccessedType();
 
+		public Bindable getChildBindable();
+
 		public static abstract class FIBBrowserElementChildrenImpl extends FIBModelObjectImpl implements FIBBrowserElementChildren {
 
 			private static final Logger logger = Logger.getLogger(FIBBrowserElementChildren.class.getPackage().getName());
@@ -978,6 +980,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 			}
 
+			@Override
 			public FIBChildBindable getChildBindable() {
 				if (childBindable == null) {
 					childBindable = new FIBChildBindable();

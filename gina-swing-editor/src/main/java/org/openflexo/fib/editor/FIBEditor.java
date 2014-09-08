@@ -88,15 +88,25 @@ public class FIBEditor implements FIBGenericEditor {
 
 	public static Resource COMPONENT_LOCALIZATION_FIB = ResourceLocator.locateResource("Fib/ComponentLocalization.fib");
 
+	/*static {
+		try {
+			FlexoLoggingManager.initialize(-1, true, null, Level.WARNING, null);
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}*/
+
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
 			UnsupportedLookAndFeelException {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 		// Needs a FileSystemResourceLocator to locate Files
-
-		final FileSystemResourceLocatorImpl fsrl = new FileSystemResourceLocatorImpl();
+		// Not required anymore: done a little bit after in FIBEditor constructor
+		/*final FileSystemResourceLocatorImpl fsrl = new FileSystemResourceLocatorImpl();
 		fsrl.appendToDirectories(System.getProperty("user.dir"));
-		ResourceLocator.appendDelegate(fsrl);
+		ResourceLocator.appendDelegate(fsrl);*/
 
 		// UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		/*DefaultExpressionParser parser = new DefaultExpressionParser();

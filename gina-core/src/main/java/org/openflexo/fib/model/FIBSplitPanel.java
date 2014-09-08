@@ -75,6 +75,20 @@ public interface FIBSplitPanel extends FIBContainer {
 
 	public void makeDefaultVerticalLayout();
 
+	public Divider addDivider(Split parent);
+
+	public Leaf addLeaf(Split parent);
+
+	public ColSplit addVerticalSplit(Split parent);
+
+	public RowSplit addHorizontalSplit(Split parent);
+
+	public ColSplit addDefaultVerticalSplit(Split parent);
+
+	public RowSplit addDefaultHorizontalSplit(Split parent);
+
+	public Node removeNode(Node node);
+
 	public static abstract class FIBSplitPanelImpl extends FIBContainerImpl implements FIBSplitPanel {
 
 		public static final String LEFT = "left";
@@ -152,6 +166,7 @@ public interface FIBSplitPanel extends FIBContainer {
 			setSplit(getDefaultVerticalLayout());
 		}
 
+		@Override
 		public Divider addDivider(Split parent) {
 			Divider returned = splitLayoutFactory.makeDivider();
 			parent.addToChildren(returned);
@@ -159,6 +174,7 @@ public interface FIBSplitPanel extends FIBContainer {
 			return returned;
 		}
 
+		@Override
 		public Leaf addLeaf(Split parent) {
 			Leaf returned = splitLayoutFactory.makeLeaf(findNextAvailableLeaf("leaf"));
 			parent.addToChildren(returned);
@@ -166,6 +182,7 @@ public interface FIBSplitPanel extends FIBContainer {
 			return returned;
 		}
 
+		@Override
 		public ColSplit addVerticalSplit(Split parent) {
 			ColSplit returned = splitLayoutFactory.makeColSplit();
 			parent.addToChildren(returned);
@@ -173,6 +190,7 @@ public interface FIBSplitPanel extends FIBContainer {
 			return returned;
 		}
 
+		@Override
 		public RowSplit addHorizontalSplit(Split parent) {
 			RowSplit returned = splitLayoutFactory.makeRowSplit();
 			parent.addToChildren(returned);
@@ -180,6 +198,7 @@ public interface FIBSplitPanel extends FIBContainer {
 			return returned;
 		}
 
+		@Override
 		public ColSplit addDefaultVerticalSplit(Split parent) {
 			ColSplit returned = getDefaultVerticalLayout();
 			parent.addToChildren(returned);
@@ -187,6 +206,7 @@ public interface FIBSplitPanel extends FIBContainer {
 			return returned;
 		}
 
+		@Override
 		public RowSplit addDefaultHorizontalSplit(Split parent) {
 			RowSplit returned = getDefaultHorizontalLayout();
 			parent.addToChildren(returned);
@@ -194,6 +214,7 @@ public interface FIBSplitPanel extends FIBContainer {
 			return returned;
 		}
 
+		@Override
 		public Node removeNode(Node node) {
 			if (node != getSplit()) {
 				node.getParent().removeFromChildren(node);

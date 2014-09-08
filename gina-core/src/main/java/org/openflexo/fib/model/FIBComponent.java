@@ -402,6 +402,9 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 	public void deleteExplicitDependancy(FIBDependancy p);
 
+	// TODO: move to FIBContainer
+	public List<FIBComponent> getNamedComponents();
+
 	public static abstract class FIBComponentImpl extends FIBModelObjectImpl implements FIBComponent {
 
 		private static final Logger logger = Logger.getLogger(FIBComponent.class.getPackage().getName());
@@ -1692,6 +1695,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 		}
 
 		// TODO: move to FIBContainer
+		@Override
 		public Vector<FIBComponent> getNamedComponents() {
 			Vector<FIBComponent> returned = new Vector<FIBComponent>();
 			for (FIBComponent c : retrieveAllSubComponents()) {

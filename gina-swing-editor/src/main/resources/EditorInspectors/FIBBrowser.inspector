@@ -89,10 +89,10 @@
             <IconColumn data="iterator.imageIcon" columnWidth="20" resizable="false" displayTitle="true" name="icon" />
             <TextFieldColumn data="iterator.name" title="name" columnWidth="100" resizable="true" displayTitle="true" name="name" />
             <CustomColumn componentClassName="org.openflexo.fib.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.data" title="data" columnWidth="200" resizable="true" displayTitle="true" name="data">
-              <ColumnAssignment variable="component.bindable" value="iterator.browserElement.iterator" />
+              <ColumnAssignment variable="component.bindable" value="iterator.owner.iterator" />
             </CustomColumn>
             <CustomColumn componentClassName="org.openflexo.fib.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.visible" title="visible" columnWidth="200" resizable="true" displayTitle="true" name="visible">
-              <ColumnAssignment variable="component.bindable" value="iterator.browserElement.iterator" />
+              <ColumnAssignment variable="component.bindable" value="iterator.owner.iterator" />
             </CustomColumn>
             <CustomColumn componentClassName="org.openflexo.fib.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.cast" title="cast" columnWidth="200" resizable="true" displayTitle="true" name="cast">
               <ColumnAssignment variable="component.bindable" value="iterator.childBindable" />

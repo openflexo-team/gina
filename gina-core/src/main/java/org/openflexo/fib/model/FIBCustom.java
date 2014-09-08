@@ -26,6 +26,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
@@ -39,6 +40,7 @@ import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.ParameterizedTypeImpl;
 import org.openflexo.fib.controller.FIBController;
+import org.openflexo.fib.model.validation.ValidationReport;
 import org.openflexo.fib.view.widget.FIBCustomWidget;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
@@ -357,6 +359,11 @@ public interface FIBCustom extends FIBWidget {
 			return returned;
 		}
 
+		@Override
+		public Collection<? extends FIBModelObject> getEmbeddedObjects() {
+			return getAssignments();
+		}
+
 	}
 
 	@ModelEntity
@@ -514,6 +521,36 @@ public interface FIBCustom extends FIBWidget {
 				return null;
 			}
 
+			@Override
+			protected void applyValidation(ValidationReport report) {
+				super.applyValidation(report);
+				performValidation(AssignmentVariableBindingMustBeValid.class, report);
+				performValidation(AssignmentValueBindingMustBeValid.class, report);
+			}
+
+			public static class AssignmentVariableBindingMustBeValid extends BindingMustBeValid<FIBCustomAssignment> {
+				public AssignmentVariableBindingMustBeValid() {
+					super("assignment_'variable'_binding_is_not_valid", FIBCustomAssignment.class);
+				}
+
+				@Override
+				public DataBinding<?> getBinding(FIBCustomAssignment object) {
+					return object.getVariable();
+				}
+
+			}
+
+			public static class AssignmentValueBindingMustBeValid extends BindingMustBeValid<FIBCustomAssignment> {
+				public AssignmentValueBindingMustBeValid() {
+					super("assignment_'value'_binding_is_not_valid", FIBCustomAssignment.class);
+				}
+
+				@Override
+				public DataBinding<?> getBinding(FIBCustomAssignment object) {
+					return object.getValue();
+				}
+
+			}
 		}
 	}
 

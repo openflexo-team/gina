@@ -26,6 +26,7 @@ import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.tree.TreeNode;
@@ -357,8 +358,9 @@ public abstract interface FIBContainer extends FIBComponent {
 							((FIBContainer) c1).append((FIBContainer) c2);
 
 							mergedComponents.add(c2);
-							logger.fine("Merged " + c1 + " and " + c2);
-
+							if (logger.isLoggable(Level.FINE)) {
+								logger.fine("Merged " + c1 + " and " + c2);
+							}
 							break;
 						}
 					}
@@ -524,11 +526,16 @@ public abstract interface FIBContainer extends FIBComponent {
 				retrieveFIBLocalizedDictionary().append(container.getLocalizedDictionary());
 			}
 
+			// TODO: Hack to be removed while refactoring BindingModel management
+			deserializationPerformed = true;
 			updateBindingModel();
+			// TODO: Hack to be removed while refactoring BindingModel management
+			deserializationPerformed = false;
+
+			finalizeDeserialization();
 			for (FIBComponent c : getSubComponents()) {
 				recursivelyFinalizeDeserialization(c);
 			}
-			finalizeDeserialization();
 
 		}
 
