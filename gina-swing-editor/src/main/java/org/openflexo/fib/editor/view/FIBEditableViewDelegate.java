@@ -313,7 +313,7 @@ public class FIBEditableViewDelegate<M extends FIBComponent, J extends JComponen
 		if (o instanceof FIBWidget) {
 			FIBWidgetView widgetView = (FIBWidgetView) view;
 			if (propertyName.equals(FIBWidget.MANAGE_DYNAMIC_MODEL_KEY)) {
-				widgetView.getComponent().updateBindingModel();
+				widgetView.getComponent().updateDynamicAccessBindingVariable();
 			} else if (propertyName.equals(FIBWidget.READ_ONLY_KEY)) {
 				widgetView.updateEnability();
 			}

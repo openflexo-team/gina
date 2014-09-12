@@ -31,6 +31,7 @@ import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.CachingStrategy;
+import org.openflexo.antar.binding.DefaultBindable;
 import org.openflexo.fib.model.validation.ValidationReport;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -255,6 +256,10 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 			return getOwner();
 		}
 
+		protected void bindingModelMightChange(BindingModel oldBindingModel) {
+			formatter.bindingModelMightChange(oldBindingModel);
+		}
+
 		@Override
 		public DataBinding<?> getData() {
 			if (data == null) {
@@ -424,8 +429,13 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 			return formatter;
 		}
 
-		private class FIBFormatter implements Bindable {
+		private class FIBFormatter extends DefaultBindable {
 			private BindingModel formatterBindingModel = null;
+
+			private void bindingModelMightChange(BindingModel oldBindingModel) {
+				getBindingModel();
+				formatterBindingModel.setBaseBindingModel(getOwner().getTableBindingModel());
+			}
 
 			@Override
 			public BindingModel getBindingModel() {
@@ -436,18 +446,20 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 			}
 
 			private void createFormatterBindingModel() {
-				formatterBindingModel = new BindingModel(getOwner().getTableBindingModel());
-				formatterBindingModel.addToBindingVariables(new BindingVariable("object", Object.class) {
-					@Override
-					public Type getType() {
-						return getDataClass();
-					}
+				if (getOwner() != null) {
+					formatterBindingModel = new BindingModel(getOwner().getTableBindingModel());
+					formatterBindingModel.addToBindingVariables(new BindingVariable("object", Object.class) {
+						@Override
+						public Type getType() {
+							return getDataClass();
+						}
 
-					@Override
-					public boolean isCacheable() {
-						return false;
-					}
-				});
+						@Override
+						public boolean isCacheable() {
+							return false;
+						}
+					});
+				}
 			}
 
 			public FIBComponent getComponent() {

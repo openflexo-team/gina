@@ -27,9 +27,11 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.ParameterizedTypeImpl;
 import org.openflexo.antar.binding.TypeUtils;
+import org.openflexo.fib.model.FIBBrowserElement.FIBBrowserElementImpl;
 import org.openflexo.fib.model.validation.ValidationReport;
 import org.openflexo.fib.view.widget.FIBBrowserWidget;
 import org.openflexo.model.annotations.Adder;
@@ -289,6 +291,14 @@ public interface FIBBrowser extends FIBWidget {
 		}
 
 		@Override
+		protected void bindingModelMightChange(BindingModel oldBindingModel) {
+			super.bindingModelMightChange(oldBindingModel);
+			for (FIBBrowserElement e : getElements()) {
+				((FIBBrowserElementImpl) e).bindingModelMightChange(oldBindingModel);
+			}
+		}
+
+		@Override
 		public DataBinding<Object> getRoot() {
 			if (root == null) {
 				root = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.GET);
@@ -337,13 +347,13 @@ public interface FIBBrowser extends FIBWidget {
 			}
 		}
 
-		@Override
+		/*@Override
 		public void updateBindingModel() {
 			super.updateBindingModel();
 			for (FIBBrowserElement e : getElements()) {
 				e.updateBindingModel();
 			}
-		}
+		}*/
 
 		@Override
 		public Class getIteratorClass() {
@@ -677,13 +687,13 @@ public interface FIBBrowser extends FIBWidget {
 			}
 		}
 
-		@Override
+		/*@Override
 		public void notifiedBindingModelRecreated() {
 			super.notifiedBindingModelRecreated();
 			for (FIBBrowserElement e : getElements()) {
 				e.notifiedBindingModelRecreated();
 			}
-		}
+		}*/
 
 		@Override
 		protected void applyValidation(ValidationReport report) {

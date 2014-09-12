@@ -335,8 +335,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 	public FIBComponent getRootComponent();
 
-	@Deprecated
-	public void notifiedBindingModelRecreated();
+	// @Deprecated
+	// public void notifiedBindingModelRecreated();
 
 	public Type getDynamicAccessType();
 
@@ -354,7 +354,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 	public Color retrieveValidBackgroundColor();
 
-	public void updateBindingModel();
+	// public void updateBindingModel();
 
 	public void declareDependantOf(FIBComponent aComponent);
 
@@ -404,6 +404,34 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 	// TODO: move to FIBContainer
 	public List<FIBComponent> getNamedComponents();
+
+	/**
+	 * Return (create when null) binding variable identified by "data"<br>
+	 * Default behavior is to generate a binding variable with the java type identified by data class
+	 */
+	public BindingVariable getDataBindingVariable();
+
+	/**
+	 * Return (create when null) binding variable identified by "controller"<br>
+	 * Default behavior is to generate a binding variable with the java type identified by controller class
+	 * 
+	 * @return
+	 */
+	public BindingVariable getControllerBindingVariable();
+
+	/**
+	 * Return (create when null) binding variable identified by component name (this is dynamic access to data beeing edited in the
+	 * component)<br>
+	 * 
+	 * @return
+	 */
+	public BindingVariable getDynamicAccessBindingVariable();
+
+	public void updateDataBindingVariable();
+
+	public void updateControllerBindingVariable();
+
+	public void updateDynamicAccessBindingVariable();
 
 	public static abstract class FIBComponentImpl extends FIBModelObjectImpl implements FIBComponent {
 
@@ -461,6 +489,11 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 		private FIBContainer parent;
 
+		protected BindingModel bindingModel = null;
+		protected BindingVariable dataBindingVariable;
+		protected BindingVariable controllerBindingVariable;
+		protected BindingVariable dynamicAccessBindingVariable;
+
 		public FIBComponentImpl() {
 			super();
 			explicitDependancies = new Vector<FIBDependancy>();
@@ -469,14 +502,20 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 		}
 
 		@Override
-		public void setParent(FIBContainer parent) {
-			this.parent = parent;
-			getData().markedAsToBeReanalized();
+		public FIBContainer getParent() {
+			return parent;
 		}
 
 		@Override
-		public FIBContainer getParent() {
-			return parent;
+		public void setParent(FIBContainer parent) {
+			BindingModel oldBindingModel = getBindingModel();
+			FIBContainer oldParent = this.parent;
+			this.parent = parent;
+			if (oldParent != null && getDynamicAccessBindingVariable() != null) {
+				oldParent.getBindingModel().removeFromBindingVariables(getDynamicAccessBindingVariable());
+			}
+			// Changing parent might cause the BindingModel to be different
+			bindingModelMightChange(oldBindingModel);
 		}
 
 		/**
@@ -759,15 +798,13 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 			return current;
 		}
 
-		protected BindingModel _bindingModel = null;
-
 		@Override
 		public BindingModel getBindingModel() {
 			if (isRootComponent()) {
-				if (_bindingModel == null) {
+				if (bindingModel == null) {
 					createBindingModel();
 				}
-				return _bindingModel;
+				return bindingModel;
 			} else {
 				if (getRootComponent() != null && getRootComponent() != this) {
 					return getRootComponent().getBindingModel();
@@ -776,7 +813,52 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 			}
 		}
 
+		/**
+		 * Return (create when null) binding variable identified by "data"<br>
+		 * Default behavior is to generate a binding variable with the java type identified by data class
+		 */
 		@Override
+		public BindingVariable getDataBindingVariable() {
+			if (dataBindingVariable == null) {
+				dataBindingVariable = new BindingVariable("data", getDataType());
+				getBindingModel().addToBindingVariables(dataBindingVariable);
+			}
+			return dataBindingVariable;
+		}
+
+		/**
+		 * Return (create when null) binding variable identified by "controller"<br>
+		 * Default behavior is to generate a binding variable with the java type identified by controller class
+		 * 
+		 * @return
+		 */
+		@Override
+		public BindingVariable getControllerBindingVariable() {
+			if (controllerBindingVariable == null) {
+				controllerBindingVariable = new BindingVariable("controller", getControllerClass());
+				getBindingModel().addToBindingVariables(controllerBindingVariable);
+			}
+			return controllerBindingVariable;
+		}
+
+		/**
+		 * Return (create when null) binding variable identified by component name (this is dynamic access to data beeing edited in the
+		 * component)<br>
+		 * 
+		 * @return
+		 */
+		@Override
+		public BindingVariable getDynamicAccessBindingVariable() {
+			if (dynamicAccessBindingVariable == null) {
+				if (StringUtils.isNotEmpty(getName()) && getDynamicAccessType() != null) {
+					dynamicAccessBindingVariable = new BindingVariable(getName(), getDynamicAccessType());
+					getBindingModel().addToBindingVariables(dynamicAccessBindingVariable);
+				}
+			}
+			return dynamicAccessBindingVariable;
+		}
+
+		/*@Override
 		public void updateBindingModel() {
 			if (deserializationPerformed) {
 				logger.fine("updateBindingModel()");
@@ -786,54 +868,89 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 					root.createBindingModel();
 				}
 			}
+		}*/
+
+		@Override
+		public void updateDataBindingVariable() {
+			getDataBindingVariable().setType(getDataType());
+		}
+
+		@Override
+		public void updateControllerBindingVariable() {
+			getControllerBindingVariable().setType(getControllerClass());
+		}
+
+		@Override
+		public void updateDynamicAccessBindingVariable() {
+			if (getDynamicAccessBindingVariable() != null) {
+				if (getDynamicAccessBindingVariable().getVariableName() != getName()) {
+					String oldName = getDynamicAccessBindingVariable().getVariableName();
+					// System.out.println("* on change le nom de la variable a " + getName());
+					getDynamicAccessBindingVariable().setVariableName(getName());
+					getBindingModel().getPropertyChangeSupport().firePropertyChange(BindingModel.BINDING_VARIABLE_NAME_CHANGED, oldName,
+							getName());
+				}
+				if (getDynamicAccessBindingVariable().getType() != getDynamicAccessType()) {
+					Type oldType = getDynamicAccessBindingVariable().getType();
+					// System.out.println("* on change le type de la variable a " + getDynamicAccessType());
+					getDynamicAccessBindingVariable().setType(getDynamicAccessType());
+					getBindingModel().getPropertyChangeSupport().firePropertyChange(BindingModel.BINDING_VARIABLE_TYPE_CHANGED, oldType,
+							getDynamicAccessType());
+				}
+				if (getBindingModel().bindingVariableNamed(getName()) != getDynamicAccessBindingVariable()) {
+					// This indicates that component hierarchy change, and that dynamic access binding variable
+					// Move from/to rootComponent binding model to/from this component binding model
+					if (getBindingModel().bindingVariableNamed(getName()) == null) {
+						getBindingModel().addToBindingVariables(getDynamicAccessBindingVariable());
+					}
+				}
+			}
+		}
+
+		protected void bindingModelMightChange(BindingModel oldBindingModel) {
+
+			if (oldBindingModel != getBindingModel()) {
+				getPropertyChangeSupport().firePropertyChange(BINDING_MODEL_PROPERTY, null, getBindingModel());
+			}
+
+			// Following is deprecated ???
+			// getData().markedAsToBeReanalized();
+			updateDynamicAccessBindingVariable();
 		}
 
 		/**
-		 * Creates binding variable identified by "data"<br>
-		 * Default behavior is to generate a binding variable with the java type identified by data class
+		 * Internally called to create component BindingModel<br>
+		 * Note that {@link BindingModel} created by this method will not necessary be the one returned by getBindingModel() method, because
+		 * all components BindingModel references the root component BindingModel<br>
+		 * 
 		 */
-		protected void updateDataBindingVariable() {
-			BindingVariable dataBV = getBindingModel().bindingVariableNamed("data");
-			if (dataBV == null) {
-				getBindingModel().addToBindingVariables(dataBV = new BindingVariable("data", getDataType()));
-			}
-			dataBV.setType(getDataType());
+		private void createBindingModel() {
+
+			bindingModel = new BindingModel();
+			getDataBindingVariable();
+			getControllerBindingVariable();
+			getDynamicAccessBindingVariable();
 		}
 
-		protected void createBindingModel() {
-			createBindingModel(null);
-		}
-
-		protected void createBindingModel(BindingModel baseBindingModel) {
-			if (_bindingModel == null) {
+		/*protected void createBindingModel(BindingModel baseBindingModel) {
+			if (bindingModel == null) {
 				if (baseBindingModel == null) {
-					_bindingModel = new BindingModel();
+					bindingModel = new BindingModel();
 				} else {
-					_bindingModel = new BindingModel(baseBindingModel);
+					bindingModel = new BindingModel(baseBindingModel);
 				}
-
-				/*Class dataClass = null;
-				try {
-				if (dataClassName != null) {
-					dataClass = Class.forName(dataClassName);
-					logger.fine("Found: "+dataClassName);
-				}
-				} catch (ClassNotFoundException e) {
-				logger.warning("Not found: "+dataClassName);
-				}*/
-				// if (dataClass == null) dataClass = Object.class;
 
 				updateDataBindingVariable();
 
 				if (StringUtils.isNotEmpty(getName()) && getDynamicAccessType() != null) {
-					_bindingModel.addToBindingVariables(new BindingVariable(getName(), getDynamicAccessType()));
+					bindingModel.addToBindingVariables(new BindingVariable(getName(), getDynamicAccessType()));
 				}
 
 				Iterator<FIBComponent> it = subComponentIterator();
 				while (it.hasNext()) {
 					FIBComponent subComponent = it.next();
 					if (StringUtils.isNotEmpty(subComponent.getName()) && subComponent.getDynamicAccessType() != null) {
-						_bindingModel
+						bindingModel
 								.addToBindingVariables(new BindingVariable(subComponent.getName(), subComponent.getDynamicAccessType()));
 					}
 				}
@@ -843,7 +960,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 					myControllerClass = FIBController.class;
 				}
 
-				_bindingModel.addToBindingVariables(new BindingVariable("controller", myControllerClass));
+				bindingModel.addToBindingVariables(new BindingVariable("controller", myControllerClass));
 
 				it = subComponentIterator();
 				while (it.hasNext()) {
@@ -853,7 +970,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 			}
 			// logger.info("Created binding model at root component level:\n"+_bindingModel);
-		}
+		}*/
 
 		@Override
 		public void notifiedBindingChanged(DataBinding<?> binding) {
@@ -863,11 +980,12 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 			}
 		}
 
-		@Override
+		/*@Override
 		@Deprecated
 		public void notifiedBindingModelRecreated() {
-		}
+		}*/
 
+		@Deprecated
 		protected boolean deserializationPerformed = true;
 
 		@Override
@@ -878,9 +996,9 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 		@Override
 		public void finalizeDeserialization() {
 
-			if (isRootComponent()) {
+			/*if (isRootComponent()) {
 				updateBindingModel();
-			}
+			}*/
 
 			if (data != null) {
 				data.decode();
@@ -1010,6 +1128,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 				data.setBindingName("data");
 
+				updateDynamicAccessBindingVariable();
+
 			} else {
 				this.data = null;
 			}
@@ -1086,13 +1206,17 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 				getData().markedAsToBeReanalized();
 				// System.out.println("data=" + getData() + " valid=" + getData().isValid() + " reason: " +
 				// getData().invalidBindingReason());
-				updateBindingModel();
+				updateDataBindingVariable();
+				updateDynamicAccessBindingVariable();
 				hasChanged(notification);
 			}
 		}
 
 		@Override
 		public Class<? extends FIBController> getControllerClass() {
+			if (controllerClass == null) {
+				return FIBController.class;
+			}
 			return controllerClass;
 		}
 
@@ -1102,7 +1226,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 			FIBPropertyNotification<Class> notification = requireChange(CONTROLLER_CLASS_KEY, (Class) controllerClass);
 			if (notification != null) {
 				this.controllerClass = controllerClass;
-				updateBindingModel();
+				updateControllerBindingVariable();
 				hasChanged(notification);
 			}
 		}
@@ -1114,7 +1238,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 		@Override
 		public Type getDynamicAccessType() {
-			if (data != null) {
+			if (getDataType() != null) {
 				Type[] args = new Type[3];
 				args[0] = new WilcardTypeImpl(FIBComponent.class);
 				args[1] = new WilcardTypeImpl(JComponent.class);
@@ -1355,12 +1479,12 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 		}
 
 		@Override
-		public void setName(String name) {
+		public final void setName(String name) {
 			if (StringUtils.isEmpty(name)) {
 				name = null;
 			}
 			performSuperSetter(NAME_KEY, name);
-			updateBindingModel();
+			updateDynamicAccessBindingVariable();
 		}
 
 		@Override
@@ -1378,7 +1502,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 			} else {
 				performSuperAdder(PARAMETERS_KEY, p);
-				updateBindingModel();
 			}
 		}
 

@@ -26,6 +26,7 @@ import org.junit.BeforeClass;
 import org.openflexo.fib.model.FIBBrowser;
 import org.openflexo.fib.model.FIBBrowserElement;
 import org.openflexo.fib.model.FIBBrowserElement.FIBBrowserElementChildren;
+import org.openflexo.fib.model.FIBCheckBox;
 import org.openflexo.fib.model.FIBCheckboxList;
 import org.openflexo.fib.model.FIBDropDown;
 import org.openflexo.fib.model.FIBDropDownColumn;
@@ -102,6 +103,10 @@ public abstract class FIBTestCase {
 
 	public FIBBrowserElementChildren newFIBBrowserElementChildren() {
 		return factory.newInstance(FIBBrowserElementChildren.class);
+	}
+
+	public FIBCheckBox newFIBCheckBox() {
+		return factory.newInstance(FIBCheckBox.class);
 	}
 
 	public FIBCheckboxList newFIBCheckboxList() {

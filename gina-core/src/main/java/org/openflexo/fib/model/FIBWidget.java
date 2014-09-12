@@ -36,6 +36,7 @@ import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.antar.binding.DataBinding.CachingStrategy;
+import org.openflexo.antar.binding.DefaultBindable;
 import org.openflexo.antar.binding.ParameterizedTypeImpl;
 import org.openflexo.antar.binding.WilcardTypeImpl;
 import org.openflexo.fib.model.validation.FixProposal;
@@ -264,6 +265,14 @@ public abstract interface FIBWidget extends FIBComponent {
 		}
 
 		@Override
+		protected void bindingModelMightChange(BindingModel oldBindingModel) {
+			super.bindingModelMightChange(oldBindingModel);
+			formatter.bindingModelMightChange(oldBindingModel);
+			valueBindable.bindingModelMightChange(oldBindingModel);
+			eventListener.bindingModelMightChange(oldBindingModel);
+		}
+
+		@Override
 		public String getIdentifier() {
 			return null;
 		}
@@ -412,7 +421,7 @@ public abstract interface FIBWidget extends FIBComponent {
 			FIBPropertyNotification<Boolean> notification = requireChange(MANAGE_DYNAMIC_MODEL_KEY, manageDynamicModel);
 			if (notification != null) {
 				this.manageDynamicModel = manageDynamicModel;
-				updateBindingModel();
+				updateDynamicAccessBindingVariable();
 				hasChanged(notification);
 			}
 		}
@@ -549,20 +558,25 @@ public abstract interface FIBWidget extends FIBComponent {
 			return getDataType();
 		}
 
-		@Override
+		/*@Override
 		public void notifiedBindingModelRecreated() {
 			super.notifiedBindingModelRecreated();
 			if (getFormatter() != null) {
 				getFormatter().notifiedBindingModelRecreated();
 			}
-		}
+		}*/
 
-		private class FIBFormatter implements Bindable {
+		private class FIBFormatter extends DefaultBindable {
 			private BindingModel formatterBindingModel = null;
 
-			public void notifiedBindingModelRecreated() {
-				createFormatterBindingModel();
+			private void bindingModelMightChange(BindingModel oldBindingModel) {
+				getBindingModel();
+				formatterBindingModel.setBaseBindingModel(FIBWidgetImpl.this.getBindingModel());
 			}
+
+			/*public void notifiedBindingModelRecreated() {
+				createFormatterBindingModel();
+			}*/
 
 			@Override
 			public BindingModel getBindingModel() {
@@ -621,8 +635,13 @@ public abstract interface FIBWidget extends FIBComponent {
 
 		}
 
-		private class FIBValueBindable implements Bindable {
+		private class FIBValueBindable extends DefaultBindable {
 			private BindingModel valueTransformerBindingModel = null;
+
+			private void bindingModelMightChange(BindingModel oldBindingModel) {
+				getBindingModel();
+				valueTransformerBindingModel.setBaseBindingModel(FIBWidgetImpl.this.getBindingModel());
+			}
 
 			@Override
 			public BindingModel getBindingModel() {
@@ -683,22 +702,27 @@ public abstract interface FIBWidget extends FIBComponent {
 
 		}
 
-		@Override
+		/*@Override
 		public void updateBindingModel() {
 			super.updateBindingModel();
 			if (deserializationPerformed) {
 				getEventListener().createEventListenerBindingModel();
 				getFormatter().createFormatterBindingModel();
 			}
-		}
+		}*/
 
 		@Override
 		public FIBEventListener getEventListener() {
 			return eventListener;
 		}
 
-		private class FIBEventListener implements Bindable {
+		private class FIBEventListener extends DefaultBindable {
 			private BindingModel eventListenerBindingModel = null;
+
+			private void bindingModelMightChange(BindingModel oldBindingModel) {
+				getBindingModel();
+				eventListenerBindingModel.setBaseBindingModel(FIBWidgetImpl.this.getBindingModel());
+			}
 
 			@Override
 			public BindingModel getBindingModel() {

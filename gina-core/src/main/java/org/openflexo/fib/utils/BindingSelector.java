@@ -55,6 +55,7 @@ import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.BindingModelChanged;
 import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.antar.binding.DataBinding;
+import org.openflexo.antar.binding.DefaultBindable;
 import org.openflexo.antar.binding.JavaBindingFactory;
 import org.openflexo.antar.binding.TypeUtils;
 import org.openflexo.antar.expr.BindingValue;
@@ -577,7 +578,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			}
 			_isProgrammaticalySet = false;
 		}
-		if (getEditedObject() !=null && getEditedObject().getOwner() != null){
+		if (getEditedObject() != null && getEditedObject().getOwner() != null) {
 			getEditedObject().getOwner().notifiedBindingChanged(getEditedObject());
 		}
 	}
@@ -1370,7 +1371,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		return this;
 	}
 
-	public static class TestBindable implements Bindable {
+	public static class TestBindable extends DefaultBindable {
 		private final BindingFactory bindingFactory = new JavaBindingFactory();
 		private final BindingModel bindingModel = new BindingModel();
 

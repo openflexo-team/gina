@@ -24,13 +24,16 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.tree.TreeNode;
 
+import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.fib.model.FIBPanel.Layout;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
@@ -141,6 +144,20 @@ public abstract interface FIBContainer extends FIBComponent {
 		return super.getDataClass();
 		}*/
 
+		@Override
+		public final void setParent(FIBContainer parent) {
+			Map<FIBComponent, BindingModel> oldBindingModelMap = new HashMap<FIBComponent, BindingModel>();
+			for (FIBComponent c : retrieveAllSubComponents()) {
+				oldBindingModelMap.put(c, c.getBindingModel());
+			}
+			super.setParent(parent);
+			for (FIBComponent c : retrieveAllSubComponents()) {
+				if (c instanceof FIBComponentImpl) {
+					((FIBComponentImpl) c).bindingModelMightChange(oldBindingModelMap.get(c));
+				}
+			}
+		}
+
 		/**
 		 * Return a recursive list of all components beeing embedded in this container
 		 * 
@@ -162,7 +179,7 @@ public abstract interface FIBContainer extends FIBComponent {
 			}
 		}
 
-		@Override
+		/*@Override
 		public void updateBindingModel() {
 			super.updateBindingModel();
 			if (deserializationPerformed) {
@@ -170,7 +187,7 @@ public abstract interface FIBContainer extends FIBComponent {
 					child.updateBindingModel();
 				}
 			}
-		}
+		}*/
 
 		/*@Override
 		public Vector<FIBComponent> getSubComponents() {
@@ -218,11 +235,11 @@ public abstract interface FIBContainer extends FIBComponent {
 			if (deserializationPerformed) {
 				reorderComponents();
 			}
-			if (aComponent instanceof FIBWidget && ((FIBWidget) aComponent).getManageDynamicModel()) {
+			/*if (aComponent instanceof FIBWidget && ((FIBWidget) aComponent).getManageDynamicModel()) {
 				if (deserializationPerformed) {
 					updateBindingModel();
 				}
-			}
+			}*/
 			getPropertyChangeSupport().firePropertyChange(SUB_COMPONENTS_KEY, null, getSubComponents());
 		}
 
@@ -527,10 +544,10 @@ public abstract interface FIBContainer extends FIBComponent {
 			}
 
 			// TODO: Hack to be removed while refactoring BindingModel management
-			deserializationPerformed = true;
-			updateBindingModel();
+			// deserializationPerformed = true;
+			// updateBindingModel();
 			// TODO: Hack to be removed while refactoring BindingModel management
-			deserializationPerformed = false;
+			// deserializationPerformed = false;
 
 			finalizeDeserialization();
 			for (FIBComponent c : getSubComponents()) {
@@ -622,13 +639,13 @@ public abstract interface FIBContainer extends FIBComponent {
 			getPropertyChangeSupport().firePropertyChange(SUB_COMPONENTS_KEY, null, getSubComponents());
 		}
 
-		@Override
+		/*@Override
 		public void notifiedBindingModelRecreated() {
 			super.notifiedBindingModelRecreated();
 			for (FIBComponent c : getSubComponents()) {
 				c.notifiedBindingModelRecreated();
 			}
-		}
+		}*/
 
 		@Override
 		public void reorderComponents() {
@@ -671,19 +688,10 @@ public abstract interface FIBContainer extends FIBComponent {
 		public void setDataClass(Class<?> dataClass) {
 			FIBPropertyNotification<Class> notification = requireChange(DATA_CLASS_KEY, (Class) dataClass);
 			if (notification != null) {
-				// System.out.println("data=" + getData() + " valid=" + getData().isValid() + " reason: " +
-				// getData().invalidBindingReason());
-				this.dataClass = dataClass;
-				getData().markedAsToBeReanalized();
-				// All bindings should be marked as reanalized
-				// TODO: do it for all bindings, not only data
+				super.setDataClass(dataClass);
 				for (FIBComponent c : retrieveAllSubComponents()) {
 					c.getData().markedAsToBeReanalized();
 				}
-				// System.out.println("data=" + getData() + " valid=" + getData().isValid() + " reason: " +
-				// getData().invalidBindingReason());
-				updateBindingModel();
-				hasChanged(notification);
 			}
 		}
 

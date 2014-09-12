@@ -36,6 +36,7 @@ import org.openflexo.antar.binding.WilcardTypeImpl;
 import org.openflexo.fib.model.FIBTableAction.FIBAddAction;
 import org.openflexo.fib.model.FIBTableAction.FIBCustomAction;
 import org.openflexo.fib.model.FIBTableAction.FIBRemoveAction;
+import org.openflexo.fib.model.FIBTableColumn.FIBTableColumnImpl;
 import org.openflexo.fib.view.widget.FIBTableWidget;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
@@ -317,6 +318,19 @@ public interface FIBTable extends FIBWidget {
 			return "Table";
 		}
 
+		@Override
+		protected void bindingModelMightChange(BindingModel oldBindingModel) {
+			super.bindingModelMightChange(oldBindingModel);
+			getTableBindingModel().setBaseBindingModel(getBindingModel());
+			getActionBindingModel().setBaseBindingModel(getBindingModel());
+			for (FIBTableColumn e : getColumns()) {
+				((FIBTableColumnImpl) e).bindingModelMightChange(oldBindingModel);
+			}
+			/*for (FIBTableAction e : getActions()) {
+				((FIBTableActionImpl) e).bindingModelMightChange(oldBindingModel);
+			}*/
+		}
+
 		/*@Override
 		public FIBTableColumn getColumnWithTitle(String title) {
 			for (FIBTableColumn c : columns) {
@@ -376,12 +390,12 @@ public interface FIBTable extends FIBWidget {
 			getPropertyChangeSupport().firePropertyChange(ACTIONS_KEY, null, actions);
 		}*/
 
-		@Override
+		/*@Override
 		public void updateBindingModel() {
 			super.updateBindingModel();
 			tableBindingModel = null;
 			actionBindingModel = null;
-		}
+		}*/
 
 		@Override
 		public BindingModel getTableBindingModel() {
@@ -422,12 +436,12 @@ public interface FIBTable extends FIBWidget {
 			// logger.info("******** Table: "+getName()+" Add BindingVariable: iterator type="+getIteratorClass());
 		}
 
-		@Override
+		/*@Override
 		public void notifiedBindingModelRecreated() {
 			super.notifiedBindingModelRecreated();
 			createTableBindingModel();
 			createActionBindingModel();
-		}
+		}*/
 
 		@Override
 		public DataBinding<Object> getSelected() {

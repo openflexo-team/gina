@@ -12,11 +12,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
-import org.openflexo.antar.binding.Bindable;
 import org.openflexo.antar.binding.BindingFactory;
 import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
+import org.openflexo.antar.binding.DefaultBindable;
 import org.openflexo.antar.binding.TypeUtils;
 import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.controller.FIBController.Status;
@@ -276,7 +276,7 @@ public class ContextualMenu {
 		return null;
 	}
 
-	public static class MakeReusableComponentParameters implements Bindable {
+	public static class MakeReusableComponentParameters extends DefaultBindable {
 		public String componentName;
 		public File reusableComponentFile;
 		public Class reusableComponentClass;

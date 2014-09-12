@@ -37,10 +37,12 @@ import org.openflexo.antar.binding.BindingFactory;
 import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.antar.binding.DataBinding;
+import org.openflexo.antar.binding.DefaultBindable;
 import org.openflexo.antar.binding.TypeUtils;
 import org.openflexo.fib.model.FIBBrowserAction.FIBAddAction;
 import org.openflexo.fib.model.FIBBrowserAction.FIBCustomAction;
 import org.openflexo.fib.model.FIBBrowserAction.FIBRemoveAction;
+import org.openflexo.fib.model.FIBBrowserElement.FIBBrowserElementChildren.FIBBrowserElementChildrenImpl;
 import org.openflexo.fib.model.validation.ValidationReport;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
@@ -98,7 +100,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 	public FIBBrowser getOwner();
 
 	@Setter(OWNER_KEY)
-	public void setOwner(FIBBrowser customColumn);
+	public void setOwner(FIBBrowser browser);
 
 	@Getter(DATA_CLASS_KEY)
 	@XMLAttribute(xmlTag = "dataClassName")
@@ -218,9 +220,9 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 	public void finalizeBrowserDeserialization();
 
-	public void updateBindingModel();
+	// public void updateBindingModel();
 
-	public void notifiedBindingModelRecreated();
+	// public void notifiedBindingModelRecreated();
 
 	public Bindable getIterator();
 
@@ -313,6 +315,20 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public FIBComponent getComponent() {
 			return getOwner();
+		}
+
+		@Override
+		public void setOwner(FIBBrowser browser) {
+			BindingModel oldBindingModel = getBindingModel();
+			performSuperSetter(OWNER_KEY, browser);
+			bindingModelMightChange(oldBindingModel);
+		}
+
+		protected void bindingModelMightChange(BindingModel oldBindingModel) {
+			iterator.bindingModelMightChange(oldBindingModel);
+			for (FIBBrowserElementChildren e : getChildren()) {
+				((FIBBrowserElementChildrenImpl) e).bindingModelMightChange(oldBindingModel);
+			}
 		}
 
 		@Override
@@ -511,10 +527,10 @@ public interface FIBBrowserElement extends FIBModelObject {
 			return null;
 		}
 
-		@Override
+		/*@Override
 		public void updateBindingModel() {
 			actionBindingModel = null;
-		}
+		}*/
 
 		@Override
 		public BindingModel getActionBindingModel() {
@@ -535,10 +551,10 @@ public interface FIBBrowserElement extends FIBModelObject {
 			// logger.info("******** Table: "+getName()+" Add BindingVariable: iterator type="+getIteratorClass());
 		}
 
-		@Override
+		/*@Override
 		public void notifiedBindingModelRecreated() {
 			createActionBindingModel();
-		}
+		}*/
 
 		@Override
 		public Font retrieveValidFont() {
@@ -619,18 +635,23 @@ public interface FIBBrowserElement extends FIBModelObject {
 			return iterator;
 		}
 
-		private class FIBBrowserElementIterator implements Bindable {
+		private class FIBBrowserElementIterator extends DefaultBindable {
 			private BindingModel iteratorBindingModel = null;
 
 			@Override
 			public BindingModel getBindingModel() {
 				if (iteratorBindingModel == null) {
-					createFormatterBindingModel();
+					createIteratorBindingModel();
 				}
 				return iteratorBindingModel;
 			}
 
-			private void createFormatterBindingModel() {
+			private void bindingModelMightChange(BindingModel oldBindingModel) {
+				getBindingModel();
+				iteratorBindingModel.setBaseBindingModel(FIBBrowserElementImpl.this.getBindingModel());
+			}
+
+			private void createIteratorBindingModel() {
 				iteratorBindingModel = new BindingModel(FIBBrowserElementImpl.this.getBindingModel());
 				iteratorBindingModel.addToBindingVariables(new BindingVariable("object", Object.class) {
 					@Override
@@ -922,8 +943,18 @@ public interface FIBBrowserElement extends FIBModelObject {
 			@Deprecated
 			public static BindingDefinition CAST = new BindingDefinition("cast", Object.class, DataBinding.BindingDefinitionType.GET, false);
 
-			private class FIBChildBindable implements Bindable {
+			protected void bindingModelMightChange(BindingModel oldBindingModel) {
+				if (childBindable != null) {
+					childBindable.bindingModelMightChange(oldBindingModel);
+				}
+			}
+
+			private class FIBChildBindable extends DefaultBindable {
 				private BindingModel childBindingModel = null;
+
+				private void bindingModelMightChange(BindingModel oldBindingModel) {
+					childBindingModel.setBaseBindingModel(FIBBrowserElementChildrenImpl.this.getBindingModel());
+				}
 
 				@Override
 				public BindingFactory getBindingFactory() {

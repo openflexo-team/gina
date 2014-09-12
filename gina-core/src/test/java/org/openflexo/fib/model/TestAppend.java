@@ -11,6 +11,12 @@ import org.openflexo.fib.FIBTestCase;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
+/**
+ * Test append() feature in FIBContainer
+ * 
+ * @author sylvain
+ * 
+ */
 @RunWith(OrderedRunner.class)
 public class TestAppend extends FIBTestCase {
 
