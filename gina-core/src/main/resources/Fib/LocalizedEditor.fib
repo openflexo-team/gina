@@ -361,98 +361,98 @@
     </Panel>
   </Panel>
   <LocalizedDictionary>
-    <Localized key="English" lang="French">Anglais</Localized>
-    <Localized key="Dutch" lang="French">Néerlandais</Localized>
-    <Localized key="French" lang="French">Francais</Localized>
-    <Localized key="Key" lang="French">Clef</Localized>
-    <Localized key="Dutch" lang="English">Dutch</Localized>
-    <Localized key="English" lang="English">English</Localized>
-    <Localized key="French" lang="English">French</Localized>
-    <Localized key="Key" lang="English">Key</Localized>
-    <Localized key="Close" lang="French">Close</Localized>
-    <Localized key="Save" lang="French">Save</Localized>
-    <Localized key="localized_editor" lang="French">Editeur de locales</Localized>
-    <Localized key="localized_editor" lang="English">Localized editor</Localized>
-    <Localized key="add" lang="English">Add</Localized>
-    <Localized key="remove" lang="English">Remove</Localized>
-    <Localized key="refresh" lang="English">Refresh</Localized>
-    <Localized key="add" lang="French">Ajouter</Localized>
-    <Localized key="remove" lang="French">Supprimer</Localized>
-    <Localized key="refresh" lang="French">Rafraichir</Localized>
-    <Localized key="localized_editor" lang="Dutch">Localization Editor</Localized>
-    <Localized key="add" lang="Dutch">Add</Localized>
-    <Localized key="remove" lang="Dutch">Remove</Localized>
-    <Localized key="refresh" lang="Dutch">Refresh</Localized>
-    <Localized key="translate" lang="French">Traduire</Localized>
-    <Localized key="translate" lang="English">Translate</Localized>
-    <Localized key="translate" lang="Dutch">Translate</Localized>
-    <Localized key="parent" lang="English">Parent</Localized>
-    <Localized key="parent" lang="French">Parent</Localized>
-    <Localized key="parent" lang="Dutch">Parent</Localized>
-    <Localized key="directory" lang="English">Directory</Localized>
-    <Localized key="directory" lang="French">Répertoire</Localized>
-    <Localized key="directory" lang="Dutch">Directory</Localized>
-    <Localized key="all_entries" lang="English">All entries</Localized>
-    <Localized key="all_entries" lang="French">Toutes les entrées</Localized>
-    <Localized key="all_entries" lang="Dutch">All entries</Localized>
-    <Localized key="issues" lang="English">Issues</Localized>
-    <Localized key="issues" lang="French">Problèmes</Localized>
-    <Localized key="issues" lang="Dutch">Issues</Localized>
-    <Localized key="search" lang="English">Search</Localized>
-    <Localized key="search" lang="French">Rechercher</Localized>
-    <Localized key="search" lang="Dutch">Search</Localized>
-    <Localized key="Save" lang="English">Save</Localized>
-    <Localized key="Save" lang="Dutch">Save</Localized>
-    <Localized key="Close" lang="English">Close</Localized>
-    <Localized key="Close" lang="Dutch">Close</Localized>
-    <Localized key="Key" lang="Dutch">Key</Localized>
-    <Localized key="French" lang="Dutch">French</Localized>
-    <Localized key="English" lang="Dutch">English</Localized>
-    <Localized key="Dutch" lang="Dutch">Dutch</Localized>
-    <Localized key="french" lang="English">French</Localized>
-    <Localized key="french" lang="French">Francais</Localized>
-    <Localized key="french" lang="Dutch">French</Localized>
-    <Localized key="english" lang="English">English</Localized>
-    <Localized key="english" lang="French">Anglais</Localized>
-    <Localized key="english" lang="Dutch">English</Localized>
-    <Localized key="dutch" lang="English">Dutch</Localized>
-    <Localized key="dutch" lang="French">Néerlandais</Localized>
-    <Localized key="dutch" lang="Dutch">Dutch</Localized>
-    <Localized key="key" lang="English">Key</Localized>
-    <Localized key="key" lang="French">Identifiant</Localized>
-    <Localized key="key" lang="Dutch">Key</Localized>
-    <Localized key="HTML" lang="English">HTML</Localized>
-    <Localized key="HTML" lang="French">HTML</Localized>
-    <Localized key="HTML" lang="Dutch">HTML</Localized>
-    <Localized key="translate_all" lang="English">Translate all</Localized>
-    <Localized key="translate_all" lang="French">Traduire tout</Localized>
-    <Localized key="translate_all" lang="Dutch">Translate all</Localized>
-    <Localized key="open_parent_locales_link" lang="English">&lt;html&gt;&lt;a href="_blank"&gt;Open&lt;/a&gt;&lt;/html&gt;</Localized>
-    <Localized key="open_parent_locales_link" lang="French">&lt;html&gt;&lt;a href="_blank"&gt;Ouvrir&lt;/a&gt;&lt;/html&gt;</Localized>
-    <Localized key="open_parent_locales_link" lang="Dutch">&lt;html&gt;&lt;a href="_blank"&gt;Open&lt;/a&gt;&lt;/html&gt;</Localized>
-    <Localized key="entries" lang="English">entries</Localized>
-    <Localized key="entries" lang="French">entries</Localized>
-    <Localized key="entries" lang="Dutch">entries</Localized>
-    <Localized key="search_entries" lang="English">Search entries</Localized>
-    <Localized key="search_entries" lang="French">Rechercher les entrées</Localized>
-    <Localized key="search_entries" lang="Dutch">Search entries</Localized>
-    <Localized key="matches" lang="English">matches</Localized>
-    <Localized key="matches" lang="French">matches</Localized>
-    <Localized key="matches" lang="Dutch">matches</Localized>
-    <Localized key="parent_locales" lang="English">Parent locales</Localized>
-    <Localized key="parent_locales" lang="French">Locales parentes</Localized>
-    <Localized key="parent_locales" lang="Dutch">Parent locales</Localized>
-    <Localized key="apply" lang="English">Apply</Localized>
-    <Localized key="apply" lang="French">Appliquer</Localized>
-    <Localized key="apply" lang="Dutch">Apply</Localized>
-    <Localized key="Contains" lang="English">Containing</Localized>
-    <Localized key="Contains" lang="French">Contenant</Localized>
-    <Localized key="Contains" lang="Dutch">Containing</Localized>
-    <Localized key="BeginsWith" lang="English">Beginning with</Localized>
-    <Localized key="BeginsWith" lang="French">Commencant par</Localized>
-    <Localized key="BeginsWith" lang="Dutch">Beginning with</Localized>
-    <Localized key="EndsWith" lang="English">Ending with</Localized>
-    <Localized key="EndsWith" lang="French">Terminant par</Localized>
-    <Localized key="EndsWith" lang="Dutch">Ending with</Localized>
+    <Localized key="English" lang="French" value="Anglais" />
+    <Localized key="Dutch" lang="French" value="Néerlandais" />
+    <Localized key="French" lang="French" value="Francais" />
+    <Localized key="Key" lang="French" value="Clef" />
+    <Localized key="Dutch" lang="English" value="Dutch" />
+    <Localized key="English" lang="English" value="English" />
+    <Localized key="French" lang="English" value="French" />
+    <Localized key="Key" lang="English" value="Key" />
+    <Localized key="Close" lang="French" value="Close" />
+    <Localized key="Save" lang="French" value="Save" />
+    <Localized key="localized_editor" lang="French" value="Editeur de locales" />
+    <Localized key="localized_editor" lang="English" value="Localized editor" />
+    <Localized key="add" lang="English" value="Add" />
+    <Localized key="remove" lang="English" value="Remove" />
+    <Localized key="refresh" lang="English" value="Refresh" />
+    <Localized key="add" lang="French" value="Ajouter" />
+    <Localized key="remove" lang="French" value="Supprimer" />
+    <Localized key="refresh" lang="French" value="Rafraichir" />
+    <Localized key="localized_editor" lang="Dutch" value="Localization Editor" />
+    <Localized key="add" lang="Dutch" value="Add" />
+    <Localized key="remove" lang="Dutch" value="Remove" />
+    <Localized key="refresh" lang="Dutch" value="Refresh" />
+    <Localized key="translate" lang="French" value="Traduire" />
+    <Localized key="translate" lang="English" value="Translate" />
+    <Localized key="translate" lang="Dutch" value="Translate" />
+    <Localized key="parent" lang="English" value="Parent" />
+    <Localized key="parent" lang="French" value="Parent" />
+    <Localized key="parent" lang="Dutch" value="Parent" />
+    <Localized key="directory" lang="English" value="Directory" />
+    <Localized key="directory" lang="French" value="Répertoire" />
+    <Localized key="directory" lang="Dutch" value="Directory" />
+    <Localized key="all_entries" lang="English" value="All entries" />
+    <Localized key="all_entries" lang="French" value="Toutes les entrées" />
+    <Localized key="all_entries" lang="Dutch" value="All entries" />
+    <Localized key="issues" lang="English" value="Issues" />
+    <Localized key="issues" lang="French" value="Problèmes" />
+    <Localized key="issues" lang="Dutch" value="Issues" />
+    <Localized key="search" lang="English" value="Search" />
+    <Localized key="search" lang="French" value="Rechercher" />
+    <Localized key="search" lang="Dutch" value="Search" />
+    <Localized key="Save" lang="English" value="Save" />
+    <Localized key="Save" lang="Dutch" value="Save" />
+    <Localized key="Close" lang="English" value="Close" />
+    <Localized key="Close" lang="Dutch" value="Close" />
+    <Localized key="Key" lang="Dutch" value="Key" />
+    <Localized key="French" lang="Dutch" value="French" />
+    <Localized key="English" lang="Dutch" value="English" />
+    <Localized key="Dutch" lang="Dutch" value="Dutch" />
+    <Localized key="french" lang="English" value="French" />
+    <Localized key="french" lang="French" value="Francais" />
+    <Localized key="french" lang="Dutch" value="French" />
+    <Localized key="english" lang="English" value="English" />
+    <Localized key="english" lang="French" value="Anglais" />
+    <Localized key="english" lang="Dutch" value="English" />
+    <Localized key="dutch" lang="English" value="Dutch" />
+    <Localized key="dutch" lang="French" value="Néerlandais" />
+    <Localized key="dutch" lang="Dutch" value="Dutch" />
+    <Localized key="key" lang="English" value="Key" />
+    <Localized key="key" lang="French" value="Identifiant" />
+    <Localized key="key" lang="Dutch" value="Key" />
+    <Localized key="HTML" lang="English" value="HTML" />
+    <Localized key="HTML" lang="French" value="HTML" />
+    <Localized key="HTML" lang="Dutch" value="HTML" />
+    <Localized key="translate_all" lang="English" value="Translate all" />
+    <Localized key="translate_all" lang="French" value="Traduire tout" />
+    <Localized key="translate_all" lang="Dutch" value="Translate all" />
+    <Localized key="open_parent_locales_link" lang="English" value="&lt;html&gt;&lt;a href=&quot;_blank&quot;&gt;Open&lt;/a&gt;&lt;/html&gt;" />
+    <Localized key="open_parent_locales_link" lang="French" value="&lt;html&gt;&lt;a href=&quot;_blank&quot;&gt;Ouvrir&lt;/a&gt;&lt;/html&gt;" />
+    <Localized key="open_parent_locales_link" lang="Dutch" value="&lt;html&gt;&lt;a href=&quot;_blank&quot;&gt;Open&lt;/a&gt;&lt;/html&gt;" />
+    <Localized key="entries" lang="English" value="entries" />
+    <Localized key="entries" lang="French" value="entries" />
+    <Localized key="entries" lang="Dutch" value="entries" />
+    <Localized key="search_entries" lang="English" value="Search entries" />
+    <Localized key="search_entries" lang="French" value="Rechercher les entrées" />
+    <Localized key="search_entries" lang="Dutch" value="Search entries" />
+    <Localized key="matches" lang="English" value="matches" />
+    <Localized key="matches" lang="French" value="matches" />
+    <Localized key="matches" lang="Dutch" value="matches" />
+    <Localized key="parent_locales" lang="English" value="Parent locales" />
+    <Localized key="parent_locales" lang="French" value="Locales parentes" />
+    <Localized key="parent_locales" lang="Dutch" value="Parent locales" />
+    <Localized key="apply" lang="English" value="Apply" />
+    <Localized key="apply" lang="French" value="Appliquer" />
+    <Localized key="apply" lang="Dutch" value="Apply" />
+    <Localized key="Contains" lang="English" value="Containing" />
+    <Localized key="Contains" lang="French" value="Contenant" />
+    <Localized key="Contains" lang="Dutch" value="Containing" />
+    <Localized key="BeginsWith" lang="English" value="Beginning with" />
+    <Localized key="BeginsWith" lang="French" value="Commencant par" />
+    <Localized key="BeginsWith" lang="Dutch" value="Beginning with" />
+    <Localized key="EndsWith" lang="English" value="Ending with" />
+    <Localized key="EndsWith" lang="French" value="Terminant par" />
+    <Localized key="EndsWith" lang="Dutch" value="Ending with" />
   </LocalizedDictionary>
 </Panel>

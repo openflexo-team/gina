@@ -15,38 +15,38 @@
     <Button action="controller.validateAndDispose()" buttonType="Trigger" label="close" localize="true" index="1" constraints="flow(index=1)" />
   </Panel>
   <LocalizedDictionary>
-    <Localized key="English" lang="French">Anglais</Localized>
-    <Localized key="Dutch" lang="French">Néérlandais</Localized>
-    <Localized key="French" lang="French">Français</Localized>
-    <Localized key="Key" lang="French">Clef</Localized>
-    <Localized key="Dutch" lang="English">Dutch</Localized>
-    <Localized key="English" lang="English">English</Localized>
-    <Localized key="French" lang="English">French</Localized>
-    <Localized key="Key" lang="English">Key</Localized>
-    <Localized key="close" lang="French">Fermer</Localized>
-    <Localized key="save" lang="French">Sauver</Localized>
-    <Localized key="close" lang="English">Close</Localized>
-    <Localized key="save" lang="English">Save</Localized>
-    <Localized key="search_new_entries" lang="French">Rechercher les nouvelles entrées</Localized>
-    <Localized key="search_new_entries" lang="English">Search new entries</Localized>
-    <Localized key="refresh" lang="French">Rafraichir</Localized>
-    <Localized key="refresh" lang="English">Refresh</Localized>
-    <Localized key="localized_editor" lang="French">Edition des traductions</Localized>
-    <Localized key="localized_editor" lang="English">Localization Editor</Localized>
-    <Localized key="add" lang="English">Add</Localized>
-    <Localized key="add" lang="French">Ajouter</Localized>
-    <Localized key="add" lang="Dutch">Voeg toe</Localized>
-    <Localized key="remove" lang="English">Remove</Localized>
-    <Localized key="remove" lang="French">Supprimer</Localized>
-    <Localized key="remove" lang="Dutch">Verwijderen</Localized>
-    <Localized key="localized_editor" lang="Dutch">Localization Editor</Localized>
-    <Localized key="Key" lang="Dutch">Sleutel</Localized>
-    <Localized key="French" lang="Dutch">French</Localized>
-    <Localized key="English" lang="Dutch">English</Localized>
-    <Localized key="Dutch" lang="Dutch">Dutch</Localized>
-    <Localized key="search_new_entries" lang="Dutch">Zoeken naar nieuwe inzendingen</Localized>
-    <Localized key="refresh" lang="Dutch">Herladen</Localized>
-    <Localized key="close" lang="Dutch">Sluiten</Localized>
-    <Localized key="save" lang="Dutch">Opslaan</Localized>
+    <Localized key="English" lang="French" value="Anglais" />
+    <Localized key="Dutch" lang="French" value="Néérlandais" />
+    <Localized key="French" lang="French" value="Français" />
+    <Localized key="Key" lang="French" value="Clef" />
+    <Localized key="Dutch" lang="English" value="Dutch" />
+    <Localized key="English" lang="English" value="English" />
+    <Localized key="French" lang="English" value="French" />
+    <Localized key="Key" lang="English" value="Key" />
+    <Localized key="close" lang="French" value="Fermer" />
+    <Localized key="save" lang="French" value="Sauver" />
+    <Localized key="close" lang="English" value="Close" />
+    <Localized key="save" lang="English" value="Save" />
+    <Localized key="search_new_entries" lang="French" value="Rechercher les nouvelles entrées" />
+    <Localized key="search_new_entries" lang="English" value="Search new entries" />
+    <Localized key="refresh" lang="French" value="Rafraichir" />
+    <Localized key="refresh" lang="English" value="Refresh" />
+    <Localized key="localized_editor" lang="French" value="Edition des traductions" />
+    <Localized key="localized_editor" lang="English" value="Localization Editor" />
+    <Localized key="add" lang="English" value="Add" />
+    <Localized key="add" lang="French" value="Ajouter" />
+    <Localized key="add" lang="Dutch" value="Voeg toe" />
+    <Localized key="remove" lang="English" value="Remove" />
+    <Localized key="remove" lang="French" value="Supprimer" />
+    <Localized key="remove" lang="Dutch" value="Verwijderen" />
+    <Localized key="localized_editor" lang="Dutch" value="Localization Editor" />
+    <Localized key="Key" lang="Dutch" value="Sleutel" />
+    <Localized key="French" lang="Dutch" value="French" />
+    <Localized key="English" lang="Dutch" value="English" />
+    <Localized key="Dutch" lang="Dutch" value="Dutch" />
+    <Localized key="search_new_entries" lang="Dutch" value="Zoeken naar nieuwe inzendingen" />
+    <Localized key="refresh" lang="Dutch" value="Herladen" />
+    <Localized key="close" lang="Dutch" value="Sluiten" />
+    <Localized key="save" lang="Dutch" value="Opslaan" />
   </LocalizedDictionary>
 </Panel>

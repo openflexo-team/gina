@@ -59,25 +59,25 @@
     </Tab>
   </TabPanel>
   <LocalizedDictionary>
-    <Localized key="enable" lang="English">Enable</Localized>
-    <Localized key="format" lang="English">Format</Localized>
-    <Localized key="enable" lang="French">Activer</Localized>
-    <Localized key="format" lang="French">Format</Localized>
-    <Localized key="Basic" lang="French">Basique</Localized>
-    <Localized key="enable" lang="Dutch">Enable</Localized>
-    <Localized key="format" lang="Dutch">Format</Localized>
-    <Localized key="dynamic_model" lang="French">Modèle dynamique</Localized>
-    <Localized key="localize_component" lang="French">Localiser le composant</Localized>
-    <Localized key="read_only_component" lang="French">Composant en lecture seule</Localized>
-    <Localized key="value_changed" lang="French">Valeur changée</Localized>
-    <Localized key="value_changed" lang="English">Value changed</Localized>
-    <Localized key="dynamic_model" lang="English">Dynamic model</Localized>
-    <Localized key="localize_component" lang="English">Localize component</Localized>
-    <Localized key="read_only_component" lang="English">Read-only component</Localized>
-    <Localized key="value_changed" lang="Dutch">Value changed</Localized>
-    <Localized key="read_only_component" lang="Dutch">Read-only component</Localized>
-    <Localized key="localize_component" lang="Dutch">Localize component</Localized>
-    <Localized key="dynamic_model" lang="Dutch">Dynamic model</Localized>
+    <Localized key="enable" lang="English" value="Enable" />
+    <Localized key="format" lang="English" value="Format" />
+    <Localized key="enable" lang="French" value="Activer" />
+    <Localized key="format" lang="French" value="Format" />
+    <Localized key="Basic" lang="French" value="Basique" />
+    <Localized key="enable" lang="Dutch" value="Enable" />
+    <Localized key="format" lang="Dutch" value="Format" />
+    <Localized key="dynamic_model" lang="French" value="Modèle dynamique" />
+    <Localized key="localize_component" lang="French" value="Localiser le composant" />
+    <Localized key="read_only_component" lang="French" value="Composant en lecture seule" />
+    <Localized key="value_changed" lang="French" value="Valeur changée" />
+    <Localized key="value_changed" lang="English" value="Value changed" />
+    <Localized key="dynamic_model" lang="English" value="Dynamic model" />
+    <Localized key="localize_component" lang="English" value="Localize component" />
+    <Localized key="read_only_component" lang="English" value="Read-only component" />
+    <Localized key="value_changed" lang="Dutch" value="Value changed" />
+    <Localized key="read_only_component" lang="Dutch" value="Read-only component" />
+    <Localized key="localize_component" lang="Dutch" value="Localize component" />
+    <Localized key="dynamic_model" lang="Dutch" value="Dynamic model" />
   </LocalizedDictionary>
   <Parameter name="title" value="Widget" />
 </Panel>
