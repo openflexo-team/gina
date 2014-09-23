@@ -43,6 +43,7 @@ import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBCustom.FIBCustomAssignment;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
 import org.openflexo.fib.view.FIBWidgetView;
+import org.openflexo.kvc.InvalidKeyValuePropertyException;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 
 /**
@@ -269,6 +270,8 @@ public class FIBCustomWidget<J extends JComponent, T> extends FIBWidgetView<FIBC
 					} catch (InvocationTargetException e) {
 						e.printStackTrace();
 					} catch (NotSettableContextException e) {
+						e.printStackTrace();
+					} catch (InvalidKeyValuePropertyException e) {
 						e.printStackTrace();
 					}
 				}
