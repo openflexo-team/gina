@@ -135,283 +135,283 @@
     </Tab>
   </TabPanel>
   <LocalizedDictionary>
-    <Localized key="title" lang="English">Title</Localized>
-    <Localized key="type" lang="English">Type</Localized>
-    <Localized key="width" lang="English">Width</Localized>
-    <Localized key="move_up" lang="English">Move up</Localized>
-    <Localized key="move_down" lang="English">Move down</Localized>
-    <Localized key="method" lang="English">Method</Localized>
-    <Localized key="delete_action" lang="English">Delete action</Localized>
-    <Localized key="title" lang="French">Titre</Localized>
-    <Localized key="type" lang="French">Type</Localized>
-    <Localized key="width" lang="French">Largeur</Localized>
-    <Localized key="Data" lang="French">Donnée</Localized>
-    <Localized key="move_up" lang="French">Remonter</Localized>
-    <Localized key="move_down" lang="French">Descendre</Localized>
-    <Localized key="method" lang="French">Méthode</Localized>
-    <Localized key="delete_action" lang="French">Supprimer l'action</Localized>
-    <Localized key="Basic" lang="French">Basique</Localized>
-    <Localized key="Graphics" lang="French">Graphisme</Localized>
-    <Localized key="title" lang="Dutch">Title</Localized>
-    <Localized key="type" lang="Dutch">Type</Localized>
-    <Localized key="width" lang="Dutch">Width</Localized>
-    <Localized key="move_up" lang="Dutch">Move up</Localized>
-    <Localized key="move_down" lang="Dutch">Move down</Localized>
-    <Localized key="method" lang="Dutch">Method</Localized>
-    <Localized key="delete_action" lang="Dutch">Delete action</Localized>
-    <Localized key="action" lang="French">Action</Localized>
-    <Localized key="available" lang="French">Disponibilité</Localized>
-    <Localized key="bg_non_selection_color" lang="French">Arrière plan</Localized>
-    <Localized key="bg_sec_selection_color" lang="French">Arrière plan sélectionné</Localized>
-    <Localized key="bg_selection_color" lang="French">Arrière plan sélectionné</Localized>
-    <Localized key="bg_non_selection_color" lang="English">Background</Localized>
-    <Localized key="bg_sec_selection_color" lang="English">Selection background</Localized>
-    <Localized key="bg_selection_color" lang="English">Selection background</Localized>
-    <Localized key="bg_selection_color" lang="Dutch">Selection background</Localized>
-    <Localized key="bg_sec_selection_color" lang="Dutch">Selection background</Localized>
-    <Localized key="bg_non_selection_color" lang="Dutch">Background</Localized>
-    <Localized key="bound_to_selection_manager" lang="French">Connecté à un gestionnaire de sélection</Localized>
-    <Localized key="create_new_row_on_click" lang="French">Créer une nouvelle ligne si click</Localized>
-    <Localized key="Columns" lang="French">Colonnes</Localized>
-    <Localized key="Controls" lang="French">Contrôles</Localized>
-    <Localized key="delete_column" lang="French">Supprimer la colonne</Localized>
-    <Localized key="iterator_class" lang="French">Classe de l'itérateur</Localized>
-    <Localized key="move_to_bottom" lang="French">En dernier</Localized>
-    <Localized key="move_to_top" lang="French">En premier</Localized>
-    <Localized key="new_add_action" lang="French">Créer une action AJOUT</Localized>
-    <Localized key="new_checkbox_column" lang="French">Colonne CHECKBOX</Localized>
-    <Localized key="new_custom_action" lang="French">Créer une action CUSTOM</Localized>
-    <Localized key="new_custom_column" lang="French">Colonne CUSTOM</Localized>
-    <Localized key="new_dropdown_column" lang="French">Colonne DROPDOWN</Localized>
-    <Localized key="new_icon_column" lang="French">Colonne ICONE</Localized>
-    <Localized key="new_label_column" lang="French">Colonne LABEL</Localized>
-    <Localized key="new_number_column" lang="French">Colonne NUMBER</Localized>
-    <Localized key="new_remove_action" lang="French">Créer une action REMOVE</Localized>
-    <Localized key="new_textfield_column" lang="French">Colonne TEXTFIELD</Localized>
-    <Localized key="row_height" lang="French">Hauteur de ligne</Localized>
-    <Localized key="select_first_row" lang="French">Sélectionner la première ligne</Localized>
-    <Localized key="selected" lang="French">Sélection</Localized>
-    <Localized key="selectionMode" lang="French">Mode de sélection</Localized>
-    <Localized key="show_footer" lang="French">Voir le pied de table</Localized>
-    <Localized key="text_non_selectionColor" lang="French">Texte non sélectionné</Localized>
-    <Localized key="text_selection_color" lang="French">Texte sélectionné</Localized>
-    <Localized key="visible_row_count" lang="French">Nombre de lignes visibles</Localized>
-    <Localized key="action" lang="English">Action</Localized>
-    <Localized key="available" lang="English">Available</Localized>
-    <Localized key="bound_to_selection_manager" lang="English">Bound to selection manager</Localized>
-    <Localized key="create_new_row_on_click" lang="English">Create new row on click</Localized>
-    <Localized key="delete_column" lang="English">Delete column</Localized>
-    <Localized key="iterator_class" lang="English">Iterator class</Localized>
-    <Localized key="move_to_bottom" lang="English">Move to bottom</Localized>
-    <Localized key="move_to_top" lang="English">Move to top</Localized>
-    <Localized key="new_add_action" lang="English">New ADD action</Localized>
-    <Localized key="new_custom_action" lang="English">New CUSTOM action</Localized>
-    <Localized key="new_remove_action" lang="English">New DELETE action</Localized>
-    <Localized key="new_checkbox_column" lang="English">Column CHECKBOX</Localized>
-    <Localized key="new_custom_column" lang="English">Column CUSTOM</Localized>
-    <Localized key="new_dropdown_column" lang="English">Column DROPDOWN</Localized>
-    <Localized key="new_icon_column" lang="English">Column ICONE</Localized>
-    <Localized key="new_label_column" lang="English">Column LABEL</Localized>
-    <Localized key="new_number_column" lang="English">Column NUMBER</Localized>
-    <Localized key="new_textfield_column" lang="English">Column TEXTFIELD</Localized>
-    <Localized key="new_checkbox_column" lang="Dutch">Column CHECKBOX</Localized>
-    <Localized key="row_height" lang="English">Row height</Localized>
-    <Localized key="select_first_row" lang="English">Select first row</Localized>
-    <Localized key="selected" lang="English">Selected</Localized>
-    <Localized key="selectionMode" lang="English">Selection mode</Localized>
-    <Localized key="show_footer" lang="English">Show footer</Localized>
-    <Localized key="text_non_selectionColor" lang="English">Non selected text</Localized>
-    <Localized key="text_selection_color" lang="English">Selected text</Localized>
-    <Localized key="visible_row_count" lang="English">Visible row count</Localized>
-    <Localized key="table_colors" lang="English">Table colors</Localized>
-    <Localized key="table_colors" lang="French">Couleurs de la table</Localized>
-    <Localized key="enable" lang="English">Enable</Localized>
-    <Localized key="format" lang="English">Format</Localized>
-    <Localized key="enable" lang="French">Activer</Localized>
-    <Localized key="format" lang="French">Format</Localized>
-    <Localized key="Basic" lang="French">Basique</Localized>
-    <Localized key="enable" lang="Dutch">Enable</Localized>
-    <Localized key="format" lang="Dutch">Format</Localized>
-    <Localized key="dynamic_model" lang="French">Modèle dynamique</Localized>
-    <Localized key="localize_component" lang="French">Localiser le composant</Localized>
-    <Localized key="read_only_component" lang="French">Composant en lecture seule</Localized>
-    <Localized key="value_changed" lang="French">Valeur changée</Localized>
-    <Localized key="value_changed" lang="English">Value changed</Localized>
-    <Localized key="dynamic_model" lang="English">Dynamic model</Localized>
-    <Localized key="localize_component" lang="English">Localize component</Localized>
-    <Localized key="read_only_component" lang="English">Read-only component</Localized>
-    <Localized key="value_changed" lang="Dutch">Value changed</Localized>
-    <Localized key="read_only_component" lang="Dutch">Read-only component</Localized>
-    <Localized key="localize_component" lang="Dutch">Localize component</Localized>
-    <Localized key="dynamic_model" lang="Dutch">Dynamic model</Localized>
-    <Localized key="name" lang="English">Name</Localized>
-    <Localized key="index" lang="English">Index</Localized>
-    <Localized key="location" lang="English">Location</Localized>
-    <Localized key="column" lang="English">Column</Localized>
-    <Localized key="top" lang="English">Top</Localized>
-    <Localized key="left" lang="English">Left</Localized>
-    <Localized key="right" lang="English">Right</Localized>
-    <Localized key="define_specific_font" lang="English">Define specific font</Localized>
-    <Localized key="define_preferred_dimensions" lang="English">Define preferred dimensions</Localized>
-    <Localized key="width" lang="English">Width</Localized>
-    <Localized key="height" lang="English">Height</Localized>
-    <Localized key="value" lang="English">Value</Localized>
-    <Localized key="name" lang="French">Nom</Localized>
-    <Localized key="index" lang="French">Index</Localized>
-    <Localized key="location" lang="French">Positionement</Localized>
-    <Localized key="column" lang="French">Colonne</Localized>
-    <Localized key="top" lang="French">Haut</Localized>
-    <Localized key="left" lang="French">Gauche</Localized>
-    <Localized key="right" lang="French">Droit</Localized>
-    <Localized key="define_specific_font" lang="French">Définir la police spécifique</Localized>
-    <Localized key="define_preferred_dimensions" lang="French">Définir les dimensions préférées</Localized>
-    <Localized key="width" lang="French">Largeur</Localized>
-    <Localized key="height" lang="French">Hauteur</Localized>
-    <Localized key="value" lang="French">Valeur</Localized>
-    <Localized key="Basic" lang="French">Basique</Localized>
-    <Localized key="Advanced" lang="French">Avancé</Localized>
-    <Localized key="Graphics" lang="French">Graphisme</Localized>
-    <Localized key="name" lang="Dutch">Name</Localized>
-    <Localized key="index" lang="Dutch">Index</Localized>
-    <Localized key="location" lang="Dutch">Location</Localized>
-    <Localized key="column" lang="Dutch">Column</Localized>
-    <Localized key="top" lang="Dutch">Top</Localized>
-    <Localized key="left" lang="Dutch">Left</Localized>
-    <Localized key="right" lang="Dutch">Right</Localized>
-    <Localized key="define_specific_font" lang="Dutch">Define specific font</Localized>
-    <Localized key="define_preferred_dimensions" lang="Dutch">Define preferred dimensions</Localized>
-    <Localized key="width" lang="Dutch">Width</Localized>
-    <Localized key="height" lang="Dutch">Height</Localized>
-    <Localized key="value" lang="Dutch">Value</Localized>
-    <Localized key="alignmentX" lang="French">Alignement X</Localized>
-    <Localized key="alignmentY" lang="French">Alignement Y</Localized>
-    <Localized key="anchor" lang="French">Ancrage</Localized>
-    <Localized key="bottom" lang="French">Bas</Localized>
-    <Localized key="data" lang="French">Donnée</Localized>
-    <Localized key="data_class" lang="French">Classe de donnée</Localized>
-    <Localized key="delete_dependency" lang="French">Supprimer la dépendance</Localized>
-    <Localized key="delete_parameter" lang="French">Supprimer le paramètre</Localized>
-    <Localized key="dependency" lang="French">Dépendance</Localized>
-    <Localized key="expand_horizontally" lang="French">Etendre horizontalement</Localized>
-    <Localized key="expand_vertically" lang="French">Etendre verticalement</Localized>
-    <Localized key="fill" lang="French">Remplir</Localized>
-    <Localized key="gridHeight" lang="French">Grid height</Localized>
-    <Localized key="gridWidth" lang="French">Grid width</Localized>
-    <Localized key="gridX" lang="French">Grid X</Localized>
-    <Localized key="gridY" lang="French">Grid Y</Localized>
-    <Localized key="Insets" lang="French">Insets</Localized>
-    <Localized key="make_new_dependency" lang="French">Créer une nouvelle dépendance</Localized>
-    <Localized key="make_new_parameter" lang="French">Créer un nouveau paramètre</Localized>
-    <Localized key="owner" lang="French">Propriétaire</Localized>
-    <Localized key="pads" lang="French">Pads</Localized>
-    <Localized key="padX" lang="French">Pad X</Localized>
-    <Localized key="padY" lang="French">Pad Y</Localized>
-    <Localized key="Params" lang="French">Paramètres</Localized>
-    <Localized key="owner" lang="English">Owner</Localized>
-    <Localized key="pads" lang="English">Pads</Localized>
-    <Localized key="pads" lang="Dutch">Pads</Localized>
-    <Localized key="padX" lang="English">Pad X</Localized>
-    <Localized key="padX" lang="Dutch">Pad X</Localized>
-    <Localized key="padY" lang="English">Pad Y</Localized>
-    <Localized key="padY" lang="Dutch">Pad Y</Localized>
-    <Localized key="owner" lang="Dutch">Owner</Localized>
-    <Localized key="make_new_parameter" lang="English">Make new parameter</Localized>
-    <Localized key="make_new_parameter" lang="Dutch">Make new parameter</Localized>
-    <Localized key="make_new_dependency" lang="English">Make new dependency</Localized>
-    <Localized key="make_new_dependency" lang="Dutch">Make new dependency</Localized>
-    <Localized key="gridY" lang="English">Grid Y</Localized>
-    <Localized key="gridY" lang="Dutch">Grid Y</Localized>
-    <Localized key="gridX" lang="English">Grid X</Localized>
-    <Localized key="gridX" lang="Dutch">Grid X</Localized>
-    <Localized key="gridWidth" lang="English">Grid width</Localized>
-    <Localized key="gridWidth" lang="Dutch">Grid width</Localized>
-    <Localized key="gridHeight" lang="English">Grid height</Localized>
-    <Localized key="gridHeight" lang="Dutch">Grid height</Localized>
-    <Localized key="fill" lang="English">Fill</Localized>
-    <Localized key="fill" lang="Dutch">Fill</Localized>
-    <Localized key="expand_vertically" lang="English">Expand vertically</Localized>
-    <Localized key="expand_vertically" lang="Dutch">Expand vertically</Localized>
-    <Localized key="expand_horizontally" lang="English">Expand horizontally</Localized>
-    <Localized key="expand_horizontally" lang="Dutch">Expand horizontally</Localized>
-    <Localized key="dependency" lang="English">Dependency</Localized>
-    <Localized key="dependency" lang="Dutch">Dependency</Localized>
-    <Localized key="delete_parameter" lang="English">Delete parameter</Localized>
-    <Localized key="delete_parameter" lang="Dutch">Delete parameter</Localized>
-    <Localized key="delete_dependency" lang="English">Delete dependency</Localized>
-    <Localized key="delete_dependency" lang="Dutch">Delete dependency</Localized>
-    <Localized key="data_class" lang="English">Data class</Localized>
-    <Localized key="data_class" lang="Dutch">Data class</Localized>
-    <Localized key="data" lang="English">Data</Localized>
-    <Localized key="data" lang="Dutch">Data</Localized>
-    <Localized key="bottom" lang="English">Bottom</Localized>
-    <Localized key="bottom" lang="Dutch">Bottom</Localized>
-    <Localized key="anchor" lang="English">Anchor</Localized>
-    <Localized key="anchor" lang="Dutch">Anchor</Localized>
-    <Localized key="alignmentX" lang="English">Alignment X</Localized>
-    <Localized key="alignmentX" lang="Dutch">Alignment X</Localized>
-    <Localized key="alignmentY" lang="English">Alignment Y</Localized>
-    <Localized key="alignmentY" lang="Dutch">Alignment Y</Localized>
-    <Localized key="font_and_colors" lang="English">Font and colors</Localized>
-    <Localized key="font_and_colors" lang="French">Police et couleurs</Localized>
-    <Localized key="component_size_management" lang="English">Component size management</Localized>
-    <Localized key="component_size_management" lang="French">Gestion de la taille du composant</Localized>
-    <Localized key="background_color" lang="English">Background color</Localized>
-    <Localized key="foreground_color" lang="English">Foreground color</Localized>
-    <Localized key="background_color" lang="French">Couleur de l'arrière-plan</Localized>
-    <Localized key="foreground_color" lang="French">Couleur d'avant-plan</Localized>
-    <Localized key="background_color" lang="Dutch">Background color</Localized>
-    <Localized key="foreground_color" lang="Dutch">Foreground color</Localized>
-    <Localized key="border_layout_constraints" lang="French">Contraintes de positionnement mode "BORDER"</Localized>
-    <Localized key="box_layout_constraints" lang="French">Contraintes de positionnement mode "BOX"</Localized>
-    <Localized key="grid_bag_layout_constraints" lang="French">Contraintes de positionnement mode "GRID BAG"</Localized>
-    <Localized key="grid_layout_constraints" lang="French">Contraintes de positionnement mode "GRID"</Localized>
-    <Localized key="free_location_constraints" lang="French">Contraintes de positionnement mode "LIBRE"</Localized>
-    <Localized key="flow_layout_constraints" lang="French">Contraintes de positionnement mode "FLOW"</Localized>
-    <Localized key="border_layout_constraints" lang="English">Border Layout constraints</Localized>
-    <Localized key="box_layout_constraints" lang="English">Box Layout constraints</Localized>
-    <Localized key="define_maximum_dimensions" lang="English">Define maximum dimensions</Localized>
-    <Localized key="define_minimum_dimensions" lang="English">Define minimum dimensions</Localized>
-    <Localized key="flow_layout_constraints" lang="English">Flow Layout constraints</Localized>
-    <Localized key="free_location_constraints" lang="English">Free Location constraints</Localized>
-    <Localized key="grid_bag_layout_constraints" lang="English">Grid Bag Layout constraints</Localized>
-    <Localized key="grid_layout_constraints" lang="English">Grid Layout constraints</Localized>
-    <Localized key="horizontal_policy" lang="French">Contraintes horizontales</Localized>
-    <Localized key="horizontal_policy" lang="English">Horizontal policy</Localized>
-    <Localized key="vertical_policy" lang="French">Contraintes verticales</Localized>
-    <Localized key="vertical_policy" lang="English">Vertical policy</Localized>
-    <Localized key="define_maximum_dimensions" lang="French">Définir des dimensions maximum</Localized>
-    <Localized key="define_minimum_dimensions" lang="French">Définir des dimensions minimum</Localized>
-    <Localized key="scroll_bar_policy" lang="French">Utilisation de "scroll bars"</Localized>
-    <Localized key="scroll_bar_policy" lang="English">Scroll Bar policy</Localized>
-    <Localized key="two_cols_layout_constraints" lang="French">Contraintes de positionnement mode "TWO COLS"</Localized>
-    <Localized key="two_cols_layout_constraints" lang="English">Two Columns Layout constraints</Localized>
-    <Localized key="use_scrollbar" lang="French">Utiliser des scroll bars</Localized>
-    <Localized key="use_scrollbar" lang="English">Use scroll bars</Localized>
-    <Localized key="visible" lang="French">Visible</Localized>
-    <Localized key="visible" lang="English">Visible</Localized>
-    <Localized key="weights" lang="French">Poids</Localized>
-    <Localized key="weights" lang="English">Weights</Localized>
-    <Localized key="weightX" lang="French">Poids en X</Localized>
-    <Localized key="weightY" lang="French">Poids en Y</Localized>
-    <Localized key="weightX" lang="English">Weight X</Localized>
-    <Localized key="weightY" lang="English">Weight Y</Localized>
-    <Localized key="name" lang="English">Name</Localized>
-    <Localized key="value" lang="English">Value</Localized>
-    <Localized key="name" lang="French">Nom</Localized>
-    <Localized key="value" lang="French">Valeur</Localized>
-    <Localized key="Basic" lang="French">Basique</Localized>
-    <Localized key="Advanced" lang="French">Avancé</Localized>
-    <Localized key="Graphics" lang="French">Graphisme</Localized>
-    <Localized key="name" lang="Dutch">Name</Localized>
-    <Localized key="value" lang="Dutch">Value</Localized>
-    <Localized key="delete_parameter" lang="French">Supprimer le paramètre</Localized>
-    <Localized key="Depends" lang="French">Dépendances</Localized>
-    <Localized key="Doc" lang="French">Doc</Localized>
-    <Localized key="make_new_parameter" lang="French">Créer un nouveau paramètre</Localized>
-    <Localized key="Params" lang="French">Paramètres</Localized>
-    <Localized key="Params" lang="English">Params</Localized>
-    <Localized key="make_new_parameter" lang="English">Make new parameter</Localized>
-    <Localized key="delete_parameter" lang="English">Delete parameter</Localized>
+    <Localized key="title" lang="English" value="Title" />
+    <Localized key="type" lang="English" value="Type" />
+    <Localized key="width" lang="English" value="Width" />
+    <Localized key="move_up" lang="English" value="Move up" />
+    <Localized key="move_down" lang="English" value="Move down" />
+    <Localized key="method" lang="English" value="Method" />
+    <Localized key="delete_action" lang="English" value="Delete action" />
+    <Localized key="title" lang="French" value="Titre" />
+    <Localized key="type" lang="French" value="Type" />
+    <Localized key="width" lang="French" value="Largeur" />
+    <Localized key="Data" lang="French" value="Donnée" />
+    <Localized key="move_up" lang="French" value="Remonter" />
+    <Localized key="move_down" lang="French" value="Descendre" />
+    <Localized key="method" lang="French" value="Méthode" />
+    <Localized key="delete_action" lang="French" value="Supprimer l'action" />
+    <Localized key="Basic" lang="French" value="Basique" />
+    <Localized key="Graphics" lang="French" value="Graphisme" />
+    <Localized key="title" lang="Dutch" value="Title" />
+    <Localized key="type" lang="Dutch" value="Type" />
+    <Localized key="width" lang="Dutch" value="Width" />
+    <Localized key="move_up" lang="Dutch" value="Move up" />
+    <Localized key="move_down" lang="Dutch" value="Move down" />
+    <Localized key="method" lang="Dutch" value="Method" />
+    <Localized key="delete_action" lang="Dutch" value="Delete action" />
+    <Localized key="action" lang="French" value="Action" />
+    <Localized key="available" lang="French" value="Disponibilité" />
+    <Localized key="bg_non_selection_color" lang="French" value="Arrière plan" />
+    <Localized key="bg_sec_selection_color" lang="French" value="Arrière plan sélectionné" />
+    <Localized key="bg_selection_color" lang="French" value="Arrière plan sélectionné" />
+    <Localized key="bg_non_selection_color" lang="English" value="Background" />
+    <Localized key="bg_sec_selection_color" lang="English" value="Selection background" />
+    <Localized key="bg_selection_color" lang="English" value="Selection background" />
+    <Localized key="bg_selection_color" lang="Dutch" value="Selection background" />
+    <Localized key="bg_sec_selection_color" lang="Dutch" value="Selection background" />
+    <Localized key="bg_non_selection_color" lang="Dutch" value="Background" />
+    <Localized key="bound_to_selection_manager" lang="French" value="Connecté à un gestionnaire de sélection" />
+    <Localized key="create_new_row_on_click" lang="French" value="Créer une nouvelle ligne si click" />
+    <Localized key="Columns" lang="French" value="Colonnes" />
+    <Localized key="Controls" lang="French" value="Contrôles" />
+    <Localized key="delete_column" lang="French" value="Supprimer la colonne" />
+    <Localized key="iterator_class" lang="French" value="Classe de l'itérateur" />
+    <Localized key="move_to_bottom" lang="French" value="En dernier" />
+    <Localized key="move_to_top" lang="French" value="En premier" />
+    <Localized key="new_add_action" lang="French" value="Créer une action AJOUT" />
+    <Localized key="new_checkbox_column" lang="French" value="Colonne CHECKBOX" />
+    <Localized key="new_custom_action" lang="French" value="Créer une action CUSTOM" />
+    <Localized key="new_custom_column" lang="French" value="Colonne CUSTOM" />
+    <Localized key="new_dropdown_column" lang="French" value="Colonne DROPDOWN" />
+    <Localized key="new_icon_column" lang="French" value="Colonne ICONE" />
+    <Localized key="new_label_column" lang="French" value="Colonne LABEL" />
+    <Localized key="new_number_column" lang="French" value="Colonne NUMBER" />
+    <Localized key="new_remove_action" lang="French" value="Créer une action REMOVE" />
+    <Localized key="new_textfield_column" lang="French" value="Colonne TEXTFIELD" />
+    <Localized key="row_height" lang="French" value="Hauteur de ligne" />
+    <Localized key="select_first_row" lang="French" value="Sélectionner la première ligne" />
+    <Localized key="selected" lang="French" value="Sélection" />
+    <Localized key="selectionMode" lang="French" value="Mode de sélection" />
+    <Localized key="show_footer" lang="French" value="Voir le pied de table" />
+    <Localized key="text_non_selectionColor" lang="French" value="Texte non sélectionné" />
+    <Localized key="text_selection_color" lang="French" value="Texte sélectionné" />
+    <Localized key="visible_row_count" lang="French" value="Nombre de lignes visibles" />
+    <Localized key="action" lang="English" value="Action" />
+    <Localized key="available" lang="English" value="Available" />
+    <Localized key="bound_to_selection_manager" lang="English" value="Bound to selection manager" />
+    <Localized key="create_new_row_on_click" lang="English" value="Create new row on click" />
+    <Localized key="delete_column" lang="English" value="Delete column" />
+    <Localized key="iterator_class" lang="English" value="Iterator class" />
+    <Localized key="move_to_bottom" lang="English" value="Move to bottom" />
+    <Localized key="move_to_top" lang="English" value="Move to top" />
+    <Localized key="new_add_action" lang="English" value="New ADD action" />
+    <Localized key="new_custom_action" lang="English" value="New CUSTOM action" />
+    <Localized key="new_remove_action" lang="English" value="New DELETE action" />
+    <Localized key="new_checkbox_column" lang="English" value="Column CHECKBOX" />
+    <Localized key="new_custom_column" lang="English" value="Column CUSTOM" />
+    <Localized key="new_dropdown_column" lang="English" value="Column DROPDOWN" />
+    <Localized key="new_icon_column" lang="English" value="Column ICONE" />
+    <Localized key="new_label_column" lang="English" value="Column LABEL" />
+    <Localized key="new_number_column" lang="English" value="Column NUMBER" />
+    <Localized key="new_textfield_column" lang="English" value="Column TEXTFIELD" />
+    <Localized key="new_checkbox_column" lang="Dutch" value="Column CHECKBOX" />
+    <Localized key="row_height" lang="English" value="Row height" />
+    <Localized key="select_first_row" lang="English" value="Select first row" />
+    <Localized key="selected" lang="English" value="Selected" />
+    <Localized key="selectionMode" lang="English" value="Selection mode" />
+    <Localized key="show_footer" lang="English" value="Show footer" />
+    <Localized key="text_non_selectionColor" lang="English" value="Non selected text" />
+    <Localized key="text_selection_color" lang="English" value="Selected text" />
+    <Localized key="visible_row_count" lang="English" value="Visible row count" />
+    <Localized key="table_colors" lang="English" value="Table colors" />
+    <Localized key="table_colors" lang="French" value="Couleurs de la table" />
+    <Localized key="enable" lang="English" value="Enable" />
+    <Localized key="format" lang="English" value="Format" />
+    <Localized key="enable" lang="French" value="Activer" />
+    <Localized key="format" lang="French" value="Format" />
+    <Localized key="Basic" lang="French" value="Basique" />
+    <Localized key="enable" lang="Dutch" value="Enable" />
+    <Localized key="format" lang="Dutch" value="Format" />
+    <Localized key="dynamic_model" lang="French" value="Modèle dynamique" />
+    <Localized key="localize_component" lang="French" value="Localiser le composant" />
+    <Localized key="read_only_component" lang="French" value="Composant en lecture seule" />
+    <Localized key="value_changed" lang="French" value="Valeur changée" />
+    <Localized key="value_changed" lang="English" value="Value changed" />
+    <Localized key="dynamic_model" lang="English" value="Dynamic model" />
+    <Localized key="localize_component" lang="English" value="Localize component" />
+    <Localized key="read_only_component" lang="English" value="Read-only component" />
+    <Localized key="value_changed" lang="Dutch" value="Value changed" />
+    <Localized key="read_only_component" lang="Dutch" value="Read-only component" />
+    <Localized key="localize_component" lang="Dutch" value="Localize component" />
+    <Localized key="dynamic_model" lang="Dutch" value="Dynamic model" />
+    <Localized key="name" lang="English" value="Name" />
+    <Localized key="index" lang="English" value="Index" />
+    <Localized key="location" lang="English" value="Location" />
+    <Localized key="column" lang="English" value="Column" />
+    <Localized key="top" lang="English" value="Top" />
+    <Localized key="left" lang="English" value="Left" />
+    <Localized key="right" lang="English" value="Right" />
+    <Localized key="define_specific_font" lang="English" value="Define specific font" />
+    <Localized key="define_preferred_dimensions" lang="English" value="Define preferred dimensions" />
+    <Localized key="width" lang="English" value="Width" />
+    <Localized key="height" lang="English" value="Height" />
+    <Localized key="value" lang="English" value="Value" />
+    <Localized key="name" lang="French" value="Nom" />
+    <Localized key="index" lang="French" value="Index" />
+    <Localized key="location" lang="French" value="Positionement" />
+    <Localized key="column" lang="French" value="Colonne" />
+    <Localized key="top" lang="French" value="Haut" />
+    <Localized key="left" lang="French" value="Gauche" />
+    <Localized key="right" lang="French" value="Droit" />
+    <Localized key="define_specific_font" lang="French" value="Définir la police spécifique" />
+    <Localized key="define_preferred_dimensions" lang="French" value="Définir les dimensions préférées" />
+    <Localized key="width" lang="French" value="Largeur" />
+    <Localized key="height" lang="French" value="Hauteur" />
+    <Localized key="value" lang="French" value="Valeur" />
+    <Localized key="Basic" lang="French" value="Basique" />
+    <Localized key="Advanced" lang="French" value="Avancé" />
+    <Localized key="Graphics" lang="French" value="Graphisme" />
+    <Localized key="name" lang="Dutch" value="Name" />
+    <Localized key="index" lang="Dutch" value="Index" />
+    <Localized key="location" lang="Dutch" value="Location" />
+    <Localized key="column" lang="Dutch" value="Column" />
+    <Localized key="top" lang="Dutch" value="Top" />
+    <Localized key="left" lang="Dutch" value="Left" />
+    <Localized key="right" lang="Dutch" value="Right" />
+    <Localized key="define_specific_font" lang="Dutch" value="Define specific font" />
+    <Localized key="define_preferred_dimensions" lang="Dutch" value="Define preferred dimensions" />
+    <Localized key="width" lang="Dutch" value="Width" />
+    <Localized key="height" lang="Dutch" value="Height" />
+    <Localized key="value" lang="Dutch" value="Value" />
+    <Localized key="alignmentX" lang="French" value="Alignement X" />
+    <Localized key="alignmentY" lang="French" value="Alignement Y" />
+    <Localized key="anchor" lang="French" value="Ancrage" />
+    <Localized key="bottom" lang="French" value="Bas" />
+    <Localized key="data" lang="French" value="Donnée" />
+    <Localized key="data_class" lang="French" value="Classe de donnée" />
+    <Localized key="delete_dependency" lang="French" value="Supprimer la dépendance" />
+    <Localized key="delete_parameter" lang="French" value="Supprimer le paramètre" />
+    <Localized key="dependency" lang="French" value="Dépendance" />
+    <Localized key="expand_horizontally" lang="French" value="Etendre horizontalement" />
+    <Localized key="expand_vertically" lang="French" value="Etendre verticalement" />
+    <Localized key="fill" lang="French" value="Remplir" />
+    <Localized key="gridHeight" lang="French" value="Grid height" />
+    <Localized key="gridWidth" lang="French" value="Grid width" />
+    <Localized key="gridX" lang="French" value="Grid X" />
+    <Localized key="gridY" lang="French" value="Grid Y" />
+    <Localized key="Insets" lang="French" value="Insets" />
+    <Localized key="make_new_dependency" lang="French" value="Créer une nouvelle dépendance" />
+    <Localized key="make_new_parameter" lang="French" value="Créer un nouveau paramètre" />
+    <Localized key="owner" lang="French" value="Propriétaire" />
+    <Localized key="pads" lang="French" value="Pads" />
+    <Localized key="padX" lang="French" value="Pad X" />
+    <Localized key="padY" lang="French" value="Pad Y" />
+    <Localized key="Params" lang="French" value="Paramètres" />
+    <Localized key="owner" lang="English" value="Owner" />
+    <Localized key="pads" lang="English" value="Pads" />
+    <Localized key="pads" lang="Dutch" value="Pads" />
+    <Localized key="padX" lang="English" value="Pad X" />
+    <Localized key="padX" lang="Dutch" value="Pad X" />
+    <Localized key="padY" lang="English" value="Pad Y" />
+    <Localized key="padY" lang="Dutch" value="Pad Y" />
+    <Localized key="owner" lang="Dutch" value="Owner" />
+    <Localized key="make_new_parameter" lang="English" value="Make new parameter" />
+    <Localized key="make_new_parameter" lang="Dutch" value="Make new parameter" />
+    <Localized key="make_new_dependency" lang="English" value="Make new dependency" />
+    <Localized key="make_new_dependency" lang="Dutch" value="Make new dependency" />
+    <Localized key="gridY" lang="English" value="Grid Y" />
+    <Localized key="gridY" lang="Dutch" value="Grid Y" />
+    <Localized key="gridX" lang="English" value="Grid X" />
+    <Localized key="gridX" lang="Dutch" value="Grid X" />
+    <Localized key="gridWidth" lang="English" value="Grid width" />
+    <Localized key="gridWidth" lang="Dutch" value="Grid width" />
+    <Localized key="gridHeight" lang="English" value="Grid height" />
+    <Localized key="gridHeight" lang="Dutch" value="Grid height" />
+    <Localized key="fill" lang="English" value="Fill" />
+    <Localized key="fill" lang="Dutch" value="Fill" />
+    <Localized key="expand_vertically" lang="English" value="Expand vertically" />
+    <Localized key="expand_vertically" lang="Dutch" value="Expand vertically" />
+    <Localized key="expand_horizontally" lang="English" value="Expand horizontally" />
+    <Localized key="expand_horizontally" lang="Dutch" value="Expand horizontally" />
+    <Localized key="dependency" lang="English" value="Dependency" />
+    <Localized key="dependency" lang="Dutch" value="Dependency" />
+    <Localized key="delete_parameter" lang="English" value="Delete parameter" />
+    <Localized key="delete_parameter" lang="Dutch" value="Delete parameter" />
+    <Localized key="delete_dependency" lang="English" value="Delete dependency" />
+    <Localized key="delete_dependency" lang="Dutch" value="Delete dependency" />
+    <Localized key="data_class" lang="English" value="Data class" />
+    <Localized key="data_class" lang="Dutch" value="Data class" />
+    <Localized key="data" lang="English" value="Data" />
+    <Localized key="data" lang="Dutch" value="Data" />
+    <Localized key="bottom" lang="English" value="Bottom" />
+    <Localized key="bottom" lang="Dutch" value="Bottom" />
+    <Localized key="anchor" lang="English" value="Anchor" />
+    <Localized key="anchor" lang="Dutch" value="Anchor" />
+    <Localized key="alignmentX" lang="English" value="Alignment X" />
+    <Localized key="alignmentX" lang="Dutch" value="Alignment X" />
+    <Localized key="alignmentY" lang="English" value="Alignment Y" />
+    <Localized key="alignmentY" lang="Dutch" value="Alignment Y" />
+    <Localized key="font_and_colors" lang="English" value="Font and colors" />
+    <Localized key="font_and_colors" lang="French" value="Police et couleurs" />
+    <Localized key="component_size_management" lang="English" value="Component size management" />
+    <Localized key="component_size_management" lang="French" value="Gestion de la taille du composant" />
+    <Localized key="background_color" lang="English" value="Background color" />
+    <Localized key="foreground_color" lang="English" value="Foreground color" />
+    <Localized key="background_color" lang="French" value="Couleur de l'arrière-plan" />
+    <Localized key="foreground_color" lang="French" value="Couleur d'avant-plan" />
+    <Localized key="background_color" lang="Dutch" value="Background color" />
+    <Localized key="foreground_color" lang="Dutch" value="Foreground color" />
+    <Localized key="border_layout_constraints" lang="French" value="Contraintes de positionnement mode &quot;BORDER&quot;" />
+    <Localized key="box_layout_constraints" lang="French" value="Contraintes de positionnement mode &quot;BOX&quot;" />
+    <Localized key="grid_bag_layout_constraints" lang="French" value="Contraintes de positionnement mode &quot;GRID BAG&quot;" />
+    <Localized key="grid_layout_constraints" lang="French" value="Contraintes de positionnement mode &quot;GRID&quot;" />
+    <Localized key="free_location_constraints" lang="French" value="Contraintes de positionnement mode &quot;LIBRE&quot;" />
+    <Localized key="flow_layout_constraints" lang="French" value="Contraintes de positionnement mode &quot;FLOW&quot;" />
+    <Localized key="border_layout_constraints" lang="English" value="Border Layout constraints" />
+    <Localized key="box_layout_constraints" lang="English" value="Box Layout constraints" />
+    <Localized key="define_maximum_dimensions" lang="English" value="Define maximum dimensions" />
+    <Localized key="define_minimum_dimensions" lang="English" value="Define minimum dimensions" />
+    <Localized key="flow_layout_constraints" lang="English" value="Flow Layout constraints" />
+    <Localized key="free_location_constraints" lang="English" value="Free Location constraints" />
+    <Localized key="grid_bag_layout_constraints" lang="English" value="Grid Bag Layout constraints" />
+    <Localized key="grid_layout_constraints" lang="English" value="Grid Layout constraints" />
+    <Localized key="horizontal_policy" lang="French" value="Contraintes horizontales" />
+    <Localized key="horizontal_policy" lang="English" value="Horizontal policy" />
+    <Localized key="vertical_policy" lang="French" value="Contraintes verticales" />
+    <Localized key="vertical_policy" lang="English" value="Vertical policy" />
+    <Localized key="define_maximum_dimensions" lang="French" value="Définir des dimensions maximum" />
+    <Localized key="define_minimum_dimensions" lang="French" value="Définir des dimensions minimum" />
+    <Localized key="scroll_bar_policy" lang="French" value="Utilisation de &quot;scroll bars&quot;" />
+    <Localized key="scroll_bar_policy" lang="English" value="Scroll Bar policy" />
+    <Localized key="two_cols_layout_constraints" lang="French" value="Contraintes de positionnement mode &quot;TWO COLS&quot;" />
+    <Localized key="two_cols_layout_constraints" lang="English" value="Two Columns Layout constraints" />
+    <Localized key="use_scrollbar" lang="French" value="Utiliser des scroll bars" />
+    <Localized key="use_scrollbar" lang="English" value="Use scroll bars" />
+    <Localized key="visible" lang="French" value="Visible" />
+    <Localized key="visible" lang="English" value="Visible" />
+    <Localized key="weights" lang="French" value="Poids" />
+    <Localized key="weights" lang="English" value="Weights" />
+    <Localized key="weightX" lang="French" value="Poids en X" />
+    <Localized key="weightY" lang="French" value="Poids en Y" />
+    <Localized key="weightX" lang="English" value="Weight X" />
+    <Localized key="weightY" lang="English" value="Weight Y" />
+    <Localized key="name" lang="English" value="Name" />
+    <Localized key="value" lang="English" value="Value" />
+    <Localized key="name" lang="French" value="Nom" />
+    <Localized key="value" lang="French" value="Valeur" />
+    <Localized key="Basic" lang="French" value="Basique" />
+    <Localized key="Advanced" lang="French" value="Avancé" />
+    <Localized key="Graphics" lang="French" value="Graphisme" />
+    <Localized key="name" lang="Dutch" value="Name" />
+    <Localized key="value" lang="Dutch" value="Value" />
+    <Localized key="delete_parameter" lang="French" value="Supprimer le paramètre" />
+    <Localized key="Depends" lang="French" value="Dépendances" />
+    <Localized key="Doc" lang="French" value="Doc" />
+    <Localized key="make_new_parameter" lang="French" value="Créer un nouveau paramètre" />
+    <Localized key="Params" lang="French" value="Paramètres" />
+    <Localized key="Params" lang="English" value="Params" />
+    <Localized key="make_new_parameter" lang="English" value="Make new parameter" />
+    <Localized key="delete_parameter" lang="English" value="Delete parameter" />
   </LocalizedDictionary>
   <Parameter name="title" value="Table" />
 </Panel>

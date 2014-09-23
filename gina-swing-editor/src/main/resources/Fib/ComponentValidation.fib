@@ -38,37 +38,37 @@
     <Button action="controller.validateAndDispose()" buttonIcon="" buttonType="Trigger" label="close" format="" icon="" tooltip="" localize="true" enable="" clickAction="" doubleClickAction="" rightClickAction="" enterPressedAction="" valueChangedAction="" valueTransform="" valueValidator="" index="2" data="" constraints="flow(index=2)" visible="" />
   </Panel>
   <LocalizedDictionary>
-    <Localized key="validation_report" lang="English">Validation report</Localized>
-    <Localized key="message" lang="English">Message</Localized>
-    <Localized key="object" lang="English">Object</Localized>
-    <Localized key="add" lang="English">Add</Localized>
-    <Localized key="remove" lang="English">Remove</Localized>
-    <Localized key="check_again" lang="English">Check again</Localized>
-    <Localized key="close" lang="English">Close</Localized>
-    <Localized key="validation_report" lang="French">Rapport de validation</Localized>
-    <Localized key="message" lang="French">Message</Localized>
-    <Localized key="object" lang="French">Objet</Localized>
-    <Localized key="add" lang="French">Ajouter</Localized>
-    <Localized key="remove" lang="French">Supprimer</Localized>
-    <Localized key="check_again" lang="French">Revalider</Localized>
-    <Localized key="close" lang="French">Fermer</Localized>
-    <Localized key="validation_report" lang="Dutch">Validation report</Localized>
-    <Localized key="message" lang="Dutch">Message</Localized>
-    <Localized key="object" lang="Dutch">Object</Localized>
-    <Localized key="add" lang="Dutch">Add</Localized>
-    <Localized key="remove" lang="Dutch">Remove</Localized>
-    <Localized key="check_again" lang="Dutch">Check again</Localized>
-    <Localized key="close" lang="Dutch">Close</Localized>
-    <Localized key="fix_issue" lang="French">Corriger le problème</Localized>
-    <Localized key="fix_proposal" lang="French">Proposition de correction</Localized>
-    <Localized key="validation_has_failed" lang="French">La validation a échoué: des erreurs ont été trouvées</Localized>
-    <Localized key="validation_has_succesfully_been_performed" lang="French">La validation a été passée avec succès</Localized>
-    <Localized key="fix_issue" lang="English">Fix issue</Localized>
-    <Localized key="fix_proposal" lang="English">Fix proposal</Localized>
-    <Localized key="validation_has_failed" lang="English">Validation has failed: errors were found</Localized>
-    <Localized key="validation_has_succesfully_been_performed" lang="English">Validation has successfully been performed</Localized>
-    <Localized key="object_($object.name)_has_no_name" lang="English">Object ($object.name) has no valid name</Localized>
-    <Localized key="object_($object.name)_has_no_name" lang="French">L'objet ($object.name) n'a pas de nom valide</Localized>
-    <Localized key="object_($object.name)_has_no_name" lang="Dutch">object_($object.name)_has_no_name</Localized>
+    <Localized key="validation_report" lang="English" value="Validation report" />
+    <Localized key="message" lang="English" value="Message" />
+    <Localized key="object" lang="English" value="Object" />
+    <Localized key="add" lang="English" value="Add" />
+    <Localized key="remove" lang="English" value="Remove" />
+    <Localized key="check_again" lang="English" value="Check again" />
+    <Localized key="close" lang="English" value="Close" />
+    <Localized key="validation_report" lang="French" value="Rapport de validation" />
+    <Localized key="message" lang="French" value="Message" />
+    <Localized key="object" lang="French" value="Objet" />
+    <Localized key="add" lang="French" value="Ajouter" />
+    <Localized key="remove" lang="French" value="Supprimer" />
+    <Localized key="check_again" lang="French" value="Revalider" />
+    <Localized key="close" lang="French" value="Fermer" />
+    <Localized key="validation_report" lang="Dutch" value="Validation report" />
+    <Localized key="message" lang="Dutch" value="Message" />
+    <Localized key="object" lang="Dutch" value="Object" />
+    <Localized key="add" lang="Dutch" value="Add" />
+    <Localized key="remove" lang="Dutch" value="Remove" />
+    <Localized key="check_again" lang="Dutch" value="Check again" />
+    <Localized key="close" lang="Dutch" value="Close" />
+    <Localized key="fix_issue" lang="French" value="Corriger le problème" />
+    <Localized key="fix_proposal" lang="French" value="Proposition de correction" />
+    <Localized key="validation_has_failed" lang="French" value="La validation a échoué: des erreurs ont été trouvées" />
+    <Localized key="validation_has_succesfully_been_performed" lang="French" value="La validation a été passée avec succès" />
+    <Localized key="fix_issue" lang="English" value="Fix issue" />
+    <Localized key="fix_proposal" lang="English" value="Fix proposal" />
+    <Localized key="validation_has_failed" lang="English" value="Validation has failed: errors were found" />
+    <Localized key="validation_has_succesfully_been_performed" lang="English" value="Validation has successfully been performed" />
+    <Localized key="object_($object.name)_has_no_name" lang="English" value="Object ($object.name) has no valid name" />
+    <Localized key="object_($object.name)_has_no_name" lang="French" value="L'objet ($object.name) n'a pas de nom valide" />
+    <Localized key="object_($object.name)_has_no_name" lang="Dutch" value="object_($object.name)_has_no_name" />
   </LocalizedDictionary>
 </Panel>

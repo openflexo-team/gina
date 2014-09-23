@@ -25,96 +25,96 @@
     </Tab>
   </TabPanel>
   <LocalizedDictionary>
-    <Localized key="title" lang="English">Title</Localized>
-    <Localized key="type" lang="English">Type</Localized>
-    <Localized key="width" lang="English">Width</Localized>
-    <Localized key="move_up" lang="English">Move up</Localized>
-    <Localized key="move_down" lang="English">Move down</Localized>
-    <Localized key="method" lang="English">Method</Localized>
-    <Localized key="delete_action" lang="English">Delete action</Localized>
-    <Localized key="title" lang="French">Titre</Localized>
-    <Localized key="type" lang="French">Type</Localized>
-    <Localized key="width" lang="French">Largeur</Localized>
-    <Localized key="Data" lang="French">Donnée</Localized>
-    <Localized key="move_up" lang="French">Remonter</Localized>
-    <Localized key="move_down" lang="French">Descendre</Localized>
-    <Localized key="method" lang="French">Méthode</Localized>
-    <Localized key="delete_action" lang="French">Supprimer l'action</Localized>
-    <Localized key="Basic" lang="French">Basique</Localized>
-    <Localized key="Graphics" lang="French">Graphisme</Localized>
-    <Localized key="title" lang="Dutch">Title</Localized>
-    <Localized key="type" lang="Dutch">Type</Localized>
-    <Localized key="width" lang="Dutch">Width</Localized>
-    <Localized key="move_up" lang="Dutch">Move up</Localized>
-    <Localized key="move_down" lang="Dutch">Move down</Localized>
-    <Localized key="method" lang="Dutch">Method</Localized>
-    <Localized key="delete_action" lang="Dutch">Delete action</Localized>
-    <Localized key="action" lang="French">Action</Localized>
-    <Localized key="available" lang="French">Disponibilité</Localized>
-    <Localized key="bg_non_selection_color" lang="French">Arrière plan</Localized>
-    <Localized key="bg_sec_selection_color" lang="French">Arrière plan sélectionné</Localized>
-    <Localized key="bg_selection_color" lang="French">Arrière plan sélectionné</Localized>
-    <Localized key="bg_non_selection_color" lang="English">Background</Localized>
-    <Localized key="bg_sec_selection_color" lang="English">Selection background</Localized>
-    <Localized key="bg_selection_color" lang="English">Selection background</Localized>
-    <Localized key="bg_selection_color" lang="Dutch">Selection background</Localized>
-    <Localized key="bg_sec_selection_color" lang="Dutch">Selection background</Localized>
-    <Localized key="bg_non_selection_color" lang="Dutch">Background</Localized>
-    <Localized key="bound_to_selection_manager" lang="French">Connecté à un gestionnaire de sélection</Localized>
-    <Localized key="create_new_row_on_click" lang="French">Créer une nouvelle ligne si click</Localized>
-    <Localized key="Columns" lang="French">Colonnes</Localized>
-    <Localized key="Controls" lang="French">Contrôles</Localized>
-    <Localized key="delete_column" lang="French">Supprimer la colonne</Localized>
-    <Localized key="iterator_class" lang="French">Classe de l'itérateur</Localized>
-    <Localized key="move_to_bottom" lang="French">En dernier</Localized>
-    <Localized key="move_to_top" lang="French">En premier</Localized>
-    <Localized key="new_add_action" lang="French">Créer une action AJOUT</Localized>
-    <Localized key="new_checkbox_column" lang="French">Colonne CHECKBOX</Localized>
-    <Localized key="new_custom_action" lang="French">Créer une action CUSTOM</Localized>
-    <Localized key="new_custom_column" lang="French">Colonne CUSTOM</Localized>
-    <Localized key="new_dropdown_column" lang="French">Colonne DROPDOWN</Localized>
-    <Localized key="new_icon_column" lang="French">Colonne ICONE</Localized>
-    <Localized key="new_label_column" lang="French">Colonne LABEL</Localized>
-    <Localized key="new_number_column" lang="French">Colonne NUMBER</Localized>
-    <Localized key="new_remove_action" lang="French">Créer une action REMOVE</Localized>
-    <Localized key="new_textfield_column" lang="French">Colonne TEXTFIELD</Localized>
-    <Localized key="row_height" lang="French">Hauteur de ligne</Localized>
-    <Localized key="select_first_row" lang="French">Sélectionner la première ligne</Localized>
-    <Localized key="selected" lang="French">Sélection</Localized>
-    <Localized key="selectionMode" lang="French">Mode de sélection</Localized>
-    <Localized key="show_footer" lang="French">Voir le pied de table</Localized>
-    <Localized key="text_non_selectionColor" lang="French">Texte non sélectionné</Localized>
-    <Localized key="text_selection_color" lang="French">Texte sélectionné</Localized>
-    <Localized key="visible_row_count" lang="French">Nombre de lignes visibles</Localized>
-    <Localized key="action" lang="English">Action</Localized>
-    <Localized key="available" lang="English">Available</Localized>
-    <Localized key="bound_to_selection_manager" lang="English">Bound to selection manager</Localized>
-    <Localized key="create_new_row_on_click" lang="English">Create new row on click</Localized>
-    <Localized key="delete_column" lang="English">Delete column</Localized>
-    <Localized key="iterator_class" lang="English">Iterator class</Localized>
-    <Localized key="move_to_bottom" lang="English">Move to bottom</Localized>
-    <Localized key="move_to_top" lang="English">Move to top</Localized>
-    <Localized key="new_add_action" lang="English">New ADD action</Localized>
-    <Localized key="new_custom_action" lang="English">New CUSTOM action</Localized>
-    <Localized key="new_remove_action" lang="English">New DELETE action</Localized>
-    <Localized key="new_checkbox_column" lang="English">Column CHECKBOX</Localized>
-    <Localized key="new_custom_column" lang="English">Column CUSTOM</Localized>
-    <Localized key="new_dropdown_column" lang="English">Column DROPDOWN</Localized>
-    <Localized key="new_icon_column" lang="English">Column ICONE</Localized>
-    <Localized key="new_label_column" lang="English">Column LABEL</Localized>
-    <Localized key="new_number_column" lang="English">Column NUMBER</Localized>
-    <Localized key="new_textfield_column" lang="English">Column TEXTFIELD</Localized>
-    <Localized key="new_checkbox_column" lang="Dutch">Column CHECKBOX</Localized>
-    <Localized key="row_height" lang="English">Row height</Localized>
-    <Localized key="select_first_row" lang="English">Select first row</Localized>
-    <Localized key="selected" lang="English">Selected</Localized>
-    <Localized key="selectionMode" lang="English">Selection mode</Localized>
-    <Localized key="show_footer" lang="English">Show footer</Localized>
-    <Localized key="text_non_selectionColor" lang="English">Non selected text</Localized>
-    <Localized key="text_selection_color" lang="English">Selected text</Localized>
-    <Localized key="visible_row_count" lang="English">Visible row count</Localized>
-    <Localized key="table_colors" lang="English">Table colors</Localized>
-    <Localized key="table_colors" lang="French">Couleurs de la table</Localized>
+    <Localized key="title" lang="English" value="Title" />
+    <Localized key="type" lang="English" value="Type" />
+    <Localized key="width" lang="English" value="Width" />
+    <Localized key="move_up" lang="English" value="Move up" />
+    <Localized key="move_down" lang="English" value="Move down" />
+    <Localized key="method" lang="English" value="Method" />
+    <Localized key="delete_action" lang="English" value="Delete action" />
+    <Localized key="title" lang="French" value="Titre" />
+    <Localized key="type" lang="French" value="Type" />
+    <Localized key="width" lang="French" value="Largeur" />
+    <Localized key="Data" lang="French" value="Donnée" />
+    <Localized key="move_up" lang="French" value="Remonter" />
+    <Localized key="move_down" lang="French" value="Descendre" />
+    <Localized key="method" lang="French" value="Méthode" />
+    <Localized key="delete_action" lang="French" value="Supprimer l'action" />
+    <Localized key="Basic" lang="French" value="Basique" />
+    <Localized key="Graphics" lang="French" value="Graphisme" />
+    <Localized key="title" lang="Dutch" value="Title" />
+    <Localized key="type" lang="Dutch" value="Type" />
+    <Localized key="width" lang="Dutch" value="Width" />
+    <Localized key="move_up" lang="Dutch" value="Move up" />
+    <Localized key="move_down" lang="Dutch" value="Move down" />
+    <Localized key="method" lang="Dutch" value="Method" />
+    <Localized key="delete_action" lang="Dutch" value="Delete action" />
+    <Localized key="action" lang="French" value="Action" />
+    <Localized key="available" lang="French" value="Disponibilité" />
+    <Localized key="bg_non_selection_color" lang="French" value="Arrière plan" />
+    <Localized key="bg_sec_selection_color" lang="French" value="Arrière plan sélectionné" />
+    <Localized key="bg_selection_color" lang="French" value="Arrière plan sélectionné" />
+    <Localized key="bg_non_selection_color" lang="English" value="Background" />
+    <Localized key="bg_sec_selection_color" lang="English" value="Selection background" />
+    <Localized key="bg_selection_color" lang="English" value="Selection background" />
+    <Localized key="bg_selection_color" lang="Dutch" value="Selection background" />
+    <Localized key="bg_sec_selection_color" lang="Dutch" value="Selection background" />
+    <Localized key="bg_non_selection_color" lang="Dutch" value="Background" />
+    <Localized key="bound_to_selection_manager" lang="French" value="Connecté à un gestionnaire de sélection" />
+    <Localized key="create_new_row_on_click" lang="French" value="Créer une nouvelle ligne si click" />
+    <Localized key="Columns" lang="French" value="Colonnes" />
+    <Localized key="Controls" lang="French" value="Contrôles" />
+    <Localized key="delete_column" lang="French" value="Supprimer la colonne" />
+    <Localized key="iterator_class" lang="French" value="Classe de l'itérateur" />
+    <Localized key="move_to_bottom" lang="French" value="En dernier" />
+    <Localized key="move_to_top" lang="French" value="En premier" />
+    <Localized key="new_add_action" lang="French" value="Créer une action AJOUT" />
+    <Localized key="new_checkbox_column" lang="French" value="Colonne CHECKBOX" />
+    <Localized key="new_custom_action" lang="French" value="Créer une action CUSTOM" />
+    <Localized key="new_custom_column" lang="French" value="Colonne CUSTOM" />
+    <Localized key="new_dropdown_column" lang="French" value="Colonne DROPDOWN" />
+    <Localized key="new_icon_column" lang="French" value="Colonne ICONE" />
+    <Localized key="new_label_column" lang="French" value="Colonne LABEL" />
+    <Localized key="new_number_column" lang="French" value="Colonne NUMBER" />
+    <Localized key="new_remove_action" lang="French" value="Créer une action REMOVE" />
+    <Localized key="new_textfield_column" lang="French" value="Colonne TEXTFIELD" />
+    <Localized key="row_height" lang="French" value="Hauteur de ligne" />
+    <Localized key="select_first_row" lang="French" value="Sélectionner la première ligne" />
+    <Localized key="selected" lang="French" value="Sélection" />
+    <Localized key="selectionMode" lang="French" value="Mode de sélection" />
+    <Localized key="show_footer" lang="French" value="Voir le pied de table" />
+    <Localized key="text_non_selectionColor" lang="French" value="Texte non sélectionné" />
+    <Localized key="text_selection_color" lang="French" value="Texte sélectionné" />
+    <Localized key="visible_row_count" lang="French" value="Nombre de lignes visibles" />
+    <Localized key="action" lang="English" value="Action" />
+    <Localized key="available" lang="English" value="Available" />
+    <Localized key="bound_to_selection_manager" lang="English" value="Bound to selection manager" />
+    <Localized key="create_new_row_on_click" lang="English" value="Create new row on click" />
+    <Localized key="delete_column" lang="English" value="Delete column" />
+    <Localized key="iterator_class" lang="English" value="Iterator class" />
+    <Localized key="move_to_bottom" lang="English" value="Move to bottom" />
+    <Localized key="move_to_top" lang="English" value="Move to top" />
+    <Localized key="new_add_action" lang="English" value="New ADD action" />
+    <Localized key="new_custom_action" lang="English" value="New CUSTOM action" />
+    <Localized key="new_remove_action" lang="English" value="New DELETE action" />
+    <Localized key="new_checkbox_column" lang="English" value="Column CHECKBOX" />
+    <Localized key="new_custom_column" lang="English" value="Column CUSTOM" />
+    <Localized key="new_dropdown_column" lang="English" value="Column DROPDOWN" />
+    <Localized key="new_icon_column" lang="English" value="Column ICONE" />
+    <Localized key="new_label_column" lang="English" value="Column LABEL" />
+    <Localized key="new_number_column" lang="English" value="Column NUMBER" />
+    <Localized key="new_textfield_column" lang="English" value="Column TEXTFIELD" />
+    <Localized key="new_checkbox_column" lang="Dutch" value="Column CHECKBOX" />
+    <Localized key="row_height" lang="English" value="Row height" />
+    <Localized key="select_first_row" lang="English" value="Select first row" />
+    <Localized key="selected" lang="English" value="Selected" />
+    <Localized key="selectionMode" lang="English" value="Selection mode" />
+    <Localized key="show_footer" lang="English" value="Show footer" />
+    <Localized key="text_non_selectionColor" lang="English" value="Non selected text" />
+    <Localized key="text_selection_color" lang="English" value="Selected text" />
+    <Localized key="visible_row_count" lang="English" value="Visible row count" />
+    <Localized key="table_colors" lang="English" value="Table colors" />
+    <Localized key="table_colors" lang="French" value="Couleurs de la table" />
   </LocalizedDictionary>
   <Parameter name="title" value="List" />
 </Panel>
