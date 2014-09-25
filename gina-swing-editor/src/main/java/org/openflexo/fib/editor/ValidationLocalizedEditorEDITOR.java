@@ -19,17 +19,21 @@
  */
 package org.openflexo.fib.editor;
 
-import org.openflexo.fib.model.validation.ValidationIssue;
+import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.localization.LocalizedDelegateImpl;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 
 public class ValidationLocalizedEditorEDITOR {
 
+	public static LocalizedDelegate VALIDATION_LOCALIZATION = new LocalizedDelegateImpl(ResourceLocator.getResourceLocator()
+			.locateResource("FIBValidationLocalized"), null, true);
+
 	public static void main(String[] args) {
 		FIBAbstractEditor editor = new FIBAbstractEditor() {
 			@Override
 			public Object[] getData() {
-				return makeArray(ValidationIssue.VALIDATION_LOCALIZATION);
+				return makeArray(VALIDATION_LOCALIZATION);
 			}
 
 			@Override

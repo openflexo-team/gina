@@ -9,9 +9,9 @@ import org.openflexo.fib.editor.widget.FIBEditorBrowser;
 import org.openflexo.fib.model.FIBLabel;
 import org.openflexo.fib.model.FIBModelFactory;
 import org.openflexo.fib.model.FIBPanel;
-import org.openflexo.fib.model.validation.ValidationReport;
 import org.openflexo.fib.testutils.FIBComponentGraphicalContextDelegate;
 import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.model.validation.ValidationReport;
 
 /**
  * Test the structural and behavioural features of FIBEditorBrowser
@@ -35,7 +35,7 @@ public class TestFIBEditorBrowser {
 		FIBEditorBrowser browser = new FIBEditorBrowser(component, null);
 
 		ValidationReport validationReport = browser.getFIBComponent().validate();
-		assertEquals(0, validationReport.getErrorNb());
+		assertEquals(0, validationReport.getErrorsCount());
 
 		gcDelegate = new FIBComponentGraphicalContextDelegate(TestFIBEditorBrowser.class.getSimpleName(), FIBEditorBrowser.FIB_FILE,
 				component);

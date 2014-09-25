@@ -8,8 +8,8 @@ import java.util.logging.Logger;
 
 import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.fib.model.validation.ValidationError;
-import org.openflexo.fib.model.validation.ValidationReport;
+import org.openflexo.model.validation.ValidationError;
+import org.openflexo.model.validation.ValidationReport;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 
@@ -24,14 +24,13 @@ public abstract class GenericFIBTestCase {
 	static final Logger logger = Logger.getLogger(GenericFIBTestCase.class.getPackage().getName());
 	static final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
-
 	public void validateFIB(String fibRelativePath) {
 		validateFIB(ResourceLocator.locateResource(fibRelativePath));
 	}
 
 	public void validateFIB(Resource fibFile) {
 		try {
-			System.out.println("Validating fib file "+fibFile);
+			System.out.println("Validating fib file " + fibFile);
 			FIBComponent component = FIBLibrary.instance().retrieveFIBComponent(fibFile);
 			if (component == null) {
 				fail("Component not found: " + fibFile.getURI());
@@ -40,7 +39,7 @@ public abstract class GenericFIBTestCase {
 			for (ValidationError error : validationReport.getErrors()) {
 				logger.severe("FIBComponent validation error: Object: " + error.getObject() + " message: " + error.getMessage());
 			}
-			assertEquals(0, validationReport.getErrorNb());
+			assertEquals(0, validationReport.getErrorsCount());
 		} finally {
 			FIBLibrary.instance().removeFIBComponentFromCache(fibFile);
 		}

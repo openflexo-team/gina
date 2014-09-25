@@ -32,11 +32,11 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.ParameterizedTypeImpl;
 import org.openflexo.antar.binding.TypeUtils;
 import org.openflexo.fib.model.FIBBrowserElement.FIBBrowserElementImpl;
-import org.openflexo.fib.model.validation.ValidationReport;
 import org.openflexo.fib.view.widget.FIBBrowserWidget;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
+import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -51,29 +51,6 @@ import org.openflexo.model.annotations.XMLElement;
 @ImplementationClass(FIBBrowser.FIBBrowserImpl.class)
 @XMLElement(xmlTag = "Browser")
 public interface FIBBrowser extends FIBWidget {
-
-	/*public enum SelectionMode {
-		SingleTreeSelection {
-			@Override
-			public int getMode() {
-				return TreeSelectionModel.SINGLE_TREE_SELECTION;
-			}
-		},
-		ContiguousTreeSelection {
-			@Override
-			public int getMode() {
-				return TreeSelectionModel.CONTIGUOUS_TREE_SELECTION;
-			}
-		},
-		DiscontiguousTreeSelection {
-			@Override
-			public int getMode() {
-				return TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION;
-			}
-		};
-
-		public abstract int getMode();
-	}*/
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String ROOT_KEY = "root";
@@ -347,14 +324,6 @@ public interface FIBBrowser extends FIBWidget {
 			}
 		}
 
-		/*@Override
-		public void updateBindingModel() {
-			super.updateBindingModel();
-			for (FIBBrowserElement e : getElements()) {
-				e.updateBindingModel();
-			}
-		}*/
-
 		@Override
 		public Class getIteratorClass() {
 			if (iteratorClass == null) {
@@ -390,22 +359,6 @@ public interface FIBBrowser extends FIBWidget {
 		public Boolean getManageDynamicModel() {
 			return true;
 		}
-
-		/*public String getIteratorClassName()
-		{
-			return iteratorClassName;
-		}
-		
-		public void setIteratorClassName(String iteratorClassName)
-		{
-			FIBAttributeNotification<String> notification = requireChange(
-					Parameters.iteratorClassName, iteratorClassName);
-			if (notification != null) {
-				this.iteratorClassName = iteratorClassName;
-				iteratorClass = null;
-				hasChanged(notification);
-			}
-		}*/
 
 		@Override
 		public Integer getVisibleRowCount() {
@@ -687,21 +640,6 @@ public interface FIBBrowser extends FIBWidget {
 			}
 		}
 
-		/*@Override
-		public void notifiedBindingModelRecreated() {
-			super.notifiedBindingModelRecreated();
-			for (FIBBrowserElement e : getElements()) {
-				e.notifiedBindingModelRecreated();
-			}
-		}*/
-
-		@Override
-		protected void applyValidation(ValidationReport report) {
-			super.applyValidation(report);
-			performValidation(RootBindingMustBeValid.class, report);
-			performValidation(SelectedBindingMustBeValid.class, report);
-		}
-
 		/**
 		 * Return a list of all bindings declared in the context of this component
 		 * 
@@ -722,6 +660,7 @@ public interface FIBBrowser extends FIBWidget {
 
 	}
 
+	@DefineValidationRule
 	public static class RootBindingMustBeValid extends BindingMustBeValid<FIBBrowser> {
 		public RootBindingMustBeValid() {
 			super("'root'_binding_is_not_valid", FIBBrowser.class);
@@ -734,6 +673,7 @@ public interface FIBBrowser extends FIBWidget {
 
 	}
 
+	@DefineValidationRule
 	public static class SelectedBindingMustBeValid extends BindingMustBeValid<FIBBrowser> {
 		public SelectedBindingMustBeValid() {
 			super("'selected'_binding_is_not_valid", FIBBrowser.class);

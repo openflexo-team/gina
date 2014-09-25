@@ -33,18 +33,18 @@ import org.openflexo.antar.binding.GenericArrayTypeImpl;
 import org.openflexo.antar.binding.ParameterizedTypeImpl;
 import org.openflexo.antar.binding.TypeUtils;
 import org.openflexo.antar.binding.WilcardTypeImpl;
-import org.openflexo.fib.model.validation.FixProposal;
-import org.openflexo.fib.model.validation.ValidationError;
-import org.openflexo.fib.model.validation.ValidationIssue;
-import org.openflexo.fib.model.validation.ValidationReport;
-import org.openflexo.fib.model.validation.ValidationRule;
 import org.openflexo.fib.view.widget.FIBMultipleValueWidget;
+import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
+import org.openflexo.model.validation.FixProposal;
+import org.openflexo.model.validation.ValidationError;
+import org.openflexo.model.validation.ValidationIssue;
+import org.openflexo.model.validation.ValidationRule;
 import org.openflexo.toolbox.StringUtils;
 
 import com.google.common.reflect.TypeToken;
@@ -444,14 +444,6 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 			}
 		}
 
-		@Override
-		protected void applyValidation(ValidationReport report) {
-			super.applyValidation(report);
-			performValidation(FIBMultipleValuesMustDefineValueRange.class, report);
-			performValidation(ListBindingMustBeValid.class, report);
-			performValidation(ArrayBindingMustBeValid.class, report);
-		}
-
 		/**
 		 * Return a list of all bindings declared in the context of this component
 		 * 
@@ -467,6 +459,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 
 	}
 
+	@DefineValidationRule
 	public static class FIBMultipleValuesMustDefineValueRange extends
 			ValidationRule<FIBMultipleValuesMustDefineValueRange, FIBMultipleValues> {
 		public FIBMultipleValuesMustDefineValueRange() {
@@ -498,6 +491,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		}
 	}
 
+	@DefineValidationRule
 	public static class ListBindingMustBeValid extends BindingMustBeValid<FIBMultipleValues> {
 		public ListBindingMustBeValid() {
 			super("'list'_binding_is_not_valid", FIBMultipleValues.class);
@@ -510,6 +504,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 
 	}
 
+	@DefineValidationRule
 	public static class ArrayBindingMustBeValid extends BindingMustBeValid<FIBMultipleValues> {
 		public ArrayBindingMustBeValid() {
 			super("'array'_binding_is_not_valid", FIBMultipleValues.class);

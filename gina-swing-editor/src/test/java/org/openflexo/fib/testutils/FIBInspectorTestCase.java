@@ -11,10 +11,10 @@ import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.editor.controller.FIBInspector;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelFactory;
-import org.openflexo.fib.model.validation.ValidationError;
-import org.openflexo.fib.model.validation.ValidationReport;
 import org.openflexo.fib.utils.GenericFIBTestCase;
 import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.model.validation.ValidationError;
+import org.openflexo.model.validation.ValidationReport;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 
@@ -49,7 +49,7 @@ public abstract class FIBInspectorTestCase extends GenericFIBTestCase {
 			for (ValidationError error : validationReport.getErrors()) {
 				logger.severe("FIBComponent validation error: Object: " + error.getObject() + " message: " + error.getMessage());
 			}
-			assertEquals(0, validationReport.getErrorNb());
+			assertEquals(0, validationReport.getErrorsCount());
 		} finally {
 			FIBLibrary.instance().removeFIBComponentFromCache(fibFile);
 		}
@@ -58,12 +58,12 @@ public abstract class FIBInspectorTestCase extends GenericFIBTestCase {
 	public static String generateInspectorTestCaseClass(Resource directory, String relativePath) {
 		StringBuffer sb = new StringBuffer();
 		for (Resource rloc : directory.getContents(Pattern.compile(".*[.]inspector"))) {
-				File f = ResourceLocator.getResourceLocator().retrieveResourceAsFile(rloc);
-				String fibName = f.getName().substring(0, f.getName().indexOf(".inspector"));
-				sb.append("@Test\n");
-				sb.append("public void test" + fibName + "Inspector() {\n");
-				sb.append("  validateFIB(\"" + relativePath + f.getName() + "\");\n");
-				sb.append("}\n\n");
+			File f = ResourceLocator.getResourceLocator().retrieveResourceAsFile(rloc);
+			String fibName = f.getName().substring(0, f.getName().indexOf(".inspector"));
+			sb.append("@Test\n");
+			sb.append("public void test" + fibName + "Inspector() {\n");
+			sb.append("  validateFIB(\"" + relativePath + f.getName() + "\");\n");
+			sb.append("}\n\n");
 		}
 		return sb.toString();
 	}

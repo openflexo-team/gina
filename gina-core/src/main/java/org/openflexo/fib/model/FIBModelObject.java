@@ -19,11 +19,8 @@
  */
 package org.openflexo.fib.model;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,13 +30,6 @@ import org.openflexo.antar.binding.BindingFactory;
 import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.fib.FIBLibrary;
-import org.openflexo.fib.model.validation.FixProposal;
-import org.openflexo.fib.model.validation.ProblemIssue;
-import org.openflexo.fib.model.validation.ValidationError;
-import org.openflexo.fib.model.validation.ValidationIssue;
-import org.openflexo.fib.model.validation.ValidationReport;
-import org.openflexo.fib.model.validation.ValidationRule;
-import org.openflexo.fib.model.validation.ValidationWarning;
 import org.openflexo.fib.utils.LocalizedDelegateGUIImpl;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
@@ -56,13 +46,22 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.model.factory.AccessibleProxyObject;
 import org.openflexo.model.factory.CloneableProxyObject;
 import org.openflexo.model.factory.DeletableProxyObject;
+import org.openflexo.model.factory.EmbeddingType;
+import org.openflexo.model.validation.FixProposal;
+import org.openflexo.model.validation.ProblemIssue;
+import org.openflexo.model.validation.Validable;
+import org.openflexo.model.validation.ValidationError;
+import org.openflexo.model.validation.ValidationIssue;
+import org.openflexo.model.validation.ValidationReport;
+import org.openflexo.model.validation.ValidationRule;
+import org.openflexo.model.validation.ValidationWarning;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.StringUtils;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(FIBModelObject.FIBModelObjectImpl.class)
-public interface FIBModelObject extends Bindable, AccessibleProxyObject, CloneableProxyObject, DeletableProxyObject {
+public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObject, CloneableProxyObject, DeletableProxyObject {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String NAME_KEY = "name";
@@ -111,8 +110,6 @@ public interface FIBModelObject extends Bindable, AccessibleProxyObject, Cloneab
 	public boolean isValid();
 
 	public ValidationReport validate();
-
-	public void validate(ValidationReport report);
 
 	public Collection<? extends FIBModelObject> getEmbeddedObjects();
 
@@ -185,53 +182,35 @@ public interface FIBModelObject extends Bindable, AccessibleProxyObject, Cloneab
 			return FIBLibrary.instance().getFIBModelFactory();
 		}
 
-		/*@Override
-		public PropertyChangeSupport getPropertyChangeSupport() {
-			return pcSupport;
-		}*/
-
-		/*@Override
-		public String getDeletedProperty() {
-			return DELETED_PROPERTY;
-		}*/
-
-		/*public void delete() {
-			isDeleted = true;
-			getPropertyChangeSupport().firePropertyChange(DELETED_PROPERTY, this, null);
+		/**
+		 * Return all embedded objects<br>
+		 * This method is really generic and use PAMELA annotations.<br>
+		 * You might want to override this method to provide a more precise implementation
+		 * 
+		 */
+		@Override
+		public Collection<? extends FIBModelObject> getEmbeddedObjects() {
+			return (Collection<? extends FIBModelObject>) getFactory().getEmbeddedObjects(this, EmbeddingType.CLOSURE);
 		}
 
+		/**
+		 * Return all embedded objects which need to be validated<br>
+		 * This method is really generic and use PAMELA annotations. You might want to override this method to provide a more precise
+		 * implementation
+		 * 
+		 */
 		@Override
-		public boolean isDeleted() {
-			return isDeleted;
-		}*/
+		public Collection<? extends Validable> getEmbeddedValidableObjects() {
 
-		/*@Override
-		public String getName() {
-			return name;
-		}
-
-		@Override
-		public void setName(String name) {
-			FIBAttributeNotification<String> notification = requireChange(NAME_KEY, name);
-			if (notification != null) {
-				this.name = name;
-				hasChanged(notification);
+			List<?> embeddedObjects = getFactory().getEmbeddedObjects(this, EmbeddingType.CLOSURE);
+			List<Validable> returned = new ArrayList<Validable>();
+			for (Object e : embeddedObjects) {
+				if (e instanceof Validable) {
+					returned.add((Validable) e);
+				}
 			}
-		}*/
-
-		/*@Override
-		public String getDescription() {
-			return description;
+			return returned;
 		}
-
-		@Override
-		public void setDescription(String description) {
-			FIBAttributeNotification<String> notification = requireChange(Parameters.description, description);
-			if (notification != null) {
-				this.description = description;
-				hasChanged(notification);
-			}
-		}*/
 
 		@Override
 		public String getParameter(String parameterName) {
@@ -242,32 +221,6 @@ public interface FIBModelObject extends Bindable, AccessibleProxyObject, Cloneab
 			}
 			return null;
 		}
-
-		/*@Override
-		public List<FIBParameter> getParameters() {
-			return parameters;
-		}
-
-		@Override
-		public void setParameters(List<FIBParameter> parameters) {
-			FIBAttributeNotification<List<FIBParameter>> notification = requireChange(Parameters.parameters, parameters);
-			if (notification != null) {
-				this.parameters = parameters;
-				hasChanged(notification);
-			}
-		}
-
-		@Override
-		public void addToParameters(FIBParameter p) {
-			parameters.add(p);
-			getPropertyChangeSupport().firePropertyChange(Parameters.parameters.name(), null, parameters);
-		}
-
-		@Override
-		public void removeFromParameters(FIBParameter p) {
-			parameters.remove(p);
-			getPropertyChangeSupport().firePropertyChange(Parameters.parameters.name(), null, parameters);
-		}*/
 
 		@Override
 		public FIBParameter createNewParameter() {
@@ -292,8 +245,6 @@ public interface FIBModelObject extends Bindable, AccessibleProxyObject, Cloneab
 		public boolean isParameterDeletable(FIBParameter p) {
 			return true;
 		}
-
-		// public abstract FIBComponent getRootComponent();
 
 		/**
 		 * Return the FIBComponent this model objects refer to
@@ -410,75 +361,16 @@ public interface FIBModelObject extends Bindable, AccessibleProxyObject, Cloneab
 		@Override
 		public final boolean isValid() {
 			ValidationReport report = validate();
-			return report.getErrorNb() == 0;
+			return report.getErrorsCount() == 0;
 		}
 
 		@Override
 		public final ValidationReport validate() {
-			ValidationReport returned = new ValidationReport(this);
-			validate(returned);
-			return returned;
+			return getFactory().getValidationModel().validate(this);
 		}
 
-		@Override
-		public void validate(ValidationReport report) {
-			// System.out.println("Validating " + this);
-			applyValidation(report);
-			Collection<? extends FIBModelObject> embeddedObjects = getEmbeddedObjects();
-			if (embeddedObjects != null) {
-				// System.out.println("Embedded for " + this + " are (" + embeddedObjects.size() + ") " + embeddedObjects);
-				for (FIBModelObject o : embeddedObjects) {
-					// System.out.println("Validating embedded " + o);
-					if (o != this) {
-						o.validate(report);
-					}
-				}
-			}
-		}
-
-		protected void applyValidation(ValidationReport report) {
-			performValidation(FIBModelObjectShouldHaveAUniqueName.class, report);
-		}
-
-		private static final Hashtable<Class<?>, ValidationRule<?, ?>> rules = new Hashtable<Class<?>, ValidationRule<?, ?>>();
-
-		private static <R extends ValidationRule<R, C>, C extends FIBModelObject> R getRule(Class<R> validationRuleClass) {
-			R returned = (R) rules.get(validationRuleClass);
-			if (returned == null) {
-				Constructor<R> c = (Constructor<R>) validationRuleClass.getConstructors()[0];
-				try {
-					returned = c.newInstance(null);
-					rules.put(validationRuleClass, returned);
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (InstantiationException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
-				}
-			}
-			return returned;
-		}
-
-		/*protected final <R extends ValidationRule<R, C>, C extends FIBModelObject> void performValidation(Class<R> validationRuleClass,
-				ValidationReport report) {
-			R rule = getRule(validationRuleClass);
-			ValidationIssue<R, C> issue = rule.applyValidation((C) this);
-			if (issue != null) {
-				report.addToValidationIssues(issue);
-			}
-
-		}*/
-
-		protected final <R extends ValidationRule> void performValidation(Class<R> validationRuleClass, ValidationReport report) {
-			R rule = (R) getRule(validationRuleClass);
-			ValidationIssue issue = rule.applyValidation(this);
-			if (issue != null) {
-				report.addToValidationIssues(issue);
-			}
-
+		public Class<?> getImplementedInterface() {
+			return getFactory().getModelEntityForInstance(this).getImplementedInterface();
 		}
 
 		@Override
@@ -530,15 +422,6 @@ public interface FIBModelObject extends Bindable, AccessibleProxyObject, Cloneab
 				}
 			}
 			return list;
-		}
-
-		@Override
-		public Collection<? extends FIBModelObject> getEmbeddedObjects() {
-			// TODO: HUGE perfs issues, please investigate
-			// Before this will be fixed, we implement this method manually
-
-			// return (Collection<? extends FIBModelObject>) getFactory().getEmbeddedObjects(this, EmbeddingType.CLOSURE);
-			return null;
 		}
 
 		@Override

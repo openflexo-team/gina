@@ -32,9 +32,9 @@ import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.CachingStrategy;
 import org.openflexo.antar.binding.DefaultBindable;
-import org.openflexo.fib.model.validation.ValidationReport;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
+import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.Import;
@@ -582,19 +582,9 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 			this.valueChangedAction = valueChangedAction;
 		}
 
-		@Override
-		protected void applyValidation(ValidationReport report) {
-			super.applyValidation(report);
-			performValidation(DataBindingMustBeValid.class, report);
-			performValidation(FormatBindingMustBeValid.class, report);
-			performValidation(TooltipBindingMustBeValid.class, report);
-			performValidation(ColorBindingMustBeValid.class, report);
-			performValidation(BgColorBindingMustBeValid.class, report);
-			performValidation(ValueChangedActionBindingMustBeValid.class, report);
-		}
-
 	}
 
+	@DefineValidationRule
 	public static class DataBindingMustBeValid extends BindingMustBeValid<FIBTableColumn> {
 		public DataBindingMustBeValid() {
 			super("'data'_binding_is_not_valid", FIBTableColumn.class);
@@ -606,6 +596,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		}
 	}
 
+	@DefineValidationRule
 	public static class FormatBindingMustBeValid extends BindingMustBeValid<FIBTableColumn> {
 		public FormatBindingMustBeValid() {
 			super("'format'_binding_is_not_valid", FIBTableColumn.class);
@@ -617,6 +608,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		}
 	}
 
+	@DefineValidationRule
 	public static class TooltipBindingMustBeValid extends BindingMustBeValid<FIBTableColumn> {
 		public TooltipBindingMustBeValid() {
 			super("'tooltip'_binding_is_not_valid", FIBTableColumn.class);
@@ -628,6 +620,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		}
 	}
 
+	@DefineValidationRule
 	public static class ColorBindingMustBeValid extends BindingMustBeValid<FIBTableColumn> {
 		public ColorBindingMustBeValid() {
 			super("'color'_binding_is_not_valid", FIBTableColumn.class);
@@ -639,6 +632,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		}
 	}
 
+	@DefineValidationRule
 	public static class BgColorBindingMustBeValid extends BindingMustBeValid<FIBTableColumn> {
 		public BgColorBindingMustBeValid() {
 			super("'bg_color'_binding_is_not_valid", FIBTableColumn.class);
@@ -650,6 +644,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		}
 	}
 
+	@DefineValidationRule
 	public static class ValueChangedActionBindingMustBeValid extends BindingMustBeValid<FIBTableColumn> {
 		public ValueChangedActionBindingMustBeValid() {
 			super("'value_changed_action'_binding_is_not_valid", FIBTableColumn.class);

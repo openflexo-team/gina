@@ -43,16 +43,12 @@ import org.openflexo.antar.binding.ParameterizedTypeImpl;
 import org.openflexo.antar.binding.WilcardTypeImpl;
 import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.validation.FixProposal;
-import org.openflexo.fib.model.validation.ValidationIssue;
-import org.openflexo.fib.model.validation.ValidationReport;
-import org.openflexo.fib.model.validation.ValidationRule;
-import org.openflexo.fib.model.validation.ValidationWarning;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
+import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.DeserializationFinalizer;
 import org.openflexo.model.annotations.DeserializationInitializer;
 import org.openflexo.model.annotations.Getter;
@@ -66,6 +62,10 @@ import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.model.validation.FixProposal;
+import org.openflexo.model.validation.ValidationIssue;
+import org.openflexo.model.validation.ValidationRule;
+import org.openflexo.model.validation.ValidationWarning;
 import org.openflexo.rm.Resource;
 import org.openflexo.toolbox.StringUtils;
 
@@ -1153,7 +1153,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 		@Override
 		public String toString() {
-			return getClass().getSimpleName() + " ("
+			return getImplementedInterface().getSimpleName() + " ("
 					+ (getName() != null ? getName() : getIdentifier() != null ? getIdentifier() : "unnamed") + ")";
 		}
 
@@ -1672,15 +1672,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 			return buttons;
 		}
 
-		@Override
-		protected void applyValidation(ValidationReport report) {
-			super.applyValidation(report);
-			performValidation(RootComponentShouldHaveDataClass.class, report);
-			performValidation(DataBindingMustBeValid.class, report);
-			performValidation(VisibleBindingMustBeValid.class, report);
-			performValidation(NonRootComponentShouldNotHaveLocalizedDictionary.class, report);
-		}
-
 		/**
 		 * Return a list of all bindings declared in the context of this component
 		 * 
@@ -1694,23 +1685,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 			return returned;
 		}
 
-		/*@Override
-		public List<TargetObject> getChainedBindings(DataBinding<?> binding, TargetObject object) {
-			return null;
-		}
-
-		@Override
-		public void update(Observable o, Object arg) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
-			// TODO Auto-generated method stub
-
-		}*/
-
 		@Override
 		public Date getLastModified() {
 			return lastModified;
@@ -1720,30 +1694,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 		public void setLastModified(Date lastModified) {
 			this.lastModified = lastModified;
 		}
-
-		/*@Override
-		public void notifiedBindingDecoded(DataBinding<?> binding) {
-			if (binding == null) {
-				return;
-			}
-
-			if (binding.isValid() && binding.getExpression() != null) {
-				// System.out.println("For binding " + binding);
-				for (BindingValue e : binding.getExpression().getAllBindingValues()) {
-					// System.out.println(" > binding variable " + e.getBindingVariable() + " of " + e.getBindingVariable().getType());
-					if (TypeUtils.isTypeAssignableFrom(FIBComponentDynamicModel.class, e.getBindingVariable().getType())) {
-						FIBComponent c = getRootComponent().getComponentNamed(e.getBindingVariable().getVariableName());
-						if (c != null) {
-							// System.out.println("Component " + toString() + " depends of " + c.toString());
-							declareDependantOf(c);
-						} else {
-							logger.warning("Cannot find component named " + e.getBindingVariable().getVariableName() + " in " + this.getName());
-						}
-					}
-				}
-			}
-
-		}*/
 
 		@Override
 		public BindingFactory getBindingFactory() {
@@ -1845,6 +1795,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 	}
 
+	@DefineValidationRule
 	public static class RootComponentShouldHaveDataClass extends ValidationRule<RootComponentShouldHaveDataClass, FIBComponent> {
 		public RootComponentShouldHaveDataClass() {
 			super(FIBModelObject.class, "root_component_should_have_data_class");
@@ -1861,6 +1812,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 	}
 
+	@DefineValidationRule
 	public static class NonRootComponentShouldNotHaveLocalizedDictionary extends
 			ValidationRule<NonRootComponentShouldNotHaveLocalizedDictionary, FIBComponent> {
 		public NonRootComponentShouldNotHaveLocalizedDictionary() {
@@ -1912,6 +1864,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 	}
 
+	@DefineValidationRule
 	public static class DataBindingMustBeValid extends BindingMustBeValid<FIBComponent> {
 		public DataBindingMustBeValid() {
 			super("'data'_binding_is_not_valid", FIBComponent.class);
@@ -1924,6 +1877,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 	}
 
+	@DefineValidationRule
 	public static class VisibleBindingMustBeValid extends BindingMustBeValid<FIBComponent> {
 		public VisibleBindingMustBeValid() {
 			super("'visible'_binding_is_not_valid", FIBComponent.class);

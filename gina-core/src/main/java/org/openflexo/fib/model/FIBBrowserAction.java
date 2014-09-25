@@ -32,9 +32,9 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
-import org.openflexo.fib.model.validation.ValidationReport;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
+import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.DeserializationFinalizer;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -203,13 +203,6 @@ public abstract interface FIBBrowserAction extends FIBModelObject {
 			}
 		}
 
-		@Override
-		protected void applyValidation(ValidationReport report) {
-			super.applyValidation(report);
-			performValidation(MethodBindingMustBeValid.class, report);
-			performValidation(IsAvailableBindingMustBeValid.class, report);
-		}
-
 	}
 
 	@ModelEntity
@@ -266,6 +259,7 @@ public abstract interface FIBBrowserAction extends FIBModelObject {
 
 	}
 
+	@DefineValidationRule
 	public static class MethodBindingMustBeValid extends BindingMustBeValid<FIBBrowserAction> {
 		public MethodBindingMustBeValid() {
 			super("'method'_binding_is_not_valid", FIBBrowserAction.class);
@@ -277,6 +271,7 @@ public abstract interface FIBBrowserAction extends FIBModelObject {
 		}
 	}
 
+	@DefineValidationRule
 	public static class IsAvailableBindingMustBeValid extends BindingMustBeValid<FIBBrowserAction> {
 		public IsAvailableBindingMustBeValid() {
 			super("'is_available'_binding_is_not_valid", FIBBrowserAction.class);

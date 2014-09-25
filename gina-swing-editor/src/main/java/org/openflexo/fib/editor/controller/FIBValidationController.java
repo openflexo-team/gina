@@ -6,12 +6,12 @@ import javax.swing.ImageIcon;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.fib.model.validation.FixProposal;
-import org.openflexo.fib.model.validation.InformationIssue;
-import org.openflexo.fib.model.validation.ValidationError;
-import org.openflexo.fib.model.validation.ValidationIssue;
-import org.openflexo.fib.model.validation.ValidationReport;
-import org.openflexo.fib.model.validation.ValidationWarning;
+import org.openflexo.model.validation.FixProposal;
+import org.openflexo.model.validation.InformationIssue;
+import org.openflexo.model.validation.ValidationError;
+import org.openflexo.model.validation.ValidationIssue;
+import org.openflexo.model.validation.ValidationReport;
+import org.openflexo.model.validation.ValidationWarning;
 
 public class FIBValidationController extends FIBController {
 
@@ -36,7 +36,9 @@ public class FIBValidationController extends FIBController {
 	public void setSelectedValidationIssue(ValidationIssue validationIssue) {
 		selectedValidationIssue = validationIssue;
 		if (validationIssue != null && validationIssue.getObject() instanceof FIBComponent) {
-			editorController.setSelectedObject((FIBComponent) validationIssue.getObject());
+			if (editorController != null) {
+				editorController.setSelectedObject((FIBComponent) validationIssue.getObject());
+			}
 		}
 	}
 
@@ -83,4 +85,14 @@ public class FIBValidationController extends FIBController {
 		}
 		return null;
 	}
+
+	@Override
+	public String getLocalizedForKey(String key) {
+		String returned = super.getLocalizedForKey(key);
+		if (returned == null) {
+			return key;
+		}
+		return returned;
+	}
+
 }

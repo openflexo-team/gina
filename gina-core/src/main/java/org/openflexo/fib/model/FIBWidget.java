@@ -39,18 +39,18 @@ import org.openflexo.antar.binding.DataBinding.CachingStrategy;
 import org.openflexo.antar.binding.DefaultBindable;
 import org.openflexo.antar.binding.ParameterizedTypeImpl;
 import org.openflexo.antar.binding.WilcardTypeImpl;
-import org.openflexo.fib.model.validation.FixProposal;
-import org.openflexo.fib.model.validation.ValidationIssue;
-import org.openflexo.fib.model.validation.ValidationReport;
-import org.openflexo.fib.model.validation.ValidationRule;
-import org.openflexo.fib.model.validation.ValidationWarning;
 import org.openflexo.fib.view.FIBWidgetView;
+import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
+import org.openflexo.model.validation.FixProposal;
+import org.openflexo.model.validation.ValidationIssue;
+import org.openflexo.model.validation.ValidationRule;
+import org.openflexo.model.validation.ValidationWarning;
 import org.openflexo.toolbox.StringUtils;
 
 @ModelEntity(isAbstract = true)
@@ -910,22 +910,9 @@ public abstract interface FIBWidget extends FIBComponent {
 			return returned;
 		}
 
-		@Override
-		protected void applyValidation(ValidationReport report) {
-			super.applyValidation(report);
-			performValidation(FIBWidgetDeclaredAsDynamicShouldHaveAName.class, report);
-			performValidation(TooltipBindingMustBeValid.class, report);
-			performValidation(EnableBindingMustBeValid.class, report);
-			performValidation(FormatBindingMustBeValid.class, report);
-			performValidation(IconBindingMustBeValid.class, report);
-			performValidation(ClickActionBindingMustBeValid.class, report);
-			performValidation(DoubleClickActionBindingMustBeValid.class, report);
-			performValidation(RightClickActionBindingMustBeValid.class, report);
-			performValidation(ValueChangeActionBindingMustBeValid.class, report);
-		}
-
 	}
 
+	@DefineValidationRule
 	public static class FIBWidgetDeclaredAsDynamicShouldHaveAName extends
 			ValidationRule<FIBWidgetDeclaredAsDynamicShouldHaveAName, FIBWidget> {
 		public FIBWidgetDeclaredAsDynamicShouldHaveAName() {
@@ -974,6 +961,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		}
 	}
 
+	@DefineValidationRule
 	public static class TooltipBindingMustBeValid extends BindingMustBeValid<FIBWidget> {
 		public TooltipBindingMustBeValid() {
 			super("'tooltip'_binding_is_not_valid", FIBWidget.class);
@@ -986,6 +974,7 @@ public abstract interface FIBWidget extends FIBComponent {
 
 	}
 
+	@DefineValidationRule
 	public static class EnableBindingMustBeValid extends BindingMustBeValid<FIBWidget> {
 		public EnableBindingMustBeValid() {
 			super("'enable'_binding_is_not_valid", FIBWidget.class);
@@ -998,6 +987,7 @@ public abstract interface FIBWidget extends FIBComponent {
 
 	}
 
+	@DefineValidationRule
 	public static class FormatBindingMustBeValid extends BindingMustBeValid<FIBWidget> {
 		public FormatBindingMustBeValid() {
 			super("'format'_binding_is_not_valid", FIBWidget.class);
@@ -1010,6 +1000,7 @@ public abstract interface FIBWidget extends FIBComponent {
 
 	}
 
+	@DefineValidationRule
 	public static class IconBindingMustBeValid extends BindingMustBeValid<FIBWidget> {
 		public IconBindingMustBeValid() {
 			super("'icon'_binding_is_not_valid", FIBWidget.class);
@@ -1022,6 +1013,7 @@ public abstract interface FIBWidget extends FIBComponent {
 
 	}
 
+	@DefineValidationRule
 	public static class ClickActionBindingMustBeValid extends BindingMustBeValid<FIBWidget> {
 		public ClickActionBindingMustBeValid() {
 			super("'click_action'_binding_is_not_valid", FIBWidget.class);
@@ -1034,6 +1026,7 @@ public abstract interface FIBWidget extends FIBComponent {
 
 	}
 
+	@DefineValidationRule
 	public static class DoubleClickActionBindingMustBeValid extends BindingMustBeValid<FIBWidget> {
 		public DoubleClickActionBindingMustBeValid() {
 			super("'double_click_action'_binding_is_not_valid", FIBWidget.class);
@@ -1046,6 +1039,7 @@ public abstract interface FIBWidget extends FIBComponent {
 
 	}
 
+	@DefineValidationRule
 	public static class RightClickActionBindingMustBeValid extends BindingMustBeValid<FIBWidget> {
 		public RightClickActionBindingMustBeValid() {
 			super("'right_click_action'_binding_is_not_valid", FIBWidget.class);
@@ -1058,6 +1052,7 @@ public abstract interface FIBWidget extends FIBComponent {
 
 	}
 
+	@DefineValidationRule
 	public static class ValueChangeActionBindingMustBeValid extends BindingMustBeValid<FIBWidget> {
 		public ValueChangeActionBindingMustBeValid() {
 			super("'value_change_acion'_binding_is_not_valid", FIBWidget.class);

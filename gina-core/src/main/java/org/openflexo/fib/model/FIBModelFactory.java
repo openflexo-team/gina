@@ -42,22 +42,30 @@ import org.openflexo.model.factory.ModelFactory;
  */
 public class FIBModelFactory extends ModelFactory {
 
+	private final FIBValidationModel validationModel;
+
 	public FIBModelFactory() throws ModelDefinitionException {
 		super(ModelContextLibrary.getModelContext(FIBComponent.class));
 		addConverter(new DataBindingConverter());
 		addConverter(new ComponentConstraintsConverter());
 		addConverter(new ResourceLocationConverter());
+		validationModel = new FIBValidationModel(this);
 	}
 
 	public FIBModelFactory(Class<?>... additionalClasses) throws ModelDefinitionException {
 		super(ModelContextLibrary.getCompoundModelContext(FIBComponent.class, additionalClasses));
 		addConverter(new DataBindingConverter());
 		addConverter(new ComponentConstraintsConverter());
+		validationModel = new FIBValidationModel(this);
 	}
 
 	public FIBModelFactory(File relativePath) throws ModelDefinitionException {
 		this();
 		addConverter(new RelativePathFileConverter(relativePath));
+	}
+
+	public FIBValidationModel getValidationModel() {
+		return validationModel;
 	}
 
 	public FIBPanel newFIBPanel() {

@@ -43,10 +43,10 @@ import org.openflexo.fib.model.FIBBrowserAction.FIBAddAction;
 import org.openflexo.fib.model.FIBBrowserAction.FIBCustomAction;
 import org.openflexo.fib.model.FIBBrowserAction.FIBRemoveAction;
 import org.openflexo.fib.model.FIBBrowserElement.FIBBrowserElementChildren.FIBBrowserElementChildrenImpl;
-import org.openflexo.fib.model.validation.ValidationReport;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
+import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -854,18 +854,6 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}
 
 		@Override
-		protected void applyValidation(ValidationReport report) {
-			super.applyValidation(report);
-			performValidation(LabelBindingMustBeValid.class, report);
-			performValidation(IconBindingMustBeValid.class, report);
-			performValidation(TooltipBindingMustBeValid.class, report);
-			performValidation(EnabledBindingMustBeValid.class, report);
-			performValidation(VisibleBindingMustBeValid.class, report);
-			performValidation(EditableLabelBindingMustBeValid.class, report);
-			performValidation(DynamicFontBindingMustBeValid.class, report);
-		}
-
-		@Override
 		public Collection<? extends FIBModelObject> getEmbeddedObjects() {
 			return getChildren();
 		}
@@ -1149,16 +1137,9 @@ public interface FIBBrowserElement extends FIBModelObject {
 						|| TypeUtils.isClassAncestorOf(Enumeration.class, TypeUtils.getBaseClass(accessedType));
 			}
 
-			@Override
-			protected void applyValidation(ValidationReport report) {
-				super.applyValidation(report);
-				performValidation(DataBindingMustBeValid.class, report);
-				performValidation(VisibleBindingMustBeValid.class, report);
-				performValidation(CastBindingMustBeValid.class, report);
-			}
-
 		}
 
+		@DefineValidationRule
 		public static class DataBindingMustBeValid extends BindingMustBeValid<FIBBrowserElementChildren> {
 			public DataBindingMustBeValid() {
 				super("'data'_binding_is_not_valid", FIBBrowserElementChildren.class);
@@ -1170,6 +1151,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 			}
 		}
 
+		@DefineValidationRule
 		public static class VisibleBindingMustBeValid extends BindingMustBeValid<FIBBrowserElementChildren> {
 			public VisibleBindingMustBeValid() {
 				super("'visible'_binding_is_not_valid", FIBBrowserElementChildren.class);
@@ -1181,6 +1163,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 			}
 		}
 
+		@DefineValidationRule
 		public static class CastBindingMustBeValid extends BindingMustBeValid<FIBBrowserElementChildren> {
 			public CastBindingMustBeValid() {
 				super("'cast'_binding_is_not_valid", FIBBrowserElementChildren.class);
@@ -1194,6 +1177,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 	}
 
+	@DefineValidationRule
 	public static class LabelBindingMustBeValid extends BindingMustBeValid<FIBBrowserElement> {
 		public LabelBindingMustBeValid() {
 			super("'label'_binding_is_not_valid", FIBBrowserElement.class);
@@ -1206,6 +1190,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 	}
 
+	@DefineValidationRule
 	public static class IconBindingMustBeValid extends BindingMustBeValid<FIBBrowserElement> {
 		public IconBindingMustBeValid() {
 			super("'icon'_binding_is_not_valid", FIBBrowserElement.class);
@@ -1217,6 +1202,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}
 	}
 
+	@DefineValidationRule
 	public static class TooltipBindingMustBeValid extends BindingMustBeValid<FIBBrowserElement> {
 		public TooltipBindingMustBeValid() {
 			super("'tooltip'_binding_is_not_valid", FIBBrowserElement.class);
@@ -1228,6 +1214,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}
 	}
 
+	@DefineValidationRule
 	public static class EnabledBindingMustBeValid extends BindingMustBeValid<FIBBrowserElement> {
 		public EnabledBindingMustBeValid() {
 			super("'enabled'_binding_is_not_valid", FIBBrowserElement.class);
@@ -1239,6 +1226,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}
 	}
 
+	@DefineValidationRule
 	public static class VisibleBindingMustBeValid extends BindingMustBeValid<FIBBrowserElement> {
 		public VisibleBindingMustBeValid() {
 			super("'visible'_binding_is_not_valid", FIBBrowserElement.class);
@@ -1250,6 +1238,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}
 	}
 
+	@DefineValidationRule
 	public static class EditableLabelBindingMustBeValid extends BindingMustBeValid<FIBBrowserElement> {
 		public EditableLabelBindingMustBeValid() {
 			super("'editable_label'_binding_is_not_valid", FIBBrowserElement.class);
@@ -1261,6 +1250,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}
 	}
 
+	@DefineValidationRule
 	public static class DynamicFontBindingMustBeValid extends BindingMustBeValid<FIBBrowserElement> {
 		public DynamicFontBindingMustBeValid() {
 			super("'dynamic_font'_binding_is_not_valid", FIBBrowserElement.class);

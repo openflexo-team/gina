@@ -25,7 +25,7 @@ import javax.swing.Icon;
 
 import org.openflexo.antar.binding.BindingDefinition;
 import org.openflexo.antar.binding.DataBinding;
-import org.openflexo.fib.model.validation.ValidationReport;
+import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -200,23 +200,19 @@ public interface FIBButton extends FIBWidget {
 			this.buttonIcon = buttonIcon;
 		}
 
-		@Override
-		protected void applyValidation(ValidationReport report) {
-			super.applyValidation(report);
-			performValidation(ActionBindingMustBeValid.class, report);
+	}
+
+	@DefineValidationRule
+	public static class ActionBindingMustBeValid extends BindingMustBeValid<FIBButton> {
+		public ActionBindingMustBeValid() {
+			super("'action'_binding_is_not_valid", FIBButton.class);
 		}
 
-		public static class ActionBindingMustBeValid extends BindingMustBeValid<FIBButton> {
-			public ActionBindingMustBeValid() {
-				super("'action'_binding_is_not_valid", FIBButton.class);
-			}
-
-			@Override
-			public DataBinding getBinding(FIBButton object) {
-				return object.getAction();
-			}
-
+		@Override
+		public DataBinding getBinding(FIBButton object) {
+			return object.getAction();
 		}
 
 	}
+
 }
