@@ -33,6 +33,7 @@ import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
+import org.openflexo.model.annotations.Embedded;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -40,7 +41,6 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
-import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.toolbox.StringUtils;
 
@@ -64,6 +64,7 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 	@Getter(value = ENTRIES_KEY, cardinality = Cardinality.LIST, inverse = FIBLocalizedEntry.DICTIONARY_KEY)
 	@CloningStrategy(StrategyType.CLONE)
 	@XMLElement
+	@Embedded
 	public List<FIBLocalizedEntry> getEntries();
 
 	@Setter(ENTRIES_KEY)
@@ -117,7 +118,7 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 
 		@Override
 		public void addToEntries(FIBLocalizedEntry entry) {
-			
+
 			entry.setLocalizedDictionary(this);
 			_entries.add(entry);
 			// logger.info("Add entry key:"+entry.getKey()+" lang="+entry.getLanguage()+" value:"+entry.getValue());
@@ -126,10 +127,10 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 				logger.warning("Undefined language: " + entry.getLanguage());
 				return;
 			}
-			if(entry.getValue()!=null && entry.getKey()!=null){
+			if (entry.getValue() != null && entry.getKey() != null) {
 				getDictForLang(lang).put(entry.getKey(), entry.getValue());
 			}
-			
+
 		}
 
 		@Override

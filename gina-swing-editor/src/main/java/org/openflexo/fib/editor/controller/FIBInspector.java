@@ -72,7 +72,7 @@ public interface FIBInspector extends FIBPanel {
 		}
 
 		protected void appendSuperInspector(FIBInspector superInspector, FIBModelFactory factory) {
-			// System.out.println("************ Append " + superInspector + " to " + this);
+			// System.out.println("************ Append " + superInspector.getDataClass() + " to " + this.getDataClass());
 			// System.out.println("Append "+superInspector+" to "+this);
 
 			/*if (superInspector.getDataType().equals(FIBWidget.class) && getDataType().equals(FIBTextField.class)) {

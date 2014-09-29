@@ -51,6 +51,7 @@ import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.DeserializationFinalizer;
 import org.openflexo.model.annotations.DeserializationInitializer;
+import org.openflexo.model.annotations.Embedded;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -325,7 +326,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 	@Getter(value = LOCALIZED_DICTIONARY_KEY, inverse = FIBLocalizedDictionary.OWNER_KEY)
 	@XMLElement
-	@CloningStrategy(StrategyType.IGNORE)
+	@CloningStrategy(StrategyType.CLONE)
+	@Embedded
 	public FIBLocalizedDictionary getLocalizedDictionary();
 
 	@Setter(LOCALIZED_DICTIONARY_KEY)
@@ -508,14 +510,16 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 		@Override
 		public void setParent(FIBContainer parent) {
-			BindingModel oldBindingModel = getBindingModel();
-			FIBContainer oldParent = this.parent;
-			this.parent = parent;
-			if (oldParent != null && getDynamicAccessBindingVariable() != null) {
-				oldParent.getBindingModel().removeFromBindingVariables(getDynamicAccessBindingVariable());
+			if (this.parent != parent) {
+				BindingModel oldBindingModel = getBindingModel();
+				FIBContainer oldParent = this.parent;
+				this.parent = parent;
+				if (oldParent != null && getDynamicAccessBindingVariable() != null) {
+					oldParent.getBindingModel().removeFromBindingVariables(getDynamicAccessBindingVariable());
+				}
+				// Changing parent might cause the BindingModel to be different
+				bindingModelMightChange(oldBindingModel);
 			}
-			// Changing parent might cause the BindingModel to be different
-			bindingModelMightChange(oldBindingModel);
 		}
 
 		/**
@@ -901,6 +905,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 					// This indicates that component hierarchy change, and that dynamic access binding variable
 					// Move from/to rootComponent binding model to/from this component binding model
 					if (getBindingModel().bindingVariableNamed(getName()) == null) {
+						// System.out.println("* on ajoute la variable a " + getDynamicAccessType());
 						getBindingModel().addToBindingVariables(getDynamicAccessBindingVariable());
 					}
 				}
@@ -909,7 +914,10 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 		protected void bindingModelMightChange(BindingModel oldBindingModel) {
 
+			// System.out.println("bindingModelMightChange");
+
 			if (oldBindingModel != getBindingModel()) {
+				// System.out.println("fire");
 				getPropertyChangeSupport().firePropertyChange(BINDING_MODEL_PROPERTY, null, getBindingModel());
 			}
 

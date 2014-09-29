@@ -234,6 +234,11 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 			footer.setModel(getDataObject());
 		}
 
+		/*System.out.println("updateWidgetFromModel() for table " + getComponent().getName());
+		System.out.println("getTableModel().getValues()=" + getTableModel().getValues());
+		System.out.println("valuesBeforeUpdating=" + valuesBeforeUpdating);
+		System.out.println("wasSelected=" + wasSelected);*/
+
 		// We restore value if and only if we represent same table
 		if (equals(getTableModel().getValues(), valuesBeforeUpdating) && wasSelected != null) {
 			returned = true;
@@ -286,6 +291,10 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 						});*/
 						// addToSelection(getTableModel().getValues().get(0));
 					}
+				} else {
+					// System.out.println("clear selection");
+					// getListSelectionModel().clearSelection();
+					// setSelected(null);
 				}
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();

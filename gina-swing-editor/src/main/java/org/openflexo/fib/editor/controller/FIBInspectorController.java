@@ -21,8 +21,6 @@ package org.openflexo.fib.editor.controller;
 
 import java.awt.BorderLayout;
 import java.awt.Rectangle;
-import java.io.File;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Observable;
@@ -60,12 +58,12 @@ public class FIBInspectorController implements Observer, ChangeListener {
 
 	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
-	private JDialog inspectorDialog;
-	private JPanel EMPTY_CONTENT;
-	private JPanel rootPane;
+	private final JDialog inspectorDialog;
+	private final JPanel EMPTY_CONTENT;
+	private final JPanel rootPane;
 
-	private Hashtable<Class<?>, FIBInspector> inspectors;
-	private Hashtable<FIBInspector, FIBView> inspectorViews;
+	private final Hashtable<Class<?>, FIBInspector> inspectors;
+	private final Hashtable<FIBInspector, FIBView> inspectorViews;
 
 	public FIBModelFactory INSPECTOR_FACTORY;
 
@@ -101,7 +99,9 @@ public class FIBInspectorController implements Observer, ChangeListener {
 		}
 
 		for (FIBInspector inspector : new ArrayList<FIBInspector>(inspectors.values())) {
+			// System.out.println(">>>>>>>>>>>>> BEGIN appendSuperInspectors for " + inspector.getDataClass());
 			inspector.appendSuperInspectors(this);
+			// System.out.println("<<<<<<<<<<<<< END appendSuperInspectors for " + inspector.getDataClass());
 		}
 
 		for (FIBInspector inspector : inspectors.values()) {

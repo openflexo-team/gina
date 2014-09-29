@@ -19,6 +19,7 @@
  */
 package org.openflexo.fib.model;
 
+import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -26,6 +27,10 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.model.validation.FixProposal;
+import org.openflexo.model.validation.ValidationIssue;
+import org.openflexo.model.validation.ValidationRule;
+import org.openflexo.model.validation.ValidationWarning;
 
 @ModelEntity
 @ImplementationClass(FIBLocalizedEntry.FIBLocalizedEntryImpl.class)
@@ -41,7 +46,7 @@ public interface FIBLocalizedEntry extends FIBModelObject {
 	@PropertyIdentifier(type = String.class)
 	public static final String VALUE_KEY = "value";
 
-	@Getter(value = DICTIONARY_KEY, inverse = FIBLocalizedDictionary.ENTRIES_KEY)
+	@Getter(value = DICTIONARY_KEY /*, inverse = FIBLocalizedDictionary.ENTRIES_KEY*/)
 	public FIBLocalizedDictionary getLocalizedDictionary();
 
 	@Setter(DICTIONARY_KEY)
@@ -76,4 +81,49 @@ public interface FIBLocalizedEntry extends FIBModelObject {
 		}
 
 	}
+
+	@DefineValidationRule
+	public static class LocalizedEntryShouldNotBeRegisteredTwice extends
+			ValidationRule<LocalizedEntryShouldNotBeRegisteredTwice, FIBLocalizedEntry> {
+		public LocalizedEntryShouldNotBeRegisteredTwice() {
+			super(FIBLocalizedEntry.class, "localized_entry_should_not_be_registered_twice");
+		}
+
+		@Override
+		public ValidationIssue<LocalizedEntryShouldNotBeRegisteredTwice, FIBLocalizedEntry> applyValidation(FIBLocalizedEntry entry) {
+
+			if (entry.getLocalizedDictionary() != null) {
+				if (entry.getLocalizedDictionary().getEntries().indexOf(entry) != entry.getLocalizedDictionary().getEntries()
+						.lastIndexOf(entry)) {
+					RemoveExtraReferences fixProposal = new RemoveExtraReferences(entry);
+					return new ValidationWarning<LocalizedEntryShouldNotBeRegisteredTwice, FIBLocalizedEntry>(this, entry,
+							"localized_entry_is_registered_twice", fixProposal);
+				}
+			}
+			return null;
+		}
+
+		protected static class RemoveExtraReferences extends FixProposal<LocalizedEntryShouldNotBeRegisteredTwice, FIBLocalizedEntry> {
+
+			private final FIBLocalizedEntry entry;
+
+			public RemoveExtraReferences(FIBLocalizedEntry entry) {
+				super("remove_duplicated_references");
+				this.entry = entry;
+			}
+
+			@Override
+			protected void fixAction() {
+				FIBLocalizedDictionary dict = entry.getLocalizedDictionary();
+				if (dict != null) {
+					while (dict.getEntries().contains(entry)) {
+						dict.removeFromEntries(entry);
+					}
+				}
+			}
+
+		}
+
+	}
+
 }
