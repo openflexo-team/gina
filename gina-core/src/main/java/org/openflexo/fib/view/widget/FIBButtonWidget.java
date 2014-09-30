@@ -85,9 +85,6 @@ public class FIBButtonWidget extends FIBWidgetView<FIBButton, JButton, String> {
 			logger.fine("Data: " + getController().getDataObject());
 		}
 
-		System.out.println(">>>>>>>> On appuie sur le bouton");
-		System.out.println("getWidget().getAction()=" + getWidget().getAction());
-
 		setData(getComponent().getIdentifier());
 		DataBinding<?> action = getWidget().getAction();
 		if (action.isValid()) {

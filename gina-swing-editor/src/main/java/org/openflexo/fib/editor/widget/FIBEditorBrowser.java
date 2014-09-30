@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.fib.editor.controller.FIBEditorController;
 import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.fib.view.widget.DefaultFIBCustomComponent;
+import org.openflexo.fib.swing.FIBJPanel;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.rm.Resource;
@@ -36,7 +36,7 @@ import org.openflexo.rm.ResourceLocator;
  * 
  */
 @SuppressWarnings("serial")
-public class FIBEditorBrowser extends DefaultFIBCustomComponent<FIBComponent> {
+public class FIBEditorBrowser extends FIBJPanel<FIBComponent> {
 
 	protected static final Logger logger = Logger.getLogger(FIBEditorBrowser.class.getPackage().getName());
 

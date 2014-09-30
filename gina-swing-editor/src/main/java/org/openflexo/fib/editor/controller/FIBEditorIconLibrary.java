@@ -5,8 +5,14 @@ import javax.swing.ImageIcon;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.ImageIconResource;
 
+/**
+ * Provides graphical resources used in the context of FIB
+ * 
+ * 
+ * @author sylvain
+ * 
+ */
 public class FIBEditorIconLibrary {
-	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
 	public static final ImageIcon DELETE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Actions/Delete.gif"));
 	public static final ImageIcon HELP_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Actions/Help.gif"));
@@ -15,7 +21,8 @@ public class FIBEditorIconLibrary {
 	public static final ImageIcon ROLE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/SmallRole.gif"));
 	public static final ImageIcon ROOT_COMPONENT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/RootComponentIcon.png"));
 	public static final ImageIcon PANEL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/PanelIcon.png"));
-	public static final ImageIcon REFERENCE_COMPONENT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/InternalFrameIcon.png"));
+	public static final ImageIcon REFERENCE_COMPONENT_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/InternalFrameIcon.png"));
 	public static final ImageIcon SPLIT_PANEL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/SplitPaneIcon.png"));
 	public static final ImageIcon BUTTON_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ButtonIcon.png"));
 	public static final ImageIcon CHECKBOX_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/CheckBoxIcon.png"));
@@ -28,12 +35,5 @@ public class FIBEditorIconLibrary {
 	public static final ImageIcon TABLE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/TableIcon.png"));
 	public static final ImageIcon TREE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/TreeIcon.png"));
 	public static final ImageIcon NUMBER_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/SpinnerIcon.png"));
-
-	public static final ImageIconResource FIX_PROPOSAL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Validation/FixProposal.gif"));
-	public static final ImageIconResource INFO_ISSUE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Validation/Info.gif"));
-	public static final ImageIconResource FIXABLE_ERROR_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Validation/FixableError.gif"));
-	public static final ImageIconResource UNFIXABLE_ERROR_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Validation/UnfixableError.gif"));
-	public static final ImageIconResource FIXABLE_WARNING_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Validation/FixableWarning.gif"));
-	public static final ImageIconResource UNFIXABLE_WARNING_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Validation/UnfixableWarning.gif"));
 
 }

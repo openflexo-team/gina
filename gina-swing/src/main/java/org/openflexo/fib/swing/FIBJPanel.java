@@ -1,4 +1,5 @@
 /*
+ * (c) Copyright 2012-2014 Openflexo
  * (c) Copyright 2010-2011 AgileBirds
  *
  * This file is part of OpenFlexo.
@@ -17,7 +18,7 @@
  * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.openflexo.fib.view.widget;
+package org.openflexo.fib.swing;
 
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeSupport;
@@ -37,11 +38,20 @@ import org.openflexo.rm.Resource;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
-public abstract class DefaultFIBCustomComponent<T> extends JPanel implements FIBCustomComponent<T, DefaultFIBCustomComponent<T>>,
-		HasPropertyChangeSupport {
+/**
+ * This is the default implementation for a Swing panel defined using a FIB model<br>
+ * This class is an instanceof JPanel in which Swing FIB instantiation is performed
+ * 
+ * @author sylvain
+ * 
+ * @param <T>
+ *            type of object beeing represented as 'data' in FIB
+ */
+@SuppressWarnings("serial")
+public abstract class FIBJPanel<T> extends JPanel implements FIBCustomComponent<T, FIBJPanel<T>>, HasPropertyChangeSupport {
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(DefaultFIBCustomComponent.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(FIBJPanel.class.getPackage().getName());
 
 	private final Vector<ApplyCancelListener> applyCancelListener;
 
@@ -54,7 +64,7 @@ public abstract class DefaultFIBCustomComponent<T> extends JPanel implements FIB
 
 	private PropertyChangeSupport pcSupport;
 
-	public DefaultFIBCustomComponent(FIBComponent component, T editedObject, LocalizedDelegate parentLocalizer) {
+	public FIBJPanel(FIBComponent component, T editedObject, LocalizedDelegate parentLocalizer) {
 		super();
 		localizer = parentLocalizer;
 		setOpaque(false);
@@ -74,12 +84,12 @@ public abstract class DefaultFIBCustomComponent<T> extends JPanel implements FIB
 		applyCancelListener = new Vector<ApplyCancelListener>();
 	}
 
-	public DefaultFIBCustomComponent(Resource fibFileName, T editedObject, LocalizedDelegate parentLocalizer) {
+	public FIBJPanel(Resource fibFileName, T editedObject, LocalizedDelegate parentLocalizer) {
 		this(FIBLibrary.instance().retrieveFIBComponent(fibFileName, true), editedObject, parentLocalizer);
 	}
 
 	/*
-	public DefaultFIBCustomComponent(File fibFile, T editedObject, LocalizedDelegate parentLocalizer) {
+	public FIBJPanel(File fibFile, T editedObject, LocalizedDelegate parentLocalizer) {
 		this(FIBLibrary.instance().retrieveFIBComponent(fibFile), editedObject, parentLocalizer);
 	}
 	*/
@@ -102,7 +112,7 @@ public abstract class DefaultFIBCustomComponent<T> extends JPanel implements FIB
 	}
 
 	@Override
-	public DefaultFIBCustomComponent<T> getJComponent() {
+	public FIBJPanel<T> getJComponent() {
 		return this;
 	}
 

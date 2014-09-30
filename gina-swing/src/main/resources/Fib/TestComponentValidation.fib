@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Panel id="0" darkLevel="0" useScrollBar="false" protectContent="false" height="500" name="main" layout="gridbag" controllerClassName="org.openflexo.fib.swing.validation.FIBValidationController" border="empty" trackViewPortWidth="true" width="600" dataClassName="org.openflexo.model.validation.ValidationReport" titleFont="SansSerif,0,13" trackViewPortHeight="true">
+  <LocalizedDictionary id="1">
+    <Localized id="2" value="Validation report" lang="English" key="validation_report" />
+    <Localized idref="2" />
+    <Localized idref="2" />
+    <Localized idref="2" />
+    <Localized id="3" value="Message" lang="English" key="message" />
+    <Localized idref="3" />
+    <Localized idref="3" />
+    <Localized idref="3" />
+    <Localized idref="3" />
+    <Localized id="4" value="Object" lang="English" key="object" />
+    <Localized idref="4" />
+    <Localized idref="4" />
+    <Localized idref="4" />
+    <Localized idref="4" />
+    <Localized id="5" value="Add" lang="English" key="add" />
+    <Localized idref="5" />
+    <Localized idref="5" />
+    <Localized idref="5" />
+    <Localized idref="5" />
+    <Localized id="6" value="Remove" lang="English" key="remove" />
+    <Localized idref="6" />
+    <Localized idref="6" />
+    <Localized idref="6" />
+    <Localized idref="6" />
+    <Localized id="7" value="Check again" lang="English" key="check_again" />
+    <Localized idref="7" />
+    <Localized idref="7" />
+    <Localized idref="7" />
+    <Localized idref="7" />
+    <Localized id="8" value="Close" lang="English" key="close" />
+    <Localized idref="8" />
+    <Localized idref="8" />
+    <Localized idref="8" />
+    <Localized idref="8" />
+    <Localized id="9" value="Rapport de validation" lang="French" key="validation_report" />
+    <Localized idref="9" />
+    <Localized idref="9" />
+    <Localized idref="9" />
+    <Localized idref="9" />
+    <Localized id="10" value="Message" lang="French" key="message" />
+    <Localized idref="10" />
+    <Localized idref="10" />
+    <Localized idref="10" />
+    <Localized idref="10" />
+    <Localized id="11" value="Objet" lang="French" key="object" />
+    <Localized idref="11" />
+    <Localized idref="11" />
+    <Localized idref="11" />
+    <Localized idref="11" />
+    <Localized id="12" value="Ajouter" lang="French" key="add" />
+    <Localized idref="12" />
+    <Localized idref="12" />
+    <Localized idref="12" />
+    <Localized idref="12" />
+    <Localized id="13" value="Supprimer" lang="French" key="remove" />
+    <Localized idref="13" />
+    <Localized idref="13" />
+    <Localized idref="13" />
+    <Localized idref="13" />
+    <Localized id="14" value="Revalider" lang="French" key="check_again" />
+    <Localized idref="14" />
+    <Localized idref="14" />
+    <Localized idref="14" />
+    <Localized idref="14" />
+    <Localized id="15" value="Fermer" lang="French" key="close" />
+    <Localized idref="15" />
+    <Localized idref="15" />
+    <Localized idref="15" />
+    <Localized idref="15" />
+    <Localized id="16" value="Validation report" lang="Dutch" key="validation_report" />
+    <Localized idref="16" />
+    <Localized idref="16" />
+    <Localized idref="16" />
+    <Localized idref="16" />
+    <Localized id="17" value="Message" lang="Dutch" key="message" />
+    <Localized idref="17" />
+    <Localized idref="17" />
+    <Localized idref="17" />
+    <Localized idref="17" />
+    <Localized id="18" value="Object" lang="Dutch" key="object" />
+    <Localized idref="18" />
+    <Localized idref="18" />
+    <Localized idref="18" />
+    <Localized idref="18" />
+    <Localized id="19" value="Add" lang="Dutch" key="add" />
+    <Localized idref="19" />
+    <Localized idref="19" />
+    <Localized idref="19" />
+    <Localized idref="19" />
+    <Localized id="20" value="Remove" lang="Dutch" key="remove" />
+    <Localized idref="20" />
+    <Localized idref="20" />
+    <Localized idref="20" />
+    <Localized idref="20" />
+    <Localized id="21" value="Check again" lang="Dutch" key="check_again" />
+    <Localized idref="21" />
+    <Localized idref="21" />
+    <Localized idref="21" />
+    <Localized idref="21" />
+    <Localized id="22" value="Close" lang="Dutch" key="close" />
+    <Localized idref="22" />
+    <Localized idref="22" />
+    <Localized idref="22" />
+    <Localized idref="22" />
+    <Localized id="23" value="Corriger le problème" lang="French" key="fix_issue" />
+    <Localized idref="23" />
+    <Localized idref="23" />
+    <Localized idref="23" />
+    <Localized idref="23" />
+    <Localized id="24" value="Proposition de correction" lang="French" key="fix_proposal" />
+    <Localized idref="24" />
+    <Localized idref="24" />
+    <Localized idref="24" />
+    <Localized idref="24" />
+    <Localized id="25" value="La validation a échoué: des erreurs ont été trouvées" lang="French" key="validation_has_failed" />
+    <Localized idref="25" />
+    <Localized idref="25" />
+    <Localized idref="25" />
+    <Localized idref="25" />
+    <Localized id="26" value="La validation a été passée avec succès" lang="French" key="validation_has_succesfully_been_performed" />
+    <Localized idref="26" />
+    <Localized idref="26" />
+    <Localized idref="26" />
+    <Localized idref="26" />
+    <Localized id="27" value="Fix issue" lang="English" key="fix_issue" />
+    <Localized idref="27" />
+    <Localized idref="27" />
+    <Localized idref="27" />
+    <Localized idref="27" />
+    <Localized id="28" value="Fix proposal" lang="English" key="fix_proposal" />
+    <Localized idref="28" />
+    <Localized idref="28" />
+    <Localized idref="28" />
+    <Localized idref="28" />
+    <Localized id="29" value="Validation has failed: errors were found" lang="English" key="validation_has_failed" />
+    <Localized idref="29" />
+    <Localized idref="29" />
+    <Localized idref="29" />
+    <Localized idref="29" />
+    <Localized id="30" value="Validation has successfully been performed" lang="English" key="validation_has_succesfully_been_performed" />
+    <Localized idref="30" />
+    <Localized idref="30" />
+    <Localized idref="30" />
+    <Localized idref="30" />
+    <Localized id="31" value="Object ($object.name) has no valid name" lang="English" key="object_($object.name)_has_no_name" />
+    <Localized idref="31" />
+    <Localized idref="31" />
+    <Localized idref="31" />
+    <Localized idref="31" />
+    <Localized id="32" value="L'objet ($object.name) n'a pas de nom valide" lang="French" key="object_($object.name)_has_no_name" />
+    <Localized idref="32" />
+    <Localized idref="32" />
+    <Localized idref="32" />
+    <Localized idref="32" />
+    <Localized id="33" value="object_($object.name)_has_no_name" lang="Dutch" key="object_($object.name)_has_no_name" />
+    <Localized idref="33" />
+    <Localized idref="33" />
+    <Localized idref="33" />
+    <Localized idref="33" />
+  </LocalizedDictionary>
+  <Panel id="34" darkLevel="0" useScrollBar="false" protectContent="false" layout="border" controllerClassName="org.openflexo.fib.controller.FIBController" border="empty" trackViewPortWidth="true" index="0" constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=0;insetsBottom=10;insetsLeft=20;insetsRight=20;insetsTop=10;padX=0;padY=0;weightX=1.0;weightY=0.0)" borderTitle="Panel" trackViewPortHeight="true">
+    <Label id="35" manageDynamicModel="false" useScrollBar="false" data="((data.localizedForKey(&quot;validation_report_for&quot;) + &quot; &quot;) + data.rootObject.toString)" controllerClassName="org.openflexo.fib.controller.FIBController" index="0" localize="true" align="left" constraints="border(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=0;insetsBottom=10;insetsLeft=0;insetsRight=0;insetsTop=10;location=west;padX=0;padY=0;weightX=1.0;weightY=0.0)" label="" readOnly="false" />
+    <DropDown id="36" manageDynamicModel="false" useScrollBar="false" data="data.reportMode" showReset="false" autoSelectFirstRow="true" name="dropdown" controllerClassName="org.openflexo.fib.controller.FIBController" localize="true" constraints="border(location=east)" format="object.localizedName" dataClassName="org.openflexo.model.validation.ValidationReport$ReportMode" showText="true" readOnly="false" iteratorClassName="org.openflexo.model.validation.ValidationReport$ReportMode" showIcon="false" />
+    <Label id="37" manageDynamicModel="false" useScrollBar="false" data="(((data.errorsCount.toString + &quot; errors, &quot;) + data.warningsCount.toString) + &quot; warnings&quot;)" controllerClassName="org.openflexo.fib.controller.FIBController" localize="true" font="Lucida Grande,2,10" align="right" constraints="border(location=south)" label="" readOnly="false" />
+  </Panel>
+  <TabPanel id="38" useScrollBar="false" restrictPreferredSizeToSelectedComponent="false" controllerClassName="org.openflexo.fib.controller.FIBController" index="2" constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=2;insetsBottom=0;insetsLeft=10;insetsRight=10;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=1.0)">
+    <Tab id="39" darkLevel="0" useScrollBar="false" protectContent="false" title="Errors/Warnings" layout="twocols" controllerClassName="org.openflexo.fib.controller.FIBController" border="empty" flowAlignment="CENTER" trackViewPortWidth="true" titleFont="SansSerif,0,11" trackViewPortHeight="true">
+      <Table id="40" showFooter="false" manageDynamicModel="true" doubleClickAction="controller.fixIssue(FixProposalTable.selected)" selectionMode="MultipleIntervalSelection" boundToSelectionManager="true" controllerClassName="org.openflexo.fib.controller.FIBController" index="2" localize="true" font="Lucida Grande,0,11" constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=true;fill=both;gridHeight=0;gridWidth=-1;gridX=0;gridY=0;index=2;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)" visibleRowCount="15" createNewRowOnClick="false" rowHeight="18" textSelectionColor="255,255,255" iteratorClassName="org.openflexo.model.validation.ValidationIssue" backgroundSelectionColor="41,90,209" useScrollBar="false" backgroundNonSelectionColor="255,255,255" data="data.filteredIssues" selected="controller.selectedValidationIssue" autoSelectFirstRow="false" name="IssuesTable" textNonSelectionColor="0,0,0" readOnly="false" backgroundSecondarySelectionColor="173,215,255">
+        <IconColumn id="41" data="controller.iconFor(iterator)" displayTitle="false" title="icon" name="icon" columnWidth="20" resizable="false" />
+        <LabelColumn id="42" data="controller.getLocalizedForKey(iterator.message)" displayTitle="true" title="message" name="label" columnWidth="250" resizable="true" />
+        <LabelColumn id="43" data="iterator.object.toString" displayTitle="true" title="object" name="label" columnWidth="100" resizable="true" />
+        <AddAction id="44" name="add" method="data.localizer.addEntry" />
+        <RemoveAction id="45" name="remove" method="data.localizer.deleteEntry(selected)" />
+      </Table>
+      <TextArea id="46" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" manageDynamicModel="false" useScrollBar="true" data="IssuesTable.selected.cause.ruleDescription" columns="8" controllerClassName="org.openflexo.fib.controller.FIBController" text="TextArea" index="2" localize="true" font="SansSerif,0,11" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center)" rows="5" readOnly="false" validateOnReturn="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" />
+      <Panel id="47" darkLevel="0" visible="((IssuesTable.selected != null) &amp; IssuesTable.selected.isProblemIssue)" useScrollBar="false" data="($org.openflexo.model.validation.ProblemIssue)IssuesTable.selected" protectContent="false" name="DetailPanel" layout="border" controllerClassName="org.openflexo.fib.controller.FIBController" border="empty" trackViewPortWidth="true" index="3" constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=true;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=0.0)" borderTitle="Panel" dataClassName="org.openflexo.model.validation.ProblemIssue" titleFont="Lucida Grande,0,13" trackViewPortHeight="true">
+        <Table id="48" showFooter="false" manageDynamicModel="true" doubleClickAction="controller.fixIssue(FixProposalTable.selected)" selectionMode="MultipleIntervalSelection" boundToSelectionManager="false" controllerClassName="org.openflexo.fib.controller.FIBController" index="3" localize="true" constraints="border(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=3;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0;x=0;y=0)" visibleRowCount="5" createNewRowOnClick="false" rowHeight="18" textSelectionColor="255,255,255" iteratorClassName="org.openflexo.model.validation.FixProposal" backgroundSelectionColor="41,90,209" useScrollBar="false" backgroundNonSelectionColor="255,255,255" data="DetailPanel.data.fixProposals" autoSelectFirstRow="true" name="FixProposalTable" textNonSelectionColor="0,0,0" readOnly="false" backgroundSecondarySelectionColor="173,215,255">
+          <IconColumn id="49" data="controller.iconFor(iterator)" displayTitle="false" title="icon" name="icon" columnWidth="20" resizable="false" />
+          <LabelColumn id="50" data="iterator.localizedMessage" displayTitle="true" title="fix_proposal" name="label" columnWidth="100" resizable="true" />
+          <LocalizedDictionary id="51" />
+        </Table>
+      </Panel>
+    </Tab>
+    <Tab id="52" darkLevel="0" useScrollBar="false" protectContent="false" title="Validation Model" layout="border" controllerClassName="org.openflexo.fib.controller.FIBController" border="empty" trackViewPortWidth="true" trackViewPortHeight="true">
+      <SplitPanel id="53" useScrollBar="false" controllerClassName="org.openflexo.fib.controller.FIBController" index="3" constraints="border(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=5;insetsBottom=0;insetsLeft=10;insetsRight=10;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)">
+        <Table id="54" showFooter="false" manageDynamicModel="true" selectionMode="MultipleIntervalSelection" boundToSelectionManager="false" controllerClassName="org.openflexo.fib.controller.FIBController" index="3" localize="true" constraints="split(anchor=center;fill=both;gridHeight=2;gridWidth=1;gridX=-1;gridY=-1;index=3;insetsBottom=0;insetsLeft=10;insetsRight=10;insetsTop=0;padX=0;padY=0;splitIdentifier=classes;weightX=1.0;weightY=1.0)" createNewRowOnClick="false" iteratorClassName="java.lang.Class" useScrollBar="false" data="data.validationModel.sortedClasses" autoSelectFirstRow="false" name="ClassesTable" readOnly="false">
+          <LabelColumn id="55" data="iterator.simpleName" displayTitle="true" title="classes" name="label" columnWidth="100" resizable="true" />
+        </Table>
+        <Table id="56" showFooter="false" manageDynamicModel="true" selectionMode="MultipleIntervalSelection" boundToSelectionManager="false" controllerClassName="org.openflexo.fib.controller.FIBController" index="3" localize="true" constraints="split(anchor=center;fill=both;gridHeight=2;gridWidth=1;gridX=-1;gridY=-1;index=3;insetsBottom=0;insetsLeft=10;insetsRight=10;insetsTop=0;padX=0;padY=0;splitIdentifier=rules;weightX=1.0;weightY=1.0)" createNewRowOnClick="false" iteratorClassName="org.openflexo.model.validation.ValidationRule" useScrollBar="false" data="data.validationModel.getGenericRuleSet(ClassesTable.selected).rules" autoSelectFirstRow="false" name="RulesTable" readOnly="false">
+          <LabelColumn id="57" data="iterator.ruleName" displayTitle="true" title="validation_rule" name="label" columnWidth="100" resizable="true" />
+        </Table>
+        <RowSplit id="58" weight="0.0" name="RowSplit">
+          <Leaf id="59" weight="0.2948435412166979" name="classes" />
+          <Divider id="60" />
+          <ColSplit id="61" weight="0.7051564485109709" name="ColSplit">
+            <Leaf id="62" weight="0.20000000298023224" name="rules" />
+            <Divider id="63" />
+            <Leaf id="64" weight="0.800000011920929" name="description" />
+          </ColSplit>
+        </RowSplit>
+      </SplitPanel>
+    </Tab>
+  </TabPanel>
+  <Panel id="65" darkLevel="0" vGap="5" useScrollBar="false" protectContent="false" hGap="5" layout="flow" controllerClassName="org.openflexo.fib.controller.FIBController" border="empty" flowAlignment="CENTER" trackViewPortWidth="true" index="4" constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=4;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=5;padX=0;padY=0;weightX=1.0;weightY=0.0)" borderTitle="Panel" titleFont="Lucida Grande,0,13" trackViewPortHeight="true">
+    <Button id="66" manageDynamicModel="false" useScrollBar="false" enable="((IssuesTable.selected != null) | (FixProposalTable.selected != null))" buttonType="Trigger" name="FixIssueButton" action="controller.fixIssues(IssuesTable.selection,FixProposalTable.selected)" controllerClassName="org.openflexo.fib.controller.FIBController" index="0" localize="true" constraints="flow(index=0)" label="fix_issue_s" readOnly="false" />
+    <Button id="67" manageDynamicModel="false" useScrollBar="false" enable="(data.filteredIssues.size &gt; 0)" buttonType="Trigger" name="FixAllButton" action="controller.fixAllIssues(data.filteredIssues)" controllerClassName="org.openflexo.fib.controller.FIBController" index="0" localize="true" constraints="flow(index=0)" label="fix_all" readOnly="false" />
+    <Button id="68" manageDynamicModel="false" useScrollBar="false" enable="((IssuesTable.selected != null) &amp; IssuesTable.selected.cause.isEnabled)" buttonType="Trigger" name="DisableRuleButton" action="controller.fixIssue(FixProposalTable.selected)" controllerClassName="org.openflexo.fib.controller.FIBController" index="0" localize="true" constraints="flow(index=0)" label="disable_rule" readOnly="false" />
+    <Button id="69" manageDynamicModel="false" useScrollBar="false" buttonType="Trigger" action="controller.checkAgain()" controllerClassName="org.openflexo.fib.controller.FIBController" index="1" localize="true" constraints="flow(index=1)" label="check_again" readOnly="false" />
+    <Button id="70" manageDynamicModel="false" useScrollBar="false" buttonType="Trigger" action="controller.validateAndDispose()" controllerClassName="org.openflexo.fib.controller.FIBController" index="2" localize="true" constraints="flow(index=2)" label="close" readOnly="false" />
+  </Panel>
+</Panel>

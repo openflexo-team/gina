@@ -3,38 +3,40 @@ package org.openflexo.fib.editor;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
-import org.openflexo.fib.FIBLibrary;
-import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.editor.controller.FIBEditorController;
-import org.openflexo.fib.editor.controller.FIBValidationController;
 import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.fib.view.FIBView;
+import org.openflexo.fib.swing.validation.ValidationPanel;
 import org.openflexo.localization.FlexoLocalization;
-import org.openflexo.model.validation.ValidationReport;
-import org.openflexo.rm.Resource;
-import org.openflexo.rm.ResourceLocator;
+import org.openflexo.model.validation.ValidationIssue;
 
-public class ValidationWindow {
+public class ValidationWindow extends JDialog {
 
-	public static Resource COMPONENT_VALIDATION_FIB = ResourceLocator.locateResource("Fib/ComponentValidation.fib");
+	private final ValidationPanel validationPanel;
+	private final FIBEditorController editorController;
 
-	private FIBView validationView = null;
-	private JDialog validationDialog = null;
-	private FIBValidationController validationController = null;
+	public ValidationWindow(JFrame frame, FIBEditorController editorController) {
+		super(frame, FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, "component_validation"), false);
+		this.editorController = editorController;
+		validationPanel = new ValidationPanel(null, FIBAbstractEditor.LOCALIZATION) {
+			@Override
+			protected void performSelect(ValidationIssue<?, ?> validationIssue) {
+				ValidationWindow.this.performSelect(validationIssue);
+			}
+		};
+		getContentPane().add(validationPanel);
+		pack();
+	}
 
-	public ValidationWindow(JFrame frame, FIBEditorController controller) {
-		FIBComponent componentValidationComponent = FIBLibrary.instance().retrieveFIBComponent(COMPONENT_VALIDATION_FIB, true);
-		validationController = new FIBValidationController(componentValidationComponent, controller);
-		validationView = FIBController.makeView(componentValidationComponent, validationController);
-		validationDialog = new JDialog(frame, FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, "component_validation"),
-				false);
-		validationDialog.getContentPane().add(validationView.getResultingJComponent());
-		validationDialog.pack();
+	protected void performSelect(ValidationIssue<?, ?> validationIssue) {
+		if (validationIssue != null && validationIssue.getObject() instanceof FIBComponent) {
+			if (editorController != null) {
+				editorController.setSelectedObject((FIBComponent) validationIssue.getObject());
+			}
+		}
 	}
 
 	public void validateAndDisplayReportForComponent(FIBComponent component) {
-		ValidationReport report = component.validate();
-		validationView.getController().setDataObject(report);
-		validationDialog.setVisible(true);
+		validationPanel.validate(component.getFactory().getValidationModel(), component);
+		setVisible(true);
 	}
 }

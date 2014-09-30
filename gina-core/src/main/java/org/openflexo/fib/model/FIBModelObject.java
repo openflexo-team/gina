@@ -209,19 +209,6 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 					returned.add((Validable) e);
 				}
 			}
-
-			if (this instanceof FIBComponent && ((FIBComponent) this).isRootComponent()) {
-				System.out.println("Alors, j'ai ca: ");
-				System.out.println("embedded=" + embeddedObjects);
-				System.out.println("return=" + returned);
-				FIBLocalizedDictionary dict = ((FIBComponent) this).getLocalizedDictionary();
-				System.out.println("dict=" + dict);
-				if (dict != null) {
-					System.out.println("entries=" + dict.getEntries());
-					System.out.println("hop=" + dict.getEmbeddedValidableObjects());
-				}
-			}
-
 			return returned;
 		}
 

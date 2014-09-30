@@ -1,4 +1,4 @@
-package org.openflexo.fib.editor;
+package org.openflexo.fib;
 
 import org.junit.Test;
 import org.openflexo.fib.utils.GenericFIBTestCase;
@@ -12,13 +12,8 @@ public class TestEditorFibs extends GenericFIBTestCase {
 	}
 
 	@Test
-	public void testBrowser() {
-		validateFIB("Fib/Browser.fib");
-	}
-
-	@Test
-	public void testComponentLocalization() {
-		validateFIB("Fib/ComponentLocalization.fib");
+	public void testComponentValidation() {
+		validateFIB("Fib/ComponentValidation.fib");
 	}
 
 }

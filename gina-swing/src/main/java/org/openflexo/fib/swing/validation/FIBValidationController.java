@@ -1,4 +1,4 @@
-package org.openflexo.fib.editor.controller;
+package org.openflexo.fib.swing.validation;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -9,70 +9,64 @@ import javax.swing.ImageIcon;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
+import org.openflexo.fib.swing.FIBUtilsIconLibrary;
 import org.openflexo.model.validation.FixProposal;
 import org.openflexo.model.validation.InformationIssue;
 import org.openflexo.model.validation.ProblemIssue;
+import org.openflexo.model.validation.Validable;
 import org.openflexo.model.validation.ValidationError;
 import org.openflexo.model.validation.ValidationIssue;
+import org.openflexo.model.validation.ValidationModel;
 import org.openflexo.model.validation.ValidationReport;
 import org.openflexo.model.validation.ValidationRule;
 import org.openflexo.model.validation.ValidationWarning;
 
-public class FIBValidationController extends FIBController {
+public abstract class FIBValidationController extends FIBController {
 
 	static final Logger logger = Logger.getLogger(FIBValidationController.class.getPackage().getName());
 
-	private FIBEditorController editorController;
-	private ValidationIssue selectedValidationIssue;
+	private ValidationIssue<?, ?> selectedValidationIssue;
 
 	public FIBValidationController(FIBComponent rootComponent) {
 		super(rootComponent);
 	}
 
-	public FIBValidationController(FIBComponent rootComponent, FIBEditorController editorController) {
-		super(rootComponent);
-		this.editorController = editorController;
-	}
-
-	public ValidationIssue getSelectedValidationIssue() {
+	public ValidationIssue<?, ?> getSelectedValidationIssue() {
 		return selectedValidationIssue;
 	}
 
-	public void setSelectedValidationIssue(ValidationIssue validationIssue) {
-		selectedValidationIssue = validationIssue;
-		if (validationIssue != null && validationIssue.getObject() instanceof FIBComponent) {
-			if (editorController != null) {
-				editorController.setSelectedObject((FIBComponent) validationIssue.getObject());
-			}
+	public void setSelectedValidationIssue(ValidationIssue<?, ?> validationIssue) {
+		if (selectedValidationIssue != validationIssue) {
+			selectedValidationIssue = validationIssue;
+			performSelect(validationIssue);
 		}
 	}
+
+	protected abstract void performSelect(ValidationIssue<?, ?> validationIssue);
 
 	public ImageIcon iconFor(Object validationObject) {
 		if (validationObject instanceof ValidationError) {
 			if (((ValidationError) validationObject).isFixable()) {
-				return FIBEditorIconLibrary.FIXABLE_ERROR_ICON;
+				return FIBUtilsIconLibrary.FIXABLE_ERROR_ICON;
 			} else {
-				return FIBEditorIconLibrary.UNFIXABLE_ERROR_ICON;
+				return FIBUtilsIconLibrary.UNFIXABLE_ERROR_ICON;
 			}
 		} else if (validationObject instanceof ValidationWarning) {
 			if (((ValidationWarning) validationObject).isFixable()) {
-				return FIBEditorIconLibrary.FIXABLE_WARNING_ICON;
+				return FIBUtilsIconLibrary.FIXABLE_WARNING_ICON;
 			} else {
-				return FIBEditorIconLibrary.UNFIXABLE_WARNING_ICON;
+				return FIBUtilsIconLibrary.UNFIXABLE_WARNING_ICON;
 			}
 		} else if (validationObject instanceof InformationIssue) {
-			return FIBEditorIconLibrary.INFO_ISSUE_ICON;
+			return FIBUtilsIconLibrary.INFO_ISSUE_ICON;
 		} else if (validationObject instanceof FixProposal) {
-			return FIBEditorIconLibrary.FIX_PROPOSAL_ICON;
+			return FIBUtilsIconLibrary.FIX_PROPOSAL_ICON;
 		}
 		return null;
 	}
 
 	public void checkAgain() {
-		if (getValidatedComponent() != null) {
-			logger.info("Revalidating component " + getValidatedComponent());
-			setDataObject(getValidatedComponent().validate());
-		}
+		setDataObject(getValidationModel().validate(getValidatedObject()));
 	}
 
 	public void fixIssue(FixProposal<?, ?> fixProposal) {
@@ -131,7 +125,7 @@ public class FIBValidationController extends FIBController {
 
 		if (getDataObject() instanceof ValidationReport) {
 			rule.setIsEnabled(false);
-			ValidationReport report = (ValidationReport) getDataObject();
+			ValidationReport report = getDataObject();
 			List<ValidationIssue<?, ?>> issuesToRemove = report.issuesRegarding(rule);
 			for (ValidationIssue<?, ?> issue : issuesToRemove) {
 				issue.delete();
@@ -141,13 +135,17 @@ public class FIBValidationController extends FIBController {
 
 	}
 
-	public FIBComponent getValidatedComponent() {
-		if (getDataObject() instanceof ValidationReport) {
-			if (((ValidationReport) getDataObject()).getRootObject() instanceof FIBComponent) {
-				return (FIBComponent) ((ValidationReport) getDataObject()).getRootObject();
-			}
-		}
-		return null;
+	@Override
+	public ValidationReport getDataObject() {
+		return (ValidationReport) super.getDataObject();
+	}
+
+	public Validable getValidatedObject() {
+		return getDataObject().getRootObject();
+	}
+
+	public ValidationModel getValidationModel() {
+		return getDataObject().getValidationModel();
 	}
 
 	@Override
