@@ -215,30 +215,32 @@ public class FIBCustomWidget<J extends JComponent, T> extends FIBWidgetView<FIBC
 		for (FIBCustomAssignment assign : getWidget().getAssignments()) {
 			DataBinding<?> variableDB = assign.getVariable();
 			DataBinding<?> valueDB = assign.getValue();
-			// System.out.println("Assignement " + variableDB + " with " + valueDB);
-			if (!valueDB.isValid()) {
-				logger.warning("Assignment value not valid: " + valueDB + " reason: " + valueDB.invalidBindingReason());
-			}
-			if (!variableDB.isValid()) {
-				logger.warning("Assignment variable not valid: " + variableDB + " reason: " + variableDB.invalidBindingReason());
-			}
-			if (valueDB != null && valueDB.isValid()) {
-				Object value = null;
-				try {
-					value = valueDB.getBindingValue(getBindingEvaluationContext());
-					// System.out.println("value=" + value);
-					if (variableDB.isValid()) {
-						// System.out.println("Assignment " + variableDB + " set value with " + value);
-						variableDB.setBindingValue(value, this);
+			if (variableDB.isSet() && valueDB.isSet()) {
+				// System.out.println("Assignement " + variableDB + " with " + valueDB);
+				if (!valueDB.isValid()) {
+					logger.warning("Assignment value not valid: " + valueDB + " reason: " + valueDB.invalidBindingReason());
+				}
+				if (!variableDB.isValid()) {
+					logger.warning("Assignment variable not valid: " + variableDB + " reason: " + variableDB.invalidBindingReason());
+				}
+				if (valueDB != null && valueDB.isValid()) {
+					Object value = null;
+					try {
+						value = valueDB.getBindingValue(getBindingEvaluationContext());
+						// System.out.println("value=" + value);
+						if (variableDB.isValid()) {
+							// System.out.println("Assignment " + variableDB + " set value with " + value);
+							variableDB.setBindingValue(value, this);
+						}
+					} catch (TypeMismatchException e) {
+						e.printStackTrace();
+					} catch (NullReferenceException e) {
+						// e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						e.printStackTrace();
+					} catch (NotSettableContextException e) {
+						e.printStackTrace();
 					}
-				} catch (TypeMismatchException e) {
-					e.printStackTrace();
-				} catch (NullReferenceException e) {
-					// e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
-				} catch (NotSettableContextException e) {
-					e.printStackTrace();
 				}
 			}
 		}
