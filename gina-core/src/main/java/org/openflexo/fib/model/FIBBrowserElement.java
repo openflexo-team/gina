@@ -220,9 +220,9 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 	public void finalizeBrowserDeserialization();
 
-	// public void updateBindingModel();
+	public void updateBindingModel();
 
-	// public void notifiedBindingModelRecreated();
+	public void notifiedBindingModelRecreated();
 
 	public Bindable getIterator();
 
@@ -325,9 +325,15 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}
 
 		protected void bindingModelMightChange(BindingModel oldBindingModel) {
+			// Ensure the current binding model will be updated
+			notifiedBindingModelRecreated();
 			iterator.bindingModelMightChange(oldBindingModel);
 			for (FIBBrowserElementChildren e : getChildren()) {
 				((FIBBrowserElementChildrenImpl) e).bindingModelMightChange(oldBindingModel);
+			}
+			// Update binding model for  actions associated with this fib browser elememt
+			for (FIBBrowserAction action : getActions()) {
+				action.updateBindingModel();
 			}
 		}
 
@@ -527,10 +533,10 @@ public interface FIBBrowserElement extends FIBModelObject {
 			return null;
 		}
 
-		/*@Override
+		@Override
 		public void updateBindingModel() {
 			actionBindingModel = null;
-		}*/
+		}
 
 		@Override
 		public BindingModel getActionBindingModel() {
@@ -551,10 +557,10 @@ public interface FIBBrowserElement extends FIBModelObject {
 			// logger.info("******** Table: "+getName()+" Add BindingVariable: iterator type="+getIteratorClass());
 		}
 
-		/*@Override
+		@Override
 		public void notifiedBindingModelRecreated() {
 			createActionBindingModel();
-		}*/
+		}
 
 		@Override
 		public Font retrieveValidFont() {

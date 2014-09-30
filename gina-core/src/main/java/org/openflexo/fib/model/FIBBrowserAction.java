@@ -89,6 +89,8 @@ public abstract interface FIBBrowserAction extends FIBModelObject {
 
 	@DeserializationFinalizer
 	public void finalizeDeserialization();
+	
+	public void updateBindingModel();
 
 	public static abstract class FIBBrowserActionImpl extends FIBModelObjectImpl implements FIBBrowserAction {
 
@@ -104,7 +106,7 @@ public abstract interface FIBBrowserAction extends FIBModelObject {
 		@Deprecated
 		public static BindingDefinition IS_AVAILABLE = new BindingDefinition("isAvailable", Boolean.class, BindingDefinitionType.EXECUTE,
 				false);
-
+		
 		@Override
 		public FIBComponent getComponent() {
 			if (getOwner() != null) {
@@ -118,6 +120,9 @@ public abstract interface FIBBrowserAction extends FIBModelObject {
 			if (method == null) {
 				method = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
 			}
+			/*if(method.getOwner()==null){
+				method.setOwner(this);
+			}*/
 			return method;
 		}
 
@@ -149,6 +154,12 @@ public abstract interface FIBBrowserAction extends FIBModelObject {
 			this.isAvailable = isAvailable;
 		}
 
+		public void updateBindingModel(){
+			if(actionBindingModel!=null){
+				actionBindingModel.setBaseBindingModel(getOwner().getActionBindingModel());
+			}
+		}
+		
 		@Override
 		public BindingModel getBindingModel() {
 			if (getOwner() != null) {
