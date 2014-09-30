@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import org.openflexo.fib.model.FIBLocalizedDictionary.FIBLocalizedDictionaryImpl.DynamicEntry;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
 import org.openflexo.localization.LocalizedDelegate;
@@ -85,6 +86,8 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 	public void endSearchNewLocalizationEntries();
 
 	public void refresh();
+
+	public Vector<DynamicEntry> getDynamicEntries();
 
 	public static abstract class FIBLocalizedDictionaryImpl extends FIBModelObjectImpl implements FIBLocalizedDictionary {
 
@@ -295,6 +298,7 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 
 		// This method is really not efficient, but only called in the context of locales editor
 		// Impact of this issue is not really severe.
+		@Override
 		public Vector<DynamicEntry> getDynamicEntries() {
 			if (dynamicEntries == null) {
 				dynamicEntries = new Vector<DynamicEntry>();
