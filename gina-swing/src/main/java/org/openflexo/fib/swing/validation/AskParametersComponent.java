@@ -56,7 +56,7 @@ public interface AskParametersComponent extends FIBPanel {
 			setLayout(Layout.twocols);
 			setDataClass(ParameteredFixProposal.class);
 
-			FIBLabel title = FACTORY.newFIBLabel(fixProposal.getLocalizedMessage());
+			FIBLabel title = FACTORY.newFIBLabel(fixProposal.getMessage());
 			title.setAlign(Align.center);
 
 			addToSubComponents(title, new TwoColsLayoutConstraints(TwoColsLayoutLocation.center, true, false));

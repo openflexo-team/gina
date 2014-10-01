@@ -491,7 +491,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 			if (getBinding(object) != null && getBinding(object).isSet()) {
 				if (!getBinding(object).isValid()) {
 					DeleteBinding<C> deleteBinding = new DeleteBinding<C>(this);
-					return new ValidationError<BindingMustBeValid<C>, C>(this, object, BindingMustBeValid.this.getNameKey() + " '"
+					return new ValidationError<BindingMustBeValid<C>, C>(this, object, BindingMustBeValid.this.getRuleName() + " '"
 							+ getBinding(object) + "' reason: " + getBinding(object).invalidBindingReason(), deleteBinding);
 				}
 			}

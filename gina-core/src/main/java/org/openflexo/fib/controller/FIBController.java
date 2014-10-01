@@ -646,7 +646,11 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 	}
 
 	public String getLocalizedForKey(String key) {
-		return getLocalizer().getLocalizedForKeyAndLanguage(key, FlexoLocalization.getCurrentLanguage());
+		String returned = getLocalizer().getLocalizedForKeyAndLanguage(key, FlexoLocalization.getCurrentLanguage());
+		if (returned == null) {
+			return key;
+		}
+		return returned;
 	}
 
 	/**

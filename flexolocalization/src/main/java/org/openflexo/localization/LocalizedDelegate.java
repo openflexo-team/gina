@@ -40,6 +40,15 @@ public interface LocalizedDelegate {
 	public String getLocalizedForKeyAndLanguage(String key, Language language);
 
 	/**
+	 * Return String matching specified key and language<br>
+	 * 
+	 * @param key
+	 * @param language
+	 * @return
+	 */
+	public String getLocalizedForKeyAndLanguage(String key, Language language, boolean createsNewEntriesIfNonExistant);
+
+	/**
 	 * Return a boolean indicating if this delegate handle creation of new entries
 	 * 
 	 * @param key

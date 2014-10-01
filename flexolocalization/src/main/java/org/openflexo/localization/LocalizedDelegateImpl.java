@@ -37,6 +37,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.io.IOUtils;
+import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.FlexoProperties;
@@ -75,7 +76,12 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	public LocalizedDelegateImpl(Resource localizedDirectory, LocalizedDelegate parent, boolean automaticSaving) {
 		this.automaticSaving = automaticSaving;
 		this.parent = parent;
-		_localizedDirectory = localizedDirectory;
+		// If we want to update locales, we have to retrieve source code dictionaries
+		if (automaticSaving) {
+			_localizedDirectory = ResourceLocator.locateSourceCodeResource(localizedDirectory);
+		} else {
+			_localizedDirectory = localizedDirectory;
+		}
 		_localizedDictionaries = new Hashtable<Language, Properties>();
 	}
 
@@ -95,23 +101,47 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	}
 
 	private Properties loadDictionary(Language language) {
-		InputStream dict = getInputStreamForLanguage(language);
 		Properties loadedDict = new FlexoProperties();
-		try {
-			if (logger.isLoggable(Level.INFO)) {
-				logger.info("Loading dictionary for language " + language.getName() + " Dir=" + _localizedDirectory.toString());
-			}
-			loadedDict.load(dict);
-		} catch (IOException e) {
-			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Unable to load Dictionary Resource for Language" + language.getName());
+		InputStream dict = getInputStreamForLanguage(language);
+		if (dict == null) {
+			logger.warning("Could not find dictionary for " + language + " in " + _localizedDirectory);
+		} else {
+			try {
+				if (logger.isLoggable(Level.INFO)) {
+					logger.info("Loading dictionary for language " + language.getName() + " Dir=" + _localizedDirectory.toString());
+				}
+				loadedDict.load(dict);
+			} catch (IOException e) {
+				if (logger.isLoggable(Level.WARNING)) {
+					logger.warning("Unable to load Dictionary Resource for Language" + language.getName());
+				}
 			}
 		}
 		return loadedDict;
 	}
 
 	private InputStream getInputStreamForLanguage(Language language) {
-		return (ResourceLocator.locateResourceWithBaseLocation(_localizedDirectory, language.getName() + ".dict")).openInputStream();
+		Resource dictResource = (ResourceLocator.locateResourceWithBaseLocation(_localizedDirectory, language.getName() + ".dict"));
+		if (dictResource != null) {
+			return dictResource.openInputStream();
+		}
+		if (_localizedDirectory instanceof FileResourceImpl) {
+			// Dictionary was not found, creates it from parent file
+			File newFile = new File(((FileResourceImpl) _localizedDirectory).getFile(), language.getName() + ".dict");
+			if (!newFile.exists()) {
+				System.out.println("Creates file " + newFile);
+				try {
+					newFile.createNewFile();
+					saveDictionary(language, new Properties());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			dictResource = (ResourceLocator.locateResourceWithBaseLocation(_localizedDirectory, language.getName() + ".dict"));
+			System.out.println("Created file " + dictResource);
+			return dictResource.openInputStream();
+		}
+		return null;
 	}
 
 	private File getDictionaryFileForLanguage(Language language) {
@@ -121,6 +151,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 	private void saveDictionary(Language language, Properties dict) {
 		File dictFile = getDictionaryFileForLanguage(language);
+		System.out.println("dictFile=" + dictFile);
 		if (dictFile == null) {
 			// IN Jar dict file is null;
 			return;
@@ -183,7 +214,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		}
 	}
 
-	public void addEntry(String key) {
+	public Entry addEntry(String key) {
 		// Add in all dictionaries, when required
 		for (Language language : Language.availableValues()) {
 			addEntryInDictionary(language, key, key, false);
@@ -191,6 +222,9 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		entries = null;
 		setChanged();
 		notifyObservers();
+		Entry returned = getEntry(key);
+		searchTranslation(returned);
+		return returned;
 	}
 
 	public void removeEntry(String key) {
@@ -220,12 +254,36 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		return true;
 	}
 
+	/**
+	 * Return String matching specified key and language<br>
+	 * 
+	 * @param key
+	 * @param language
+	 * @return
+	 */
+	@Override
+	public String getLocalizedForKeyAndLanguage(String key, Language language, boolean createsNewEntriesIfNonExistant) {
+		if (!createsNewEntriesIfNonExistant) {
+			return getLocalizedForKeyAndLanguage(key, language);
+		}
+
+		Properties currentLanguageDict = getDictionary(language);
+
+		String localized = currentLanguageDict.getProperty(key);
+
+		if (localized == null) {
+			addEntry(key);
+			if (automaticSaving) {
+				save();
+			}
+			return currentLanguageDict.getProperty(key);
+		} else {
+			return localized;
+		}
+	}
+
 	@Override
 	public String getLocalizedForKeyAndLanguage(String key, Language language) {
-		/*if (_localizedDictionaries == null) {
-			loadLocalizedDictionaries();
-		}*/
-
 		Properties currentLanguageDict = getDictionary(language);
 		// String localized = currentLanguageDict.getProperty(key);
 

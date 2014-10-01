@@ -148,15 +148,6 @@ public abstract class FIBValidationController extends FIBController {
 		return getDataObject().getValidationModel();
 	}
 
-	@Override
-	public String getLocalizedForKey(String key) {
-		String returned = super.getLocalizedForKey(key);
-		if (returned == null) {
-			return key;
-		}
-		return returned;
-	}
-
 	public Color getValidationRuleColor(ValidationRule<?, ?> rule) {
 		return (rule.getIsEnabled() ? Color.BLACK : Color.LIGHT_GRAY);
 	}
