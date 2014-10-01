@@ -467,11 +467,11 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 			@Override
 			protected void fixAction() {
-				getObject().setName(getUniqueName());
+				getValidable().setName(getUniqueName());
 			}
 
 			public String getUniqueName() {
-				return getObject().generateUniqueName(getObject().getBaseName());
+				return getValidable().generateUniqueName(getValidable().getBaseName());
 			}
 
 		}
@@ -509,7 +509,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 			@Override
 			protected void fixAction() {
-				rule.getBinding(getObject()).setExpression(null);
+				rule.getBinding(getValidable()).setExpression(null);
 			}
 
 		}

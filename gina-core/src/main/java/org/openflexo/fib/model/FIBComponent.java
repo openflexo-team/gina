@@ -1847,7 +1847,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 		@Override
 		protected void fixAction() {
-			getObject().setLocalizedDictionary(null);
+			getValidable().setLocalizedDictionary(null);
 		}
 
 	}

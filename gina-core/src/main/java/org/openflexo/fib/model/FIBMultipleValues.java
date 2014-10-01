@@ -485,7 +485,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 
 			@Override
 			protected void fixAction() {
-				getObject().setStaticList("Item 1 ,Item 2 ,Item 3 ");
+				getValidable().setStaticList("Item 1 ,Item 2 ,Item 3 ");
 			}
 
 		}

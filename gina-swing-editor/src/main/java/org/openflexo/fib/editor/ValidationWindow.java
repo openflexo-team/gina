@@ -28,9 +28,9 @@ public class ValidationWindow extends JDialog {
 	}
 
 	protected void performSelect(ValidationIssue<?, ?> validationIssue) {
-		if (validationIssue != null && validationIssue.getObject() instanceof FIBComponent) {
+		if (validationIssue != null && validationIssue.getValidable() instanceof FIBComponent) {
 			if (editorController != null) {
-				editorController.setSelectedObject((FIBComponent) validationIssue.getObject());
+				editorController.setSelectedObject((FIBComponent) validationIssue.getValidable());
 			}
 		}
 	}

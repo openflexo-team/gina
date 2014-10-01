@@ -129,7 +129,6 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			// Dictionary was not found, creates it from parent file
 			File newFile = new File(((FileResourceImpl) _localizedDirectory).getFile(), language.getName() + ".dict");
 			if (!newFile.exists()) {
-				System.out.println("Creates file " + newFile);
 				try {
 					newFile.createNewFile();
 					saveDictionary(language, new Properties());
@@ -138,7 +137,6 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 				}
 			}
 			dictResource = (ResourceLocator.locateResourceWithBaseLocation(_localizedDirectory, language.getName() + ".dict"));
-			System.out.println("Created file " + dictResource);
 			return dictResource.openInputStream();
 		}
 		return null;
@@ -151,7 +149,6 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 	private void saveDictionary(Language language, Properties dict) {
 		File dictFile = getDictionaryFileForLanguage(language);
-		System.out.println("dictFile=" + dictFile);
 		if (dictFile == null) {
 			// IN Jar dict file is null;
 			return;

@@ -925,7 +925,7 @@ public abstract interface FIBWidget extends FIBComponent {
 				GenerateDefaultName fixProposal1 = new GenerateDefaultName();
 				DisableDynamicModelManagement fixProposal2 = new DisableDynamicModelManagement();
 				return new ValidationWarning<FIBWidgetDeclaredAsDynamicShouldHaveAName, FIBWidget>(this, object,
-						"widget_($object.toString)_declares_managing_dynamic_model_but_does_not_have_a_name", fixProposal1, fixProposal2);
+						"widget_($validable.toString)_declares_managing_dynamic_model_but_does_not_have_a_name", fixProposal1, fixProposal2);
 			}
 			return null;
 		}
@@ -933,16 +933,16 @@ public abstract interface FIBWidget extends FIBComponent {
 		protected static class GenerateDefaultName extends FixProposal<FIBWidgetDeclaredAsDynamicShouldHaveAName, FIBWidget> {
 
 			public GenerateDefaultName() {
-				super("generate_default_name_:_($defaultName)");
+				super("generate_default_name_:_'($defaultName)'");
 			}
 
 			@Override
 			protected void fixAction() {
-				getObject().setName(getDefaultName());
+				getValidable().setName(getDefaultName());
 			}
 
 			public String getDefaultName() {
-				return getObject().generateUniqueName(getObject().getBaseName());
+				return getValidable().generateUniqueName(getValidable().getBaseName());
 			}
 
 		}
@@ -955,7 +955,7 @@ public abstract interface FIBWidget extends FIBComponent {
 
 			@Override
 			protected void fixAction() {
-				getObject().setManageDynamicModel(false);
+				getValidable().setManageDynamicModel(false);
 			}
 
 		}

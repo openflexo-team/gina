@@ -20,15 +20,13 @@
  */
 package org.openflexo.fib.model;
 
+import org.openflexo.antar.binding.BindingEvaluator;
 import org.openflexo.fib.utils.LocalizedDelegateGUIImpl;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.validation.FixProposal;
 import org.openflexo.model.validation.Validable;
-import org.openflexo.model.validation.ValidationIssue;
 import org.openflexo.model.validation.ValidationModel;
-import org.openflexo.model.validation.ValidationRule;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 
@@ -80,38 +78,18 @@ public class FIBValidationModel extends ValidationModel {
 	}
 
 	@Override
-	public String localizedRuleName(ValidationRule<?, ?> validationRule) {
-		if (validationRule == null) {
-			return null;
+	public String localizedInContext(String key, Object context) {
+		String localized = VALIDATION_LOCALIZATION.getLocalizedForKeyAndLanguage(key, FlexoLocalization.getCurrentLanguage(), true);
+		if (localized.contains("($")) {
+			String asBindingExpression = asBindingExpression(localized);
+			try {
+				return (String) BindingEvaluator.evaluateBinding(asBindingExpression, context);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return localized;
+			}
 		}
-		return VALIDATION_LOCALIZATION.getLocalizedForKeyAndLanguage(validationRule.getRuleName(), FlexoLocalization.getCurrentLanguage(),
-				true);
-	}
-
-	@Override
-	public String localizedRuleDescription(ValidationRule<?, ?> validationRule) {
-		if (validationRule == null) {
-			return null;
-		}
-
-		return VALIDATION_LOCALIZATION.getLocalizedForKeyAndLanguage(validationRule.getRuleDescription(),
-				FlexoLocalization.getCurrentLanguage(), true);
-	}
-
-	@Override
-	public String localizedIssueMessage(ValidationIssue<?, ?> issue) {
-		if (issue == null) {
-			return null;
-		}
-		return VALIDATION_LOCALIZATION.getLocalizedForKeyAndLanguage(issue.getMessage(), FlexoLocalization.getCurrentLanguage(), true);
-	}
-
-	@Override
-	public String localizedFixProposal(FixProposal<?, ?> proposal) {
-		if (proposal == null) {
-			return null;
-		}
-		return VALIDATION_LOCALIZATION.getLocalizedForKeyAndLanguage(proposal.getMessage(), FlexoLocalization.getCurrentLanguage(), true);
+		return localized;
 	}
 
 }

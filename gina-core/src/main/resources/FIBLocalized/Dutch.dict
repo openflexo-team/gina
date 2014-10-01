@@ -40,6 +40,7 @@ select_directory=Select a directory
 show_evaluation=Show evaluation
 show_more_operators=Show more operators
 specify_basic_binding=Specify basic binding
+specify_complex_binding=specify_complex_binding
 specify_compound_binding=Specify compound binding
 string=String
 transparent=Transparent
