@@ -687,9 +687,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 	}
 
 	public void refreshLocalized() {
-		logger.warning("refreshLocalized() not implemented yet");
-		// setChanged();
-		// notifyObservers();
+		getRootComponent().retrieveFIBLocalizedDictionary().refresh();
 	}
 
 	public FIBSelectable getSelectionLeader() {

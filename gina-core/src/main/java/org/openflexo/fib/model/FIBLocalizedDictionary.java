@@ -56,6 +56,8 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 	@PropertyIdentifier(type = List.class)
 	public static final String ENTRIES_KEY = "entries";
 
+	public static final String DYNAMIC_ENTRIES_KEY = "dynamicEntries";
+
 	@Getter(value = OWNER_KEY, inverse = FIBComponent.LOCALIZED_DICTIONARY_KEY)
 	public FIBComponent getOwner();
 
@@ -331,7 +333,8 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 		public void refresh() {
 			logger.fine("Refresh called on FIBLocalizedDictionary " + Integer.toHexString(hashCode()));
 			dynamicEntries = null;
-			getPropertyChangeSupport().firePropertyChange("entries", null, getEntries());
+			getPropertyChangeSupport().firePropertyChange(ENTRIES_KEY, null, getEntries());
+			getPropertyChangeSupport().firePropertyChange(DYNAMIC_ENTRIES_KEY, null, getDynamicEntries());
 		}
 
 		public DynamicEntry addEntry() {
@@ -366,12 +369,25 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 		@Override
 		public void endSearchNewLocalizationEntries() {
 			isSearchingNewEntries = false;
+			refresh();
 		}
 
+		/**
+		 * Register new localization entry with supplied value for specified key and language
+		 * 
+		 * @param key
+		 * @param language
+		 * @param value
+		 * @return boolean indicating if registration was successfully performed
+		 */
 		@Override
 		public boolean registerNewEntry(String key, Language language, String value) {
-			setLocalizedForKeyAndLanguage(key, value, language);
-			return true;
+			if (StringUtils.isNotEmpty(key)) {
+				System.out.println("> register entry " + key);
+				setLocalizedForKeyAndLanguage(key, value, language);
+				return true;
+			}
+			return false;
 		}
 
 		private LocalizedDelegate parentLocalizedDelegate;
