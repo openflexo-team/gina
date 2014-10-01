@@ -72,7 +72,7 @@ public interface FIBInspector extends FIBPanel {
 		}
 
 		protected void appendSuperInspector(FIBInspector superInspector, FIBModelFactory factory) {
-			// System.out.println("************ Append " + superInspector.getDataClass() + " to " + this.getDataClass());
+			// System.out.println(">>>>>>> BEGIN Append " + superInspector.getDataClass() + " to " + this.getDataClass());
 			// System.out.println("Append "+superInspector+" to "+this);
 
 			/*if (superInspector.getDataType().equals(FIBWidget.class) && getDataType().equals(FIBTextField.class)) {
@@ -81,8 +81,11 @@ public interface FIBInspector extends FIBPanel {
 						.getSubComponentNamed("ControlsTab")));
 			}*/
 
+			//System.out.println(factory.stringRepresentation(superInspector));
+
 			// TODO: i dont't know if this clone is still required (check this)
-			FIBInspector clonedSuperInspector = (FIBInspector) superInspector.cloneObject();
+			// FIBInspector clonedSuperInspector = (FIBInspector) superInspector.cloneObject();
+			FIBInspector clonedSuperInspector = superInspector;
 
 			/*if (superInspector.getDataType().equals(FIBWidget.class) && getDataType().equals(FIBTextField.class)) {
 				System.out.println("to be appened:");
@@ -98,6 +101,7 @@ public interface FIBInspector extends FIBPanel {
 						.getSubComponentNamed("ControlsTab")));
 				// System.exit(-1);
 			}*/
+			// System.out.println("<<<<<<< END Append " + superInspector.getDataClass() + " to " + this.getDataClass());
 
 		}
 
