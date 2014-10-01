@@ -38,9 +38,9 @@ public class FlexoLoggingViewer implements HasPropertyChangeSupport {
 
 	public static final ImageIcon FILTER_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Utils/Search.png"));
 
-	private FlexoLoggingManager loggingManager;
+	private final FlexoLoggingManager loggingManager;
 
-	private PropertyChangeSupport _pcSupport;
+	private final PropertyChangeSupport _pcSupport;
 
 	public Vector<LoggingFilter> filters = new Vector<LoggingFilter>();
 	public String searchedText;
@@ -59,7 +59,7 @@ public class FlexoLoggingViewer implements HasPropertyChangeSupport {
 
 	public static void showLoggingViewer(FlexoLoggingManager loggingManager, Window parent) {
 		System.out.println("showLoggingViewer with " + loggingManager);
-		FIBComponent loggingViewerComponent = FIBLibrary.instance().retrieveFIBComponent(LOGGING_VIEWER_FIB_NAME,true);
+		FIBComponent loggingViewerComponent = FIBLibrary.instance().retrieveFIBComponent(LOGGING_VIEWER_FIB_NAME, true);
 		if (instance == null || dialog == null) {
 			instance = new FlexoLoggingViewer(loggingManager);
 			dialog = FIBDialog.instanciateAndShowDialog(loggingViewerComponent, instance, parent, false,
@@ -160,7 +160,10 @@ public class FlexoLoggingViewer implements HasPropertyChangeSupport {
 			}
 			*/
 		}
-		return rl.retrieveResourceAsFile(configurationFile);
+		if (configurationFile != null) {
+			return rl.retrieveResourceAsFile(configurationFile);
+		}
+		return null;
 	}
 
 	public void setConfigurationFile(Resource configurationFile) {
