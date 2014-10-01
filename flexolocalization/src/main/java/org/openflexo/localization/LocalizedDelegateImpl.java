@@ -78,7 +78,13 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		this.parent = parent;
 		// If we want to update locales, we have to retrieve source code dictionaries
 		if (automaticSaving) {
-			_localizedDirectory = ResourceLocator.locateSourceCodeResource(localizedDirectory);
+			Resource sourceCodeResource = ResourceLocator.locateSourceCodeResource(localizedDirectory);
+			if (sourceCodeResource == null) {
+				_localizedDirectory = localizedDirectory;
+				automaticSaving = false;
+			} else {
+				_localizedDirectory = sourceCodeResource;
+			}
 		} else {
 			_localizedDirectory = localizedDirectory;
 		}
