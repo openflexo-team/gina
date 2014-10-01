@@ -130,6 +130,8 @@
       </Custom>
       <CheckBox selected="false" data="data.boundToSelectionManager" constraints="twocols(location=left)" localize="true" />
       <Label label="bound_to_selection_manager" constraints="twocols(location=right)" localize="true" />
+      <CheckBox selected="false" data="data.deepExploration" constraints="twocols(location=left)" localize="true" />
+      <Label label="deep_exploration_support" constraints="twocols(location=right)" localize="true" />
       <Label label="selectionMode" constraints="twocols(location=left)" localize="true" />
       <DropDown data="data.selectionMode" constraints="twocols(location=right)" localize="true" iteratorClassName="java.lang.Object" autoSelectFirstRow="false" />
     </Tab>

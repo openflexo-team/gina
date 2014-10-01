@@ -62,6 +62,8 @@ public interface FIBBrowser extends FIBWidget {
 	public static final String ROW_HEIGHT_KEY = "rowHeight";
 	@PropertyIdentifier(type = boolean.class)
 	public static final String BOUND_TO_SELECTION_MANAGER_KEY = "boundToSelectionManager";
+	@PropertyIdentifier(type = boolean.class)
+	public static final String DEEP_EXPLORATION_KEY = "deepExploration";
 	@PropertyIdentifier(type = SelectionMode.class)
 	public static final String SELECTION_MODE_KEY = "selectionMode";
 	@PropertyIdentifier(type = DataBinding.class)
@@ -121,6 +123,13 @@ public interface FIBBrowser extends FIBWidget {
 
 	@Setter(BOUND_TO_SELECTION_MANAGER_KEY)
 	public void setBoundToSelectionManager(boolean boundToSelectionManager);
+
+	@Getter(value = DEEP_EXPLORATION_KEY, defaultValue = "false")
+	@XMLAttribute
+	public boolean getDeepExploration();
+
+	@Setter(DEEP_EXPLORATION_KEY)
+	public void setDeepExploration(boolean deepExploration);
 
 	@Getter(value = SELECTION_MODE_KEY)
 	@XMLAttribute
