@@ -60,7 +60,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 	private final LocalizedDelegate parent;
 	private final Resource _localizedDirectory;
-	private Hashtable<Language, Properties> _localizedDictionaries;
+	private final Hashtable<Language, Properties> _localizedDictionaries;
 
 	private boolean automaticSaving = false;
 
@@ -76,7 +76,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		this.automaticSaving = automaticSaving;
 		this.parent = parent;
 		_localizedDirectory = localizedDirectory;
-		loadLocalizedDictionaries();
+		_localizedDictionaries = new Hashtable<Language, Properties>();
 	}
 
 	private Properties getDictionary(Language language) {
@@ -88,13 +88,29 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	}
 
 	private Properties createNewDictionary(Language language) {
-		Properties newDict = new Properties();
+		Properties newDict = loadDictionary(language);
 		_localizedDictionaries.put(language, newDict);
 		saveDictionary(language, newDict);
 		return newDict;
 	}
 
-	private InputStream getDictionaryForLanguage(Language language) {
+	private Properties loadDictionary(Language language) {
+		InputStream dict = getInputStreamForLanguage(language);
+		Properties loadedDict = new FlexoProperties();
+		try {
+			if (logger.isLoggable(Level.INFO)) {
+				logger.info("Loading dictionary for language " + language.getName() + " Dir=" + _localizedDirectory.toString());
+			}
+			loadedDict.load(dict);
+		} catch (IOException e) {
+			if (logger.isLoggable(Level.WARNING)) {
+				logger.warning("Unable to load Dictionary Resource for Language" + language.getName());
+			}
+		}
+		return loadedDict;
+	}
+
+	private InputStream getInputStreamForLanguage(Language language) {
 		return (ResourceLocator.locateResourceWithBaseLocation(_localizedDirectory, language.getName() + ".dict")).openInputStream();
 	}
 
@@ -130,24 +146,19 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		}
 	}
 
-	private Properties loadDictionary(Language language) {
-		InputStream dict = getDictionaryForLanguage(language);
-		Properties loadedDict = new FlexoProperties();
-		try {
-			loadedDict.load(dict);
-		} catch (IOException e) {
-			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Unable to load Dictionary Resource for Language" + language.getName());
-			}
+	public void loadLocalizedDictionaries() {
+		for (Language language : Language.availableValues()) {
+			getDictionary(language);
 		}
-		return loadedDict;
 	}
 
-	private void loadLocalizedDictionaries() {
+	/*private void loadLocalizedDictionaries() {
 		_localizedDictionaries = new Hashtable<Language, Properties>();
 
+		Thread.dumpStack();
+
 		for (Language language : Language.availableValues()) {
-			InputStream dict = getDictionaryForLanguage(language);
+			InputStream dict = getInputStreamForLanguage(language);
 			if (logger.isLoggable(Level.INFO)) {
 				logger.info("Checking dictionary for language " + language.getName() + " Dir=" + _localizedDirectory.toString());
 			}
@@ -159,7 +170,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 				_localizedDictionaries.put(language, loadedDict);
 			}
 		}
-	}
+	}*/
 
 	private void addEntryInDictionary(Language language, String key, String value, boolean required) {
 		Properties dict = getDictionary(language);
@@ -211,9 +222,9 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 	@Override
 	public String getLocalizedForKeyAndLanguage(String key, Language language) {
-		if (_localizedDictionaries == null) {
+		/*if (_localizedDictionaries == null) {
 			loadLocalizedDictionaries();
-		}
+		}*/
 
 		Properties currentLanguageDict = getDictionary(language);
 		// String localized = currentLanguageDict.getProperty(key);
@@ -438,9 +449,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 	public Vector<Entry> getEntries() {
 		if (entries == null) {
-			if (_localizedDictionaries == null) {
-				loadLocalizedDictionaries();
-			}
+			loadLocalizedDictionaries();
 			entries = new Vector<Entry>();
 			if (_localizedDictionaries.size() > 0) {
 				Enumeration en = _localizedDictionaries.values().iterator().next().propertyNames();
@@ -467,9 +476,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	}
 
 	private Vector<Entry> computeIssuesEntries() {
-		if (_localizedDictionaries == null) {
-			loadLocalizedDictionaries();
-		}
+		loadLocalizedDictionaries();
 		issuesEntries = new Vector<Entry>();
 		for (Entry e : getEntries()) {
 			if (e.hasInvalidValue()) {
@@ -487,9 +494,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	}
 
 	protected Vector<Entry> computeMatchingEntries(String text, SearchMode searchMode) {
-		if (_localizedDictionaries == null) {
-			loadLocalizedDictionaries();
-		}
+		loadLocalizedDictionaries();
 		matchingEntries = new Vector<Entry>();
 		for (Entry e : getEntries()) {
 			switch (searchMode) {

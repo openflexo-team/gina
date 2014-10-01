@@ -94,9 +94,9 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 
 	// Instanciate a new localizer in directory src/dev/resources/FIBEditorLocalizer
 	// linked to parent localizer (which is Openflexo main localizer)
-	public static LocalizedDelegateGUIImpl LOCALIZATION = new LocalizedDelegateGUIImpl(
-			ResourceLocator.locateResource("FIBEditorLocalized"), new LocalizedDelegateGUIImpl(ResourceLocator.locateResource("Localized"),
-					null, false), true);
+	public static LocalizedDelegateGUIImpl LOCALIZATION = LocalizedDelegateGUIImpl.getLocalizedDelegate(
+			ResourceLocator.locateResource("FIBEditorLocalized"),
+			LocalizedDelegateGUIImpl.getLocalizedDelegate(ResourceLocator.locateResource("Localized"), null, false), true);
 
 	public static Resource COMPONENT_LOCALIZATION_FIB = ResourceLocator.locateResource("Fib/ComponentLocalization.fib");
 

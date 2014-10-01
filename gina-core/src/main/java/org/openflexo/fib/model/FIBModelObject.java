@@ -150,16 +150,16 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 			if (fibLocalizedDelegate != null) {
 				if (generalLocalizedDelegate != null) {
-					LOCALIZATION = new LocalizedDelegateGUIImpl(fibLocalizedDelegate, new LocalizedDelegateGUIImpl(
-							generalLocalizedDelegate, null, false), true);
+					LOCALIZATION = LocalizedDelegateGUIImpl.getLocalizedDelegate(fibLocalizedDelegate,
+							LocalizedDelegateGUIImpl.getLocalizedDelegate(generalLocalizedDelegate, null, false), true);
 				} else {
-					LOCALIZATION = new LocalizedDelegateGUIImpl(fibLocalizedDelegate, null, true);
+					LOCALIZATION = LocalizedDelegateGUIImpl.getLocalizedDelegate(fibLocalizedDelegate, null, true);
 				}
 			} else {
 				if (generalLocalizedDelegate != null) {
-					LOCALIZATION = new LocalizedDelegateGUIImpl(generalLocalizedDelegate, null, true);
+					LOCALIZATION = LocalizedDelegateGUIImpl.getLocalizedDelegate(generalLocalizedDelegate, null, true);
 				} else {
-					LOCALIZATION = new LocalizedDelegateGUIImpl(generalLocalizedDelegate, null, false);
+					LOCALIZATION = LocalizedDelegateGUIImpl.getLocalizedDelegate(generalLocalizedDelegate, null, false);
 				}
 			}
 		}

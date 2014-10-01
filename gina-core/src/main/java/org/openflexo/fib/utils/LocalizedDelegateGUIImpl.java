@@ -3,9 +3,8 @@ package org.openflexo.fib.utils;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Window;
-import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.swing.Icon;
@@ -36,12 +35,24 @@ public class LocalizedDelegateGUIImpl extends LocalizedDelegateImpl {
 	private SearchMode searchMode = SearchMode.Contains;
 	private String searchedString;
 
-	public LocalizedDelegateGUIImpl(Resource localizedDirectoryURL, LocalizedDelegate parent, boolean automaticSaving) {
+	private static Map<Resource, LocalizedDelegateGUIImpl> loadedLocalizedDelegates = new HashMap<Resource, LocalizedDelegateGUIImpl>();
+
+	public static LocalizedDelegateGUIImpl getLocalizedDelegate(Resource localizedDirectoryURL, LocalizedDelegate parent,
+			boolean automaticSaving) {
+		LocalizedDelegateGUIImpl returned = loadedLocalizedDelegates.get(localizedDirectoryURL);
+		if (returned == null) {
+			returned = new LocalizedDelegateGUIImpl(localizedDirectoryURL, parent, automaticSaving);
+			loadedLocalizedDelegates.put(localizedDirectoryURL, returned);
+		}
+		return returned;
+	}
+
+	protected LocalizedDelegateGUIImpl(Resource localizedDirectoryURL, LocalizedDelegate parent, boolean automaticSaving) {
 		super(localizedDirectoryURL, parent, automaticSaving);
 	}
 
 	public void showLocalizedEditor(Window parentFrame) {
-		FIBComponent localizedEditorComponent = FIBLibrary.instance().retrieveFIBComponent(LOCALIZED_EDITOR_FIB,true);
+		FIBComponent localizedEditorComponent = FIBLibrary.instance().retrieveFIBComponent(LOCALIZED_EDITOR_FIB, true);
 		FIBDialog.instanciateAndShowDialog(localizedEditorComponent, this, parentFrame, true, FlexoLocalization.getMainLocalizer());
 	}
 
