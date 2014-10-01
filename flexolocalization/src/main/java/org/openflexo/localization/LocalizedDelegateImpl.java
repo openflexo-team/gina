@@ -198,7 +198,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		for (Language language : Language.availableValues()) {
 			Properties dict = getDictionary(language);
 			// NPE if not dev and using jar
-			if (dict != null){
+			if (dict != null) {
 				saveDictionary(language, dict);
 			}
 		}
@@ -471,7 +471,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			loadLocalizedDictionaries();
 		}
 		issuesEntries = new Vector<Entry>();
-		for (Entry e : entries) {
+		for (Entry e : getEntries()) {
 			if (e.hasInvalidValue()) {
 				issuesEntries.add(e);
 			}
