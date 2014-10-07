@@ -16,9 +16,4 @@ public class TestEditorFibs extends GenericFIBTestCase {
 		validateFIB("Fib/Browser.fib");
 	}
 
-	@Test
-	public void testComponentLocalization() {
-		validateFIB("Fib/ComponentLocalization.fib");
-	}
-
 }
