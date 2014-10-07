@@ -172,12 +172,13 @@ public class FlexoLocalization {
 			if (createsNewEntriesIfNonExistant && delegate.handleNewEntry(key, language)) {
 				// We have to register this new entries
 				if (delegate.getParent() != null) {
-					// A parent exists, we will use its localized values in current localizer
-					/*for (Language l : Language.availableValues()) {
-						String value = localizedForKeyAndLanguage(delegate.getParent(), key, l, false);
-						delegate.registerNewEntry(key, l, value);
-					}*/
-					return localizedForKeyAndLanguage(delegate.getParent(), key, language, false);
+					// A parent exists
+					String value = localizedForKeyAndLanguage(delegate.getParent(), key, language, false);
+					if (value.equals(key)) {
+						// parent does not define this locale
+						delegate.registerNewEntry(key, language, key);
+					}
+					return value;
 				} else {
 					// No parent exists, we will use keys
 					for (Language l : Language.availableValues()) {

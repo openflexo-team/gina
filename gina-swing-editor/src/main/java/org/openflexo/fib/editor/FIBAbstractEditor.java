@@ -425,7 +425,7 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 	 * @return
 	 */
 	public FIBController makeNewController(FIBComponent component) {
-		return null;
+		return FIBController.instanciateController(component, LOCALIZATION);
 	}
 
 	public void loadFIB() {
@@ -502,7 +502,13 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 
 	public void localizeFIB() {
 
-		getController().searchNewLocalizationEntries();
+		System.out.println("On cherche les locales pour: ");
+		FIBComponent c = editorController.getController().getRootComponent();
+		System.out.println(c.getFactory().stringRepresentation(c));
+
+		editorController.getController().searchNewLocalizationEntries();
+
+		// getController().searchNewLocalizationEntries();
 
 		if (fibComponent != null) {
 			getLocalizationWindow().setVisible(true);

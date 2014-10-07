@@ -291,7 +291,12 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 
 			@Override
 			public String getEnglish() {
-				return getLocalizedForKeyAndLanguage(key, Language.ENGLISH);
+				// The locale might be found in parent localizer
+				String returned = FlexoLocalization.localizedForKeyAndLanguage(FIBLocalizedDictionaryImpl.this, key, Language.ENGLISH);
+				if (returned == null) {
+					returned = key;
+				}
+				return returned;
 			}
 
 			@Override
@@ -303,7 +308,12 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 
 			@Override
 			public String getFrench() {
-				return getLocalizedForKeyAndLanguage(key, Language.FRENCH);
+				// The locale might be found in parent localizer
+				String returned = FlexoLocalization.localizedForKeyAndLanguage(FIBLocalizedDictionaryImpl.this, key, Language.FRENCH);
+				if (returned == null) {
+					returned = key;
+				}
+				return returned;
 			}
 
 			@Override
@@ -315,7 +325,12 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 
 			@Override
 			public String getDutch() {
-				return getLocalizedForKeyAndLanguage(key, Language.DUTCH);
+				// The locale might be found in parent localizer
+				String returned = FlexoLocalization.localizedForKeyAndLanguage(FIBLocalizedDictionaryImpl.this, key, Language.DUTCH);
+				if (returned == null) {
+					returned = key;
+				}
+				return returned;
 			}
 
 			@Override
@@ -495,8 +510,8 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 		@Override
 		public boolean registerNewEntry(String key, Language language, String value) {
 			if (StringUtils.isNotEmpty(key)) {
-				/*System.out.println("> register entry " + key);
-				Thread.dumpStack();
+				//System.out.println("> register entry " + key);
+				/*Thread.dumpStack();
 				if (key.contains(" ")) {
 					System.out.println("localized key with blank = " + key);
 					Thread.dumpStack();
