@@ -126,6 +126,7 @@ public interface FIBButton extends FIBWidget {
 		public DataBinding<Object> getAction() {
 			if (action == null) {
 				action = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
+				action.setBindingName("action");
 			}
 			return action;
 		}
@@ -136,6 +137,7 @@ public interface FIBButton extends FIBWidget {
 				action.setOwner(this);
 				action.setDeclaredType(Void.TYPE);
 				action.setBindingDefinitionType(DataBinding.BindingDefinitionType.EXECUTE);
+				action.setBindingName("action");
 			}
 			this.action = action;
 		}

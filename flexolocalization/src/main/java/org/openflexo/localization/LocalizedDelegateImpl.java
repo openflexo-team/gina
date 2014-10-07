@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Observable;
 import java.util.Properties;
 import java.util.Vector;
@@ -55,40 +56,57 @@ import org.openflexo.toolbox.StringUtils;
  * @author sylvain
  * 
  */
-public class LocalizedDelegateImpl extends Observable implements LocalizedDelegate {
+public class LocalizedDelegateImpl extends Observable implements LocalizedDelegate, HasPropertyChangeSupport {
 
 	private static final Logger logger = Logger.getLogger(LocalizedDelegateImpl.class.getPackage().getName());
 
 	private final LocalizedDelegate parent;
-	private final Resource _localizedDirectory;
+	private final Resource localizedDirectoryResource;
 	private final Hashtable<Language, Properties> _localizedDictionaries;
 
 	private boolean automaticSaving = false;
+	private boolean editingSupport = false;
 
-	private Vector<Entry> entries;
-	private Vector<Entry> issuesEntries;
-	private Vector<Entry> matchingEntries;
+	private List<Entry> entries;
+
+	private final PropertyChangeSupport pcSupport;
 
 	public static enum SearchMode {
 		Contains, BeginsWith, EndsWith
 	}
 
-	public LocalizedDelegateImpl(Resource localizedDirectory, LocalizedDelegate parent, boolean automaticSaving) {
+	protected LocalizedDelegateImpl(Resource localizedDirectory, LocalizedDelegate parent, boolean automaticSaving, boolean editingSupport) {
 		this.automaticSaving = automaticSaving;
+		this.editingSupport = editingSupport;
 		this.parent = parent;
+		pcSupport = new PropertyChangeSupport(this);
 		// If we want to update locales, we have to retrieve source code dictionaries
-		if (automaticSaving) {
+		if (editingSupport) {
 			Resource sourceCodeResource = ResourceLocator.locateSourceCodeResource(localizedDirectory);
 			if (sourceCodeResource == null) {
-				_localizedDirectory = localizedDirectory;
+				localizedDirectoryResource = localizedDirectory;
 				automaticSaving = false;
 			} else {
-				_localizedDirectory = sourceCodeResource;
+				localizedDirectoryResource = sourceCodeResource;
 			}
 		} else {
-			_localizedDirectory = localizedDirectory;
+			localizedDirectoryResource = localizedDirectory;
 		}
 		_localizedDictionaries = new Hashtable<Language, Properties>();
+	}
+
+	@Override
+	public PropertyChangeSupport getPropertyChangeSupport() {
+		return pcSupport;
+	}
+
+	@Override
+	public String getDeletedProperty() {
+		return null;
+	}
+
+	public Resource getLocalizedDirectoryResource() {
+		return localizedDirectoryResource;
 	}
 
 	private Properties getDictionary(Language language) {
@@ -110,11 +128,11 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		Properties loadedDict = new FlexoProperties();
 		InputStream dict = getInputStreamForLanguage(language);
 		if (dict == null) {
-			logger.warning("Could not find dictionary for " + language + " in " + _localizedDirectory);
+			logger.warning("Could not find dictionary for " + language + " in " + localizedDirectoryResource);
 		} else {
 			try {
 				if (logger.isLoggable(Level.INFO)) {
-					logger.info("Loading dictionary for language " + language.getName() + " Dir=" + _localizedDirectory.toString());
+					logger.info("Loading dictionary for language " + language.getName() + " Dir=" + localizedDirectoryResource.toString());
 				}
 				loadedDict.load(dict);
 			} catch (IOException e) {
@@ -127,13 +145,13 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	}
 
 	private InputStream getInputStreamForLanguage(Language language) {
-		Resource dictResource = (ResourceLocator.locateResourceWithBaseLocation(_localizedDirectory, language.getName() + ".dict"));
+		Resource dictResource = (ResourceLocator.locateResourceWithBaseLocation(localizedDirectoryResource, language.getName() + ".dict"));
 		if (dictResource != null) {
 			return dictResource.openInputStream();
 		}
-		if (_localizedDirectory instanceof FileResourceImpl) {
+		if (localizedDirectoryResource instanceof FileResourceImpl) {
 			// Dictionary was not found, creates it from parent file
-			File newFile = new File(((FileResourceImpl) _localizedDirectory).getFile(), language.getName() + ".dict");
+			File newFile = new File(((FileResourceImpl) localizedDirectoryResource).getFile(), language.getName() + ".dict");
 			if (!newFile.exists()) {
 				try {
 					newFile.createNewFile();
@@ -142,14 +160,14 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 					e.printStackTrace();
 				}
 			}
-			dictResource = (ResourceLocator.locateResourceWithBaseLocation(_localizedDirectory, language.getName() + ".dict"));
+			dictResource = (ResourceLocator.locateResourceWithBaseLocation(localizedDirectoryResource, language.getName() + ".dict"));
 			return dictResource.openInputStream();
 		}
 		return null;
 	}
 
 	private File getDictionaryFileForLanguage(Language language) {
-		return ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResourceWithBaseLocation(_localizedDirectory,
+		return ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResourceWithBaseLocation(localizedDirectoryResource,
 				language.getName() + ".dict"));
 	}
 
@@ -194,10 +212,10 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		for (Language language : Language.availableValues()) {
 			InputStream dict = getInputStreamForLanguage(language);
 			if (logger.isLoggable(Level.INFO)) {
-				logger.info("Checking dictionary for language " + language.getName() + " Dir=" + _localizedDirectory.toString());
+				logger.info("Checking dictionary for language " + language.getName() + " Dir=" + localizedDirectoryResource.toString());
 			}
 			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Looking for dictionary in  " + _localizedDirectory.toString());
+				logger.fine("Looking for dictionary in  " + localizedDirectoryResource.toString());
 			}
 			if (dict != null) {
 				Properties loadedDict = loadDictionary(language);
@@ -210,7 +228,8 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		Properties dict = getDictionary(language);
 		if (!required && dict.getProperty(key) == null || required) {
 			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Adding entry '" + key + "' in " + language + " dictionary, in directory " + _localizedDirectory.toString());
+				logger.fine("Adding entry '" + key + "' in " + language + " dictionary, in directory "
+						+ localizedDirectoryResource.toString());
 			}
 			dict.setProperty(key, value);
 			// saveDictionary(language, dict);
@@ -227,19 +246,29 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		notifyObservers();
 		Entry returned = getEntry(key);
 		searchTranslation(returned);
+		getPropertyChangeSupport().firePropertyChange("entries", null, getEntries());
 		return returned;
 	}
 
 	public void removeEntry(String key) {
-		// Remove from all dictionaries
-		for (Language language : Language.availableValues()) {
-			Properties dict = getDictionary(language);
-			dict.remove(key);
-			// saveDictionary(language, dict);
+		Entry entryToRemove = getEntry(key);
+		if (entryToRemove != null) {
+			// Remove from all dictionaries
+			for (Language language : Language.availableValues()) {
+				Properties dict = getDictionary(language);
+				dict.remove(key);
+				// saveDictionary(language, dict);
+			}
+			// entries = null;
+			if (entries != null) {
+				entries.remove(entryToRemove);
+			}
+			entryToRemove.delete();
+			setChanged();
+			notifyObservers();
+			getPropertyChangeSupport().firePropertyChange("entries", null, getEntries());
+			System.out.println("Hop, on notifie !!!");
 		}
-		entries = null;
-		setChanged();
-		notifyObservers();
 	}
 
 	public void saveAllDictionaries() {
@@ -266,6 +295,11 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	 */
 	@Override
 	public String getLocalizedForKeyAndLanguage(String key, Language language, boolean createsNewEntriesIfNonExistant) {
+
+		if (key == null || StringUtils.isEmpty(key)) {
+			return null;
+		}
+
 		if (!createsNewEntriesIfNonExistant) {
 			return getLocalizedForKeyAndLanguage(key, language);
 		}
@@ -277,6 +311,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		if (localized == null) {
 			addEntry(key);
 			if (automaticSaving) {
+				System.out.println("Save because added: " + key);
 				save();
 			}
 			return currentLanguageDict.getProperty(key);
@@ -287,6 +322,11 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 	@Override
 	public String getLocalizedForKeyAndLanguage(String key, Language language) {
+
+		if (key == null || StringUtils.isEmpty(key)) {
+			return null;
+		}
+
 		Properties currentLanguageDict = getDictionary(language);
 		// String localized = currentLanguageDict.getProperty(key);
 
@@ -310,7 +350,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		// saveDictionary(language, currentLanguageDict);
 	}
 
-	public class Entry implements HasPropertyChangeSupport {
+	public class Entry implements LocalizedEntry {
 		private static final String DELETED_PROPERTY = "deleted";
 		private String key;
 		private final PropertyChangeSupport pcSupport;
@@ -325,12 +365,14 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			return pcSupport;
 		}
 
+		@Override
 		public String getEnglish() {
 			String localized = getLocalizedForKeyAndLanguage(key, Language.ENGLISH);
 			return localized != null ? localized : key;
 			// return localizedForKeyAndLanguage(key, Language.ENGLISH);
 		}
 
+		@Override
 		public void setEnglish(String value) {
 			// System.out.println("setEnglish with " + value);
 			String oldValue = getEnglish();
@@ -338,12 +380,14 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			pcSupport.firePropertyChange("english", oldValue, value);
 		}
 
+		@Override
 		public String getFrench() {
 			String localized = getLocalizedForKeyAndLanguage(key, Language.FRENCH);
 			return localized != null ? localized : key;
 			// return localizedForKeyAndLanguage(key, Language.FRENCH);
 		}
 
+		@Override
 		public void setFrench(String value) {
 			// System.out.println("setFrench with " + value);
 			String oldValue = getFrench();
@@ -351,12 +395,14 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			pcSupport.firePropertyChange("french", oldValue, value);
 		}
 
+		@Override
 		public String getDutch() {
 			String localized = getLocalizedForKeyAndLanguage(key, Language.DUTCH);
 			return localized != null ? localized : key;
 			// return localizedForKeyAndLanguage(key, Language.DUTCH);
 		}
 
+		@Override
 		public void setDutch(String value) {
 			// System.out.println("setDutch with " + value);
 			String oldValue = getDutch();
@@ -364,6 +410,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			pcSupport.firePropertyChange("dutch", oldValue, value);
 		}
 
+		@Override
 		public void delete() {
 			removeEntry(key);
 			pcSupport.firePropertyChange(DELETED_PROPERTY, false, true);
@@ -374,36 +421,44 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			return DELETED_PROPERTY;
 		}
 
+		@Override
 		public String getKey() {
 			return key;
 		}
 
 		public void setKey(String aNewKey) {
-			String oldKey = key;
-			for (Language l : Language.availableValues()) {
-				Properties dict = getDictionary(l);
-				String oldValue = dict.getProperty(oldKey);
-				dict.remove(oldKey);
-				if (oldValue != null) {
-					dict.setProperty(aNewKey, oldValue);
+			if (aNewKey != null && !aNewKey.equals(key)) {
+				String oldKey = key;
+				for (Language l : Language.availableValues()) {
+					Properties dict = getDictionary(l);
+					String oldValue = dict.getProperty(oldKey);
+					dict.remove(oldKey);
+					if (oldValue != null) {
+						dict.setProperty(aNewKey, oldValue);
+					}
 				}
+				key = aNewKey;
+				entries = null;
+				getPropertyChangeSupport().firePropertyChange("key", oldKey, aNewKey);
 			}
-			key = aNewKey;
-			entries = null;
 		}
 
+		@Override
 		public boolean hasInvalidValue() {
 			return !isFrenchValueValid() || !isEnglishValueValid() || !isDutchValueValid();
 		}
 
+		@Override
 		public boolean isFrenchValueValid() {
 			return isValueValid(getKey(), getFrench());
 		}
 
+		@Override
 		public boolean isEnglishValueValid() {
 			return isValueValid(getKey(), getEnglish());
 		}
 
+		@Override
 		public boolean isDutchValueValid() {
 			return isValueValid(getKey(), getDutch());
 		}
@@ -421,10 +476,12 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			return true;
 		}
 
+		@Override
 		public boolean getIsHTML() {
 			return getFrench().startsWith("<html>") || getEnglish().startsWith("<html>") || getDutch().startsWith("<html>");
 		}
 
+		@Override
 		public void setIsHTML(boolean flag) {
 			if (flag) {
 				setEnglish(addHTMLSupport(getEnglish()));
@@ -435,6 +492,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 				setFrench(removeHTMLSupport(getFrench()));
 				setDutch(removeHTMLSupport(getDutch()));
 			}
+			getPropertyChangeSupport().firePropertyChange("isHTML", !flag, flag);
 		}
 
 		private String addHTMLSupport(String value) {
@@ -508,7 +566,8 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		}
 	}
 
-	public Vector<Entry> getEntries() {
+	@Override
+	public List<Entry> getEntries() {
 		if (entries == null) {
 			loadLocalizedDictionaries();
 			entries = new Vector<Entry>();
@@ -524,62 +583,8 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 					return Collator.getInstance().compare(o1.key, o2.key);
 				}
 			});
-			computeIssuesEntries();
 		}
 		return entries;
-	}
-
-	public Vector<Entry> getIssuesEntries() {
-		if (issuesEntries == null) {
-			issuesEntries = computeIssuesEntries();
-		}
-		return issuesEntries;
-	}
-
-	private Vector<Entry> computeIssuesEntries() {
-		loadLocalizedDictionaries();
-		issuesEntries = new Vector<Entry>();
-		for (Entry e : getEntries()) {
-			if (e.hasInvalidValue()) {
-				issuesEntries.add(e);
-			}
-		}
-		return issuesEntries;
-	}
-
-	public Vector<Entry> getMatchingEntries() {
-		if (matchingEntries == null) {
-			matchingEntries = new Vector<Entry>();
-		}
-		return matchingEntries;
-	}
-
-	protected Vector<Entry> computeMatchingEntries(String text, SearchMode searchMode) {
-		loadLocalizedDictionaries();
-		matchingEntries = new Vector<Entry>();
-		for (Entry e : getEntries()) {
-			switch (searchMode) {
-			case Contains:
-				if (e.contains(text)) {
-					matchingEntries.add(e);
-				}
-				break;
-			case BeginsWith:
-				if (e.startsWith(text)) {
-					matchingEntries.add(e);
-				}
-				break;
-			case EndsWith:
-				if (e.endsWith(text)) {
-					matchingEntries.add(e);
-				}
-				break;
-
-			default:
-				break;
-			}
-		}
-		return matchingEntries;
 	}
 
 	private Entry getEntry(String key) {
@@ -606,29 +611,36 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 	public Entry addEntry() {
 		addEntry("key");
-		return getEntry("key");
+		Entry returned = getEntry("key");
+		getPropertyChangeSupport().firePropertyChange("entries", null, getEntries());
+		return returned;
 	}
 
 	public void deleteEntry(Entry entry) {
 		entry.delete();
+		getPropertyChangeSupport().firePropertyChange("entries", null, getEntries());
 	}
 
-	public void searchTranslation(Entry entry) {
+	@Override
+	public void searchTranslation(LocalizedEntry entry) {
 		if (getParent() != null) {
-			String englishTranslation = FlexoLocalization.localizedForKeyAndLanguage(parent, entry.key, Language.ENGLISH);
-			if (entry.key.equals(englishTranslation)) {
-				englishTranslation = automaticEnglishTranslation(entry.key);
+			String englishTranslation = FlexoLocalization.localizedForKeyAndLanguage(parent, entry.getKey(), Language.ENGLISH);
+			if (entry.getKey().equals(englishTranslation)) {
+				englishTranslation = automaticEnglishTranslation(entry.getKey());
 			}
 			entry.setEnglish(englishTranslation);
-			String dutchTranslation = FlexoLocalization.localizedForKeyAndLanguage(parent, entry.key, Language.DUTCH);
-			if (entry.key.equals(dutchTranslation)) {
-				dutchTranslation = automaticDutchTranslation(entry.key);
+			String dutchTranslation = FlexoLocalization.localizedForKeyAndLanguage(parent, entry.getKey(), Language.DUTCH);
+			if (entry.getKey().equals(dutchTranslation)) {
+				dutchTranslation = automaticDutchTranslation(entry.getKey());
 			}
 			entry.setDutch(dutchTranslation);
-			String frenchTranslation = FlexoLocalization.localizedForKeyAndLanguage(parent, entry.key, Language.FRENCH);
+			String frenchTranslation = FlexoLocalization.localizedForKeyAndLanguage(parent, entry.getKey(), Language.FRENCH);
+			if (entry.getKey().equals(frenchTranslation)) {
+				frenchTranslation = automaticFrenchTranslation(entry.getKey());
+			}
 			entry.setFrench(frenchTranslation);
 		} else {
-			String englishTranslation = entry.key.toString();
+			String englishTranslation = entry.getKey().toString();
 			englishTranslation = englishTranslation.replace("_", " ");
 			englishTranslation = englishTranslation.substring(0, 1).toUpperCase() + englishTranslation.substring(1);
 			entry.setEnglish(englishTranslation);
@@ -644,7 +656,13 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	}
 
 	private String automaticDutchTranslation(String key) {
-		return automaticEnglishTranslation(key);
+		return key;
+		// return automaticEnglishTranslation(key);
+	}
+
+	private String automaticFrenchTranslation(String key) {
+		return key;
+		// return automaticEnglishTranslation(key);
 	}
 
 	@Override
@@ -671,18 +689,23 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		return _localizedDictionaries;
 	}
 
-	@Deprecated
+	/**
+	 * Return directory where this localized delegate is stored, when available (might be null if located in a JAR for example)
+	 * 
+	 * @return
+	 */
+	@Override
 	public File getLocalizedDirectory() {
-		return ResourceLocator.retrieveResourceAsFile(_localizedDirectory);
+		return ResourceLocator.retrieveResourceAsFile(localizedDirectoryResource);
 	}
 
-	public String getParentDelegateDescription() {
+	/*public String getParentDelegateDescription() {
 		if (getParent() == null) {
 			return "none";
 		} else {
 			return getParent().toString();
 		}
-	}
+	}*/
 
 	@Override
 	public String toString() {

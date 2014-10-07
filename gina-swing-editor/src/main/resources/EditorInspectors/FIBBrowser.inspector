@@ -3,11 +3,11 @@
   <TabPanel name="Tab" constraints="border(location=center)">
     <Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
       <Label label="root" constraints="twocols(location=left)" localize="true" />
-      <Custom componentClassName="org.openflexo.fib.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.root" constraints="twocols(expandHorizontally=true;location=right)">
+      <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.root" constraints="twocols(expandHorizontally=true;location=right)">
         <Assignment variable="component.bindable" value="data" />
       </Custom>
       <Label label="iterator_class" constraints="twocols(location=left)" localize="true" />
-      <Custom componentClassName="org.openflexo.fib.utils.ClassSelector" localize="true" manageDynamicModel="true" data="data.iteratorClass" constraints="twocols(expandHorizontally=true;location=right)" />
+      <Custom componentClassName="org.openflexo.fib.swing.utils.ClassSelector" localize="true" manageDynamicModel="true" data="data.iteratorClass" constraints="twocols(expandHorizontally=true;location=right)" />
       <Label label="visible_row_count" constraints="twocols(location=left)" localize="true" />
       <Number minValue="1" maxValue="100" increment="1" numberType="IntegerType" columns="3" data="data.visibleRowCount" constraints="twocols(location=right)" localize="true" />
       <Label label="row_height" constraints="twocols(location=left)" localize="true" />
@@ -36,13 +36,13 @@
           <Label label="name" constraints="twocols(location=left)" localize="true" />
           <TextField data="ElementsTable.selected.name" constraints="twocols(expandHorizontally=true;location=right)" localize="true" columns="15" />
           <Label label="class_name" constraints="twocols(location=left)" localize="true" />
-          <Custom componentClassName="org.openflexo.fib.utils.ClassSelector" localize="true" manageDynamicModel="true" data="ElementsTable.selected.dataClass" constraints="twocols(expandHorizontally=true;location=right)" />
+          <Custom componentClassName="org.openflexo.fib.swing.utils.ClassSelector" localize="true" manageDynamicModel="true" data="ElementsTable.selected.dataClass" constraints="twocols(expandHorizontally=true;location=right)" />
           <Label label="label" constraints="twocols(location=left)" localize="true" />
-          <Custom componentClassName="org.openflexo.fib.utils.BindingSelector" localize="true" manageDynamicModel="true" data="ElementsTable.selected.label" constraints="twocols(expandHorizontally=true;location=right)">
+          <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="ElementsTable.selected.label" constraints="twocols(expandHorizontally=true;location=right)">
             <Assignment variable="component.bindable" value="ElementsTable.selected.iterator" />
           </Custom>
           <Label label="icon" constraints="twocols(location=left)" localize="true" />
-          <Custom componentClassName="org.openflexo.fib.utils.BindingSelector" localize="true" manageDynamicModel="true" data="ElementsTable.selected.icon" constraints="twocols(expandHorizontally=true;location=right)">
+          <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="ElementsTable.selected.icon" constraints="twocols(expandHorizontally=true;location=right)">
             <Assignment variable="component.bindable" value="ElementsTable.selected.iterator" />
           </Custom>
           <Label label="icon_file" constraints="twocols(location=left)" localize="true" />
@@ -50,21 +50,21 @@
         </Tab>
         <Tab title="Advanced" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="1" font="SansSerif,0,11" name="DetailsAdvancedTab">
           <Label label="tooltip" constraints="twocols(location=left)" localize="true" />
-          <Custom componentClassName="org.openflexo.fib.utils.BindingSelector" localize="true" manageDynamicModel="true" data="ElementsTable.selected.tooltip" constraints="twocols(expandHorizontally=true;location=right)">
+          <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="ElementsTable.selected.tooltip" constraints="twocols(expandHorizontally=true;location=right)">
             <Assignment variable="component.bindable" value="ElementsTable.selected.iterator" />
           </Custom>
           <Label label="enabled" constraints="twocols(location=left)" localize="true" />
-          <Custom componentClassName="org.openflexo.fib.utils.BindingSelector" localize="true" manageDynamicModel="true" data="ElementsTable.selected.enabled" constraints="twocols(expandHorizontally=true;location=right)">
+          <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="ElementsTable.selected.enabled" constraints="twocols(expandHorizontally=true;location=right)">
             <Assignment variable="component.bindable" value="ElementsTable.selected.iterator" />
           </Custom>
           <Label label="visible" constraints="twocols(location=left)" localize="true" />
-          <Custom componentClassName="org.openflexo.fib.utils.BindingSelector" localize="true" manageDynamicModel="true" data="ElementsTable.selected.visible" constraints="twocols(expandHorizontally=true;location=right)">
+          <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="ElementsTable.selected.visible" constraints="twocols(expandHorizontally=true;location=right)">
             <Assignment variable="component.bindable" value="ElementsTable.selected.iterator" />
           </Custom>
           <Label label="is_label_editable" constraints="twocols(location=left)" localize="true" />
           <Panel layout="border" titleFont="SansSerif,0,11" darkLevel="0" constraints="twocols(expandHorizontally=true;location=right)">
             <CheckBox selected="false" data="ElementsTable.selected.isEditable" constraints="border(location=west)" localize="true" />
-            <Custom componentClassName="org.openflexo.fib.utils.BindingSelector" localize="true" manageDynamicModel="true" data="ElementsTable.selected.editableLabel" constraints="border(location=center)" visible="ElementsTable.selected.isEditable">
+            <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="ElementsTable.selected.editableLabel" constraints="border(location=center)" visible="ElementsTable.selected.isEditable">
               <Assignment variable="component.bindable" value="ElementsTable.selected.iterator" />
             </Custom>
           </Panel>
@@ -80,7 +80,7 @@
             <Font sampleText="Sample for this font" localize="true" data="ElementsTable.selected.font" constraints="flow()" visible="ElementsTable.selected.hasSpecificFont" />
           </Panel>
           <Label label="dynamic_font" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true" />
-          <Custom componentClassName="org.openflexo.fib.utils.BindingSelector" localize="true" manageDynamicModel="true" index="21" data="ElementsTable.selected.dynamicFont" constraints="twocols(expandHorizontally=true;expandVertically=false;index=21;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+          <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" index="21" data="ElementsTable.selected.dynamicFont" constraints="twocols(expandHorizontally=true;expandVertically=false;index=21;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
             <Assignment variable="component.bindable" value="ElementsTable.selected.iterator" />
           </Custom>
         </Tab>
@@ -88,13 +88,13 @@
           <Table iteratorClassName="org.openflexo.fib.model.FIBBrowserElement$FIBBrowserElementChildren" visibleRowCount="4" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="ChildrenTable" data="ElementsTable.selected.children" constraints="border(location=center)" font="SansSerif,0,11">
             <IconColumn data="iterator.imageIcon" columnWidth="20" resizable="false" displayTitle="true" name="icon" />
             <TextFieldColumn data="iterator.name" title="name" columnWidth="100" resizable="true" displayTitle="true" name="name" />
-            <CustomColumn componentClassName="org.openflexo.fib.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.data" title="data" columnWidth="200" resizable="true" displayTitle="true" name="data">
+            <CustomColumn componentClassName="org.openflexo.fib.swing.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.data" title="data" columnWidth="200" resizable="true" displayTitle="true" name="data">
               <ColumnAssignment variable="component.bindable" value="iterator.owner.iterator" />
             </CustomColumn>
-            <CustomColumn componentClassName="org.openflexo.fib.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.visible" title="visible" columnWidth="200" resizable="true" displayTitle="true" name="visible">
+            <CustomColumn componentClassName="org.openflexo.fib.swing.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.visible" title="visible" columnWidth="200" resizable="true" displayTitle="true" name="visible">
               <ColumnAssignment variable="component.bindable" value="iterator.owner.iterator" />
             </CustomColumn>
-            <CustomColumn componentClassName="org.openflexo.fib.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.cast" title="cast" columnWidth="200" resizable="true" displayTitle="true" name="cast">
+            <CustomColumn componentClassName="org.openflexo.fib.swing.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.cast" title="cast" columnWidth="200" resizable="true" displayTitle="true" name="cast">
               <ColumnAssignment variable="component.bindable" value="iterator.childBindable" />
             </CustomColumn>
             <AddAction method="ElementsTable.selected.createChildren()" name="new_children" />
@@ -109,10 +109,10 @@
           <Table iteratorClassName="org.openflexo.fib.model.FIBBrowserAction" visibleRowCount="5" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="ActionsTable" data="ElementsTable.selected.actions" constraints="border(location=center)" font="SansSerif,0,11">
             <TextFieldColumn data="iterator.name" title="action" columnWidth="200" resizable="true" displayTitle="true" name="name" />
             <LabelColumn data="iterator.actionType" title="type" columnWidth="80" resizable="true" displayTitle="true" name="type" />
-            <CustomColumn componentClassName="org.openflexo.fib.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.method" title="method" columnWidth="300" resizable="true" displayTitle="true" name="method">
+            <CustomColumn componentClassName="org.openflexo.fib.swing.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.method" title="method" columnWidth="300" resizable="true" displayTitle="true" name="method">
               <ColumnAssignment variable="component.bindable" value="iterator" />
             </CustomColumn>
-            <CustomColumn componentClassName="org.openflexo.fib.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.isAvailable" title="available" columnWidth="300" resizable="true" displayTitle="true" name="visibleValue">
+            <CustomColumn componentClassName="org.openflexo.fib.swing.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.isAvailable" title="available" columnWidth="300" resizable="true" displayTitle="true" name="visibleValue">
               <ColumnAssignment variable="component.bindable" value="iterator" />
             </CustomColumn>
             <AddAction method="ElementsTable.selected.createAddAction()" name="new_add_action" />
@@ -125,7 +125,7 @@
     </Tab>
     <Tab title="Controls" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="2" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="ControlsTab">
       <Label label="selected" constraints="twocols(location=left)" localize="true" />
-      <Custom componentClassName="org.openflexo.fib.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.selected" constraints="twocols(expandHorizontally=true;location=right)">
+      <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.selected" constraints="twocols(expandHorizontally=true;location=right)">
         <Assignment variable="component.bindable" value="data" />
       </Custom>
       <CheckBox selected="false" data="data.boundToSelectionManager" constraints="twocols(location=left)" localize="true" />

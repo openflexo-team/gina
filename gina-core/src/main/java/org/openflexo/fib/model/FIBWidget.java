@@ -311,6 +311,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		public DataBinding<String> getTooltip() {
 			if (tooltip == null) {
 				tooltip = new DataBinding<String>(this, String.class, DataBinding.BindingDefinitionType.GET);
+				tooltip.setBindingName("tooltip");
 			}
 			return tooltip;
 		}
@@ -321,6 +322,7 @@ public abstract interface FIBWidget extends FIBComponent {
 				tooltip.setOwner(this);
 				tooltip.setDeclaredType(String.class);
 				tooltip.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				tooltip.setBindingName("tooltip");
 			}
 			this.tooltip = tooltip;
 		}
@@ -329,6 +331,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		public DataBinding<Boolean> getEnable() {
 			if (enable == null) {
 				enable = new DataBinding<Boolean>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				enable.setBindingName("enable");
 			}
 			return enable;
 		}
@@ -339,6 +342,7 @@ public abstract interface FIBWidget extends FIBComponent {
 				enable.setOwner(this);
 				enable.setDeclaredType(Boolean.class);
 				enable.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				enable.setBindingName("enable");
 			}
 			this.enable = enable;
 		}
@@ -463,6 +467,7 @@ public abstract interface FIBWidget extends FIBComponent {
 						return getDataType();
 					}
 				};
+				valueTransform.setBindingName("valueTransform");
 			}
 			return valueTransform;
 		}
@@ -477,6 +482,7 @@ public abstract interface FIBWidget extends FIBComponent {
 						return getDataType();
 					}
 				};
+				this.valueTransform.setBindingName("valueTransform");
 			} else {
 				this.valueTransform = null;
 			}
@@ -492,6 +498,7 @@ public abstract interface FIBWidget extends FIBComponent {
 			if (format == null) {
 				format = new DataBinding<String>(formatter, String.class, DataBinding.BindingDefinitionType.GET);
 				format.setCachingStrategy(CachingStrategy.NO_CACHING);
+				format.setBindingName("format");
 			}
 			return format;
 		}
@@ -505,6 +512,7 @@ public abstract interface FIBWidget extends FIBComponent {
 					format.setDeclaredType(String.class);
 					format.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 					format.setCachingStrategy(CachingStrategy.NO_CACHING);
+					format.setBindingName("format");
 				}
 				this.format = format;
 				hasChanged(notification);
@@ -516,6 +524,7 @@ public abstract interface FIBWidget extends FIBComponent {
 			if (icon == null) {
 				icon = new DataBinding<Icon>(formatter, Icon.class, DataBinding.BindingDefinitionType.GET);
 				icon.setCachingStrategy(CachingStrategy.NO_CACHING);
+				icon.setBindingName("icon");
 			}
 			return icon;
 		}
@@ -529,6 +538,7 @@ public abstract interface FIBWidget extends FIBComponent {
 					icon.setDeclaredType(Icon.class);
 					icon.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 					icon.setCachingStrategy(CachingStrategy.NO_CACHING);
+					icon.setBindingName("icon");
 				}
 				this.icon = icon;
 				hasChanged(notification);
@@ -770,6 +780,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		public DataBinding<Boolean> getValueValidator() {
 			if (valueValidator == null) {
 				valueValidator = new DataBinding<Boolean>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				valueValidator.setBindingName("valueValidator");
 			}
 			return valueValidator;
 		}
@@ -780,6 +791,7 @@ public abstract interface FIBWidget extends FIBComponent {
 				valueValidator.setOwner(this);
 				valueValidator.setDeclaredType(Boolean.class);
 				valueValidator.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				valueValidator.setBindingName("valueValidator");
 			}
 			this.valueValidator = valueValidator;
 		}
@@ -788,6 +800,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		public DataBinding<?> getValueChangedAction() {
 			if (valueChangedAction == null) {
 				valueChangedAction = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
+				valueChangedAction.setBindingName("valueChangedAction");
 			}
 			return valueChangedAction;
 		}
@@ -798,6 +811,7 @@ public abstract interface FIBWidget extends FIBComponent {
 				valueChangedAction.setOwner(this);
 				valueChangedAction.setDeclaredType(Object.class);
 				valueChangedAction.setBindingDefinitionType(DataBinding.BindingDefinitionType.EXECUTE);
+				valueChangedAction.setBindingName("valueChangedAction");
 			}
 			this.valueChangedAction = valueChangedAction;
 		}
@@ -811,6 +825,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		public final DataBinding<?> getClickAction() {
 			if (clickAction == null) {
 				clickAction = new DataBinding<Object>(eventListener, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
+				clickAction.setBindingName("clickAction");
 			}
 			return clickAction;
 		}
@@ -821,6 +836,7 @@ public abstract interface FIBWidget extends FIBComponent {
 				clickAction.setOwner(eventListener);
 				clickAction.setDeclaredType(Object.class);
 				clickAction.setBindingDefinitionType(DataBinding.BindingDefinitionType.EXECUTE);
+				clickAction.setBindingName("clickAction");
 			}
 			this.clickAction = clickAction;
 		}
@@ -834,6 +850,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		public DataBinding<?> getDoubleClickAction() {
 			if (doubleClickAction == null) {
 				doubleClickAction = new DataBinding<Object>(eventListener, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
+				doubleClickAction.setBindingName("doubleClickAction");
 			}
 			return doubleClickAction;
 		}
@@ -844,6 +861,7 @@ public abstract interface FIBWidget extends FIBComponent {
 				doubleClickAction.setOwner(eventListener);
 				doubleClickAction.setDeclaredType(Object.class);
 				doubleClickAction.setBindingDefinitionType(DataBinding.BindingDefinitionType.EXECUTE);
+				doubleClickAction.setBindingName("doubleClickAction");
 			}
 			this.doubleClickAction = doubleClickAction;
 		}
@@ -857,6 +875,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		public DataBinding<?> getRightClickAction() {
 			if (rightClickAction == null) {
 				rightClickAction = new DataBinding<Object>(eventListener, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
+				rightClickAction.setBindingName("rightClickAction");
 			}
 			return rightClickAction;
 		}
@@ -867,6 +886,7 @@ public abstract interface FIBWidget extends FIBComponent {
 				rightClickAction.setOwner(eventListener);
 				rightClickAction.setDeclaredType(Object.class);
 				rightClickAction.setBindingDefinitionType(DataBinding.BindingDefinitionType.EXECUTE);
+				rightClickAction.setBindingName("rightClickAction");
 			}
 			this.rightClickAction = rightClickAction;
 		}
@@ -880,6 +900,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		public DataBinding<?> getEnterPressedAction() {
 			if (enterPressedAction == null) {
 				enterPressedAction = new DataBinding<Object>(eventListener, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
+				enterPressedAction.setBindingName("enterPressedAction");
 			}
 			return enterPressedAction;
 		}
@@ -890,6 +911,7 @@ public abstract interface FIBWidget extends FIBComponent {
 				enterPressedAction.setOwner(eventListener);
 				enterPressedAction.setDeclaredType(Object.class);
 				enterPressedAction.setBindingDefinitionType(DataBinding.BindingDefinitionType.EXECUTE);
+				enterPressedAction.setBindingName("enterPressedAction");
 			}
 			this.enterPressedAction = enterPressedAction;
 		}

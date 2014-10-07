@@ -19,6 +19,7 @@
  */
 package org.openflexo.fib.model;
 
+import org.openflexo.localization.Language;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -80,6 +81,11 @@ public interface FIBLocalizedEntry extends FIBModelObject {
 			return getLocalizedDictionary().getComponent();
 		}
 
+		@Override
+		public String toString() {
+			return getKey() + "/" + getLanguage() + ":" + getValue();
+		}
+
 	}
 
 	@DefineValidationRule
@@ -93,8 +99,8 @@ public interface FIBLocalizedEntry extends FIBModelObject {
 		public ValidationIssue<LocalizedEntryShouldNotBeRegisteredTwice, FIBLocalizedEntry> applyValidation(FIBLocalizedEntry entry) {
 
 			if (entry.getLocalizedDictionary() != null) {
-				if (entry.getLocalizedDictionary().getEntries().indexOf(entry) != entry.getLocalizedDictionary().getEntries()
-						.lastIndexOf(entry)) {
+				if (entry.getLocalizedDictionary().getLocalizedEntries().indexOf(entry) != entry.getLocalizedDictionary()
+						.getLocalizedEntries().lastIndexOf(entry)) {
 					RemoveExtraReferences fixProposal = new RemoveExtraReferences(entry);
 					return new ValidationWarning<LocalizedEntryShouldNotBeRegisteredTwice, FIBLocalizedEntry>(this, entry,
 							"localized_entry_is_registered_twice", fixProposal);
@@ -116,9 +122,58 @@ public interface FIBLocalizedEntry extends FIBModelObject {
 			protected void fixAction() {
 				FIBLocalizedDictionary dict = entry.getLocalizedDictionary();
 				if (dict != null) {
-					while (dict.getEntries().contains(entry)) {
-						dict.removeFromEntries(entry);
+					if (dict.getLocalizedEntries().indexOf(entry) != dict.getLocalizedEntries().lastIndexOf(entry)) {
+						dict.removeFromLocalizedEntries(entry);
 					}
+				}
+			}
+
+		}
+
+	}
+
+	@DefineValidationRule
+	public static class LocalizedEntryShouldNotRedefineParentTranslation extends
+			ValidationRule<LocalizedEntryShouldNotRedefineParentTranslation, FIBLocalizedEntry> {
+		public LocalizedEntryShouldNotRedefineParentTranslation() {
+			super(FIBLocalizedEntry.class, "localized_entry_should_not_redefine_parent_translation");
+		}
+
+		@Override
+		public ValidationIssue<LocalizedEntryShouldNotRedefineParentTranslation, FIBLocalizedEntry> applyValidation(FIBLocalizedEntry entry) {
+
+			// System.out.println("looking up " + entry);
+			// System.out.println("parent=" + entry.getLocalizedDictionary().getParent());
+			if (entry.getLocalizedDictionary() != null && entry.getLocalizedDictionary().getParent() != null) {
+				String parentTranslation = entry.getLocalizedDictionary().getParent()
+						.getLocalizedForKeyAndLanguage(entry.getKey(), Language.retrieveLanguage(entry.getLanguage()));
+				// System.out.println("parentTranslation=" + parentTranslation);
+				if (parentTranslation != null && parentTranslation.equals(entry.getValue())) {
+					DeleteUnnecessaryTranslation fixProposal = new DeleteUnnecessaryTranslation(entry);
+					return new ValidationWarning<LocalizedEntryShouldNotRedefineParentTranslation, FIBLocalizedEntry>(this, entry,
+							"($validable):_unnecessary_parent_locale_redefinition", fixProposal);
+				}
+			}
+			return null;
+		}
+
+		protected static class DeleteUnnecessaryTranslation extends
+				FixProposal<LocalizedEntryShouldNotRedefineParentTranslation, FIBLocalizedEntry> {
+
+			private final FIBLocalizedEntry entry;
+
+			public DeleteUnnecessaryTranslation(FIBLocalizedEntry entry) {
+				super("remove_unnecessary_translation");
+				this.entry = entry;
+			}
+
+			@Override
+			protected void fixAction() {
+				if (entry != null && !entry.isDeleted()) {
+					if (entry.getLocalizedDictionary() != null) {
+						entry.getLocalizedDictionary().removeFromLocalizedEntries(entry);
+					}
+					entry.delete();
 				}
 			}
 

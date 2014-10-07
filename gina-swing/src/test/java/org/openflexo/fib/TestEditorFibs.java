@@ -12,8 +12,23 @@ public class TestEditorFibs extends GenericFIBTestCase {
 	}
 
 	@Test
-	public void testComponentValidation() {
-		validateFIB("Fib/ComponentValidation.fib");
+	public void testClassSelector() {
+		validateFIB("Fib/ClassSelector.fib");
+	}
+
+	@Test
+	public void testLocalizedPanel() {
+		validateFIB("Fib/LocalizedPanel.fib");
+	}
+
+	@Test
+	public void testLoggingViewer() {
+		validateFIB("Fib/LoggingViewer.fib");
+	}
+
+	@Test
+	public void testValidationPanel() {
+		validateFIB("Fib/ValidationPanel.fib");
 	}
 
 }

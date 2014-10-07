@@ -21,7 +21,6 @@
 package org.openflexo.fib.model;
 
 import org.openflexo.antar.binding.BindingEvaluator;
-import org.openflexo.fib.utils.LocalizedDelegateGUIImpl;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -39,8 +38,8 @@ import org.openflexo.rm.ResourceLocator;
 public class FIBValidationModel extends ValidationModel {
 
 	private static Resource fibValidationLocalizedDelegate = ResourceLocator.locateResource("FIBValidationLocalized");
-	private static LocalizedDelegate VALIDATION_LOCALIZATION = LocalizedDelegateGUIImpl.getLocalizedDelegate(
-			fibValidationLocalizedDelegate, null, true);
+	private static LocalizedDelegate VALIDATION_LOCALIZATION = FlexoLocalization.getLocalizedDelegate(fibValidationLocalizedDelegate, null,
+			true, true);
 
 	public FIBValidationModel(FIBModelFactory fibModelFactory) throws ModelDefinitionException {
 		super(fibModelFactory.getModelContext());
@@ -80,7 +79,7 @@ public class FIBValidationModel extends ValidationModel {
 	@Override
 	public String localizedInContext(String key, Object context) {
 		String localized = VALIDATION_LOCALIZATION.getLocalizedForKeyAndLanguage(key, FlexoLocalization.getCurrentLanguage(), true);
-		if (localized.contains("($")) {
+		if (localized != null && localized.contains("($")) {
 			String asBindingExpression = asBindingExpression(localized);
 			try {
 				return (String) BindingEvaluator.evaluateBinding(asBindingExpression, context);

@@ -65,7 +65,8 @@ import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelFactory;
 import org.openflexo.fib.model.FIBPanel;
 import org.openflexo.fib.model.FIBPanel.Layout;
-import org.openflexo.fib.utils.FlexoLoggingViewer;
+import org.openflexo.fib.swing.localization.LocalizedEditor;
+import org.openflexo.fib.swing.logging.FlexoLoggingViewer;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
@@ -74,7 +75,6 @@ import org.openflexo.logging.FlexoLoggingManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.FileSystemResourceLocatorImpl;
-import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.swing.ComponentBoundSaver;
 import org.openflexo.swing.FlexoFileChooser;
@@ -86,7 +86,7 @@ public class FIBEditor implements FIBGenericEditor {
 
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditor.class.getPackage().getName());
 
-	public static Resource COMPONENT_LOCALIZATION_FIB = ResourceLocator.locateResource("Fib/ComponentLocalization.fib");
+	// public static Resource COMPONENT_LOCALIZATION_FIB = ResourceLocator.locateResource("Fib/ComponentLocalization.fib");
 
 	/*static {
 		try {
@@ -157,7 +157,9 @@ public class FIBEditor implements FIBGenericEditor {
 
 	private FIBEditorController editorController;
 
-	private ValidationWindow validationWindow;
+	private LocalizedEditor localizedEditor;
+	private ComponentValidationWindow componentValidationWindow;
+	private ComponentLocalizationWindow componentLocalizationWindow;
 
 	final FileSystemResourceLocatorImpl resourceLocator;
 
@@ -405,7 +407,20 @@ public class FIBEditor implements FIBGenericEditor {
 			return;
 		}
 
-		FIBComponent componentLocalizationComponent = FIBLibrary.instance().retrieveFIBComponent(COMPONENT_LOCALIZATION_FIB, true);
+		if (editedFIB != null && editedFIB.fibComponent != null) {
+			editorController.getController().searchNewLocalizationEntries();
+			getLocalizationWindow(editedFIB.fibComponent).setVisible(true);
+		}
+
+		// editorController.getController().searchNewLocalizationEntries();
+
+		// getController().searchNewLocalizationEntries();
+
+		/*if (fibComponent != null) {
+			getLocalizationWindow().setVisible(true);
+		}*/
+
+		/*FIBComponent componentLocalizationComponent = FIBLibrary.instance().retrieveFIBComponent(COMPONENT_LOCALIZATION_FIB, true);
 
 		FIBView view = FIBController.makeView(componentLocalizationComponent, FIBAbstractEditor.LOCALIZATION);
 		view.getController().setDataObject(editorController.getController());
@@ -413,20 +428,35 @@ public class FIBEditor implements FIBGenericEditor {
 				"component_localization"), false);
 		localizationInterface.getContentPane().add(view.getResultingJComponent());
 		localizationInterface.pack();
-		localizationInterface.setVisible(true);
+		localizationInterface.setVisible(true);*/
 	}
 
 	public void validateFIB() {
 		if (editedFIB != null && editedFIB.fibComponent != null) {
-			getValidationWindow().validateAndDisplayReportForComponent(editedFIB.fibComponent);
+			getValidationWindow(editedFIB.fibComponent).validateAndDisplayReportForComponent(editedFIB.fibComponent);
 		}
 	}
 
-	protected ValidationWindow getValidationWindow() {
-		if (validationWindow == null) {
-			validationWindow = new ValidationWindow(frame, editorController);
+	protected ComponentValidationWindow getValidationWindow(FIBComponent component) {
+		if (componentValidationWindow != null && componentValidationWindow.getFIBComponent() != component) {
+			componentValidationWindow.dispose();
+			componentValidationWindow = null;
 		}
-		return validationWindow;
+		if (componentValidationWindow == null) {
+			componentValidationWindow = new ComponentValidationWindow(frame, editorController);
+		}
+		return componentValidationWindow;
+	}
+
+	protected ComponentLocalizationWindow getLocalizationWindow(FIBComponent component) {
+		if (componentLocalizationWindow != null && componentLocalizationWindow.getFIBComponent() != component) {
+			componentLocalizationWindow.dispose();
+			componentLocalizationWindow = null;
+		}
+		if (componentLocalizationWindow == null) {
+			componentLocalizationWindow = new ComponentLocalizationWindow(frame, editorController);
+		}
+		return componentLocalizationWindow;
 	}
 
 	public void switchToLanguage(Language lang) {
@@ -664,7 +694,11 @@ public class FIBEditor implements FIBGenericEditor {
 			localizedItem.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					FIBAbstractEditor.LOCALIZATION.showLocalizedEditor(frame);
+					if (localizedEditor == null) {
+						localizedEditor = new LocalizedEditor(getFrame(), "localized_editor", FIBAbstractEditor.LOCALIZATION,
+								FIBAbstractEditor.LOCALIZATION);
+					}
+					localizedEditor.setVisible(true);
 				}
 			});
 

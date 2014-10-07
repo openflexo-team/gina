@@ -21,9 +21,8 @@ package org.openflexo.localization;
 
 import java.awt.Component;
 import java.awt.Frame;
-import java.io.File;
 import java.lang.ref.WeakReference;
-import java.net.URL;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -114,8 +113,8 @@ public class FlexoLocalization {
 	 * 
 	 * @param localizedDirectory
 	 */
-	public static void initWith(Resource localizedDirectory) {
-		mainLocalizer = new LocalizedDelegateImpl(localizedDirectory, null, false);
+	public static void initWith(Resource localizedDirectory, LocalizedDelegate parent, boolean automaticSaving, boolean editingSupport) {
+		mainLocalizer = new LocalizedDelegateImpl(localizedDirectory, parent, automaticSaving, editingSupport);
 	}
 
 	/**
@@ -174,10 +173,10 @@ public class FlexoLocalization {
 				// We have to register this new entries
 				if (delegate.getParent() != null) {
 					// A parent exists, we will use its localized values in current localizer
-					for (Language l : Language.availableValues()) {
+					/*for (Language l : Language.availableValues()) {
 						String value = localizedForKeyAndLanguage(delegate.getParent(), key, l, false);
 						delegate.registerNewEntry(key, l, value);
-					}
+					}*/
 					return localizedForKeyAndLanguage(delegate.getParent(), key, language, false);
 				} else {
 					// No parent exists, we will use keys
@@ -506,4 +505,17 @@ public class FlexoLocalization {
 			}
 		}
 	}
+
+	private static Map<Resource, LocalizedDelegate> loadedLocalizedDelegates = new HashMap<Resource, LocalizedDelegate>();
+
+	public static LocalizedDelegate getLocalizedDelegate(Resource localizedDirectoryURL, LocalizedDelegate parent, boolean automaticSaving,
+			boolean editingSupport) {
+		LocalizedDelegate returned = loadedLocalizedDelegates.get(localizedDirectoryURL);
+		if (returned == null) {
+			returned = new LocalizedDelegateImpl(localizedDirectoryURL, parent, automaticSaving, editingSupport);
+			loadedLocalizedDelegates.put(localizedDirectoryURL, returned);
+		}
+		return returned;
+	}
+
 }

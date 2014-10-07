@@ -5,7 +5,7 @@
       <Label label="label" constraints="twocols(location=left)" localize="true" />
       <TextField data="data.label" constraints="twocols(expandHorizontally=true;location=right)" localize="true" columns="15" />
       <Label label="button_icon" constraints="twocols(location=left)" localize="true" />
-      <Custom componentClassName="org.openflexo.fib.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.buttonIcon" constraints="twocols(expandHorizontally=true;location=right)">
+      <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.buttonIcon" constraints="twocols(expandHorizontally=true;location=right)">
         <Assignment variable="component.bindable" value="data" />
       </Custom>
       <Label label="button_type" constraints="twocols(location=left)" localize="true" />
@@ -15,7 +15,7 @@
     </Tab>
     <Tab title="Controls" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="2" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="ControlsTab">
       <Label label="action" constraints="twocols(location=left)" localize="true" />
-      <Custom componentClassName="org.openflexo.fib.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.action" constraints="twocols(expandHorizontally=true;location=right)">
+      <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.action" constraints="twocols(expandHorizontally=true;location=right)">
         <Assignment variable="component.bindable" value="data" />
       </Custom>
     </Tab>

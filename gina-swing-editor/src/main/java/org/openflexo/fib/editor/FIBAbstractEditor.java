@@ -54,11 +54,12 @@ import org.openflexo.fib.editor.controller.FIBEditorPalette;
 import org.openflexo.fib.editor.controller.FIBInspectorController;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelFactory;
-import org.openflexo.fib.utils.FlexoLoggingViewer;
-import org.openflexo.fib.utils.LocalizedDelegateGUIImpl;
+import org.openflexo.fib.swing.localization.LocalizedEditor;
+import org.openflexo.fib.swing.logging.FlexoLoggingViewer;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
+import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.logging.FlexoLoggingManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -94,9 +95,9 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 
 	// Instanciate a new localizer in directory src/dev/resources/FIBEditorLocalizer
 	// linked to parent localizer (which is Openflexo main localizer)
-	public static LocalizedDelegateGUIImpl LOCALIZATION = LocalizedDelegateGUIImpl.getLocalizedDelegate(
+	public static LocalizedDelegate LOCALIZATION = FlexoLocalization.getLocalizedDelegate(
 			ResourceLocator.locateResource("FIBEditorLocalized"),
-			LocalizedDelegateGUIImpl.getLocalizedDelegate(ResourceLocator.locateResource("Localized"), null, false), true);
+			FlexoLocalization.getLocalizedDelegate(ResourceLocator.locateResource("Localized"), null, false, false), true, true);
 
 	public static Resource COMPONENT_LOCALIZATION_FIB = ResourceLocator.locateResource("Fib/ComponentLocalization.fib");
 
@@ -114,6 +115,10 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 	private FIBModelFactory factory;
 
 	private final JMenu actionMenu;
+
+	private LocalizedEditor localizedEditor;
+	private ComponentValidationWindow componentValidationWindow;
+	private ComponentLocalizationWindow componentLocalizationWindow;
 
 	public FIBEditorController getEditorController() {
 		return editorController;
@@ -340,7 +345,11 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 		localizedItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				LOCALIZATION.showLocalizedEditor(frame);
+				if (localizedEditor == null) {
+					localizedEditor = new LocalizedEditor(getFrame(), "localized_editor", FIBAbstractEditor.LOCALIZATION,
+							FIBAbstractEditor.LOCALIZATION);
+				}
+				localizedEditor.setVisible(true);
 			}
 		});
 
@@ -492,14 +501,12 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 	}
 
 	public void localizeFIB() {
-		FIBComponent componentLocalizationComponent = FIBLibrary.instance().retrieveFIBComponent(COMPONENT_LOCALIZATION_FIB, true);
 
-		FIBView view = FIBController.makeView(componentLocalizationComponent, LOCALIZATION);
-		view.getController().setDataObject(editorController.getController());
-		JDialog localizationInterface = new JDialog(frame, FlexoLocalization.localizedForKey(LOCALIZATION, "component_localization"), false);
-		localizationInterface.getContentPane().add(view.getResultingJComponent());
-		localizationInterface.pack();
-		localizationInterface.setVisible(true);
+		getController().searchNewLocalizationEntries();
+
+		if (fibComponent != null) {
+			getLocalizationWindow().setVisible(true);
+		}
 	}
 
 	public void validateFIB() {
@@ -508,13 +515,18 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 		}
 	}
 
-	private ValidationWindow validationWindow;
-
-	protected ValidationWindow getValidationWindow() {
-		if (validationWindow == null) {
-			validationWindow = new ValidationWindow(frame, editorController);
+	protected ComponentValidationWindow getValidationWindow() {
+		if (componentValidationWindow == null) {
+			componentValidationWindow = new ComponentValidationWindow(frame, editorController);
 		}
-		return validationWindow;
+		return componentValidationWindow;
+	}
+
+	protected ComponentLocalizationWindow getLocalizationWindow() {
+		if (componentLocalizationWindow == null) {
+			componentLocalizationWindow = new ComponentLocalizationWindow(frame, editorController);
+		}
+		return componentLocalizationWindow;
 	}
 
 	public void switchToLanguage(Language lang) {

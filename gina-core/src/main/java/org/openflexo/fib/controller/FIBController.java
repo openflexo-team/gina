@@ -164,11 +164,11 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 
 	public FIBController(FIBComponent rootComponent) {
 		this.rootComponent = rootComponent;
+		pcSupport = new PropertyChangeSupport(this);
 		views = new Hashtable<FIBComponent, FIBView<?, ?, ?>>();
 		selectionListeners = new Vector<FIBSelectionListener>();
 		mouseClickListeners = new Vector<FIBMouseClickListener>();
 		viewFactory = new DefaultFIBViewFactory();
-		pcSupport = new PropertyChangeSupport(this);
 	}
 
 	public void delete() {
@@ -204,6 +204,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 	}
 
 	public FIBView<FIBComponent, ?, ?> buildView() {
+
 		FIBView<FIBComponent, ?, ?> returned = buildView(rootComponent);
 		returned.update();
 		return returned;

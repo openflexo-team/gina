@@ -19,6 +19,11 @@
  */
 package org.openflexo.localization;
 
+import java.io.File;
+import java.util.List;
+
+import org.openflexo.toolbox.HasPropertyChangeSupport;
+
 /**
  * This interface is implemented by all classes implementing localization features<br>
  * A localized delegate is responsible for the localization of a set of keys<br>
@@ -73,4 +78,64 @@ public interface LocalizedDelegate {
 	 * @return
 	 */
 	public LocalizedDelegate getParent();
+
+	/**
+	 * Return all entries declared for this {@link LocalizedDelegate}
+	 * 
+	 * @return
+	 */
+	public List<? extends LocalizedEntry> getEntries();
+
+	/**
+	 * Return directory where this localized delegate is stored, when available (might be null if located in a JAR for example)
+	 * 
+	 * @return
+	 */
+	public File getLocalizedDirectory();
+
+	/**
+	 * Search automatic translation for supplied entry
+	 * 
+	 * @param entry
+	 */
+	public void searchTranslation(LocalizedEntry entry);
+
+	/**
+	 * Represents a localized entry<br>
+	 * A {@link LocalizedEntry} is explicitely identified by its key
+	 * 
+	 * @author sylvain
+	 *
+	 */
+	public interface LocalizedEntry extends HasPropertyChangeSupport {
+
+		public String getKey();
+
+		public String getEnglish();
+
+		public void setEnglish(String value);
+
+		public String getFrench();
+
+		public void setFrench(String value);
+
+		public String getDutch();
+
+		public void setDutch(String value);
+
+		public void delete();
+
+		public boolean getIsHTML();
+
+		public void setIsHTML(boolean flag);
+
+		public boolean hasInvalidValue();
+
+		public boolean isFrenchValueValid();
+
+		public boolean isEnglishValueValid();
+
+		public boolean isDutchValueValid();
+
+	}
 }

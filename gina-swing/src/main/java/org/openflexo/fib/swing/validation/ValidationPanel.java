@@ -15,10 +15,10 @@ import org.openflexo.rm.ResourceLocator;
 @SuppressWarnings("serial")
 public abstract class ValidationPanel extends FIBJPanel<ValidationReport> {
 
-	public static Resource COMPONENT_VALIDATION_FIB = ResourceLocator.locateResource("Fib/ComponentValidation.fib");
+	public static Resource VALIDATION_PANEL_FIB = ResourceLocator.locateResource("Fib/ValidationPanel.fib");
 
 	public ValidationPanel(ValidationReport validationReport, LocalizedDelegate parentLocalizer) {
-		super(FIBLibrary.instance().retrieveFIBComponent(COMPONENT_VALIDATION_FIB, true), validationReport, parentLocalizer);
+		super(FIBLibrary.instance().retrieveFIBComponent(VALIDATION_PANEL_FIB, true), validationReport, parentLocalizer);
 	}
 
 	@Override

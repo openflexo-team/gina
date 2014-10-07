@@ -1,6 +1,7 @@
 package org.openflexo.fib.editor.widget;
 
 import java.awt.event.MouseEvent;
+import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Logger;
 
@@ -48,6 +49,8 @@ public class FIBBrowserController extends FIBController implements Observer {
 		if (editorController != null) {
 			editorController.addObserver(this);
 		}
+
+		getPropertyChangeSupport().firePropertyChange("editorController", null, editorController);
 	}
 
 	public FIBBrowserController(FIBComponent rootComponent) {
@@ -62,9 +65,13 @@ public class FIBBrowserController extends FIBController implements Observer {
 	}
 
 	public void setSelectedComponent(FIBComponent selectedComponent) {
-		logger.info("setSelectedComponent with " + selectedComponent + " editorController=" + editorController);
+		logger.info(">>>>setSelectedComponent with " + selectedComponent + " editorController=" + editorController);
 		if (editorController != null) {
-			editorController.setSelectedObject(selectedComponent);
+			if (editorController.getSelectedObject() != selectedComponent) {
+				Object oldValue = editorController.getSelectedObject();
+				editorController.setSelectedObject(selectedComponent);
+				getPropertyChangeSupport().firePropertyChange("selectedComponent", oldValue, selectedComponent);
+			}
 		}
 	}
 

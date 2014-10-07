@@ -409,6 +409,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 			if (format == null) {
 				format = new DataBinding<String>(formatter, String.class, DataBinding.BindingDefinitionType.GET);
 				format.setCachingStrategy(CachingStrategy.NO_CACHING);
+				format.setBindingName("format");
 			}
 			return format;
 		}
@@ -420,6 +421,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 				format.setDeclaredType(String.class);
 				format.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 				format.setCachingStrategy(CachingStrategy.NO_CACHING);
+				format.setBindingName("format");
 			}
 			this.format = format;
 		}
@@ -507,6 +509,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 			if (tooltip == null) {
 				tooltip = new DataBinding<String>(this, String.class, DataBinding.BindingDefinitionType.GET);
 				tooltip.setCachingStrategy(CachingStrategy.NO_CACHING);
+				tooltip.setBindingName("tooltip");
 			}
 			return tooltip;
 		}
@@ -518,6 +521,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 				tooltip.setDeclaredType(String.class);
 				tooltip.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 				tooltip.setCachingStrategy(CachingStrategy.NO_CACHING);
+				tooltip.setBindingName("tooltip");
 			}
 			this.tooltip = tooltip;
 		}
@@ -527,6 +531,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 			if (color == null) {
 				color = new DataBinding<Color>(this, Color.class, DataBinding.BindingDefinitionType.GET);
 				color.setCachingStrategy(CachingStrategy.NO_CACHING);
+				color.setBindingName("color");
 			}
 			return color;
 		}
@@ -538,6 +543,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 				color.setDeclaredType(Color.class);
 				color.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 				color.setCachingStrategy(CachingStrategy.NO_CACHING);
+				color.setBindingName("color");
 			}
 			this.color = color;
 		}
@@ -547,6 +553,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 			if (bgColor == null) {
 				bgColor = new DataBinding<Color>(this, Color.class, DataBinding.BindingDefinitionType.GET);
 				bgColor.setCachingStrategy(CachingStrategy.NO_CACHING);
+				bgColor.setBindingName("bgColor");
 			}
 			return bgColor;
 		}
@@ -558,6 +565,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 				bgColor.setDeclaredType(Color.class);
 				bgColor.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 				bgColor.setCachingStrategy(CachingStrategy.NO_CACHING);
+				bgColor.setBindingName("bgColor");
 			}
 			this.bgColor = bgColor;
 		}
@@ -567,6 +575,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 			if (valueChangedAction == null) {
 				valueChangedAction = new DataBinding<Void>(this, Void.class, DataBinding.BindingDefinitionType.EXECUTE);
 				valueChangedAction.setCachingStrategy(CachingStrategy.NO_CACHING);
+				valueChangedAction.setBindingName("valueChangedAction");
 			}
 			return valueChangedAction;
 		}
@@ -578,6 +587,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 				valueChangedAction.setDeclaredType(Void.class);
 				valueChangedAction.setBindingDefinitionType(DataBinding.BindingDefinitionType.EXECUTE);
 				valueChangedAction.setCachingStrategy(CachingStrategy.NO_CACHING);
+				valueChangedAction.setBindingName("valueChangedAction");
 			}
 			this.valueChangedAction = valueChangedAction;
 		}
@@ -635,7 +645,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 	@DefineValidationRule
 	public static class BgColorBindingMustBeValid extends BindingMustBeValid<FIBTableColumn> {
 		public BgColorBindingMustBeValid() {
-			super("'bg_color'_binding_is_not_valid", FIBTableColumn.class);
+			super("'background_color'_binding_is_not_valid", FIBTableColumn.class);
 		}
 
 		@Override

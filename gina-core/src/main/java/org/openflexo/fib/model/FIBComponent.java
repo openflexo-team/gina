@@ -313,6 +313,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 	@Getter(value = EXPLICIT_DEPENDANCIES_KEY, cardinality = Cardinality.LIST, inverse = FIBDependancy.OWNER_KEY)
 	@XMLElement
 	@CloningStrategy(StrategyType.CLONE)
+	@Embedded
 	public List<FIBDependancy> getExplicitDependancies();
 
 	@Setter(EXPLICIT_DEPENDANCIES_KEY)
@@ -1134,7 +1135,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 					}
 				};
 
-				data.setBindingName("data");
+				this.data.setBindingName("data");
 
 				updateDynamicAccessBindingVariable();
 
@@ -1155,6 +1156,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 		public void setVisible(DataBinding<Boolean> visible) {
 			if (visible != null) {
 				visible = new DataBinding<Boolean>(visible.toString(), this, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				visible.setBindingName("data");
 			}
 			this.visible = visible;
 		}
@@ -1832,7 +1834,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 			if (!object.isRootComponent() && object.getLocalizedDictionary() != null) {
 				RemoveExtraLocalizedDictionary fixProposal = new RemoveExtraLocalizedDictionary();
 				return new ValidationWarning<NonRootComponentShouldNotHaveLocalizedDictionary, FIBComponent>(this, object,
-						"component_($object.toString)_has_a_localized_dictionary_but_is_not_root_component", fixProposal);
+						"component_($validable)_has_a_localized_dictionary_but_is_not_root_component", fixProposal);
 			}
 			return null;
 		}

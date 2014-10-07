@@ -23,6 +23,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.beans.PropertyChangeSupport;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
@@ -106,15 +107,12 @@ import org.openflexo.fib.view.FIBView;
 import org.openflexo.fib.view.FIBWidgetView;
 import org.openflexo.localization.Language;
 import org.openflexo.logging.FlexoLogger;
-import org.openflexo.rm.FileSystemResourceLocatorImpl;
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.swing.NoInsetsBorder;
+import org.openflexo.toolbox.HasPropertyChangeSupport;
 
-public class FIBEditorController /*extends FIBController*/extends Observable {
+public class FIBEditorController /*extends FIBController*/extends Observable implements HasPropertyChangeSupport {
 
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditorController.class.getPackage().getName());
-	
-
 
 	private final FIBController controller;
 
@@ -124,6 +122,7 @@ public class FIBEditorController /*extends FIBController*/extends Observable {
 	private final FIBView<?, ?, ?> fibPanel;
 	private final FIBGenericEditor editor;
 
+	private FIBComponent fibComponent = null;
 	private FIBComponent selectedObject = null;
 	private FIBComponent focusedObject = null;
 
@@ -133,6 +132,8 @@ public class FIBEditorController /*extends FIBController*/extends Observable {
 	private static final Border SELECTED_BORDER = new NoInsetsBorder(BorderFactory.createLineBorder(Color.BLUE));
 
 	private final Map<FIBComponent, FIBEditableViewDelegate<?, ?>> viewDelegates;
+
+	private final PropertyChangeSupport pcSupport;
 
 	private class FibWrappingPanel extends JPanel {
 		public FibWrappingPanel(JComponent wrappedFib) {
@@ -206,13 +207,15 @@ public class FIBEditorController /*extends FIBController*/extends Observable {
 	public FIBEditorController(FIBModelFactory factory, FIBComponent fibComponent, FIBGenericEditor editor, Object dataObject,
 			FIBController controller) {
 
-		
+		pcSupport = new PropertyChangeSupport(this);
+
 		this.controller = controller;
 		this.factory = factory;
 		viewDelegates = new HashMap<FIBComponent, FIBEditableViewDelegate<?, ?>>();
 		controller.setViewFactory(new EditorFIBViewFactory());
 
 		this.editor = editor;
+		this.fibComponent = fibComponent;
 
 		contextualMenu = new ContextualMenu(this);
 
@@ -240,6 +243,20 @@ public class FIBEditorController /*extends FIBController*/extends Observable {
 			fibPanel.getController().updateWithoutDataObject();
 		}
 
+	}
+
+	@Override
+	public PropertyChangeSupport getPropertyChangeSupport() {
+		return pcSupport;
+	}
+
+	@Override
+	public String getDeletedProperty() {
+		return null;
+	}
+
+	public FIBComponent getFIBComponent() {
+		return fibComponent;
 	}
 
 	public Object getDataObject() {
@@ -298,14 +315,15 @@ public class FIBEditorController /*extends FIBController*/extends Observable {
 	}
 
 	public void setSelectedObject(FIBComponent aComponent) {
-		// logger.info("setSelectedObject "+aComponent);
-		// System.out.println("Switch from " + selectedObject + " to " + aComponent);
 		if (aComponent != selectedObject) {
-			SelectedObjectChange change = new SelectedObjectChange(selectedObject, aComponent);
+			logger.info("Switch from " + selectedObject + " to " + aComponent);
+			FIBComponent oldValue = selectedObject;
+			SelectedObjectChange change = new SelectedObjectChange(oldValue, aComponent);
 			selectedObject = aComponent;
 			setChanged();
 			notifyObservers(change);
 			editorPanel.repaint();
+			getPropertyChangeSupport().firePropertyChange("selectedObject", oldValue, selectedObject);
 		}
 
 		// System.out.println("set selected: "+selectedObject);

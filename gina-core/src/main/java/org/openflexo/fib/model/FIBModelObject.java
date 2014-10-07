@@ -30,7 +30,8 @@ import org.openflexo.antar.binding.BindingFactory;
 import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.fib.FIBLibrary;
-import org.openflexo.fib.utils.LocalizedDelegateGUIImpl;
+import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -141,7 +142,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 		public static final String DELETED_PROPERTY = "Deleted";
 
 		// TODO: Localizer for the FIB, should be refactored
-		public static LocalizedDelegateGUIImpl LOCALIZATION;
+		public static LocalizedDelegate LOCALIZATION;
 
 		static {
 			ResourceLocator rl = ResourceLocator.getResourceLocator();
@@ -150,16 +151,16 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 			if (fibLocalizedDelegate != null) {
 				if (generalLocalizedDelegate != null) {
-					LOCALIZATION = LocalizedDelegateGUIImpl.getLocalizedDelegate(fibLocalizedDelegate,
-							LocalizedDelegateGUIImpl.getLocalizedDelegate(generalLocalizedDelegate, null, false), true);
+					LOCALIZATION = FlexoLocalization.getLocalizedDelegate(fibLocalizedDelegate,
+							FlexoLocalization.getLocalizedDelegate(generalLocalizedDelegate, null, false, false), true, true);
 				} else {
-					LOCALIZATION = LocalizedDelegateGUIImpl.getLocalizedDelegate(fibLocalizedDelegate, null, true);
+					LOCALIZATION = FlexoLocalization.getLocalizedDelegate(fibLocalizedDelegate, null, true, true);
 				}
 			} else {
 				if (generalLocalizedDelegate != null) {
-					LOCALIZATION = LocalizedDelegateGUIImpl.getLocalizedDelegate(generalLocalizedDelegate, null, true);
+					LOCALIZATION = FlexoLocalization.getLocalizedDelegate(generalLocalizedDelegate, null, true, true);
 				} else {
-					LOCALIZATION = LocalizedDelegateGUIImpl.getLocalizedDelegate(generalLocalizedDelegate, null, false);
+					LOCALIZATION = FlexoLocalization.getLocalizedDelegate(generalLocalizedDelegate, null, false, false);
 				}
 			}
 		}
@@ -491,11 +492,32 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 			if (getBinding(object) != null && getBinding(object).isSet()) {
 				if (!getBinding(object).isValid()) {
 					DeleteBinding<C> deleteBinding = new DeleteBinding<C>(this);
-					return new ValidationError<BindingMustBeValid<C>, C>(this, object, BindingMustBeValid.this.getRuleName() + " '"
-							+ getBinding(object) + "' reason: " + getBinding(object).invalidBindingReason(), deleteBinding);
+					// return new ValidationError<BindingMustBeValid<C>, C>(this, object, BindingMustBeValid.this.getRuleName() + " '"
+					// + getBinding(object) + "' reason: " + getBinding(object).invalidBindingReason(), deleteBinding);
+					return new InvalidBindingIssue<C>(this, object, deleteBinding);
 				}
 			}
 			return null;
+		}
+
+		public static class InvalidBindingIssue<C extends FIBModelObject> extends ValidationError<BindingMustBeValid<C>, C> {
+
+			public InvalidBindingIssue(BindingMustBeValid<C> rule, C anObject, FixProposal<BindingMustBeValid<C>, C>... fixProposals) {
+				super(rule, anObject, "binding_'($binding.bindingName)'_is_not_valid: ($binding)", fixProposals);
+			}
+
+			public DataBinding<?> getBinding() {
+				return getCause().getBinding(getValidable());
+			}
+
+			public String getReason() {
+				return getBinding().invalidBindingReason();
+			}
+
+			@Override
+			public String getDetailedInformations() {
+				return "($reason)";
+			}
 		}
 
 		protected static class DeleteBinding<C extends FIBModelObject> extends FixProposal<BindingMustBeValid<C>, C> {

@@ -3,15 +3,15 @@
   <TabPanel name="Tab" constraints="border(location=center)">
     <Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
       <Label label="data" constraints="twocols(location=left)" name="dataLabel" localize="true" />
-      <Custom componentClassName="org.openflexo.fib.utils.BindingSelector" localize="true" manageDynamicModel="true" name="dataValue" data="data.data" constraints="twocols(expandHorizontally=true;location=right)">
+      <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" name="dataValue" data="data.data" constraints="twocols(expandHorizontally=true;location=right)">
         <Assignment variable="component.bindable" value="data" />
       </Custom>
       <Label label="data_class" constraints="twocols(location=left)" localize="true" />
-      <Custom componentClassName="org.openflexo.fib.utils.ClassSelector" localize="true" manageDynamicModel="true" data="data.dataClass" constraints="twocols(expandHorizontally=true;location=right)" />
+      <Custom componentClassName="org.openflexo.fib.swing.utils.ClassSelector" localize="true" manageDynamicModel="true" data="data.dataClass" constraints="twocols(expandHorizontally=true;location=right)" />
       <Label label="controller_class" constraints="twocols(location=left)" visible="data.isRootComponent" localize="true" />
-      <Custom componentClassName="org.openflexo.fib.utils.ClassSelector" localize="true" manageDynamicModel="true" data="data.controllerClass" constraints="twocols(expandHorizontally=true;location=right)" visible="data.isRootComponent" />
+      <Custom componentClassName="org.openflexo.fib.swing.utils.ClassSelector" localize="true" manageDynamicModel="true" data="data.controllerClass" constraints="twocols(expandHorizontally=true;location=right)" visible="data.isRootComponent" />
       <Label label="visible" constraints="twocols(location=left)" name="visibleLabel" localize="true" />
-      <Custom componentClassName="org.openflexo.fib.utils.BindingSelector" localize="true" manageDynamicModel="true" name="visibleValue" data="data.visible" constraints="twocols(expandHorizontally=true;location=right)">
+      <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" name="visibleValue" data="data.visible" constraints="twocols(expandHorizontally=true;location=right)">
         <Assignment variable="component.bindable" value="data" />
       </Custom>
     </Tab>

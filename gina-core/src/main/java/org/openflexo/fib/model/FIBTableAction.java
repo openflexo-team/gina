@@ -105,6 +105,7 @@ public abstract interface FIBTableAction extends FIBModelObject {
 		public DataBinding<Object> getMethod() {
 			if (method == null) {
 				method = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
+				method.setBindingName("method");
 			}
 			return method;
 		}
@@ -115,6 +116,7 @@ public abstract interface FIBTableAction extends FIBModelObject {
 				method.setOwner(this);
 				method.setDeclaredType(Object.class);
 				method.setBindingDefinitionType(DataBinding.BindingDefinitionType.EXECUTE);
+				method.setBindingName("method");
 			}
 			this.method = method;
 		}
@@ -123,6 +125,7 @@ public abstract interface FIBTableAction extends FIBModelObject {
 		public DataBinding<Boolean> getIsAvailable() {
 			if (isAvailable == null) {
 				isAvailable = new DataBinding<Boolean>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				isAvailable.setBindingName("isAvailable");
 			}
 			return isAvailable;
 		}
@@ -133,6 +136,7 @@ public abstract interface FIBTableAction extends FIBModelObject {
 				isAvailable.setOwner(this);
 				isAvailable.setDeclaredType(Boolean.class);
 				isAvailable.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				isAvailable.setBindingName("isAvailable");
 			}
 			this.isAvailable = isAvailable;
 		}

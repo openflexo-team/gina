@@ -124,6 +124,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 					// + newValue + " source=" + source);
 					performSelect(newValue);
 				}
+
 			};
 		}
 	}
@@ -598,6 +599,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 			if (getBrowser().getDeepExploration()) {
 				// Recursively and exhaustively explore the whole model to retrieve all contents
 				// To be able to unfold required folders to select searched value
+				System.out.println("Explore whole contents");
 				getBrowserModel().recursivelyExploreModelToRetrieveContents();
 			}
 

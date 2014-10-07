@@ -528,8 +528,8 @@ public abstract class FIBMultipleValueWidget<W extends FIBMultipleValues, C exte
 		if (getComponent().getLocalize()) {
 			FIBMultipleValueModel mvModel = getMultipleValueModel();
 			for (int i = 0; i < mvModel.getSize(); i++) {
-				String s = getStringRepresentation(mvModel.getElementAt(i));
-				getLocalized(s);
+				/*String s =*/getStringRepresentation(mvModel.getElementAt(i));
+				// getLocalized(s);
 			}
 		}
 	}

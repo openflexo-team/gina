@@ -37,6 +37,7 @@ import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.DefineValidationRule;
+import org.openflexo.model.annotations.Embedded;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -148,6 +149,7 @@ public interface FIBBrowser extends FIBWidget {
 	@Getter(value = ELEMENTS_KEY, cardinality = Cardinality.LIST, inverse = FIBBrowserElement.OWNER_KEY)
 	@XMLElement
 	@CloningStrategy(StrategyType.CLONE)
+	@Embedded
 	public List<FIBBrowserElement> getElements();
 
 	@Setter(ELEMENTS_KEY)

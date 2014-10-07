@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
+import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.DeserializationFinalizer;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -31,6 +32,10 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.model.validation.FixProposal;
+import org.openflexo.model.validation.ValidationIssue;
+import org.openflexo.model.validation.ValidationRule;
+import org.openflexo.model.validation.ValidationWarning;
 
 @ModelEntity
 @ImplementationClass(FIBDependancy.FIBDependancyImpl.class)
@@ -117,4 +122,49 @@ public interface FIBDependancy extends FIBModelObject {
 		}
 
 	}
+
+	@DefineValidationRule
+	public static class DependancyShouldNotBeRegisteredTwice extends ValidationRule<DependancyShouldNotBeRegisteredTwice, FIBDependancy> {
+		public DependancyShouldNotBeRegisteredTwice() {
+			super(FIBDependancy.class, "dependancy_should_not_be_registered_twice");
+		}
+
+		@Override
+		public ValidationIssue<DependancyShouldNotBeRegisteredTwice, FIBDependancy> applyValidation(FIBDependancy dependancy) {
+			if (dependancy.getOwner() != null) {
+				if (dependancy.getOwner().getExplicitDependancies().indexOf(dependancy) != dependancy.getOwner().getExplicitDependancies()
+						.lastIndexOf(dependancy)) {
+					RemoveExtraReferences fixProposal = new RemoveExtraReferences(dependancy);
+					return new ValidationWarning<DependancyShouldNotBeRegisteredTwice, FIBDependancy>(this, dependancy,
+							"dependancy_to_($validable.toString)_is_registered_twice", fixProposal);
+				}
+			}
+
+			return null;
+		}
+
+		protected static class RemoveExtraReferences extends FixProposal<DependancyShouldNotBeRegisteredTwice, FIBDependancy> {
+
+			private final FIBDependancy dependancy;
+
+			public RemoveExtraReferences(FIBDependancy dependancy) {
+				super("remove_duplicated_references");
+				this.dependancy = dependancy;
+			}
+
+			@Override
+			protected void fixAction() {
+				FIBComponent component = dependancy.getOwner();
+				if (component != null) {
+					while (component.getExplicitDependancies().indexOf(dependancy) != component.getExplicitDependancies().lastIndexOf(
+							dependancy)) {
+						component.removeFromExplicitDependancies(dependancy);
+					}
+				}
+			}
+
+		}
+
+	}
+
 }

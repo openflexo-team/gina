@@ -21,7 +21,7 @@ import org.openflexo.model.validation.ValidationReport;
 import org.openflexo.model.validation.ValidationRule;
 import org.openflexo.model.validation.ValidationWarning;
 
-public abstract class FIBValidationController extends FIBController {
+public class FIBValidationController extends FIBController {
 
 	static final Logger logger = Logger.getLogger(FIBValidationController.class.getPackage().getName());
 
@@ -42,7 +42,10 @@ public abstract class FIBValidationController extends FIBController {
 		}
 	}
 
-	protected abstract void performSelect(ValidationIssue<?, ?> validationIssue);
+	// To be overriden
+	protected void performSelect(ValidationIssue<?, ?> validationIssue) {
+
+	}
 
 	public ImageIcon iconFor(Object validationObject) {
 		if (validationObject instanceof ValidationError) {

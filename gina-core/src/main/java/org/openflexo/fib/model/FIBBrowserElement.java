@@ -47,6 +47,7 @@ import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.DefineValidationRule;
+import org.openflexo.model.annotations.Embedded;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -193,6 +194,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 	@Getter(value = CHILDREN_KEY, cardinality = Cardinality.LIST, inverse = FIBBrowserElementChildren.OWNER_KEY)
 	@XMLElement
 	@CloningStrategy(StrategyType.CLONE)
+	@Embedded
 	public List<FIBBrowserElementChildren> getChildren();
 
 	@Setter(CHILDREN_KEY)
@@ -207,6 +209,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 	@Getter(value = ACTIONS_KEY, cardinality = Cardinality.LIST, inverse = FIBBrowserAction.OWNER_KEY)
 	@XMLElement
 	@CloningStrategy(StrategyType.CLONE)
+	@Embedded
 	public List<FIBBrowserAction> getActions();
 
 	@Setter(ACTIONS_KEY)
@@ -331,7 +334,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 			for (FIBBrowserElementChildren e : getChildren()) {
 				((FIBBrowserElementChildrenImpl) e).bindingModelMightChange(oldBindingModel);
 			}
-			// Update binding model for  actions associated with this fib browser elememt
+			// Update binding model for actions associated with this fib browser elememt
 			for (FIBBrowserAction action : getActions()) {
 				action.updateBindingModel();
 			}
@@ -341,6 +344,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		public DataBinding<String> getLabel() {
 			if (label == null) {
 				label = new DataBinding<String>(iterator, String.class, DataBinding.BindingDefinitionType.GET);
+				label.setBindingName("label");
 			}
 			return label;
 		}
@@ -353,6 +357,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 					label.setOwner(iterator);
 					label.setDeclaredType(String.class);
 					label.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+					label.setBindingName("label");
 				}
 				this.label = label;
 				hasChanged(notification);
@@ -363,6 +368,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		public DataBinding<Icon> getIcon() {
 			if (icon == null) {
 				icon = new DataBinding<Icon>(iterator, Icon.class, DataBinding.BindingDefinitionType.GET);
+				icon.setBindingName("icon");
 			}
 			return icon;
 		}
@@ -375,6 +381,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 					icon.setOwner(iterator);
 					icon.setDeclaredType(Icon.class);
 					icon.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+					icon.setBindingName("icon");
 				}
 				this.icon = icon;
 				hasChanged(notification);
@@ -385,6 +392,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		public DataBinding<String> getTooltip() {
 			if (tooltip == null) {
 				tooltip = new DataBinding<String>(iterator, String.class, DataBinding.BindingDefinitionType.GET);
+				tooltip.setBindingName("tooltip");
 			}
 			return tooltip;
 		}
@@ -395,6 +403,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 				tooltip.setOwner(iterator);
 				tooltip.setDeclaredType(String.class);
 				tooltip.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				tooltip.setBindingName("tooltip");
 			}
 			this.tooltip = tooltip;
 		}
@@ -403,6 +412,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		public DataBinding<Boolean> getEnabled() {
 			if (enabled == null) {
 				enabled = new DataBinding<Boolean>(iterator, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				enabled.setBindingName("enabled");
 			}
 			return enabled;
 		}
@@ -413,6 +423,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 				enabled.setOwner(iterator);
 				enabled.setDeclaredType(Boolean.class);
 				enabled.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				enabled.setBindingName("enabled");
 			}
 			this.enabled = enabled;
 		}
@@ -421,6 +432,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		public DataBinding<Boolean> getVisible() {
 			if (visible == null) {
 				visible = new DataBinding<Boolean>(iterator, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				visible.setBindingName("visible");
 			}
 			return visible;
 		}
@@ -431,6 +443,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 				visible.setOwner(iterator);
 				visible.setDeclaredType(Boolean.class);
 				visible.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				visible.setBindingName("visible");
 			}
 			this.visible = visible;
 		}
