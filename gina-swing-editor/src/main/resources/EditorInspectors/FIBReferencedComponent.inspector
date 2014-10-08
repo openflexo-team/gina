@@ -4,6 +4,10 @@
     <Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
       <Label label="file" constraints="twocols(location=left)" localize="true" />
       <File isDirectory="false" localize="true" data="data.componentActualFile" constraints="twocols(expandHorizontally=true;location=right)" />
+       <Label label="dynamic_file" constraints="twocols(location=left)" localize="true" />
+      <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.dynamicComponentFile" constraints="twocols(expandHorizontally=true;location=right)">
+        <Assignment variable="component.bindable" value="data" />
+      </Custom>
       <Label label="assignments" align="center" constraints="twocols(expandHorizontally=true;location=center)" localize="true" />
       <Table iteratorClassName="org.openflexo.fib.model.FIBReferencedComponent$FIBReferenceAssignment" visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="AssignmentsTable" data="data.assignments" constraints="twocols(expandHorizontally=true;expandVertically=true;location=center)">
         <CustomColumn componentClassName="org.openflexo.fib.swing.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.variable" title="Variable" columnWidth="200" resizable="true" displayTitle="true">
