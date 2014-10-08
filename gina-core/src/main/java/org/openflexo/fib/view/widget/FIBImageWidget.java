@@ -36,7 +36,7 @@ public class FIBImageWidget extends FIBWidgetView<FIBImage, JLabel, Image> imple
 
 	private static final Logger logger = Logger.getLogger(FIBImageWidget.class.getPackage().getName());
 
-	private JLabel labelWidget;
+	private final JLabel labelWidget;
 
 	public FIBImageWidget(FIBImage model, FIBController controller) {
 		super(model, controller);
@@ -82,7 +82,9 @@ public class FIBImageWidget extends FIBWidgetView<FIBImage, JLabel, Image> imple
 	}
 
 	protected void updateAlign() {
-		labelWidget.setHorizontalAlignment(getWidget().getAlign().getAlign());
+		if (getWidget() != null && getWidget().getAlign() != null) {
+			labelWidget.setHorizontalAlignment(getWidget().getAlign().getAlign());
+		}
 	}
 
 	protected void updateImage() {
