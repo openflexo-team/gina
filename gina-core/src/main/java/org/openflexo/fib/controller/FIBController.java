@@ -796,7 +796,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 					v.getSelectableComponent().objectAddedToSelection(o);
 					if (selectionLeader == null) {
 						selectionLeader = v.getSelectableComponent();
-						logger.info("Selection LEADER is now (2) " + selectionLeader);
+						// logger.info("Selection LEADER is now (2) " + selectionLeader);
 					}
 					if (lastFocusedSelectable == null) {
 						lastFocusedSelectable = selectionLeader;
