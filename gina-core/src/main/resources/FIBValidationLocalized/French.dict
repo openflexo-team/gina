@@ -1,4 +1,6 @@
 'action'_binding_is_not_valid_description='action'_binding_is_not_valid_description
+'click_action'_binding_is_not_valid='click_action'_binding_is_not_valid
+'click_action'_binding_is_not_valid_description='click_action'_binding_is_not_valid_description
 'data'_binding_is_not_valid_description='data'_binding_is_not_valid_description
 'value_change_acion'_binding_is_not_valid_description='value_change_acion'_binding_is_not_valid_description
 ($reason)=($reason)
