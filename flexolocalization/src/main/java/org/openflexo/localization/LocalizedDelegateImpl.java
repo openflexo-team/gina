@@ -112,17 +112,17 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	private Properties getDictionary(Language language) {
 		Properties dict = _localizedDictionaries.get(language);
 		if (dict == null) {
-			dict = createNewDictionary(language);
+			dict = loadDictionary(language);
 		}
 		return dict;
 	}
 
-	private Properties createNewDictionary(Language language) {
+	/*private Properties createNewDictionary(Language language) {
 		Properties newDict = loadDictionary(language);
 		_localizedDictionaries.put(language, newDict);
 		saveDictionary(language, newDict);
 		return newDict;
-	}
+	}*/
 
 	private Properties loadDictionary(Language language) {
 		Properties loadedDict = new FlexoProperties();
@@ -135,6 +135,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 					logger.info("Loading dictionary for language " + language.getName() + " Dir=" + localizedDirectoryResource.toString());
 				}
 				loadedDict.load(dict);
+				_localizedDictionaries.put(language, loadedDict);
 			} catch (IOException e) {
 				if (logger.isLoggable(Level.WARNING)) {
 					logger.warning("Unable to load Dictionary Resource for Language" + language.getName());
