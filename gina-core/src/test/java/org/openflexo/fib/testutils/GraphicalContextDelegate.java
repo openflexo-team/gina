@@ -17,11 +17,12 @@ import org.openflexo.fib.controller.FIBController;
 
 public class GraphicalContextDelegate {
 
-	private EventProcessor eventProcessor;
+	private final EventProcessor eventProcessor;
 	private JTabbedPane tabbedPane;
 	private boolean dontDestroyMe = false;
 
 	public GraphicalContextDelegate(final String frameTitle) {
+
 		eventProcessor = new EventProcessor();
 
 		try {
