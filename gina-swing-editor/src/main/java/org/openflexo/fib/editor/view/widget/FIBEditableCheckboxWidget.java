@@ -38,9 +38,9 @@ public class FIBEditableCheckboxWidget extends FIBCheckBoxWidget implements FIBE
 	@SuppressWarnings("unused")
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditableCheckboxWidget.class.getPackage().getName());
 
-	private FIBEditableViewDelegate<FIBCheckBox, JCheckBox> delegate;
+	private final FIBEditableViewDelegate<FIBCheckBox, JCheckBox> delegate;
 
-	private FIBEditorController editorController;
+	private final FIBEditorController editorController;
 
 	@Override
 	public FIBEditorController getEditorController() {
@@ -72,7 +72,11 @@ public class FIBEditableCheckboxWidget extends FIBCheckBoxWidget implements FIBE
 		return delegate;
 	}
 
+	@Override
 	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
+		if (isDeleted()) {
+			return;
+		}
 		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
 		delegate.receivedModelNotifications(o, propertyName, oldValue, newValue);
 	}

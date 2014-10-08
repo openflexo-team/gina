@@ -38,9 +38,9 @@ public class FIBEditableTextFieldWidget extends FIBTextFieldWidget implements FI
 	@SuppressWarnings("unused")
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditableTextFieldWidget.class.getPackage().getName());
 
-	private FIBEditableViewDelegate<FIBTextField, JTextField> delegate;
+	private final FIBEditableViewDelegate<FIBTextField, JTextField> delegate;
 
-	private FIBEditorController editorController;
+	private final FIBEditorController editorController;
 
 	@Override
 	public FIBEditorController getEditorController() {
@@ -72,7 +72,11 @@ public class FIBEditableTextFieldWidget extends FIBTextFieldWidget implements FI
 		return delegate;
 	}
 
+	@Override
 	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
+		if (isDeleted()) {
+			return;
+		}
 		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
 		delegate.receivedModelNotifications(o, propertyName, oldValue, newValue);
 	}

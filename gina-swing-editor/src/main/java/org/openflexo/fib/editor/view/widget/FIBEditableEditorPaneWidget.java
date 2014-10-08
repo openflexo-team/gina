@@ -76,6 +76,9 @@ public class FIBEditableEditorPaneWidget extends FIBEditorPaneWidget implements 
 
 	@Override
 	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
+		if (isDeleted()) {
+			return;
+		}
 		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
 		if (propertyName.equals(FIBEditorPane.CONTENT_TYPE_KEY)) {
 			updateContentType();

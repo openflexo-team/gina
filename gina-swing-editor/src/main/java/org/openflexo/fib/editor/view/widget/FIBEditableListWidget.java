@@ -74,6 +74,9 @@ public class FIBEditableListWidget<T> extends FIBListWidget<T> implements FIBEdi
 
 	@Override
 	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
+		if (isDeleted()) {
+			return;
+		}
 		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
 		if ((propertyName.equals(FIBList.CREATE_NEW_ROW_ON_CLICK_KEY)) || (propertyName.equals(FIBList.ROW_HEIGHT_KEY))
 				|| (propertyName.equals(FIBList.VISIBLE_ROW_COUNT_KEY)) || (propertyName.equals(FIBList.LAYOUT_ORIENTATION_KEY))) {

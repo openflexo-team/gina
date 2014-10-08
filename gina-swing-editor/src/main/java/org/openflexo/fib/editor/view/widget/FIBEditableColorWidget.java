@@ -71,7 +71,11 @@ public class FIBEditableColorWidget extends FIBColorWidget implements FIBEditabl
 		return delegate;
 	}
 
+	@Override
 	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
+		if (isDeleted()) {
+			return;
+		}
 		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
 		delegate.receivedModelNotifications(o, propertyName, oldValue, newValue);
 	}

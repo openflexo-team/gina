@@ -74,6 +74,9 @@ public class FIBEditableTableWidget<T> extends FIBTableWidget<T> implements FIBE
 
 	@Override
 	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
+		if (isDeleted()) {
+			return;
+		}
 		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
 		if ((propertyName.equals(FIBTable.CREATE_NEW_ROW_ON_CLICK_KEY)) || (propertyName.equals(FIBTable.ITERATOR_CLASS_KEY))
 				|| (propertyName.equals(FIBTable.ROW_HEIGHT_KEY)) || (propertyName.equals(FIBTable.VISIBLE_ROW_COUNT_KEY))

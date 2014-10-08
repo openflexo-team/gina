@@ -75,6 +75,9 @@ public class FIBEditableRadioButtonListWidget<T> extends FIBRadioButtonListWidge
 
 	@Override
 	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
+		if (isDeleted()) {
+			return;
+		}
 		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
 		if ((propertyName.equals(FIBWidget.FORMAT_KEY)) || (propertyName.equals(FIBWidget.LOCALIZE_KEY))
 				|| (propertyName.equals(FIBRadioButtonList.COLUMNS_KEY)) || (propertyName.equals(FIBRadioButtonList.H_GAP_KEY))

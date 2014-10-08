@@ -38,9 +38,9 @@ public class FIBEditableCustomWidget<J extends JComponent, T> extends FIBCustomW
 	@SuppressWarnings("unused")
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditableCustomWidget.class.getPackage().getName());
 
-	private FIBEditableViewDelegate<FIBCustom, J> delegate;
+	private final FIBEditableViewDelegate<FIBCustom, J> delegate;
 
-	private FIBEditorController editorController;
+	private final FIBEditorController editorController;
 
 	@Override
 	public FIBEditorController getEditorController() {
@@ -72,7 +72,11 @@ public class FIBEditableCustomWidget<J extends JComponent, T> extends FIBCustomW
 		return delegate;
 	}
 
+	@Override
 	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
+		if (isDeleted()) {
+			return;
+		}
 		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
 		delegate.receivedModelNotifications(o, propertyName, oldValue, newValue);
 	}

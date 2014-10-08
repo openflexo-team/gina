@@ -45,9 +45,9 @@ public class FIBEditableNumberWidget {
 
 	public static class FIBEditableByteWidget extends FIBByteWidget implements FIBEditableView<FIBNumber, JSpinner> {
 
-		private FIBEditableViewDelegate<FIBNumber, JSpinner> delegate;
+		private final FIBEditableViewDelegate<FIBNumber, JSpinner> delegate;
 
-		private FIBEditorController editorController;
+		private final FIBEditorController editorController;
 
 		@Override
 		public FIBEditorController getEditorController() {
@@ -80,7 +80,11 @@ public class FIBEditableNumberWidget {
 			return delegate;
 		}
 
+		@Override
 		public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
+			if (isDeleted()) {
+				return;
+			}
 			super.receivedModelNotifications(o, propertyName, oldValue, newValue);
 			delegate.receivedModelNotifications(o, propertyName, oldValue, newValue);
 		}
@@ -89,9 +93,9 @@ public class FIBEditableNumberWidget {
 
 	public static class FIBEditableShortWidget extends FIBShortWidget implements FIBEditableView<FIBNumber, JSpinner> {
 
-		private FIBEditableViewDelegate<FIBNumber, JSpinner> delegate;
+		private final FIBEditableViewDelegate<FIBNumber, JSpinner> delegate;
 
-		private FIBEditorController editorController;
+		private final FIBEditorController editorController;
 
 		@Override
 		public FIBEditorController getEditorController() {
@@ -123,7 +127,11 @@ public class FIBEditableNumberWidget {
 			return delegate;
 		}
 
+		@Override
 		public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
+			if (isDeleted()) {
+				return;
+			}
 			super.receivedModelNotifications(o, propertyName, oldValue, newValue);
 			delegate.receivedModelNotifications(o, propertyName, oldValue, newValue);
 		}
@@ -132,9 +140,9 @@ public class FIBEditableNumberWidget {
 
 	public static class FIBEditableIntegerWidget extends FIBIntegerWidget implements FIBEditableView<FIBNumber, JSpinner> {
 
-		private FIBEditableViewDelegate<FIBNumber, JSpinner> delegate;
+		private final FIBEditableViewDelegate<FIBNumber, JSpinner> delegate;
 
-		private FIBEditorController editorController;
+		private final FIBEditorController editorController;
 
 		@Override
 		public FIBEditorController getEditorController() {
@@ -166,7 +174,11 @@ public class FIBEditableNumberWidget {
 			return delegate;
 		}
 
+		@Override
 		public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
+			if (isDeleted()) {
+				return;
+			}
 			super.receivedModelNotifications(o, propertyName, oldValue, newValue);
 			delegate.receivedModelNotifications(o, propertyName, oldValue, newValue);
 		}
@@ -175,9 +187,9 @@ public class FIBEditableNumberWidget {
 
 	public static class FIBEditableLongWidget extends FIBLongWidget implements FIBEditableView<FIBNumber, JSpinner> {
 
-		private FIBEditableViewDelegate<FIBNumber, JSpinner> delegate;
+		private final FIBEditableViewDelegate<FIBNumber, JSpinner> delegate;
 
-		private FIBEditorController editorController;
+		private final FIBEditorController editorController;
 
 		@Override
 		public FIBEditorController getEditorController() {
@@ -209,7 +221,11 @@ public class FIBEditableNumberWidget {
 			return delegate;
 		}
 
+		@Override
 		public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
+			if (isDeleted()) {
+				return;
+			}
 			super.receivedModelNotifications(o, propertyName, oldValue, newValue);
 			delegate.receivedModelNotifications(o, propertyName, oldValue, newValue);
 		}
@@ -218,9 +234,9 @@ public class FIBEditableNumberWidget {
 
 	public static class FIBEditableFloatWidget extends FIBFloatWidget implements FIBEditableView<FIBNumber, JSpinner> {
 
-		private FIBEditableViewDelegate<FIBNumber, JSpinner> delegate;
+		private final FIBEditableViewDelegate<FIBNumber, JSpinner> delegate;
 
-		private FIBEditorController editorController;
+		private final FIBEditorController editorController;
 
 		@Override
 		public FIBEditorController getEditorController() {
@@ -252,7 +268,11 @@ public class FIBEditableNumberWidget {
 			return delegate;
 		}
 
+		@Override
 		public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
+			if (isDeleted()) {
+				return;
+			}
 			super.receivedModelNotifications(o, propertyName, oldValue, newValue);
 			delegate.receivedModelNotifications(o, propertyName, oldValue, newValue);
 		}
@@ -261,9 +281,9 @@ public class FIBEditableNumberWidget {
 
 	public static class FIBEditableDoubleWidget extends FIBDoubleWidget implements FIBEditableView<FIBNumber, JSpinner> {
 
-		private FIBEditableViewDelegate<FIBNumber, JSpinner> delegate;
+		private final FIBEditableViewDelegate<FIBNumber, JSpinner> delegate;
 
-		private FIBEditorController editorController;
+		private final FIBEditorController editorController;
 
 		@Override
 		public FIBEditorController getEditorController() {
@@ -295,7 +315,11 @@ public class FIBEditableNumberWidget {
 			return delegate;
 		}
 
+		@Override
 		public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
+			if (isDeleted()) {
+				return;
+			}
 			super.receivedModelNotifications(o, propertyName, oldValue, newValue);
 			delegate.receivedModelNotifications(o, propertyName, oldValue, newValue);
 		}

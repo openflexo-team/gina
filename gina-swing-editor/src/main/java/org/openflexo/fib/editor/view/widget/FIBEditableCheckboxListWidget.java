@@ -76,6 +76,9 @@ public class FIBEditableCheckboxListWidget<T> extends FIBCheckboxListWidget<T> i
 
 	@Override
 	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
+		if (isDeleted()) {
+			return;
+		}
 		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
 		if ((propertyName.equals(FIBWidget.FORMAT_KEY)) || (propertyName.equals(FIBWidget.LOCALIZE_KEY))
 				|| (propertyName.equals(FIBCheckboxList.COLUMNS_KEY)) || (propertyName.equals(FIBCheckboxList.H_GAP_KEY))

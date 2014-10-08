@@ -75,6 +75,9 @@ public class FIBEditableHtmlEditorWidget extends FIBHtmlEditorWidget implements 
 
 	@Override
 	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
+		if (isDeleted()) {
+			return;
+		}
 		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
 		if ((propertyName.equals(FIBHtmlEditor.OPTIONS_IN_LINE1_KEY)) || (propertyName.equals(FIBHtmlEditor.OPTIONS_IN_LINE2_KEY))
 				|| (propertyName.equals(FIBHtmlEditor.OPTIONS_IN_LINE3_KEY))

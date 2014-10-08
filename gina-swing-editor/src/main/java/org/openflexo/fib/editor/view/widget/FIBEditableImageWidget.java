@@ -75,6 +75,9 @@ public class FIBEditableImageWidget extends FIBImageWidget implements FIBEditabl
 
 	@Override
 	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
+		if (isDeleted()) {
+			return;
+		}
 		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
 		if ((propertyName.equals(FIBImage.ALIGN_KEY))) {
 			updateAlign();

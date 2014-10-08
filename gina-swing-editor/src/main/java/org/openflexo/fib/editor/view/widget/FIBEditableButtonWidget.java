@@ -73,6 +73,9 @@ public class FIBEditableButtonWidget extends FIBButtonWidget implements FIBEdita
 
 	@Override
 	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
+		if (isDeleted()) {
+			return;
+		}
 		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
 		if (propertyName.equals(FIBButton.LABEL_KEY)) {
 			updateLabel();

@@ -441,7 +441,7 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 	@Override
 	public final void propertyChange(PropertyChangeEvent evt) {
 		// System.out.println("Widget " + getWidget() + " : propertyChange " + evt);
-		if (evt.getSource() instanceof FIBModelObject) {
+		if (evt.getSource() instanceof FIBModelObject && (!((FIBModelObject) evt.getSource()).isDeleted())) {
 			receivedModelNotifications((FIBModelObject) evt.getSource(), evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
 		}
 		/*if (!SwingUtilities.isEventDispatchThread()) {
