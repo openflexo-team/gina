@@ -66,5 +66,11 @@ public interface FIBTab extends FIBPanel {
 			}
 		}
 
+		@Override
+		public void searchLocalized(LocalizationEntryRetriever retriever) {
+			super.searchLocalized(retriever);
+			retriever.foundLocalized(getTitle());
+		}
+
 	}
 }

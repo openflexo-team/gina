@@ -32,6 +32,7 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
+import org.openflexo.fib.model.FIBComponent.LocalizationEntryRetriever;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.DefineValidationRule;
@@ -89,8 +90,10 @@ public abstract interface FIBBrowserAction extends FIBModelObject {
 
 	@DeserializationFinalizer
 	public void finalizeDeserialization();
-	
+
 	public void updateBindingModel();
+
+	public void searchLocalized(LocalizationEntryRetriever retriever);
 
 	public static abstract class FIBBrowserActionImpl extends FIBModelObjectImpl implements FIBBrowserAction {
 
@@ -106,7 +109,7 @@ public abstract interface FIBBrowserAction extends FIBModelObject {
 		@Deprecated
 		public static BindingDefinition IS_AVAILABLE = new BindingDefinition("isAvailable", Boolean.class, BindingDefinitionType.EXECUTE,
 				false);
-		
+
 		@Override
 		public FIBComponent getComponent() {
 			if (getOwner() != null) {
@@ -154,12 +157,13 @@ public abstract interface FIBBrowserAction extends FIBModelObject {
 			this.isAvailable = isAvailable;
 		}
 
-		public void updateBindingModel(){
-			if(actionBindingModel!=null){
+		@Override
+		public void updateBindingModel() {
+			if (actionBindingModel != null) {
 				actionBindingModel.setBaseBindingModel(getOwner().getActionBindingModel());
 			}
 		}
-		
+
 		@Override
 		public BindingModel getBindingModel() {
 			if (getOwner() != null) {
@@ -212,6 +216,11 @@ public abstract interface FIBBrowserAction extends FIBModelObject {
 			} else {
 				return null;
 			}
+		}
+
+		@Override
+		public void searchLocalized(LocalizationEntryRetriever retriever) {
+			retriever.foundLocalized(getName());
 		}
 
 	}

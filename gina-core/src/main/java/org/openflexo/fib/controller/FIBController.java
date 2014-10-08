@@ -677,7 +677,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 		getRootView().updateLanguage();
 	}
 
-	public void searchNewLocalizationEntries() {
+	/*public void searchNewLocalizationEntries() {
 		logger.fine("Search new localization entries");
 		Language currentLanguage = FlexoLocalization.getCurrentLanguage();
 		getRootComponent().retrieveFIBLocalizedDictionary().beginSearchNewLocalizationEntries();
@@ -689,7 +689,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 		switchToLanguage(currentLanguage);
 		// setChanged();
 		// notifyObservers();
-	}
+	}*/
 
 	public void refreshLocalized() {
 		getRootComponent().retrieveFIBLocalizedDictionary().refresh();

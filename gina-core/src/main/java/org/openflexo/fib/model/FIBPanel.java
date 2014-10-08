@@ -666,5 +666,13 @@ public interface FIBPanel extends FIBContainer {
 			}
 		}
 
+		@Override
+		public void searchLocalized(LocalizationEntryRetriever retriever) {
+			super.searchLocalized(retriever);
+			if (getBorder() == Border.titled) {
+				retriever.foundLocalized(getBorderTitle());
+			}
+		}
+
 	}
 }

@@ -966,5 +966,16 @@ public interface FIBTable extends FIBWidget {
 			return new ChainedCollection<FIBModelObject>(getColumns(), getActions());
 		}
 
+		@Override
+		public void searchLocalized(LocalizationEntryRetriever retriever) {
+			super.searchLocalized(retriever);
+			for (FIBTableColumn column : getColumns()) {
+				column.searchLocalized(retriever);
+			}
+			for (FIBTableAction action : getActions()) {
+				action.searchLocalized(retriever);
+			}
+		}
+
 	}
 }

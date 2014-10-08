@@ -23,6 +23,7 @@ import java.lang.reflect.Type;
 
 import javax.swing.SwingConstants;
 
+import org.openflexo.fib.model.FIBComponent.LocalizationEntryRetriever;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -132,6 +133,12 @@ public interface FIBLabel extends FIBWidget {
 				this.align = align;
 				hasChanged(notification);
 			}
+		}
+
+		@Override
+		public void searchLocalized(LocalizationEntryRetriever retriever) {
+			super.searchLocalized(retriever);
+			retriever.foundLocalized(getLabel());
 		}
 
 	}

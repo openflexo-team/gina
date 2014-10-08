@@ -43,6 +43,7 @@ import org.openflexo.fib.model.FIBBrowserAction.FIBAddAction;
 import org.openflexo.fib.model.FIBBrowserAction.FIBCustomAction;
 import org.openflexo.fib.model.FIBBrowserAction.FIBRemoveAction;
 import org.openflexo.fib.model.FIBBrowserElement.FIBBrowserElementChildren.FIBBrowserElementChildrenImpl;
+import org.openflexo.fib.model.FIBComponent.LocalizationEntryRetriever;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -258,6 +259,8 @@ public interface FIBBrowserElement extends FIBModelObject {
 	public FIBBrowserElementChildren createChildren();
 
 	public FIBBrowserElementChildren deleteChildren(FIBBrowserElementChildren elementToDelete);
+
+	public void searchLocalized(LocalizationEntryRetriever retriever);
 
 	public static abstract class FIBBrowserElementImpl extends FIBModelObjectImpl implements FIBBrowserElement {
 
@@ -875,6 +878,13 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public Collection<? extends FIBModelObject> getEmbeddedObjects() {
 			return getChildren();
+		}
+
+		@Override
+		public void searchLocalized(LocalizationEntryRetriever retriever) {
+			for (FIBBrowserAction action : getActions()) {
+				action.searchLocalized(retriever);
+			}
 		}
 
 	}

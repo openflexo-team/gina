@@ -669,6 +669,14 @@ public interface FIBBrowser extends FIBWidget {
 			return getElements();
 		}
 
+		@Override
+		public void searchLocalized(LocalizationEntryRetriever retriever) {
+			super.searchLocalized(retriever);
+			for (FIBBrowserElement element : getElements()) {
+				element.searchLocalized(retriever);
+			}
+		}
+
 	}
 
 	@DefineValidationRule

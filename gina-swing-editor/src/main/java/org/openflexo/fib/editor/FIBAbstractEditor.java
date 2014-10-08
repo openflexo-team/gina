@@ -502,15 +502,18 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 
 	public void localizeFIB() {
 
+		/*fibComponent.searchLocalized(fibComponent.getLocalizedDictionary());
+
 		System.out.println("On cherche les locales pour: ");
 		FIBComponent c = editorController.getController().getRootComponent();
 		System.out.println(c.getFactory().stringRepresentation(c));
 
-		editorController.getController().searchNewLocalizationEntries();
+		editorController.getController().searchNewLocalizationEntries();*/
 
 		// getController().searchNewLocalizationEntries();
 
 		if (fibComponent != null) {
+			fibComponent.searchAndRegisterAllLocalized();
 			getLocalizationWindow().setVisible(true);
 		}
 	}

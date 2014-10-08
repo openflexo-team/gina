@@ -23,6 +23,7 @@ import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
@@ -455,6 +456,25 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 			returned.add(getList());
 			returned.add(getArray());
 			return returned;
+		}
+
+		@Override
+		public void searchLocalized(LocalizationEntryRetriever retriever) {
+			super.searchLocalized(retriever);
+			if (StringUtils.isNotEmpty(getStaticList())) {
+				StringTokenizer st = new StringTokenizer(getStaticList(), ",");
+				while (st.hasMoreTokens()) {
+					retriever.foundLocalized(st.nextToken());
+				}
+			}
+
+			// TODO localize enums ??? not sure it is relevant
+			/*if (isEnumType()) {
+				Class<? extends Enum<?>> type = getIteratorClass();
+				for (Enum<?> e : type.getEnumConstants()) {
+					
+				}
+			}*/
 		}
 
 	}

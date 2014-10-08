@@ -202,6 +202,11 @@ public interface FIBButton extends FIBWidget {
 			this.buttonIcon = buttonIcon;
 		}
 
+		@Override
+		public void searchLocalized(LocalizationEntryRetriever retriever) {
+			super.searchLocalized(retriever);
+			retriever.foundLocalized(getLabel());
+		}
 	}
 
 	@DefineValidationRule

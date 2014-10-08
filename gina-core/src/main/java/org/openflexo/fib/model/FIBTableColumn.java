@@ -32,6 +32,7 @@ import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.CachingStrategy;
 import org.openflexo.antar.binding.DefaultBindable;
+import org.openflexo.fib.model.FIBComponent.LocalizationEntryRetriever;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.DefineValidationRule;
@@ -186,6 +187,8 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 	public void setHasSpecificFont(boolean aFlag);
 
 	public Bindable getFormatter();
+
+	public void searchLocalized(LocalizationEntryRetriever retriever);
 
 	public static abstract class FIBTableColumnImpl extends FIBModelObjectImpl implements FIBTableColumn {
 
@@ -590,6 +593,12 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 				valueChangedAction.setBindingName("valueChangedAction");
 			}
 			this.valueChangedAction = valueChangedAction;
+		}
+
+		@Override
+		public void searchLocalized(LocalizationEntryRetriever retriever) {
+			retriever.foundLocalized(getTitle());
+			retriever.foundLocalized(getTooltipText());
 		}
 
 	}

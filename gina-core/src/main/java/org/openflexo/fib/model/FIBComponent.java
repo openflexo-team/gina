@@ -436,6 +436,19 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 	public void updateDynamicAccessBindingVariable();
 
+	/**
+	 * Search localized entries using {@link LocalizationEntryRetriever}
+	 * 
+	 * @param retriever
+	 */
+	public void searchLocalized(LocalizationEntryRetriever retriever);
+
+	/**
+	 * Iterate on whole component to find all localization entries, based on FIBComponent model<br>
+	 * Missing entries are added to FIBLocalizedDictionary
+	 */
+	public void searchAndRegisterAllLocalized();
+
 	public static abstract class FIBComponentImpl extends FIBModelObjectImpl implements FIBComponent {
 
 		private static final Logger logger = Logger.getLogger(FIBComponent.class.getPackage().getName());
@@ -1803,6 +1816,17 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 			return null;
 		}
 
+		/**
+		 * Iterate on whole component to find all localization entries, based on FIBComponent model<br>
+		 * Missing entries are added to FIBLocalizedDictionary
+		 */
+		@Override
+		public void searchAndRegisterAllLocalized() {
+			searchLocalized(getLocalizedDictionary());
+			getLocalizedDictionary().refresh();
+
+		}
+
 	}
 
 	@DefineValidationRule
@@ -1898,6 +1922,16 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 			return object.getVisible();
 		}
 
+	}
+
+	/**
+	 * Interface used to search localized entries
+	 * 
+	 * @author sylvain
+	 *
+	 */
+	public static interface LocalizationEntryRetriever {
+		public void foundLocalized(String key);
 	}
 
 }

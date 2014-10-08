@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import org.openflexo.antar.binding.BindingDefinition;
 import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.DataBinding;
+import org.openflexo.fib.model.FIBComponent.LocalizationEntryRetriever;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.DefineValidationRule;
@@ -81,6 +82,8 @@ public abstract interface FIBTableAction extends FIBModelObject {
 
 	@DeserializationFinalizer
 	public void finalizeDeserialization();
+
+	public void searchLocalized(LocalizationEntryRetriever retriever);
 
 	public static abstract class FIBTableActionImpl extends FIBModelObjectImpl implements FIBTableAction {
 
@@ -159,6 +162,11 @@ public abstract interface FIBTableAction extends FIBModelObject {
 
 		@Override
 		public abstract ActionType getActionType();
+
+		@Override
+		public void searchLocalized(LocalizationEntryRetriever retriever) {
+			retriever.foundLocalized(getName());
+		}
 
 	}
 

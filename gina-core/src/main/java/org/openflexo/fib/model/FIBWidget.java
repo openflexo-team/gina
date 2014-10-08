@@ -932,6 +932,11 @@ public abstract interface FIBWidget extends FIBComponent {
 			return returned;
 		}
 
+		@Override
+		public void searchLocalized(LocalizationEntryRetriever retriever) {
+			retriever.foundLocalized(getTooltipText());
+		}
+
 	}
 
 	@DefineValidationRule

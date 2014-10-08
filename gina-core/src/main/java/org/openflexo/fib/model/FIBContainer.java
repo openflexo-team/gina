@@ -714,5 +714,12 @@ public abstract interface FIBContainer extends FIBComponent {
 			return true;
 		}
 
+		@Override
+		public void searchLocalized(LocalizationEntryRetriever retriever) {
+			for (FIBComponent c : getSubComponents()) {
+				c.searchLocalized(retriever);
+			}
+		}
+
 	}
 }

@@ -408,27 +408,10 @@ public class FIBEditor implements FIBGenericEditor {
 		}
 
 		if (editedFIB != null && editedFIB.fibComponent != null) {
-			editorController.getController().searchNewLocalizationEntries();
+			editedFIB.fibComponent.searchAndRegisterAllLocalized();
 			getLocalizationWindow(editedFIB.fibComponent).setVisible(true);
 		}
 
-		// editorController.getController().searchNewLocalizationEntries();
-
-		// getController().searchNewLocalizationEntries();
-
-		/*if (fibComponent != null) {
-			getLocalizationWindow().setVisible(true);
-		}*/
-
-		/*FIBComponent componentLocalizationComponent = FIBLibrary.instance().retrieveFIBComponent(COMPONENT_LOCALIZATION_FIB, true);
-
-		FIBView view = FIBController.makeView(componentLocalizationComponent, FIBAbstractEditor.LOCALIZATION);
-		view.getController().setDataObject(editorController.getController());
-		JDialog localizationInterface = new JDialog(frame, FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION,
-				"component_localization"), false);
-		localizationInterface.getContentPane().add(view.getResultingJComponent());
-		localizationInterface.pack();
-		localizationInterface.setVisible(true);*/
 	}
 
 	public void validateFIB() {

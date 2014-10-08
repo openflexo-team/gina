@@ -231,5 +231,12 @@ public interface FIBFile extends FIBWidget {
 		public void setTitle(String title) {
 			this.title = title;
 		}
+
+		@Override
+		public void searchLocalized(LocalizationEntryRetriever retriever) {
+			super.searchLocalized(retriever);
+			retriever.foundLocalized(getTitle());
+		}
+
 	}
 }
