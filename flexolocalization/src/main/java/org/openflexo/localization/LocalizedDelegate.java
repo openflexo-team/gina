@@ -100,6 +100,8 @@ public interface LocalizedDelegate {
 	 */
 	public void searchTranslation(LocalizedEntry entry);
 
+	public void searchLocalized();
+
 	/**
 	 * Represents a localized entry<br>
 	 * A {@link LocalizedEntry} is explicitely identified by its key

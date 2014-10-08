@@ -20,10 +20,16 @@ public class ComponentLocalizationWindow extends JDialog {
 	private final LocalizedPanel localizedPanel;
 	private final FIBEditorController editorController;
 
-	public ComponentLocalizationWindow(JFrame frame, FIBEditorController editorController) {
+	public ComponentLocalizationWindow(JFrame frame, final FIBEditorController editorController) {
 		super(frame, FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, "component_localization"), false);
 		this.editorController = editorController;
-		localizedPanel = new LocalizedPanel(editorController.getFIBComponent().getLocalizedDictionary(), FIBAbstractEditor.LOCALIZATION);
+		localizedPanel = new LocalizedPanel(editorController.getFIBComponent().getLocalizedDictionary(), FIBAbstractEditor.LOCALIZATION,
+				false, true) {
+			@Override
+			public void searchLocalized() {
+				editorController.getFIBComponent().searchAndRegisterAllLocalized();
+			}
+		};
 		getContentPane().add(localizedPanel);
 		pack();
 	}

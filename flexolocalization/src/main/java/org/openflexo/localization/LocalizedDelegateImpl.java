@@ -268,7 +268,6 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			setChanged();
 			notifyObservers();
 			getPropertyChangeSupport().firePropertyChange("entries", null, getEntries());
-			System.out.println("Hop, on notifie !!!");
 		}
 	}
 
@@ -711,6 +710,10 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	@Override
 	public String toString() {
 		return "Localization stored in " + getLocalizedDirectory().getAbsolutePath();
+	}
+
+	@Override
+	public void searchLocalized() {
 	}
 
 }

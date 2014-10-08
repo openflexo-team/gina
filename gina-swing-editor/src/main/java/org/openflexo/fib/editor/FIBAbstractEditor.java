@@ -347,7 +347,7 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 			public void actionPerformed(ActionEvent e) {
 				if (localizedEditor == null) {
 					localizedEditor = new LocalizedEditor(getFrame(), "localized_editor", FIBAbstractEditor.LOCALIZATION,
-							FIBAbstractEditor.LOCALIZATION);
+							FIBAbstractEditor.LOCALIZATION, true, false);
 				}
 				localizedEditor.setVisible(true);
 			}

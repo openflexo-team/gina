@@ -191,12 +191,23 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 
 		@Override
 		public String getLocalizedForKeyAndLanguage(String key, Language language) {
+			return getLocalizedForKeyAndLanguage(key, language, false);
+		}
+
+		@Override
+		public String getLocalizedForKeyAndLanguage(String key, Language language, boolean createsNewEntriesIfNonExistant) {
 			if (key == null || StringUtils.isEmpty(key)) {
 				return null;
 			}
 			// if (isSearchingNewEntries) logger.info("-------> called localizedForKeyAndLanguage() key="+key+" lang="+language);
 
-			return getDictForLang(language).get(key);
+			String returned = getDictForLang(language).get(key);
+
+			if (returned == null && createsNewEntriesIfNonExistant) {
+				foundLocalized(key);
+			}
+
+			return returned;
 
 			/*String returned = getDictForLang(language).get(key);
 			if (returned == null) {
@@ -268,10 +279,11 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 					for (Language l : Language.getAvailableLanguages()) {
 						FIBLocalizedEntry e = getEntry(l, key);
 						if (e != null) {
-							System.out.println("Removing " + e.getValue() + " for key " + key + " language=" + l);
+							// System.out.println("Removing " + e.getValue() + " for key " + key + " language=" + l);
 							removeFromLocalizedEntries(e);
 						}
 					}
+					FIBLocalizedDictionaryImpl.this.getPropertyChangeSupport().firePropertyChange("entries", null, getEntries());
 				}
 			}
 
@@ -601,17 +613,22 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 		@Override
 		public void foundLocalized(String key) {
 			if (StringUtils.isNotEmpty(key)) {
-				System.out.println("Declared key: " + key);
+				// System.out.println("Declared key: " + key);
 				DynamicEntry entry = getEntry(key);
 				if (entry == null) {
-					System.out.println("Created key: " + key);
+					// System.out.println("Created key: " + key);
 					entry = new DynamicEntry(key);
 					dynamicEntries.add(entry);
 					searchTranslation(entry);
 				} else {
-					System.out.println("Found key: " + key);
+					// System.out.println("Found key: " + key);
 				}
 			}
+		}
+
+		@Override
+		public void searchLocalized() {
+			getOwner().searchAndRegisterAllLocalized();
 		}
 
 	}

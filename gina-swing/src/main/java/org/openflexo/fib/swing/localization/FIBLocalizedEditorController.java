@@ -210,7 +210,7 @@ public class FIBLocalizedEditorController extends FIBController {
 			Resource sourceCodeDirectoryResource = ResourceLocator.locateSourceCodeResource(parent.getLocalizedDirectoryResource());
 			LocalizedDelegate sourceLocalized = FlexoLocalization.getLocalizedDelegate(sourceCodeDirectoryResource, parent.getParent(),
 					true, true);
-			parentLocalizedEditor = new LocalizedEditor(null, "localized_editor", sourceLocalized, getLocalizer());
+			parentLocalizedEditor = new LocalizedEditor(null, "localized_editor", sourceLocalized, getLocalizer(), true, false);
 		}
 		parentLocalizedEditor.setVisible(true);
 	}
@@ -283,6 +283,36 @@ public class FIBLocalizedEditorController extends FIBController {
 		getPropertyChangeSupport().firePropertyChange("matchingEntries", null, getMatchingEntries());
 		getPropertyChangeSupport().firePropertyChange("issuesEntries", null, getIssuesEntries());
 		// refresh();
+	}
+
+	public boolean displaySaveButton() {
+		return false;
+	}
+
+	public boolean displaySearchLocalizedButton() {
+		return true;
+	}
+
+	public void searchLocalized() {
+		getDataObject().searchLocalized();
+	}
+
+	public void removeUnecessaryLocalized() {
+		if (getDataObject().getParent() != null) {
+			for (LocalizedEntry e : new ArrayList<LocalizedEntry>(getDataObject().getEntries())) {
+				boolean overrideWithDifferentValues = false;
+				for (Language l : Language.getAvailableLanguages()) {
+					String localValue = getDataObject().getLocalizedForKeyAndLanguage(e.getKey(), l, false);
+					String parentValue = getDataObject().getParent().getLocalizedForKeyAndLanguage(e.getKey(), l, false);
+					if (parentValue == null || !parentValue.equals(localValue)) {
+						overrideWithDifferentValues = true;
+					}
+				}
+				if (!overrideWithDifferentValues) {
+					removeEntry(e);
+				}
+			}
+		}
 	}
 
 }
