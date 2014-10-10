@@ -23,7 +23,6 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -51,7 +50,8 @@ public class FIBDialog<T> extends JDialog {
 		return instanciateDialog(componentFile, data, frame, modal, null);
 	}
 
-	public static <T> FIBDialog<T> instanciateDialog(Resource componentFile, T data, Window frame, boolean modal, LocalizedDelegate localizer) {
+	public static <T> FIBDialog<T> instanciateDialog(Resource componentFile, T data, Window frame, boolean modal,
+			LocalizedDelegate localizer) {
 		FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(componentFile);
 		if (fibComponent == null) {
 			logger.warning("FileNotFoundException: " + componentFile.getURI());
@@ -70,7 +70,7 @@ public class FIBDialog<T> extends JDialog {
 		return instanciateDialog(fibComponent, data, frame, modal, localizer);
 	}
 	*/
-	
+
 	public static <T> FIBDialog<T> instanciateDialog(FIBComponent fibComponent, T data, Window frame, boolean modal,
 			LocalizedDelegate localizer) {
 		return new FIBDialog<T>(fibComponent, data, frame, modal, localizer);
@@ -108,18 +108,18 @@ public class FIBDialog<T> extends JDialog {
 		}
 		return instanciateAndShowDialog(fibComponent, data, frame, modal, localizer);
 	}
-	
-/*
-	public static <T> FIBDialog<T> instanciateAndShowDialog(String fibResourcePath, T data, Window frame, boolean modal,
-			LocalizedDelegate localizer) {
-		FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(fibResourcePath);
-		if (fibComponent == null) {
-			logger.warning("ResourceNotFoundException: " + fibResourcePath);
-			return null;
+
+	/*
+		public static <T> FIBDialog<T> instanciateAndShowDialog(String fibResourcePath, T data, Window frame, boolean modal,
+				LocalizedDelegate localizer) {
+			FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(fibResourcePath);
+			if (fibComponent == null) {
+				logger.warning("ResourceNotFoundException: " + fibResourcePath);
+				return null;
+			}
+			return instanciateAndShowDialog(fibComponent, data, frame, modal, localizer);
 		}
-		return instanciateAndShowDialog(fibComponent, data, frame, modal, localizer);
-	}
-	*/
+		*/
 
 	protected FIBDialog(FIBComponent fibComponent, T data, Window frame, boolean modal, LocalizedDelegate localizer) {
 		this(frame, modal, fibComponent, localizer);
@@ -142,7 +142,11 @@ public class FIBDialog<T> extends JDialog {
 	}
 
 	public void initDialog(FIBComponent fibComponent, LocalizedDelegate localizer) {
-		initDialog(fibComponent, FIBController.instanciateController(fibComponent, localizer));
+		initDialog(fibComponent, makeFIBController(fibComponent, localizer));
+	}
+
+	protected FIBController makeFIBController(FIBComponent fibComponent, LocalizedDelegate parentLocalizer) {
+		return FIBController.instanciateController(fibComponent, parentLocalizer);
 	}
 
 	public void initDialog(FIBComponent fibComponent, FIBController controller) {
