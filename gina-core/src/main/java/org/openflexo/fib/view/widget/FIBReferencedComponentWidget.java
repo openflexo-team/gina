@@ -193,7 +193,6 @@ BindingEvaluationContext*/{
 				referencedComponentView.delete();
 				referencedComponentView = null;
 			}
-
 			// Call the parent view for a complete layout: the referencedComponentView will be computed during this loop
 			getParentView().updateLayout();
 			return true;
@@ -230,6 +229,8 @@ BindingEvaluationContext*/{
 					referencedComponentView = embeddedFIBController.getViewFactory().makeContainer((FIBContainer) loaded);
 					referencedComponentView.setEmbeddingComponent(this);
 				}
+
+				performAssignments();
 			} else {
 				if (!isComponentLoading) {
 					logger.warning("ReferencedComponent = null and I'm NOT loading anything... : " + this.getComponentFile().getURI());
@@ -261,6 +262,10 @@ BindingEvaluationContext*/{
 	}
 
 	private void performAssignments() {
+
+		if (embeddedFIBController == null) {
+			return;
+		}
 		for (FIBReferenceAssignment assign : getWidget().getAssignments()) {
 			DataBinding<?> variableDB = assign.getVariable();
 			DataBinding<?> valueDB = assign.getValue();
@@ -286,6 +291,8 @@ BindingEvaluationContext*/{
 	}
 
 	private boolean updateReferencedComponentView() {
+
+		//logger.info("updateReferencedComponentView() called in FIBReferencedComponentWidget");
 
 		boolean returned = updateDynamicallyReferencedComponentWhenRequired();
 
@@ -319,6 +326,8 @@ BindingEvaluationContext*/{
 
 	@Override
 	public boolean updateWidgetFromModel() {
+
+		//logger.info("updateWidgetFromModel() called in FIBReferencedComponentWidget");
 
 		return updateReferencedComponentView();
 
