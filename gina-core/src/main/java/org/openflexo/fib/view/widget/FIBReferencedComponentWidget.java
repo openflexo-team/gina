@@ -44,6 +44,7 @@ import org.openflexo.fib.model.FIBWidget;
 import org.openflexo.fib.view.FIBContainerView;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.fib.view.FIBWidgetView;
+import org.openflexo.kvc.InvalidKeyValuePropertyException;
 import org.openflexo.rm.Resource;
 
 /**
@@ -230,7 +231,6 @@ BindingEvaluationContext*/{
 					referencedComponentView.setEmbeddingComponent(this);
 				}
 
-				performAssignments();
 			} else {
 				if (!isComponentLoading) {
 					logger.warning("ReferencedComponent = null and I'm NOT loading anything... : " + this.getComponentFile().getURI());
@@ -285,6 +285,8 @@ BindingEvaluationContext*/{
 					e.printStackTrace();
 				} catch (NotSettableContextException e) {
 					e.printStackTrace();
+				} catch (InvalidKeyValuePropertyException e) {
+					e.printStackTrace();
 				}
 			}
 		}
@@ -292,7 +294,7 @@ BindingEvaluationContext*/{
 
 	private boolean updateReferencedComponentView() {
 
-		//logger.info("updateReferencedComponentView() called in FIBReferencedComponentWidget");
+		// logger.info("updateReferencedComponentView() called in FIBReferencedComponentWidget");
 
 		boolean returned = updateDynamicallyReferencedComponentWhenRequired();
 
@@ -327,7 +329,7 @@ BindingEvaluationContext*/{
 	@Override
 	public boolean updateWidgetFromModel() {
 
-		//logger.info("updateWidgetFromModel() called in FIBReferencedComponentWidget");
+		// logger.info("updateWidgetFromModel() called in FIBReferencedComponentWidget");
 
 		return updateReferencedComponentView();
 
