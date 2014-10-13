@@ -121,25 +121,31 @@ BindingEvaluationContext*/{
 	}
 
 	public Resource getComponentFile() {
+		FIBReferencedComponent widg = getWidget();
+		// NPE Protection when widget is null
+		if (widg != null) {
+			if (widg.getDynamicComponentFile() != null && widg.getDynamicComponentFile().isSet()
+					&& widg.getDynamicComponentFile().isValid()) {
+				// The component file is dynamically defined, use it
+				File componentFile;
+				try {
+					return widg.getDynamicComponentFile().getBindingValue(getBindingEvaluationContext());
+				} catch (TypeMismatchException e) {
+					e.printStackTrace();
+				} catch (NullReferenceException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				}
+			}
 
-		if (getWidget().getDynamicComponentFile() != null && getWidget().getDynamicComponentFile().isSet()
-				&& getWidget().getDynamicComponentFile().isValid()) {
-			// The component file is dynamically defined, use it
-			File componentFile;
-			try {
-				return getWidget().getDynamicComponentFile().getBindingValue(getBindingEvaluationContext());
-			} catch (TypeMismatchException e) {
-				e.printStackTrace();
-			} catch (NullReferenceException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
+			else if (widg.getComponentFile() != null) {
+				// The component file is statically defined, use it
+				return widg.getComponentFile();
 			}
 		}
-
-		else if (getWidget().getComponentFile() != null) {
-			// The component file is statically defined, use it
-			return getWidget().getComponentFile();
+		else {
+			logger.warning("FIBReferencedComponent with null widget, please investigate");
 		}
 
 		return null;
@@ -226,11 +232,13 @@ BindingEvaluationContext*/{
 				if (loaded instanceof FIBWidget) {
 					referencedComponentView = embeddedFIBController.getViewFactory().makeWidget((FIBWidget) loaded);
 					referencedComponentView.setEmbeddingComponent(this);
-				} else if (loaded instanceof FIBContainer) {
+				}
+				else if (loaded instanceof FIBContainer) {
 					referencedComponentView = embeddedFIBController.getViewFactory().makeContainer((FIBContainer) loaded);
 					referencedComponentView.setEmbeddingComponent(this);
 				}
-			} else {
+			}
+			else {
 				if (!isComponentLoading) {
 					logger.warning("ReferencedComponent = null and I'm NOT loading anything... : " + this.getComponentFile().getURI());
 				}
@@ -307,7 +315,8 @@ BindingEvaluationContext*/{
 				embeddedFIBController.setDataObject(getValue(), true);
 
 				referencedComponentView.update();
-			} else {
+			}
+			else {
 				System.out.println("Dis donc, on dirait que " + getValue() + "n'est pas un "
 						+ embeddedFIBController.getRootComponent().getDataType());
 			}
