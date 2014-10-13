@@ -793,6 +793,16 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 		}
 	}
 
+	/**
+	 * Called when a widget becomes visible<br>
+	 * There is no guarantee that widget is in sync with the model, so, we need to call updateWidgetFromModel again
+	 */
+	@Override
+	protected void hiddenComponentBecomesVisible() {
+		super.hiddenComponentBecomesVisible();
+		updateWidgetFromModel();
+	}
+
 	public final void updateEnability() {
 		if (isComponentEnabled()) {
 			if (!enabled) {

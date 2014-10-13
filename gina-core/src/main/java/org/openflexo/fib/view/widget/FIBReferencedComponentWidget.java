@@ -44,6 +44,7 @@ import org.openflexo.fib.model.FIBWidget;
 import org.openflexo.fib.view.FIBContainerView;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.fib.view.FIBWidgetView;
+import org.openflexo.kvc.InvalidKeyValuePropertyException;
 import org.openflexo.rm.Resource;
 
 /**
@@ -199,7 +200,6 @@ BindingEvaluationContext*/{
 				referencedComponentView.delete();
 				referencedComponentView = null;
 			}
-
 			// Call the parent view for a complete layout: the referencedComponentView will be computed during this loop
 			getParentView().updateLayout();
 			return true;
@@ -237,6 +237,7 @@ BindingEvaluationContext*/{
 					referencedComponentView = embeddedFIBController.getViewFactory().makeContainer((FIBContainer) loaded);
 					referencedComponentView.setEmbeddingComponent(this);
 				}
+
 			}
 			else {
 				if (!isComponentLoading) {
@@ -269,6 +270,10 @@ BindingEvaluationContext*/{
 	}
 
 	private void performAssignments() {
+
+		if (embeddedFIBController == null) {
+			return;
+		}
 		for (FIBReferenceAssignment assign : getWidget().getAssignments()) {
 			DataBinding<?> variableDB = assign.getVariable();
 			DataBinding<?> valueDB = assign.getValue();
@@ -288,12 +293,16 @@ BindingEvaluationContext*/{
 					e.printStackTrace();
 				} catch (NotSettableContextException e) {
 					e.printStackTrace();
+				} catch (InvalidKeyValuePropertyException e) {
+					e.printStackTrace();
 				}
 			}
 		}
 	}
 
 	private boolean updateReferencedComponentView() {
+
+		// logger.info("updateReferencedComponentView() called in FIBReferencedComponentWidget");
 
 		boolean returned = updateDynamicallyReferencedComponentWhenRequired();
 
@@ -328,6 +337,8 @@ BindingEvaluationContext*/{
 
 	@Override
 	public boolean updateWidgetFromModel() {
+
+		// logger.info("updateWidgetFromModel() called in FIBReferencedComponentWidget");
 
 		return updateReferencedComponentView();
 

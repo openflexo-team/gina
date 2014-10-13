@@ -123,12 +123,12 @@ public abstract interface FIBWidget extends FIBComponent {
 	@Setter(TOOLTIP_TEXT_KEY)
 	public void setTooltipText(String tooltipText);
 
-	@Getter(value = LOCALIZE_KEY)
+	@Getter(value = LOCALIZE_KEY, defaultValue = "true")
 	@XMLAttribute
-	public Boolean getLocalize();
+	public boolean getLocalize();
 
 	@Setter(LOCALIZE_KEY)
-	public void setLocalize(Boolean localize);
+	public void setLocalize(boolean localize);
 
 	@Getter(value = ENABLE_KEY)
 	@XMLAttribute
@@ -243,7 +243,7 @@ public abstract interface FIBWidget extends FIBComponent {
 
 		private Boolean manageDynamicModel = false;
 		private Boolean readOnly = false;
-		private Boolean localize = true;
+		// private Boolean localize = true;
 		private String tooltipText;
 		private DataBinding<?> clickAction;
 		private DataBinding<?> doubleClickAction;
@@ -545,7 +545,7 @@ public abstract interface FIBWidget extends FIBComponent {
 			}
 		}
 
-		@Override
+		/*@Override
 		public Boolean getLocalize() {
 			return localize;
 		}
@@ -557,7 +557,7 @@ public abstract interface FIBWidget extends FIBComponent {
 				this.localize = localize;
 				hasChanged(notification);
 			}
-		}
+		}*/
 
 		@Override
 		public FIBFormatter getFormatter() {

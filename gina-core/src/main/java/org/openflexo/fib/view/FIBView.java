@@ -433,12 +433,16 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 				getResultingJComponent().getParent().repaint();
 			}
 			if (visible) {
+				hiddenComponentBecomesVisible();
 				for (FIBView<?, ?, ?> view : subViews.values()) {
 					view.updateVisibility();
 				}
 			}
 			setVisible(visible);
 		}
+	}
+
+	protected void hiddenComponentBecomesVisible() {
 	}
 
 	public Object getDefaultData() {
