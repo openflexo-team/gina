@@ -709,7 +709,10 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 	@Override
 	public String toString() {
-		return "Localization stored in " + getLocalizedDirectory().getAbsolutePath();
+		if (getLocalizedDirectory() != null) {
+			return "Localization stored in " + getLocalizedDirectory().getAbsolutePath();
+		}
+		return super.toString();
 	}
 
 	@Override
