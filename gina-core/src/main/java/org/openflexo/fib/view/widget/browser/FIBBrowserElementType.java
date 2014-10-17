@@ -210,8 +210,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 				return (Icon) returned;
 			}
 			return null;
-		}
-		else {
+		} else {
 			return browserElementDefinition.getImageIcon();
 		}
 	}
@@ -236,8 +235,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 				return (Boolean) enabledValue;
 			}
 			return true;
-		}
-		else {
+		} else {
 			return true;
 		}
 	}
@@ -267,8 +265,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 				e.printStackTrace();
 				return true;
 			}
-		}
-		else {
+		} else {
 			return true;
 		}
 	}
@@ -289,8 +286,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 				}
 				// System.out.println("For " + object + " of " + object.getClass().getSimpleName() + " children=" + children.getData()
 				// + " values=" + object);
-			}
-			else {
+			} else {
 				// System.out.println("add children for "+browserElementDefinition.getName()+" children "+children.getName()+" data="+children.getData());
 				// System.out.println("Obtain "+getChildrenFor(children, object));
 				// System.out.println("accessed type="+children.getAccessedType());
@@ -342,8 +338,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 				return new CastFunction(children).apply(result);
 			}
 			return result;
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
@@ -402,8 +397,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 				return returned;
 			}
 			return list;
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
@@ -452,8 +446,10 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 		Object oldIteratorObject = this.iteratorObject;
 		if (iteratorObject != oldIteratorObject) {
 			this.iteratorObject = iteratorObject;
-			// getPropertyChangeSupport().firePropertyChange("object", oldIteratorObject, iteratorObject);
-			getPropertyChangeSupport().firePropertyChange(browserElementDefinition.getName(), oldIteratorObject, iteratorObject);
+			// Sylvain:
+			// This is not necessary anymore to fire this, since we will not track the modification of
+			// a variable which is intrinsically temporary. Firing this causes huge performance issues
+			// getPropertyChangeSupport().firePropertyChange(browserElementDefinition.getName(), oldIteratorObject, iteratorObject);
 		}
 	}
 
@@ -461,11 +457,9 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 	public synchronized Object getValue(BindingVariable variable) {
 		if (variable.getVariableName().equals(browserElementDefinition.getName())) {
 			return iteratorObject;
-		}
-		else if (variable.getVariableName().equals("object")) {
+		} else if (variable.getVariableName().equals("object")) {
 			return iteratorObject;
-		}
-		else {
+		} else {
 			return getController().getValue(variable);
 		}
 	}
@@ -541,8 +535,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 		public Object getValue(BindingVariable variable) {
 			if (variable.getVariableName().equals("child")) {
 				return child;
-			}
-			else {
+			} else {
 				return FIBBrowserElementType.this.getValue(variable);
 			}
 		}
