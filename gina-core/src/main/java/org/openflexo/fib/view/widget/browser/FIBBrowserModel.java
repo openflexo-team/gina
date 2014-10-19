@@ -102,8 +102,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 
 		if (element != null) {
 			return _elementTypes.get(element);
-		}
-		else {
+		} else {
 			logger.warning("Could not find element for class " + aClass);
 			/*System.out.println("Available=");
 			for (FIBBrowserElement e : _fibBrowser.getElements()) {
@@ -342,8 +341,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 					l.delete();
 				}
 				childrenDataBindingValueChangeListeners.clear();
-			}
-			else {
+			} else {
 				childrenDataBindingValueChangeListeners = new HashMap<FIBBrowserElement.FIBBrowserElementChildren, BindingValueChangeListener<?>>();
 			}
 			// This is really important to this now
@@ -370,8 +368,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 									}
 								}
 							};
-						}
-						else {
+						} else {
 							l = new BrowserCellBindingValueChangeListener<Object>(children.getData(), browserElementType);
 						}
 						childrenDataBindingValueChangeListeners.put(children, l);
@@ -387,8 +384,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 					l.delete();
 				}
 				childrenCastBindingValueChangeListeners.clear();
-			}
-			else {
+			} else {
 				childrenCastBindingValueChangeListeners = new HashMap<FIBBrowserElement.FIBBrowserElementChildren, BindingValueChangeListener<?>>();
 			}
 			// This is really important to this now
@@ -412,8 +408,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 					l.delete();
 				}
 				childrenVisibleBindingValueChangeListeners.clear();
-			}
-			else {
+			} else {
 				childrenVisibleBindingValueChangeListeners = new HashMap<FIBBrowserElement.FIBBrowserElementChildren, BindingValueChangeListener<Boolean>>();
 			}
 
@@ -741,8 +736,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			if (children == null) {
 				oldChildren = Collections.emptyList();
 				removedChildren = Collections.emptyList();
-			}
-			else {
+			} else {
 				if (children.size() == 1 && children.firstElement() instanceof LoadingCell) {
 					removeAllChildren();
 				}
@@ -778,8 +772,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 									logger.fine("END UPDATING recursively " + cell.getRepresentedObject().toString());
 								}
 								index = children.indexOf(cell) + 1;
-							}
-							else {
+							} else {
 								newChildren.add(cell);
 								if (children == null) {
 									children = new Vector();
@@ -794,14 +787,12 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 									// cell.update(true);
 								}
 							}
-						}
-						else {
+						} else {
 							cell.isVisible = false;
 						}
 					}
 				}
-			}
-			else {
+			} else {
 				newChildren = Collections.emptyList();
 			}
 
@@ -861,8 +852,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 						logger.warning("Unexpected " + e.getClass().getSimpleName()
 								+ " when refreshing browser, no severity but please investigate");
 					}
-				}
-				else {
+				} else {
 					if (removedChildren.size() > 0) {
 						int[] childIndices = new int[removedChildren.size()];
 						Object[] removedChildrenObjects = new Object[removedChildren.size()];
@@ -930,14 +920,15 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 
 			// dependingObjects.refreshObserving(browserElementType);
 
-			if (cellsToForceUpdate != null){
+			if (cellsToForceUpdate != null) {
 				for (BrowserCell cell : cellsToForceUpdate) {
 					if (cell != this) // prevent multiple update of same cell
 						cell.update(true);
 				}
 			}
 
-			logger.fine("END UPDATING ( " + recursively + ")  => " + getRepresentedObject().toString());
+			logger.fine("END UPDATING ( " + recursively + ")  => "
+					+ (getRepresentedObject() != null ? getRepresentedObject().toString() : "null"));
 
 		}
 
