@@ -3083,6 +3083,7 @@ invalid_operation\:=Op\u00E9ration non-valide
 invalid_parent=Parent non valide
 invalid_percentage\:=Pourcentage invalide
 invalid_value=Valeur invalide
+invalid_xml_exception=invalid_xml_exception
 inventory=Stock
 inventory_description=Stock
 io_exception=io exception

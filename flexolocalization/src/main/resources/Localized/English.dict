@@ -3084,6 +3084,7 @@ invalid_operation\:=Invalid operation\:
 invalid_parent=Invalid parent
 invalid_percentage\:=Invalid percentage
 invalid_value=Invalid value
+invalid_xml_exception=invalid_xml_exception
 inventory=Inventory
 inventory_description=Inventory
 io_exception=io exception

@@ -3072,6 +3072,7 @@ invalid_operation\:=Ongeldige operatie\:
 invalid_parent=Ongeldige ouder
 invalid_percentage\:=Ongeldig percentage
 invalid_value=Ongeldige Waarde
+invalid_xml_exception=invalid_xml_exception
 inventory=Inventaris
 inventory_description=Inventaris
 io_exception=io uitzondering
