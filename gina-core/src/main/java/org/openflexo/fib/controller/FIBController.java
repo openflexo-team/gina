@@ -132,7 +132,7 @@ import org.openflexo.toolbox.ToolBox;
 public class FIBController /*extends Observable*/implements BindingEvaluationContext, Observer, PropertyChangeListener,
 		HasPropertyChangeSupport {
 
-	private static final Logger logger = Logger.getLogger(FIBController.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(FIBController.class.getPackage().getName());
 
 	private Object dataObject;
 	private final FIBComponent rootComponent;
@@ -318,18 +318,18 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 				returned = c.newInstance(fibComponent);
 				// System.out.println("returned=" + returned);
 			} catch (SecurityException e) {
-				logger.warning("SecurityException: Could not instanciate " + fibComponent.getControllerClass());
+				LOGGER.warning("SecurityException: Could not instanciate " + fibComponent.getControllerClass());
 			} catch (NoSuchMethodException e) {
 				// Thread.dumpStack();
-				logger.warning("NoSuchMethodException: Could not instanciate " + fibComponent.getControllerClass());
+				LOGGER.warning("NoSuchMethodException: Could not instanciate " + fibComponent.getControllerClass());
 			} catch (IllegalArgumentException e) {
-				logger.warning("IllegalArgumentException: Could not instanciate " + fibComponent.getControllerClass());
+				LOGGER.warning("IllegalArgumentException: Could not instanciate " + fibComponent.getControllerClass());
 			} catch (InstantiationException e) {
-				logger.warning("InstantiationException: Could not instanciate " + fibComponent.getControllerClass());
+				LOGGER.warning("InstantiationException: Could not instanciate " + fibComponent.getControllerClass());
 			} catch (IllegalAccessException e) {
-				logger.warning("IllegalAccessException: Could not instanciate " + fibComponent.getControllerClass());
+				LOGGER.warning("IllegalAccessException: Could not instanciate " + fibComponent.getControllerClass());
 			} catch (InvocationTargetException e) {
-				logger.warning("InvocationTargetException: Could not instanciate " + fibComponent.getControllerClass());
+				LOGGER.warning("InvocationTargetException: Could not instanciate " + fibComponent.getControllerClass());
 			}
 		}
 		if (returned == null) {
@@ -389,7 +389,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 		try {
 			return getViewFactory().makeContainer(fibContainer);
 		} catch (RuntimeException e) {
-			logger.warning("Unexpected exception " + e.getMessage() + ". See logs for details.");
+			LOGGER.warning("Unexpected exception " + e.getMessage() + ". See logs for details.");
 			e.printStackTrace();
 			return null;
 		}
@@ -509,7 +509,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 		try {
 			return getViewFactory().makeWidget(fibWidget);
 		} catch (RuntimeException e) {
-			logger.warning("Unexpected exception " + e.getMessage() + ". See logs for details.");
+			LOGGER.warning("Unexpected exception " + e.getMessage() + ". See logs for details.");
 			e.printStackTrace();
 			return null;
 		}
@@ -641,7 +641,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 			}
 			return returned;
 		} else {
-			logger.warning("Could not find localizer");
+			LOGGER.warning("Could not find localizer");
 			return null;
 		}
 	}
@@ -787,7 +787,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 
 		// logger.info("objectAddedToSelection() dans FIBController with " + o);
 
-		logger.fine("FIBController: objectAddedToSelection(): " + o);
+		LOGGER.fine("FIBController: objectAddedToSelection(): " + o);
 		Enumeration<FIBView<?, ?, ?>> en = getViews();
 		while (en.hasMoreElements()) {
 			FIBView<?, ?, ?> v = en.nextElement();
@@ -811,7 +811,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 
 		// logger.info("objectRemovedFromSelection() dans FIBController with " + o);
 
-		logger.fine("FIBController: objectRemovedFromSelection(): " + o);
+		LOGGER.fine("FIBController: objectRemovedFromSelection(): " + o);
 		Enumeration<FIBView<?, ?, ?>> en = getViews();
 		while (en.hasMoreElements()) {
 			FIBView<?, ?, ?> v = en.nextElement();
@@ -824,7 +824,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 	}
 
 	public void selectionCleared() {
-		logger.fine("FIBController: selectionCleared()");
+		LOGGER.fine("FIBController: selectionCleared()");
 		Enumeration<FIBView<?, ?, ?>> en = getViews();
 		while (en.hasMoreElements()) {
 			FIBView<?, ?, ?> v = en.nextElement();
@@ -895,8 +895,8 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 				return new FIBEditorWidget((FIBEditor) fibWidget, FIBController.this);
 			}
 			if (fibWidget instanceof FIBTextPane) {
-				if (logger.isLoggable(Level.WARNING)) {
-					logger.warning("Can't handle TextPane yet");
+				if (LOGGER.isLoggable(Level.WARNING)) {
+					LOGGER.warning("Can't handle TextPane yet");
 				}
 				return new FIBEditorPaneWidget((FIBEditorPane) fibWidget, FIBController.this);
 			}
@@ -983,7 +983,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 		private final FIBController controller;
 
 		public EditorLauncher(FIBController controller, FIBComponent component) {
-			logger.fine("make EditorLauncher for component: " + component.getResource());
+			LOGGER.fine("make EditorLauncher for component: " + component.getResource());
 			this.component = component;
 			this.controller = controller;
 		}
@@ -1005,14 +1005,14 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 				try {
 					fibLocation = new FileResourceImpl(fibFile.getCanonicalPath(), fibFile.toURI().toURL(), fibFile);
 				} catch (LocatorNotFoundException e) {
-					logger.severe("No Locator found for managing FileResources!! ");
+					LOGGER.severe("No Locator found for managing FileResources!! ");
 					e.printStackTrace();
 				}
 				component.setResource(fibLocation);
 				FIBLibrary.save(component, fibFile);
 			} catch (IOException e) {
 				e.printStackTrace();
-				logger.warning("Cannot create FIB temp file definition for component, aborting FIB edition");
+				LOGGER.warning("Cannot create FIB temp file definition for component, aborting FIB edition");
 				return;
 			}
 		}
@@ -1029,10 +1029,10 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 			Object[] args = new Object[2];
 			args[0] = component.getResource();
 			args[1] = getDataObject();
-			logger.info("Opening FIB editor for " + component.getResource());
+			LOGGER.info("Opening FIB editor for " + component.getResource());
 			c.newInstance(args);
 		} catch (ClassNotFoundException e) {
-			logger.warning("Cannot open FIB Editor, please add org.openflexo.fib.editor.FIBEmbeddedEditor in the class path");
+			LOGGER.warning("Cannot open FIB Editor, please add org.openflexo.fib.editor.FIBEmbeddedEditor in the class path");
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (InstantiationException e) {
@@ -1040,7 +1040,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
-			logger.warning("Cannot instanciate " + embeddedEditor + " with constructor " + c + " because of unexpected exception ");
+			LOGGER.warning("Cannot instanciate " + embeddedEditor + " with constructor " + c + " because of unexpected exception ");
 			e.getTargetException().printStackTrace();
 		}
 	}
@@ -1065,20 +1065,20 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 	 * @return true is exception was correctely handled
 	 */
 	public boolean handleException(Throwable t) {
-		logger.warning("Unexpected exception raised: " + t.getMessage());
+		LOGGER.warning("Unexpected exception raised: " + t.getMessage());
 		t.printStackTrace();
 		return false;
 	}
 
 	public void performCopyAction(Object focused, List<?> selection) {
-		logger.warning("COPY action not implemented. Please override this method");
+		LOGGER.warning("COPY action not implemented. Please override this method");
 	}
 
 	public void performCutAction(Object focused, List<?> selection) {
-		logger.warning("CUT action not implemented. Please override this method");
+		LOGGER.warning("CUT action not implemented. Please override this method");
 	}
 
 	public void performPasteAction(Object focused, List<?> selection) {
-		logger.warning("PASTE action not implemented. Please override this method");
+		LOGGER.warning("PASTE action not implemented. Please override this method");
 	}
 }

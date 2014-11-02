@@ -77,7 +77,7 @@ import org.openflexo.toolbox.ToolBox;
  */
 public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> implements FIBSelectable<T>, TreeSelectionListener {
 
-	private static final Logger logger = Logger.getLogger(FIBBrowserWidget.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(FIBBrowserWidget.class.getPackage().getName());
 
 	public static final String SELECTED = "selected";
 	public static final String SELECTION = "selection";
@@ -199,7 +199,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 	private boolean processRootChanged() {
 		boolean returned = getBrowserModel().updateRootObject(getRootValue());
 		if (returned) {
-			logger.fine("RootValue changed for FIBBrowserWidget " + getRootValue());
+			LOGGER.fine("RootValue changed for FIBBrowserWidget " + getRootValue());
 			try {
 				_tree.fireTreeWillExpand(new TreePath(_tree.getModel().getRoot()));
 			} catch (ExpandVetoException e1) {
@@ -221,18 +221,18 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 		// if (debug) System.out.println("wasSelected: "+wasSelected);
 
 		if (_tree.isEditing()) {
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine(getComponent().getName() + " - Tree is currently editing");
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine(getComponent().getName() + " - Tree is currently editing");
 			}
 			_tree.getCellEditor().cancelCellEditing();
 		} else {
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine(getComponent().getName() + " - Tree is NOT currently edited ");
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine(getComponent().getName() + " - Tree is NOT currently edited ");
 			}
 		}
 
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine(getComponent().getName() + " updateWidgetFromModel() with " + getValue() + " dataObject=" + getDataObject());
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine(getComponent().getName() + " updateWidgetFromModel() with " + getValue() + " dataObject=" + getDataObject());
 		}
 
 		boolean returned = processRootChanged();
@@ -329,9 +329,9 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 	private void deleteBrowser() {
 		if (_tree != null) {
 			_tree.removeFocusListener(this);
-		}
-		for (MouseListener l : _tree.getMouseListeners()) {
-			_tree.removeMouseListener(l);
+			for (MouseListener l : _tree.getMouseListeners()) {
+				_tree.removeMouseListener(l);
+			}
 		}
 	}
 
@@ -590,7 +590,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 
 	public void performSelect(T object) {
 		if (object == getSelected()) {
-			logger.fine("FIBTableWidget: ignore performSelect " + object);
+			LOGGER.fine("FIBTableWidget: ignore performSelect " + object);
 			return;
 		}
 		setSelected(object);
@@ -625,12 +625,12 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 	}
 
 	public void setSelected(T object) {
-		logger.info("Select " + object);
+		LOGGER.info("Select " + object);
 		if (getRootValue() == null) {
 			return;
 		}
 		if (object == getSelected() /*&& !force*/) {
-			logger.fine("Ignore set selected object");
+			LOGGER.fine("Ignore set selected object");
 			return;
 		}
 
@@ -773,7 +773,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 		System.out.println("getComponent().getSelected().isValid()=" + getComponent().getSelected().isValid());*/
 		if (getComponent() != null) {
 			if (getComponent().getSelected().isValid()) {
-				logger.fine("Sets SELECTED binding with " + getSelected());
+				LOGGER.fine("Sets SELECTED binding with " + getSelected());
 				try {
 					getComponent().getSelected().setBindingValue(getSelected(), getBindingEvaluationContext());
 				} catch (TypeMismatchException e1) {
@@ -797,7 +797,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 			if (ctrl != null) {
 				ctrl.updateSelection(this, oldSelection, selection);
 			} else {
-				logger.warning("INVESTIGATE: trying to update selection on a widget withour controlller! " + this.toString());
+				LOGGER.warning("INVESTIGATE: trying to update selection on a widget withour controlller! " + this.toString());
 			}
 		}
 

@@ -42,7 +42,7 @@ import org.openflexo.rm.Resource;
 
 public class FIBLibrary {
 
-	static final Logger logger = Logger.getLogger(FIBLibrary.class.getPackage().getName());
+	static final Logger LOGGER = Logger.getLogger(FIBLibrary.class.getPackage().getName());
 
 	private static FIBLibrary _current;
 
@@ -119,8 +119,8 @@ public class FIBLibrary {
 		FIBComponent fibComponent = _fibDefinitions.get(fibFile);
 		if (!useCache || fibComponent == null || fibComponent.getLastModified().before(fibFile.getLastUpdate())) {
 
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Load " + fibFile.getURI());
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("Load " + fibFile.getURI());
 			}
 
 			InputStream fis = null;
@@ -149,7 +149,7 @@ public class FIBLibrary {
 				e.printStackTrace();
 			} catch (Exception e) {
 				e.printStackTrace();
-				logger.warning("Unhandled Exception");
+				LOGGER.warning("Unhandled Exception");
 			} finally {
 				if (fis != null) {
 					IOUtils.closeQuietly(fis);
@@ -194,36 +194,36 @@ public class FIBLibrary {
 				_fibDefinitions.put(fibIdentifier, component);
 				return component;
 			} catch (ModelDefinitionException e) {
-				if (logger.isLoggable(Level.WARNING)) {
-					logger.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
+				if (LOGGER.isLoggable(Level.WARNING)) {
+					LOGGER.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
 				}
 				e.printStackTrace();
 			} catch (FileNotFoundException e) {
-				if (logger.isLoggable(Level.WARNING)) {
-					logger.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
+				if (LOGGER.isLoggable(Level.WARNING)) {
+					LOGGER.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
 				}
 				e.printStackTrace();
 			} catch (IOException e) {
-				if (logger.isLoggable(Level.WARNING)) {
-					logger.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
+				if (LOGGER.isLoggable(Level.WARNING)) {
+					LOGGER.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
 				}
 				e.printStackTrace();
 			} catch (JDOMException e) {
-				if (logger.isLoggable(Level.WARNING)) {
-					logger.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
+				if (LOGGER.isLoggable(Level.WARNING)) {
+					LOGGER.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
 				}
 				e.printStackTrace();
 			} catch (InvalidDataException e) {
-				if (logger.isLoggable(Level.WARNING)) {
-					logger.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
+				if (LOGGER.isLoggable(Level.WARNING)) {
+					LOGGER.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
 				}
 				e.printStackTrace();
 			} catch (Exception e) {
-				if (logger.isLoggable(Level.WARNING)) {
-					logger.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
+				if (LOGGER.isLoggable(Level.WARNING)) {
+					LOGGER.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
 				}
 				e.printStackTrace();
-				logger.warning("Unhandled Exception");
+				LOGGER.warning("Unhandled Exception");
 			} finally {
 				if (inputStream != null) {
 					IOUtils.closeQuietly(inputStream);
@@ -234,7 +234,7 @@ public class FIBLibrary {
 	}
 
 	public static boolean save(FIBComponent component, File file) {
-		logger.info("Save to file " + file.getAbsolutePath());
+		LOGGER.info("Save to file " + file.getAbsolutePath());
 
 		FileOutputStream out = null;
 		try {
@@ -255,9 +255,9 @@ public class FIBLibrary {
 			FIBModelFactory factory = new FIBModelFactory(fibFile.getParentFile());
 
 			factory.serialize(component, stream);
-			logger.info("Succeeded to save: " + fibFile);
+			LOGGER.info("Succeeded to save: " + fibFile);
 		} catch (Exception e) {
-			logger.warning("Failed to save: " + fibFile + " unexpected exception: " + e.getMessage());
+			LOGGER.warning("Failed to save: " + fibFile + " unexpected exception: " + e.getMessage());
 			e.printStackTrace();
 		} finally {
 			IOUtils.closeQuietly(stream);

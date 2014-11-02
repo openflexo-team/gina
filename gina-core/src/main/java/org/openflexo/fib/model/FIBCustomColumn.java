@@ -351,7 +351,7 @@ public interface FIBCustomColumn extends FIBTableColumn {
 				if (getOwner() != null && variable != null) {
 					variable.decode();
 				}
-				if (variable.isValid()) {
+				if (variable != null && variable.isValid()) {
 					VALUE.setType(variable.getAnalyzedType());
 					if (value != null) {
 						value.setBindingDefinition(VALUE);

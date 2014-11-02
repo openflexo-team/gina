@@ -55,7 +55,7 @@ import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 public class FIBCustomWidget<J extends JComponent, T> extends FIBWidgetView<FIBCustom, J, T> implements ApplyCancelListener,
 		BindingEvaluationContext {
 
-	private static final Logger logger = Logger.getLogger(FIBCustomWidget.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(FIBCustomWidget.class.getPackage().getName());
 
 	public static final String COMPONENT = "component";
 
@@ -69,7 +69,7 @@ public class FIBCustomWidget<J extends JComponent, T> extends FIBWidgetView<FIBC
 			customComponent = makeCustomComponent(model.getComponentClass(), (Class<T>) TypeUtils.getBaseClass(model.getDataType()),
 					controller);
 		} catch (ClassCastException e) {
-			logger.warning("Could not instanciate component: ClassCastException, see logs for details");
+			LOGGER.warning("Could not instanciate component: ClassCastException, see logs for details");
 			e.printStackTrace();
 		}
 		if (customComponent != null) {
@@ -86,7 +86,7 @@ public class FIBCustomWidget<J extends JComponent, T> extends FIBWidgetView<FIBC
 	private FIBCustomComponent<T, J> makeCustomComponent(Class<FIBCustomComponent<T, J>> customComponentClass, Class<T> dataClass,
 			FIBController controller) {
 		if (customComponentClass == null) {
-			logger.warning("Could not instanciate custom component : no component class found");
+			LOGGER.warning("Could not instanciate custom component : no component class found");
 			return new NotFoundComponent();
 		}
 		Class[] types = new Class[1];
@@ -111,7 +111,7 @@ public class FIBCustomWidget<J extends JComponent, T> extends FIBWidgetView<FIBC
 				}
 			}
 			if (constructor == null) {
-				logger.warning("Could not instanciate class " + customComponentClass + " : no valid constructor found, (searched "
+				LOGGER.warning("Could not instanciate class " + customComponentClass + " : no valid constructor found, (searched "
 						+ customComponentClass.getSimpleName() + "(" + dataClass.getSimpleName() + ")...)");
 				return new NotFoundComponent();
 			}
@@ -218,10 +218,10 @@ public class FIBCustomWidget<J extends JComponent, T> extends FIBWidgetView<FIBC
 			if (variableDB.isSet() && valueDB.isSet()) {
 				// System.out.println("Assignement " + variableDB + " with " + valueDB);
 				if (!valueDB.isValid()) {
-					logger.warning("Assignment value not valid: " + valueDB + " reason: " + valueDB.invalidBindingReason());
+					LOGGER.warning("Assignment value not valid: " + valueDB + " reason: " + valueDB.invalidBindingReason());
 				}
 				if (!variableDB.isValid()) {
-					logger.warning("Assignment variable not valid: " + variableDB + " reason: " + variableDB.invalidBindingReason());
+					LOGGER.warning("Assignment variable not valid: " + variableDB + " reason: " + variableDB.invalidBindingReason());
 				}
 				if (valueDB != null && valueDB.isValid()) {
 					Object value = null;
@@ -321,7 +321,7 @@ public class FIBCustomWidget<J extends JComponent, T> extends FIBWidgetView<FIBC
 				// }
 			} catch (ClassCastException e) {
 				customComponent.setEditedObject(null);
-				logger.warning("Unexpected ClassCastException in " + customComponent + ": " + e.getMessage());
+				LOGGER.warning("Unexpected ClassCastException in " + customComponent + ": " + e.getMessage());
 				// e.printStackTrace();
 			}
 
@@ -334,7 +334,7 @@ public class FIBCustomWidget<J extends JComponent, T> extends FIBWidgetView<FIBC
 				customComponent.setRevertValue(getValue());
 			} catch (ClassCastException e) {
 				customComponent.setRevertValue(null);
-				logger.warning("Unexpected ClassCastException in " + customComponent + ": " + e.getMessage());
+				LOGGER.warning("Unexpected ClassCastException in " + customComponent + ": " + e.getMessage());
 				// e.printStackTrace();
 			}
 
@@ -346,8 +346,8 @@ public class FIBCustomWidget<J extends JComponent, T> extends FIBWidgetView<FIBC
 
 	@Override
 	public void fireApplyPerformed() {
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("fireApplyPerformed() in FIBCustomWidget, value=" + customComponent.getEditedObject());
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("fireApplyPerformed() in FIBCustomWidget, value=" + customComponent.getEditedObject());
 		}
 		// In this case, we force model updating
 		updateModelFromWidget(true);

@@ -36,7 +36,7 @@ import org.openflexo.fib.model.FIBContainer;
 
 public abstract class FIBContainerView<M extends FIBContainer, J extends JComponent, T> extends FIBView<M, J, T> {
 
-	private static final Logger logger = Logger.getLogger(FIBContainerView.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(FIBContainerView.class.getPackage().getName());
 
 	private Vector<JComponent> subComponents;
 	private Hashtable<JComponent, Object> constraints;
@@ -90,7 +90,7 @@ public abstract class FIBContainerView<M extends FIBContainer, J extends JCompon
 	protected void addJComponent(JComponent c) {
 		// logger.info("addJComponent constraints=" + c);
 		Object constraint = constraints.get(c);
-		logger.fine(getComponent() + ": addJComponent " + c + " constraint=" + constraint);
+		LOGGER.fine(getComponent() + ": addJComponent " + c + " constraint=" + constraint);
 		if (constraint == null) {
 			getJComponent().add(c);
 		} else {
@@ -212,7 +212,7 @@ public abstract class FIBContainerView<M extends FIBContainer, J extends JCompon
 	}
 
 	protected void registerComponentWithConstraints(JComponent component, Object constraint, int index) {
-		logger.fine("Register component: " + component + " constraint=" + constraint);
+		LOGGER.fine("Register component: " + component + " constraint=" + constraint);
 		if (index < 0 || index > subComponents.size()) {
 			index = subComponents.size();
 		}

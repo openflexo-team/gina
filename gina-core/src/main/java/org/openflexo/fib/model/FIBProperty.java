@@ -38,7 +38,7 @@ import org.openflexo.model.annotations.PropertyIdentifier;
  */
 public class FIBProperty<T> {
 
-	private static final Logger logger = Logger.getLogger(FIBProperty.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(FIBProperty.class.getPackage().getName());
 
 	public static void main(String[] args) {
 		System.out.println("Hop: " + getFIBProperty(FIBModelObject.class, FIBModelObject.NAME_KEY));

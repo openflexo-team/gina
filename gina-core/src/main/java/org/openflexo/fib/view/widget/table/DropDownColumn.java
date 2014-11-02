@@ -49,7 +49,7 @@ import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBDropDownColumn;
 
 public class DropDownColumn<T, V> extends AbstractColumn<T, V> implements EditableColumn<T, V> {
-	static final Logger logger = Logger.getLogger(DropDownColumn.class.getPackage().getName());
+	static final Logger LOGGER = Logger.getLogger(DropDownColumn.class.getPackage().getName());
 
 	private final DropDownCellRenderer _cellRenderer;
 
@@ -92,7 +92,7 @@ public class DropDownColumn<T, V> extends AbstractColumn<T, V> implements Editab
 			}
 		}
 
-		logger.warning("Could not determine value class");
+		LOGGER.warning("Could not determine value class");
 		return (Class<V>) Object.class;
 	}
 
@@ -187,7 +187,7 @@ public class DropDownColumn<T, V> extends AbstractColumn<T, V> implements Editab
 				}
 				return list;
 			} catch (ClassCastException e) {
-				logger.warning("ClassCastException " + e.getMessage());
+				LOGGER.warning("ClassCastException " + e.getMessage());
 			}
 		}
 
@@ -202,7 +202,7 @@ public class DropDownColumn<T, V> extends AbstractColumn<T, V> implements Editab
 				return list;
 			}
 		}
-		logger.warning("Could not access element list");
+		LOGGER.warning("Could not access element list");
 		return null;
 	}
 
