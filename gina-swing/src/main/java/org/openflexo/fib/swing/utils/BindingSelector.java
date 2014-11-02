@@ -90,7 +90,7 @@ import org.openflexo.toolbox.StringUtils;
  */
 public class BindingSelector extends TextFieldCustomPopup<DataBinding> implements FIBCustomComponent<DataBinding, BindingSelector>,
 		Observer, PropertyChangeListener {
-	static final Logger logger = Logger.getLogger(BindingSelector.class.getPackage().getName());
+	static final Logger LOGGER = Logger.getLogger(BindingSelector.class.getPackage().getName());
 
 	private DataBinding _revertBindingValue;
 
@@ -111,8 +111,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		public boolean dispatchKeyEvent(KeyEvent e) {
 
 			if (e.getID() == KeyEvent.KEY_TYPED && (e.getKeyChar() == KeyEvent.VK_TAB)) {
-				if (logger.isLoggable(Level.FINE)) {
-					logger.fine("Calling tab pressed " + e);
+				if (LOGGER.isLoggable(Level.FINE)) {
+					LOGGER.fine("Calling tab pressed " + e);
 				}
 				getCustomPanel().processTabPressed();
 				e.consume();
@@ -158,8 +158,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			public void focusLost(FocusEvent focusEvent) {
 				KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(tabDispatcher);
 				Component opposite = focusEvent.getOppositeComponent();
-				if (logger.isLoggable(Level.FINER)) {
-					logger.finer("focus lost for " + (opposite != null ? SwingUtils.getComponentPath(opposite) : "null"));
+				if (LOGGER.isLoggable(Level.FINER)) {
+					LOGGER.finer("focus lost for " + (opposite != null ? SwingUtils.getComponentPath(opposite) : "null"));
 				}
 				if (opposite == null || !SwingUtilities.isDescendingFrom(opposite, BindingSelector.this)
 						&& !SwingUtilities.isDescendingFrom(opposite, _selectorPanel)) {
@@ -331,14 +331,14 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			if (newEditedBinding != null) {
 				// logger.info("Decoding binding as " + newEditedBinding + " valid=" + newEditedBinding.isValid());
 				if (newEditedBinding.isValid()) {
-					if (logger.isLoggable(Level.FINE)) {
-						logger.fine("Decoded as VALID binding: " + newEditedBinding);
+					if (LOGGER.isLoggable(Level.FINE)) {
+						LOGGER.fine("Decoded as VALID binding: " + newEditedBinding);
 					}
 					getTextField().setForeground(defaultForeground);
 					getTextField().setSelectedTextColor(defaultSelectedColor);
 					if (!newEditedBinding.equals(getEditedObject())) {
-						if (logger.isLoggable(Level.FINE)) {
-							logger.fine("This is a new one, i take this");
+						if (LOGGER.isLoggable(Level.FINE)) {
+							LOGGER.fine("This is a new one, i take this");
 						}
 						setEditedObject(newEditedBinding);
 						fireEditedObjectChanged();
@@ -347,14 +347,14 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 						// Anyway, in case of it is the same object, but with changes, we always fire fireEditedObjectChanged()
 						checkIfDisplayModeShouldChange(newEditedBinding, true);
 						fireEditedObjectChanged();
-						if (logger.isLoggable(Level.FINE)) {
-							logger.fine("Skipping as it represents the same binding");
+						if (LOGGER.isLoggable(Level.FINE)) {
+							LOGGER.fine("Skipping as it represents the same binding");
 						}
 						return;
 					}
 				} else {
-					if (logger.isLoggable(Level.FINE)) {
-						logger.fine("Decoded as INVALID binding: " + newEditedBinding + " trying to synchronize panel");
+					if (LOGGER.isLoggable(Level.FINE)) {
+						LOGGER.fine("Decoded as INVALID binding: " + newEditedBinding + " trying to synchronize panel");
 					}
 					getTextField().setForeground(Color.RED);
 					getTextField().setSelectedTextColor(Color.RED);
@@ -366,10 +366,10 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			}
 
 			else {
-				if (logger.isLoggable(Level.FINE)) {
-					logger.fine("Couldn't decode as binding, trying to synchronize panel anyway");
+				if (LOGGER.isLoggable(Level.FINE)) {
+					LOGGER.fine("Couldn't decode as binding, trying to synchronize panel anyway");
 				}
-				logger.info("Couldn't decode as binding, trying to synchronize panel anyway");
+				LOGGER.info("Couldn't decode as binding, trying to synchronize panel anyway");
 				getTextField().setForeground(Color.RED);
 				getTextField().setSelectedTextColor(Color.RED);
 				if (_selectorPanel != null) {
@@ -478,16 +478,16 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			newEditionMode = EditionMode.NORMAL_BINDING;
 		}
 
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("DISPLAY_MODE was: " + oldEditionMode + " is now " + newEditionMode);
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("DISPLAY_MODE was: " + oldEditionMode + " is now " + newEditionMode);
 		}
 
 		boolean editedObjectChanged = false;
 
 		// Should i change edited object ???
 		if (getEditedObject() != newDataBinding && setValueAsNewEditedValue) {
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Switching edited object from " + _editedObject + " to " + newDataBinding);
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("Switching edited object from " + _editedObject + " to " + newDataBinding);
 			}
 			_editedObject = newDataBinding;
 			editedObjectChanged = true;
@@ -649,8 +649,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 
 	public void activateCompoundBindingMode() {
 
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("ActivateCompoundBindingMode() getEditedObject()=" + getEditedObject() + " editionMode=" + editionMode
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("ActivateCompoundBindingMode() getEditedObject()=" + getEditedObject() + " editionMode=" + editionMode
 					+ " popupIsShown()=" + popupIsShown() + " _selectorPanel=" + _selectorPanel);
 		}
 		if (_selectorPanel != null && editionMode != EditionMode.COMPOUND_BINDING) {
@@ -674,8 +674,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 	}
 
 	public void activateNormalBindingMode() {
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("activateNormalBindingMode()");
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("activateNormalBindingMode()");
 		}
 		if (_selectorPanel != null && editionMode != EditionMode.NORMAL_BINDING) {
 			editionMode = EditionMode.NORMAL_BINDING;
@@ -699,8 +699,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 	}
 
 	public void activateBindingExpressionMode(/*Expression bindingExpression*/) {
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("activateBindingExpressionMode()");
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("activateBindingExpressionMode()");
 		}
 		if (_selectorPanel != null) {
 			editionMode = EditionMode.BINDING_EXPRESSION;
@@ -788,8 +788,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 
 	@Override
 	public void updateCustomPanel(DataBinding editedObject) {
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("updateCustomPanel() with " + editedObject);
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("updateCustomPanel() with " + editedObject);
 		}
 		if (_selectorPanel != null) {
 			// logger.info("Updating custom panel with " + editedObject.getExpression());
@@ -802,7 +802,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 					getLabel().setIcon(UtilsIconLibrary.OK_ICON);
 				} else {
 					Bindable owner = editedObject.getOwner();
-					logger.info("Binding not valid: " + editedObject + " reason=" + editedObject.invalidBindingReason());
+					LOGGER.info("Binding not valid: " + editedObject + " reason=" + editedObject.invalidBindingReason());
 					/*if (editedObject.isBindingValue()) {
 						BindingValue bv = (BindingValue) (editedObject.getExpression());
 						System.out.println("BV=" + bv);
@@ -855,8 +855,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 
 	@CustomComponentParameter(name = "bindable", type = CustomComponentParameter.Type.MANDATORY)
 	public void setBindable(Bindable bindable) {
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("setBindable with " + bindable);
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("setBindable with " + bindable);
 		}
 		unregisterListenerForBindable();
 		_bindable = bindable;
@@ -904,7 +904,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 	public void update(Observable observable, Object notification) {
 		if (observable == _bindable) {
 			if (notification instanceof BindingModelChanged) {
-				logger.fine("Refreshing Binding Model");
+				LOGGER.fine("Refreshing Binding Model");
 				refreshBindingModel();
 			}
 		}
@@ -925,7 +925,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 				((BindingValueSelectorPanel) _selectorPanel).updateListModels();
 			}
 
-			logger.fine("Refreshing Binding Model");
+			LOGGER.fine("Refreshing Binding Model");
 			refreshBindingModel();
 		} /*else if (evt.getPropertyName().equals(BindingDefinitionTypeChanged.BINDING_DEFINITION_TYPE_CHANGED)) {
 			logger.fine("Updating BindingDefinition type");
@@ -1063,7 +1063,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 	void recreateBindingValue() {
 		getEditedObject().setExpression(makeBinding());
 		fireEditedObjectChanged();
-		logger.info("Recreating Binding with mode " + editionMode + " as " + getEditedObject());
+		LOGGER.info("Recreating Binding with mode " + editionMode + " as " + getEditedObject());
 	}
 
 	Bindable _bindable;
@@ -1112,7 +1112,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			// The goal here is to retrieve the same state of textfield before opening the panel
 			// Basically we request the focus, but just before to do it, we save textfield selection parameters
 
-			logger.info("Request focus in " + getTextField());
+			LOGGER.info("Request focus in " + getTextField());
 
 			// We should embedd all this code in an InvokeLater block, because we should do all this stuff after the
 			// EventDispatchThread has processed the popup windiw opening

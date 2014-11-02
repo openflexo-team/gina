@@ -20,7 +20,7 @@ import org.openflexo.rm.ResourceLocator;
 @SuppressWarnings("serial")
 public class LocalizedPanel extends FIBJPanel<LocalizedDelegate> {
 
-	private static final Logger logger = Logger.getLogger(LocalizedPanel.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(LocalizedPanel.class.getPackage().getName());
 
 	public static Resource lOCALIZED_PANEL_FIB = ResourceLocator.locateResource("Fib/LocalizedPanel.fib");
 
@@ -89,7 +89,7 @@ public class LocalizedPanel extends FIBJPanel<LocalizedDelegate> {
 		if (getEditedObject() instanceof LocalizedDelegateImpl) {
 			((LocalizedDelegateImpl) getEditedObject()).saveAllDictionaries();
 		} else {
-			logger.warning("save localized not implemented");
+			LOGGER.warning("save localized not implemented");
 		}
 	}
 

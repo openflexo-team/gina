@@ -50,7 +50,7 @@ import javax.swing.table.TableColumn;
  */
 public class TabularPanel extends JPanel implements TableModelListener, ListSelectionListener, Observer {
 
-	protected static final Logger logger = Logger.getLogger(TabularPanel.class.getPackage().getName());
+	protected static final Logger LOGGER = Logger.getLogger(TabularPanel.class.getPackage().getName());
 
 	protected JTable _table;
 
@@ -131,27 +131,27 @@ public class TabularPanel extends JPanel implements TableModelListener, ListSele
 
 					if (e.getClickCount() == 2) {
 						if (_model.isCellEditable(row, col)) {
-							if (logger.isLoggable(Level.FINE)) {
-								if (logger.isLoggable(Level.FINE)) {
-									logger.fine("Double-click detected in a editable cell. Do nothing !");
+							if (LOGGER.isLoggable(Level.FINE)) {
+								if (LOGGER.isLoggable(Level.FINE)) {
+									LOGGER.fine("Double-click detected in a editable cell. Do nothing !");
 								}
 							}
 						} else if (row > -1 && row < _model.getRowCount()) {
-							if (logger.isLoggable(Level.FINE)) {
-								if (logger.isLoggable(Level.FINE)) {
-									logger.fine("Double-click detected in a NON-editable cell. Select !");
+							if (LOGGER.isLoggable(Level.FINE)) {
+								if (LOGGER.isLoggable(Level.FINE)) {
+									LOGGER.fine("Double-click detected in a NON-editable cell. Select !");
 								}
 							}
 						}
 					} else if (e.getClickCount() == 1) {
-						if (logger.isLoggable(Level.FINE)) {
-							if (logger.isLoggable(Level.FINE)) {
-								logger.fine("Simple-click detected !");
+						if (LOGGER.isLoggable(Level.FINE)) {
+							if (LOGGER.isLoggable(Level.FINE)) {
+								LOGGER.fine("Simple-click detected !");
 							}
 						}
 						if (_table.getEditingRow() > -1 && _table.getEditingRow() != row) {
-							if (logger.isLoggable(Level.INFO)) {
-								logger.info("Change row where edition was started, fire stop editing !");
+							if (LOGGER.isLoggable(Level.INFO)) {
+								LOGGER.info("Change row where edition was started, fire stop editing !");
 							}
 							TableCellEditor cellEditor = _model.columnAt(col).getCellEditor();
 							if (cellEditor != null) {
@@ -216,8 +216,8 @@ public class TabularPanel extends JPanel implements TableModelListener, ListSele
 			return;
 		}
 
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("valueChanged() ListSelectionEvent=" + e + " ListSelectionModel=" + _listSelectionModel.toString());
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("valueChanged() ListSelectionEvent=" + e + " ListSelectionModel=" + _listSelectionModel.toString());
 		}
 		_selectedObjectsNeedsRecomputing = true;
 
@@ -262,8 +262,8 @@ public class TabularPanel extends JPanel implements TableModelListener, ListSele
 	 */
 	@Override
 	public void update(Observable o, Object dataModification) {
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("update received in TabularPanel for " + o + " dataModification=" + dataModification);
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("update received in TabularPanel for " + o + " dataModification=" + dataModification);
 		}
 		_model.fireTableDataChanged();
 	}
@@ -278,8 +278,8 @@ public class TabularPanel extends JPanel implements TableModelListener, ListSele
 	public void tableChanged(TableModelEvent e) {
 		if (e instanceof AbstractModel.ModelObjectHasChanged) {
 			AbstractModel.ModelObjectHasChanged event = (AbstractModel.ModelObjectHasChanged) e;
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Model has changed from " + event.getOldModel() + " to " + event.getNewModel());
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("Model has changed from " + event.getOldModel() + " to " + event.getNewModel());
 			}
 			if (event.getOldModel() != null) {
 				event.getOldModel().deleteObserver(this);
@@ -291,8 +291,8 @@ public class TabularPanel extends JPanel implements TableModelListener, ListSele
 			AbstractModel.SelectObjectEvent event = (AbstractModel.SelectObjectEvent) e;
 			selectObject(event.getSelectedObject());
 		} else if (e instanceof AbstractModel.RowMoveForObjectEvent) {
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Reselect object, and then the edited cell");
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("Reselect object, and then the edited cell");
 			}
 			AbstractModel.RowMoveForObjectEvent event = (AbstractModel.RowMoveForObjectEvent) e;
 			selectObject(event.getEditedObject());

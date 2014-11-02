@@ -18,7 +18,7 @@ import org.openflexo.localization.LocalizedDelegateImpl;
 @SuppressWarnings("serial")
 public class LocalizedEditor extends JDialog {
 
-	private static final Logger logger = Logger.getLogger(LocalizedEditor.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(LocalizedEditor.class.getPackage().getName());
 
 	private final LocalizedPanel localizedPanel;
 	private final LocalizedDelegate localizedToEdit;
@@ -50,7 +50,7 @@ public class LocalizedEditor extends JDialog {
 		if (localizedToEdit instanceof LocalizedDelegateImpl) {
 			((LocalizedDelegateImpl) localizedToEdit).saveAllDictionaries();
 		} else {
-			logger.warning("save localized not implemented");
+			LOGGER.warning("save localized not implemented");
 		}
 	}
 

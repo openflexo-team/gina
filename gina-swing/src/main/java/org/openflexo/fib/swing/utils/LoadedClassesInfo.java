@@ -41,7 +41,7 @@ import org.openflexo.toolbox.StringUtils;
 
 public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
-	private static final Logger logger = Logger.getLogger(LoadedClassesInfo.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(LoadedClassesInfo.class.getPackage().getName());
 
 	static ClassLoader appLoader = ClassLoader.getSystemClassLoader();
 	static ClassLoader currentLoader = LoadedClassesInfo.class.getClassLoader();
@@ -149,19 +149,19 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 	private ClassInfo registerClass(Class c) {
 		if (c.getPackage() == null) {
-			logger.warning("No package for class " + c);
+			LOGGER.warning("No package for class " + c);
 			return null;
 		}
 
 		PackageInfo p = registerPackage(c.getPackage());
 
-		logger.fine("Register class " + c);
+		LOGGER.fine("Register class " + c);
 
 		if (!c.isMemberClass() && !c.isAnonymousClass() && !c.isLocalClass()) {
 			ClassInfo returned = p.classes.get(c);
 			if (returned == null) {
 				p.classes.put(c, returned = new ClassInfo(c));
-				logger.fine("Store " + returned + " in package " + p.packageName);
+				LOGGER.fine("Store " + returned + " in package " + p.packageName);
 			}
 			return returned;
 		} else if (c.isMemberClass()) {
@@ -243,7 +243,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 				Matcher matcher = pattern.matcher(packageName);
 				return !matcher.find();
 			} catch (PatternSyntaxException e) {
-				logger.warning("PatternSyntaxException: " + patternString);
+				LOGGER.warning("PatternSyntaxException: " + patternString);
 				return false;
 			}
 		}
@@ -284,7 +284,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 			packageName = aClass.getPackage().getName();
 			fullQualifiedName = aClass.getName();
 			clazz = aClass;
-			logger.fine("Instanciate new ClassInfo for " + aClass);
+			LOGGER.fine("Instanciate new ClassInfo for " + aClass);
 		}
 
 		@Override
@@ -302,7 +302,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 			if (returned == null) {
 				memberClasses.put(c, returned = new ClassInfo(c));
 				needsReordering = true;
-				logger.fine(toString() + ": declare member: " + returned);
+				LOGGER.fine(toString() + ": declare member: " + returned);
 			}
 			return returned;
 		}
@@ -393,14 +393,14 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		try {
 			Class foundClass = Class.forName(getFilteredPackageName() + "." + filteredClassName);
 			foundClasses.add(foundClass);
-			logger.info("Found class " + foundClass);
+			LOGGER.info("Found class " + foundClass);
 		} catch (ClassNotFoundException e) {
 		}
 		for (Package p : packages.keySet()) {
 			try {
 				Class foundClass = Class.forName(p.getName() + "." + filteredClassName);
 				foundClasses.add(foundClass);
-				logger.info("Found class " + foundClass);
+				LOGGER.info("Found class " + foundClass);
 			} catch (ClassNotFoundException e) {
 			}
 		}
@@ -440,7 +440,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 					}
 				}
 			} catch (PatternSyntaxException e) {
-				logger.warning("PatternSyntaxException: " + patternString);
+				LOGGER.warning("PatternSyntaxException: " + patternString);
 			}
 			if (matchingClasses.size() == 1) {
 				setSelectedClassInfo(matchingClasses.firstElement());
@@ -461,7 +461,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 	public void setSelectedClassInfo(ClassInfo selectedClassInfo) {
 		if (selectedClassInfo != this.selectedClassInfo) {
 			ClassInfo oldSelectedClassInfo = this.selectedClassInfo;
-			logger.info("setSelectedClassInfo with " + selectedClassInfo);
+			LOGGER.info("setSelectedClassInfo with " + selectedClassInfo);
 			this.selectedClassInfo = selectedClassInfo;
 			// if (selectedClassInfo != null) setFilteredClassName(selectedClassInfo.className);
 			pcSupport.firePropertyChange("selectedClassInfo", oldSelectedClassInfo, selectedClassInfo);

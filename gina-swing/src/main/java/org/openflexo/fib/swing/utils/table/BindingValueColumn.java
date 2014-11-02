@@ -37,7 +37,7 @@ import org.openflexo.fib.swing.utils.BindingSelector;
  */
 public abstract class BindingValueColumn<D> extends CustomColumn<D, DataBinding> {
 
-	protected static final Logger logger = Logger.getLogger(BindingValueColumn.class.getPackage().getName());
+	protected static final Logger LOGGER = Logger.getLogger(BindingValueColumn.class.getPackage().getName());
 
 	private Map<DataBinding, BindingSelector> viewSelectors;
 
@@ -72,8 +72,8 @@ public abstract class BindingValueColumn<D> extends CustomColumn<D, DataBinding>
 			}*/
 			selector.setBindable(getBindableFor(value, rowObject));
 			// selector.setBindingDefinition(getBindingDefinitionFor(value, rowObject));
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Selector: " + selector.toString() + " rowObject=" + rowObject + "" + " binding=" + value
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("Selector: " + selector.toString() + " rowObject=" + rowObject + "" + " binding=" + value
 						+ " with BindingDefinition " + getBindingDefinitionFor(value, rowObject));
 			}
 		}

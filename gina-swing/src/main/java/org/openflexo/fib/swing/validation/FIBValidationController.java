@@ -23,7 +23,7 @@ import org.openflexo.model.validation.ValidationWarning;
 
 public class FIBValidationController extends FIBController {
 
-	static final Logger logger = Logger.getLogger(FIBValidationController.class.getPackage().getName());
+	static final Logger LOGGER = Logger.getLogger(FIBValidationController.class.getPackage().getName());
 
 	private ValidationIssue<?, ?> selectedValidationIssue;
 
