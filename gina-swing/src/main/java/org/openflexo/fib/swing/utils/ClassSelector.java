@@ -43,7 +43,7 @@ import org.openflexo.swing.TextFieldCustomPopup;
  */
 public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCustomComponent<Class, ClassSelector> {
 	@SuppressWarnings("hiding")
-	static final Logger logger = Logger.getLogger(ClassSelector.class.getPackage().getName());
+	static final Logger LOGGER = Logger.getLogger(ClassSelector.class.getPackage().getName());
 
 	public static Resource FIB_FILE_NAME = ResourceLocator.getResourceLocator().locateResource("Fib/ClassSelector.fib");
 
@@ -82,8 +82,8 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 		} else {
 			_revertValue = null;
 		}
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("Sets revert value to " + _revertValue);
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("Sets revert value to " + _revertValue);
 		}
 	}
 
@@ -188,8 +188,8 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 
 	@Override
 	public void cancel() {
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("CANCEL: revert to " + getRevertValue());
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("CANCEL: revert to " + getRevertValue());
 		}
 		setEditedObject(getRevertValue());
 		closePopup();

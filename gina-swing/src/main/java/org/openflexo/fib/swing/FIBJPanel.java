@@ -51,7 +51,7 @@ import org.openflexo.toolbox.HasPropertyChangeSupport;
 public abstract class FIBJPanel<T> extends JPanel implements FIBCustomComponent<T, FIBJPanel<T>>, HasPropertyChangeSupport {
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(FIBJPanel.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(FIBJPanel.class.getPackage().getName());
 
 	private final Vector<ApplyCancelListener> applyCancelListener;
 

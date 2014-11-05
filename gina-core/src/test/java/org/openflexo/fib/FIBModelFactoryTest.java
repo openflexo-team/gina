@@ -37,7 +37,7 @@ import org.openflexo.test.OrderedRunner;
  */
 public class FIBModelFactoryTest {
 
-	private static final Logger logger = FlexoLogger.getLogger(FIBModelFactoryTest.class.getPackage().getName());
+	private static final Logger LOGGER = FlexoLogger.getLogger(FIBModelFactoryTest.class.getPackage().getName());
 
 	@Test
 	public void testInstanciateFIBModelFactory() {

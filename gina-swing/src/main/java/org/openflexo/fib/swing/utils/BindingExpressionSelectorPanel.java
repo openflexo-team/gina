@@ -117,8 +117,8 @@ public class BindingExpressionSelectorPanel extends AbstractBindingSelectorPanel
 			_bindingSelector._editedObject = _bindingSelector.makeBindingExpression();
 		}*/
 
-		if (BindingSelector.logger.isLoggable(Level.FINE)) {
-			BindingSelector.logger.fine("init() called in BindingExpressionSelectorPanel with " + bindingSelector.getEditedObject()
+		if (BindingSelector.LOGGER.isLoggable(Level.FINE)) {
+			BindingSelector.LOGGER.fine("init() called in BindingExpressionSelectorPanel with " + bindingSelector.getEditedObject()
 					+ " expression=" + bindingSelector.getEditedObject().getExpression());
 		}
 
@@ -181,8 +181,8 @@ public class BindingExpressionSelectorPanel extends AbstractBindingSelectorPanel
 
 	@Override
 	protected void update() {
-		if (BindingSelector.logger.isLoggable(Level.FINE)) {
-			BindingSelector.logger.fine("update() called for BindingExpressionSelectorPanel");
+		if (BindingSelector.LOGGER.isLoggable(Level.FINE)) {
+			BindingSelector.LOGGER.fine("update() called for BindingExpressionSelectorPanel");
 		}
 
 		/*if (_bindingSelector.getEditedObject() != null && !(_bindingSelector.getEditedObject() instanceof BindingExpression)) {

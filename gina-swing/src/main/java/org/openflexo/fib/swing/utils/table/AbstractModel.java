@@ -45,7 +45,7 @@ import org.openflexo.fib.view.widget.table.EditableColumn;
  */
 public abstract class AbstractModel<M extends Observable, D> extends DefaultTableModel implements Observer {
 
-	private static final Logger logger = Logger.getLogger(AbstractModel.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(AbstractModel.class.getPackage().getName());
 
 	private M _model;
 
@@ -67,8 +67,8 @@ public abstract class AbstractModel<M extends Observable, D> extends DefaultTabl
 	}
 
 	public void setModel(M model) {
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("Set model for " + getClass().getName() + " with " + model);
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("Set model for " + getClass().getName() + " with " + model);
 		}
 		M oldModel = _model;
 		_model = model;
@@ -186,8 +186,8 @@ public abstract class AbstractModel<M extends Observable, D> extends DefaultTabl
 	@Override
 	public void fireTableDataChanged() {
 		super.fireTableDataChanged();
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("fireTableDataChanged() in " + getClass().getName() + " " + hashCode());
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("fireTableDataChanged() in " + getClass().getName() + " " + hashCode());
 		}
 		updateObservedObjects();
 	}
@@ -213,8 +213,8 @@ public abstract class AbstractModel<M extends Observable, D> extends DefaultTabl
 	public void update(Observable observable, Object dataModification) {
 		int row = indexOf((D) observable);
 		fireTableRowsUpdated(row, row);
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("Update row " + row + " for object " + observable);
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("Update row " + row + " for object " + observable);
 		}
 	}
 
@@ -256,8 +256,8 @@ public abstract class AbstractModel<M extends Observable, D> extends DefaultTabl
 	public void replaceColumnByColumn(AbstractColumn<D, ?> oldColumn, AbstractColumn<D, ?> newColumn) {
 		int index = _columns.indexOf(oldColumn);
 		if (index < 0) {
-			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Try to replaced a inexisting column. Not going further.");
+			if (LOGGER.isLoggable(Level.WARNING)) {
+				LOGGER.warning("Try to replaced a inexisting column. Not going further.");
 			}
 			return;
 		}

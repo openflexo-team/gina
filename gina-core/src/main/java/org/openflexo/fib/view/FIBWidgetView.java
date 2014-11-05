@@ -62,7 +62,7 @@ import org.openflexo.toolbox.ToolBox;
 public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T> extends FIBView<M, J, T> implements FocusListener,
 		PropertyChangeListener /*, HasDependencyBinding*/{
 
-	private static final Logger logger = Logger.getLogger(FIBWidgetView.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(FIBWidgetView.class.getPackage().getName());
 
 	public static final int META_MASK = ToolBox.getPLATFORM() == ToolBox.MACOS ? InputEvent.META_MASK : InputEvent.CTRL_MASK;
 
@@ -198,16 +198,16 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 
 	@Override
 	public void focusGained(FocusEvent event) {
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("focusGained()");
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("focusGained()");
 		}
 		gainFocus();
 	}
 
 	@Override
 	public void focusLost(FocusEvent event) {
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("focusLost()");
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("focusLost()");
 		}
 
 		if (event.getOppositeComponent() != null && SwingUtilities.isDescendingFrom(event.getOppositeComponent(), getJComponent())) {
@@ -224,14 +224,14 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 			if (getController().getFocusedWidget() != null && getController().getFocusedWidget()._hasFocus == true) {
 				getController().getFocusedWidget().looseFocus();
 			}
-			logger.fine("Getting focus: " + getWidget());
+			LOGGER.fine("Getting focus: " + getWidget());
 			_hasFocus = true;
 			getController().setFocusedWidget(this);
 		}
 	}
 
 	public void looseFocus() {
-		logger.fine("Loosing focus: " + getWidget());
+		LOGGER.fine("Loosing focus: " + getWidget());
 		if (!modelUpdating && !isDeleted()) {
 			updateModelFromWidget();
 		}
@@ -282,13 +282,13 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 			setData(returned);
 			return returned;
 		} catch (TypeMismatchException e) {
-			logger.warning("Widget " + getWidget() + " TypeMismatchException: " + e.getMessage());
+			LOGGER.warning("Widget " + getWidget() + " TypeMismatchException: " + e.getMessage());
 			return null;
 		} catch (NullReferenceException e) {
 			// logger.warning("Widget " + getWidget() + " NullReferenceException: " + e.getMessage());
 			return null;
 		} catch (InvocationTargetException e) {
-			logger.warning("Widget " + getWidget() + " InvocationTargetException: " + e.getMessage());
+			LOGGER.warning("Widget " + getWidget() + " InvocationTargetException: " + e.getMessage());
 			return null;
 		}
 
@@ -308,13 +308,13 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 			try {
 				aValue = (T) getWidget().getValueTransform().getBindingValue(getValueBindingContext(aValue));
 			} catch (TypeMismatchException e) {
-				logger.warning("Unexpected TypeMismatchException while evaluating " + getWidget().getValueTransform() + e.getMessage());
+				LOGGER.warning("Unexpected TypeMismatchException while evaluating " + getWidget().getValueTransform() + e.getMessage());
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				logger.warning("Unexpected NullReferenceException while evaluating " + getWidget().getValueTransform() + e.getMessage());
+				LOGGER.warning("Unexpected NullReferenceException while evaluating " + getWidget().getValueTransform() + e.getMessage());
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				logger.warning("Unexpected InvocationTargetException while evaluating " + getWidget().getValueTransform() + e.getMessage());
+				LOGGER.warning("Unexpected InvocationTargetException while evaluating " + getWidget().getValueTransform() + e.getMessage());
 				e.printStackTrace();
 			}
 			if (!equals(old, aValue)) {
@@ -333,13 +333,13 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 			try {
 				object = getWidget().getValueValidator().getBindingValue(getValueBindingContext(aValue));
 			} catch (TypeMismatchException e) {
-				logger.warning("Unexpected TypeMismatchException while evaluating " + getWidget().getValueValidator() + e.getMessage());
+				LOGGER.warning("Unexpected TypeMismatchException while evaluating " + getWidget().getValueValidator() + e.getMessage());
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				logger.warning("Unexpected NullReferenceException while evaluating " + getWidget().getValueValidator() + e.getMessage());
+				LOGGER.warning("Unexpected NullReferenceException while evaluating " + getWidget().getValueValidator() + e.getMessage());
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				logger.warning("Unexpected InvocationTargetException while evaluating " + getWidget().getValueValidator() + e.getMessage());
+				LOGGER.warning("Unexpected InvocationTargetException while evaluating " + getWidget().getValueValidator() + e.getMessage());
 				e.printStackTrace();
 			}
 			if (object == null) {
@@ -370,7 +370,7 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				logger.warning("Unexpected " + e + " cannot setValue() with " + getWidget().getData() + " and value " + aValue
+				LOGGER.warning("Unexpected " + e + " cannot setValue() with " + getWidget().getData() + " and value " + aValue
 						+ " message=" + e.getMessage());
 				// e.printStackTrace();
 			} catch (InvocationTargetException e) {
@@ -565,7 +565,7 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 					v.update();
 				}
 			} else {
-				logger.warning("Cannot find FIBView for component " + c);
+				LOGGER.warning("Cannot find FIBView for component " + c);
 			}
 		}
 		// logger.info("END updateDependancies() for " + getWidget());
@@ -807,7 +807,7 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 		if (isComponentEnabled()) {
 			if (!enabled) {
 				// Becomes enabled
-				logger.fine("Component becomes enabled");
+				LOGGER.fine("Component becomes enabled");
 				// System.out.println("Component  becomes enabled "+getJComponent());
 				enableComponent(getJComponent());
 				setEnabled(true);
@@ -815,7 +815,7 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 		} else {
 			if (enabled) {
 				// Becomes disabled
-				logger.fine("Component becomes disabled");
+				LOGGER.fine("Component becomes disabled");
 				// System.out.println("Component  becomes disabled "+getJComponent());
 				disableComponent(getJComponent());
 				setEnabled(false);

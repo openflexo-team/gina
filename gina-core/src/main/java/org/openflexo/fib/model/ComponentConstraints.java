@@ -32,7 +32,7 @@ import org.openflexo.fib.model.FIBPanel.Layout;
 
 public abstract class ComponentConstraints extends Hashtable<String, String> {
 
-	static final Logger logger = Logger.getLogger(FIBComponent.class.getPackage().getName());
+	static final Logger LOGGER = Logger.getLogger(FIBComponent.class.getPackage().getName());
 
 	private static final String INDEX = "index";
 
@@ -108,7 +108,7 @@ public abstract class ComponentConstraints extends Hashtable<String, String> {
 	public String getStringValue(String key, String defaultValue) {
 		String stringValue = get(key);
 		if (stringValue == null) {
-			logger.info("Ben je trouve pas....... pourtant=" + this);
+			LOGGER.info("Ben je trouve pas....... pourtant=" + this);
 			ignoreNotif = true;
 			setStringValue(key, defaultValue);
 			ignoreNotif = false;
@@ -134,7 +134,7 @@ public abstract class ComponentConstraints extends Hashtable<String, String> {
 				return en;
 			}
 		}
-		logger.warning("Found inconsistent value '" + stringValue + "' as " + enumType);
+		LOGGER.warning("Found inconsistent value '" + stringValue + "' as " + enumType);
 		return defaultValue;
 	}
 

@@ -47,7 +47,7 @@ import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> implements LocalizationListener, HasPropertyChangeSupport {
 
-	private static final Logger logger = Logger.getLogger(FIBView.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(FIBView.class.getPackage().getName());
 
 	public static final String DATA = "data";
 	public static final String VISIBLE = "visible";
@@ -146,7 +146,7 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 
 	public void delete() {
 
-		logger.fine("@@@@@@@@@ Delete view for component " + getComponent());
+		LOGGER.fine("@@@@@@@@@ Delete view for component " + getComponent());
 
 		if (dataBindingValueChangeListener != null) {
 			dataBindingValueChangeListener.stopObserving();
@@ -161,7 +161,7 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 		if (isDeleted) {
 			return;
 		}
-		logger.fine("Delete view for component " + getComponent());
+		LOGGER.fine("Delete view for component " + getComponent());
 		if (subViews != null) {
 			for (FIBView v : subViews.values()) {
 				v.delete();
@@ -397,7 +397,7 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 					componentVisible = isVisible;
 				}
 			} catch (TypeMismatchException e) {
-				logger.warning("Unable to evaluate " + getComponent().getVisible());
+				LOGGER.warning("Unable to evaluate " + getComponent().getVisible());
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				// NullReferenceException is allowed, in this case, default visibility is true

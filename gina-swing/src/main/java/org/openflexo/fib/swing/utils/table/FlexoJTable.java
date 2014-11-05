@@ -27,7 +27,7 @@ import javax.swing.table.JTableHeader;
 
 public class FlexoJTable extends JTable {
 
-	protected static final Logger logger = Logger.getLogger(FlexoJTable.class.getPackage().getName());
+	protected static final Logger LOGGER = Logger.getLogger(FlexoJTable.class.getPackage().getName());
 
 	protected AbstractModel _model;
 

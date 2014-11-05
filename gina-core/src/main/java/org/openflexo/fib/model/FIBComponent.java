@@ -451,7 +451,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 	public static abstract class FIBComponentImpl extends FIBModelObjectImpl implements FIBComponent {
 
-		private static final Logger logger = Logger.getLogger(FIBComponent.class.getPackage().getName());
+		private static final Logger LOGGER = Logger.getLogger(FIBComponent.class.getPackage().getName());
 
 		private BindingFactory bindingFactory;
 		public static Color DISABLED_COLOR = Color.GRAY;
@@ -901,7 +901,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 		@Override
 		public void updateDynamicAccessBindingVariable() {
 			if (getDynamicAccessBindingVariable() != null) {
-				if (getDynamicAccessBindingVariable().getVariableName() != getName()) {
+				//if (getDynamicAccessBindingVariable().getVariableName() != getName()) {
+				if (! getDynamicAccessBindingVariable().getVariableName().equals(getName())) {
 					String oldName = getDynamicAccessBindingVariable().getVariableName();
 					// System.out.println("* on change le nom de la variable a " + getName());
 					getDynamicAccessBindingVariable().setVariableName(getName());
@@ -998,7 +999,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 		public void notifiedBindingChanged(DataBinding<?> binding) {
 			super.notifiedBindingChanged(binding);
 			if (binding == getData()) {
-				logger.info("notified data changed");
+				LOGGER.info("notified data changed");
 			}
 		}
 
@@ -1052,7 +1053,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 			// logger.info("Component "+this+" depends of "+aComponent);
 			if (aComponent != null) {
 				if (aComponent == this) {
-					logger.warning("Forbidden reflexive dependencies");
+					LOGGER.warning("Forbidden reflexive dependencies");
 					return;
 				}
 				// Look if this dependancy may cause a loop in dependancies
@@ -1067,13 +1068,13 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 				if (!mayDepends.contains(aComponent)) {
 					mayDepends.add(aComponent);
-					logger.fine("Component " + this + " depends of " + aComponent);
+					LOGGER.fine("Component " + this + " depends of " + aComponent);
 				}
 				if (!((FIBComponentImpl) aComponent).mayAlters.contains(this)) {
 					((FIBComponentImpl) aComponent).mayAlters.add(this);
 				}
 			} else {
-				logger.warning("Trying to test dependency against a NULL Fib Component");
+				LOGGER.warning("Trying to test dependency against a NULL Fib Component");
 			}
 		}
 
@@ -1520,7 +1521,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 						setControllerClass((Class<? extends FIBController>) myControllerClass);
 					}
 				} catch (ClassNotFoundException e) {
-					logger.warning("Could not find class " + p.getValue());
+					LOGGER.warning("Could not find class " + p.getValue());
 				}
 
 			} else {

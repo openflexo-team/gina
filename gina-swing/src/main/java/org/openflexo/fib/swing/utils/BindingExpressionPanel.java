@@ -76,7 +76,7 @@ import org.openflexo.swing.MouseOverButton;
 
 public class BindingExpressionPanel extends JPanel implements FocusListener {
 
-	static final Logger logger = Logger.getLogger(BindingExpressionPanel.class.getPackage().getName());
+	static final Logger LOGGER = Logger.getLogger(BindingExpressionPanel.class.getPackage().getName());
 
 	DataBinding<?> dataBinding;
 
@@ -588,8 +588,8 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 
 		protected ExpressionInnerPanel(Expression expression) {
 			super();
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Build new ExpressionInnerPanel with " + (expression != null ? expression.toString() : "null"));
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("Build new ExpressionInnerPanel with " + (expression != null ? expression.toString() : "null"));
 			}
 			_representedExpression = expression;
 			innerDataBinding = new DataBinding<Object>(dataBinding.getOwner(), Object.class, DataBinding.BindingDefinitionType.GET);
@@ -1019,8 +1019,8 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 				GridBagConstraints c = new GridBagConstraints();
 				setLayout(gridbag);
 
-				if (logger.isLoggable(Level.FINE)) {
-					logger.fine("Building BindingSelector with " + _representedExpression);
+				if (LOGGER.isLoggable(Level.FINE)) {
+					LOGGER.fine("Building BindingSelector with " + _representedExpression);
 				}
 				_bindingSelector = new BindingSelector(innerDataBinding) {
 					@Override
@@ -1140,8 +1140,8 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 	public void focusGained(FocusEvent e) {
 		focusReceiver = (ExpressionInnerPanel) SwingUtilities.getAncestorOfClass(ExpressionInnerPanel.class, (Component) e.getSource());
 		if (focusReceiver != null) {
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Focus gained by expression " + focusReceiver.getRepresentedExpression() + " receiver=" + focusReceiver);
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("Focus gained by expression " + focusReceiver.getRepresentedExpression() + " receiver=" + focusReceiver);
 			}
 		}
 	}
@@ -1152,8 +1152,8 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 		ExpressionInnerPanel whoLoseFocus = (ExpressionInnerPanel) SwingUtilities.getAncestorOfClass(ExpressionInnerPanel.class,
 				(Component) e.getSource());
 		if (whoLoseFocus != null) {
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Focus lost by expression " + whoLoseFocus.getRepresentedExpression() + " looser=" + whoLoseFocus);
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("Focus lost by expression " + whoLoseFocus.getRepresentedExpression() + " looser=" + whoLoseFocus);
 			}
 		}
 	}

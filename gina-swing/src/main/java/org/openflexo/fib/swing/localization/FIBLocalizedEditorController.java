@@ -30,7 +30,7 @@ import org.openflexo.toolbox.StringUtils;
  */
 public class FIBLocalizedEditorController extends FIBController {
 
-	private static final Logger logger = Logger.getLogger(FlexoLocalization.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(FlexoLocalization.class.getPackage().getName());
 
 	private SearchMode searchMode = SearchMode.Contains;
 	private String searchedString;
@@ -216,7 +216,7 @@ public class FIBLocalizedEditorController extends FIBController {
 	}
 
 	public void apply() {
-		logger.info("Applying localized to GUI");
+		LOGGER.info("Applying localized to GUI");
 		FlexoLocalization.updateGUILocalized();
 	}
 

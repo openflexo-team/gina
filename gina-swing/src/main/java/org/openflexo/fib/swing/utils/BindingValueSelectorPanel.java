@@ -106,7 +106,7 @@ import org.openflexo.toolbox.ToolBox;
 @SuppressWarnings("serial")
 public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel implements ListSelectionListener {
 
-	static final Logger logger = Logger.getLogger(BindingValueSelectorPanel.class.getPackage().getName());
+	static final Logger LOGGER= Logger.getLogger(BindingValueSelectorPanel.class.getPackage().getName());
 
 	private static final String SPECIFY_BASIC_BINDING = "specify_basic_binding";
 	private static final String SPECIFY_COMPOUND_BINDING = "specify_complex_binding";
@@ -304,8 +304,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				 */
 				@Override
 				public void setValue(Function.FunctionArgument arg, DataBinding aValue) {
-					if (logger.isLoggable(Level.FINE)) {
-						logger.fine("Sets value " + arg + " to be " + aValue);
+					if (LOGGER.isLoggable(Level.FINE)) {
+						LOGGER.fine("Sets value " + arg + " to be " + aValue);
 					}
 
 					if (arg != null && getFunctionPathElement() != null) {
@@ -470,8 +470,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 	@Override
 	protected void init() {
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("init() with " + bindingSelector.editionMode + " for " + bindingSelector.getEditedObject());
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("init() with " + bindingSelector.editionMode + " for " + bindingSelector.getEditedObject());
 		}
 
 		setLayout(new BorderLayout());
@@ -730,8 +730,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		newList.addMouseListener(typeResolver);
 
 		_lists.add(newList);
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("makeNewJList() size = " + _lists.size());
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("makeNewJList() size = " + _lists.size());
 		}
 		newList.setPrototypeCellValue("123456789012345"); // ICI
 		newList.setSize(new Dimension(100, 150));
@@ -752,8 +752,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					// Trying to update MethodCall Panel
 					JList list = (JList) e.getSource();
 					int index = _lists.indexOf(list);
-					if (logger.isLoggable(Level.FINE)) {
-						logger.fine("Click on index " + index);
+					if (LOGGER.isLoggable(Level.FINE)) {
+						LOGGER.fine("Click on index " + index);
 					}
 					if (index < 0) {
 						return;
@@ -848,8 +848,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 	}
 
 	void updateMethodCallPanel() {
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("updateMethodCallPanel with " + bindingSelector.editionMode + " binding=" + bindingSelector.getEditedObject()
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("updateMethodCallPanel with " + bindingSelector.editionMode + " binding=" + bindingSelector.getEditedObject()
 					+ " _selectedPathElementIndex=" + _selectedPathElementIndex);
 		}
 		if (bindingSelector.editionMode == EditionMode.COMPOUND_BINDING && bindingSelector.getEditedObject().isBindingValue()) {
@@ -896,8 +896,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				browserPanel.remove(scrollPanes[i]);
 			}
 		}
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("deleteJList() size = " + _lists.size());
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("deleteJList() size = " + _lists.size());
 		}
 		revalidate();
 		repaint();
@@ -961,8 +961,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 	@Override
 	protected void update() {
 		DataBinding binding = bindingSelector.getEditedObject();
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("update with " + binding);
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("update with " + binding);
 		}
 
 		// logger.info("Update in BindingValueSelectorPanel with binding " + binding);
@@ -1067,11 +1067,11 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		updateSearchedTypeLabel();
 
 		if (binding != null) {
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Binding " + binding + " isValid()=" + binding.isValid());
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("Binding " + binding + " isValid()=" + binding.isValid());
 			}
-			else if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Binding is null");
+			else if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("Binding is null");
 			}
 		}
 
@@ -1182,13 +1182,13 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 	protected BindingColumnListModel buildRootColumnListModel() {
 		if (bindingSelector.getBindingModel() != null) {
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("buildRootColumnListModel() from " + bindingSelector.getBindingModel());
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("buildRootColumnListModel() from " + bindingSelector.getBindingModel());
 			}
 			return new RootBindingColumnListModel(bindingSelector.getBindingModel());
 		}
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("buildRootColumnListModel(): EMPTY_MODEL");
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("buildRootColumnListModel(): EMPTY_MODEL");
 		}
 		return EMPTY_MODEL;
 	}
@@ -1231,7 +1231,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			_element = element;
 			_resultingType = resultingType;
 			if (resultingType == null) {
-				logger.warning("make BindingColumnElement with null type !");
+				LOGGER.warning("make BindingColumnElement with null type !");
 			}
 		}
 
@@ -1347,6 +1347,11 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		public String toString() {
 			return "BindingColumnElement/" + getLabel() + "[" + _element.toString() + "]";
 		}
+		
+		@Override
+		public int hashCode() {
+			return (_element == null?0:_element.hashCode()) + (_resultingType == null?0:_resultingType.hashCode());
+		}
 
 		@Override
 		public boolean equals(Object obj) {
@@ -1393,7 +1398,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 				}
 			}
-			logger.info("I cannot find " + element + " of " + (element != null ? element.getClass() : null));
+			LOGGER.info("I cannot find " + element + " of " + (element != null ? element.getClass() : null));
 			/*for (int i = 0; i < getSize(); i++) {
 				logger.info("Looking with " + getElementAt(i).getElement() + " of "
 						+ (getElementAt(i).getElement() != null ? getElementAt(i).getElement().getClass() : null));
@@ -1619,8 +1624,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			super();
 			_element = element;
 			_type = resultingType;
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Build NormalBindingColumnListModel for " + element + " base class=" + TypeUtils.getBaseClass(_type));
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("Build NormalBindingColumnListModel for " + element + " base class=" + TypeUtils.getBaseClass(_type));
 			}
 			_accessibleProperties = new Vector<BindingPathElement>();
 			_accessibleMethods = new Vector<BindingPathElement>();
@@ -1751,8 +1756,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 		private void updateBindingVariables() {
 			// System.out.println("*** updateBindingVariables() called in " + this);
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("BindingModel is: " + _myBindingModel + " with " + _myBindingModel.getBindingVariablesCount());
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("BindingModel is: " + _myBindingModel + " with " + _myBindingModel.getBindingVariablesCount());
 			}
 			for (BindingVariable bv : observedBindingVariables) {
 				if (bv.getPropertyChangeSupport() != null) {
@@ -1932,7 +1937,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		DataBinding dataBinding = bindingSelector.getEditedObject();
 
 		if (dataBinding == null) {
-			logger.warning("dataBinding should not be null");
+			LOGGER.warning("dataBinding should not be null");
 			return;
 		}
 
@@ -1959,8 +1964,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		}
 		int newSelectedIndex = list.getSelectedIndex();
 
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("I select something from list at index " + index + " selected=" + newSelectedIndex);
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("I select something from list at index " + index + " selected=" + newSelectedIndex);
 		}
 		if (newSelectedIndex < 0) {
 			return;
@@ -1999,8 +2004,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 	@Override
 	protected void synchronizePanelWithTextFieldValue(String textValue) {
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("Request synchronizePanelWithTextFieldValue " + textValue);
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("Request synchronizePanelWithTextFieldValue " + textValue);
 		}
 
 		try {
@@ -2043,8 +2048,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 	}
 
 	private void filterWithCurrentInput(String textValue) {
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("Try to filter for current input " + textValue);
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("Try to filter for current input " + textValue);
 		}
 
 		if (!hasBindingPathForm(textValue)) {
@@ -2173,7 +2178,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 	@Override
 	protected void processEnterPressed() {
-		logger.fine("Pressed on ENTER");
+		LOGGER.fine("Pressed on ENTER");
 
 		int index = 0;
 		if (bindingSelector.getEditedObject() != null) {
@@ -2201,13 +2206,13 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 	@Override
 	protected void processDelete() {
-		logger.fine("Pressed on DELETE");
+		LOGGER.fine("Pressed on DELETE");
 		suppressSelection();
 	}
 
 	@Override
 	protected void processBackspace() {
-		logger.fine("Pressed on BACKSPACE");
+		LOGGER.fine("Pressed on BACKSPACE");
 		if (!suppressSelection()) {
 			if (bindingSelector.getTextField().getText().length() > 0) {
 				bindingSelector.getTextField().setText(
@@ -2234,7 +2239,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 	@Override
 	protected void processTabPressed() {
-		logger.fine("Pressed on TAB, completionInfo=" + completionInfo);
+		LOGGER.fine("Pressed on TAB, completionInfo=" + completionInfo);
 		if (completionInfo != null) {
 			// System.out.println("Autocomplete !!!");
 			completionInfo.autoComplete();
@@ -2243,7 +2248,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 	@Override
 	protected void processUpPressed() {
-		logger.fine("Pressed on UP");
+		LOGGER.fine("Pressed on UP");
 
 		int index = 0;
 		if (bindingSelector.getEditedObject() != null) {
@@ -2262,7 +2267,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 	@Override
 	protected void processDownPressed() {
-		logger.fine("Pressed on DOWN");
+		LOGGER.fine("Pressed on DOWN");
 		if (!bindingSelector.popupIsShown()) {
 			bindingSelector.openPopup();
 		}
@@ -2373,13 +2378,13 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			binding.setExpression(bindingSelector.makeBinding()); // Should create a BindingValue instance !!!
 			bindingRecreated = true;
 			if (!binding.isBindingValue()) {
-				logger.severe("Should never happen: valueSelected() called for a non-BindingValue instance !");
+				LOGGER.severe("Should never happen: valueSelected() called for a non-BindingValue instance !");
 				return;
 			}
 		}
 		BindingValue bindingValue = (BindingValue) binding.getExpression();
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("Value selected: index=" + index + " list=" + list + " bindingValue=" + bindingValue);
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("Value selected: index=" + index + " list=" + list + " bindingValue=" + bindingValue);
 		}
 		BindingValueSelectorPanel.BindingColumnElement selectedValue = (BindingValueSelectorPanel.BindingColumnElement) list
 				.getSelectedValue();
@@ -2419,7 +2424,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 						+ selectedValue.getElement().getClass());
 				System.out.println("currentElement=" + currentElement + " of " + currentElement != null ? currentElement.getClass() : null);*/
 
-				logger.info("Selecting currentElement " + currentElement + " selectedValue=" + selectedValue);
+				LOGGER.info("Selecting currentElement " + currentElement + " selectedValue=" + selectedValue);
 				// if (currentElement != null) {
 				if (currentElement == null
 						|| !(currentElement instanceof FunctionPathElement)
@@ -2428,7 +2433,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 								((FunctionPathElement) selectedValue.getElement()).getFunction())) {
 					bindingSelector.disconnect();
 					Function function = ((FunctionPathElement) selectedValue.getElement()).getFunction();
-					logger.info("Selecting function " + function);
+					LOGGER.info("Selecting function " + function);
 					FunctionPathElement newFunctionPathElement = bindingSelector.getBindable().getBindingFactory()
 							.makeFunctionPathElement(bindingValue.getLastBindingPathElement(), function, new ArrayList<DataBinding<?>>());
 					// System.out.println("newFunctionPathElement=" + newFunctionPathElement);
@@ -2444,7 +2449,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 					}
 					else {
-						logger.warning("Cannot retrieve new FunctionPathElement for " + bindingValue.getLastBindingPathElement()
+						LOGGER.warning("Cannot retrieve new FunctionPathElement for " + bindingValue.getLastBindingPathElement()
 								+ " function=" + function);
 					}
 				}

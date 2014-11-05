@@ -42,7 +42,7 @@ import org.openflexo.rm.Resource;
 @SuppressWarnings("serial")
 public class FIBDialog<T> extends JDialog {
 
-	private static final Logger logger = Logger.getLogger(FIBController.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(FIBController.class.getPackage().getName());
 
 	private FIBView view;
 
@@ -54,7 +54,7 @@ public class FIBDialog<T> extends JDialog {
 			LocalizedDelegate localizer) {
 		FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(componentFile);
 		if (fibComponent == null) {
-			logger.warning("FileNotFoundException: " + componentFile.getURI());
+			LOGGER.warning("FileNotFoundException: " + componentFile.getURI());
 			return null;
 		}
 		return instanciateDialog(fibComponent, data, frame, modal, localizer);
@@ -103,7 +103,7 @@ public class FIBDialog<T> extends JDialog {
 			LocalizedDelegate localizer) {
 		FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(componentFile);
 		if (fibComponent == null) {
-			logger.warning("FileNotFoundException: " + componentFile.getURI());
+			LOGGER.warning("FileNotFoundException: " + componentFile.getURI());
 			return null;
 		}
 		return instanciateAndShowDialog(fibComponent, data, frame, modal, localizer);

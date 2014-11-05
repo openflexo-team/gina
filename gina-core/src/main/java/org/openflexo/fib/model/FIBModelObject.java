@@ -137,7 +137,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 	public static abstract class FIBModelObjectImpl implements FIBModelObject {
 
-		private static final Logger logger = Logger.getLogger(FIBModelObject.class.getPackage().getName());
+		private static final Logger LOGGER = Logger.getLogger(FIBModelObject.class.getPackage().getName());
 
 		public static final String DELETED_PROPERTY = "Deleted";
 
@@ -303,7 +303,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 		protected <T extends Object> FIBPropertyNotification<T> requireChange(String key, T value) {
 			FIBProperty<T> property = (FIBProperty<T>) FIBProperty.getFIBProperty(getClass(), key);
 			if (property == null) {
-				logger.warning("Cannot find property " + property + " in " + getClass());
+				LOGGER.warning("Cannot find property " + property + " in " + getClass());
 			}
 			T oldValue = (T) objectForKey(key);
 			if (oldValue == null) {
@@ -327,8 +327,8 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 		}
 
 		protected void hasChanged(FIBModelNotification notification) {
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Change attribute " + notification.getAttributeName() + " for object " + this + " was: "
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("Change attribute " + notification.getAttributeName() + " for object " + this + " was: "
 						+ notification.oldValue() + " is now: " + notification.newValue());
 			}
 			getPropertyChangeSupport()

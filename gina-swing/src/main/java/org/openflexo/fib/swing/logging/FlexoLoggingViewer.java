@@ -32,7 +32,7 @@ public class FlexoLoggingViewer implements HasPropertyChangeSupport {
 
 	public static ResourceLocator rl = ResourceLocator.getResourceLocator();
 
-	static final Logger logger = Logger.getLogger(FlexoLoggingViewer.class.getPackage().getName());
+	static final Logger LOGGER = Logger.getLogger(FlexoLoggingViewer.class.getPackage().getName());
 
 	public static final Resource LOGGING_VIEWER_FIB_NAME = ResourceLocator.locateResource("Fib/LoggingViewer.fib");
 
