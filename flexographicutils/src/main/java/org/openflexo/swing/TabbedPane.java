@@ -374,64 +374,67 @@ public class TabbedPane<J> {
 				for (int i = 0; i < tabs.size(); i++) {
 					J tab = tabs.get(i);
 					TabHeader tabHeader = headerComponents.get(tab);
-					if (!tabHeader.isVisible()) {
-						tabHeader.setBounds(0, 0, 0, 0);
-						selectedHeaderDone |= tabHeader == selectedHeader;
-						continue;
-					}
-					if (!moveToPopup) {
-						if (!selectedHeaderDone) {
-							if (tab != selectedTab) {
-								if (i + 2 == tabs.size()) { // in this case, we only need to put the current tab and the selected tab
-									moveToPopup = availableWidth
-											- (tabHeader.getPreferredSize().width + selectedHeader.getPreferredSize().width) < 0;
-								} else {
-									moveToPopup = availableWidth
-											- (tabHeader.getPreferredSize().width + selectedHeader.getPreferredSize().width + extraTabsButton
-													.getWidth()) < 0;
+					if(tabHeader!=null){
+						if (!tabHeader.isVisible()) {
+							tabHeader.setBounds(0, 0, 0, 0);
+							selectedHeaderDone |= tabHeader == selectedHeader;
+							continue;
+						}
+						if (!moveToPopup) {
+							if (!selectedHeaderDone) {
+								if (tab != selectedTab) {
+									if (i + 2 == tabs.size()) { // in this case, we only need to put the current tab and the selected tab
+										moveToPopup = availableWidth
+												- (tabHeader.getPreferredSize().width + selectedHeader.getPreferredSize().width) < 0;
+									} else {
+										moveToPopup = availableWidth
+												- (tabHeader.getPreferredSize().width + selectedHeader.getPreferredSize().width + extraTabsButton
+														.getWidth()) < 0;
+									}
 								}
-							}
-							if (moveToPopup) {
-								// There is not enough room to put the current tab header, the selected header and the extraTabs button
-								if (selectedHeader.getParent() != this) {
-									add(selectedHeader);
+								if (moveToPopup) {
+									// There is not enough room to put the current tab header, the selected header and the extraTabs button
+									if (selectedHeader.getParent() != this) {
+										add(selectedHeader);
+									}
+									tabs.remove(selectedTab);
+									tabs.add(i, selectedTab);
+									i++;
+									selectedHeader.setBounds(x, 0, selectedHeader.getPreferredSize().width, getHeight());
+									xBorderEnd = x;
+									xBorderStart = x + selectedHeader.getWidth();
+									selectedHeaderDone = true;
 								}
-								tabs.remove(selectedTab);
-								tabs.add(i, selectedTab);
-								i++;
-								selectedHeader.setBounds(x, 0, selectedHeader.getPreferredSize().width, getHeight());
-								xBorderEnd = x;
-								xBorderStart = x + selectedHeader.getWidth();
-								selectedHeaderDone = true;
-							}
-						} else {
-							if (i + 1 == tabs.size()) {
-								moveToPopup = availableWidth - tabHeader.getWidth() < 0;
 							} else {
-								moveToPopup = availableWidth - (tabHeader.getWidth() + extraTabsButton.getWidth()) < 0;
+								if (i + 1 == tabs.size()) {
+									moveToPopup = availableWidth - tabHeader.getWidth() < 0;
+								} else {
+									moveToPopup = availableWidth - (tabHeader.getWidth() + extraTabsButton.getWidth()) < 0;
+								}
 							}
 						}
+						if (moveToPopup) {
+							if (extraTabsButton.getParent() != this) {
+								add(extraTabsButton);
+							}
+							extraTabsButton.setSize(extraTabsButton.getWidth(), getHeight());
+							extraTabsButton.setLocation(getWidth() - extraTabsButton.getWidth(), 0);
+							extraTabsPopup.add(tabHeader);
+							extraTabsPopup.revalidate();
+						} else {
+							if (tabHeader.getParent() != this) {
+								add(tabHeader);
+							}
+							if (x > 0) {
+								x += TAB_SPACING;
+							}
+							tabHeader.setBounds(x, 0, tabHeader.getPreferredSize().width, getHeight());
+							x += tabHeader.getWidth();
+						}
+						availableWidth = getWidth() - x;
+						selectedHeaderDone |= tab == selectedTab;
 					}
-					if (moveToPopup) {
-						if (extraTabsButton.getParent() != this) {
-							add(extraTabsButton);
-						}
-						extraTabsButton.setSize(extraTabsButton.getWidth(), getHeight());
-						extraTabsButton.setLocation(getWidth() - extraTabsButton.getWidth(), 0);
-						extraTabsPopup.add(tabHeader);
-						extraTabsPopup.revalidate();
-					} else {
-						if (tabHeader.getParent() != this) {
-							add(tabHeader);
-						}
-						if (x > 0) {
-							x += TAB_SPACING;
-						}
-						tabHeader.setBounds(x, 0, tabHeader.getPreferredSize().width, getHeight());
-						x += tabHeader.getWidth();
-					}
-					availableWidth = getWidth() - x;
-					selectedHeaderDone |= tab == selectedTab;
+					
 				}
 				if (selectedHeader != null) {
 					xBorderEnd = selectedHeader.getX();
