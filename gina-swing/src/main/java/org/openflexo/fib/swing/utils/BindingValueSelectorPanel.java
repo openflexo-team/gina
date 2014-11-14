@@ -106,7 +106,7 @@ import org.openflexo.toolbox.ToolBox;
 @SuppressWarnings("serial")
 public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel implements ListSelectionListener {
 
-	static final Logger LOGGER= Logger.getLogger(BindingValueSelectorPanel.class.getPackage().getName());
+	static final Logger LOGGER = Logger.getLogger(BindingValueSelectorPanel.class.getPackage().getName());
 
 	private static final String SPECIFY_BASIC_BINDING = "specify_basic_binding";
 	private static final String SPECIFY_COMPOUND_BINDING = "specify_complex_binding";
@@ -199,11 +199,9 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 	public BindingVariable getSelectedBindingVariable() {
 		if (listAtIndex(0) != null && listAtIndex(0).getSelectedValue() != null) {
 			return (BindingVariable) ((BindingColumnElement) listAtIndex(0).getSelectedValue()).getElement();
-		}
-		else if (listAtIndex(0) != null && listAtIndex(0).getModel().getSize() == 1) {
+		} else if (listAtIndex(0) != null && listAtIndex(0).getModel().getSize() == 1) {
 			return (BindingVariable) listAtIndex(0).getModel().getElementAt(0).getElement();
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
@@ -215,8 +213,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					&& ((BindingColumnElement) listModel.getElementAt(i)).getLabel().startsWith(subPartialPath)) {
 				if (pathElementIndex.size() == 0) {
 					pathElementIndex.add(i);
-				}
-				else {
+				} else {
 					pathElementIndex.set(0, i);
 				}
 				return (BindingColumnElement) listModel.getElementAt(i);
@@ -376,8 +373,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		public Function.FunctionArgument elementAt(int row) {
 			if (row >= 0 && row < getRowCount()) {
 				return getFunctionPathElement().getFunction().getArguments().get(row);
-			}
-			else {
+			} else {
 				return null;
 			}
 		}
@@ -444,8 +440,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 		if (bindingSelector.editionMode == EditionMode.COMPOUND_BINDING) {
 			baseHeight = 300;
-		}
-		else {
+		} else {
 			baseHeight = 180;
 		}
 
@@ -529,8 +524,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				public void actionPerformed(ActionEvent e) {
 					if (bindingSelector.editionMode == EditionMode.COMPOUND_BINDING) {
 						bindingSelector.activateNormalBindingMode();
-					}
-					else {
+					} else {
 						bindingSelector.activateCompoundBindingMode();
 					}
 				}
@@ -545,8 +539,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 						SPECIFY_BASIC_BINDING));
 				showHideCompoundBindingsButtonLabel.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION,
 						SPECIFY_BASIC_BINDING) + "  ");
-			}
-			else {
+			} else {
 				showHideCompoundBindingsButton.setNormalIcon(FIBIconLibrary.TOGGLE_ARROW_BOTTOM_ICON);
 				showHideCompoundBindingsButton.setMouseOverIcon(FIBIconLibrary.TOGGLE_ARROW_BOTTOM_SELECTED_ICON);
 				showHideCompoundBindingsButton.setToolTipText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION,
@@ -596,8 +589,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			bindingValueRepresentation.setLineWrap(true);*/
 			// topPane.add(bindingValueRepresentation, BorderLayout.CENTER);
 			topPane.add(labelPanel, BorderLayout.SOUTH);
-		}
-		else {
+		} else {
 			topPane = labelPanel;
 		}
 
@@ -613,8 +605,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					getMethodCallBindingsPanel()); // ICI
 			((JSplitPane) middlePane).setDividerLocation(0.5);
 			((JSplitPane) middlePane).setResizeWeight(0.5);
-		}
-		else { // For NORMAL_BINDING and STATIC_BINDING
+		} else { // For NORMAL_BINDING and STATIC_BINDING
 			middlePane = new JScrollPane(browserPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
 					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED); // ICI
 		}
@@ -660,8 +651,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 	private String getTypeStringRepresentation() {
 		if (bindingSelector.getEditedObject() == null || bindingSelector.getEditedObject().getDeclaredType() == null) {
 			return FlexoLocalization.localizedForKey("no_type");
-		}
-		else {
+		} else {
 			return TypeUtils.simpleRepresentation(bindingSelector.getEditedObject().getDeclaredType());
 		}
 	}
@@ -713,8 +703,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		public BindingColumnListModel getModel() {
 			if (super.getModel() instanceof BindingColumnListModel) {
 				return (BindingColumnListModel) super.getModel();
-			}
-			else {
+			} else {
 				new Exception("Oops, got a " + super.getModel()).printStackTrace();
 				return null;
 			}
@@ -747,8 +736,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					if (bindingSelector.getEditedObject() != null && bindingSelector.getEditedObject().isValid()) {
 						bindingSelector.apply();
 					}
-				}
-				else if (e.getClickCount() == 1) {
+				} else if (e.getClickCount() == 1) {
 					// Trying to update MethodCall Panel
 					JList list = (JList) e.getSource();
 					int index = _lists.indexOf(list);
@@ -775,16 +763,13 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				if (e.getKeyChar() == '\n') {
 					bindingSelector._selectorPanel.processEnterPressed();
 					e.consume();
-				}
-				else if (e.getKeyChar() == KeyEvent.VK_BACK_SPACE) {
+				} else if (e.getKeyChar() == KeyEvent.VK_BACK_SPACE) {
 					bindingSelector._selectorPanel.processBackspace();
 					e.consume();
-				}
-				else if (e.getKeyChar() == KeyEvent.VK_DELETE) {
+				} else if (e.getKeyChar() == KeyEvent.VK_DELETE) {
 					bindingSelector._selectorPanel.processDelete();
 					e.consume();
-				}
-				else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+				} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 					if (!ensureBindingValueExists()) {
 						return;
 					}
@@ -802,8 +787,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 						}
 						e.consume();
 					}
-				}
-				else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+				} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 					if (!ensureBindingValueExists()) {
 						return;
 					}
@@ -840,8 +824,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				|| bindingSelector.getEditedObject().isBindingValue()
 				&& ((BindingValue) bindingSelector.getEditedObject().getExpression()).getBindingPath().size() == 0) {
 			_selectedPathElementIndex = -1;
-		}
-		else if (bindingSelector.getEditedObject().isBindingValue()) {
+		} else if (bindingSelector.getEditedObject().isBindingValue()) {
 			_selectedPathElementIndex = ((BindingValue) bindingSelector.getEditedObject().getExpression()).getBindingPath().size();
 		}
 		updateMethodCallPanel();
@@ -862,8 +845,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			BindingValue bindingValue = (BindingValue) bindingSelector.getEditedObject().getExpression();
 			if (bindingValue == null) {
 				_selectedPathElementIndex = -1;
-			}
-			else if (_selectedPathElementIndex > bindingValue.getBindingPath().size()) {
+			} else if (_selectedPathElementIndex > bindingValue.getBindingPath().size()) {
 				_selectedPathElementIndex = -1;
 			}
 			if (_selectedPathElementIndex > -1 && bindingValue != null) {
@@ -972,8 +954,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			if (binding == null) {
 				setEditStaticValue(false);
 			}
-		}
-		else if (binding.isBindingValue()) {
+		} else if (binding.isBindingValue()) {
 			BindingValue bindingValue = (BindingValue) binding.getExpression();
 			listAtIndex(0).setModel(getRootColumnListModel());
 			int lastUpdatedList = 0;
@@ -984,8 +965,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				if (bindingValue.getBindingVariable().getType() != null) {
 					listAtIndex(1).setModel(
 							getColumnListModel(bindingValue.getBindingVariable(), bindingValue.getBindingVariable().getType()));
-				}
-				else {
+				} else {
 					listAtIndex(1).setModel(EMPTY_MODEL);
 				}
 				listAtIndex(0).removeListSelectionListener(this);
@@ -1069,8 +1049,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		if (binding != null) {
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine("Binding " + binding + " isValid()=" + binding.isValid());
-			}
-			else if (LOGGER.isLoggable(Level.FINE)) {
+			} else if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine("Binding is null");
 			}
 		}
@@ -1096,8 +1075,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 			if (binding.isBindingValue()) {
 				setEditStaticValue(false);
-			}
-			else if (binding.isConstant()) {
+			} else if (binding.isConstant()) {
 				setEditStaticValue(true);
 			}
 		}
@@ -1139,8 +1117,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				for (int i = 0; i < getVisibleColsCount(); i++) {
 					listAtIndex(i).setEnabled(false);
 				}
-			}
-			else {
+			} else {
 				staticBindingPanel.disableStaticBindingPanel();
 				// _bindingSelector.setEditedObject(null,false);
 				for (int i = 0; i < getVisibleColsCount(); i++) {
@@ -1200,6 +1177,9 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 	protected BindingColumnListModel getColumnListModel(BindingPathElement element, Type resultingType) {
 		if (element == null) {
+			return EMPTY_MODEL;
+		}
+		if (resultingType == null) {
 			return EMPTY_MODEL;
 		}
 		// if (TypeUtils.isResolved(element.getType())) {
@@ -1268,8 +1248,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		public String getTypeStringRepresentation() {
 			if (getResultingType() == null) {
 				return FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "no_type");
-			}
-			else {
+			} else {
 				return TypeUtils.simpleRepresentation(getResultingType());
 			}
 		}
@@ -1347,10 +1326,10 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		public String toString() {
 			return "BindingColumnElement/" + getLabel() + "[" + _element.toString() + "]";
 		}
-		
+
 		@Override
 		public int hashCode() {
-			return (_element == null?0:_element.hashCode()) + (_resultingType == null?0:_resultingType.hashCode());
+			return (_element == null ? 0 : _element.hashCode()) + (_resultingType == null ? 0 : _resultingType.hashCode());
 		}
 
 		@Override
@@ -1364,8 +1343,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					return false;
 				}
 				return _element.equals(bce._element) && _resultingType.equals(bce._resultingType);
-			}
-			else {
+			} else {
 				return super.equals(obj);
 			}
 		}
@@ -1439,15 +1417,13 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 						returned++;
 					}
 				}
-			}
-			else if (getFilter() == null) {
+			} else if (getFilter() == null) {
 				for (int i = 0; i < getUnfilteredSize(); i++) {
 					if (!isFiltered(getUnfilteredElementAt(i))) {
 						returned++;
 					}
 				}
-			}
-			else {
+			} else {
 				for (int i = 0; i < getUnfilteredSize(); i++) {
 					if (getUnfilteredElementAt(i).getLabel().startsWith(filter) && !isFiltered(getUnfilteredElementAt(i))) {
 						returned++;
@@ -1472,8 +1448,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 						return getUnfilteredElementAt(i);
 					}
 				}
-			}
-			else if (getFilter() == null) {
+			} else if (getFilter() == null) {
 				int searchedIndex = -1;
 				for (int i = 0; i < getUnfilteredSize(); i++) {
 					if (!isFiltered(getUnfilteredElementAt(i))) {
@@ -1483,8 +1458,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 						return getUnfilteredElementAt(i);
 					}
 				}
-			}
-			else {
+			} else {
 				int searchedIndex = -1;
 				for (int i = 0; i < getUnfilteredSize(); i++) {
 					if (getUnfilteredElementAt(i).getLabel().startsWith(filter) && !isFiltered(getUnfilteredElementAt(i))) {
@@ -1508,8 +1482,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				if (bv.getType() == null) {
 					return true;
 				}
-			}
-			else if (columnElement.getElement() != null) {
+			} else if (columnElement.getElement() != null) {
 				DataBinding binding = bindingSelector.getEditedObject();
 				if (binding != null && binding.isBindingValue()) {
 					BindingValue bindingValue = (BindingValue) binding.getExpression();
@@ -1517,14 +1490,12 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 							&& bindingValue.isLastBindingPathElement(columnElement.getElement()/*, getIndexOfList(this) - 1*/)
 							&& bindingSelector.isConnected()) {
 						// setIcon(label, CONNECTED_ICON, list);
-					}
-					else if (columnElement.getResultingType() != null) {
+					} else if (columnElement.getResultingType() != null) {
 						if (TypeUtils.isResolved(columnElement.getResultingType()) && bindingSelector.getBindable() != null) {
 							// if (columnElement.getElement().getAccessibleBindingPathElements().size() > 0) {
 							if (bindingSelector.getBindable().getBindingFactory()
 									.getAccessibleSimplePathElements(columnElement.getElement()).size() > 0) {
-							}
-							else {
+							} else {
 								if (!TypeUtils.isTypeAssignableFrom(binding.getDeclaredType(), columnElement.getResultingType(), true)) {
 									return true;
 								}
@@ -1739,8 +1710,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			super.propertyChange(evt);
 			if (evt.getSource() == _myBindingModel) {
 				updateBindingVariables();
-			}
-			else if (evt.getSource() instanceof BindingVariable) {
+			} else if (evt.getSource() instanceof BindingVariable) {
 				BindingVariable bv = (BindingVariable) evt.getSource();
 				// System.out.println("-------> YES, j'ai vu que la variable: " + bv + " a ete modifiee: " + evt);
 			}
@@ -1863,8 +1833,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					// }
 					if (columnElement.getElement().getType() != null) {
 						returned.setToolTipText(columnElement.getTooltipText());
-					}
-					else {
+					} else {
 						label.setForeground(Color.GRAY);
 					}
 
@@ -1877,8 +1846,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 								&& bindingSelector.isConnected()) {
 							// System.out.println("connecte");
 							returned = getIconLabelComponent(label, FIBIconLibrary.CONNECTED_ICON);
-						}
-						else if (columnElement.getResultingType() != null) {
+						} else if (columnElement.getResultingType() != null) {
 							if (TypeUtils.isResolved(columnElement.getResultingType()) && bindingSelector.getBindable() != null) {
 								// if (columnElement.getElement().getAccessibleBindingPathElements().size() > 0) {
 								if (bindingSelector.getBindable().getBindingFactory() != null
@@ -1887,8 +1855,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 										&& bindingSelector.getBindable().getBindingFactory()
 												.getAccessibleSimplePathElements(columnElement.getElement()).size() > 0) {
 									returned = getIconLabelComponent(label, FIBIconLibrary.ARROW_RIGHT_ICON);
-								}
-								else {
+								} else {
 									if (!TypeUtils.isTypeAssignableFrom(binding.getDeclaredType(), columnElement.getResultingType(), true)) {
 										label.setForeground(Color.GRAY);
 									}
@@ -1900,8 +1867,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 						}
 					}
 
-				}
-				else {
+				} else {
 					// Happen because of prototype value !
 					// logger.warning("Unexpected type: "+bce+" of "+(bce!=null?bce.getClass():"null"));
 				}
@@ -1990,8 +1956,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			char c = textValue.charAt(i);
 			if (c == '.') {
 				startingPathItem = true;
-			}
-			else {
+			} else {
 				boolean isNormalChar = c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '0' && c <= '9' && !startingPathItem;
 				if (!isNormalChar) {
 					return false;
@@ -2036,8 +2001,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 			if (textValue == null || !textValue.equals(bindingSelector.renderedString(bindingSelector.getEditedObject()))) {
 				bindingSelector.getTextField().setForeground(Color.RED);
-			}
-			else {
+			} else {
 				bindingSelector.getTextField().setForeground(Color.BLACK);
 			}
 
@@ -2065,8 +2029,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			BindingColumnElement col_element = findElementEquals(_lists.get(listIndex).getModel(), element);
 			if (col_element == null) {
 				isCurrentlyValid = false;
-			}
-			else {
+			} else {
 				bindingSelector.setUpdatingModel(true);
 				if (!ensureBindingValueExists()) {
 					bindingSelector.setUpdatingModel(false);
@@ -2125,8 +2088,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			matchingElements = findElementsMatching(list.getModel(), subPartialPath);
 			if (matchingElements.size() == 1) {
 				commonBeginningPath = matchingElements.firstElement().getLabel();
-			}
-			else if (matchingElements.size() > 1) {
+			} else if (matchingElements.size() > 1) {
 				int endCommonPathIndex = 0;
 				boolean foundDiff = false;
 				while (!foundDiff) {
@@ -2141,8 +2103,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 						if (!foundDiff) {
 							endCommonPathIndex++;
 						}
-					}
-					else {
+					} else {
 						foundDiff = true;
 					}
 				}
@@ -2161,8 +2122,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		protected void autoComplete() {
 			if (!alreadyAutocompleted) {
 				bindingSelector.getTextField().setText(validPath + commonBeginningPath);
-			}
-			else {
+			} else {
 				bindingSelector.getTextField().setText(validPath + commonBeginningPath + ".");
 			}
 			alreadyAutocompleted = true;
@@ -2402,8 +2362,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				binding.setExpression(bindingValue);
 				bindingSelector.fireEditedObjectChanged();
 			}
-		}
-		else {
+		} else {
 			if (selectedValue.getElement() instanceof SimplePathElement) {
 				// FIXED invalid type object comparison
 				if (selectedValue.getElement() != bindingValue.getBindingPathElementAtIndex(index - 1)) {
@@ -2415,8 +2374,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					binding.setExpression(bindingValue);
 					bindingSelector.fireEditedObjectChanged();
 				}
-			}
-			else if (selectedValue.getElement() instanceof FunctionPathElement
+			} else if (selectedValue.getElement() instanceof FunctionPathElement
 					&& bindingSelector.editionMode == EditionMode.COMPOUND_BINDING) {
 
 				BindingPathElement currentElement = bindingValue.getBindingPathElementAtIndex(index - 1);
@@ -2447,8 +2405,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 						binding.setExpression(bindingValue);
 						bindingSelector.fireEditedObjectChanged();
 
-					}
-					else {
+					} else {
 						LOGGER.warning("Cannot retrieve new FunctionPathElement for " + bindingValue.getLastBindingPathElement()
 								+ " function=" + function);
 					}
