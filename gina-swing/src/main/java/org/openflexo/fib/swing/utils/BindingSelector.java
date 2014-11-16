@@ -305,7 +305,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 	}
 
 	@Override
-	public void updateUI() {
+	final public void updateUI() {
 		super.updateUI();
 		if (getTextField() != null) {
 			defaultForeground = getTextField().getForeground();

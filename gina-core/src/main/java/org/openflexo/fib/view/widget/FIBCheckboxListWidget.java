@@ -109,7 +109,7 @@ public class FIBCheckboxListWidget<T> extends FIBMultipleValueWidget<FIBCheckbox
 		rebuildCheckboxes();
 	}
 
-	protected void rebuildCheckboxes() {
+	final protected void rebuildCheckboxes() {
 		if (panel != null) {
 			panel.removeAll();
 			((GridLayout) panel.getLayout()).setColumns(getWidget().getColumns());

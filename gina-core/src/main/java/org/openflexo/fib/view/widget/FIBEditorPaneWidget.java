@@ -52,7 +52,7 @@ public class FIBEditorPaneWidget extends FIBWidgetView<FIBEditorPane, JEditorPan
 
 	private static final Logger logger = Logger.getLogger(FIBEditorPaneWidget.class.getPackage().getName());
 
-	private JPanel panel;
+	private final JPanel panel;
 	private final JEditorPane editorPane;
 	private JScrollPane scrollPane;
 	boolean validateOnReturn;
@@ -136,7 +136,7 @@ public class FIBEditorPaneWidget extends FIBWidgetView<FIBEditorPane, JEditorPan
 		editorPane.setCaretPosition(0);
 	}
 
-	protected void updateContentType() {
+	final protected void updateContentType() {
 		if (getComponent().getContentType() != null) {
 			editorPane.setContentType(getComponent().getContentType().getContentType());
 		} else {
@@ -252,7 +252,7 @@ public class FIBEditorPaneWidget extends FIBWidgetView<FIBEditorPane, JEditorPan
 	}
 
 	@Override
-	public void updateFont() {
+	final public void updateFont() {
 		super.updateFont();
 		if (getFont() != null) {
 			if (editorPane.getDocument() instanceof StyledDocument) {

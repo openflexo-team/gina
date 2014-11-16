@@ -174,7 +174,7 @@ public class FIBEditableViewDelegate<M extends FIBComponent, J extends JComponen
 		return view.getEditorController().getController();
 	}
 
-	public M getFIBComponent() {
+	final public M getFIBComponent() {
 		return view.getComponent();
 	}
 
@@ -406,7 +406,7 @@ public class FIBEditableViewDelegate<M extends FIBComponent, J extends JComponen
 			return placeHolder != null;
 		}
 
-		public FIBComponent getFIBComponent() {
+		final public FIBComponent getFIBComponent() {
 			return editableView.getComponent();
 		}
 

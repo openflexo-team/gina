@@ -91,7 +91,7 @@ public class FIBColorWidget extends FIBWidgetView<FIBColor, ColorSelector, Color
 		checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
 	}
 
-	public void updateCheckboxVisibility() {
+	final public void updateCheckboxVisibility() {
 		checkBox.setVisible(getWidget().getAllowsNull());
 	}
 

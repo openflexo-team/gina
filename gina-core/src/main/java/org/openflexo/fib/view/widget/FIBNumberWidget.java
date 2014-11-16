@@ -60,9 +60,9 @@ public abstract class FIBNumberWidget<T extends Number> extends FIBWidgetView<FI
 
 	protected boolean ignoreTextfieldChanges = false;
 
-	private JPanel container;
+	private final JPanel container;
 
-	private JCheckBox checkBox;
+	private final JCheckBox checkBox;
 
 	JSpinner valueChooser;
 
@@ -440,7 +440,7 @@ public abstract class FIBNumberWidget<T extends Number> extends FIBWidgetView<FI
 		}
 	}
 
-	public void updateCheckboxVisibility() {
+	final public void updateCheckboxVisibility() {
 		checkBox.setVisible(getWidget().getAllowsNull() && !TypeUtils.isPrimitive(getComponent().getDataType()));
 	}
 

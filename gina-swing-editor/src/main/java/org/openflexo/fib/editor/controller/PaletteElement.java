@@ -133,7 +133,7 @@ public class PaletteElement implements FIBDraggable /*implements Transferable*/{
 	}
 
 	@Override
-	public void enableDragging() {
+	final public void enableDragging() {
 		for (JComponent j : dgr.keySet()) {
 			dgr.get(j).setComponent(j);
 		}

@@ -590,7 +590,7 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 
 	}
 
-	public boolean showExitMenuItem() {
+	final public boolean showExitMenuItem() {
 		return true;
 	}
 

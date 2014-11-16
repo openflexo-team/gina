@@ -78,7 +78,7 @@ public class FIBDropDownWidget<T> extends FIBMultipleValueWidget<FIBDropDown, JC
 
 	}
 
-	protected void initJComboBox() {
+	final protected void initJComboBox() {
 		if (logger.isLoggable(Level.FINE)) {
 			logger.fine("initJComboBox()");
 		}

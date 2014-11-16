@@ -40,7 +40,7 @@ import org.openflexo.model.exceptions.InvalidDataException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.Resource;
 
-public class FIBLibrary {
+final public class FIBLibrary {
 
 	static final Logger LOGGER = Logger.getLogger(FIBLibrary.class.getPackage().getName());
 

@@ -39,13 +39,13 @@ import org.openflexo.swing.FontSelector;
 
 public class FIBFontWidget extends FIBWidgetView<FIBFont, FontSelector, Font> implements ApplyCancelListener {
 
-	private static final Logger logger = Logger.getLogger(FIBFontWidget.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(FIBFontWidget.class.getPackage().getName());
 
 	protected FontSelector _selector;
-	private JCheckBox checkBox;
+	private final JCheckBox checkBox;
 	private Font revertValue;
 
-	private JPanel container;
+	private final JPanel container;
 
 	public FIBFontWidget(FIBFont model, FIBController controller) {
 		super(model, controller);
@@ -80,7 +80,7 @@ public class FIBFontWidget extends FIBWidgetView<FIBFont, FontSelector, Font> im
 		updateFont();
 	}
 
-	public void updateCheckboxVisibility() {
+	final public void updateCheckboxVisibility() {
 		checkBox.setVisible(getWidget().getAllowsNull());
 	}
 

@@ -335,7 +335,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 		}
 	}
 
-	private void buildBrowser() {
+	final private void buildBrowser() {
 		_tree = new JTree(getBrowserModel()) {
 			@Override
 			protected void paintComponent(Graphics g) {

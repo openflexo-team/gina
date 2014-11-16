@@ -352,7 +352,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 		}*/
 	}
 
-	private void init() {
+	final private void init() {
 		/*expressionTA = new JTextArea(3, 50);
 		expressionTA.setLineWrap(true);
 		expressionTA.addKeyListener(new KeyAdapter() {

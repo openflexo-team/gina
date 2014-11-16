@@ -83,7 +83,7 @@ class ConstantValuePanel extends JPanel {
 		updateConstantValuePanel();
 	}
 
-	private void initConstantValuePanel() {
+	final private void initConstantValuePanel() {
 		selectStaticBindingCB = null;
 		selectValueCB = null;
 		enterValueTF = null;
@@ -321,7 +321,7 @@ class ConstantValuePanel extends JPanel {
 		}
 	}
 
-	void updateConstantValuePanel() {
+	final void updateConstantValuePanel() {
 		isUpdatingPanel = true;
 
 		EvaluationType newType;

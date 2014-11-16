@@ -70,12 +70,12 @@ import org.openflexo.toolbox.ToolBox;
  */
 public class FIBEditorWidget extends FIBWidgetView<FIBEditor, JEditTextArea, String> {
 
-	private static final Logger logger = Logger.getLogger(FIBEditorWidget.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(FIBEditorWidget.class.getPackage().getName());
 
 	private static final int DEFAULT_COLUMNS = 30;
 	private static final int DEFAULT_ROWS = 5;
 
-	private JPanel panel;
+	private final JPanel panel;
 	private final JEditTextArea textArea;
 	private JScrollPane scrollPane;
 	boolean validateOnReturn;
@@ -221,8 +221,8 @@ public class FIBEditorWidget extends FIBWidgetView<FIBEditor, JEditTextArea, Str
 	@Override
 	public synchronized boolean updateModelFromWidget() {
 		if (notEquals(getValue(), textArea.getText())) {
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("updateModelFromWidget() in TextAreaWidget");
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("updateModelFromWidget() in TextAreaWidget");
 			}
 			modelUpdating = true;
 			try {
@@ -269,14 +269,14 @@ public class FIBEditorWidget extends FIBWidgetView<FIBEditor, JEditTextArea, Str
 	}
 
 	@Override
-	public void updateFont() {
+	final public void updateFont() {
 		super.updateFont();
 		if (getFont() != null) {
 			textArea.setFont(getFont());
 		}
 	}
 
-	public void updateTokenMarkerStyle() {
+	final public void updateTokenMarkerStyle() {
 		if (getWidget().getTokenMarkerStyle() != null) {
 			textArea.setTokenMarker(makeTokenMarker(getWidget().getTokenMarkerStyle()));
 		}
