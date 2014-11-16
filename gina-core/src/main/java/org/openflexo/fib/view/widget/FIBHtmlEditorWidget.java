@@ -38,7 +38,7 @@ import com.metaphaseeditor.MetaphaseEditorPanel;
  */
 public class FIBHtmlEditorWidget extends FIBWidgetView<FIBHtmlEditor, MetaphaseEditorPanel, String> {
 
-	private static final Logger logger = Logger.getLogger(FIBHtmlEditorWidget.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(FIBHtmlEditorWidget.class.getPackage().getName());
 
 	private MetaphaseEditorConfiguration _editorConfiguration;
 	private final MetaphaseEditorPanel _editor;
@@ -128,8 +128,8 @@ public class FIBHtmlEditorWidget extends FIBWidgetView<FIBHtmlEditor, MetaphaseE
 		// System.out.println("updateModelFromWidget() with " + _editor.getDocument());
 		if (notEquals(getValue(), _editor.getDocument())) {
 			modelUpdating = true;
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("updateModelFromWidget() in TextAreaWidget");
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("updateModelFromWidget() in TextAreaWidget");
 			}
 			setValue(_editor.getDocument());
 			modelUpdating = false;
@@ -149,7 +149,7 @@ public class FIBHtmlEditorWidget extends FIBWidgetView<FIBHtmlEditor, MetaphaseE
 	}
 
 	@Override
-	public void updateFont() {
+	final public void updateFont() {
 		super.updateFont();
 		if (getFont() != null) {
 			_editor.setFont(getFont());

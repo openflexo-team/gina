@@ -50,7 +50,7 @@ import org.openflexo.toolbox.ToolBox;
  */
 public class FIBFileWidget extends FIBWidgetView<FIBFile, JTextField, File> {
 
-	static final Logger logger = Logger.getLogger(FIBFileWidget.class.getPackage().getName());
+	static final Logger LOGGER = Logger.getLogger(FIBFileWidget.class.getPackage().getName());
 
 	protected JPanel fileChooserPanel;
 
@@ -129,7 +129,7 @@ public class FIBFileWidget extends FIBWidgetView<FIBFile, JTextField, File> {
 		}
 	}
 
-	public void addActionListenerToChooseButton() {
+	final public void addActionListenerToChooseButton() {
 		chooseButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

@@ -34,7 +34,7 @@ import org.openflexo.swing.ImageUtils;
 
 public class FIBImageWidget extends FIBWidgetView<FIBImage, JLabel, Image> implements ImageObserver {
 
-	private static final Logger logger = Logger.getLogger(FIBImageWidget.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(FIBImageWidget.class.getPackage().getName());
 
 	private final JLabel labelWidget;
 
@@ -81,13 +81,13 @@ public class FIBImageWidget extends FIBWidgetView<FIBImage, JLabel, Image> imple
 		return labelWidget;
 	}
 
-	protected void updateAlign() {
+	final protected void updateAlign() {
 		if (getWidget() != null && getWidget().getAlign() != null) {
 			labelWidget.setHorizontalAlignment(getWidget().getAlign().getAlign());
 		}
 	}
 
-	protected void updateImage() {
+	final protected void updateImage() {
 		if (getWidget().getData().isValid()) {
 			Image image = getValue();
 			updateImageDefaultSize(image);
@@ -118,7 +118,7 @@ public class FIBImageWidget extends FIBWidgetView<FIBImage, JLabel, Image> imple
 			int imageHeight = image.getHeight(this);
 			if (imageWidth <= 0 || imageHeight <= 0) {
 				synchronized (this) {
-					logger.fine("Image is not ready, waiting...");
+					LOGGER.fine("Image is not ready, waiting...");
 					computeImageLater = true;
 					return null;
 				}
@@ -170,7 +170,7 @@ public class FIBImageWidget extends FIBWidgetView<FIBImage, JLabel, Image> imple
 	public synchronized boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
 		updateImageDefaultSize(img);
 		if (computeImageLater) {
-			logger.fine("Image can now be displayed");
+			LOGGER.fine("Image can now be displayed");
 			computeImageLater = false;
 			updateImage();
 		}

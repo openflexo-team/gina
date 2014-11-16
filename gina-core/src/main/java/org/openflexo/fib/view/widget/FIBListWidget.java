@@ -42,7 +42,7 @@ import org.openflexo.fib.model.FIBList;
 
 public class FIBListWidget<T> extends FIBMultipleValueWidget<FIBList, JList, T, T> implements FIBSelectable<T> {
 
-	static final Logger logger = Logger.getLogger(FIBListWidget.class.getPackage().getName());
+	static final Logger LOGGER = Logger.getLogger(FIBListWidget.class.getPackage().getName());
 
 	public static final String SELECTION = "selection";
 
@@ -93,8 +93,8 @@ public class FIBListWidget<T> extends FIBMultipleValueWidget<FIBList, JList, T, 
 		// updateListModelWhenRequired();
 		if (getWidget().getData() != null && notEquals(getValue(), _list.getSelectedValue())) {
 
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("updateWidgetFromModel()");
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("updateWidgetFromModel()");
 			}
 			widgetUpdating = true;
 			// updateList();
@@ -112,8 +112,8 @@ public class FIBListWidget<T> extends FIBMultipleValueWidget<FIBList, JList, T, 
 	public synchronized boolean updateModelFromWidget() {
 		if (notEquals(getValue(), _list.getSelectedValue())) {
 			modelUpdating = true;
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("updateModelFromWidget with " + _list.getSelectedValue());
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("updateModelFromWidget with " + _list.getSelectedValue());
 			}
 			if (_list.getSelectedValue() != null && !widgetUpdating) {
 				setValue((T) _list.getSelectedValue());
@@ -260,8 +260,8 @@ public class FIBListWidget<T> extends FIBMultipleValueWidget<FIBList, JList, T, 
 				return;
 			}
 
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("valueChanged() selected index=" + getListSelectionModel().getMinSelectionIndex());
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("valueChanged() selected index=" + getListSelectionModel().getMinSelectionIndex());
 			}
 
 			updateModelFromWidget();
@@ -291,7 +291,7 @@ public class FIBListWidget<T> extends FIBMultipleValueWidget<FIBList, JList, T, 
 			setSelection(newSelection);
 
 			if (getComponent().getSelected().isValid()) {
-				logger.fine("Sets SELECTED binding with " + selectedObject);
+				LOGGER.fine("Sets SELECTED binding with " + selectedObject);
 				try {
 					getComponent().getSelected().setBindingValue(selectedObject, getBindingEvaluationContext());
 				} catch (TypeMismatchException e1) {
@@ -311,8 +311,8 @@ public class FIBListWidget<T> extends FIBMultipleValueWidget<FIBList, JList, T, 
 				getController().updateSelection(FIBListWidget.this, oldSelection, selection);
 			}
 
-			logger.fine((isFocused() ? "LEADER" : "SECONDARY") + " Selected is " + selectedObject);
-			logger.fine((isFocused() ? "LEADER" : "SECONDARY") + " Selection is " + selection);
+			LOGGER.fine((isFocused() ? "LEADER" : "SECONDARY") + " Selected is " + selectedObject);
+			LOGGER.fine((isFocused() ? "LEADER" : "SECONDARY") + " Selection is " + selection);
 
 		}
 
@@ -369,7 +369,7 @@ public class FIBListWidget<T> extends FIBMultipleValueWidget<FIBList, JList, T, 
 	}
 
 	@Override
-	public void updateFont() {
+	final public void updateFont() {
 		super.updateFont();
 		if (getFont() != null) {
 			_list.setFont(getFont());
@@ -428,7 +428,7 @@ public class FIBListWidget<T> extends FIBMultipleValueWidget<FIBList, JList, T, 
 	private FIBListCellRenderer listCellRenderer;
 
 	@Override
-	public FIBListCellRenderer getListCellRenderer() {
+	final public FIBListCellRenderer getListCellRenderer() {
 		if (listCellRenderer == null) {
 			listCellRenderer = new FIBListCellRenderer();
 		}

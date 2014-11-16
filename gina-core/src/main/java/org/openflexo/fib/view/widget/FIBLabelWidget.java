@@ -30,7 +30,7 @@ import org.openflexo.fib.model.FIBLabel;
 import org.openflexo.fib.view.FIBWidgetView;
 
 public class FIBLabelWidget extends FIBWidgetView<FIBLabel, JLabel, String> {
-	private static final Logger logger = Logger.getLogger(FIBLabelWidget.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(FIBLabelWidget.class.getPackage().getName());
 
 	private JLabel labelWidget;
 
@@ -80,7 +80,7 @@ public class FIBLabelWidget extends FIBWidgetView<FIBLabel, JLabel, String> {
 		return labelWidget;
 	}
 
-	protected void updateAlign() {
+	final protected void updateAlign() {
 		if (labelWidget == null || getWidget() == null) {
 			return;
 		}
@@ -90,7 +90,7 @@ public class FIBLabelWidget extends FIBWidgetView<FIBLabel, JLabel, String> {
 		labelWidget.setHorizontalAlignment(getWidget().getAlign().getAlign());
 	}
 
-	protected void updateLabel() {
+	final protected void updateLabel() {
 		if (labelWidget == null || getWidget() == null) {
 			return;
 		}

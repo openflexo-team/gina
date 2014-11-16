@@ -60,7 +60,7 @@ import org.openflexo.toolbox.StringUtils;
  */
 public abstract class FIBMultipleValueWidget<W extends FIBMultipleValues, C extends JComponent, T, I> extends FIBWidgetView<W, C, T> {
 
-	static final Logger logger = Logger.getLogger(FIBMultipleValueWidget.class.getPackage().getName());
+	static final Logger LOGGER = Logger.getLogger(FIBMultipleValueWidget.class.getPackage().getName());
 
 	public static final String SELECTED = "selected";
 	public static final String SELECTED_INDEX = "selectedIndex";
@@ -151,8 +151,8 @@ public abstract class FIBMultipleValueWidget<W extends FIBMultipleValues, C exte
 			update();
 		}
 
-		private void update() {
-			logger.fine("update FIBMultipleValueModel");
+		final private void update() {
+			LOGGER.fine("update FIBMultipleValueModel");
 
 			list = null;
 			array = null;
@@ -191,7 +191,7 @@ public abstract class FIBMultipleValueWidget<W extends FIBMultipleValues, C exte
 				try {
 					array = (T[]) accessedArray;
 				} catch (ClassCastException e) {
-					logger.warning("ClassCastException " + e.getMessage());
+					LOGGER.warning("ClassCastException " + e.getMessage());
 				}
 				/*for (int i=0; i<array.length; i++) {
 					System.out.println("> "+array[i]);

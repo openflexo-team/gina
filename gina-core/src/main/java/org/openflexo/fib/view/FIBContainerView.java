@@ -106,6 +106,7 @@ public abstract class FIBContainerView<M extends FIBContainer, J extends JCompon
 		return getJComponent();
 	}
 
+	@Override
 	public T getValue() {
 		if (getDataObject() == null) {
 			return null;

@@ -25,7 +25,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,7 +48,7 @@ import org.openflexo.localization.FlexoLocalization;
 @SuppressWarnings("serial")
 public class FIBTableWidgetFooter<T> extends JPanel {
 
-	protected static final Logger logger = Logger.getLogger(FIBTableWidgetFooter.class.getPackage().getName());
+	protected static final Logger LOGGER = Logger.getLogger(FIBTableWidgetFooter.class.getPackage().getName());
 
 	public static final int MINIMUM_BROWSER_VIEW_WIDTH = 200;
 
@@ -224,7 +227,7 @@ public class FIBTableWidgetFooter<T> extends JPanel {
 		plusActionMenuNeedsRecomputed = true;*/
 	}
 
-	protected void handleSelectionCleared() {
+	final protected void handleSelectionCleared() {
 		handleSelectionChanged();
 
 		/*System.out.println("handleSelectionCleared");
@@ -276,8 +279,8 @@ public class FIBTableWidgetFooter<T> extends JPanel {
 	private JPopupMenu getPlusActionMenu() {
 		if (plusActionMenuNeedsRecomputed) {
 			plusActionMenu = new JPopupMenu();
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Build plus menu");
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("Build plus menu");
 			}
 
 			for (FIBTableAction action : sortedAddKeys) {
@@ -317,8 +320,8 @@ public class FIBTableWidgetFooter<T> extends JPanel {
 	private JPopupMenu getOptionActionMenu() {
 		if (optionsActionMenuNeedsRecomputed) {
 			optionsActionMenu = new JPopupMenu();
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Build plus menu");
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("Build plus menu");
 			}
 
 			for (FIBTableAction action : sortedOtherKeys) {

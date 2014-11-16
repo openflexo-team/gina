@@ -58,7 +58,7 @@ import com.google.common.collect.Multimaps;
 
 public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 
-	private static final Logger logger = Logger.getLogger(FIBBrowserModel.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(FIBBrowserModel.class.getPackage().getName());
 
 	private Map<FIBBrowserElement, FIBBrowserElementType> _elementTypes;
 	private FIBBrowser _fibBrowser;
@@ -104,7 +104,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			return _elementTypes.get(element);
 		}
 		else {
-			logger.warning("Could not find element for class " + aClass);
+			LOGGER.warning("Could not find element for class " + aClass);
 			/*System.out.println("Available=");
 			for (FIBBrowserElement e : _fibBrowser.getElements()) {
 				System.out.println("> " + e.getName() + " for " + e.getDataClass());
@@ -145,7 +145,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			if (getRoot() != null) {
 				((BrowserCell) getRoot()).delete();
 			}
-			logger.fine("updateRootObject() with " + root + " rootCell=" + rootCell);
+			LOGGER.fine("updateRootObject() with " + root + " rootCell=" + rootCell);
 			setRoot(rootCell);
 			// rootCell.loadChildren(this, null);
 
@@ -221,7 +221,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 		if (!exhaustiveContentsIsUpToDate) {
 			computedExhaustiveContents.clear();
 			if (getRoot() instanceof BrowserCell) {
-				logger.info("!!!!! called recursivelyExploreModelToRetrieveContents() !!!!");
+				LOGGER.info("!!!!! called recursivelyExploreModelToRetrieveContents() !!!!");
 				((BrowserCell) getRoot()).update(true);
 				exhaustiveContentsIsUpToDate = true;
 			}
@@ -553,7 +553,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			return (BrowserCell) super.getParent();
 		}
 
-		public Object getRepresentedObject() {
+		final public Object getRepresentedObject() {
 			return getUserObject();
 		}
 
@@ -633,7 +633,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 
 		public void delete() {
 
-			logger.fine("Delete BrowserCell for " + getRepresentedObject());
+			LOGGER.fine("Delete BrowserCell for " + getRepresentedObject());
 
 			if (childrenDataBindingValueChangeListeners != null) {
 				for (BindingValueChangeListener<?> l : childrenDataBindingValueChangeListeners.values()) {
@@ -718,7 +718,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 
 			// logger.info("**************** update() " + this);
 			if (browserElementType == null) {
-				logger.warning("No element type registered for " + getRepresentedObject());
+				LOGGER.warning("No element type registered for " + getRepresentedObject());
 				return;
 			}
 
@@ -726,7 +726,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			// When becomes visible, must tells to parent to update
 			if (!isVisible) {
 				if (browserElementType.isVisible(getRepresentedObject())) {
-					logger.fine("Cell " + this + " becomes visible");
+					LOGGER.fine("Cell " + this + " becomes visible");
 					getParent().update(recursively);
 				}
 			}
@@ -821,8 +821,8 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			}
 
 			if (requireSorting) {
-				if (logger.isLoggable(Level.FINE)) {
-					logger.fine("Detected sorting required");
+				if (LOGGER.isLoggable(Level.FINE)) {
+					LOGGER.fine("Detected sorting required");
 				}
 				// Sort children according to supplied list
 				Collections.sort(children, new Comparator<BrowserCell>() {
@@ -855,7 +855,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 						// An Exception might be raised here
 						// We should investigate further, but since no real consequences are raised here, we just ignore exception
 						e.printStackTrace();
-						logger.warning("Unexpected " + e.getClass().getSimpleName()
+						LOGGER.warning("Unexpected " + e.getClass().getSimpleName()
 								+ " when refreshing browser, no severity but please investigate");
 					}
 				}
@@ -886,7 +886,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 				// An ArrayIndexOutOfBoundsException might be raised here
 				// We should investigate further, but since no real consequences are raised here, we just ignore exception
 				// e.printStackTrace();
-				logger.warning("Unexpected ArrayIndexOutOfBoundsException when refreshing browser, no severity but please investigate");
+				LOGGER.warning("Unexpected ArrayIndexOutOfBoundsException when refreshing browser, no severity but please investigate");
 				e.printStackTrace(System.out);
 				nodeStructureChanged(this);
 			} catch (NullPointerException e) {
@@ -894,7 +894,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 				// An NullPointerException might be raised here
 				// We should investigate further, but since no real consequences are raised here, we just ignore exception
 				// e.printStackTrace();
-				logger.warning("Unexpected NullPointerException when refreshing browser, no severity but please investigate");
+				LOGGER.warning("Unexpected NullPointerException when refreshing browser, no severity but please investigate");
 			}
 
 			if (requireSorting) {
@@ -911,7 +911,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 					// An Exception might be raised here
 					// We should investigate further, but since no real consequences are raised here, we just ignore exception
 					e.printStackTrace();
-					logger.warning("Unexpected " + e.getClass().getSimpleName()
+					LOGGER.warning("Unexpected " + e.getClass().getSimpleName()
 							+ " when refreshing browser, no severity but please investigate");
 				}
 

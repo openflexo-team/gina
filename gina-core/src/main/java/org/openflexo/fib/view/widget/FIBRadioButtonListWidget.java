@@ -34,11 +34,11 @@ import org.openflexo.fib.model.FIBRadioButtonList;
 
 public class FIBRadioButtonListWidget<T> extends FIBMultipleValueWidget<FIBRadioButtonList, JPanel, T, T> {
 
-	static final Logger logger = Logger.getLogger(FIBRadioButtonListWidget.class.getPackage().getName());
+	static final Logger LOGGER = Logger.getLogger(FIBRadioButtonListWidget.class.getPackage().getName());
 
 	private JRadioButton[] radioButtonArray;
 
-	private JPanel panel;
+	private final JPanel panel;
 
 	private ButtonGroup buttonGroup;
 
@@ -82,7 +82,7 @@ public class FIBRadioButtonListWidget<T> extends FIBMultipleValueWidget<FIBRadio
 		}
 	}
 
-	protected void rebuildRadioButtons() {
+	final protected void rebuildRadioButtons() {
 		if (panel != null) {
 			panel.removeAll();
 			((GridLayout) panel.getLayout()).setColumns(getWidget().getColumns());
@@ -112,8 +112,8 @@ public class FIBRadioButtonListWidget<T> extends FIBMultipleValueWidget<FIBRadio
 	public synchronized boolean updateWidgetFromModel() {
 		T value = getValue();
 		if (notEquals(value, selectedValue) /*|| listModelRequireChange()*/|| multipleValueModel == null) {
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("updateWidgetFromModel()");
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("updateWidgetFromModel()");
 			}
 
 			widgetUpdating = true;
@@ -168,8 +168,8 @@ public class FIBRadioButtonListWidget<T> extends FIBMultipleValueWidget<FIBRadio
 	public synchronized boolean updateModelFromWidget() {
 		if (notEquals(getValue(), selectedValue)) {
 			modelUpdating = true;
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("updateModelFromWidget with " + selectedValue);
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("updateModelFromWidget with " + selectedValue);
 			}
 			if (selectedValue != null && !widgetUpdating) {
 				setValue(selectedValue);

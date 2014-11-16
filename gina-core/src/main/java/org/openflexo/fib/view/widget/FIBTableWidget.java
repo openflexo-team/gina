@@ -75,7 +75,7 @@ import org.openflexo.fib.view.widget.table.FIBTableWidgetFooter;
 public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collection<T>> implements TableModelListener, FIBSelectable<T>,
 		ListSelectionListener {
 
-	private static final Logger logger = Logger.getLogger(FIBTableWidget.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(FIBTableWidget.class.getPackage().getName());
 
 	public static final String SELECTED = "selected";
 	public static final String SELECTION = "selection";
@@ -210,19 +210,19 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 			// if (debug) System.out.println("wasSelected: "+wasSelected);
 
 			if (_table.isEditing()) {
-				if (logger.isLoggable(Level.FINE)) {
-					logger.fine(getComponent().getName() + " - Table is currently editing at col:" + _table.getEditingColumn() + " row:"
+				if (LOGGER.isLoggable(Level.FINE)) {
+					LOGGER.fine(getComponent().getName() + " - Table is currently editing at col:" + _table.getEditingColumn() + " row:"
 							+ _table.getEditingRow());
 				}
 				_table.getCellEditor().cancelCellEditing();
 			} else {
-				if (logger.isLoggable(Level.FINE)) {
-					logger.fine(getComponent().getName() + " - Table is NOT currently edited ");
+				if (LOGGER.isLoggable(Level.FINE)) {
+					LOGGER.fine(getComponent().getName() + " - Table is NOT currently edited ");
 				}
 			}
 
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine(getComponent().getName() + " updateWidgetFromModel() with " + getValue() + " dataObject=" + getDataObject());
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine(getComponent().getName() + " updateWidgetFromModel() with " + getValue() + " dataObject=" + getDataObject());
 			}
 
 			if (getValue() == null) {
@@ -327,12 +327,12 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 	public void tableChanged(TableModelEvent e) {
 		if (e instanceof FIBTableModel.ModelObjectHasChanged) {
 			FIBTableModel.ModelObjectHasChanged event = (FIBTableModel.ModelObjectHasChanged) e;
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Model has changed from " + event.getOldValues() + " to " + event.getNewValues());
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("Model has changed from " + event.getOldValues() + " to " + event.getNewValues());
 			}
 		} else if (e instanceof FIBTableModel.RowMoveForObjectEvent) {
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Reselect object, and then the edited cell");
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("Reselect object, and then the edited cell");
 			}
 			FIBTableModel.RowMoveForObjectEvent event = (FIBTableModel.RowMoveForObjectEvent) e;
 			getListSelectionModel().removeListSelectionListener(this);
@@ -453,7 +453,7 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 		}
 	}
 
-	private void buildTable() {
+	final private void buildTable() {
 		getTableModel().addTableModelListener(this);
 
 		_table = new JXTable(getTableModel()) {
@@ -607,8 +607,8 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 			return;
 		}
 
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("valueChanged() selected index=" + getListSelectionModel().getMinSelectionIndex());
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("valueChanged() selected index=" + getListSelectionModel().getMinSelectionIndex());
 		}
 
 		// System.out.println("received " + e);
@@ -647,7 +647,7 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 		// System.out.println("selection=" + newSelection);
 
 		if (getComponent().getSelected().isValid()) {
-			logger.fine("Sets SELECTED binding with " + selectedObject);
+			LOGGER.fine("Sets SELECTED binding with " + selectedObject);
 			try {
 				getComponent().getSelected().setBindingValue(selectedObject, getBindingEvaluationContext());
 			} catch (TypeMismatchException e1) {
@@ -687,7 +687,7 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 
 	public void performSelect(T object) {
 		if (object == getSelected()) {
-			logger.fine("FIBTableWidget: ignore performSelect " + object);
+			LOGGER.fine("FIBTableWidget: ignore performSelect " + object);
 			return;
 		}
 		setSelected(object);
@@ -711,7 +711,7 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 		}
 		Object oldSelected = getSelected();
 		selectedObject = object;
-		logger.fine("FIBTable: setSelectedObject with object " + object + " current is " + getSelected());
+		LOGGER.fine("FIBTable: setSelectedObject with object " + object + " current is " + getSelected());
 
 		getPropertyChangeSupport().firePropertyChange(SELECTED, oldSelected, object);
 	}
@@ -740,7 +740,7 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 				index = _table.convertRowIndexToView(index);
 				getListSelectionModel().addSelectionInterval(index, index);
 			} catch (IndexOutOfBoundsException e) {
-				logger.warning("Unexpected " + e);
+				LOGGER.warning("Unexpected " + e);
 			}
 			ignoreNotifications = false;
 		}
@@ -754,7 +754,7 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 			try {
 				index = _table.convertRowIndexToView(index);
 			} catch (IndexOutOfBoundsException e) {
-				logger.warning("Unexpected " + e);
+				LOGGER.warning("Unexpected " + e);
 			}
 			getListSelectionModel().removeSelectionInterval(index, index);
 			ignoreNotifications = false;
