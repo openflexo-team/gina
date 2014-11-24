@@ -279,6 +279,9 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 				saveDictionary(language, dict);
 			}
 		}
+		synchronized (this) {
+			saveScheduled = false;
+		}
 	}
 
 	@Override
@@ -599,8 +602,59 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		return null;
 	}
 
+	private boolean saveScheduled = false;
+	private long lastSchedule = -1;
+
 	public void save() {
-		saveAllDictionaries();
+
+		// Localization entries are scheduled for a save
+		// When not scheduled, saving is scheduled after a 3 secs triggering
+		// Any new save schedule triggers a new request, and saving is then postposed
+
+		synchronized (this) {
+			lastSchedule = System.currentTimeMillis();
+			if (!saveScheduled) {
+				saveScheduled = true;
+				Thread saveThread = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						while (System.currentTimeMillis() < lastSchedule + 3000) {
+							// We need to wait
+							try {
+								Thread.sleep(3000);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+						logger.info("Saving dictionaries for " + localizedDirectoryResource);
+						saveAllDictionaries();
+					}
+				}, "SaveLocales");
+				saveThread.start();
+			}
+		}
+
+	}
+
+	// Test purposes
+	public static void main(String[] args) {
+
+		LocalizedDelegateImpl localization = new LocalizedDelegateImpl(ResourceLocator.locateResource("Localized"), null, true, true);
+		localization.save();
+		try {
+			Thread.sleep(500);
+			localization.save();
+			Thread.sleep(1500);
+			localization.save();
+			Thread.sleep(600);
+			localization.save();
+			Thread.sleep(900);
+			localization.save();
+			Thread.sleep(1000);
+			localization.save();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void refresh() {
