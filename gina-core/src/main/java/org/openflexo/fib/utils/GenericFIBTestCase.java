@@ -50,7 +50,9 @@ public abstract class GenericFIBTestCase {
 	public static String generateFIBTestCaseClass(File directory, String relativePath) {
 		StringBuffer sb = new StringBuffer();
 		for (File f : directory.listFiles()) {
-			if (f.getName().endsWith(".fib")) {
+			if (f.isDirectory()) {
+				generateFIBTestCaseClass(f, relativePath + f.getName() + File.separator, sb);
+			} else if (f.getName().endsWith(".fib")) {
 				String fibName = f.getName().substring(0, f.getName().indexOf(".fib"));
 				sb.append("@Test\n");
 				sb.append("public void test" + fibName + "() {\n");
@@ -59,6 +61,20 @@ public abstract class GenericFIBTestCase {
 			}
 		}
 		return sb.toString();
+	}
+
+	private static void generateFIBTestCaseClass(File directory, String relativePath, StringBuffer sb) {
+		for (File f : directory.listFiles()) {
+			if (f.isDirectory()) {
+				generateFIBTestCaseClass(f, relativePath + f.getName() + File.separator);
+			} else if (f.getName().endsWith(".fib")) {
+				String fibName = f.getName().substring(0, f.getName().indexOf(".fib"));
+				sb.append("@Test\n");
+				sb.append("public void test" + fibName + "() {\n");
+				sb.append("  validateFIB(\"" + relativePath + f.getName() + "\");\n");
+				sb.append("}\n\n");
+			}
+		}
 	}
 
 }
