@@ -1,7 +1,6 @@
 package org.openflexo.fib.swing.validation;
 
 import org.openflexo.fib.FIBLibrary;
-import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.swing.FIBJPanel;
 import org.openflexo.localization.LocalizedDelegate;
@@ -22,29 +21,31 @@ public abstract class ValidationPanel extends FIBJPanel<ValidationReport> {
 	}
 
 	@Override
-	protected FIBController makeFIBController(FIBComponent fibComponent, LocalizedDelegate parentLocalizer) {
+	protected FIBValidationController makeFIBController(FIBComponent fibComponent, LocalizedDelegate parentLocalizer) {
 		return new FIBValidationController(fibComponent) {
 			@Override
 			protected void performSelect(ValidationIssue<?, ?> validationIssue) {
 				ValidationPanel.this.performSelect(validationIssue);
 			}
-
-			@Override
-			public void checkAgain() {
-				startValidation(getValidationModel());
-				super.checkAgain();
-				stopValidation(getValidationModel());
-			}
 		};
+	}
+
+	@Override
+	public FIBValidationController getController() {
+		return (FIBValidationController) super.getController();
 	}
 
 	protected abstract void performSelect(ValidationIssue<?, ?> validationIssue);
 
-	public void validate(ValidationModel validationModel, Validable objectToValidate) {
-		startValidation(validationModel);
+	protected void performValidation(ValidationModel validationModel, Validable objectToValidate) throws InterruptedException {
+		// startValidation(validationModel);
 		ValidationReport report = validationModel.validate(objectToValidate);
-		stopValidation(validationModel);
+		// stopValidation(validationModel);
 		getController().setDataObject(report);
+	}
+
+	public void validate(ValidationModel validationModel, Validable objectToValidate) throws InterruptedException {
+		performValidation(validationModel, objectToValidate);
 	}
 
 	@Override
@@ -57,9 +58,9 @@ public abstract class ValidationPanel extends FIBJPanel<ValidationReport> {
 		// TODO
 	}
 
-	public void startValidation(ValidationModel validationModel) {
+	/*public void startValidation(ValidationModel validationModel) {
 	}
 
 	public void stopValidation(ValidationModel validationModel) {
-	}
+	}*/
 }

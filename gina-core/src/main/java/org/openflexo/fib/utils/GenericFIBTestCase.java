@@ -42,6 +42,9 @@ public abstract class GenericFIBTestCase {
 						+ validationReport.getValidationModel().localizedIssueDetailedInformations(error));
 			}
 			assertEquals(0, validationReport.getErrorsCount());
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			fail("Interrupted FIB validation");
 		} finally {
 			FIBLibrary.instance().removeFIBComponentFromCache(fibFile);
 		}

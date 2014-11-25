@@ -44,7 +44,7 @@ public class ComponentValidationWindow extends JDialog {
 		}
 	}
 
-	public void validateAndDisplayReportForComponent(FIBComponent component) {
+	public void validateAndDisplayReportForComponent(FIBComponent component) throws InterruptedException {
 		validationPanel.validate(component.getFactory().getValidationModel(), component);
 		setVisible(true);
 	}

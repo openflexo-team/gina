@@ -110,7 +110,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 	public boolean isValid();
 
-	public ValidationReport validate();
+	public ValidationReport validate() throws InterruptedException;
 
 	public Collection<? extends FIBModelObject> getEmbeddedObjects();
 
@@ -361,12 +361,18 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 		@Override
 		public final boolean isValid() {
-			ValidationReport report = validate();
-			return report.getErrorsCount() == 0;
+			ValidationReport report;
+			try {
+				report = validate();
+				return report.getErrorsCount() == 0;
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				return false;
+			}
 		}
 
 		@Override
-		public final ValidationReport validate() {
+		public final ValidationReport validate() throws InterruptedException {
 			return getFactory().getValidationModel().validate(this);
 		}
 

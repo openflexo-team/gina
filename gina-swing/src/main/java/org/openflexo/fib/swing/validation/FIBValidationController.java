@@ -68,8 +68,10 @@ public class FIBValidationController extends FIBController {
 		return null;
 	}
 
-	public void checkAgain() {
-		setDataObject(getValidationModel().validate(getValidatedObject()));
+	public void checkAgain() throws InterruptedException {
+		if (getValidationModel() != null && getValidatedObject() != null) {
+			setDataObject(getValidationModel().validate(getValidatedObject()));
+		}
 	}
 
 	public void fixIssue(FixProposal<?, ?> fixProposal) {

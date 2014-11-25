@@ -520,7 +520,12 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 
 	public void validateFIB() {
 		if (fibComponent != null) {
-			getValidationWindow().validateAndDisplayReportForComponent(fibComponent);
+			try {
+				getValidationWindow().validateAndDisplayReportForComponent(fibComponent);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

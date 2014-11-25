@@ -416,7 +416,12 @@ public class FIBEditor implements FIBGenericEditor {
 
 	public void validateFIB() {
 		if (editedFIB != null && editedFIB.fibComponent != null) {
-			getValidationWindow(editedFIB.fibComponent).validateAndDisplayReportForComponent(editedFIB.fibComponent);
+			try {
+				getValidationWindow(editedFIB.fibComponent).validateAndDisplayReportForComponent(editedFIB.fibComponent);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

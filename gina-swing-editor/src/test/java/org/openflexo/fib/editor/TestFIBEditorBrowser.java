@@ -27,7 +27,7 @@ public class TestFIBEditorBrowser {
 	private static FIBPanel component;
 
 	@Test
-	public void test1InstanciateWidget() throws ModelDefinitionException {
+	public void test1InstanciateWidget() throws ModelDefinitionException, InterruptedException {
 
 		factory = new FIBModelFactory();
 		component = factory.newInstance(FIBPanel.class);
