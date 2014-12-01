@@ -3812,6 +3812,7 @@ open_process_in_new_window=Proces in een nieuw venster openen
 open_project=Project openen
 open_workflow=Een WorkFlow openen
 opening_fib_editor=Bezig met openen van de FIB editor...
+opening_module_view_for_object=opening_module_view_for_object
 opening_project=opening_project
 operation=Operatie
 operationComponent=Operatie component
