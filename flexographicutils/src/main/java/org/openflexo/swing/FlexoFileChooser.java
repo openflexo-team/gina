@@ -40,6 +40,9 @@ import org.openflexo.toolbox.ImageIconResource;
 import org.openflexo.toolbox.ToolBox;
 
 public class FlexoFileChooser {
+	
+	public static final ImageIcon FOLDER_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Common/Folder.gif"));
+	
 
 	private enum ImplementationType {
 		JFileChooserImplementation, FileDialogImplementation
@@ -73,7 +76,7 @@ public class FlexoFileChooser {
 				@Override
 				public Icon getIcon(File f) {
 					if(ToolBox.getIconFileChooserRequiresFix(f, getFileView())){
-						return ToolBox.getIconFileChooserWithFix(f, getFileView());
+						return ToolBox.getIconFileChooserWithFix(f, getFileView(),FOLDER_ICON);
 					}
 					return super.getIcon(f);
 				}
@@ -83,7 +86,7 @@ public class FlexoFileChooser {
 				@Override
 				public Icon getIcon(File f) {
 					if(ToolBox.getIconFileChooserRequiresFix(f, getFileView())){
-						return ToolBox.getIconFileChooserWithFix(f, getFileView());
+						return ToolBox.getIconFileChooserWithFix(f, getFileView(),FOLDER_ICON);
 					}
 					return super.getIcon(f);
 				}
