@@ -57,6 +57,7 @@ public class GraphicalContextDelegate {
 
 	public void addTab(String title, FIBController controller) {
 		tabbedPane.add(title, controller.getRootView().getDynamicJComponent());
+		tabbedPane.revalidate();
 	}
 
 	public void waitGUI() {
