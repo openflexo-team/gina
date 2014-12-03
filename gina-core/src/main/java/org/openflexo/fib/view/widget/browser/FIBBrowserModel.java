@@ -102,8 +102,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 
 		if (element != null) {
 			return _elementTypes.get(element);
-		}
-		else {
+		} else {
 			LOGGER.warning("Could not find element for class " + aClass);
 			/*System.out.println("Available=");
 			for (FIBBrowserElement e : _fibBrowser.getElements()) {
@@ -342,8 +341,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 					l.delete();
 				}
 				childrenDataBindingValueChangeListeners.clear();
-			}
-			else {
+			} else {
 				childrenDataBindingValueChangeListeners = new HashMap<FIBBrowserElement.FIBBrowserElementChildren, BindingValueChangeListener<?>>();
 			}
 			// This is really important to this now
@@ -370,8 +368,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 									}
 								}
 							};
-						}
-						else {
+						} else {
 							l = new BrowserCellBindingValueChangeListener<Object>(children.getData(), browserElementType);
 						}
 						childrenDataBindingValueChangeListeners.put(children, l);
@@ -387,8 +384,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 					l.delete();
 				}
 				childrenCastBindingValueChangeListeners.clear();
-			}
-			else {
+			} else {
 				childrenCastBindingValueChangeListeners = new HashMap<FIBBrowserElement.FIBBrowserElementChildren, BindingValueChangeListener<?>>();
 			}
 			// This is really important to this now
@@ -412,8 +408,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 					l.delete();
 				}
 				childrenVisibleBindingValueChangeListeners.clear();
-			}
-			else {
+			} else {
 				childrenVisibleBindingValueChangeListeners = new HashMap<FIBBrowserElement.FIBBrowserElementChildren, BindingValueChangeListener<Boolean>>();
 			}
 
@@ -739,8 +734,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			if (children == null) {
 				oldChildren = Collections.emptyList();
 				removedChildren = Collections.emptyList();
-			}
-			else {
+			} else {
 				if (children.size() == 1 && children.firstElement() instanceof LoadingCell) {
 					removeAllChildren();
 				}
@@ -770,10 +764,9 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 								removedChildren.remove(cell);
 								if (recursively) {
 									cellsToForceUpdate.add(cell);
-								} 
+								}
 								index = children.indexOf(cell) + 1;
-							}
-							else {
+							} else {
 								newChildren.add(cell);
 								if (children == null) {
 									children = new Vector();
@@ -790,15 +783,12 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 								}
 							}
 
-
-						}
-						else {
+						} else {
 							cell.isVisible = false;
 						}
 					}
 				}
-			}
-			else {
+			} else {
 				newChildren = Collections.emptyList();
 			}
 
@@ -858,8 +848,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 						LOGGER.warning("Unexpected " + e.getClass().getSimpleName()
 								+ " when refreshing browser, no severity but please investigate");
 					}
-				}
-				else {
+				} else {
 					if (removedChildren.size() > 0) {
 						int[] childIndices = new int[removedChildren.size()];
 						Object[] removedChildrenObjects = new Object[removedChildren.size()];
@@ -867,14 +856,24 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 							childIndices[i] = oldChildren.indexOf(removedChildren.get(i));
 							removedChildrenObjects[i] = removedChildren.get(i);
 						}
-						nodesWereRemoved(this, childIndices, removedChildrenObjects);
+						try {
+							nodesWereRemoved(this, childIndices, removedChildrenObjects);
+						} catch (Exception e) {
+							e.printStackTrace();
+							LOGGER.warning("Unexpected exception: " + e);
+						}
 					}
 					if (newChildren.size() > 0) {
 						int[] childIndices = new int[newChildren.size()];
 						for (int i = 0; i < newChildren.size(); i++) {
 							childIndices[i] = children.indexOf(newChildren.get(i));
 						}
-						nodesWereInserted(this, childIndices);
+						try {
+							nodesWereInserted(this, childIndices);
+						} catch (Exception e) {
+							e.printStackTrace();
+							LOGGER.warning("Unexpected exception: " + e);
+						}
 					}
 				}
 			}
