@@ -119,10 +119,16 @@ public class FIBBrowserCellRenderer extends DefaultTreeCellRenderer {
 	  }*/
 
 	private FIBBrowserElementType getElementType(Object object) {
-		return widget.getBrowserModel().elementTypeForClass(object.getClass());
+		if (widget != null && widget.getBrowserModel() != null && object != null) {
+			return widget.getBrowserModel().elementTypeForClass(object.getClass());
+		}
+		return null;
 	}
 
 	protected String getLabel(Object object) {
+		if (object == null) {
+			return null;
+		}
 		FIBBrowserElementType elementType = getElementType(object);
 		if (elementType != null) {
 			return elementType.getLabelFor(object);
@@ -131,6 +137,9 @@ public class FIBBrowserCellRenderer extends DefaultTreeCellRenderer {
 	}
 
 	protected Icon getIcon(Object object) {
+		if (object == null) {
+			return null;
+		}
 		FIBBrowserElementType elementType = getElementType(object);
 		if (elementType != null) {
 			return elementType.getIconFor(object);
@@ -139,6 +148,9 @@ public class FIBBrowserCellRenderer extends DefaultTreeCellRenderer {
 	}
 
 	protected String getTooltip(Object object) {
+		if (object == null) {
+			return null;
+		}
 		FIBBrowserElementType elementType = getElementType(object);
 		if (elementType != null) {
 			return elementType.getTooltipFor(object);
@@ -147,6 +159,9 @@ public class FIBBrowserCellRenderer extends DefaultTreeCellRenderer {
 	}
 
 	protected boolean isEnabled(Object object) {
+		if (object == null) {
+			return false;
+		}
 		FIBBrowserElementType elementType = getElementType(object);
 		if (elementType != null) {
 			// System.out.println("Object "+object+" isEnabled="+elementType.isEnabled(object));
@@ -156,6 +171,9 @@ public class FIBBrowserCellRenderer extends DefaultTreeCellRenderer {
 	}
 
 	protected Font getFont(Object object) {
+		if (object == null) {
+			return null;
+		}
 		FIBBrowserElementType elementType = getElementType(object);
 		if (elementType != null) {
 			return elementType.getFont(object);
