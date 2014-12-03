@@ -339,7 +339,13 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 		_tree = new JTree(getBrowserModel()) {
 			@Override
 			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
+				// We try here to handle exception which may occur in SWING layers
+				try {
+					super.paintComponent(g);
+				} catch (Exception e) {
+					LOGGER.warning("Unexpected exception occured in SWING: " + e);
+					e.printStackTrace();
+				}
 				if (ToolBox.isMacOSLaf()) {
 					if (getSelectionRows() != null && getSelectionRows().length > 0) {
 						for (int selected : getSelectionRows()) {
