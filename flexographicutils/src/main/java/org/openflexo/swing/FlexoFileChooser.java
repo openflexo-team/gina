@@ -29,13 +29,20 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileView;
 
+import org.openflexo.rm.ResourceLocator;
+import org.openflexo.toolbox.ImageIconResource;
 import org.openflexo.toolbox.ToolBox;
 
 public class FlexoFileChooser {
+	
+	public static final ImageIcon FOLDER_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Common/Folder.gif"));
+	
 
 	private enum ImplementationType {
 		JFileChooserImplementation, FileDialogImplementation
@@ -53,7 +60,8 @@ public class FlexoFileChooser {
 		JFileChooser chooser;
 		if (ToolBox.fileChooserRequiresFix()) {
 			// ToolBox.fixFileChooser();
-			chooser = new JFileChooser(location) {
+			chooser = new JFileChooser(location){
+				
 				@Override
 				public int showDialog(Component parent, String approveButtonText) throws HeadlessException {
 					ToolBox.fixFileChooser();
@@ -64,13 +72,29 @@ public class FlexoFileChooser {
 						ToolBox.undoFixFileChooser();
 					}
 				}
+				
+				@Override
+				public Icon getIcon(File f) {
+					if(ToolBox.getIconFileChooserRequiresFix(f, getFileView())){
+						return ToolBox.getIconFileChooserWithFix(f, getFileView(),FOLDER_ICON);
+					}
+					return super.getIcon(f);
+				}
 			};
 		} else {
-			chooser = new JFileChooser(location);
+			chooser = new JFileChooser(location){
+				@Override
+				public Icon getIcon(File f) {
+					if(ToolBox.getIconFileChooserRequiresFix(f, getFileView())){
+						return ToolBox.getIconFileChooserWithFix(f, getFileView(),FOLDER_ICON);
+					}
+					return super.getIcon(f);
+				}
+			};
 		}
 		return chooser;
 	}
-
+	
 	private FileDialog _fileDialog;
 	private JFileChooser _fileChooser;
 	private Window _owner;
