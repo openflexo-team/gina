@@ -40,7 +40,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeModelEvent;
@@ -485,7 +484,8 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 				if (!getBrowser().getRootVisible() && (BrowserCell) getBrowserModel().getRoot() != null
 						&& ((BrowserCell) getBrowserModel().getRoot()).getChildCount() == 1) {
 					// Only one cell and roots are hidden, expand this first cell
-					SwingUtilities.invokeLater(new Runnable() {
+
+					invokeLater(new Runnable() {
 						@Override
 						public void run() {
 							// See issue OPENFLEXO-516. Sometimes, the condition may have become false.
@@ -496,7 +496,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 												((BrowserCell) getBrowserModel().getRoot()).getChildAt(0) }));
 							}
 						}
-					});
+					}, 1000);
 				}
 			}
 
