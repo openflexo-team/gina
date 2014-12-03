@@ -935,4 +935,48 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 		}
 	}
 
+	/**
+	 * Semantics of this method is not trivial: the goal is to aggregate some notifications within a given time (supplied as a
+	 * aggregationTimeOut), to do it only once.<br>
+	 * Within this delay, all requests to this method will simply reinitialize time-out, and will be ignored. Only the first call will be
+	 * executed in a new thread which will die immediately after.
+	 * 
+	 * @param r
+	 *            runnable to run after last request + timeout
+	 * @param aggregationTimeOut
+	 *            in milliseconds
+	 */
+	public void invokeLater(final Runnable r, final long aggregationTimeOut) {
+		synchronized (this) {
+			lastSchedule = System.currentTimeMillis();
+			if (!invokeLaterScheduled) {
+				invokeLaterScheduled = true;
+				Thread invokeLaterThread = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						while (System.currentTimeMillis() < lastSchedule + aggregationTimeOut) {
+							// We need to wait
+							try {
+								Thread.sleep(aggregationTimeOut);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+						synchronized (FIBWidgetView.this) {
+							invokeLaterScheduled = false;
+						}
+						LOGGER.fine("Starting runnable declared in invokeLater");
+						r.run();
+					}
+				}, "InvokeLaterThread");
+				invokeLaterThread.start();
+			} else {
+				LOGGER.fine("Ignoring invokeLater");
+			}
+		}
+	}
+
+	private boolean invokeLaterScheduled = false;
+	private long lastSchedule = -1;
+
 }
