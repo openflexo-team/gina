@@ -28,6 +28,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.Icon;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
@@ -409,6 +410,25 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 			}
 		}
 		return value.toString();
+	}
+
+	public Icon getIconRepresentation(final Object value) {
+		if (value == null) {
+			return null;
+		}
+		if (getColumnModel().getIcon() != null && getColumnModel().getIcon().isValid()) {
+			formatter.setValue(value);
+			try {
+				return getColumnModel().getIcon().getBindingValue(formatter);
+			} catch (TypeMismatchException e) {
+				e.printStackTrace();
+			} catch (NullReferenceException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 
 	protected class ColumnDynamicFormatter implements BindingEvaluationContext, HasPropertyChangeSupport {

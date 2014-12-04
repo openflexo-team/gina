@@ -127,6 +127,11 @@ public class DropDownColumn<T, V> extends AbstractColumn<T, V> implements Editab
 			if (returned instanceof JLabel) {
 				((JLabel) returned).setText(renderValue((T) value));
 				((JLabel) returned).setFont(getFont());
+				if (getColumnModel().getShowIcon()) {
+					if (getColumnModel().getIcon() != null && getColumnModel().getIcon().isValid()) {
+						((JLabel) returned).setIcon(getIconRepresentation(value));
+					}
+				}
 			}
 			return returned;
 		}
@@ -162,7 +167,7 @@ public class DropDownColumn<T, V> extends AbstractColumn<T, V> implements Editab
 			}
 
 			if (accessedList instanceof List) {
-				return (List<V>) accessedList;
+				return accessedList;
 			}
 		}
 
@@ -234,6 +239,11 @@ public class DropDownColumn<T, V> extends AbstractColumn<T, V> implements Editab
 					if (returned instanceof JLabel) {
 						((JLabel) returned).setText(renderValue((T) value));
 						((JLabel) returned).setFont(getFont());
+						if (getColumnModel().getShowIcon()) {
+							if (getColumnModel().getIcon() != null && getColumnModel().getIcon().isValid()) {
+								((JLabel) returned).setIcon(getIconRepresentation(value));
+							}
+						}
 					}
 					return returned;
 				}

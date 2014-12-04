@@ -24,6 +24,8 @@ import java.awt.Font;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import javax.swing.Icon;
+
 import org.openflexo.antar.binding.Bindable;
 import org.openflexo.antar.binding.BindingDefinition;
 import org.openflexo.antar.binding.BindingFactory;
@@ -62,6 +64,10 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 	public static final String DATA_KEY = "data";
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String FORMAT_KEY = "format";
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String ICON_KEY = "icon";
+	@PropertyIdentifier(type = Boolean.class)
+	public static final String SHOW_ICON_KEY = "showIcon";
 	@PropertyIdentifier(type = String.class)
 	public static final String TITLE_KEY = "title";
 	@PropertyIdentifier(type = Integer.class)
@@ -103,6 +109,20 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 
 	@Setter(FORMAT_KEY)
 	public void setFormat(DataBinding<String> format);
+
+	@Getter(value = ICON_KEY)
+	@XMLAttribute
+	public DataBinding<Icon> getIcon();
+
+	@Setter(ICON_KEY)
+	public void setIcon(DataBinding<Icon> icon);
+
+	@Getter(value = SHOW_ICON_KEY)
+	@XMLAttribute
+	public Boolean getShowIcon();
+
+	@Setter(SHOW_ICON_KEY)
+	public void setShowIcon(Boolean showIcon);
 
 	@Getter(value = TITLE_KEY)
 	@XMLAttribute
@@ -213,6 +233,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 
 		private DataBinding<?> data;
 		private DataBinding<String> format;
+		private DataBinding<Icon> icon;
 		private DataBinding<String> tooltip;
 		private DataBinding<Color> color;
 		private DataBinding<Color> bgColor;
@@ -223,6 +244,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		private boolean displayTitle = true;
 		private Font font;
 		private DataBinding<?> valueChangedAction;
+		private boolean showIcon = false;
 
 		private final FIBFormatter formatter;
 
@@ -427,6 +449,46 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 				format.setBindingName("format");
 			}
 			this.format = format;
+		}
+
+		@Override
+		public DataBinding<Icon> getIcon() {
+			if (icon == null) {
+				icon = new DataBinding<Icon>(formatter, Icon.class, DataBinding.BindingDefinitionType.GET);
+				icon.setCachingStrategy(CachingStrategy.NO_CACHING);
+				icon.setBindingName("icon");
+			}
+			return icon;
+		}
+
+		@Override
+		public void setIcon(DataBinding<Icon> icon) {
+			FIBPropertyNotification<DataBinding<Icon>> notification = requireChange(ICON_KEY, icon);
+			if (notification != null) {
+				if (icon != null) {
+					icon.setOwner(formatter);
+					icon.setDeclaredType(Icon.class);
+					icon.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+					icon.setCachingStrategy(CachingStrategy.NO_CACHING);
+					icon.setBindingName("icon");
+				}
+				this.icon = icon;
+				hasChanged(notification);
+			}
+		}
+
+		@Override
+		public Boolean getShowIcon() {
+			return showIcon;
+		}
+
+		@Override
+		public void setShowIcon(Boolean showIcon) {
+			FIBPropertyNotification<Boolean> notification = requireChange(SHOW_ICON_KEY, showIcon);
+			if (notification != null) {
+				this.showIcon = showIcon;
+				hasChanged(notification);
+			}
 		}
 
 		@Override

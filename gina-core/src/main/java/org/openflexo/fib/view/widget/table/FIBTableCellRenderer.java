@@ -13,6 +13,7 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import org.openflexo.fib.model.FIBTable;
+import org.openflexo.fib.model.FIBTableColumn;
 import org.openflexo.fib.view.widget.FIBTableWidget;
 
 @SuppressWarnings("serial")
@@ -76,7 +77,13 @@ public class FIBTableCellRenderer<T, V> extends DefaultTableCellRenderer {
 		}
 
 		if (returned instanceof JLabel) {
+			FIBTableColumn columnModel = this.column.getColumnModel();
 			((JLabel) returned).setText(this.column.getStringRepresentation(value));
+			if (columnModel.getShowIcon()) {
+				if (columnModel.getIcon() != null && columnModel.getIcon().isValid()) {
+					((JLabel) returned).setIcon(this.column.getIconRepresentation(value));
+				}
+			}
 		}
 
 		if (getTableWidget().isEnabled()) {
