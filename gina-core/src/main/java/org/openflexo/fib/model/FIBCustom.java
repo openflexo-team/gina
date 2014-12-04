@@ -460,6 +460,7 @@ public interface FIBCustom extends FIBWidget {
 			public DataBinding<?> getVariable() {
 				if (variable == null) {
 					variable = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.GET_SET);
+					variable.setBindingName("variable");
 				}
 				return variable;
 			}
@@ -470,6 +471,7 @@ public interface FIBCustom extends FIBWidget {
 					variable.setOwner(this);
 					variable.setDeclaredType(Object.class);
 					variable.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET_SET);
+					variable.setBindingName("variable");
 				}
 				this.variable = variable;
 				if (getOwner() != null && variable != null) {
@@ -487,6 +489,7 @@ public interface FIBCustom extends FIBWidget {
 			public DataBinding<?> getValue() {
 				if (value == null) {
 					value = new DataBinding<Object>(getOwner(), Object.class, DataBinding.BindingDefinitionType.GET);
+					value.setBindingName("value");
 				}
 				return value;
 			}
@@ -497,6 +500,7 @@ public interface FIBCustom extends FIBWidget {
 					value.setOwner(getOwner()); // Warning, still null while deserializing
 					value.setDeclaredType(Object.class);
 					value.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+					value.setBindingName("value");
 					this.value = value;
 				} else {
 					getValue();
