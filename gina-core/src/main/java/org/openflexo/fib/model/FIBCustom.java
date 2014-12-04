@@ -46,6 +46,7 @@ import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.DeserializationFinalizer;
+import org.openflexo.model.annotations.Embedded;
 import org.openflexo.model.annotations.Finder;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
@@ -115,6 +116,7 @@ public interface FIBCustom extends FIBWidget {
 	@Getter(value = ASSIGNMENTS_KEY, cardinality = Cardinality.LIST, inverse = FIBCustomAssignment.OWNER_KEY)
 	@XMLElement
 	@CloningStrategy(StrategyType.CLONE)
+	@Embedded
 	public List<FIBCustomAssignment> getAssignments();
 
 	@Setter(ASSIGNMENTS_KEY)
