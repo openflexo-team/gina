@@ -111,6 +111,11 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 					// + newValue + " source=" + source);
 					updateEnability();
 				}
+
+				@Override
+				protected Boolean getDefaultValue() {
+					return false;
+				}
 			};
 		}
 	}
