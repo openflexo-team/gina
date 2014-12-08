@@ -130,6 +130,12 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 					// + newValue + " source=" + source);
 					updateVisibility();
 				}
+
+				@Override
+				protected Boolean getDefaultValue() {
+					return true;
+				}
+
 			};
 		}
 	}
