@@ -627,7 +627,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 	}
 
 	public void setSelected(T object) {
-		LOGGER.info("Select " + object);
+		LOGGER.fine("Select " + object);
 		if (getRootValue() == null) {
 			return;
 		}
