@@ -20,10 +20,7 @@
 package org.openflexo.fib.view.widget;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -47,7 +44,6 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.event.TreeWillExpandListener;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreePath;
@@ -345,7 +341,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 					LOGGER.warning("Unexpected exception occured in SWING: " + e);
 					e.printStackTrace();
 				}
-				if (ToolBox.isMacOSLaf()) {
+				/*if (ToolBox.isMacOSLaf()) {
 					if (getSelectionRows() != null && getSelectionRows().length > 0) {
 						for (int selected : getSelectionRows()) {
 							Rectangle rowBounds = getRowBounds(selected);
@@ -368,7 +364,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 							}
 						}
 					}
-				}
+				}*/
 			}
 		};
 		_tree.addTreeWillExpandListener(new TreeWillExpandListener() {
