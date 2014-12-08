@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import javax.swing.UIManager;
+
 import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.ParameterizedTypeImpl;
@@ -568,6 +570,9 @@ public interface FIBBrowser extends FIBWidget {
 
 		@Override
 		public Color getTextSelectionColor() {
+			if (textSelectionColor == null) {
+				return UIManager.getLookAndFeelDefaults().getColor("Tree.selectionForeground");
+			}
 			return textSelectionColor;
 		}
 
@@ -582,6 +587,9 @@ public interface FIBBrowser extends FIBWidget {
 
 		@Override
 		public Color getTextNonSelectionColor() {
+			if (textNonSelectionColor == null) {
+				return UIManager.getLookAndFeelDefaults().getColor("Tree.textForeground");
+			}
 			return textNonSelectionColor;
 		}
 
@@ -596,6 +604,9 @@ public interface FIBBrowser extends FIBWidget {
 
 		@Override
 		public Color getBackgroundSelectionColor() {
+			if (backgroundSelectionColor == null) {
+				return UIManager.getLookAndFeelDefaults().getColor("Tree.selectionBackground");
+			}
 			return backgroundSelectionColor;
 		}
 
@@ -610,6 +621,9 @@ public interface FIBBrowser extends FIBWidget {
 
 		@Override
 		public Color getBackgroundSecondarySelectionColor() {
+			if (backgroundSecondarySelectionColor == null) {
+				return new Color(178, 215, 255);
+			}
 			return backgroundSecondarySelectionColor;
 		}
 
@@ -625,6 +639,9 @@ public interface FIBBrowser extends FIBWidget {
 
 		@Override
 		public Color getBackgroundNonSelectionColor() {
+			if (backgroundNonSelectionColor == null) {
+				return UIManager.getLookAndFeelDefaults().getColor("Tree.textBackground");
+			}
 			return backgroundNonSelectionColor;
 		}
 

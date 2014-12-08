@@ -23,8 +23,12 @@ import java.awt.Color;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Logger;
+
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 
 import org.openflexo.antar.binding.BindingDefinition;
 import org.openflexo.antar.binding.BindingModel;
@@ -878,8 +882,28 @@ public interface FIBTable extends FIBWidget {
 			}
 		}
 
+		public static void main(String args[]) throws Exception {
+			UIManager.LookAndFeelInfo looks[] = UIManager.getInstalledLookAndFeels();
+
+			for (UIManager.LookAndFeelInfo info : looks) {
+				UIManager.setLookAndFeel(info.getClassName());
+
+				UIDefaults defaults = UIManager.getDefaults();
+				Enumeration newKeys = defaults.keys();
+
+				while (newKeys.hasMoreElements()) {
+					Object obj = newKeys.nextElement();
+					if ((obj instanceof String) && ((String) obj).contains("Table"))
+						System.out.printf("%50s : %s\n", obj, UIManager.get(obj));
+				}
+			}
+		}
+
 		@Override
 		public Color getTextSelectionColor() {
+			if (textSelectionColor == null) {
+				return UIManager.getLookAndFeelDefaults().getColor("Table[Enabled+Selected].textForeground");
+			}
 			return textSelectionColor;
 		}
 
@@ -894,6 +918,9 @@ public interface FIBTable extends FIBWidget {
 
 		@Override
 		public Color getTextNonSelectionColor() {
+			if (textNonSelectionColor == null) {
+				return UIManager.getLookAndFeelDefaults().getColor("Table.textForeground");
+			}
 			return textNonSelectionColor;
 		}
 
@@ -908,6 +935,10 @@ public interface FIBTable extends FIBWidget {
 
 		@Override
 		public Color getBackgroundSelectionColor() {
+			if (backgroundSelectionColor == null) {
+				System.out.println("return " + UIManager.getLookAndFeelDefaults().getColor("Tree.selectionBackground"));
+				return UIManager.getLookAndFeelDefaults().getColor("Table[Enabled+Selected].textBackground");
+			}
 			return backgroundSelectionColor;
 		}
 
@@ -922,6 +953,9 @@ public interface FIBTable extends FIBWidget {
 
 		@Override
 		public Color getBackgroundSecondarySelectionColor() {
+			if (backgroundSecondarySelectionColor == null) {
+				return new Color(178, 215, 255);
+			}
 			return backgroundSecondarySelectionColor;
 		}
 
@@ -937,6 +971,9 @@ public interface FIBTable extends FIBWidget {
 
 		@Override
 		public Color getBackgroundNonSelectionColor() {
+			if (backgroundNonSelectionColor == null) {
+				return UIManager.getLookAndFeelDefaults().getColor("Table.background");
+			}
 			return backgroundNonSelectionColor;
 		}
 
