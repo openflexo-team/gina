@@ -231,11 +231,15 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 	}
 
 	public FIBView<?, ?, ?> viewForComponent(String componentName) {
-		FIBComponent c = getRootComponent().getComponentNamed(componentName);
-		if (c != null) {
-			return views.get(c);
+
+		// Includes views from embedded components
+		for (FIBView<?, ?, ?> v : getAllViews()) {
+			if (StringUtils.isNotEmpty(v.getComponent().getName()) && v.getComponent().getName().equals(componentName)) {
+				return v;
+			}
 		}
 		return null;
+
 	}
 
 	public Collection<FIBView<?, ?, ?>> getViews() {
@@ -244,21 +248,17 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 
 	// Includes views from embedded components
 	public List<FIBView<?, ?, ?>> getAllViews() {
-		System.out.println("Je cherche toutes les vues de ");
 		List<FIBView<?, ?, ?>> l = new ArrayList<FIBView<?, ?, ?>>();
 		l.addAll(views.values());
 		for (FIBView<?, ?, ?> v : views.values()) {
 			if (v instanceof FIBReferencedComponentWidget) {
 				FIBReferencedComponentWidget w = (FIBReferencedComponentWidget) v;
-				System.out.println("Found widget " + w);
-				System.out.println("w.getReferencedComponentView() = " + w.getReferencedComponentView());
 				if (w.getReferencedComponentView() != null) {
 					l.addAll(w.getReferencedComponentView().getController().getAllViews());
-					System.out.println("added: " + w.getReferencedComponentView().getController().getAllViews());
-				} else {
-					System.out.println("Pas de vue pour "
+				} /*else {
+					System.out.println("No view for "
 							+ FIBLibrary.instance().getFIBModelFactory().stringRepresentation(w.getReferencedComponent()));
-				}
+					}*/
 			}
 		}
 		return l;
@@ -808,19 +808,19 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 	 */
 	public <T> void updateSelection(FIBSelectable<T> widget, List<T> oldSelection, List<T> newSelection) {
 
-		LOGGER.info("updateSelection() dans FIBController with " + newSelection);
-		LOGGER.info("widget=" + widget);
-		LOGGER.info("selectionLeader=" + getSelectionLeader());
+		// LOGGER.info("updateSelection() dans FIBController with " + newSelection);
+		// LOGGER.info("widget=" + widget);
+		// LOGGER.info("selectionLeader=" + getSelectionLeader());
 
 		if (isEmbedded()) {
-			System.out.println("ah ben tiens j'ai un parent " + getRootView().getEmbeddingComponent().getController() + " dans " + this);
+			// When component is embedded, forward this to the parent
 			getEmbeddingController().updateSelection(widget, oldSelection, newSelection);
 			return;
 		}
 
 		if (widget == getSelectionLeader()) {
 
-			LOGGER.info("OUAIS, c'est bien moi le LEADER: " + getSelectionLeader());
+			// LOGGER.info("*************** I'm the SELECTION LEADER: " + getSelectionLeader());
 
 			// The caller widget is the selection leader, and should fire selection change event all over the world !
 			fireSelectionChanged(widget);
@@ -846,7 +846,10 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 						}
 					}
 					for (Object o : objectsToRemoveFromSelection) {
-						if (v.getSelectableComponent().mayRepresent(o)) {
+						// Don't do this for FIBSelectable which are not SelectionLeader !!!
+						// Otherwise, if this selectable'selection is the cause of displaying of selection leader
+						// the selection leader might disapppear
+						if (v.getSelectableComponent().mayRepresent(o) && v.getSelectableComponent() == getSelectionLeader()) {
 							v.getSelectableComponent().objectRemovedFromSelection(o);
 						}
 					}
@@ -857,7 +860,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 
 	public void objectAddedToSelection(Object o) {
 
-		LOGGER.info("objectAddedToSelection() dans FIBController with " + o);
+		// LOGGER.info("************** objectAddedToSelection() dans FIBController with " + o);
 
 		LOGGER.fine("FIBController: objectAddedToSelection(): " + o);
 
@@ -879,7 +882,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 
 	public void objectRemovedFromSelection(Object o) {
 
-		// logger.info("objectRemovedFromSelection() dans FIBController with " + o);
+		// LOGGER.info("************** objectRemovedFromSelection() dans FIBController with " + o);
 
 		LOGGER.fine("FIBController: objectRemovedFromSelection(): " + o);
 		for (FIBView<?, ?, ?> v : getViews()) {
