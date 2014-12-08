@@ -37,7 +37,6 @@ import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -156,9 +155,7 @@ public class FIBEditableViewDelegate<M extends FIBComponent, J extends JComponen
 	}
 
 	private boolean isComponentRootComponentForAnyFIBView(Component c) {
-		Enumeration<FIBView<?, ?, ?>> en = getController().getViews();
-		while (en.hasMoreElements()) {
-			FIBView<?, ?, ?> v = en.nextElement();
+		for (FIBView<?, ?, ?> v : getController().getViews()) {
 			if (v.getResultingJComponent() == c) {
 				return true;
 			}
