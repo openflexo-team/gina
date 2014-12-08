@@ -936,7 +936,6 @@ public interface FIBTable extends FIBWidget {
 		@Override
 		public Color getBackgroundSelectionColor() {
 			if (backgroundSelectionColor == null) {
-				System.out.println("return " + UIManager.getLookAndFeelDefaults().getColor("Tree.selectionBackground"));
 				return UIManager.getLookAndFeelDefaults().getColor("Table[Enabled+Selected].textBackground");
 			}
 			return backgroundSelectionColor;
