@@ -19,13 +19,18 @@
  */
 package org.openflexo.fib.view.widget;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
@@ -55,20 +60,20 @@ public class FIBRadioButtonListWidget<T> extends FIBMultipleValueWidget<FIBRadio
 				radioButtonArray[0].setSelected(true);
 				setSelected(getMultipleValueModel().getElementAt(0));
 			}*/
-		
+
 		if ((getWidget().getData() == null || !getWidget().getData().isValid()) && getWidget().getAutoSelectFirstRow()
 				&& getMultipleValueModel().getSize() > 0) {
 			setSelectedValue(getMultipleValueModel().getElementAt(0));
 		}
 	}
 
-	private void selectFirstRowIfRequired(){
-		if (selectedValue==null && (getWidget().getData() != null && getWidget().getData().isValid()) && getWidget().getAutoSelectFirstRow()
-				&& getMultipleValueModel().getSize() > 0) {
+	private void selectFirstRowIfRequired() {
+		if (selectedValue == null && (getWidget().getData() != null && getWidget().getData().isValid())
+				&& getWidget().getAutoSelectFirstRow() && getMultipleValueModel().getSize() > 0) {
 			setSelectedValue(getMultipleValueModel().getElementAt(0));
 		}
 	}
-	
+
 	@Override
 	protected FIBMultipleValueModel<T> createMultipleValueModel() {
 		return new FIBMultipleValueModel<T>();
@@ -96,6 +101,17 @@ public class FIBRadioButtonListWidget<T> extends FIBMultipleValueWidget<FIBRadio
 				rb.setOpaque(false);
 				rb.addActionListener(new RadioButtonListener(rb, object, i));
 				radioButtonArray[i] = rb;
+				// Handle the case of icon should be displayed
+				if (getWidget().getShowIcon() && getWidget().getIcon().isSet() && getWidget().getIcon().isValid()) {
+					rb.setHorizontalAlignment(JCheckBox.LEFT);
+					rb.setText(null);
+					final JLabel label = new JLabel(getStringRepresentation(object), getIconRepresentation(object), JLabel.LEADING);
+					Dimension ps = rb.getPreferredSize();
+					rb.setLayout(new BorderLayout());
+					label.setLabelFor(rb);
+					label.setBorder(BorderFactory.createEmptyBorder(0, ps.width, 0, 0));
+					rb.add(label);
+				}
 				panel.add(rb);
 				buttonGroup.add(rb);
 				if (object.equals(getValue())) {
