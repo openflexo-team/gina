@@ -28,6 +28,7 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.GenericArrayTypeImpl;
 import org.openflexo.antar.binding.ParameterizedTypeImpl;
 import org.openflexo.antar.binding.WilcardTypeImpl;
+import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -100,6 +101,7 @@ public interface FIBDropDownColumn extends FIBTableColumn {
 			if (list == null) {
 				list = new DataBinding<List<?>>(this, new TypeToken<List<?>>() {
 				}.getType(), DataBinding.BindingDefinitionType.GET);
+				list.setBindingName("list");
 			}
 			return list;
 		}
@@ -111,6 +113,7 @@ public interface FIBDropDownColumn extends FIBTableColumn {
 				list.setDeclaredType(new TypeToken<List<?>>() {
 				}.getType());
 				list.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				list.setBindingName("list");
 			}
 			this.list = list;
 		}
@@ -120,6 +123,7 @@ public interface FIBDropDownColumn extends FIBTableColumn {
 			if (array == null) {
 				array = new DataBinding<Object[]>(this, new TypeToken<Object[]>() {
 				}.getType(), DataBinding.BindingDefinitionType.GET);
+				array.setBindingName("array");
 			}
 			return array;
 		}
@@ -131,6 +135,7 @@ public interface FIBDropDownColumn extends FIBTableColumn {
 				array.setDeclaredType(new TypeToken<Object[]>() {
 				}.getType());
 				array.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				array.setBindingName("array");
 			}
 			this.array = array;
 		}
@@ -157,4 +162,29 @@ public interface FIBDropDownColumn extends FIBTableColumn {
 		}
 
 	}
+
+	@DefineValidationRule
+	public static class ListBindingMustBeValid extends BindingMustBeValid<FIBDropDownColumn> {
+		public ListBindingMustBeValid() {
+			super("'list'_binding_is_not_valid", FIBDropDownColumn.class);
+		}
+
+		@Override
+		public DataBinding<?> getBinding(FIBDropDownColumn object) {
+			return object.getList();
+		}
+	}
+
+	@DefineValidationRule
+	public static class ArrayBindingMustBeValid extends BindingMustBeValid<FIBDropDownColumn> {
+		public ArrayBindingMustBeValid() {
+			super("'array'_binding_is_not_valid", FIBDropDownColumn.class);
+		}
+
+		@Override
+		public DataBinding<?> getBinding(FIBDropDownColumn object) {
+			return object.getArray();
+		}
+	}
+
 }
