@@ -16,3 +16,4 @@ target
 .settings
 /.pmd
 /.gitignore
+/pom.xml~
