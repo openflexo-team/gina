@@ -761,7 +761,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 			return;
 		}
 
-		LOGGER.info("Focused widget is now " + newFocusedWidget.getComponent() + " was="
+		LOGGER.fine("Focused widget is now " + newFocusedWidget.getComponent() + " was="
 				+ (focusedWidget != null ? focusedWidget.getComponent() : null));
 		if (newFocusedWidget != focusedWidget) {
 			FIBWidgetView oldFocusedWidget = focusedWidget;
