@@ -24,16 +24,21 @@ import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
-public class FlexoCollabsiblePanelGroup extends JPanel {
+public class FlexoCollabsiblePanelGroup extends JScrollPane {
 
+	private static final long serialVersionUID = 1L;
 	private final List<FlexoCollabsiblePanel> panels;
 	private FlexoCollabsiblePanel openedPanel;
+	private final JPanel mainPane;
 
 	public FlexoCollabsiblePanelGroup() {
-		super(new VerticalLayout());
+		super();
+		mainPane = new JPanel(new VerticalLayout());
 		panels = new ArrayList<FlexoCollabsiblePanel>();
 		openedPanel = null;
+		setViewportView(mainPane);
 	}
 
 	public void addContents(final String title, JComponent contents) {
@@ -51,7 +56,7 @@ public class FlexoCollabsiblePanelGroup extends JPanel {
 
 	public void addContents(FlexoCollabsiblePanel collabsiblePanel) {
 		panels.add(collabsiblePanel);
-		add(collabsiblePanel);
+		mainPane.add(collabsiblePanel);
 		setOpenedPanel(collabsiblePanel);
 	}
 
