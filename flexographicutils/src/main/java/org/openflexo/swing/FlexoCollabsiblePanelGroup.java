@@ -22,9 +22,11 @@ package org.openflexo.swing;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 public class FlexoCollabsiblePanelGroup extends JScrollPane {
 
@@ -39,6 +41,8 @@ public class FlexoCollabsiblePanelGroup extends JScrollPane {
 		panels = new ArrayList<FlexoCollabsiblePanel>();
 		openedPanel = null;
 		setViewportView(mainPane);
+		setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		setBorder(BorderFactory.createEmptyBorder());
 	}
 
 	public void addContents(final String title, JComponent contents) {
