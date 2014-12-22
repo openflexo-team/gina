@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>gina</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.1</version>
 	</parent>
 	<artifactId>flexolocalization</artifactId>
 	<name>Localization for Openflexo infrastructure</name>
