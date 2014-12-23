@@ -725,7 +725,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 	}
 
 	public void setSelectionLeader(FIBSelectable selectionLeader) {
-		LOGGER.info("Selection LEADER is now " + selectionLeader);
+		LOGGER.fine("Selection LEADER is now " + selectionLeader);
 		if (isEmbedded()) {
 			getEmbeddingController().setSelectionLeader(selectionLeader);
 			return;
