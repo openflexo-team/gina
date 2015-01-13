@@ -144,8 +144,7 @@ BindingEvaluationContext*/{
 				// The component file is statically defined, use it
 				return widg.getComponentFile();
 			}
-		}
-		else {
+		} else {
 			logger.warning("FIBReferencedComponent with null widget, please investigate");
 		}
 
@@ -201,7 +200,9 @@ BindingEvaluationContext*/{
 				referencedComponentView = null;
 			}
 			// Call the parent view for a complete layout: the referencedComponentView will be computed during this loop
-			getParentView().updateLayout();
+			if (getParentView() != null) {
+				getParentView().updateLayout();
+			}
 			return true;
 		}
 		// Otherwise referenced component has not changed
@@ -232,14 +233,12 @@ BindingEvaluationContext*/{
 				if (loaded instanceof FIBWidget) {
 					referencedComponentView = embeddedFIBController.getViewFactory().makeWidget((FIBWidget) loaded);
 					referencedComponentView.setEmbeddingComponent(this);
-				}
-				else if (loaded instanceof FIBContainer) {
+				} else if (loaded instanceof FIBContainer) {
 					referencedComponentView = embeddedFIBController.getViewFactory().makeContainer((FIBContainer) loaded);
 					referencedComponentView.setEmbeddingComponent(this);
 				}
 
-			}
-			else {
+			} else {
 				if (!isComponentLoading) {
 					logger.warning("ReferencedComponent = null and I'm NOT loading anything... : " + this.getComponentFile().getURI());
 				}
@@ -324,8 +323,7 @@ BindingEvaluationContext*/{
 				embeddedFIBController.setDataObject(getValue(), true);
 
 				referencedComponentView.update();
-			}
-			else {
+			} else {
 				System.out.println("Dis donc, on dirait que " + getValue() + "n'est pas un "
 						+ embeddedFIBController.getRootComponent().getDataType());
 			}
