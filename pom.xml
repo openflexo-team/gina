@@ -13,6 +13,7 @@
 	<properties>
 		<connie.version>1.2-SNAPSHOT</connie.version>
 		<pamela.version>1.2-SNAPSHOT</pamela.version>
+		<gina.logo>https://media.openflexo.org/images/gina_logo64x64.png</gina.logo>
 	</properties>
 	<scm>
 		<connection>scm:git:ssh://git@github.com/openflexo-team/gina.git</connection>
