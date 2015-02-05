@@ -223,7 +223,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 							getEditedObject().reset();
 							fireEditedObjectChanged();
 							apply();
-						} else if (StringUtils.isNotEmpty(getTextField().getText()) && textFieldNotSynchWithEditedObject()) {
+						}
+						else if (StringUtils.isNotEmpty(getTextField().getText()) && textFieldNotSynchWithEditedObject()) {
 							if (_selectorPanel instanceof BindingValueSelectorPanel) {
 								BindingValueSelectorPanel selectorPanel = (BindingValueSelectorPanel) _selectorPanel;
 								if (selectorPanel.isKeyPathFromTextASubKeyPath(getTextField().getText())
@@ -233,7 +234,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 									if (getEditedObject().isValid()) {
 										apply();
 									}
-								} else {
+								}
+								else {
 									String input = getTextField().getText();
 									if (input.indexOf(".") > -1) {
 										String pathIgnoringLastPart = input.substring(0, input.lastIndexOf("."));
@@ -252,7 +254,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 					else if (e.getKeyCode() == KeyEvent.VK_UP) {
 						_selectorPanel.processUpPressed();
 						e.consume();
-					} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					}
+					else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 						_selectorPanel.processDownPressed();
 						e.consume();
 					} /*else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -362,7 +365,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 						setEditedObject(newEditedBinding);
 						fireEditedObjectChanged();
 						return;
-					} else {
+					}
+					else {
 						// Anyway, in case of it is the same object, but with changes, we always fire fireEditedObjectChanged()
 						checkIfDisplayModeShouldChange(newEditedBinding, true);
 						fireEditedObjectChanged();
@@ -371,7 +375,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 						}
 						return;
 					}
-				} else {
+				}
+				else {
 					if (LOGGER.isLoggable(Level.FINE)) {
 						LOGGER.fine("Decoded as INVALID binding: " + newEditedBinding + " trying to synchronize panel");
 					}
@@ -451,7 +456,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		if (updateBindingSelectionMode) {
 			if (dataBinding != null) {
 				dataBinding = checkIfDisplayModeShouldChange(dataBinding, false);
-			} else {
+			}
+			else {
 				activateNormalBindingMode();
 			}
 		}
@@ -460,7 +466,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		if (getEditedObject() != null && getEditedObject().isValid()) {
 			getTextField().setForeground(defaultForeground);
 			getTextField().setSelectedTextColor(defaultSelectedColor);
-		} else {
+		}
+		else {
 			getTextField().setForeground(Color.RED);
 			getTextField().setSelectedTextColor(Color.RED);
 		}
@@ -480,20 +487,24 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		if (newDataBinding != null && newDataBinding.isSet()) {
 			if (newDataBinding.isConstant()) {
 				newEditionMode = EditionMode.STATIC_BINDING;
-			} else if (newDataBinding.isBindingValue()) {
+			}
+			else if (newDataBinding.isBindingValue()) {
 				if (((BindingValue) newDataBinding.getExpression()).isCompoundBinding()
 						|| newDataBinding.getBindingDefinitionType() == DataBinding.BindingDefinitionType.EXECUTE) {
 					newEditionMode = EditionMode.COMPOUND_BINDING;
-				} else if (oldEditionMode != EditionMode.NORMAL_BINDING && oldEditionMode != EditionMode.COMPOUND_BINDING) {
+				}
+				else if (oldEditionMode != EditionMode.NORMAL_BINDING && oldEditionMode != EditionMode.COMPOUND_BINDING) {
 					newEditionMode = EditionMode.NORMAL_BINDING;
 				}
-			} else {
+			}
+			else {
 				newEditionMode = EditionMode.BINDING_EXPRESSION;
 			}
 			if (newDataBinding == null) {
 				newEditionMode = EditionMode.NORMAL_BINDING;
 			}
-		} else {
+		}
+		else {
 			newEditionMode = EditionMode.NORMAL_BINDING;
 		}
 
@@ -516,10 +527,12 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			if (newEditionMode.useCommonPanel()) {
 				if (newEditionMode == EditionMode.COMPOUND_BINDING) {
 					activateCompoundBindingMode();
-				} else {
+				}
+				else {
 					activateNormalBindingMode();
 				}
-			} else if (newDataBinding.isExpression()) {
+			}
+			else if (newDataBinding.isExpression()) {
 				activateBindingExpressionMode();
 			}
 		}
@@ -592,7 +605,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			if (getEditedObject() != null) {
 				getTextField().setForeground(getEditedObject().isValid() ? defaultForeground : Color.RED);
 				getTextField().setSelectedTextColor(getEditedObject().isValid() ? defaultSelectedColor : Color.RED);
-			} else {
+			}
+			else {
 				getTextField().setForeground(Color.RED);
 				getTextField().setSelectedTextColor(Color.RED);
 			}
@@ -767,7 +781,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 	public void setRevertValue(DataBinding oldValue) {
 		if (oldValue != null) {
 			_revertBindingValue = oldValue.clone();
-		} else {
+		}
+		else {
 			_revertBindingValue = null;
 		}
 	}
@@ -819,7 +834,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 				if (editedObject.isValid()) {
 					getLabel().setVisible(true);
 					getLabel().setIcon(UtilsIconLibrary.OK_ICON);
-				} else {
+				}
+				else {
 					Bindable owner = editedObject.getOwner();
 					LOGGER.info("Binding not valid: " + editedObject + " reason=" + editedObject.invalidBindingReason());
 					/*if (editedObject.isBindingValue()) {
@@ -839,15 +855,18 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 					getLabel().setVisible(true);
 					getLabel().setIcon(UtilsIconLibrary.ERROR_ICON);
 				}
-			} else {
+			}
+			else {
 				if (editedObject.isMandatory()) {
 					getLabel().setVisible(true);
 					getLabel().setIcon(UtilsIconLibrary.WARNING_ICON);
-				} else {
+				}
+				else {
 					getLabel().setVisible(false);
 				}
 			}
-		} else {
+		}
+		else {
 			getLabel().setVisible(true);
 			getLabel().setIcon(UtilsIconLibrary.ERROR_ICON);
 		}
@@ -1117,7 +1136,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			ButtonsControlPanel controlPanel = null;
 			if (_selectorPanel instanceof BindingValueSelectorPanel) {
 				controlPanel = ((BindingValueSelectorPanel) _selectorPanel)._controlPanel;
-			} else if (_selectorPanel instanceof BindingExpressionSelectorPanel) {
+			}
+			else if (_selectorPanel instanceof BindingExpressionSelectorPanel) {
 				controlPanel = ((BindingExpressionSelectorPanel) _selectorPanel)._controlPanel;
 			}
 			if (controlPanel != null) {
@@ -1210,7 +1230,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 				connect();
 				getTextField().setForeground(defaultForeground);
 				getTextField().setSelectedTextColor(defaultSelectedColor);
-			} else {
+			}
+			else {
 				getTextField().setForeground(Color.RED);
 				getTextField().setSelectedTextColor(Color.RED);
 			}
@@ -1263,16 +1284,19 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		}
 		if (TypeUtils.isBoolean(getEditedObject().getDeclaredType())) {
 			return b instanceof BooleanConstant;
-		} else if (TypeUtils.isInteger(getEditedObject().getDeclaredType()) || TypeUtils.isLong(getEditedObject().getDeclaredType())
+		}
+		else if (TypeUtils.isInteger(getEditedObject().getDeclaredType()) || TypeUtils.isLong(getEditedObject().getDeclaredType())
 				|| TypeUtils.isShort(getEditedObject().getDeclaredType()) || TypeUtils.isChar(getEditedObject().getDeclaredType())
 				|| TypeUtils.isByte(getEditedObject().getDeclaredType())) {
 			return b instanceof IntegerConstant;
-		} else if (TypeUtils.isFloat(getEditedObject().getDeclaredType()) || TypeUtils.isDouble(getEditedObject().getDeclaredType())) {
+		}
+		else if (TypeUtils.isFloat(getEditedObject().getDeclaredType()) || TypeUtils.isDouble(getEditedObject().getDeclaredType())) {
 			if (stringValue.endsWith(".")) {
 				return false;
 			}
 			return b instanceof IntegerConstant || b instanceof FloatConstant;
-		} else if (TypeUtils.isString(getEditedObject().getDeclaredType())) {
+		}
+		else if (TypeUtils.isString(getEditedObject().getDeclaredType())) {
 			return b instanceof StringConstant;
 		}
 		return false;
@@ -1287,7 +1311,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 				return true;
 			}
 			return false;
-		} else {
+		}
+		else {
 			return true;
 		}
 	}
@@ -1298,7 +1323,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 				return true;
 			}
 			return false;
-		} else {
+		}
+		else {
 			return true;
 		}
 	}
@@ -1324,16 +1350,19 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 
 		if (TypeUtils.isBoolean(getEditedObject().getDeclaredType())) {
 			return isAcceptableAsBeginningOfBooleanStaticBindingValue(stringValue);
-		} else if (TypeUtils.isInteger(getEditedObject().getDeclaredType()) || TypeUtils.isLong(getEditedObject().getDeclaredType())
+		}
+		else if (TypeUtils.isInteger(getEditedObject().getDeclaredType()) || TypeUtils.isLong(getEditedObject().getDeclaredType())
 				|| TypeUtils.isShort(getEditedObject().getDeclaredType()) || TypeUtils.isChar(getEditedObject().getDeclaredType())
 				|| TypeUtils.isByte(getEditedObject().getDeclaredType())) {
 			return isAcceptableStaticBindingValue(stringValue);
-		} else if (TypeUtils.isFloat(getEditedObject().getDeclaredType()) || TypeUtils.isDouble(getEditedObject().getDeclaredType())) {
+		}
+		else if (TypeUtils.isFloat(getEditedObject().getDeclaredType()) || TypeUtils.isDouble(getEditedObject().getDeclaredType())) {
 			if (stringValue.endsWith(".") && stringValue.length() > 1) {
 				return isAcceptableStaticBindingValue(stringValue.substring(0, stringValue.length() - 1));
 			}
 			return isAcceptableStaticBindingValue(stringValue);
-		} else if (TypeUtils.isString(getEditedObject().getDeclaredType())) {
+		}
+		else if (TypeUtils.isString(getEditedObject().getDeclaredType())) {
 			return isAcceptableAsBeginningOfStringStaticBindingValue(stringValue);
 		}
 		return false;
