@@ -53,7 +53,7 @@ import java.util.logging.Logger;
 
 import javax.swing.tree.TreeNode;
 
-import org.openflexo.antar.binding.BindingModel;
+import org.openflexo.connie.BindingModel;
 import org.openflexo.fib.model.FIBPanel.Layout;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;

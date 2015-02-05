@@ -48,12 +48,12 @@ import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 
-import org.openflexo.antar.binding.BindingDefinition;
-import org.openflexo.antar.binding.DataBinding;
-import org.openflexo.antar.binding.GenericArrayTypeImpl;
-import org.openflexo.antar.binding.ParameterizedTypeImpl;
-import org.openflexo.antar.binding.TypeUtils;
-import org.openflexo.antar.binding.WilcardTypeImpl;
+import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.binding.BindingDefinition;
+import org.openflexo.connie.type.GenericArrayTypeImpl;
+import org.openflexo.connie.type.ParameterizedTypeImpl;
+import org.openflexo.connie.type.TypeUtils;
+import org.openflexo.connie.type.WilcardTypeImpl;
 import org.openflexo.fib.view.widget.FIBMultipleValueWidget;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;

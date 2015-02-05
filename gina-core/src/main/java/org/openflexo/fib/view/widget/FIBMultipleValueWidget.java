@@ -53,11 +53,11 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
 import javax.swing.JList;
 
-import org.openflexo.antar.binding.BindingValueArrayChangeListener;
-import org.openflexo.antar.binding.BindingValueListChangeListener;
-import org.openflexo.antar.binding.DataBinding;
-import org.openflexo.antar.expr.NullReferenceException;
-import org.openflexo.antar.expr.TypeMismatchException;
+import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.binding.BindingValueArrayChangeListener;
+import org.openflexo.connie.binding.BindingValueListChangeListener;
+import org.openflexo.connie.exception.NullReferenceException;
+import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.fib.model.FIBMultipleValues;

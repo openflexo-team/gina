@@ -43,9 +43,9 @@ import java.awt.Color;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-import org.openflexo.antar.binding.BindingDefinition;
-import org.openflexo.antar.binding.DataBinding;
-import org.openflexo.antar.binding.ParameterizedTypeImpl;
+import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.binding.BindingDefinition;
+import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.fib.view.widget.FIBListWidget;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;

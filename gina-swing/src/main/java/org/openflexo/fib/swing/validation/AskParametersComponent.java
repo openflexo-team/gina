@@ -38,8 +38,8 @@
 
 package org.openflexo.fib.swing.validation;
 
-import org.openflexo.antar.binding.DataBinding;
-import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
+import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.fib.model.FIBButton;
 import org.openflexo.fib.model.FIBLabel;
 import org.openflexo.fib.model.FIBLabel.Align;

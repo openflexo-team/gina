@@ -53,7 +53,7 @@ import java.util.logging.Logger;
 
 import org.apache.commons.io.IOUtils;
 import org.jdom2.JDOMException;
-import org.openflexo.antar.binding.BindingFactory;
+import org.openflexo.connie.BindingFactory;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelFactory;
 import org.openflexo.model.exceptions.InvalidDataException;

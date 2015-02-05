@@ -61,7 +61,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.TableColumn;
 
-import org.openflexo.antar.binding.BindingEvaluator;
+import org.openflexo.connie.BindingEvaluator;
 import org.openflexo.rm.Resource;
 
 /**

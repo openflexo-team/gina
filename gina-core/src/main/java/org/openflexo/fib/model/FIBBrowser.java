@@ -49,10 +49,10 @@ import java.util.logging.Logger;
 
 import javax.swing.UIManager;
 
-import org.openflexo.antar.binding.BindingModel;
-import org.openflexo.antar.binding.DataBinding;
-import org.openflexo.antar.binding.ParameterizedTypeImpl;
-import org.openflexo.antar.binding.TypeUtils;
+import org.openflexo.connie.BindingModel;
+import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.type.ParameterizedTypeImpl;
+import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.fib.model.FIBBrowserElement.FIBBrowserElementImpl;
 import org.openflexo.fib.view.widget.FIBBrowserWidget;
 import org.openflexo.model.annotations.Adder;

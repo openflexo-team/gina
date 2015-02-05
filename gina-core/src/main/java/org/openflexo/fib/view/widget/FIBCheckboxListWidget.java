@@ -55,8 +55,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.openflexo.antar.binding.BindingValueListChangeListener;
-import org.openflexo.antar.binding.DataBinding;
+import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.binding.BindingValueListChangeListener;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBCheckboxList;
 

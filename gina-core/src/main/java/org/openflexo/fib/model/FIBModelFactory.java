@@ -40,7 +40,7 @@ package org.openflexo.fib.model;
 
 import java.io.File;
 
-import org.openflexo.antar.binding.DataBinding;
+import org.openflexo.connie.DataBinding;
 import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.model.FIBBrowserElement.FIBBrowserElementChildren;
 import org.openflexo.fib.model.FIBCustom.FIBCustomAssignment;

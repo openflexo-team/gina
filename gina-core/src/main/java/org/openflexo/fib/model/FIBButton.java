@@ -43,8 +43,8 @@ import java.lang.reflect.Type;
 
 import javax.swing.Icon;
 
-import org.openflexo.antar.binding.BindingDefinition;
-import org.openflexo.antar.binding.DataBinding;
+import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;

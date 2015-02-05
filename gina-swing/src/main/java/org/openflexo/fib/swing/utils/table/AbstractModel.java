@@ -53,7 +53,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import org.openflexo.antar.binding.BindingEvaluationContext;
+import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.fib.view.widget.table.EditableColumn;
 
 /**

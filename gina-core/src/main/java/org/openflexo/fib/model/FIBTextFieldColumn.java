@@ -41,8 +41,8 @@ package org.openflexo.fib.model;
 
 import java.lang.reflect.Type;
 
-import org.openflexo.antar.binding.BindingDefinition;
-import org.openflexo.antar.binding.DataBinding;
+import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
