@@ -38,9 +38,9 @@
 
 package org.openflexo.fib;
 
-import org.openflexo.connie.JavaBindingFactory;
 import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
+import org.openflexo.connie.java.JavaBindingFactory;
 import org.openflexo.fib.model.FIBTable;
 
 final class FIBBindingFactory extends JavaBindingFactory {
