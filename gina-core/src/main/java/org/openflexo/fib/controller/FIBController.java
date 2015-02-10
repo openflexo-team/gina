@@ -40,10 +40,7 @@
 package org.openflexo.fib.controller;
 
 import java.awt.Component;
-import java.awt.Toolkit;
 import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -67,7 +64,6 @@ import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingVariable;
@@ -446,8 +442,8 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 	 */
 	protected class FIBMouseAdapter extends MouseAdapter {
 
-		private boolean wasDoubleClick = false;
-		private Timer timer;
+		// private boolean wasDoubleClick = false;
+		// private Timer timer;
 		private final FIBWidgetView widgetView;
 		private final FIBWidget fibWidget;
 		private boolean isPopupTrigger = false;
@@ -483,9 +479,12 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 		public void mouseClicked(MouseEvent e) {
 			mouseEvent = e;
 			if (e.getClickCount() == 2) {
-				wasDoubleClick = true;
+				// wasDoubleClick = true;
 				fireDoubleClick(mouseEvent);
-			} else {
+			} else if (e.getClickCount() == 1) {
+				// wasDoubleClick = true;
+				fireSingleClick(mouseEvent);
+			}/* {
 				Integer timerinterval = (Integer) Toolkit.getDefaultToolkit().getDesktopProperty("awt.multiClickInterval");
 				timer = new Timer(timerinterval.intValue(), new ActionListener() {
 					@Override
@@ -500,14 +499,14 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 				timer.setRepeats(false);
 				timer.start();
 
-			}
+				}*/
 			isPopupTrigger = false;
 		}
 
-		@Override
+		/*@Override
 		public void mouseReleased(MouseEvent e) {
 			isPopupTrigger = true;
-		}
+		}*/
 
 	}
 
