@@ -37,7 +37,7 @@
  * 
  */
 
-package org.openflexo.fib.editor.notifications;
+package org.openflexo.fib.swing.toolbox;
 
 import org.openflexo.fib.model.FIBComponent;
 

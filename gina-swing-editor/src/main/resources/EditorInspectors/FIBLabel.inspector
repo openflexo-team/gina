@@ -1,4 +1,4 @@
-<Panel className="org.openflexo.fib.editor.controller.FIBInspector" 
+<Panel className="org.openflexo.fib.swing.toolbox.JFIBInspector" 
 	   name="Inspector" 
 	   layout="border" 
 	   dataClassName="org.openflexo.fib.model.FIBLabel">

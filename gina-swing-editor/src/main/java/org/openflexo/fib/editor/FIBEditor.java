@@ -80,13 +80,14 @@ import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.editor.controller.FIBEditorController;
 import org.openflexo.fib.editor.controller.FIBEditorPalette;
-import org.openflexo.fib.editor.controller.FIBInspectorController;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelFactory;
 import org.openflexo.fib.model.FIBPanel;
 import org.openflexo.fib.model.FIBPanel.Layout;
 import org.openflexo.fib.swing.localization.LocalizedEditor;
 import org.openflexo.fib.swing.logging.FlexoLoggingViewer;
+import org.openflexo.fib.swing.toolbox.JFIBInspectorController;
+import org.openflexo.fib.swing.toolbox.JFIBPreferences;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
@@ -173,7 +174,7 @@ public class FIBEditor implements FIBGenericEditor {
 	private final FIBEditorPalette palette;
 	private final FlexoFileChooser fileChooser;
 
-	private final FIBInspectorController inspector;
+	private final JFIBInspectorController inspector;
 
 	private FIBEditorController editorController;
 
@@ -184,7 +185,7 @@ public class FIBEditor implements FIBGenericEditor {
 	final FileSystemResourceLocatorImpl resourceLocator;
 
 	@Override
-	public FIBInspectorController getInspector() {
+	public JFIBInspectorController getInspector() {
 		return inspector;
 	}
 
@@ -230,12 +231,12 @@ public class FIBEditor implements FIBGenericEditor {
 	public FIBEditor() {
 		super();
 		frame = new JFrame();
-		frame.setBounds(FIBPreferences.getFrameBounds());
+		frame.setBounds(JFIBPreferences.getFrameBounds());
 		new ComponentBoundSaver(frame) {
 
 			@Override
 			public void saveBounds(Rectangle bounds) {
-				FIBPreferences.setFrameBounds(bounds);
+				JFIBPreferences.setFrameBounds(bounds);
 			}
 		};
 		fileChooser = new FlexoFileChooser(frame);
@@ -251,14 +252,14 @@ public class FIBEditor implements FIBGenericEditor {
 				return f.isDirectory() || f.getName().endsWith(".fib") || f.getName().endsWith(".inspector");
 			}
 		});
-		fileChooser.setCurrentDirectory(FIBPreferences.getLastDirectory());
+		fileChooser.setCurrentDirectory(JFIBPreferences.getLastDirectory());
 
 		resourceLocator = new FileSystemResourceLocatorImpl();
-		resourceLocator.appendToDirectories(FIBPreferences.getLastDirectory().getAbsolutePath());
+		resourceLocator.appendToDirectories(JFIBPreferences.getLastDirectory().getAbsolutePath());
 		resourceLocator.appendToDirectories(System.getProperty("user.home"));
 		ResourceLocator.appendDelegate(resourceLocator);
 
-		inspector = new FIBInspectorController(frame);
+		inspector = new JFIBInspectorController(frame, ResourceLocator.locateResource("EditorInspectors"), FIBAbstractEditor.LOCALIZATION);
 
 		palette = new FIBEditorPalette(frame);
 		palette.setVisible(true);
@@ -340,7 +341,7 @@ public class FIBEditor implements FIBGenericEditor {
 			JOptionPane.showMessageDialog(frame, "File " + fibFile.getAbsolutePath() + " does not exist anymore");
 			return;
 		}
-		FIBPreferences.setLastFile(fibFile);
+		JFIBPreferences.setLastFile(fibFile);
 
 		FileResourceImpl fibResource = null;
 		try {
@@ -384,7 +385,7 @@ public class FIBEditor implements FIBGenericEditor {
 			if (!file.getName().endsWith(".fib")) {
 				file = new File(file.getParentFile(), file.getName() + ".fib");
 			}
-			FIBPreferences.setLastFile(file);
+			JFIBPreferences.setLastFile(file);
 			editedFIB.fibFile = file;
 			editedFIB.title = file.getName();
 			mainPanel.setTitleAt(mainPanel.getSelectedIndex(), editedFIB.title);
@@ -560,7 +561,7 @@ public class FIBEditor implements FIBGenericEditor {
 			});
 
 			openRecent = new JMenu(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, "open_recent"));
-			FIBPreferences.addPreferenceChangeListener(this);
+			JFIBPreferences.addPreferenceChangeListener(this);
 			updateOpenRecent();
 			saveItem = new JMenuItem(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, "save_interface"));
 			saveItem.addActionListener(new ActionListener() {
@@ -744,7 +745,7 @@ public class FIBEditor implements FIBGenericEditor {
 
 		@Override
 		public void preferenceChange(PreferenceChangeEvent evt) {
-			if (evt.getKey().startsWith(FIBPreferences.LAST_FILE)) {
+			if (evt.getKey().startsWith(JFIBPreferences.LAST_FILE)) {
 				if (willUpdate) {
 					return;
 				} else {
@@ -762,7 +763,7 @@ public class FIBEditor implements FIBGenericEditor {
 
 		private void updateOpenRecent() {
 			openRecent.removeAll();
-			List<File> files = FIBPreferences.getLastFiles();
+			List<File> files = JFIBPreferences.getLastFiles();
 			openRecent.setEnabled(files.size() != 0);
 			for (final File file : files) {
 				JMenuItem item = new JMenuItem(file.getName());

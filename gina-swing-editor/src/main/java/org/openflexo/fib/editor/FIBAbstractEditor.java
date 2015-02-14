@@ -71,11 +71,12 @@ import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.editor.controller.FIBEditorController;
 import org.openflexo.fib.editor.controller.FIBEditorPalette;
-import org.openflexo.fib.editor.controller.FIBInspectorController;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelFactory;
 import org.openflexo.fib.swing.localization.LocalizedEditor;
 import org.openflexo.fib.swing.logging.FlexoLoggingViewer;
+import org.openflexo.fib.swing.toolbox.JFIBInspectorController;
+import org.openflexo.fib.swing.toolbox.JFIBPreferences;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
@@ -125,7 +126,7 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 	// private JPanel mainPanel;
 	private final FIBEditorPalette palette;
 
-	private final FIBInspectorController inspector;
+	private final JFIBInspectorController inspector;
 
 	// private Resource fibResource;
 	private FIBComponent fibComponent;
@@ -150,7 +151,7 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 	}
 
 	@Override
-	public FIBInspectorController getInspector() {
+	public JFIBInspectorController getInspector() {
 		return inspector;
 	}
 
@@ -200,7 +201,7 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 		frame = new JFrame();
 		frame.setPreferredSize(new Dimension(1200, 800));
 
-		inspector = new FIBInspectorController(frame);
+		inspector = new JFIBInspectorController(frame, ResourceLocator.locateResource("EditorInspectors"), LOCALIZATION);
 
 		palette = new FIBEditorPalette(frame);
 		palette.setVisible(true);
@@ -487,7 +488,7 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 		frame.pack();
 
 		if (getEditedComponentFile() != null) {
-			FIBPreferences.setLastFile(getEditedComponentFile());
+			JFIBPreferences.setLastFile(getEditedComponentFile());
 		}
 	}
 

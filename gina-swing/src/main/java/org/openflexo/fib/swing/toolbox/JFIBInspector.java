@@ -37,7 +37,7 @@
  * 
  */
 
-package org.openflexo.fib.editor.controller;
+package org.openflexo.fib.swing.toolbox;
 
 import org.openflexo.fib.model.FIBModelFactory;
 import org.openflexo.fib.model.FIBPanel;
@@ -47,20 +47,20 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 
 @ModelEntity
-@ImplementationClass(FIBInspector.FIBInspectorImpl.class)
+@ImplementationClass(JFIBInspector.JFIBInspectorImpl.class)
 @XMLElement(xmlTag = "Inspector")
-public interface FIBInspector extends FIBPanel {
+public interface JFIBInspector extends FIBPanel {
 
-	public void appendSuperInspectors(FIBInspectorController controller);
+	public void appendSuperInspectors(JFIBInspectorController controller);
 
 	public FIBTabPanel getTabPanel();
 
-	public static abstract class FIBInspectorImpl extends FIBPanelImpl implements FIBInspector {
+	public static abstract class JFIBInspectorImpl extends FIBPanelImpl implements JFIBInspector {
 
 		private boolean superInspectorWereAppended = false;
 
 		@Override
-		public void appendSuperInspectors(FIBInspectorController controller) {
+		public void appendSuperInspectors(JFIBInspectorController controller) {
 
 			if (!superInspectorWereAppended) {
 
@@ -68,13 +68,13 @@ public interface FIBInspector extends FIBPanel {
 					return;
 				}
 				if (getDataType() instanceof Class) {
-					FIBInspector superInspector = controller.inspectorForClass(((Class) getDataType()).getSuperclass());
+					JFIBInspector superInspector = controller.inspectorForClass(((Class) getDataType()).getSuperclass());
 					if (superInspector != null) {
 						superInspector.appendSuperInspectors(controller);
 						appendSuperInspector(superInspector, controller.INSPECTOR_FACTORY);
 					}
 					for (Class superInterface : ((Class) getDataType()).getInterfaces()) {
-						FIBInspector superInterfaceInspector = controller.inspectorForClass(superInterface);
+						JFIBInspector superInterfaceInspector = controller.inspectorForClass(superInterface);
 						if (superInterfaceInspector != null) {
 							superInterfaceInspector.appendSuperInspectors(controller);
 							appendSuperInspector(superInterfaceInspector, controller.INSPECTOR_FACTORY);
@@ -91,7 +91,7 @@ public interface FIBInspector extends FIBPanel {
 			return "Inspector[" + getDataType() + "]";
 		}
 
-		protected void appendSuperInspector(FIBInspector superInspector, FIBModelFactory factory) {
+		protected void appendSuperInspector(JFIBInspector superInspector, FIBModelFactory factory) {
 			// System.out.println(">>>>>>> BEGIN Append " + superInspector.getDataClass() + " to " + this.getDataClass());
 			// System.out.println("Append "+superInspector+" to "+this);
 
@@ -104,8 +104,8 @@ public interface FIBInspector extends FIBPanel {
 			//System.out.println(factory.stringRepresentation(superInspector));
 
 			// TODO: i dont't know if this clone is still required (check this)
-			// FIBInspector clonedSuperInspector = (FIBInspector) superInspector.cloneObject();
-			FIBInspector clonedSuperInspector = superInspector;
+			// JFIBInspector clonedSuperInspector = (JFIBInspector) superInspector.cloneObject();
+			JFIBInspector clonedSuperInspector = superInspector;
 
 			/*if (superInspector.getDataType().equals(FIBWidget.class) && getDataType().equals(FIBTextField.class)) {
 				System.out.println("to be appened:");

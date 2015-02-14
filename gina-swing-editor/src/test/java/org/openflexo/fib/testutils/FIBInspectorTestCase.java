@@ -46,9 +46,9 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import org.openflexo.fib.FIBLibrary;
-import org.openflexo.fib.editor.controller.FIBInspector;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelFactory;
+import org.openflexo.fib.swing.toolbox.JFIBInspector;
 import org.openflexo.fib.utils.GenericFIBTestCase;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.validation.ValidationError;
@@ -70,7 +70,7 @@ public abstract class FIBInspectorTestCase extends GenericFIBTestCase {
 
 	static {
 		try {
-			INSPECTOR_FACTORY = new FIBModelFactory(FIBInspector.class);
+			INSPECTOR_FACTORY = new FIBModelFactory(JFIBInspector.class);
 		} catch (ModelDefinitionException e1) {
 			e1.printStackTrace();
 		}

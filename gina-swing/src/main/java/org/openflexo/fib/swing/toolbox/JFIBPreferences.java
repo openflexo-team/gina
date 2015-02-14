@@ -36,7 +36,7 @@
  * 
  */
 
-package org.openflexo.fib.editor;
+package org.openflexo.fib.swing.toolbox;
 
 import java.awt.Rectangle;
 import java.io.File;
@@ -51,7 +51,7 @@ import org.openflexo.model.converter.AWTRectangleConverter;
 import org.openflexo.model.exceptions.InvalidDataException;
 import org.openflexo.rm.ResourceLocator;
 
-public class FIBPreferences {
+public class JFIBPreferences {
 
 	private static final String FIB = "FIB";
 

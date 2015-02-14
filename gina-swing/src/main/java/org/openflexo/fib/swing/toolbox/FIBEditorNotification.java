@@ -37,15 +37,19 @@
  * 
  */
 
-package org.openflexo.fib.editor.notifications;
+package org.openflexo.fib.swing.toolbox;
 
-import org.openflexo.fib.model.FIBComponent;
+import org.openflexo.fib.model.FIBModelNotification;
 
-public class SelectedObjectChange extends FIBEditorNotification<FIBComponent> {
-	public static String SELECTION = "selection";
+public class FIBEditorNotification<T extends Object> extends FIBModelNotification<T> {
+	public FIBEditorNotification(String attributeName, T oldValue, T newValue) {
+		super(attributeName, oldValue, newValue);
+	}
 
-	public SelectedObjectChange(FIBComponent oldValue, FIBComponent newValue) {
-		super(SELECTION, oldValue, newValue);
+	@Override
+	public String toString() {
+		return "FIBEditorNotification of " + getClass().getSimpleName() + " " + getAttributeName() + " old: " + oldValue() + " new: "
+				+ newValue();
 	}
 
 }

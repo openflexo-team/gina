@@ -58,8 +58,8 @@ import javax.swing.JPanel;
 
 import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.editor.FIBEditor;
-import org.openflexo.fib.editor.FIBPreferences;
 import org.openflexo.fib.model.FIBComponent;
+import org.openflexo.fib.swing.toolbox.JFIBPreferences;
 import org.openflexo.fib.utils.FIBIconLibrary;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.rm.Resource;
@@ -116,12 +116,12 @@ public class FIBEditorPalette extends JDialog {
 						}
 
 						getContentPane().add(paletteContent);
-						setBounds(FIBPreferences.getPaletteBounds());
+						setBounds(JFIBPreferences.getPaletteBounds());
 						new ComponentBoundSaver(this) {
 
 							@Override
 							public void saveBounds(Rectangle bounds) {
-								FIBPreferences.setPaletteBounds(bounds);
+								JFIBPreferences.setPaletteBounds(bounds);
 							}
 						};
 

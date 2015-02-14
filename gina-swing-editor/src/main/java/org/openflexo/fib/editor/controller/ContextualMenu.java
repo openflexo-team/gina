@@ -61,7 +61,6 @@ import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.controller.FIBController.Status;
 import org.openflexo.fib.controller.FIBDialog;
 import org.openflexo.fib.editor.FIBEmbeddedEditor;
-import org.openflexo.fib.editor.FIBPreferences;
 import org.openflexo.fib.editor.controller.EditorAction.ActionAvailability;
 import org.openflexo.fib.editor.controller.EditorAction.ActionPerformer;
 import org.openflexo.fib.model.BorderLayoutConstraints;
@@ -85,6 +84,7 @@ import org.openflexo.fib.model.FIBSplitPanel;
 import org.openflexo.fib.model.SplitLayoutConstraints;
 import org.openflexo.fib.model.TwoColsLayoutConstraints;
 import org.openflexo.fib.model.TwoColsLayoutConstraints.TwoColsLayoutLocation;
+import org.openflexo.fib.swing.toolbox.JFIBPreferences;
 import org.openflexo.fib.swing.utils.BindingSelector;
 import org.openflexo.fib.view.widget.FIBReferencedComponentWidget;
 import org.openflexo.logging.FlexoLogger;
@@ -327,9 +327,9 @@ public class ContextualMenu {
 			this.contextComponent = parent;
 			if (StringUtils.isNotEmpty(component.getName())) {
 				componentName = component.getName();
-				reusableComponentFile = new File(FIBPreferences.getLastDirectory(), componentName + ".fib");
+				reusableComponentFile = new File(JFIBPreferences.getLastDirectory(), componentName + ".fib");
 			} else {
-				reusableComponentFile = new File(FIBPreferences.getLastDirectory(), "ReusableComponent.fib");
+				reusableComponentFile = new File(JFIBPreferences.getLastDirectory(), "ReusableComponent.fib");
 			}
 			if (component.getData().isSet()) {
 				data = new DataBinding<Object>(component.getData().toString(), this, Object.class, BindingDefinitionType.GET);
