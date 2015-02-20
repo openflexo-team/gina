@@ -40,6 +40,7 @@ package org.openflexo.fib.testutils;
 
 import java.awt.AWTEvent;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -47,14 +48,18 @@ import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.openflexo.fib.controller.FIBController;
 
-public class GraphicalContextDelegate {
+public class GraphicalContextDelegate implements ChangeListener {
 
+	private JFrame frame;
 	private final EventProcessor eventProcessor;
 	private JTabbedPane tabbedPane;
 	private boolean dontDestroyMe = false;
@@ -68,7 +73,8 @@ public class GraphicalContextDelegate {
 				@Override
 				public void run() {
 					tabbedPane = new JTabbedPane();
-					JFrame frame = new JFrame(frameTitle);
+					tabbedPane.addChangeListener(GraphicalContextDelegate.this);
+					frame = new JFrame(frameTitle);
 					frame.setLayout(new BorderLayout());
 					frame.setSize(new Dimension(1024, 768));
 					frame.setLocationRelativeTo(null);
@@ -94,8 +100,16 @@ public class GraphicalContextDelegate {
 	}
 
 	public void addTab(String title, FIBController controller) {
-		tabbedPane.add(title, controller.getRootView().getDynamicJComponent());
+		addTab(title, controller.getRootView().getDynamicJComponent());
+	}
+
+	public void addTab(String title, JComponent component) {
+		tabbedPane.add(title, component);
 		tabbedPane.revalidate();
+	}
+
+	public JFrame getFrame() {
+		return frame;
 	}
 
 	public void waitGUI() {
@@ -127,6 +141,14 @@ public class GraphicalContextDelegate {
 		if (eventProcessor.getException() != null) {
 			throw new InvocationTargetException(eventProcessor.getException());
 		}
+	}
+
+	@Override
+	public final void stateChanged(ChangeEvent e) {
+		selectedTab(tabbedPane.getSelectedIndex(), tabbedPane.getSelectedComponent());
+	}
+
+	public void selectedTab(int index, Component selectedComponent) {
 	}
 
 	public static class EventProcessor extends java.awt.EventQueue {
