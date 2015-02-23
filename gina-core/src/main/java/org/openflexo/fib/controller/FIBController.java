@@ -54,8 +54,10 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
@@ -69,6 +71,7 @@ import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.model.FIBBrowser;
 import org.openflexo.fib.model.FIBButton;
@@ -135,6 +138,8 @@ import org.openflexo.localization.Language;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
 import org.openflexo.rm.FileResourceImpl;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.StringUtils;
 import org.openflexo.toolbox.ToolBox;
@@ -1170,4 +1175,56 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 	public void performPasteAction(Object focused, List<?> selection) {
 		LOGGER.warning("PASTE action not implemented. Please override this method");
 	}
+
+	public Resource getFIBPanelForObject(Object anObject) {
+
+	/*System.out
+				.println("Searching FIBPanel for "
+						+ anObject
+						+ (anObject != null ? " class=" + anObject.getClass() + " et on retourne "
+								+ getFIBPanelForClass(anObject.getClass()) : ""));*/
+
+		if (anObject != null) {
+			return getFIBPanelForClass(anObject.getClass());
+		}
+		return null;
+	}
+
+	private final Map<Class<?>, Resource> fibPanelsForClasses = new HashMap<Class<?>, Resource>() {
+		@Override
+		public Resource get(Object key) {
+			if (containsKey(key)) {
+				return super.get(key);
+			}
+			if (key instanceof Class) {
+				Class<?> aClass = (Class<?>) key;
+				//System.out.println("Searching FIBPanel for " + aClass);
+				if (aClass.getAnnotation(org.openflexo.fib.annotation.FIBPanel.class) != null) {
+					//System.out.println("Found annotation " + aClass.getAnnotation(org.openflexo.fib.annotation.FIBPanel.class));
+					String fibPanelName = aClass.getAnnotation(org.openflexo.fib.annotation.FIBPanel.class).value();
+					Resource fibPanelResource = ResourceLocator.locateResource(fibPanelName);
+					//System.out.println("fibPanelResource=" + fibPanelResource);
+					if (fibPanelResource != null) {
+						// logger.info("Found " + fibPanel);
+						put(aClass, fibPanelResource);
+						return fibPanelResource;
+					}
+				}
+				put(aClass, null);
+				return null;
+			}
+			return null;
+		}
+	};
+
+	/*public static void main(String[] args) {
+		FlexoFIBController newController = new FlexoFIBController(null);
+		System.out.println("Result: " + newController.getFIBPanelForClass(DeclareFlexoRole.class));
+	}*/
+
+	public Resource getFIBPanelForClass(Class<?> aClass) {
+
+		return TypeUtils.objectForClass(aClass, fibPanelsForClasses);
+	}
+
 }
