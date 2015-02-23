@@ -236,6 +236,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 
 	public void registerView(FIBView<?, ?, ?> view) {
 		views.put(view.getComponent(), view);
+		getPropertyChangeSupport().firePropertyChange(((FIBComponent) view.getComponent()).getName(), null, view.getComponent());
 	}
 
 	public void unregisterView(FIBView<?, ?, ?> view) {

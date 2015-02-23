@@ -157,6 +157,10 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 				}
 
 			};
+			/*if (getComponent().getVisible().toString().equals("EnableMultipleLayoutsCheckBox.data")) {
+				System.out.println("******** ok je l'ai");
+				System.out.println(visibleBindingValueChangeListener.toString());
+			}*/
 		}
 	}
 
@@ -209,12 +213,14 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 	}
 
 	public void setData(T data) {
+
 		T oldData = this.data;
 		if (oldData != data) {
 
 			if (getComponent().getDataClass() == null || (data != null && getComponent().getDataClass().isAssignableFrom(data.getClass()))) {
 				// System.out.println("OK data " + data + " is an instance of " + getComponent().getDataClass());
 				this.data = data;
+				// System.out.println("from " + oldData + " to " + data);
 				getPropertyChangeSupport().firePropertyChange(DATA, oldData, data);
 			} else {
 				if (getComponent().getDataClass() != null) {
