@@ -17,10 +17,12 @@
 		</plugins>
 	</build>
 	<dependencies>
-		<dependency>
-			<groupId>org.openflexo</groupId>
-			<artifactId>gina-core</artifactId>
-		</dependency>
+			<!-- Declare dependancies for gina -->
+			<dependency>
+				<groupId>org.openflexo</groupId>
+				<artifactId>gina-core</artifactId>
+				<version>${project.version}</version>
+			</dependency>			
 	</dependencies>
 </project>
 

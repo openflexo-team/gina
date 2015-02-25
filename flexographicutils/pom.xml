@@ -1,42 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.openflexo</groupId>
-		<artifactId>gina</artifactId>
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.openflexo</groupId>
+        <artifactId>gina</artifactId>
         <version>1.2-SNAPSHOT</version>
-	</parent>
-	<artifactId>flexographicutils</artifactId>
-	<name>Flexo Graphical Utilities</name>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
-	<dependencies>
-		<dependency>
-			<groupId>org.openflexo</groupId>
-			<artifactId>flexolocalization</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.openflexo</groupId>
-			<artifactId>pamela-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.swinglabs.swingx</groupId>
-			<artifactId>swingx-core</artifactId>
-		</dependency>
-		 <dependency>
+    </parent>
+    <artifactId>flexographicutils</artifactId>
+    <name>Flexo Graphical Utilities</name>
+    <scm>
+        <connection>scm:git:ssh://git@github.com/openflexo-team/gina.git</connection>
+        <url>https://github.com/openflexo-team/gina</url>
+    </scm>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+       <!-- 
+		other modules in this project dependencies
+	-->
+        <dependency>
+            <groupId>org.openflexo</groupId>
+            <artifactId>flexolocalization</artifactId>
+	    <version>${project.version}</version>
+        </dependency>
+       <!-- 
+		other  dependencies
+	-->
+        <dependency>
+            <groupId>org.swinglabs.swingx</groupId>
+            <artifactId>swingx-core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
         </dependency>
         <dependency>
-			<groupId>batik</groupId>
-			<artifactId>batik-svggen</artifactId>
-		</dependency>
-	</dependencies>
+            <groupId>batik</groupId>
+            <artifactId>batik-svggen</artifactId>
+        </dependency>
+	
+    </dependencies>
 </project>
-

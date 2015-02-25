@@ -4,10 +4,14 @@
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>gina</artifactId>
-        <version>1.2-SNAPSHOT</version>
+        	<version>1.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>flexolocalization</artifactId>
 	<name>Localization for Openflexo infrastructure</name>
+    <scm>
+        <connection>scm:git:ssh://git@github.com/openflexo-team/gina.git</connection>
+        <url>https://github.com/openflexo-team/gina</url>
+    </scm>
 	<build>
 		<plugins>
 			<plugin>
@@ -16,11 +20,20 @@
 			</plugin>
 		</plugins>
 	</build>
-	<dependencies>
-		<dependency>
-			<groupId>org.openflexo</groupId>
-			<artifactId>pamela-core</artifactId>
-		</dependency>
-	</dependencies>
+    <dependencies>
+       <!-- 
+		Openflexo Infrastructure dependencies
+	-->
+        <dependency>
+            <groupId>org.openflexo</groupId>
+            <artifactId>pamela-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openflexo</groupId>
+            <artifactId>flexoutils</artifactId>
+	     <classifier>tests</classifier>
+	     <scope>test</scope>
+        </dependency>
+     </dependencies>
 </project>
 
