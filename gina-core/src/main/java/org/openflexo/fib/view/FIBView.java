@@ -215,7 +215,8 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 	public void setData(T data) {
 
 		T oldData = this.data;
-		if (oldData != data) {
+
+		if (notEquals(oldData, data)) {
 
 			if (getComponent().getDataClass() == null || (data != null && getComponent().getDataClass().isAssignableFrom(data.getClass()))) {
 				// System.out.println("OK data " + data + " is an instance of " + getComponent().getDataClass());
