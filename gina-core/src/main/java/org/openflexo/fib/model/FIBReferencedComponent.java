@@ -74,6 +74,8 @@ public interface FIBReferencedComponent extends FIBWidget {
 	public static final String COMPONENT_FILE_KEY = "componentFile";
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String DYNAMIC_COMPONENT_FILE_KEY = "dynamicComponentFile";
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String DYNAMIC_COMPONENT_KEY = "dynamicComponent";
 	@PropertyIdentifier(type = Vector.class)
 	public static final String ASSIGNMENTS_KEY = "assignments";
 
@@ -95,6 +97,13 @@ public interface FIBReferencedComponent extends FIBWidget {
 
 	@Setter(DYNAMIC_COMPONENT_FILE_KEY)
 	public void setDynamicComponentFile(DataBinding<Resource> dynamicComponentFile);
+
+	@Getter(value = DYNAMIC_COMPONENT_KEY)
+	@XMLAttribute
+	public DataBinding<FIBComponent> getDynamicComponent();
+
+	@Setter(DYNAMIC_COMPONENT_KEY)
+	public void setDynamicComponent(DataBinding<FIBComponent> dynamicComponent);
 
 	@Getter(value = ASSIGNMENTS_KEY, cardinality = Cardinality.LIST, inverse = FIBReferenceAssignment.OWNER_KEY)
 	@XMLElement
@@ -120,6 +129,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 
 		private Resource componentFile;
 		private DataBinding<Resource> dynamicComponentFile;
+		private DataBinding<FIBComponent> dynamicComponent;
 
 		// TODO: Should be moved to FIBReferencedComponent widget
 		// private FIBComponent referencedComponent;
@@ -177,7 +187,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 
 			if (dynamicComponentFile == null) {
 				dynamicComponentFile = new DataBinding<Resource>(this, Resource.class, DataBinding.BindingDefinitionType.GET);
-				dynamicComponentFile.setBindingName("componentFile");
+				dynamicComponentFile.setBindingName("dynamicComponentFile");
 				// dynamicComponentFile.setCacheable(true);
 			}
 			return dynamicComponentFile;
@@ -199,6 +209,40 @@ public interface FIBReferencedComponent extends FIBWidget {
 				}
 
 				this.dynamicComponentFile = dynamicComponentFile;
+
+				// referencedComponent = null;
+				notify(notification);
+			}
+
+		}
+
+		@Override
+		public DataBinding<FIBComponent> getDynamicComponent() {
+
+			if (dynamicComponent == null) {
+				dynamicComponent = new DataBinding<FIBComponent>(this, FIBComponent.class, DataBinding.BindingDefinitionType.GET);
+				dynamicComponent.setBindingName("dynamicComponent");
+				// dynamicComponentFile.setCacheable(true);
+			}
+			return dynamicComponent;
+		}
+
+		@Override
+		public void setDynamicComponent(DataBinding<FIBComponent> dynamicComponent) {
+
+			FIBPropertyNotification<DataBinding<FIBComponent>> notification = requireChange(DYNAMIC_COMPONENT_KEY, dynamicComponent);
+
+			if (notification != null) {
+
+				if (dynamicComponent != null) {
+					dynamicComponent.setOwner(this);
+					dynamicComponent.setDeclaredType(FIBComponent.class);
+					dynamicComponent.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+					dynamicComponent.setBindingName("dynamicComponent");
+					// dynamicComponent.setCacheable(true);
+				}
+
+				this.dynamicComponent = dynamicComponent;
 
 				// referencedComponent = null;
 				notify(notification);

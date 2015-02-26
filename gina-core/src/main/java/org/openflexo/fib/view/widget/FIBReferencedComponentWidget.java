@@ -38,7 +38,6 @@
 
 package org.openflexo.fib.view.widget;
 
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
@@ -147,7 +146,6 @@ BindingEvaluationContext*/{
 			if (widg.getDynamicComponentFile() != null && widg.getDynamicComponentFile().isSet()
 					&& widg.getDynamicComponentFile().isValid()) {
 				// The component file is dynamically defined, use it
-				File componentFile;
 				try {
 					return widg.getDynamicComponentFile().getBindingValue(getBindingEvaluationContext());
 				} catch (TypeMismatchException e) {
@@ -172,6 +170,26 @@ BindingEvaluationContext*/{
 
 	private FIBComponent retrieveReferencedComponent() {
 
+		FIBReferencedComponent widg = getWidget();
+		// NPE Protection when widget is null
+		if (widg != null) {
+
+			if (widg.getDynamicComponent() != null && widg.getDynamicComponent().isSet() && widg.getDynamicComponent().isValid()) {
+				// The component is dynamically defined, use it
+				try {
+					return widg.getDynamicComponent().getBindingValue(getBindingEvaluationContext());
+				} catch (TypeMismatchException e) {
+					e.printStackTrace();
+				} catch (NullReferenceException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				}
+				return null;
+			}
+		}
+
+		// Maybe the component file is defined ???
 		Resource componentFile = getComponentFile();
 		if (componentFile != null) {
 			return FIBLibrary.instance().retrieveFIBComponent(componentFile);
