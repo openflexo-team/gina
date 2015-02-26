@@ -399,9 +399,15 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 	public boolean definePreferredDimensions();
 
+	public void setDefinePreferredDimensions(boolean definePreferredDimensions);
+
 	public boolean defineMaxDimensions();
 
+	public void setDefineMaxDimensions(boolean defineMaxDimensions);
+
 	public boolean defineMinDimensions();
+
+	public void setDefineMinDimensions(boolean defineMinDimensions);
 
 	public Iterator<FIBComponent> getMayDependsIterator();
 
@@ -921,8 +927,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 		@Override
 		public void updateDynamicAccessBindingVariable() {
 			if (getDynamicAccessBindingVariable() != null) {
-				//if (getDynamicAccessBindingVariable().getVariableName() != getName()) {
-				if (! getDynamicAccessBindingVariable().getVariableName().equals(getName())) {
+				// if (getDynamicAccessBindingVariable().getVariableName() != getName()) {
+				if (!getDynamicAccessBindingVariable().getVariableName().equals(getName())) {
 					String oldName = getDynamicAccessBindingVariable().getVariableName();
 					// System.out.println("* on change le nom de la variable a " + getName());
 					getDynamicAccessBindingVariable().setVariableName(getName());
@@ -1554,6 +1560,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 			return width != null && height != null;
 		}
 
+		@Override
 		public void setDefinePreferredDimensions(boolean definePreferredDimensions) {
 			if (definePreferredDimensions() != definePreferredDimensions) {
 				if (definePreferredDimensions) {
@@ -1575,6 +1582,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 			return maxWidth != null && maxHeight != null;
 		}
 
+		@Override
 		public void setDefineMaxDimensions(boolean defineMaxDimensions) {
 			if (defineMaxDimensions) {
 				FIBView<?, ?, ?> v = FIBController.makeView(this, (LocalizedDelegate) null);
@@ -1592,6 +1600,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 			return minWidth != null && minHeight != null;
 		}
 
+		@Override
 		public void setDefineMinDimensions(boolean defineMinDimensions) {
 			if (defineMinDimensions) {
 				FIBView<?, ?, ?> v = FIBController.makeView(this, (LocalizedDelegate) null);
