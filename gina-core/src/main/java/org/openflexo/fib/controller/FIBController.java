@@ -328,7 +328,8 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 	public void setDataObject(Object anObject, boolean forceUpdate) {
 		if (forceUpdate || anObject != dataObject) {
 			Object oldDataObject = dataObject;
-			if (oldDataObject instanceof HasPropertyChangeSupport) {
+			if (oldDataObject instanceof HasPropertyChangeSupport
+					&& ((HasPropertyChangeSupport) oldDataObject).getPropertyChangeSupport() != null) {
 				((HasPropertyChangeSupport) oldDataObject).getPropertyChangeSupport().removePropertyChangeListener(this);
 			} else if (oldDataObject instanceof Observable) {
 				((Observable) oldDataObject).deleteObserver(this);
@@ -1178,11 +1179,11 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 
 	public Resource getFIBPanelForObject(Object anObject) {
 
-	/*System.out
-				.println("Searching FIBPanel for "
-						+ anObject
-						+ (anObject != null ? " class=" + anObject.getClass() + " et on retourne "
-								+ getFIBPanelForClass(anObject.getClass()) : ""));*/
+		/*System.out
+					.println("Searching FIBPanel for "
+							+ anObject
+							+ (anObject != null ? " class=" + anObject.getClass() + " et on retourne "
+									+ getFIBPanelForClass(anObject.getClass()) : ""));*/
 
 		if (anObject != null) {
 			return getFIBPanelForClass(anObject.getClass());
@@ -1198,12 +1199,12 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 			}
 			if (key instanceof Class) {
 				Class<?> aClass = (Class<?>) key;
-				//System.out.println("Searching FIBPanel for " + aClass);
+				// System.out.println("Searching FIBPanel for " + aClass);
 				if (aClass.getAnnotation(org.openflexo.fib.annotation.FIBPanel.class) != null) {
-					//System.out.println("Found annotation " + aClass.getAnnotation(org.openflexo.fib.annotation.FIBPanel.class));
+					// System.out.println("Found annotation " + aClass.getAnnotation(org.openflexo.fib.annotation.FIBPanel.class));
 					String fibPanelName = aClass.getAnnotation(org.openflexo.fib.annotation.FIBPanel.class).value();
 					Resource fibPanelResource = ResourceLocator.locateResource(fibPanelName);
-					//System.out.println("fibPanelResource=" + fibPanelResource);
+					// System.out.println("fibPanelResource=" + fibPanelResource);
 					if (fibPanelResource != null) {
 						// logger.info("Found " + fibPanel);
 						put(aClass, fibPanelResource);
