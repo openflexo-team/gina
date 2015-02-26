@@ -41,12 +41,10 @@ package org.openflexo.fib.swing.toolbox;
 
 import java.awt.BorderLayout;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -56,15 +54,13 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.openflexo.connie.type.TypeUtils;
-import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBModelFactory;
+import org.openflexo.fib.utils.FIBInspector;
+import org.openflexo.fib.utils.InspectorGroup;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.fib.view.container.FIBTabPanelView;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
-import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.swing.ComponentBoundSaver;
@@ -79,48 +75,15 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 	private final JPanel EMPTY_CONTENT;
 	private final JPanel rootPane;
 
-	private final Hashtable<Class<?>, JFIBInspector> inspectors;
-	private final Hashtable<JFIBInspector, FIBView> inspectorViews;
+	private final InspectorGroup inspectorGroup;
 
-	public FIBModelFactory INSPECTOR_FACTORY;
+	private final Hashtable<FIBInspector, FIBView> inspectorViews;
 
 	public JFIBInspectorController(JFrame frame, Resource inspectorDirectory, LocalizedDelegate localizer) {
-		inspectors = new Hashtable<Class<?>, JFIBInspector>();
-		inspectorViews = new Hashtable<JFIBInspector, FIBView>();
+		inspectorGroup = new InspectorGroup(inspectorDirectory);
+		inspectorViews = new Hashtable<FIBInspector, FIBView>();
 
-		try {
-			INSPECTOR_FACTORY = new FIBModelFactory(JFIBInspector.class);
-		} catch (ModelDefinitionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		for (Resource f : inspectorDirectory.getContents(Pattern.compile(".*[.]inspector"))) {
-			// System.out.println("Read "+f.getAbsolutePath());
-			logger.info("Loading " + f.getURI());
-			JFIBInspector inspector = (JFIBInspector) FIBLibrary.instance().retrieveFIBComponent(f, false, INSPECTOR_FACTORY);
-			if (inspector != null) {
-				if (inspector.getDataClass() != null) {
-					// try {
-					inspectors.put(inspector.getDataClass(), inspector);
-					logger.info("Loaded inspector: " + f.getURI() + " for " + inspector.getDataClass());
-					/*} catch (ClassNotFoundException e) {
-						logger.warning("Not found: " + inspector.getDataClassName());
-					}*/
-				}
-			} else {
-				logger.warning("Not found: " + f.getURI());
-			}
-		}
-
-		for (JFIBInspector inspector : new ArrayList<JFIBInspector>(inspectors.values())) {
-			// System.out.println(">>>>>>>>>>>>> BEGIN appendSuperInspectors for " + inspector.getDataClass());
-			inspector.appendSuperInspectors(this);
-			// System.out.println("<<<<<<<<<<<<< END appendSuperInspectors for " + inspector.getDataClass());
-		}
-
-		for (JFIBInspector inspector : inspectors.values()) {
-
+		for (FIBInspector inspector : inspectorGroup.getInspectors().values()) {
 			FIBView inspectorView = FIBController.makeView(inspector, localizer);
 			FlexoLocalization.addToLocalizationListeners(inspectorView);
 			inspectorViews.put(inspector, inspectorView);
@@ -151,7 +114,7 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 		inspectorDialog.setVisible(true);
 	}
 
-	private JFIBInspector currentInspector = null;
+	private FIBInspector currentInspector = null;
 	private FIBView currentInspectorView = null;
 
 	private Object currentInspectedObject = null;
@@ -163,7 +126,7 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 
 		currentInspectedObject = object;
 
-		JFIBInspector newInspector = inspectorForObject(object);
+		FIBInspector newInspector = inspectorGroup.inspectorForObject(object);
 
 		if (newInspector == null) {
 			logger.warning("No inspector for " + object);
@@ -186,7 +149,7 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 		rootPane.repaint();
 	}
 
-	private void switchToInspector(JFIBInspector newInspector) {
+	private void switchToInspector(FIBInspector newInspector) {
 		/*if (newInspector.getDataClass() == FIBPanel.class) {
 			System.out.println("Hop: "+newInspector.getXMLRepresentation());
 		}*/
@@ -216,33 +179,6 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 			logger.warning("No inspector view for " + newInspector);
 			switchToEmptyContent();
 		}
-	}
-
-	protected JFIBInspector inspectorForObject(Object object) {
-		if (object == null) {
-			return null;
-		}
-		return inspectorForClass(object.getClass());
-	}
-
-	protected JFIBInspector inspectorForClass(Class<?> aClass) {
-		return TypeUtils.objectForClass(aClass, inspectors);
-
-		// Old code, to be removed
-		/*Class c = aClass;
-		while (c != null) {
-			JFIBInspector returned = inspectors.get(c);
-			if (returned != null) {
-				return returned;
-			} else {
-				c = c.getSuperclass();
-			}
-		}
-		return null;*/
-	}
-
-	protected Hashtable<Class<?>, JFIBInspector> getInspectors() {
-		return inspectors;
 	}
 
 	@Override
