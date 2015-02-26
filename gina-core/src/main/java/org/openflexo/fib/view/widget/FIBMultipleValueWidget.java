@@ -141,6 +141,9 @@ public abstract class FIBMultipleValueWidget<W extends FIBMultipleValues, C exte
 
 	@Override
 	public void updateData() {
+		if (isDeleted()) {
+			return;
+		}
 		super.updateData();
 		Type type = getWidget().getData().getAnalyzedType();
 		if (type instanceof Class && ((Class) type).isEnum()) {
