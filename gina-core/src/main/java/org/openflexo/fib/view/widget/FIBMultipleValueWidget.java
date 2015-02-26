@@ -177,10 +177,14 @@ public abstract class FIBMultipleValueWidget<W extends FIBMultipleValues, C exte
 		final private void update() {
 			LOGGER.fine("update FIBMultipleValueModel");
 
+			if (isDeleted() || getWidget() == null) {
+				return;
+			}
+
 			list = null;
 			array = null;
 
-			if (getWidget().getList() != null && getWidget().getList().isValid() /*&& getDataObject() != null*/) {
+			if (getWidget() != null && getWidget().getList() != null && getWidget().getList().isValid() /*&& getDataObject() != null*/) {
 
 				Object accessedList = null;
 				try {
@@ -198,7 +202,7 @@ public abstract class FIBMultipleValueWidget<W extends FIBMultipleValues, C exte
 
 			}
 
-			else if (getWidget().getArray() != null && getWidget().getArray().isValid() /*&& getDataObject() != null*/) {
+			else if (getWidget() != null && getWidget().getArray() != null && getWidget().getArray().isValid() /*&& getDataObject() != null*/) {
 
 				Object accessedArray = null;
 				try {
@@ -221,7 +225,7 @@ public abstract class FIBMultipleValueWidget<W extends FIBMultipleValues, C exte
 				}*/
 			}
 
-			else if (getWidget().getData() != null && getWidget().getData().isValid() /*&& getDataObject() != null*/) {
+			else if (getWidget() != null && getWidget().getData() != null && getWidget().getData().isValid() /*&& getDataObject() != null*/) {
 				/*System.out.println("Binding: "+getWidget().getData().getBinding());
 				System.out.println("isBindingValid: "+getWidget().getData().getBinding().isBindingValid());
 				if (!getWidget().getData().getBinding().isBindingValid()) {
