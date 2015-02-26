@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="border" darkLevel="0" dataClassName="org.openflexo.fib.model.FIBWidget" name="Inspector">
+  <TabPanel name="Tab" constraints="border(location=center)">
+    <Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
+      <CheckBox selected="false" data="data.localize" constraints="twocols(location=left)" localize="true" />
+      <Label label="localize_component" constraints="twocols(expandHorizontally=true;location=right)" localize="true" />
+      <CheckBox selected="false" data="data.readOnly" constraints="twocols(location=left)" localize="true" />
+      <Label label="read_only_component" constraints="twocols(expandHorizontally=true;location=right)" localize="true" />
+    </Tab>
+    <Tab title="Advanced" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="1" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab">
+    </Tab>
+    <Tab title="Controls" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="2" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="ControlsTab">
+       <CheckBox selected="false" data="data.manageDynamicModel" constraints="twocols(location=left)" localize="true" />
+      <Label label="dynamic_model" constraints="twocols(expandHorizontally=true;location=right)" localize="true" />
+    </Tab>
+    <Tab title="Doc" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="6" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="DocumentationTab">
+      <Label label="tooltip_text" constraints="twocols(location=left)" localize="true" />
+      <TextField data="data.tooltipText" constraints="twocols(expandHorizontally=true;location=right)" localize="true" columns="15" />
+    </Tab>
+  </TabPanel>
+  <Parameter name="title" value="Widget" />
+</Inspector>

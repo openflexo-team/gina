@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel className="org.openflexo.fib.swing.toolbox.JFIBInspector" layout="border" darkLevel="0" dataClassName="org.openflexo.fib.model.FIBTabPanel" name="Inspector">
+<Inspector layout="border" darkLevel="0" dataClassName="org.openflexo.fib.model.FIBTabPanel" name="Inspector">
   <Parameter name="title" value="Tabbed panel" />
-</Panel>
+</Inspector>

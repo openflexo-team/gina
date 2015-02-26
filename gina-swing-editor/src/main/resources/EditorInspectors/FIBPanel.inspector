@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel className="org.openflexo.fib.swing.toolbox.JFIBInspector" layout="border" darkLevel="0" dataClassName="org.openflexo.fib.model.FIBPanel" name="Inspector">
+<Inspector layout="border" darkLevel="0" dataClassName="org.openflexo.fib.model.FIBPanel" name="Inspector">
   <TabPanel name="Tab" constraints="border(location=center)">
     <Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
       <Panel layout="twocols" border="titled" borderTitle="Layout" titleFont="SansSerif,0,11" darkLevel="0" constraints="twocols(expandHorizontally=true;location=center)" name="LayoutPanel">
@@ -576,4 +576,4 @@
   </LocalizedDictionary>
   <Parameter name="title" value="Panel" />
   <Parameter name="title" value="Panel" />
-</Panel>
+</Inspector>
