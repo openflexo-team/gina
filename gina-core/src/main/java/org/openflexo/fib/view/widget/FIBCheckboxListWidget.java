@@ -94,9 +94,13 @@ public class FIBCheckboxListWidget<T> extends FIBMultipleValueWidget<FIBCheckbox
 
 				@Override
 				public void bindingValueChanged(Object source, List<T> newValue) {
-					// System.out.println(" bindingValueChanged() detected for data list=" + getComponent().getEnable() + " with newValue="
-					// + newValue + " source=" + source);
+					//System.out
+					//		.println(" bindingValueChanged() detected for data list="
+					//				+ (getComponent() != null ? getComponent().getData() : "") + " with newValue=" + newValue + " source="
+					//				+ source);
 					updateData();
+					updateMultipleValues();
+					rebuildCheckboxes();
 				}
 			};
 		}
@@ -130,6 +134,9 @@ public class FIBCheckboxListWidget<T> extends FIBMultipleValueWidget<FIBCheckbox
 	}
 
 	final protected void rebuildCheckboxes() {
+		if (getWidget() == null) {
+			return;
+		}
 		if (panel != null) {
 			panel.removeAll();
 			((GridLayout) panel.getLayout()).setColumns(getWidget().getColumns());
@@ -137,6 +144,7 @@ public class FIBCheckboxListWidget<T> extends FIBMultipleValueWidget<FIBCheckbox
 			((GridLayout) panel.getLayout()).setVgap(getWidget().getVGap());
 			checkboxesArray = new JCheckBox[getMultipleValueModel().getSize()];
 			labelsArray = new JLabel[getMultipleValueModel().getSize()];
+
 			for (int i = 0; i < getMultipleValueModel().getSize(); i++) {
 				T object = getMultipleValueModel().getElementAt(i);
 				String text = getStringRepresentation(object);
