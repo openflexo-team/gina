@@ -335,9 +335,12 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 				((Observable) oldDataObject).deleteObserver(this);
 			}
 			dataObject = anObject;
-			if (getRootView() != null) {
+
+			// Attempt to reduce time required to update component
+			// I suspect that if the 'data' notification is correctely handled, this is no more necessary
+			/*if (getRootView() != null) {
 				getRootView().update();
-			}
+			}*/
 			if (dataObject instanceof HasPropertyChangeSupport) {
 				((HasPropertyChangeSupport) dataObject).getPropertyChangeSupport().addPropertyChangeListener(this);
 			} else if (dataObject instanceof Observable) {
