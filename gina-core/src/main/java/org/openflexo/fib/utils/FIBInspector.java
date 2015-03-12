@@ -39,6 +39,9 @@
 
 package org.openflexo.fib.utils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.openflexo.fib.model.FIBModelFactory;
 import org.openflexo.fib.model.FIBPanel;
 import org.openflexo.fib.model.FIBTabPanel;
@@ -59,12 +62,17 @@ public interface FIBInspector extends FIBPanel {
 
 	public static abstract class FIBInspectorImpl extends FIBPanelImpl implements FIBInspector {
 
-		private boolean superInspectorWereAppended = false;
+		private final Map<InspectorGroup, Boolean> superInspectorWereAppended = new HashMap<InspectorGroup, Boolean>();
 
 		@Override
 		public void appendSuperInspectors(InspectorGroup inspectorGroup) {
 
-			if (!superInspectorWereAppended) {
+			Boolean alreadyDone = superInspectorWereAppended.get(inspectorGroup);
+			if (alreadyDone == null) {
+				alreadyDone = false;
+			}
+
+			if (!alreadyDone) {
 
 				if (getDataType() == null) {
 					return;
@@ -83,7 +91,7 @@ public interface FIBInspector extends FIBPanel {
 						}
 					}
 				}
-				superInspectorWereAppended = true;
+				superInspectorWereAppended.put(inspectorGroup, true);
 			}
 
 		}

@@ -41,11 +41,13 @@ package org.openflexo.fib.utils;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.fib.FIBLibrary;
+import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelFactory;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.Resource;
@@ -55,7 +57,7 @@ import org.openflexo.rm.ResourceLocator;
  * Implements a logical group of inspectors as a set of merged FIB components
  * 
  * @author sylvain
- *
+ * 
  */
 public class InspectorGroup {
 
@@ -67,7 +69,7 @@ public class InspectorGroup {
 
 	private FIBModelFactory fibModelFactory;
 
-	public InspectorGroup(Resource inspectorDirectory) {
+	public InspectorGroup(Resource inspectorDirectory, InspectorGroup... parentInspectorGroups) {
 		inspectors = new Hashtable<Class<?>, FIBInspector>();
 
 		try {
@@ -80,24 +82,30 @@ public class InspectorGroup {
 		for (Resource f : inspectorDirectory.getContents(Pattern.compile(".*[.]inspector"))) {
 			// System.out.println("Read "+f.getAbsolutePath());
 			logger.info("Loading " + f.getURI());
-			FIBInspector inspector = (FIBInspector) FIBLibrary.instance().retrieveFIBComponent(f, false, fibModelFactory);
-			if (inspector != null) {
-				if (inspector.getDataClass() != null) {
-					// try {
-					inspectors.put(inspector.getDataClass(), inspector);
-					logger.info("Loaded inspector: " + f.getURI() + " for " + inspector.getDataClass());
-					/*} catch (ClassNotFoundException e) {
-						logger.warning("Not found: " + inspector.getDataClassName());
-					}*/
+			FIBComponent component = FIBLibrary.instance().retrieveFIBComponent(f, false, fibModelFactory);
+			if (component instanceof FIBInspector) {
+				FIBInspector inspector = (FIBInspector) component;
+				if (inspector != null) {
+					if (inspector.getDataClass() != null) {
+						inspectors.put(inspector.getDataClass(), inspector);
+						logger.info("Loaded inspector: " + f.getURI() + " for " + inspector.getDataClass());
+						progress(f, inspector);
+
+					}
+				} else {
+					logger.warning("Not found: " + f.getURI());
 				}
 			} else {
-				logger.warning("Not found: " + f.getURI());
+				logger.warning("Component in " + f + " is not an inspector !");
 			}
 		}
 
 		for (FIBInspector inspector : new ArrayList<FIBInspector>(inspectors.values())) {
 			// System.out.println(">>>>>>>>>>>>> BEGIN appendSuperInspectors for " + inspector.getDataClass());
 			inspector.appendSuperInspectors(this);
+			for (InspectorGroup parentGroup : parentInspectorGroups) {
+				inspector.appendSuperInspectors(parentGroup);
+			}
 			// System.out.println("<<<<<<<<<<<<< END appendSuperInspectors for " + inspector.getDataClass());
 		}
 
@@ -110,8 +118,33 @@ public class InspectorGroup {
 		return inspectorForClass(object.getClass());
 	}
 
+	/**
+	 * Return the most specialized inspector, contained in this group, that represents supplied class
+	 * 
+	 * @param aClass
+	 * @return
+	 */
 	public FIBInspector inspectorForClass(Class<?> aClass) {
 		return TypeUtils.objectForClass(aClass, inspectors);
+	}
+
+	/**
+	 * Return the list of all inspectors, contained in this group, that represents supplied class<br>
+	 * We can obtain, this way, the list of all super inspectors that are composed for a given inspector.
+	 * 
+	 * @param aClass
+	 * @return
+	 */
+	public List<FIBInspector> inspectorsForClass(Class<?> aClass) {
+		List<FIBInspector> returned = new ArrayList<FIBInspector>();
+		for (FIBInspector inspector : getInspectors().values()) {
+			if (inspector.getDataClass().isAssignableFrom(aClass)) {
+				if (!returned.contains(inspector)) {
+					returned.add(inspector);
+				}
+			}
+		}
+		return returned;
 	}
 
 	public Hashtable<Class<?>, FIBInspector> getInspectors() {
@@ -120,5 +153,12 @@ public class InspectorGroup {
 
 	public FIBModelFactory getFIBModelFactory() {
 		return fibModelFactory;
+	}
+
+	/**
+	 * Hook to plug progress
+	 */
+	public void progress(Resource f, FIBInspector inspector) {
+
 	}
 }

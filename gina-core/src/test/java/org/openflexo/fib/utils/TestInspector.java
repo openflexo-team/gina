@@ -38,7 +38,11 @@
 
 package org.openflexo.fib.utils;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -87,5 +91,15 @@ public class TestInspector extends FIBTestCase {
 	public void testFIBTextFieldWidget() {
 		FIBInspector textFieldInspector = inspectorGroup.inspectorForClass(FIBTextField.class);
 		System.out.println(textFieldInspector.getXMLRepresentation());
+	}
+
+	@Test
+	@TestOrder(5)
+	public void testFIBTextFieldWidgetInspectors() {
+		List<FIBInspector> inspectors = inspectorGroup.inspectorsForClass(FIBTextField.class);
+		System.out.println("inspectors=" + inspectors);
+		assertEquals(2, inspectors.size());
+		assertTrue(inspectors.contains(inspectorGroup.inspectorForClass(FIBWidget.class)));
+		assertTrue(inspectors.contains(inspectorGroup.inspectorForClass(FIBTextField.class)));
 	}
 }
