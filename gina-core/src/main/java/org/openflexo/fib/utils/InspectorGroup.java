@@ -103,9 +103,9 @@ public class InspectorGroup {
 		for (FIBInspector inspector : new ArrayList<FIBInspector>(inspectors.values())) {
 			// System.out.println(">>>>>>>>>>>>> BEGIN appendSuperInspectors for " + inspector.getDataClass());
 			inspector.appendSuperInspectors(this);
-			for (InspectorGroup parentGroup : parentInspectorGroups) {
+			/*for (InspectorGroup parentGroup : parentInspectorGroups) {
 				inspector.appendSuperInspectors(parentGroup);
-			}
+			}*/
 			// System.out.println("<<<<<<<<<<<<< END appendSuperInspectors for " + inspector.getDataClass());
 		}
 

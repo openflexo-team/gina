@@ -39,9 +39,6 @@
 
 package org.openflexo.fib.utils;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.openflexo.fib.model.FIBModelFactory;
 import org.openflexo.fib.model.FIBPanel;
 import org.openflexo.fib.model.FIBTabPanel;
@@ -62,17 +59,20 @@ public interface FIBInspector extends FIBPanel {
 
 	public static abstract class FIBInspectorImpl extends FIBPanelImpl implements FIBInspector {
 
-		private final Map<InspectorGroup, Boolean> superInspectorWereAppended = new HashMap<InspectorGroup, Boolean>();
+		// private final Map<InspectorGroup, Boolean> superInspectorWereAppended = new HashMap<InspectorGroup, Boolean>();
+		private boolean superInspectorWereAppened = false;
 
 		@Override
 		public void appendSuperInspectors(InspectorGroup inspectorGroup) {
 
-			Boolean alreadyDone = superInspectorWereAppended.get(inspectorGroup);
+			/*Boolean alreadyDone = superInspectorWereAppended.get(inspectorGroup);
 			if (alreadyDone == null) {
 				alreadyDone = false;
 			}
 
-			if (!alreadyDone) {
+			if (!alreadyDone) {*/
+
+			if (!superInspectorWereAppened) {
 
 				if (getDataType() == null) {
 					return;
@@ -91,7 +91,8 @@ public interface FIBInspector extends FIBPanel {
 						}
 					}
 				}
-				superInspectorWereAppended.put(inspectorGroup, true);
+				// superInspectorWereAppended.put(inspectorGroup, true);
+				superInspectorWereAppened = true;
 			}
 
 		}
@@ -102,36 +103,11 @@ public interface FIBInspector extends FIBPanel {
 		}
 
 		protected void appendSuperInspector(FIBInspector superInspector, FIBModelFactory factory) {
-			// System.out.println(">>>>>>> BEGIN Append " + superInspector.getDataClass() + " to " + this.getDataClass());
-			// System.out.println("Append "+superInspector+" to "+this);
-
-			/*if (superInspector.getDataType().equals(FIBWidget.class) && getDataType().equals(FIBTextField.class)) {
-				System.out.println("was:");
-				System.out.println(factory.stringRepresentation(((FIBContainer) this.getSubComponentNamed("Tab"))
-						.getSubComponentNamed("ControlsTab")));
-			}*/
-
-			// System.out.println(factory.stringRepresentation(superInspector));
-
 			// TODO: i dont't know if this clone is still required (check this)
-			// JFIBInspector clonedSuperInspector = (JFIBInspector) superInspector.cloneObject();
-			FIBInspector clonedSuperInspector = superInspector;
-
-			/*if (superInspector.getDataType().equals(FIBWidget.class) && getDataType().equals(FIBTextField.class)) {
-				System.out.println("to be appened:");
-				System.out.println(factory.stringRepresentation(((FIBContainer) clonedSuperInspector.getSubComponentNamed("Tab"))
-						.getSubComponentNamed("ControlsTab")));
-			}*/
+			FIBInspector clonedSuperInspector = (FIBInspector) superInspector.cloneObject();
+			// FIBInspector clonedSuperInspector = superInspector;
 
 			append(clonedSuperInspector);
-
-			/*if (superInspector.getDataType().equals(FIBWidget.class) && getDataType().equals(FIBTextField.class)) {
-				System.out.println("now:");
-				System.out.println(factory.stringRepresentation(((FIBContainer) this.getSubComponentNamed("Tab"))
-						.getSubComponentNamed("ControlsTab")));
-				// System.exit(-1);
-			}*/
-			// System.out.println("<<<<<<< END Append " + superInspector.getDataClass() + " to " + this.getDataClass());
 
 		}
 

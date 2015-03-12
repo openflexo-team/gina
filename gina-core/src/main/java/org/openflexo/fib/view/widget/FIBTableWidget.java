@@ -600,6 +600,9 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 
 	@Override
 	public boolean synchronizedWithSelection() {
+		if (getWidget() == null) {
+			return false;
+		}
 		return getWidget().getBoundToSelectionManager();
 	}
 
