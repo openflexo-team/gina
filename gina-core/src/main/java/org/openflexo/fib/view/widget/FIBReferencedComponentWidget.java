@@ -99,6 +99,21 @@ BindingEvaluationContext*/{
 		listenDynamicComponentFileValueChange();
 	}
 
+	@Override
+	protected void updateVisibility() {
+		System.out.println("Tiens je ferais pas un truc la ? was=" + isComponentVisible());
+		super.updateVisibility();
+		System.out.println("now=" + isComponentVisible());
+		updateWidgetFromModel();
+	}
+
+	@Override
+	public void updateData() {
+		System.out.println("Tiens je ferais pas un autre truc la ? was=" + getData());
+		super.updateData();
+		System.out.println("now=" + getData());
+	}
+
 	private void listenDynamicComponentFileValueChange() {
 		if (dynamicComponentFileBindingValueChangeListener != null) {
 			dynamicComponentFileBindingValueChangeListener.stopObserving();

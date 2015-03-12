@@ -1182,11 +1182,11 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 
 	public Resource getFIBPanelForObject(Object anObject) {
 
-		/*System.out
-					.println("Searching FIBPanel for "
-							+ anObject
-							+ (anObject != null ? " class=" + anObject.getClass() + " et on retourne "
-									+ getFIBPanelForClass(anObject.getClass()) : ""));*/
+		System.out
+				.println("Searching FIBPanel for "
+						+ anObject
+						+ (anObject != null ? " class=" + anObject.getClass() + " et on retourne "
+								+ getFIBPanelForClass(anObject.getClass()) : ""));
 
 		if (anObject != null) {
 			return getFIBPanelForClass(anObject.getClass());
