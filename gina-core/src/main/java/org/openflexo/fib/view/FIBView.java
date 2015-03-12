@@ -178,6 +178,10 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 
 		LOGGER.fine("@@@@@@@@@ Delete view for component " + getComponent());
 
+		if (isDeleted) {
+			return;
+		}
+
 		if (dataBindingValueChangeListener != null) {
 			dataBindingValueChangeListener.stopObserving();
 			dataBindingValueChangeListener.delete();
@@ -188,9 +192,6 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 			visibleBindingValueChangeListener.delete();
 		}
 
-		if (isDeleted) {
-			return;
-		}
 		LOGGER.fine("Delete view for component " + getComponent());
 		if (subViews != null) {
 			for (FIBView v : subViews.values()) {
