@@ -40,8 +40,10 @@
 package org.openflexo.fib.utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
@@ -81,7 +83,7 @@ public class InspectorGroup {
 
 		for (Resource f : inspectorDirectory.getContents(Pattern.compile(".*[.]inspector"))) {
 			// System.out.println("Read "+f.getAbsolutePath());
-			logger.info("Loading " + f.getURI());
+			logger.fine("Loading " + f.getURI());
 			FIBComponent component = FIBLibrary.instance().retrieveFIBComponent(f, false, fibModelFactory);
 			if (component instanceof FIBInspector) {
 				FIBInspector inspector = (FIBInspector) component;
@@ -107,6 +109,25 @@ public class InspectorGroup {
 				inspector.appendSuperInspectors(parentGroup);
 			}*/
 			// System.out.println("<<<<<<<<<<<<< END appendSuperInspectors for " + inspector.getDataClass());
+		}
+
+		for (FIBInspector inspector : new ArrayList<FIBInspector>(inspectors.values())) {
+			Map<Class<?>, FIBInspector> parentGroupInspectors = new HashMap<Class<?>, FIBInspector>();
+			for (InspectorGroup parentGroup : parentInspectorGroups) {
+				FIBInspector parentInspector = parentGroup.inspectorForClass(inspector.getDataClass());
+				if (parentInspector != null) {
+					parentGroupInspectors.put(parentInspector.getDataClass(), parentInspector);
+				}
+			}
+			if (parentGroupInspectors.size() > 0) {
+				Class<?> mostSpecializedClass = TypeUtils.getMostSpecializedClass(parentGroupInspectors.keySet());
+				if (mostSpecializedClass != null) {
+					FIBInspector inspectorToAppend = parentGroupInspectors.get(mostSpecializedClass);
+					System.out.println("A l'inspecteur de " + inspector.getDataClass() + " je rajoute l'inspecteur de "
+							+ mostSpecializedClass);
+					inspector.appendSuperInspector(inspectorToAppend, fibModelFactory);
+				}
+			}
 		}
 
 	}

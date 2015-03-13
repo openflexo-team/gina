@@ -53,6 +53,8 @@ public interface FIBInspector extends FIBPanel {
 
 	public void appendSuperInspectors(InspectorGroup inspectorGroup);
 
+	public void appendSuperInspector(FIBInspector superInspector, FIBModelFactory factory);
+
 	public FIBTabPanel getTabPanel();
 
 	public String getXMLRepresentation();
@@ -102,7 +104,8 @@ public interface FIBInspector extends FIBPanel {
 			return "Inspector[" + getDataType() + "]";
 		}
 
-		protected void appendSuperInspector(FIBInspector superInspector, FIBModelFactory factory) {
+		@Override
+		public void appendSuperInspector(FIBInspector superInspector, FIBModelFactory factory) {
 			// TODO: i dont't know if this clone is still required (check this)
 			FIBInspector clonedSuperInspector = (FIBInspector) superInspector.cloneObject();
 			// FIBInspector clonedSuperInspector = superInspector;
