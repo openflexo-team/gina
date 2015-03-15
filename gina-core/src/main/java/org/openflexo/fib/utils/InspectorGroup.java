@@ -92,7 +92,6 @@ public class InspectorGroup {
 						inspectors.put(inspector.getDataClass(), inspector);
 						logger.info("Loaded inspector: " + f.getURI() + " for " + inspector.getDataClass());
 						progress(f, inspector);
-
 					}
 				} else {
 					logger.warning("Not found: " + f.getURI());
@@ -102,15 +101,14 @@ public class InspectorGroup {
 			}
 		}
 
+		// We first merge all inspectors inside the group
 		for (FIBInspector inspector : new ArrayList<FIBInspector>(inspectors.values())) {
-			// System.out.println(">>>>>>>>>>>>> BEGIN appendSuperInspectors for " + inspector.getDataClass());
+			// System.out.println("Merging " + inspector.getDataClass());
 			inspector.appendSuperInspectors(this);
-			/*for (InspectorGroup parentGroup : parentInspectorGroups) {
-				inspector.appendSuperInspectors(parentGroup);
-			}*/
-			// System.out.println("<<<<<<<<<<<<< END appendSuperInspectors for " + inspector.getDataClass());
 		}
 
+		// Then, for each parent inspector group, we compute the resulting inspector from superclasses.
+		// Then we choose the most specialized one to merge with the new inspector
 		for (FIBInspector inspector : new ArrayList<FIBInspector>(inspectors.values())) {
 			Map<Class<?>, FIBInspector> parentGroupInspectors = new HashMap<Class<?>, FIBInspector>();
 			for (InspectorGroup parentGroup : parentInspectorGroups) {
@@ -123,8 +121,6 @@ public class InspectorGroup {
 				Class<?> mostSpecializedClass = TypeUtils.getMostSpecializedClass(parentGroupInspectors.keySet());
 				if (mostSpecializedClass != null) {
 					FIBInspector inspectorToAppend = parentGroupInspectors.get(mostSpecializedClass);
-					System.out.println("A l'inspecteur de " + inspector.getDataClass() + " je rajoute l'inspecteur de "
-							+ mostSpecializedClass);
 					inspector.appendSuperInspector(inspectorToAppend, fibModelFactory);
 				}
 			}
@@ -132,6 +128,12 @@ public class InspectorGroup {
 
 	}
 
+	/**
+	 * Return the most specialized inspector, contained in this group, that represents supplied object
+	 * 
+	 * @param aClass
+	 * @return
+	 */
 	public FIBInspector inspectorForObject(Object object) {
 		if (object == null) {
 			return null;
