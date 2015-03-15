@@ -124,7 +124,7 @@ public class FIBTabPanelView<T> extends FIBContainerView<FIBTabPanel, JTabbedPan
 	@Override
 	protected void retrieveContainedJComponentsAndConstraints() {
 		Vector<FIBTab> allTabs = new Vector<FIBTab>();
-		for (FIBComponent subComponent : getComponent().getSubComponents()) {
+		for (FIBComponent subComponent : getNotHiddenSubComponents()) {
 			if (subComponent instanceof FIBTab) {
 				allTabs.add((FIBTab) subComponent);
 			}

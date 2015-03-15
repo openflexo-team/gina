@@ -245,8 +245,11 @@ public class FIBPanelView<C extends FIBPanel, T> extends FIBContainerView<C, JPa
 	@Override
 	protected void retrieveContainedJComponentsAndConstraints() {
 		Vector<FIBComponent> allSubComponents = new Vector<FIBComponent>();
-		allSubComponents.addAll(getComponent().getSubComponents());
+		allSubComponents.addAll(getNotHiddenSubComponents());
 		// Vector<FIBComponent> allSubComponents = getComponent().getSubComponents();
+
+		// if (fibComponent.getParameter("hidden") == null
+		// || fibComponent.getParameter("hidden").equalsIgnoreCase("false")) {
 
 		if (getComponent().getLayout() == Layout.flow || getComponent().getLayout() == Layout.box
 				|| getComponent().getLayout() == Layout.buttons || getComponent().getLayout() == Layout.twocols
@@ -270,7 +273,7 @@ public class FIBPanelView<C extends FIBPanel, T> extends FIBContainerView<C, JPa
 
 		if (getComponent().getLayout() == Layout.grid) {
 
-			for (FIBComponent subComponent : getComponent().getSubComponents()) {
+			for (FIBComponent subComponent : getNotHiddenSubComponents()) {
 				FIBView subView = getController().viewForComponent(subComponent);
 				if (subView == null) {
 					subView = getController().buildView(subComponent);

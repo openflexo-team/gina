@@ -101,7 +101,7 @@ public class FIBSplitPanelView<T> extends FIBContainerView<FIBSplitPanel, JXMult
 	@Override
 	protected void retrieveContainedJComponentsAndConstraints() {
 
-		for (FIBComponent subComponent : getComponent().getSubComponents()) {
+		for (FIBComponent subComponent : getNotHiddenSubComponents()) {
 			FIBView subView = getController().viewForComponent(subComponent);
 			if (subView == null) {
 				subView = getController().buildView(subComponent);

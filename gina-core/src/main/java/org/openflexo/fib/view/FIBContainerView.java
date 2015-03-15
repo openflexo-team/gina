@@ -42,6 +42,7 @@ package org.openflexo.fib.view;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -266,6 +267,23 @@ public abstract class FIBContainerView<M extends FIBContainer, J extends JCompon
 
 	protected Vector<JComponent> getSubComponents() {
 		return subComponents;
+	}
+
+	/**
+	 * Return all sub-components that are not declared as to be hidden in inheritance hierarchy
+	 * 
+	 * @return
+	 */
+	protected List<FIBComponent> getNotHiddenSubComponents() {
+		List<FIBComponent> returned = new ArrayList<FIBComponent>();
+		for (FIBComponent subComponent : getComponent().getSubComponents()) {
+			if (subComponent.getParameter("hidden") == null || subComponent.getParameter("hidden").equalsIgnoreCase("false")) {
+				returned.add(subComponent);
+			} /*else {
+				System.out.println("Ignoring " + subComponent);
+				}*/
+		}
+		return returned;
 	}
 
 	protected Hashtable<JComponent, Object> getConstraints() {

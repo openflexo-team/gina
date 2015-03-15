@@ -538,10 +538,10 @@ public abstract interface FIBContainer extends FIBComponent {
 								}
 								if (overridingComponent != null) {
 									insert = false;
-									if (overridingComponent.getParameter("hidden") != null
+									/*if (overridingComponent.getParameter("hidden") != null
 											&& overridingComponent.getParameter("hidden").equalsIgnoreCase("true")) {
 										removeFromSubComponents(overridingComponent);
-									}
+									}*/
 								}
 							} else {
 								break;
@@ -550,13 +550,13 @@ public abstract interface FIBContainer extends FIBComponent {
 							break;
 						}
 					}
-				} else {
+				} /*else {
 					if (overridingComponent.getParameter("hidden") != null
 							&& overridingComponent.getParameter("hidden").equalsIgnoreCase("true")) {
 						// Super property must be shadowed
 						removeFromSubComponents(overridingComponent);
 					}
-				}
+					}*/
 			}
 
 			if (container.getLocalizedDictionary() != null) {
