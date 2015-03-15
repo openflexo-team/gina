@@ -157,7 +157,12 @@ public class FIBBrowserActionListener<T> implements ActionListener, BindingEvalu
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						widget.setSelected(newObject);
+						if (widget.mayRepresent(newObject)) {
+							System.out.println("OK, je selectionne le nouvel object: " + newObject);
+							widget.setSelected(newObject);
+						} else {
+							System.out.println("Pas moyen de selectionner le nouvel objet");
+						}
 					}
 				});
 			} catch (TypeMismatchException e) {

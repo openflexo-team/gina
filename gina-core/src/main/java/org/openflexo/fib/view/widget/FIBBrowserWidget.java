@@ -535,6 +535,9 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 
 	@Override
 	public boolean mayRepresent(Object o) {
+		if (o == null) {
+			return false;
+		}
 		return _browserModel.containsObject(o);
 	}
 
