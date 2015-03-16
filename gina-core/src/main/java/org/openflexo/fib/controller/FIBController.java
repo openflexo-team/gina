@@ -841,7 +841,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 		// LOGGER.info("widget=" + widget);
 		// LOGGER.info("selectionLeader=" + getSelectionLeader());
 
-		if (isEmbedded()) {
+		if (isEmbedded() && getEmbeddingController() != null) {
 			// When component is embedded, forward this to the parent
 			getEmbeddingController().updateSelection(widget, oldSelection, newSelection);
 			return;
