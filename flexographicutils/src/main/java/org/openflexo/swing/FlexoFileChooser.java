@@ -56,6 +56,14 @@ import javax.swing.filechooser.FileView;
 
 import org.openflexo.toolbox.ToolBox;
 
+/**
+ * A graphical component which is used to choose a file (open or save).<br>
+ * This component provides an abstraction above both JFileChooser and FileDialog, allowing the user to choose one implementation
+ * 
+ * 
+ * @author sylvain
+ * 
+ */
 public class FlexoFileChooser {
 
 	private enum ImplementationType {
@@ -73,8 +81,8 @@ public class FlexoFileChooser {
 	public static JFileChooser getFileChooser(String location) {
 		JFileChooser chooser;
 		if (ToolBox.fileChooserRequiresFix()) {
-			chooser = new JFileChooser(location){
-				
+			chooser = new JFileChooser(location) {
+
 				@Override
 				public int showDialog(Component parent, String approveButtonText) throws HeadlessException {
 					ToolBox.fixFileChooser();
@@ -85,22 +93,22 @@ public class FlexoFileChooser {
 						ToolBox.undoFixFileChooser();
 					}
 				}
-				
+
 				@Override
 				public Icon getIcon(File f) {
 					Icon returned = ToolBox.getIconFileChooserWithFix(f, getFileView());
-					if(returned ==null){
+					if (returned == null) {
 						returned = super.getIcon(f);
 					}
 					return returned;
 				}
 			};
 		} else {
-			chooser = new JFileChooser(location){
+			chooser = new JFileChooser(location) {
 				@Override
 				public Icon getIcon(File f) {
 					Icon returned = ToolBox.getIconFileChooserWithFix(f, getFileView());
-					if(returned ==null){
+					if (returned == null) {
 						returned = super.getIcon(f);
 					}
 					return returned;
@@ -109,10 +117,10 @@ public class FlexoFileChooser {
 		}
 		return chooser;
 	}
-	
+
 	private FileDialog _fileDialog;
 	private JFileChooser _fileChooser;
-	private Window _owner;
+	private final Window _owner;
 
 	public FlexoFileChooser(Window owner) {
 		super();
@@ -152,7 +160,7 @@ public class FlexoFileChooser {
 			}
 			_fileChooser.setFileSelectionMode(mode);
 		} else if (getImplementationType() == ImplementationType.FileDialogImplementation) {
-			if (mode == JFileChooser.DIRECTORIES_ONLY) {
+			if (mode == JFileChooser.DIRECTORIES_ONLY || mode == JFileChooser.FILES_AND_DIRECTORIES) {
 				System.setProperty("apple.awt.fileDialogForDirectories", "true");
 			} else if (mode == JFileChooser.FILES_ONLY) {
 				System.setProperty("apple.awt.fileDialogForDirectories", "false");
@@ -270,7 +278,7 @@ public class FlexoFileChooser {
 	}
 
 	private static class FilenameFilterAdapter implements FilenameFilter {
-		private FileFilter _fileFilter;
+		private final FileFilter _fileFilter;
 
 		public FilenameFilterAdapter(FileFilter fileFilter) {
 			super();
@@ -363,6 +371,10 @@ public class FlexoFileChooser {
 		return JFileChooser.ERROR_OPTION;
 	}
 
+	public int showSaveDialog() throws HeadlessException {
+		return showSaveDialog(_owner);
+	}
+
 	public File getSelectedFile() {
 		if (getImplementationType() == ImplementationType.JFileChooserImplementation) {
 			return _fileChooser.getSelectedFile();
@@ -383,4 +395,13 @@ public class FlexoFileChooser {
 			}
 		}
 	}
+
+	public void setApproveButtonText(String text) {
+		if (getImplementationType() == ImplementationType.JFileChooserImplementation) {
+			_fileChooser.setApproveButtonText(text);
+		} else if (getImplementationType() == ImplementationType.FileDialogImplementation) {
+			// Not implemented
+		}
+	}
+
 }
