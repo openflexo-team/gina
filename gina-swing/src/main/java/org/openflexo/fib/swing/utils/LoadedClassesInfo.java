@@ -62,7 +62,7 @@ import org.openflexo.toolbox.StringUtils;
  * Utility class used to reflect all loaded java classes in {@link ClassLoader}
  * 
  * @author sylvain
- *
+ * 
  */
 public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
@@ -488,6 +488,8 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 				setSelectedClassInfo(matchingClasses.firstElement());
 			}
 		}
+
+		System.out.println("Matching classes= " + matchingClasses);
 
 		instance.pcSupport.firePropertyChange("packages", null, null);
 		pcSupport.firePropertyChange("matchingClasses", null, null);

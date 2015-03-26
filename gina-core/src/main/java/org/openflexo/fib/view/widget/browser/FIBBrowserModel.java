@@ -724,6 +724,8 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 
 		public void update(boolean recursively) {
 
+			// System.out.println("Updating for " + getRepresentedObject());
+
 			loaded = true;
 
 			// During exploration of all exhaustive contents, in order not no enter in an infinite loop
@@ -742,7 +744,9 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			if (!isVisible) {
 				if (browserElementType.isVisible(getRepresentedObject())) {
 					LOGGER.fine("Cell " + this + " becomes visible");
-					getParent().update(recursively);
+					isVisible = true;
+					// getParent().update(recursively);
+					getParent().update(false);
 				}
 			}
 
