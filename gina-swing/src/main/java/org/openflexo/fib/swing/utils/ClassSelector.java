@@ -39,7 +39,6 @@
 package org.openflexo.fib.swing.utils;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,7 +54,7 @@ import org.openflexo.rm.ResourceLocator;
 import org.openflexo.swing.TextFieldCustomPopup;
 
 /**
- * Widget allowing to edit a binding
+ * Widget allowing to select a class in a popup panel
  * 
  * @author sguerin
  * 
@@ -65,9 +64,6 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 	static final Logger LOGGER = Logger.getLogger(ClassSelector.class.getPackage().getName());
 
 	public static Resource FIB_FILE_NAME = ResourceLocator.getResourceLocator().locateResource("Fib/ClassSelector.fib");
-
-	private static final Color DEFAULT_COLOR1 = Color.RED;
-	private static final Color DEFAULT_COLOR2 = Color.WHITE;
 
 	private Class _revertValue;
 
@@ -130,7 +126,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 	}
 
 	public class ClassSelectorDetailsPanel extends ResizablePanel {
-		private FIBComponent fibComponent;
+		private final FIBComponent fibComponent;
 		private FIBView fibView;
 		private CustomFIBController controller;
 
