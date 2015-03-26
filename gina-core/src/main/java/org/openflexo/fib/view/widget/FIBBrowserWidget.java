@@ -135,9 +135,9 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
-					// System.out.println(" bindingValueChanged() detected for selected=" + getComponent().getSelected() + " with newValue="
-					// + newValue + " source=" + source);
-					performSelect(newValue);
+					//System.out.println(" bindingValueChanged() detected for selected=" + getComponent().getSelected() + " with newValue="
+					//		+ newValue + " source=" + source);
+					performSelect(newValue, false);
 				}
 
 			};
@@ -221,6 +221,8 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 				e1.printStackTrace();
 			}
 		}
+		// If root object has changed, this might be very usefull to update selected, too !!!
+		updateSelected(true);
 		return returned;
 	}
 
@@ -559,7 +561,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 	@Override
 	public boolean update() {
 		super.update();
-		updateSelected();
+		updateSelected(false);
 		// TODO: this should be not necessary
 		// Vincent : It causes many notifications and for big browsers such as archimate emf metamodel one
 		// it is tool long to produce the browser (35 seconds for this one).
@@ -571,14 +573,14 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 		return true;
 	}
 
-	private final void updateSelected() {
+	private final void updateSelected(boolean force) {
 
 		try {
 			if (getComponent().getSelected().isValid()
 					&& getComponent().getSelected().getBindingValue(getBindingEvaluationContext()) != null) {
 				T newSelectedObject = (T) getComponent().getSelected().getBindingValue(getBindingEvaluationContext());
-				if (notEquals(newSelectedObject, getSelected())) {
-					performSelect(newSelectedObject);
+				if (notEquals(newSelectedObject, getSelected()) || force) {
+					performSelect(newSelectedObject, force);
 				}
 			}
 		} catch (TypeMismatchException e) {
@@ -613,18 +615,18 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 		return selectedObject;
 	}
 
-	public void performSelect(T object) {
-		if (object == getSelected()) {
+	public void performSelect(T object, boolean force) {
+
+		if ((!force) && (object == getSelected())) {
 			LOGGER.fine("FIBTableWidget: ignore performSelect " + object);
 			return;
 		}
 		setSelected(object);
 		if (object != null) {
-
 			if (getBrowser().getDeepExploration()) {
 				// Recursively and exhaustively explore the whole model to retrieve all contents
 				// To be able to unfold required folders to select searched value
-				System.out.println("Explore whole contents");
+				//System.out.println("Explore whole contents");
 				getBrowserModel().recursivelyExploreModelToRetrieveContents();
 			}
 
