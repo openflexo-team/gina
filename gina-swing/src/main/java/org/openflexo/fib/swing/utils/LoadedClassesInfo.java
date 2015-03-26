@@ -58,6 +58,12 @@ import org.openflexo.toolbox.ClassScope;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.StringUtils;
 
+/**
+ * Utility class used to reflect all loaded java classes in {@link ClassLoader}
+ * 
+ * @author sylvain
+ *
+ */
 public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 	private static final Logger LOGGER = Logger.getLogger(LoadedClassesInfo.class.getPackage().getName());
@@ -69,6 +75,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 	private static LoadedClassesInfo instance;
 
 	static {
+		System.out.println("On commence a charger les classes");
 		appLoader = ClassLoader.getSystemClassLoader();
 		currentLoader = LoadedClassesInfo.class.getClassLoader();
 		if (appLoader != currentLoader) {
@@ -77,6 +84,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 			loaders = new ClassLoader[] { appLoader };
 		}
 		instance = new LoadedClassesInfo();
+		System.out.println("A y'est c'est fait");
 	}
 
 	private Hashtable<Package, PackageInfo> packages;
@@ -97,7 +105,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		if (aClass != null) {
 			ClassInfo ci = instance.registerClass(aClass);
 			instance.setFilteredClassName(aClass.getSimpleName());
-			// instance.setFilteredPackageName(aClass.getPackage().getName());
+			instance.setFilteredPackageName(aClass.getPackage().getName());
 			instance.setSelectedClassInfo(ci);
 		} else {
 			instance.setFilteredPackageName("*");
@@ -166,6 +174,10 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		return returned;
 	}
 
+	public ClassInfo getClass(Class c) {
+		return registerClass(c);
+	}
+
 	private ClassInfo registerClass(Class c) {
 		if (c.getPackage() == null) {
 			LOGGER.warning("No package for class " + c);
@@ -200,7 +212,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 	public class PackageInfo implements HasPropertyChangeSupport {
 		public String packageName;
-		private Hashtable<Class, ClassInfo> classes = new Hashtable<Class, ClassInfo>() {
+		private final Hashtable<Class, ClassInfo> classes = new Hashtable<Class, ClassInfo>() {
 			@Override
 			public synchronized ClassInfo put(Class key, ClassInfo value) {
 				ClassInfo returned = super.put(key, value);
@@ -211,7 +223,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		};
 		private Vector<ClassInfo> classesList;
 		private boolean needsReordering = true;
-		private PropertyChangeSupport pcSupport;
+		private final PropertyChangeSupport pcSupport;
 
 		public PackageInfo(Package aPackage) {
 			pcSupport = new PropertyChangeSupport(this);
@@ -274,12 +286,12 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 	}
 
 	public class ClassInfo implements HasPropertyChangeSupport {
-		private Class clazz;
+		private final Class clazz;
 		public String className;
 		public String packageName;
 		public String fullQualifiedName;
 
-		private Hashtable<Class, ClassInfo> memberClasses = new Hashtable<Class, ClassInfo>() {
+		private final Hashtable<Class, ClassInfo> memberClasses = new Hashtable<Class, ClassInfo>() {
 			@Override
 			public synchronized ClassInfo put(Class key, ClassInfo value) {
 				ClassInfo returned = super.put(key, value);
@@ -290,7 +302,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		};
 		private Vector<ClassInfo> memberClassesList;
 		private boolean needsReordering = true;
-		private PropertyChangeSupport pcSupport;
+		private final PropertyChangeSupport pcSupport;
 
 		public ClassInfo(Class aClass) {
 			pcSupport = new PropertyChangeSupport(this);
@@ -304,6 +316,10 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 			fullQualifiedName = aClass.getName();
 			clazz = aClass;
 			LOGGER.fine("Instanciate new ClassInfo for " + aClass);
+		}
+
+		public Class getClazz() {
+			return clazz;
 		}
 
 		@Override
@@ -373,7 +389,9 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 	public void setFilteredPackageName(String filter) {
 		if (filter == null || !filter.equals(this.filteredPackageName)) {
+			String oldValue = this.filteredPackageName;
 			this.filteredPackageName = filter;
+			getPropertyChangeSupport().firePropertyChange("filteredPackageName", oldValue, filteredPackageName);
 			updateMatchingClasses();
 		}
 	}
@@ -384,6 +402,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 	public void setFilteredClassName(String filteredClassName) {
 		if (filteredClassName == null || !filteredClassName.equals(this.filteredClassName)) {
+			String oldValue = this.filteredClassName;
 			this.filteredClassName = filteredClassName;
 			/*Vector<Class> foundClasses = new Vector<Class>();
 			try {
@@ -403,6 +422,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 			for (Class c : foundClasses) {
 				registerClass(c);
 			}*/
+			getPropertyChangeSupport().firePropertyChange("filteredClassName", oldValue, filteredClassName);
 			updateMatchingClasses();
 		}
 	}
@@ -430,6 +450,9 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 	}
 
 	private void updateMatchingClasses() {
+
+		System.out.println("updateMatchingClasses() for " + filteredPackageName + " " + filteredClassName);
+
 		matchingClasses.clear();
 
 		if (!StringUtils.isEmpty(filteredClassName)) {
