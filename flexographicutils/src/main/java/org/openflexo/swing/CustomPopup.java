@@ -507,9 +507,11 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 								&& !_frontComponent.hasFocus()) {
 							// This test is used to detect the case of the lost of focus is performed
 							// Because a child popup gained the focus: in this case, nothing should be performed
-							if (!(oppositeWindow instanceof CustomPopup.CustomJPopupMenu)
-									|| !((CustomPopup.CustomJPopupMenu) oppositeWindow).isChildOf(_popup)) {
-								pointerLeavesPopup();
+							if (oppositeWindow != null) {
+								if (!(oppositeWindow instanceof CustomPopup.CustomJPopupMenu)
+										|| !((CustomPopup.CustomJPopupMenu) oppositeWindow).isChildOf(_popup)) {
+									pointerLeavesPopup();
+								}
 							}
 						}
 					}
