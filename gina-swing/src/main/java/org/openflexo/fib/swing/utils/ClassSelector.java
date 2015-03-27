@@ -40,18 +40,29 @@ package org.openflexo.fib.swing.utils;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
 
 import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
+import org.openflexo.fib.swing.logging.FlexoLoggingViewer;
 import org.openflexo.fib.view.FIBView;
+import org.openflexo.logging.FlexoLoggingManager;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.swing.TextFieldCustomPopup;
+import org.openflexo.swing.VerticalLayout;
 
 /**
  * Widget allowing to select a class in a popup panel
@@ -253,7 +264,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 		FIBAbstractEditor editor = new FIBAbstractEditor() {
 			@Override
 			public Object[] getData() {
-				return FIBAbstractEditor.makeArray(LoadedClassesInfo.instance(java.lang.Object.class));
+				return FIBAbstractEditor.makeArray(new LoadedClassesInfo(java.lang.Object.class));
 			}
 
 			@Override
@@ -265,4 +276,62 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 		editor.launch();
 	}*/
 
+	/**
+	 * This main allows to launch an application testing the TypeSelector
+	 * 
+	 * @param args
+	 * @throws SecurityException
+	 * @throws IOException
+	 */
+	public static void main(String[] args) throws SecurityException, IOException {
+
+		Resource loggingFile = ResourceLocator.locateResource("Config/logging_INFO.properties");
+		FlexoLoggingManager.initialize(-1, true, loggingFile, Level.INFO, null);
+		final JDialog dialog = new JDialog((Frame) null, false);
+
+		final ClassSelector selector = new ClassSelector(String.class) {
+			@Override
+			public void apply() {
+				super.apply();
+				System.out.println("Apply, getEditedObject()=" + getEditedObject());
+			}
+
+			@Override
+			public void cancel() {
+				super.cancel();
+				System.out.println("Cancel, getEditedObject()=" + getEditedObject());
+			}
+		};
+		selector.setRevertValue(Object.class);
+
+		JButton closeButton = new JButton("Close");
+		closeButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				selector.delete();
+				dialog.dispose();
+				System.exit(0);
+			}
+		});
+
+		JButton logButton = new JButton("Logs");
+		logButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				FlexoLoggingViewer.showLoggingViewer(FlexoLoggingManager.instance(), dialog);
+			}
+		});
+
+		JPanel panel = new JPanel(new VerticalLayout());
+		panel.add(selector);
+
+		panel.add(closeButton);
+		panel.add(logButton);
+
+		dialog.setPreferredSize(new Dimension(550, 600));
+		dialog.getContentPane().add(panel);
+		dialog.pack();
+
+		dialog.setVisible(true);
+	}
 }
