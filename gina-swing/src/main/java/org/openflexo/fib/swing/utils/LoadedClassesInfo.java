@@ -60,7 +60,9 @@ import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.StringUtils;
 
 /**
- * Utility class used to reflect all loaded java classes in {@link ClassLoader}
+ * Utility class used to reflect all loaded java classes in {@link ClassLoader}<br>
+ * 
+ * A common memory area (static fields) is shared by all instances of this class
  * 
  * @author sylvain
  * 
@@ -106,25 +108,9 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 	private final PropertyChangeSupport pcSupport;
 
-	/*public static LoadedClassesInfo instance() {
-		return instance;
-	}
-
-	public static LoadedClassesInfo instance(Class aClass) {
-		if (aClass != null) {
-			ClassInfo ci = instance.registerClass(aClass);
-			instance.setFilteredPackageName("*");
-			instance.setFilteredClassName(aClass.getName());
-			// instance.setFilteredPackageName(aClass.getPackage().getName());
-			instance.setSelectedClassInfo(ci);
-		} else {
-			instance.setFilteredPackageName("*");
-			instance.setFilteredClassName("");
-			instance.setSelectedClassInfo(null);
-		}
-		return instance;
-	}*/
-
+	/**
+	 * Statically initialize this class with {@link ClassLoader}s
+	 */
 	private static void init() {
 		instances = new ArrayList<LoadedClassesInfo>();
 		classesForName = new Hashtable<String, Vector<ClassInfo>>();
@@ -567,7 +553,6 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 	}
 
 	public void performSelect(ClassInfo selectedClassInfo) {
-		System.out.println("OK, je veux vraiment ca: " + selectedClassInfo);
 		setSelectedClassInfo(selectedClassInfo);
 		if (selectedClassInfo != null) {
 			setFilteredClassName(selectedClassInfo.getClazz().getName());
