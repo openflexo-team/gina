@@ -137,7 +137,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 			controller = new CustomFIBController(fibComponent);
 			fibView = controller.buildView(fibComponent);
 
-			controller.setDataObject(LoadedClassesInfo.instance(aClass));
+			controller.setDataObject(new LoadedClassesInfo(aClass));
 
 			setLayout(new BorderLayout());
 			add(fibView.getResultingJComponent(), BorderLayout.CENTER);
@@ -152,7 +152,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 		}
 
 		public void update() {
-			controller.setDataObject(LoadedClassesInfo.instance(getEditedObject()));
+			controller.setDataObject(new LoadedClassesInfo(getEditedObject()));
 		}
 
 		@Override
@@ -166,7 +166,8 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 			}
 
 			public void apply() {
-				setEditedObject(LoadedClassesInfo.instance().getSelectedClassInfo().getRepresentedClass());
+				LoadedClassesInfo dataObject = (LoadedClassesInfo) getDataObject();
+				setEditedObject(dataObject.getSelectedClassInfo().getRepresentedClass());
 				ClassSelector.this.apply();
 			}
 

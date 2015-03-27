@@ -41,6 +41,7 @@ package org.openflexo.fib.swing.utils;
 import java.beans.PropertyChangeSupport;
 import java.net.URL;
 import java.text.Collator;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
@@ -72,10 +73,10 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 	static ClassLoader currentLoader = LoadedClassesInfo.class.getClassLoader();
 	static ClassLoader[] loaders = new ClassLoader[] { appLoader, currentLoader };
 
-	private static LoadedClassesInfo instance;
+	// private static LoadedClassesInfo instance;
 
 	static {
-		System.out.println("On commence a charger les classes");
+		LOGGER.info("Starting loading classes in LoadedClassesInfo");
 		appLoader = ClassLoader.getSystemClassLoader();
 		currentLoader = LoadedClassesInfo.class.getClassLoader();
 		if (appLoader != currentLoader) {
@@ -83,29 +84,38 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		} else {
 			loaders = new ClassLoader[] { appLoader };
 		}
-		instance = new LoadedClassesInfo();
-		System.out.println("A y'est c'est fait");
+		// instance = new LoadedClassesInfo();
+
+		init();
+
+		LOGGER.info("Finished loading classes in LoadedClassesInfo");
 	}
 
-	private Hashtable<Package, PackageInfo> packages;
-	private Vector<PackageInfo> packageList;
-	private boolean needsReordering = true;
+	private static Hashtable<Package, PackageInfo> packages;
+	private static Vector<PackageInfo> packageList;
+	private static boolean needsReordering = true;
+	private static Hashtable<String, Vector<ClassInfo>> classesForName;
+	private static List<LoadedClassesInfo> instances;
+
+	private String filteredPackageName = "*";
+	private String filteredClassName = "";
+
+	private final boolean searchMode = false;
 
 	public Vector<ClassInfo> matchingClasses = new Vector<ClassInfo>();
 
-	private Hashtable<String, Vector<ClassInfo>> classesForName;
+	private final PropertyChangeSupport pcSupport;
 
-	private PropertyChangeSupport pcSupport;
-
-	public static LoadedClassesInfo instance() {
+	/*public static LoadedClassesInfo instance() {
 		return instance;
 	}
 
 	public static LoadedClassesInfo instance(Class aClass) {
 		if (aClass != null) {
 			ClassInfo ci = instance.registerClass(aClass);
-			instance.setFilteredClassName(aClass.getSimpleName());
-			instance.setFilteredPackageName(aClass.getPackage().getName());
+			instance.setFilteredPackageName("*");
+			instance.setFilteredClassName(aClass.getName());
+			// instance.setFilteredPackageName(aClass.getPackage().getName());
 			instance.setSelectedClassInfo(ci);
 		} else {
 			instance.setFilteredPackageName("*");
@@ -113,17 +123,19 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 			instance.setSelectedClassInfo(null);
 		}
 		return instance;
-	}
+	}*/
 
-	private LoadedClassesInfo() {
-		pcSupport = new PropertyChangeSupport(this);
+	private static void init() {
+		instances = new ArrayList<LoadedClassesInfo>();
 		classesForName = new Hashtable<String, Vector<ClassInfo>>();
 		packages = new Hashtable<Package, PackageInfo>() {
 			@Override
 			public synchronized PackageInfo put(Package key, PackageInfo value) {
 				PackageInfo returned = super.put(key, value);
 				needsReordering = true;
-				pcSupport.firePropertyChange("packages", null, null);
+				for (LoadedClassesInfo instance : instances) {
+					instance.pcSupport.firePropertyChange("packages", null, null);
+				}
 				return returned;
 			};
 		};
@@ -139,6 +151,24 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		}
 	}
 
+	public LoadedClassesInfo() {
+		pcSupport = new PropertyChangeSupport(this);
+		setFilteredPackageName("*");
+		setFilteredClassName("");
+		setSelectedClassInfo(null);
+	}
+
+	public LoadedClassesInfo(Class aClass) {
+		this();
+		if (aClass != null) {
+			ClassInfo ci = registerClass(aClass);
+			setFilteredPackageName("*");
+			setFilteredClassName(aClass.getName());
+			// instance.setFilteredPackageName(aClass.getPackage().getName());
+			setSelectedClassInfo(ci);
+		}
+	}
+
 	@Override
 	public PropertyChangeSupport getPropertyChangeSupport() {
 		return pcSupport;
@@ -149,7 +179,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		return null;
 	}
 
-	public List<PackageInfo> getPackages() {
+	public static List<PackageInfo> getPackages() {
 		if (needsReordering) {
 			packageList = new Vector<PackageInfo>();
 			for (Package p : packages.keySet()) {
@@ -166,7 +196,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		return packageList;
 	}
 
-	private PackageInfo registerPackage(Package p) {
+	private static PackageInfo registerPackage(Package p) {
 		PackageInfo returned = packages.get(p);
 		if (returned == null) {
 			packages.put(p, returned = new PackageInfo(p));
@@ -174,11 +204,11 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		return returned;
 	}
 
-	public ClassInfo getClass(Class c) {
+	public static ClassInfo getClass(Class c) {
 		return registerClass(c);
 	}
 
-	private ClassInfo registerClass(Class c) {
+	private static ClassInfo registerClass(Class c) {
 		if (c.getPackage() == null) {
 			LOGGER.warning("No package for class " + c);
 			return null;
@@ -210,7 +240,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 	}
 
-	public class PackageInfo implements HasPropertyChangeSupport {
+	public static class PackageInfo implements HasPropertyChangeSupport {
 		public String packageName;
 		private final Hashtable<Class, ClassInfo> classes = new Hashtable<Class, ClassInfo>() {
 			@Override
@@ -258,16 +288,16 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 			return classesList;
 		}
 
-		public boolean isFiltered() {
-			if (getFilteredPackageName() == null || StringUtils.isEmpty(getFilteredPackageName())) {
+		public boolean isFiltered(LoadedClassesInfo loadedClassesInfo) {
+			if (loadedClassesInfo.getFilteredPackageName() == null || StringUtils.isEmpty(loadedClassesInfo.getFilteredPackageName())) {
 				return false;
 			}
-			if (packageName.startsWith(getFilteredPackageName())) {
+			if (packageName.startsWith(loadedClassesInfo.getFilteredPackageName())) {
 				return false;
 			}
-			String patternString = getFilteredPackageName();
+			String patternString = loadedClassesInfo.getFilteredPackageName();
 			if (patternString.startsWith("*")) {
-				patternString = "." + getFilteredPackageName();
+				patternString = "." + loadedClassesInfo.getFilteredPackageName();
 			}
 			try {
 				Pattern pattern = Pattern.compile(patternString);
@@ -285,7 +315,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 	}
 
-	public class ClassInfo implements HasPropertyChangeSupport {
+	public static class ClassInfo implements HasPropertyChangeSupport {
 		private final Class clazz;
 		public String className;
 		public String packageName;
@@ -380,9 +410,6 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 	}
 
-	private String filteredPackageName = "*";
-	private String filteredClassName = "";
-
 	public String getFilteredPackageName() {
 		return filteredPackageName;
 	}
@@ -428,6 +455,16 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 	}
 
 	public void search() {
+		isExplicitelySearching = true;
+		explicitelySearch();
+		updateMatchingClasses();
+		isExplicitelySearching = false;
+	}
+
+	/**
+	 * Internally called to explicitely search in all known packages if class identified by simple name exists
+	 */
+	private void explicitelySearch() {
 		Vector<Class> foundClasses = new Vector<Class>();
 		try {
 			Class foundClass = Class.forName(getFilteredPackageName() + "." + filteredClassName);
@@ -446,8 +483,9 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		for (Class c : foundClasses) {
 			registerClass(c);
 		}
-		updateMatchingClasses();
 	}
+
+	private boolean isExplicitelySearching = false;
 
 	private void updateMatchingClasses() {
 
@@ -461,9 +499,16 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 				patternString = "." + filteredClassName;
 			}
 			try {
+				System.out.println("patternString=" + patternString);
+				String simpleName;
+				if (patternString.lastIndexOf(".") > -1) {
+					simpleName = patternString.substring(patternString.lastIndexOf(".") + 1);
+				} else {
+					simpleName = patternString;
+				}
 				Vector<ClassInfo> exactMatches = new Vector<ClassInfo>();
-				if (classesForName.get(filteredClassName) != null) {
-					exactMatches = classesForName.get(filteredClassName);
+				if (classesForName.get(simpleName) != null) {
+					exactMatches = classesForName.get(simpleName);
 					matchingClasses.addAll(exactMatches);
 				}
 				Pattern pattern = Pattern.compile(patternString);
@@ -472,7 +517,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 					if (matcher.find()) {
 						for (ClassInfo potentialMatch : classesForName.get(s)) {
 							PackageInfo packageInfo = registerPackage(potentialMatch.clazz.getPackage());
-							if (!packageInfo.isFiltered()) {
+							if (!packageInfo.isFiltered(this)) {
 								if (!exactMatches.contains(potentialMatch)) {
 									matchingClasses.add(potentialMatch);
 									// System.out.println("Found "+potentialMatch);
@@ -481,18 +526,24 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 						}
 					}
 				}
+				if (matchingClasses.size() == 0 && !isExplicitelySearching) {
+					// Special case, we try to instanciate class for each package
+					System.out.println("Trying to find class....");
+					search();
+				}
 			} catch (PatternSyntaxException e) {
 				LOGGER.warning("PatternSyntaxException: " + patternString);
-			}
-			if (matchingClasses.size() == 1) {
-				setSelectedClassInfo(matchingClasses.firstElement());
 			}
 		}
 
 		System.out.println("Matching classes= " + matchingClasses);
 
-		instance.pcSupport.firePropertyChange("packages", null, null);
-		pcSupport.firePropertyChange("matchingClasses", null, null);
+		pcSupport.firePropertyChange("packages", null, getPackages());
+		pcSupport.firePropertyChange("matchingClasses", null, matchingClasses);
+
+		if (matchingClasses.size() == 1) {
+			setSelectedClassInfo(matchingClasses.firstElement());
+		}
 
 	}
 
@@ -509,6 +560,17 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 			this.selectedClassInfo = selectedClassInfo;
 			// if (selectedClassInfo != null) setFilteredClassName(selectedClassInfo.className);
 			pcSupport.firePropertyChange("selectedClassInfo", oldSelectedClassInfo, selectedClassInfo);
+			if (matchingClasses.size() < 2 && selectedClassInfo != null) {
+				setFilteredClassName(selectedClassInfo.getClazz().getName());
+			}
+		}
+	}
+
+	public void performSelect(ClassInfo selectedClassInfo) {
+		System.out.println("OK, je veux vraiment ca: " + selectedClassInfo);
+		setSelectedClassInfo(selectedClassInfo);
+		if (selectedClassInfo != null) {
+			setFilteredClassName(selectedClassInfo.getClazz().getName());
 		}
 	}
 }
