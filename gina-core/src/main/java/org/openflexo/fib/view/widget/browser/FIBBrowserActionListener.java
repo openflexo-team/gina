@@ -158,10 +158,10 @@ public class FIBBrowserActionListener<T> implements ActionListener, BindingEvalu
 					@Override
 					public void run() {
 						if (widget.mayRepresent(newObject)) {
-							System.out.println("OK, je selectionne le nouvel object: " + newObject);
+							//System.out.println("Selecting new object: " + newObject);
 							widget.setSelected(newObject);
 						} else {
-							System.out.println("Pas moyen de selectionner le nouvel objet");
+							//System.out.println("Cannot select new object");
 						}
 					}
 				});
