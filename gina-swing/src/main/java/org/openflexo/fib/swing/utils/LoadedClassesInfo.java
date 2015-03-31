@@ -475,7 +475,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 	private void updateMatchingClasses() {
 
-		System.out.println("updateMatchingClasses() for " + filteredPackageName + " " + filteredClassName);
+		// System.out.println("updateMatchingClasses() for " + filteredPackageName + " " + filteredClassName);
 
 		matchingClasses.clear();
 
@@ -485,7 +485,6 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 				patternString = "." + filteredClassName;
 			}
 			try {
-				System.out.println("patternString=" + patternString);
 				String simpleName;
 				if (patternString.lastIndexOf(".") > -1) {
 					simpleName = patternString.substring(patternString.lastIndexOf(".") + 1);
@@ -522,7 +521,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 			}
 		}
 
-		System.out.println("Matching classes= " + matchingClasses);
+		// System.out.println("Matching classes= " + matchingClasses);
 
 		pcSupport.firePropertyChange("packages", null, getPackages());
 		pcSupport.firePropertyChange("matchingClasses", null, matchingClasses);
@@ -542,7 +541,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 	public void setSelectedClassInfo(ClassInfo selectedClassInfo) {
 		if (selectedClassInfo != this.selectedClassInfo) {
 			ClassInfo oldSelectedClassInfo = this.selectedClassInfo;
-			LOGGER.info("setSelectedClassInfo with " + selectedClassInfo);
+			LOGGER.fine("setSelectedClassInfo with " + selectedClassInfo);
 			this.selectedClassInfo = selectedClassInfo;
 			// if (selectedClassInfo != null) setFilteredClassName(selectedClassInfo.className);
 			pcSupport.firePropertyChange("selectedClassInfo", oldSelectedClassInfo, selectedClassInfo);
