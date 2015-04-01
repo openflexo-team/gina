@@ -576,7 +576,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 	private final void updateSelected(boolean force) {
 
 		try {
-			if (getComponent().getSelected() != null && getComponent().getSelected().isValid()
+			if (getComponent() != null && getComponent().getSelected() != null && getComponent().getSelected().isValid()
 					&& getComponent().getSelected().getBindingValue(getBindingEvaluationContext()) != null) {
 				T newSelectedObject = (T) getComponent().getSelected().getBindingValue(getBindingEvaluationContext());
 				if (notEquals(newSelectedObject, getSelected()) || force) {
