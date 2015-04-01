@@ -135,8 +135,8 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
-					//System.out.println(" bindingValueChanged() detected for selected=" + getComponent().getSelected() + " with newValue="
-					//		+ newValue + " source=" + source);
+					// System.out.println(" bindingValueChanged() detected for selected=" + getComponent().getSelected() + " with newValue="
+					// + newValue + " source=" + source);
 					performSelect(newValue, false);
 				}
 
@@ -575,20 +575,23 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 
 	private final void updateSelected(boolean force) {
 
-		try {
-			if (getComponent() != null && getComponent().getSelected() != null && getComponent().getSelected().isValid()
-					&& getComponent().getSelected().getBindingValue(getBindingEvaluationContext()) != null) {
-				T newSelectedObject = (T) getComponent().getSelected().getBindingValue(getBindingEvaluationContext());
-				if (notEquals(newSelectedObject, getSelected()) || force) {
-					performSelect(newSelectedObject, force);
+
+		if (getComponent() != null && getComponent().getSelected() != null) {
+			try {
+				if (getComponent().getSelected().isValid()
+						&& getComponent().getSelected().getBindingValue(getBindingEvaluationContext()) != null) {
+					T newSelectedObject = (T) getComponent().getSelected().getBindingValue(getBindingEvaluationContext());
+					if (notEquals(newSelectedObject, getSelected()) || force) {
+						performSelect(newSelectedObject, force);
+					}
 				}
+			} catch (TypeMismatchException e) {
+				e.printStackTrace();
+			} catch (NullReferenceException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
 			}
-		} catch (TypeMismatchException e) {
-			e.printStackTrace();
-		} catch (NullReferenceException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -626,7 +629,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 			if (getBrowser().getDeepExploration()) {
 				// Recursively and exhaustively explore the whole model to retrieve all contents
 				// To be able to unfold required folders to select searched value
-				//System.out.println("Explore whole contents");
+				// System.out.println("Explore whole contents");
 				getBrowserModel().recursivelyExploreModelToRetrieveContents();
 			}
 

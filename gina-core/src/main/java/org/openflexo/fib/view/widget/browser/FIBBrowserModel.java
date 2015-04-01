@@ -245,7 +245,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 		if (!exhaustiveContentsIsUpToDate) {
 			computedExhaustiveContents.clear();
 			if (getRoot() instanceof BrowserCell) {
-				LOGGER.info("!!!!! called recursivelyExploreModelToRetrieveContents() !!!!");
+				LOGGER.fine("!!!!! called recursivelyExploreModelToRetrieveContents() !!!!");
 				((BrowserCell) getRoot()).update(true);
 				exhaustiveContentsIsUpToDate = true;
 			}
