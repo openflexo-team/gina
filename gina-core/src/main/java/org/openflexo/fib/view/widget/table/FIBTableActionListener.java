@@ -161,8 +161,10 @@ public class FIBTableActionListener<T> implements ActionListener, BindingEvaluat
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
 			}
-			tableWidget.updateWidgetFromModel();
-			tableWidget.performSelect(newObject);
+			if (tableWidget != null) {
+				tableWidget.updateWidgetFromModel();
+				tableWidget.performSelect(newObject);
+			}
 
 			/*if (newObject != null) {
 				int index = tableModel.getTableWidget().getValue().indexOf(newObject);
