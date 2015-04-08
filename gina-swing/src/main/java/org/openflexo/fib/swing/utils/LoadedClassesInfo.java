@@ -195,6 +195,11 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 	}
 
 	private static ClassInfo registerClass(Class c) {
+		if (c == null) {
+			LOGGER.warning("Null class " + c);
+			return null;
+		}
+
 		if (c.getPackage() == null) {
 			LOGGER.warning("No package for class " + c);
 			return null;
