@@ -329,8 +329,10 @@ BindingEvaluationContext*/{
 				try {
 					value = valueDB.getBindingValue(getBindingEvaluationContext());
 					if (variableDB.isValid()) {
-						// System.out.println("Assignment " + assign + " set value with " + value);
-						variableDB.setBindingValue(value, embeddedFIBController);
+						Object oldValue = variableDB.getBindingValue(embeddedFIBController);
+						if (value != oldValue) {
+							variableDB.setBindingValue(value, embeddedFIBController);
+						}
 					}
 				} catch (TypeMismatchException e) {
 					e.printStackTrace();
@@ -353,14 +355,6 @@ BindingEvaluationContext*/{
 
 		boolean returned = updateDynamicallyReferencedComponentWhenRequired();
 
-		// We need here to "force" update while some assignments may be required
-
-		// if (notEquals(getValue(), customComponent.getEditedObject())) {
-
-		/*if (getWidget().getComponentClass().getName().endsWith("FIBForegroundStyleSelector")) {
-				logger.info("GET updateWidgetFromModel() with " + getValue() + " for " + customComponent);
-			}*/
-
 		if (getReferencedComponentView() != null) {
 
 			if ((getValue() == null)
@@ -368,12 +362,11 @@ BindingEvaluationContext*/{
 
 				performAssignments();
 
-				embeddedFIBController.setDataObject(getValue(), true);
+				embeddedFIBController.setDataObject(getValue(), /*true*/false);
 
 				referencedComponentView.update();
 			} else {
-				System.out.println("Dis donc, on dirait que " + getValue() + "n'est pas un "
-						+ embeddedFIBController.getRootComponent().getDataType());
+				logger.warning("Inconsistant data: " + getValue() + " is not a " + embeddedFIBController.getRootComponent().getDataType());
 			}
 
 		}
