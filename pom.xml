@@ -3,7 +3,7 @@
     <parent>
         <groupId>org.openflexo</groupId>
         <artifactId>openflexo-component</artifactId>
-        <version>0.3-SNAPSHOT</version>
+        <version>0.3-RC3</version>
     </parent>
     <!-- ************
    	Component identity and specific information
@@ -17,8 +17,8 @@
 	Properties
       -->
     <properties>
-        <connie.version>1.2-SNAPSHOT</connie.version>
-        <pamela.version>1.2-SNAPSHOT</pamela.version>
+        <connie.version>1.2-RC3</connie.version>
+        <pamela.version>1.2-RC3</pamela.version>
         <swingx.version>1.6.3</swingx.version>
         <gina.logo>https://media.openflexo.org/images/gina_logo64x64.png</gina.logo>
     </properties>
