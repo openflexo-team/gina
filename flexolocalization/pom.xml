@@ -4,14 +4,14 @@
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>gina</artifactId>
-        	<version>1.2-RC3</version>
+        	<version>1.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>flexolocalization</artifactId>
 	<name>Localization for Openflexo infrastructure</name>
     <scm>
         <connection>scm:git:ssh://git@github.com/openflexo-team/gina.git</connection>
         <url>https://github.com/openflexo-team/gina</url>
-      <tag>Gina-1.2-RC3</tag>
+      <tag>HEAD</tag>
   </scm>
 	<build>
 		<plugins>
