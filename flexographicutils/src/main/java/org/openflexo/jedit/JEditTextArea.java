@@ -1938,9 +1938,9 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 				right.setBounds(ileft + centerWidth, itop, rightWidth, centerHeight);
 			}
 			// Lay out all status components, in order
-			Enumeration status = leftOfScrollBar.elements();
+			Enumeration<Component> status = leftOfScrollBar.elements();
 			while (status.hasMoreElements()) {
-				Component comp = (Component) status.nextElement();
+				Component comp = status.nextElement();
 				Dimension dim = comp.getPreferredSize();
 				comp.setBounds(ileft, itop + centerHeight, dim.width, bottomHeight);
 				ileft += dim.width;

@@ -148,12 +148,12 @@ public class JTextFieldRegExp extends JTextField implements DocumentListener {
 		return validateError() != null;
 	}
 
-	private String validate(Vector patterns, Vector messages) {
-		Enumeration en = patterns.elements();
+	private String validate(Vector<Pattern> patterns, Vector<String> messages) {
+		Enumeration<Pattern> en = patterns.elements();
 		Pattern p = null;
 		int i = 0;
 		while (en.hasMoreElements()) {
-			p = (Pattern) en.nextElement();
+			p = en.nextElement();
 			if (!p.matcher(getText()).matches()) {
 				return messages.get(i).toString();
 			}
