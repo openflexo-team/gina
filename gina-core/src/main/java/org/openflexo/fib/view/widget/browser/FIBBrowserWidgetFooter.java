@@ -52,6 +52,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -71,6 +73,7 @@ import javax.swing.event.MenuKeyListener;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBBrowserAction;
+import org.openflexo.fib.model.FIBBrowserAction.ActionType;
 import org.openflexo.fib.model.FIBBrowserElement;
 import org.openflexo.fib.utils.FIBIconLibrary;
 import org.openflexo.fib.view.widget.FIBBrowserWidget;
@@ -87,16 +90,16 @@ public class FIBBrowserWidgetFooter<T> extends JPanel implements MouseListener, 
 
 	// protected JPopupMenu popupMenu = null;
 
-	private Map<FIBBrowserElement, Map<FIBBrowserAction, FIBBrowserActionListener>> _addActions;
-	private Map<FIBBrowserElement, Map<FIBBrowserAction, FIBBrowserActionListener>> _removeActions;
-	private Map<FIBBrowserElement, Map<FIBBrowserAction, FIBBrowserActionListener>> _otherActions;
+	private Map<FIBBrowserElement, Map<FIBBrowserAction, FIBBrowserActionListener<T>>> _addActions;
+	private Map<FIBBrowserElement, Map<FIBBrowserAction, FIBBrowserActionListener<T>>> _removeActions;
+	private Map<FIBBrowserElement, Map<FIBBrowserAction, FIBBrowserActionListener<T>>> _otherActions;
 
 	private class BrowserButton implements ActionListener {
-		private Map<FIBBrowserElement, Map<FIBBrowserAction, FIBBrowserActionListener>> actions;
-		private JButton button;
+		private final Map<FIBBrowserElement, Map<FIBBrowserAction, FIBBrowserActionListener<T>>> actions;
+		private final JButton button;
 
-		public BrowserButton(Map<FIBBrowserElement, Map<FIBBrowserAction, FIBBrowserActionListener>> actions, Icon icon, Icon disabledIcon,
-				Icon pressedIcon) {
+		public BrowserButton(Map<FIBBrowserElement, Map<FIBBrowserAction, FIBBrowserActionListener<T>>> actions, Icon icon,
+				Icon disabledIcon, Icon pressedIcon) {
 			super();
 			this.actions = actions;
 			button = new ImageButton(icon);
@@ -114,10 +117,10 @@ public class FIBBrowserWidgetFooter<T> extends JPanel implements MouseListener, 
 			if (selection != null) {
 				FIBBrowserElement element = elementForObject(selection);
 				if (element != null) {
-					Map<FIBBrowserAction, FIBBrowserActionListener> browserActions = actions.get(element);
+					Map<FIBBrowserAction, FIBBrowserActionListener<T>> browserActions = actions.get(element);
 					int activeActionCount = 0;
 					if (browserActions != null && browserActions.size() > 0) {
-						for (Entry<FIBBrowserAction, FIBBrowserActionListener> e : browserActions.entrySet()) {
+						for (Entry<FIBBrowserAction, FIBBrowserActionListener<T>> e : browserActions.entrySet()) {
 							if (e.getValue().isActive(selection)) {
 								activeActionCount++;
 							}
@@ -145,10 +148,10 @@ public class FIBBrowserWidgetFooter<T> extends JPanel implements MouseListener, 
 		public void actionPerformed(ActionEvent e) {
 			FIBBrowserElement element = elementForObject(_widget.getSelected());
 			if (element != null) {
-				List<FIBBrowserActionListener> listeners = new ArrayList<FIBBrowserActionListener>();
-				Map<FIBBrowserAction, FIBBrowserActionListener> browserActions = actions.get(element);
+				List<FIBBrowserActionListener<T>> listeners = new ArrayList<FIBBrowserActionListener<T>>();
+				Map<FIBBrowserAction, FIBBrowserActionListener<T>> browserActions = actions.get(element);
 				if (browserActions != null && browserActions.size() > 0) {
-					for (Entry<FIBBrowserAction, FIBBrowserActionListener> entry : browserActions.entrySet()) {
+					for (Entry<FIBBrowserAction, FIBBrowserActionListener<T>> entry : browserActions.entrySet()) {
 						if (entry.getValue().isActive(_widget.getSelected())) {
 							listeners.add(entry.getValue());
 						}
@@ -159,7 +162,7 @@ public class FIBBrowserWidgetFooter<T> extends JPanel implements MouseListener, 
 					listeners.get(0).actionPerformed(e);
 				} else if (listeners.size() > 1) {
 					JPopupMenu popupMenu = new JPopupMenu();
-					for (FIBBrowserActionListener actionListener : listeners) {
+					for (FIBBrowserActionListener<T> actionListener : listeners) {
 						actionListener.setSelectedObject(_widget.getSelected());
 						JMenuItem menuItem = new JMenuItem(getLocalized(actionListener.getBrowserAction().getName()));
 						menuItem.addActionListener(actionListener);
@@ -175,20 +178,32 @@ public class FIBBrowserWidgetFooter<T> extends JPanel implements MouseListener, 
 		}
 	}
 
-	private BrowserButton plusButton;
-	private BrowserButton minusButton;
-	private BrowserButton optionsButton;
-	private JButton filtersButton;
+	private final BrowserButton plusButton;
+	private final BrowserButton minusButton;
+	private final BrowserButton optionsButton;
+	private final JButton filtersButton;
 
 	/**
 	 * Stores controls: key is the JButton and value the FIBTableActionListener
 	 */
 	// private Hashtable<JButton,FIBTableActionListener> _controls;
 
-	public FIBBrowserWidgetFooter(FIBBrowserWidget widget) {
+	public FIBBrowserWidgetFooter(FIBBrowserWidget<T> widget) {
 		super();
 		setOpaque(false);
 		_widget = widget;
+
+		for (final FIBBrowserElement e : widget.getBrowser().getElements()) {
+			e.getPropertyChangeSupport().addPropertyChangeListener(new PropertyChangeListener() {
+
+				@Override
+				public void propertyChange(PropertyChangeEvent evt) {
+					if (evt.getPropertyName().equals(FIBBrowserElement.ACTIONS_KEY)) {
+						updateActionsFor(e);
+					}
+				}
+			});
+		}
 
 		initializeActions(widget);
 
@@ -236,18 +251,18 @@ public class FIBBrowserWidgetFooter<T> extends JPanel implements MouseListener, 
 	}
 
 	private void initializeActions(FIBBrowserWidget<T> widget) {
-		_addActions = new LinkedHashMap<FIBBrowserElement, Map<FIBBrowserAction, FIBBrowserActionListener>>();
-		_removeActions = new LinkedHashMap<FIBBrowserElement, Map<FIBBrowserAction, FIBBrowserActionListener>>();
-		_otherActions = new LinkedHashMap<FIBBrowserElement, Map<FIBBrowserAction, FIBBrowserActionListener>>();
+		_addActions = new LinkedHashMap<FIBBrowserElement, Map<FIBBrowserAction, FIBBrowserActionListener<T>>>();
+		_removeActions = new LinkedHashMap<FIBBrowserElement, Map<FIBBrowserAction, FIBBrowserActionListener<T>>>();
+		_otherActions = new LinkedHashMap<FIBBrowserElement, Map<FIBBrowserAction, FIBBrowserActionListener<T>>>();
 
 		for (FIBBrowserElement element : widget.getComponent().getElements()) {
 
-			Map<FIBBrowserAction, FIBBrowserActionListener> addActions = new LinkedHashMap<FIBBrowserAction, FIBBrowserActionListener>();
-			Map<FIBBrowserAction, FIBBrowserActionListener> removeActions = new LinkedHashMap<FIBBrowserAction, FIBBrowserActionListener>();
-			Map<FIBBrowserAction, FIBBrowserActionListener> otherActions = new LinkedHashMap<FIBBrowserAction, FIBBrowserActionListener>();
+			Map<FIBBrowserAction, FIBBrowserActionListener<T>> addActions = new LinkedHashMap<FIBBrowserAction, FIBBrowserActionListener<T>>();
+			Map<FIBBrowserAction, FIBBrowserActionListener<T>> removeActions = new LinkedHashMap<FIBBrowserAction, FIBBrowserActionListener<T>>();
+			Map<FIBBrowserAction, FIBBrowserActionListener<T>> otherActions = new LinkedHashMap<FIBBrowserAction, FIBBrowserActionListener<T>>();
 
 			for (FIBBrowserAction plAction : element.getActions()) {
-				FIBBrowserActionListener plActionListener = new FIBBrowserActionListener(_widget, plAction);
+				FIBBrowserActionListener<T> plActionListener = new FIBBrowserActionListener<T>(_widget, plAction);
 				if (plActionListener.isAddAction()) {
 					addActions.put(plAction, plActionListener);
 				} else if (plActionListener.isRemoveAction()) {
@@ -263,24 +278,74 @@ public class FIBBrowserWidgetFooter<T> extends JPanel implements MouseListener, 
 		}
 	}
 
+	private void updateActionsFor(FIBBrowserElement element) {
+
+		Map<FIBBrowserAction, FIBBrowserActionListener<T>> addActions = _addActions.get(element);
+		Map<FIBBrowserAction, FIBBrowserActionListener<T>> removeActions = _removeActions.get(element);
+		Map<FIBBrowserAction, FIBBrowserActionListener<T>> otherActions = _otherActions.get(element);
+
+		List<FIBBrowserAction> addActionsToRemove = new ArrayList<FIBBrowserAction>(addActions.keySet());
+		List<FIBBrowserAction> removeActionsToRemove = new ArrayList<FIBBrowserAction>(removeActions.keySet());
+		List<FIBBrowserAction> otherActionsToRemove = new ArrayList<FIBBrowserAction>(otherActions.keySet());
+
+		for (FIBBrowserAction plAction : element.getActions()) {
+			if (plAction.getActionType() == ActionType.Add) {
+				FIBBrowserActionListener<T> plActionListener = addActions.get(plAction);
+				if (plActionListener != null) {
+					addActionsToRemove.remove(plAction);
+				} else {
+					plActionListener = new FIBBrowserActionListener<T>(_widget, plAction);
+					addActions.put(plAction, plActionListener);
+				}
+			} else if (plAction.getActionType() == ActionType.Delete) {
+				FIBBrowserActionListener<T> plActionListener = removeActions.get(plAction);
+				if (plActionListener != null) {
+					removeActionsToRemove.remove(plAction);
+				} else {
+					plActionListener = new FIBBrowserActionListener<T>(_widget, plAction);
+					removeActions.put(plAction, plActionListener);
+				}
+			} else if (plAction.getActionType() == ActionType.Custom) {
+				FIBBrowserActionListener<T> plActionListener = otherActions.get(plAction);
+				if (plActionListener != null) {
+					otherActionsToRemove.remove(plAction);
+				} else {
+					plActionListener = new FIBBrowserActionListener<T>(_widget, plAction);
+					otherActions.put(plAction, plActionListener);
+				}
+			}
+		}
+
+		for (FIBBrowserAction a : new ArrayList<FIBBrowserAction>(addActionsToRemove)) {
+			addActions.remove(a);
+		}
+		for (FIBBrowserAction a : new ArrayList<FIBBrowserAction>(removeActionsToRemove)) {
+			removeActions.remove(a);
+		}
+		for (FIBBrowserAction a : new ArrayList<FIBBrowserAction>(otherActionsToRemove)) {
+			otherActions.remove(a);
+		}
+
+	}
+
 	public void delete() {
 		if (_widget != null && _widget.getComponent() != null) {
 			for (FIBBrowserElement element : _widget.getComponent().getElements()) {
-				Map<FIBBrowserAction, FIBBrowserActionListener> hashtable = _addActions != null ? _addActions.get(element) : null;
+				Map<FIBBrowserAction, FIBBrowserActionListener<T>> hashtable = _addActions != null ? _addActions.get(element) : null;
 				if (hashtable != null) {
-					for (Map.Entry<FIBBrowserAction, FIBBrowserActionListener> e : hashtable.entrySet()) {
+					for (Map.Entry<FIBBrowserAction, FIBBrowserActionListener<T>> e : hashtable.entrySet()) {
 						e.getValue().delete();
 					}
 				}
 				hashtable = _removeActions != null ? _removeActions.get(element) : null;
 				if (hashtable != null) {
-					for (Map.Entry<FIBBrowserAction, FIBBrowserActionListener> e : hashtable.entrySet()) {
+					for (Map.Entry<FIBBrowserAction, FIBBrowserActionListener<T>> e : hashtable.entrySet()) {
 						e.getValue().delete();
 					}
 				}
 				hashtable = _otherActions != null ? _otherActions.get(element) : null;
 				if (hashtable != null) {
-					for (Map.Entry<FIBBrowserAction, FIBBrowserActionListener> e : hashtable.entrySet()) {
+					for (Map.Entry<FIBBrowserAction, FIBBrowserActionListener<T>> e : hashtable.entrySet()) {
 						e.getValue().delete();
 					}
 				}
@@ -327,6 +392,7 @@ public class FIBBrowserWidgetFooter<T> extends JPanel implements MouseListener, 
 		return false;
 	}
 
+	@SuppressWarnings("serial")
 	private JPopupMenu makeFiltersPopupMenu() {
 
 		JPopupMenu returned = new JPopupMenu() {
