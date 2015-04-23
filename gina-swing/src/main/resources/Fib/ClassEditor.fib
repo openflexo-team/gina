@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel layout="twocols" darkLevel="0" dataClassName="org.openflexo.fib.swing.utils.LoadedClassesInfo" controllerClassName="org.openflexo.fib.swing.utils.ClassSelector$ClassSelectorDetailsPanel$CustomFIBController" width="200" height="200">
+<Panel layout="twocols" darkLevel="0"
+	dataClassName="org.openflexo.fib.swing.utils.LoadedClassesInfo">
 	<Panel layout="gridbag" borderTitle="Panel" darkLevel="0" index="1"
 		constraints="twocols(expandHorizontally=true;expandVertically=false;index=0;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=center)">
 		<Label label="Package" index="0"
@@ -85,16 +86,5 @@
 		</BrowserElement>
 		<Dependancy componentName="FilteredPackageName" />
 	</Browser>
-  <Panel layout="flow" hGap="5" vGap="0" flowAlignment="CENTER" borderTitle="Panel" darkLevel="0" index="3" constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=center)">
-    <Button action="controller.apply()" buttonType="Trigger" label="apply" index="0" constraints="flow(index=0)" localize="true" enable="(data.selectedClassInfo != null)">
-      <LocalizedDictionary />
-    </Button>
-    <Button action="controller.cancel()" buttonType="Trigger" label="cancel" index="1" constraints="flow(index=1)" localize="true">
-      <LocalizedDictionary />
-    </Button>
-    <Button action="controller.reset()" buttonType="Trigger" label="reset" index="2" constraints="flow(index=2)" localize="true">
-      <LocalizedDictionary />
-    </Button>
-  </Panel>
-  <LocalizedDictionary />
+	<LocalizedDictionary />
 </Panel>

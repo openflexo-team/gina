@@ -81,7 +81,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	private static final Logger logger = Logger.getLogger(LocalizedDelegateImpl.class.getPackage().getName());
 
 	private final LocalizedDelegate parent;
-	private final Resource localizedDirectoryResource;
+	private Resource localizedDirectoryResource;
 	private final Hashtable<Language, Properties> _localizedDictionaries;
 
 	private boolean automaticSaving = false;
@@ -128,6 +128,10 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	public Resource getLocalizedDirectoryResource() {
 		return localizedDirectoryResource;
 	}
+	public void setLocalizedDirectoryResource(Resource r) {
+		localizedDirectoryResource = r;
+	}
+
 
 	private Properties getDictionary(Language language) {
 		Properties dict = _localizedDictionaries.get(language);

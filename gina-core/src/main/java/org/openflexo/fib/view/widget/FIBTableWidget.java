@@ -714,7 +714,7 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 			return;
 		}
 		setSelected(object);
-		if (object != null) {
+		if (object != null && getTableModel() != null && getTableModel().getValues() != null) {
 			int index = getTableModel().getValues().indexOf(object);
 			if (index > -1) {
 				index = _table.convertRowIndexToView(index);

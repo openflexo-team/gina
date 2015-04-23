@@ -363,14 +363,18 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 	public boolean update() {
 
 		updateData();
+
 		updateVisibility();
 
-		if (dataBindingValueChangeListener != null) {
+		// IMPORTANT (Sylvain):
+		// I commented out following statement which seems to me unnecessary
+		// I'm not really sure not to have caused any regression
+		/*if (dataBindingValueChangeListener != null) {
 			dataBindingValueChangeListener.refreshObserving();
 		}
 		if (visibleBindingValueChangeListener != null) {
 			visibleBindingValueChangeListener.refreshObserving();
-		}
+		}*/
 
 		return true;
 	}

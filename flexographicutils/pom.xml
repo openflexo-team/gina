@@ -11,7 +11,8 @@
     <scm>
         <connection>scm:git:ssh://git@github.com/openflexo-team/gina.git</connection>
         <url>https://github.com/openflexo-team/gina</url>
-    </scm>
+      <tag>HEAD</tag>
+  </scm>
     <build>
         <plugins>
             <plugin>

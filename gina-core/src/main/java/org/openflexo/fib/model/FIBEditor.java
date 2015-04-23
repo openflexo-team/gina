@@ -169,7 +169,7 @@ public interface FIBEditor extends FIBTextWidget {
 
 		@Override
 		public void setTokenMarkerStyle(FIBTokenMarkerStyle tokenMarkerStyle) {
-			System.out.println("setTokenMarkerStyle with " + tokenMarkerStyle);
+			//System.out.println("setTokenMarkerStyle with " + tokenMarkerStyle);
 			FIBPropertyNotification<FIBTokenMarkerStyle> notification = requireChange(TOKEN_MARKER_STYLE_KEY, tokenMarkerStyle);
 			if (notification != null) {
 				this.tokenMarkerStyle = tokenMarkerStyle;

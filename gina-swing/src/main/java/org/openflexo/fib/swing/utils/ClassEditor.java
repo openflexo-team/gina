@@ -36,42 +36,38 @@
  * 
  */
 
-package org.openflexo.fib;
+package org.openflexo.fib.swing.utils;
 
-import org.junit.Test;
-import org.openflexo.fib.utils.GenericFIBTestCase;
-import org.openflexo.rm.FileResourceImpl;
+import java.util.logging.Logger;
+
+import org.openflexo.fib.swing.FIBJPanel;
+import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 
-public class TestEditorFibs extends GenericFIBTestCase {
+/**
+ * Widget allowing to select a class in a plain panel
+ * 
+ * @author sguerin
+ * 
+ */
+public class ClassEditor extends FIBJPanel<LoadedClassesInfo> {
+	@SuppressWarnings("hiding")
+	static final Logger LOGGER = Logger.getLogger(ClassEditor.class.getPackage().getName());
 
-	public static void main(String[] args) {
-		System.out.println(generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib")).getFile(), "Fib/"));
+	public static Resource FIB_FILE_NAME = ResourceLocator.getResourceLocator().locateResource("Fib/ClassEditor.fib");
+
+	public ClassEditor(LoadedClassesInfo editedObject) {
+		super(FIB_FILE_NAME, editedObject, FlexoLocalization.getMainLocalizer());
 	}
 
-	@Test
-	public void testClassEditor() {
-		validateFIB("Fib/ClassEditor.fib");
+	@Override
+	public Class<LoadedClassesInfo> getRepresentedType() {
+		return LoadedClassesInfo.class;
 	}
 
-	@Test
-	public void testClassSelector() {
-		validateFIB("Fib/ClassSelector.fib");
-	}
-
-	@Test
-	public void testLocalizedPanel() {
-		validateFIB("Fib/LocalizedPanel.fib");
-	}
-
-	@Test
-	public void testLoggingViewer() {
-		validateFIB("Fib/LoggingViewer.fib");
-	}
-
-	@Test
-	public void testValidationPanel() {
-		validateFIB("Fib/ValidationPanel.fib");
+	@Override
+	public void delete() {
 	}
 
 }
