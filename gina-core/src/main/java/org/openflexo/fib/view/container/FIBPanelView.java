@@ -94,8 +94,8 @@ public class FIBPanelView<C extends FIBPanel, T> extends FIBContainerView<C, JPa
 			panel.setBorder(BorderFactory.createEtchedBorder());
 			break;
 		case line:
-			panel.setBorder(BorderFactory.createLineBorder(getComponent().getBorderColor() != null ? getComponent().getBorderColor()
-					: Color.black));
+			panel.setBorder(BorderFactory
+					.createLineBorder(getComponent().getBorderColor() != null ? getComponent().getBorderColor() : Color.black));
 			break;
 		case lowered:
 			panel.setBorder(BorderFactory.createLoweredBevelBorder());
@@ -104,14 +104,15 @@ public class FIBPanelView<C extends FIBPanel, T> extends FIBContainerView<C, JPa
 			panel.setBorder(BorderFactory.createRaisedBevelBorder());
 			break;
 		case titled:
-			panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), getLocalized(getComponent()
-					.getBorderTitle()), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, getComponent().retrieveValidFont(),
-					getComponent().retrieveValidForegroundColor()));
+			panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+					getLocalized(getComponent().getBorderTitle()), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION,
+					getComponent().retrieveValidFont(), getComponent().retrieveValidForegroundColor()));
 			break;
 		case rounded3d:
-			panel.setBorder(new RoundedBorder(StringUtils.isNotEmpty(getComponent().getBorderTitle()) ? getLocalized(getComponent()
-					.getBorderTitle()) : null, getComponent().getBorderTop() != null ? getComponent().getBorderTop() : 0, getComponent()
-					.getBorderLeft() != null ? getComponent().getBorderLeft() : 0,
+			panel.setBorder(new RoundedBorder(
+					StringUtils.isNotEmpty(getComponent().getBorderTitle()) ? getLocalized(getComponent().getBorderTitle()) : null,
+					getComponent().getBorderTop() != null ? getComponent().getBorderTop() : 0,
+					getComponent().getBorderLeft() != null ? getComponent().getBorderLeft() : 0,
 					getComponent().getBorderBottom() != null ? getComponent().getBorderBottom() : 0,
 					getComponent().getBorderRight() != null ? getComponent().getBorderRight() : 0, getComponent().getTitleFont(),
 					getComponent().retrieveValidForegroundColor(), getComponent().getDarkLevel()));
@@ -133,15 +134,16 @@ public class FIBPanelView<C extends FIBPanel, T> extends FIBContainerView<C, JPa
 			panel.setLayout(null);
 			break;
 		case flow:
-			panel.setLayout(new FlowLayout(getComponent().getFlowAlignment().getAlign(), getComponent().getHGap(), getComponent().getVGap()));
+			panel.setLayout(
+					new FlowLayout(getComponent().getFlowAlignment().getAlign(), getComponent().getHGap(), getComponent().getVGap()));
 			break;
 		case border:
 			panel.setLayout(new BorderLayout());
 			break;
 		case grid:
 			// logger.info("rows="+getComponent().getRows()+" cols="+getComponent().getCols());
-			panel.setLayout(new GridLayout(getComponent().getRows(), getComponent().getCols(), getComponent().getHGap(), getComponent()
-					.getVGap()));
+			panel.setLayout(
+					new GridLayout(getComponent().getRows(), getComponent().getCols(), getComponent().getHGap(), getComponent().getVGap()));
 			break;
 		case box:
 			panel.setLayout(new BoxLayout(panel, getComponent().getBoxLayoutAxis().getAxis()));
@@ -197,7 +199,7 @@ public class FIBPanelView<C extends FIBPanel, T> extends FIBContainerView<C, JPa
 			@Override
 			public boolean getScrollableTracksViewportWidth() {
 				Container parent = getParent();
-				if (parent instanceof JViewport) {
+				if (parent instanceof JViewport && getPreferredSize() != null) {
 					return parent.getWidth() > getPreferredSize().width && FIBPanelView.this.getComponent().isTrackViewPortWidth();
 				}
 				return FIBPanelView.this.getComponent().isTrackViewPortWidth();
@@ -206,7 +208,7 @@ public class FIBPanelView<C extends FIBPanel, T> extends FIBContainerView<C, JPa
 			@Override
 			public boolean getScrollableTracksViewportHeight() {
 				Container parent = getParent();
-				if (parent instanceof JViewport) {
+				if (parent instanceof JViewport && getPreferredSize() != null) {
 					return parent.getHeight() > getPreferredSize().height && FIBPanelView.this.getComponent().isTrackViewPortHeight();
 				}
 				return FIBPanelView.this.getComponent().isTrackViewPortHeight();
@@ -266,7 +268,7 @@ public class FIBPanelView<C extends FIBPanel, T> extends FIBContainerView<C, JPa
 					}
 				}
 			}
-
+			
 			System.out.println("*********************************************");*/
 
 		}
