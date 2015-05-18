@@ -64,6 +64,7 @@ import org.openflexo.connie.type.WilcardTypeImpl;
 import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.view.FIBView;
+import org.openflexo.himtester.listener.FIBHandler;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
@@ -188,6 +189,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 	public static final String EXPLICIT_DEPENDANCIES_KEY = "explicitDependancies";
 	@PropertyIdentifier(type = FIBLocalizedDictionary.class)
 	public static final String LOCALIZED_DICTIONARY_KEY = "localizedDictionary";
+	@PropertyIdentifier(type = String.class)
+	public static final String UNIQUE_ID = "uniqueID";
 
 	@Override
 	@Getter(value = PARENT_KEY/*, inverse = FIBContainer.SUB_COMPONENTS_KEY*/)
@@ -353,6 +356,15 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 	@Setter(LOCALIZED_DICTIONARY_KEY)
 	public void setLocalizedDictionary(FIBLocalizedDictionary localizedDictionary);
+	
+	public String getUniqueID();
+	
+	@Getter(value = UNIQUE_ID, defaultValue = "")
+	@XMLAttribute
+	public String getDirectUniqueID();
+	
+	@Setter(UNIQUE_ID)
+	public void setUniqueID(String uniqueID);
 
 	public boolean isRootComponent();
 
@@ -541,6 +553,14 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 			explicitDependancies = new Vector<FIBDependancy>();
 			mayDepends = new Vector<FIBComponent>();
 			mayAlters = new Vector<FIBComponent>();
+		}
+		
+		public String getUniqueID() {
+			if (getDirectUniqueID() == null) {
+				setUniqueID(FIBHandler.getInstance().generateUniqueID(this));
+				System.out.println(getDirectUniqueID());
+			}
+			return getDirectUniqueID();
 		}
 
 		@Override

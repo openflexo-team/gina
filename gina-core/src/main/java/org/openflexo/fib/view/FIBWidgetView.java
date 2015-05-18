@@ -71,6 +71,7 @@ import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelObject;
 import org.openflexo.fib.model.FIBWidget;
+import org.openflexo.himtester.events.FIBActionEvent;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.ToolBox;
 
@@ -105,6 +106,8 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 	// private Map<DataBinding<?>, BindingValueChangeListener<?>> listeners;
 
 	private BindingValueChangeListener<Boolean> enableBindingValueChangeListener;
+	
+	private boolean eventListeningLocked, eventUserMod;
 
 	// private DependingObjects dependingObjects;
 
@@ -113,6 +116,8 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 		formatter = new DynamicFormatter();
 		valueBindingContext = new DynamicValueBindingContext();
 		eventListener = new DynamicEventListener();
+		eventListeningLocked = false;
+		eventUserMod = true;
 		// addBindingValueChangeListeners();
 		listenEnableValueChange();
 	}
@@ -138,6 +143,44 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 				}
 			};
 		}
+	}
+	
+	protected void lockListening() {
+		eventListeningLocked = true;
+	}
+	
+	protected void allowListening() {
+		eventListeningLocked = false;
+	}
+	
+	protected boolean isListeningLocked() {
+		return eventListeningLocked;
+	}
+	
+	protected void setInUserMod(boolean userMod) {
+		eventUserMod = userMod;
+	}
+	
+	protected void enterUserMod() {
+		eventUserMod = true;
+	}
+	
+	protected void exitUserMod() {
+		eventUserMod = false;
+	}
+	
+	protected boolean isInUserMod() {
+		return eventUserMod;
+	}
+	
+	public synchronized void actionPerformed(FIBActionEvent e) {
+		actionPerformed(e, eventUserMod);
+	}
+	
+	public synchronized void actionPerformed(FIBActionEvent e, boolean fromUserOrigin) {
+		e.setFromUser(fromUserOrigin);
+		if (!isListeningLocked())
+			getWidget().actionPerformed(e);
 	}
 
 	// public void updateBindingValueChangeListeners() {

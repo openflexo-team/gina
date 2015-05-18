@@ -56,10 +56,15 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBTextField;
 import org.openflexo.fib.view.FIBWidgetView;
+import org.openflexo.himtester.events.FIBActionEvent;
+import org.openflexo.himtester.events.FIBEventFactory;
+import org.openflexo.himtester.events.FIBTextEvent;
+import org.openflexo.himtester.listener.FIBActionListenerManager;
 import org.openflexo.toolbox.ToolBox;
 
 /**
@@ -127,6 +132,12 @@ public class FIBTextFieldWidget extends FIBWidgetView<FIBTextField, JTextField, 
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {
+				try {
+					actionPerformed(FIBEventFactory.getInstance().createTextEvent("text-inserted", e.getOffset(), e.getLength(),
+							e.getDocument().getText(e.getOffset(), e.getLength()), getValue()));
+				} catch (BadLocationException e2) {
+					e2.printStackTrace();
+				}
 				if (!validateOnReturn && !widgetUpdating) {
 					try {
 						if (ToolBox.getPLATFORM() == ToolBox.MACOS) {
@@ -146,6 +157,8 @@ public class FIBTextFieldWidget extends FIBWidgetView<FIBTextField, JTextField, 
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
+				actionPerformed(FIBEventFactory.getInstance().createTextEvent("text-removed", e.getOffset(), e.getLength(),
+						"", getValue()));
 				if (!validateOnReturn && !widgetUpdating) {
 					updateModelFromWidget();
 				}
@@ -171,6 +184,11 @@ public class FIBTextFieldWidget extends FIBWidgetView<FIBTextField, JTextField, 
 				}
 			}
 		});
+		/*textField.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+            	FIBTextFieldWidget.this.getWidget().actionPerformed("text-inserted", String.valueOf(e.getKeyChar()), textField.getCaretPosition());
+            }
+        });*/
 		textField.addFocusListener(this);
 
 		updateFont();
@@ -180,10 +198,49 @@ public class FIBTextFieldWidget extends FIBWidgetView<FIBTextField, JTextField, 
 	public void focusGained(FocusEvent arg0) {
 		super.focusGained(arg0);
 		textField.selectAll();
+
+		actionPerformed(FIBEventFactory.getInstance().createFocusEvent("focus-gained"));
+	}
+	
+	@Override
+	public void focusLost(FocusEvent arg0) {
+		super.focusLost(arg0);
+
+		actionPerformed(FIBEventFactory.getInstance().createFocusEvent("focus-lost"));
 	}
 
 	public Class getDefaultType() {
 		return String.class;
+	}
+	
+	public void execute(FIBActionEvent e) {
+		exitUserMod();
+
+		FIBTextEvent ete;
+
+		String text;
+		switch(e.getAction()) {
+		case "text-inserted":
+			ete = (FIBTextEvent) e;
+			text = textField.getText();
+			if (text.length() >= ete.getPosition())
+				textField.setText(text.substring(0, ete.getPosition()) + e.getValue() + text.substring(ete.getPosition()));
+			break;
+		case "text-removed":
+			ete = (FIBTextEvent) e;
+			text = textField.getText();
+			if (text.length() >= ete.getPosition() + ete.getLength())
+				textField.setText(text.substring(0, ete.getPosition()) + text.substring(ete.getPosition() + ete.getLength()));
+			break;
+		case "focus-gained":
+			textField.requestFocus();
+			break;
+		case "focus-lost":
+			textField.getParent().requestFocus();
+			break;
+		}
+		
+		enterUserMod();
 	}
 
 	// DEBUG
@@ -232,7 +289,9 @@ public class FIBTextFieldWidget extends FIBWidgetView<FIBTextField, JTextField, 
 			widgetUpdating = true;
 			try {
 				int caret = textField.getCaretPosition();
+				exitUserMod();
 				textField.setText(getValue());
+				enterUserMod();
 				if (caret > -1 && caret < textField.getDocument().getLength()) {
 					textField.setCaretPosition(caret);
 				}

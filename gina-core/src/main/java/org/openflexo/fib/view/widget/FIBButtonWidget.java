@@ -54,6 +54,8 @@ import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBButton;
 import org.openflexo.fib.view.FIBWidgetView;
+import org.openflexo.himtester.events.FIBEventFactory;
+import org.openflexo.himtester.listener.FIBActionListenerManager;
 
 public class FIBButtonWidget extends FIBWidgetView<FIBButton, JButton, String> {
 
@@ -104,6 +106,8 @@ public class FIBButtonWidget extends FIBWidgetView<FIBButton, JButton, String> {
 			logger.fine("Action: " + getWidget().getAction() + " valid=" + getWidget().getAction().isValid());
 			logger.fine("Data: " + getController().getDataObject());
 		}
+		
+		actionPerformed(FIBEventFactory.getInstance().createButtonEvent("clicked"));
 
 		setData(getComponent().getIdentifier());
 		DataBinding<?> action = getWidget().getAction();

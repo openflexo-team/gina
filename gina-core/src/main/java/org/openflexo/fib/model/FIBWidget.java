@@ -41,6 +41,7 @@ package org.openflexo.fib.model;
 
 import java.awt.event.MouseEvent;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -60,6 +61,12 @@ import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.connie.type.WilcardTypeImpl;
 import org.openflexo.fib.view.FIBWidgetView;
+import org.openflexo.himtester.events.FIBActionEvent;
+import org.openflexo.himtester.events.FIBEventFactory;
+import org.openflexo.himtester.events.FIBTextEvent;
+import org.openflexo.himtester.listener.FIBActionListener;
+import org.openflexo.himtester.listener.FIBActionListenerManager;
+import org.openflexo.himtester.listener.FIBHandler;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -226,6 +233,12 @@ public abstract interface FIBWidget extends FIBComponent {
 	public Bindable getValueBindable();
 
 	public Bindable getEventListener();
+	
+	public void addFibListener(FIBActionListener l);
+	
+	public void actionPerformed(FIBActionEvent e);
+
+	//public void actionPerformed(String action, Object... args);
 
 	public static abstract class FIBWidgetImpl extends FIBComponentImpl implements FIBWidget {
 
@@ -276,13 +289,57 @@ public abstract interface FIBWidget extends FIBComponent {
 		private final FIBValueBindable valueBindable;
 		private final FIBEventListener eventListener;
 		private DataBinding<Object> valueTransform;
+		
+		private List<FIBActionListener> fibListeners = new ArrayList<FIBActionListener>();
 
 		public FIBWidgetImpl() {
 			super();
 			formatter = new FIBFormatter();
-			valueBindable = new FIBValueBindable();
+			valueBindable = new FIBValueBindable(); 
 			eventListener = new FIBEventListener();
+			
+			//id = FIBIDManager.getUniqueID(getBaseName() == null ? "" : getBaseName(), "");
+			//System.out.println("Created " + id);
+			
+			if (FIBActionListenerManager.getInstance().isEnabled())
+				addFibListener(FIBActionListenerManager.getInstance());
 		}
+		
+		public void addFibListener(FIBActionListener l) {
+			fibListeners.add(l);
+	    }
+		
+		public synchronized void actionPerformed(FIBActionEvent e) {
+			e.setIdentity(this.getBaseName(), this.getName(), this.getRootComponent().getUniqueID());
+			
+			for (FIBActionListener fl : fibListeners)
+	            fl.actionPerformed(e);
+		}
+		
+		/*public void actionPerformed(String action, Object... args) {
+			FIBActionEvent e;
+			
+			FIBEventFactory f = FIBActionListenerManager.getInstance().getFactory();
+
+			switch(action) {
+			case "clicked":
+				e = f.createButtonEvent(action);
+			case "text-inserted":
+				FIBTextEvent ev = f.createTextEvent(action, );
+				e = ev;
+				ev.setValue((String) args[0]);
+				ev.setPosition((int) args[1]);
+				break;
+			case "text-removed":
+				e.setPosition((int) args[0]);
+				e.setSize((int) args[1]);
+				break;
+			}
+			
+			e.setIdentity(this.getBaseName(), this.getName(), this.getRootComponent().getID());
+			
+			this.actionPerformed(e);
+		}*/
 
 		@Override
 		protected void bindingModelMightChange(BindingModel oldBindingModel) {

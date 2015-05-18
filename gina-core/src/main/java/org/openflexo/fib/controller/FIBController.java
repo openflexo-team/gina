@@ -133,6 +133,7 @@ import org.openflexo.fib.view.widget.FIBReferencedComponentWidget;
 import org.openflexo.fib.view.widget.FIBTableWidget;
 import org.openflexo.fib.view.widget.FIBTextAreaWidget;
 import org.openflexo.fib.view.widget.FIBTextFieldWidget;
+import org.openflexo.himtester.listener.FIBHandler;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
 import org.openflexo.localization.LocalizedDelegate;
@@ -190,6 +191,8 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 		selectionListeners = new Vector<FIBSelectionListener>();
 		mouseClickListeners = new Vector<FIBMouseClickListener>();
 		viewFactory = new DefaultFIBViewFactory();
+		
+		FIBHandler.getInstance().register(this);
 	}
 
 	public void delete() {
@@ -207,6 +210,8 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 			dataObject = null;
 			deleted = true;
 			getPropertyChangeSupport().firePropertyChange(DELETED, false, true);
+			
+			FIBHandler.getInstance().unregister(this);
 		}
 	}
 
@@ -225,7 +230,6 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 	}
 
 	public FIBView<FIBComponent, ?, ?> buildView() {
-
 		FIBView<FIBComponent, ?, ?> returned = buildView(rootComponent);
 		returned.update();
 		return returned;
@@ -407,6 +411,9 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 	}
 
 	public final <M extends FIBComponent> FIBView<M, ?, ?> buildView(M fibComponent) {
+		// force the generation of the rootComponent ID
+		rootComponent.getUniqueID();
+
 		if (fibComponent instanceof FIBContainer) {
 			return buildContainer((FIBContainer) fibComponent);
 		} else if (fibComponent instanceof FIBWidget) {
