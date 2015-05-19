@@ -71,6 +71,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingValueChangeListener;
+import org.openflexo.connie.binding.BindingValueListChangeListener;
 import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -109,6 +110,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 	private List<T> selection;
 
 	private BindingValueChangeListener<T> selectedBindingValueChangeListener;
+	private BindingValueListChangeListener<T, List<T>> selectionBindingValueChangeListener;
 	private BindingValueChangeListener<Object> rootBindingValueChangeListener;
 
 	public FIBBrowserWidget(FIBBrowser fibBrowser, FIBController controller) {
@@ -121,6 +123,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 		_footer = new FIBBrowserWidgetFooter(this);
 		buildBrowser();
 		listenSelectedValueChange();
+		listenSelectionValueChange();
 		listenRootValueChange();
 	}
 
@@ -140,6 +143,26 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 					performSelect(newValue, false);
 				}
 
+			};
+		}
+	}
+
+	private void listenSelectionValueChange() {
+
+		if (selectionBindingValueChangeListener != null) {
+			selectionBindingValueChangeListener.stopObserving();
+			selectionBindingValueChangeListener.delete();
+		}
+		if (getComponent().getSelection() != null && getComponent().getSelection().isValid()) {
+			selectionBindingValueChangeListener = new BindingValueListChangeListener<T, List<T>>(((DataBinding) getComponent()
+					.getSelection()), getBindingEvaluationContext()) {
+				@Override
+				public void bindingValueChanged(Object source, List<T> newValue) {
+					// System.out.println(" bindingValueChanged() detected for selection=" + getComponent().getSelection() +
+					// " with newValue="
+					// + newValue + " source=" + source);
+					performSelect(newValue, false);
+				}
 			};
 		}
 	}
@@ -575,7 +598,6 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 
 	private final void updateSelected(boolean force) {
 
-
 		if (getComponent() != null && getComponent().getSelected() != null) {
 			try {
 				if (getComponent().getSelected().isValid()
@@ -654,6 +676,51 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 		}
 	}
 
+	public void performSelect(List<T> objects, boolean force) {
+
+		// TODO: implement premature return when selection has not changed
+
+		/*if ((!force) && objects != null && (objects.equals(getSelection()))) {
+			LOGGER.fine("FIBTableWidget: ignore performSelect " + objects);
+			return;
+		}*/
+		setSelection(objects);
+		if (objects != null) {
+			if (getBrowser().getDeepExploration()) {
+				// Recursively and exhaustively explore the whole model to retrieve all contents
+				// To be able to unfold required folders to select searched value
+				// System.out.println("Explore whole contents");
+				getBrowserModel().recursivelyExploreModelToRetrieveContents();
+			}
+
+			TreePath scrollTo = null;
+			List<TreePath> treePathsAsList = new ArrayList<TreePath>();
+
+			for (T object : objects) {
+				Collection<BrowserCell> cells = getBrowserModel().getBrowserCell(object);
+				if (cells != null) {
+					for (BrowserCell cell : cells) {
+						TreePath treePath = cell.getTreePath();
+						if (scrollTo == null) {
+							scrollTo = treePath;
+						}
+						treePathsAsList.add(treePath);
+					}
+				}
+			}
+
+			getTreeSelectionModel().clearSelection();
+			getTreeSelectionModel().addSelectionPaths(treePathsAsList.toArray(new TreePath[treePathsAsList.size()]));
+
+			if (scrollTo != null) {
+				_tree.scrollPathToVisible(scrollTo);
+			}
+
+		} else {
+			clearSelection();
+		}
+	}
+
 	public void setSelected(T object) {
 		LOGGER.fine("Select " + object);
 		if (getRootValue() == null) {
@@ -667,28 +734,6 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 		T oldSelectedObject = getSelected();
 
 		selectedObject = object;
-
-		// logger.info("---------------------> FIBBrowserWidget, setSelectedObject from "+getSelectedObject()+" to "+object);
-		/*if (object != null) {
-			Collection<BrowserCell> cells = getBrowserModel().getBrowserCell(object);
-			// logger.info("Select " + cells);
-			getTreeSelectionModel().clearSelection();
-			if (cells != null) {
-				TreePath scrollTo = null;
-				for (BrowserCell cell : cells) {
-					TreePath treePath = cell.getTreePath();
-					if (scrollTo == null) {
-						scrollTo = treePath;
-					}
-					getTreeSelectionModel().addSelectionPath(treePath);
-				}
-				if (scrollTo != null) {
-					_tree.scrollPathToVisible(scrollTo);
-				}
-			}
-			} else {
-			clearSelection();
-			}*/
 
 		getPropertyChangeSupport().firePropertyChange(SELECTED, oldSelectedObject, object);
 	}
