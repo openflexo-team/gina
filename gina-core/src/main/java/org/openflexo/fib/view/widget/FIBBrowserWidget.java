@@ -798,6 +798,10 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 	@Override
 	public synchronized void valueChanged(TreeSelectionEvent e) {
 
+		if (selection == null) {
+			selection = new ArrayList<T>();
+		}
+
 		List<T> oldSelection = new ArrayList<T>(selection);
 		T newSelectedObject;
 		List<T> newSelection = new ArrayList<T>(selection);
