@@ -54,6 +54,7 @@ import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBButton;
 import org.openflexo.fib.view.FIBWidgetView;
+import org.openflexo.himtester.events.FIBActionEvent;
 import org.openflexo.himtester.events.FIBEventFactory;
 import org.openflexo.himtester.listener.FIBActionListenerManager;
 
@@ -90,6 +91,18 @@ public class FIBButtonWidget extends FIBWidgetView<FIBButton, JButton, String> {
 		widgetUpdating = false;
 		return false;
 	}
+	
+	public void executeEvent(FIBActionEvent e) {
+		widgetExecuting = true;
+
+		switch(e.getAction()) {
+		case "clicked":
+			this.buttonClicked();
+			break;
+		}
+		
+		widgetExecuting = false;
+	}
 
 	/**
 	 * Update the model given the actual state of the widget
@@ -107,7 +120,7 @@ public class FIBButtonWidget extends FIBWidgetView<FIBButton, JButton, String> {
 			logger.fine("Data: " + getController().getDataObject());
 		}
 		
-		actionPerformed(FIBEventFactory.getInstance().createButtonEvent("clicked"));
+		actionPerformed(FIBEventFactory.getInstance().createMouseEvent("clicked"));
 
 		setData(getComponent().getIdentifier());
 		DataBinding<?> action = getWidget().getAction();

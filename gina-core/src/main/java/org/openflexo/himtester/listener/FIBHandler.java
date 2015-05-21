@@ -9,6 +9,8 @@ import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.fib.view.FIBWidgetView;
+import org.openflexo.himtester.events.FIBActionEvent;
+import org.openflexo.himtester.events.FIBEventFactory;
 
 public class FIBHandler {
 	static private FIBHandler instance;
@@ -57,10 +59,14 @@ public class FIBHandler {
 	
 	public void register(FIBController controller) {
 		controllers.add(controller);
+		
+		controller.actionPerformed(FIBEventFactory.getInstance().createControllerEvent("register"));
 	}
 	
 	public void unregister(FIBController controller) {
 		controllers.remove(controller);
+		
+		controller.actionPerformed(FIBEventFactory.getInstance().createControllerEvent("unregister"));
 	}
 	
 	public FIBController findControllerByRootComponentID(String componentID) {

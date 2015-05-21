@@ -133,6 +133,10 @@ import org.openflexo.fib.view.widget.FIBReferencedComponentWidget;
 import org.openflexo.fib.view.widget.FIBTableWidget;
 import org.openflexo.fib.view.widget.FIBTextAreaWidget;
 import org.openflexo.fib.view.widget.FIBTextFieldWidget;
+import org.openflexo.himtester.events.FIBActionEvent;
+import org.openflexo.himtester.events.FIBEventFactory;
+import org.openflexo.himtester.listener.FIBActionListener;
+import org.openflexo.himtester.listener.FIBActionListenerManager;
 import org.openflexo.himtester.listener.FIBHandler;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
@@ -213,6 +217,15 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 			
 			FIBHandler.getInstance().unregister(this);
 		}
+	}
+	
+	public void actionPerformed(FIBActionEvent e) {
+		e.setIdentity(this.getClass().getSimpleName(), "<CONTROLLER>", this.getRootComponent().getUniqueID());
+		
+		if (FIBActionListenerManager.getInstance().isEnabled())
+			for(FIBActionListener l : FIBActionListenerManager.getInstance().getListeners()) {
+				l.actionPerformed(e);
+			}
 	}
 
 	public boolean isDeleted() {

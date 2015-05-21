@@ -35,8 +35,12 @@ public class FIBEventFactory {
 		return getModelFactory().newInstance(FIBActionEvent.class, widgetClass, widgetID, component, action);
 	}
 	
-	public FIBButtonEvent createButtonEvent(String action) {
-		return getModelFactory().newInstance(FIBButtonEvent.class, action);
+	public FIBMouseEvent createMouseEvent(String action) {
+		return getModelFactory().newInstance(FIBMouseEvent.class, action);
+	}
+	
+	public FIBControllerEvent createControllerEvent(String action) {
+		return getModelFactory().newInstance(FIBControllerEvent.class, action);
 	}
 	
 	public FIBTextEvent createTextEvent(String action, int position, int length, String value, String absoluteValue) {
@@ -45,5 +49,9 @@ public class FIBEventFactory {
 	
 	public FIBFocusEvent createFocusEvent(String action) {
 		return getModelFactory().newInstance(FIBFocusEvent.class, action);
+	}
+	
+	public <T> FIBChangeValueEvent createChangeValueEvent(String action, T value) {
+		return getModelFactory().newInstance(FIBChangeValueEvent.class, action, String.valueOf(value));
 	}
 }

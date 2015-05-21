@@ -1,7 +1,5 @@
 package org.openflexo.himtester;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -12,7 +10,6 @@ import org.openflexo.fib.view.FIBWidgetView;
 import org.openflexo.fib.view.widget.FIBButtonWidget;
 import org.openflexo.fib.view.widget.FIBTextFieldWidget;
 import org.openflexo.himtester.events.FIBActionEvent;
-import org.openflexo.himtester.events.FIBTextEvent;
 import org.openflexo.himtester.listener.FIBActionListener;
 import org.openflexo.himtester.listener.FIBActionListenerManager;
 import org.openflexo.himtester.listener.FIBHandler;
@@ -28,23 +25,23 @@ public class FIBRecorder implements FIBActionListener {
 		recording = false;
 		wasRecording = recording;
 		rootNode = FIBRecorderManager.getInstance().getFactory().newInstance(FIBRecordedNode.class);
-		
+
 		lastStates = new LinkedList<FIBActionEvent>();
-		
+
 		FIBRecordedNode initNode = FIBRecorderManager.getInstance().getFactory().newInstance(FIBRecordedNode.class);
 		rootNode.addNode(initNode);
-		
+
 		FIBActionListenerManager.getInstance().addListenerAndEnable(this);
 	}
 
 	public void actionPerformed(FIBActionEvent e) {
 		if (e.isFromUserOrigin()) {
 			lastStates.clear();
-			//System.out.println("!RESET " + e);
+			System.out.println("!USER! " + e);
 		}
 		else {
 			lastStates.add(e);
-			//System.out.println("!> " + e);
+			System.out.println("!> " + e);
 		}
 		
 		if (!isRecording())
@@ -104,17 +101,17 @@ public class FIBRecorder implements FIBActionListener {
 	public int playNextStep() throws FIBInvalidStateException {
 		return checkNextStep(false);
 	}
-	
+
 	public int checkNextStep(boolean checkStates) throws FIBInvalidStateException {
 		if (currentEventIndex >= rootNode.getNodes().size())
 			return currentEventIndex;
 
 		pauseRecordingIfRunning();
-		
+
 		FIBRecordedNode node = rootNode.getNodes().get(currentEventIndex++);
-		
+
 		executeNodeEvents(node);
-		
+
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e1) {
@@ -128,23 +125,23 @@ public class FIBRecorder implements FIBActionListener {
 			} catch (FIBInvalidStateException e) {
 				retry = true;
 			}
-			
+
 			if (retry) {
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
-				
+
 				this.checkStates(node, lastStates);
 			}
 		}
-		
+
 		resumeRecordingIfRunningBefore();
-		
+
 		return currentEventIndex;
 	}
-	
+
 	protected void checkStates(FIBRecordedNode node, LinkedList<FIBActionEvent> states) throws FIBInvalidStateException {
 		//System.out.println(states);
 		//System.out.println(node.getStates());
@@ -179,6 +176,7 @@ public class FIBRecorder implements FIBActionListener {
 	}
 	
 	protected void executeNodeEvents(FIBRecordedNode node) {
+		System.out.println("Event " + node);
 		for(FIBActionEvent e : node.getEvents()) {
 			executeEvent(e);
 		}
@@ -189,22 +187,7 @@ public class FIBRecorder implements FIBActionListener {
 		
 		FIBWidgetView<?, ?, ?> wv = FIBHandler.getInstance().findWidgetViewChildByID(e.getComponent(), e.getWidgetID());
 		if (wv != null) {
-			//System.out.println(e.getWidgetClass());
-			
-			switch(e.getWidgetClass()) {
-			case "Button":
-				FIBButtonWidget wb = (FIBButtonWidget) wv;
-
-				wb.buttonClicked();
-
-				break;
-			case "TextField":
-				FIBTextFieldWidget wb1 = (FIBTextFieldWidget) wv;
-
-				wb1.execute(e);
-
-				break;
-			}
+			wv.executeEvent(e);
 		}
 	}
 

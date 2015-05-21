@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.openflexo.connie.DataBinding;
 import org.openflexo.himtester.events.FIBActionEvent;
-import org.openflexo.himtester.events.FIBButtonEvent;
+import org.openflexo.himtester.events.FIBMouseEvent;
 import org.openflexo.himtester.events.FIBEventFactory;
 import org.openflexo.himtester.events.FIBFocusEvent;
 import org.openflexo.himtester.events.FIBTextEvent;
@@ -21,14 +21,13 @@ import org.openflexo.model.annotations.Parameter;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter.Cardinality;
 
 @ModelEntity
 @XMLElement(xmlTag = "Node")
-@Imports({ @Import(FIBRecordedNode.FIBRecordedNodeStates.class) })
-@ImplementationClass(FIBRecordedNode.FIBRecordedNodeImpl.class)
 public interface FIBRecordedNode {
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String EVENTS_KEY = "events";
@@ -38,9 +37,12 @@ public interface FIBRecordedNode {
 	
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String STATES_KEY = "states";
+	
+	@PropertyIdentifier(type = boolean.class)
+	public static final String ENABLED = "enabled";
 
 	@Getter(value = EVENTS_KEY, cardinality = Cardinality.LIST)
-	@XMLElement//(context = "Events")
+	@XMLElement(context = "EVENT_")
 	@CloningStrategy(StrategyType.CLONE)
 	@Embedded
 	public List<FIBActionEvent> getEvents();
@@ -63,57 +65,22 @@ public interface FIBRecordedNode {
 	@Remover(NODES_KEY)
 	public void removeNode(FIBRecordedNode aColumn);
 	
-	@Getter(value = STATES_KEY, cardinality = Cardinality.SINGLE)
-	@XMLElement
+	@Getter(value = STATES_KEY, cardinality = Cardinality.LIST)
+	@XMLElement(context = "STATE_")
 	@CloningStrategy(StrategyType.CLONE)
 	@Embedded
-	public FIBRecordedNode.FIBRecordedNodeStates getStateList();
-	
-	@Setter(value = STATES_KEY)
-	public void setStateList(FIBRecordedNode.FIBRecordedNodeStates list);
-	
 	public List<FIBActionEvent> getStates();
+	
+	@Adder(STATES_KEY)
 	public void addState(FIBActionEvent aColumn);
+	
+	@Remover(STATES_KEY)
 	public void removeState(FIBActionEvent aColumn);
 	
-	@ModelEntity
-	@XMLElement(xmlTag = "States")
-	public interface FIBRecordedNodeStates {
-		@PropertyIdentifier(type = DataBinding.class)
-		public static final String STATES_KEY = "states";
+	@Getter(value = ENABLED, defaultValue = "true")
+	@XMLAttribute
+	public boolean isEnabled();
 
-		@Getter(value = STATES_KEY, cardinality = Cardinality.LIST)
-		@XMLElement
-		@CloningStrategy(StrategyType.CLONE)
-		@Embedded
-		public List<FIBActionEvent> getStates();
-		
-		@Adder(STATES_KEY)
-		public void addState(FIBActionEvent aColumn);
-		
-		@Remover(STATES_KEY)
-		public void removeState(FIBActionEvent aColumn);
-	}
-	
-	public abstract class FIBRecordedNodeImpl implements FIBRecordedNode {
-		public List<FIBActionEvent> getStates() {
-			return getStatesInstance().getStates();
-		}
-		
-		public void addState(FIBActionEvent aColumn) {
-			getStatesInstance().addState(aColumn);
-		}
-		
-		public void removeState(FIBActionEvent aColumn) {
-			getStatesInstance().removeState(aColumn);
-		}
-		
-		private FIBRecordedNodeStates getStatesInstance() {
-			if (getStateList() == null)
-				setStateList(FIBRecorderManager.getInstance().getFactory().newInstance(FIBRecordedNode.FIBRecordedNodeStates.class));
-			
-			return getStateList();
-		}
-
-	}
+	@Setter(ENABLED)
+	public void setEnabled(boolean enabled);
 }

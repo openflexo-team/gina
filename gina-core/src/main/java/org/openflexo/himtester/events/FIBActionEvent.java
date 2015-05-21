@@ -1,5 +1,6 @@
 package org.openflexo.himtester.events;
 
+import org.openflexo.connie.DataBinding;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.Import;
@@ -14,7 +15,8 @@ import org.openflexo.model.annotations.XMLElement;
 
 @ModelEntity
 @ImplementationClass(FIBActionEvent.FIBActionEventImpl.class)
-@Imports({ @Import(FIBButtonEvent.class), @Import(FIBTextEvent.class), @Import(FIBFocusEvent.class) })
+@Imports({ @Import(FIBMouseEvent.class), @Import(FIBTextEvent.class), @Import(FIBFocusEvent.class),
+	@Import(FIBControllerEvent.class), @Import(FIBChangeValueEvent.class) })
 @XMLElement(xmlTag = "ActionEvent")
 public abstract interface FIBActionEvent {
 	@PropertyIdentifier(type = String.class)
@@ -40,6 +42,9 @@ public abstract interface FIBActionEvent {
 	
 	@PropertyIdentifier(type = boolean.class)
 	public static final String FROM_USER = "fromUser";
+	
+	@PropertyIdentifier(type = boolean.class)
+	public static final String ENABLED = "enabled";
 
 
 	@Initializer
@@ -104,6 +109,13 @@ public abstract interface FIBActionEvent {
 
 	@Setter(FROM_USER)
 	public void setFromUser(boolean isFromUserOrigin);
+	
+	@Getter(value = ENABLED, defaultValue = "true")
+	@XMLAttribute
+	public boolean isEnabled();
+
+	@Setter(ENABLED)
+	public void setEnabled(boolean enabled);
 	
 	public void setIdentity(String widgetClass, String widgetID, String component);
 	

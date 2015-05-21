@@ -49,6 +49,10 @@ import javax.swing.JCheckBox;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBCheckBox;
 import org.openflexo.fib.view.FIBWidgetView;
+import org.openflexo.himtester.events.FIBActionEvent;
+import org.openflexo.himtester.events.FIBChangeValueEvent;
+import org.openflexo.himtester.events.FIBEventFactory;
+import org.openflexo.himtester.events.FIBTextEvent;
 
 /**
  * Represents a widget able to edit a boolean, a Boolean or a String object
@@ -81,6 +85,9 @@ public class FIBCheckBoxWidget extends FIBWidgetView<FIBCheckBox, JCheckBox, Boo
 			checkbox.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					FIBCheckBoxWidget.this.actionPerformed(FIBEventFactory.getInstance().createChangeValueEvent(
+							getValue() ? "unchecked" : "checked", FIBCheckBoxWidget.this.checkbox.isSelected()));
+					
 					updateModelFromWidget();
 				}
 			});
@@ -92,6 +99,22 @@ public class FIBCheckBoxWidget extends FIBWidgetView<FIBCheckBox, JCheckBox, Boo
 		isNegate = model.getNegate();
 
 		updateFont();
+	}
+	
+	public void executeEvent(FIBActionEvent e) {
+		
+		widgetExecuting = true;
+
+		switch(e.getAction()) {
+		case "checked":
+			checkbox.setSelected(true);
+			break;
+		case "unchecked":
+			checkbox.setSelected(false);
+			break;
+		}
+		
+		widgetExecuting = false;
 	}
 
 	@Override

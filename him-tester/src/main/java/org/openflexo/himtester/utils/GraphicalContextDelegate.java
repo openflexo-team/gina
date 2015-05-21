@@ -78,7 +78,7 @@ public class GraphicalContextDelegate implements ChangeListener {
 					tabbedPane.addChangeListener(GraphicalContextDelegate.this);*/
 					frame = new JFrame(frameTitle);
 					frame.setLayout(new BorderLayout());
-					frame.setSize(new Dimension(320, 120));
+					frame.setSize(new Dimension(320, 280));
 					frame.setLocationRelativeTo(null);
 					frame.setLocation(startX, startY);
 					startX += 128;

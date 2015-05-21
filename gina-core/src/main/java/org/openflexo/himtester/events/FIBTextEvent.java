@@ -11,7 +11,7 @@ import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 
 @ModelEntity
-@ImplementationClass(FIBTextEvent.FIBTextFieldEventImpl.class)
+//@ImplementationClass(FIBTextEvent.FIBTextFieldEventImpl.class)
 @XMLElement(xmlTag = "TextEvent")
 public abstract interface FIBTextEvent extends FIBActionEvent {
 	@PropertyIdentifier(type = Integer.class)
@@ -20,11 +20,6 @@ public abstract interface FIBTextEvent extends FIBActionEvent {
 	@PropertyIdentifier(type = Integer.class)
 	public static final String LENGTH = "length";
 
-	/*@Initializer
-	public FIBTextFieldEvent init(@Parameter(WIDGET_CLASS) String widgetClass, @Parameter(WIDGET_ID) String widgetID,
-			@Parameter(COMPONENT) String component, @Parameter(ACTION) String action,
-			@Parameter(VALUE) String value, @Parameter(POSITION) String position, @Parameter(SIZE) String size);*/
-	
 	@Initializer
 	public FIBTextEvent init(@Parameter(ACTION) String action, @Parameter(POSITION) Integer position, @Parameter(LENGTH) Integer size,
 			@Parameter(VALUE) String value, @Parameter(ABSOLUTE_VALUE) String absoluteValue);
@@ -50,8 +45,8 @@ public abstract interface FIBTextEvent extends FIBActionEvent {
 	@Setter(LENGTH)
 	public void setPosition(int position);
 	
-	public abstract class FIBTextFieldEventImpl extends FIBActionEventImpl implements FIBTextEvent {
+	/*public abstract class FIBTextFieldEventImpl extends FIBActionEventImpl implements FIBTextEvent {
 
-	}
+	}*/
 
 }

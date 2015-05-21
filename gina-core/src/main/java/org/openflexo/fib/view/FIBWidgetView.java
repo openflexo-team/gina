@@ -107,7 +107,9 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 
 	private BindingValueChangeListener<Boolean> enableBindingValueChangeListener;
 	
-	private boolean eventListeningLocked, eventUserMod;
+	private boolean eventListeningLocked;
+	
+	protected boolean widgetExecuting;
 
 	// private DependingObjects dependingObjects;
 
@@ -117,7 +119,7 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 		valueBindingContext = new DynamicValueBindingContext();
 		eventListener = new DynamicEventListener();
 		eventListeningLocked = false;
-		eventUserMod = true;
+		widgetExecuting = false;
 		// addBindingValueChangeListeners();
 		listenEnableValueChange();
 	}
@@ -157,28 +159,16 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 		return eventListeningLocked;
 	}
 	
-	protected void setInUserMod(boolean userMod) {
-		eventUserMod = userMod;
-	}
-	
-	protected void enterUserMod() {
-		eventUserMod = true;
-	}
-	
-	protected void exitUserMod() {
-		eventUserMod = false;
-	}
-	
-	protected boolean isInUserMod() {
-		return eventUserMod;
+	public void executeEvent(FIBActionEvent e) {
 	}
 	
 	public synchronized void actionPerformed(FIBActionEvent e) {
-		actionPerformed(e, eventUserMod);
+		actionPerformed(e, !widgetUpdating && !widgetExecuting);
 	}
 	
 	public synchronized void actionPerformed(FIBActionEvent e, boolean fromUserOrigin) {
 		e.setFromUser(fromUserOrigin);
+		
 		if (!isListeningLocked())
 			getWidget().actionPerformed(e);
 	}

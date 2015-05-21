@@ -64,6 +64,9 @@ import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBNumber;
 import org.openflexo.fib.view.FIBWidgetView;
+import org.openflexo.himtester.events.FIBActionEvent;
+import org.openflexo.himtester.events.FIBChangeValueEvent;
+import org.openflexo.himtester.events.FIBEventFactory;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.toolbox.ToolBox;
 
@@ -106,6 +109,10 @@ public abstract class FIBNumberWidget<T extends Number> extends FIBWidgetView<FI
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				valueChooser.setEnabled(!checkBox.isSelected());
+				
+				/*FIBNumberWidget.this.actionPerformed(FIBEventFactory.getInstance().createChangeValueEvent(
+						"change", FIBNumberWidget.this.checkBox.get));*/
+				
 				updateModelFromWidget();
 			}
 		});
@@ -117,6 +124,9 @@ public abstract class FIBNumberWidget<T extends Number> extends FIBWidgetView<FI
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				if (e.getSource() == valueChooser && !ignoreTextfieldChanges) {
+					FIBNumberWidget.this.actionPerformed(FIBEventFactory.getInstance().createChangeValueEvent(
+							"change", FIBNumberWidget.this.valueChooser.getValue()));
+					
 					updateModelFromWidget();
 				}
 			}
@@ -156,6 +166,21 @@ public abstract class FIBNumberWidget<T extends Number> extends FIBWidgetView<FI
 			container.setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER,
 					BOTTOM_COMPENSATING_BORDER, RIGHT_COMPENSATING_BORDER));
 		}
+	}
+	
+	public void executeEvent(FIBActionEvent e) {
+		widgetExecuting = true;
+
+		switch(e.getAction()) {
+		case "change": {
+			FIBChangeValueEvent ev = (FIBChangeValueEvent) e;
+			//T value = Integer.parseInt(ev.getValue());
+			valueChooser.setValue(Integer.parseInt(ev.getValue()));
+			break;
+			}
+		}
+		
+		widgetExecuting = false;
 	}
 
 	@Override

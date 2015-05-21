@@ -298,9 +298,6 @@ public abstract interface FIBWidget extends FIBComponent {
 			valueBindable = new FIBValueBindable(); 
 			eventListener = new FIBEventListener();
 			
-			//id = FIBIDManager.getUniqueID(getBaseName() == null ? "" : getBaseName(), "");
-			//System.out.println("Created " + id);
-			
 			if (FIBActionListenerManager.getInstance().isEnabled())
 				addFibListener(FIBActionListenerManager.getInstance());
 		}
@@ -311,7 +308,6 @@ public abstract interface FIBWidget extends FIBComponent {
 		
 		public synchronized void actionPerformed(FIBActionEvent e) {
 			e.setIdentity(this.getBaseName(), this.getName(), this.getRootComponent().getUniqueID());
-			
 			for (FIBActionListener fl : fibListeners)
 	            fl.actionPerformed(e);
 		}

@@ -213,25 +213,27 @@ public class FIBTextFieldWidget extends FIBWidgetView<FIBTextField, JTextField, 
 		return String.class;
 	}
 	
-	public void execute(FIBActionEvent e) {
-		exitUserMod();
+	public void executeEvent(FIBActionEvent e) {
+		widgetExecuting = true;
 
-		FIBTextEvent ete;
-
-		String text;
 		switch(e.getAction()) {
-		case "text-inserted":
-			ete = (FIBTextEvent) e;
-			text = textField.getText();
-			if (text.length() >= ete.getPosition())
-				textField.setText(text.substring(0, ete.getPosition()) + e.getValue() + text.substring(ete.getPosition()));
+		case "text-inserted": {
+			FIBTextEvent ev = (FIBTextEvent) e;
+			String text = textField.getText();
+			if (text.length() >= ev.getPosition())
+			{
+				textField.setText(text.substring(0, ev.getPosition()) + e.getValue() + text.substring(ev.getPosition()));
+				textField.setCaretPosition(ev.getPosition() + e.getValue().length());
+			}
 			break;
-		case "text-removed":
-			ete = (FIBTextEvent) e;
-			text = textField.getText();
-			if (text.length() >= ete.getPosition() + ete.getLength())
-				textField.setText(text.substring(0, ete.getPosition()) + text.substring(ete.getPosition() + ete.getLength()));
+		}
+		case "text-removed": {
+			FIBTextEvent ev = (FIBTextEvent) e;
+			String text = textField.getText();
+			if (text.length() >= ev.getPosition() + ev.getLength())
+				textField.setText(text.substring(0, ev.getPosition()) + text.substring(ev.getPosition() + ev.getLength()));
 			break;
+		}
 		case "focus-gained":
 			textField.requestFocus();
 			break;
@@ -240,7 +242,7 @@ public class FIBTextFieldWidget extends FIBWidgetView<FIBTextField, JTextField, 
 			break;
 		}
 		
-		enterUserMod();
+		widgetExecuting = false;
 	}
 
 	// DEBUG
@@ -289,9 +291,7 @@ public class FIBTextFieldWidget extends FIBWidgetView<FIBTextField, JTextField, 
 			widgetUpdating = true;
 			try {
 				int caret = textField.getCaretPosition();
-				exitUserMod();
 				textField.setText(getValue());
-				enterUserMod();
 				if (caret > -1 && caret < textField.getDocument().getLength()) {
 					textField.setCaretPosition(caret);
 				}
