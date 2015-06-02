@@ -17,8 +17,8 @@
 	Properties
       -->
     <properties>
-        <connie.version>1.3-SYLVAIN-SNAPSHOT</connie.version>
-        <pamela.version>1.3-SYLVAIN-SNAPSHOT</pamela.version>
+        <connie.version>1.3-SNAPSHOT</connie.version>
+        <pamela.version>1.3-SNAPSHOT</pamela.version>
         <swingx.version>1.6.3</swingx.version>
         <gina.logo>https://media.openflexo.org/images/gina_logo64x64.png</gina.logo>
     </properties>
