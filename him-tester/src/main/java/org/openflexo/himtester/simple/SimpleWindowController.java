@@ -2,9 +2,13 @@ package org.openflexo.himtester.simple;
 
 import java.io.File;
 
+import javax.swing.SwingUtilities;
+
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.himtester.FIBRecorderManager;
+import org.openflexo.gina.task.GinaTask;
+import org.openflexo.gina.task.ThreadPoolGinaTaskManager;
+import org.openflexo.replay.GinaRecorderManager;
 
 public class SimpleWindowController extends FIBController {
 
@@ -16,8 +20,41 @@ public class SimpleWindowController extends FIBController {
 		//System.out.println("openCopy");
 		
 		final char letter = windowLetter.charAt(0);
+		
+		SimpleExampleCase.getTaskManager().scheduleExecution(new GinaTask("Open Window") {
 
-		Thread t = new Thread(new Runnable() {
+			@Override
+			public void performTask() throws InterruptedException {
+				switch(letter)
+				{
+				case 'A':
+					new SimpleWindow(letter, SimpleExampleCase.getPersonA());
+					break;
+				case 'B':
+					new SimpleWindow(letter, SimpleExampleCase.getPersonB());
+					break;
+				}
+			}
+			
+		});
+		
+		/*SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				switch(letter)
+				{
+				case 'A':
+					new SimpleWindow(letter, SimpleExampleCase.getPersonA());
+					break;
+				case 'B':
+					new SimpleWindow(letter, SimpleExampleCase.getPersonB());
+					break;
+				}
+			}
+
+		});*/
+
+		/*Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				switch(letter)
@@ -32,7 +69,7 @@ public class SimpleWindowController extends FIBController {
 			}
 
 		});
-		t.start();
+		t.start();*/
 	}
 
 	public void copyTo(String windowLetter) {
@@ -51,8 +88,13 @@ public class SimpleWindowController extends FIBController {
 		}
 	}
 	
+	public void startTask() {
+		SimpleTask task = new SimpleTask("Count task");
+		SimpleExampleCase.getTaskManager().scheduleExecution(task);
+	}
+	
 	public void save() {
-		FIBRecorderManager.getInstance().getCurrentRecorder().save(new File("D:/test-gina-recorder"));
+		GinaRecorderManager.getInstance().getCurrentRecorder().save(new File("D:/test-gina-recorder"));
 	}
 
 }

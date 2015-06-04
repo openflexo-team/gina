@@ -68,10 +68,13 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.fib.controller.FIBController;
+import org.openflexo.fib.listener.FIBActionListener;
+import org.openflexo.fib.listener.GinaHandler;
+import org.openflexo.fib.listener.GinaStackEvent;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelObject;
 import org.openflexo.fib.model.FIBWidget;
-import org.openflexo.himtester.events.FIBActionEvent;
+import org.openflexo.gina.event.FIBEvent;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.ToolBox;
 
@@ -109,7 +112,7 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 	
 	private boolean eventListeningLocked;
 	
-	protected boolean widgetExecuting;
+	protected boolean widgetExecuting, widgetDisableUserEvent;
 
 	// private DependingObjects dependingObjects;
 
@@ -120,6 +123,7 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 		eventListener = new DynamicEventListener();
 		eventListeningLocked = false;
 		widgetExecuting = false;
+		widgetDisableUserEvent = false;
 		// addBindingValueChangeListeners();
 		listenEnableValueChange();
 	}
@@ -159,18 +163,23 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 		return eventListeningLocked;
 	}
 	
-	public void executeEvent(FIBActionEvent e) {
+	public void executeEvent(FIBEvent e) {
 	}
 	
-	public synchronized void actionPerformed(FIBActionEvent e) {
-		actionPerformed(e, !widgetUpdating && !widgetExecuting);
+	public synchronized GinaStackEvent actionPerformed(FIBEvent e) {
+		return actionPerformed(e, !widgetUpdating && !widgetExecuting && !widgetDisableUserEvent);
 	}
 	
-	public synchronized void actionPerformed(FIBActionEvent e, boolean fromUserOrigin) {
+	public synchronized GinaStackEvent actionPerformed(FIBEvent e, boolean fromUserOrigin) {
 		e.setFromUser(fromUserOrigin);
 		
+		e.setIdentity(getWidget().getBaseName(), getWidget().getName(), getWidget().getRootComponent().getUniqueID());
 		if (!isListeningLocked())
-			getWidget().actionPerformed(e);
+			for (FIBActionListener fl : getWidget().getFibListeners())
+	            fl.actionPerformed(e);
+		
+		// create the stack element
+		return GinaHandler.getInstance().pushStackEvent(e);
 	}
 
 	// public void updateBindingValueChangeListeners() {

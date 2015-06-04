@@ -80,12 +80,15 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.controller.FIBSelectable;
+import org.openflexo.fib.listener.GinaStackEvent;
 import org.openflexo.fib.model.FIBTable;
 import org.openflexo.fib.model.FIBTableAction;
 import org.openflexo.fib.view.FIBWidgetView;
 import org.openflexo.fib.view.widget.table.FIBTableActionListener;
 import org.openflexo.fib.view.widget.table.FIBTableModel;
 import org.openflexo.fib.view.widget.table.FIBTableWidgetFooter;
+import org.openflexo.gina.event.FIBEvent;
+import org.openflexo.gina.event.FIBEventFactory;
 
 /**
  * Widget allowing to display/edit a list of values
@@ -195,6 +198,19 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 	    }
 	    return _label;
 	}*/
+	
+	public void executeEvent(FIBEvent e) {
+		widgetExecuting = true;
+
+		switch(e.getAction()) {
+		case "selected":
+			System.out.println("Hello :)");
+			_table.setRowSelectionInterval(0, 0);
+			break;
+		}
+		
+		widgetExecuting = false;
+	}
 
 	@Override
 	public synchronized boolean updateWidgetFromModel() {
@@ -621,14 +637,20 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 
+		GinaStackEvent stack = actionPerformed(FIBEventFactory.getInstance().createSelectionEvent("selected", e.getFirstIndex(), e.getLastIndex()) );
+
 		if (!(getTableModel().getValues() != null && getTableModel().getValues().size() > 0)) {
+			stack.unstack();
 			return;
 		}
 
 		// Ignore extra messages.
 		if (e.getValueIsAdjusting()) {
+			stack.unstack();
 			return;
 		}
+		
+		widgetDisableUserEvent = true;
 
 		if (LOGGER.isLoggable(Level.FINE)) {
 			LOGGER.fine("valueChanged() selected index=" + getListSelectionModel().getMinSelectionIndex());
@@ -698,7 +720,10 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 				System.out.println((isFocused() ? "LEADER" : "SECONDARY")+" La newSelection est "+newSelection);
 			}
 		});*/
+		
+		widgetDisableUserEvent = false;
 
+		stack.unstack();
 	}
 
 	private boolean ignoreNotifications = false;

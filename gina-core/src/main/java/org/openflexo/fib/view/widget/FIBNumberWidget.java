@@ -62,11 +62,12 @@ import javax.swing.event.ChangeListener;
 
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.fib.controller.FIBController;
+import org.openflexo.fib.listener.GinaStackEvent;
 import org.openflexo.fib.model.FIBNumber;
 import org.openflexo.fib.view.FIBWidgetView;
-import org.openflexo.himtester.events.FIBActionEvent;
-import org.openflexo.himtester.events.FIBChangeValueEvent;
-import org.openflexo.himtester.events.FIBEventFactory;
+import org.openflexo.gina.event.FIBChangeValueEvent;
+import org.openflexo.gina.event.FIBEvent;
+import org.openflexo.gina.event.FIBEventFactory;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.toolbox.ToolBox;
 
@@ -124,10 +125,12 @@ public abstract class FIBNumberWidget<T extends Number> extends FIBWidgetView<FI
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				if (e.getSource() == valueChooser && !ignoreTextfieldChanges) {
-					FIBNumberWidget.this.actionPerformed(FIBEventFactory.getInstance().createChangeValueEvent(
+					GinaStackEvent stack = FIBNumberWidget.this.actionPerformed(FIBEventFactory.getInstance().createChangeValueEvent(
 							"change", FIBNumberWidget.this.valueChooser.getValue()));
 					
 					updateModelFromWidget();
+					
+					stack.unstack();
 				}
 			}
 		});
@@ -168,7 +171,7 @@ public abstract class FIBNumberWidget<T extends Number> extends FIBWidgetView<FI
 		}
 	}
 	
-	public void executeEvent(FIBActionEvent e) {
+	public void executeEvent(FIBEvent e) {
 		widgetExecuting = true;
 
 		switch(e.getAction()) {

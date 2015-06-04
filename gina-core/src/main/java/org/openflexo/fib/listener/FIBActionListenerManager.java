@@ -1,15 +1,14 @@
-package org.openflexo.himtester.listener;
+package org.openflexo.fib.listener;
 
 import java.util.LinkedList;
 
-import org.openflexo.himtester.events.FIBActionEvent;
+import org.openflexo.gina.event.FIBEvent;
 
 public class FIBActionListenerManager implements FIBActionListener {
 	static private FIBActionListenerManager instance;
 	
 	private boolean listenModEnabled;
 	private LinkedList<FIBActionListener> listeners;
-	//private FIBEventFactory factory;
 	
 	static public FIBActionListenerManager getInstance() {
 		if (instance == null)
@@ -17,16 +16,11 @@ public class FIBActionListenerManager implements FIBActionListener {
 		
 		return instance;
 	}
-	
-	/*public static FIBEventFactory getInstanceFactory() {
-		return getInstance().getFactory();
-	}*/
 
 
 	private FIBActionListenerManager() {
 		this.listenModEnabled = false;
 		this.listeners = new LinkedList<FIBActionListener>();
-		//this.factory = new FIBEventFactory();
 	}
 
 	public boolean isEnabled() {
@@ -61,13 +55,9 @@ public class FIBActionListenerManager implements FIBActionListener {
 	public LinkedList<FIBActionListener> getListeners() {
 		return listeners;
 	}
-	
-	/*public FIBEventFactory getFactory() {
-		return factory;
-	}*/
 
 	@Override
-	public void actionPerformed(FIBActionEvent e) {
+	public void actionPerformed(FIBEvent e) {
 		for (FIBActionListener l : listeners)
 			l.actionPerformed(e);
 	}

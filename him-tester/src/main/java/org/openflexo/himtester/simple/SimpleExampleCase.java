@@ -7,8 +7,6 @@
 
 package org.openflexo.himtester.simple;
 
-import java.io.File;
-
 import org.openflexo.connie.DataBinding;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBButton;
@@ -18,10 +16,10 @@ import org.openflexo.fib.model.FIBPanel.Layout;
 import org.openflexo.fib.model.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.fib.sampleData.Person;
 import org.openflexo.fib.sampleData.Family.Gender;
-import org.openflexo.himtester.FIBRecorderEditor;
-import org.openflexo.himtester.FIBRecorderManager;
+import org.openflexo.gina.task.ThreadPoolGinaTaskManager;
 import org.openflexo.himtester.utils.GraphicalContextDelegate;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.replay.GinaRecorderManager;
 
 public class SimpleExampleCase {
 
@@ -32,6 +30,8 @@ public class SimpleExampleCase {
 	private GraphicalContextDelegate gcDelegate;
 	private FIBPanel component;
 	private FIBController controller;
+	
+	private static ThreadPoolGinaTaskManager threadPool = ThreadPoolGinaTaskManager.createInstance();
 
 	public SimpleExampleCase() {
 		new SimpleWindow('A', getPersonA());
@@ -99,12 +99,13 @@ public class SimpleExampleCase {
 
 	}
 	
+	public static ThreadPoolGinaTaskManager getTaskManager() {
+		return threadPool;
+	}
+	
 	public static void main(String[] args) {
-		FIBRecorderManager.getInstance().createAndSetToCurrent();
-		//FIBRecorderManager.getInstance().getCurrentRecorder().load(new File("D:/test-gina-recorder"));
-		//FIBRecorderManager.getInstance().getCurrentRecorder().startRecording();
-		FIBRecorderEditor editor = new FIBRecorderEditor();
-		
+		GinaRecorderManager.getInstance().setup();
+
 		instance = new SimpleExampleCase();
 	}
 

@@ -87,6 +87,11 @@ public class SimpleWindow {
 		buttonCopy.setAction(new DataBinding<Object>("controller.copyTo('" + (this.letter == 'A' ? 'B' : 'A') + "')"));
 		buttonCopy.setName("copyButton");
 		
+		FIBButton buttonTask = GraphicalContextDelegate.getFactory().newInstance(FIBButton.class);
+		buttonTask.setLabel("Start count task");
+		buttonTask.setAction(new DataBinding<Object>("controller.startTask()"));
+		buttonTask.setName("taskButton");
+		
 		component.addToSubComponents(labelFirstname, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, true, false));
 		component.addToSubComponents(textFieldFirstname, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false));
 		component.addToSubComponents(labelLastname, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, true, false));
@@ -98,6 +103,8 @@ public class SimpleWindow {
 		
 		component.addToSubComponents(buttonOpen, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, true, false));
 		component.addToSubComponents(buttonCopy, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false));
+		
+		component.addToSubComponents(buttonTask, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, true, false));
 	}
 
 }

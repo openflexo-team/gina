@@ -63,8 +63,8 @@ import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.connie.type.WilcardTypeImpl;
 import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.controller.FIBController;
+import org.openflexo.fib.listener.GinaHandler;
 import org.openflexo.fib.view.FIBView;
-import org.openflexo.himtester.listener.FIBHandler;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
@@ -557,7 +557,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 		
 		public String getUniqueID() {
 			if (getDirectUniqueID() == null) {
-				setUniqueID(FIBHandler.getInstance().generateUniqueID(this));
+				setUniqueID(GinaHandler.getInstance().generateUniqueID(this));
 				System.out.println(getDirectUniqueID());
 			}
 			return getDirectUniqueID();

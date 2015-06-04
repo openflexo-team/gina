@@ -47,12 +47,13 @@ import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 
 import org.openflexo.fib.controller.FIBController;
+import org.openflexo.fib.listener.GinaStackEvent;
 import org.openflexo.fib.model.FIBCheckBox;
 import org.openflexo.fib.view.FIBWidgetView;
-import org.openflexo.himtester.events.FIBActionEvent;
-import org.openflexo.himtester.events.FIBChangeValueEvent;
-import org.openflexo.himtester.events.FIBEventFactory;
-import org.openflexo.himtester.events.FIBTextEvent;
+import org.openflexo.gina.event.FIBChangeValueEvent;
+import org.openflexo.gina.event.FIBEvent;
+import org.openflexo.gina.event.FIBEventFactory;
+import org.openflexo.gina.event.FIBTextEvent;
 
 /**
  * Represents a widget able to edit a boolean, a Boolean or a String object
@@ -85,10 +86,12 @@ public class FIBCheckBoxWidget extends FIBWidgetView<FIBCheckBox, JCheckBox, Boo
 			checkbox.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					FIBCheckBoxWidget.this.actionPerformed(FIBEventFactory.getInstance().createChangeValueEvent(
+					GinaStackEvent stack = FIBCheckBoxWidget.this.actionPerformed(FIBEventFactory.getInstance().createChangeValueEvent(
 							getValue() ? "unchecked" : "checked", FIBCheckBoxWidget.this.checkbox.isSelected()));
 					
 					updateModelFromWidget();
+					
+					stack.unstack();
 				}
 			});
 		}
@@ -101,7 +104,7 @@ public class FIBCheckBoxWidget extends FIBWidgetView<FIBCheckBox, JCheckBox, Boo
 		updateFont();
 	}
 	
-	public void executeEvent(FIBActionEvent e) {
+	public void executeEvent(FIBEvent e) {
 		
 		widgetExecuting = true;
 

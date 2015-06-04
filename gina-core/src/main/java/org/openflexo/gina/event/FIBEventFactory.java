@@ -1,4 +1,4 @@
-package org.openflexo.himtester.events;
+package org.openflexo.gina.event;
 
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
@@ -23,7 +23,7 @@ public class FIBEventFactory {
 	public ModelFactory getModelFactory() {
 		if (factory == null) {
 			try {
-				factory = new ModelFactory(FIBActionEvent.class);
+				factory = new ModelFactory(GinaEvent.class);
 			} catch (ModelDefinitionException e) {
 				e.printStackTrace();
 			}
@@ -31,8 +31,8 @@ public class FIBEventFactory {
 		return factory;
 	}
 	
-	public FIBActionEvent createActionEvent(String widgetClass, String widgetID, String component, String action) {
-		return getModelFactory().newInstance(FIBActionEvent.class, widgetClass, widgetID, component, action);
+	public FIBEvent createActionEvent(String widgetClass, String widgetID, String component, String action) {
+		return getModelFactory().newInstance(FIBEvent.class, widgetClass, widgetID, component, action);
 	}
 	
 	public FIBMouseEvent createMouseEvent(String action) {
@@ -53,5 +53,17 @@ public class FIBEventFactory {
 	
 	public <T> FIBChangeValueEvent createChangeValueEvent(String action, T value) {
 		return getModelFactory().newInstance(FIBChangeValueEvent.class, action, String.valueOf(value));
+	}
+	
+	public FIBSelectionEvent createSelectionEvent(String action, int firstElement, int lastElement) {
+		return getModelFactory().newInstance(FIBSelectionEvent.class, action, firstElement, lastElement);
+	}
+
+	public FIBEvent createEvent() {
+		return getModelFactory().newInstance(FIBEvent.class);
+	}
+	
+	public GinaEvent createGenericEvent() {
+		return getModelFactory().newInstance(GinaEvent.class);
 	}
 }

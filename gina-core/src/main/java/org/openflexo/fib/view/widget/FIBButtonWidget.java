@@ -52,11 +52,12 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fib.controller.FIBController;
+import org.openflexo.fib.listener.FIBActionListenerManager;
+import org.openflexo.fib.listener.GinaStackEvent;
 import org.openflexo.fib.model.FIBButton;
 import org.openflexo.fib.view.FIBWidgetView;
-import org.openflexo.himtester.events.FIBActionEvent;
-import org.openflexo.himtester.events.FIBEventFactory;
-import org.openflexo.himtester.listener.FIBActionListenerManager;
+import org.openflexo.gina.event.FIBEvent;
+import org.openflexo.gina.event.FIBEventFactory;
 
 public class FIBButtonWidget extends FIBWidgetView<FIBButton, JButton, String> {
 
@@ -92,7 +93,7 @@ public class FIBButtonWidget extends FIBWidgetView<FIBButton, JButton, String> {
 		return false;
 	}
 	
-	public void executeEvent(FIBActionEvent e) {
+	public void executeEvent(FIBEvent e) {
 		widgetExecuting = true;
 
 		switch(e.getAction()) {
@@ -120,7 +121,7 @@ public class FIBButtonWidget extends FIBWidgetView<FIBButton, JButton, String> {
 			logger.fine("Data: " + getController().getDataObject());
 		}
 		
-		actionPerformed(FIBEventFactory.getInstance().createMouseEvent("clicked"));
+		GinaStackEvent stack = actionPerformed(FIBEventFactory.getInstance().createMouseEvent("clicked"));
 
 		setData(getComponent().getIdentifier());
 		DataBinding<?> action = getWidget().getAction();
@@ -137,6 +138,8 @@ public class FIBButtonWidget extends FIBWidgetView<FIBButton, JButton, String> {
 		}
 		updateComponentsExplicitelyDeclaredAsDependant();
 		updateWidgetFromModel();
+		
+		stack.unstack();
 	}
 
 	@Override

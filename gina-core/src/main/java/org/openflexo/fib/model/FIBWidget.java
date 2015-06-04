@@ -60,13 +60,13 @@ import org.openflexo.connie.DataBinding.CachingStrategy;
 import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.connie.type.WilcardTypeImpl;
+import org.openflexo.fib.listener.FIBActionListener;
+import org.openflexo.fib.listener.FIBActionListenerManager;
+import org.openflexo.fib.listener.GinaHandler;
 import org.openflexo.fib.view.FIBWidgetView;
-import org.openflexo.himtester.events.FIBActionEvent;
-import org.openflexo.himtester.events.FIBEventFactory;
-import org.openflexo.himtester.events.FIBTextEvent;
-import org.openflexo.himtester.listener.FIBActionListener;
-import org.openflexo.himtester.listener.FIBActionListenerManager;
-import org.openflexo.himtester.listener.FIBHandler;
+import org.openflexo.gina.event.FIBEvent;
+import org.openflexo.gina.event.FIBEventFactory;
+import org.openflexo.gina.event.FIBTextEvent;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -235,10 +235,8 @@ public abstract interface FIBWidget extends FIBComponent {
 	public Bindable getEventListener();
 	
 	public void addFibListener(FIBActionListener l);
-	
-	public void actionPerformed(FIBActionEvent e);
 
-	//public void actionPerformed(String action, Object... args);
+	public List<FIBActionListener> getFibListeners();
 
 	public static abstract class FIBWidgetImpl extends FIBComponentImpl implements FIBWidget {
 
@@ -306,10 +304,8 @@ public abstract interface FIBWidget extends FIBComponent {
 			fibListeners.add(l);
 	    }
 		
-		public synchronized void actionPerformed(FIBActionEvent e) {
-			e.setIdentity(this.getBaseName(), this.getName(), this.getRootComponent().getUniqueID());
-			for (FIBActionListener fl : fibListeners)
-	            fl.actionPerformed(e);
+		public List<FIBActionListener> getFibListeners() {
+			return fibListeners;
 		}
 		
 		/*public void actionPerformed(String action, Object... args) {

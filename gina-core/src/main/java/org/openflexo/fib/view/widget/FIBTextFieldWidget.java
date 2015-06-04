@@ -59,12 +59,13 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
 import org.openflexo.fib.controller.FIBController;
+import org.openflexo.fib.listener.FIBActionListenerManager;
+import org.openflexo.fib.listener.GinaStackEvent;
 import org.openflexo.fib.model.FIBTextField;
 import org.openflexo.fib.view.FIBWidgetView;
-import org.openflexo.himtester.events.FIBActionEvent;
-import org.openflexo.himtester.events.FIBEventFactory;
-import org.openflexo.himtester.events.FIBTextEvent;
-import org.openflexo.himtester.listener.FIBActionListenerManager;
+import org.openflexo.gina.event.FIBEvent;
+import org.openflexo.gina.event.FIBEventFactory;
+import org.openflexo.gina.event.FIBTextEvent;
 import org.openflexo.toolbox.ToolBox;
 
 /**
@@ -132,18 +133,22 @@ public class FIBTextFieldWidget extends FIBWidgetView<FIBTextField, JTextField, 
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {
+				GinaStackEvent stack = null;
 				try {
-					actionPerformed(FIBEventFactory.getInstance().createTextEvent("text-inserted", e.getOffset(), e.getLength(),
+					stack = actionPerformed(FIBEventFactory.getInstance().createTextEvent("text-inserted", e.getOffset(), e.getLength(),
 							e.getDocument().getText(e.getOffset(), e.getLength()), getValue()));
 				} catch (BadLocationException e2) {
 					e2.printStackTrace();
 				}
+
 				if (!validateOnReturn && !widgetUpdating) {
 					try {
 						if (ToolBox.getPLATFORM() == ToolBox.MACOS) {
 							if (e.getLength() == 1) {
 								char c = textField.getText().charAt(e.getOffset());
 								if (c == '´' || c == 'ˆ' || c == '˜' || c == '`' || c == '¨') {
+									if (stack != null)
+										stack.unstack();
 									return;
 								}
 							}
@@ -153,15 +158,19 @@ public class FIBTextFieldWidget extends FIBWidgetView<FIBTextField, JTextField, 
 					}
 					updateModelFromWidget();
 				}
+				
+				if (stack != null)
+					stack.unstack();
 			}
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				actionPerformed(FIBEventFactory.getInstance().createTextEvent("text-removed", e.getOffset(), e.getLength(),
+				GinaStackEvent stack = actionPerformed(FIBEventFactory.getInstance().createTextEvent("text-removed", e.getOffset(), e.getLength(),
 						"", getValue()));
 				if (!validateOnReturn && !widgetUpdating) {
 					updateModelFromWidget();
 				}
+				stack.unstack();
 			}
 		});
 		textField.addActionListener(new ActionListener() {
@@ -199,21 +208,21 @@ public class FIBTextFieldWidget extends FIBWidgetView<FIBTextField, JTextField, 
 		super.focusGained(arg0);
 		textField.selectAll();
 
-		actionPerformed(FIBEventFactory.getInstance().createFocusEvent("focus-gained"));
+		actionPerformed(FIBEventFactory.getInstance().createFocusEvent("focus-gained")).unstack();
 	}
 	
 	@Override
 	public void focusLost(FocusEvent arg0) {
 		super.focusLost(arg0);
 
-		actionPerformed(FIBEventFactory.getInstance().createFocusEvent("focus-lost"));
+		actionPerformed(FIBEventFactory.getInstance().createFocusEvent("focus-lost")).unstack();
 	}
 
 	public Class getDefaultType() {
 		return String.class;
 	}
 	
-	public void executeEvent(FIBActionEvent e) {
+	public void executeEvent(FIBEvent e) {
 		widgetExecuting = true;
 
 		switch(e.getAction()) {

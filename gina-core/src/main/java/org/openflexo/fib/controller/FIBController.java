@@ -73,6 +73,9 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.fib.FIBLibrary;
+import org.openflexo.fib.listener.FIBActionListener;
+import org.openflexo.fib.listener.FIBActionListenerManager;
+import org.openflexo.fib.listener.GinaHandler;
 import org.openflexo.fib.model.FIBBrowser;
 import org.openflexo.fib.model.FIBButton;
 import org.openflexo.fib.model.FIBCheckBox;
@@ -133,11 +136,8 @@ import org.openflexo.fib.view.widget.FIBReferencedComponentWidget;
 import org.openflexo.fib.view.widget.FIBTableWidget;
 import org.openflexo.fib.view.widget.FIBTextAreaWidget;
 import org.openflexo.fib.view.widget.FIBTextFieldWidget;
-import org.openflexo.himtester.events.FIBActionEvent;
-import org.openflexo.himtester.events.FIBEventFactory;
-import org.openflexo.himtester.listener.FIBActionListener;
-import org.openflexo.himtester.listener.FIBActionListenerManager;
-import org.openflexo.himtester.listener.FIBHandler;
+import org.openflexo.gina.event.FIBEvent;
+import org.openflexo.gina.event.FIBEventFactory;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
 import org.openflexo.localization.LocalizedDelegate;
@@ -196,7 +196,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 		mouseClickListeners = new Vector<FIBMouseClickListener>();
 		viewFactory = new DefaultFIBViewFactory();
 		
-		FIBHandler.getInstance().register(this);
+		GinaHandler.getInstance().register(this);
 	}
 
 	public void delete() {
@@ -215,11 +215,11 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 			deleted = true;
 			getPropertyChangeSupport().firePropertyChange(DELETED, false, true);
 			
-			FIBHandler.getInstance().unregister(this);
+			GinaHandler.getInstance().unregister(this);
 		}
 	}
 	
-	public void actionPerformed(FIBActionEvent e) {
+	public void actionPerformed(FIBEvent e) {
 		e.setIdentity(this.getClass().getSimpleName(), "<CONTROLLER>", this.getRootComponent().getUniqueID());
 		
 		if (FIBActionListenerManager.getInstance().isEnabled())

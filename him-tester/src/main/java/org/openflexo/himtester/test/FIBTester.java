@@ -3,7 +3,6 @@ package org.openflexo.himtester.test;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -13,10 +12,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-import org.openflexo.himtester.FIBInvalidStateException;
-import org.openflexo.himtester.FIBRecorderCallbackTest;
-import org.openflexo.himtester.FIBRecorderManager;
 import org.openflexo.himtester.simple.SimpleExampleCase;
+import org.openflexo.replay.GinaRecorderManager;
+import org.openflexo.replay.InvalidRecorderStateException;
 
 @RunWith(Parameterized.class)
 public class FIBTester {
@@ -26,9 +24,9 @@ public class FIBTester {
 
 	@Parameters
     public static Collection<FIBTestParameter[]> data() {
-		FIBRecorderManager.getInstance().createAndSetToCurrent();
-		FIBRecorderManager.getInstance().getCurrentRecorder().load(new File("D:/test-gina-recorder"));
-		int size = FIBRecorderManager.getInstance().getCurrentRecorder().getRootNode().getNodes().size();
+		GinaRecorderManager.getInstance().createAndSetToCurrent();
+		GinaRecorderManager.getInstance().getCurrentRecorder().load(new File("D:/test-gina-recorder"));
+		int size = GinaRecorderManager.getInstance().getCurrentRecorder().getRootNode().getNodes().size();
 
         LinkedList<FIBTestParameter[]> list = new LinkedList<FIBTestParameter[]>();
         for(int i=0; i<size; ++i)
@@ -47,8 +45,8 @@ public class FIBTester {
     @Test
     public void test() {
     	try {
-			FIBRecorderManager.getInstance().getCurrentRecorder().checkNextStep(true);
-		} catch (FIBInvalidStateException e) {
+			GinaRecorderManager.getInstance().getCurrentRecorder().checkNextStep(true);
+		} catch (InvalidRecorderStateException e) {
 			assertTrue(e.getMessage(), false);
 		}
     	assertTrue(true);
