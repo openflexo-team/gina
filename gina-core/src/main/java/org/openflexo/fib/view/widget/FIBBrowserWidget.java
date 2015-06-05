@@ -158,9 +158,8 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 					.getSelection()), getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, List<T> newValue) {
-					// System.out.println(" bindingValueChanged() detected for selection=" + getComponent().getSelection() +
-					// " with newValue="
-					// + newValue + " source=" + source);
+					//System.out.println(" bindingValueChanged() detected for selection=" + getComponent().getSelection() + " with newValue="
+					//		+ newValue + " source=" + source);
 					performSelect(newValue, false);
 				}
 			};
@@ -246,6 +245,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 		}
 		// If root object has changed, this might be very usefull to update selected, too !!!
 		updateSelected(true);
+		updateSelection(true);
 		return returned;
 	}
 
@@ -585,6 +585,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 	public boolean update() {
 		super.update();
 		updateSelected(false);
+		updateSelection(false);
 		// TODO: this should be not necessary
 		// Vincent : It causes many notifications and for big browsers such as archimate emf metamodel one
 		// it is tool long to produce the browser (35 seconds for this one).
@@ -615,6 +616,28 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private final void updateSelection(boolean force) {
+
+		/*if (getComponent() != null && getComponent().getSelection() != null) {
+			System.out.println("************** updateSelection with " + getComponent().getSelection() + " valid="
+					+ getComponent().getSelection().isValid() + " reason=" + getComponent().getSelection().invalidBindingReason());
+		}*/
+
+		if (getComponent() != null && getComponent().getSelection() != null && getComponent().getSelection().isValid()) {
+			try {
+				List<T> newSelection = getComponent().getSelection().getBindingValue(getBindingEvaluationContext());
+				performSelect(newSelection, force);
+			} catch (TypeMismatchException e) {
+				e.printStackTrace();
+			} catch (NullReferenceException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	/*@Override
