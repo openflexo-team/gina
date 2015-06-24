@@ -115,7 +115,7 @@ public abstract class GinaTask implements Runnable, HasPropertyChangeSupport {
 		return "GinaTask:" + getTaskTitle();
 	}
 
-	protected synchronized void startExecution(GinaTaskThread thread) {
+	public synchronized void startExecution(GinaTaskThread thread) {
 		if (status == TaskStatus.READY_TO_EXECUTE) {
 			GinaHandler.getInstance().setTreadStack(thread.getId(), callStackEvents);
 			this.thread = thread;
@@ -127,7 +127,7 @@ public abstract class GinaTask implements Runnable, HasPropertyChangeSupport {
 		}
 	}
 
-	protected synchronized void stopExecution() {
+	public synchronized void stopExecution() {
 		if (status == TaskStatus.RUNNING) {
 			status = TaskStatus.CANCEL_REQUESTED;
 			thread.interrupt();
@@ -137,7 +137,7 @@ public abstract class GinaTask implements Runnable, HasPropertyChangeSupport {
 	}
 
 	@Deprecated
-	protected void forceStopExecution() {
+	public void forceStopExecution() {
 		if (status == TaskStatus.RUNNING) {
 			status = TaskStatus.CANCEL_REQUESTED;
 			thread.stop();
@@ -146,7 +146,7 @@ public abstract class GinaTask implements Runnable, HasPropertyChangeSupport {
 		}
 	}
 
-	protected synchronized void finishedExecution() {
+	public synchronized void finishedExecution() {
 		GinaHandler.getInstance().setTreadStack(thread.getId(), null);
 
 		if (status == TaskStatus.RUNNING) {

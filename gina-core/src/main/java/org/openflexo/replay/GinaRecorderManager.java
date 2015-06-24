@@ -1,8 +1,6 @@
 package org.openflexo.replay;
 
-import java.io.File;
-
-import org.openflexo.gina.event.FIBEvent;
+import org.openflexo.gina.event.GinaEvent;
 import org.openflexo.model.ModelContext;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
@@ -16,6 +14,10 @@ public class GinaRecorderManager {
 	private ModelFactory factory;
 	private ModelContext context;
 	
+	/**
+	 * Return the unique instance of the manage and create it if needed
+	 * @return GinaRecorderManager instance
+	 */
 	static public GinaRecorderManager getInstance() {
 		if (instance == null)
 			instance = new GinaRecorderManager();
@@ -23,13 +25,16 @@ public class GinaRecorderManager {
 		return instance;
 	}
 
-
 	private GinaRecorderManager() {
 		this.recorder = null;
 		this.factory = null;
 		this.context = null;
 	}
 
+	/**
+	 * Instantiate a GinaRecorder and set it as the current recorder
+	 * @return the newly created recorder
+	 */
 	public GinaRecorder createAndSetToCurrent() {
 		GinaRecorder r = new GinaRecorder();
 		
@@ -38,18 +43,30 @@ public class GinaRecorderManager {
 		return r;
 	}
 
+	/**
+	 * Set the current recorder
+	 * @param r the recorder instance
+	 */
 	public void setCurrentRecorder(GinaRecorder r) {
 		recorder = r;
 	}
 
+	/**
+	 * Return the current recorder
+	 * @return the current recorder
+	 */
 	public GinaRecorder getCurrentRecorder() {
 		return recorder;
 	}
 	
+	/**
+	 * Get the Pamela model factory for the GinaRecordedNode and the GinaEvent
+	 * @return the model factory
+	 */
 	public ModelFactory getFactory() {
 		if (factory == null) {
 			try {
-				context = new ModelContext(FIBEvent.class, GinaRecordedNode.class);
+				context = new ModelContext(GinaEvent.class, GinaRecordedNode.class);
 				factory = new ModelFactory(context);
 			} catch (ModelDefinitionException e) {
 				e.printStackTrace();
@@ -57,7 +74,6 @@ public class GinaRecorderManager {
 		}
 		return factory;
 	}
-
 
 	public void setup() {
 		if (recorder == null) {

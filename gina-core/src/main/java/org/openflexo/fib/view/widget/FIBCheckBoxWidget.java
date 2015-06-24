@@ -118,6 +118,7 @@ public class FIBCheckBoxWidget extends FIBWidgetView<FIBCheckBox, JCheckBox, Boo
 		}
 		
 		widgetExecuting = false;
+
 	}
 
 	@Override

@@ -12,8 +12,6 @@ import org.openflexo.fib.listener.FIBActionListener;
 import org.openflexo.fib.listener.FIBActionListenerManager;
 import org.openflexo.fib.listener.GinaHandler;
 import org.openflexo.fib.listener.GinaStackEvent;
-import org.openflexo.fib.view.FIBWidgetView;
-import org.openflexo.fib.view.widget.FIBTextFieldWidget;
 import org.openflexo.gina.event.FIBEvent;
 import org.openflexo.gina.event.GinaEvent;
 
@@ -46,6 +44,10 @@ public class GinaRecorder implements FIBActionListener {
 		actionPerformed((GinaEvent) e);
 	}
 
+	/**
+	 * 
+	 * @param e
+	 */
 	public void actionPerformed(GinaEvent e) {
 		//ignore non recorded events
 		if (!isRecording())
@@ -61,7 +63,7 @@ public class GinaRecorder implements FIBActionListener {
 		else {
 			lastStates.add(e);
 			System.out.println("Event STATE : " + e);
-			
+
 			Stack<GinaStackEvent> stack = GinaHandler.getInstance().getEventStack();
 			for(int i = stack.size() - 1; i >= 0; --i) {
 				GinaStackEvent ev = stack.get(i);
@@ -71,7 +73,7 @@ public class GinaRecorder implements FIBActionListener {
 				}
 				//System.out.println(ev.toString());
 			}
-			
+
 			if (origin != null)
 				System.out.println("Origin : " + origin);
 		}
@@ -97,12 +99,12 @@ public class GinaRecorder implements FIBActionListener {
 		save(new File("D:/test-gina-recorder-temp"));
 	}
 	
+	/**
+	 * Get the root GinaRecordedNode
+	 * @return GinaRecordedNode root node
+	 */
 	public GinaRecordedNode getRootNode() {
 		return rootNode;
-	}
-	
-	public void unstack(GinaStackEvent es) {
-		
 	}
 
 	public void play() {
