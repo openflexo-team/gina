@@ -91,6 +91,8 @@ public interface FIBBrowser extends FIBWidget {
 	public static final String SELECTION_MODE_KEY = "selectionMode";
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String SELECTED_KEY = "selected";
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String SELECTION_KEY = "selection";
 	@PropertyIdentifier(type = Vector.class)
 	public static final String ELEMENTS_KEY = "elements";
 	@PropertyIdentifier(type = boolean.class)
@@ -167,6 +169,13 @@ public interface FIBBrowser extends FIBWidget {
 
 	@Setter(SELECTED_KEY)
 	public void setSelected(DataBinding<Object> selected);
+
+	@Getter(value = SELECTION_KEY)
+	@XMLAttribute
+	public DataBinding<List> getSelection();
+
+	@Setter(SELECTION_KEY)
+	public void setSelection(DataBinding<List> selection);
 
 	@Getter(value = ELEMENTS_KEY, cardinality = Cardinality.LIST, inverse = FIBBrowserElement.OWNER_KEY)
 	@XMLElement
@@ -266,6 +275,7 @@ public interface FIBBrowser extends FIBWidget {
 
 		private DataBinding<Object> root;
 		private DataBinding<Object> selected;
+		private DataBinding<List> selection;
 
 		private Integer visibleRowCount;
 		private Integer rowHeight;
@@ -345,6 +355,24 @@ public interface FIBBrowser extends FIBWidget {
 		}
 
 		@Override
+		public DataBinding<List> getSelection() {
+			if (selection == null) {
+				selection = new DataBinding<List>(this, List.class, DataBinding.BindingDefinitionType.GET_SET);
+			}
+			return selection;
+		}
+
+		@Override
+		public void setSelection(DataBinding<List> selection) {
+			if (selection != null) {
+				selection.setOwner(this);
+				selection.setDeclaredType(List.class);
+				selection.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET_SET);
+			}
+			this.selection = selection;
+		}
+
+		@Override
 		public void finalizeDeserialization() {
 			logger.fine("finalizeDeserialization() for FIBTable " + getName());
 			super.finalizeDeserialization();
@@ -354,6 +382,9 @@ public interface FIBBrowser extends FIBWidget {
 			}
 			if (selected != null) {
 				selected.decode();
+			}
+			if (selection != null) {
+				selection.decode();
 			}
 		}
 

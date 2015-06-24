@@ -232,7 +232,11 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 	}
 
 	public ResizablePanel getCustomPanel() {
-		if (_customPanel == null) {
+		return getCustomPanel(true);
+	}
+
+	public ResizablePanel getCustomPanel(boolean createWhenNonExistant) {
+		if (_customPanel == null && createWhenNonExistant) {
 			try {
 				_customPanel = createCustomPanel(getEditedObject());
 			} catch (ClassCastException e) {
