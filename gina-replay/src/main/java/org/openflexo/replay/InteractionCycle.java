@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.openflexo.connie.DataBinding;
-import org.openflexo.gina.manager.GinaManager;
+import org.openflexo.gina.manager.GinaReplayManager;
 import org.openflexo.gina.event.GinaEvent;
 import org.openflexo.gina.event.SystemEvent;
 import org.openflexo.gina.event.UserInteraction;
@@ -72,13 +72,13 @@ public interface InteractionCycle extends ScenarioNode {
 	public List<GinaEvent> getUserInteractionsByKind(String kind);
 	public List<GinaEvent> getNonUserInteractionsByKind(String kind);
 	
-	public void init(GinaManager manager);
+	public void init(GinaReplayManager manager);
 	
 	public abstract class FIBRecordedNodeImpl extends ScenarioNodeImpl implements InteractionCycle {
 		
-		public void init(GinaManager manager) {
+		public void init(GinaReplayManager manager) {
 			if (this.getSystemEventTree() == null)
-				this.setSystemEventTree(manager.getFactory().newInstance(SystemEventTreeNode.class));
+				this.setSystemEventTree(manager.getModelFactory().newInstance(SystemEventTreeNode.class));
 		}
 		
 		@Override

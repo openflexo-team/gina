@@ -4,7 +4,8 @@ import org.openflexo.gina.event.GinaEvent.KIND;
 import org.openflexo.gina.event.GinaEventNotifier;
 import org.openflexo.gina.event.GinaTaskEventNotifier;
 import org.openflexo.gina.event.description.GinaTaskEventDescription;
-import org.openflexo.gina.manager.GinaManager;
+import org.openflexo.gina.manager.EventManager;
+import org.openflexo.gina.manager.GinaReplayManager;
 import org.openflexo.gina.manager.GinaTask;
 import org.openflexo.gina.manager.URID;
 
@@ -15,11 +16,11 @@ public abstract class Task implements GinaTask, Runnable {
 
 	protected GinaTaskEventNotifier GENotifier;
 
-	public Task(GinaManager manager, String title) {
+	public Task(EventManager manager, String title) {
 		this.title = title;
 		System.out.println("<<TASK>> created");
 
-		this.GENotifier = new GinaTaskEventNotifier(manager) {
+		this.GENotifier = new GinaTaskEventNotifier(manager, this) {
 
 			@Override
 			public KIND computeClass(GinaTaskEventDescription d) {
@@ -35,19 +36,30 @@ public abstract class Task implements GinaTask, Runnable {
 		};
 
 		this.GENotifier.createBranch();
+			
+		if (manager != null)
+			manager.register(this);
 
 	}
 
 	@Override
 	public URID getURID() {
-		if (urid == null)
-			urid = this.GENotifier.getManager().generateURID(this);
 		return urid;
 	}
 
 	@Override
 	public String getBaseIdentifier() {
 		return "task-" + this.getTaskTitle();
+	}
+	
+	@Override
+	public void setURID(URID urid) {
+		this.urid = urid;
+	}
+
+	@Override
+	public EventManager getEventManager() {
+		return this.GENotifier.getManager();
 	}
 
 	private String getTaskTitle() {

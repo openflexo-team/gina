@@ -56,7 +56,7 @@ import org.jdom2.JDOMException;
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelFactory;
-import org.openflexo.gina.manager.GinaManager;
+import org.openflexo.gina.manager.GinaReplayManager;
 import org.openflexo.model.exceptions.InvalidDataException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.Resource;

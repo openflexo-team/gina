@@ -1,6 +1,11 @@
-package org.openflexo.gina.event;
+package org.openflexo.gina.manager;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import org.openflexo.gina.event.GinaEvent;
+import org.openflexo.gina.event.SystemEvent;
+import org.openflexo.gina.event.UserInteraction;
 import org.openflexo.gina.event.GinaEvent.KIND;
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.event.description.GinaNotifyMethodEventDescription;
@@ -8,6 +13,7 @@ import org.openflexo.gina.event.description.GinaTaskEventDescription;
 import org.openflexo.model.ModelContext;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.replay.Scenario;
 
 /**
  * This factory creates NotifiyMethodEvent, TaskEvent, EventDescription and GinaEvents from an EventDescription
@@ -16,28 +22,25 @@ import org.openflexo.model.factory.ModelFactory;
  */
 
 public class GinaEventFactory {
-	static private GinaEventFactory instance;
 	private ModelFactory factory;
 	private ModelContext context;
-	
-	static public GinaEventFactory getInstance() {
-		if (instance == null)
-			instance = new GinaEventFactory();
-		
-		return instance;
-	}
+	private List<Class<?>> eventDescriptionModelClasses;
 
-
-	private GinaEventFactory() {
+	public GinaEventFactory() {
 		super();
-		this.factory = null;
-		this.context = null;
+		
+		this.eventDescriptionModelClasses = new LinkedList<Class<?>>();
+	}
+	
+	public void addModel(Class<?> cls) {
+		if (!this.eventDescriptionModelClasses.contains(cls))
+			this.eventDescriptionModelClasses.add(cls);
 	}
 
 	public ModelFactory getModelFactory() {
 		if (factory == null) {
 			try {
-				context = new ModelContext(GinaEvent.class);
+				context = new ModelContext(this.eventDescriptionModelClasses.toArray(new Class[this.eventDescriptionModelClasses.size()]));
 				factory = new ModelFactory(context);
 			} catch (ModelDefinitionException e) {
 				e.printStackTrace();

@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-import org.openflexo.gina.manager.GinaManager;
+import org.openflexo.gina.manager.GinaReplayManager;
 import org.openflexo.replay.InvalidRecorderStateException;
 import org.openflexo.replay.cases.MultiEventsCase;
 

@@ -135,8 +135,9 @@ import org.openflexo.fib.view.widget.FIBTextAreaWidget;
 import org.openflexo.fib.view.widget.FIBTextFieldWidget;
 import org.openflexo.gina.event.description.FIBEventDescription;
 import org.openflexo.gina.event.description.FIBEventFactory;
+import org.openflexo.gina.manager.EventManager;
 import org.openflexo.gina.manager.GinaEventListener;
-import org.openflexo.gina.manager.GinaManager;
+import org.openflexo.gina.manager.GinaReplayManager;
 import org.openflexo.gina.manager.Registerable;
 import org.openflexo.gina.manager.URID;
 import org.openflexo.localization.FlexoLocalization;
@@ -171,7 +172,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 
 	private LocalizedDelegate parentLocalizer = null;
 	
-	private GinaManager recorderManager = null;
+	private EventManager eventManager = null;
 	private URID urid = null;
 
 	private FIBViewFactory viewFactory;
@@ -219,19 +220,22 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 		}
 	}
 
-	public GinaManager getRecorderManager() {
-		return recorderManager;
+	public EventManager getEventManager() {
+		return eventManager;
 	}
 
-	public void setRecorderManager(GinaManager recorderManager) {
-		if (this.recorderManager != null) {
-			this.recorderManager.unregister(this);
-			this.urid = null;
+	public void setRecorderManager(EventManager recorderManager) {
+		if (this.eventManager != null) {
+			this.eventManager.unregister(this);
 		}
-		this.recorderManager = recorderManager;
-		if (this.recorderManager != null) {
-			this.urid = this.recorderManager.register(this.getClass(), this);
+		this.eventManager = recorderManager;
+		if (this.eventManager != null) {
+			this.eventManager.register(this);
 		}
+	}
+	
+	public void setURID(URID urid) {
+		this.urid = urid;
 	}
 	
 	public URID getURID() {
@@ -389,7 +393,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 		return instanciateController(fibComponent, parentLocalizer, null);
 	}
 
-	public static FIBController instanciateController(FIBComponent fibComponent, LocalizedDelegate parentLocalizer, GinaManager recorderManager) {
+	public static FIBController instanciateController(FIBComponent fibComponent, LocalizedDelegate parentLocalizer, EventManager recorderManager) {
 		FIBController returned = null;
 		// System.out.println("Instanciate controller for component: " + fibComponent);
 		/*if (fibComponent != null) {
@@ -449,9 +453,6 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 	}
 
 	public final <M extends FIBComponent> FIBView<M, ?, ?> buildView(M fibComponent) {
-		// force the generation of the rootComponent ID
-		rootComponent.getUniqueID();
-
 		if (fibComponent instanceof FIBContainer) {
 			return buildContainer((FIBContainer) fibComponent);
 		} else if (fibComponent instanceof FIBWidget) {

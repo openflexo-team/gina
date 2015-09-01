@@ -64,6 +64,7 @@ import org.openflexo.connie.type.WilcardTypeImpl;
 import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.view.FIBView;
+import org.openflexo.gina.manager.HasBaseIdentifier;
 import org.openflexo.gina.manager.Registerable;
 import org.openflexo.gina.manager.URID;
 import org.openflexo.localization.LocalizedDelegate;
@@ -100,7 +101,7 @@ import org.openflexo.toolbox.StringUtils;
 		@Import(FIBCheckboxList.class), @Import(FIBDropDown.class), @Import(FIBList.class), @Import(FIBRadioButtonList.class),
 		@Import(FIBNumber.class), @Import(FIBReferencedComponent.class), @Import(FIBTable.class), @Import(FIBEditor.class),
 		@Import(FIBEditorPane.class), @Import(FIBTextArea.class), @Import(FIBTextField.class) })
-public abstract interface FIBComponent extends FIBModelObject, TreeNode, Registerable {
+public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBaseIdentifier {
 
 	public static enum VerticalScrollBarPolicy {
 		VERTICAL_SCROLLBAR_AS_NEEDED {
@@ -190,8 +191,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, Registe
 	public static final String EXPLICIT_DEPENDANCIES_KEY = "explicitDependancies";
 	@PropertyIdentifier(type = FIBLocalizedDictionary.class)
 	public static final String LOCALIZED_DICTIONARY_KEY = "localizedDictionary";
-	@PropertyIdentifier(type = String.class)
-	public static final String UNIQUE_ID = "uniqueID";
 
 	@Override
 	@Getter(value = PARENT_KEY/*, inverse = FIBContainer.SUB_COMPONENTS_KEY*/)
@@ -357,15 +356,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, Registe
 
 	@Setter(LOCALIZED_DICTIONARY_KEY)
 	public void setLocalizedDictionary(FIBLocalizedDictionary localizedDictionary);
-	
-	public String getUniqueID();
-	
-	@Getter(value = UNIQUE_ID, defaultValue = "")
-	@XMLAttribute
-	public String getDirectUniqueID();
-	
-	@Setter(UNIQUE_ID)
-	public void setUniqueID(String uniqueID);
 
 	public boolean isRootComponent();
 
@@ -554,18 +544,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, Registe
 			explicitDependancies = new Vector<FIBDependancy>();
 			mayDepends = new Vector<FIBComponent>();
 			mayAlters = new Vector<FIBComponent>();
-		}
-		
-		public String getUniqueID() {
-			if (getDirectUniqueID() == null) {
-				setUniqueID(/*GinaHandlerTemp.getInstance().generateUniqueID(this)*/"");
-				System.out.println(getDirectUniqueID());
-			}
-			return getDirectUniqueID();
-		}
-		
-		public URID getURID() {
-			return null;
 		}
 		
 		public String getBaseIdentifier() {

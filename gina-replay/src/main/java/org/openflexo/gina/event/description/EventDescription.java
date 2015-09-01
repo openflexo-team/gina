@@ -24,6 +24,9 @@ public abstract interface EventDescription {
 	public static final String ACTION = "action";
 	
 	@PropertyIdentifier(type = String.class)
+	public static final String PARENT_IDENTIFIER = "parentIdentifier";
+	
+	@PropertyIdentifier(type = String.class)
 	public static final String VALUE = "value";
 	
 	@PropertyIdentifier(type = String.class)
@@ -46,6 +49,13 @@ public abstract interface EventDescription {
 
 	@Setter(ACTION)
 	public void setAction(String action);
+	
+	@Getter(value = PARENT_IDENTIFIER, defaultValue = "")
+	@XMLAttribute
+	public String getParentIdentifier();
+
+	@Setter(PARENT_IDENTIFIER)
+	public void setParentIdentifier(String parentIdentifier);
 
 	@Getter(value = VALUE)
 	@XMLAttribute

@@ -8,7 +8,7 @@ import org.openflexo.fib.model.TwoColsLayoutConstraints;
 import org.openflexo.fib.model.FIBPanel.Layout;
 import org.openflexo.fib.model.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.fib.sampleData.Person;
-import org.openflexo.gina.manager.GinaManager;
+import org.openflexo.gina.manager.GinaReplayManager;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.replay.GinaReplay;
 
@@ -17,9 +17,9 @@ public class CaseCommandWindow {
 	private FIBPanel component;
 	private FIBController controller;
 	
-	private GinaManager manager;
+	private GinaReplayManager manager;
 
-	public CaseCommandWindow(GinaManager manager) {
+	public CaseCommandWindow(GinaReplayManager manager) {
 		super();
 		
 		this.manager = manager;
@@ -28,7 +28,7 @@ public class CaseCommandWindow {
 	}
 	
 	public void initCase() {
-		manager = new GinaManager();
+		manager = new GinaReplayManager();
 		GinaReplay recorder = new GinaReplay(manager);
 		manager.setCurrentReplayer(recorder);
 		recorder.startRecording();
@@ -60,7 +60,7 @@ public class CaseCommandWindow {
 		gcDelegate.setController(controller);
 	}
 	
-	public GinaManager getManager() {
+	public GinaReplayManager getManager() {
 		return manager;
 	}
 }

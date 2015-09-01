@@ -5,27 +5,32 @@ import java.util.List;
 
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.event.description.GinaNotifyMethodEventDescription;
+import org.openflexo.gina.manager.EventManager;
+import org.openflexo.gina.manager.GinaEventFactory;
 import org.openflexo.gina.manager.GinaEventListener;
-import org.openflexo.gina.manager.GinaManager;
 import org.openflexo.gina.manager.GinaStackEvent;
+import org.openflexo.gina.manager.Registerable;
 
 public abstract class GinaEventNotifier<D extends EventDescription> {
 	private List<GinaEventListener> ginaListeners = new ArrayList<GinaEventListener>();
 	
-	protected GinaManager manager;
+	protected EventManager manager;
+	protected Registerable parent;
 
-	public GinaEventNotifier(GinaManager manager) {
+	public GinaEventNotifier(EventManager manager, Registerable parent) {
+		this.parent = parent;
 		this.manager = manager;
 		if (this.manager != null)
 			this.addListener(this.manager);
 	}
 
-	public GinaManager getManager() {
+	public EventManager getManager() {
 		return manager;
 	}
 
 	public void addListener(GinaEventListener l) {
-		ginaListeners.add(l);
+		if (!ginaListeners.contains(l))
+			ginaListeners.add(l);
 	}
 
 	public void removeListener(GinaEventListener l) {
@@ -40,6 +45,7 @@ public abstract class GinaEventNotifier<D extends EventDescription> {
 		if (this.manager == null)
 			return new GinaStackEvent();
 
+		d.setParentIdentifier(parent.getURID().getIdentifier());
 		this.setIdentity(d);
 
 		//this.findBranchAncestor();
@@ -48,7 +54,7 @@ public abstract class GinaEventNotifier<D extends EventDescription> {
 		GinaStackEvent se = manager.pushStackEvent(d, this.computeClass(d));
 
 		for (GinaEventListener fl : ginaListeners)
-			fl.eventPerformed(se.getEvent());
+			fl.eventPerformed(se.getEvent(), manager.getEventStack());
 
 		return se;
 	}
@@ -75,7 +81,7 @@ public abstract class GinaEventNotifier<D extends EventDescription> {
 		// System.out.println("[Notify] " + trace.getMethodName() + " in class "
 		// + trace.getClassName());
 
-		EventDescription desc = GinaEventFactory.getInstance()
+		EventDescription desc = manager.getFactory()
 				.createNotifiyMethodEvent(GinaNotifyMethodEventDescription.NOTIFIED,
 						trace.getClassName(), trace.getMethodName(), info);
 		
@@ -83,7 +89,7 @@ public abstract class GinaEventNotifier<D extends EventDescription> {
 		GinaStackEvent se = manager.pushStackEvent(desc, GinaEvent.KIND.UNKNOWN);
 
 		for (GinaEventListener fl : ginaListeners)
-			fl.eventPerformed(se.getEvent());
+			fl.eventPerformed(se.getEvent(), manager.getEventStack());
 
 		return se;
 	}

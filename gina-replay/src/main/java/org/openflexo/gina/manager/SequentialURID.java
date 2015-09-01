@@ -1,5 +1,6 @@
 package org.openflexo.gina.manager;
 
+
 public class SequentialURID implements URID {
 
 	private String baseIdentifier;

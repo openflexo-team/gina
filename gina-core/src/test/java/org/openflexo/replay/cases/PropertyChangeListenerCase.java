@@ -58,7 +58,7 @@ public class PropertyChangeListenerCase extends Case {
 	public static Person getPersonA() {
 		if (personA == null) {
 			personA = new Person("Robert", "Smith", 39);
-			getManager().trackPropertyChange(personA);
+			getEventManager().trackPropertyChange(personA);
 		}
 
 		return personA;

@@ -17,7 +17,7 @@ import org.openflexo.gina.event.SystemEvent;
 import org.openflexo.gina.event.UserInteraction;
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.manager.GinaEventListener;
-import org.openflexo.gina.manager.GinaManager;
+import org.openflexo.gina.manager.GinaReplayManager;
 import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.gina.event.strategies.RecordingStrategy;
 import org.openflexo.gina.event.strategies.CheckingStrategy;
@@ -34,14 +34,14 @@ public class GinaReplay implements GinaEventListener {
 	private boolean recording, wasRecording;
 	private int currentEventIndex;
 	private int delayBetweenNodes, delayWaitSync;
-	private GinaManager manager;
+	private GinaReplayManager manager;
 	
 	private RecordingStrategy recordingStrategy;
 	private CheckingStrategy checkingStrategy;
 	
 	private LinkedList<GinaEvent> lastNonUserInteractions;
 
-	public GinaReplay(GinaManager manager) {
+	public GinaReplay(GinaReplayManager manager) {
 		this.delayBetweenNodes = 500;
 		this.delayWaitSync = 2000;
 
@@ -52,9 +52,9 @@ public class GinaReplay implements GinaEventListener {
 		
 		this.lastNonUserInteractions = new LinkedList<GinaEvent>();
 		
-		scenario = manager.getFactory().newInstance(Scenario.class);
+		scenario = manager.getModelFactory().newInstance(Scenario.class);
 
-		InteractionCycle initNode = this.manager.getFactory().newInstance(InteractionCycle.class);
+		InteractionCycle initNode = this.manager.getModelFactory().newInstance(InteractionCycle.class);
 		scenario.addNode(initNode);
 		
 		// strategies
@@ -69,12 +69,12 @@ public class GinaReplay implements GinaEventListener {
 	 * @param e
 	 */
 	@Override
-	public void eventPerformed(GinaEvent e) {
+	public void eventPerformed(GinaEvent e, Stack<GinaStackEvent> stack) {
 		if (!isRecording())
 			return;
 
 		if (this.recordingStrategy != null)
-			this.recordingStrategy.eventPerformed(e);
+			this.recordingStrategy.eventPerformed(e, stack);
 
 		//System.out.println("Number of recorded events : " + rootNode.getNodes().size());
 		save(new File("D:/test-gina-recorder-temp"));
@@ -266,7 +266,7 @@ public class GinaReplay implements GinaEventListener {
 		try {
 			out = new FileOutputStream(file);
 
-			manager.getFactory().serialize(scenario, out);
+			manager.getModelFactory().serialize(scenario, out);
 
 			return true;
 		} catch (Exception e) {

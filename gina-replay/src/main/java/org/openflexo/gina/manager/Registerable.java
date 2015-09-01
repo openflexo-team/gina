@@ -6,10 +6,12 @@ package org.openflexo.gina.manager;
  * @author Alexandre
  *
  */
-public interface Registerable {
+public interface Registerable extends HasBaseIdentifier {
 
 	public URID getURID();
 	
-	public String getBaseIdentifier();
+	public void setURID(URID urid);
+	
+	public EventManager getEventManager();
 
 }

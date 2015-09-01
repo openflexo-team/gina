@@ -7,6 +7,6 @@ import org.openflexo.gina.event.description.GinaTaskEventDescription;
  * 
  * @author Alexandre
  */
-public interface GinaTask extends NotifierRegisterable<GinaTaskEventDescription> {
+public interface GinaTask extends HasEventNotifier<GinaTaskEventDescription>, Registerable {
 
 }

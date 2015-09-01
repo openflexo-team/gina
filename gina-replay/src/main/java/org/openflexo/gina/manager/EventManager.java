@@ -1,10 +1,9 @@
 package org.openflexo.gina.manager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-/*import java.util.LinkedList;
-import java.util.List;*/
 import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.locks.Lock;
@@ -12,41 +11,25 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.openflexo.gina.event.GinaEvent;
-import org.openflexo.gina.event.GinaEventFactory;
 import org.openflexo.gina.event.GinaEvent.KIND;
 import org.openflexo.gina.event.description.EventDescription;
-import org.openflexo.model.ModelContext;
-import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.replay.GinaReplay;
 import org.openflexo.replay.Scenario;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
-/**
- * This class manages manages :
- *  - all the registered items
- *  - the current stack event
- *  - the current replayer
- *  
- *  It should be unique for a set of registered items.
- * 
- * @author Alexandre
- *
- */
-public class GinaManager implements GinaEventListener {
+public class EventManager implements GinaEventListener {
+	private List<GinaEventListener> listeners = new ArrayList<GinaEventListener>();
 
-	private GinaReplay replayer;
-	private ModelFactory factory;
-	private ModelContext context;
 	private Map<URID, Registerable> registry;
 	private Map<String, Integer> uridSequences;
 	private Map<Long, ThreadStack> threadStackEvents;
 	private List<GinaEventContext> contexts;
 	private Map<Object, Pair<Lock, Integer>> locks;
-	
 	private Lock globalLock, headLock;
-
-	public GinaManager() {
+	
+	private GinaEventFactory factory;
+	
+	public EventManager() {
 		this.registry = new HashMap<URID, Registerable>();
 		this.uridSequences = new HashMap<String, Integer>();
 		this.threadStackEvents = new HashMap<Long, ThreadStack>();
@@ -56,10 +39,35 @@ public class GinaManager implements GinaEventListener {
 		this.globalLock = new ReentrantLock();
 		this.headLock = new ReentrantLock();
 		this.locks = new HashMap<Object, Pair<Lock, Integer>>();
+		
+		factory = new GinaEventFactory();
+		factory.addModel(EventDescription.class);
+		factory.addModel(GinaEvent.class);
 	}
 	
+	public GinaEventFactory getFactory() {
+		return factory;
+	}
+	
+	public ModelFactory getModelFactory() {
+		return getFactory().getModelFactory();
+	}
+
 	public Lock getLock() {
 		return globalLock;
+	}
+	
+	public void addListener(GinaEventListener l) {
+		if (l != this && !listeners.contains(l))
+			listeners.add(l);
+	}
+
+	public void removeListener(GinaEventListener l) {
+		listeners.remove(l);
+	}
+
+	public void clearListeners() {
+		listeners.clear();
 	}
 	
 	public synchronized Lock registerLock(Object watch) {
@@ -124,82 +132,24 @@ public class GinaManager implements GinaEventListener {
 
 		headLock.unlock();
 	}
-
-	/**
-	 * Instantiate a GinaRecorder and set it as the current recorder
-	 * @return the newly created recorder
-	 */
-	public GinaReplay createAndSetToCurrent() {
-		GinaReplay r = new GinaReplay(this);
-
-		setCurrentReplayer(r);
-
-		return r;
-	}
-
-	/**
-	 * Set the current recorder
-	 * @param r the recorder instance
-	 */
-	public void setCurrentReplayer(GinaReplay r) {
-		replayer = r;
-	}
-
-	/**
-	 * Return the current recorder
-	 * @return the current recorder
-	 */
-	public GinaReplay getCurrentReplayer() {
-		return replayer;
-	}
-
-	/**
-	 * Get the Pamela model factory for the GinaRecordedNode and the GinaEvent
-	 * @return the model factory
-	 */
-	public ModelFactory getFactory() {
-		if (factory == null) {
-			try {
-				context = new ModelContext(EventDescription.class, Scenario.class);
-				factory = new ModelFactory(context);
-			} catch (ModelDefinitionException e) {
-				e.printStackTrace();
-			}
-		}
-		return factory;
-	}
-
-	public void setup() {
-		if (replayer == null) {
-			createAndSetToCurrent();
-
-			/*recorder.load(new File("D:/test-gina-recorder"));
-			recorder.play();*/
-
-			replayer.startRecording();
-
-			//GinaRecorderEditor editor = new GinaRecorderEditor();
-		}
-	}
 	
-	public void trackPropertyChange(HasPropertyChangeSupport obj) {
-		GinaPropertyChangeListener listener = new GinaPropertyChangeListener(this);
+	public URID register(Registerable obj) {
+		if (obj.getURID() != null)
+			return obj.getURID();
 		
-		obj.getPropertyChangeSupport().addPropertyChangeListener(listener);
-	}
-
-	public URID register(Class<? extends Registerable> cls, Registerable obj) {
 		URID urid = generateURID(obj);
 		
 		System.out.println("Registering " + urid);
 		
 		this.registry.put(urid, obj);
+		obj.setURID(urid);
 		
 		return urid;
 	}
 
 	public void unregister(Registerable obj) {
 		System.out.println("Unregistering " + obj.getURID());
+		obj.setURID(null);
 		
 		this.registry.remove(obj.getURID());
 	}
@@ -266,10 +216,10 @@ public class GinaManager implements GinaEventListener {
 		if (!ts.getStack().isEmpty())
 			kind = KIND.SYSTEM_EVENT;
 		else if (context != null) {
-			System.out.println("Context | " + context.getParent());
+			System.out.println("Context | " + context);
 		}
 		
-		GinaEvent e = GinaEventFactory.getInstance().createEventFromDescription(d, kind);
+		GinaEvent e = getFactory().createEventFromDescription(d, kind);
 		
 		System.out.println("IN 1" + ts.getStack());
 		GinaStackEvent stack = new GinaStackEvent(e, this);
@@ -284,9 +234,15 @@ public class GinaManager implements GinaEventListener {
 	}
 
 	@Override
-	public void eventPerformed(GinaEvent e) {
-		if (getCurrentReplayer() != null)
-			getCurrentReplayer().eventPerformed(e);
+	public void eventPerformed(GinaEvent e, Stack<GinaStackEvent> stack) {
+		for (GinaEventListener fl : listeners)
+			fl.eventPerformed(e, stack);
+	}
+	
+	public void trackPropertyChange(HasPropertyChangeSupport obj) {
+		GinaPropertyChangeListener listener = new GinaPropertyChangeListener(this);
+		
+		obj.getPropertyChangeSupport().addPropertyChangeListener(listener);
 	}
 	
 	/**
@@ -341,5 +297,4 @@ public class GinaManager implements GinaEventListener {
 			while(stackEvents.pop() != e);
 		}
 	}
-
 }

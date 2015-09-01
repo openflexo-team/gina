@@ -7,13 +7,13 @@ import org.openflexo.gina.event.UserInteraction;
 
 public class GinaStackEvent {
 	private GinaEvent event;
-	private GinaManager manager;
+	private EventManager manager;
 	
 	public GinaStackEvent() {
 		this(null, null);
 	}
 
-	public GinaStackEvent(GinaEvent event, GinaManager manager) {
+	public GinaStackEvent(GinaEvent event, EventManager manager) {
 		super();
 		this.event = event;
 		this.manager = manager;

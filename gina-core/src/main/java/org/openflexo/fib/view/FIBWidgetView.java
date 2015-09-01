@@ -130,7 +130,7 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 		widgetExecuting = false;
 		widgetDisableUserEvent = false;
 
-		GENotifier = new GinaEventNotifier<FIBEventDescription>(this.getController().getRecorderManager()) {
+		GENotifier = new GinaEventNotifier<FIBEventDescription>(this.getController().getEventManager(), this.getController()) {
 
 			@Override
 			public KIND computeClass(FIBEventDescription e) {
@@ -142,7 +142,7 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 
 			@Override
 			public void setIdentity(FIBEventDescription e) {
-				((FIBEventDescription) e).setIdentity(getWidget().getBaseName(), getWidget().getName(), getWidget().getRootComponent().getUniqueID());
+				e.setIdentity(getWidget().getBaseName(), getWidget().getName());
 			}
 			
 		};

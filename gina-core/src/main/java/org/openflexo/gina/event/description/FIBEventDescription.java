@@ -25,9 +25,6 @@ public abstract interface FIBEventDescription extends EventDescription {
 	
 	@PropertyIdentifier(type = String.class)
 	public static final String WIDGET_ID = "widgetID";
-	
-	@PropertyIdentifier(type = String.class)
-	public static final String COMPONENT = "component";
 
 
 	@Initializer
@@ -58,14 +55,7 @@ public abstract interface FIBEventDescription extends EventDescription {
 	@Setter(WIDGET_ID)
 	public void setWidgetID(String widgetID);
 	
-	@Getter(value = COMPONENT)
-	@XMLAttribute
-	public String getComponent();
-
-	@Setter(COMPONENT)
-	public void setComponent(String component);
-	
-	public void setIdentity(String widgetClass, String widgetID, String component);
+	public void setIdentity(String widgetClass, String widgetID);
 	
 	public abstract class FIBEventDescriptionImpl extends EventDescriptionImpl implements FIBEventDescription {
 		/*public FIBActionEventImpl() {
@@ -81,14 +71,14 @@ public abstract interface FIBEventDescription extends EventDescription {
 			setAction(action);
 		}*/
 		
-		public void setIdentity(String widgetClass, String widgetID, String component) {
+		public void setIdentity(String widgetClass, String widgetID) {
 			setWidgetClass(widgetClass);
 			setWidgetID(widgetID);
-			setComponent(component);
+			System.out.println(">>>>>> SET " + this);
 		}
 
 		public String toString() {
-			return "Event " + getAction() + " @ (id=" + getWidgetID() + ", class=" + getWidgetClass() + ", within " + getComponent() + ") value = " + getValue();
+			return "Event " + getAction() + " @ (id=" + getWidgetID() + ", class=" + getWidgetClass() + ", within " + getParentIdentifier() + ") value = " + getValue();
 		}
 
 		public boolean matchesIdentity(EventDescription e) {
@@ -97,7 +87,7 @@ public abstract interface FIBEventDescription extends EventDescription {
 
 			FIBEventDescription fe = (FIBEventDescription) e;
 			return fe.getAction().equals(getAction()) && fe.getWidgetClass().equals(getWidgetClass()) && fe.getWidgetID().equals(getWidgetID())
-					&& fe.getComponent().equals(getComponent());
+					&& fe.getParentIdentifier().equals(getParentIdentifier());
 		}
 
 		public void checkMatchingEvent(EventDescription e) throws InvalidRecorderStateException {

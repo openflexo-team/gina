@@ -4,7 +4,7 @@ import java.io.File;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.gina.manager.GinaManager;
+import org.openflexo.gina.manager.GinaReplayManager;
 import org.openflexo.replay.InvalidRecorderStateException;
 
 public class GinaRecorderEditorController extends FIBController {

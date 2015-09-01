@@ -5,13 +5,12 @@ import org.openflexo.gina.event.GinaTaskEventNotifier;
 
 public class GinaEventContext {
 
-	private GinaManager manager;
-	private Registerable parent;
-	private NotifierRegisterable<?> notifierParent;
+	private EventManager manager;
+	private HasEventNotifier<?> notifierParent;
 	private GinaStackEvent eventParent;
 	private GinaEventFilter filter;
 
-	public GinaEventContext(GinaManager manager, Registerable parent, GinaEventFilter filter) {
+	/*public GinaEventContext(GinaManager manager, Registerable parent, GinaEventFilter filter) {
 		this.manager = manager;
 		this.parent = parent;
 		this.filter = filter;
@@ -21,15 +20,17 @@ public class GinaEventContext {
 
 	public GinaEventContext(GinaManager manager, Registerable parent) {
 		this(manager, parent, null);
-	}
+	}*/
 	
-	public GinaEventContext(GinaManager manager, NotifierRegisterable<?> parent, GinaEventFilter filter) {
-		this(manager, (Registerable)parent, filter);
+	public GinaEventContext(EventManager manager, HasEventNotifier<?> parent, GinaEventFilter filter) {
+		this.manager = manager;
+		this.eventParent = null;
+		this.filter = filter;
 		
 		this.notifierParent = parent;
 	}
 	
-	public GinaEventContext(GinaManager manager, NotifierRegisterable<?> parent) {
+	public GinaEventContext(EventManager manager, HasEventNotifier<?> parent) {
 		this(manager, parent, null);
 	}
 
@@ -42,33 +43,37 @@ public class GinaEventContext {
 	}
 
 	public void open() {
-		this.manager.register(this);
-		if (this.filter != null)
-			this.filter.lock(manager);
-		else
-			this.manager.getLock().lock();
-		if (this.notifierParent != null) {
-			GinaEventNotifier<?> gen = this.notifierParent.getNotifier();
-			if (gen instanceof GinaTaskEventNotifier)
-				((GinaTaskEventNotifier) gen).switchToStackBranch();
+		if (this.manager != null) {
+			this.manager.register(this);
+			if (this.filter != null)
+				this.filter.lock(manager);
+			else
+				this.manager.getLock().lock();
+			if (this.notifierParent != null) {
+				GinaEventNotifier<?> gen = this.notifierParent.getNotifier();
+				if (gen instanceof GinaTaskEventNotifier)
+					((GinaTaskEventNotifier) gen).switchToStackBranch();
+			}
 		}
 	}
 
 	public void close() {
-		if (this.filter != null)
-			this.filter.unlock();
-		else
-			this.manager.getLock().unlock();
-		this.manager.unregister(this);
-		this.manager.resetDefaultStack();
+		if (this.manager != null) {
+			if (this.filter != null)
+				this.filter.unlock();
+			else
+				this.manager.getLock().unlock();
+			this.manager.unregister(this);
+			this.manager.resetDefaultStack();
+		}
 	}
 
-	public GinaManager getManager() {
+	public EventManager getManager() {
 		return manager;
 	}
-
-	public Registerable getParent() {
-		return parent;
+	
+	public HasEventNotifier<?> getParent() {
+		return notifierParent;
 	}
 
 	public GinaStackEvent getEventParent() {

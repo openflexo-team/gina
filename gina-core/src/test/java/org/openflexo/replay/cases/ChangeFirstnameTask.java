@@ -2,8 +2,10 @@ package org.openflexo.replay.cases;
 
 import java.util.Random;
 
-import org.openflexo.gina.manager.GinaManager;
+import org.openflexo.gina.manager.EventManager;
+import org.openflexo.gina.manager.GinaReplayManager;
 import org.openflexo.gina.manager.GinaEventContext;
+import org.openflexo.gina.manager.URID;
 import org.openflexo.replay.sampleData.Person;
 import org.openflexo.replay.utils.Task;
 
@@ -11,7 +13,7 @@ public class ChangeFirstnameTask extends Task {
 	
 	private Person person;
 
-	public ChangeFirstnameTask(GinaManager manager, String title, Person person) {
+	public ChangeFirstnameTask(EventManager manager, String title, Person person) {
 		super(manager, title);
 		
 		this.person = person;

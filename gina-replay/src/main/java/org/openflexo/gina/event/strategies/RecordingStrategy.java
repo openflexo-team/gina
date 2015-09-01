@@ -6,7 +6,7 @@ import org.openflexo.gina.event.GinaEvent;
 import org.openflexo.gina.event.SystemEvent;
 import org.openflexo.gina.event.UserInteraction;
 import org.openflexo.gina.event.GinaEvent.KIND;
-import org.openflexo.gina.manager.GinaManager;
+import org.openflexo.gina.manager.GinaReplayManager;
 import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.replay.SystemEventTreeNode;
 import org.openflexo.replay.InteractionCycle;
@@ -16,18 +16,17 @@ import org.openflexo.replay.ScenarioNode;
 public class RecordingStrategy {
 	
 	private Scenario scenario;
-	private GinaManager manager;
+	private GinaReplayManager manager;
 
-	public RecordingStrategy(Scenario scenario, GinaManager manager) {
+	public RecordingStrategy(Scenario scenario, GinaReplayManager manager) {
 		super();
 		this.scenario = scenario;
 		this.manager = manager;
 	}
-	
-	public void eventPerformed(GinaEvent e) {
+
+	public void eventPerformed(GinaEvent e, Stack<GinaStackEvent> stack) {
 		GinaEvent origin = null, userOrigin = null;
-		
-		Stack<GinaStackEvent> stack = manager.getEventStack();
+
 		if (stack.size() > 1) {
 			origin = stack.get(stack.size() - 2).getEvent();
 			userOrigin = stack.firstElement().getEvent();
@@ -67,7 +66,7 @@ public class RecordingStrategy {
 		
 		// add as event or state depending of its origin
 		if (e.getKind() == KIND.USER_INTERACTION) {
-			InteractionCycle node = manager.getFactory().newInstance(InteractionCycle.class);
+			InteractionCycle node = manager.getModelFactory().newInstance(InteractionCycle.class);
 			node.addUserInteraction((UserInteraction) e);
 
 			//System.out.println(e);
@@ -80,7 +79,7 @@ public class RecordingStrategy {
 				InteractionCycle ic = (InteractionCycle) node;
 				ic.init(manager);
 
-				SystemEventTreeNode treeNode = manager.getFactory().newInstance(SystemEventTreeNode.class, (SystemEvent) e);
+				SystemEventTreeNode treeNode = manager.getModelFactory().newInstance(SystemEventTreeNode.class, (SystemEvent) e);
 				System.out.println(treeNode.getSystemEvent());
 
 				//if (ic.getSystemEventTree())

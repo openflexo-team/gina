@@ -12,9 +12,9 @@ public class ConcurrentTasksDifferentThreadController extends FIBController {
 	}
 	
 	public void startTask() {
-		Task task = new ChangeFirstnameTask(Case.getManager(), "Count task", ConcurrentTasksDifferentThreadCase.getPersonA());
+		Task task = new ChangeFirstnameTask(Case.getEventManager(), "Count task", ConcurrentTasksDifferentThreadCase.getPersonA());
 		Case.getTaskExecutor().execute(task);
-		Task task2 = new ChangeFirstnameTask(Case.getManager(), "Count task 2", ConcurrentTasksDifferentThreadCase.getPersonA());
+		Task task2 = new ChangeFirstnameTask(Case.getEventManager(), "Count task 2", ConcurrentTasksDifferentThreadCase.getPersonA());
 		Case.getTaskExecutor().execute(task2);
 	}
 
