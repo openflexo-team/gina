@@ -52,12 +52,12 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.listener.FIBActionListenerManager;
-import org.openflexo.fib.listener.GinaStackEvent;
 import org.openflexo.fib.model.FIBButton;
 import org.openflexo.fib.view.FIBWidgetView;
-import org.openflexo.gina.event.FIBEvent;
-import org.openflexo.gina.event.FIBEventFactory;
+import org.openflexo.gina.event.description.FIBEventFactory;
+import org.openflexo.gina.event.description.FIBMouseEventDescription;
+import org.openflexo.gina.event.description.EventDescription;
+import org.openflexo.gina.manager.GinaStackEvent;
 
 public class FIBButtonWidget extends FIBWidgetView<FIBButton, JButton, String> {
 
@@ -93,11 +93,12 @@ public class FIBButtonWidget extends FIBWidgetView<FIBButton, JButton, String> {
 		return false;
 	}
 	
-	public void executeEvent(FIBEvent e) {
+	@Override
+	public void executeEvent(EventDescription e) {
 		widgetExecuting = true;
 
 		switch(e.getAction()) {
-		case "clicked":
+		case FIBMouseEventDescription.CLICKED:
 			this.buttonClicked();
 			break;
 		}
@@ -115,13 +116,13 @@ public class FIBButtonWidget extends FIBWidgetView<FIBButton, JButton, String> {
 	}
 
 	public synchronized void buttonClicked() {
+		GinaStackEvent stackElement = GENotifier.raise(FIBEventFactory.getInstance().createMouseEvent(FIBMouseEventDescription.CLICKED));
+
 		if (logger.isLoggable(Level.FINE)) {
 			logger.fine("Button " + getWidget() + " has clicked");
 			logger.fine("Action: " + getWidget().getAction() + " valid=" + getWidget().getAction().isValid());
 			logger.fine("Data: " + getController().getDataObject());
 		}
-		
-		GinaStackEvent stack = actionPerformed(FIBEventFactory.getInstance().createMouseEvent("clicked"));
 
 		setData(getComponent().getIdentifier());
 		DataBinding<?> action = getWidget().getAction();
@@ -138,8 +139,8 @@ public class FIBButtonWidget extends FIBWidgetView<FIBButton, JButton, String> {
 		}
 		updateComponentsExplicitelyDeclaredAsDependant();
 		updateWidgetFromModel();
-		
-		stack.unstack();
+
+		stackElement.end();
 	}
 
 	@Override

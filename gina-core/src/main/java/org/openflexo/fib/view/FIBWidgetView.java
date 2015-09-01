@@ -68,13 +68,16 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.listener.FIBActionListener;
-import org.openflexo.fib.listener.GinaHandler;
-import org.openflexo.fib.listener.GinaStackEvent;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelObject;
 import org.openflexo.fib.model.FIBWidget;
-import org.openflexo.gina.event.FIBEvent;
+import org.openflexo.gina.event.GinaEvent.KIND;
+import org.openflexo.gina.event.GinaEventNotifier;
+import org.openflexo.gina.event.description.FIBEventDescription;
+import org.openflexo.gina.event.description.GenericEventPerformer;
+import org.openflexo.gina.event.description.EventDescription;
+import org.openflexo.gina.manager.GinaEventListener;
+import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.ToolBox;
 
@@ -84,7 +87,7 @@ import org.openflexo.toolbox.ToolBox;
  * @author sylvain
  */
 public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T> extends FIBView<M, J, T> implements FocusListener,
-		PropertyChangeListener /*, HasDependencyBinding*/{
+		PropertyChangeListener, GenericEventPerformer<FIBEventDescription> /*, HasDependencyBinding*/{
 
 	private static final Logger LOGGER = Logger.getLogger(FIBWidgetView.class.getPackage().getName());
 
@@ -113,6 +116,8 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 	private boolean eventListeningLocked;
 	
 	protected boolean widgetExecuting, widgetDisableUserEvent;
+	
+	protected GinaEventNotifier<FIBEventDescription> GENotifier;
 
 	// private DependingObjects dependingObjects;
 
@@ -124,6 +129,24 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 		eventListeningLocked = false;
 		widgetExecuting = false;
 		widgetDisableUserEvent = false;
+
+		GENotifier = new GinaEventNotifier<FIBEventDescription>(this.getController().getRecorderManager()) {
+
+			@Override
+			public KIND computeClass(FIBEventDescription e) {
+				if (!widgetUpdating && !widgetExecuting && !widgetDisableUserEvent)
+					return KIND.USER_INTERACTION;
+				else
+					return KIND.SYSTEM_EVENT;
+			}
+
+			@Override
+			public void setIdentity(FIBEventDescription e) {
+				((FIBEventDescription) e).setIdentity(getWidget().getBaseName(), getWidget().getName(), getWidget().getRootComponent().getUniqueID());
+			}
+			
+		};
+
 		// addBindingValueChangeListeners();
 		listenEnableValueChange();
 	}
@@ -163,24 +186,30 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 		return eventListeningLocked;
 	}
 	
-	public void executeEvent(FIBEvent e) {
+	@Override
+	public void executeEvent(EventDescription e) {}
+	
+	/*@Override
+	public boolean isMatching(GinaEvent e) {
+		return false;
 	}
 	
-	public synchronized GinaStackEvent actionPerformed(FIBEvent e) {
-		return actionPerformed(e, !widgetUpdating && !widgetExecuting && !widgetDisableUserEvent);
+	@Override
+	public GinaStackEvent eventPerformed(FIBEvent e) {
+		return eventPerformed(e, !widgetUpdating && !widgetExecuting && !widgetDisableUserEvent);
 	}
 	
-	public synchronized GinaStackEvent actionPerformed(FIBEvent e, boolean fromUserOrigin) {
-		e.setFromUser(fromUserOrigin);
+	public GinaStackEvent eventPerformed(FIBEvent e, boolean isUserInteraction) {
+		e.setUserInteraction(isUserInteraction);
 		
 		e.setIdentity(getWidget().getBaseName(), getWidget().getName(), getWidget().getRootComponent().getUniqueID());
 		if (!isListeningLocked())
-			for (FIBActionListener fl : getWidget().getFibListeners())
-	            fl.actionPerformed(e);
+			for (GinaEventListener fl : getWidget().getFibListeners())
+	            fl.eventPerformed(e);
 		
 		// create the stack element
 		return GinaHandler.getInstance().pushStackEvent(e);
-	}
+	}*/
 
 	// public void updateBindingValueChangeListeners() {
 	// System.out.println("++++++++++++++++++++++++ updateBindingValueChangeListeners(). Est-ce vraiment necessaire ?");

@@ -59,13 +59,13 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.listener.FIBActionListenerManager;
-import org.openflexo.fib.listener.GinaStackEvent;
 import org.openflexo.fib.model.FIBTextField;
 import org.openflexo.fib.view.FIBWidgetView;
-import org.openflexo.gina.event.FIBEvent;
-import org.openflexo.gina.event.FIBEventFactory;
-import org.openflexo.gina.event.FIBTextEvent;
+import org.openflexo.gina.event.description.FIBEventFactory;
+import org.openflexo.gina.event.description.FIBFocusEventDescription;
+import org.openflexo.gina.event.description.FIBTextEventDescription;
+import org.openflexo.gina.event.description.EventDescription;
+import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.toolbox.ToolBox;
 
 /**
@@ -135,8 +135,8 @@ public class FIBTextFieldWidget extends FIBWidgetView<FIBTextField, JTextField, 
 			public void insertUpdate(DocumentEvent e) {
 				GinaStackEvent stack = null;
 				try {
-					stack = actionPerformed(FIBEventFactory.getInstance().createTextEvent("text-inserted", e.getOffset(), e.getLength(),
-							e.getDocument().getText(e.getOffset(), e.getLength()), getValue()));
+					stack = GENotifier.raise(FIBEventFactory.getInstance().createTextEvent(FIBTextEventDescription.INSERTED, e.getOffset(), e.getLength(),
+							e.getDocument().getText(e.getOffset(), e.getLength()), textField.getText()));
 				} catch (BadLocationException e2) {
 					e2.printStackTrace();
 				}
@@ -148,7 +148,7 @@ public class FIBTextFieldWidget extends FIBWidgetView<FIBTextField, JTextField, 
 								char c = textField.getText().charAt(e.getOffset());
 								if (c == '´' || c == 'ˆ' || c == '˜' || c == '`' || c == '¨') {
 									if (stack != null)
-										stack.unstack();
+										stack.end();
 									return;
 								}
 							}
@@ -160,17 +160,17 @@ public class FIBTextFieldWidget extends FIBWidgetView<FIBTextField, JTextField, 
 				}
 				
 				if (stack != null)
-					stack.unstack();
+					stack.end();
 			}
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				GinaStackEvent stack = actionPerformed(FIBEventFactory.getInstance().createTextEvent("text-removed", e.getOffset(), e.getLength(),
+				GinaStackEvent stack = GENotifier.raise(FIBEventFactory.getInstance().createTextEvent(FIBTextEventDescription.REMOVED, e.getOffset(), e.getLength(),
 						"", getValue()));
 				if (!validateOnReturn && !widgetUpdating) {
 					updateModelFromWidget();
 				}
-				stack.unstack();
+				stack.end();
 			}
 		});
 		textField.addActionListener(new ActionListener() {
@@ -205,29 +205,36 @@ public class FIBTextFieldWidget extends FIBWidgetView<FIBTextField, JTextField, 
 
 	@Override
 	public void focusGained(FocusEvent arg0) {
+		GinaStackEvent stack = GENotifier.raise(
+				FIBEventFactory.getInstance().createFocusEvent(FIBFocusEventDescription.FOCUS_GAINED));
+		
 		super.focusGained(arg0);
 		textField.selectAll();
 
-		actionPerformed(FIBEventFactory.getInstance().createFocusEvent("focus-gained")).unstack();
+		stack.end();
 	}
 	
 	@Override
 	public void focusLost(FocusEvent arg0) {
+		GinaStackEvent stack = GENotifier.raise(
+				FIBEventFactory.getInstance().createFocusEvent(FIBFocusEventDescription.FOCUS_LOST));
+		
 		super.focusLost(arg0);
 
-		actionPerformed(FIBEventFactory.getInstance().createFocusEvent("focus-lost")).unstack();
+		stack.end();
 	}
 
 	public Class getDefaultType() {
 		return String.class;
 	}
 	
-	public void executeEvent(FIBEvent e) {
+	@Override
+	public void executeEvent(EventDescription e) {
 		widgetExecuting = true;
 
 		switch(e.getAction()) {
-		case "text-inserted": {
-			FIBTextEvent ev = (FIBTextEvent) e;
+		case FIBTextEventDescription.INSERTED: {
+			FIBTextEventDescription ev = (FIBTextEventDescription) e;
 			String text = textField.getText();
 			if (text.length() >= ev.getPosition())
 			{
@@ -236,17 +243,17 @@ public class FIBTextFieldWidget extends FIBWidgetView<FIBTextField, JTextField, 
 			}
 			break;
 		}
-		case "text-removed": {
-			FIBTextEvent ev = (FIBTextEvent) e;
+		case FIBTextEventDescription.REMOVED: {
+			FIBTextEventDescription ev = (FIBTextEventDescription) e;
 			String text = textField.getText();
 			if (text.length() >= ev.getPosition() + ev.getLength())
 				textField.setText(text.substring(0, ev.getPosition()) + text.substring(ev.getPosition() + ev.getLength()));
 			break;
 		}
-		case "focus-gained":
+		case FIBFocusEventDescription.FOCUS_GAINED:
 			textField.requestFocus();
 			break;
-		case "focus-lost":
+		case FIBFocusEventDescription.FOCUS_LOST:
 			textField.getParent().requestFocus();
 			break;
 		}

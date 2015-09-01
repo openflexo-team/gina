@@ -54,6 +54,9 @@ import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBColor;
 import org.openflexo.fib.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.fib.view.FIBWidgetView;
+import org.openflexo.gina.event.description.FIBEventFactory;
+import org.openflexo.gina.event.description.FIBValueEventDescription;
+import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.swing.ColorSelector;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
@@ -123,7 +126,12 @@ public class FIBColorWidget extends FIBWidgetView<FIBColor, ColorSelector, Color
 
 	@Override
 	public void fireApplyPerformed() {
+		GinaStackEvent stack = GENotifier.raise(FIBEventFactory.getInstance().createValueEvent(
+				FIBValueEventDescription.CHANGED, getValue().getRGB()));
+		
 		updateModelFromWidget();
+		
+		stack.end();
 	}
 
 	@Override

@@ -84,6 +84,8 @@ import org.openflexo.fib.view.widget.browser.FIBBrowserCellRenderer;
 import org.openflexo.fib.view.widget.browser.FIBBrowserModel;
 import org.openflexo.fib.view.widget.browser.FIBBrowserModel.BrowserCell;
 import org.openflexo.fib.view.widget.browser.FIBBrowserWidgetFooter;
+import org.openflexo.gina.event.description.FIBEventFactory;
+import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.toolbox.ToolBox;
 
 /**
@@ -797,6 +799,29 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 
 	@Override
 	public synchronized void valueChanged(TreeSelectionEvent e) {
+		
+		if (e.getNewLeadSelectionPath() != null && e.getNewLeadSelectionPath().getLastPathComponent() != null
+				&& e.getNewLeadSelectionPath().getLastPathComponent() instanceof BrowserCell) {
+			for (TreePath tp : e.getPaths()) {
+				System.out.println("PATH : " + tp.getPath());
+				/*if (tp.getLastPathComponent() instanceof BrowserCell) {
+					BrowserCell cell = (BrowserCell) tp.getLastPathComponent();
+					system.out.println(cell.);
+				}*/
+				
+				/*for (Object to : tp.getPath()) {
+					if (to instanceof BrowserCell) {
+						BrowserCell cell = (BrowserCell) to;
+						
+						System.out.println();
+					}
+				}*/
+			}
+		}
+		
+		GinaStackEvent stack = GENotifier.raise(
+				FIBEventFactory.getInstance().createMouseEvent("selected") );
+		
 
 		if (selection == null) {
 			selection = new ArrayList<T>();
@@ -832,7 +857,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 		// logger.info("BrowserModel, selected object is now "+selectedObject);
 
 		// System.out.println("selectedObject = " + selectedObject);
-		// System.out.println("selection = " + selection);
+		System.out.println("selection = " + newSelection);
 
 		if (newSelectedObject == null) {
 			setSelected(null);
@@ -881,6 +906,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 		}
 
 		_footer.setFocusedObject(newSelectedObject);
-
+		
+		stack.end();
 	}
 }

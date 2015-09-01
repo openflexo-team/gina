@@ -62,12 +62,12 @@ import javax.swing.event.ChangeListener;
 
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.listener.GinaStackEvent;
 import org.openflexo.fib.model.FIBNumber;
 import org.openflexo.fib.view.FIBWidgetView;
-import org.openflexo.gina.event.FIBChangeValueEvent;
-import org.openflexo.gina.event.FIBEvent;
-import org.openflexo.gina.event.FIBEventFactory;
+import org.openflexo.gina.event.description.FIBEventFactory;
+import org.openflexo.gina.event.description.FIBValueEventDescription;
+import org.openflexo.gina.event.description.EventDescription;
+import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.toolbox.ToolBox;
 
@@ -125,12 +125,12 @@ public abstract class FIBNumberWidget<T extends Number> extends FIBWidgetView<FI
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				if (e.getSource() == valueChooser && !ignoreTextfieldChanges) {
-					GinaStackEvent stack = FIBNumberWidget.this.actionPerformed(FIBEventFactory.getInstance().createChangeValueEvent(
-							"change", FIBNumberWidget.this.valueChooser.getValue()));
+					GinaStackEvent stack = FIBNumberWidget.this.GENotifier.raise(FIBEventFactory.getInstance().createValueEvent(
+							FIBValueEventDescription.CHANGED, FIBNumberWidget.this.valueChooser.getValue()));
 					
 					updateModelFromWidget();
 					
-					stack.unstack();
+					stack.end();
 				}
 			}
 		});
@@ -171,20 +171,43 @@ public abstract class FIBNumberWidget<T extends Number> extends FIBWidgetView<FI
 		}
 	}
 	
-	public void executeEvent(FIBEvent e) {
+	@Override
+	public void executeEvent(EventDescription e) {
 		widgetExecuting = true;
 
-		switch(e.getAction()) {
-		case "change": {
-			FIBChangeValueEvent ev = (FIBChangeValueEvent) e;
-			//T value = Integer.parseInt(ev.getValue());
-			valueChooser.setValue(Integer.parseInt(ev.getValue()));
+		switch (e.getAction()) {
+		case FIBValueEventDescription.CHANGED: {
+			T value = parseValue(e.getValue());
+			System.out.println(value);
+			valueChooser.setValue(value);
 			break;
-			}
+		}
 		}
 		
 		widgetExecuting = false;
 	}
+	
+	public abstract T parseValue(String str);
+	
+	/*@Override
+	public boolean isMatching(GinaEvent e) {
+
+		switch (e.getAction()) {
+		case FIBValueEvent.CHANGED: {
+			try {
+				Number number = NumberFormat.getInstance().parse(e.getAbsoluteValue());
+				@SuppressWarnings("unchecked")
+				T value = (T) number;
+				return (value == getValue());
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+			break;
+		}
+		}
+		
+		return false;
+	}*/
 
 	@Override
 	public void focusGained(FocusEvent event) {
@@ -318,6 +341,11 @@ public abstract class FIBNumberWidget<T extends Number> extends FIBWidgetView<FI
 		public int getDefaultColumns() {
 			return 4;
 		}
+
+		@Override
+		public Byte parseValue(String str) {
+			return Byte.parseByte(str);
+		}
 	}
 
 	public static class FIBShortWidget extends FIBNumberWidget<Short> {
@@ -350,6 +378,11 @@ public abstract class FIBNumberWidget<T extends Number> extends FIBWidgetView<FI
 		@Override
 		public int getDefaultColumns() {
 			return 6;
+		}
+
+		@Override
+		public Short parseValue(String str) {
+			return Short.parseShort(str);
 		}
 	}
 
@@ -387,6 +420,11 @@ public abstract class FIBNumberWidget<T extends Number> extends FIBWidgetView<FI
 		public int getDefaultColumns() {
 			return 8;
 		}
+
+		@Override
+		public Integer parseValue(String str) {
+			return Integer.parseInt(str);
+		}
 	}
 
 	public static class FIBLongWidget extends FIBNumberWidget<Long> {
@@ -419,6 +457,11 @@ public abstract class FIBNumberWidget<T extends Number> extends FIBWidgetView<FI
 		@Override
 		public int getDefaultColumns() {
 			return 10;
+		}
+
+		@Override
+		public Long parseValue(String str) {
+			return Long.parseLong(str);
 		}
 	}
 
@@ -453,6 +496,11 @@ public abstract class FIBNumberWidget<T extends Number> extends FIBWidgetView<FI
 		public int getDefaultColumns() {
 			return 10;
 		}
+
+		@Override
+		public Float parseValue(String str) {
+			return Float.parseFloat(str);
+		}
 	}
 
 	public static class FIBDoubleWidget extends FIBNumberWidget<Double> {
@@ -485,6 +533,11 @@ public abstract class FIBNumberWidget<T extends Number> extends FIBWidgetView<FI
 		@Override
 		public int getDefaultColumns() {
 			return 10;
+		}
+
+		@Override
+		public Double parseValue(String str) {
+			return Double.parseDouble(str);
 		}
 	}
 

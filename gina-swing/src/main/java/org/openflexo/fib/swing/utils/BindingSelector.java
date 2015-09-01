@@ -90,6 +90,10 @@ import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
 import org.openflexo.fib.swing.logging.FlexoLoggingViewer;
+import org.openflexo.gina.event.GinaEvent.KIND;
+import org.openflexo.gina.event.GinaEventNotifier;
+import org.openflexo.gina.event.description.EventDescription;
+import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.icon.UtilsIconLibrary;
 import org.openflexo.logging.FlexoLoggingManager;
 import org.openflexo.rm.Resource;
@@ -157,6 +161,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 	private Color defaultForeground;
 
 	private Color defaultSelectedColor;
+	
+	protected GinaEventNotifier GENotifier;
 
 	public BindingSelector(DataBinding<?> editedObject) {
 		this(editedObject, -1);
@@ -164,17 +170,40 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 
 	public BindingSelector(DataBinding<?> editedObject, int cols) {
 		super(null, cols);
+		
+		GENotifier = new GinaEventNotifier(null) {
+
+			@Override
+			public KIND computeClass(EventDescription e) {
+				return KIND.UNKNOWN;
+			}
+
+			@Override
+			public void setIdentity(EventDescription e) {
+				if (e instanceof EventDescription) {
+					//((FIBEvent) e).setIdentity(getWidget().getBaseName(), getWidget().getName(), getWidget().getRootComponent().getUniqueID());
+				}
+			}
+			
+		};
+		
 		setFocusable(true);
 		getTextField().setFocusable(true);
 		getTextField().setEditable(true);
 		getTextField().addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent focusEvent) {
+				GinaStackEvent stackElement = GENotifier.notifyMethod();
+
 				KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(tabDispatcher);
+				
+				stackElement.end();
 			}
 
 			@Override
 			public void focusLost(FocusEvent focusEvent) {
+				GinaStackEvent stackElement = GENotifier.notifyMethod();
+
 				KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(tabDispatcher);
 				Component opposite = focusEvent.getOppositeComponent();
 				if (LOGGER.isLoggable(Level.FINER)) {
@@ -188,14 +217,18 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 						apply();
 					}
 				}
+				
+				stackElement.end();
 			}
 		});
 		shortcutsKeyAdapter = new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
+				GinaStackEvent stackElement = GENotifier.notifyMethod();
 
 				// if command-key is pressed, do not open popup
 				if (e.isAltDown() || e.isAltGraphDown() || e.isControlDown() || e.isMetaDown()) {
+					stackElement.end();
 					return;
 				}
 
@@ -268,27 +301,37 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 						e.consume();
 						}*/
 				}
+				
+				stackElement.end();
 			}
 		};
 
 		documentListener = new DocumentListener() {
 			@Override
 			public void changedUpdate(DocumentEvent e) {
+				GinaStackEvent stackElement = GENotifier.notifyMethod();
 				textEdited(e);
+				stackElement.end();
 			}
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {
+				GinaStackEvent stackElement = GENotifier.notifyMethod();
 				textEdited(e);
+				stackElement.end();
 			}
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
+				GinaStackEvent stackElement = GENotifier.notifyMethod();
 				textEdited(e);
+				stackElement.end();
 			}
 
 			public void textEdited(DocumentEvent e) {
+				GinaStackEvent stackElement = GENotifier.notifyMethod();
 				if (isProgrammaticalySet()) {
+					stackElement.end();
 					return;
 				}
 				String textValue = getTextField().getText();
@@ -298,6 +341,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 				} finally {
 					textIsEditing = false;
 				}
+				stackElement.end();
 			}
 		};
 
@@ -681,6 +725,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 	}
 
 	public void activateCompoundBindingMode() {
+		GinaStackEvent stackElement = GENotifier.notifyMethod();
 
 		if (LOGGER.isLoggable(Level.FINE)) {
 			LOGGER.fine("ActivateCompoundBindingMode() getEditedObject()=" + getEditedObject() + " editionMode=" + editionMode
@@ -704,9 +749,13 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			}
 		}
 		editionMode = EditionMode.COMPOUND_BINDING;
+		
+		stackElement.end();
 	}
 
 	public void activateNormalBindingMode() {
+		GinaStackEvent stackElement = GENotifier.notifyMethod();
+		
 		if (LOGGER.isLoggable(Level.FINE)) {
 			LOGGER.fine("activateNormalBindingMode()");
 		}
@@ -729,9 +778,13 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			}
 		}
 		editionMode = EditionMode.NORMAL_BINDING;
+		
+		stackElement.end();
 	}
 
 	public void activateBindingExpressionMode(/*Expression bindingExpression*/) {
+		GinaStackEvent stackElement = GENotifier.notifyMethod();
+		
 		if (LOGGER.isLoggable(Level.FINE)) {
 			LOGGER.fine("activateBindingExpressionMode()");
 		}
@@ -753,6 +806,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 				updateCustomPanel(getEditedObject());
 			}
 		}
+		
+		stackElement.end();
 	}
 
 	@Override
@@ -956,6 +1011,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
+		GinaStackEvent stackElement = GENotifier.notifyMethod();
+		
 		if (evt.getPropertyName().equals(BindingModelChanged.BINDING_MODEL_CHANGED)) {
 			// System.out.println("!!!!!!!!!!!!!! propertyChange() " + evt.getPropertyName() + " evt=" + evt + " called in " + this);
 
@@ -970,6 +1027,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			refreshBindingDefinitionType();
 			}*/
 
+		stackElement.end();
 	}
 
 	/*public void setCustomBindingModel(BindingModel aBindingModel)
@@ -1218,6 +1276,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 
 	@Override
 	public void apply() {
+		GinaStackEvent stackElement = GENotifier.notifyMethod();
+
 		if (_selectorPanel != null) {
 			_selectorPanel.willApply();
 		}
@@ -1242,10 +1302,14 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			closePopup();
 		}
 		super.apply();
+		
+		stackElement.end();
 	}
 
 	@Override
 	public void cancel() {
+		GinaStackEvent stackElement = GENotifier.notifyMethod();
+
 		if (_revertBindingValue != null) {
 			if (_revertBindingValue.getOwner() != null && _revertBindingValue.isValid()) {
 				setEditedObject(_revertBindingValue);
@@ -1253,6 +1317,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		}
 		closePopup();
 		super.cancel();
+		
+		stackElement.end();
 	}
 
 	@Override
@@ -1461,6 +1527,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		Resource loggingFile = ResourceLocator.locateResource("Config/logging_INFO.properties");
 		FlexoLoggingManager.initialize(-1, true, loggingFile, Level.INFO, null);
 		final JDialog dialog = new JDialog((Frame) null, false);
+		
+		// TODO GinaManager.getInstance().setup();
 
 		Bindable testBindable = new TestBindable();
 

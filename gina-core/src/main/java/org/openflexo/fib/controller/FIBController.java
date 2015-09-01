@@ -73,9 +73,6 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.fib.FIBLibrary;
-import org.openflexo.fib.listener.FIBActionListener;
-import org.openflexo.fib.listener.FIBActionListenerManager;
-import org.openflexo.fib.listener.GinaHandler;
 import org.openflexo.fib.model.FIBBrowser;
 import org.openflexo.fib.model.FIBButton;
 import org.openflexo.fib.model.FIBCheckBox;
@@ -136,8 +133,12 @@ import org.openflexo.fib.view.widget.FIBReferencedComponentWidget;
 import org.openflexo.fib.view.widget.FIBTableWidget;
 import org.openflexo.fib.view.widget.FIBTextAreaWidget;
 import org.openflexo.fib.view.widget.FIBTextFieldWidget;
-import org.openflexo.gina.event.FIBEvent;
-import org.openflexo.gina.event.FIBEventFactory;
+import org.openflexo.gina.event.description.FIBEventDescription;
+import org.openflexo.gina.event.description.FIBEventFactory;
+import org.openflexo.gina.manager.GinaEventListener;
+import org.openflexo.gina.manager.GinaManager;
+import org.openflexo.gina.manager.Registerable;
+import org.openflexo.gina.manager.URID;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
 import org.openflexo.localization.LocalizedDelegate;
@@ -156,7 +157,7 @@ import org.openflexo.toolbox.ToolBox;
  * 
  */
 public class FIBController /*extends Observable*/implements BindingEvaluationContext, Observer, PropertyChangeListener,
-		HasPropertyChangeSupport {
+		HasPropertyChangeSupport, Registerable {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBController.class.getPackage().getName());
 
@@ -169,6 +170,9 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 	private FIBWidgetView<?, ?, ?> focusedWidget;
 
 	private LocalizedDelegate parentLocalizer = null;
+	
+	private GinaManager recorderManager = null;
+	private URID urid = null;
 
 	private FIBViewFactory viewFactory;
 
@@ -195,8 +199,6 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 		selectionListeners = new Vector<FIBSelectionListener>();
 		mouseClickListeners = new Vector<FIBMouseClickListener>();
 		viewFactory = new DefaultFIBViewFactory();
-		
-		GinaHandler.getInstance().register(this);
 	}
 
 	public void delete() {
@@ -214,18 +216,32 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 			dataObject = null;
 			deleted = true;
 			getPropertyChangeSupport().firePropertyChange(DELETED, false, true);
-			
-			GinaHandler.getInstance().unregister(this);
+		}
+	}
+
+	public GinaManager getRecorderManager() {
+		return recorderManager;
+	}
+
+	public void setRecorderManager(GinaManager recorderManager) {
+		if (this.recorderManager != null) {
+			this.recorderManager.unregister(this);
+			this.urid = null;
+		}
+		this.recorderManager = recorderManager;
+		if (this.recorderManager != null) {
+			this.urid = this.recorderManager.register(this.getClass(), this);
 		}
 	}
 	
-	public void actionPerformed(FIBEvent e) {
-		e.setIdentity(this.getClass().getSimpleName(), "<CONTROLLER>", this.getRootComponent().getUniqueID());
-		
-		if (FIBActionListenerManager.getInstance().isEnabled())
-			for(FIBActionListener l : FIBActionListenerManager.getInstance().getListeners()) {
-				l.actionPerformed(e);
-			}
+	public URID getURID() {
+		return this.urid;
+	}
+	
+	public String getBaseIdentifier() {
+		if (rootComponent == null)
+			return this.getClass().getName();
+		return rootComponent.getBaseIdentifier();
 	}
 
 	public boolean isDeleted() {
@@ -368,14 +384,19 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 			getPropertyChangeSupport().firePropertyChange("data", oldDataObject, anObject);
 		}
 	}
-
+	
 	public static FIBController instanciateController(FIBComponent fibComponent, LocalizedDelegate parentLocalizer) {
+		return instanciateController(fibComponent, parentLocalizer, null);
+	}
+
+	public static FIBController instanciateController(FIBComponent fibComponent, LocalizedDelegate parentLocalizer, GinaManager recorderManager) {
 		FIBController returned = null;
 		// System.out.println("Instanciate controller for component: " + fibComponent);
 		/*if (fibComponent != null) {
 			fibComponent.getFactory().stringRepresentation(fibComponent);
 		}*/
 		if (fibComponent.getControllerClass() != null) {
+			
 			try {
 				// System.out.println("Class=" + fibComponent.getControllerClass());
 				Constructor<? extends FIBController> c = fibComponent.getControllerClass().getConstructor(FIBComponent.class);
@@ -385,7 +406,6 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 			} catch (SecurityException e) {
 				LOGGER.warning("SecurityException: Could not instanciate " + fibComponent.getControllerClass());
 			} catch (NoSuchMethodException e) {
-				// Thread.dumpStack();
 				LOGGER.warning("NoSuchMethodException: Could not instanciate " + fibComponent.getControllerClass());
 			} catch (IllegalArgumentException e) {
 				LOGGER.warning("IllegalArgumentException: Could not instanciate " + fibComponent.getControllerClass());
@@ -401,6 +421,11 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 			returned = new FIBController(fibComponent);
 		}
 		returned.setParentLocalizer(parentLocalizer);
+		
+		if (recorderManager != null) {
+			returned.setRecorderManager(recorderManager);
+		}
+		
 		return returned;
 	}
 

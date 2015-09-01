@@ -47,13 +47,12 @@ import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.listener.GinaStackEvent;
 import org.openflexo.fib.model.FIBCheckBox;
 import org.openflexo.fib.view.FIBWidgetView;
-import org.openflexo.gina.event.FIBChangeValueEvent;
-import org.openflexo.gina.event.FIBEvent;
-import org.openflexo.gina.event.FIBEventFactory;
-import org.openflexo.gina.event.FIBTextEvent;
+import org.openflexo.gina.event.description.FIBEventFactory;
+import org.openflexo.gina.event.description.FIBValueEventDescription;
+import org.openflexo.gina.event.description.EventDescription;
+import org.openflexo.gina.manager.GinaStackEvent;
 
 /**
  * Represents a widget able to edit a boolean, a Boolean or a String object
@@ -86,12 +85,12 @@ public class FIBCheckBoxWidget extends FIBWidgetView<FIBCheckBox, JCheckBox, Boo
 			checkbox.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					GinaStackEvent stack = FIBCheckBoxWidget.this.actionPerformed(FIBEventFactory.getInstance().createChangeValueEvent(
-							getValue() ? "unchecked" : "checked", FIBCheckBoxWidget.this.checkbox.isSelected()));
+					GinaStackEvent stack = FIBCheckBoxWidget.this.GENotifier.raise(FIBEventFactory.getInstance().createValueEvent(
+							getValue() ? FIBValueEventDescription.UNCHECKED : FIBValueEventDescription.CHECKED, FIBCheckBoxWidget.this.checkbox.isSelected()));
 					
 					updateModelFromWidget();
 					
-					stack.unstack();
+					stack.end();
 				}
 			});
 		}
@@ -104,21 +103,20 @@ public class FIBCheckBoxWidget extends FIBWidgetView<FIBCheckBox, JCheckBox, Boo
 		updateFont();
 	}
 	
-	public void executeEvent(FIBEvent e) {
-		
+	@Override
+	public void executeEvent(EventDescription e) {
 		widgetExecuting = true;
 
 		switch(e.getAction()) {
-		case "checked":
+		case FIBValueEventDescription.CHECKED:
 			checkbox.setSelected(true);
 			break;
-		case "unchecked":
+		case FIBValueEventDescription.UNCHECKED:
 			checkbox.setSelected(false);
 			break;
 		}
 		
 		widgetExecuting = false;
-
 	}
 
 	@Override

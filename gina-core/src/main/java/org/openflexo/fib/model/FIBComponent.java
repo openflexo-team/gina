@@ -63,8 +63,9 @@ import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.connie.type.WilcardTypeImpl;
 import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.listener.GinaHandler;
 import org.openflexo.fib.view.FIBView;
+import org.openflexo.gina.manager.Registerable;
+import org.openflexo.gina.manager.URID;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
@@ -99,7 +100,7 @@ import org.openflexo.toolbox.StringUtils;
 		@Import(FIBCheckboxList.class), @Import(FIBDropDown.class), @Import(FIBList.class), @Import(FIBRadioButtonList.class),
 		@Import(FIBNumber.class), @Import(FIBReferencedComponent.class), @Import(FIBTable.class), @Import(FIBEditor.class),
 		@Import(FIBEditorPane.class), @Import(FIBTextArea.class), @Import(FIBTextField.class) })
-public abstract interface FIBComponent extends FIBModelObject, TreeNode {
+public abstract interface FIBComponent extends FIBModelObject, TreeNode, Registerable {
 
 	public static enum VerticalScrollBarPolicy {
 		VERTICAL_SCROLLBAR_AS_NEEDED {
@@ -557,10 +558,18 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 		
 		public String getUniqueID() {
 			if (getDirectUniqueID() == null) {
-				setUniqueID(GinaHandler.getInstance().generateUniqueID(this));
+				setUniqueID(/*GinaHandlerTemp.getInstance().generateUniqueID(this)*/"");
 				System.out.println(getDirectUniqueID());
 			}
 			return getDirectUniqueID();
+		}
+		
+		public URID getURID() {
+			return null;
+		}
+		
+		public String getBaseIdentifier() {
+			return this.getBaseName() + ":" + this.getName();
 		}
 
 		@Override

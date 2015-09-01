@@ -56,9 +56,9 @@ import org.jdom2.JDOMException;
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelFactory;
+import org.openflexo.gina.manager.GinaManager;
 import org.openflexo.model.exceptions.InvalidDataException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.replay.GinaRecorderManager;
 import org.openflexo.rm.Resource;
 
 final public class FIBLibrary {
@@ -93,7 +93,7 @@ final public class FIBLibrary {
 		if (_current == null) {
 			createInstance();
 			
-			GinaRecorderManager.getInstance().setup();
+			// TODO GinaManager.getInstance().setup();
 		}
 		return _current;
 	}

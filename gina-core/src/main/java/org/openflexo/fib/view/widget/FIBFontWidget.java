@@ -53,6 +53,9 @@ import javax.swing.JPanel;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBFont;
 import org.openflexo.fib.view.FIBWidgetView;
+import org.openflexo.gina.event.description.FIBEventFactory;
+import org.openflexo.gina.event.description.FIBValueEventDescription;
+import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 import org.openflexo.swing.FontSelector;
@@ -154,7 +157,12 @@ public class FIBFontWidget extends FIBWidgetView<FIBFont, FontSelector, Font> im
 
 	@Override
 	public void fireApplyPerformed() {
+		GinaStackEvent stack = GENotifier.raise(FIBEventFactory.getInstance().createValueEvent(
+				FIBValueEventDescription.CHANGED, getValue().getFontName()));
+		
 		updateModelFromWidget();
+		
+		stack.end();
 	}
 
 	@Override

@@ -80,15 +80,21 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.controller.FIBSelectable;
-import org.openflexo.fib.listener.GinaStackEvent;
 import org.openflexo.fib.model.FIBTable;
 import org.openflexo.fib.model.FIBTableAction;
 import org.openflexo.fib.view.FIBWidgetView;
 import org.openflexo.fib.view.widget.table.FIBTableActionListener;
 import org.openflexo.fib.view.widget.table.FIBTableModel;
 import org.openflexo.fib.view.widget.table.FIBTableWidgetFooter;
-import org.openflexo.gina.event.FIBEvent;
-import org.openflexo.gina.event.FIBEventFactory;
+import org.openflexo.gina.event.description.FIBEventDescription;
+import org.openflexo.gina.event.description.FIBEventFactory;
+import org.openflexo.gina.event.description.FIBFocusEventDescription;
+import org.openflexo.gina.event.description.FIBSelectionEventDescription;
+import org.openflexo.gina.event.description.FIBTextEventDescription;
+import org.openflexo.gina.event.description.EventDescription;
+import org.openflexo.gina.event.description.item.DescriptionIntegerItem;
+import org.openflexo.gina.event.description.item.DescriptionItem;
+import org.openflexo.gina.manager.GinaStackEvent;
 
 /**
  * Widget allowing to display/edit a list of values
@@ -199,14 +205,24 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 	    return _label;
 	}*/
 	
-	public void executeEvent(FIBEvent e) {
+	@Override
+	public void executeEvent(EventDescription e) {
 		widgetExecuting = true;
 
 		switch(e.getAction()) {
-		case "selected":
-			System.out.println("Hello :)");
-			_table.setRowSelectionInterval(0, 0);
+		case FIBSelectionEventDescription.SELECTED: {
+			FIBSelectionEventDescription se = (FIBSelectionEventDescription) e;
+			for(DescriptionItem item : se.getValues()) {
+				if (item instanceof DescriptionIntegerItem) {
+					DescriptionIntegerItem intItem = (DescriptionIntegerItem) item;
+					if (item.getAction().equals(FIBSelectionEventDescription.SELECTED))
+						getListSelectionModel().addSelectionInterval(intItem.getValue(), intItem.getValue());;
+						if (item.getAction().equals(FIBSelectionEventDescription.DESELECTED))
+						getListSelectionModel().removeSelectionInterval(intItem.getValue(), intItem.getValue());;
+				}
+			}
 			break;
+		}
 		}
 		
 		widgetExecuting = false;
@@ -637,18 +653,17 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 
-		GinaStackEvent stack = actionPerformed(FIBEventFactory.getInstance().createSelectionEvent("selected", e.getFirstIndex(), e.getLastIndex()) );
-
 		if (!(getTableModel().getValues() != null && getTableModel().getValues().size() > 0)) {
-			stack.unstack();
 			return;
 		}
 
 		// Ignore extra messages.
 		if (e.getValueIsAdjusting()) {
-			stack.unstack();
 			return;
 		}
+		
+		GinaStackEvent stack = GENotifier.raise(
+				FIBEventFactory.getInstance().createSelectionEvent(getListSelectionModel(), e.getFirstIndex(), e.getLastIndex()) );
 		
 		widgetDisableUserEvent = true;
 
@@ -723,7 +738,7 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 		
 		widgetDisableUserEvent = false;
 
-		stack.unstack();
+		stack.end();
 	}
 
 	private boolean ignoreNotifications = false;

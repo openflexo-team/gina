@@ -59,6 +59,12 @@ import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.controller.FIBSelectable;
 import org.openflexo.fib.model.FIBList;
+import org.openflexo.gina.event.description.FIBEventFactory;
+import org.openflexo.gina.event.description.FIBSelectionEventDescription;
+import org.openflexo.gina.event.description.EventDescription;
+import org.openflexo.gina.event.description.item.DescriptionIntegerItem;
+import org.openflexo.gina.event.description.item.DescriptionItem;
+import org.openflexo.gina.manager.GinaStackEvent;
 
 public class FIBListWidget<T> extends FIBMultipleValueWidget<FIBList, JList, T, T> implements FIBSelectable<T> {
 
@@ -183,6 +189,35 @@ public class FIBListWidget<T> extends FIBMultipleValueWidget<FIBList, JList, T, 
 		}
 		return (FIBListModel) multipleValueModel;
 	}*/
+	
+	@Override
+	public void executeEvent(EventDescription e) {
+		widgetExecuting = true;
+		System.out.println("Execute");
+
+		switch(e.getAction()) {
+		case FIBSelectionEventDescription.SELECTED: {
+			FIBSelectionEventDescription se = (FIBSelectionEventDescription) e;
+
+			for(DescriptionItem item : se.getValues()) {
+				if (item instanceof DescriptionIntegerItem) {
+					DescriptionIntegerItem intItem = (DescriptionIntegerItem) item;
+					if (item.getAction().equals(FIBSelectionEventDescription.SELECTED))
+						getListSelectionModel().addSelectionInterval(intItem.getValue(), intItem.getValue());
+					if (item.getAction().equals(FIBSelectionEventDescription.DESELECTED))
+						getListSelectionModel().removeSelectionInterval(intItem.getValue(), intItem.getValue());
+				}
+			}
+			
+			_list.revalidate();
+			_list.repaint();
+			break;
+		}
+		}
+		
+		System.out.println("Execute end");
+		widgetExecuting = false;
+	}
 
 	private FIBListModel oldListModel = null;
 
@@ -275,6 +310,10 @@ public class FIBListWidget<T> extends FIBMultipleValueWidget<FIBList, JList, T, 
 			if (e.getValueIsAdjusting()) {
 				return;
 			}
+			
+			GinaStackEvent stack = GENotifier.raise(
+					FIBEventFactory.getInstance().createSelectionEvent(getListSelectionModel(), e.getFirstIndex(), e.getLastIndex() ));
+
 
 			if (widgetUpdating) {
 				return;
@@ -334,6 +373,7 @@ public class FIBListWidget<T> extends FIBMultipleValueWidget<FIBList, JList, T, 
 			LOGGER.fine((isFocused() ? "LEADER" : "SECONDARY") + " Selected is " + selectedObject);
 			LOGGER.fine((isFocused() ? "LEADER" : "SECONDARY") + " Selection is " + selection);
 
+			stack.end();
 		}
 
 		private boolean ignoreNotifications = false;
