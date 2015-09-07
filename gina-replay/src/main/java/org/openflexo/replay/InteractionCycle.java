@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.openflexo.connie.DataBinding;
-import org.openflexo.gina.manager.GinaReplayManager;
 import org.openflexo.gina.event.GinaEvent;
 import org.openflexo.gina.event.SystemEvent;
 import org.openflexo.gina.event.UserInteraction;

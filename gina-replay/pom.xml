@@ -21,6 +21,11 @@
             <groupId>org.openflexo</groupId>
             <artifactId>pamela-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.openflexo</groupId>
+            <artifactId>gina-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 		<dependency>
             <groupId>org.openflexo</groupId>
             <artifactId>gina-events</artifactId>

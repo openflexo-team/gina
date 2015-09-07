@@ -13,11 +13,11 @@ import javax.swing.SwingUtilities;
 import org.apache.commons.io.IOUtils;
 import org.openflexo.gina.event.GinaEvent;
 import org.openflexo.gina.event.GinaEvent.KIND;
+import org.openflexo.gina.event.InvalidRecorderStateException;
 import org.openflexo.gina.event.SystemEvent;
 import org.openflexo.gina.event.UserInteraction;
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.manager.GinaEventListener;
-import org.openflexo.gina.manager.GinaReplayManager;
 import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.gina.event.strategies.RecordingStrategy;
 import org.openflexo.gina.event.strategies.CheckingStrategy;
@@ -193,7 +193,7 @@ public class GinaReplay implements GinaEventListener {
 			GinaEvent matching = findMatchingEvent(nonUserInteractions, e);
 
 			if (matching == null) {
-				throw new InvalidRecorderStateException("No matching state", node, e);
+				throw new InvalidRecorderStateException("No matching state"/*, node*/, e);
 			}
 			
 			//e.checkMatchingEvent(matching);
@@ -248,6 +248,10 @@ public class GinaReplay implements GinaEventListener {
 	}
 	
 	public void startRecording() {
+		if (scenario.size() == 0) {
+			// TODO
+		}
+
 		this.resumeRecording();
 	}
 	

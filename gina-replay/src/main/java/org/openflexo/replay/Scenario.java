@@ -55,6 +55,8 @@ public interface Scenario extends ScenarioNode {
 	
 	public boolean eof();
 	
+	public int size();
+	
 	public ScenarioNode getNextNode();
 	
 	public ScenarioNode getNodeByUserInteraction(UserInteraction userOrigin);
@@ -96,6 +98,10 @@ public interface Scenario extends ScenarioNode {
 			}
 
 			return null;
+		}
+		
+		public int size() {
+			return getNodes().size();
 		}
 
 		@Override

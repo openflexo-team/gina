@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
+import org.openflexo.replay.GinaReplayManager;
 import org.openflexo.replay.InteractionCycle;
 import org.openflexo.gina.event.GinaEvent;
-import org.openflexo.gina.manager.GinaReplayManager;
 import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.replay.Scenario;
 

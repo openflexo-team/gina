@@ -137,7 +137,6 @@ import org.openflexo.gina.event.description.FIBEventDescription;
 import org.openflexo.gina.event.description.FIBEventFactory;
 import org.openflexo.gina.manager.EventManager;
 import org.openflexo.gina.manager.GinaEventListener;
-import org.openflexo.gina.manager.GinaReplayManager;
 import org.openflexo.gina.manager.Registerable;
 import org.openflexo.gina.manager.URID;
 import org.openflexo.localization.FlexoLocalization;

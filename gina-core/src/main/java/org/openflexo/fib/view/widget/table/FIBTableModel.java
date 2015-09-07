@@ -383,6 +383,7 @@ public class FIBTableModel<T> extends AbstractTableModel {
 
 	@Override
 	public void setValueAt(Object value, int row, int col) {
+		new Exception().printStackTrace();
 		AbstractColumn<T, ?> column = columnAt(col);
 		if (column != null && column instanceof EditableColumn) {
 			T object = elementAt(row);
@@ -392,6 +393,7 @@ public class FIBTableModel<T> extends AbstractTableModel {
 	}
 
 	public void fireCellUpdated(T editedObject, int row, int column) {
+		System.out.println(editedObject);
 		// fireTableChanged(new TableModelEvent(this, row, row, column));
 		int newRow = indexOf(editedObject);
 		if (logger.isLoggable(Level.FINE)) {

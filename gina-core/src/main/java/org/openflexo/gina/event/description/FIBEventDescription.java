@@ -1,6 +1,7 @@
 package org.openflexo.gina.event.description;
 
 import org.openflexo.fib.view.FIBWidgetView;
+import org.openflexo.gina.event.InvalidRecorderStateException;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.Import;
@@ -12,7 +13,6 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.replay.InvalidRecorderStateException;
 
 @ModelEntity
 @ImplementationClass(FIBEventDescription.FIBEventDescriptionImpl.class)
@@ -74,11 +74,10 @@ public abstract interface FIBEventDescription extends EventDescription {
 		public void setIdentity(String widgetClass, String widgetID) {
 			setWidgetClass(widgetClass);
 			setWidgetID(widgetID);
-			System.out.println(">>>>>> SET " + this);
 		}
 
 		public String toString() {
-			return "Event " + getAction() + " @ (id=" + getWidgetID() + ", class=" + getWidgetClass() + ", within " + getParentIdentifier() + ") value = " + getValue();
+			return "Event " + getAction() + " (" + String.valueOf(getDelay()) + ") @ (id=" + getWidgetID() + ", class=" + getWidgetClass() + ", within " + getParentIdentifier() + ") value = " + getValue();
 		}
 
 		public boolean matchesIdentity(EventDescription e) {
