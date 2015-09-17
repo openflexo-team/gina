@@ -22,6 +22,8 @@ import org.openflexo.gina.manager.GinaEventListener;
 import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.gina.event.strategies.RecordingStrategy;
 import org.openflexo.gina.event.strategies.CheckingStrategy;
+import org.openflexo.rm.FileResourceImpl;
+import org.openflexo.rm.ResourceLocator;
 
 /**
  * 
@@ -78,7 +80,9 @@ public class GinaReplay implements GinaEventListener {
 			this.recordingStrategy.eventPerformed(e, stack);
 
 		//System.out.println("Number of recorded events : " + rootNode.getNodes().size());
-		save(new File("D:/test-gina-recorder-temp"));
+		File scenarioDir = ((FileResourceImpl) ResourceLocator.locateSourceCodeResource("scenarii")).getFile();
+		System.out.println(scenarioDir);
+		save(scenarioDir, "last-scenario");
 	}
 	
 	/**
@@ -273,10 +277,10 @@ public class GinaReplay implements GinaEventListener {
 			this.recording = true;
 	}
 	
-	public boolean save(File file) {
+	public boolean save(File dir, String filename) {
 		FileOutputStream out = null;
 		try {
-			out = new FileOutputStream(file);
+			out = new FileOutputStream(new File(dir, filename));
 
 			manager.getModelFactory().serialize(scenario, out);
 
