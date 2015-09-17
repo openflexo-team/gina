@@ -15,6 +15,8 @@ import org.junit.runners.Parameterized.Parameters;
 import org.openflexo.gina.event.InvalidRecorderStateException;
 import org.openflexo.replay.GinaReplayManager;
 import org.openflexo.replay.cases.MultiEventsCase;
+import org.openflexo.rm.FileResourceImpl;
+import org.openflexo.rm.ResourceLocator;
 
 @RunWith(Parameterized.class)
 public class Tester {
@@ -25,7 +27,8 @@ public class Tester {
 	
 	public static void init() {
 		testConfiguration = new ReplayTestConfiguration();
-		testConfiguration.loadScenario(new File("D:/test-gina-recorder-temp"));
+		File scenarioDir = ((FileResourceImpl) ResourceLocator.locateResource("scenarii/last-scenario")).getFile();
+		testConfiguration.loadScenario(scenarioDir);
 		testConfiguration.runMain();
 	}
 
