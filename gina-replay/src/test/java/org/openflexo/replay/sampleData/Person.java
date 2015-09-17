@@ -41,7 +41,7 @@ package org.openflexo.replay.sampleData;
 import javax.swing.Icon;
 
 import org.openflexo.icon.UtilsIconLibrary;
-import org.openflexo.replay.sampleData.Family.Gender;
+//import org.openflexo.replay.sampleData.Family.Gender;
 
 public class Person extends SampleData {
 

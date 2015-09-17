@@ -30,6 +30,8 @@ public class RecordingStrategy {
 		if (stack.size() > 1) {
 			origin = stack.get(stack.size() - 2).getEvent();
 			userOrigin = stack.firstElement().getEvent();
+			if (userOrigin.getKind() != KIND.USER_INTERACTION)
+				userOrigin = ((InteractionCycle)this.scenario.getNodes().get(0)).getUserInteraction();
 		}
 		
 		// change state list
@@ -67,7 +69,7 @@ public class RecordingStrategy {
 		// add as event or state depending of its origin
 		if (e.getKind() == KIND.USER_INTERACTION) {
 			InteractionCycle node = manager.getModelFactory().newInstance(InteractionCycle.class);
-			node.addUserInteraction((UserInteraction) e);
+			node.setUserInteraction((UserInteraction) e);
 
 			//System.out.println(e);
 			scenario.addNode(node);

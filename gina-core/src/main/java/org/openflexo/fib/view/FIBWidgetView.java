@@ -73,6 +73,7 @@ import org.openflexo.fib.model.FIBModelObject;
 import org.openflexo.fib.model.FIBWidget;
 import org.openflexo.gina.event.GinaEvent.KIND;
 import org.openflexo.gina.event.GinaEventNotifier;
+import org.openflexo.gina.event.MissingIdentityParameterException;
 import org.openflexo.gina.event.description.FIBEventDescription;
 import org.openflexo.gina.event.description.GenericEventPerformer;
 import org.openflexo.gina.event.description.EventDescription;
@@ -141,7 +142,7 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 			}
 
 			@Override
-			public void setIdentity(FIBEventDescription e) {
+			public void setIdentity(FIBEventDescription e) throws MissingIdentityParameterException {
 				e.setIdentity(getWidget().getBaseName(), getWidget().getName());
 			}
 			
@@ -172,6 +173,10 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 				}
 			};
 		}
+	}
+	
+	public GinaEventNotifier<FIBEventDescription> getGENotifier() {
+		return GENotifier;
 	}
 	
 	protected void lockListening() {

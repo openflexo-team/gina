@@ -9,8 +9,9 @@ import org.openflexo.fib.model.FIBLabel;
 import org.openflexo.fib.model.FIBTextField;
 import org.openflexo.fib.model.TwoColsLayoutConstraints;
 import org.openflexo.fib.model.TwoColsLayoutConstraints.TwoColsLayoutLocation;
+import org.openflexo.replay.sampleData.Gender;
 import org.openflexo.replay.sampleData.Person;
-import org.openflexo.replay.sampleData.Family.Gender;
+//import org.openflexo.replay.sampleData.Family.Gender;
 import org.openflexo.replay.utils.GraphicalContextDelegate;
 import org.openflexo.replay.utils.Window;
 

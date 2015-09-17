@@ -7,6 +7,7 @@ import org.openflexo.gina.event.GinaEvent;
 import org.openflexo.gina.event.SystemEvent;
 import org.openflexo.gina.event.UserInteraction;
 import org.openflexo.gina.event.GinaEvent.KIND;
+import org.openflexo.gina.event.description.ApplicationEventDescription;
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.event.description.NotifyMethodEventDescription;
 import org.openflexo.gina.event.description.GinaTaskEventDescription;
@@ -65,6 +66,11 @@ public class GinaEventFactory {
 		return getModelFactory().newInstance(GinaTaskEventDescription.class, action, identifier);
 	}
 	
+	public ApplicationEventDescription createApplicationEvent(String action,
+			String className) {
+		return getModelFactory().newInstance(ApplicationEventDescription.class, action, className);
+	}
+	
 	static public Class<?> getEventClass(KIND kind) {
 		switch(kind) {
 		case USER_INTERACTION:
@@ -79,4 +85,5 @@ public class GinaEventFactory {
 
 		return null;
 	}
+
 }

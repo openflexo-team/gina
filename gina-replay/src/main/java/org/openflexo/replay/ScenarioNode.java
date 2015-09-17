@@ -33,7 +33,7 @@ public interface ScenarioNode {
 	public void setEnabled(boolean enabled);
 
 	
-	public class ScenarioNodeImpl {
+	public abstract class ScenarioNodeImpl implements ScenarioNode {
 		
 	}
 }

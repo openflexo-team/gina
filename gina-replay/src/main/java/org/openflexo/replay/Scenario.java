@@ -92,7 +92,7 @@ public interface Scenario extends ScenarioNode {
 			for(ScenarioNode node : getNodes()) {
 				if (node instanceof InteractionCycle) {
 					InteractionCycle ic = (InteractionCycle) node;
-					if (ic.getUserInteractions().contains(userOrigin))
+					if (ic.getUserInteraction() == userOrigin)
 						return ic;
 				}
 			}

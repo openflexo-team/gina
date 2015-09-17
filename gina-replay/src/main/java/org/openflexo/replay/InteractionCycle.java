@@ -35,24 +35,20 @@ import org.openflexo.model.annotations.Getter.Cardinality;
 @Imports({ @Import(SystemEventTreeNode.class) })
 @XMLElement(xmlTag = "InteractionCycle")
 public interface InteractionCycle extends ScenarioNode {
-	@PropertyIdentifier(type = DataBinding.class)
+	@PropertyIdentifier(type = UserInteraction.class)
 	public static final String USER_INTERACTION_KEY = "userInteraction";
 	
 	@PropertyIdentifier(type = SystemEventTreeNode.class)
 	public static final String SYSTEM_EVENT_NODE_KEY = "systemEventNode";
 
 
-	@Getter(value = USER_INTERACTION_KEY, cardinality = Cardinality.LIST)
+	@Getter(value = USER_INTERACTION_KEY)
 	@XMLElement(context = "UserInteraction_")
-	@CloningStrategy(StrategyType.CLONE)
 	@Embedded
-	public List<UserInteraction> getUserInteractions();
+	public UserInteraction getUserInteraction();
 	
-	@Adder(USER_INTERACTION_KEY)
-	public void addUserInteraction(UserInteraction aColumn);
-	
-	@Remover(USER_INTERACTION_KEY)
-	public void removeUserInteraction(UserInteraction aColumn);
+	@Setter(USER_INTERACTION_KEY)
+	public void setUserInteraction(UserInteraction userInteraction);
 	
 	
 	@Getter(value = SYSTEM_EVENT_NODE_KEY)
@@ -68,7 +64,7 @@ public interface InteractionCycle extends ScenarioNode {
 	public void addNewNonUserInteraction();
 	public void addNewUserInteraction();
 	
-	public List<GinaEvent> getUserInteractionsByKind(String kind);
+	public GinaEvent getUserInteractionByKind(String kind);
 	public List<GinaEvent> getNonUserInteractionsByKind(String kind);
 	
 	public void init(GinaReplayManager manager);
@@ -91,14 +87,11 @@ public interface InteractionCycle extends ScenarioNode {
 		}
 
 		
-		public List<GinaEvent> getUserInteractionsByKind(String namespace) {
-			List<GinaEvent> l = new LinkedList<GinaEvent>();
+		public GinaEvent getUserInteractionsByKind(String namespace) {
+			if (getUserInteraction().getDescription().getNamespace() == namespace)
+				return getUserInteraction();
 			
-			for(UserInteraction e : getUserInteractions())
-				if (e.getDescription().getNamespace() == namespace)
-					l.add(e);
-			
-			return l;
+			return null;
 		}
 		
 		public List<GinaEvent> getNonUserInteractionsByKind(String namespace) {

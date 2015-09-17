@@ -3,6 +3,7 @@ package org.openflexo.replay.utils;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBButton;
+import org.openflexo.fib.model.FIBLabel;
 import org.openflexo.fib.model.FIBPanel;
 import org.openflexo.fib.model.TwoColsLayoutConstraints;
 import org.openflexo.fib.model.FIBPanel.Layout;
@@ -47,11 +48,14 @@ public class CaseCommandWindow {
 		component.setControllerClass(CaseCommandController.class);
 		
 		FIBButton buttonPlay = GraphicalContextDelegate.getFactory().newInstance(FIBButton.class);
-		buttonPlay.setLabel("Save");
+		buttonPlay.setLabel("Save the Scenario");
 		buttonPlay.setAction(new DataBinding<Object>("controller.save()"));
 		buttonPlay.setName("saveButton");
-
 		component.addToSubComponents(buttonPlay, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, true, false));
+		
+		FIBLabel listLabel = GraphicalContextDelegate.getFactory().newInstance(FIBLabel.class);
+		listLabel.setLabel("For the replay, save and launch org.openflexo.replay.test.Tester");
+		component.addToSubComponents(listLabel, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false));
 		
 		// Instantiate the controller
 		controller = FIBController.instanciateController(component, FlexoLocalization.getMainLocalizer());

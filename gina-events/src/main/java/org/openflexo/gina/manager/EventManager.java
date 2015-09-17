@@ -1,5 +1,6 @@
 package org.openflexo.gina.manager;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -160,6 +161,16 @@ public class EventManager implements GinaEventListener {
 		
 		this.registry.remove(obj.getURID());
 	}
+	
+	public Registerable find(String identifier) {
+		for(Map.Entry<URID, Registerable> r : this.registry.entrySet()) {
+			if (r.getKey().getIdentifier().equals(identifier)) {
+				return r.getValue();
+			}
+		}
+		
+		return null;
+	}
 
 	public URID generateURID(Registerable obj) {
 		String base = obj.getBaseIdentifier();
@@ -236,6 +247,9 @@ public class EventManager implements GinaEventListener {
 		else if (context != null) {
 			System.out.println("Context | " + context);
 		}
+		
+		if (kind == KIND.UNKNOWN && ts.getStack().isEmpty())
+			kind = KIND.USER_INTERACTION;
 
 		GinaEvent e = getFactory().createEventFromDescription(d, kind);
 
@@ -327,6 +341,34 @@ public class EventManager implements GinaEventListener {
 			if (stackEvents.contains(e))
 				while(stackEvents.pop() != e);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Object getObjectValue(String value, String classValue) {
+		
+		Class<?> cls;
+		try {
+			cls = Class.forName(classValue);
+		} catch (ClassNotFoundException e) {
+			return null;
+		}
+		
+		if (String.class == cls)
+			return value;
+		
+		if( Boolean.class == cls ) return Boolean.parseBoolean( value );
+	    if( Byte.class == cls ) return Byte.parseByte( value );
+	    if( Short.class == cls ) return Short.parseShort( value );
+	    if( Integer.class == cls ) return Integer.parseInt( value );
+	    if( Long.class == cls ) return Long.parseLong( value );
+	    if( Float.class == cls ) return Float.parseFloat( value );
+	    if( Double.class == cls ) return Double.parseDouble( value );
+		
+		if (cls.isEnum()) {
+			return Enum.valueOf((Class<Enum>)cls, value);
+		}
+		
+		return null;
 	}
 
 }

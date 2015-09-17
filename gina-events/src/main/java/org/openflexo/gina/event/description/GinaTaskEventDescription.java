@@ -1,10 +1,10 @@
 package org.openflexo.gina.event.description;
 
 import org.openflexo.gina.event.InvalidRecorderStateException;
+import org.openflexo.gina.event.MissingIdentityParameterException;
+import org.openflexo.gina.manager.EventManager;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.Import;
-import org.openflexo.model.annotations.Imports;
 import org.openflexo.model.annotations.Initializer;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Parameter;
@@ -60,33 +60,28 @@ public abstract interface GinaTaskEventDescription extends EventDescription {
 	public void setTaskTitle(String taskTitle);
 
 	
-	public void setIdentity(String taskClass, String taskTitle);
+	public void setIdentity(String taskClass, String taskTitle) throws MissingIdentityParameterException;
 	
 	public boolean matchIdentity(GinaTaskEventDescription e);
 	
 	public abstract class GinaTaskEventDescriptionImpl extends EventDescriptionImpl implements GinaTaskEventDescription {
-		/*public FIBActionEventImpl() {
-			super();
-		}
 
-		public FIBActionEventImpl(String widgetClass, String widgetID, String component, String action) {
-			super();
-			
-			setWidgetClass(widgetClass);
-			setWidgetID(widgetID);
-			setComponent(component);
-			setAction(action);
-		}*/
-
-		public void setIdentity(String taskClass, String taskTitle) {
+		@Override
+		public void setIdentity(String taskClass, String taskTitle) throws MissingIdentityParameterException {
 			setTaskClass(taskClass);
 			setTaskTitle(taskTitle);
+
+			if (taskClass == null)
+				throw new MissingIdentityParameterException("taskClass", this.getClass().getName());
+			if (taskTitle == null)
+				throw new MissingIdentityParameterException("taskTitle", this.getClass().getName());
 		}
 
 		public String toString() {
 			return "TaskEvent " + getAction() + " @ (" + getTaskTitle();// + ", class=" + getTaskClass() +")";
 		}
 
+		@Override
 		public boolean matchesIdentity(EventDescription e) {
 			/*if (!(e instanceof GinaTaskEventDescription))
 				return super.matchesIdentity(e);
@@ -97,12 +92,13 @@ public abstract interface GinaTaskEventDescription extends EventDescription {
 			return false;
 		}
 
+		@Override
 		public void checkMatchingEvent(EventDescription e) throws InvalidRecorderStateException {}
 
-		public void execute() {
+		@Override
+		public void execute(EventManager manager) {}
 
-		}
-
+		@Override
 		public String getNamespace() {
 			return "description.task";
 		}

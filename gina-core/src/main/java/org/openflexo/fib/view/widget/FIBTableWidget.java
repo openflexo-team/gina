@@ -89,7 +89,9 @@ import org.openflexo.fib.view.widget.table.FIBTableWidgetFooter;
 import org.openflexo.gina.event.description.FIBEventDescription;
 import org.openflexo.gina.event.description.FIBEventFactory;
 import org.openflexo.gina.event.description.FIBFocusEventDescription;
+import org.openflexo.gina.event.description.FIBMouseEventDescription;
 import org.openflexo.gina.event.description.FIBSelectionEventDescription;
+import org.openflexo.gina.event.description.FIBTableEventDescription;
 import org.openflexo.gina.event.description.FIBTextEventDescription;
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.event.description.item.DescriptionIntegerItem;
@@ -209,18 +211,30 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 	public void executeEvent(EventDescription e) {
 		widgetExecuting = true;
 
-		switch(e.getAction()) {
+		switch (e.getAction()) {
 		case FIBSelectionEventDescription.SELECTED: {
 			FIBSelectionEventDescription se = (FIBSelectionEventDescription) e;
-			for(DescriptionItem item : se.getValues()) {
+			for (DescriptionItem item : se.getValues()) {
 				if (item instanceof DescriptionIntegerItem) {
 					DescriptionIntegerItem intItem = (DescriptionIntegerItem) item;
-					if (item.getAction().equals(FIBSelectionEventDescription.SELECTED))
-						getListSelectionModel().addSelectionInterval(intItem.getValue(), intItem.getValue());;
-						if (item.getAction().equals(FIBSelectionEventDescription.DESELECTED))
-						getListSelectionModel().removeSelectionInterval(intItem.getValue(), intItem.getValue());;
+					if (item.getAction().equals(
+							FIBSelectionEventDescription.SELECTED))
+						getListSelectionModel().addSelectionInterval(
+								intItem.getValue(), intItem.getValue());
+					;
+					if (item.getAction().equals(
+							FIBSelectionEventDescription.DESELECTED))
+						getListSelectionModel().removeSelectionInterval(
+								intItem.getValue(), intItem.getValue());
+					;
 				}
 			}
+			getListSelectionModel().setLeadSelectionIndex(se.getLead());
+			break;
+		}
+		case FIBTableEventDescription.CHANGED: {
+			FIBTableEventDescription te = (FIBTableEventDescription) e;
+			getTableModel().setValueAt(te.getObjectValue(), te.getRow(), te.getCol());
 			break;
 		}
 		}
@@ -662,17 +676,6 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 			return;
 		}
 		
-		GinaStackEvent stack = GENotifier.raise(
-				FIBEventFactory.getInstance().createSelectionEvent(getListSelectionModel(), e.getFirstIndex(), e.getLastIndex()) );
-		
-		widgetDisableUserEvent = true;
-
-		if (LOGGER.isLoggable(Level.FINE)) {
-			LOGGER.fine("valueChanged() selected index=" + getListSelectionModel().getMinSelectionIndex());
-		}
-
-		// System.out.println("received " + e);
-
 		int i = getListSelectionModel().getMinSelectionIndex();
 		int leadIndex = getListSelectionModel().getLeadSelectionIndex();
 		if (!getListSelectionModel().isSelectedIndex(leadIndex)) {
@@ -684,6 +687,17 @@ public class FIBTableWidget<T> extends FIBWidgetView<FIBTable, JTable, Collectio
 		}
 
 		// System.out.println("leadIndex=" + leadIndex);
+		
+		GinaStackEvent stack = GENotifier.raise(
+				FIBEventFactory.getInstance().createSelectionEvent(getListSelectionModel(), leadIndex, e.getFirstIndex(), e.getLastIndex()) );
+		
+		widgetDisableUserEvent = true;
+
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("valueChanged() selected index=" + getListSelectionModel().getMinSelectionIndex());
+		}
+
+		// System.out.println("received " + e);
 
 		if (leadIndex > -1) {
 			leadIndex = _table.convertRowIndexToModel(leadIndex);

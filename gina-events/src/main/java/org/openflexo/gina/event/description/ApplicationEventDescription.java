@@ -1,10 +1,7 @@
 package org.openflexo.gina.event.description;
 
-import org.openflexo.gina.event.InvalidRecorderStateException;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.Import;
-import org.openflexo.model.annotations.Imports;
 import org.openflexo.model.annotations.Initializer;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Parameter;
@@ -29,7 +26,7 @@ public abstract interface ApplicationEventDescription extends EventDescription {
 	public ApplicationEventDescription init(@Parameter(ACTION) String action);
 	
 	@Initializer
-	public ApplicationEventDescription init(@Parameter(ACTION) String action, @Parameter(MAIN_CLASS) String title);
+	public ApplicationEventDescription init(@Parameter(ACTION) String action, @Parameter(MAIN_CLASS) String main);
 	
 	
 	@Getter(value = MAIN_CLASS)
@@ -48,16 +45,7 @@ public abstract interface ApplicationEventDescription extends EventDescription {
 			return "ApplicationEvent " + getAction() + " (" + getMainClass() + ")";
 		}
 
-		public boolean matchesIdentity(EventDescription e) {
-			return true;
-		}
-
-		public void checkMatchingEvent(EventDescription e) throws InvalidRecorderStateException {}
-
-		public void execute() {
-
-		}
-
+		@Override
 		public String getNamespace() {
 			return "description.application";
 		}

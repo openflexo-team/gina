@@ -34,14 +34,14 @@ public abstract interface FIBTextEventDescription extends FIBEventDescription {
 	public int getPosition();
 
 	@Setter(POSITION)
-	public void setLength(int length);
+	public void setPosition(int position);
 	
 	@Getter(value = LENGTH, defaultValue = "0")
 	@XMLAttribute
 	public int getLength();
 
 	@Setter(LENGTH)
-	public void setPosition(int position);
+	public void setLength(int length);
 
 
 	/*public abstract class FIBTextFieldEventImpl extends FIBEventImpl implements FIBTextEvent {

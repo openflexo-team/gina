@@ -54,7 +54,7 @@ public abstract interface NotifyMethodEventDescription extends
 	@Setter(INFO)
 	public void setInfo(String info);
 
-	public abstract class GinaNotifyMethodEventDescriptionImpl implements
+	public abstract class GinaNotifyMethodEventDescriptionImpl extends EventDescriptionImpl implements
 			NotifyMethodEventDescription {
 		public String toString() {
 			return "NotifyMethod event " + getAction() + " : "

@@ -3,11 +3,11 @@ package org.openflexo.replay.utils;
 import org.openflexo.gina.event.GinaEvent.KIND;
 import org.openflexo.gina.event.GinaEventNotifier;
 import org.openflexo.gina.event.GinaTaskEventNotifier;
+import org.openflexo.gina.event.MissingIdentityParameterException;
 import org.openflexo.gina.event.description.GinaTaskEventDescription;
 import org.openflexo.gina.manager.EventManager;
 import org.openflexo.gina.manager.GinaTask;
 import org.openflexo.gina.manager.URID;
-import org.openflexo.replay.GinaReplayManager;
 
 public abstract class Task implements GinaTask, Runnable {
 
@@ -28,7 +28,7 @@ public abstract class Task implements GinaTask, Runnable {
 			}
 
 			@Override
-			public void setIdentity(GinaTaskEventDescription d) {
+			public void setIdentity(GinaTaskEventDescription d) throws MissingIdentityParameterException {
 				d.setIdentity(Task.class.getName(),
 						Task.this.getTaskTitle());
 			}

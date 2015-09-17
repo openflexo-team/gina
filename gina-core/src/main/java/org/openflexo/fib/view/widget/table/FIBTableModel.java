@@ -69,6 +69,10 @@ import org.openflexo.fib.model.FIBTable;
 import org.openflexo.fib.model.FIBTableColumn;
 import org.openflexo.fib.model.FIBTextFieldColumn;
 import org.openflexo.fib.view.widget.FIBTableWidget;
+import org.openflexo.gina.event.description.FIBEventFactory;
+import org.openflexo.gina.event.description.FIBMouseEventDescription;
+import org.openflexo.gina.event.description.FIBTableEventDescription;
+import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 /**
@@ -383,17 +387,19 @@ public class FIBTableModel<T> extends AbstractTableModel {
 
 	@Override
 	public void setValueAt(Object value, int row, int col) {
-		new Exception().printStackTrace();
+		FIBTableEventDescription desc = FIBEventFactory.getInstance().
+				createTableEvent(FIBTableEventDescription.CHANGED, value, value.getClass().getName(), row, col);
+		GinaStackEvent gse = _widget.getGENotifier().raise(desc);
 		AbstractColumn<T, ?> column = columnAt(col);
 		if (column != null && column instanceof EditableColumn) {
 			T object = elementAt(row);
 			((EditableColumn<T, Object>) column).setValueFor(object, value/*, _widget.getBindingEvaluationContext()*/);
 			fireCellUpdated(object, row, col);
 		}
+		gse.end();
 	}
 
 	public void fireCellUpdated(T editedObject, int row, int column) {
-		System.out.println(editedObject);
 		// fireTableChanged(new TableModelEvent(this, row, row, column));
 		int newRow = indexOf(editedObject);
 		if (logger.isLoggable(Level.FINE)) {

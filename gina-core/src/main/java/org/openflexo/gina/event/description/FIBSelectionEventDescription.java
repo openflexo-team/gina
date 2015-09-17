@@ -10,9 +10,13 @@ import org.openflexo.model.annotations.Embedded;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Import;
 import org.openflexo.model.annotations.Imports;
+import org.openflexo.model.annotations.Initializer;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.Parameter;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Remover;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter.Cardinality;
@@ -25,28 +29,28 @@ public abstract interface FIBSelectionEventDescription extends FIBEventDescripti
 	public static final String DESELECTED = "selection-deselected";
 	public static final String CLEAR_SELECTION = "selection-clear";
 	
-	/*@PropertyIdentifier(type = Integer.class)
-	public static final String FIRST_ELEMENT = "firstElement";
-	
 	@PropertyIdentifier(type = Integer.class)
-	public static final String LAST_ELEMENT = "lastElement";
+	public static final String LEAD = "lead";
+	
+	/*@PropertyIdentifier(type = Integer.class)
+	public static final String LAST_ELEMENT = "lastElement";*/
 	
 	@Initializer
-	public FIBSelectionEvent init(@Parameter(ACTION) String action, @Parameter(FIRST_ELEMENT) Integer firstElement, @Parameter(LAST_ELEMENT) Integer lastElement);
+	public FIBSelectionEventDescription init(@Parameter(ACTION) String action, @Parameter(LEAD) Integer lead);
 	
-	@Getter(value = FIRST_ELEMENT, defaultValue = "0")
+	/*@Getter(value = FIRST_ELEMENT, defaultValue = "0")
 	@XMLAttribute
 	public int getFirstElement();
 
 	@Setter(FIRST_ELEMENT)
-	public void setFirstElement(int firstElement);
+	public void setFirstElement(int firstElement);*/
 	
-	@Getter(value = LAST_ELEMENT, defaultValue = "0")
+	@Getter(value = LEAD, defaultValue = "-1")
 	@XMLAttribute
-	public int getLastElement();
+	public int getLead();
 
-	@Setter(LAST_ELEMENT)
-	public void setLastElement(int lastElement);*/
+	@Setter(LEAD)
+	public void setLead(int lead);
 	
 	// selection
 	@PropertyIdentifier(type = DataBinding.class)

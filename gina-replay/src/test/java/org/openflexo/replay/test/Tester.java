@@ -17,45 +17,52 @@ import org.openflexo.replay.GinaReplayManager;
 import org.openflexo.replay.cases.MultiEventsCase;
 
 @RunWith(Parameterized.class)
-public class FIBTester {
-	private static MultiEventsCase simpleCase;
+public class Tester {
+
+	private TestParameter testParam;
+
+	static private ReplayTestConfiguration testConfiguration;
 	
-	private FIBTestParameter testParam;
+	public static void init() {
+		testConfiguration = new ReplayTestConfiguration();
+		testConfiguration.loadScenario(new File("D:/test-gina-recorder-temp"));
+		testConfiguration.runMain();
+	}
 
 	@Parameters
-    public static Collection<FIBTestParameter[]> data() {
-		/*GinaManager.getInstance().createAndSetToCurrent();
-		GinaManager.getInstance().getCurrentRecorder().load(new File("D:/test-gina-recorder"));
-		int size = GinaManager.getInstance().getCurrentRecorder().getRootNode().getNodes().size();
+    public static Collection<TestParameter[]> data() {
+    	init();
+    	LinkedList<TestParameter[]> list = new LinkedList<TestParameter[]>();
 
-        LinkedList<FIBTestParameter[]> list = new LinkedList<FIBTestParameter[]>();
+		int size = testConfiguration.getManager().getCurrentReplayer().getScenario().size();
+
         for(int i=0; i<size; ++i)
         {
-        	FIBTestParameter[] param = {new FIBTestParameter(i)};
+        	TestParameter[] param = {new TestParameter(i)};
         	list.add(param);
         }
-        
-        return list;*/
-    	return null;
+
+    	return list;
     }
 
-    public FIBTester(FIBTestParameter param) {
+    public Tester(TestParameter param) {
     	testParam = param;
     }
 
     @Test
     public void test() {
-    	/*try {
-			GinaManager.getInstance().getCurrentRecorder().checkNextStep(true);
+    	try {
+    		testConfiguration.getManager().getCurrentReplayer().checkNextStep(false);
 		} catch (InvalidRecorderStateException e) {
 			assertTrue(e.getMessage(), false);
-		}*/
+		}
+
     	assertTrue(true);
     }
     
     @BeforeClass
 	public static void initGUI() {
-    	simpleCase = new MultiEventsCase();
+    	//simpleCase = new MultiEventsCase();
 		//gcDelegate = new GraphicalContextDelegate(FIBCheckboxListWidgetTest.class.getSimpleName());
 	}
 

@@ -2,6 +2,7 @@ package org.openflexo.gina.event;
 
 
 public class InvalidRecorderStateException extends Exception {
+	private static final long serialVersionUID = -8987939023490611302L;
 	//private InteractionCycle node;
 	private GinaEvent state;
 	

@@ -16,6 +16,7 @@ import org.openflexo.gina.event.GinaEvent.KIND;
 import org.openflexo.gina.event.InvalidRecorderStateException;
 import org.openflexo.gina.event.SystemEvent;
 import org.openflexo.gina.event.UserInteraction;
+import org.openflexo.gina.event.description.ApplicationEventDescription;
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.manager.GinaEventListener;
 import org.openflexo.gina.manager.GinaStackEvent;
@@ -54,8 +55,8 @@ public class GinaReplay implements GinaEventListener {
 		
 		scenario = manager.getModelFactory().newInstance(Scenario.class);
 
-		InteractionCycle initNode = this.manager.getModelFactory().newInstance(InteractionCycle.class);
-		scenario.addNode(initNode);
+		/*InteractionCycle initNode = this.manager.getModelFactory().newInstance(InteractionCycle.class);
+		scenario.addNode(initNode);*/
 		
 		// strategies
 		this.recordingStrategy = new RecordingStrategy(scenario, this.manager);//null;
@@ -111,13 +112,12 @@ public class GinaReplay implements GinaEventListener {
 	
 	protected boolean executeNodeEvents(InteractionCycle node) {
 		//System.out.println("Event " + node);
-		for(final GinaEvent e : node.getUserInteractions()) {
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					//executeEvent(e);
-				}
-			});
-		}
+		final GinaEvent e = node.getUserInteraction();
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				executeEvent(e.getDescription());
+			}
+		});
 		
 		if (delayBetweenNodes > 0)
 			try {
@@ -134,7 +134,7 @@ public class GinaReplay implements GinaEventListener {
 		
 		for(int retry = retryNumber; retry > 0; retry--) {
 			try{
-				e.execute();
+				e.execute(manager.getEventManager());
 				
 				if (retry != retryNumber)
 					LOGGER.warning("PLAY : had to retry " + (retryNumber - retry) + " time(s) to perfom User Interaction " + e);
@@ -184,7 +184,7 @@ public class GinaReplay implements GinaEventListener {
 	protected void checkNonUserInteractions(InteractionCycle node, LinkedList<GinaEvent> nonUserInteractions) throws InvalidRecorderStateException {
 		List<GinaEvent> l = new LinkedList<GinaEvent>();
 		//l.addAll(node.getSystemEventTree());
-		l.addAll(node.getUserInteractions());
+		l.add(node.getUserInteraction());
 		
 		System.out.println("1 : " + nonUserInteractions);
 		System.out.println("2 : " + l);
@@ -248,11 +248,19 @@ public class GinaReplay implements GinaEventListener {
 	}
 	
 	public void startRecording() {
-		if (scenario.size() == 0) {
-			// TODO
-		}
-
 		this.resumeRecording();
+
+		if (scenario.size() == 0) {
+			// register the beginning of the application
+			StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+			StackTraceElement main = stack[stack.length - 1];
+
+			ApplicationEventDescription d = manager.getEventManager().getFactory().createApplicationEvent(ApplicationEventDescription.STARTED, main.getClassName());
+			GinaStackEvent gse = manager.getEventManager().pushStackEvent(d, KIND.USER_INTERACTION);
+			gse.end();
+			
+			eventPerformed(gse.getEvent(), manager.getEventManager().getEventStack());
+		}
 	}
 	
 	protected void pauseRecordingIfRunning() {
@@ -286,7 +294,7 @@ public class GinaReplay implements GinaEventListener {
 		try {
 			in = new FileInputStream(file);
 
-			// TODO rootNode = (InteractionCycle) GinaManager.getInstance().getFactory().deserialize(in);
+			scenario = (Scenario) manager.getModelFactory().deserialize(in);
 
 			return true;
 		} catch (Exception e) {

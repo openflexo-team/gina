@@ -67,10 +67,14 @@ public class GraphicalContextDelegate implements ChangeListener {
 	private boolean dontDestroyMe = false;
 	
 	public GraphicalContextDelegate(final String frameTitle) {
-		this(frameTitle, new Dimension(320, 280));
+		this(frameTitle, new Dimension(560, 80), false);
+	}
+	
+	public GraphicalContextDelegate(final String frameTitle, final Dimension dim) {
+		this(frameTitle, dim, true);
 	}
 
-	public GraphicalContextDelegate(final String frameTitle, final Dimension dim) {
+	public GraphicalContextDelegate(final String frameTitle, final Dimension dim, final boolean customDimension) {
 
 		eventProcessor = new EventProcessor();
 
@@ -85,8 +89,8 @@ public class GraphicalContextDelegate implements ChangeListener {
 					frame.setSize(dim);
 					frame.setLocationRelativeTo(null);
 					frame.setLocation(startX, startY);
-					startX += 128;
-					startY += 128;
+					startX += (customDimension ? dim.width + 16 : 64);
+					startY += (customDimension ? 16 : 64);
 					/*JButton myButton;
 					myButton = new JButton("I take the control");
 					myButton.addActionListener(new ActionListener() {

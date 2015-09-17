@@ -1,6 +1,7 @@
 package org.openflexo.gina.event.description;
 
 import org.openflexo.gina.event.InvalidRecorderStateException;
+import org.openflexo.gina.manager.EventManager;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.Import;
@@ -15,7 +16,7 @@ import org.openflexo.model.annotations.XMLElement;
 
 @ModelEntity
 @ImplementationClass(EventDescription.EventDescriptionImpl.class)
-@Imports({ @Import(NotifyMethodEventDescription.class), @Import(GinaTaskEventDescription.class) })
+@Imports({ @Import(NotifyMethodEventDescription.class), @Import(GinaTaskEventDescription.class), @Import(ApplicationEventDescription.class) })
 @XMLElement(xmlTag = "EventDescription")
 public abstract interface EventDescription {
 	public static final String EVENT_DEFINITION_ERROR = "event-definition-error";
@@ -91,7 +92,7 @@ public abstract interface EventDescription {
 
 	public void checkMatchingEvent(EventDescription e) throws InvalidRecorderStateException;
 	
-	public void execute();
+	public void execute(EventManager manager);
 	
 	public String getNamespace();
 	
@@ -100,12 +101,15 @@ public abstract interface EventDescription {
 			return "Generic event " + getAction() + " (" + String.valueOf(getDelay()) + ") value = " + getValue();
 		}
 
+		@Override
 		public boolean matchesIdentity(EventDescription e) {
 			return e.getAction().equals(getAction());
 		}
 
+		@Override
 		public void checkMatchingEvent(EventDescription e) throws InvalidRecorderStateException {}
 
+		@Override
 		public boolean matchesEvent(EventDescription e) {
 			try {
 				checkMatchingEvent(e);
@@ -115,8 +119,10 @@ public abstract interface EventDescription {
 			}
 		}
 
-		public void execute() {}
+		@Override
+		public void execute(EventManager manager) {}
 
+		@Override
 		public abstract String getNamespace();
 	}
 

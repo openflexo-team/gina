@@ -6,7 +6,7 @@ import org.openflexo.model.annotations.Parameter;
 import org.openflexo.model.annotations.XMLElement;
 
 @ModelEntity
-@XMLElement(xmlTag = "ChangeValueEvent")
+@XMLElement(xmlTag = "ValueEvent")
 public abstract interface FIBValueEventDescription extends FIBEventDescription {
 	public static final String CHECKED = "checked";
 	public static final String UNCHECKED = "unchecked";

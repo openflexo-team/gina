@@ -1,7 +1,14 @@
 package org.openflexo.gina.event.description;
 
+import java.util.List;
+
+import org.openflexo.fib.controller.FIBController;
+import org.openflexo.fib.view.FIBView;
 import org.openflexo.fib.view.FIBWidgetView;
 import org.openflexo.gina.event.InvalidRecorderStateException;
+import org.openflexo.gina.event.MissingIdentityParameterException;
+import org.openflexo.gina.manager.EventManager;
+import org.openflexo.gina.manager.Registerable;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.Import;
@@ -16,8 +23,13 @@ import org.openflexo.model.annotations.XMLElement;
 
 @ModelEntity
 @ImplementationClass(FIBEventDescription.FIBEventDescriptionImpl.class)
-@Imports({ @Import(FIBMouseEventDescription.class), @Import(FIBTextEventDescription.class), @Import(FIBFocusEventDescription.class),
-	@Import(FIBControllerEventDescription.class), @Import(FIBValueEventDescription.class), @Import(FIBSelectionEventDescription.class) })
+@Imports({ @Import(FIBMouseEventDescription.class),
+		@Import(FIBTextEventDescription.class),
+		@Import(FIBFocusEventDescription.class),
+		@Import(FIBControllerEventDescription.class),
+		@Import(FIBValueEventDescription.class),
+		@Import(FIBSelectionEventDescription.class),
+		@Import(FIBTableEventDescription.class) })
 @XMLElement(xmlTag = "FibEvent")
 public abstract interface FIBEventDescription extends EventDescription {
 	@PropertyIdentifier(type = String.class)
@@ -55,31 +67,26 @@ public abstract interface FIBEventDescription extends EventDescription {
 	@Setter(WIDGET_ID)
 	public void setWidgetID(String widgetID);
 	
-	public void setIdentity(String widgetClass, String widgetID);
+	public void setIdentity(String widgetClass, String widgetID) throws MissingIdentityParameterException;
 	
 	public abstract class FIBEventDescriptionImpl extends EventDescriptionImpl implements FIBEventDescription {
-		/*public FIBActionEventImpl() {
-			super();
-		}
-
-		public FIBActionEventImpl(String widgetClass, String widgetID, String component, String action) {
-			super();
-			
-			setWidgetClass(widgetClass);
-			setWidgetID(widgetID);
-			setComponent(component);
-			setAction(action);
-		}*/
 		
-		public void setIdentity(String widgetClass, String widgetID) {
+		@Override
+		public void setIdentity(String widgetClass, String widgetID) throws MissingIdentityParameterException {
 			setWidgetClass(widgetClass);
 			setWidgetID(widgetID);
+			
+			if (widgetClass == null)
+				throw new MissingIdentityParameterException("widgetClass", this.getClass().getName());
+			if (widgetID == null)
+				throw new MissingIdentityParameterException("widgetID", this.getClass().getName());
 		}
 
 		public String toString() {
 			return "Event " + getAction() + " (" + String.valueOf(getDelay()) + ") @ (id=" + getWidgetID() + ", class=" + getWidgetClass() + ", within " + getParentIdentifier() + ") value = " + getValue();
 		}
 
+		@Override
 		public boolean matchesIdentity(EventDescription e) {
 			if (!(e instanceof FIBEventDescription))
 				return super.matchesIdentity(e);
@@ -89,6 +96,7 @@ public abstract interface FIBEventDescription extends EventDescription {
 					&& fe.getParentIdentifier().equals(getParentIdentifier());
 		}
 
+		@Override
 		public void checkMatchingEvent(EventDescription e) throws InvalidRecorderStateException {
 			if (!(e instanceof EventDescription)) {
 				super.checkMatchingEvent(e);
@@ -99,14 +107,40 @@ public abstract interface FIBEventDescription extends EventDescription {
 				throw new InvalidRecorderStateException(getAbsoluteValue(), e.getAbsoluteValue());
 
 		}
+		
+		public FIBWidgetView<?, ?, ?> getWidgetView(EventManager manager) {
+			Registerable parent = manager.find(getParentIdentifier());
+			if (!(parent instanceof FIBController))
+				return null;
 
-		public void execute() {
-			/*FIBWidgetView<?, ?, ?> wv = GinaHandlerTemp.getInstance().findWidgetViewChildByID(getComponent(), getWidgetID());
-			if (wv == null)
-				throw new NullPointerException();
-			wv.executeEvent(this);*/
+			String widgetClass = getWidgetClass();
+			String widgetID = getWidgetID();
+			
+			List<FIBView<?, ?, ?>> l = ((FIBController) parent).getAllViews();
+			for(FIBView<?, ?, ?> v : l) {
+				if (v instanceof FIBWidgetView<?, ?, ?>) {
+					FIBWidgetView<?, ?, ?> wv = (FIBWidgetView<?, ?, ?>) v;
+					if (wv.getWidget().getBaseName() != null
+							&& wv.getWidget().getName() != null
+							&& wv.getWidget().getBaseName().equals(widgetClass)
+							&& wv.getWidget().getName().equals(widgetID)) {
+						return wv;
+					}
+				}
+			}
+			
+			return null;
 		}
 
+		@Override
+		public void execute(EventManager manager) {
+			FIBWidgetView<?, ?, ?> wv = getWidgetView(manager);
+			if (wv == null)
+				throw new NullPointerException();
+			wv.executeEvent(this);
+		}
+
+		@Override
 		public String getNamespace() {
 			return "description.fib";
 		}

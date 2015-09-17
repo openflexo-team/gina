@@ -58,9 +58,9 @@ public class Family extends SampleData {
 	private Vector<Person> children;
 	private Vector<Person> jackies;
 
-	public enum Gender {
+	/*public enum Gender {
 		Male, Female
-	}
+	}*/
 
 	public Family() {
 

@@ -312,10 +312,11 @@ public class FIBListWidget<T> extends FIBMultipleValueWidget<FIBList, JList, T, 
 			}
 			
 			GinaStackEvent stack = GENotifier.raise(
-					FIBEventFactory.getInstance().createSelectionEvent(getListSelectionModel(), e.getFirstIndex(), e.getLastIndex() ));
+					FIBEventFactory.getInstance().createSelectionEvent(getListSelectionModel(), getListSelectionModel().getLeadSelectionIndex(), e.getFirstIndex(), e.getLastIndex() ));
 
 
 			if (widgetUpdating) {
+				stack.end();
 				return;
 			}
 

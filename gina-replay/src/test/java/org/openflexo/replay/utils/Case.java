@@ -8,6 +8,7 @@ import org.openflexo.gina.event.description.FIBEventDescription;
 import org.openflexo.gina.manager.EventManager;
 import org.openflexo.replay.GinaReplay;
 import org.openflexo.replay.GinaReplayManager;
+import org.openflexo.replay.test.ReplayTestConfiguration;
 
 public abstract class Case {
 
@@ -15,6 +16,8 @@ public abstract class Case {
 	static private CaseCommandWindow commandWindow;
 	static private GinaReplayManager manager;
 	static private ExecutorService executor;
+	
+	static private ReplayTestConfiguration testConfiguration;
 
 	static public void initCase(Case c) {
 		instance = c;
@@ -23,11 +26,19 @@ public abstract class Case {
 		manager.addEventDescriptionModels(FIBEventDescription.class);
 		GinaReplay recorder = new GinaReplay(manager);
 		manager.setCurrentReplayer(recorder);
-		recorder.startRecording();
+		
+		if (testConfiguration == null)
+			recorder.startRecording();
+		else
+			testConfiguration.startup(manager);
 
 		commandWindow = new CaseCommandWindow(manager);
 		
 		c.start();
+	}
+	
+	static public void ginaReplayStartupHook(ReplayTestConfiguration config) {
+		testConfiguration = config;
 	}
 	
 	static public void initExecutor(int threadNumber) {

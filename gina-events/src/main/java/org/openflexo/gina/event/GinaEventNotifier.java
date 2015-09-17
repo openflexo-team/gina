@@ -6,7 +6,6 @@ import java.util.List;
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.event.description.NotifyMethodEventDescription;
 import org.openflexo.gina.manager.EventManager;
-import org.openflexo.gina.manager.GinaEventFactory;
 import org.openflexo.gina.manager.GinaEventListener;
 import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.gina.manager.Registerable;
@@ -46,7 +45,11 @@ public abstract class GinaEventNotifier<D extends EventDescription> {
 			return new GinaStackEvent();
 
 		d.setParentIdentifier(parent.getURID().getIdentifier());
-		this.setIdentity(d);
+		try {
+			this.setIdentity(d);
+		} catch (MissingIdentityParameterException e) {
+			System.out.println("Attention : " + e.getMessage());
+		}
 
 		//this.findBranchAncestor();
 
@@ -96,6 +99,6 @@ public abstract class GinaEventNotifier<D extends EventDescription> {
 
 	public abstract GinaEvent.KIND computeClass(D d);
 
-	public abstract void setIdentity(D d);
+	public abstract void setIdentity(D d) throws MissingIdentityParameterException;
 
 }

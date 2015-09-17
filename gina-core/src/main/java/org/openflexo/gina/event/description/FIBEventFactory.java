@@ -64,8 +64,12 @@ public class FIBEventFactory {
 		return getModelFactory().newInstance(FIBValueEventDescription.class, action, String.valueOf(value));
 	}
 	
-	public FIBSelectionEventDescription createSelectionEvent(ListSelectionModel selection, int min, int max) {
-		FIBSelectionEventDescription e = getModelFactory().newInstance(FIBSelectionEventDescription.class, FIBSelectionEventDescription.SELECTED);
+	public <T> FIBTableEventDescription createTableEvent(String action, T value, String classValue, int row, int col) {
+		return getModelFactory().newInstance(FIBTableEventDescription.class, action, String.valueOf(value), classValue, row, col);
+	}
+	
+	public FIBSelectionEventDescription createSelectionEvent(ListSelectionModel selection, int lead, int min, int max) {
+		FIBSelectionEventDescription e = getModelFactory().newInstance(FIBSelectionEventDescription.class, FIBSelectionEventDescription.SELECTED, lead);
 		
 		for(int i = min; i <= max; ++i)
 			e.addValue(getModelFactory().newInstance(DescriptionIntegerItem.class,

@@ -1,9 +1,9 @@
 package org.openflexo.replay.test;
 
-public class FIBTestParameter {
+public class TestParameter {
 	private int testIndex;
 
-	public FIBTestParameter(int testIndex) {
+	public TestParameter(int testIndex) {
 		super();
 		this.testIndex = testIndex;
 	}
