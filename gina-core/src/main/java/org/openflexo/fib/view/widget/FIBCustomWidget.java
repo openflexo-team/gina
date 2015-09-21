@@ -86,8 +86,8 @@ public class FIBCustomWidget<J extends JComponent, T> extends FIBWidgetView<FIBC
 	public FIBCustomWidget(FIBCustom model, FIBController controller) {
 		super(model, controller);
 		try {
-			customComponent = makeCustomComponent(model.getComponentClass(), (Class<T>) TypeUtils.getBaseClass(model.getDataType()),
-					controller);
+			customComponent = makeCustomComponent((Class) model.getComponentClass(),
+					(Class<T>) TypeUtils.getBaseClass(model.getDataType()), controller);
 		} catch (ClassCastException e) {
 			LOGGER.warning("Could not instanciate component: ClassCastException, see logs for details");
 			e.printStackTrace();
