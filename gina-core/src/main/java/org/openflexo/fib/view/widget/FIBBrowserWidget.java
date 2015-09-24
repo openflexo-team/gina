@@ -470,7 +470,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 			_tree.setVisibleRowCount(_fibBrowser.getVisibleRowCount());
 		}
 
-		getTreeSelectionModel().setSelectionMode(getBrowser().getSelectionMode().getMode());
+		getTreeSelectionModel().setSelectionMode(getBrowser().getTreeSelectionMode().getMode());
 		getTreeSelectionModel().addTreeSelectionListener(this);
 
 		scrollPane = new JScrollPane(_tree);
@@ -899,7 +899,7 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 			if (ctrl != null) {
 				ctrl.updateSelection(this, oldSelection, selection);
 			} else {
-				LOGGER.warning("INVESTIGATE: trying to update selection on a widget withour controlller! " + this.toString());
+				LOGGER.warning("INVESTIGATE: trying to update selection on a widget without controlller! " + this.toString());
 			}
 		}
 
