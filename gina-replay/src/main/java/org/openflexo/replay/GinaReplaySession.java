@@ -30,8 +30,8 @@ import org.openflexo.rm.ResourceLocator;
  * 
  * @author Alexandre
  */
-public class GinaReplay implements GinaEventListener {
-	private static final Logger LOGGER = Logger.getLogger(GinaReplay.class.getPackage().getName());
+public class GinaReplaySession implements GinaEventListener {
+	private static final Logger LOGGER = Logger.getLogger(GinaReplaySession.class.getPackage().getName());
 
 	private Scenario scenario;
 	private boolean recording, wasRecording;
@@ -44,7 +44,7 @@ public class GinaReplay implements GinaEventListener {
 	
 	private LinkedList<GinaEvent> lastNonUserInteractions;
 
-	public GinaReplay(GinaReplayManager manager) {
+	public GinaReplaySession(GinaReplayManager manager) {
 		this.delayBetweenNodes = 500;
 		this.delayWaitSync = 2000;
 

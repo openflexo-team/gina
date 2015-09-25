@@ -389,7 +389,7 @@ public class FIBTableModel<T> extends AbstractTableModel {
 	public void setValueAt(Object value, int row, int col) {
 		FIBTableEventDescription desc = FIBEventFactory.getInstance().
 				createTableEvent(FIBTableEventDescription.CHANGED, value, value.getClass().getName(), row, col);
-		GinaStackEvent gse = _widget.getGENotifier().raise(desc);
+		GinaStackEvent gse = _widget.getNotifier().raise(desc);
 		AbstractColumn<T, ?> column = columnAt(col);
 		if (column != null && column instanceof EditableColumn) {
 			T object = elementAt(row);

@@ -72,13 +72,14 @@ import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelObject;
 import org.openflexo.fib.model.FIBWidget;
 import org.openflexo.gina.event.GinaEvent.KIND;
+import org.openflexo.gina.event.GenericEventPerformer;
 import org.openflexo.gina.event.GinaEventNotifier;
 import org.openflexo.gina.event.MissingIdentityParameterException;
 import org.openflexo.gina.event.description.FIBEventDescription;
-import org.openflexo.gina.event.description.GenericEventPerformer;
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.manager.GinaEventListener;
 import org.openflexo.gina.manager.GinaStackEvent;
+import org.openflexo.gina.manager.HasEventNotifier;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.ToolBox;
 
@@ -88,7 +89,7 @@ import org.openflexo.toolbox.ToolBox;
  * @author sylvain
  */
 public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T> extends FIBView<M, J, T> implements FocusListener,
-		PropertyChangeListener, GenericEventPerformer<FIBEventDescription> /*, HasDependencyBinding*/{
+		PropertyChangeListener, GenericEventPerformer<FIBEventDescription>, HasEventNotifier<FIBEventDescription> /*, HasDependencyBinding*/{
 
 	private static final Logger LOGGER = Logger.getLogger(FIBWidgetView.class.getPackage().getName());
 
@@ -142,7 +143,7 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 			}
 
 			@Override
-			public void setIdentity(FIBEventDescription e) throws MissingIdentityParameterException {
+			public void setIdentity(FIBEventDescription e, Object o) throws MissingIdentityParameterException {
 				e.setIdentity(getWidget().getBaseName(), getWidget().getName());
 			}
 			
@@ -175,7 +176,7 @@ public abstract class FIBWidgetView<M extends FIBWidget, J extends JComponent, T
 		}
 	}
 	
-	public GinaEventNotifier<FIBEventDescription> getGENotifier() {
+	public GinaEventNotifier<FIBEventDescription> getNotifier() {
 		return GENotifier;
 	}
 	

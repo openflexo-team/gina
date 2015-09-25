@@ -223,11 +223,11 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 		return eventManager;
 	}
 
-	public void setRecorderManager(EventManager recorderManager) {
+	public void setEventManager(EventManager eventManager) {
 		if (this.eventManager != null) {
 			this.eventManager.unregister(this);
 		}
-		this.eventManager = recorderManager;
+		this.eventManager = eventManager;
 		if (this.eventManager != null) {
 			this.eventManager.register(this);
 		}
@@ -426,7 +426,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 		returned.setParentLocalizer(parentLocalizer);
 		
 		if (recorderManager != null) {
-			returned.setRecorderManager(recorderManager);
+			returned.setEventManager(recorderManager);
 		}
 		
 		return returned;

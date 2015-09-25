@@ -28,7 +28,7 @@ public abstract class Task implements GinaTask, Runnable {
 			}
 
 			@Override
-			public void setIdentity(GinaTaskEventDescription d) throws MissingIdentityParameterException {
+			public void setIdentity(GinaTaskEventDescription d, Object o) throws MissingIdentityParameterException {
 				d.setIdentity(Task.class.getName(),
 						Task.this.getTaskTitle());
 			}
@@ -40,6 +40,12 @@ public abstract class Task implements GinaTask, Runnable {
 		if (manager != null)
 			manager.register(this);
 
+	}
+	
+	@Override
+	public void setEventManager(EventManager manager) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override

@@ -13,5 +13,7 @@ public interface Registerable extends HasBaseIdentifier {
 	public void setURID(URID urid);
 	
 	public EventManager getEventManager();
+	
+	public void setEventManager(EventManager manager);
 
 }

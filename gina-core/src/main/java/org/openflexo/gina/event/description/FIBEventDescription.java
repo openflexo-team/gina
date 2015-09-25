@@ -98,7 +98,7 @@ public abstract interface FIBEventDescription extends EventDescription {
 
 		@Override
 		public void checkMatchingEvent(EventDescription e) throws InvalidRecorderStateException {
-			if (!(e instanceof EventDescription)) {
+			if (!(e instanceof FIBEventDescription)) {
 				super.checkMatchingEvent(e);
 				return;
 			}

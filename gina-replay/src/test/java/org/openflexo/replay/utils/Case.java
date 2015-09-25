@@ -5,8 +5,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.openflexo.gina.event.description.FIBEventDescription;
+import org.openflexo.gina.event.description.TreeNodeEventDescription;
 import org.openflexo.gina.manager.EventManager;
-import org.openflexo.replay.GinaReplay;
+import org.openflexo.replay.GinaReplaySession;
 import org.openflexo.replay.GinaReplayManager;
 import org.openflexo.replay.test.ReplayTestConfiguration;
 
@@ -23,8 +24,8 @@ public abstract class Case {
 		instance = c;
 
 		manager = new GinaReplayManager();
-		manager.addEventDescriptionModels(FIBEventDescription.class);
-		GinaReplay recorder = new GinaReplay(manager);
+		manager.addEventDescriptionModels(FIBEventDescription.class, TreeNodeEventDescription.class);
+		GinaReplaySession recorder = new GinaReplaySession(manager);
 		manager.setCurrentReplayer(recorder);
 		
 		if (testConfiguration == null)

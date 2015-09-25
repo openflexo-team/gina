@@ -20,7 +20,7 @@ public class GinaPropertyChangeListener implements PropertyChangeListener, Regis
 			}
 
 			@Override
-			public void setIdentity(NotifyMethodEventDescription d) {
+			public void setIdentity(NotifyMethodEventDescription d, Object o) {
 				
 			}
 			
@@ -55,6 +55,12 @@ public class GinaPropertyChangeListener implements PropertyChangeListener, Regis
 	public EventManager getEventManager() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void setEventManager(EventManager manager) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

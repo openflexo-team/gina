@@ -10,7 +10,7 @@ import org.openflexo.fib.model.FIBPanel.Layout;
 import org.openflexo.fib.model.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.replay.sampleData.Person;
 import org.openflexo.localization.FlexoLocalization;
-import org.openflexo.replay.GinaReplay;
+import org.openflexo.replay.GinaReplaySession;
 import org.openflexo.replay.GinaReplayManager;
 
 public class CaseCommandWindow {
@@ -30,7 +30,7 @@ public class CaseCommandWindow {
 	
 	public void initCase() {
 		manager = new GinaReplayManager();
-		GinaReplay recorder = new GinaReplay(manager);
+		GinaReplaySession recorder = new GinaReplaySession(manager);
 		manager.setCurrentReplayer(recorder);
 		recorder.startRecording();
 		

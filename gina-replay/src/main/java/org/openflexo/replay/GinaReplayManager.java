@@ -22,7 +22,7 @@ import org.openflexo.model.factory.ModelFactory;
  */
 public class GinaReplayManager implements GinaEventListener {
 
-	private GinaReplay replayer;
+	private GinaReplaySession replayer;
 	private GinaEventFactory factory;
 	private EventManager eventManager;
 	
@@ -51,8 +51,8 @@ public class GinaReplayManager implements GinaEventListener {
 	 * Instantiate a GinaRecorder and set it as the current recorder
 	 * @return the newly created recorder
 	 */
-	public GinaReplay createAndSetToCurrent() {
-		GinaReplay r = new GinaReplay(this);
+	public GinaReplaySession createAndSetToCurrent() {
+		GinaReplaySession r = new GinaReplaySession(this);
 
 		setCurrentReplayer(r);
 
@@ -63,7 +63,7 @@ public class GinaReplayManager implements GinaEventListener {
 	 * Set the current recorder
 	 * @param r the recorder instance
 	 */
-	public void setCurrentReplayer(GinaReplay r) {
+	public void setCurrentReplayer(GinaReplaySession r) {
 		replayer = r;
 	}
 
@@ -71,7 +71,7 @@ public class GinaReplayManager implements GinaEventListener {
 	 * Return the current recorder
 	 * @return the current recorder
 	 */
-	public GinaReplay getCurrentReplayer() {
+	public GinaReplaySession getCurrentReplayer() {
 		return replayer;
 	}
 

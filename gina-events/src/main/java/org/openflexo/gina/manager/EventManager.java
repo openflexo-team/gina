@@ -371,4 +371,12 @@ public class EventManager implements GinaEventListener {
 		return null;
 	}
 
+	public static Class<?> getClassForName(String type) throws ClassNotFoundException {
+		try {
+			return Class.forName(type);
+		} catch (ClassNotFoundException e) {
+			return Class.forName("java.lang." + type);
+		}
+	}
+
 }

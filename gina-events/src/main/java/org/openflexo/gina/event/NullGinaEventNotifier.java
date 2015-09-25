@@ -10,29 +10,17 @@ import org.openflexo.gina.manager.GinaEventListener;
 import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.gina.manager.Registerable;
 
-public abstract class GinaEventNotifier<D extends EventDescription> {
+public abstract class NullGinaEventNotifier<D extends EventDescription> {
 	private List<GinaEventListener> ginaListeners = new ArrayList<GinaEventListener>();
 	
 	protected EventManager manager;
 	protected Registerable parent;
 
-	public GinaEventNotifier(EventManager manager, Registerable parent) {
-		this.parent = parent;
-		this.manager = manager;
-		if (this.manager != null)
-			this.addListener(this.manager);
-	}
-	
-	public void setManager(EventManager manager) {
-		if (this.manager != null)
-			this.removeListener(this.manager);
-		this.manager = manager;
-		if (this.manager != null)
-			this.addListener(this.manager);
+	public NullGinaEventNotifier() {
 	}
 
 	public EventManager getManager() {
-		return manager;
+		return null;
 	}
 
 	public void addListener(GinaEventListener l) {
@@ -47,18 +35,14 @@ public abstract class GinaEventNotifier<D extends EventDescription> {
 	public void clearListeners() {
 		ginaListeners.clear();
 	}
-	
-	public GinaStackEvent raise(D d) {
-		return raise(d, null);
-	}
 
-	public GinaStackEvent raise(D d, Object o) {
+	public GinaStackEvent raise(D d) {
 		if (this.manager == null)
 			return new GinaStackEvent();
 
 		d.setParentIdentifier(parent.getURID().getIdentifier());
 		try {
-			this.setIdentity(d, o);
+			this.setIdentity(d);
 		} catch (MissingIdentityParameterException e) {
 			System.out.println("Attention : " + e.getMessage());
 		}
@@ -111,6 +95,6 @@ public abstract class GinaEventNotifier<D extends EventDescription> {
 
 	public abstract GinaEvent.KIND computeClass(D d);
 
-	public abstract void setIdentity(D d, Object o) throws MissingIdentityParameterException;
+	public abstract void setIdentity(D d) throws MissingIdentityParameterException;
 
 }

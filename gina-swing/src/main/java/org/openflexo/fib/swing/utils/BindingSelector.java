@@ -179,7 +179,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			}
 
 			@Override
-			public void setIdentity(EventDescription e) {
+			public void setIdentity(EventDescription e, Object o) {
 				if (e instanceof EventDescription) {
 					//((FIBEvent) e).setIdentity(getWidget().getBaseName(), getWidget().getName(), getWidget().getRootComponent().getUniqueID());
 				}
