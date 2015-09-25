@@ -32,7 +32,7 @@ public class Tester {
 		testConfiguration.runMain();
 	}
 
-	@Parameters
+	@Parameters( name = "{index}: Node {0}" )
     public static Collection<TestParameter[]> data() {
     	init();
     	LinkedList<TestParameter[]> list = new LinkedList<TestParameter[]>();
@@ -41,7 +41,8 @@ public class Tester {
 
         for(int i=0; i<size; ++i)
         {
-        	TestParameter[] param = {new TestParameter(i)};
+        	TestParameter[] param = {new TestParameter(i, testConfiguration.getManager().getCurrentReplayer().
+        			getScenario().getNodes().get(i))};
         	list.add(param);
         }
 

@@ -103,5 +103,12 @@ public interface InteractionCycle extends ScenarioNode {
 			
 			return l;
 		}
+		
+		public String toString() {
+			if (getUserInteraction() == null)
+				return "Interaction without UserInteraction";
+			else
+				return getUserInteraction().toString();
+		}
 	}
 }
