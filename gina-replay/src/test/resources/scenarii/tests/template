@@ -1,4 +1,4 @@
-package org.openflexo.replay.test;
+package org.openflexo.replay.tests;
 
 import static org.junit.Assert.*;
 
@@ -13,19 +13,18 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.openflexo.gina.event.InvalidRecorderStateException;
+import org.openflexo.replay.test.ReplayTestConfiguration;
+import org.openflexo.replay.test.TestParameter;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.ResourceLocator;
 
 @RunWith(Parameterized.class)
-public class Tester {
-
-	private TestParameter testParam;
-
+public class %%CLASS_NAME%% {
 	static private ReplayTestConfiguration testConfiguration;
 	
 	public static void init() {
 		testConfiguration = new ReplayTestConfiguration();
-		File scenarioDir = ((FileResourceImpl) ResourceLocator.locateResource("scenarii/last-scenario")).getFile();
+		File scenarioDir = ((FileResourceImpl) ResourceLocator.locateResource("%%RESOURCE_SCENARIO%%")).getFile();
 		testConfiguration.loadScenario(scenarioDir);
 		testConfiguration.runMain();
 	}
@@ -47,8 +46,7 @@ public class Tester {
     	return list;
     }
 
-    public Tester(TestParameter param) {
-    	testParam = param;
+    public %%CLASS_NAME%%(TestParameter param) {
     }
 
     @Test
@@ -61,26 +59,4 @@ public class Tester {
 
     	assertTrue(true);
     }
-    
-    @BeforeClass
-	public static void initGUI() {
-    	//simpleCase = new MultiEventsCase();
-		//gcDelegate = new GraphicalContextDelegate(FIBCheckboxListWidgetTest.class.getSimpleName());
-	}
-
-	@AfterClass
-	public static void waitGUI() {
-		//gcDelegate.waitGUI();
-	}
-
-	/*@Before
-	public void setUp() {
-		gcDelegate.setUp();
-	}
-
-	@Override
-	@After
-	public void tearDown() throws Exception {
-		gcDelegate.tearDown();
-	}*/
 }

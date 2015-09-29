@@ -53,6 +53,10 @@ public class ReplayTestConfiguration {
 		}
 	}
 	
+	public Class<?> getMainClassLauncher() {
+		return mainClassLauncher;
+	}
+	
 	public void runMain() {
 		if (mainClassLauncher == null)
 			return;
