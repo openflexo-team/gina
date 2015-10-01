@@ -344,55 +344,55 @@ public interface FIBPanel extends FIBContainer {
 			if (notification != null) {
 				this.layout = layout;
 				switch (layout) {
-				case none:
-					break;
-				case flow:
-					if (flowAlignment == null) {
-						flowAlignment = FlowLayoutAlignment.LEADING;
-					}
-					if (hGap == null) {
-						hGap = 5;
-					}
-					if (vGap == null) {
-						vGap = 5;
-					}
-					break;
-				case grid:
-					if (hGap == null) {
-						hGap = 5;
-					}
-					if (vGap == null) {
-						vGap = 5;
-					}
-					if (rows == null) {
-						rows = 2;
-					}
-					if (cols == null) {
-						cols = 2;
-					}
-					break;
-				case buttons:
-					if (hGap == null) {
-						hGap = 5;
-					}
-					if (vGap == null) {
-						vGap = 5;
-					}
-					break;
-				case box:
-					if (boxLayoutAxis == null) {
-						boxLayoutAxis = BoxLayoutAxis.X_AXIS;
-					}
-					break;
-				case border:
-					break;
-				case twocols:
-					break;
-				case gridbag:
-					break;
+					case none:
+						break;
+					case flow:
+						if (flowAlignment == null) {
+							flowAlignment = FlowLayoutAlignment.LEADING;
+						}
+						if (hGap == null) {
+							hGap = 5;
+						}
+						if (vGap == null) {
+							vGap = 5;
+						}
+						break;
+					case grid:
+						if (hGap == null) {
+							hGap = 5;
+						}
+						if (vGap == null) {
+							vGap = 5;
+						}
+						if (rows == null) {
+							rows = 2;
+						}
+						if (cols == null) {
+							cols = 2;
+						}
+						break;
+					case buttons:
+						if (hGap == null) {
+							hGap = 5;
+						}
+						if (vGap == null) {
+							vGap = 5;
+						}
+						break;
+					case box:
+						if (boxLayoutAxis == null) {
+							boxLayoutAxis = BoxLayoutAxis.X_AXIS;
+						}
+						break;
+					case border:
+						break;
+					case twocols:
+						break;
+					case gridbag:
+						break;
 
-				default:
-					break;
+					default:
+						break;
 				}
 
 				hasChanged(notification);
@@ -410,33 +410,33 @@ public interface FIBPanel extends FIBContainer {
 			if (notification != null) {
 				this.border = border;
 				switch (border) {
-				case line:
-					if (borderColor == null) {
-						borderColor = Color.BLACK;
-					}
-					break;
-				case titled:
-					if (borderTitle == null) {
-						borderTitle = "Panel";
-					}
-					break;
-				case rounded3d:
-					if (borderTop == null) {
-						borderTop = 2;
-					}
-					if (borderBottom == null) {
-						borderBottom = 2;
-					}
-					if (borderLeft == null) {
-						borderRight = 2;
-					}
-					if (borderRight == null) {
-						borderRight = 2;
-					}
-					break;
+					case line:
+						if (borderColor == null) {
+							borderColor = Color.BLACK;
+						}
+						break;
+					case titled:
+						if (borderTitle == null) {
+							borderTitle = "Panel";
+						}
+						break;
+					case rounded3d:
+						if (borderTop == null) {
+							borderTop = 2;
+						}
+						if (borderBottom == null) {
+							borderBottom = 2;
+						}
+						if (borderLeft == null) {
+							borderRight = 2;
+						}
+						if (borderRight == null) {
+							borderRight = 2;
+						}
+						break;
 
-				default:
-					break;
+					default:
+						break;
 				}
 				hasChanged(notification);
 			}

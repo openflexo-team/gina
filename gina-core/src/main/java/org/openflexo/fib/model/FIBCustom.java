@@ -58,9 +58,7 @@ import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingDefinition;
-import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.view.widget.FIBCustomWidget;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -329,10 +327,11 @@ public interface FIBCustom extends FIBWidget {
 
 		@Override
 		public Type getDynamicAccessType() {
-			Type[] args = new Type[2];
+			/*Type[] args = new Type[2];
 			args[0] = getDataType();
 			args[1] = getComponentClass();
-			return new ParameterizedTypeImpl(FIBCustomWidget.class, args);
+			return new ParameterizedTypeImpl(FIBCustomWidget.class, args);*/
+			return getComponentClass();
 		}
 
 		@Override
@@ -549,7 +548,8 @@ public interface FIBCustom extends FIBWidget {
 					value.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 					value.setBindingName("value");
 					this.value = value;
-				} else {
+				}
+				else {
 					getValue();
 				}
 			}

@@ -296,7 +296,11 @@ public class FIBController
 		}
 		for (FIBComponent c : views.keySet()) {
 			if (variable.getVariableName().equals(c.getName())) {
-				return viewForComponent(c) /*.getDynamicModel()*/;
+				FIBView<?, ?, ?> returned = viewForComponent(c) /*.getDynamicModel()*/;
+				if (returned instanceof FIBCustomWidget) {
+					return ((FIBCustomWidget<?, ?>) returned).getCustomComponent();
+				}
+				return returned;
 			}
 		}
 		if (variable.getVariableName().equals("controller")) {
