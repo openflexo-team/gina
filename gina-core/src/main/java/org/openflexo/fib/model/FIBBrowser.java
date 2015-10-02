@@ -773,4 +773,17 @@ public interface FIBBrowser extends FIBWidget {
 
 	}
 
+	@DefineValidationRule
+	public static class SelectionBindingMustBeValid extends BindingMustBeValid<FIBBrowser> {
+		public SelectionBindingMustBeValid() {
+			super("'selection'_binding_is_not_valid", FIBBrowser.class);
+		}
+
+		@Override
+		public DataBinding<?> getBinding(FIBBrowser object) {
+			return object.getSelection();
+		}
+
+	}
+
 }
