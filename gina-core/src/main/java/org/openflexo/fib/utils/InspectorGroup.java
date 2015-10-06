@@ -118,11 +118,18 @@ public class InspectorGroup {
 				}
 			}
 			if (parentGroupInspectors.size() > 0) {
-				Class<?> mostSpecializedClass = TypeUtils.getMostSpecializedClass(parentGroupInspectors.keySet());
+				// Fixed issue with multiple inheritance
+				// I think this is really costly in cpu time
+				// TODO: check and optimize this !!!
+				for (FIBInspector inspectorToAppend : parentGroupInspectors.values()) {
+					inspector.appendSuperInspector(inspectorToAppend, fibModelFactory);
+				}
+
+				/*Class<?> mostSpecializedClass = TypeUtils.getMostSpecializedClass(parentGroupInspectors.keySet());
 				if (mostSpecializedClass != null) {
 					FIBInspector inspectorToAppend = parentGroupInspectors.get(mostSpecializedClass);
 					inspector.appendSuperInspector(inspectorToAppend, fibModelFactory);
-				}
+				}*/
 			}
 		}
 
