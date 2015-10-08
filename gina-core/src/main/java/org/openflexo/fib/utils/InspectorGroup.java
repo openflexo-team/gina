@@ -90,13 +90,15 @@ public class InspectorGroup {
 				if (inspector != null) {
 					if (inspector.getDataClass() != null) {
 						inspectors.put(inspector.getDataClass(), inspector);
-						logger.info("Loaded inspector: " + f.getURI() + " for " + inspector.getDataClass());
+						logger.fine("Loaded inspector: " + f.getURI() + " for " + inspector.getDataClass());
 						progress(f, inspector);
 					}
-				} else {
+				}
+				else {
 					logger.warning("Not found: " + f.getURI());
 				}
-			} else {
+			}
+			else {
 				logger.warning("Component in " + f + " is not an inspector !");
 			}
 		}
