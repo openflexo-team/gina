@@ -158,8 +158,9 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 					.getSelection()), getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, List<T> newValue) {
-					//System.out.println(" bindingValueChanged() detected for selection=" + getComponent().getSelection() + " with newValue="
-					//		+ newValue + " source=" + source);
+					// System.out.println(" bindingValueChanged() detected for selection=" + getComponent().getSelection() +
+					// " with newValue="
+					// + newValue + " source=" + source);
 					performSelect(newValue, false);
 				}
 			};
@@ -798,10 +799,18 @@ public class FIBBrowserWidget<T> extends FIBWidgetView<FIBBrowser, JTree, T> imp
 
 	@Override
 	public void addToSelection(Object o) {
+
+		if (getBrowserModel().getPaths(o).length == 0 && getBrowser().getDeepExploration()) {
+			// No matches yet, but we may recursively and exhaustively explore the whole model to retrieve all contents
+			getBrowserModel().recursivelyExploreModelToRetrieveContents();
+		}
+		// System.out.println(getBrowserModel().debugContents());
+
 		for (TreePath path : getBrowserModel().getPaths(o)) {
 			getTreeSelectionModel().addSelectionPath(path);
 			getJTree().scrollPathToVisible(path);
 		}
+
 	}
 
 	@Override
