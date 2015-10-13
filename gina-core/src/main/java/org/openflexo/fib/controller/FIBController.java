@@ -151,7 +151,7 @@ import org.openflexo.toolbox.ToolBox;
  * 
  */
 public class FIBController
-		/*extends Observable*/implements BindingEvaluationContext, Observer, PropertyChangeListener, HasPropertyChangeSupport {
+/*extends Observable*/implements BindingEvaluationContext, Observer, PropertyChangeListener, HasPropertyChangeSupport {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBController.class.getPackage().getName());
 
@@ -335,8 +335,7 @@ public class FIBController
 			if (oldDataObject instanceof HasPropertyChangeSupport
 					&& ((HasPropertyChangeSupport) oldDataObject).getPropertyChangeSupport() != null) {
 				((HasPropertyChangeSupport) oldDataObject).getPropertyChangeSupport().removePropertyChangeListener(this);
-			}
-			else if (oldDataObject instanceof Observable) {
+			} else if (oldDataObject instanceof Observable) {
 				((Observable) oldDataObject).deleteObserver(this);
 			}
 			dataObject = anObject;
@@ -348,8 +347,7 @@ public class FIBController
 			}*/
 			if (dataObject instanceof HasPropertyChangeSupport) {
 				((HasPropertyChangeSupport) dataObject).getPropertyChangeSupport().addPropertyChangeListener(this);
-			}
-			else if (dataObject instanceof Observable) {
+			} else if (dataObject instanceof Observable) {
 				((Observable) dataObject).addObserver(this);
 			}
 			// setChanged();
@@ -415,8 +413,7 @@ public class FIBController
 	public final <M extends FIBComponent> FIBView<M, ?, ?> buildView(M fibComponent) {
 		if (fibComponent instanceof FIBContainer) {
 			return buildContainer((FIBContainer) fibComponent);
-		}
-		else if (fibComponent instanceof FIBWidget) {
+		} else if (fibComponent instanceof FIBWidget) {
 			FIBWidgetView widgetView = buildWidget((FIBWidget) fibComponent);
 			if (widgetView != null) {
 				return widgetView;
@@ -477,8 +474,7 @@ public class FIBController
 					&& (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3 || ToolBox.isMacOS() && isPopupTrigger)) {
 				// Detected right-click associated with action
 				widgetView.applyRightClickAction(e);
-			}
-			else if (fibWidget.hasClickAction()) {
+			} else if (fibWidget.hasClickAction()) {
 				// Detected click associated with action
 				widgetView.applySingleClickAction(e);
 			}
@@ -499,8 +495,7 @@ public class FIBController
 			if (e.getClickCount() == 2) {
 				// wasDoubleClick = true;
 				fireDoubleClick(mouseEvent);
-			}
-			else if (e.getClickCount() == 1) {
+			} else if (e.getClickCount() == 1) {
 				// wasDoubleClick = true;
 				fireSingleClick(mouseEvent);
 			} /* {
@@ -700,8 +695,7 @@ public class FIBController
 				returned.setParent(getParentLocalizer());
 			}
 			return returned;
-		}
-		else {
+		} else {
 			LOGGER.warning("Could not find localizer");
 			return null;
 		}
@@ -879,8 +873,7 @@ public class FIBController
 			for (Object o : newSelection) {
 				if (oldSelection != null && oldSelection.contains(o)) {
 					objectsToRemoveFromSelection.remove(o);
-				}
-				else {
+				} else {
 					objectsToAddToSelection.add(o);
 				}
 			}
@@ -993,14 +986,11 @@ public class FIBController
 		public FIBView makeContainer(FIBContainer fibContainer) {
 			if (fibContainer instanceof FIBTab) {
 				return new FIBTabView((FIBTab) fibContainer, FIBController.this);
-			}
-			else if (fibContainer instanceof FIBPanel) {
+			} else if (fibContainer instanceof FIBPanel) {
 				return new FIBPanelView((FIBPanel) fibContainer, FIBController.this);
-			}
-			else if (fibContainer instanceof FIBTabPanel) {
+			} else if (fibContainer instanceof FIBTabPanel) {
 				return new FIBTabPanelView((FIBTabPanel) fibContainer, FIBController.this);
-			}
-			else if (fibContainer instanceof FIBSplitPanel) {
+			} else if (fibContainer instanceof FIBSplitPanel) {
 				return new FIBSplitPanelView((FIBSplitPanel) fibContainer, FIBController.this);
 			}
 			return null;
@@ -1053,20 +1043,20 @@ public class FIBController
 			if (fibWidget instanceof FIBNumber) {
 				FIBNumber w = (FIBNumber) fibWidget;
 				switch (w.getNumberType()) {
-					case ByteType:
-						return new FIBNumberWidget.FIBByteWidget(w, FIBController.this);
-					case ShortType:
-						return new FIBNumberWidget.FIBShortWidget(w, FIBController.this);
-					case IntegerType:
-						return new FIBNumberWidget.FIBIntegerWidget(w, FIBController.this);
-					case LongType:
-						return new FIBNumberWidget.FIBLongWidget(w, FIBController.this);
-					case FloatType:
-						return new FIBNumberWidget.FIBFloatWidget(w, FIBController.this);
-					case DoubleType:
-						return new FIBNumberWidget.FIBDoubleWidget(w, FIBController.this);
-					default:
-						break;
+				case ByteType:
+					return new FIBNumberWidget.FIBByteWidget(w, FIBController.this);
+				case ShortType:
+					return new FIBNumberWidget.FIBShortWidget(w, FIBController.this);
+				case IntegerType:
+					return new FIBNumberWidget.FIBIntegerWidget(w, FIBController.this);
+				case LongType:
+					return new FIBNumberWidget.FIBLongWidget(w, FIBController.this);
+				case FloatType:
+					return new FIBNumberWidget.FIBFloatWidget(w, FIBController.this);
+				case DoubleType:
+					return new FIBNumberWidget.FIBDoubleWidget(w, FIBController.this);
+				default:
+					break;
 				}
 			}
 			if (fibWidget instanceof FIBColor) {
