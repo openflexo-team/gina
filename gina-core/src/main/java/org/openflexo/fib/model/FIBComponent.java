@@ -475,6 +475,13 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 	 */
 	public void searchAndRegisterAllLocalized();
 
+	/**
+	 * Return flag indicating if this component as been marked as "hidden" (parameters scheme)
+	 * 
+	 * @return
+	 */
+	public boolean isHidden();
+
 	public static abstract class FIBComponentImpl extends FIBModelObjectImpl implements FIBComponent {
 
 		private static final Logger LOGGER = Logger.getLogger(FIBComponent.class.getPackage().getName());
@@ -1872,6 +1879,15 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode {
 
 		}
 
+		/**
+		 * Return flag indicating if this component as been marked as "hidden" (parameters scheme)
+		 * 
+		 * @return
+		 */
+		@Override
+		public boolean isHidden() {
+			return (getParameter("hidden") != null && getParameter("hidden").equalsIgnoreCase("true"));
+		}
 	}
 
 	@DefineValidationRule
