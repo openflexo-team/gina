@@ -12,7 +12,7 @@ import org.openflexo.gina.event.UserInteraction;
 import org.openflexo.gina.event.description.ApplicationEventDescription;
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.event.description.FIBEventDescription;
-import org.openflexo.gina.event.description.TreeNodeEventDescription;
+//import org.openflexo.gina.event.description.TreeNodeEventDescription;
 import org.openflexo.gina.manager.EventManager;
 import org.openflexo.replay.GinaReplaySession;
 import org.openflexo.replay.GinaReplayManager;
@@ -34,7 +34,7 @@ public abstract class Case {
 		instance = c;
 
 		manager = new GinaReplayManager();
-		manager.addEventDescriptionModels(FIBEventDescription.class, TreeNodeEventDescription.class);
+		//manager.addEventDescriptionModels(FIBEventDescription.class, TreeNodeEventDescription.class);
 		GinaReplaySession recorder = new GinaReplaySession(manager);
 		manager.setCurrentSession(recorder);
 		
