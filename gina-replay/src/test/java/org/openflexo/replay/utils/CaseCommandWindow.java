@@ -31,7 +31,7 @@ public class CaseCommandWindow {
 	public void initCase() {
 		manager = new GinaReplayManager();
 		GinaReplaySession recorder = new GinaReplaySession(manager);
-		manager.setCurrentReplayer(recorder);
+		manager.setCurrentSession(recorder);
 		recorder.startRecording();
 		
 		createRecorderControllerWindow();

@@ -42,7 +42,7 @@ public class ReplayTestConfiguration {
 				ApplicationEventDescription aed = (ApplicationEventDescription) d;
 				try {
 					mainClassLauncher = Class.forName(aed.getMainClass());
-					System.out.println("Main class : " + mainClassLauncher);
+					//System.out.println("Main class : " + mainClassLauncher);
 				} catch (ClassNotFoundException e) {
 					System.out.println("The class '" + aed.getMainClass() + "' cannot be found in the classpath !");
 					scenarioBase = null;
@@ -105,8 +105,10 @@ public class ReplayTestConfiguration {
 	public void startup(GinaReplayManager manager) {
 		this.manager = manager;
 
-		if (scenarioToLoad != null)
-			this.manager.getCurrentReplayer().load(scenarioToLoad);
+		if (scenarioToLoad != null) {
+			this.manager.getCurrentSession().load(scenarioToLoad);
+			this.manager.getCurrentSession().launched();
+		}
 	}
 	
 	private void deserializeScenario(File file) {

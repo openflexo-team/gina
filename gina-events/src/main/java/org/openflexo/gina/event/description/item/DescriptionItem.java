@@ -1,6 +1,7 @@
 package org.openflexo.gina.event.description.item;
 
 import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.Import;
 import org.openflexo.model.annotations.Imports;
 import org.openflexo.model.annotations.Initializer;
