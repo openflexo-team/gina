@@ -265,7 +265,7 @@ public class DrawindTreeNodeCase extends Case {
 		node3.connectTo(node2);
 		GraphDrawing1 returned = new GraphDrawing1(graph, factory);
 		returned.printGraphicalObjectHierarchy();
-		returned.setEventManager(getManager().getEventManager());
+		//returned.setEventManager(getManager().getEventManager());
 		return returned;
 	}
 
