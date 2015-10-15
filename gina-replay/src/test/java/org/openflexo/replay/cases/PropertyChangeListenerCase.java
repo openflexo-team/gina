@@ -2,6 +2,13 @@ package org.openflexo.replay.cases;
 
 import java.awt.Dimension;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.fib.model.FIBButton;
@@ -15,7 +22,10 @@ import org.openflexo.replay.sampleData.Person;
 import org.openflexo.replay.utils.Case;
 import org.openflexo.replay.utils.GraphicalContextDelegate;
 import org.openflexo.replay.utils.Window;
+import org.openflexo.test.OrderedRunner;
+import org.openflexo.test.TestOrder;
 
+@RunWith(OrderedRunner.class)
 public class PropertyChangeListenerCase extends Case {
 
 	private static Person personA;
@@ -23,6 +33,32 @@ public class PropertyChangeListenerCase extends Case {
 	public static void main(String[] args) {
 		//initExecutor(2);
 		initCase(new PropertyChangeListenerCase());
+	}
+	
+	@Test
+	@TestOrder(1)
+	public void testInit() {
+		main(null);
+		
+		assertNotNull(Case.getInstance());
+	}
+	
+	@Test
+	@TestOrder(2)
+	public void testModify() {
+		getPersonA().setAge(20);
+		getPersonA().setFirstName("Alex");
+	}
+	
+	@Test
+	@TestOrder(3)
+	public void testWait() {
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -55,6 +91,8 @@ public class PropertyChangeListenerCase extends Case {
 		w.getComponent().addToSubComponents(textFieldFirstname, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false));
 		w.getComponent().addToSubComponents(labelLastname, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, true, false));
 		w.getComponent().addToSubComponents(textFieldLastname, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false));
+	
+		assert(w.getComponent().isValid());
 	}
 
 	public static Person getPersonA() {

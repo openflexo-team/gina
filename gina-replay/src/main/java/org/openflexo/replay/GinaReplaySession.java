@@ -22,6 +22,7 @@ import org.openflexo.gina.manager.GinaEventListener;
 import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.gina.event.strategies.RecordingStrategy;
 import org.openflexo.gina.event.strategies.CheckingStrategy;
+import org.openflexo.replay.test.ReplayTestConfiguration;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.ResourceLocator;
 
@@ -41,11 +42,9 @@ public class GinaReplaySession implements GinaEventListener {
 	
 	private RecordingStrategy recordingStrategy;
 	private CheckingStrategy checkingStrategy;
-	
-	private LinkedList<GinaEvent> lastNonUserInteractions;
 
 	public GinaReplaySession(GinaReplayManager manager) {
-		this.delayBetweenNodes = 500;
+		this.delayBetweenNodes = 30;
 		this.delayWaitSync = 2000;
 
 		this.recording = false;
@@ -53,16 +52,14 @@ public class GinaReplaySession implements GinaEventListener {
 		
 		this.manager = manager;
 		
-		this.lastNonUserInteractions = new LinkedList<GinaEvent>();
-		
 		scenario = manager.getModelFactory().newInstance(Scenario.class);
 
 		/*InteractionCycle initNode = this.manager.getModelFactory().newInstance(InteractionCycle.class);
 		scenario.addNode(initNode);*/
 		
 		// strategies
-		this.recordingStrategy = new RecordingStrategy(scenario, this.manager);//null;
-		this.checkingStrategy = null;
+		this.recordingStrategy = new RecordingStrategy(this);
+		this.checkingStrategy = new CheckingStrategy(this);
 		
 		LOGGER.info("REC Gina Recorder is Up");
 	}
@@ -73,16 +70,15 @@ public class GinaReplaySession implements GinaEventListener {
 	 */
 	@Override
 	public void eventPerformed(GinaEvent e, Stack<GinaStackEvent> stack) {
-		if (!isRecording())
-			return;
-
-		if (this.recordingStrategy != null)
+		if (this.recordingStrategy != null && isRecording()) {
 			this.recordingStrategy.eventPerformed(e, stack);
-
-		//System.out.println("Number of recorded events : " + rootNode.getNodes().size());
-		File scenarioDir = ((FileResourceImpl) ResourceLocator.locateSourceCodeResource("scenarii")).getFile();
-		System.out.println(scenarioDir);
-		save(scenarioDir, "last-scenario");
+			//System.out.println("Number of recorded events : " + rootNode.getNodes().size());
+			File scenarioDir = ((FileResourceImpl) ResourceLocator.locateSourceCodeResource("scenarii")).getFile();
+			save(scenarioDir, "last-scenario");
+		}
+		if (this.checkingStrategy != null && !isRecording()) {
+			this.checkingStrategy.eventPerformed(e, stack);
+		}
 	}
 	
 	/**
@@ -91,6 +87,17 @@ public class GinaReplaySession implements GinaEventListener {
 	 */
 	public Scenario getScenario() {
 		return scenario;
+	}
+	
+	public void launched() {
+		if (scenario.size() == 0)
+			return;
+		if (!(scenario.getNodes().get(0) instanceof InteractionCycle))
+			return;
+		UserInteraction ui = ((InteractionCycle) scenario.getNodes().get(0)).getUserInteraction();
+		if (!(ui.getDescription() instanceof ApplicationEventDescription))
+			return;
+		executeEvent(ui);
 	}
 
 	public void play() {
@@ -103,8 +110,8 @@ public class GinaReplaySession implements GinaEventListener {
 				for(ScenarioNode node : scenario.getNodes()) {
 					if (node instanceof InteractionCycle) {
 						InteractionCycle ic = (InteractionCycle) node;
-						executeNodeEvents(ic);
-						waitForNonUserInteractionsSync(ic, delayWaitSync);
+						executeNodeEvent(ic);
+						waitForSystemEventsSync(ic, delayWaitSync);
 					}
 				}
 
@@ -114,12 +121,12 @@ public class GinaReplaySession implements GinaEventListener {
 		t.start();
 	}
 	
-	protected boolean executeNodeEvents(InteractionCycle node) {
+	protected boolean executeNodeEvent(InteractionCycle node) {
 		//System.out.println("Event " + node);
-		final GinaEvent e = node.getUserInteraction();
+		final UserInteraction e = node.getUserInteraction();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				executeEvent(e.getDescription());
+				executeEvent(e);
 			}
 		});
 		
@@ -131,35 +138,45 @@ public class GinaReplaySession implements GinaEventListener {
 		return true;
 	}
 	
-	protected boolean executeEvent(final EventDescription e) {
-		LOGGER.info("PLAY : Event " + e);
-		
+	protected boolean executeEvent(UserInteraction e) {
 		int retryNumber = 10;
+		final EventDescription d = e.getDescription();
+		
+		LOGGER.info("PLAY : Event " + d);
+		if (this.checkingStrategy != null) {
+			this.checkingStrategy.eventPlayed(e);
+		}
 		
 		for(int retry = retryNumber; retry > 0; retry--) {
 			try{
-				e.execute(manager.getEventManager());
+				d.execute(manager.getEventManager());
 				
 				if (retry != retryNumber)
-					LOGGER.warning("PLAY : had to retry " + (retryNumber - retry) + " time(s) to perfom User Interaction " + e);
+					LOGGER.warning("PLAY : had to retry " + (retryNumber - retry) + " time(s) to perfom User Interaction " + d);
 				
 				return true;
 			} catch(Exception e1) {
 				try {
+					e1.printStackTrace();
 					Thread.sleep(50);
 				} catch (InterruptedException e2) {}
 			}
 		}
 
-		LOGGER.warning("PLAY : Can't perform " + e);
+		LOGGER.warning("PLAY : Can't perform " + d);
 		return false;
 	}
 
 	public int playNextStep() throws InvalidRecorderStateException {
 		return checkNextStep(false);
 	}
+	
+	public void checkSystemEvents(InteractionCycle node) throws InvalidRecorderStateException {
+		if (checkingStrategy != null)
+			checkingStrategy.checkSystemEvents(node);
+	}
 
-	public int checkNextStep(boolean checkNonUserInteractions) throws InvalidRecorderStateException {
+	public int checkNextStep(boolean checkSystemEvents) throws InvalidRecorderStateException {
 		if (currentEventIndex >= scenario.getNodes().size())
 			return currentEventIndex;
 
@@ -169,15 +186,11 @@ public class GinaReplaySession implements GinaEventListener {
 		if (node instanceof InteractionCycle) {
 			InteractionCycle ic = (InteractionCycle) node;
 	
-			executeNodeEvents(ic);
+			executeNodeEvent(ic);
 	
-			if (checkNonUserInteractions) {
-				if (!waitForNonUserInteractionsSync(ic, delayWaitSync)) {
-					checkNonUserInteractions(ic, lastNonUserInteractions);
-				}
+			if (checkSystemEvents && !waitForSystemEventsSync(ic, delayWaitSync)) {
+				checkSystemEvents(ic);
 			}
-			
-			lastNonUserInteractions.clear();
 	
 			resumeRecordingIfRunningBefore();
 		}
@@ -185,26 +198,9 @@ public class GinaReplaySession implements GinaEventListener {
 		return currentEventIndex;
 	}
 
-	protected void checkNonUserInteractions(InteractionCycle node, LinkedList<GinaEvent> nonUserInteractions) throws InvalidRecorderStateException {
-		List<GinaEvent> l = new LinkedList<GinaEvent>();
-		//l.addAll(node.getSystemEventTree());
-		l.add(node.getUserInteraction());
-		
-		System.out.println("1 : " + nonUserInteractions);
-		System.out.println("2 : " + l);
-		
-		for(GinaEvent e : l) {
-			GinaEvent matching = findMatchingEvent(nonUserInteractions, e);
-
-			if (matching == null) {
-				throw new InvalidRecorderStateException("No matching state"/*, node*/, e);
-			}
-			
-			//e.checkMatchingEvent(matching);
-		}
-	}
 	
-	protected boolean waitForNonUserInteractionsSync(InteractionCycle node, int duration) {
+	
+	protected boolean waitForSystemEventsSync(InteractionCycle node, int duration) {
 		int step = 500;
 		for(int time = duration; time > 0; time -= step) {
 			try {
@@ -212,7 +208,7 @@ public class GinaReplaySession implements GinaEventListener {
 			} catch (InterruptedException e) {}
 			
 			try {
-				checkNonUserInteractions(node, lastNonUserInteractions);
+				checkSystemEvents(node);
 				//LOGGER.info("PLAY : State sync ok");
 				
 				if (time != duration)
@@ -229,15 +225,6 @@ public class GinaReplaySession implements GinaEventListener {
 		LOGGER.warning("PLAY : Non User Interaction error");
 		return false;
 	}
-	
-	protected GinaEvent findMatchingEvent(LinkedList<GinaEvent> events, GinaEvent target) {
-		for(GinaEvent e : events) {
-			if (e.matchesIdentity(target))
-				return e;
-		}
-		
-		return null;
-	}
 
 	public boolean isRecording() {
 		return recording;
@@ -252,9 +239,18 @@ public class GinaReplaySession implements GinaEventListener {
 	}
 	
 	public void startRecording() {
-		this.resumeRecording();
+		start(null);
+	}
+	
+	public void start(ReplayTestConfiguration testConfiguration) {
+		if (testConfiguration == null) {
+			this.resumeRecording();
+		}
+		else {
+			testConfiguration.startup(manager);
+		}
 
-		if (scenario.size() == 0) {
+		if (testConfiguration != null || scenario.size() == 0) {
 			// register the beginning of the application
 			StackTraceElement[] stack = Thread.currentThread().getStackTrace();
 			StackTraceElement main = stack[stack.length - 1];
@@ -307,5 +303,84 @@ public class GinaReplaySession implements GinaEventListener {
 			IOUtils.closeQuietly(in);
 		}
 		return false;
+	}
+
+	public GinaReplayManager getManager() {
+		return manager;
+	}
+	
+	public GinaEvent getEventOrigin(GinaEvent e, Stack<GinaStackEvent> stack) {
+		GinaEvent origin = null;
+
+		if (stack.size() > 1) {
+			origin = stack.get(stack.size() - 2).getEvent();
+		}
+		
+		// change state list
+		if (e.getKind() == KIND.USER_INTERACTION) {
+			//System.out.println("    User Interaction : " + e);
+			//lastNonUserInteractions.clear();
+		}
+		else {
+			//System.out.println("Non User Interaction : " + e);
+			//lastNonUserInteractions.add(e);
+
+			/*Stack<GinaStackEvent> stack = manager.getEventStack();
+			for(int i = stack.size() - 1; i >= 0; --i) {
+				GinaStackEvent ev = stack.get(i);
+				if (ev.getEvent().isUserInteraction()) {
+					origin = ev.getEvent();
+					break;
+				}
+				//System.out.println(ev.toString());
+			}*/
+
+			/*if (origin != null)
+				System.out.println("Origin : " + origin);*/
+		}
+		
+		/*if (origin != null)
+			System.out.println("        Stack #" + (stack.size() - 1) + " - Origin : " + origin);*/
+		
+		return origin;
+	}
+	
+	public GinaEvent getEventUserOrigin(GinaEvent e, Stack<GinaStackEvent> stack) {
+		GinaEvent origin = getEventOrigin(e, stack);
+		GinaEvent userOrigin = null;
+
+		if (stack.size() > 1) {
+			userOrigin = stack.firstElement().getEvent();
+			/*if (userOrigin.getKind() != KIND.USER_INTERACTION)
+				userOrigin = ((InteractionCycle)scenario.getNodes().get(0)).getUserInteraction();*/
+		}
+		
+		// change state list
+		if (e.getKind() == KIND.USER_INTERACTION) {
+			//System.out.println("    User Interaction : " + e);
+			//lastNonUserInteractions.clear();
+		}
+		else {
+			//System.out.println("Non User Interaction : " + e);
+			//lastNonUserInteractions.add(e);
+
+			/*Stack<GinaStackEvent> stack = manager.getEventStack();
+			for(int i = stack.size() - 1; i >= 0; --i) {
+				GinaStackEvent ev = stack.get(i);
+				if (ev.getEvent().isUserInteraction()) {
+					origin = ev.getEvent();
+					break;
+				}
+				//System.out.println(ev.toString());
+			}*/
+
+			/*if (origin != null)
+				System.out.println("Origin : " + origin);*/
+		}
+		
+		/*if (userOrigin != null && userOrigin != origin)
+			System.out.println("        Stack #1 - User Origin : " + userOrigin);*/
+		
+		return userOrigin;
 	}
 }

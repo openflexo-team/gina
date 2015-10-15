@@ -35,11 +35,11 @@ public class Tester {
     	init();
     	LinkedList<TestParameter[]> list = new LinkedList<TestParameter[]>();
 
-		int size = testConfiguration.getManager().getCurrentReplayer().getScenario().size();
+		int size = testConfiguration.getManager().getCurrentSession().getScenario().size();
 
         for(int i=0; i<size; ++i)
         {
-        	TestParameter[] param = {new TestParameter(i, testConfiguration.getManager().getCurrentReplayer().
+        	TestParameter[] param = {new TestParameter(i, testConfiguration.getManager().getCurrentSession().
         			getScenario().getNodes().get(i))};
         	list.add(param);
         }
@@ -54,7 +54,7 @@ public class Tester {
     @Test
     public void test() {
     	try {
-    		testConfiguration.getManager().getCurrentReplayer().checkNextStep(false);
+    		testConfiguration.getManager().getCurrentSession().checkNextStep(true);
 		} catch (InvalidRecorderStateException e) {
 			assertTrue(e.getMessage(), false);
 		}

@@ -63,8 +63,7 @@ public interface InteractionCycle extends ScenarioNode {
 
 	public void addNewNonUserInteraction();
 	public void addNewUserInteraction();
-	
-	public GinaEvent getUserInteractionByKind(String kind);
+
 	public List<GinaEvent> getNonUserInteractionsByKind(String kind);
 	
 	public void init(GinaReplayManager manager);
@@ -85,15 +84,8 @@ public interface InteractionCycle extends ScenarioNode {
 		public void addNewUserInteraction() {
 			//addUserInteraction(FIBEventFactory.getInstance().createEvent());
 		}
-
 		
-		public GinaEvent getUserInteractionsByKind(String namespace) {
-			if (getUserInteraction().getDescription().getNamespace() == namespace)
-				return getUserInteraction();
-			
-			return null;
-		}
-		
+		@Override
 		public List<GinaEvent> getNonUserInteractionsByKind(String namespace) {
 			List<GinaEvent> l = new LinkedList<GinaEvent>();
 			

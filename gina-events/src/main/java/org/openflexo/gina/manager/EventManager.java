@@ -253,10 +253,10 @@ public class EventManager implements GinaEventListener {
 
 		GinaEvent e = getFactory().createEventFromDescription(d, kind);
 
-		System.out.println("IN 1" + ts.getStack());
+		//System.out.println("IN 1" + ts.getStack());
 		GinaStackEvent stack = new GinaStackEvent(e, this);
 		ts.getStack().push(stack);
-		System.out.println("IN 2" + ts.getStack());
+		//System.out.println("IN 2" + ts.getStack());
 		
 		return stack;
 	}
@@ -337,7 +337,6 @@ public class EventManager implements GinaEventListener {
 		}
 		
 		public synchronized void popStackEvent(GinaStackEvent e) {
-			System.out.println("POP" + stackEvents);
 			if (stackEvents.contains(e))
 				while(stackEvents.pop() != e);
 		}

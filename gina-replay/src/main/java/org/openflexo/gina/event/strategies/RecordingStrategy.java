@@ -8,59 +8,23 @@ import org.openflexo.gina.event.UserInteraction;
 import org.openflexo.gina.event.GinaEvent.KIND;
 import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.replay.GinaReplayManager;
+import org.openflexo.replay.GinaReplaySession;
 import org.openflexo.replay.SystemEventTreeNode;
 import org.openflexo.replay.InteractionCycle;
 import org.openflexo.replay.Scenario;
 import org.openflexo.replay.ScenarioNode;
 
 public class RecordingStrategy {
-	
-	private Scenario scenario;
-	private GinaReplayManager manager;
+	private GinaReplaySession session;
 
-	public RecordingStrategy(Scenario scenario, GinaReplayManager manager) {
+	public RecordingStrategy(GinaReplaySession session) {
 		super();
-		this.scenario = scenario;
-		this.manager = manager;
+		this.session = session;
 	}
 
 	public void eventPerformed(GinaEvent e, Stack<GinaStackEvent> stack) {
-		GinaEvent origin = null, userOrigin = null;
-
-		if (stack.size() > 1) {
-			origin = stack.get(stack.size() - 2).getEvent();
-			userOrigin = stack.firstElement().getEvent();
-			if (userOrigin.getKind() != KIND.USER_INTERACTION)
-				userOrigin = ((InteractionCycle)this.scenario.getNodes().get(0)).getUserInteraction();
-		}
-		
-		// change state list
-		if (e.getKind() == KIND.USER_INTERACTION) {
-			System.out.println("    User Interaction : " + e);
-			//lastNonUserInteractions.clear();
-		}
-		else {
-			System.out.println("Non User Interaction : " + e);
-			//lastNonUserInteractions.add(e);
-
-			/*Stack<GinaStackEvent> stack = manager.getEventStack();
-			for(int i = stack.size() - 1; i >= 0; --i) {
-				GinaStackEvent ev = stack.get(i);
-				if (ev.getEvent().isUserInteraction()) {
-					origin = ev.getEvent();
-					break;
-				}
-				//System.out.println(ev.toString());
-			}*/
-
-			/*if (origin != null)
-				System.out.println("Origin : " + origin);*/
-		}
-		
-		if (origin != null)
-			System.out.println("        Stack #" + (stack.size() - 1) + " - Origin : " + origin);
-		if (userOrigin != null && userOrigin != origin)
-			System.out.println("        Stack #1 - User Origin : " + userOrigin);
+		GinaEvent origin = session.getEventOrigin(e, stack);
+		GinaEvent userOrigin = session.getEventUserOrigin(e, stack);
 
 		//TODO
 		//if (e.getWidgetID() == "playButton")
@@ -68,20 +32,23 @@ public class RecordingStrategy {
 		
 		// add as event or state depending of its origin
 		if (e.getKind() == KIND.USER_INTERACTION) {
-			InteractionCycle node = manager.getModelFactory().newInstance(InteractionCycle.class);
+			InteractionCycle node = session.getManager().getModelFactory().newInstance(InteractionCycle.class);
 			node.setUserInteraction((UserInteraction) e);
+			
+			System.out.println("    User Interaction : " + e + "\n        origin : " + origin + "\n        userOrigin : " + userOrigin);
 
 			//System.out.println(e);
-			scenario.addNode(node);
+			session.getScenario().addNode(node);
 		}
 		else {
+			System.out.println("Non User Interaction : " + e + "\n        origin : " + origin + "\n        userOrigin : " + userOrigin);
 			//System.out.println("State updated : " + e);
-			ScenarioNode node = scenario.getNodeByUserInteraction((UserInteraction) userOrigin);
+			ScenarioNode node = session.getScenario().getNodeByUserInteraction((UserInteraction) userOrigin);
 			if (node instanceof InteractionCycle) {
 				InteractionCycle ic = (InteractionCycle) node;
-				ic.init(manager);
+				ic.init(session.getManager());
 
-				SystemEventTreeNode treeNode = manager.getModelFactory().newInstance(SystemEventTreeNode.class, (SystemEvent) e);
+				SystemEventTreeNode treeNode = session.getManager().getModelFactory().newInstance(SystemEventTreeNode.class, (SystemEvent) e);
 				System.out.println(treeNode.getSystemEvent());
 
 				//if (ic.getSystemEventTree())

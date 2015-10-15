@@ -22,7 +22,7 @@ import org.openflexo.model.factory.ModelFactory;
  */
 public class GinaReplayManager implements GinaEventListener {
 
-	private GinaReplaySession replayer;
+	private GinaReplaySession session;
 	private GinaEventFactory factory;
 	private EventManager eventManager;
 	
@@ -54,7 +54,7 @@ public class GinaReplayManager implements GinaEventListener {
 	public GinaReplaySession createAndSetToCurrent() {
 		GinaReplaySession r = new GinaReplaySession(this);
 
-		setCurrentReplayer(r);
+		setCurrentSession(r);
 
 		return r;
 	}
@@ -63,16 +63,16 @@ public class GinaReplayManager implements GinaEventListener {
 	 * Set the current recorder
 	 * @param r the recorder instance
 	 */
-	public void setCurrentReplayer(GinaReplaySession r) {
-		replayer = r;
+	public void setCurrentSession(GinaReplaySession r) {
+		session = r;
 	}
 
 	/**
 	 * Return the current recorder
 	 * @return the current recorder
 	 */
-	public GinaReplaySession getCurrentReplayer() {
-		return replayer;
+	public GinaReplaySession getCurrentSession() {
+		return session;
 	}
 
 	/**
@@ -93,21 +93,21 @@ public class GinaReplayManager implements GinaEventListener {
 	}
 
 	public void setup() {
-		if (replayer == null) {
+		if (session == null) {
 			createAndSetToCurrent();
 
 			/*recorder.load(new File("D:/test-gina-recorder"));
 			recorder.play();*/
 
-			replayer.startRecording();
+			session.startRecording();
 
 			//GinaRecorderEditor editor = new GinaRecorderEditor();
 		}
 	}
 	
 	public void eventPerformed(GinaEvent e, Stack<GinaStackEvent> stack) {
-		if (getCurrentReplayer() != null)
-			getCurrentReplayer().eventPerformed(e, stack);
+		if (getCurrentSession() != null)
+			getCurrentSession().eventPerformed(e, stack);
 	}
 
 }

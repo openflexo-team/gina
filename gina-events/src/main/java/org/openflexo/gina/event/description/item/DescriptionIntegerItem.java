@@ -1,6 +1,7 @@
 package org.openflexo.gina.event.description.item;
 
 import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.Initializer;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Parameter;
@@ -10,6 +11,7 @@ import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 
 @ModelEntity
+@ImplementationClass(DescriptionIntegerItem.DescriptionIntegerItemImpl.class)
 @XMLElement(xmlTag = "IntegerItem")
 public abstract interface DescriptionIntegerItem extends DescriptionItem {
 	@PropertyIdentifier(type = Integer.class)
@@ -26,4 +28,10 @@ public abstract interface DescriptionIntegerItem extends DescriptionItem {
 
 	@Setter(VALUE)
 	public void setValue(Integer value);
+	
+	public abstract class DescriptionIntegerItemImpl implements DescriptionIntegerItem {
+		public String toString() {
+			return "[DI:" + getAction() + "]" + getValue() + "(Integer)";
+		}
+	}
 }
