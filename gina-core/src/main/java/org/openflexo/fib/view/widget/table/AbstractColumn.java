@@ -156,7 +156,8 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 	public String getLocalized(String key) {
 		if (getController() != null) {
 			return FlexoLocalization.localizedForKey(getController().getLocalizerForComponent(getColumnModel().getOwner()), key);
-		} else {
+		}
+		else {
 			logger.warning("Controller not defined");
 			return key;
 		}
@@ -263,13 +264,18 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 	public Object getValue(BindingVariable variable) {
 		if (variable.getVariableName().equals(FIBTable.ITERATOR_NAME)) {
 			return iteratorObject;
-		} else {
-			return tableModel.getWidget().getBindingEvaluationContext().getValue(variable);
+		}
+		else {
+			if ((tableModel != null) && (tableModel.getWidget() != null)
+					&& (tableModel.getWidget().getBindingEvaluationContext() != null)) {
+				return tableModel.getWidget().getBindingEvaluationContext().getValue(variable);
+			}
+			return null;
 		}
 	}
 
 	/*private BindingEvaluationContext bindingEvaluationContext;
-
+	
 	public BindingEvaluationContext getBindingEvaluationContext() {
 		if (bindingEvaluationContext != null) {
 			return bindingEvaluationContext;
@@ -480,7 +486,8 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 		public Object getValue(BindingVariable variable) {
 			if (variable.getVariableName().equals(OBJECT)) {
 				return value;
-			} else {
+			}
+			else {
 				return AbstractColumn.this.getValue(variable);
 			}
 		}

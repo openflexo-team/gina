@@ -58,9 +58,7 @@ import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingDefinition;
-import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.view.widget.FIBCustomWidget;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -123,15 +121,24 @@ public interface FIBCustom extends FIBWidget {
 
 	@PropertyIdentifier(type = Class.class)
 	public static final String COMPONENT_CLASS_KEY = "componentClass";
-	@PropertyIdentifier(type = Vector.class)
+	@PropertyIdentifier(type = Class.class)
+	public static final String DATA_CLASS_FOR_COMPONENT_KEY = "dataClassForComponent";
+	@PropertyIdentifier(type = FIBCustomAssignment.class, cardinality = Cardinality.LIST)
 	public static final String ASSIGNMENTS_KEY = "assignments";
 
 	@Getter(value = COMPONENT_CLASS_KEY)
 	@XMLAttribute(xmlTag = "componentClassName")
-	public Class getComponentClass();
+	public Class<?> getComponentClass();
 
 	@Setter(COMPONENT_CLASS_KEY)
-	public void setComponentClass(Class componentClass);
+	public void setComponentClass(Class<?> componentClass);
+
+	@Getter(value = DATA_CLASS_FOR_COMPONENT_KEY)
+	@XMLAttribute
+	public Class<?> getDataClassForComponent();
+
+	@Setter(DATA_CLASS_FOR_COMPONENT_KEY)
+	public void setDataClassForComponent(Class<?> dataClass);
 
 	@Getter(value = ASSIGNMENTS_KEY, cardinality = Cardinality.LIST, inverse = FIBCustomAssignment.OWNER_KEY)
 	@XMLElement
@@ -164,7 +171,8 @@ public interface FIBCustom extends FIBWidget {
 		public static final String COMPONENT_NAME = "component";
 
 		private Class componentClass;
-		private Class defaultDataClass = null;
+		private Class dataClassForComponent;
+		private final Class defaultDataClass = null;
 
 		private List<FIBCustomAssignment> assignments;
 
@@ -188,24 +196,21 @@ public interface FIBCustom extends FIBWidget {
 
 		@Override
 		public Type getDefaultDataClass() {
-			if (getComponentClass() != null && defaultDataClass == null) {
-				defaultDataClass = getDataClassForComponent(getComponentClass());
-			}
-			if (defaultDataClass != null) {
-				return defaultDataClass;
+			if (getDataClassForComponent() != null) {
+				return getDataClassForComponent();
 			}
 			return Object.class;
 		}
 
 		@Override
-		public Class getComponentClass() {
+		public Class<?> getComponentClass() {
 			return componentClass;
 
 		}
 
 		@Override
-		public void setComponentClass(Class componentClass) {
-			FIBPropertyNotification<Class> notification = requireChange(COMPONENT_CLASS_KEY, componentClass);
+		public void setComponentClass(Class<?> componentClass) {
+			FIBPropertyNotification notification = requireChange(COMPONENT_CLASS_KEY, componentClass);
 			if (notification != null) {
 				this.componentClass = componentClass;
 				if (componentClass != null) {
@@ -229,6 +234,25 @@ public interface FIBCustom extends FIBWidget {
 					}
 				}
 				hasChanged(notification);
+			}
+		}
+
+		@Override
+		public Class<?> getDataClassForComponent() {
+			if (dataClassForComponent == null && getComponentClass() != null && !isDeserializing()) {
+				dataClassForComponent = getDataClassForComponent(getComponentClass());
+			}
+			return dataClassForComponent;
+		}
+
+		@Override
+		public void setDataClassForComponent(Class<?> dataClassForComponent) {
+
+			if ((dataClassForComponent == null && this.dataClassForComponent != null)
+					|| (dataClassForComponent != null && !dataClassForComponent.equals(this.dataClassForComponent))) {
+				Class oldValue = this.dataClassForComponent;
+				this.dataClassForComponent = dataClassForComponent;
+				getPropertyChangeSupport().firePropertyChange("dataClassForComponent", oldValue, dataClassForComponent);
 			}
 		}
 
@@ -303,10 +327,11 @@ public interface FIBCustom extends FIBWidget {
 
 		@Override
 		public Type getDynamicAccessType() {
-			Type[] args = new Type[2];
+			/*Type[] args = new Type[2];
 			args[0] = getDataType();
 			args[1] = getComponentClass();
-			return new ParameterizedTypeImpl(FIBCustomWidget.class, args);
+			return new ParameterizedTypeImpl(FIBCustomWidget.class, args);*/
+			return getComponentClass();
 		}
 
 		@Override
@@ -333,7 +358,8 @@ public interface FIBCustom extends FIBWidget {
 
 		/**
 		 * Stuff to retrieve default data class from component class<br>
-		 * NB: this is STATIC !!!!
+		 * NB: this is STATIC !!!!<br>
+		 * NB2: this is really cpu-expansive: take care to use of this
 		 * 
 		 * @param componentClass
 		 * @return
@@ -522,7 +548,8 @@ public interface FIBCustom extends FIBWidget {
 					value.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 					value.setBindingName("value");
 					this.value = value;
-				} else {
+				}
+				else {
 					getValue();
 				}
 			}

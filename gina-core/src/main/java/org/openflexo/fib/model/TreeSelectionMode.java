@@ -38,25 +38,25 @@
 
 package org.openflexo.fib.model;
 
-import javax.swing.ListSelectionModel;
+import javax.swing.tree.TreeSelectionModel;
 
-public enum SelectionMode {
-	SingleSelection {
+public enum TreeSelectionMode {
+	SingleTreeSelection {
 		@Override
 		public int getMode() {
-			return ListSelectionModel.SINGLE_SELECTION;
+			return TreeSelectionModel.SINGLE_TREE_SELECTION;
 		}
 	},
-	SingleIntervalSelection {
+	ContiguousTreeSelection {
 		@Override
 		public int getMode() {
-			return ListSelectionModel.SINGLE_INTERVAL_SELECTION;
+			return TreeSelectionModel.CONTIGUOUS_TREE_SELECTION;
 		}
 	},
-	MultipleIntervalSelection {
+	DiscontiguousTreeSelection {
 		@Override
 		public int getMode() {
-			return ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
+			return TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION;
 		}
 	};
 
