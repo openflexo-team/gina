@@ -142,6 +142,8 @@ public class GraphicalContextDelegate implements ChangeListener {
 			// eventProcessor.getException().printStackTrace();
 			// throw new InvocationTargetException(eventProcessor.getException());
 			System.err.println("Unexpected exception:" + eventProcessor.getException());
+			eventProcessor.getException().printStackTrace();
+			Thread.dumpStack();
 			throw (Exception) eventProcessor.getException();
 		}
 	}
