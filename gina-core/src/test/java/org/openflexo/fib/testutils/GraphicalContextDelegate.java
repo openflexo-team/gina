@@ -138,9 +138,11 @@ public class GraphicalContextDelegate implements ChangeListener {
 	}
 
 	public void tearDown() throws Exception {
-		if (eventProcessor.getException() != null) {
-			eventProcessor.getException().printStackTrace();
-			throw new InvocationTargetException(eventProcessor.getException());
+		if (eventProcessor.getException() instanceof Exception) {
+			// eventProcessor.getException().printStackTrace();
+			// throw new InvocationTargetException(eventProcessor.getException());
+			System.err.println("Unexpected exception:" + eventProcessor.getException());
+			throw (Exception) eventProcessor.getException();
 		}
 	}
 
