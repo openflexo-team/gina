@@ -46,6 +46,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -58,6 +59,8 @@ import javax.swing.event.ChangeListener;
 import org.openflexo.fib.controller.FIBController;
 
 public class GraphicalContextDelegate implements ChangeListener {
+
+	protected static final Logger logger = Logger.getLogger(GraphicalContextDelegate.class.getPackage().getName());
 
 	private JFrame frame;
 	private final EventProcessor eventProcessor;
@@ -138,12 +141,16 @@ public class GraphicalContextDelegate implements ChangeListener {
 	}
 
 	public void tearDown() throws Exception {
+		if (frame != null) {
+			frame.dispose();
+		}
+
 		if (eventProcessor.getException() instanceof Exception) {
 			// eventProcessor.getException().printStackTrace();
 			// throw new InvocationTargetException(eventProcessor.getException());
 			System.err.println("Unexpected exception:" + eventProcessor.getException());
 			eventProcessor.getException().printStackTrace();
-			Thread.dumpStack();
+			// Thread.dumpStack();
 			throw (Exception) eventProcessor.getException();
 		}
 	}
@@ -173,7 +180,12 @@ public class GraphicalContextDelegate implements ChangeListener {
 			try {
 				super.dispatchEvent(e);
 			} catch (Throwable exception) {
-				exception.printStackTrace();
+				for (StackTraceElement el : exception.getStackTrace()) {
+					System.out.println(el.toString());
+					System.err.println(el.toString());
+					logger.info(el.toString());
+				}
+				// exception.printStackTrace();
 				this.exception = exception;
 			}
 		}
