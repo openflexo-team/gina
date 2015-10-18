@@ -134,6 +134,12 @@ public class GraphicalContextDelegate implements ChangeListener {
 				}
 			}
 		}
+
+		if (frame != null) {
+			System.out.println("Disposing frame...");
+			frame.dispose();
+		}
+
 	}
 
 	public void setUp() {
@@ -141,10 +147,6 @@ public class GraphicalContextDelegate implements ChangeListener {
 	}
 
 	public void tearDown() throws Exception {
-		if (frame != null) {
-			frame.dispose();
-		}
-
 		if (eventProcessor.getException() instanceof Exception) {
 			// eventProcessor.getException().printStackTrace();
 			// throw new InvocationTargetException(eventProcessor.getException());
