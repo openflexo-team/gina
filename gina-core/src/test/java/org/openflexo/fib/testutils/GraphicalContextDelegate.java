@@ -66,6 +66,7 @@ public class GraphicalContextDelegate implements ChangeListener {
 	private final EventProcessor eventProcessor;
 	private JTabbedPane tabbedPane;
 	private boolean dontDestroyMe = false;
+	private boolean isDisposed = false;
 
 	public GraphicalContextDelegate(final String frameTitle) {
 
@@ -138,12 +139,17 @@ public class GraphicalContextDelegate implements ChangeListener {
 		if (frame != null) {
 			System.out.println("Disposing frame...");
 			frame.dispose();
+			isDisposed = true;
 		}
 
 	}
 
 	public void setUp() {
 		eventProcessor.reset();
+	}
+
+	public boolean isDisposed() {
+		return isDisposed;
 	}
 
 	public void tearDown() throws Exception {
@@ -168,7 +174,11 @@ public class GraphicalContextDelegate implements ChangeListener {
 	public void selectedTab(int index, Component selectedComponent) {
 	}
 
-	public static class EventProcessor extends java.awt.EventQueue {
+	public boolean handleException(Exception e) {
+		return true;
+	}
+
+	public class EventProcessor extends java.awt.EventQueue {
 
 		private Throwable exception = null;
 
@@ -184,14 +194,16 @@ public class GraphicalContextDelegate implements ChangeListener {
 		protected void dispatchEvent(AWTEvent e) {
 			try {
 				super.dispatchEvent(e);
-			} catch (Throwable exception) {
+			} catch (Exception exception) {
 				/*for (StackTraceElement el : exception.getStackTrace()) {
 					System.out.println(el.toString());
 					System.err.println(el.toString());
 					logger.info(el.toString());
 				}*/
 				// exception.printStackTrace();
-				this.exception = exception;
+				if (handleException(exception)) {
+					this.exception = exception;
+				}
 			}
 		}
 
