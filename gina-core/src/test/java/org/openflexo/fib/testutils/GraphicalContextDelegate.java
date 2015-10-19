@@ -46,6 +46,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -59,10 +60,13 @@ import org.openflexo.fib.controller.FIBController;
 
 public class GraphicalContextDelegate implements ChangeListener {
 
+	protected static final Logger logger = Logger.getLogger(GraphicalContextDelegate.class.getPackage().getName());
+
 	private JFrame frame;
 	private final EventProcessor eventProcessor;
 	private JTabbedPane tabbedPane;
 	private boolean dontDestroyMe = false;
+	private boolean isDisposed = false;
 
 	public GraphicalContextDelegate(final String frameTitle) {
 
@@ -131,15 +135,34 @@ public class GraphicalContextDelegate implements ChangeListener {
 				}
 			}
 		}
+
+		if (frame != null) {
+			System.out.println("Disposing frame...");
+			frame.dispose();
+			isDisposed = true;
+		}
+
 	}
 
 	public void setUp() {
 		eventProcessor.reset();
 	}
 
+	public boolean isDisposed() {
+		return isDisposed;
+	}
+
 	public void tearDown() throws Exception {
-		if (eventProcessor.getException() != null) {
-			throw new InvocationTargetException(eventProcessor.getException());
+		if (eventProcessor.getException() instanceof Exception) {
+			// eventProcessor.getException().printStackTrace();
+			// throw new InvocationTargetException(eventProcessor.getException());
+			System.err.println("Unexpected exception:" + eventProcessor.getException());
+			eventProcessor.getException().printStackTrace();
+			for (StackTraceElement e : eventProcessor.getException().getStackTrace()) {
+				System.err.println(e.toString());
+			}
+			// Thread.dumpStack();
+			throw (Exception) eventProcessor.getException();
 		}
 	}
 
@@ -151,7 +174,11 @@ public class GraphicalContextDelegate implements ChangeListener {
 	public void selectedTab(int index, Component selectedComponent) {
 	}
 
-	public static class EventProcessor extends java.awt.EventQueue {
+	public boolean handleException(Exception e) {
+		return true;
+	}
+
+	public class EventProcessor extends java.awt.EventQueue {
 
 		private Throwable exception = null;
 
@@ -167,8 +194,16 @@ public class GraphicalContextDelegate implements ChangeListener {
 		protected void dispatchEvent(AWTEvent e) {
 			try {
 				super.dispatchEvent(e);
-			} catch (Throwable exception) {
-				this.exception = exception;
+			} catch (Exception exception) {
+				for (StackTraceElement el : exception.getStackTrace()) {
+					System.out.println(el.toString());
+					System.err.println(el.toString());
+					logger.info(el.toString());
+				}
+				// exception.printStackTrace();
+				if (handleException(exception)) {
+					this.exception = exception;
+				}
 			}
 		}
 

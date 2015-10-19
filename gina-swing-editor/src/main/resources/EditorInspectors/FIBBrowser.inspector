@@ -133,7 +133,7 @@
       <CheckBox selected="false" data="data.deepExploration" constraints="twocols(location=left)" localize="true" />
       <Label label="deep_exploration_support" constraints="twocols(location=right)" localize="true" />
       <Label label="selectionMode" constraints="twocols(location=left)" localize="true" />
-      <DropDown data="data.selectionMode" constraints="twocols(location=right)" localize="true" iteratorClassName="java.lang.Object" autoSelectFirstRow="false" />
+      <DropDown data="data.treeSelectionMode" constraints="twocols(location=right)" localize="true" iteratorClassName="org.openflexo.fib.model.TreeSelectionMode" autoSelectFirstRow="false" />
     </Tab>
     <Tab title="Layout" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="3" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="LayoutTab" />
     <Tab title="Graphics" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="4" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="GraphicsTab">

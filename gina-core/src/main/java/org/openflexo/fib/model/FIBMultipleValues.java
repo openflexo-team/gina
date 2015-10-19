@@ -148,8 +148,8 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		private static final Logger logger = Logger.getLogger(FIBMultipleValues.class.getPackage().getName());
 
 		@Deprecated
-		public BindingDefinition LIST = new BindingDefinition("list", new ParameterizedTypeImpl(List.class, new WilcardTypeImpl(
-				Object.class)), DataBinding.BindingDefinitionType.GET, false) {
+		public BindingDefinition LIST = new BindingDefinition("list",
+				new ParameterizedTypeImpl(List.class, new WilcardTypeImpl(Object.class)), DataBinding.BindingDefinitionType.GET, false) {
 			@Override
 			public Type getType() {
 				return getListBindingType();
@@ -165,7 +165,8 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		};
 
 		@Deprecated
-		private final BindingDefinition DATA = new BindingDefinition("data", Object.class, DataBinding.BindingDefinitionType.GET_SET, false) {
+		private final BindingDefinition DATA = new BindingDefinition("data", Object.class, DataBinding.BindingDefinitionType.GET_SET,
+				false) {
 			@Override
 			public Type getType() {
 				return getDataType();
@@ -299,7 +300,8 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 			if (iteratorClass == null) {
 				if (expectedIteratorClass != null) {
 					return expectedIteratorClass;
-				} else {
+				}
+				else {
 					return Object.class;
 				}
 			}
@@ -363,14 +365,16 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 			if (binding == getList()) {
 				if (getList() != null) {
 					Type accessedType = getList().getAnalyzedType();
-					if (accessedType instanceof ParameterizedType && ((ParameterizedType) accessedType).getActualTypeArguments().length > 0) {
+					if (accessedType instanceof ParameterizedType
+							&& ((ParameterizedType) accessedType).getActualTypeArguments().length > 0) {
 						Class newIteratorClass = TypeUtils.getBaseClass(((ParameterizedType) accessedType).getActualTypeArguments()[0]);
 						if (getIteratorClass() == null || !TypeUtils.isClassAncestorOf(newIteratorClass, getIteratorClass())) {
 							setIteratorClass(newIteratorClass);
 						}
 					}
 				}
-			} else if (binding == getArray()) {
+			}
+			else if (binding == getArray()) {
 				if (getArray() != null) {
 					Type accessedType = getArray().getAnalyzedType();
 					if (accessedType instanceof GenericArrayType) {
@@ -380,7 +384,8 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 						}
 					}
 				}
-			} else if (binding == getData()) {
+			}
+			else if (binding == getData()) {
 				if (getData() != null) {
 					Type accessedType = getData().getAnalyzedType();
 					/*if (accessedType instanceof Class && ((Class)accessedType).isEnum()) {
@@ -391,7 +396,8 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 					}
 
 				}
-			} else if (binding == getFormat()) {
+			}
+			else if (binding == getFormat()) {
 				notifyChange(FORMAT_KEY, null, getFormat());
 			}
 		}
@@ -500,19 +506,21 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 	}
 
 	@DefineValidationRule
-	public static class FIBMultipleValuesMustDefineValueRange extends
-			ValidationRule<FIBMultipleValuesMustDefineValueRange, FIBMultipleValues> {
+	public static class FIBMultipleValuesMustDefineValueRange
+			extends ValidationRule<FIBMultipleValuesMustDefineValueRange, FIBMultipleValues> {
 		public FIBMultipleValuesMustDefineValueRange() {
 			super(FIBMultipleValues.class, "widget_must_define_values_range_(either_static_list_or_dynamic_list_or_array_or_enumeration)");
 		}
 
 		@Override
 		public ValidationIssue<FIBMultipleValuesMustDefineValueRange, FIBMultipleValues> applyValidation(FIBMultipleValues object) {
-			if (StringUtils.isEmpty(object.getStaticList()) && !object.getList().isSet() && !object.getArray().isSet()
+
+			if (!object.isHidden() && StringUtils.isEmpty(object.getStaticList()) && !object.getList().isSet() && !object.getArray().isSet()
 					&& !object.isEnumType()) {
 				GenerateDefaultStaticList fixProposal = new GenerateDefaultStaticList();
 				return new ValidationError<FIBMultipleValuesMustDefineValueRange, FIBMultipleValues>(this, object,
-						"widget_does_not_define_any_values_range_(either_static_list_or_dynamic_list_or_array_or_enumeration)", fixProposal);
+						"widget_does_not_define_any_values_range_(either_static_list_or_dynamic_list_or_array_or_enumeration)",
+						fixProposal);
 			}
 			return null;
 		}

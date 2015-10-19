@@ -156,7 +156,7 @@ import org.openflexo.toolbox.ToolBox;
  * @author sylvain
  * 
  */
-public class FIBController /*extends Observable*/implements BindingEvaluationContext, Observer, PropertyChangeListener,
+public class FIBController implements BindingEvaluationContext, Observer, PropertyChangeListener,
 		HasPropertyChangeSupport, Registerable {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBController.class.getPackage().getName());
@@ -332,7 +332,11 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 		}
 		for (FIBComponent c : views.keySet()) {
 			if (variable.getVariableName().equals(c.getName())) {
-				return viewForComponent(c) /*.getDynamicModel()*/;
+				FIBView<?, ?, ?> returned = viewForComponent(c) /*.getDynamicModel()*/;
+				if (returned instanceof FIBCustomWidget) {
+					return ((FIBCustomWidget<?, ?>) returned).getCustomComponent();
+				}
+				return returned;
 			}
 		}
 		if (variable.getVariableName().equals("controller")) {
@@ -539,7 +543,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 			} else if (e.getClickCount() == 1) {
 				// wasDoubleClick = true;
 				fireSingleClick(mouseEvent);
-			}/* {
+			} /* {
 				Integer timerinterval = (Integer) Toolkit.getDefaultToolkit().getDesktopProperty("awt.multiClickInterval");
 				timer = new Timer(timerinterval.intValue(), new ActionListener() {
 					@Override
@@ -553,7 +557,7 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 				});
 				timer.setRepeats(false);
 				timer.start();
-
+				
 				}*/
 			isPopupTrigger = false;
 		}
@@ -890,6 +894,14 @@ public class FIBController /*extends Observable*/implements BindingEvaluationCon
 			// When component is embedded, forward this to the parent
 			getEmbeddingController().updateSelection(widget, oldSelection, newSelection);
 			return;
+		}
+
+		// System.out.println("widget=" + widget);
+		// System.out.println("getSelectionLeader()=" + getSelectionLeader());
+
+		// Fixed issue with selection not taken under account when component has just been initialized
+		if (getSelectionLeader() == null) {
+			setSelectionLeader(widget);
 		}
 
 		if (widget == getSelectionLeader()) {

@@ -90,13 +90,15 @@ public class InspectorGroup {
 				if (inspector != null) {
 					if (inspector.getDataClass() != null) {
 						inspectors.put(inspector.getDataClass(), inspector);
-						logger.info("Loaded inspector: " + f.getURI() + " for " + inspector.getDataClass());
+						logger.fine("Loaded inspector: " + f.getURI() + " for " + inspector.getDataClass());
 						progress(f, inspector);
 					}
-				} else {
+				}
+				else {
 					logger.warning("Not found: " + f.getURI());
 				}
-			} else {
+			}
+			else {
 				logger.warning("Component in " + f + " is not an inspector !");
 			}
 		}
@@ -118,11 +120,18 @@ public class InspectorGroup {
 				}
 			}
 			if (parentGroupInspectors.size() > 0) {
-				Class<?> mostSpecializedClass = TypeUtils.getMostSpecializedClass(parentGroupInspectors.keySet());
+				// Fixed issue with multiple inheritance
+				// I think this is really costly in cpu time
+				// TODO: check and optimize this !!!
+				for (FIBInspector inspectorToAppend : parentGroupInspectors.values()) {
+					inspector.appendSuperInspector(inspectorToAppend, fibModelFactory);
+				}
+
+				/*Class<?> mostSpecializedClass = TypeUtils.getMostSpecializedClass(parentGroupInspectors.keySet());
 				if (mostSpecializedClass != null) {
 					FIBInspector inspectorToAppend = parentGroupInspectors.get(mostSpecializedClass);
 					inspector.appendSuperInspector(inspectorToAppend, fibModelFactory);
-				}
+				}*/
 			}
 		}
 

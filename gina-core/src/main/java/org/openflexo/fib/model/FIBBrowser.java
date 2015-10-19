@@ -87,7 +87,7 @@ public interface FIBBrowser extends FIBWidget {
 	public static final String BOUND_TO_SELECTION_MANAGER_KEY = "boundToSelectionManager";
 	@PropertyIdentifier(type = boolean.class)
 	public static final String DEEP_EXPLORATION_KEY = "deepExploration";
-	@PropertyIdentifier(type = SelectionMode.class)
+	@PropertyIdentifier(type = TreeSelectionMode.class)
 	public static final String SELECTION_MODE_KEY = "selectionMode";
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String SELECTED_KEY = "selected";
@@ -157,11 +157,11 @@ public interface FIBBrowser extends FIBWidget {
 	public void setDeepExploration(boolean deepExploration);
 
 	@Getter(value = SELECTION_MODE_KEY)
-	@XMLAttribute
-	public SelectionMode getSelectionMode();
+	@XMLAttribute(xmlTag = "selectionMode")
+	public TreeSelectionMode getTreeSelectionMode();
 
 	@Setter(SELECTION_MODE_KEY)
-	public void setSelectionMode(SelectionMode selectionMode);
+	public void setTreeSelectionMode(TreeSelectionMode selectionMode);
 
 	@Getter(value = SELECTED_KEY)
 	@XMLAttribute
@@ -281,7 +281,7 @@ public interface FIBBrowser extends FIBWidget {
 		private Integer rowHeight;
 		private boolean boundToSelectionManager = false;
 
-		private SelectionMode selectionMode = SelectionMode.DiscontiguousTreeSelection;
+		private TreeSelectionMode selectionMode = TreeSelectionMode.DiscontiguousTreeSelection;
 
 		private boolean showFooter = true;
 		private boolean rootVisible = true;
@@ -550,13 +550,13 @@ public interface FIBBrowser extends FIBWidget {
 		}
 
 		@Override
-		public SelectionMode getSelectionMode() {
+		public TreeSelectionMode getTreeSelectionMode() {
 			return selectionMode;
 		}
 
 		@Override
-		public void setSelectionMode(SelectionMode selectionMode) {
-			FIBPropertyNotification<SelectionMode> notification = requireChange(SELECTION_MODE_KEY, selectionMode);
+		public void setTreeSelectionMode(TreeSelectionMode selectionMode) {
+			FIBPropertyNotification<TreeSelectionMode> notification = requireChange(SELECTION_MODE_KEY, selectionMode);
 			if (notification != null) {
 				this.selectionMode = selectionMode;
 				hasChanged(notification);
@@ -769,6 +769,19 @@ public interface FIBBrowser extends FIBWidget {
 		@Override
 		public DataBinding<?> getBinding(FIBBrowser object) {
 			return object.getSelected();
+		}
+
+	}
+
+	@DefineValidationRule
+	public static class SelectionBindingMustBeValid extends BindingMustBeValid<FIBBrowser> {
+		public SelectionBindingMustBeValid() {
+			super("'selection'_binding_is_not_valid", FIBBrowser.class);
+		}
+
+		@Override
+		public DataBinding<?> getBinding(FIBBrowser object) {
+			return object.getSelection();
 		}
 
 	}
