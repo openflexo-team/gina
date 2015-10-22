@@ -43,7 +43,7 @@ import javax.swing.JFrame;
 
 import org.openflexo.fib.editor.controller.FIBEditorController;
 import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.fib.swing.localization.LocalizedPanel;
+import org.openflexo.fib.swing.utils.localization.LocalizedPanel;
 import org.openflexo.localization.FlexoLocalization;
 
 /**

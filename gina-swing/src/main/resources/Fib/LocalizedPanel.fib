@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel id="0" darkLevel="0" useScrollBar="false" borderLeft="0" protectContent="false" height="500" name="LocalizedEditor" layout="gridbag" controllerClassName="org.openflexo.fib.swing.localization.FIBLocalizedEditorController" border="empty" trackViewPortWidth="true" width="600" dataClassName="org.openflexo.localization.LocalizedDelegate" titleFont="Lucida Grande,0,13" borderTop="5" trackViewPortHeight="true">
+<Panel id="0" darkLevel="0" useScrollBar="false" borderLeft="0" protectContent="false" height="500" name="LocalizedEditor" layout="gridbag" controllerClassName="org.openflexo.fib.swing.utils.localization.FIBLocalizedEditorController" border="empty" trackViewPortWidth="true" width="600" dataClassName="org.openflexo.localization.LocalizedDelegate" titleFont="Lucida Grande,0,13" borderTop="5" trackViewPortHeight="true">
   <LocalizedDictionary id="1">
     <Localized id="2" value="Editeur de locales" lang="French" key="localized_editor" />
     <Localized id="3" value="Localized editor" lang="English" key="localized_editor" />

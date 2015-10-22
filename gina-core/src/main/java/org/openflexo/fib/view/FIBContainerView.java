@@ -39,269 +39,31 @@
 
 package org.openflexo.fib.view;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Vector;
-import java.util.logging.Logger;
 
-import javax.swing.JComponent;
-
-import org.openflexo.connie.exception.NullReferenceException;
-import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.connie.type.TypeUtils;
-import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBContainer;
+import org.openflexo.fib.view.impl.FIBContainerViewImpl;
 
-public abstract class FIBContainerView<M extends FIBContainer, J extends JComponent, T> extends FIBView<M, J, T> {
+/**
+ * Represent the "view" associated with a {@link FIBContainer} in a given rendering engine environment (eg Swing)<br>
+ * A {@link FIBContainerView} is a container for some sub-components (a set of {@link FIBView}) with a given layout
+ * 
+ * A default implementation is provided in this library, see {@link FIBContainerViewImpl}
+ * 
+ * @author sylvain
+ *
+ * @param <M>
+ *            type of {@link FIBComponent} this view represents
+ * @param <C>
+ *            type of technology-specific component
+ * @param <C2>
+ *            type of technology-specific component beeing contained by this view
+ */
+public interface FIBContainerView<M extends FIBContainer, C, C2> extends FIBView<M, C> {
 
-	private static final Logger LOGGER = Logger.getLogger(FIBContainerView.class.getPackage().getName());
+	public List<FIBView<?, C2>> getSubComponents();
 
-	private Vector<JComponent> subComponents;
-	private Hashtable<JComponent, Object> constraints;
-
-	public FIBContainerView(M model, FIBController controller) {
-		super(model, controller);
-
-		subComponents = new Vector<JComponent>();
-		constraints = new Hashtable<JComponent, Object>();
-
-		createJComponent();
-		buildSubComponents();
-
-	}
-
-	@Override
-	public void delete() {
-		if (isDeleted()) {
-			return;
-		}
-		subComponents.clear();
-		constraints.clear();
-		subComponents = null;
-		constraints = null;
-		super.delete();
-	}
-
-	protected synchronized void buildSubComponents() {
-		subViews.clear();
-		subComponents.clear();
-		constraints.clear();
-
-		retrieveContainedJComponentsAndConstraints();
-
-		for (JComponent j : subComponents) {
-			addJComponent(j);
-		}
-
-		updatePreferredSize();
-
-		updateFont();
-
-		getJComponent().revalidate();
-		getJComponent().repaint();
-	}
-
-	protected abstract J createJComponent();
-
-	protected abstract void retrieveContainedJComponentsAndConstraints();
-
-	protected void addJComponent(JComponent c) {
-		// logger.info("addJComponent constraints=" + c);
-		Object constraint = constraints.get(c);
-		LOGGER.fine(getComponent() + ": addJComponent " + c + " constraint=" + constraint);
-		if (constraint == null) {
-			getJComponent().add(c);
-		} else {
-			getJComponent().add(c, constraint);
-		}
-	}
-
-	@Override
-	public abstract J getJComponent();
-
-	@Override
-	public J getDynamicJComponent() {
-		return getJComponent();
-	}
-
-	@Override
-	public T getValue() {
-		if (getDataObject() == null) {
-			return null;
-		}
-		if (getComponent().getData() == null || getComponent().getData().isUnset()) {
-			return null;
-		}
-		try {
-			return (T) getComponent().getData().getBindingValue(getBindingEvaluationContext());
-		} catch (TypeMismatchException e) {
-			e.printStackTrace();
-			return null;
-		} catch (NullReferenceException e) {
-			e.printStackTrace();
-			return null;
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	@Override
-	public boolean update() {
-		super.update();
-		for (FIBView v : new ArrayList<FIBView>(subViews.values())) {
-			v.update();
-		}
-		return true;
-	}
-
-	/*@Override
-	public void updateDataObject(final Object dataObject) {
-		update(new Vector<FIBComponent>());
-		if (isComponentVisible()) {
-			for (FIBView v : new ArrayList<FIBView>(subViews.values())) {
-				v.updateDataObject(dataObject);
-			}
-		}
-		updateDataDynamicValue();
-	}*/
-
-	/*private void updateDataDynamicValue() {
-		setData(getValue());
-	}*/
-
-	/*private void updateDataDynamicValue() {
-		if (getDynamicModel() != null && getComponent().getData().isSet() && getComponent().getData().isValid()) {
-			logger.fine("Container: " + getComponent() + " value data for " + getDynamicModel() + " is " + getValue());
-			Object newDataValue = getValue();
-			if (getDynamicModel().getData() != getValue()) {
-				getDynamicModel().setData(getValue());
-				notifyDynamicModelChanged();
-			}
-		}
-	}*/
-
-	@Override
-	protected boolean checkValidDataPath() {
-		if (getParentView() != null && !getParentView().checkValidDataPath()) {
-			return false;
-		}
-		if (getComponent().getDataType() != null) {
-			Object value = getValue();
-			if (value != null && !TypeUtils.isTypeAssignableFrom(getComponent().getDataType(), value.getClass(), true)) {
-				// logger.fine("INVALID data path for component "+getComponent());
-				// logger.fine("Value is "+getValue().getClass()+" while expected type is "+getComponent().getDataType());
-				return false;
-			}
-		}
-		return true;
-	}
-
-	@Override
-	public void updateLanguage() {
-		for (FIBView v : subViews.values()) {
-			// if (!"True".equals(v.getComponent().getParameter(FIBContainer.INHERITED)))
-			v.updateLanguage();
-		}
-	}
-
-	/**
-	 * This method is called to update view representing a FIBComponent.<br>
-	 * Callers are all the components that have been updated during current update loop. If the callers contains the component itself, does
-	 * nothing and return.
-	 * 
-	 * @param callers
-	 *            all the components that have been previously updated during current update loop
-	 * @return a flag indicating if component has been updated
-	 */
-	/*@Override
-	public boolean update(List<FIBComponent> callers) {
-		boolean returned = super.update(callers);
-		updateDataDynamicValue();
-
-		return returned;
-	}*/
-
-	protected void registerViewForComponent(FIBView view, FIBComponent component) {
-		subViews.put(component, view);
-	}
-
-	protected void registerComponentWithConstraints(JComponent component, Object constraint) {
-		registerComponentWithConstraints(component, constraint, -1);
-	}
-
-	protected void registerComponentWithConstraints(JComponent component, Object constraint, int index) {
-		LOGGER.fine("Register component: " + component + " constraint=" + constraint);
-		if (index < 0 || index > subComponents.size()) {
-			index = subComponents.size();
-		}
-		subComponents.add(index, component);
-		if (constraint != null) {
-			constraints.put(component, constraint);
-		}
-	}
-
-	protected void registerComponentWithConstraints(JComponent component, int index) {
-		registerComponentWithConstraints(component, null, index);
-	}
-
-	protected void registerComponentWithConstraints(JComponent component) {
-		registerComponentWithConstraints(component, null, -1);
-	}
-
-	/*protected void registerComponentWithConstraints(JComponent component, int index)
-	{
-		logger.fine("Register component: "+component+" index="+index);
-		subComponents.insertElementAt(component,index);
-	}
-
-	protected void registerComponentWithConstraints(JComponent component, Object constraint, int index)
-	{
-		logger.fine("Register component: "+component+" index="+index);
-		subComponents.insertElementAt(component,index);
-		if (constraint != null) constraints.put(component,constraint);
-	}*/
-
-	protected Vector<JComponent> getSubComponents() {
-		return subComponents;
-	}
-
-	/**
-	 * Return all sub-components that are not declared as to be hidden in inheritance hierarchy
-	 * 
-	 * @return
-	 */
-	protected List<FIBComponent> getNotHiddenSubComponents() {
-		List<FIBComponent> returned = new ArrayList<FIBComponent>();
-		for (FIBComponent subComponent : getComponent().getSubComponents()) {
-			if (subComponent.getParameter("hidden") == null || subComponent.getParameter("hidden").equalsIgnoreCase("false")) {
-				returned.add(subComponent);
-			} /*else {
-				System.out.println("Ignoring " + subComponent);
-				}*/
-		}
-		return returned;
-	}
-
-	protected Hashtable<JComponent, Object> getConstraints() {
-		return constraints;
-	}
-
-	@Override
-	public synchronized void updateFont() {
-		if (getFont() != null) {
-			getJComponent().setFont(getFont());
-		}
-		for (FIBView v : subViews.values()) {
-			v.updateFont();
-		}
-		getJComponent().revalidate();
-		getJComponent().repaint();
-	}
-
-	public abstract void updateLayout();
+	public void updateLayout();
 
 }

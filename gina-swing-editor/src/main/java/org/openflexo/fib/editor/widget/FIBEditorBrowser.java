@@ -42,7 +42,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.fib.editor.controller.FIBEditorController;
 import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.fib.swing.FIBJPanel;
+import org.openflexo.fib.swing.utils.FIBJPanel;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.rm.Resource;

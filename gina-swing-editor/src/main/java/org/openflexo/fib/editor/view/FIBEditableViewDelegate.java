@@ -81,16 +81,16 @@ import org.openflexo.fib.model.FIBPanel;
 import org.openflexo.fib.model.FIBSplitPanel;
 import org.openflexo.fib.model.FIBTab;
 import org.openflexo.fib.model.FIBWidget;
-import org.openflexo.fib.view.FIBContainerView;
-import org.openflexo.fib.view.FIBView;
-import org.openflexo.fib.view.FIBWidgetView;
-import org.openflexo.fib.view.container.FIBPanelView;
-import org.openflexo.fib.view.container.FIBSplitPanelView;
-import org.openflexo.fib.view.container.FIBTabView;
-import org.openflexo.fib.view.widget.FIBColorWidget;
-import org.openflexo.fib.view.widget.FIBFontWidget;
-import org.openflexo.fib.view.widget.FIBMultipleValueWidget;
-import org.openflexo.fib.view.widget.FIBNumberWidget;
+import org.openflexo.fib.swing.view.FIBContainerView;
+import org.openflexo.fib.swing.view.FIBView;
+import org.openflexo.fib.swing.view.FIBWidgetView;
+import org.openflexo.fib.swing.view.container.FIBPanelView;
+import org.openflexo.fib.swing.view.container.FIBSplitPanelView;
+import org.openflexo.fib.swing.view.container.FIBTabView;
+import org.openflexo.fib.swing.view.widget.FIBColorWidget;
+import org.openflexo.fib.swing.view.widget.FIBFontWidget;
+import org.openflexo.fib.swing.view.widget.FIBMultipleValueWidget;
+import org.openflexo.fib.swing.view.widget.FIBNumberWidget;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.swing.Focusable;
 
@@ -175,7 +175,7 @@ public class FIBEditableViewDelegate<M extends FIBComponent, J extends JComponen
 	}
 
 	private boolean isComponentRootComponentForAnyFIBView(Component c) {
-		for (FIBView<?, ?, ?> v : getController().getViews()) {
+		for (FIBView<?, ?> v : getController().getViews()) {
 			if (v.getResultingJComponent() == c) {
 				return true;
 			}

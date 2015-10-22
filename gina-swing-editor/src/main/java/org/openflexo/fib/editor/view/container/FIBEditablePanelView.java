@@ -64,7 +64,7 @@ import org.openflexo.fib.model.GridBagLayoutConstraints;
 import org.openflexo.fib.model.GridLayoutConstraints;
 import org.openflexo.fib.model.TwoColsLayoutConstraints;
 import org.openflexo.fib.model.TwoColsLayoutConstraints.TwoColsLayoutLocation;
-import org.openflexo.fib.view.container.FIBPanelView;
+import org.openflexo.fib.swing.view.container.FIBPanelView;
 import org.openflexo.logging.FlexoLogger;
 
 public class FIBEditablePanelView<T> extends FIBPanelView<FIBPanel, T> implements FIBEditableView<FIBPanel, JPanel> {

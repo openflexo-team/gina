@@ -48,7 +48,7 @@ import org.openflexo.fib.editor.view.FIBEditableViewDelegate;
 import org.openflexo.fib.editor.view.PlaceHolder;
 import org.openflexo.fib.model.FIBEditor;
 import org.openflexo.fib.model.FIBModelObject;
-import org.openflexo.fib.view.widget.FIBEditorWidget;
+import org.openflexo.fib.swing.view.widget.FIBEditorWidget;
 import org.openflexo.jedit.JEditTextArea;
 import org.openflexo.logging.FlexoLogger;
 

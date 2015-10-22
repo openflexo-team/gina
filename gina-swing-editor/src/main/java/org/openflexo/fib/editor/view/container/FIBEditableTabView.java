@@ -64,7 +64,7 @@ import org.openflexo.fib.model.GridBagLayoutConstraints;
 import org.openflexo.fib.model.GridLayoutConstraints;
 import org.openflexo.fib.model.TwoColsLayoutConstraints;
 import org.openflexo.fib.model.TwoColsLayoutConstraints.TwoColsLayoutLocation;
-import org.openflexo.fib.view.container.FIBTabView;
+import org.openflexo.fib.swing.view.container.FIBTabView;
 import org.openflexo.logging.FlexoLogger;
 
 public class FIBEditableTabView<T> extends FIBTabView<FIBTab, T> implements FIBEditableView<FIBTab, JPanel> {

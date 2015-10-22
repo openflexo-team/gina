@@ -52,8 +52,6 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import javax.swing.JComponent;
-
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
@@ -82,7 +80,7 @@ import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 @XMLElement(xmlTag = "Custom")
 public interface FIBCustom extends FIBWidget {
 
-	public static interface FIBCustomComponent<V, C extends JComponent> {
+	public static interface FIBCustomComponent<V, C> {
 		@Documented
 		@Retention(RetentionPolicy.RUNTIME)
 		public @interface CustomComponentParameter {

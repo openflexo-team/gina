@@ -50,8 +50,8 @@ import org.openflexo.fib.editor.view.FIBEditableViewDelegate;
 import org.openflexo.fib.editor.view.PlaceHolder;
 import org.openflexo.fib.model.FIBImage;
 import org.openflexo.fib.model.FIBModelObject;
-import org.openflexo.fib.view.FIBContainerView;
-import org.openflexo.fib.view.widget.FIBImageWidget;
+import org.openflexo.fib.swing.view.FIBContainerView;
+import org.openflexo.fib.swing.view.widget.FIBImageWidget;
 import org.openflexo.logging.FlexoLogger;
 
 public class FIBEditableImageWidget extends FIBImageWidget implements FIBEditableView<FIBImage, JLabel> {

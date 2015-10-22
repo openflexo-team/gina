@@ -50,7 +50,7 @@ import org.openflexo.fib.editor.view.FIBEditableViewDelegate;
 import org.openflexo.fib.editor.view.PlaceHolder;
 import org.openflexo.fib.model.FIBModelObject;
 import org.openflexo.fib.model.FIBTextArea;
-import org.openflexo.fib.view.widget.FIBTextAreaWidget;
+import org.openflexo.fib.swing.view.widget.FIBTextAreaWidget;
 import org.openflexo.logging.FlexoLogger;
 
 public class FIBEditableTextAreaWidget extends FIBTextAreaWidget implements FIBEditableView<FIBTextArea, JTextArea> {

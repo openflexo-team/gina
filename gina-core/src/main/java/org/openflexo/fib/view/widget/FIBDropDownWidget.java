@@ -39,265 +39,36 @@
 
 package org.openflexo.fib.view.widget;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.BorderFactory;
-import javax.swing.ComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JPanel;
-
-import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBDropDown;
-import org.openflexo.fib.model.FIBModelObject.FIBModelObjectImpl;
-import org.openflexo.localization.FlexoLocalization;
-import org.openflexo.toolbox.ToolBox;
 
-public class FIBDropDownWidget<T> extends FIBMultipleValueWidget<FIBDropDown, JComboBox, T, T> {
+/**
+ * Represents a widget able to select an item in a list (combo box)
+ * 
+ * @param <C>
+ *            type of technology-specific component this view manage
+ * @param <T>
+ *            type of data beeing represented by this view
+ * 
+ * @author sylvain
+ */
+public interface FIBDropDownWidget<C, T> extends FIBMultipleValueWidget<FIBDropDown, C, T, T> {
 
 	static final Logger logger = Logger.getLogger(FIBDropDownWidget.class.getPackage().getName());
 
-	private final JButton resetButton;
-
-	private final JPanel dropdownPanel;
-
-	protected JComboBox jComboBox;
-
-	public FIBDropDownWidget(FIBDropDown model, FIBController controller) {
-		super(model, controller);
-		initJComboBox();
-		dropdownPanel = new JPanel(new BorderLayout());
-		resetButton = new JButton();
-		resetButton.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "reset", resetButton));
-		resetButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				jComboBox.getModel().setSelectedItem(null);
-				setValue(null);
-			}
-		});
-		if (!ToolBox.isMacOSLaf()) {
-			dropdownPanel.setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER,
-					BOTTOM_COMPENSATING_BORDER, RIGHT_COMPENSATING_BORDER));
-		}
-
-		dropdownPanel.add(jComboBox, BorderLayout.CENTER);
-		if (model.getShowReset()) {
-			dropdownPanel.add(resetButton, BorderLayout.EAST);
-		}
-		dropdownPanel.setOpaque(false);
-		dropdownPanel.addFocusListener(this);
-
-		updateFont();
-
-	}
-
-	final protected void initJComboBox() {
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("initJComboBox()");
-		}
-		Point locTemp = null;
-		Container parentTemp = null;
-		if (jComboBox != null && jComboBox.getParent() != null) {
-			locTemp = jComboBox.getLocation();
-			parentTemp = jComboBox.getParent();
-			parentTemp.remove(jComboBox);
-			parentTemp.remove(resetButton);
-		}
-		multipleValueModel = null;
-		jComboBox = new JComboBox(getListModel());
-		/*if (getDataObject() == null) {
-			Vector<Object> defaultValue = new Vector<Object>();
-			defaultValue.add(FlexoLocalization.localizedForKey("no_selection"));
-			_jComboBox = new JComboBox(defaultValue);
-		} else {
-			// TODO: Verify that there is no reason for this comboBoxModel to be cached.
-			multipleValueModel=null;
-			_jComboBox = new JComboBox(getListModel());
-		}*/
-		jComboBox.setFont(getFont());
-		jComboBox.setRenderer(getListCellRenderer());
-		jComboBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (logger.isLoggable(Level.FINE)) {
-					logger.fine("Action performed in " + this.getClass().getName());
-				}
-				updateModelFromWidget();
-			}
-		});
-		if (parentTemp != null) {
-			// _jComboBox.setSize(dimTemp);
-			jComboBox.setLocation(locTemp);
-			((JPanel) parentTemp).add(jComboBox, BorderLayout.CENTER);
-			if (getWidget().getShowReset()) {
-				((JPanel) parentTemp).add(resetButton, BorderLayout.EAST);
-			}
-		}
-		// Important: otherwise might be desynchronized
-		jComboBox.revalidate();
-
-		if ((getWidget().getData() == null || !getWidget().getData().isValid()) && getWidget().getAutoSelectFirstRow()
-				&& getListModel().getSize() > 0) {
-			jComboBox.setSelectedIndex(0);
-		}
-		jComboBox.setEnabled(isComponentEnabled());
-	}
-
 	@Override
-	public synchronized boolean updateWidgetFromModel() {
-
-		// System.out.println("getValue()=" + getValue());
-		// System.out.println("jComboBox.getSelectedItem()=" + jComboBox.getSelectedItem());
-		// System.out.println("listModelRequireChange()=" + listModelRequireChange());
-
-		if (notEquals(getValue(), jComboBox.getSelectedItem()) /*|| listModelRequireChange()*/) {
-
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("updateWidgetFromModel()");
-			}
-			widgetUpdating = true;
-			// initJComboBox();
-			jComboBox.setSelectedItem(getValue());
-
-			widgetUpdating = false;
-
-			if (getValue() == null && getWidget().getAutoSelectFirstRow() && getListModel().getSize() > 0) {
-				jComboBox.setSelectedIndex(0);
-			}
-
-			return true;
-		}
-
-		return false;
-	}
+	public DropDownRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter();
 
 	/**
-	 * Update the model given the actual state of the widget
+	 * Specification of an adapter for a given rendering technology (eg Swing)
+	 * 
+	 * @author sylvain
+	 *
+	 * @param <C>
 	 */
-	@Override
-	public synchronized boolean updateModelFromWidget() {
-		if (widgetUpdating || modelUpdating) {
-			return false;
-		}
-		if (notEquals(getValue(), jComboBox.getSelectedItem())) {
-			modelUpdating = true;
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("updateModelFromWidget with " + jComboBox.getSelectedItem());
-			}
-			if (jComboBox.getSelectedItem() != null && !widgetUpdating) {
-				setValue((T) jComboBox.getSelectedItem());
-			}
-			modelUpdating = false;
-			return true;
-		}
-		return false;
-	}
+	public static interface DropDownRenderingTechnologyAdapter<C> extends MultipleValueRenderingTechnologyAdapter<C> {
 
-	public MyComboBoxModel getListModel() {
-		return (MyComboBoxModel) getMultipleValueModel();
-	}
-
-	@Override
-	protected MyComboBoxModel createMultipleValueModel() {
-		return new MyComboBoxModel(getValue());
-	}
-
-	@Override
-	protected void proceedToListModelUpdate() {
-		if (jComboBox != null) {
-			jComboBox.setModel(getListModel());
-			// System.out.println("New list model = " + getListModel());
-			if (!widgetUpdating && !isDeleted() && getDynamicJComponent() != null) {
-				updateWidgetFromModel();
-			}
-		}
-	}
-
-	/*@Override
-	protected MyComboBoxModel updateListModelWhenRequired() {
-		if (multipleValueModel == null) {
-			multipleValueModel = new MyComboBoxModel(getValue());
-			if (jComboBox != null) {
-				jComboBox.setModel((MyComboBoxModel) multipleValueModel);
-			}
-		} else {
-			MyComboBoxModel aNewMyComboBoxModel = new MyComboBoxModel(getValue());
-			if (!aNewMyComboBoxModel.equals(multipleValueModel)) {
-				multipleValueModel = aNewMyComboBoxModel;
-				jComboBox.setModel((MyComboBoxModel) multipleValueModel);
-			}
-		}
-		return (MyComboBoxModel) multipleValueModel;
-	}*/
-
-	protected class MyComboBoxModel extends FIBMultipleValueModel implements ComboBoxModel {
-		protected Object selectedItem = null;
-
-		public MyComboBoxModel(Object selectedObject) {
-			super();
-		}
-
-		@Override
-		public void setSelectedItem(Object anItem) {
-			if (selectedItem != anItem) {
-				widgetUpdating = true;
-				selectedItem = anItem;
-				// logger.info("setSelectedItem() with " + anItem + " widgetUpdating=" + widgetUpdating + " modelUpdating=" +
-				// modelUpdating);
-				setSelected((T) anItem);
-				setSelectedIndex(indexOf(anItem));
-				/*if (!widgetUpdating && !modelUpdating) {
-					notifyDynamicModelChanged();
-				}*/
-				widgetUpdating = false;
-			}
-		}
-
-		@Override
-		public Object getSelectedItem() {
-			return selectedItem;
-		}
-
-		@Override
-		public int hashCode() {
-			return selectedItem == null ? 0 : selectedItem.hashCode();
-		}
-
-		@Override
-		public boolean equals(Object object) {
-			if (object instanceof FIBDropDownWidget.MyComboBoxModel) {
-				if (selectedItem != ((MyComboBoxModel) object).selectedItem) {
-					return false;
-				}
-			}
-			return super.equals(object);
-		}
-
-	}
-
-	@Override
-	public JPanel getJComponent() {
-		return dropdownPanel;
-	}
-
-	@Override
-	public JComboBox getDynamicJComponent() {
-		return jComboBox;
-	}
-
-	@Override
-	public void updateFont() {
-		super.updateFont();
-		if (getFont() != null) {
-			jComboBox.setFont(getFont());
-		}
 	}
 
 }

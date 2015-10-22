@@ -51,10 +51,10 @@ import org.openflexo.fib.editor.view.FIBEditableViewDelegate;
 import org.openflexo.fib.editor.view.PlaceHolder;
 import org.openflexo.fib.model.FIBModelObject;
 import org.openflexo.fib.model.FIBReferencedComponent;
-import org.openflexo.fib.view.widget.FIBReferencedComponentWidget;
+import org.openflexo.fib.swing.view.widget.JFIBReferencedComponentWidget;
 import org.openflexo.logging.FlexoLogger;
 
-public class FIBEditableReferencedComponentWidget extends FIBReferencedComponentWidget implements
+public class FIBEditableReferencedComponentWidget extends JFIBReferencedComponentWidget implements
 		FIBEditableView<FIBReferencedComponent, JComponent> {
 
 	@SuppressWarnings("unused")

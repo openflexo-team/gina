@@ -116,8 +116,8 @@ public abstract interface FIBEventDescription extends EventDescription {
 			String widgetClass = getWidgetClass();
 			String widgetID = getWidgetID();
 			
-			List<FIBView<?, ?, ?>> l = ((FIBController) parent).getAllViews();
-			for(FIBView<?, ?, ?> v : l) {
+			List<FIBView<?, ?>> l = ((FIBController) parent).getAllViews();
+			for(FIBView<?, ?> v : l) {
 				if (v instanceof FIBWidgetView<?, ?, ?>) {
 					FIBWidgetView<?, ?, ?> wv = (FIBWidgetView<?, ?, ?>) v;
 					if (wv.getWidget().getBaseName() != null

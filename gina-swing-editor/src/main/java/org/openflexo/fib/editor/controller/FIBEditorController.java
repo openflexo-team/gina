@@ -123,8 +123,8 @@ import org.openflexo.fib.model.FIBTextPane;
 import org.openflexo.fib.model.FIBWidget;
 import org.openflexo.fib.swing.toolbox.FocusedObjectChange;
 import org.openflexo.fib.swing.toolbox.SelectedObjectChange;
-import org.openflexo.fib.view.FIBView;
-import org.openflexo.fib.view.FIBWidgetView;
+import org.openflexo.fib.swing.view.FIBView;
+import org.openflexo.fib.swing.view.FIBWidgetView;
 import org.openflexo.localization.Language;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.swing.NoInsetsBorder;
@@ -139,7 +139,7 @@ public class FIBEditorController /*extends FIBController*/extends Observable imp
 	private final FIBModelFactory factory;
 
 	private final JPanel editorPanel;
-	private final FIBView<?, ?, ?> fibPanel;
+	private final FIBView<?, ?> fibPanel;
 	private final FIBGenericEditor editor;
 
 	private FIBComponent fibComponent = null;
@@ -245,7 +245,7 @@ public class FIBEditorController /*extends FIBController*/extends Observable imp
 
 		/*FIBComponent browserComponent = FIBLibrary.instance().retrieveFIBComponent(BROWSER_FIB, false, factory);
 		browserController = new FIBBrowserController(browserComponent, this);
-		FIBView<?, ?, ?> view = FIBController.makeView(browserComponent, browserController);
+		FIBViewImpl<?, ?, ?> view = FIBController.makeView(browserComponent, browserController);
 		view.getController().setDataObject(fibComponent);*/
 
 		fibPanel = controller.buildView();
@@ -311,7 +311,7 @@ public class FIBEditorController /*extends FIBController*/extends Observable imp
 		return editor.getPalette();
 	}
 
-	public FIBView<?, ?, ?> getFibPanel() {
+	public FIBView<?, ?> getFibPanel() {
 		return fibPanel;
 	}
 
@@ -372,7 +372,7 @@ public class FIBEditorController /*extends FIBController*/extends Observable imp
 		notifyObservers(change2);
 	}
 
-	public FIBView<?, ?, ?> viewForComponent(FIBComponent component) {
+	public FIBView<?, ?> viewForComponent(FIBComponent component) {
 		return controller.viewForComponent(component);
 	}
 
@@ -408,7 +408,7 @@ public class FIBEditorController /*extends FIBController*/extends Observable imp
 
 	protected class EditorFIBViewFactory implements FIBViewFactory {
 		@Override
-		public FIBView<?, ?, ?> makeContainer(FIBContainer fibContainer) {
+		public FIBView<?, ?> makeContainer(FIBContainer fibContainer) {
 			if (fibContainer instanceof FIBTab) {
 				return new FIBEditableTabView((FIBTab) fibContainer, FIBEditorController.this);
 			} else if (fibContainer instanceof FIBPanel) {

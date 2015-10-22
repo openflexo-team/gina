@@ -41,13 +41,18 @@ package org.openflexo.fib.controller;
 
 import java.util.List;
 
+/**
+ * Implemented by a widget able to select an object of type T
+ * 
+ * @author sylvain
+ *
+ * @param <T>
+ */
 public interface FIBSelectable<T> {
 
 	public T getSelected();
 
 	public List<T> getSelection();
-
-	// public boolean isFocused();
 
 	public boolean synchronizedWithSelection();
 

@@ -52,7 +52,7 @@ import org.openflexo.fib.model.FIBCheckboxList;
 import org.openflexo.fib.model.FIBModelObject;
 import org.openflexo.fib.model.FIBMultipleValues;
 import org.openflexo.fib.model.FIBWidget;
-import org.openflexo.fib.view.widget.FIBCheckboxListWidget;
+import org.openflexo.fib.swing.view.widget.FIBCheckboxListWidget;
 import org.openflexo.logging.FlexoLogger;
 
 public class FIBEditableCheckboxListWidget<T> extends FIBCheckboxListWidget<T> implements FIBEditableView<FIBCheckboxList, JPanel> {

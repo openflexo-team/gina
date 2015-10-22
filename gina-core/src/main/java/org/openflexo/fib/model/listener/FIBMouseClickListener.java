@@ -43,5 +43,5 @@ import org.openflexo.fib.view.FIBView;
 
 public interface FIBMouseClickListener {
 
-	public void mouseClicked(FIBView<?, ?, ?> view, int clickCount);
+	public void mouseClicked(FIBView<?, ?> view, int clickCount);
 }

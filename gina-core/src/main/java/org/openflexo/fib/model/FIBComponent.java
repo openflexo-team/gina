@@ -1588,7 +1588,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		public void setDefinePreferredDimensions(boolean definePreferredDimensions) {
 			if (definePreferredDimensions() != definePreferredDimensions) {
 				if (definePreferredDimensions) {
-					FIBView<?, ?, ?> v = FIBController.makeView(this, (LocalizedDelegate) null);
+					FIBView<?, ?> v = FIBController.makeView(this, (LocalizedDelegate) null);
 					Dimension p = v.getJComponent().getPreferredSize();
 					setWidth(p.width);
 					setHeight(p.height);
@@ -1610,7 +1610,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		@Override
 		public void setDefineMaxDimensions(boolean defineMaxDimensions) {
 			if (defineMaxDimensions) {
-				FIBView<?, ?, ?> v = FIBController.makeView(this, (LocalizedDelegate) null);
+				FIBView<?, ?> v = FIBController.makeView(this, (LocalizedDelegate) null);
 				setMaxWidth(1024);
 				setMaxHeight(1024);
 				v.delete();
@@ -1629,7 +1629,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		@Override
 		public void setDefineMinDimensions(boolean defineMinDimensions) {
 			if (defineMinDimensions) {
-				FIBView<?, ?, ?> v = FIBController.makeView(this, (LocalizedDelegate) null);
+				FIBView<?, ?> v = FIBController.makeView(this, (LocalizedDelegate) null);
 				Dimension p = v.getJComponent().getMinimumSize();
 				setMinWidth(p.width);
 				setMinHeight(p.height);

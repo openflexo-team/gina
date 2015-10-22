@@ -47,7 +47,7 @@ import javax.swing.ImageIcon;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.fib.swing.FIBUtilsIconLibrary;
+import org.openflexo.fib.swing.utils.FIBUtilsIconLibrary;
 import org.openflexo.model.validation.FixProposal;
 import org.openflexo.model.validation.InformationIssue;
 import org.openflexo.model.validation.ProblemIssue;

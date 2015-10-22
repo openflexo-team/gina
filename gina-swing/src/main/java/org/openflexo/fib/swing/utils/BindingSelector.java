@@ -89,7 +89,7 @@ import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
-import org.openflexo.fib.swing.logging.FlexoLoggingViewer;
+import org.openflexo.fib.swing.utils.logging.FlexoLoggingViewer;
 import org.openflexo.gina.event.GinaEvent.KIND;
 import org.openflexo.gina.event.GinaEventNotifier;
 import org.openflexo.gina.event.description.EventDescription;

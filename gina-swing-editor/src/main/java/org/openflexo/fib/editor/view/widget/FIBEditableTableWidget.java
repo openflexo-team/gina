@@ -50,7 +50,7 @@ import org.openflexo.fib.editor.view.FIBEditableViewDelegate;
 import org.openflexo.fib.editor.view.PlaceHolder;
 import org.openflexo.fib.model.FIBModelObject;
 import org.openflexo.fib.model.FIBTable;
-import org.openflexo.fib.view.widget.FIBTableWidget;
+import org.openflexo.fib.swing.view.widget.FIBTableWidget;
 import org.openflexo.logging.FlexoLogger;
 
 public class FIBEditableTableWidget<T> extends FIBTableWidget<T> implements FIBEditableView<FIBTable, JTable> {

@@ -39,248 +39,51 @@
 
 package org.openflexo.fib.view;
 
-import java.awt.Dimension;
 import java.awt.Font;
-import java.beans.PropertyChangeSupport;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.logging.Logger;
 
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
-import javax.swing.JScrollPane;
 
 import org.openflexo.connie.BindingEvaluationContext;
-import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingValueChangeListener;
-import org.openflexo.connie.exception.NullReferenceException;
-import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.controller.FIBSelectable;
 import org.openflexo.fib.model.FIBComponent;
+import org.openflexo.fib.view.impl.FIBViewImpl;
 import org.openflexo.fib.view.widget.FIBReferencedComponentWidget;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
 import org.openflexo.localization.LocalizationListener;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
-public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> implements LocalizationListener, HasPropertyChangeSupport {
-
-	private static final Logger LOGGER = Logger.getLogger(FIBView.class.getPackage().getName());
+/**
+ * Represent the "view" associated with a {@link FIBComponent} in a given rendering engine environment (eg Swing)<br>
+ * 
+ * A default implementation is provided in this library, see {@link FIBViewImpl}
+ * 
+ * @author sylvain
+ *
+ * @param <M>
+ *            type of {@link FIBComponent} this view represents
+ * @param <C>
+ *            type of technology-specific component this view manage
+ */
+public interface FIBView<M extends FIBComponent, C> extends LocalizationListener, HasPropertyChangeSupport {
 
 	public static final String DATA = "data";
 	public static final String VISIBLE = "visible";
 
 	public static final String DELETED_PROPERTY = "Deleted";
 
-	protected static final int TOP_COMPENSATING_BORDER = 3;
-	protected static final int BOTTOM_COMPENSATING_BORDER = TOP_COMPENSATING_BORDER;
-	protected static final int LEFT_COMPENSATING_BORDER = 5;
-	protected static final int RIGHT_COMPENSATING_BORDER = LEFT_COMPENSATING_BORDER;
+	/**
+	 * Return the controller that manages this view
+	 * 
+	 * @return
+	 */
+	public FIBController getController();
 
-	private M component;
-	private FIBController controller;
-
-	private T data;
-
-	protected Map<FIBComponent, FIBView> subViews;
-
-	private boolean visible = true;
-	private boolean isDeleted = false;
-
-	private JScrollPane scrolledComponent;
-
-	private FIBReferencedComponentWidget embeddingComponent;
-
-	private final PropertyChangeSupport pcSupport;
-
-	private BindingValueChangeListener<T> dataBindingValueChangeListener;
-	private BindingValueChangeListener<Boolean> visibleBindingValueChangeListener;
-
-	public FIBView(M model, FIBController controller) {
-		super();
-		this.controller = controller;
-		component = model;
-
-		pcSupport = new PropertyChangeSupport(this);
-
-		subViews = new Hashtable<FIBComponent, FIBView>();
-
-		controller.registerView(this);
-
-		updateData();
-
-		listenDataValueChange();
-		listenVisibleValueChange();
-
-	}
-
-	private void listenDataValueChange() {
-		if (dataBindingValueChangeListener != null) {
-			dataBindingValueChangeListener.stopObserving();
-			dataBindingValueChangeListener.delete();
-		}
-
-		if (getComponent().getData() != null && getComponent().getData().isValid()) {
-			dataBindingValueChangeListener = new BindingValueChangeListener<T>((DataBinding<T>) getComponent().getData(),
-					getBindingEvaluationContext()) {
-				@Override
-				public void bindingValueChanged(Object source, T newValue) {
-					// System.out.println(" bindingValueChanged() detected for data=" + getComponent().getData() + " with newValue="
-					// + newValue + " source=" + source);
-
-					updateData();
-				}
-			};
-		}
-	}
-
-	private void listenVisibleValueChange() {
-		if (visibleBindingValueChangeListener != null) {
-			visibleBindingValueChangeListener.stopObserving();
-			visibleBindingValueChangeListener.delete();
-		}
-		if (getComponent().getVisible() != null && getComponent().getVisible().isValid()) {
-			visibleBindingValueChangeListener = new BindingValueChangeListener<Boolean>(getComponent().getVisible(),
-					getBindingEvaluationContext()) {
-				@Override
-				public void bindingValueChanged(Object source, Boolean newValue) {
-					// System.out.println(" bindingValueChanged() detected for visible=" + getComponent().getVisible() + " with newValue="
-					// + newValue + " source=" + source);
-					updateVisibility();
-				}
-
-				@Override
-				protected Boolean getDefaultValue() {
-					return true;
-				}
-
-			};
-			/*if (getComponent().getVisible().toString().equals("EnableMultipleLayoutsCheckBox.data")) {
-				System.out.println("******** ok je l'ai");
-				System.out.println(visibleBindingValueChangeListener.toString());
-			}*/
-		}
-	}
-
-	@Override
-	public PropertyChangeSupport getPropertyChangeSupport() {
-		return pcSupport;
-	}
-
-	@Override
-	public String getDeletedProperty() {
-		return DELETED_PROPERTY;
-	}
-
-	public void delete() {
-
-		LOGGER.fine("@@@@@@@@@ Delete view for component " + getComponent());
-
-		if (isDeleted) {
-			return;
-		}
-
-		if (dataBindingValueChangeListener != null) {
-			dataBindingValueChangeListener.stopObserving();
-			dataBindingValueChangeListener.delete();
-		}
-
-		if (visibleBindingValueChangeListener != null) {
-			visibleBindingValueChangeListener.stopObserving();
-			visibleBindingValueChangeListener.delete();
-		}
-
-		LOGGER.fine("Delete view for component " + getComponent());
-		if (subViews != null) {
-			for (FIBView v : subViews.values()) {
-				v.delete();
-			}
-			subViews.clear();
-			subViews = null;
-		}
-		if (controller != null) {
-			controller.unregisterView(this);
-		}
-
-		isDeleted = true;
-		component = null;
-		controller = null;
-	}
-
-	public T getData() {
-		return data;
-	}
-
-	public void setData(T data) {
-
-		T oldData = this.data;
-
-		if (notEquals(oldData, data)) {
-
-			if (getComponent().getDataClass() == null || (data != null && getComponent().getDataClass().isAssignableFrom(data.getClass()))) {
-				// System.out.println("OK data " + data + " is an instance of " + getComponent().getDataClass());
-				this.data = data;
-				// System.out.println("from " + oldData + " to " + data);
-				getPropertyChangeSupport().firePropertyChange(DATA, oldData, data);
-			} else {
-				if (getComponent().getDataClass() != null) {
-					// System.out.println("Sorry, data " + data + " of " + data.getClass() + " is not an instance of "
-					// + getComponent().getDataClass());
-				}
-				this.data = null;
-				getPropertyChangeSupport().firePropertyChange(DATA, oldData, null);
-			}
-		}
-	}
-
-	public boolean isViewVisible() {
-		return visible;
-	}
-
-	public void setVisible(boolean visible) {
-		if (this.visible != visible) {
-			this.visible = visible;
-			getPropertyChangeSupport().firePropertyChange(VISIBLE, !visible, visible);
-		}
-	}
-
-	public JComponent getJComponentForObject(FIBComponent component) {
-		if (getComponent() == component) {
-			return getJComponent();
-		} else {
-			for (FIBView v : getSubViews().values()) {
-				JComponent j = v.getJComponentForObject(component);
-				if (j != null) {
-					return j;
-				}
-			}
-		}
-		return null;
-	}
-
-	public JComponent geDynamicJComponentForObject(FIBComponent component) {
-		if (getComponent() == component) {
-			return getDynamicJComponent();
-		} else {
-			for (FIBView v : getSubViews().values()) {
-				JComponent j = v.geDynamicJComponentForObject(component);
-				if (j != null) {
-					return j;
-				}
-			}
-		}
-		return null;
-	}
-
-	public boolean isDeleted() {
-		return isDeleted;
-	}
-
-	public FIBController getController() {
-		return controller;
-	}
+	/**
+	 * Return boolean indicating if this view is visible
+	 * 
+	 * @return
+	 */
+	public boolean isViewVisible();
 
 	/**
 	 * Return the BindingEvaluationContext valid in the context of current widget.<br>
@@ -289,36 +92,14 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 	 * 
 	 * @return
 	 */
-	public BindingEvaluationContext getBindingEvaluationContext() {
-		/*
-		if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("DropSchemePanel")) {
-			if (getEmbeddingComponent() == null) {
-				System.out.println("for DropSchemePanel embedding component is " + getEmbeddingComponent());
-			}
-		}*/
-		/*if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("DropSchemeWidget")) {
-			System.out.println("for DropSchemeWidget embedding component is " + getEmbeddingComponent());
-		}*/
-		if (getEmbeddingComponent() != null) {
-			return getEmbeddingComponent().getEmbeddedBindingEvaluationContext();
-		}
-		if (getParentView() != null) {
-			return getParentView().getBindingEvaluationContext();
-		}
-		return getController();
-	}
+	public BindingEvaluationContext getBindingEvaluationContext();
 
-	public final Object getDataObject() {
-		return getController().getDataObject();
-	}
+	public Object getDataObject();
 
-	public final M getComponent() {
-		return component;
-	}
+	// TODO renamed to getFIBComponent()
+	public M getComponent();
 
-	// public abstract void updateDataObject(Object anObject);
-
-	public abstract void updateLanguage();
+	public void updateLanguage();
 
 	/**
 	 * Return the effective base component to be added to swing hierarchy This component may be encapsulated in a JScrollPane
@@ -332,7 +113,7 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 	 * 
 	 * @return J
 	 */
-	public abstract J getDynamicJComponent();
+	public abstract C getDynamicJComponent();
 
 	/**
 	 * Return the effective component to be added to swing hierarchy This component may be the same as the one returned by
@@ -340,304 +121,59 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 	 * 
 	 * @return JComponent
 	 */
-	public JComponent getResultingJComponent() {
-		if (getComponent().getUseScrollBar()) {
-			if (scrolledComponent == null) {
-				scrolledComponent = new JScrollPane(getJComponent(), getComponent().getVerticalScrollbarPolicy().getPolicy(),
-						getComponent().getHorizontalScrollbarPolicy().getPolicy());
-				scrolledComponent.setOpaque(false);
-				scrolledComponent.getViewport().setOpaque(false);
-				scrolledComponent.setBorder(BorderFactory.createEmptyBorder());
-			}
-			return scrolledComponent;
-		} else {
-			return getJComponent();
-		}
-	}
+	public JComponent getResultingJComponent();
 
 	/**
 	 * This method is called to update view representing a FIBComponent.<br>
 	 * 
 	 * @return a flag indicating if component has been updated
 	 */
-	public boolean update() {
+	public boolean update();
 
-		updateData();
+	public boolean isComponentVisible();
 
-		updateVisibility();
+	public boolean isComponentEnabled();
 
-		// IMPORTANT (Sylvain):
-		// I commented out following statement which seems to me unnecessary
-		// I'm not really sure not to have caused any regression
-		/*if (dataBindingValueChangeListener != null) {
-			dataBindingValueChangeListener.refreshObserving();
-		}
-		if (visibleBindingValueChangeListener != null) {
-			visibleBindingValueChangeListener.refreshObserving();
-		}*/
+	public FIBContainerView<?, ?, ?> getParentView();
 
-		return true;
-	}
+	public Font getFont();
 
-	/**
-	 * This method is called to update view representing a FIBComponent.<br>
-	 * Callers are all the components that have been updated during current update loop. If the callers contains the component itself, does
-	 * nothing and return.
-	 * 
-	 * @param callers
-	 *            all the components that have been previously updated during current update loop
-	 * @return a flag indicating if component has been updated
-	 */
-	/*public boolean update(List<FIBComponent> callers) {
-		if (callers.contains(getComponent())) {
-			return false;
-		}
-		updateVisibility();
-		return true;
-	}*/
+	public void updateFont();
 
-	protected abstract boolean checkValidDataPath();
-
-	public final boolean isComponentVisible() {
-		/*if (getComponent().getName() != null && getComponent().getName().equals("DropSchemePanel")) {
-			System.out.println("Bon, je me demande si c'est visible");
-			System.out.println("getComponent().getVisible()=" + getComponent().getVisible());
-			System.out.println("valid=" + getComponent().getVisible().isValid());
-			System.out.println("getBindingEvaluationContext=" + getBindingEvaluationContext());
-			try {
-				System.out.println("result=" + getComponent().getVisible().getBindingValue(getBindingEvaluationContext()));
-				DataBinding<Object> binding1 = new DataBinding<Object>("data", getComponent(), Object.class, BindingDefinitionType.GET);
-				System.out.println("data=" + binding1.getBindingValue(getBindingEvaluationContext()));
-				DataBinding<Object> binding2 = new DataBinding<Object>("EditionActionBrowser.selected", getComponent(), Object.class,
-						BindingDefinitionType.GET);
-				System.out.println("EditionActionBrowser.selected=" + binding2.getBindingValue(getBindingEvaluationContext()));
-			} catch (TypeMismatchException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NullReferenceException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}*/
-
-		if (getParentView() != null && !getParentView().isComponentVisible()) {
-			return false;
-		}
-
-		boolean componentVisible = true;
-		if (getComponent().getVisible() != null && getComponent().getVisible().isSet()) {
-			try {
-				Boolean isVisible = getComponent().getVisible().getBindingValue(getBindingEvaluationContext());
-				if (isVisible != null) {
-					componentVisible = isVisible;
-				}
-			} catch (TypeMismatchException e) {
-				LOGGER.warning("Unable to evaluate " + getComponent().getVisible());
-				e.printStackTrace();
-			} catch (NullReferenceException e) {
-				// NullReferenceException is allowed, in this case, default visibility is true
-				componentVisible = true;
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-				componentVisible = true;
-			}
-		}
-		return componentVisible;
-	}
-
-	public final boolean hasValue() {
-		return component.getData() != null && component.getData().isSet();
-	}
-
-	public abstract T getValue();
-
-	public void updateData() {
-		setData(getValue());
-	}
-
-	protected void updateVisibility() {
-		if (isComponentVisible() != visible) {
-			visible = !visible;
-			getResultingJComponent().setVisible(visible);
-			if (getResultingJComponent().getParent() instanceof JComponent) {
-				((JComponent) getResultingJComponent().getParent()).revalidate();
-			} else if (getResultingJComponent().getParent() != null) {
-				getResultingJComponent().getParent().validate();
-			}
-			if (getResultingJComponent().getParent() != null) {
-				getResultingJComponent().getParent().repaint();
-			}
-			if (visible) {
-				hiddenComponentBecomesVisible();
-				for (FIBView<?, ?, ?> view : subViews.values()) {
-					view.updateVisibility();
-				}
-			}
-			setVisible(visible);
-		}
-	}
-
-	protected void hiddenComponentBecomesVisible() {
-	}
-
-	public Object getDefaultData() {
-		return null;
-	}
-
-	/*	public void notifyDynamicModelChanged() {
-			// System.out.println("notifyDynamicModelChanged()");
-			if (getComponent() != null) {
-				Iterator<FIBComponent> it = getComponent().getMayAltersIterator();
-				while (it.hasNext()) {
-					FIBComponent c = it.next();
-					logger.fine("Because dynamic model change, now update " + c);
-					FIBView view = getController().viewForComponent(c);
-					if (view != null) {
-						view.updateDataObject(getDataObject());
-					} else {
-						if (logger.isLoggable(Level.FINE)) {
-							logger.fine("Unexpected null view when retrieving view for " + c);
-						}
-					}
-				}
-			} else {
-				logger.warning("Unexpected null component");
-			}
-		}*/
-
-	public FIBContainerView<?, ?, ?> getParentView() {
-		if (getComponent() != null) {
-			if (getComponent().getParent() != null) {
-				return (FIBContainerView<?, ?, ?>) getController().viewForComponent(getComponent().getParent());
-			}
-		}
-		return null;
-	}
-
-	public Map<FIBComponent, FIBView> getSubViews() {
-		return subViews;
-	}
-
-	public Font getFont() {
-		if (getComponent() != null) {
-			return getComponent().retrieveValidFont();
-		}
-		return null;
-	}
-
-	public abstract void updateFont();
-
-	public String getLocalized(String key) {
-		if (getController().getLocalizerForComponent(getComponent()) != null) {
-			return FlexoLocalization.localizedForKey(getController().getLocalizerForComponent(getComponent()), key);
-		}
-		return key;
-	}
-
-	public boolean isSelectableComponent() {
-		return this instanceof FIBSelectable;
-	}
-
-	public FIBSelectable getSelectableComponent() {
-		if (isSelectableComponent()) {
-			return (FIBSelectable) this;
-		}
-		return null;
-	}
+	public String getLocalized(String key);
 
 	@Override
-	public void languageChanged(Language language) {
-		updateLanguage();
+	public void languageChanged(Language language);
+
+	public void updateGraphicalProperties();
+
+	public FIBReferencedComponentWidget<?, C> getEmbeddingComponent();
+
+	public void setEmbeddingComponent(FIBReferencedComponentWidget<?, C> embeddingComponent);
+
+	public void delete();
+
+	public RenderingTechnologyAdapter<C> getRenderingTechnologyAdapter();
+
+	/**
+	 * Specification of an adapter for a given rendering technology (eg Swing)
+	 * 
+	 * @author sylvain
+	 *
+	 * @param <C>
+	 */
+	public static interface RenderingTechnologyAdapter<C> {
+
+		public void setOpaque(C component, boolean opaque);
+
+		public void setFont(C component, Font aFont);
+
+		public void setToolTipText(C component, String aText);
+
+		public void requestFocus(C component);
+
+		public void requestFocusInParent(C component);
+
 	}
 
-	public void updateGraphicalProperties() {
-		updatePreferredSize();
-		updateMaximumSize();
-		updateMinimumSize();
-		updateOpacity();
-		updateBackgroundColor();
-		updateForegroundColor();
-	}
-
-	protected void updateOpacity() {
-		if (getComponent().getOpaque() != null) {
-			getDynamicJComponent().setOpaque(getComponent().getOpaque());
-		}
-	}
-
-	protected void updatePreferredSize() {
-		if (getComponent().definePreferredDimensions()) {
-			Dimension preferredSize = getJComponent().getPreferredSize();
-			if (getComponent().getWidth() != null) {
-				preferredSize.width = getComponent().getWidth();
-			}
-			if (getComponent().getHeight() != null) {
-				preferredSize.height = getComponent().getHeight();
-			}
-			getJComponent().setPreferredSize(preferredSize);
-		}
-	}
-
-	protected void updateMinimumSize() {
-		if (getComponent().defineMinDimensions()) {
-			Dimension minSize = getJComponent().getMinimumSize();
-			if (getComponent().getMinWidth() != null) {
-				minSize.width = getComponent().getMinWidth();
-			}
-			if (getComponent().getMinHeight() != null) {
-				minSize.height = getComponent().getMinHeight();
-			}
-			getJComponent().setMinimumSize(minSize);
-		}
-	}
-
-	protected void updateMaximumSize() {
-		if (getComponent().defineMaxDimensions()) {
-			Dimension maxSize = getJComponent().getMaximumSize();
-			if (getComponent().getMaxWidth() != null) {
-				maxSize.width = getComponent().getMaxWidth();
-			}
-			if (getComponent().getMaxHeight() != null) {
-				maxSize.height = getComponent().getMaxHeight();
-			}
-			getJComponent().setMinimumSize(maxSize);
-		}
-	}
-
-	protected void updateBackgroundColor() {
-		getJComponent().setBackground(getComponent().getBackgroundColor());
-	}
-
-	protected void updateForegroundColor() {
-		getJComponent().setForeground(getComponent().getForegroundColor());
-	}
-
-	public static boolean equals(Object o1, Object o2) {
-		if (o1 == o2) {
-			return true;
-		}
-		if (o1 == null) {
-			return o2 == null;
-		} else {
-			return o1.equals(o2);
-		}
-	}
-
-	public static boolean notEquals(Object o1, Object o2) {
-		return !equals(o1, o2);
-	}
-
-	public FIBReferencedComponentWidget getEmbeddingComponent() {
-		return embeddingComponent;
-	}
-
-	public void setEmbeddingComponent(FIBReferencedComponentWidget embeddingComponent) {
-		/* if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("DropSchemePanel")) {
-			System.out.println("Set emmbedding component for DropSchemePanel with " + embeddingComponent);
-		}*/
-		this.embeddingComponent = embeddingComponent;
-	}
 }

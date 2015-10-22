@@ -39,7 +39,7 @@
 package org.openflexo.fib.editor.test;
 
 import org.openflexo.fib.editor.FIBAbstractEditor;
-import org.openflexo.fib.swing.localization.LocalizedPanel;
+import org.openflexo.fib.swing.utils.localization.LocalizedPanel;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 

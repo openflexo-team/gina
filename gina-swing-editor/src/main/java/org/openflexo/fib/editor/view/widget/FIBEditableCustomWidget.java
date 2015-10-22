@@ -50,7 +50,7 @@ import org.openflexo.fib.editor.view.FIBEditableViewDelegate;
 import org.openflexo.fib.editor.view.PlaceHolder;
 import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBModelObject;
-import org.openflexo.fib.view.widget.FIBCustomWidget;
+import org.openflexo.fib.swing.view.widget.FIBCustomWidget;
 import org.openflexo.logging.FlexoLogger;
 
 public class FIBEditableCustomWidget<J extends JComponent, T> extends FIBCustomWidget<J, T> implements FIBEditableView<FIBCustom, J> {

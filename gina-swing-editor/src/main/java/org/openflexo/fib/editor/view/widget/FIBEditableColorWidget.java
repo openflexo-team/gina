@@ -48,7 +48,7 @@ import org.openflexo.fib.editor.view.FIBEditableViewDelegate;
 import org.openflexo.fib.editor.view.PlaceHolder;
 import org.openflexo.fib.model.FIBColor;
 import org.openflexo.fib.model.FIBModelObject;
-import org.openflexo.fib.view.widget.FIBColorWidget;
+import org.openflexo.fib.swing.view.widget.FIBColorWidget;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.swing.ColorSelector;
 

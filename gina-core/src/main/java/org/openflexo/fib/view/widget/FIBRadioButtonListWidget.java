@@ -39,214 +39,32 @@
 
 package org.openflexo.fib.view.widget;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-
-import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBRadioButtonList;
 
-public class FIBRadioButtonListWidget<T> extends FIBMultipleValueWidget<FIBRadioButtonList, JPanel, T, T> {
-
-	static final Logger LOGGER = Logger.getLogger(FIBRadioButtonListWidget.class.getPackage().getName());
-
-	private JRadioButton[] radioButtonArray;
-
-	private final JPanel panel;
-
-	private ButtonGroup buttonGroup;
-
-	private T selectedValue;
-
-	public FIBRadioButtonListWidget(FIBRadioButtonList model, FIBController controller) {
-		super(model, controller);
-		buttonGroup = new ButtonGroup();
-		panel = new JPanel(new GridLayout(0, model.getColumns(), model.getHGap(), model.getVGap()));
-		panel.setOpaque(false);
-		rebuildRadioButtons();
-		updateData();
-		/*if (getWidget().getAutoSelectFirstRow() && getMultipleValueModel().getSize() > 0) {
-				radioButtonArray[0].setSelected(true);
-				setSelected(getMultipleValueModel().getElementAt(0));
-			}*/
-
-		if ((getWidget().getData() == null || !getWidget().getData().isValid()) && getWidget().getAutoSelectFirstRow()
-				&& getMultipleValueModel().getSize() > 0) {
-			setSelectedValue(getMultipleValueModel().getElementAt(0));
-		}
-	}
-
-	private void selectFirstRowIfRequired() {
-		if (selectedValue == null && (getWidget().getData() != null && getWidget().getData().isValid())
-				&& getWidget().getAutoSelectFirstRow() && getMultipleValueModel().getSize() > 0) {
-			setSelectedValue(getMultipleValueModel().getElementAt(0));
-		}
-	}
+/**
+ * Represents a widget able to select an item in a radio button panel
+ * 
+ * @param <C>
+ *            type of technology-specific component this view manage
+ * @param <T>
+ *            type of data beeing represented by this view
+ * 
+ * @author sylvain
+ */
+public interface FIBRadioButtonListWidget<C, T> extends FIBMultipleValueWidget<FIBRadioButtonList, C, T, T> {
 
 	@Override
-	protected FIBMultipleValueModel<T> createMultipleValueModel() {
-		return new FIBMultipleValueModel<T>();
-	}
-
-	@Override
-	protected void proceedToListModelUpdate() {
-		rebuildRadioButtons();
-		if (!widgetUpdating && !isDeleted() && getDynamicJComponent() != null) {
-			updateWidgetFromModel();
-		}
-	}
-
-	final protected void rebuildRadioButtons() {
-		if (panel != null) {
-			panel.removeAll();
-			((GridLayout) panel.getLayout()).setColumns(getWidget().getColumns());
-			((GridLayout) panel.getLayout()).setHgap(getWidget().getHGap());
-			((GridLayout) panel.getLayout()).setVgap(getWidget().getVGap());
-			buttonGroup = new ButtonGroup();
-			radioButtonArray = new JRadioButton[getMultipleValueModel().getSize()];
-			for (int i = 0; i < getMultipleValueModel().getSize(); i++) {
-				T object = getMultipleValueModel().getElementAt(i);
-				JRadioButton rb = new JRadioButton(getStringRepresentation(object), equals(object, selectedValue));
-				rb.setOpaque(false);
-				rb.addActionListener(new RadioButtonListener(rb, object, i));
-				radioButtonArray[i] = rb;
-				// Handle the case of icon should be displayed
-				if (getWidget().getShowIcon() && getWidget().getIcon().isSet() && getWidget().getIcon().isValid()) {
-					rb.setHorizontalAlignment(JCheckBox.LEFT);
-					rb.setText(null);
-					final JLabel label = new JLabel(getStringRepresentation(object), getIconRepresentation(object), JLabel.LEADING);
-					Dimension ps = rb.getPreferredSize();
-					rb.setLayout(new BorderLayout());
-					label.setLabelFor(rb);
-					label.setBorder(BorderFactory.createEmptyBorder(0, ps.width, 0, 0));
-					rb.add(label);
-				}
-				panel.add(rb);
-				buttonGroup.add(rb);
-				if (object.equals(getValue())) {
-					rb.doClick();
-				}
-			}
-			updateFont();
-			panel.revalidate();
-			selectFirstRowIfRequired();
-		}
-	}
-
-	@Override
-	public synchronized boolean updateWidgetFromModel() {
-		T value = getValue();
-		if (notEquals(value, selectedValue) /*|| listModelRequireChange()*/|| multipleValueModel == null) {
-			if (LOGGER.isLoggable(Level.FINE)) {
-				LOGGER.fine("updateWidgetFromModel()");
-			}
-
-			widgetUpdating = true;
-			selectedValue = value;
-			setSelected(value);
-			// TODO: handle selected index
-			rebuildRadioButtons();
-
-			/*if (selectedValue == null) {
-				if (getWidget().getAutoSelectFirstRow() && getMultipleValueModel().getSize() > 0) {
-					radioButtonArray[0].doClick();
-				}
-				setSelected(getMultipleValueModel().getElementAt(0));
-				selectedValue = getMultipleValueModel().getElementAt(0);
-				setValue(selectedValue);
-			}*/
-
-			widgetUpdating = false;
-			return true;
-		}
-		return false;
-	}
-
-	private class RadioButtonListener implements ActionListener {
-
-		private final T value;
-		private final JRadioButton button;
-		private final int index;
-
-		public RadioButtonListener(JRadioButton button, T value, int index) {
-			this.button = button;
-			this.value = value;
-			this.index = index;
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if (e.getSource() == button && button.isSelected()) {
-				selectedValue = value;
-				updateModelFromWidget();
-				setSelected(value);
-				setSelectedIndex(index);
-			}
-		}
-
-	}
+	public RadioButtonRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter();
 
 	/**
-	 * Update the model given the actual state of the widget
+	 * Specification of an adapter for a given rendering technology (eg Swing)
+	 * 
+	 * @author sylvain
+	 *
+	 * @param <C>
 	 */
-	@Override
-	public synchronized boolean updateModelFromWidget() {
-		if (notEquals(getValue(), selectedValue)) {
-			modelUpdating = true;
-			if (LOGGER.isLoggable(Level.FINE)) {
-				LOGGER.fine("updateModelFromWidget with " + selectedValue);
-			}
-			if (selectedValue != null && !widgetUpdating) {
-				setValue(selectedValue);
-			}
-			modelUpdating = false;
-			return true;
-		}
-		return false;
-	}
+	public static interface RadioButtonRenderingTechnologyAdapter<C> extends MultipleValueRenderingTechnologyAdapter<C> {
 
-	@Override
-	public JPanel getJComponent() {
-		return panel;
-	}
-
-	@Override
-	public JPanel getDynamicJComponent() {
-		return panel;
-	}
-
-	@Override
-	public void updateFont() {
-		super.updateFont();
-		if (getFont() != null) {
-			for (JRadioButton rb : radioButtonArray) {
-				rb.setFont(getFont());
-			}
-		}
-	}
-
-	public T getSelectedValue() {
-		return selectedValue;
-	}
-
-	public void setSelectedValue(T selectedValue) {
-		if (selectedValue != null) {
-			int newSelectedIndex = getMultipleValueModel().indexOf(selectedValue);
-			if (newSelectedIndex >= 0 && newSelectedIndex < getMultipleValueModel().getSize()) {
-				radioButtonArray[newSelectedIndex].doClick();
-			}
-		}
 	}
 
 }

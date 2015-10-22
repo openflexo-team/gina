@@ -40,7 +40,6 @@ package org.openflexo.fib.swing.utils;
 
 import java.util.logging.Logger;
 
-import org.openflexo.fib.swing.FIBJPanel;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;

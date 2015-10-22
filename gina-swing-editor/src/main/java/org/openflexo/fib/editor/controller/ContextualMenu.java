@@ -86,7 +86,7 @@ import org.openflexo.fib.model.TwoColsLayoutConstraints;
 import org.openflexo.fib.model.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.fib.swing.toolbox.JFIBPreferences;
 import org.openflexo.fib.swing.utils.BindingSelector;
-import org.openflexo.fib.view.widget.FIBReferencedComponentWidget;
+import org.openflexo.fib.swing.view.widget.JFIBReferencedComponentWidget;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.FileResourceImpl;
@@ -198,7 +198,7 @@ public class ContextualMenu {
 			public FIBModelObject performAction(FIBModelObject object) {
 				FIBReferencedComponent referencedComponent = (FIBReferencedComponent) object;
 
-				FIBReferencedComponentWidget widgetView = (FIBReferencedComponentWidget) editorController.getController().viewForComponent(
+				JFIBReferencedComponentWidget widgetView = (JFIBReferencedComponentWidget) editorController.getController().viewForComponent(
 						referencedComponent);
 
 				Object dataObject = widgetView.getValue();

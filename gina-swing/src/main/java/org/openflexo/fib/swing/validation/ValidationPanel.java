@@ -40,7 +40,7 @@ package org.openflexo.fib.swing.validation;
 
 import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.fib.swing.FIBJPanel;
+import org.openflexo.fib.swing.utils.FIBJPanel;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.validation.Validable;
 import org.openflexo.model.validation.ValidationIssue;

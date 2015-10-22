@@ -46,7 +46,7 @@ import javax.swing.JComponent;
 
 import org.openflexo.fib.editor.controller.FIBEditorController;
 import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.fib.view.FIBView;
+import org.openflexo.fib.swing.view.FIBView;
 
 public interface FIBEditableView<M extends FIBComponent, J extends JComponent> extends PropertyChangeListener {
 

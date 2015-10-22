@@ -69,9 +69,9 @@ import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBContainer;
 import org.openflexo.fib.model.FIBPanel;
 import org.openflexo.fib.model.FIBPanel.Layout;
+import org.openflexo.fib.swing.view.FIBView;
 import org.openflexo.fib.model.FIBTab;
 import org.openflexo.fib.model.FIBTabPanel;
-import org.openflexo.fib.view.FIBView;
 import org.openflexo.logging.FlexoLogger;
 
 public class PaletteElement implements FIBDraggable /*implements Transferable*/{

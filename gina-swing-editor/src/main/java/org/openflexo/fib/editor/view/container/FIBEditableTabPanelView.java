@@ -55,9 +55,9 @@ import org.openflexo.fib.editor.view.FIBEditableViewDelegate;
 import org.openflexo.fib.editor.view.PlaceHolder;
 import org.openflexo.fib.model.FIBModelObject;
 import org.openflexo.fib.model.FIBPanel.Layout;
+import org.openflexo.fib.swing.view.container.FIBTabPanelView;
 import org.openflexo.fib.model.FIBTab;
 import org.openflexo.fib.model.FIBTabPanel;
-import org.openflexo.fib.view.container.FIBTabPanelView;
 import org.openflexo.logging.FlexoLogger;
 
 public class FIBEditableTabPanelView<T> extends FIBTabPanelView<T> implements FIBEditableView<FIBTabPanel, JTabbedPane> {
