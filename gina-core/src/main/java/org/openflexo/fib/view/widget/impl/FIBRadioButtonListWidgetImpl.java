@@ -51,23 +51,10 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 
 	static final Logger LOGGER = Logger.getLogger(FIBRadioButtonListWidgetImpl.class.getPackage().getName());
 
-	private T selectedValue;
-
 	public FIBRadioButtonListWidgetImpl(FIBRadioButtonList model, FIBController controller,
 			RadioButtonRenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
 		super(model, controller, renderingTechnologyAdapter);
-
-		rebuildRadioButtons();
-		updateData();
-		/*if (getWidget().getAutoSelectFirstRow() && getMultipleValueModel().getSize() > 0) {
-				radioButtonArray[0].setSelected(true);
-				setSelected(getMultipleValueModel().getElementAt(0));
-			}*/
-
-		if ((getWidget().getData() == null || !getWidget().getData().isValid()) && getWidget().getAutoSelectFirstRow()
-				&& getMultipleValueModel().getSize() > 0) {
-			setSelectedValue(getMultipleValueModel().getElementAt(0));
-		}
+		selectFirstRowIfRequired();
 	}
 
 	@Override
@@ -76,7 +63,7 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 	}
 
 	private void selectFirstRowIfRequired() {
-		if (selectedValue == null && (getWidget().getData() != null && getWidget().getData().isValid())
+		if (getSelectedValue() == null && (getWidget().getData() != null && getWidget().getData().isValid())
 				&& getWidget().getAutoSelectFirstRow() && getMultipleValueModel().getSize() > 0) {
 			setSelectedValue(getMultipleValueModel().getElementAt(0));
 		}
@@ -88,26 +75,17 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 	}
 
 	@Override
-	protected void proceedToListModelUpdate() {
-		rebuildRadioButtons();
-		if (!widgetUpdating && !isDeleted() && getDynamicJComponent() != null) {
-			updateWidgetFromModel();
-		}
-	}
-
-	@Override
 	public synchronized boolean updateWidgetFromModel() {
 		T value = getValue();
-		if (notEquals(value, selectedValue) /*|| listModelRequireChange()*/ || multipleValueModel == null) {
+		if (notEquals(value, getSelectedValue()) /*|| listModelRequireChange()*/ || multipleValueModel == null) {
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine("updateWidgetFromModel()");
 			}
 
 			widgetUpdating = true;
-			selectedValue = value;
+			setSelectedValue(value);
 			setSelected(value);
-			// TODO: handle selected index
-			updateRadioButtons();
+			setSelectedIndex(getMultipleValueModel().indexOf(value));
 
 			widgetUpdating = false;
 			return true;
@@ -115,20 +93,18 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 		return false;
 	}
 
-	protected abstract void updateRadioButtons();
-
 	/**
 	 * Update the model given the actual state of the widget
 	 */
 	@Override
 	public synchronized boolean updateModelFromWidget() {
-		if (notEquals(getValue(), selectedValue)) {
+		if (notEquals(getValue(), getSelectedValue())) {
 			modelUpdating = true;
 			if (LOGGER.isLoggable(Level.FINE)) {
-				LOGGER.fine("updateModelFromWidget with " + selectedValue);
+				LOGGER.fine("updateModelFromWidget with " + getSelectedValue());
 			}
-			if (selectedValue != null && !widgetUpdating) {
-				setValue(selectedValue);
+			if (getSelectedValue() != null && !widgetUpdating) {
+				setValue(getSelectedValue());
 			}
 			modelUpdating = false;
 			return true;
@@ -137,18 +113,10 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 	}
 
 	public T getSelectedValue() {
-		return selectedValue;
+		return (T) getRenderingTechnologyAdapter().getSelectedItem(getDynamicJComponent());
 	}
 
 	public void setSelectedValue(T selectedValue) {
-		if (selectedValue != null) {
-			int newSelectedIndex = getMultipleValueModel().indexOf(selectedValue);
-			if (newSelectedIndex >= 0 && newSelectedIndex < getMultipleValueModel().getSize()) {
-				radioButtonArray[newSelectedIndex].doClick();
-			}
-		}
+		getRenderingTechnologyAdapter().setSelectedItem(getDynamicJComponent(), selectedValue);
 	}
-
-	protected abstract void performClick(int selectedIndex);
-
 }
