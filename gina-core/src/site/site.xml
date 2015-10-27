@@ -20,15 +20,14 @@
   <custom>
 	<openflexo-skin>
 		<sideMenus>true</sideMenus>
+		<displayBreadCrumbs>true</displayBreadCrumbs>
 		<localMenu>/inc/html/developersMenu.html</localMenu>
+		<includeVersionLinks>true</includeVersionLinks>
 	</openflexo-skin>
   </custom>
  
+ 
   <body>
-     <links>
-      <item name="Openflexo" href="http://www.openflexo.org"/>
-    </links>
-
     <menu name="Gina core">
       <item name="Home" 		href="index.html" />
       <item name="Javadoc"    	href="./apidocs/index.html" />

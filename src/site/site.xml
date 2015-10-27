@@ -22,14 +22,13 @@
   <custom>
 	<openflexo-skin>
 		<sideMenus>true</sideMenus>
+		<displayBreadCrumbs>true</displayBreadCrumbs>
 		<localMenu>/inc/html/developersMenu.html</localMenu>
+		<includeVersionLinks>true</includeVersionLinks>
 	</openflexo-skin>
-  </custom>
-  
+ </custom>
+   
   <body>
-    <links>
-      <item name="Openflexo" href="http://www.openflexo.org"/>
-    </links>
     <menu ref="modules" />
     <menu ref="reports" />
   </body>
