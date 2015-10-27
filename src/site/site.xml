@@ -29,6 +29,16 @@
  </custom>
    
   <body>
+  
+    <menu name="Gina">
+      <item name="Home" 		href="index.html" />
+      <item name="Gina core"    	href="gina-core/index.html" />
+      <item name="Gina swing"    	href="gina-swing/index.html" />
+      <item name="Gina swing editor"    	href="gina-swing-editor/index.html" />
+      <item name="FAQ" 			href="faq.html"/>
+      <item name="Javadoc"    	href="./apidocs/index.html" />
+    </menu>
+  
     <menu ref="modules" />
     <menu ref="reports" />
   </body>
