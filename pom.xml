@@ -21,6 +21,7 @@
         <pamela.version>1.3-SNAPSHOT</pamela.version>
         <swingx.version>1.6.3</swingx.version>
         <gina.logo>https://media.openflexo.org/images/gina_logo64x64.png</gina.logo>
+	    <sitedeploy.dir>/home/www/sites/gina</sitedeploy.dir>
     </properties>
     <!-- ************
 	tools Config Dependency
@@ -171,7 +172,7 @@
             <distributionManagement>
                 <site>
                     <id>gina.website</id>
-                    <url>scp://server-one.openflexo.org/home/www/sites/gina/SNAPSHOT/</url>
+                    <url>scp://server-one.openflexo.org${sitedeploy.dir}/SNAPSHOT/</url>
                 </site>
             </distributionManagement>
         </profile>
@@ -188,7 +189,7 @@
             <distributionManagement>
                 <site>
                     <id>gina.website</id>
-                    <url>scp://server-one.openflexo.org/home/www/sites/gina/SNAPSHOT/</url>
+                    <url>scp://server-one.openflexo.org${sitedeploy.dir}/SNAPSHOT/</url>
                 </site>
             </distributionManagement>
         </profile>
@@ -205,7 +206,7 @@
             <distributionManagement>
                 <site>
                     <id>gina.website</id>
-                    <url>scp://server-one.openflexo.org/home/www/sites/gina/${project.version}/</url>
+                    <url>scp://server-one.openflexo.org${sitedeploy.dir}/${project.version}/</url>
                 </site>
             </distributionManagement>
         </profile>
