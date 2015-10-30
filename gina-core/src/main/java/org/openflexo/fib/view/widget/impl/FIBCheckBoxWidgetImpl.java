@@ -37,85 +37,59 @@
  * 
  */
 
-package org.openflexo.fib.swing.view.widget;
+package org.openflexo.fib.view.widget.impl;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.logging.Logger;
-
-import javax.swing.BorderFactory;
-import javax.swing.JCheckBox;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBCheckBox;
-import org.openflexo.fib.swing.view.FIBWidgetView;
-import org.openflexo.gina.event.description.FIBEventFactory;
-import org.openflexo.gina.event.description.FIBValueEventDescription;
+import org.openflexo.fib.view.impl.FIBWidgetViewImpl;
+import org.openflexo.fib.view.widget.FIBCheckBoxWidget;
 import org.openflexo.gina.event.description.EventDescription;
-import org.openflexo.gina.manager.GinaStackEvent;
+import org.openflexo.gina.event.description.FIBValueEventDescription;
 
 /**
- * Represents a widget able to edit a boolean, a Boolean or a String object
+ * Default base implementation for a widget able to edit a boolean (or Boolean) object
  * 
- * @author sguerin
+ * @param <C>
+ *            type of technology-specific component this view manage
+ * 
+ * @author sylvain
  */
-public class FIBCheckBoxWidget extends FIBWidgetView<FIBCheckBox, JCheckBox, Boolean> {
+public abstract class FIBCheckBoxWidgetImpl<C> extends FIBWidgetViewImpl<FIBCheckBox, C, Boolean>implements FIBCheckBoxWidget<C> {
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(FIBCheckBoxWidget.class.getPackage().getName());
-
-	private final JCheckBox checkbox;
+	private static final Logger logger = Logger.getLogger(FIBCheckBoxWidgetImpl.class.getPackage().getName());
 
 	private boolean isNegate = false;
 
 	/**
 	 * @param model
 	 */
-	public FIBCheckBoxWidget(FIBCheckBox model, FIBController controller) {
-		super(model, controller);
-		checkbox = new JCheckBox();
-		checkbox.setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
-				RIGHT_COMPENSATING_BORDER));
-		checkbox.setOpaque(false);
-		checkbox.setBorderPaintedFlat(true);
-		checkbox.setSelected(model.getSelected());
-		if (isReadOnly()) {
-			checkbox.setEnabled(false);
-		} else {
-			checkbox.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					GinaStackEvent stack = FIBCheckBoxWidget.this.GENotifier.raise(FIBEventFactory.getInstance().createValueEvent(
-							getValue() ? FIBValueEventDescription.UNCHECKED : FIBValueEventDescription.CHECKED, FIBCheckBoxWidget.this.checkbox.isSelected()));
-					
-					updateModelFromWidget();
-					
-					stack.end();
-				}
-			});
-		}
-		checkbox.addFocusListener(this);
-
-		// _jCheckBox.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
-
+	public FIBCheckBoxWidgetImpl(FIBCheckBox model, FIBController controller,
+			CheckBoxRenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
+		super(model, controller, renderingTechnologyAdapter);
 		isNegate = model.getNegate();
-
-		updateFont();
 	}
-	
+
+	@Override
+	public CheckBoxRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter() {
+		return (CheckBoxRenderingTechnologyAdapter<C>) super.getRenderingTechnologyAdapter();
+	}
+
 	@Override
 	public void executeEvent(EventDescription e) {
 		widgetExecuting = true;
 
-		switch(e.getAction()) {
-		case FIBValueEventDescription.CHECKED:
-			checkbox.setSelected(true);
-			break;
-		case FIBValueEventDescription.UNCHECKED:
-			checkbox.setSelected(false);
-			break;
+		switch (e.getAction()) {
+			case FIBValueEventDescription.CHECKED:
+				getRenderingTechnologyAdapter().setSelected(getDynamicJComponent(), true);
+				break;
+			case FIBValueEventDescription.UNCHECKED:
+				getRenderingTechnologyAdapter().setSelected(getDynamicJComponent(), false);
+				break;
 		}
-		
+
 		widgetExecuting = false;
 	}
 
@@ -128,13 +102,14 @@ public class FIBCheckBoxWidget extends FIBWidgetView<FIBCheckBox, JCheckBox, Boo
 	@Override
 	public synchronized boolean updateWidgetFromModel() {
 		Boolean value = getValue();
-		if (notEquals(isNegate ? value == null || !value : value != null && value, checkbox.isSelected())) {
+		if (notEquals(isNegate ? value == null || !value : value != null && value,
+				getRenderingTechnologyAdapter().getSelected(getDynamicJComponent()))) {
 			widgetUpdating = true;
 			if (value != null) {
 				if (isNegate) {
 					value = !value;
 				}
-				checkbox.setSelected(value);
+				getRenderingTechnologyAdapter().setSelected(getDynamicJComponent(), value);
 			}
 			widgetUpdating = false;
 			return true;
@@ -152,22 +127,14 @@ public class FIBCheckBoxWidget extends FIBWidgetView<FIBCheckBox, JCheckBox, Boo
 		}
 
 		Boolean value = getValue();
-		if (notEquals(isNegate ? value == null || !value : value != null && value, checkbox.isSelected())) {
-			setValue(isNegate ? !checkbox.isSelected() : checkbox.isSelected());
+		if (notEquals(isNegate ? value == null || !value : value != null && value,
+				getRenderingTechnologyAdapter().getSelected(getDynamicJComponent())S)) {
+			setValue(isNegate ? !getRenderingTechnologyAdapter().getSelected(getDynamicJComponent())
+					: getRenderingTechnologyAdapter().getSelected(getDynamicJComponent()));
 			return true;
 		}
 		return false;
 
-	}
-
-	@Override
-	public JCheckBox getJComponent() {
-		return checkbox;
-	}
-
-	@Override
-	public JCheckBox getDynamicJComponent() {
-		return checkbox;
 	}
 
 	@Override
