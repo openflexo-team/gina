@@ -128,7 +128,7 @@ public abstract class FIBCheckBoxWidgetImpl<C> extends FIBWidgetViewImpl<FIBChec
 
 		Boolean value = getValue();
 		if (notEquals(isNegate ? value == null || !value : value != null && value,
-				getRenderingTechnologyAdapter().getSelected(getDynamicJComponent())S)) {
+				getRenderingTechnologyAdapter().getSelected(getDynamicJComponent()))) {
 			setValue(isNegate ? !getRenderingTechnologyAdapter().getSelected(getDynamicJComponent())
 					: getRenderingTechnologyAdapter().getSelected(getDynamicJComponent()));
 			return true;
