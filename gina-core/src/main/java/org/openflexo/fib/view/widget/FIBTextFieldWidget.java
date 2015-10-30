@@ -44,6 +44,9 @@ import org.openflexo.fib.model.FIBTextField;
 /**
  * Simple widget allowing to display/edit a String in a TextField
  * 
+ * @param <C>
+ *            type of technology-specific component this view manage
+ *
  * @author sylvain
  */
 public interface FIBTextFieldWidget<C> extends FIBGenericTextWidget<FIBTextField, C> {

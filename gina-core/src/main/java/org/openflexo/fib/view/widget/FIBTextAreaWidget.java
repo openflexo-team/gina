@@ -44,7 +44,10 @@ import org.openflexo.fib.model.FIBTextArea;
 /**
  * Represents a widget able to edit a Text (more than one line) object
  * 
- * @author bmangez,sguerin
+ * @param <C>
+ *            type of technology-specific component this view manage
+ * 
+ * @author sylvain
  */
 public interface FIBTextAreaWidget<C> extends FIBGenericTextWidget<FIBTextArea, C> {
 
