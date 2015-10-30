@@ -48,11 +48,11 @@ import org.openflexo.fib.editor.view.FIBEditableViewDelegate;
 import org.openflexo.fib.editor.view.PlaceHolder;
 import org.openflexo.fib.model.FIBColor;
 import org.openflexo.fib.model.FIBModelObject;
-import org.openflexo.fib.swing.view.widget.FIBColorWidget;
+import org.openflexo.fib.swing.view.widget.JFIBColorWidget;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.swing.ColorSelector;
 
-public class FIBEditableColorWidget extends FIBColorWidget implements FIBEditableView<FIBColor, ColorSelector> {
+public class FIBEditableColorWidget extends JFIBColorWidget implements FIBEditableView<FIBColor, ColorSelector> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditableColorWidget.class.getPackage().getName());

@@ -96,8 +96,10 @@ public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel>implements ImageO
 
 	}
 
+	public static SwingImageRenderingTechnologyAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingImageRenderingTechnologyAdapter();
+
 	public JFIBImageWidget(FIBImage model, FIBController controller) {
-		super(model, controller, new SwingImageRenderingTechnologyAdapter());
+		super(model, controller, RENDERING_TECHNOLOGY_ADAPTER);
 	}
 
 	@Override
