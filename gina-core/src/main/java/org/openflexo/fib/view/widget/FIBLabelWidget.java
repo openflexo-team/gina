@@ -37,54 +37,41 @@
  * 
  */
 
-package org.openflexo.fib.view.widget.impl;
+package org.openflexo.fib.view.widget;
 
-import java.util.logging.Logger;
-
-import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBTextArea;
-import org.openflexo.fib.view.widget.FIBTextAreaWidget;
+import org.openflexo.fib.model.FIBLabel;
+import org.openflexo.fib.view.FIBWidgetView;
 
 /**
- * Default base implementation for a widget able to edit a Text (more than one line) object
+ * Simple widget allowing to display a label<br>
+ * Label can be statically or dynamically retrieved
+ * 
+ * @param <C>
+ *            type of technology-specific component this view manage
  * 
  * @author sylvain
  */
-public abstract class FIBTextAreaWidgetImpl<C> extends FIBGenericTextWidgetImpl<FIBTextArea, C>implements FIBTextAreaWidget<C> {
-
-	private static final Logger LOGGER = Logger.getLogger(FIBTextAreaWidgetImpl.class.getPackage().getName());
-
-	public static final int DEFAULT_COLUMNS = 30;
-	public static final int DEFAULT_ROWS = 5;
-
-	public FIBTextAreaWidgetImpl(FIBTextArea model, FIBController controller,
-			TextAreaRenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
-		super(model, controller, renderingTechnologyAdapter);
-		updateColumns();
-		updateRows();
-	}
+public interface FIBLabelWidget<C> extends FIBWidgetView<FIBLabel, C, String> {
 
 	@Override
-	public TextAreaRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter() {
-		return (TextAreaRenderingTechnologyAdapter<C>) super.getRenderingTechnologyAdapter();
-	}
+	public LabelRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter();
 
-	public void updateColumns() {
-		getRenderingTechnologyAdapter().setColumns(getDynamicJComponent(),
-				getWidget().getColumns() != null && getWidget().getColumns() > 0 ? getWidget().getColumns() : getDefaultColumns());
-	}
+	/**
+	 * Specification of an adapter for a given rendering technology (eg Swing)
+	 * 
+	 * @author sylvain
+	 *
+	 * @param <C>
+	 */
+	public static interface LabelRenderingTechnologyAdapter<C> extends RenderingTechnologyAdapter<C> {
 
-	public int getDefaultColumns() {
-		return DEFAULT_COLUMNS;
-	}
+		public String getText(C component);
 
-	public void updateRows() {
-		getRenderingTechnologyAdapter().setRows(getDynamicJComponent(),
-				getWidget().getRows() != null && getWidget().getRows() > 0 ? getWidget().getRows() : getDefaultRows());
-	}
+		public void setText(C component, String aText);
 
-	public int getDefaultRows() {
-		return DEFAULT_ROWS;
+		public int getHorizontalAlignment(C component);
+
+		public void setHorizontalAlignment(C component, int align);
 	}
 
 }

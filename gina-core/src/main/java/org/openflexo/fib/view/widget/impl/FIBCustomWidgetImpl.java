@@ -57,7 +57,6 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.controller.FIBSelectable;
 import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBCustom.FIBCustomAssignment;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
@@ -162,6 +161,7 @@ public abstract class FIBCustomWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBCus
 	protected void performModelUpdating(Object value) {
 	}
 
+	@Override
 	public FIBCustomComponent<T, C> getCustomComponent() {
 		return customComponent;
 	}
@@ -380,19 +380,6 @@ public abstract class FIBCustomWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBCus
 	public Object getValue(BindingVariable variable) {
 		if (variable.getVariableName().equals("component")) {
 			return customComponent;
-		}
-		return null;
-	}
-
-	@Override
-	public boolean isSelectableComponent() {
-		return customComponent instanceof FIBSelectable;
-	}
-
-	@Override
-	public FIBSelectable getSelectableComponent() {
-		if (isSelectableComponent()) {
-			return (FIBSelectable) customComponent;
 		}
 		return null;
 	}

@@ -68,6 +68,7 @@ import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.toolbox.StringUtils;
 
 /**
+ * Default base implementation for a generic and abstract widget allowing to handle a list of values
  * 
  * @author sylvain
  * 

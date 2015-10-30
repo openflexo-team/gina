@@ -37,37 +37,39 @@
  * 
  */
 
-package org.openflexo.fib.swing.view.widget;
+package org.openflexo.fib.view.widget.impl;
 
+import java.awt.Image;
 import java.util.logging.Logger;
 
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
-
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBLabel;
-import org.openflexo.fib.swing.view.FIBWidgetView;
+import org.openflexo.fib.model.FIBImage;
+import org.openflexo.fib.view.impl.FIBWidgetViewImpl;
+import org.openflexo.fib.view.widget.FIBImageWidget;
+import org.openflexo.swing.ImageUtils;
 
-public class FIBLabelWidget extends FIBWidgetView<FIBLabel, JLabel, String> {
-	private static final Logger LOGGER = Logger.getLogger(FIBLabelWidget.class.getPackage().getName());
+/**
+ * Default base implementation for a widget allowing to display an image<br>
+ * Image can be statically or dynamically retrieved
+ * 
+ * @param <C>
+ *            type of technology-specific component this view manage
+ * 
+ * @author sylvain
+ */
+public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, C, Image>implements FIBImageWidget<C> {
 
-	private JLabel labelWidget;
+	private static final Logger LOGGER = Logger.getLogger(FIBImageWidgetImpl.class.getPackage().getName());
 
-	public FIBLabelWidget(FIBLabel model, FIBController controller) {
-		super(model, controller);
-		if (model.getData().isValid()) {
-			labelWidget = new JLabel(" ");
-		} else {
-			labelWidget = new JLabel();
-		}
-		labelWidget.setFocusable(false); // There is not much point in giving focus to a label since there is no KeyBindings nor KeyListener
-											// on it.
-		labelWidget.setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, TOP_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
-				RIGHT_COMPENSATING_BORDER));
-		updateFont();
+	public FIBImageWidgetImpl(FIBImage model, FIBController controller, ImageRenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
+		super(model, controller, renderingTechnologyAdapter);
 		updateAlign();
-		updateLabel();
+		updateImage();
+	}
+
+	@Override
+	public ImageRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter() {
+		return (ImageRenderingTechnologyAdapter) super.getRenderingTechnologyAdapter();
 	}
 
 	@Override
@@ -76,7 +78,7 @@ public class FIBLabelWidget extends FIBWidgetView<FIBLabel, JLabel, String> {
 			return false;
 		}
 		widgetUpdating = true;
-		updateLabel();
+		updateImage();
 		widgetUpdating = false;
 		return false;
 	}
@@ -90,47 +92,28 @@ public class FIBLabelWidget extends FIBWidgetView<FIBLabel, JLabel, String> {
 		return false;
 	}
 
-	@Override
-	public JLabel getJComponent() {
-		return labelWidget;
-	}
-
-	@Override
-	public JLabel getDynamicJComponent() {
-		return labelWidget;
-	}
-
 	final protected void updateAlign() {
-		if (labelWidget == null || getWidget() == null) {
-			return;
-		}
 		if (getWidget().getAlign() == null) {
 			return;
 		}
-		labelWidget.setHorizontalAlignment(getWidget().getAlign().getAlign());
+		getRenderingTechnologyAdapter().setHorizontalAlignment(getDynamicJComponent(), getWidget().getAlign().getAlign());
 	}
 
-	final protected void updateLabel() {
-		if (labelWidget == null || getWidget() == null) {
-			return;
-		}
+	final protected void updateImage() {
 		if (getWidget().getData().isValid()) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					if (getWidget() != null) {
-						labelWidget.setText(getWidget().getLocalize() ? getLocalized(getValue()) : getValue());
-					}
-				}
-			});
-		} else {
-			labelWidget.setText(getWidget().getLocalize() ? getLocalized(getWidget().getLabel()) : getWidget().getLabel());
+			Image image = getValue();
+			updateImageDefaultSize(image);
+			getRenderingTechnologyAdapter().setImage(getDynamicJComponent(), image, this);
+		}
+		else if (getWidget().getImageFile() != null) {
+			if (getWidget().getImageFile().exists()) {
+				Image image = ImageUtils.loadImageFromFile(getWidget().getImageFile());
+				updateImageDefaultSize(image);
+				getRenderingTechnologyAdapter().setImage(getDynamicJComponent(), image, this);
+			}
 		}
 	}
 
-	@Override
-	public void updateLanguage() {
-		super.updateLanguage();
-		updateLabel();
-	}
+	protected abstract void updateImageDefaultSize(Image image);
+
 }

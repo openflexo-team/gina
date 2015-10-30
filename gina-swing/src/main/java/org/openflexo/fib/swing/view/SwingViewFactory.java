@@ -86,8 +86,8 @@ import org.openflexo.fib.swing.view.widget.FIBEditorWidget;
 import org.openflexo.fib.swing.view.widget.FIBFileWidget;
 import org.openflexo.fib.swing.view.widget.FIBFontWidget;
 import org.openflexo.fib.swing.view.widget.FIBHtmlEditorWidget;
-import org.openflexo.fib.swing.view.widget.FIBImageWidget;
-import org.openflexo.fib.swing.view.widget.FIBLabelWidget;
+import org.openflexo.fib.swing.view.widget.JFIBImageWidget;
+import org.openflexo.fib.swing.view.widget.JFIBLabelWidget;
 import org.openflexo.fib.swing.view.widget.JFIBListWidget;
 import org.openflexo.fib.swing.view.widget.FIBNumberWidget;
 import org.openflexo.fib.swing.view.widget.JFIBRadioButtonListWidget;
@@ -153,10 +153,10 @@ public class SwingViewFactory extends GinaViewFactoryImpl<C> {
 			return new FIBHtmlEditorWidget((FIBHtmlEditor) fibWidget, this.fibController);
 		}
 		if (fibWidget instanceof FIBLabel) {
-			return new FIBLabelWidget((FIBLabel) fibWidget, this.fibController);
+			return new JFIBLabelWidget((FIBLabel) fibWidget, this.fibController);
 		}
 		if (fibWidget instanceof FIBImage) {
-			return new FIBImageWidget((FIBImage) fibWidget, this.fibController);
+			return new JFIBImageWidget((FIBImage) fibWidget, this.fibController);
 		}
 		if (fibWidget instanceof FIBCheckBox) {
 			return new FIBCheckBoxWidget((FIBCheckBox) fibWidget, this.fibController);

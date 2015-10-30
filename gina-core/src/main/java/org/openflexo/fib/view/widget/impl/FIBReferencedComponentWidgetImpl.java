@@ -80,7 +80,7 @@ import org.openflexo.rm.Resource;
  * @author sylvain
  * 
  */
-public class FIBReferencedComponentWidgetImpl<C, C2> extends FIBWidgetViewImpl<FIBReferencedComponent, C, Object>
+public abstract class FIBReferencedComponentWidgetImpl<C, C2> extends FIBWidgetViewImpl<FIBReferencedComponent, C, Object>
 		implements FIBReferencedComponentWidget<C, C2> {
 
 	private static final Logger logger = Logger.getLogger(FIBReferencedComponentWidgetImpl.class.getPackage().getName());
@@ -290,12 +290,13 @@ public class FIBReferencedComponentWidgetImpl<C, C2> extends FIBWidgetViewImpl<F
 				embeddedFIBController.setDataObject(getValue());
 
 				if (loaded instanceof FIBWidget) {
-					referencedComponentView = (FIBWidgetView) embeddedFIBController.getViewFactory().makeWidget((FIBWidget) loaded);
+					referencedComponentView = (FIBWidgetView) embeddedFIBController.getViewFactory().makeWidget((FIBWidget) loaded,
+							embeddedFIBController);
 					referencedComponentView.setEmbeddingComponent(this);
 				}
 				else if (loaded instanceof FIBContainer) {
-					referencedComponentView = (FIBContainerView) embeddedFIBController.getViewFactory()
-							.makeContainer((FIBContainer) loaded);
+					referencedComponentView = (FIBContainerView) embeddedFIBController.getViewFactory().makeContainer((FIBContainer) loaded,
+							embeddedFIBController);
 					referencedComponentView.setEmbeddingComponent(this);
 				}
 
