@@ -74,7 +74,7 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 
 	private List<T> selection;
 
-	public FIBListWidgetImpl(FIBList model, FIBController controller, ListRenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
+	public FIBListWidgetImpl(FIBList model, FIBController controller, ListRenderingTechnologyAdapter<C, T> renderingTechnologyAdapter) {
 		super(model, controller, renderingTechnologyAdapter);
 
 		updateMultipleValues();
@@ -84,8 +84,8 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 	}
 
 	@Override
-	public ListRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter() {
-		return (ListRenderingTechnologyAdapter<C>) super.getRenderingTechnologyAdapter();
+	public ListRenderingTechnologyAdapter<C, T> getRenderingTechnologyAdapter() {
+		return (ListRenderingTechnologyAdapter<C, T>) super.getRenderingTechnologyAdapter();
 	}
 
 	public void updateVisibleRowCount() {
@@ -133,7 +133,7 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 	 */
 	@Override
 	public synchronized boolean updateModelFromWidget() {
-		T newValue = (T) getRenderingTechnologyAdapter().getSelectedItem(getDynamicJComponent());
+		T newValue = getRenderingTechnologyAdapter().getSelectedItem(getDynamicJComponent());
 		if (notEquals(getValue(), newValue)) {
 			modelUpdating = true;
 			if (LOGGER.isLoggable(Level.FINE)) {

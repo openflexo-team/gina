@@ -39,10 +39,12 @@
 
 package org.openflexo.fib.view.widget;
 
-import org.openflexo.fib.model.FIBRadioButtonList;
+import java.util.List;
+
+import org.openflexo.fib.model.FIBCheckboxList;
 
 /**
- * Represents a widget able to select an item in a radio button panel
+ * Represents a widget able to select a collection of items in a checkboxes panel
  * 
  * @param <C>
  *            type of technology-specific component this view manage
@@ -51,10 +53,10 @@ import org.openflexo.fib.model.FIBRadioButtonList;
  * 
  * @author sylvain
  */
-public interface FIBRadioButtonListWidget<C, T> extends FIBMultipleValueWidget<FIBRadioButtonList, C, T, T> {
+public interface FIBCheckboxListWidget<C, T> extends FIBMultipleValueWidget<FIBCheckboxList, C, List<T>, T> {
 
 	@Override
-	public RadioButtonRenderingTechnologyAdapter<C, T> getRenderingTechnologyAdapter();
+	public CheckboxListRenderingTechnologyAdapter<C, T> getRenderingTechnologyAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -63,8 +65,8 @@ public interface FIBRadioButtonListWidget<C, T> extends FIBMultipleValueWidget<F
 	 *
 	 * @param <C>
 	 */
-	public static interface RadioButtonRenderingTechnologyAdapter<C, T>
-			extends SingleSelectionMultipleValueRenderingTechnologyAdapter<C, T> {
+	public static interface CheckboxListRenderingTechnologyAdapter<C, T>
+			extends MultipleSelectionMultipleValueRenderingTechnologyAdapter<C, T> {
 
 	}
 

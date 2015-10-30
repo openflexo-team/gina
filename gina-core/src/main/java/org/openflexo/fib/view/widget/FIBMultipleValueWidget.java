@@ -39,6 +39,8 @@
 
 package org.openflexo.fib.view.widget;
 
+import java.util.List;
+
 import org.openflexo.fib.model.FIBMultipleValues;
 import org.openflexo.fib.view.FIBWidgetView;
 
@@ -70,7 +72,7 @@ public interface FIBMultipleValueWidget<M extends FIBMultipleValues, C, T, I> ex
 	public void setSelectedIndex(int selectedIndex);
 
 	@Override
-	public MultipleValueRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter();
+	public MultipleValueRenderingTechnologyAdapter<C, I> getRenderingTechnologyAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -78,16 +80,32 @@ public interface FIBMultipleValueWidget<M extends FIBMultipleValues, C, T, I> ex
 	 * @author sylvain
 	 *
 	 * @param <C>
+	 *            type of technology-specific component this view manage
 	 */
-	public static interface MultipleValueRenderingTechnologyAdapter<C> extends RenderingTechnologyAdapter<C> {
+	public static interface MultipleValueRenderingTechnologyAdapter<C, T> extends RenderingTechnologyAdapter<C> {
 
-		public Object getSelectedItem(C component);
+	}
 
-		public void setSelectedItem(C component, Object item);
+	public static interface SingleSelectionMultipleValueRenderingTechnologyAdapter<C, T>
+			extends MultipleValueRenderingTechnologyAdapter<C, T> {
+
+		public T getSelectedItem(C component);
+
+		public void setSelectedItem(C component, T item);
 
 		public int getSelectedIndex(C component);
 
 		public void setSelectedIndex(C component, int index);
+
+	}
+
+	public static interface MultipleSelectionMultipleValueRenderingTechnologyAdapter<C, T>
+			extends MultipleValueRenderingTechnologyAdapter<C, T> {
+
+		public List<T> getSelectedItems(C component);
+
+		public void setSelectedItems(C component, List<T> items);
+
 	}
 
 }

@@ -57,7 +57,7 @@ import org.openflexo.fib.model.FIBList;
 public interface FIBListWidget<C, T> extends FIBMultipleValueWidget<FIBList, C, T, T>, FIBSelectable<T> {
 
 	@Override
-	public ListRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter();
+	public ListRenderingTechnologyAdapter<C, T> getRenderingTechnologyAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -66,7 +66,7 @@ public interface FIBListWidget<C, T> extends FIBMultipleValueWidget<FIBList, C, 
 	 *
 	 * @param <C>
 	 */
-	public static interface ListRenderingTechnologyAdapter<C> extends MultipleValueRenderingTechnologyAdapter<C> {
+	public static interface ListRenderingTechnologyAdapter<C, T> extends SingleSelectionMultipleValueRenderingTechnologyAdapter<C, T> {
 
 		public int getVisibleRowCount(C component);
 

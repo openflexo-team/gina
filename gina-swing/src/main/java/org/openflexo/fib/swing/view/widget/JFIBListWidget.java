@@ -69,15 +69,15 @@ public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T>implements 
 	 * 
 	 */
 	public static class SwingListRenderingTechnologyAdapter<T> extends SwingRenderingTechnologyAdapter<JList<T>>
-			implements ListRenderingTechnologyAdapter<JList<T>> {
+			implements ListRenderingTechnologyAdapter<JList<T>, T> {
 
 		@Override
-		public Object getSelectedItem(JList<T> component) {
+		public T getSelectedItem(JList<T> component) {
 			return component.getSelectedValue();
 		}
 
 		@Override
-		public void setSelectedItem(JList<T> component, Object item) {
+		public void setSelectedItem(JList<T> component, T item) {
 			component.setSelectedValue(item, true);
 		}
 

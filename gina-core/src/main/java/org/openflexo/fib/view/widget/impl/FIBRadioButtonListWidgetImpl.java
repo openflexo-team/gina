@@ -46,20 +46,30 @@ import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBRadioButtonList;
 import org.openflexo.fib.view.widget.FIBRadioButtonListWidget;
 
+/**
+ * Base implementation for a widget able to select an item in a radio button panel
+ * 
+ * @param <C>
+ *            type of technology-specific component this view manage
+ * @param <T>
+ *            type of data beeing represented by this view
+ * 
+ * @author sylvain
+ */
 public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl<FIBRadioButtonList, C, T, T>
 		implements FIBRadioButtonListWidget<C, T> {
 
 	static final Logger LOGGER = Logger.getLogger(FIBRadioButtonListWidgetImpl.class.getPackage().getName());
 
 	public FIBRadioButtonListWidgetImpl(FIBRadioButtonList model, FIBController controller,
-			RadioButtonRenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
+			RadioButtonRenderingTechnologyAdapter<C, T> renderingTechnologyAdapter) {
 		super(model, controller, renderingTechnologyAdapter);
 		selectFirstRowIfRequired();
 	}
 
 	@Override
-	public RadioButtonRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter() {
-		return (RadioButtonRenderingTechnologyAdapter<C>) super.getRenderingTechnologyAdapter();
+	public RadioButtonRenderingTechnologyAdapter<C, T> getRenderingTechnologyAdapter() {
+		return (RadioButtonRenderingTechnologyAdapter<C, T>) super.getRenderingTechnologyAdapter();
 	}
 
 	private void selectFirstRowIfRequired() {
@@ -113,7 +123,7 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 	}
 
 	public T getSelectedValue() {
-		return (T) getRenderingTechnologyAdapter().getSelectedItem(getDynamicJComponent());
+		return getRenderingTechnologyAdapter().getSelectedItem(getDynamicJComponent());
 	}
 
 	public void setSelectedValue(T selectedValue) {

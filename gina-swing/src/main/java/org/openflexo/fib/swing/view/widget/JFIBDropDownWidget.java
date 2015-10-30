@@ -83,15 +83,15 @@ public class JFIBDropDownWidget<T> extends FIBDropDownWidgetImpl<JComboBox<T>, T
 	 * 
 	 */
 	public static class SwingDropDownRenderingTechnologyAdapter<T> extends SwingRenderingTechnologyAdapter<JComboBox<T>>
-			implements DropDownRenderingTechnologyAdapter<JComboBox<T>> {
+			implements DropDownRenderingTechnologyAdapter<JComboBox<T>, T> {
 
 		@Override
-		public Object getSelectedItem(JComboBox<T> component) {
-			return component.getSelectedItem();
+		public T getSelectedItem(JComboBox<T> component) {
+			return (T) component.getSelectedItem();
 		}
 
 		@Override
-		public void setSelectedItem(JComboBox<T> component, Object item) {
+		public void setSelectedItem(JComboBox<T> component, T item) {
 			component.setSelectedItem(item);
 		}
 

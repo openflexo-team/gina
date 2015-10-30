@@ -96,7 +96,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 	private BindingValueArrayChangeListener<Object> arrayBindingValueChangeListener;
 
 	public FIBMultipleValueWidgetImpl(M model, FIBController controller,
-			MultipleValueRenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
+			MultipleValueRenderingTechnologyAdapter<C, I> renderingTechnologyAdapter) {
 		super(model, controller, renderingTechnologyAdapter);
 		listenListValueChange();
 		listenArrayValueChange();
@@ -105,8 +105,8 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 	}
 
 	@Override
-	public MultipleValueRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter() {
-		return (MultipleValueRenderingTechnologyAdapter) super.getRenderingTechnologyAdapter();
+	public MultipleValueRenderingTechnologyAdapter<C, I> getRenderingTechnologyAdapter() {
+		return (MultipleValueRenderingTechnologyAdapter<C, I>) super.getRenderingTechnologyAdapter();
 	}
 
 	private void listenListValueChange() {

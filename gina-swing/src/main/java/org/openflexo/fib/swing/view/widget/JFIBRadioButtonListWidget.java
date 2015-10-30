@@ -72,16 +72,16 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 	 * 
 	 */
 	public static class SwingRadioButtonRenderingTechnologyAdapter<T> extends SwingRenderingTechnologyAdapter<JRadioButtonPanel<T>>
-			implements RadioButtonRenderingTechnologyAdapter<JRadioButtonPanel<T>> {
+			implements RadioButtonRenderingTechnologyAdapter<JRadioButtonPanel<T>, T> {
 
 		@Override
-		public Object getSelectedItem(JRadioButtonPanel<T> component) {
+		public T getSelectedItem(JRadioButtonPanel<T> component) {
 			return component.getSelectedValue();
 		}
 
 		@Override
-		public void setSelectedItem(JRadioButtonPanel<T> component, Object item) {
-			component.setSelectedValue((T) item);
+		public void setSelectedItem(JRadioButtonPanel<T> component, T item) {
+			component.setSelectedValue(item);
 		}
 
 		@Override

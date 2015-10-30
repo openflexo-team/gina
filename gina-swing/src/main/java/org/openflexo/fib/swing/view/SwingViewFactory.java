@@ -76,8 +76,8 @@ import org.openflexo.fib.swing.view.container.FIBTabPanelView;
 import org.openflexo.fib.swing.view.container.FIBTabView;
 import org.openflexo.fib.swing.view.widget.FIBBrowserWidget;
 import org.openflexo.fib.swing.view.widget.FIBButtonWidget;
-import org.openflexo.fib.swing.view.widget.FIBCheckBoxWidget;
-import org.openflexo.fib.swing.view.widget.FIBCheckboxListWidget;
+import org.openflexo.fib.swing.view.widget.JFIBCheckBoxWidget;
+import org.openflexo.fib.swing.view.widget.JFIBCheckboxListWidget;
 import org.openflexo.fib.swing.view.widget.FIBColorWidget;
 import org.openflexo.fib.swing.view.widget.FIBCustomWidget;
 import org.openflexo.fib.swing.view.widget.JFIBDropDownWidget;
@@ -159,7 +159,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<C> {
 			return new JFIBImageWidget((FIBImage) fibWidget, this.fibController);
 		}
 		if (fibWidget instanceof FIBCheckBox) {
-			return new FIBCheckBoxWidget((FIBCheckBox) fibWidget, this.fibController);
+			return new JFIBCheckBoxWidget((FIBCheckBox) fibWidget, this.fibController);
 		}
 		if (fibWidget instanceof FIBTable) {
 			return new FIBTableWidget((FIBTable) fibWidget, this.fibController);
@@ -208,7 +208,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<C> {
 			return new JFIBRadioButtonListWidget((FIBRadioButtonList) fibWidget, this.fibController);
 		}
 		if (fibWidget instanceof FIBCheckboxList) {
-			return new FIBCheckboxListWidget((FIBCheckboxList) fibWidget, this.fibController);
+			return new JFIBCheckboxListWidget((FIBCheckboxList) fibWidget, this.fibController);
 		}
 		if (fibWidget instanceof FIBCustom) {
 			return new FIBCustomWidget((FIBCustom) fibWidget, this.fibController);
