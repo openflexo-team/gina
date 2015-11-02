@@ -135,7 +135,7 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 			return new FIBFileWidget((FIBFile) fibWidget, this.fibController);
 		}
 		if (fibWidget instanceof FIBButton) {
-			return new FIBButtonWidget((FIBButton) fibWidget, this.fibController);
+			return new FIBButtonWidgetImpl((FIBButton) fibWidget, this.fibController);
 		}
 		if (fibWidget instanceof FIBRadioButtonList) {
 			return new FIBRadioButtonListWidget((FIBRadioButtonList) fibWidget, this.fibController);

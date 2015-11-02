@@ -37,48 +37,48 @@
  * 
  */
 
-package org.openflexo.fib.swing.view.widget;
+package org.openflexo.fib.view.widget.impl;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.Icon;
-import javax.swing.JButton;
 
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBButton;
-import org.openflexo.fib.swing.view.FIBWidgetView;
+import org.openflexo.fib.view.impl.FIBWidgetViewImpl;
+import org.openflexo.fib.view.widget.FIBButtonWidget.ButtonWidgetRenderingTechnologyAdapter;
+import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.event.description.FIBEventFactory;
 import org.openflexo.gina.event.description.FIBMouseEventDescription;
-import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.manager.GinaStackEvent;
 
-public class FIBButtonWidget extends FIBWidgetView<FIBButton, JButton, String> {
+/**
+ * Default base implementation for a widget with a button<br>
+ * 
+ * @param <C>
+ *            type of technology-specific component this view manage
+ * 
+ * @author sylvain
+ */
+public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton, C, String> {
 
-	private static final Logger logger = Logger.getLogger(FIBButtonWidget.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(FIBButtonWidgetImpl.class.getPackage().getName());
 
-	private final JButton buttonWidget;
-
-	public FIBButtonWidget(FIBButton model, FIBController controller) {
-		super(model, controller);
-		buttonWidget = new JButton();
-		buttonWidget.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				buttonClicked();
-				// updateDependancies();
-			}
-		});
+	public FIBButtonWidgetImpl(FIBButton model, FIBController controller,
+			ButtonWidgetRenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
+		super(model, controller, renderingTechnologyAdapter);
 		updateLabel();
 		updateIcon();
-		// updatePreferredSize();
-		updateFont();
+	}
+
+	@Override
+	public ButtonWidgetRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter() {
+		return (ButtonWidgetRenderingTechnologyAdapter) super.getRenderingTechnologyAdapter();
 	}
 
 	@Override
@@ -92,19 +92,6 @@ public class FIBButtonWidget extends FIBWidgetView<FIBButton, JButton, String> {
 		widgetUpdating = false;
 		return false;
 	}
-	
-	@Override
-	public void executeEvent(EventDescription e) {
-		widgetExecuting = true;
-
-		switch(e.getAction()) {
-		case FIBMouseEventDescription.CLICKED:
-			this.buttonClicked();
-			break;
-		}
-		
-		widgetExecuting = false;
-	}
 
 	/**
 	 * Update the model given the actual state of the widget
@@ -113,6 +100,19 @@ public class FIBButtonWidget extends FIBWidgetView<FIBButton, JButton, String> {
 	public synchronized boolean updateModelFromWidget() {
 		// not relevant
 		return false;
+	}
+
+	@Override
+	public void executeEvent(EventDescription e) {
+		widgetExecuting = true;
+
+		switch (e.getAction()) {
+			case FIBMouseEventDescription.CLICKED:
+				this.buttonClicked();
+				break;
+		}
+
+		widgetExecuting = false;
 	}
 
 	public synchronized void buttonClicked() {
@@ -143,34 +143,27 @@ public class FIBButtonWidget extends FIBWidgetView<FIBButton, JButton, String> {
 		stackElement.end();
 	}
 
-	@Override
-	public JButton getJComponent() {
-		return buttonWidget;
-	}
-
-	@Override
-	public JButton getDynamicJComponent() {
-		return buttonWidget;
-	}
-
 	protected void updateLabel() {
 		// logger.info("Button update label with key="+getWidget().getLabel());
-		if (buttonWidget != null && getWidget().getLabel() != null) {
+		if (getWidget().getLabel() != null) {
 			String text;
 			if (getValue() != null) {
 				if (getWidget().getLocalize()) {
 					text = getLocalized(getValue());
-				} else {
+				}
+				else {
 					text = getValue();
 				}
-			} else {
+			}
+			else {
 				if (getWidget().getLocalize()) {
 					text = getLocalized(getWidget().getLabel());
-				} else {
+				}
+				else {
 					text = getWidget().getLabel();
 				}
 			}
-			buttonWidget.setText(text);
+			getRenderingTechnologyAdapter().setText(getDynamicJComponent(), text);
 		}
 	}
 
@@ -180,19 +173,20 @@ public class FIBButtonWidget extends FIBWidgetView<FIBButton, JButton, String> {
 			Icon icon;
 			try {
 				icon = getWidget().getButtonIcon().getBindingValue(getBindingEvaluationContext());
-				buttonWidget.setIcon(icon);
+				getRenderingTechnologyAdapter().setIcon(getDynamicJComponent(), icon);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
-				buttonWidget.setIcon(null);
+				getRenderingTechnologyAdapter().setIcon(getDynamicJComponent(), null);
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-				buttonWidget.setIcon(null);
+				getRenderingTechnologyAdapter().setIcon(getDynamicJComponent(), null);
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
-				buttonWidget.setIcon(null);
+				getRenderingTechnologyAdapter().setIcon(getDynamicJComponent(), null);
 			}
-		} else {
-			buttonWidget.setIcon(null);
+		}
+		else {
+			getRenderingTechnologyAdapter().setIcon(getDynamicJComponent(), null);
 		}
 	}
 

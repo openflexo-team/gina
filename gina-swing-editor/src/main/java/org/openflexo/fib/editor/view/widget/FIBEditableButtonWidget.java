@@ -50,10 +50,10 @@ import org.openflexo.fib.editor.view.FIBEditableViewDelegate;
 import org.openflexo.fib.editor.view.PlaceHolder;
 import org.openflexo.fib.model.FIBButton;
 import org.openflexo.fib.model.FIBModelObject;
-import org.openflexo.fib.swing.view.widget.FIBButtonWidget;
+import org.openflexo.fib.swing.view.widget.JFIBButtonWidget;
 import org.openflexo.logging.FlexoLogger;
 
-public class FIBEditableButtonWidget extends FIBButtonWidget implements FIBEditableView<FIBButton, JButton> {
+public class FIBEditableButtonWidget extends JFIBButtonWidget implements FIBEditableView<FIBButton, JButton> {
 
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditableButtonWidget.class.getPackage().getName());
 
