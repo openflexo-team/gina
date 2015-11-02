@@ -39,39 +39,40 @@
 
 package org.openflexo.fib.view.widget.impl;
 
-import java.awt.Color;
+import java.awt.Font;
 import java.util.logging.Logger;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBColor;
+import org.openflexo.fib.model.FIBFont;
 import org.openflexo.fib.view.impl.FIBWidgetViewImpl;
-import org.openflexo.fib.view.widget.FIBColorWidget;
+import org.openflexo.fib.view.widget.FIBFontWidget;
 import org.openflexo.gina.event.description.FIBEventFactory;
 import org.openflexo.gina.event.description.FIBValueEventDescription;
 import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 
 /**
- * Default base implementation for a widget able to select a Color
+ * Default base implementation for a widget able to select a Font
  * 
  * @param <C>
  *            type of technology-specific component this view manage
  * 
  * @author sylvain
  */
-public abstract class FIBColorWidgetImpl<C> extends FIBWidgetViewImpl<FIBColor, C, Color>implements FIBColorWidget<C>, ApplyCancelListener {
+public abstract class FIBFontWidgetImpl<C> extends FIBWidgetViewImpl<FIBFont, C, Font>implements FIBFontWidget<C>, ApplyCancelListener {
 
-	private static final Logger logger = Logger.getLogger(FIBColorWidgetImpl.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(FIBFontWidgetImpl.class.getPackage().getName());
 
-	public FIBColorWidgetImpl(FIBColor model, FIBController controller,
-			ColorWidgetRenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
+	private Font revertValue;
+
+	public FIBFontWidgetImpl(FIBFont model, FIBController controller, FontWidgetRenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
 		super(model, controller, renderingTechnologyAdapter);
 		updateCheckboxVisibility();
 	}
 
 	@Override
-	public ColorWidgetRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter() {
-		return (ColorWidgetRenderingTechnologyAdapter) super.getRenderingTechnologyAdapter();
+	public FontWidgetRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter() {
+		return (FontWidgetRenderingTechnologyAdapter) super.getRenderingTechnologyAdapter();
 	}
 
 	public final void updateCheckboxVisibility() {
@@ -79,23 +80,8 @@ public abstract class FIBColorWidgetImpl<C> extends FIBWidgetViewImpl<FIBColor, 
 	}
 
 	@Override
-	public void fireApplyPerformed() {
-		GinaStackEvent stack = GENotifier
-				.raise(FIBEventFactory.getInstance().createValueEvent(FIBValueEventDescription.CHANGED, getValue().getRGB()));
-
-		updateModelFromWidget();
-
-		stack.end();
-	}
-
-	@Override
-	public void fireCancelPerformed() {
-		// Nothing to do, widget resets itself automatically and model has not been changed.
-	}
-
-	@Override
 	public synchronized boolean updateWidgetFromModel() {
-		Color editedObject = getSelectedColor();
+		Font editedObject = getSelectedFont();
 		if (!getRenderingTechnologyAdapter().isCheckboxSelected(getDynamicJComponent())) {
 			editedObject = null;
 		}
@@ -105,7 +91,7 @@ public abstract class FIBColorWidgetImpl<C> extends FIBWidgetViewImpl<FIBColor, 
 				getRenderingTechnologyAdapter().setCheckboxSelected(getDynamicJComponent(), getValue() != null);
 				getRenderingTechnologyAdapter().setCheckboxEnabled(getDynamicJComponent(),
 						(getValue() != null || !getWidget().getAllowsNull()) && isEnabled());
-				setSelectedColor(getValue());
+				setSelectedFont(getValue());
 			} finally {
 				widgetUpdating = false;
 			}
@@ -119,9 +105,9 @@ public abstract class FIBColorWidgetImpl<C> extends FIBWidgetViewImpl<FIBColor, 
 	 */
 	@Override
 	public synchronized boolean updateModelFromWidget() {
-		Color editedObject = null;
+		Font editedObject = null;
 		if (getRenderingTechnologyAdapter().isCheckboxSelected(getDynamicJComponent())) {
-			editedObject = getSelectedColor();
+			editedObject = getSelectedFont();
 		}
 		if (notEquals(getValue(), editedObject)) {
 			if (isReadOnly()) {
@@ -138,12 +124,27 @@ public abstract class FIBColorWidgetImpl<C> extends FIBWidgetViewImpl<FIBColor, 
 		return false;
 	}
 
-	public Color getSelectedColor() {
-		return getRenderingTechnologyAdapter().getSelectedColor(getDynamicJComponent());
+	public Font getSelectedFont() {
+		return getRenderingTechnologyAdapter().getSelectedFont(getDynamicJComponent());
 	}
 
-	public void setSelectedColor(Color aColor) {
-		getRenderingTechnologyAdapter().setSelectedColor(getDynamicJComponent(), aColor);
+	public void setSelectedFont(Font aFont) {
+		getRenderingTechnologyAdapter().setSelectedFont(getDynamicJComponent(), aFont);
+	}
+
+	@Override
+	public void fireApplyPerformed() {
+		GinaStackEvent stack = GENotifier
+				.raise(FIBEventFactory.getInstance().createValueEvent(FIBValueEventDescription.CHANGED, getValue().getFontName()));
+
+		updateModelFromWidget();
+
+		stack.end();
+	}
+
+	@Override
+	public void fireCancelPerformed() {
+		setValue(revertValue);
 	}
 
 }

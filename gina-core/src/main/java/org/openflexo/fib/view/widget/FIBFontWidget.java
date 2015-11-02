@@ -39,13 +39,13 @@
 
 package org.openflexo.fib.view.widget;
 
-import java.awt.Color;
+import java.awt.Font;
 
-import org.openflexo.fib.model.FIBColor;
+import org.openflexo.fib.model.FIBFont;
 import org.openflexo.fib.view.FIBWidgetView;
 
 /**
- * Represents a widget able to select a Color<br>
+ * Represents a widget able to select a Font<br>
  * When allowNull set to true, might select a null value
  * 
  * @param <C>
@@ -53,10 +53,10 @@ import org.openflexo.fib.view.FIBWidgetView;
  * 
  * @author sylvain
  */
-public interface FIBColorWidget<C> extends FIBWidgetView<FIBColor, C, Color> {
+public interface FIBFontWidget<C> extends FIBWidgetView<FIBFont, C, Font> {
 
 	@Override
-	public ColorWidgetRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter();
+	public FontWidgetRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -65,11 +65,11 @@ public interface FIBColorWidget<C> extends FIBWidgetView<FIBColor, C, Color> {
 	 *
 	 * @param <C>
 	 */
-	public static interface ColorWidgetRenderingTechnologyAdapter<C> extends RenderingTechnologyAdapter<C> {
+	public static interface FontWidgetRenderingTechnologyAdapter<C> extends RenderingTechnologyAdapter<C> {
 
-		public Color getSelectedColor(C component);
+		public Font getSelectedFont(C component);
 
-		public void setSelectedColor(C component, Color aColor);
+		public void setSelectedFont(C component, Font aFont);
 
 		public boolean isCheckboxVisible(C component);
 

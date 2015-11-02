@@ -39,7 +39,7 @@
 
 package org.openflexo.fib.swing.view.widget;
 
-import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -52,86 +52,86 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBColor;
+import org.openflexo.fib.model.FIBFont;
 import org.openflexo.fib.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.fib.swing.view.SwingRenderingTechnologyAdapter;
-import org.openflexo.fib.swing.view.widget.JFIBColorWidget.ColorSelectorPanel;
-import org.openflexo.fib.view.widget.impl.FIBColorWidgetImpl;
+import org.openflexo.fib.swing.view.widget.JFIBFontWidget.FontSelectorPanel;
+import org.openflexo.fib.view.widget.impl.FIBFontWidgetImpl;
 import org.openflexo.localization.FlexoLocalization;
-import org.openflexo.swing.ColorSelector;
+import org.openflexo.swing.FontSelector;
 
 /**
- * Swing implementation for a widget able to select a Color
+ * Swing implementation for a widget able to select a Font
  * 
  * @param <C>
  *            type of technology-specific component this view manage
  * 
  * @author sylvain
  */
-public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>implements FocusListener {
+public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel>implements FocusListener {
 
-	private static final Logger logger = Logger.getLogger(JFIBColorWidget.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(JFIBFontWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing Color Widget<br>
+	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing Font Widget<br>
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingColorWidgetRenderingTechnologyAdapter extends SwingRenderingTechnologyAdapter<ColorSelectorPanel>
-			implements ColorWidgetRenderingTechnologyAdapter<ColorSelectorPanel> {
+	public static class SwingFontWidgetRenderingTechnologyAdapter extends SwingRenderingTechnologyAdapter<FontSelectorPanel>
+			implements FontWidgetRenderingTechnologyAdapter<FontSelectorPanel> {
 
 		@Override
-		public Color getSelectedColor(ColorSelectorPanel component) {
+		public Font getSelectedFont(FontSelectorPanel component) {
 			return component.selector.getEditedObject();
 		}
 
 		@Override
-		public void setSelectedColor(ColorSelectorPanel component, Color aColor) {
-			component.selector.setEditedObject(aColor);
+		public void setSelectedFont(FontSelectorPanel component, Font aFont) {
+			component.selector.setEditedObject(aFont);
 		}
 
 		@Override
-		public boolean isCheckboxVisible(ColorSelectorPanel component) {
+		public boolean isCheckboxVisible(FontSelectorPanel component) {
 			return component.checkBox.isVisible();
 		}
 
 		@Override
-		public void setCheckboxVisible(ColorSelectorPanel component, boolean visible) {
+		public void setCheckboxVisible(FontSelectorPanel component, boolean visible) {
 			component.checkBox.setVisible(visible);
 		}
 
 		@Override
-		public boolean isCheckboxSelected(ColorSelectorPanel component) {
+		public boolean isCheckboxSelected(FontSelectorPanel component) {
 			return component.checkBox.isSelected();
 		}
 
 		@Override
-		public void setCheckboxSelected(ColorSelectorPanel component, boolean selected) {
+		public void setCheckboxSelected(FontSelectorPanel component, boolean selected) {
 			component.checkBox.setSelected(selected);
 		}
 
 		@Override
-		public boolean isCheckboxEnabled(ColorSelectorPanel component) {
+		public boolean isCheckboxEnabled(FontSelectorPanel component) {
 			return component.checkBox.isEnabled();
 		}
 
 		@Override
-		public void setCheckboxEnabled(ColorSelectorPanel component, boolean enabled) {
+		public void setCheckboxEnabled(FontSelectorPanel component, boolean enabled) {
 			component.checkBox.setEnabled(enabled);
 		}
 
 	}
 
-	public static SwingColorWidgetRenderingTechnologyAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingColorWidgetRenderingTechnologyAdapter();
+	public static SwingFontWidgetRenderingTechnologyAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingFontWidgetRenderingTechnologyAdapter();
 
-	public static class ColorSelectorPanel extends JPanel {
+	public static class FontSelectorPanel extends JPanel {
 		private final JCheckBox checkBox;
-		protected ColorSelector selector;
+		protected FontSelector selector;
 		private final JPanel container;
-		private final JFIBColorWidget widget;
+		private final JFIBFontWidget widget;
 
-		public ColorSelectorPanel(JFIBColorWidget widget) {
+		public FontSelectorPanel(JFIBFontWidget widget) {
 			super(new GridBagLayout());
 			this.widget = widget;
 			selector.addApplyCancelListener(widget);
@@ -148,7 +148,7 @@ public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>imple
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					selector.setEnabled(checkBox.isSelected());
-					ColorSelectorPanel.this.widget.updateModelFromWidget();
+					FontSelectorPanel.this.widget.updateModelFromWidget();
 				}
 			});
 			container = new JPanel(new GridBagLayout());
@@ -170,19 +170,19 @@ public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>imple
 		}
 
 		public void updateLanguage() {
-			checkBox.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "transparent", checkBox));
+			checkBox.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
 			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
 		}
 
 	}
 
-	public JFIBColorWidget(FIBColor model, FIBController controller) {
+	public JFIBFontWidget(FIBFont model, FIBController controller) {
 		super(model, controller, RENDERING_TECHNOLOGY_ADAPTER);
 	}
 
 	@Override
-	protected ColorSelectorPanel makeTechnologyComponent() {
-		return new ColorSelectorPanel(this);
+	protected FontSelectorPanel makeTechnologyComponent() {
+		return new FontSelectorPanel(this);
 	}
 
 	@Override

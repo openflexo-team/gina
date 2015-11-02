@@ -48,11 +48,11 @@ import org.openflexo.fib.editor.view.FIBEditableViewDelegate;
 import org.openflexo.fib.editor.view.PlaceHolder;
 import org.openflexo.fib.model.FIBFont;
 import org.openflexo.fib.model.FIBModelObject;
-import org.openflexo.fib.swing.view.widget.FIBFontWidget;
+import org.openflexo.fib.swing.view.widget.JFIBFontWidget;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.swing.FontSelector;
 
-public class FIBEditableFontWidget extends FIBFontWidget implements FIBEditableView<FIBFont, FontSelector> {
+public class FIBEditableFontWidget extends JFIBFontWidget implements FIBEditableView<FIBFont, FontSelector> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditableFontWidget.class.getPackage().getName());
