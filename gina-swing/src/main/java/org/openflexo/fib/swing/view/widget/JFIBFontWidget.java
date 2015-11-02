@@ -128,7 +128,6 @@ public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel>implemen
 	public static class FontSelectorPanel extends JPanel {
 		private final JCheckBox checkBox;
 		protected FontSelector selector;
-		private final JPanel container;
 		private final JFIBFontWidget widget;
 
 		public FontSelectorPanel(JFIBFontWidget widget) {
@@ -151,16 +150,15 @@ public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel>implemen
 					FontSelectorPanel.this.widget.updateModelFromWidget();
 				}
 			});
-			container = new JPanel(new GridBagLayout());
-			container.setOpaque(false);
+			setOpaque(false);
 			GridBagConstraints gbc = new GridBagConstraints();
 			gbc.fill = GridBagConstraints.NONE;
 			gbc.weightx = 0;
 			gbc.anchor = GridBagConstraints.LINE_START;
-			container.add(checkBox, gbc);
+			add(checkBox, gbc);
 			gbc.fill = GridBagConstraints.HORIZONTAL;
 			gbc.weightx = 1.0;
-			container.add(selector, gbc);
+			add(selector, gbc);
 		}
 
 		@Override

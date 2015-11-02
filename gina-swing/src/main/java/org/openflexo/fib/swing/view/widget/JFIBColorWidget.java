@@ -128,7 +128,6 @@ public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>imple
 	public static class ColorSelectorPanel extends JPanel {
 		private final JCheckBox checkBox;
 		protected ColorSelector selector;
-		private final JPanel container;
 		private final JFIBColorWidget widget;
 
 		public ColorSelectorPanel(JFIBColorWidget widget) {
@@ -151,16 +150,15 @@ public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>imple
 					ColorSelectorPanel.this.widget.updateModelFromWidget();
 				}
 			});
-			container = new JPanel(new GridBagLayout());
-			container.setOpaque(false);
+			setOpaque(false);
 			GridBagConstraints gbc = new GridBagConstraints();
 			gbc.fill = GridBagConstraints.NONE;
 			gbc.weightx = 0;
 			gbc.anchor = GridBagConstraints.LINE_START;
-			container.add(checkBox, gbc);
+			add(checkBox, gbc);
 			gbc.fill = GridBagConstraints.HORIZONTAL;
 			gbc.weightx = 1.0;
-			container.add(selector, gbc);
+			add(selector, gbc);
 		}
 
 		@Override
