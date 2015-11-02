@@ -82,7 +82,7 @@ import org.openflexo.fib.swing.view.widget.JFIBColorWidget;
 import org.openflexo.fib.swing.view.widget.FIBCustomWidget;
 import org.openflexo.fib.swing.view.widget.JFIBDropDownWidget;
 import org.openflexo.fib.swing.view.widget.FIBEditorPaneWidget;
-import org.openflexo.fib.swing.view.widget.FIBEditorWidget;
+import org.openflexo.fib.swing.view.widget.JFIBEditorWidget;
 import org.openflexo.fib.swing.view.widget.JFIBFileWidget;
 import org.openflexo.fib.swing.view.widget.JFIBFontWidget;
 import org.openflexo.fib.swing.view.widget.FIBHtmlEditorWidget;
@@ -135,7 +135,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<C> {
 			return makeTextField((FIBTextField) fibWidget, fibController);
 		}
 		if (fibWidget instanceof FIBEditor) {
-			return new FIBEditorWidget((FIBEditor) fibWidget, this.fibController);
+			return new JFIBEditorWidget((FIBEditor) fibWidget, this.fibController);
 		}
 		if (fibWidget instanceof FIBTextPane) {
 			if (FIBController.LOGGER.isLoggable(Level.WARNING)) {
@@ -225,5 +225,5 @@ public class SwingViewFactory extends GinaViewFactoryImpl<C> {
 	@Override
 	public abstract FIBTextAreaWidgetImpl<? extends C> makeTextArea(FIBTextArea widget, FIBController controller);
 
-	public abstract FIBEditorWidget<? extends C> makeEditor(FIBEditor widget, FIBController controller);
+	public abstract JFIBEditorWidget<? extends C> makeEditor(FIBEditor widget, FIBController controller);
 }

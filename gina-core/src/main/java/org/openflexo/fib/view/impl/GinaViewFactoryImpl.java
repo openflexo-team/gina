@@ -68,7 +68,7 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 			return (FIBWidgetView<F, ? extends C, ?>) makeTextField((FIBTextField) fibWidget, controller);
 		}
 		if (fibWidget instanceof FIBEditor) {
-			return new FIBEditorWidget((FIBEditor) fibWidget, this.fibController);
+			return new FIBEditorWidgetImpl((FIBEditor) fibWidget, this.fibController);
 		}
 		if (fibWidget instanceof FIBTextPane) {
 			if (FIBController.LOGGER.isLoggable(Level.WARNING)) {
@@ -156,5 +156,5 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 
 	public abstract FIBTextAreaWidgetImpl<? extends C> makeTextArea(FIBTextArea widget, FIBController controller);
 
-	public abstract FIBEditorWidget<? extends C> makeEditor(FIBEditor widget, FIBController controller);
+	public abstract FIBEditorWidgetImpl<? extends C> makeEditor(FIBEditor widget, FIBController controller);
 }

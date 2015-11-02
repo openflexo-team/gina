@@ -1,6 +1,7 @@
 /**
  * 
- * Copyright (c) 2014, Openflexo
+ * Copyright (c) 2013-2014, Openflexo
+ * Copyright (c) 2011-2012, AgileBirds
  * 
  * This file is part of Gina-core, a component of the software infrastructure 
  * developed at Openflexo.
@@ -36,28 +37,47 @@
  * 
  */
 
-package org.openflexo.fib;
+package org.openflexo.fib.view.widget;
 
-import java.io.File;
-import java.io.IOException;
+import org.openflexo.fib.model.FIBEditor;
+import org.openflexo.fib.view.FIBWidgetView;
+import org.openflexo.fib.view.widget.FIBGenericTextWidget.GenericTextRenderingTechnologyAdapter;
+import org.openflexo.jedit.TokenMarker;
 
-public class ConvertFIBModel {
+/**
+ * Represents a widget able to edit a Text (more than one line) object using a syntax-aware and syntax-colored editor (eg code editor)
+ * 
+ * @param <C>
+ *            type of technology-specific component this view manage
+ * 
+ * @author sylvain
+ */
+public interface FIBEditorWidget<C> extends FIBWidgetView<FIBEditor, C, String> {
 
-	public static void main(String[] args) {
-		File currentDir = new File(System.getProperty("user.dir"));
-		System.out.println("current=" + currentDir);
-		File sourceCode = currentDir;
-		File fibCoreResourceDir = new File(currentDir, "src/main/resources");
-		File mappingFile = new File(fibCoreResourceDir, "Models/FIBModel.xml");
-		File tempFile = null;
-		try {
-			tempFile = File.createTempFile("PAMELAGenerator", "");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		File outputDir = new File(tempFile.getParentFile(), "PAMELAGenerator");
-		// PAMELAGenerator generator = new PAMELAGenerator(mappingFile, sourceCode, outputDir);
+	@Override
+	public EditorWidgetRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter();
+
+	/**
+	 * Specification of an adapter for a given rendering technology (eg Swing)
+	 * 
+	 * @author sylvain
+	 *
+	 * @param <C>
+	 */
+	public static interface EditorWidgetRenderingTechnologyAdapter<C> extends GenericTextRenderingTechnologyAdapter<C> {
+
+		public int getColumns(C component);
+
+		public void setColumns(C component, int columns);
+
+		public int getRows(C component);
+
+		public void setRows(C component, int rows);
+
+		public TokenMarker getTokenMarker(C component);
+
+		public void setTokenMarker(C component, TokenMarker tokenMarker);
+
 	}
 
 }

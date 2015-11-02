@@ -48,11 +48,11 @@ import org.openflexo.fib.editor.view.FIBEditableViewDelegate;
 import org.openflexo.fib.editor.view.PlaceHolder;
 import org.openflexo.fib.model.FIBEditor;
 import org.openflexo.fib.model.FIBModelObject;
-import org.openflexo.fib.swing.view.widget.FIBEditorWidget;
+import org.openflexo.fib.swing.view.widget.JFIBEditorWidget;
 import org.openflexo.jedit.JEditTextArea;
 import org.openflexo.logging.FlexoLogger;
 
-public class FIBEditableEditorWidget extends FIBEditorWidget implements FIBEditableView<FIBEditor, JEditTextArea> {
+public class FIBEditableEditorWidget extends JFIBEditorWidget implements FIBEditableView<FIBEditor, JEditTextArea> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditableEditorWidget.class.getPackage().getName());

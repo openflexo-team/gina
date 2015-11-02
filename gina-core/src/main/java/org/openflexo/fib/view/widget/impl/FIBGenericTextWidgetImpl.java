@@ -77,10 +77,6 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 		return (GenericTextRenderingTechnologyAdapter<C>) super.getRenderingTechnologyAdapter();
 	}
 
-	public Class getDefaultType() {
-		return String.class;
-	}
-
 	public void updateEditable() {
 		getRenderingTechnologyAdapter().setEditable(getDynamicJComponent(), !isReadOnly());
 	}
