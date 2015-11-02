@@ -61,7 +61,6 @@ import org.openflexo.fib.model.FIBTableAction;
 import org.openflexo.fib.view.impl.FIBWidgetViewImpl;
 import org.openflexo.fib.view.widget.FIBTableWidget;
 import org.openflexo.fib.view.widget.table.FIBTableModel;
-import org.openflexo.fib.view.widget.table.FIBTableWidgetFooter;
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.event.description.FIBSelectionEventDescription;
 import org.openflexo.gina.event.description.FIBTableEventDescription;
@@ -86,7 +85,7 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 	private final FIBTable table;
 	private FIBTableModel<T> _tableModel;
 
-	protected final FIBTableWidgetFooter<T> footer;
+	protected final FIBTableWidgetFooter<?, T> footer;
 
 	protected List<T> selection;
 	protected T selectedObject;
@@ -99,10 +98,12 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 			TableRenderingTechnologyAdapter<C, T> renderingTechnologyAdapter) {
 		super(fibTable, controller, renderingTechnologyAdapter);
 		table = fibTable;
-		footer = new FIBTableWidgetFooter(this);
+		footer = makeFooter();
 		listenDataAsListValueChange();
 		listenSelectedValueChange();
 	}
+
+	public abstract FIBTableWidgetFooter<?, T> makeFooter();
 
 	@Override
 	public TableRenderingTechnologyAdapter<C, T> getRenderingTechnologyAdapter() {
@@ -151,7 +152,7 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 		return table;
 	}
 
-	public FIBTableWidgetFooter<T> getFooter() {
+	public FIBTableWidgetFooter<?, T> getFooter() {
 		return footer;
 	}
 

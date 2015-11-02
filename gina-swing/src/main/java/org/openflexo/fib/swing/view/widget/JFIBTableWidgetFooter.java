@@ -37,7 +37,7 @@
  * 
  */
 
-package org.openflexo.fib.view.widget.table;
+package org.openflexo.fib.swing.view.widget;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -45,10 +45,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,47 +54,46 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
-import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBTable;
 import org.openflexo.fib.model.FIBTableAction;
 import org.openflexo.fib.utils.FIBIconLibrary;
 import org.openflexo.fib.view.widget.FIBTableWidget;
-import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.fib.view.widget.table.FIBTableActionListener;
+import org.openflexo.fib.view.widget.table.FIBTableWidgetFooterImpl;
 
-@SuppressWarnings("serial")
-public class FIBTableWidgetFooter<T> extends JPanel {
+/**
+ * Swing implementation for a table widget footer (the footer is synchronized with the selection of table)<br>
+ * In Swing, this is a JPanel with 3 JButtons +/- and custom.
+ * 
+ * @author sylvain
+ */
+public class JFIBTableWidgetFooter<T> extends FIBTableWidgetFooterImpl<JPanel, T> {
 
-	protected static final Logger LOGGER = Logger.getLogger(FIBTableWidgetFooter.class.getPackage().getName());
+	protected static final Logger LOGGER = Logger.getLogger(JFIBTableWidgetFooter.class.getPackage().getName());
 
 	public static final int MINIMUM_BROWSER_VIEW_WIDTH = 200;
 
-	protected FIBTableWidget<?, T> tableWidget;
-	protected FIBTable fibTable;
-
 	protected JButton plusButton;
-
 	protected JButton minusButton;
-
 	protected JButton optionsButton;
 
 	protected JPopupMenu popupMenu = null;
-	private List<FIBTableAction> sortedAddKeys;
-	private List<FIBTableAction> sortedRemoveKeys;
-	private List<FIBTableAction> sortedOtherKeys;
+
+	private final JPanel footerPanel;
 
 	/**
 	 * Stores controls: key is the JButton and value the FIBTableActionListener
 	 */
 	// private Hashtable<JButton,FIBTableActionListener> _controls;
 
-	public FIBTableWidgetFooter(FIBTableWidget<?, T> widget) {
-		super();
-		tableWidget = widget;
+	public JFIBTableWidgetFooter(FIBTableWidget<?, T> widget) {
+		super(widget);
 
 		initializeActions(widget);
-		setOpaque(false);
-		setBorder(BorderFactory.createEmptyBorder());
-		setLayout(new BorderLayout());
+
+		footerPanel = new JPanel();
+		footerPanel.setOpaque(false);
+		footerPanel.setBorder(BorderFactory.createEmptyBorder());
+		footerPanel.setLayout(new BorderLayout());
 
 		JPanel plusMinusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		plusMinusPanel.setBorder(BorderFactory.createEmptyBorder());
@@ -180,11 +175,11 @@ public class FIBTableWidgetFooter<T> extends JPanel {
 		plusMinusPanel.add(plusButton);
 		plusMinusPanel.add(minusButton);
 
-		add(plusMinusPanel, BorderLayout.WEST);
+		footerPanel.add(plusMinusPanel, BorderLayout.WEST);
 		optionsButton = new JButton(FIBIconLibrary.BROWSER_OPTIONS_ICON);
 		optionsButton.setBorder(BorderFactory.createEmptyBorder());
 		optionsButton.setDisabledIcon(FIBIconLibrary.BROWSER_OPTIONS_DISABLED_ICON);
-		add(optionsButton, BorderLayout.EAST);
+		footerPanel.add(optionsButton, BorderLayout.EAST);
 
 		optionsButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -207,9 +202,23 @@ public class FIBTableWidgetFooter<T> extends JPanel {
 
 		handleSelectionCleared();
 
-		revalidate();
+		footerPanel.revalidate();
 	}
 
+	@Override
+	public JPanel getFooterComponent() {
+		return footerPanel;
+	}
+
+	private JPopupMenu plusActionMenu = null;
+	private JPopupMenu minusActionMenu = null;
+	private JPopupMenu optionsActionMenu = null;
+
+	private boolean plusActionMenuNeedsRecomputed = true;
+	private boolean minusActionMenuNeedsRecomputed = true;
+	private boolean optionsActionMenuNeedsRecomputed = true;
+
+	@Override
 	public void handleSelectionChanged() {
 		// System.out.println("handleSelectionChanged");
 		plusActionMenuNeedsRecomputed = true;
@@ -247,55 +256,6 @@ public class FIBTableWidgetFooter<T> extends JPanel {
 		minusButton.setEnabled((focusedObject != null) && (getActionTypesWithDeleteType(focusedObject, globalSelection).size() > 0));
 		plusActionMenuNeedsRecomputed = true;*/
 	}
-
-	final protected void handleSelectionCleared() {
-		handleSelectionChanged();
-
-		/*System.out.println("handleSelectionCleared");
-		
-		plusButton.setEnabled(false);
-		minusButton.setEnabled(false);
-		
-		plusActionMenuNeedsRecomputed = true;
-		minusActionMenuNeedsRecomputed = true;
-		optionsActionMenuNeedsRecomputed = true;
-		*/
-	}
-
-	void plusPressed() {
-		for (FIBTableAction action : addActions.keySet()) {
-			FIBTableActionListener<T> actionListener = addActions.get(action);
-			if (actionListener.isActive(tableWidget.getSelected())) {
-				actionListener.performAction(tableWidget.getSelected());
-			}
-		}
-	}
-
-	void minusPressed() {
-		for (FIBTableAction action : removeActions.keySet()) {
-			FIBTableActionListener<T> actionListener = removeActions.get(action);
-			if (actionListener.isActive(tableWidget.getSelected())) {
-				// actionListener.performAction(_tableModel.getSelectedObject(), _tableModel.getSelectedObjects());
-				actionListener.performAction(tableWidget.getSelected());
-			}
-		}
-	}
-
-	boolean hasMultiplePlusActions() {
-		return addActions.size() > 1;
-	}
-
-	boolean hasMultipleMinusActions() {
-		return removeActions.size() > 1;
-	}
-
-	private JPopupMenu plusActionMenu = null;
-	private JPopupMenu minusActionMenu = null;
-	private JPopupMenu optionsActionMenu = null;
-
-	private boolean plusActionMenuNeedsRecomputed = true;
-	private boolean minusActionMenuNeedsRecomputed = true;
-	private boolean optionsActionMenuNeedsRecomputed = true;
 
 	private JPopupMenu getPlusActionMenu() {
 		if (plusActionMenuNeedsRecomputed) {
@@ -360,82 +320,9 @@ public class FIBTableWidgetFooter<T> extends JPanel {
 		return optionsActionMenu;
 	}
 
-	private Hashtable<FIBTableAction, FIBTableActionListener<T>> addActions;
-	private Hashtable<FIBTableAction, FIBTableActionListener<T>> removeActions;
-	private Hashtable<FIBTableAction, FIBTableActionListener<T>> otherActions;
-
-	private void initializeActions(FIBTableWidget<?, T> tableWidget) {
-		addActions = new Hashtable<FIBTableAction, FIBTableActionListener<T>>();
-		removeActions = new Hashtable<FIBTableAction, FIBTableActionListener<T>>();
-		otherActions = new Hashtable<FIBTableAction, FIBTableActionListener<T>>();
-		sortedAddKeys = new ArrayList<FIBTableAction>();
-		sortedRemoveKeys = new ArrayList<FIBTableAction>();
-		sortedOtherKeys = new ArrayList<FIBTableAction>();
-
-		for (FIBTableAction plAction : tableWidget.getComponent().getActions()) {
-			FIBTableActionListener<T> plActionListener = new FIBTableActionListener<T>(plAction, tableWidget);
-			if (plActionListener.isAddAction()) {
-				addActions.put(plAction, plActionListener);
-				sortedAddKeys.add(plAction);
-			}
-			else if (plActionListener.isRemoveAction()) {
-				removeActions.put(plAction, plActionListener);
-				sortedRemoveKeys.add(plAction);
-			}
-			else if (plActionListener.isCustomAction()) {
-				otherActions.put(plAction, plActionListener);
-				sortedOtherKeys.add(plAction);
-			}
-		}
-	}
-
+	@Override
 	public void delete() {
-		for (FIBTableAction a : addActions.keySet()) {
-			addActions.get(a).delete();
-		}
-		for (FIBTableAction a : removeActions.keySet()) {
-			removeActions.get(a).delete();
-		}
-		for (FIBTableAction a : otherActions.keySet()) {
-			otherActions.get(a).delete();
-		}
-
-		tableWidget = null;
-		fibTable = null;
-	}
-
-	public Enumeration<FIBTableActionListener<T>> getAddActionListeners() {
-		return addActions.elements();
-	}
-
-	public void setModel(Object model) {
-		// logger.info("Set model with "+model);
-		for (FIBTableAction action : addActions.keySet()) {
-			FIBTableActionListener<T> actionListener = addActions.get(action);
-			actionListener.setModel(model);
-		}
-		for (FIBTableAction action : removeActions.keySet()) {
-			FIBTableActionListener<T> actionListener = removeActions.get(action);
-			actionListener.setModel(model);
-		}
-		for (FIBTableAction action : otherActions.keySet()) {
-			FIBTableActionListener<T> actionListener = otherActions.get(action);
-			actionListener.setModel(model);
-		}
-		handleSelectionChanged();
-		/* for (Enumeration en = _controls.elements(); en.hasMoreElements();) {
-		      FIBTableActionListener actionListener = (FIBTableActionListener) en.nextElement();
-		  	actionListener.setModel(model);
-		  }
-		  updateControls(null);*/
-	}
-
-	public FIBController getController() {
-		return tableWidget.getController();
-	}
-
-	public String getLocalized(String key) {
-		return FlexoLocalization.localizedForKey(getController().getLocalizerForComponent(fibTable), key);
+		super.delete();
 	}
 
 }

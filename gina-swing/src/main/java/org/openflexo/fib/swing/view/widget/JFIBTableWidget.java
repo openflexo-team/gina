@@ -354,13 +354,23 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 		_dynamicComponent.add(scrollPane, BorderLayout.CENTER);
 
 		if (getTable().getShowFooter()) {
-			_dynamicComponent.add(getFooter(), BorderLayout.SOUTH);
+			_dynamicComponent.add(getFooter().getFooterComponent(), BorderLayout.SOUTH);
 		}
 
 		_dynamicComponent.revalidate();
 		_dynamicComponent.repaint();
 
 		return _table;
+	}
+
+	@Override
+	public JFIBTableWidgetFooter<T> getFooter() {
+		return (JFIBTableWidgetFooter<T>) super.getFooter();
+	}
+
+	@Override
+	public JFIBTableWidgetFooter<T> makeFooter() {
+		return new JFIBTableWidgetFooter<T>(this);
 	}
 
 	@Override
