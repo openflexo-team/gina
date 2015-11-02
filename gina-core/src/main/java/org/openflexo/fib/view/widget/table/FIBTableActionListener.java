@@ -37,7 +37,7 @@
  * 
  */
 
-package org.openflexo.fib.swing.view.widget.table;
+package org.openflexo.fib.view.widget.table;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -56,7 +56,7 @@ import org.openflexo.fib.model.FIBTableAction;
 import org.openflexo.fib.model.FIBTableAction.FIBAddAction;
 import org.openflexo.fib.model.FIBTableAction.FIBCustomAction;
 import org.openflexo.fib.model.FIBTableAction.FIBRemoveAction;
-import org.openflexo.fib.swing.view.widget.FIBTableWidget;
+import org.openflexo.fib.view.widget.FIBTableWidget;
 
 /**
  * Please comment this class
@@ -70,10 +70,10 @@ public class FIBTableActionListener<T> implements ActionListener, BindingEvaluat
 
 	private FIBTableAction tableAction;
 	private Object model;
-	private FIBTableWidget<T> tableWidget;
+	private FIBTableWidget<?, T> tableWidget;
 	protected T selectedObject;
 
-	public FIBTableActionListener(FIBTableAction tableAction, FIBTableWidget<T> tableWidget) {
+	public FIBTableActionListener(FIBTableAction tableAction, FIBTableWidget<?, T> tableWidget) {
 		super();
 		this.tableWidget = tableWidget;
 		this.tableAction = tableAction;
@@ -200,7 +200,8 @@ public class FIBTableActionListener<T> implements ActionListener, BindingEvaluat
 	public Object getValue(BindingVariable variable) {
 		if (variable.getVariableName().equals("selected")) {
 			return selectedObject;
-		} else {
+		}
+		else {
 			return tableWidget.getBindingEvaluationContext().getValue(variable);
 		}
 	}

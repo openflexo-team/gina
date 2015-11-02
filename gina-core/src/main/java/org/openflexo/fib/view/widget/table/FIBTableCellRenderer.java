@@ -40,7 +40,7 @@
  * 
  */
 
-package org.openflexo.fib.swing.view.widget.table;
+package org.openflexo.fib.view.widget.table;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -53,7 +53,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import org.openflexo.fib.model.FIBTable;
 import org.openflexo.fib.model.FIBTableColumn;
-import org.openflexo.fib.swing.view.widget.FIBTableWidget;
+import org.openflexo.fib.view.widget.FIBTableWidget;
 
 @SuppressWarnings("serial")
 public class FIBTableCellRenderer<T, V> extends DefaultTableCellRenderer {
@@ -79,7 +79,7 @@ public class FIBTableCellRenderer<T, V> extends DefaultTableCellRenderer {
 		return column.getTableModel();
 	}
 
-	public FIBTableWidget<T> getTableWidget() {
+	public FIBTableWidget<?, T> getTableWidget() {
 		return column.getTableModel().getTableWidget();
 	}
 
@@ -134,7 +134,8 @@ public class FIBTableCellRenderer<T, V> extends DefaultTableCellRenderer {
 					if (getTable().getBackgroundSelectionColor() != null) {
 						setBackground(getTable().getBackgroundSelectionColor());
 					}
-				} else {
+				}
+				else {
 					if (getTable().getTextNonSelectionColor() != null) {
 						setForeground(getTable().getTextNonSelectionColor());
 					}
@@ -142,7 +143,8 @@ public class FIBTableCellRenderer<T, V> extends DefaultTableCellRenderer {
 						setBackground(getTable().getBackgroundSecondarySelectionColor());
 					}
 				}
-			} else {
+			}
+			else {
 				if (getTable().getTextNonSelectionColor() != null) {
 					setForeground(getTable().getTextNonSelectionColor());
 				}
@@ -150,15 +152,18 @@ public class FIBTableCellRenderer<T, V> extends DefaultTableCellRenderer {
 					setBackground(getTable().getBackgroundNonSelectionColor());
 				}
 			}
-		} else {
+		}
+		else {
 			if (disabledColor != null) {
 				setForeground(disabledColor);
-			} else if (getForeground() != null) {
+			}
+			else if (getForeground() != null) {
 				setForeground(getForeground().brighter());
 			}
 			if (disabledBackgroundColor != null) {
 				setBackground(disabledBackgroundColor);
-			} else if (getBackground() != null) {
+			}
+			else if (getBackground() != null) {
 				setBackground(getBackground().darker());
 			}
 		}

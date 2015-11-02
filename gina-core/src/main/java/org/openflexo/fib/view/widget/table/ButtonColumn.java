@@ -37,7 +37,7 @@
  * 
  */
 
-package org.openflexo.fib.swing.view.widget.table;
+package org.openflexo.fib.view.widget.table;
 
 import java.awt.event.ActionEvent;
 import java.lang.reflect.InvocationTargetException;

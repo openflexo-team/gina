@@ -1,6 +1,6 @@
 /**
  * 
- * Copyright (c) 2013-2015, Openflexo
+ * Copyright (c) 2013-2014, Openflexo
  * Copyright (c) 2011-2012, AgileBirds
  * 
  * This file is part of Gina-core, a component of the software infrastructure 
@@ -37,50 +37,22 @@
  * 
  */
 
-package org.openflexo.fib.swing.view;
+package org.openflexo.fib.view.widget.table;
 
-import javax.swing.text.JTextComponent;
-
-import org.openflexo.fib.view.FIBView.RenderingTechnologyAdapter;
-import org.openflexo.fib.view.widget.FIBGenericTextWidget.GenericTextRenderingTechnologyAdapter;
 
 /**
- * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing
+ * Represents an editable column in a table
  * 
  * @author sylvain
  * 
+ * @param <T>
+ *            type of row object beeing handled by this column
+ * @param <V>
+ *            type of value beeing managed by column's cells
  */
-public class SwingTextRenderingTechnologyAdapter<J extends JTextComponent> extends SwingRenderingTechnologyAdapter<J>
-		implements GenericTextRenderingTechnologyAdapter<J> {
+public interface EditableColumn<T, V> {
 
-	@Override
-	public String getText(J component) {
-		return component.getText();
-	}
+	public boolean isCellEditableFor(T object);
 
-	@Override
-	public void setText(J component, String aText) {
-		component.setText(aText);
-	}
-
-	@Override
-	public boolean isEditable(J component) {
-		return component.isEditable();
-	}
-
-	@Override
-	public void setEditable(J component, boolean editable) {
-		component.setEditable(editable);
-	}
-
-	@Override
-	public int getCaretPosition(J component) {
-		return component.getCaretPosition();
-	}
-
-	@Override
-	public void setCaretPosition(J component, int caretPosition) {
-		component.setCaretPosition(caretPosition);
-	}
-
+	public void setValueFor(T object, V value/*, BindingEvaluationContext evaluationContext*/);
 }

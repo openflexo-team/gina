@@ -54,7 +54,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import org.openflexo.connie.BindingEvaluationContext;
-import org.openflexo.fib.swing.view.widget.table.EditableColumn;
+import org.openflexo.fib.view.widget.table.EditableColumn;
 
 /**
  * Represents a TableModel used by a TabularView

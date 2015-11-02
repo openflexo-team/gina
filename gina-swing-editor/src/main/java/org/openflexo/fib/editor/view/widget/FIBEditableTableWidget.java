@@ -50,10 +50,10 @@ import org.openflexo.fib.editor.view.FIBEditableViewDelegate;
 import org.openflexo.fib.editor.view.PlaceHolder;
 import org.openflexo.fib.model.FIBModelObject;
 import org.openflexo.fib.model.FIBTable;
-import org.openflexo.fib.swing.view.widget.FIBTableWidget;
+import org.openflexo.fib.swing.view.widget.JFIBTableWidget;
 import org.openflexo.logging.FlexoLogger;
 
-public class FIBEditableTableWidget<T> extends FIBTableWidget<T> implements FIBEditableView<FIBTable, JTable> {
+public class FIBEditableTableWidget<T> extends JFIBTableWidget<T> implements FIBEditableView<FIBTable, JTable> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditableTableWidget.class.getPackage().getName());

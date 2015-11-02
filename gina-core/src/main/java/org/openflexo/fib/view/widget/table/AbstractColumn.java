@@ -37,7 +37,7 @@
  * 
  */
 
-package org.openflexo.fib.swing.view.widget.table;
+package org.openflexo.fib.view.widget.table;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -60,7 +60,7 @@ import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBTable;
 import org.openflexo.fib.model.FIBTableColumn;
-import org.openflexo.fib.swing.view.widget.FIBTableWidget;
+import org.openflexo.fib.view.widget.FIBTableWidget;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 

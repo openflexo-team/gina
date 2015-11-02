@@ -37,22 +37,63 @@
  * 
  */
 
-package org.openflexo.fib.swing.view.widget.table;
+package org.openflexo.fib.view.widget;
 
+import java.util.Collection;
+
+import javax.swing.ListSelectionModel;
+
+import org.openflexo.fib.controller.FIBSelectable;
+import org.openflexo.fib.model.FIBTable;
+import org.openflexo.fib.view.FIBWidgetView;
 
 /**
- * Represents an editable column in a table
+ * Represents a table widget (a table display a list of rows, with some data presented as columns)
+ * 
+ * @param <C>
+ *            type of technology-specific component this view manage
  * 
  * @author sylvain
- * 
- * @param <T>
- *            type of row object beeing handled by this column
- * @param <V>
- *            type of value beeing managed by column's cells
  */
-public interface EditableColumn<T, V> {
+public interface FIBTableWidget<C, T> extends FIBWidgetView<FIBTable, C, Collection<T>>, FIBSelectable<T> {
 
-	public boolean isCellEditableFor(T object);
+	@Override
+	public TableRenderingTechnologyAdapter<C, T> getRenderingTechnologyAdapter();
 
-	public void setValueFor(T object, V value/*, BindingEvaluationContext evaluationContext*/);
+	public void updateTable();
+
+	public void performSelect(T object);
+
+	public boolean isEnabled();
+
+	public boolean isLastFocusedSelectable();
+
+	/**
+	 * Specification of an adapter for a given rendering technology (eg Swing)
+	 * 
+	 * @author sylvain
+	 *
+	 * @param <C>
+	 */
+	public static interface TableRenderingTechnologyAdapter<C, T> extends RenderingTechnologyAdapter<C> {
+
+		public int getVisibleRowCount(C component);
+
+		public void setVisibleRowCount(C component, int visibleRowCount);
+
+		public int getRowHeight(C component);
+
+		public void setRowHeight(C component, int rowHeight);
+
+		public ListSelectionModel getListSelectionModel(C component);
+
+		public boolean isEditing(C component);
+
+		public int getEditingRow(C component);
+
+		public int getEditingColumn(C component);
+
+		public void cancelCellEditing(C component);
+	}
+
 }

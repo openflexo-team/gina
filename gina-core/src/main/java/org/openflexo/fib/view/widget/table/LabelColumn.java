@@ -37,10 +37,10 @@
  * 
  */
 
-package org.openflexo.fib.swing.view.widget.table;
+package org.openflexo.fib.view.widget.table;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBTableColumn;
+import org.openflexo.fib.model.FIBLabelColumn;
 
 /**
  * Please comment this class
@@ -48,24 +48,15 @@ import org.openflexo.fib.model.FIBTableColumn;
  * @author sguerin
  * 
  */
-public abstract class StringColumn<T> extends AbstractColumn<T, String> {
+public class LabelColumn<T> extends StringColumn<T> {
 
-	public StringColumn(FIBTableColumn columnModel, FIBTableModel<T> tableModel, FIBController controller) {
+	public LabelColumn(FIBLabelColumn columnModel, FIBTableModel<T> tableModel, FIBController controller) {
 		super(columnModel, tableModel, controller);
 	}
 
 	@Override
-	public Class<String> getValueClass() {
-		return String.class;
-	}
-
-	@Override
 	public String toString() {
-		return "StringColumn " + "@" + Integer.toHexString(hashCode());
+		return "LabelColumn " + "@" + Integer.toHexString(hashCode());
 	}
 
-	@Override
-	public boolean requireCellRenderer() {
-		return true;
-	}
 }

@@ -37,10 +37,20 @@
  * 
  */
 
-package org.openflexo.fib.swing.view.widget.table;
+package org.openflexo.fib.view.widget.table;
+
+import java.awt.Component;
+import java.awt.Font;
+
+import javax.swing.DefaultCellEditor;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBLabelColumn;
+import org.openflexo.fib.model.FIBTextFieldColumn;
 
 /**
  * Please comment this class
@@ -48,15 +58,61 @@ import org.openflexo.fib.model.FIBLabelColumn;
  * @author sguerin
  * 
  */
-public class LabelColumn<T> extends StringColumn<T> {
+public class TextFieldColumn<T> extends StringColumn<T> implements EditableColumn<T, String> {
 
-	public LabelColumn(FIBLabelColumn columnModel, FIBTableModel<T> tableModel, FIBController controller) {
+	private DefaultCellEditor editor;
+
+	public TextFieldColumn(FIBTextFieldColumn columnModel, FIBTableModel<T> tableModel, FIBController controller) {
 		super(columnModel, tableModel, controller);
 	}
 
 	@Override
-	public String toString() {
-		return "LabelColumn " + "@" + Integer.toHexString(hashCode());
+	public boolean isCellEditableFor(Object object) {
+		return true;
 	}
 
+	@Override
+	public boolean requireCellRenderer() {
+		return true;
+	}
+
+	@Override
+	public TableCellRenderer getCellRenderer() {
+		return getDefaultTableCellRenderer();
+	}
+
+	@Override
+	public boolean requireCellEditor() {
+		return true;
+	}
+
+	@SuppressWarnings("serial")
+	@Override
+	public TableCellEditor getCellEditor() {
+		if (editor == null) {
+			editor = new DefaultCellEditor(new JTextField()) {
+				@Override
+				public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+					final JTextField textfield = (JTextField) super.getTableCellEditorComponent(table, value, isSelected, row, column);
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							textfield.selectAll();
+						}
+					});
+					return textfield;
+				}
+			};
+			Font font = getFont();
+			if (font != null) {
+				((JTextField) editor.getComponent()).setFont(font);
+			}
+		}
+		return editor;
+	}
+
+	@Override
+	public String toString() {
+		return "EditableStringColumn " + "[" + getTitle() + "]" + Integer.toHexString(hashCode());
+	}
 }

@@ -37,12 +37,13 @@
  * 
  */
 
-package org.openflexo.fib.swing.view.widget.table;
+package org.openflexo.fib.view.widget.table;
 
 import java.awt.Component;
-import java.awt.Font;
 
 import javax.swing.DefaultCellEditor;
+import javax.swing.InputVerifier;
+import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -50,7 +51,7 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBTextFieldColumn;
+import org.openflexo.fib.model.FIBNumberColumn;
 
 /**
  * Please comment this class
@@ -58,12 +59,27 @@ import org.openflexo.fib.model.FIBTextFieldColumn;
  * @author sguerin
  * 
  */
-public class TextFieldColumn<T> extends StringColumn<T> implements EditableColumn<T, String> {
+public class NumberColumn<T> extends AbstractColumn<T, Number> implements EditableColumn<T, Number> {
 
 	private DefaultCellEditor editor;
 
-	public TextFieldColumn(FIBTextFieldColumn columnModel, FIBTableModel<T> tableModel, FIBController controller) {
+	public NumberColumn(FIBNumberColumn columnModel, FIBTableModel<T> tableModel, FIBController controller) {
 		super(columnModel, tableModel, controller);
+	}
+
+	@Override
+	public FIBNumberColumn getColumnModel() {
+		return (FIBNumberColumn) super.getColumnModel();
+	}
+
+	@Override
+	public Class<Number> getValueClass() {
+		return Number.class;
+	}
+
+	@Override
+	public String toString() {
+		return "IntegerColumn " + "@" + Integer.toHexString(hashCode());
 	}
 
 	@Override
@@ -86,14 +102,30 @@ public class TextFieldColumn<T> extends StringColumn<T> implements EditableColum
 		return true;
 	}
 
-	@SuppressWarnings("serial")
 	@Override
 	public TableCellEditor getCellEditor() {
 		if (editor == null) {
 			editor = new DefaultCellEditor(new JTextField()) {
 				@Override
 				public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+
 					final JTextField textfield = (JTextField) super.getTableCellEditorComponent(table, value, isSelected, row, column);
+					textfield.setInputVerifier(new InputVerifier() {
+
+						@Override
+						public boolean verify(JComponent input) {
+							if (input instanceof JTextField) {
+								String text = ((JTextField) input).getText();
+								return text == null || text.trim().length() == 0 || getValue(text) != null;
+							}
+							return true;
+						}
+					});
+					if (value != null) {
+						textfield.setText(((Number) value).toString());
+					} else {
+						textfield.setText("");
+					}
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
 						public void run() {
@@ -102,17 +134,41 @@ public class TextFieldColumn<T> extends StringColumn<T> implements EditableColum
 					});
 					return textfield;
 				}
+
+				@Override
+				public Number getCellEditorValue() {
+					Object cellEditorValue = super.getCellEditorValue();
+					if (cellEditorValue != null && cellEditorValue.toString().trim().length() > 0) {
+						return getValue(cellEditorValue.toString().trim());
+					}
+					return null;
+				}
+
+				private Number getValue(String value) {
+					try {
+						switch (getColumnModel().getNumberType()) {
+						case ByteType:
+							return Byte.parseByte(value);
+						case ShortType:
+							return Short.parseShort(value);
+						case IntegerType:
+							return Integer.parseInt(value);
+						case LongType:
+							return Long.parseLong(value);
+						case FloatType:
+							return Float.parseFloat(value);
+						case DoubleType:
+							return Double.parseDouble(value);
+						default:
+							return null;
+						}
+					} catch (NumberFormatException e) {
+						e.printStackTrace();
+					}
+					return null;
+				}
 			};
-			Font font = getFont();
-			if (font != null) {
-				((JTextField) editor.getComponent()).setFont(font);
-			}
 		}
 		return editor;
-	}
-
-	@Override
-	public String toString() {
-		return "EditableStringColumn " + "[" + getTitle() + "]" + Integer.toHexString(hashCode());
 	}
 }

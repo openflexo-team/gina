@@ -37,7 +37,7 @@
  * 
  */
 
-package org.openflexo.fib.swing.view.widget.table;
+package org.openflexo.fib.view.widget.table;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -76,7 +76,7 @@ import org.openflexo.toolbox.ToolBox;
  * @author sguerin
  * 
  */
-public class CustomColumn<T, V> extends AbstractColumn<T, V> implements EditableColumn<T, V>, ApplyCancelListener {
+public class CustomColumn<T, V> extends AbstractColumn<T, V>implements EditableColumn<T, V>, ApplyCancelListener {
 	private static final Logger logger = Logger.getLogger(CustomColumn.class.getPackage().getName());
 
 	private final FIBCustomColumn _customColumn;
@@ -125,7 +125,8 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V> implements Editable
 					if (TypeUtils.isTypeAssignableFrom(c.getGenericParameterTypes()[0], dataClass)) {
 						constructor = (Constructor<FIBCustomComponent<V, ?>>) c;
 						break;
-					} else {
+					}
+					else {
 						// There is no guarantee that the component support this type
 						// Anyway we warn and continue as returning null will be even worse
 						logger.warning("Non-compatible types while instanciating component " + customComponentClass
@@ -191,13 +192,16 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V> implements Editable
 		}
 
 		@Override
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row,
+				int column) {
 			Component c;
 			if (isSelected && hasFocus || useCustomViewForCellRendering) {
 				FIBCustomComponent<V, ?> customWidgetView = getViewCustomWidget(elementAt(row));
 				if (customWidgetView != null) {
-					c = customWidgetView.getJComponent();
-				} else {
+					// TODO: this cast should disappear: we may not be a JComponent in other context than Swing
+					c = (Component) customWidgetView.getJComponent();
+				}
+				else {
 					c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 				}
 				Color fg = null;
@@ -205,7 +209,8 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V> implements Editable
 				if (isSelected) {
 					c.setForeground(fg == null ? table.getSelectionForeground() : fg);
 					c.setBackground(bg == null ? table.getSelectionBackground() : bg);
-				} else {
+				}
+				else {
 					c.setForeground(table.getForeground());
 					c.setBackground(table.getBackground());
 				}
@@ -233,7 +238,8 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V> implements Editable
 						}
 					}
 				}
-			} else {
+			}
+			else {
 				Component returned = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 				if (returned instanceof JLabel) {
 					((JLabel) returned).setText(renderValue((T) value));
@@ -350,7 +356,8 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V> implements Editable
 
 				});
 			}
-			JComponent jComponent = _customWidget.getJComponent();
+			// TODO: this cast should disappear: we may not be a JComponent in other context than Swing
+			JComponent jComponent = (JComponent) _customWidget.getJComponent();
 			jComponent.setBorder(null);
 			return jComponent;
 		}
@@ -362,15 +369,15 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V> implements Editable
 		// logger.info("setEditedRowObject with " + anObject);
 		_editedRowObject = anObject;
 
-		//System.out.println("Performing assignments for " + _customColumn.getComponentClass());
+		// System.out.println("Performing assignments for " + _customColumn.getComponentClass());
 
 		for (FIBCustomAssignment assign : getColumnModel().getAssignments()) {
 			DataBinding<Object> variableDB = assign.getVariable();
 			DataBinding<Object> valueDB = assign.getValue();
 
-			//logger.info("Assignment " + variableDB + " to " + valueDB);
-			//logger.info("variableDB=" + variableDB + " valid=" + variableDB.isValid() + " reason=" + variableDB.invalidBindingReason());
-			//logger.info("valueDB=" + valueDB + " valid=" + valueDB.isValid() + " reason=" + valueDB.invalidBindingReason());
+			// logger.info("Assignment " + variableDB + " to " + valueDB);
+			// logger.info("variableDB=" + variableDB + " valid=" + variableDB.isValid() + " reason=" + variableDB.invalidBindingReason());
+			// logger.info("valueDB=" + valueDB + " valid=" + valueDB.isValid() + " reason=" + valueDB.invalidBindingReason());
 			if (valueDB.isValid()) {
 				Object value = null;
 				try {
@@ -398,7 +405,8 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V> implements Editable
 	public Object getValue(BindingVariable variable) {
 		if (variable.getVariableName().equals(FIBCustomImpl.COMPONENT_NAME)) {
 			return _editCustomWidget;
-		} else {
+		}
+		else {
 			return super.getValue(variable);
 		}
 	}

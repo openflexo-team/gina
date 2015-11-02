@@ -1,7 +1,7 @@
 /**
  * 
  * Copyright (c) 2013-2014, Openflexo
- * Copyright (c) 2012-2012, AgileBirds
+ * Copyright (c) 2011-2012, AgileBirds
  * 
  * This file is part of Gina-core, a component of the software infrastructure 
  * developed at Openflexo.
@@ -37,17 +37,35 @@
  * 
  */
 
-package org.openflexo.fib.swing.view.widget.treetable;
+package org.openflexo.fib.view.widget.table;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBBrowser;
-import org.openflexo.fib.swing.view.widget.FIBBrowserWidget;
+import org.openflexo.fib.model.FIBTableColumn;
 
-public class FIBTreeTableWidget extends FIBBrowserWidget {
+/**
+ * Please comment this class
+ * 
+ * @author sguerin
+ * 
+ */
+public abstract class StringColumn<T> extends AbstractColumn<T, String> {
 
-	public FIBTreeTableWidget(FIBBrowser fibBrowser, FIBController controller) {
-		super(fibBrowser, controller);
-		// TODO Auto-generated constructor stub
+	public StringColumn(FIBTableColumn columnModel, FIBTableModel<T> tableModel, FIBController controller) {
+		super(columnModel, tableModel, controller);
 	}
 
+	@Override
+	public Class<String> getValueClass() {
+		return String.class;
+	}
+
+	@Override
+	public String toString() {
+		return "StringColumn " + "@" + Integer.toHexString(hashCode());
+	}
+
+	@Override
+	public boolean requireCellRenderer() {
+		return true;
+	}
 }
