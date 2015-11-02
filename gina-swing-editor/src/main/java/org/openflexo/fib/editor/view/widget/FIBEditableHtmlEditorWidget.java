@@ -49,12 +49,12 @@ import org.openflexo.fib.editor.view.PlaceHolder;
 import org.openflexo.fib.model.FIBHtmlEditor;
 import org.openflexo.fib.model.FIBModelObject;
 import org.openflexo.fib.model.FIBWidget;
-import org.openflexo.fib.swing.view.widget.FIBHtmlEditorWidget;
+import org.openflexo.fib.swing.view.widget.JFIBHtmlEditorWidget;
 import org.openflexo.logging.FlexoLogger;
 
 import com.metaphaseeditor.MetaphaseEditorPanel;
 
-public class FIBEditableHtmlEditorWidget extends FIBHtmlEditorWidget implements FIBEditableView<FIBHtmlEditor, MetaphaseEditorPanel> {
+public class FIBEditableHtmlEditorWidget extends JFIBHtmlEditorWidget implements FIBEditableView<FIBHtmlEditor, MetaphaseEditorPanel> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditableHtmlEditorWidget.class.getPackage().getName());

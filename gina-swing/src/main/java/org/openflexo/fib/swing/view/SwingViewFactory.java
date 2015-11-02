@@ -85,7 +85,7 @@ import org.openflexo.fib.swing.view.widget.FIBEditorPaneWidget;
 import org.openflexo.fib.swing.view.widget.JFIBEditorWidget;
 import org.openflexo.fib.swing.view.widget.JFIBFileWidget;
 import org.openflexo.fib.swing.view.widget.JFIBFontWidget;
-import org.openflexo.fib.swing.view.widget.FIBHtmlEditorWidget;
+import org.openflexo.fib.swing.view.widget.JFIBHtmlEditorWidget;
 import org.openflexo.fib.swing.view.widget.JFIBImageWidget;
 import org.openflexo.fib.swing.view.widget.JFIBLabelWidget;
 import org.openflexo.fib.swing.view.widget.JFIBListWidget;
@@ -150,7 +150,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<C> {
 			return new FIBTextAreaWidgetImpl((FIBTextArea) fibWidget, this.fibController);
 		}
 		if (fibWidget instanceof FIBHtmlEditor) {
-			return new FIBHtmlEditorWidget((FIBHtmlEditor) fibWidget, this.fibController);
+			return new JFIBHtmlEditorWidget((FIBHtmlEditor) fibWidget, this.fibController);
 		}
 		if (fibWidget instanceof FIBLabel) {
 			return new JFIBLabelWidget((FIBLabel) fibWidget, this.fibController);

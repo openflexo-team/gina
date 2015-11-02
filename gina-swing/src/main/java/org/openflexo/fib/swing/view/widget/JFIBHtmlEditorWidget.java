@@ -39,14 +39,13 @@
 
 package org.openflexo.fib.swing.view.widget;
 
-import java.awt.event.FocusEvent;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBHtmlEditor;
 import org.openflexo.fib.model.FIBHtmlEditorOption;
-import org.openflexo.fib.swing.view.FIBWidgetView;
+import org.openflexo.fib.swing.view.SwingRenderingTechnologyAdapter;
+import org.openflexo.fib.view.widget.impl.FIBHtmlEditorWidgetImpl;
 
 import com.metaphaseeditor.MetaphaseEditorConfiguration;
 import com.metaphaseeditor.MetaphaseEditorPanel;
@@ -56,47 +55,72 @@ import com.metaphaseeditor.MetaphaseEditorPanel;
  * 
  * @author sylvain
  */
-public class FIBHtmlEditorWidget extends FIBWidgetView<FIBHtmlEditor, MetaphaseEditorPanel, String> {
+public class JFIBHtmlEditorWidget extends FIBHtmlEditorWidgetImpl<MetaphaseEditorPanel> {
 
-	private static final Logger LOGGER = Logger.getLogger(FIBHtmlEditorWidget.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(JFIBHtmlEditorWidget.class.getPackage().getName());
 
-	private MetaphaseEditorConfiguration _editorConfiguration;
-	private final MetaphaseEditorPanel _editor;
-	boolean validateOnReturn;
+	/**
+	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing JTextField<br>
+	 * (based on generic SwingTextRenderingTechnologyAdapter)
+	 * 
+	 * @author sylvain
+	 * 
+	 */
+	public static class SwingHtmlEditorWidgetRenderingTechnologyAdapter extends SwingRenderingTechnologyAdapter<MetaphaseEditorPanel>
+			implements HtmlEditorWidgetRenderingTechnologyAdapter<MetaphaseEditorPanel> {
 
-	public FIBHtmlEditorWidget(FIBHtmlEditor model, FIBController controller) {
-		super(model, controller);
-		_editor = new MetaphaseEditorPanel(_editorConfiguration = buildConfiguration()) {
+		@Override
+		public String getText(MetaphaseEditorPanel component) {
+			return component.getDocument();
+		}
+
+		@Override
+		public void setText(MetaphaseEditorPanel component, String aText) {
+			component.setDocument(aText);
+		}
+
+		@Override
+		public boolean isEditable(MetaphaseEditorPanel component) {
+			return true;
+		}
+
+		@Override
+		public void setEditable(MetaphaseEditorPanel component, boolean editable) {
+		}
+
+		@Override
+		public int getCaretPosition(MetaphaseEditorPanel component) {
+			return component.getHtmlTextPane().getCaretPosition();
+		}
+
+		@Override
+		public void setCaretPosition(MetaphaseEditorPanel component, int caretPosition) {
+			component.getHtmlTextPane().setCaretPosition(caretPosition);
+		}
+
+	}
+
+	public static SwingHtmlEditorWidgetRenderingTechnologyAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingHtmlEditorWidgetRenderingTechnologyAdapter();
+
+	public JFIBHtmlEditorWidget(FIBHtmlEditor model, FIBController controller) {
+		super(model, controller, RENDERING_TECHNOLOGY_ADAPTER);
+	}
+
+	@Override
+	protected MetaphaseEditorPanel makeTechnologyComponent() {
+		return new MetaphaseEditorPanel(buildConfiguration()) {
 			@Override
 			public void documentWasEdited() {
 				super.documentWasEdited();
 				updateModelFromWidget();
 			}
 		};
-		/* _editor.getDocument().addDocumentListener(new DocumentListener() {
-		     public void changedUpdate(DocumentEvent e)
-		     {
-		          if ((!validateOnReturn) && (!widgetUpdating))
-		              updateModelFromWidget();
-		     }
 
-		     public void insertUpdate(DocumentEvent e)
-		     {
-		         if ((!validateOnReturn) && (!widgetUpdating))
-		             updateModelFromWidget();
-		     }
-
-		     public void removeUpdate(DocumentEvent e)
-		     {
-		         if ((!validateOnReturn) && (!widgetUpdating))
-		             updateModelFromWidget();
-		     }
-		 });*/
-		updateFont();
 	}
 
+	@Override
 	protected void updateHtmlEditorConfiguration() {
-		_editor.updateComponents(_editorConfiguration = buildConfiguration());
+		getDynamicJComponent().updateComponents(buildConfiguration());
 	}
 
 	private MetaphaseEditorConfiguration buildConfiguration() {
@@ -114,65 +138,8 @@ public class FIBHtmlEditorWidget extends FIBWidgetView<FIBHtmlEditor, MetaphaseE
 	}
 
 	@Override
-	public void focusGained(FocusEvent event) {
-		super.focusGained(event);
-		// _editor.selectAll();
-	}
-
-	@Override
-	public synchronized boolean updateWidgetFromModel() {
-		if (notEquals(getValue(), _editor.getDocument())) {
-			if (modelUpdating) {
-				return false;
-			}
-			if (getValue() != null && (getValue() + "\n").equals(_editor.getDocument())) {
-				return false;
-			}
-			widgetUpdating = true;
-			if (getValue() != null) {
-				_editor.setDocument(getValue());
-			} else {
-				_editor.setDocument("");
-			}
-			widgetUpdating = false;
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Update the model given the actual state of the widget
-	 */
-	@Override
-	public synchronized boolean updateModelFromWidget() {
-		// System.out.println("updateModelFromWidget() with " + _editor.getDocument());
-		if (notEquals(getValue(), _editor.getDocument())) {
-			modelUpdating = true;
-			if (LOGGER.isLoggable(Level.FINE)) {
-				LOGGER.fine("updateModelFromWidget() in TextAreaWidget");
-			}
-			setValue(_editor.getDocument());
-			modelUpdating = false;
-			return true;
-		}
-		return false;
-	}
-
-	@Override
 	public MetaphaseEditorPanel getJComponent() {
-		return _editor;
+		return getDynamicJComponent();
 	}
 
-	@Override
-	public MetaphaseEditorPanel getDynamicJComponent() {
-		return _editor;
-	}
-
-	@Override
-	final public void updateFont() {
-		super.updateFont();
-		if (getFont() != null) {
-			_editor.setFont(getFont());
-		}
-	}
 }

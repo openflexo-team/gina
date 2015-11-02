@@ -83,7 +83,7 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 			return (FIBWidgetView<F, ? extends C, ?>) makeTextArea((FIBTextArea) fibWidget, controller);
 		}
 		if (fibWidget instanceof FIBHtmlEditor) {
-			return new FIBHtmlEditorWidget((FIBHtmlEditor) fibWidget, this.fibController);
+			return new FIBHtmlEditorWidgetImpl((FIBHtmlEditor) fibWidget, this.fibController);
 		}
 		if (fibWidget instanceof FIBLabel) {
 			return new FIBLabelWidgetImpl((FIBLabel) fibWidget, this.fibController);
