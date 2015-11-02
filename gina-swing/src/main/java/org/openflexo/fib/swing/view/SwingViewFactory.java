@@ -89,7 +89,7 @@ import org.openflexo.fib.swing.view.widget.FIBHtmlEditorWidget;
 import org.openflexo.fib.swing.view.widget.JFIBImageWidget;
 import org.openflexo.fib.swing.view.widget.JFIBLabelWidget;
 import org.openflexo.fib.swing.view.widget.JFIBListWidget;
-import org.openflexo.fib.swing.view.widget.FIBNumberWidget;
+import org.openflexo.fib.swing.view.widget.JFIBNumberWidget;
 import org.openflexo.fib.swing.view.widget.JFIBRadioButtonListWidget;
 import org.openflexo.fib.swing.view.widget.FIBTableWidget;
 import org.openflexo.fib.view.FIBView;
@@ -177,17 +177,17 @@ public class SwingViewFactory extends GinaViewFactoryImpl<C> {
 			FIBNumber w = (FIBNumber) fibWidget;
 			switch (w.getNumberType()) {
 				case ByteType:
-					return new FIBNumberWidget.FIBByteWidget(w, this.fibController);
+					return new JFIBNumberWidget.FIBByteWidget(w, this.fibController);
 				case ShortType:
-					return new FIBNumberWidget.FIBShortWidget(w, this.fibController);
+					return new JFIBNumberWidget.FIBShortWidget(w, this.fibController);
 				case IntegerType:
-					return new FIBNumberWidget.FIBIntegerWidget(w, this.fibController);
+					return new JFIBNumberWidget.FIBIntegerWidget(w, this.fibController);
 				case LongType:
-					return new FIBNumberWidget.FIBLongWidget(w, this.fibController);
+					return new JFIBNumberWidget.FIBLongWidget(w, this.fibController);
 				case FloatType:
-					return new FIBNumberWidget.FIBFloatWidget(w, this.fibController);
+					return new JFIBNumberWidget.FIBFloatWidget(w, this.fibController);
 				case DoubleType:
-					return new FIBNumberWidget.FIBDoubleWidget(w, this.fibController);
+					return new JFIBNumberWidget.FIBDoubleWidget(w, this.fibController);
 				default:
 					break;
 			}

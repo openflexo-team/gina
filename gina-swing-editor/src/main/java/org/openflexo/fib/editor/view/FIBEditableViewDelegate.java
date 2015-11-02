@@ -90,7 +90,7 @@ import org.openflexo.fib.swing.view.container.FIBTabView;
 import org.openflexo.fib.swing.view.widget.JFIBColorWidget;
 import org.openflexo.fib.swing.view.widget.JFIBFontWidget;
 import org.openflexo.fib.swing.view.widget.FIBMultipleValueWidget;
-import org.openflexo.fib.swing.view.widget.FIBNumberWidget;
+import org.openflexo.fib.swing.view.widget.JFIBNumberWidget;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.swing.Focusable;
 
@@ -347,9 +347,9 @@ public class FIBEditableViewDelegate<M extends FIBComponent, J extends JComponen
 
 		if (o instanceof FIBNumber) {
 			if (propertyName.equals(FIBNumber.ALLOWS_NULL_KEY)) {
-				((FIBNumberWidget<?>) view).updateCheckboxVisibility();
+				((JFIBNumberWidget<?>) view).updateCheckboxVisibility();
 			} else if (propertyName.equals(FIBNumber.COLUMNS_KEY)) {
-				((FIBNumberWidget<?>) view).updateColumns();
+				((JFIBNumberWidget<?>) view).updateColumns();
 			}
 		}
 

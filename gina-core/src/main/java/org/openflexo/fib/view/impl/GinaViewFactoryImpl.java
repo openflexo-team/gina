@@ -110,17 +110,17 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 			FIBNumber w = (FIBNumber) fibWidget;
 			switch (w.getNumberType()) {
 				case ByteType:
-					return new FIBNumberWidget.FIBByteWidget(w, this.fibController);
+					return new FIBNumberWidgetImpl.FIBByteWidget(w, this.fibController);
 				case ShortType:
-					return new FIBNumberWidget.FIBShortWidget(w, this.fibController);
+					return new FIBNumberWidgetImpl.FIBShortWidget(w, this.fibController);
 				case IntegerType:
-					return new FIBNumberWidget.FIBIntegerWidget(w, this.fibController);
+					return new FIBNumberWidgetImpl.FIBIntegerWidget(w, this.fibController);
 				case LongType:
-					return new FIBNumberWidget.FIBLongWidget(w, this.fibController);
+					return new FIBNumberWidgetImpl.FIBLongWidget(w, this.fibController);
 				case FloatType:
-					return new FIBNumberWidget.FIBFloatWidget(w, this.fibController);
+					return new FIBNumberWidgetImpl.FIBFloatWidget(w, this.fibController);
 				case DoubleType:
-					return new FIBNumberWidget.FIBDoubleWidget(w, this.fibController);
+					return new FIBNumberWidgetImpl.FIBDoubleWidget(w, this.fibController);
 				default:
 					break;
 			}
