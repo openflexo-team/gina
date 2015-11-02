@@ -12,7 +12,6 @@ import org.openflexo.fib.model.FIBContainer;
 import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBDropDown;
 import org.openflexo.fib.model.FIBEditor;
-import org.openflexo.fib.model.FIBEditorPane;
 import org.openflexo.fib.model.FIBFile;
 import org.openflexo.fib.model.FIBFont;
 import org.openflexo.fib.model.FIBHtmlEditor;
@@ -32,6 +31,16 @@ import org.openflexo.fib.view.FIBWidgetView;
 import org.openflexo.fib.view.GinaViewFactory;
 import org.openflexo.fib.view.widget.FIBReferencedComponentWidget;
 import org.openflexo.fib.view.widget.FIBTextFieldWidget;
+import org.openflexo.fib.view.widget.impl.FIBButtonWidgetImpl;
+import org.openflexo.fib.view.widget.impl.FIBCheckBoxWidgetImpl;
+import org.openflexo.fib.view.widget.impl.FIBColorWidgetImpl;
+import org.openflexo.fib.view.widget.impl.FIBEditorWidgetImpl;
+import org.openflexo.fib.view.widget.impl.FIBFileWidgetImpl;
+import org.openflexo.fib.view.widget.impl.FIBFontWidgetImpl;
+import org.openflexo.fib.view.widget.impl.FIBHtmlEditorWidgetImpl;
+import org.openflexo.fib.view.widget.impl.FIBImageWidgetImpl;
+import org.openflexo.fib.view.widget.impl.FIBLabelWidgetImpl;
+import org.openflexo.fib.view.widget.impl.FIBNumberWidgetImpl;
 import org.openflexo.fib.view.widget.impl.FIBTextAreaWidgetImpl;
 
 /**
