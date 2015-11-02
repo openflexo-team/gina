@@ -40,7 +40,7 @@
  * 
  */
 
-package org.openflexo.fib.swing.view.widget.browser;
+package org.openflexo.fib.view.widget.browser;
 
 import java.awt.Component;
 import java.awt.Font;
@@ -50,30 +50,31 @@ import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import org.openflexo.fib.swing.view.widget.FIBBrowserWidget;
-import org.openflexo.fib.swing.view.widget.browser.FIBBrowserModel.BrowserCell;
+import org.openflexo.fib.view.widget.FIBBrowserWidget;
+import org.openflexo.fib.view.widget.browser.FIBBrowserModel.BrowserCell;
 
-public class FIBBrowserCellRenderer extends DefaultTreeCellRenderer {
+@SuppressWarnings("serial")
+public class FIBBrowserCellRenderer<T> extends DefaultTreeCellRenderer {
 
-	private final FIBBrowserWidget widget;
+	private final FIBBrowserWidget<?, T> widget;
 
-	public FIBBrowserCellRenderer(FIBBrowserWidget widget) {
+	public FIBBrowserCellRenderer(FIBBrowserWidget<?, T> widget) {
 		super();
 		this.widget = widget;
-		if (widget.getBrowser().getTextSelectionColor() != null) {
-			setTextSelectionColor(widget.getBrowser().getTextSelectionColor());
+		if (widget.getWidget().getTextSelectionColor() != null) {
+			setTextSelectionColor(widget.getWidget().getTextSelectionColor());
 		}
-		if (widget.getBrowser().getTextNonSelectionColor() != null) {
-			setTextNonSelectionColor(widget.getBrowser().getTextNonSelectionColor());
+		if (widget.getWidget().getTextNonSelectionColor() != null) {
+			setTextNonSelectionColor(widget.getWidget().getTextNonSelectionColor());
 		}
-		if (widget.getBrowser().getBackgroundSelectionColor() != null) {
-			setBackgroundSelectionColor(widget.getBrowser().getBackgroundSelectionColor());
+		if (widget.getWidget().getBackgroundSelectionColor() != null) {
+			setBackgroundSelectionColor(widget.getWidget().getBackgroundSelectionColor());
 		}
-		if (widget.getBrowser().getBackgroundNonSelectionColor() != null) {
-			setBackgroundNonSelectionColor(widget.getBrowser().getBackgroundNonSelectionColor());
+		if (widget.getWidget().getBackgroundNonSelectionColor() != null) {
+			setBackgroundNonSelectionColor(widget.getWidget().getBackgroundNonSelectionColor());
 		}
-		if (widget.getBrowser().getBorderSelectionColor() != null) {
-			setBorderSelectionColor(widget.getBrowser().getBorderSelectionColor());
+		if (widget.getWidget().getBorderSelectionColor() != null) {
+			setBorderSelectionColor(widget.getWidget().getBorderSelectionColor());
 		}
 		if (widget.getFont() != null) {
 			setFont(widget.getFont());
@@ -106,18 +107,19 @@ public class FIBBrowserCellRenderer extends DefaultTreeCellRenderer {
 
 			if (sel) {
 				if (widget.isLastFocusedSelectable()) {
-					if (widget.getBrowser().getTextSelectionColor() != null) {
-						setTextSelectionColor(widget.getBrowser().getTextSelectionColor());
+					if (widget.getWidget().getTextSelectionColor() != null) {
+						setTextSelectionColor(widget.getWidget().getTextSelectionColor());
 					}
-					if (widget.getBrowser().getBackgroundSelectionColor() != null) {
-						setBackgroundSelectionColor(widget.getBrowser().getBackgroundSelectionColor());
+					if (widget.getWidget().getBackgroundSelectionColor() != null) {
+						setBackgroundSelectionColor(widget.getWidget().getBackgroundSelectionColor());
 					}
-				} else {
-					if (widget.getBrowser().getTextNonSelectionColor() != null) {
-						setTextSelectionColor(widget.getBrowser().getTextNonSelectionColor());
+				}
+				else {
+					if (widget.getWidget().getTextNonSelectionColor() != null) {
+						setTextSelectionColor(widget.getWidget().getTextNonSelectionColor());
 					}
-					if (widget.getBrowser().getBackgroundSecondarySelectionColor() != null) {
-						setBackgroundSelectionColor(widget.getBrowser().getBackgroundSecondarySelectionColor());
+					if (widget.getWidget().getBackgroundSecondarySelectionColor() != null) {
+						setBackgroundSelectionColor(widget.getWidget().getBackgroundSecondarySelectionColor());
 					}
 				}
 			}
@@ -125,10 +127,11 @@ public class FIBBrowserCellRenderer extends DefaultTreeCellRenderer {
 			JLabel returned = (JLabel) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 			if (widget.isEnabled()) {
 				if (isEnabled(representedObject)) {
-					if (widget.getBrowser().getTextNonSelectionColor() != null) {
-						setTextNonSelectionColor(widget.getBrowser().getTextNonSelectionColor());
+					if (widget.getWidget().getTextNonSelectionColor() != null) {
+						setTextNonSelectionColor(widget.getWidget().getTextNonSelectionColor());
 					}
-				} else {
+				}
+				else {
 					setEnabled(false);
 				}
 			}
@@ -233,7 +236,7 @@ public class FIBBrowserCellRenderer extends DefaultTreeCellRenderer {
 	     setLeafIcon(UIManager.getIcon("Tree.leafIcon"));
 	     setClosedIcon(UIManager.getIcon("Tree.closedIcon"));
 	     setOpenIcon(UIManager.getIcon("Tree.openIcon"));
-
+	
 	     setTextSelectionColor(UIManager.getColor("Tree.selectionForeground"));
 	     setTextNonSelectionColor(UIManager.getColor("Tree.textForeground"));
 	     setBackgroundSelectionColor(UIManager.getColor("Tree.selectionBackground"));

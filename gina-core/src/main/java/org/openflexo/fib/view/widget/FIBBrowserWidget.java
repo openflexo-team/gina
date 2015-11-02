@@ -37,50 +37,72 @@
  * 
  */
 
-package org.openflexo.fib.view.widget.impl;
+package org.openflexo.fib.view.widget;
 
-import java.util.Enumeration;
+import java.util.List;
 
-import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.view.widget.FIBTableWidget;
-import org.openflexo.fib.view.widget.table.FIBTableActionListener;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
+
+import org.openflexo.fib.controller.FIBSelectable;
+import org.openflexo.fib.model.FIBBrowser;
+import org.openflexo.fib.view.FIBWidgetView;
+import org.openflexo.fib.view.widget.browser.FIBBrowserModel;
 
 /**
- * Represent a table widget footer (the footer is synchronized with the selection of table)
+ * Represents a browser (a tree of various objects)
  * 
  * @param <C>
  *            type of technology-specific component this view manage
  * @param <T>
- *            type of objects managed by this footer
+ *            type of row data
  * 
  * @author sylvain
  */
-public interface FIBTableWidgetFooter<C, T> {
+public interface FIBBrowserWidget<C, T> extends FIBWidgetView<FIBBrowser, C, T>, FIBSelectable<T> {
 
-	public C getFooterComponent();
+	@Override
+	public BrowserRenderingTechnologyAdapter<C, T> getRenderingTechnologyAdapter();
 
-	public void handleSelectionChanged();
+	public FIBBrowserModel getBrowserModel();
 
-	public void handleSelectionCleared();
+	public void updateBrowser();
 
-	public void plusPressed();
+	public void performSelect(T object, boolean force);
 
-	public void minusPressed();
+	public void performSelect(List<T> objects, boolean force);
 
-	public boolean hasMultiplePlusActions();
+	public void performExpand(T o);
 
-	boolean hasMultipleMinusActions();
+	public boolean isEnabled();
 
-	public void initializeActions(FIBTableWidget<?, T> tableWidget);
+	public boolean isLastFocusedSelectable();
 
-	public void delete();
+	/**
+	 * Specification of an adapter for a given rendering technology (eg Swing)
+	 * 
+	 * @author sylvain
+	 *
+	 * @param <C>
+	 */
+	public static interface BrowserRenderingTechnologyAdapter<C, T> extends RenderingTechnologyAdapter<C> {
 
-	public Enumeration<FIBTableActionListener<T>> getAddActionListeners();
+		public int getVisibleRowCount(C component);
 
-	public void setModel(Object model);
+		public void setVisibleRowCount(C component, int visibleRowCount);
 
-	public FIBController getController();
+		public int getRowHeight(C component);
 
-	public String getLocalized(String key);
+		public void setRowHeight(C component, int rowHeight);
+
+		public boolean isEditing(C component);
+
+		public void cancelCellEditing(C component);
+
+		public TreeSelectionModel getTreeSelectionModel(C component);
+
+		public boolean isExpanded(C component, TreePath treePath);
+
+	}
 
 }

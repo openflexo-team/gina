@@ -93,23 +93,13 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 	private static final Logger LOGGER = Logger.getLogger(JFIBTableWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing JComboBox<br>
-	 * (based on generic SwingTextRenderingTechnologyAdapter)
+	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing JTable<br>
 	 * 
 	 * @author sylvain
 	 * 
 	 */
 	public static class SwingTableRenderingTechnologyAdapter<T> extends SwingRenderingTechnologyAdapter<JXTable>
 			implements TableRenderingTechnologyAdapter<JXTable, T> {
-
-		/*public List<T> getSelectedItems(JXTable component) {
-			// TODO
-			return null;
-		}
-		
-		public void setSelectedItems(JXTable component, List<T> items) {
-			// TODO
-		}*/
 
 		@Override
 		public int getVisibleRowCount(JXTable component) {

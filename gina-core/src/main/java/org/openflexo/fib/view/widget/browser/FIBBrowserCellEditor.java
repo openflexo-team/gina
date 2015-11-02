@@ -40,7 +40,7 @@
  * 
  */
 
-package org.openflexo.fib.swing.view.widget.browser;
+package org.openflexo.fib.view.widget.browser;
 
 import java.awt.Component;
 import java.awt.event.MouseEvent;
@@ -51,7 +51,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellEditor;
 import javax.swing.tree.TreePath;
 
-import org.openflexo.fib.swing.view.widget.browser.FIBBrowserModel.BrowserCell;
+import org.openflexo.fib.view.widget.browser.FIBBrowserModel.BrowserCell;
 
 public class FIBBrowserCellEditor extends DefaultTreeCellEditor {
 

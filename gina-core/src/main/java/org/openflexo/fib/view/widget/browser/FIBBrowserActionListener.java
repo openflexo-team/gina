@@ -37,7 +37,7 @@
  * 
  */
 
-package org.openflexo.fib.swing.view.widget.browser;
+package org.openflexo.fib.view.widget.browser;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,7 +57,7 @@ import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBBrowserAction;
 import org.openflexo.fib.model.FIBBrowserAction.ActionType;
 import org.openflexo.fib.model.FIBBrowserAction.FIBCustomAction;
-import org.openflexo.fib.swing.view.widget.FIBBrowserWidget;
+import org.openflexo.fib.view.widget.impl.FIBBrowserWidgetImpl;
 
 public class FIBBrowserActionListener<T> implements ActionListener, BindingEvaluationContext, PropertyChangeListener {
 
@@ -67,9 +67,9 @@ public class FIBBrowserActionListener<T> implements ActionListener, BindingEvalu
 
 	private Object model;
 
-	private final FIBBrowserWidget<T> widget;
+	private final FIBBrowserWidgetImpl<?, T> widget;
 
-	public FIBBrowserActionListener(FIBBrowserWidget<T> widget, FIBBrowserAction browserAction) {
+	public FIBBrowserActionListener(FIBBrowserWidgetImpl<?, T> widget, FIBBrowserAction browserAction) {
 		super();
 		this.widget = widget;
 		this.browserAction = browserAction;
@@ -159,11 +159,13 @@ public class FIBBrowserActionListener<T> implements ActionListener, BindingEvalu
 					public void run() {
 						if (isRemoveAction()) {
 							widget.setSelected(null);
-						} else {
+						}
+						else {
 							if (widget.mayRepresent(newObject)) {
 								// System.out.println("Selecting new object: " + newObject);
 								widget.setSelected(newObject);
-							} else {
+							}
+							else {
 								// System.out.println("Cannot select new object");
 							}
 						}
@@ -210,9 +212,11 @@ public class FIBBrowserActionListener<T> implements ActionListener, BindingEvalu
 	public Object getValue(BindingVariable variable) {
 		if (variable.getVariableName().equals("selected")) {
 			return selectedObject;
-		} else if (variable.getVariableName().equals("action")) {
+		}
+		else if (variable.getVariableName().equals("action")) {
 			return browserAction;
-		} else {
+		}
+		else {
 			return widget.getBindingEvaluationContext().getValue(variable);
 		}
 	}

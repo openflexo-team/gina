@@ -37,7 +37,7 @@
  * 
  */
 
-package org.openflexo.fib.swing.view.widget.browser;
+package org.openflexo.fib.view.widget.browser;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -39,11 +39,9 @@
 
 package org.openflexo.fib.view.widget.impl;
 
-import java.util.Enumeration;
-
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.view.widget.FIBTableWidget;
-import org.openflexo.fib.view.widget.table.FIBTableActionListener;
+import org.openflexo.fib.model.FIBBrowserElement;
+import org.openflexo.fib.view.widget.FIBBrowserWidget;
 
 /**
  * Represent a table widget footer (the footer is synchronized with the selection of table)
@@ -55,29 +53,17 @@ import org.openflexo.fib.view.widget.table.FIBTableActionListener;
  * 
  * @author sylvain
  */
-public interface FIBTableWidgetFooter<C, T> {
+public interface FIBBrowserWidgetFooter<C, T> {
 
 	public C getFooterComponent();
 
-	public void handleSelectionChanged();
+	public void initializeActions(FIBBrowserWidget<?, T> widget);
 
-	public void handleSelectionCleared();
-
-	public void plusPressed();
-
-	public void minusPressed();
-
-	public boolean hasMultiplePlusActions();
-
-	boolean hasMultipleMinusActions();
-
-	public void initializeActions(FIBTableWidget<?, T> tableWidget);
+	public void updateActionsFor(FIBBrowserElement element);
 
 	public void delete();
 
-	public Enumeration<FIBTableActionListener<T>> getAddActionListeners();
-
-	public void setModel(Object model);
+	public void setFocusedObject(Object object);
 
 	public FIBController getController();
 

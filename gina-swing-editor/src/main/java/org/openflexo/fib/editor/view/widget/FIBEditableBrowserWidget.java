@@ -50,10 +50,10 @@ import org.openflexo.fib.editor.view.FIBEditableViewDelegate;
 import org.openflexo.fib.editor.view.PlaceHolder;
 import org.openflexo.fib.model.FIBBrowser;
 import org.openflexo.fib.model.FIBModelObject;
-import org.openflexo.fib.swing.view.widget.FIBBrowserWidget;
+import org.openflexo.fib.swing.view.widget.JFIBBrowserWidget;
 import org.openflexo.logging.FlexoLogger;
 
-public class FIBEditableBrowserWidget<T> extends FIBBrowserWidget<T> implements FIBEditableView<FIBBrowser, JTree> {
+public class FIBEditableBrowserWidget<T> extends JFIBBrowserWidget<T> implements FIBEditableView<FIBBrowser, JTree> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditableBrowserWidget.class.getPackage().getName());

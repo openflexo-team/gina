@@ -52,6 +52,8 @@ import org.openflexo.fib.view.FIBWidgetView;
  * 
  * @param <C>
  *            type of technology-specific component this view manage
+ * @param <T>
+ *            type of row data
  * 
  * @author sylvain
  */

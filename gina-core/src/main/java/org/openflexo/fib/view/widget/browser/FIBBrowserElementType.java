@@ -37,7 +37,7 @@
  * 
  */
 
-package org.openflexo.fib.swing.view.widget.browser;
+package org.openflexo.fib.view.widget.browser;
 
 import java.awt.Font;
 import java.beans.PropertyChangeEvent;
@@ -61,7 +61,7 @@ import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBBrowser;
 import org.openflexo.fib.model.FIBBrowserElement;
 import org.openflexo.fib.model.FIBBrowserElement.FIBBrowserElementChildren;
-import org.openflexo.fib.swing.view.widget.FIBBrowserWidget;
+import org.openflexo.fib.view.widget.FIBBrowserWidget;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.ToolBox;
@@ -230,7 +230,8 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 				return (Icon) returned;
 			}
 			return null;
-		} else {
+		}
+		else {
 			return browserElementDefinition.getImageIcon();
 		}
 	}
@@ -255,7 +256,8 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 				return (Boolean) enabledValue;
 			}
 			return true;
-		} else {
+		}
+		else {
 			return true;
 		}
 	}
@@ -285,7 +287,8 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 				e.printStackTrace();
 				return true;
 			}
-		} else {
+		}
+		else {
 			return true;
 		}
 	}
@@ -297,7 +300,8 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 		List<Object> returned = new ArrayList<Object>();
 		for (FIBBrowserElementChildren children : browserElementDefinition.getChildren()) {
 			if (children.isMultipleAccess()) {
-				// System.out.println("add all children for "+browserElementDefinition.getName()+" children "+children.getName()+" data="+children.getData());
+				// System.out.println("add all children for "+browserElementDefinition.getName()+" children "+children.getName()+"
+				// data="+children.getData());
 				// System.out.println("Obtain "+getChildrenListFor(children, object));
 				List<?> childrenObjects = getChildrenListFor(children, object);
 				// Might be null if some visibility was declared
@@ -306,8 +310,10 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 				}
 				// System.out.println("For " + object + " of " + object.getClass().getSimpleName() + " children=" + children.getData()
 				// + " values=" + object);
-			} else {
-				// System.out.println("add children for "+browserElementDefinition.getName()+" children "+children.getName()+" data="+children.getData());
+			}
+			else {
+				// System.out.println("add children for "+browserElementDefinition.getName()+" children "+children.getName()+"
+				// data="+children.getData());
 				// System.out.println("Obtain "+getChildrenFor(children, object));
 				// System.out.println("accessed type="+children.getAccessedType());
 				Object childrenObject = getChildrenFor(children, object);
@@ -358,7 +364,8 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 				return new CastFunction(children).apply(result);
 			}
 			return result;
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
@@ -417,7 +424,8 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 				return returned;
 			}
 			return list;
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
@@ -477,9 +485,11 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 	public synchronized Object getValue(BindingVariable variable) {
 		if (variable.getVariableName().equals(browserElementDefinition.getName())) {
 			return iteratorObject;
-		} else if (variable.getVariableName().equals("object")) {
+		}
+		else if (variable.getVariableName().equals("object")) {
 			return iteratorObject;
-		} else {
+		}
+		else {
 			return getController().getValue(variable);
 		}
 	}
@@ -555,7 +565,8 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 		public Object getValue(BindingVariable variable) {
 			if (variable.getVariableName().equals("child")) {
 				return child;
-			} else {
+			}
+			else {
 				return FIBBrowserElementType.this.getValue(variable);
 			}
 		}

@@ -74,7 +74,7 @@ import org.openflexo.fib.swing.view.container.FIBPanelView;
 import org.openflexo.fib.swing.view.container.FIBSplitPanelView;
 import org.openflexo.fib.swing.view.container.FIBTabPanelView;
 import org.openflexo.fib.swing.view.container.FIBTabView;
-import org.openflexo.fib.swing.view.widget.FIBBrowserWidget;
+import org.openflexo.fib.swing.view.widget.JFIBBrowserWidget;
 import org.openflexo.fib.swing.view.widget.JFIBButtonWidget;
 import org.openflexo.fib.swing.view.widget.JFIBCheckBoxWidget;
 import org.openflexo.fib.swing.view.widget.JFIBCheckboxListWidget;
@@ -165,7 +165,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<C> {
 			return new JFIBTableWidget((FIBTable) fibWidget, this.fibController);
 		}
 		if (fibWidget instanceof FIBBrowser) {
-			return new FIBBrowserWidget((FIBBrowser) fibWidget, this.fibController);
+			return new JFIBBrowserWidget((FIBBrowser) fibWidget, this.fibController);
 		}
 		if (fibWidget instanceof FIBDropDown) {
 			return new JFIBDropDownWidget((FIBDropDown) fibWidget, this.fibController);
