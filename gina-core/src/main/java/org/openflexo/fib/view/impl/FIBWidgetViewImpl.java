@@ -45,7 +45,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.InputEvent;
-import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 import java.lang.reflect.InvocationTargetException;
@@ -69,6 +68,7 @@ import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelObject;
+import org.openflexo.fib.model.FIBMouseEvent;
 import org.openflexo.fib.model.FIBWidget;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.fib.view.FIBWidgetView;
@@ -168,8 +168,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 	/**
 	 * Return technology-specific component representing widget<br>
-	 * Note that, depending on the underlying technology, this technology-specific component might be embedded in an other component before to 
-	 * be added in component hierarchy (for example if component need to be embedded in a scroll pane)
+	 * Note that, depending on the underlying technology, this technology-specific component might be embedded in an other component before
+	 * to be added in component hierarchy (for example if component need to be embedded in a scroll pane)
 	 * 
 	 * @return C
 	 */
@@ -933,7 +933,13 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		return null;
 	}
 
-	public void applySingleClickAction(MouseEvent event) {
+	/**
+	 * Called after the platform-specific controller has detected a mouse event matching a single-click action<br>
+	 * 
+	 * @param event
+	 *            platform-specific event which is translated into a generic FIBMouseEvent
+	 */
+	public void applySingleClickAction(FIBMouseEvent event) {
 		eventListener.setEvent(event);
 		try {
 			getWidget().getClickAction().execute(eventListener);
@@ -946,7 +952,13 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		}
 	}
 
-	public void applyDoubleClickAction(MouseEvent event) {
+	/**
+	 * Called after the platform-specific controller has detected a mouse event matching a double-click action<br>
+	 * 
+	 * @param event
+	 *            platform-specific event which is translated into a generic FIBMouseEvent
+	 */
+	public void applyDoubleClickAction(FIBMouseEvent event) {
 		eventListener.setEvent(event);
 		try {
 			getWidget().getDoubleClickAction().execute(eventListener);
@@ -959,7 +971,13 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		}
 	}
 
-	public void applyRightClickAction(MouseEvent event) {
+	/**
+	 * Called after the platform-specific controller has detected a mouse event matching a right-click action<br>
+	 * 
+	 * @param event
+	 *            platform-specific event which is translated into a generic FIBMouseEvent
+	 */
+	public void applyRightClickAction(FIBMouseEvent event) {
 		eventListener.setEvent(event);
 		try {
 			getWidget().getRightClickAction().execute(eventListener);
@@ -1120,11 +1138,11 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	}
 
 	protected class DynamicEventListener extends FIBDynamicBindingEvaluationContext {
-		private MouseEvent mouseEvent;
+		private FIBMouseEvent mouseEvent;
 		protected final static String EVENT = "event";
 
-		private void setEvent(MouseEvent mouseEvent) {
-			MouseEvent oldEvent = this.mouseEvent;
+		private void setEvent(FIBMouseEvent mouseEvent) {
+			FIBMouseEvent oldEvent = this.mouseEvent;
 			this.mouseEvent = mouseEvent;
 			getPropertyChangeSupport().firePropertyChange(EVENT, oldEvent, mouseEvent);
 		}

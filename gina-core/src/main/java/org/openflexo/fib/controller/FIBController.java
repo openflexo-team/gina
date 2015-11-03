@@ -41,8 +41,6 @@ package org.openflexo.fib.controller;
 
 import java.awt.Component;
 import java.awt.Window;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
@@ -68,8 +66,6 @@ import javax.swing.SwingUtilities;
 
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingVariable;
-import org.openflexo.connie.exception.NullReferenceException;
-import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.model.FIBComponent;
@@ -96,7 +92,6 @@ import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.StringUtils;
-import org.openflexo.toolbox.ToolBox;
 
 /**
  * Represent the controller of an instantiation of a FIBComponent in a particular Window Toolkit context (eg Swing)
@@ -318,7 +313,7 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 		l.addAll(views.values());
 		for (FIBView<?, ?> v : views.values()) {
 			if (v instanceof FIBReferencedComponentWidget) {
-				FIBReferencedComponentWidget<?, ?> w = (FIBReferencedComponentWidget<?, ?>) v;
+				FIBReferencedComponentWidget<?> w = (FIBReferencedComponentWidget<?>) v;
 				if (w.getReferencedComponentView() != null) {
 					l.addAll(w.getReferencedComponentView().getController().getAllViews());
 				} /*else {
@@ -342,7 +337,7 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 			if (variable.getVariableName().equals(c.getName())) {
 				FIBView<?, ?> returned = viewForComponent(c) /*.getDynamicModel()*/;
 				if (returned instanceof FIBCustomWidget) {
-					return ((FIBCustomWidget<?, ?>) returned).getCustomComponent();
+					return ((FIBCustomWidget<?, ?>) returned).getTechnologyComponent();
 				}
 				return returned;
 			}
@@ -418,7 +413,7 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 			return (FIBView<M, ?>) buildContainer((FIBContainer) fibComponent);
 		}
 		else if (fibComponent instanceof FIBWidget) {
-			return buildWidget((FIBWidget) fibComponent);
+			return (FIBView<M, ?>) getViewFactory().makeWidget((FIBWidget) fibComponent, this);
 		}
 		return null;
 	}
@@ -440,91 +435,12 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 
 	protected final <F extends FIBContainer> FIBContainerView<F, ?, ?> makeContainer(F fibContainer) {
 		try {
-			return (FIBContainerView<F, ?, ?>) getViewFactory().makeView(fibContainer);
+			return getViewFactory().makeContainer(fibContainer, this);
 		} catch (RuntimeException e) {
 			LOGGER.warning("Unexpected exception " + e.getMessage() + ". See logs for details.");
 			e.printStackTrace();
 			return null;
 		}
-	}
-
-	/**
-	 * Implementation of a MouseAdapter which ignore SingleClick events when DoubleClick was performed<br>
-	 * Also perform mouse binding execution
-	 * 
-	 * @author sylvain
-	 * 
-	 */
-	protected class FIBMouseAdapter extends MouseAdapter {
-
-		// private boolean wasDoubleClick = false;
-		// private Timer timer;
-		private final FIBWidgetView widgetView;
-		private final FIBWidget fibWidget;
-		private boolean isPopupTrigger = false;
-
-		public FIBMouseAdapter(FIBWidgetView widgetView, FIBWidget fibWidget) {
-			this.widgetView = widgetView;
-			this.fibWidget = fibWidget;
-		}
-
-		protected void fireSingleClick(MouseEvent e) {
-			mouseEvent = e;
-			fireMouseClicked(widgetView, 1);
-			if (fibWidget.hasRightClickAction()
-					&& (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3 || ToolBox.isMacOS() && isPopupTrigger)) {
-				// Detected right-click associated with action
-				widgetView.applyRightClickAction(e);
-			}
-			else if (fibWidget.hasClickAction()) {
-				// Detected click associated with action
-				widgetView.applySingleClickAction(e);
-			}
-		}
-
-		protected void fireDoubleClick(MouseEvent e) {
-			mouseEvent = e;
-			fireMouseClicked(widgetView, 2);
-			if (fibWidget.hasDoubleClickAction()) {
-				// Detected double-click associated with action
-				widgetView.applyDoubleClickAction(e);
-			}
-		}
-
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			mouseEvent = e;
-			if (e.getClickCount() == 2) {
-				// wasDoubleClick = true;
-				fireDoubleClick(mouseEvent);
-			}
-			else if (e.getClickCount() == 1) {
-				// wasDoubleClick = true;
-				fireSingleClick(mouseEvent);
-			} /* {
-				Integer timerinterval = (Integer) Toolkit.getDefaultToolkit().getDesktopProperty("awt.multiClickInterval");
-				timer = new Timer(timerinterval.intValue(), new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent evt) {
-						if (wasDoubleClick) {
-							wasDoubleClick = false; // reset flag
-						} else {
-							fireSingleClick(mouseEvent);
-						}
-					}
-				});
-				timer.setRepeats(false);
-				timer.start();
-				
-				}*/
-			isPopupTrigger = false;
-		}
-
-		/*@Override
-		public void mouseReleased(MouseEvent e) {
-			isPopupTrigger = true;
-		}*/
-
 	}
 
 	/**
@@ -535,44 +451,6 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 	 * @param fibWidget
 	 * @return
 	 */
-	protected final FIBWidgetView buildWidget(final FIBWidget fibWidget) {
-		final FIBWidgetView returned = makeWidget(fibWidget);
-		returned.getTechnologyComponent().addMouseListener(new FIBMouseAdapter(returned, fibWidget));
-
-		returned.getTechnologyComponent().addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (fibWidget.hasEnterPressedAction() && e.getKeyCode() == KeyEvent.VK_ENTER) {
-					// Detected double-click associated with action
-					try {
-						fibWidget.getEnterPressedAction().execute(returned.getBindingEvaluationContext());
-					} catch (TypeMismatchException e1) {
-						e1.printStackTrace();
-					} catch (NullReferenceException e1) {
-						e1.printStackTrace();
-					} catch (InvocationTargetException e1) {
-						e1.printStackTrace();
-					}
-				}
-			}
-		});
-		if (StringUtils.isNotEmpty(fibWidget.getTooltipText())) {
-			returned.getTechnologyComponent().setToolTipText(fibWidget.getTooltipText());
-		}
-		returned.updateGraphicalProperties();
-		return returned;
-	}
-
-	protected final FIBWidgetView makeWidget(FIBWidget fibWidget) {
-		try {
-			return getViewFactory().makeWidget(fibWidget);
-		} catch (RuntimeException e) {
-			LOGGER.warning("Unexpected exception " + e.getMessage() + ". See logs for details.");
-			e.printStackTrace();
-			return null;
-		}
-	}
-
 	@Override
 	public void update(Observable o, Object arg) {
 		// System.out.println("Received "+arg);
@@ -808,10 +686,10 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 			}
 			if (newFocusedWidget != null) {
 				newFocusedWidget.getJComponent().repaint();
-				if (newFocusedWidget.isSelectableComponent()) {
-					setLastFocusedSelectable(newFocusedWidget.getSelectableComponent());
+				if (newFocusedWidget instanceof FIBSelectable) {
+					setLastFocusedSelectable((FIBSelectable) newFocusedWidget);
 					if (getLastFocusedSelectable().synchronizedWithSelection()) {
-						setSelectionLeader(newFocusedWidget.getSelectableComponent());
+						setSelectionLeader((FIBSelectable) newFocusedWidget);
 						fireSelectionChanged((FIBSelectable) newFocusedWidget);
 					}
 				}
@@ -884,10 +762,9 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 			}
 
 			for (FIBView<?, ?> v : getAllViews()) {
-				if (v instanceof FIBWidgetView && ((FIBWidgetView<?, ?, ?>) v).isSelectableComponent()
-						&& ((FIBWidgetView<?, ?, ?>) v).getSelectableComponent() != getSelectionLeader()
-						&& ((FIBWidgetView<?, ?, ?>) v).getSelectableComponent().synchronizedWithSelection()) {
-					FIBSelectable selectableComponent = ((FIBWidgetView<?, ?, ?>) v).getSelectableComponent();
+				if (v instanceof FIBWidgetView && v instanceof FIBSelectable && v != getSelectionLeader()
+						&& ((FIBSelectable) v).synchronizedWithSelection()) {
+					FIBSelectable selectableComponent = (FIBSelectable) ((FIBWidgetView<?, ?, ?>) v);
 					for (Object o : objectsToAddToSelection) {
 						if (selectableComponent.mayRepresent(o)) {
 							selectableComponent.objectAddedToSelection(o);
@@ -913,9 +790,8 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 		LOGGER.fine("FIBController: objectAddedToSelection(): " + o);
 
 		for (FIBView<?, ?> v : getViews()) {
-			if (v instanceof FIBWidgetView && ((FIBWidgetView<?, ?, ?>) v).isSelectableComponent()
-					&& ((FIBWidgetView<?, ?, ?>) v).getSelectableComponent().synchronizedWithSelection()) {
-				FIBSelectable selectableComponent = ((FIBWidgetView<?, ?, ?>) v).getSelectableComponent();
+			if (v instanceof FIBWidgetView && v instanceof FIBSelectable && ((FIBSelectable) v).synchronizedWithSelection()) {
+				FIBSelectable selectableComponent = (FIBSelectable) v;
 				if (selectableComponent.mayRepresent(o)) {
 					selectableComponent.objectAddedToSelection(o);
 					if (getSelectionLeader() == null) {
@@ -936,9 +812,8 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 
 		LOGGER.fine("FIBController: objectRemovedFromSelection(): " + o);
 		for (FIBView<?, ?> v : getViews()) {
-			if (v instanceof FIBWidgetView && ((FIBWidgetView<?, ?, ?>) v).isSelectableComponent()
-					&& ((FIBWidgetView<?, ?, ?>) v).getSelectableComponent().synchronizedWithSelection()) {
-				FIBSelectable selectableComponent = ((FIBWidgetView<?, ?, ?>) v).getSelectableComponent();
+			if (v instanceof FIBWidgetView && v instanceof FIBSelectable && ((FIBSelectable) v).synchronizedWithSelection()) {
+				FIBSelectable selectableComponent = (FIBSelectable) v;
 				if (selectableComponent.mayRepresent(o)) {
 					selectableComponent.objectRemovedFromSelection(o);
 				}
@@ -949,9 +824,8 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 	public void selectionCleared() {
 		LOGGER.fine("FIBController: selectionCleared()");
 		for (FIBView<?, ?> v : getViews()) {
-			if (v instanceof FIBWidgetView && ((FIBWidgetView<?, ?, ?>) v).isSelectableComponent()
-					&& ((FIBWidgetView<?, ?, ?>) v).getSelectableComponent().synchronizedWithSelection()) {
-				FIBSelectable selectableComponent = ((FIBWidgetView<?, ?, ?>) v).getSelectableComponent();
+			if (v instanceof FIBWidgetView && v instanceof FIBSelectable && ((FIBSelectable) v).synchronizedWithSelection()) {
+				FIBSelectable selectableComponent = (FIBSelectable) v;
 				selectableComponent.selectionResetted();
 			}
 		}

@@ -40,7 +40,6 @@
 package org.openflexo.fib.model;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -65,9 +64,6 @@ import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.gina.manager.HasBaseIdentifier;
-import org.openflexo.gina.manager.Registerable;
-import org.openflexo.gina.manager.URID;
-import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -100,7 +96,7 @@ import org.openflexo.toolbox.StringUtils;
 		@Import(FIBFile.class), @Import(FIBFont.class), @Import(FIBHtmlEditor.class), @Import(FIBImage.class), @Import(FIBLabel.class),
 		@Import(FIBCheckboxList.class), @Import(FIBDropDown.class), @Import(FIBList.class), @Import(FIBRadioButtonList.class),
 		@Import(FIBNumber.class), @Import(FIBReferencedComponent.class), @Import(FIBTable.class), @Import(FIBEditor.class),
-		@Import(FIBEditorPane.class), @Import(FIBTextArea.class), @Import(FIBTextField.class) })
+		@Import(FIBTextArea.class), @Import(FIBTextField.class) })
 public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBaseIdentifier {
 
 	public static enum VerticalScrollBarPolicy {
@@ -552,7 +548,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			mayDepends = new Vector<FIBComponent>();
 			mayAlters = new Vector<FIBComponent>();
 		}
-		
+
+		@Override
 		public String getBaseIdentifier() {
 			return this.getBaseName() + ":" + this.getName();
 		}
@@ -1588,11 +1585,14 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		public void setDefinePreferredDimensions(boolean definePreferredDimensions) {
 			if (definePreferredDimensions() != definePreferredDimensions) {
 				if (definePreferredDimensions) {
-					FIBView<?, ?> v = FIBController.makeView(this, (LocalizedDelegate) null);
+					// This is no more possible, we should find an other solution
+					/*FIBView<?, ?> v = FIBController.makeView(this, (LocalizedDelegate) null);
 					Dimension p = v.getJComponent().getPreferredSize();
 					setWidth(p.width);
 					setHeight(p.height);
-					v.delete();
+					v.delete();*/
+					setWidth(100);
+					setHeight(100);
 				}
 				else {
 					setWidth(null);
@@ -1610,10 +1610,11 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		@Override
 		public void setDefineMaxDimensions(boolean defineMaxDimensions) {
 			if (defineMaxDimensions) {
-				FIBView<?, ?> v = FIBController.makeView(this, (LocalizedDelegate) null);
+				// This is no more possible, we should find an other solution
+				// FIBView<?, ?> v = FIBController.makeView(this, (LocalizedDelegate) null);
 				setMaxWidth(1024);
 				setMaxHeight(1024);
-				v.delete();
+				// v.delete();
 			}
 			else {
 				setMaxWidth(null);
@@ -1629,11 +1630,14 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		@Override
 		public void setDefineMinDimensions(boolean defineMinDimensions) {
 			if (defineMinDimensions) {
-				FIBView<?, ?> v = FIBController.makeView(this, (LocalizedDelegate) null);
-				Dimension p = v.getJComponent().getMinimumSize();
-				setMinWidth(p.width);
-				setMinHeight(p.height);
-				v.delete();
+				// This is no more possible, we should find an other solution
+				// FIBView<?, ?> v = FIBController.makeView(this, (LocalizedDelegate) null);
+				// Dimension p = v.getJComponent().getMinimumSize();
+				// setMinWidth(p.width);
+				// setMinHeight(p.height);
+				// v.delete();
+				setMinWidth(10);
+				setMinHeight(10);
 			}
 			else {
 				setMinWidth(null);

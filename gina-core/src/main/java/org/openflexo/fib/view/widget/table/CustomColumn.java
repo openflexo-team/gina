@@ -81,9 +81,9 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V>implements EditableC
 
 	private final FIBCustomColumn _customColumn;
 
-	private final FIBCustomComponent<V, ?> _viewCustomWidget;
+	private final FIBCustomComponent<V> _viewCustomWidget;
 
-	private final FIBCustomComponent<V, ?> _editCustomWidget;
+	private final FIBCustomComponent<V> _editCustomWidget;
 
 	private final boolean useCustomViewForCellRendering;
 	private final boolean disableTerminateEditOnFocusLost;
@@ -91,9 +91,9 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V>implements EditableC
 	public CustomColumn(FIBCustomColumn columnModel, FIBTableModel<T> tableModel, FIBController controller) {
 		super(columnModel, tableModel, controller);
 		_customColumn = columnModel;
-		_viewCustomWidget = makeCustomComponent((Class<FIBCustomComponent<V, ?>>) columnModel.getComponentClass(),
+		_viewCustomWidget = makeCustomComponent((Class<FIBCustomComponent<V>>) columnModel.getComponentClass(),
 				(Class<V>) TypeUtils.getBaseClass(columnModel.getDataClass()));
-		_editCustomWidget = makeCustomComponent((Class<FIBCustomComponent<V, ?>>) columnModel.getComponentClass(),
+		_editCustomWidget = makeCustomComponent((Class<FIBCustomComponent<V>>) columnModel.getComponentClass(),
 				(Class<V>) TypeUtils.getBaseClass(columnModel.getDataClass()));
 		if (_editCustomWidget != null) {
 			_editCustomWidget.addApplyCancelListener(this);
@@ -109,7 +109,7 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V>implements EditableC
 		return (FIBCustomColumn) super.getColumnModel();
 	}
 
-	private FIBCustomComponent<V, ?> makeCustomComponent(Class<FIBCustomComponent<V, ?>> customComponentClass, Class<V> dataClass) {
+	private FIBCustomComponent<V> makeCustomComponent(Class<FIBCustomComponent<V>> customComponentClass, Class<V> dataClass) {
 		if (dataClass == null) {
 			return null;
 		}
@@ -119,11 +119,11 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V>implements EditableC
 		Class[] types = new Class[1];
 		types[0] = dataClass;
 		try {
-			Constructor<FIBCustomComponent<V, ?>> constructor = null;
+			Constructor<FIBCustomComponent<V>> constructor = null;
 			for (Constructor<?> c : customComponentClass.getConstructors()) {
 				if (c.getGenericParameterTypes().length == 1) {
 					if (TypeUtils.isTypeAssignableFrom(c.getGenericParameterTypes()[0], dataClass)) {
-						constructor = (Constructor<FIBCustomComponent<V, ?>>) c;
+						constructor = (Constructor<FIBCustomComponent<V>>) c;
 						break;
 					}
 					else {
@@ -131,7 +131,7 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V>implements EditableC
 						// Anyway we warn and continue as returning null will be even worse
 						logger.warning("Non-compatible types while instanciating component " + customComponentClass
 								+ " with declared dataClass=" + dataClass + " instead of " + c.getGenericParameterTypes()[0]);
-						constructor = (Constructor<FIBCustomComponent<V, ?>>) c;
+						constructor = (Constructor<FIBCustomComponent<V>>) c;
 					}
 				}
 			}
@@ -196,10 +196,10 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V>implements EditableC
 				int column) {
 			Component c;
 			if (isSelected && hasFocus || useCustomViewForCellRendering) {
-				FIBCustomComponent<V, ?> customWidgetView = getViewCustomWidget(elementAt(row));
+				FIBCustomComponent<V> customWidgetView = getViewCustomWidget(elementAt(row));
 				if (customWidgetView != null) {
 					// TODO: this cast should disappear: we may not be a JComponent in other context than Swing
-					c = (Component) customWidgetView.getTechnologyComponent();
+					c = (Component) customWidgetView;
 				}
 				else {
 					c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -263,7 +263,7 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V>implements EditableC
 		// return _viewCustomWidget.getColorForObject(value);
 	}
 
-	protected FIBCustomComponent<V, ?> getViewCustomWidget(T rowObject) {
+	protected FIBCustomComponent<V> getViewCustomWidget(T rowObject) {
 		if (_viewCustomWidget != null) {
 			V value = getValueFor(rowObject/*, getBindingEvaluationContext()*/);
 			_viewCustomWidget.setEditedObject(value);
@@ -273,7 +273,7 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V>implements EditableC
 		return _viewCustomWidget;
 	}
 
-	protected FIBCustomComponent<V, ?> getEditCustomWidget(T rowObject) {
+	protected FIBCustomComponent<V> getEditCustomWidget(T rowObject) {
 		if (_editCustomWidget != null) {
 			V value = getValueFor(rowObject/*, getBindingEvaluationContext()*/);
 			_editCustomWidget.setEditedObject(value);
@@ -300,7 +300,7 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V>implements EditableC
 	private final CustomCellEditor _customCellEditor;
 
 	protected class CustomCellEditor extends AbstractCellEditor implements TableCellEditor, ActionListener {
-		FIBCustomComponent<V, ?> _customWidget;
+		FIBCustomComponent<V> _customWidget;
 
 		public CustomCellEditor() {
 			_customWidget = getEditCustomWidget(null);
@@ -357,7 +357,7 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V>implements EditableC
 				});
 			}
 			// TODO: this cast should disappear: we may not be a JComponent in other context than Swing
-			JComponent jComponent = (JComponent) _customWidget.getTechnologyComponent();
+			JComponent jComponent = (JComponent) _customWidget;
 			jComponent.setBorder(null);
 			return jComponent;
 		}

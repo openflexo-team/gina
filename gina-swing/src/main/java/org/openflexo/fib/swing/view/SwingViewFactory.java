@@ -39,8 +39,17 @@
 
 package org.openflexo.fib.swing.view;
 
+import java.awt.Point;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.lang.reflect.InvocationTargetException;
+
 import javax.swing.JComponent;
 
+import org.openflexo.connie.exception.NullReferenceException;
+import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBBrowser;
 import org.openflexo.fib.model.FIBButton;
@@ -56,12 +65,14 @@ import org.openflexo.fib.model.FIBHtmlEditor;
 import org.openflexo.fib.model.FIBImage;
 import org.openflexo.fib.model.FIBLabel;
 import org.openflexo.fib.model.FIBList;
+import org.openflexo.fib.model.FIBMouseEvent;
 import org.openflexo.fib.model.FIBNumber;
 import org.openflexo.fib.model.FIBRadioButtonList;
 import org.openflexo.fib.model.FIBReferencedComponent;
 import org.openflexo.fib.model.FIBTable;
 import org.openflexo.fib.model.FIBTextArea;
 import org.openflexo.fib.model.FIBTextField;
+import org.openflexo.fib.model.FIBWidget;
 import org.openflexo.fib.swing.view.widget.JFIBBrowserWidget;
 import org.openflexo.fib.swing.view.widget.JFIBButtonWidget;
 import org.openflexo.fib.swing.view.widget.JFIBCheckBoxWidget;
@@ -82,6 +93,7 @@ import org.openflexo.fib.swing.view.widget.JFIBReferencedComponentWidget;
 import org.openflexo.fib.swing.view.widget.JFIBTableWidget;
 import org.openflexo.fib.swing.view.widget.JFIBTextAreaWidget;
 import org.openflexo.fib.swing.view.widget.JFIBTextFieldWidget;
+import org.openflexo.fib.view.FIBWidgetView;
 import org.openflexo.fib.view.GinaViewFactory;
 import org.openflexo.fib.view.impl.GinaViewFactoryImpl;
 import org.openflexo.fib.view.widget.FIBLabelWidget;
@@ -104,6 +116,7 @@ import org.openflexo.fib.view.widget.impl.FIBRadioButtonListWidgetImpl;
 import org.openflexo.fib.view.widget.impl.FIBReferencedComponentWidgetImpl;
 import org.openflexo.fib.view.widget.impl.FIBTableWidgetImpl;
 import org.openflexo.fib.view.widget.impl.FIBTextAreaWidgetImpl;
+import org.openflexo.toolbox.StringUtils;
 
 /**
  * A {@link GinaViewFactory} implementation dedicated for Swing
@@ -114,6 +127,114 @@ import org.openflexo.fib.view.widget.impl.FIBTextAreaWidgetImpl;
 public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 
 	public static final SwingViewFactory INSTANCE = new SwingViewFactory();
+
+	/**
+	 * A MouseAdapter which handle click actions<br>
+	 * Also perform mouse binding execution
+	 * 
+	 * @author sylvain
+	 * 
+	 */
+	protected class FIBMouseAdapter extends MouseAdapter {
+
+		private final FIBWidgetView<?, ? extends JComponent, ?> widgetView;
+
+		public FIBMouseAdapter(FIBWidgetView<?, ? extends JComponent, ?> widgetView, FIBWidget fibWidget) {
+			this.widgetView = widgetView;
+		}
+
+		private FIBMouseEvent makeMouseEvent(final MouseEvent e) {
+			return new FIBMouseEvent() {
+
+				@Override
+				public int getY() {
+					return e.getY();
+				}
+
+				@Override
+				public int getX() {
+					return e.getX();
+				}
+
+				@Override
+				public Object getSource() {
+					return e.getSource();
+				}
+
+				@Override
+				public Point getPoint() {
+					return e.getPoint();
+				}
+
+				@Override
+				public Point getLocationOnScreen() {
+					return e.getLocationOnScreen();
+				}
+
+				@Override
+				public int getClickCount() {
+					return e.getClickCount();
+				}
+
+				@Override
+				public int getButton() {
+					return e.getButton();
+				}
+			};
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			widgetView.getController().fireMouseClicked(widgetView, e.getClickCount());
+			if (e.getClickCount() == 1) {
+				if (widgetView.getWidget().hasRightClickAction() && (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3)) {
+					// Detected right-click associated with action
+					widgetView.applyRightClickAction(makeMouseEvent(e));
+				}
+				else if (widgetView.getWidget().hasClickAction()) {
+					// Detected click associated with action
+					widgetView.applySingleClickAction(makeMouseEvent(e));
+				}
+			}
+			else if (e.getClickCount() == 2) {
+				if (widgetView.getWidget().hasDoubleClickAction()) {
+					// Detected double-click associated with action
+					widgetView.applyDoubleClickAction(makeMouseEvent(e));
+				}
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <F extends FIBWidget> FIBWidgetView<F, ? extends JComponent, ?> makeWidget(final F fibWidget, FIBController controller) {
+		final FIBWidgetView<F, ? extends JComponent, ?> returned = super.makeWidget(fibWidget, controller);
+
+		returned.getTechnologyComponent().addMouseListener(new FIBMouseAdapter(returned, fibWidget));
+
+		returned.getTechnologyComponent().addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (fibWidget.hasEnterPressedAction() && e.getKeyCode() == KeyEvent.VK_ENTER) {
+					// Detected double-click associated with action
+					try {
+						fibWidget.getEnterPressedAction().execute(returned.getBindingEvaluationContext());
+					} catch (TypeMismatchException e1) {
+						e1.printStackTrace();
+					} catch (NullReferenceException e1) {
+						e1.printStackTrace();
+					} catch (InvocationTargetException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		if (StringUtils.isNotEmpty(fibWidget.getTooltipText())) {
+			returned.getTechnologyComponent().setToolTipText(fibWidget.getTooltipText());
+		}
+		returned.updateGraphicalProperties();
+		return returned;
+	}
 
 	@Override
 	public FIBLabelWidget<? extends JComponent> makeLabel(FIBLabel widget, FIBController controller) {

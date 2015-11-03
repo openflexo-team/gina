@@ -53,14 +53,12 @@ import org.openflexo.fib.view.widget.impl.FIBTextAreaWidgetImpl;
  * @author sylvain
  * 
  * @param <C>
- *            base minimal class of components build by this tool factory (eg
- *            JComponent for Swing)
+ *            base minimal class of components build by this tool factory (eg JComponent for Swing)
  */
 public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 
 	@Override
-	public <F extends FIBContainer> FIBContainerView<F, ? extends C, ? extends C> makeContainer(F fibContainer,
-			FIBController controller) {
+	public <F extends FIBContainer> FIBContainerView<F, ? extends C, ? extends C> makeContainer(F fibContainer, FIBController controller) {
 		/*
 		 * if (fibContainer instanceof FIBTab) { return new FIBTabView((FIBTab)
 		 * fibContainer, this.fibController); } else if (fibContainer instanceof
@@ -77,6 +75,13 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <F extends FIBWidget> FIBWidgetView<F, ? extends C, ?> makeWidget(F fibWidget, FIBController controller) {
+		final FIBWidgetView<F, ? extends C, ?> returned = buildWidget(fibWidget, controller);
+		returned.updateGraphicalProperties();
+		return returned;
+	}
+
+	@SuppressWarnings("unchecked")
+	private <F extends FIBWidget> FIBWidgetView<F, ? extends C, ?> buildWidget(F fibWidget, FIBController controller) {
 		if (fibWidget instanceof FIBLabel) {
 			return (FIBWidgetView<F, ? extends C, ?>) makeLabel((FIBLabel) fibWidget, controller);
 		}
@@ -135,8 +140,7 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 			return (FIBWidgetView<F, ? extends C, ?>) makeCustomWidget((FIBCustom) fibWidget, controller);
 		}
 		if (fibWidget instanceof FIBReferencedComponent) {
-			return (FIBWidgetView<F, ? extends C, ?>) makeReferencedComponentWidget((FIBReferencedComponent) fibWidget,
-					controller);
+			return (FIBWidgetView<F, ? extends C, ?>) makeReferencedComponentWidget((FIBReferencedComponent) fibWidget, controller);
 		}
 		return null;
 	}
@@ -153,11 +157,9 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 
 	public abstract FIBCheckBoxWidgetImpl<? extends C> makeCheckbox(FIBCheckBox widget, FIBController controller);
 
-	public abstract FIBCheckboxListWidgetImpl<? extends C, ?> makeCheckboxList(FIBCheckboxList widget,
-			FIBController controller);
+	public abstract FIBCheckboxListWidgetImpl<? extends C, ?> makeCheckboxList(FIBCheckboxList widget, FIBController controller);
 
-	public abstract FIBRadioButtonListWidgetImpl<? extends C, ?> makeRadioButtonList(FIBRadioButtonList widget,
-			FIBController controller);
+	public abstract FIBRadioButtonListWidgetImpl<? extends C, ?> makeRadioButtonList(FIBRadioButtonList widget, FIBController controller);
 
 	public abstract FIBDropDownWidgetImpl<? extends C, ?> makeDropDown(FIBDropDown widget, FIBController controller);
 
@@ -181,7 +183,7 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 
 	public abstract FIBCustomWidgetImpl<? extends C, ?> makeCustomWidget(FIBCustom widget, FIBController controller);
 
-	public abstract FIBReferencedComponentWidgetImpl<? extends C> makeReferencedComponentWidget(
-			FIBReferencedComponent widget, FIBController controller);
+	public abstract FIBReferencedComponentWidgetImpl<? extends C> makeReferencedComponentWidget(FIBReferencedComponent widget,
+			FIBController controller);
 
 }

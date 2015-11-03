@@ -44,6 +44,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.Icon;
 
 import org.openflexo.fib.model.FIBComponent;
+import org.openflexo.fib.model.FIBMouseEvent;
 import org.openflexo.fib.model.FIBWidget;
 import org.openflexo.fib.view.impl.FIBContainerViewImpl;
 import org.openflexo.gina.event.GenericEventPerformer;
@@ -129,5 +130,29 @@ public interface FIBWidgetView<M extends FIBWidget, C, T>
 	 *            in milliseconds
 	 */
 	public void invokeLater(final Runnable r, final long aggregationTimeOut);
+
+	/**
+	 * Called after the platform-specific controller has detected a mouse event matching a single-click action<br>
+	 * 
+	 * @param event
+	 *            platform-specific event which is translated into a generic FIBMouseEvent
+	 */
+	public void applySingleClickAction(FIBMouseEvent event);
+
+	/**
+	 * Called after the platform-specific controller has detected a mouse event matching a double-click action<br>
+	 * 
+	 * @param event
+	 *            platform-specific event which is translated into a generic FIBMouseEvent
+	 */
+	public void applyDoubleClickAction(FIBMouseEvent event);
+
+	/**
+	 * Called after the platform-specific controller has detected a mouse event matching a right-click action<br>
+	 * 
+	 * @param event
+	 *            platform-specific event which is translated into a generic FIBMouseEvent
+	 */
+	public void applyRightClickAction(FIBMouseEvent event);
 
 }

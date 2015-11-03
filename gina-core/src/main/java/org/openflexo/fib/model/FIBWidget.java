@@ -39,9 +39,7 @@
 
 package org.openflexo.fib.model;
 
-import java.awt.event.MouseEvent;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -54,17 +52,13 @@ import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.DefaultBindable;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.DataBinding.CachingStrategy;
+import org.openflexo.connie.DefaultBindable;
 import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.connie.type.WilcardTypeImpl;
 import org.openflexo.fib.view.FIBWidgetView;
-import org.openflexo.gina.event.description.FIBEventDescription;
-import org.openflexo.gina.event.description.FIBEventFactory;
-import org.openflexo.gina.event.description.FIBTextEventDescription;
-import org.openflexo.gina.manager.GinaEventListener;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -231,9 +225,9 @@ public abstract interface FIBWidget extends FIBComponent {
 	public Bindable getValueBindable();
 
 	public Bindable getEventListener();
-	
-	/*public void addFibListener(GinaEventListener l);
 
+	/*public void addFibListener(GinaEventListener l);
+	
 	public List<GinaEventListener> getFibListeners();*/
 
 	public static abstract class FIBWidgetImpl extends FIBComponentImpl implements FIBWidget {
@@ -245,7 +239,8 @@ public abstract interface FIBWidget extends FIBComponent {
 		public static BindingDefinition ENABLE = new BindingDefinition("enable", Boolean.class, DataBinding.BindingDefinitionType.GET,
 				false);
 		@Deprecated
-		public static BindingDefinition FORMAT = new BindingDefinition("format", String.class, DataBinding.BindingDefinitionType.GET, false);
+		public static BindingDefinition FORMAT = new BindingDefinition("format", String.class, DataBinding.BindingDefinitionType.GET,
+				false);
 		@Deprecated
 		public static BindingDefinition ICON = new BindingDefinition("icon", Icon.class, DataBinding.BindingDefinitionType.GET, false);
 		@Deprecated
@@ -285,29 +280,29 @@ public abstract interface FIBWidget extends FIBComponent {
 		private final FIBValueBindable valueBindable;
 		private final FIBEventListener eventListener;
 		private DataBinding<Object> valueTransform;
-		
-		//private List<GinaEventListener> fibListeners = new ArrayList<GinaEventListener>();
+
+		// private List<GinaEventListener> fibListeners = new ArrayList<GinaEventListener>();
 
 		public FIBWidgetImpl() {
 			super();
 			formatter = new FIBFormatter();
-			valueBindable = new FIBValueBindable(); 
+			valueBindable = new FIBValueBindable();
 			eventListener = new FIBEventListener();
 		}
-		
+
 		/*public void addFibListener(GinaEventListener l) {
 			fibListeners.add(l);
-	    }
+		}
 		
 		public List<GinaEventListener> getFibListeners() {
 			return fibListeners;
 		}*/
-		
+
 		/*public void actionPerformed(String action, Object... args) {
 			FIBActionEvent e;
 			
 			FIBEventFactory f = FIBActionListenerManager.getInstance().getFactory();
-
+		
 			switch(action) {
 			case "clicked":
 				e = f.createButtonEvent(action);
@@ -468,7 +463,8 @@ public abstract interface FIBWidget extends FIBComponent {
 			if (getManageDynamicModel()) {
 				if (getData() != null && getData().isSet()) {
 					return super.getDynamicAccessType();
-				} else {
+				}
+				else {
 					Type[] args = new Type[3];
 					args[0] = new WilcardTypeImpl(FIBComponent.class);
 					args[1] = new WilcardTypeImpl(JComponent.class);
@@ -547,7 +543,8 @@ public abstract interface FIBWidget extends FIBComponent {
 					}
 				};
 				this.valueTransform.setBindingName("valueTransform");
-			} else {
+			}
+			else {
 				this.valueTransform = null;
 			}
 		}
@@ -613,7 +610,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		public Boolean getLocalize() {
 			return localize;
 		}
-
+		
 		@Override
 		public void setLocalize(Boolean localize) {
 			FIBPropertyNotification<Boolean> notification = requireChange(LOCALIZE_KEY, localize);
@@ -682,9 +679,8 @@ public abstract interface FIBWidget extends FIBComponent {
 			@Override
 			public String toString() {
 				if (FIBWidgetImpl.this instanceof FIBDropDown) {
-					return "FIBFormatter[" + FIBWidgetImpl.this + "] iteratorClass="
-							+ ((FIBDropDown) FIBWidgetImpl.this).getIteratorClass() + " dataType="
-							+ ((FIBDropDown) FIBWidgetImpl.this).getDataType() + " obtained from "
+					return "FIBFormatter[" + FIBWidgetImpl.this + "] iteratorClass=" + ((FIBDropDown) FIBWidgetImpl.this).getIteratorClass()
+							+ " dataType=" + ((FIBDropDown) FIBWidgetImpl.this).getDataType() + " obtained from "
 							+ ((FIBDropDown) FIBWidgetImpl.this).getDescription();
 				}
 				return "FIBFormatter[" + FIBWidgetImpl.this + "]" + " dataType=" + FIBWidgetImpl.this.getDataType();
@@ -759,7 +755,8 @@ public abstract interface FIBWidget extends FIBComponent {
 			public void notifiedBindingChanged(DataBinding<?> binding) {
 				if (binding == getValueTransform()) {
 					FIBWidgetImpl.this.notifiedBindingChanged(binding);
-				} else if (binding == getValueValidator()) {
+				}
+				else if (binding == getValueValidator()) {
 					FIBWidgetImpl.this.notifiedBindingChanged(binding);
 				}
 			}
@@ -808,7 +805,7 @@ public abstract interface FIBWidget extends FIBComponent {
 
 			private void createEventListenerBindingModel() {
 				eventListenerBindingModel = new BindingModel(FIBWidgetImpl.this.getBindingModel());
-				BindingVariable eventVariable = new BindingVariable("event", MouseEvent.class);
+				BindingVariable eventVariable = new BindingVariable("event", FIBMouseEvent.class);
 				eventVariable.setCacheable(false);
 				eventListenerBindingModel.addToBindingVariables(eventVariable);
 			}
@@ -1004,8 +1001,8 @@ public abstract interface FIBWidget extends FIBComponent {
 	}
 
 	@DefineValidationRule
-	public static class FIBWidgetDeclaredAsDynamicShouldHaveAName extends
-			ValidationRule<FIBWidgetDeclaredAsDynamicShouldHaveAName, FIBWidget> {
+	public static class FIBWidgetDeclaredAsDynamicShouldHaveAName
+			extends ValidationRule<FIBWidgetDeclaredAsDynamicShouldHaveAName, FIBWidget> {
 		public FIBWidgetDeclaredAsDynamicShouldHaveAName() {
 			super(FIBWidget.class, "widgets_declaring_managing_dynamic_model_should_have_a_name");
 		}
@@ -1016,7 +1013,8 @@ public abstract interface FIBWidget extends FIBComponent {
 				GenerateDefaultName fixProposal1 = new GenerateDefaultName();
 				DisableDynamicModelManagement fixProposal2 = new DisableDynamicModelManagement();
 				return new ValidationWarning<FIBWidgetDeclaredAsDynamicShouldHaveAName, FIBWidget>(this, object,
-						"widget_($validable.toString)_declares_managing_dynamic_model_but_does_not_have_a_name", fixProposal1, fixProposal2);
+						"widget_($validable.toString)_declares_managing_dynamic_model_but_does_not_have_a_name", fixProposal1,
+						fixProposal2);
 			}
 			return null;
 		}
