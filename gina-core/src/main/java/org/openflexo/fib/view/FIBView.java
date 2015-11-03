@@ -149,9 +149,9 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 
 	public void updateGraphicalProperties();
 
-	public FIBReferencedComponentWidget<?, C> getEmbeddingComponent();
+	public FIBReferencedComponentWidget<C> getEmbeddingComponent();
 
-	public void setEmbeddingComponent(FIBReferencedComponentWidget<?, C> embeddingComponent);
+	public void setEmbeddingComponent(FIBReferencedComponentWidget<C> embeddingComponent);
 
 	public void delete();
 

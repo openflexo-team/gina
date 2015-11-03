@@ -43,6 +43,8 @@ import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBReferencedComponent;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.fib.view.FIBWidgetView;
+import org.openflexo.fib.view.FIBView.RenderingTechnologyAdapter;
+import org.openflexo.fib.view.widget.FIBCustomWidget.CustomComponentRenderingTechnologyAdapter;
 
 /**
  * This component allows to reuse an other component, and embed it into a widget<br>
@@ -51,16 +53,28 @@ import org.openflexo.fib.view.FIBWidgetView;
  * 
  * @param <C>
  *            type of technology-specific component this view manage
- * @param <C2>
- *            type of technology-specific component this view is embedding (this is the type of embedded component)
  * 
  * @author sylvain
  * 
  */
-public interface FIBReferencedComponentWidget<C, C2> extends FIBWidgetView<FIBReferencedComponent, C, Object> {
+public interface FIBReferencedComponentWidget<C> extends FIBWidgetView<FIBReferencedComponent, C, Object> {
 
 	public BindingEvaluationContext getEmbeddedBindingEvaluationContext();
 
-	public FIBView<FIBComponent, C2> getReferencedComponentView();
+	public FIBView<FIBComponent,C> getReferencedComponentView();
+
+	@Override
+	public ReferencedComponentRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter();
+
+	/**
+	 * Specification of an adapter for a given rendering technology (eg Swing)
+	 * 
+	 * @author sylvain
+	 *
+	 * @param <C>
+	 */
+	public static interface ReferencedComponentRenderingTechnologyAdapter<C> extends RenderingTechnologyAdapter<C> {
+
+	}
 
 }

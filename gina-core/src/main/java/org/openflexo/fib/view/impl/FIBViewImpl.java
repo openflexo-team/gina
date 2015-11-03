@@ -90,7 +90,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	private JScrollPane scrolledComponent;
 
-	private FIBReferencedComponentWidget<?, C> embeddingComponent;
+	private FIBReferencedComponentWidget<C> embeddingComponent;
 
 	private final PropertyChangeSupport pcSupport;
 
@@ -519,12 +519,12 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	}
 
 	@Override
-	public FIBReferencedComponentWidget<?, C> getEmbeddingComponent() {
+	public FIBReferencedComponentWidget<C> getEmbeddingComponent() {
 		return embeddingComponent;
 	}
 
 	@Override
-	public void setEmbeddingComponent(FIBReferencedComponentWidget<?, C> embeddingComponent) {
+	public void setEmbeddingComponent(FIBReferencedComponentWidget<C> embeddingComponent) {
 		/* if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("DropSchemePanel")) {
 			System.out.println("Set emmbedding component for DropSchemePanel with " + embeddingComponent);
 		}*/

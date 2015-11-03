@@ -174,7 +174,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	 * @return C
 	 */
 	@Override
-	public C getTechnologyComponent() {
+	public final C getTechnologyComponent() {
 		return technologyComponent;
 	}
 

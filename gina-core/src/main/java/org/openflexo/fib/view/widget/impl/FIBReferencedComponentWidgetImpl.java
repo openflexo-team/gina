@@ -80,15 +80,15 @@ import org.openflexo.rm.Resource;
  * @author sylvain
  * 
  */
-public abstract class FIBReferencedComponentWidgetImpl<C, C2> extends FIBWidgetViewImpl<FIBReferencedComponent, C, Object>
-		implements FIBReferencedComponentWidget<C, C2> {
+public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewImpl<FIBReferencedComponent, C, Object>
+		implements FIBReferencedComponentWidget<C> {
 
 	private static final Logger logger = Logger.getLogger(FIBReferencedComponentWidgetImpl.class.getPackage().getName());
 
 	public static final String COMPONENT = "component";
 
 	private FIBComponent referencedComponent = null;
-	private FIBView<FIBComponent, C2> referencedComponentView;
+	private FIBView<FIBComponent, C> referencedComponentView;
 
 	private FIBController embeddedFIBController;
 	// private final GinaViewFactory factory;
@@ -99,12 +99,16 @@ public abstract class FIBReferencedComponentWidgetImpl<C, C2> extends FIBWidgetV
 	private BindingValueChangeListener<Resource> dynamicComponentFileBindingValueChangeListener;
 
 	public FIBReferencedComponentWidgetImpl(FIBReferencedComponent model, FIBController controller,
-			RenderingTechnologyAdapter<C> renderingTechnologyAdapter, GinaViewFactory<?> factory) {
+			ReferencedComponentRenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
 		super(model, controller, renderingTechnologyAdapter);
-		// this.factory = factory;
 		NOT_FOUND_LABEL = new JLabel(""/*"<" + model.getName() + ": not found component>"*/);
 		updateFont();
 		listenDynamicComponentFileValueChange();
+	}
+	
+	@Override
+	public ReferencedComponentRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter() {
+		return (ReferencedComponentRenderingTechnologyAdapter<C>)super.getRenderingTechnologyAdapter();
 	}
 
 	/*@Override
@@ -141,7 +145,7 @@ public abstract class FIBReferencedComponentWidgetImpl<C, C2> extends FIBWidgetV
 	 * Update the model given the actual state of the widget
 	 */
 	@Override
-	public synchronized boolean updateModelFromWidget() {
+	public boolean updateModelFromWidget() {
 		return false;
 	}
 
@@ -267,68 +271,52 @@ public abstract class FIBReferencedComponentWidgetImpl<C, C2> extends FIBWidgetV
 	}
 
 	@Override
-	public FIBView<FIBComponent, C2> getReferencedComponentView() {
-		if (referencedComponentView == null && !isComponentLoading) {
-			// System.out.println(">>>>>>> Making new FIBViewImpl for " + getWidget() + " for " + getWidget().getComponent());
+	protected C makeTechnologyComponent() {
+		
+		FIBComponent loaded = getReferencedComponent();
 
-			isComponentLoading = true;
-			FIBComponent loaded = getReferencedComponent();
+		// If an embedded FIBController is already declared, delete it
+		if (embeddedFIBController != null) {
+			embeddedFIBController.delete();
+			embeddedFIBController = null;
+		}
 
-			// If an embedded FIBController is already declared, delete it
-			if (embeddedFIBController != null) {
-				embeddedFIBController.delete();
-				embeddedFIBController = null;
+		if (loaded != null) {
+
+			// Now, we instantiate a new embedded FIBController
+
+			embeddedFIBController = FIBController.instanciateController(loaded, getController().getViewFactory(),
+					getController().getLocalizer());
+
+			embeddedFIBController.setDataObject(getValue());
+
+			if (loaded instanceof FIBWidget) {
+				referencedComponentView = (FIBWidgetView) embeddedFIBController.getViewFactory().makeWidget((FIBWidget) loaded,
+						embeddedFIBController);
+				referencedComponentView.setEmbeddingComponent(this);
+			}
+			else if (loaded instanceof FIBContainer) {
+				referencedComponentView = (FIBContainerView) embeddedFIBController.getViewFactory().makeContainer((FIBContainer) loaded,
+						embeddedFIBController);
+				referencedComponentView.setEmbeddingComponent(this);
 			}
 
-			if (loaded != null) {
-
-				// Now, we instantiate a new embedded FIBController
-
-				embeddedFIBController = FIBController.instanciateController(loaded, getController().getViewFactory(),
-						getController().getLocalizer());
-
-				embeddedFIBController.setDataObject(getValue());
-
-				if (loaded instanceof FIBWidget) {
-					referencedComponentView = (FIBWidgetView) embeddedFIBController.getViewFactory().makeWidget((FIBWidget) loaded,
-							embeddedFIBController);
-					referencedComponentView.setEmbeddingComponent(this);
-				}
-				else if (loaded instanceof FIBContainer) {
-					referencedComponentView = (FIBContainerView) embeddedFIBController.getViewFactory().makeContainer((FIBContainer) loaded,
-							embeddedFIBController);
-					referencedComponentView.setEmbeddingComponent(this);
-				}
-
+		}
+		else {
+			if (!isComponentLoading) {
+				logger.warning("ReferencedComponent = null and I'm NOT loading anything... : " + this.getComponentFile().getURI());
 			}
-			else {
-				if (!isComponentLoading) {
-					logger.warning("ReferencedComponent = null and I'm NOT loading anything... : " + this.getComponentFile().getURI());
-				}
-
-			}
-
-			isComponentLoading = false;
-
+		}
+		
+		return referencedComponentView.getTechnologyComponent();
+	}
+	
+	@Override
+	public FIBView<FIBComponent, C> getReferencedComponentView() {
+		if (referencedComponentView == null) {
+			technologyComponent = makeTechnologyComponent();
 		}
 		return referencedComponentView;
-	}
-
-	@Override
-	public synchronized JComponent getJComponent() {
-		if (getReferencedComponentView() != null) {
-			JComponent returned = getReferencedComponentView().getJComponent();
-			/*if (returned != null && getWidget().getOpaque() != null) {
-					returned.setOpaque(getWidget().getOpaque());
-				}*/
-			return returned;
-		}
-		return NOT_FOUND_LABEL;
-	}
-
-	@Override
-	public C getTechnologyComponent() {
-		return (C) getJComponent();
 	}
 
 	private void performAssignments() {
