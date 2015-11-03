@@ -58,15 +58,15 @@ import org.openflexo.fib.view.widget.FIBLabelWidget;
 public abstract class FIBLabelWidgetImpl<C> extends FIBWidgetViewImpl<FIBLabel, C, String>implements FIBLabelWidget<C> {
 	private static final Logger LOGGER = Logger.getLogger(FIBLabelWidgetImpl.class.getPackage().getName());
 
-	public FIBLabelWidgetImpl(FIBLabel model, FIBController controller, LabelRenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
-		super(model, controller, renderingTechnologyAdapter);
+	public FIBLabelWidgetImpl(FIBLabel model, FIBController controller, LabelRenderingAdapter<C> RenderingAdapter) {
+		super(model, controller, RenderingAdapter);
 		updateAlign();
 		updateLabel();
 	}
 
 	@Override
-	public LabelRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter() {
-		return (LabelRenderingTechnologyAdapter) super.getRenderingTechnologyAdapter();
+	public LabelRenderingAdapter<C> getRenderingAdapter() {
+		return (LabelRenderingAdapter) super.getRenderingAdapter();
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public abstract class FIBLabelWidgetImpl<C> extends FIBWidgetViewImpl<FIBLabel, 
 		if (getWidget().getAlign() == null) {
 			return;
 		}
-		getRenderingTechnologyAdapter().setHorizontalAlignment(getTechnologyComponent(), getWidget().getAlign().getAlign());
+		getRenderingAdapter().setHorizontalAlignment(getTechnologyComponent(), getWidget().getAlign().getAlign());
 	}
 
 	final protected void updateLabel() {
@@ -104,7 +104,7 @@ public abstract class FIBLabelWidgetImpl<C> extends FIBWidgetViewImpl<FIBLabel, 
 		else if (StringUtils.isNotEmpty(getWidget().getLabel())) {
 			label = (getWidget().getLocalize() ? getLocalized(getWidget().getLabel()) : getWidget().getLabel());
 		}
-		getRenderingTechnologyAdapter().setText(getTechnologyComponent(), label);
+		getRenderingAdapter().setText(getTechnologyComponent(), label);
 	}
 
 	@Override

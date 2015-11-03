@@ -44,7 +44,7 @@ import java.util.logging.Logger;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBHtmlEditor;
 import org.openflexo.fib.model.FIBHtmlEditorOption;
-import org.openflexo.fib.swing.view.SwingRenderingTechnologyAdapter;
+import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.view.widget.impl.FIBHtmlEditorWidgetImpl;
 
 import com.metaphaseeditor.MetaphaseEditorConfiguration;
@@ -60,14 +60,14 @@ public class JFIBHtmlEditorWidget extends FIBHtmlEditorWidgetImpl<MetaphaseEdito
 	private static final Logger LOGGER = Logger.getLogger(JFIBHtmlEditorWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing JTextField<br>
-	 * (based on generic SwingTextRenderingTechnologyAdapter)
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JTextField<br>
+	 * (based on generic SwingTextRenderingAdapter)
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingHtmlEditorWidgetRenderingTechnologyAdapter extends SwingRenderingTechnologyAdapter<MetaphaseEditorPanel>
-			implements HtmlEditorWidgetRenderingTechnologyAdapter<MetaphaseEditorPanel> {
+	public static class SwingHtmlEditorWidgetRenderingAdapter extends SwingRenderingAdapter<MetaphaseEditorPanel>
+			implements HtmlEditorWidgetRenderingAdapter<MetaphaseEditorPanel> {
 
 		@Override
 		public String getText(MetaphaseEditorPanel component) {
@@ -100,7 +100,7 @@ public class JFIBHtmlEditorWidget extends FIBHtmlEditorWidgetImpl<MetaphaseEdito
 
 	}
 
-	public static SwingHtmlEditorWidgetRenderingTechnologyAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingHtmlEditorWidgetRenderingTechnologyAdapter();
+	public static SwingHtmlEditorWidgetRenderingAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingHtmlEditorWidgetRenderingAdapter();
 
 	public JFIBHtmlEditorWidget(FIBHtmlEditor model, FIBController controller) {
 		super(model, controller, RENDERING_TECHNOLOGY_ADAPTER);

@@ -58,19 +58,19 @@ public abstract class FIBTextAreaWidgetImpl<C> extends FIBGenericTextWidgetImpl<
 	public static final int DEFAULT_ROWS = 5;
 
 	public FIBTextAreaWidgetImpl(FIBTextArea model, FIBController controller,
-			TextAreaRenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
-		super(model, controller, renderingTechnologyAdapter);
+			TextAreaRenderingAdapter<C> RenderingAdapter) {
+		super(model, controller, RenderingAdapter);
 		updateColumns();
 		updateRows();
 	}
 
 	@Override
-	public TextAreaRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter() {
-		return (TextAreaRenderingTechnologyAdapter<C>) super.getRenderingTechnologyAdapter();
+	public TextAreaRenderingAdapter<C> getRenderingAdapter() {
+		return (TextAreaRenderingAdapter<C>) super.getRenderingAdapter();
 	}
 
 	public void updateColumns() {
-		getRenderingTechnologyAdapter().setColumns(getTechnologyComponent(),
+		getRenderingAdapter().setColumns(getTechnologyComponent(),
 				getWidget().getColumns() != null && getWidget().getColumns() > 0 ? getWidget().getColumns() : getDefaultColumns());
 	}
 
@@ -79,7 +79,7 @@ public abstract class FIBTextAreaWidgetImpl<C> extends FIBGenericTextWidgetImpl<
 	}
 
 	public void updateRows() {
-		getRenderingTechnologyAdapter().setRows(getTechnologyComponent(),
+		getRenderingAdapter().setRows(getTechnologyComponent(),
 				getWidget().getRows() != null && getWidget().getRows() > 0 ? getWidget().getRows() : getDefaultRows());
 	}
 

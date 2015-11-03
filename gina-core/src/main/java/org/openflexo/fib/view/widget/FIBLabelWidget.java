@@ -54,7 +54,7 @@ import org.openflexo.fib.view.FIBWidgetView;
 public interface FIBLabelWidget<C> extends FIBWidgetView<FIBLabel, C, String> {
 
 	@Override
-	public LabelRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter();
+	public LabelRenderingAdapter<C> getRenderingAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -63,7 +63,7 @@ public interface FIBLabelWidget<C> extends FIBWidgetView<FIBLabel, C, String> {
 	 *
 	 * @param <C>
 	 */
-	public static interface LabelRenderingTechnologyAdapter<C> extends RenderingTechnologyAdapter<C> {
+	public static interface LabelRenderingAdapter<C> extends RenderingAdapter<C> {
 
 		public String getText(C component);
 

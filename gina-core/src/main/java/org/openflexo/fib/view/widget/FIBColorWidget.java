@@ -56,7 +56,7 @@ import org.openflexo.fib.view.FIBWidgetView;
 public interface FIBColorWidget<C> extends FIBWidgetView<FIBColor, C, Color> {
 
 	@Override
-	public ColorWidgetRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter();
+	public ColorWidgetRenderingAdapter<C> getRenderingAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -65,7 +65,7 @@ public interface FIBColorWidget<C> extends FIBWidgetView<FIBColor, C, Color> {
 	 *
 	 * @param <C>
 	 */
-	public static interface ColorWidgetRenderingTechnologyAdapter<C> extends RenderingTechnologyAdapter<C> {
+	public static interface ColorWidgetRenderingAdapter<C> extends RenderingAdapter<C> {
 
 		public Color getSelectedColor(C component);
 

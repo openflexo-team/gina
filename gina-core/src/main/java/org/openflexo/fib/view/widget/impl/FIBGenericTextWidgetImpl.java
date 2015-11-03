@@ -63,8 +63,8 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 	protected boolean validateOnReturn;
 
 	public FIBGenericTextWidgetImpl(F model, FIBController controller,
-			GenericTextRenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
-		super(model, controller, renderingTechnologyAdapter);
+			GenericTextRenderingAdapter<C> RenderingAdapter) {
+		super(model, controller, RenderingAdapter);
 
 		validateOnReturn = model.isValidateOnReturn();
 
@@ -73,17 +73,17 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 	}
 
 	@Override
-	public GenericTextRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter() {
-		return (GenericTextRenderingTechnologyAdapter<C>) super.getRenderingTechnologyAdapter();
+	public GenericTextRenderingAdapter<C> getRenderingAdapter() {
+		return (GenericTextRenderingAdapter<C>) super.getRenderingAdapter();
 	}
 
 	public void updateEditable() {
-		getRenderingTechnologyAdapter().setEditable(getTechnologyComponent(), !isReadOnly());
+		getRenderingAdapter().setEditable(getTechnologyComponent(), !isReadOnly());
 	}
 
 	public void updateText() {
 		if (getWidget().getText() != null) {
-			getRenderingTechnologyAdapter().setText(getTechnologyComponent(), getWidget().getText());
+			getRenderingAdapter().setText(getTechnologyComponent(), getWidget().getText());
 		}
 	}
 
@@ -94,27 +94,27 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 		switch (e.getAction()) {
 			case FIBTextEventDescription.INSERTED: {
 				FIBTextEventDescription ev = (FIBTextEventDescription) e;
-				String text = getRenderingTechnologyAdapter().getText(getTechnologyComponent());
+				String text = getRenderingAdapter().getText(getTechnologyComponent());
 				if (text.length() >= ev.getPosition()) {
-					getRenderingTechnologyAdapter().setText(getTechnologyComponent(),
+					getRenderingAdapter().setText(getTechnologyComponent(),
 							(text.substring(0, ev.getPosition()) + e.getValue() + text.substring(ev.getPosition())));
-					getRenderingTechnologyAdapter().setCaretPosition(getTechnologyComponent(), ev.getPosition() + e.getValue().length());
+					getRenderingAdapter().setCaretPosition(getTechnologyComponent(), ev.getPosition() + e.getValue().length());
 				}
 				break;
 			}
 			case FIBTextEventDescription.REMOVED: {
 				FIBTextEventDescription ev = (FIBTextEventDescription) e;
-				String text = getRenderingTechnologyAdapter().getText(getTechnologyComponent());
+				String text = getRenderingAdapter().getText(getTechnologyComponent());
 				if (text.length() >= ev.getPosition() + ev.getLength())
-					getRenderingTechnologyAdapter().setText(getTechnologyComponent(),
+					getRenderingAdapter().setText(getTechnologyComponent(),
 							text.substring(0, ev.getPosition()) + text.substring(ev.getPosition() + ev.getLength()));
 				break;
 			}
 			case FIBFocusEventDescription.FOCUS_GAINED:
-				getRenderingTechnologyAdapter().requestFocus(getTechnologyComponent());
+				getRenderingAdapter().requestFocus(getTechnologyComponent());
 				break;
 			case FIBFocusEventDescription.FOCUS_LOST:
-				getRenderingTechnologyAdapter().requestFocusInParent(getTechnologyComponent());
+				getRenderingAdapter().requestFocusInParent(getTechnologyComponent());
 				break;
 		}
 
@@ -124,7 +124,7 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 	@Override
 	public synchronized boolean updateWidgetFromModel() {
 
-		String currentWidgetValue = getRenderingTechnologyAdapter().getText(getTechnologyComponent());
+		String currentWidgetValue = getRenderingAdapter().getText(getTechnologyComponent());
 		if (notEquals(getValue(), currentWidgetValue)) {
 			if (modelUpdating) {
 				return false;
@@ -134,10 +134,10 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 			}
 			widgetUpdating = true;
 			try {
-				int caret = getRenderingTechnologyAdapter().getCaretPosition(getTechnologyComponent());
-				getRenderingTechnologyAdapter().setText(getTechnologyComponent(), getValue());
+				int caret = getRenderingAdapter().getCaretPosition(getTechnologyComponent());
+				getRenderingAdapter().setText(getTechnologyComponent(), getValue());
 				if (caret > -1 && caret < getValue().length()) {
-					getRenderingTechnologyAdapter().setCaretPosition(getTechnologyComponent(), caret);
+					getRenderingAdapter().setCaretPosition(getTechnologyComponent(), caret);
 				}
 			} finally {
 				widgetUpdating = false;
@@ -152,13 +152,13 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 	 */
 	@Override
 	public synchronized boolean updateModelFromWidget() {
-		if (notEquals(getValue(), getRenderingTechnologyAdapter().getText(getTechnologyComponent()))) {
+		if (notEquals(getValue(), getRenderingAdapter().getText(getTechnologyComponent()))) {
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("updateModelFromWidget() in " + this);
 			}
 			modelUpdating = true;
 			try {
-				setValue(getRenderingTechnologyAdapter().getText(getTechnologyComponent()));
+				setValue(getRenderingAdapter().getText(getTechnologyComponent()));
 			} finally {
 				modelUpdating = false;
 			}

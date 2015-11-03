@@ -53,7 +53,7 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBList;
-import org.openflexo.fib.swing.view.SwingRenderingTechnologyAdapter;
+import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.view.widget.impl.FIBListWidgetImpl;
 import org.openflexo.gina.event.description.EventDescription;
 
@@ -62,14 +62,14 @@ public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T>implements 
 	static final Logger LOGGER = Logger.getLogger(JFIBListWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing JComboBox<br>
-	 * (based on generic SwingTextRenderingTechnologyAdapter)
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JComboBox<br>
+	 * (based on generic SwingTextRenderingAdapter)
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingListRenderingTechnologyAdapter<T> extends SwingRenderingTechnologyAdapter<JList<T>>
-			implements ListRenderingTechnologyAdapter<JList<T>, T> {
+	public static class SwingListRenderingAdapter<T> extends SwingRenderingAdapter<JList<T>>
+			implements ListRenderingAdapter<JList<T>, T> {
 
 		@Override
 		public T getSelectedItem(JList<T> component) {
@@ -119,7 +119,7 @@ public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T>implements 
 	}
 
 	public JFIBListWidget(FIBList model, FIBController controller) {
-		super(model, controller, new SwingListRenderingTechnologyAdapter<T>());
+		super(model, controller, new SwingListRenderingAdapter<T>());
 
 		updateMultipleValues();
 

@@ -64,7 +64,7 @@ import javax.swing.event.ChangeListener;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.fib.model.FIBNumber;
-import org.openflexo.fib.swing.view.SwingRenderingTechnologyAdapter;
+import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.swing.view.widget.JFIBNumberWidget.NumberSelectorPanel;
 import org.openflexo.fib.view.widget.impl.FIBNumberWidgetImpl;
 import org.openflexo.gina.event.description.FIBEventFactory;
@@ -86,14 +86,14 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 	static final Logger logger = Logger.getLogger(JFIBNumberWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing Font Widget<br>
+	 * A {@link RenderingAdapter} implementation dedicated for Swing Font Widget<br>
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingNumberWidgetRenderingTechnologyAdapter<T extends Number>
-			extends SwingRenderingTechnologyAdapter<NumberSelectorPanel<T>>
-			implements NumberWidgetRenderingTechnologyAdapter<NumberSelectorPanel<T>, T> {
+	public static class SwingNumberWidgetRenderingAdapter<T extends Number>
+			extends SwingRenderingAdapter<NumberSelectorPanel<T>>
+			implements NumberWidgetRenderingAdapter<NumberSelectorPanel<T>, T> {
 
 		@Override
 		public T getNumber(NumberSelectorPanel<T> component) {
@@ -253,7 +253,7 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 	 * @param model
 	 */
 	public JFIBNumberWidget(FIBNumber model, FIBController controller) {
-		super(model, controller, new SwingNumberWidgetRenderingTechnologyAdapter<T>());
+		super(model, controller, new SwingNumberWidgetRenderingAdapter<T>());
 	}
 
 	@Override

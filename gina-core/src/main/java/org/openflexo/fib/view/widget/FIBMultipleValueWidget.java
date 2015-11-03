@@ -72,7 +72,7 @@ public interface FIBMultipleValueWidget<M extends FIBMultipleValues, C, T, I> ex
 	public void setSelectedIndex(int selectedIndex);
 
 	@Override
-	public MultipleValueRenderingTechnologyAdapter<C, I> getRenderingTechnologyAdapter();
+	public MultipleValueRenderingAdapter<C, I> getRenderingAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -82,12 +82,12 @@ public interface FIBMultipleValueWidget<M extends FIBMultipleValues, C, T, I> ex
 	 * @param <C>
 	 *            type of technology-specific component this view manage
 	 */
-	public static interface MultipleValueRenderingTechnologyAdapter<C, T> extends RenderingTechnologyAdapter<C> {
+	public static interface MultipleValueRenderingAdapter<C, T> extends RenderingAdapter<C> {
 
 	}
 
-	public static interface SingleSelectionMultipleValueRenderingTechnologyAdapter<C, T>
-			extends MultipleValueRenderingTechnologyAdapter<C, T> {
+	public static interface SingleSelectionMultipleValueRenderingAdapter<C, T>
+			extends MultipleValueRenderingAdapter<C, T> {
 
 		public T getSelectedItem(C component);
 
@@ -99,8 +99,8 @@ public interface FIBMultipleValueWidget<M extends FIBMultipleValues, C, T, I> ex
 
 	}
 
-	public static interface MultipleSelectionMultipleValueRenderingTechnologyAdapter<C, T>
-			extends MultipleValueRenderingTechnologyAdapter<C, T> {
+	public static interface MultipleSelectionMultipleValueRenderingAdapter<C, T>
+			extends MultipleValueRenderingAdapter<C, T> {
 
 		public List<T> getSelectedItems(C component);
 

@@ -54,7 +54,7 @@ import javax.swing.JPanel;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBColor;
 import org.openflexo.fib.model.FIBModelObject.FIBModelObjectImpl;
-import org.openflexo.fib.swing.view.SwingRenderingTechnologyAdapter;
+import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.swing.view.widget.JFIBColorWidget.ColorSelectorPanel;
 import org.openflexo.fib.view.widget.impl.FIBColorWidgetImpl;
 import org.openflexo.localization.FlexoLocalization;
@@ -73,13 +73,13 @@ public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>imple
 	private static final Logger logger = Logger.getLogger(JFIBColorWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing Color Widget<br>
+	 * A {@link RenderingAdapter} implementation dedicated for Swing Color Widget<br>
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingColorWidgetRenderingTechnologyAdapter extends SwingRenderingTechnologyAdapter<ColorSelectorPanel>
-			implements ColorWidgetRenderingTechnologyAdapter<ColorSelectorPanel> {
+	public static class SwingColorWidgetRenderingAdapter extends SwingRenderingAdapter<ColorSelectorPanel>
+			implements ColorWidgetRenderingAdapter<ColorSelectorPanel> {
 
 		@Override
 		public Color getSelectedColor(ColorSelectorPanel component) {
@@ -123,7 +123,7 @@ public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>imple
 
 	}
 
-	public static SwingColorWidgetRenderingTechnologyAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingColorWidgetRenderingTechnologyAdapter();
+	public static SwingColorWidgetRenderingAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingColorWidgetRenderingAdapter();
 
 	public static class ColorSelectorPanel extends JPanel {
 		private final JCheckBox checkBox;

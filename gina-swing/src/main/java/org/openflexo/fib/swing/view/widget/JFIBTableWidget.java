@@ -75,7 +75,7 @@ import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.controller.FIBSelectable;
 import org.openflexo.fib.model.FIBTable;
-import org.openflexo.fib.swing.view.SwingRenderingTechnologyAdapter;
+import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.view.widget.impl.FIBTableWidgetImpl;
 import org.openflexo.fib.view.widget.table.FIBTableActionListener;
 import org.openflexo.fib.view.widget.table.FIBTableModel;
@@ -93,13 +93,13 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 	private static final Logger LOGGER = Logger.getLogger(JFIBTableWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing JTable<br>
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JTable<br>
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingTableRenderingTechnologyAdapter<T> extends SwingRenderingTechnologyAdapter<JXTable>
-			implements TableRenderingTechnologyAdapter<JXTable, T> {
+	public static class SwingTableRenderingAdapter<T> extends SwingRenderingAdapter<JXTable>
+			implements TableRenderingAdapter<JXTable, T> {
 
 		@Override
 		public int getVisibleRowCount(JXTable component) {
@@ -152,7 +152,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 	private JScrollPane scrollPane;
 
 	public JFIBTableWidget(FIBTable fibTable, FIBController controller) {
-		super(fibTable, controller, new SwingTableRenderingTechnologyAdapter<T>());
+		super(fibTable, controller, new SwingTableRenderingAdapter<T>());
 
 		_dynamicComponent = new JPanel();
 		_dynamicComponent.setOpaque(false);

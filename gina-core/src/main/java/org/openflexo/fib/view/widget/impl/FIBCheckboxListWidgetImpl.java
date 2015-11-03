@@ -57,14 +57,14 @@ public abstract class FIBCheckboxListWidgetImpl<C, T> extends FIBMultipleValueWi
 	private BindingValueListChangeListener<T, List<T>> listenerToDataAsListValue;
 
 	public FIBCheckboxListWidgetImpl(FIBCheckboxList model, FIBController controller,
-			CheckboxListRenderingTechnologyAdapter<C, T> renderingTechnologyAdapter) {
-		super(model, controller, renderingTechnologyAdapter);
+			CheckboxListRenderingAdapter<C, T> RenderingAdapter) {
+		super(model, controller, RenderingAdapter);
 		listenDataAsListValueChange();
 	}
 
 	@Override
-	public CheckboxListRenderingTechnologyAdapter<C, T> getRenderingTechnologyAdapter() {
-		return (CheckboxListRenderingTechnologyAdapter<C, T>) super.getRenderingTechnologyAdapter();
+	public CheckboxListRenderingAdapter<C, T> getRenderingAdapter() {
+		return (CheckboxListRenderingAdapter<C, T>) super.getRenderingAdapter();
 	}
 
 	private void listenDataAsListValueChange() {
@@ -142,11 +142,11 @@ public abstract class FIBCheckboxListWidgetImpl<C, T> extends FIBMultipleValueWi
 	}
 
 	public List<T> getSelectedValues() {
-		return getRenderingTechnologyAdapter().getSelectedItems(getTechnologyComponent());
+		return getRenderingAdapter().getSelectedItems(getTechnologyComponent());
 	}
 
 	public void setSelectedValues(List<T> selectedValues) {
-		getRenderingTechnologyAdapter().setSelectedItems(getTechnologyComponent(), selectedValues);
+		getRenderingAdapter().setSelectedItems(getTechnologyComponent(), selectedValues);
 	}
 
 }

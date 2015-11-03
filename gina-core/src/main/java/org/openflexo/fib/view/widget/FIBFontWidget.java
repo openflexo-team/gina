@@ -56,7 +56,7 @@ import org.openflexo.fib.view.FIBWidgetView;
 public interface FIBFontWidget<C> extends FIBWidgetView<FIBFont, C, Font> {
 
 	@Override
-	public FontWidgetRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter();
+	public FontWidgetRenderingAdapter<C> getRenderingAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -65,7 +65,7 @@ public interface FIBFontWidget<C> extends FIBWidgetView<FIBFont, C, Font> {
 	 *
 	 * @param <C>
 	 */
-	public static interface FontWidgetRenderingTechnologyAdapter<C> extends RenderingTechnologyAdapter<C> {
+	public static interface FontWidgetRenderingAdapter<C> extends RenderingAdapter<C> {
 
 		public Font getSelectedFont(C component);
 

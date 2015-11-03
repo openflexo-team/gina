@@ -43,15 +43,15 @@ import java.awt.Font;
 
 import javax.swing.JComponent;
 
-import org.openflexo.fib.view.FIBView.RenderingTechnologyAdapter;
+import org.openflexo.fib.view.FIBView.RenderingAdapter;
 
 /**
- * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing
+ * A {@link RenderingAdapter} implementation dedicated for Swing
  * 
  * @author sylvain
  * 
  */
-public class SwingRenderingTechnologyAdapter<J extends JComponent> implements RenderingTechnologyAdapter<J> {
+public class SwingRenderingAdapter<J extends JComponent> implements RenderingAdapter<J> {
 
 	@Override
 	public void setOpaque(J component, boolean opaque) {

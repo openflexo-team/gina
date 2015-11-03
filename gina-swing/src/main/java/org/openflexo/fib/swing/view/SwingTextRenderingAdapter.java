@@ -41,17 +41,17 @@ package org.openflexo.fib.swing.view;
 
 import javax.swing.text.JTextComponent;
 
-import org.openflexo.fib.view.FIBView.RenderingTechnologyAdapter;
-import org.openflexo.fib.view.widget.FIBGenericTextWidget.GenericTextRenderingTechnologyAdapter;
+import org.openflexo.fib.view.FIBView.RenderingAdapter;
+import org.openflexo.fib.view.widget.FIBGenericTextWidget.GenericTextRenderingAdapter;
 
 /**
- * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing
+ * A {@link RenderingAdapter} implementation dedicated for Swing
  * 
  * @author sylvain
  * 
  */
-public class SwingTextRenderingTechnologyAdapter<J extends JTextComponent> extends SwingRenderingTechnologyAdapter<J>
-		implements GenericTextRenderingTechnologyAdapter<J> {
+public class SwingTextRenderingAdapter<J extends JTextComponent> extends SwingRenderingAdapter<J>
+		implements GenericTextRenderingAdapter<J> {
 
 	@Override
 	public String getText(J component) {

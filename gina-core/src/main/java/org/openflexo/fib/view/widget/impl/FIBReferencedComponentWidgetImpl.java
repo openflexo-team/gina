@@ -41,9 +41,6 @@ package org.openflexo.fib.view.widget.impl;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingValueChangeListener;
@@ -61,7 +58,6 @@ import org.openflexo.fib.model.FIBWidget;
 import org.openflexo.fib.view.FIBContainerView;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.fib.view.FIBWidgetView;
-import org.openflexo.fib.view.GinaViewFactory;
 import org.openflexo.fib.view.impl.FIBWidgetViewImpl;
 import org.openflexo.fib.view.widget.FIBReferencedComponentWidget;
 import org.openflexo.kvc.InvalidKeyValuePropertyException;
@@ -92,35 +88,20 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 
 	private FIBController embeddedFIBController;
 	// private final GinaViewFactory factory;
-	private boolean isComponentLoading = false;
-
-	private final JLabel NOT_FOUND_LABEL;
+	private final boolean isComponentLoading = false;
 
 	private BindingValueChangeListener<Resource> dynamicComponentFileBindingValueChangeListener;
 
 	public FIBReferencedComponentWidgetImpl(FIBReferencedComponent model, FIBController controller,
-			ReferencedComponentRenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
-		super(model, controller, renderingTechnologyAdapter);
-		NOT_FOUND_LABEL = new JLabel(""/*"<" + model.getName() + ": not found component>"*/);
-		updateFont();
+			ReferencedComponentRenderingAdapter<C> RenderingAdapter) {
+		super(model, controller, RenderingAdapter);
 		listenDynamicComponentFileValueChange();
 	}
-	
-	@Override
-	public ReferencedComponentRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter() {
-		return (ReferencedComponentRenderingTechnologyAdapter<C>)super.getRenderingTechnologyAdapter();
-	}
 
-	/*@Override
-	protected void updateVisibility() {
-		super.updateVisibility();
-		updateWidgetFromModel();
-	}
-	
 	@Override
-	public void updateData() {
-		super.updateData();
-	}*/
+	public ReferencedComponentRenderingAdapter<C> getRenderingAdapter() {
+		return (ReferencedComponentRenderingAdapter<C>) super.getRenderingAdapter();
+	}
 
 	private void listenDynamicComponentFileValueChange() {
 		if (dynamicComponentFileBindingValueChangeListener != null) {
@@ -272,7 +253,7 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 
 	@Override
 	protected C makeTechnologyComponent() {
-		
+
 		FIBComponent loaded = getReferencedComponent();
 
 		// If an embedded FIBController is already declared, delete it
@@ -307,10 +288,10 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 				logger.warning("ReferencedComponent = null and I'm NOT loading anything... : " + this.getComponentFile().getURI());
 			}
 		}
-		
+
 		return referencedComponentView.getTechnologyComponent();
 	}
-	
+
 	@Override
 	public FIBView<FIBComponent, C> getReferencedComponentView() {
 		if (referencedComponentView == null) {

@@ -54,7 +54,7 @@ import org.openflexo.fib.model.FIBRadioButtonList;
 public interface FIBRadioButtonListWidget<C, T> extends FIBMultipleValueWidget<FIBRadioButtonList, C, T, T> {
 
 	@Override
-	public RadioButtonRenderingTechnologyAdapter<C, T> getRenderingTechnologyAdapter();
+	public RadioButtonRenderingAdapter<C, T> getRenderingAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -63,8 +63,8 @@ public interface FIBRadioButtonListWidget<C, T> extends FIBMultipleValueWidget<F
 	 *
 	 * @param <C>
 	 */
-	public static interface RadioButtonRenderingTechnologyAdapter<C, T>
-			extends SingleSelectionMultipleValueRenderingTechnologyAdapter<C, T> {
+	public static interface RadioButtonRenderingAdapter<C, T>
+			extends SingleSelectionMultipleValueRenderingAdapter<C, T> {
 
 	}
 

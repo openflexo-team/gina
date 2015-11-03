@@ -60,7 +60,7 @@ import javax.swing.text.BadLocationException;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBTextField;
-import org.openflexo.fib.swing.view.SwingTextRenderingTechnologyAdapter;
+import org.openflexo.fib.swing.view.SwingTextRenderingAdapter;
 import org.openflexo.fib.view.widget.impl.FIBTextFieldWidgetImpl;
 import org.openflexo.gina.event.description.FIBEventFactory;
 import org.openflexo.gina.event.description.FIBFocusEventDescription;
@@ -78,14 +78,14 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>imple
 	private static final Logger logger = Logger.getLogger(JFIBTextFieldWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing JTextField<br>
-	 * (based on generic SwingTextRenderingTechnologyAdapter)
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JTextField<br>
+	 * (based on generic SwingTextRenderingAdapter)
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingTextFieldRenderingTechnologyAdapter extends SwingTextRenderingTechnologyAdapter<JTextField>
-			implements TextFieldRenderingTechnologyAdapter<JTextField> {
+	public static class SwingTextFieldRenderingAdapter extends SwingTextRenderingAdapter<JTextField>
+			implements TextFieldRenderingAdapter<JTextField> {
 
 		@Override
 		public void setColumns(JTextField component, int columns) {
@@ -99,7 +99,7 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>imple
 
 	}
 
-	public static SwingTextFieldRenderingTechnologyAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingTextFieldRenderingTechnologyAdapter();
+	public static SwingTextFieldRenderingAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingTextFieldRenderingAdapter();
 
 	private final JPanel panel;
 

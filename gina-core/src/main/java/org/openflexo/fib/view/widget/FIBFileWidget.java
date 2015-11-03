@@ -55,7 +55,7 @@ import org.openflexo.fib.view.FIBWidgetView;
 public interface FIBFileWidget<C> extends FIBWidgetView<FIBFile, C, File> {
 
 	@Override
-	public FileWidgetRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter();
+	public FileWidgetRenderingAdapter<C> getRenderingAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -64,7 +64,7 @@ public interface FIBFileWidget<C> extends FIBWidgetView<FIBFile, C, File> {
 	 *
 	 * @param <C>
 	 */
-	public static interface FileWidgetRenderingTechnologyAdapter<C> extends RenderingTechnologyAdapter<C> {
+	public static interface FileWidgetRenderingAdapter<C> extends RenderingAdapter<C> {
 
 		public File getSelectedFile(C component);
 

@@ -57,7 +57,7 @@ import javax.swing.event.DocumentListener;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBTextArea;
-import org.openflexo.fib.swing.view.SwingTextRenderingTechnologyAdapter;
+import org.openflexo.fib.swing.view.SwingTextRenderingAdapter;
 import org.openflexo.fib.view.widget.impl.FIBTextAreaWidgetImpl;
 import org.openflexo.toolbox.ToolBox;
 
@@ -71,14 +71,14 @@ public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea>implemen
 	private static final Logger LOGGER = Logger.getLogger(JFIBTextAreaWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing JTextField<br>
-	 * (based on generic SwingTextRenderingTechnologyAdapter)
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JTextField<br>
+	 * (based on generic SwingTextRenderingAdapter)
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingTextAreaRenderingTechnologyAdapter extends SwingTextRenderingTechnologyAdapter<JTextArea>
-			implements TextAreaRenderingTechnologyAdapter<JTextArea> {
+	public static class SwingTextAreaRenderingAdapter extends SwingTextRenderingAdapter<JTextArea>
+			implements TextAreaRenderingAdapter<JTextArea> {
 
 		@Override
 		public int getColumns(JTextArea component) {
@@ -102,7 +102,7 @@ public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea>implemen
 
 	}
 
-	public static SwingTextAreaRenderingTechnologyAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingTextAreaRenderingTechnologyAdapter();
+	public static SwingTextAreaRenderingAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingTextAreaRenderingAdapter();
 
 	private final JPanel panel;
 	private JScrollPane scrollPane;

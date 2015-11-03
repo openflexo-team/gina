@@ -781,7 +781,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 
 			// / Only updates children if Node is Expanded
 
-			boolean isExpanded = widget.getRenderingTechnologyAdapter().isExpanded(widget.getTechnologyComponent(), this.getTreePath());
+			boolean isExpanded = widget.getRenderingAdapter().isExpanded(widget.getTechnologyComponent(), this.getTreePath());
 
 			List<BrowserCell> oldChildren = null;
 			List<BrowserCell> removedChildren = null;

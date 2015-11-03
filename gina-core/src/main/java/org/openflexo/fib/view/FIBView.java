@@ -155,7 +155,7 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 
 	public void delete();
 
-	public RenderingTechnologyAdapter<C> getRenderingTechnologyAdapter();
+	public RenderingAdapter<C> getRenderingAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -164,7 +164,7 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 	 *
 	 * @param <C>
 	 */
-	public static interface RenderingTechnologyAdapter<C> {
+	public static interface RenderingAdapter<C> {
 
 		public void setOpaque(C component, boolean opaque);
 

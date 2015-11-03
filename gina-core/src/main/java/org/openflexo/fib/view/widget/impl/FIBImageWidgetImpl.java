@@ -61,15 +61,15 @@ public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, 
 
 	private static final Logger LOGGER = Logger.getLogger(FIBImageWidgetImpl.class.getPackage().getName());
 
-	public FIBImageWidgetImpl(FIBImage model, FIBController controller, ImageRenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
-		super(model, controller, renderingTechnologyAdapter);
+	public FIBImageWidgetImpl(FIBImage model, FIBController controller, ImageRenderingAdapter<C> RenderingAdapter) {
+		super(model, controller, RenderingAdapter);
 		updateAlign();
 		updateImage();
 	}
 
 	@Override
-	public ImageRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter() {
-		return (ImageRenderingTechnologyAdapter) super.getRenderingTechnologyAdapter();
+	public ImageRenderingAdapter<C> getRenderingAdapter() {
+		return (ImageRenderingAdapter) super.getRenderingAdapter();
 	}
 
 	@Override
@@ -96,20 +96,20 @@ public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, 
 		if (getWidget().getAlign() == null) {
 			return;
 		}
-		getRenderingTechnologyAdapter().setHorizontalAlignment(getTechnologyComponent(), getWidget().getAlign().getAlign());
+		getRenderingAdapter().setHorizontalAlignment(getTechnologyComponent(), getWidget().getAlign().getAlign());
 	}
 
 	final protected void updateImage() {
 		if (getWidget().getData().isValid()) {
 			Image image = getValue();
 			updateImageDefaultSize(image);
-			getRenderingTechnologyAdapter().setImage(getTechnologyComponent(), image, this);
+			getRenderingAdapter().setImage(getTechnologyComponent(), image, this);
 		}
 		else if (getWidget().getImageFile() != null) {
 			if (getWidget().getImageFile().exists()) {
 				Image image = ImageUtils.loadImageFromFile(getWidget().getImageFile());
 				updateImageDefaultSize(image);
-				getRenderingTechnologyAdapter().setImage(getTechnologyComponent(), image, this);
+				getRenderingAdapter().setImage(getTechnologyComponent(), image, this);
 			}
 		}
 	}

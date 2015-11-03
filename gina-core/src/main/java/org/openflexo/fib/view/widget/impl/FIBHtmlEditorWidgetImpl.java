@@ -59,14 +59,14 @@ public abstract class FIBHtmlEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBHt
 	boolean validateOnReturn;
 
 	public FIBHtmlEditorWidgetImpl(FIBHtmlEditor model, FIBController controller,
-			HtmlEditorWidgetRenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
-		super(model, controller, renderingTechnologyAdapter);
+			HtmlEditorWidgetRenderingAdapter<C> RenderingAdapter) {
+		super(model, controller, RenderingAdapter);
 		updateHtmlEditorConfiguration();
 	}
 
 	@Override
-	public HtmlEditorWidgetRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter() {
-		return (HtmlEditorWidgetRenderingTechnologyAdapter<C>) super.getRenderingTechnologyAdapter();
+	public HtmlEditorWidgetRenderingAdapter<C> getRenderingAdapter() {
+		return (HtmlEditorWidgetRenderingAdapter<C>) super.getRenderingAdapter();
 	}
 
 	protected abstract void updateHtmlEditorConfiguration();
@@ -74,7 +74,7 @@ public abstract class FIBHtmlEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBHt
 	@Override
 	public synchronized boolean updateWidgetFromModel() {
 
-		String editedText = getRenderingTechnologyAdapter().getText(getTechnologyComponent());
+		String editedText = getRenderingAdapter().getText(getTechnologyComponent());
 
 		if (notEquals(getValue(), editedText)) {
 			if (modelUpdating) {
@@ -85,10 +85,10 @@ public abstract class FIBHtmlEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBHt
 			}
 			widgetUpdating = true;
 			if (getValue() != null) {
-				getRenderingTechnologyAdapter().setText(getTechnologyComponent(), getValue());
+				getRenderingAdapter().setText(getTechnologyComponent(), getValue());
 			}
 			else {
-				getRenderingTechnologyAdapter().setText(getTechnologyComponent(), "");
+				getRenderingAdapter().setText(getTechnologyComponent(), "");
 			}
 			widgetUpdating = false;
 			return true;
@@ -102,7 +102,7 @@ public abstract class FIBHtmlEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBHt
 	@Override
 	public synchronized boolean updateModelFromWidget() {
 
-		String editedText = getRenderingTechnologyAdapter().getText(getTechnologyComponent());
+		String editedText = getRenderingAdapter().getText(getTechnologyComponent());
 
 		if (notEquals(getValue(), editedText)) {
 			modelUpdating = true;

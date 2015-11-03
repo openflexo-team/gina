@@ -56,7 +56,7 @@ import org.openflexo.fib.model.FIBCheckboxList;
 public interface FIBCheckboxListWidget<C, T> extends FIBMultipleValueWidget<FIBCheckboxList, C, List<T>, T> {
 
 	@Override
-	public CheckboxListRenderingTechnologyAdapter<C, T> getRenderingTechnologyAdapter();
+	public CheckboxListRenderingAdapter<C, T> getRenderingAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -65,8 +65,8 @@ public interface FIBCheckboxListWidget<C, T> extends FIBMultipleValueWidget<FIBC
 	 *
 	 * @param <C>
 	 */
-	public static interface CheckboxListRenderingTechnologyAdapter<C, T>
-			extends MultipleSelectionMultipleValueRenderingTechnologyAdapter<C, T> {
+	public static interface CheckboxListRenderingAdapter<C, T>
+			extends MultipleSelectionMultipleValueRenderingAdapter<C, T> {
 
 	}
 

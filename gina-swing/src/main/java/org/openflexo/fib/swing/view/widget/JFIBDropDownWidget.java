@@ -56,7 +56,7 @@ import javax.swing.JPanel;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBDropDown;
 import org.openflexo.fib.model.FIBModelObject.FIBModelObjectImpl;
-import org.openflexo.fib.swing.view.SwingRenderingTechnologyAdapter;
+import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.view.widget.impl.FIBDropDownWidgetImpl;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.toolbox.ToolBox;
@@ -76,14 +76,14 @@ public class JFIBDropDownWidget<T> extends FIBDropDownWidgetImpl<JComboBox<T>, T
 	static final Logger logger = Logger.getLogger(JFIBDropDownWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing JComboBox<br>
-	 * (based on generic SwingTextRenderingTechnologyAdapter)
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JComboBox<br>
+	 * (based on generic SwingTextRenderingAdapter)
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingDropDownRenderingTechnologyAdapter<T> extends SwingRenderingTechnologyAdapter<JComboBox<T>>
-			implements DropDownRenderingTechnologyAdapter<JComboBox<T>, T> {
+	public static class SwingDropDownRenderingAdapter<T> extends SwingRenderingAdapter<JComboBox<T>>
+			implements DropDownRenderingAdapter<JComboBox<T>, T> {
 
 		@Override
 		public T getSelectedItem(JComboBox<T> component) {
@@ -111,7 +111,7 @@ public class JFIBDropDownWidget<T> extends FIBDropDownWidgetImpl<JComboBox<T>, T
 	private final JPanel dropdownPanel;
 
 	public JFIBDropDownWidget(FIBDropDown model, FIBController controller) {
-		super(model, controller, new SwingDropDownRenderingTechnologyAdapter<T>());
+		super(model, controller, new SwingDropDownRenderingAdapter<T>());
 
 		dropdownPanel = new JPanel(new BorderLayout());
 		resetButton = new JButton();

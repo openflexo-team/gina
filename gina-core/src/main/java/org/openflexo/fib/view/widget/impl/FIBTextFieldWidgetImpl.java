@@ -57,18 +57,18 @@ public abstract class FIBTextFieldWidgetImpl<C> extends FIBGenericTextWidgetImpl
 	protected static final int DEFAULT_COLUMNS = 10;
 
 	public FIBTextFieldWidgetImpl(FIBTextField model, FIBController controller,
-			TextFieldRenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
-		super(model, controller, renderingTechnologyAdapter);
+			TextFieldRenderingAdapter<C> RenderingAdapter) {
+		super(model, controller, RenderingAdapter);
 		updateColumns();
 	}
 
 	@Override
-	public TextFieldRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter() {
-		return (TextFieldRenderingTechnologyAdapter<C>) super.getRenderingTechnologyAdapter();
+	public TextFieldRenderingAdapter<C> getRenderingAdapter() {
+		return (TextFieldRenderingAdapter<C>) super.getRenderingAdapter();
 	}
 
 	public void updateColumns() {
-		getRenderingTechnologyAdapter().setColumns(getTechnologyComponent(),
+		getRenderingAdapter().setColumns(getTechnologyComponent(),
 				getWidget().getColumns() != null && getWidget().getColumns() > 0 ? getWidget().getColumns() : getDefaultColumns());
 	}
 

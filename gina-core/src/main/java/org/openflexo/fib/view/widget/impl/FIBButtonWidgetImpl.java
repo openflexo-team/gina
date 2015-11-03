@@ -51,7 +51,7 @@ import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBButton;
 import org.openflexo.fib.view.impl.FIBWidgetViewImpl;
-import org.openflexo.fib.view.widget.FIBButtonWidget.ButtonWidgetRenderingTechnologyAdapter;
+import org.openflexo.fib.view.widget.FIBButtonWidget.ButtonWidgetRenderingAdapter;
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.event.description.FIBEventFactory;
 import org.openflexo.gina.event.description.FIBMouseEventDescription;
@@ -70,15 +70,15 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 	private static final Logger logger = Logger.getLogger(FIBButtonWidgetImpl.class.getPackage().getName());
 
 	public FIBButtonWidgetImpl(FIBButton model, FIBController controller,
-			ButtonWidgetRenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
-		super(model, controller, renderingTechnologyAdapter);
+			ButtonWidgetRenderingAdapter<C> RenderingAdapter) {
+		super(model, controller, RenderingAdapter);
 		updateLabel();
 		updateIcon();
 	}
 
 	@Override
-	public ButtonWidgetRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter() {
-		return (ButtonWidgetRenderingTechnologyAdapter) super.getRenderingTechnologyAdapter();
+	public ButtonWidgetRenderingAdapter<C> getRenderingAdapter() {
+		return (ButtonWidgetRenderingAdapter) super.getRenderingAdapter();
 	}
 
 	@Override
@@ -163,7 +163,7 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 					text = getWidget().getLabel();
 				}
 			}
-			getRenderingTechnologyAdapter().setText(getTechnologyComponent(), text);
+			getRenderingAdapter().setText(getTechnologyComponent(), text);
 		}
 	}
 
@@ -173,20 +173,20 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 			Icon icon;
 			try {
 				icon = getWidget().getButtonIcon().getBindingValue(getBindingEvaluationContext());
-				getRenderingTechnologyAdapter().setIcon(getTechnologyComponent(), icon);
+				getRenderingAdapter().setIcon(getTechnologyComponent(), icon);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
-				getRenderingTechnologyAdapter().setIcon(getTechnologyComponent(), null);
+				getRenderingAdapter().setIcon(getTechnologyComponent(), null);
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-				getRenderingTechnologyAdapter().setIcon(getTechnologyComponent(), null);
+				getRenderingAdapter().setIcon(getTechnologyComponent(), null);
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
-				getRenderingTechnologyAdapter().setIcon(getTechnologyComponent(), null);
+				getRenderingAdapter().setIcon(getTechnologyComponent(), null);
 			}
 		}
 		else {
-			getRenderingTechnologyAdapter().setIcon(getTechnologyComponent(), null);
+			getRenderingAdapter().setIcon(getTechnologyComponent(), null);
 		}
 	}
 

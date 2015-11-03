@@ -74,8 +74,8 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 
 	private List<T> selection;
 
-	public FIBListWidgetImpl(FIBList model, FIBController controller, ListRenderingTechnologyAdapter<C, T> renderingTechnologyAdapter) {
-		super(model, controller, renderingTechnologyAdapter);
+	public FIBListWidgetImpl(FIBList model, FIBController controller, ListRenderingAdapter<C, T> RenderingAdapter) {
+		super(model, controller, RenderingAdapter);
 
 		updateMultipleValues();
 		updateVisibleRowCount();
@@ -84,19 +84,19 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 	}
 
 	@Override
-	public ListRenderingTechnologyAdapter<C, T> getRenderingTechnologyAdapter() {
-		return (ListRenderingTechnologyAdapter<C, T>) super.getRenderingTechnologyAdapter();
+	public ListRenderingAdapter<C, T> getRenderingAdapter() {
+		return (ListRenderingAdapter<C, T>) super.getRenderingAdapter();
 	}
 
 	public void updateVisibleRowCount() {
 		if (getWidget().getVisibleRowCount() != null && getWidget().getVisibleRowCount() > 0) {
-			getRenderingTechnologyAdapter().setVisibleRowCount(getTechnologyComponent(), getWidget().getVisibleRowCount());
+			getRenderingAdapter().setVisibleRowCount(getTechnologyComponent(), getWidget().getVisibleRowCount());
 		}
 	}
 
 	public void updateRowHeight() {
 		if (getWidget().getRowHeight() != null && getWidget().getRowHeight() > 0) {
-			getRenderingTechnologyAdapter().setRowHeight(getTechnologyComponent(), getWidget().getVisibleRowCount());
+			getRenderingAdapter().setRowHeight(getTechnologyComponent(), getWidget().getVisibleRowCount());
 		}
 	}
 
@@ -115,13 +115,13 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 	public synchronized boolean updateWidgetFromModel() {
 		// updateListModelWhenRequired();
 		if (getWidget().getData() != null
-				&& notEquals(getValue(), getRenderingTechnologyAdapter().getSelectedItem(getTechnologyComponent()))) {
+				&& notEquals(getValue(), getRenderingAdapter().getSelectedItem(getTechnologyComponent()))) {
 
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine("updateWidgetFromModel()");
 			}
 			widgetUpdating = true;
-			getRenderingTechnologyAdapter().setSelectedItem(getTechnologyComponent(), getValue());
+			getRenderingAdapter().setSelectedItem(getTechnologyComponent(), getValue());
 			widgetUpdating = false;
 			return true;
 		}
@@ -133,7 +133,7 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 	 */
 	@Override
 	public synchronized boolean updateModelFromWidget() {
-		T newValue = getRenderingTechnologyAdapter().getSelectedItem(getTechnologyComponent());
+		T newValue = getRenderingAdapter().getSelectedItem(getTechnologyComponent());
 		if (notEquals(getValue(), newValue)) {
 			modelUpdating = true;
 			if (LOGGER.isLoggable(Level.FINE)) {
@@ -324,7 +324,7 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 	}
 
 	public ListSelectionModel getListSelectionModel() {
-		return getRenderingTechnologyAdapter().getListSelectionModel(getTechnologyComponent());
+		return getRenderingAdapter().getListSelectionModel(getTechnologyComponent());
 	}
 
 	@Override

@@ -48,8 +48,8 @@ import javax.swing.JButton;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBButton;
-import org.openflexo.fib.swing.view.SwingRenderingTechnologyAdapter;
-import org.openflexo.fib.view.widget.FIBButtonWidget.ButtonWidgetRenderingTechnologyAdapter;
+import org.openflexo.fib.swing.view.SwingRenderingAdapter;
+import org.openflexo.fib.view.widget.FIBButtonWidget.ButtonWidgetRenderingAdapter;
 import org.openflexo.fib.view.widget.impl.FIBButtonWidgetImpl;
 
 public class JFIBButtonWidget extends FIBButtonWidgetImpl<JButton> {
@@ -57,14 +57,14 @@ public class JFIBButtonWidget extends FIBButtonWidgetImpl<JButton> {
 	private static final Logger logger = Logger.getLogger(JFIBButtonWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing JLabel<br>
-	 * (based on generic SwingTextRenderingTechnologyAdapter)
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JLabel<br>
+	 * (based on generic SwingTextRenderingAdapter)
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingButtonRenderingTechnologyAdapter extends SwingRenderingTechnologyAdapter<JButton>
-			implements ButtonWidgetRenderingTechnologyAdapter<JButton> {
+	public static class SwingButtonRenderingAdapter extends SwingRenderingAdapter<JButton>
+			implements ButtonWidgetRenderingAdapter<JButton> {
 
 		@Override
 		public String getText(JButton component) {
@@ -88,7 +88,7 @@ public class JFIBButtonWidget extends FIBButtonWidgetImpl<JButton> {
 
 	}
 
-	public static SwingButtonRenderingTechnologyAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingButtonRenderingTechnologyAdapter();
+	public static SwingButtonRenderingAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingButtonRenderingAdapter();
 
 	public JFIBButtonWidget(FIBButton model, FIBController controller) {
 		super(model, controller, RENDERING_TECHNOLOGY_ADAPTER);

@@ -45,8 +45,8 @@ import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
 import org.openflexo.fib.view.FIBWidgetView;
-import org.openflexo.fib.view.FIBView.RenderingTechnologyAdapter;
-import org.openflexo.fib.view.widget.FIBImageWidget.ImageRenderingTechnologyAdapter;
+import org.openflexo.fib.view.FIBView.RenderingAdapter;
+import org.openflexo.fib.view.widget.FIBImageWidget.ImageRenderingAdapter;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 
 /**
@@ -67,7 +67,7 @@ public interface FIBCustomWidget<C extends FIBCustomComponent<T>, T> extends FIB
 	public C getTechnologyComponent();
 	
 	@Override
-	public CustomComponentRenderingTechnologyAdapter<C,T> getRenderingTechnologyAdapter();
+	public CustomComponentRenderingAdapter<C,T> getRenderingAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -76,7 +76,7 @@ public interface FIBCustomWidget<C extends FIBCustomComponent<T>, T> extends FIB
 	 *
 	 * @param <C>
 	 */
-	public static interface CustomComponentRenderingTechnologyAdapter<C,T> extends RenderingTechnologyAdapter<C> {
+	public static interface CustomComponentRenderingAdapter<C,T> extends RenderingAdapter<C> {
 
 	}
 

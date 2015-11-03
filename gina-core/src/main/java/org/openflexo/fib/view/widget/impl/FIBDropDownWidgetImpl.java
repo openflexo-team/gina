@@ -64,31 +64,31 @@ public abstract class FIBDropDownWidgetImpl<C, T> extends FIBMultipleValueWidget
 	static final Logger logger = Logger.getLogger(FIBDropDownWidgetImpl.class.getPackage().getName());
 
 	public FIBDropDownWidgetImpl(FIBDropDown model, FIBController controller,
-			DropDownRenderingTechnologyAdapter<C, T> renderingTechnologyAdapter) {
-		super(model, controller, renderingTechnologyAdapter);
+			DropDownRenderingAdapter<C, T> RenderingAdapter) {
+		super(model, controller, RenderingAdapter);
 	}
 
 	@Override
-	public DropDownRenderingTechnologyAdapter<C, T> getRenderingTechnologyAdapter() {
-		return (DropDownRenderingTechnologyAdapter<C, T>) super.getRenderingTechnologyAdapter();
+	public DropDownRenderingAdapter<C, T> getRenderingAdapter() {
+		return (DropDownRenderingAdapter<C, T>) super.getRenderingAdapter();
 	}
 
 	@Override
 	public synchronized boolean updateWidgetFromModel() {
 
 		if (notEquals(getValue(),
-				getRenderingTechnologyAdapter().getSelectedItem(getTechnologyComponent())) /*|| listModelRequireChange()*/) {
+				getRenderingAdapter().getSelectedItem(getTechnologyComponent())) /*|| listModelRequireChange()*/) {
 
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("updateWidgetFromModel()");
 			}
 			widgetUpdating = true;
-			getRenderingTechnologyAdapter().setSelectedItem(getTechnologyComponent(), getValue());
+			getRenderingAdapter().setSelectedItem(getTechnologyComponent(), getValue());
 
 			widgetUpdating = false;
 
 			if (getValue() == null && getWidget().getAutoSelectFirstRow() && getListModel().getSize() > 0) {
-				getRenderingTechnologyAdapter().setSelectedIndex(getTechnologyComponent(), 0);
+				getRenderingAdapter().setSelectedIndex(getTechnologyComponent(), 0);
 			}
 
 			return true;
@@ -105,9 +105,9 @@ public abstract class FIBDropDownWidgetImpl<C, T> extends FIBMultipleValueWidget
 		if (widgetUpdating || modelUpdating) {
 			return false;
 		}
-		if (notEquals(getValue(), getRenderingTechnologyAdapter().getSelectedItem(getTechnologyComponent()))) {
+		if (notEquals(getValue(), getRenderingAdapter().getSelectedItem(getTechnologyComponent()))) {
 			modelUpdating = true;
-			T newValue = getRenderingTechnologyAdapter().getSelectedItem(getTechnologyComponent());
+			T newValue = getRenderingAdapter().getSelectedItem(getTechnologyComponent());
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("updateModelFromWidget with " + newValue);
 			}

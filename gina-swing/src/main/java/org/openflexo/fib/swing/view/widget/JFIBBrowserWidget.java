@@ -68,7 +68,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBBrowser;
-import org.openflexo.fib.swing.view.SwingRenderingTechnologyAdapter;
+import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.view.widget.browser.FIBBrowserCellEditor;
 import org.openflexo.fib.view.widget.browser.FIBBrowserCellRenderer;
 import org.openflexo.fib.view.widget.browser.FIBBrowserModel.BrowserCell;
@@ -89,13 +89,13 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTree, T>implemen
 	private static final Logger LOGGER = Logger.getLogger(JFIBBrowserWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing JTable<br>
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JTable<br>
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingBrowserRenderingTechnologyAdapter<T> extends SwingRenderingTechnologyAdapter<JTree>
-			implements BrowserRenderingTechnologyAdapter<JTree, T> {
+	public static class SwingBrowserRenderingAdapter<T> extends SwingRenderingAdapter<JTree>
+			implements BrowserRenderingAdapter<JTree, T> {
 
 		@Override
 		public int getVisibleRowCount(JTree component) {
@@ -143,7 +143,7 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTree, T>implemen
 	private JScrollPane scrollPane;
 
 	public JFIBBrowserWidget(FIBBrowser fibBrowser, FIBController controller) {
-		super(fibBrowser, controller, new SwingBrowserRenderingTechnologyAdapter<T>());
+		super(fibBrowser, controller, new SwingBrowserRenderingAdapter<T>());
 		_dynamicComponent = new JPanel();
 		_dynamicComponent.setOpaque(false);
 		_dynamicComponent.setLayout(new BorderLayout());

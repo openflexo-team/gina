@@ -55,7 +55,7 @@ import javax.swing.JRadioButton;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBRadioButtonList;
-import org.openflexo.fib.swing.view.SwingRenderingTechnologyAdapter;
+import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.swing.view.widget.JFIBRadioButtonListWidget.JRadioButtonPanel;
 import org.openflexo.fib.view.impl.FIBViewImpl;
 import org.openflexo.fib.view.widget.impl.FIBRadioButtonListWidgetImpl;
@@ -65,14 +65,14 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 	static final Logger LOGGER = Logger.getLogger(JFIBRadioButtonListWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing JComboBox<br>
-	 * (based on generic SwingTextRenderingTechnologyAdapter)
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JComboBox<br>
+	 * (based on generic SwingTextRenderingAdapter)
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingRadioButtonRenderingTechnologyAdapter<T> extends SwingRenderingTechnologyAdapter<JRadioButtonPanel<T>>
-			implements RadioButtonRenderingTechnologyAdapter<JRadioButtonPanel<T>, T> {
+	public static class SwingRadioButtonRenderingAdapter<T> extends SwingRenderingAdapter<JRadioButtonPanel<T>>
+			implements RadioButtonRenderingAdapter<JRadioButtonPanel<T>, T> {
 
 		@Override
 		public T getSelectedItem(JRadioButtonPanel<T> component) {
@@ -97,7 +97,7 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 	}
 
 	public JFIBRadioButtonListWidget(FIBRadioButtonList model, FIBController controller) {
-		super(model, controller, new SwingRadioButtonRenderingTechnologyAdapter<T>());
+		super(model, controller, new SwingRadioButtonRenderingAdapter<T>());
 	}
 
 	@Override

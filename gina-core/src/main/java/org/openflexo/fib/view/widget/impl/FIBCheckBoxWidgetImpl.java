@@ -67,14 +67,14 @@ public abstract class FIBCheckBoxWidgetImpl<C> extends FIBWidgetViewImpl<FIBChec
 	 * @param model
 	 */
 	public FIBCheckBoxWidgetImpl(FIBCheckBox model, FIBController controller,
-			CheckBoxRenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
-		super(model, controller, renderingTechnologyAdapter);
+			CheckBoxRenderingAdapter<C> RenderingAdapter) {
+		super(model, controller, RenderingAdapter);
 		isNegate = model.getNegate();
 	}
 
 	@Override
-	public CheckBoxRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter() {
-		return (CheckBoxRenderingTechnologyAdapter<C>) super.getRenderingTechnologyAdapter();
+	public CheckBoxRenderingAdapter<C> getRenderingAdapter() {
+		return (CheckBoxRenderingAdapter<C>) super.getRenderingAdapter();
 	}
 
 	@Override
@@ -83,10 +83,10 @@ public abstract class FIBCheckBoxWidgetImpl<C> extends FIBWidgetViewImpl<FIBChec
 
 		switch (e.getAction()) {
 			case FIBValueEventDescription.CHECKED:
-				getRenderingTechnologyAdapter().setSelected(getTechnologyComponent(), true);
+				getRenderingAdapter().setSelected(getTechnologyComponent(), true);
 				break;
 			case FIBValueEventDescription.UNCHECKED:
-				getRenderingTechnologyAdapter().setSelected(getTechnologyComponent(), false);
+				getRenderingAdapter().setSelected(getTechnologyComponent(), false);
 				break;
 		}
 
@@ -103,13 +103,13 @@ public abstract class FIBCheckBoxWidgetImpl<C> extends FIBWidgetViewImpl<FIBChec
 	public synchronized boolean updateWidgetFromModel() {
 		Boolean value = getValue();
 		if (notEquals(isNegate ? value == null || !value : value != null && value,
-				getRenderingTechnologyAdapter().getSelected(getTechnologyComponent()))) {
+				getRenderingAdapter().getSelected(getTechnologyComponent()))) {
 			widgetUpdating = true;
 			if (value != null) {
 				if (isNegate) {
 					value = !value;
 				}
-				getRenderingTechnologyAdapter().setSelected(getTechnologyComponent(), value);
+				getRenderingAdapter().setSelected(getTechnologyComponent(), value);
 			}
 			widgetUpdating = false;
 			return true;
@@ -128,9 +128,9 @@ public abstract class FIBCheckBoxWidgetImpl<C> extends FIBWidgetViewImpl<FIBChec
 
 		Boolean value = getValue();
 		if (notEquals(isNegate ? value == null || !value : value != null && value,
-				getRenderingTechnologyAdapter().getSelected(getTechnologyComponent()))) {
-			setValue(isNegate ? !getRenderingTechnologyAdapter().getSelected(getTechnologyComponent())
-					: getRenderingTechnologyAdapter().getSelected(getTechnologyComponent()));
+				getRenderingAdapter().getSelected(getTechnologyComponent()))) {
+			setValue(isNegate ? !getRenderingAdapter().getSelected(getTechnologyComponent())
+					: getRenderingAdapter().getSelected(getTechnologyComponent()));
 			return true;
 		}
 		return false;

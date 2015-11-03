@@ -53,7 +53,7 @@ import org.openflexo.fib.view.FIBWidgetView;
 public interface FIBCheckBoxWidget<C> extends FIBWidgetView<FIBCheckBox, C, Boolean> {
 
 	@Override
-	public CheckBoxRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter();
+	public CheckBoxRenderingAdapter<C> getRenderingAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -62,7 +62,7 @@ public interface FIBCheckBoxWidget<C> extends FIBWidgetView<FIBCheckBox, C, Bool
 	 *
 	 * @param <C>
 	 */
-	public static interface CheckBoxRenderingTechnologyAdapter<C> extends RenderingTechnologyAdapter<C> {
+	public static interface CheckBoxRenderingAdapter<C> extends RenderingAdapter<C> {
 
 		public boolean getSelected(C component);
 

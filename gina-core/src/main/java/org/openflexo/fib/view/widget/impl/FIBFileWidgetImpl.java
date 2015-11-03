@@ -65,8 +65,8 @@ public abstract class FIBFileWidgetImpl<C> extends FIBWidgetViewImpl<FIBFile, C,
 	protected Boolean isDirectory;
 	protected File defaultDirectory;
 
-	public FIBFileWidgetImpl(FIBFile model, FIBController controller, FileWidgetRenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
-		super(model, controller, renderingTechnologyAdapter);
+	public FIBFileWidgetImpl(FIBFile model, FIBController controller, FileWidgetRenderingAdapter<C> RenderingAdapter) {
+		super(model, controller, RenderingAdapter);
 
 		mode = model.getMode() != null ? model.getMode() : FIBFile.FileMode.OpenMode;
 		filter = model.getFilter();
@@ -78,8 +78,8 @@ public abstract class FIBFileWidgetImpl<C> extends FIBWidgetViewImpl<FIBFile, C,
 	}
 
 	@Override
-	public FileWidgetRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter() {
-		return (FileWidgetRenderingTechnologyAdapter) super.getRenderingTechnologyAdapter();
+	public FileWidgetRenderingAdapter<C> getRenderingAdapter() {
+		return (FileWidgetRenderingAdapter) super.getRenderingAdapter();
 	}
 
 	@Override
@@ -113,11 +113,11 @@ public abstract class FIBFileWidgetImpl<C> extends FIBWidgetViewImpl<FIBFile, C,
 	}
 
 	public File getSelectedFile() {
-		return getRenderingTechnologyAdapter().getSelectedFile(getTechnologyComponent());
+		return getRenderingAdapter().getSelectedFile(getTechnologyComponent());
 	}
 
 	protected void setSelectedFile(File aFile) {
-		getRenderingTechnologyAdapter().setSelectedFile(getTechnologyComponent(), aFile);
+		getRenderingAdapter().setSelectedFile(getTechnologyComponent(), aFile);
 	}
 
 }

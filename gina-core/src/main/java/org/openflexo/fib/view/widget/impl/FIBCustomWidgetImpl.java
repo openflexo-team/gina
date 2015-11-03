@@ -60,7 +60,7 @@ import org.openflexo.fib.model.FIBCustom.FIBCustomAssignment;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
 import org.openflexo.fib.view.impl.FIBWidgetViewImpl;
 import org.openflexo.fib.view.widget.FIBCustomWidget;
-import org.openflexo.fib.view.widget.FIBColorWidget.ColorWidgetRenderingTechnologyAdapter;
+import org.openflexo.fib.view.widget.FIBColorWidget.ColorWidgetRenderingAdapter;
 import org.openflexo.kvc.InvalidKeyValuePropertyException;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 
@@ -86,8 +86,8 @@ public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> ex
 
 	//private final JLabel ERROR_LABEL = new JLabel("<Cannot instanciate component>");
 
-	public FIBCustomWidgetImpl(FIBCustom model, FIBController controller, CustomComponentRenderingTechnologyAdapter<C,T> renderingTechnologyAdapter) {
-		super(model, controller, renderingTechnologyAdapter);
+	public FIBCustomWidgetImpl(FIBCustom model, FIBController controller, CustomComponentRenderingAdapter<C,T> RenderingAdapter) {
+		super(model, controller, RenderingAdapter);
 
 		// We need here to "listen" all assignment values that may change
 		assignmentValueBindingValueChangeListeners = new ArrayList<BindingValueChangeListener<?>>();
@@ -96,8 +96,8 @@ public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> ex
 	}
 
 	@Override
-	public CustomComponentRenderingTechnologyAdapter<C,T> getRenderingTechnologyAdapter() {
-		return (CustomComponentRenderingTechnologyAdapter<C,T>) super.getRenderingTechnologyAdapter();
+	public CustomComponentRenderingAdapter<C,T> getRenderingAdapter() {
+		return (CustomComponentRenderingAdapter<C,T>) super.getRenderingAdapter();
 	}
 
 	@Override

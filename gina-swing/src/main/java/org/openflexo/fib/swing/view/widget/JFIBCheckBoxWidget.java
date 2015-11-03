@@ -49,7 +49,7 @@ import javax.swing.JCheckBox;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBCheckBox;
-import org.openflexo.fib.swing.view.SwingRenderingTechnologyAdapter;
+import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.view.widget.impl.FIBCheckBoxWidgetImpl;
 import org.openflexo.gina.event.description.FIBEventFactory;
 import org.openflexo.gina.event.description.FIBValueEventDescription;
@@ -66,13 +66,13 @@ public class JFIBCheckBoxWidget extends FIBCheckBoxWidgetImpl<JCheckBox>implemen
 	private static final Logger logger = Logger.getLogger(JFIBCheckBoxWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing JCheckBox<br>
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JCheckBox<br>
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingCheckBoxRenderingTechnologyAdapter extends SwingRenderingTechnologyAdapter<JCheckBox>
-			implements CheckBoxRenderingTechnologyAdapter<JCheckBox> {
+	public static class SwingCheckBoxRenderingAdapter extends SwingRenderingAdapter<JCheckBox>
+			implements CheckBoxRenderingAdapter<JCheckBox> {
 
 		@Override
 		public boolean getSelected(JCheckBox component) {
@@ -86,7 +86,7 @@ public class JFIBCheckBoxWidget extends FIBCheckBoxWidgetImpl<JCheckBox>implemen
 
 	}
 
-	public static SwingCheckBoxRenderingTechnologyAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingCheckBoxRenderingTechnologyAdapter();
+	public static SwingCheckBoxRenderingAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingCheckBoxRenderingAdapter();
 
 	/**
 	 * @param model

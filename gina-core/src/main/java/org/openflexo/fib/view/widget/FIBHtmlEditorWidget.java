@@ -41,7 +41,7 @@ package org.openflexo.fib.view.widget;
 
 import org.openflexo.fib.model.FIBHtmlEditor;
 import org.openflexo.fib.view.FIBWidgetView;
-import org.openflexo.fib.view.widget.FIBGenericTextWidget.GenericTextRenderingTechnologyAdapter;
+import org.openflexo.fib.view.widget.FIBGenericTextWidget.GenericTextRenderingAdapter;
 
 /**
  * Represents a widget able to edit an HTML fragment
@@ -54,7 +54,7 @@ import org.openflexo.fib.view.widget.FIBGenericTextWidget.GenericTextRenderingTe
 public interface FIBHtmlEditorWidget<C> extends FIBWidgetView<FIBHtmlEditor, C, String> {
 
 	@Override
-	public HtmlEditorWidgetRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter();
+	public HtmlEditorWidgetRenderingAdapter<C> getRenderingAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -63,7 +63,7 @@ public interface FIBHtmlEditorWidget<C> extends FIBWidgetView<FIBHtmlEditor, C, 
 	 *
 	 * @param <C>
 	 */
-	public static interface HtmlEditorWidgetRenderingTechnologyAdapter<C> extends GenericTextRenderingTechnologyAdapter<C> {
+	public static interface HtmlEditorWidgetRenderingAdapter<C> extends GenericTextRenderingAdapter<C> {
 
 	}
 

@@ -57,7 +57,7 @@ import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBContainer;
 import org.openflexo.fib.view.FIBContainerView;
 import org.openflexo.fib.view.FIBView;
-import org.openflexo.fib.view.FIBWidgetView.RenderingTechnologyAdapter;
+import org.openflexo.fib.view.FIBWidgetView.RenderingAdapter;
 
 /**
  * Default generic (and abstract) implementation for a "view" associated with a {@link FIBContainer} in a given rendering engine environment
@@ -83,8 +83,8 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 
 	protected Map<FIBComponent, FIBViewImpl<?, C2>> subViewsMap;
 
-	public FIBContainerViewImpl(M model, FIBController controller, RenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
-		super(model, controller, renderingTechnologyAdapter);
+	public FIBContainerViewImpl(M model, FIBController controller, RenderingAdapter<C> RenderingAdapter) {
+		super(model, controller, RenderingAdapter);
 
 		subComponents = new ArrayList<C2>();
 		constraints = new Hashtable<JComponent, Object>();

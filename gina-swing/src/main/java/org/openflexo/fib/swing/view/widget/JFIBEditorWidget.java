@@ -53,7 +53,7 @@ import javax.swing.event.DocumentListener;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBEditor;
-import org.openflexo.fib.swing.view.SwingRenderingTechnologyAdapter;
+import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.view.widget.impl.FIBEditorWidgetImpl;
 import org.openflexo.jedit.JEditTextArea;
 import org.openflexo.jedit.TokenMarker;
@@ -69,14 +69,14 @@ public class JFIBEditorWidget extends FIBEditorWidgetImpl<JEditTextArea>implemen
 	private static final Logger LOGGER = Logger.getLogger(JFIBEditorWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing JTextField<br>
-	 * (based on generic SwingTextRenderingTechnologyAdapter)
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JTextField<br>
+	 * (based on generic SwingTextRenderingAdapter)
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingEditorWidgetRenderingTechnologyAdapter extends SwingRenderingTechnologyAdapter<JEditTextArea>
-			implements EditorWidgetRenderingTechnologyAdapter<JEditTextArea> {
+	public static class SwingEditorWidgetRenderingAdapter extends SwingRenderingAdapter<JEditTextArea>
+			implements EditorWidgetRenderingAdapter<JEditTextArea> {
 
 		@Override
 		public int getColumns(JEditTextArea component) {
@@ -140,7 +140,7 @@ public class JFIBEditorWidget extends FIBEditorWidgetImpl<JEditTextArea>implemen
 
 	}
 
-	public static SwingEditorWidgetRenderingTechnologyAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingEditorWidgetRenderingTechnologyAdapter();
+	public static SwingEditorWidgetRenderingAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingEditorWidgetRenderingAdapter();
 
 	private static final int DEFAULT_COLUMNS = 30;
 	private static final int DEFAULT_ROWS = 5;

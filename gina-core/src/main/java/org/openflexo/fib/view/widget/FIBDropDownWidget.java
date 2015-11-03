@@ -58,7 +58,7 @@ public interface FIBDropDownWidget<C, T> extends FIBMultipleValueWidget<FIBDropD
 	static final Logger logger = Logger.getLogger(FIBDropDownWidget.class.getPackage().getName());
 
 	@Override
-	public DropDownRenderingTechnologyAdapter<C, T> getRenderingTechnologyAdapter();
+	public DropDownRenderingAdapter<C, T> getRenderingAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -67,7 +67,7 @@ public interface FIBDropDownWidget<C, T> extends FIBMultipleValueWidget<FIBDropD
 	 *
 	 * @param <C>
 	 */
-	public static interface DropDownRenderingTechnologyAdapter<C, T> extends SingleSelectionMultipleValueRenderingTechnologyAdapter<C, T> {
+	public static interface DropDownRenderingAdapter<C, T> extends SingleSelectionMultipleValueRenderingAdapter<C, T> {
 
 	}
 

@@ -56,7 +56,7 @@ import org.openflexo.fib.view.FIBWidgetView;
 public interface FIBImageWidget<C> extends FIBWidgetView<FIBImage, C, Image> {
 
 	@Override
-	public ImageRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter();
+	public ImageRenderingAdapter<C> getRenderingAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -65,7 +65,7 @@ public interface FIBImageWidget<C> extends FIBWidgetView<FIBImage, C, Image> {
 	 *
 	 * @param <C>
 	 */
-	public static interface ImageRenderingTechnologyAdapter<C> extends RenderingTechnologyAdapter<C> {
+	public static interface ImageRenderingAdapter<C> extends RenderingAdapter<C> {
 
 		public Image getImage(C component, FIBImageWidget<C> widget);
 

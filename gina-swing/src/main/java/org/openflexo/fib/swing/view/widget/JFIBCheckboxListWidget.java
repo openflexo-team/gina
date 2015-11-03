@@ -57,7 +57,7 @@ import javax.swing.JPanel;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBCheckboxList;
-import org.openflexo.fib.swing.view.SwingRenderingTechnologyAdapter;
+import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.swing.view.widget.JFIBCheckboxListWidget.JCheckBoxListPanel;
 import org.openflexo.fib.view.widget.impl.FIBCheckboxListWidgetImpl;
 
@@ -66,14 +66,14 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 	static final Logger logger = Logger.getLogger(JFIBCheckboxListWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing JComboBox<br>
-	 * (based on generic SwingTextRenderingTechnologyAdapter)
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JComboBox<br>
+	 * (based on generic SwingTextRenderingAdapter)
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingCheckboxListRenderingTechnologyAdapter<T> extends SwingRenderingTechnologyAdapter<JCheckBoxListPanel<T>>
-			implements CheckboxListRenderingTechnologyAdapter<JCheckBoxListPanel<T>, T> {
+	public static class SwingCheckboxListRenderingAdapter<T> extends SwingRenderingAdapter<JCheckBoxListPanel<T>>
+			implements CheckboxListRenderingAdapter<JCheckBoxListPanel<T>, T> {
 
 		@Override
 		public List<T> getSelectedItems(JCheckBoxListPanel<T> component) {
@@ -88,7 +88,7 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 	}
 
 	public JFIBCheckboxListWidget(FIBCheckboxList model, FIBController controller) {
-		super(model, controller, new SwingCheckboxListRenderingTechnologyAdapter<T>());
+		super(model, controller, new SwingCheckboxListRenderingAdapter<T>());
 
 	}
 

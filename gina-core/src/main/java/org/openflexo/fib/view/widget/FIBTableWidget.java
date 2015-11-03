@@ -60,7 +60,7 @@ import org.openflexo.fib.view.FIBWidgetView;
 public interface FIBTableWidget<C, T> extends FIBWidgetView<FIBTable, C, Collection<T>>, FIBSelectable<T> {
 
 	@Override
-	public TableRenderingTechnologyAdapter<C, T> getRenderingTechnologyAdapter();
+	public TableRenderingAdapter<C, T> getRenderingAdapter();
 
 	public void updateTable();
 
@@ -77,7 +77,7 @@ public interface FIBTableWidget<C, T> extends FIBWidgetView<FIBTable, C, Collect
 	 *
 	 * @param <C>
 	 */
-	public static interface TableRenderingTechnologyAdapter<C, T> extends RenderingTechnologyAdapter<C> {
+	public static interface TableRenderingAdapter<C, T> extends RenderingAdapter<C> {
 
 		public int getVisibleRowCount(C component);
 

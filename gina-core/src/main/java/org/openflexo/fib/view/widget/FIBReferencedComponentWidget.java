@@ -43,8 +43,8 @@ import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBReferencedComponent;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.fib.view.FIBWidgetView;
-import org.openflexo.fib.view.FIBView.RenderingTechnologyAdapter;
-import org.openflexo.fib.view.widget.FIBCustomWidget.CustomComponentRenderingTechnologyAdapter;
+import org.openflexo.fib.view.FIBView.RenderingAdapter;
+import org.openflexo.fib.view.widget.FIBCustomWidget.CustomComponentRenderingAdapter;
 
 /**
  * This component allows to reuse an other component, and embed it into a widget<br>
@@ -64,7 +64,7 @@ public interface FIBReferencedComponentWidget<C> extends FIBWidgetView<FIBRefere
 	public FIBView<FIBComponent,C> getReferencedComponentView();
 
 	@Override
-	public ReferencedComponentRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter();
+	public ReferencedComponentRenderingAdapter<C> getRenderingAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -73,7 +73,7 @@ public interface FIBReferencedComponentWidget<C> extends FIBWidgetView<FIBRefere
 	 *
 	 * @param <C>
 	 */
-	public static interface ReferencedComponentRenderingTechnologyAdapter<C> extends RenderingTechnologyAdapter<C> {
+	public static interface ReferencedComponentRenderingAdapter<C> extends RenderingAdapter<C> {
 
 	}
 

@@ -46,7 +46,7 @@ import javax.swing.JLabel;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBLabel;
-import org.openflexo.fib.swing.view.SwingRenderingTechnologyAdapter;
+import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.view.widget.impl.FIBLabelWidgetImpl;
 
 /**
@@ -58,14 +58,14 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabel> {
 	private static final Logger LOGGER = Logger.getLogger(JFIBLabelWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing JLabel<br>
-	 * (based on generic SwingTextRenderingTechnologyAdapter)
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JLabel<br>
+	 * (based on generic SwingTextRenderingAdapter)
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingLabelRenderingTechnologyAdapter extends SwingRenderingTechnologyAdapter<JLabel>
-			implements LabelRenderingTechnologyAdapter<JLabel> {
+	public static class SwingLabelRenderingAdapter extends SwingRenderingAdapter<JLabel>
+			implements LabelRenderingAdapter<JLabel> {
 
 		@Override
 		public String getText(JLabel component) {
@@ -89,7 +89,7 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabel> {
 
 	}
 
-	public static SwingLabelRenderingTechnologyAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingLabelRenderingTechnologyAdapter();
+	public static SwingLabelRenderingAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingLabelRenderingAdapter();
 
 	public JFIBLabelWidget(FIBLabel model, FIBController controller) {
 		super(model, controller, RENDERING_TECHNOLOGY_ADAPTER);

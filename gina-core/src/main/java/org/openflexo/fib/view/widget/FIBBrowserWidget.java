@@ -62,7 +62,7 @@ import org.openflexo.fib.view.widget.browser.FIBBrowserModel;
 public interface FIBBrowserWidget<C, T> extends FIBWidgetView<FIBBrowser, C, T>, FIBSelectable<T> {
 
 	@Override
-	public BrowserRenderingTechnologyAdapter<C, T> getRenderingTechnologyAdapter();
+	public BrowserRenderingAdapter<C, T> getRenderingAdapter();
 
 	public FIBBrowserModel getBrowserModel();
 
@@ -85,7 +85,7 @@ public interface FIBBrowserWidget<C, T> extends FIBWidgetView<FIBBrowser, C, T>,
 	 *
 	 * @param <C>
 	 */
-	public static interface BrowserRenderingTechnologyAdapter<C, T> extends RenderingTechnologyAdapter<C> {
+	public static interface BrowserRenderingAdapter<C, T> extends RenderingAdapter<C> {
 
 		public int getVisibleRowCount(C component);
 

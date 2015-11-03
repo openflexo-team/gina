@@ -53,7 +53,7 @@ import org.openflexo.fib.view.FIBWidgetView;
 public interface FIBNumberWidget<C, T extends Number> extends FIBWidgetView<FIBNumber, C, T> {
 
 	@Override
-	public NumberWidgetRenderingTechnologyAdapter<C, T> getRenderingTechnologyAdapter();
+	public NumberWidgetRenderingAdapter<C, T> getRenderingAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -62,7 +62,7 @@ public interface FIBNumberWidget<C, T extends Number> extends FIBWidgetView<FIBN
 	 *
 	 * @param <C>
 	 */
-	public static interface NumberWidgetRenderingTechnologyAdapter<C, T extends Number> extends RenderingTechnologyAdapter<C> {
+	public static interface NumberWidgetRenderingAdapter<C, T extends Number> extends RenderingAdapter<C> {
 
 		public T getNumber(C component);
 

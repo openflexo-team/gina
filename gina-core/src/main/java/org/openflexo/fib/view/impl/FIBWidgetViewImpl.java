@@ -123,8 +123,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 	private BindingValueChangeListener<T> dataBindingValueChangeListener;
 
-	protected FIBWidgetViewImpl(M model, FIBController aController, RenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
-		super(model, aController, renderingTechnologyAdapter);
+	protected FIBWidgetViewImpl(M model, FIBController aController, RenderingAdapter<C> RenderingAdapter) {
+		super(model, aController, RenderingAdapter);
 		formatter = new DynamicFormatter();
 		valueBindingContext = new DynamicValueBindingContext();
 		eventListener = new DynamicEventListener();
@@ -861,7 +861,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		if (getComponent().getTooltip() != null && getComponent().getTooltip().isValid()) {
 			try {
 				String tooltipText = getComponent().getTooltip().getBindingValue(getBindingEvaluationContext());
-				getRenderingTechnologyAdapter().setToolTipText(getTechnologyComponent(), tooltipText);
+				getRenderingAdapter().setToolTipText(getTechnologyComponent(), tooltipText);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
@@ -980,7 +980,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	@Override
 	public void updateFont() {
 		if (getFont() != null) {
-			getRenderingTechnologyAdapter().setFont(getTechnologyComponent(), getFont());
+			getRenderingAdapter().setFont(getTechnologyComponent(), getFont());
 		}
 	}
 

@@ -62,14 +62,14 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 	static final Logger LOGGER = Logger.getLogger(FIBRadioButtonListWidgetImpl.class.getPackage().getName());
 
 	public FIBRadioButtonListWidgetImpl(FIBRadioButtonList model, FIBController controller,
-			RadioButtonRenderingTechnologyAdapter<C, T> renderingTechnologyAdapter) {
-		super(model, controller, renderingTechnologyAdapter);
+			RadioButtonRenderingAdapter<C, T> RenderingAdapter) {
+		super(model, controller, RenderingAdapter);
 		selectFirstRowIfRequired();
 	}
 
 	@Override
-	public RadioButtonRenderingTechnologyAdapter<C, T> getRenderingTechnologyAdapter() {
-		return (RadioButtonRenderingTechnologyAdapter<C, T>) super.getRenderingTechnologyAdapter();
+	public RadioButtonRenderingAdapter<C, T> getRenderingAdapter() {
+		return (RadioButtonRenderingAdapter<C, T>) super.getRenderingAdapter();
 	}
 
 	private void selectFirstRowIfRequired() {
@@ -123,10 +123,10 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 	}
 
 	public T getSelectedValue() {
-		return getRenderingTechnologyAdapter().getSelectedItem(getTechnologyComponent());
+		return getRenderingAdapter().getSelectedItem(getTechnologyComponent());
 	}
 
 	public void setSelectedValue(T selectedValue) {
-		getRenderingTechnologyAdapter().setSelectedItem(getTechnologyComponent(), selectedValue);
+		getRenderingAdapter().setSelectedItem(getTechnologyComponent(), selectedValue);
 	}
 }

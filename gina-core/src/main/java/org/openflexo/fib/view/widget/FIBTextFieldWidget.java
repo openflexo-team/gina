@@ -52,7 +52,7 @@ import org.openflexo.fib.model.FIBTextField;
 public interface FIBTextFieldWidget<C> extends FIBGenericTextWidget<FIBTextField, C> {
 
 	@Override
-	public TextFieldRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter();
+	public TextFieldRenderingAdapter<C> getRenderingAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -61,7 +61,7 @@ public interface FIBTextFieldWidget<C> extends FIBGenericTextWidget<FIBTextField
 	 *
 	 * @param <C>
 	 */
-	public static interface TextFieldRenderingTechnologyAdapter<C> extends GenericTextRenderingTechnologyAdapter<C> {
+	public static interface TextFieldRenderingAdapter<C> extends GenericTextRenderingAdapter<C> {
 
 		public int getColumns(C component);
 

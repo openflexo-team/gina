@@ -41,7 +41,7 @@ package org.openflexo.fib.view.widget;
 
 import org.openflexo.fib.model.FIBEditor;
 import org.openflexo.fib.view.FIBWidgetView;
-import org.openflexo.fib.view.widget.FIBGenericTextWidget.GenericTextRenderingTechnologyAdapter;
+import org.openflexo.fib.view.widget.FIBGenericTextWidget.GenericTextRenderingAdapter;
 import org.openflexo.jedit.TokenMarker;
 
 /**
@@ -55,7 +55,7 @@ import org.openflexo.jedit.TokenMarker;
 public interface FIBEditorWidget<C> extends FIBWidgetView<FIBEditor, C, String> {
 
 	@Override
-	public EditorWidgetRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter();
+	public EditorWidgetRenderingAdapter<C> getRenderingAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -64,7 +64,7 @@ public interface FIBEditorWidget<C> extends FIBWidgetView<FIBEditor, C, String> 
 	 *
 	 * @param <C>
 	 */
-	public static interface EditorWidgetRenderingTechnologyAdapter<C> extends GenericTextRenderingTechnologyAdapter<C> {
+	public static interface EditorWidgetRenderingAdapter<C> extends GenericTextRenderingAdapter<C> {
 
 		public int getColumns(C component);
 

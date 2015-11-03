@@ -58,7 +58,7 @@ import javax.swing.SwingUtilities;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBFile;
 import org.openflexo.fib.model.FIBModelObject.FIBModelObjectImpl;
-import org.openflexo.fib.swing.view.SwingRenderingTechnologyAdapter;
+import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.swing.view.widget.JFIBFileWidget.FileSelectorPanel;
 import org.openflexo.fib.view.widget.impl.FIBFileWidgetImpl;
 import org.openflexo.localization.FlexoLocalization;
@@ -217,14 +217,14 @@ public class JFIBFileWidget extends FIBFileWidgetImpl<FileSelectorPanel>implemen
 	}
 
 	/**
-	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing JLabel<br>
-	 * (based on generic SwingTextRenderingTechnologyAdapter)
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JLabel<br>
+	 * (based on generic SwingTextRenderingAdapter)
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingFileWidgetRenderingTechnologyAdapter extends SwingRenderingTechnologyAdapter<FileSelectorPanel>
-			implements FileWidgetRenderingTechnologyAdapter<FileSelectorPanel> {
+	public static class SwingFileWidgetRenderingAdapter extends SwingRenderingAdapter<FileSelectorPanel>
+			implements FileWidgetRenderingAdapter<FileSelectorPanel> {
 
 		@Override
 		public File getSelectedFile(FileSelectorPanel component) {
@@ -238,7 +238,7 @@ public class JFIBFileWidget extends FIBFileWidgetImpl<FileSelectorPanel>implemen
 
 	}
 
-	public static SwingFileWidgetRenderingTechnologyAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingFileWidgetRenderingTechnologyAdapter();
+	public static SwingFileWidgetRenderingAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingFileWidgetRenderingAdapter();
 
 	public JFIBFileWidget(FIBFile model, FIBController controller) {
 		super(model, controller, RENDERING_TECHNOLOGY_ADAPTER);

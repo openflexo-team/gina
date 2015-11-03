@@ -96,14 +96,14 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	private BindingValueChangeListener<Boolean> visibleBindingValueChangeListener;
 
-	private final RenderingTechnologyAdapter<C> renderingTechnologyAdapter;
+	private final RenderingAdapter<C> renderingAdapter;
 
-	public FIBViewImpl(M model, FIBController controller, RenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
+	public FIBViewImpl(M model, FIBController controller, RenderingAdapter<C> renderingAdapter) {
 		super();
 		this.controller = controller;
 		component = model;
 
-		this.renderingTechnologyAdapter = renderingTechnologyAdapter;
+		this.renderingAdapter = renderingAdapter;
 
 		pcSupport = new PropertyChangeSupport(this);
 
@@ -114,8 +114,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	}
 
 	@Override
-	public RenderingTechnologyAdapter<C> getRenderingTechnologyAdapter() {
-		return renderingTechnologyAdapter;
+	public RenderingAdapter<C> getRenderingAdapter() {
+		return renderingAdapter;
 	}
 
 	private void listenVisibleValueChange() {
@@ -254,8 +254,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	/**
 	 * Return technology-specific component representing widget<br>
-	 * Note that, depending on the underlying technology, this technology-specific component might be embedded in an other component before to 
-	 * be added in component hierarchy (for example if component need to be embedded in a scroll pane)
+	 * Note that, depending on the underlying technology, this technology-specific component might be embedded in an other component before
+	 * to be added in component hierarchy (for example if component need to be embedded in a scroll pane)
 	 * 
 	 * @return C
 	 */
@@ -451,7 +451,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	protected void updateOpacity() {
 		if (getComponent().getOpaque() != null) {
-			renderingTechnologyAdapter.setOpaque(getTechnologyComponent(), getComponent().getOpaque());
+			renderingAdapter.setOpaque(getTechnologyComponent(), getComponent().getOpaque());
 		}
 	}
 

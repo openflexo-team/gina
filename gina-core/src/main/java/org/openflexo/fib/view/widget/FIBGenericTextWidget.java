@@ -50,7 +50,7 @@ import org.openflexo.fib.view.FIBWidgetView;
 public interface FIBGenericTextWidget<F extends FIBTextWidget, C> extends FIBWidgetView<F, C, String> {
 
 	@Override
-	public GenericTextRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter();
+	public GenericTextRenderingAdapter<C> getRenderingAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -59,7 +59,7 @@ public interface FIBGenericTextWidget<F extends FIBTextWidget, C> extends FIBWid
 	 *
 	 * @param <C>
 	 */
-	public static interface GenericTextRenderingTechnologyAdapter<C> extends RenderingTechnologyAdapter<C> {
+	public static interface GenericTextRenderingAdapter<C> extends RenderingAdapter<C> {
 
 		public String getText(C component);
 

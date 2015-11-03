@@ -84,22 +84,22 @@ public abstract class FIBEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBEditor
 	protected boolean validateOnReturn;
 
 	public FIBEditorWidgetImpl(FIBEditor model, FIBController controller,
-			EditorWidgetRenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
-		super(model, controller, renderingTechnologyAdapter);
+			EditorWidgetRenderingAdapter<C> RenderingAdapter) {
+		super(model, controller, RenderingAdapter);
 		validateOnReturn = model.isValidateOnReturn();
 		updateFont();
 		updateTokenMarkerStyle();
 	}
 
 	@Override
-	public EditorWidgetRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter() {
-		return (EditorWidgetRenderingTechnologyAdapter<C>) super.getRenderingTechnologyAdapter();
+	public EditorWidgetRenderingAdapter<C> getRenderingAdapter() {
+		return (EditorWidgetRenderingAdapter<C>) super.getRenderingAdapter();
 	}
 
 	@Override
 	public synchronized boolean updateWidgetFromModel() {
 
-		String editedText = getRenderingTechnologyAdapter().getText(getTechnologyComponent());
+		String editedText = getRenderingAdapter().getText(getTechnologyComponent());
 
 		if (notEquals(getValue(), editedText)) {
 			if (modelUpdating) {
@@ -110,9 +110,9 @@ public abstract class FIBEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBEditor
 			}
 			widgetUpdating = true;
 			try {
-				int caretPosition = getRenderingTechnologyAdapter().getCaretPosition(getTechnologyComponent());
-				getRenderingTechnologyAdapter().setText(getTechnologyComponent(), getValue());
-				getRenderingTechnologyAdapter().setCaretPosition(getTechnologyComponent(),
+				int caretPosition = getRenderingAdapter().getCaretPosition(getTechnologyComponent());
+				getRenderingAdapter().setText(getTechnologyComponent(), getValue());
+				getRenderingAdapter().setCaretPosition(getTechnologyComponent(),
 						caretPosition < getValue().length() ? caretPosition : getValue().length());
 			} finally {
 				widgetUpdating = false;
@@ -128,7 +128,7 @@ public abstract class FIBEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBEditor
 	@Override
 	public synchronized boolean updateModelFromWidget() {
 
-		String editedText = getRenderingTechnologyAdapter().getText(getTechnologyComponent());
+		String editedText = getRenderingAdapter().getText(getTechnologyComponent());
 
 		if (notEquals(getValue(), editedText)) {
 			if (LOGGER.isLoggable(Level.FINE)) {
@@ -147,7 +147,7 @@ public abstract class FIBEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBEditor
 
 	final public void updateTokenMarkerStyle() {
 		if (getWidget().getTokenMarkerStyle() != null) {
-			getRenderingTechnologyAdapter().setTokenMarker(getTechnologyComponent(), makeTokenMarker(getWidget().getTokenMarkerStyle()));
+			getRenderingAdapter().setTokenMarker(getTechnologyComponent(), makeTokenMarker(getWidget().getTokenMarkerStyle()));
 		}
 	}
 

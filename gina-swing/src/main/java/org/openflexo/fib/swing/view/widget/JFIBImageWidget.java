@@ -49,7 +49,7 @@ import javax.swing.SwingUtilities;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBImage;
-import org.openflexo.fib.swing.view.SwingRenderingTechnologyAdapter;
+import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.view.widget.FIBImageWidget;
 import org.openflexo.fib.view.widget.impl.FIBImageWidgetImpl;
 
@@ -63,13 +63,13 @@ public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel>implements ImageO
 	private static final Logger LOGGER = Logger.getLogger(JFIBImageWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing JLabel image<br>
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JLabel image<br>
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingImageRenderingTechnologyAdapter extends SwingRenderingTechnologyAdapter<JLabel>
-			implements ImageRenderingTechnologyAdapter<JLabel> {
+	public static class SwingImageRenderingAdapter extends SwingRenderingAdapter<JLabel>
+			implements ImageRenderingAdapter<JLabel> {
 
 		@Override
 		public Image getImage(JLabel component, FIBImageWidget<JLabel> widget) {
@@ -96,7 +96,7 @@ public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel>implements ImageO
 
 	}
 
-	public static SwingImageRenderingTechnologyAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingImageRenderingTechnologyAdapter();
+	public static SwingImageRenderingAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingImageRenderingAdapter();
 
 	public JFIBImageWidget(FIBImage model, FIBController controller) {
 		super(model, controller, RENDERING_TECHNOLOGY_ADAPTER);

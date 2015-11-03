@@ -64,12 +64,12 @@ import org.openflexo.fib.controller.FIBSelectable;
 import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBCustom.FIBCustomAssignment;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
-import org.openflexo.fib.swing.view.SwingRenderingTechnologyAdapter;
-import org.openflexo.fib.swing.view.widget.JFIBImageWidget.SwingImageRenderingTechnologyAdapter;
-import org.openflexo.fib.view.FIBView.RenderingTechnologyAdapter;
+import org.openflexo.fib.swing.view.SwingRenderingAdapter;
+import org.openflexo.fib.swing.view.widget.JFIBImageWidget.SwingImageRenderingAdapter;
+import org.openflexo.fib.view.FIBView.RenderingAdapter;
 import org.openflexo.fib.view.impl.FIBWidgetViewImpl;
 import org.openflexo.fib.view.widget.FIBImageWidget;
-import org.openflexo.fib.view.widget.FIBImageWidget.ImageRenderingTechnologyAdapter;
+import org.openflexo.fib.view.widget.FIBImageWidget.ImageRenderingAdapter;
 import org.openflexo.fib.view.widget.impl.FIBCustomWidgetImpl;
 import org.openflexo.kvc.InvalidKeyValuePropertyException;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
@@ -85,20 +85,20 @@ public class JFIBCustomWidget<J extends JComponent & FIBCustomComponent<T>, T> e
 	private static final Logger LOGGER = Logger.getLogger(JFIBCustomWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing custom component<br>
+	 * A {@link RenderingAdapter} implementation dedicated for Swing custom component<br>
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingCustomComponentRenderingTechnologyAdapter<J extends JComponent,T> extends SwingRenderingTechnologyAdapter<J>
-			implements CustomComponentRenderingTechnologyAdapter<J,T> {
+	public static class SwingCustomComponentRenderingAdapter<J extends JComponent,T> extends SwingRenderingAdapter<J>
+			implements CustomComponentRenderingAdapter<J,T> {
 
 	}
 	
 	private final JLabel ERROR_LABEL = new JLabel("<Cannot instanciate component>");
 
 	public JFIBCustomWidget(FIBCustom model, FIBController controller) {
-		super(model, controller, new SwingCustomComponentRenderingTechnologyAdapter<J,T>());
+		super(model, controller, new SwingCustomComponentRenderingAdapter<J,T>());
 	}
 
 

@@ -95,8 +95,8 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 	private BindingValueListChangeListener<T, List<T>> listenerToDataAsListValue;
 
 	public FIBTableWidgetImpl(FIBTable fibTable, FIBController controller,
-			TableRenderingTechnologyAdapter<C, T> renderingTechnologyAdapter) {
-		super(fibTable, controller, renderingTechnologyAdapter);
+			TableRenderingAdapter<C, T> RenderingAdapter) {
+		super(fibTable, controller, RenderingAdapter);
 		table = fibTable;
 		footer = makeFooter();
 		listenDataAsListValueChange();
@@ -106,8 +106,8 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 	public abstract FIBTableWidgetFooter<?, T> makeFooter();
 
 	@Override
-	public TableRenderingTechnologyAdapter<C, T> getRenderingTechnologyAdapter() {
-		return (TableRenderingTechnologyAdapter<C, T>) super.getRenderingTechnologyAdapter();
+	public TableRenderingAdapter<C, T> getRenderingAdapter() {
+		return (TableRenderingAdapter<C, T>) super.getRenderingAdapter();
 	}
 
 	private void listenDataAsListValueChange() {
@@ -227,13 +227,13 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 			// if (debug) System.out.println("valuesBeforeUpdating: "+valuesBeforeUpdating);
 			// if (debug) System.out.println("wasSelected: "+wasSelected);
 
-			if (getRenderingTechnologyAdapter().isEditing(getTechnologyComponent())) {
+			if (getRenderingAdapter().isEditing(getTechnologyComponent())) {
 				if (LOGGER.isLoggable(Level.FINE)) {
 					LOGGER.fine(getComponent().getName() + " - Table is currently editing at col:"
-							+ getRenderingTechnologyAdapter().getEditingColumn(getTechnologyComponent()) + " row:"
-							+ getRenderingTechnologyAdapter().getEditingRow(getTechnologyComponent()));
+							+ getRenderingAdapter().getEditingColumn(getTechnologyComponent()) + " row:"
+							+ getRenderingAdapter().getEditingRow(getTechnologyComponent()));
 				}
-				getRenderingTechnologyAdapter().cancelCellEditing(getTechnologyComponent());
+				getRenderingAdapter().cancelCellEditing(getTechnologyComponent());
 			}
 			else {
 				if (LOGGER.isLoggable(Level.FINE)) {
@@ -332,7 +332,7 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 	}
 
 	public ListSelectionModel getListSelectionModel() {
-		return getRenderingTechnologyAdapter().getListSelectionModel(getTechnologyComponent());
+		return getRenderingAdapter().getListSelectionModel(getTechnologyComponent());
 	}
 
 	@Override

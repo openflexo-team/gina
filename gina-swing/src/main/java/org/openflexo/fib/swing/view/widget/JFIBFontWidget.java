@@ -54,7 +54,7 @@ import javax.swing.JPanel;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBFont;
 import org.openflexo.fib.model.FIBModelObject.FIBModelObjectImpl;
-import org.openflexo.fib.swing.view.SwingRenderingTechnologyAdapter;
+import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.swing.view.widget.JFIBFontWidget.FontSelectorPanel;
 import org.openflexo.fib.view.widget.impl.FIBFontWidgetImpl;
 import org.openflexo.localization.FlexoLocalization;
@@ -73,13 +73,13 @@ public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel>implemen
 	private static final Logger LOGGER = Logger.getLogger(JFIBFontWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingTechnologyAdapter} implementation dedicated for Swing Font Widget<br>
+	 * A {@link RenderingAdapter} implementation dedicated for Swing Font Widget<br>
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingFontWidgetRenderingTechnologyAdapter extends SwingRenderingTechnologyAdapter<FontSelectorPanel>
-			implements FontWidgetRenderingTechnologyAdapter<FontSelectorPanel> {
+	public static class SwingFontWidgetRenderingAdapter extends SwingRenderingAdapter<FontSelectorPanel>
+			implements FontWidgetRenderingAdapter<FontSelectorPanel> {
 
 		@Override
 		public Font getSelectedFont(FontSelectorPanel component) {
@@ -123,7 +123,7 @@ public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel>implemen
 
 	}
 
-	public static SwingFontWidgetRenderingTechnologyAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingFontWidgetRenderingTechnologyAdapter();
+	public static SwingFontWidgetRenderingAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingFontWidgetRenderingAdapter();
 
 	public static class FontSelectorPanel extends JPanel {
 		private final JCheckBox checkBox;

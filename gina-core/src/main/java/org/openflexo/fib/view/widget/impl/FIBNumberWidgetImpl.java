@@ -68,16 +68,16 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 	 * @param model
 	 */
 	public FIBNumberWidgetImpl(FIBNumber model, FIBController controller,
-			NumberWidgetRenderingTechnologyAdapter<C, T> renderingTechnologyAdapter) {
-		super(model, controller, renderingTechnologyAdapter);
+			NumberWidgetRenderingAdapter<C, T> RenderingAdapter) {
+		super(model, controller, RenderingAdapter);
 		validateOnReturn = model.getValidateOnReturn();
 		updateCheckboxVisibility();
 		updateColumns();
 	}
 
 	@Override
-	public NumberWidgetRenderingTechnologyAdapter<C, T> getRenderingTechnologyAdapter() {
-		return (NumberWidgetRenderingTechnologyAdapter<C, T>) super.getRenderingTechnologyAdapter();
+	public NumberWidgetRenderingAdapter<C, T> getRenderingAdapter() {
+		return (NumberWidgetRenderingAdapter<C, T>) super.getRenderingAdapter();
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 			case FIBValueEventDescription.CHANGED: {
 				T value = parseValue(e.getValue());
 				System.out.println(value);
-				getRenderingTechnologyAdapter().setNumber(getTechnologyComponent(), value);
+				getRenderingAdapter().setNumber(getTechnologyComponent(), value);
 				break;
 			}
 		}
@@ -151,15 +151,15 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 	public synchronized boolean updateWidgetFromModel() {
 		// logger.info("updateWidgetFromModel() with "+getValue());
 		T editedValue = null;
-		if (!getRenderingTechnologyAdapter().isCheckboxSelected(getTechnologyComponent())) {
+		if (!getRenderingAdapter().isCheckboxSelected(getTechnologyComponent())) {
 			editedValue = getEditedValue();
 		}
 		if (notEquals(getValue(), editedValue)) {
 
 			widgetUpdating = true;
-			getRenderingTechnologyAdapter().setWidgetEnabled(getTechnologyComponent(),
+			getRenderingAdapter().setWidgetEnabled(getTechnologyComponent(),
 					(getValue() != null || !getWidget().getAllowsNull()) && isEnabled());
-			getRenderingTechnologyAdapter().setCheckboxSelected(getTechnologyComponent(), getValue() == null);
+			getRenderingAdapter().setCheckboxSelected(getTechnologyComponent(), getValue() == null);
 			T currentValue = null;
 
 			if (getValue() == null) {
@@ -177,7 +177,7 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 
 			ignoreTextfieldChanges = true;
 			try {
-				getRenderingTechnologyAdapter().setNumber(getTechnologyComponent(), currentValue);
+				getRenderingAdapter().setNumber(getTechnologyComponent(), currentValue);
 			} catch (IllegalArgumentException e) {
 				logger.warning("IllegalArgumentException: " + e.getMessage());
 			}
@@ -191,11 +191,11 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 	}
 
 	public T getEditedValue() {
-		return getRenderingTechnologyAdapter().getNumber(getTechnologyComponent());
+		return getRenderingAdapter().getNumber(getTechnologyComponent());
 	}
 
 	public void setEditedValue(T aValue) {
-		getRenderingTechnologyAdapter().setNumber(getTechnologyComponent(), aValue);
+		getRenderingAdapter().setNumber(getTechnologyComponent(), aValue);
 	}
 
 	/**
@@ -204,7 +204,7 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 	@Override
 	public synchronized boolean updateModelFromWidget() {
 		T editedValue = null;
-		if (!getRenderingTechnologyAdapter().isCheckboxSelected(getTechnologyComponent())) {
+		if (!getRenderingAdapter().isCheckboxSelected(getTechnologyComponent())) {
 			editedValue = getEditedValue();
 		}
 		if (notEquals(getValue(), editedValue)) {
@@ -220,16 +220,16 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 	}
 
 	final public void updateCheckboxVisibility() {
-		getRenderingTechnologyAdapter().setCheckboxVisible(getTechnologyComponent(),
+		getRenderingAdapter().setCheckboxVisible(getTechnologyComponent(),
 				getWidget().getAllowsNull() && !TypeUtils.isPrimitive(getComponent().getDataType()));
 	}
 
 	public void updateColumns() {
 		if (getComponent().getColumns() != null) {
-			getRenderingTechnologyAdapter().setColumns(getTechnologyComponent(), getComponent().getColumns());
+			getRenderingAdapter().setColumns(getTechnologyComponent(), getComponent().getColumns());
 		}
 		else {
-			getRenderingTechnologyAdapter().setColumns(getTechnologyComponent(), 0);
+			getRenderingAdapter().setColumns(getTechnologyComponent(), 0);
 		}
 	}
 

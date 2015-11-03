@@ -55,7 +55,7 @@ import org.openflexo.fib.view.FIBWidgetView;
 public interface FIBButtonWidget<C> extends FIBWidgetView<FIBButton, C, String> {
 
 	@Override
-	public ButtonWidgetRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter();
+	public ButtonWidgetRenderingAdapter<C> getRenderingAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -64,7 +64,7 @@ public interface FIBButtonWidget<C> extends FIBWidgetView<FIBButton, C, String> 
 	 *
 	 * @param <C>
 	 */
-	public static interface ButtonWidgetRenderingTechnologyAdapter<C> extends RenderingTechnologyAdapter<C> {
+	public static interface ButtonWidgetRenderingAdapter<C> extends RenderingAdapter<C> {
 
 		public String getText(C component);
 

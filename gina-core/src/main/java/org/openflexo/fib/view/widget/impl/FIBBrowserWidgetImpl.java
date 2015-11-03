@@ -95,8 +95,8 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 	private BindingValueChangeListener<Object> rootBindingValueChangeListener;
 
 	public FIBBrowserWidgetImpl(FIBBrowser fibBrowser, FIBController controller,
-			BrowserRenderingTechnologyAdapter<C, T> renderingTechnologyAdapter) {
-		super(fibBrowser, controller, renderingTechnologyAdapter);
+			BrowserRenderingAdapter<C, T> RenderingAdapter) {
+		super(fibBrowser, controller, RenderingAdapter);
 
 		_fibBrowser = fibBrowser;
 
@@ -114,8 +114,8 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 	public abstract FIBBrowserWidgetFooter<?, T> makeFooter();
 
 	@Override
-	public BrowserRenderingTechnologyAdapter<C, T> getRenderingTechnologyAdapter() {
-		return (BrowserRenderingTechnologyAdapter<C, T>) super.getRenderingTechnologyAdapter();
+	public BrowserRenderingAdapter<C, T> getRenderingAdapter() {
+		return (BrowserRenderingAdapter<C, T>) super.getRenderingAdapter();
 	}
 
 	private void listenSelectedValueChange() {
@@ -241,11 +241,11 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		// if (debug) System.out.println("valuesBeforeUpdating: "+valuesBeforeUpdating);
 		// if (debug) System.out.println("wasSelected: "+wasSelected);
 
-		if (getRenderingTechnologyAdapter().isEditing(getTechnologyComponent())) {
+		if (getRenderingAdapter().isEditing(getTechnologyComponent())) {
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine(getComponent().getName() + "  - Tree is currently editing");
 			}
-			getRenderingTechnologyAdapter().cancelCellEditing(getTechnologyComponent());
+			getRenderingAdapter().cancelCellEditing(getTechnologyComponent());
 		}
 		else {
 			if (LOGGER.isLoggable(Level.FINE)) {
@@ -307,7 +307,7 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 	}
 
 	public TreeSelectionModel getTreeSelectionModel() {
-		return getRenderingTechnologyAdapter().getTreeSelectionModel(getTechnologyComponent());
+		return getRenderingAdapter().getTreeSelectionModel(getTechnologyComponent());
 	}
 
 	@Override

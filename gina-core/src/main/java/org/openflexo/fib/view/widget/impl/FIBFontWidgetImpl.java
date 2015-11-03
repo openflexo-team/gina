@@ -65,31 +65,31 @@ public abstract class FIBFontWidgetImpl<C> extends FIBWidgetViewImpl<FIBFont, C,
 
 	private Font revertValue;
 
-	public FIBFontWidgetImpl(FIBFont model, FIBController controller, FontWidgetRenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
-		super(model, controller, renderingTechnologyAdapter);
+	public FIBFontWidgetImpl(FIBFont model, FIBController controller, FontWidgetRenderingAdapter<C> RenderingAdapter) {
+		super(model, controller, RenderingAdapter);
 		updateCheckboxVisibility();
 	}
 
 	@Override
-	public FontWidgetRenderingTechnologyAdapter<C> getRenderingTechnologyAdapter() {
-		return (FontWidgetRenderingTechnologyAdapter) super.getRenderingTechnologyAdapter();
+	public FontWidgetRenderingAdapter<C> getRenderingAdapter() {
+		return (FontWidgetRenderingAdapter) super.getRenderingAdapter();
 	}
 
 	public final void updateCheckboxVisibility() {
-		getRenderingTechnologyAdapter().setCheckboxVisible(getTechnologyComponent(), getWidget().getAllowsNull());
+		getRenderingAdapter().setCheckboxVisible(getTechnologyComponent(), getWidget().getAllowsNull());
 	}
 
 	@Override
 	public synchronized boolean updateWidgetFromModel() {
 		Font editedObject = getSelectedFont();
-		if (!getRenderingTechnologyAdapter().isCheckboxSelected(getTechnologyComponent())) {
+		if (!getRenderingAdapter().isCheckboxSelected(getTechnologyComponent())) {
 			editedObject = null;
 		}
 		if (notEquals(getValue(), editedObject)) {
 			widgetUpdating = true;
 			try {
-				getRenderingTechnologyAdapter().setCheckboxSelected(getTechnologyComponent(), getValue() != null);
-				getRenderingTechnologyAdapter().setCheckboxEnabled(getTechnologyComponent(),
+				getRenderingAdapter().setCheckboxSelected(getTechnologyComponent(), getValue() != null);
+				getRenderingAdapter().setCheckboxEnabled(getTechnologyComponent(),
 						(getValue() != null || !getWidget().getAllowsNull()) && isEnabled());
 				setSelectedFont(getValue());
 			} finally {
@@ -106,7 +106,7 @@ public abstract class FIBFontWidgetImpl<C> extends FIBWidgetViewImpl<FIBFont, C,
 	@Override
 	public synchronized boolean updateModelFromWidget() {
 		Font editedObject = null;
-		if (getRenderingTechnologyAdapter().isCheckboxSelected(getTechnologyComponent())) {
+		if (getRenderingAdapter().isCheckboxSelected(getTechnologyComponent())) {
 			editedObject = getSelectedFont();
 		}
 		if (notEquals(getValue(), editedObject)) {
@@ -125,11 +125,11 @@ public abstract class FIBFontWidgetImpl<C> extends FIBWidgetViewImpl<FIBFont, C,
 	}
 
 	public Font getSelectedFont() {
-		return getRenderingTechnologyAdapter().getSelectedFont(getTechnologyComponent());
+		return getRenderingAdapter().getSelectedFont(getTechnologyComponent());
 	}
 
 	public void setSelectedFont(Font aFont) {
-		getRenderingTechnologyAdapter().setSelectedFont(getTechnologyComponent(), aFont);
+		getRenderingAdapter().setSelectedFont(getTechnologyComponent(), aFont);
 	}
 
 	@Override

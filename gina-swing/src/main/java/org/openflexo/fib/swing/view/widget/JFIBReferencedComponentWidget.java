@@ -45,6 +45,7 @@ import javax.swing.JLabel;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBReferencedComponent;
+import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.view.widget.impl.FIBReferencedComponentWidgetImpl;
 
 /**
@@ -61,9 +62,20 @@ public class JFIBReferencedComponentWidget extends FIBReferencedComponentWidgetI
 
 	private final JLabel NOT_FOUND_LABEL;
 
-	public JFIBReferencedComponentWidget(FIBReferencedComponent model, FIBController controller,
-			ReferencedComponentRenderingTechnologyAdapter<JComponent> renderingTechnologyAdapter) {
-		super(model, controller, renderingTechnologyAdapter);
+	/**
+	 * A {@link RenderingAdapter} implementation dedicated for Swing referenced component<br>
+	 * 
+	 * @author sylvain
+	 * 
+	 */
+	public static class SwingReferencedComponentRenderingAdapter extends SwingRenderingAdapter<JComponent>
+			implements ReferencedComponentRenderingAdapter<JComponent> {
+	}
+
+	public static SwingReferencedComponentRenderingAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingReferencedComponentRenderingAdapter();
+
+	public JFIBReferencedComponentWidget(FIBReferencedComponent model, FIBController controller) {
+		super(model, controller, RENDERING_TECHNOLOGY_ADAPTER);
 		// this.factory = factory;
 		NOT_FOUND_LABEL = new JLabel(""/*
 										 * "<" + model.getName() +
