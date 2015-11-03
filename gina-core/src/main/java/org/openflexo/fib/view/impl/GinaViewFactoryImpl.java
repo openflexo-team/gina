@@ -1,7 +1,5 @@
 package org.openflexo.fib.view.impl;
 
-import java.util.logging.Level;
-
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBBrowser;
 import org.openflexo.fib.model.FIBButton;
@@ -24,23 +22,29 @@ import org.openflexo.fib.model.FIBReferencedComponent;
 import org.openflexo.fib.model.FIBTable;
 import org.openflexo.fib.model.FIBTextArea;
 import org.openflexo.fib.model.FIBTextField;
-import org.openflexo.fib.model.FIBTextPane;
 import org.openflexo.fib.model.FIBWidget;
 import org.openflexo.fib.view.FIBContainerView;
 import org.openflexo.fib.view.FIBWidgetView;
 import org.openflexo.fib.view.GinaViewFactory;
-import org.openflexo.fib.view.widget.FIBReferencedComponentWidget;
+import org.openflexo.fib.view.widget.FIBLabelWidget;
 import org.openflexo.fib.view.widget.FIBTextFieldWidget;
+import org.openflexo.fib.view.widget.impl.FIBBrowserWidgetImpl;
 import org.openflexo.fib.view.widget.impl.FIBButtonWidgetImpl;
 import org.openflexo.fib.view.widget.impl.FIBCheckBoxWidgetImpl;
+import org.openflexo.fib.view.widget.impl.FIBCheckboxListWidgetImpl;
 import org.openflexo.fib.view.widget.impl.FIBColorWidgetImpl;
+import org.openflexo.fib.view.widget.impl.FIBCustomWidgetImpl;
+import org.openflexo.fib.view.widget.impl.FIBDropDownWidgetImpl;
 import org.openflexo.fib.view.widget.impl.FIBEditorWidgetImpl;
 import org.openflexo.fib.view.widget.impl.FIBFileWidgetImpl;
 import org.openflexo.fib.view.widget.impl.FIBFontWidgetImpl;
 import org.openflexo.fib.view.widget.impl.FIBHtmlEditorWidgetImpl;
 import org.openflexo.fib.view.widget.impl.FIBImageWidgetImpl;
-import org.openflexo.fib.view.widget.impl.FIBLabelWidgetImpl;
+import org.openflexo.fib.view.widget.impl.FIBListWidgetImpl;
 import org.openflexo.fib.view.widget.impl.FIBNumberWidgetImpl;
+import org.openflexo.fib.view.widget.impl.FIBRadioButtonListWidgetImpl;
+import org.openflexo.fib.view.widget.impl.FIBReferencedComponentWidgetImpl;
+import org.openflexo.fib.view.widget.impl.FIBTableWidgetImpl;
 import org.openflexo.fib.view.widget.impl.FIBTextAreaWidgetImpl;
 
 /**
@@ -49,121 +53,135 @@ import org.openflexo.fib.view.widget.impl.FIBTextAreaWidgetImpl;
  * @author sylvain
  * 
  * @param <C>
- *            base minimal class of components build by this tool factory (eg JComponent for Swing)
+ *            base minimal class of components build by this tool factory (eg
+ *            JComponent for Swing)
  */
 public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 
 	@Override
-	public <F extends FIBContainer> FIBContainerView<F, ? extends C, ? extends C> makeContainer(F fibContainer, FIBController controller) {
-		/*if (fibContainer instanceof FIBTab) {
-			return new FIBTabView((FIBTab) fibContainer, this.fibController);
-		}
-		else if (fibContainer instanceof FIBPanel) {
-			return new FIBPanelView((FIBPanel) fibContainer, this.fibController);
-		}
-		else if (fibContainer instanceof FIBTabPanel) {
-			return new FIBTabPanelView((FIBTabPanel) fibContainer, this.fibController);
-		}
-		else if (fibContainer instanceof FIBSplitPanel) {
-			return new FIBSplitPanelView((FIBSplitPanel) fibContainer, this.fibController);
-		}*/
+	public <F extends FIBContainer> FIBContainerView<F, ? extends C, ? extends C> makeContainer(F fibContainer,
+			FIBController controller) {
+		/*
+		 * if (fibContainer instanceof FIBTab) { return new FIBTabView((FIBTab)
+		 * fibContainer, this.fibController); } else if (fibContainer instanceof
+		 * FIBPanel) { return new FIBPanelView((FIBPanel) fibContainer,
+		 * this.fibController); } else if (fibContainer instanceof FIBTabPanel)
+		 * { return new FIBTabPanelView((FIBTabPanel) fibContainer,
+		 * this.fibController); } else if (fibContainer instanceof
+		 * FIBSplitPanel) { return new FIBSplitPanelView((FIBSplitPanel)
+		 * fibContainer, this.fibController); }
+		 */
 		return null;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <F extends FIBWidget> FIBWidgetView<F, ? extends C, ?> makeWidget(F fibWidget, FIBController controller) {
+		if (fibWidget instanceof FIBLabel) {
+			return (FIBWidgetView<F, ? extends C, ?>) makeLabel((FIBLabel) fibWidget, controller);
+		}
 		if (fibWidget instanceof FIBTextField) {
 			return (FIBWidgetView<F, ? extends C, ?>) makeTextField((FIBTextField) fibWidget, controller);
-		}
-		if (fibWidget instanceof FIBEditor) {
-			return new FIBEditorWidgetImpl((FIBEditor) fibWidget, this.fibController);
-		}
-		if (fibWidget instanceof FIBTextPane) {
-			if (FIBController.LOGGER.isLoggable(Level.WARNING)) {
-				FIBController.LOGGER.warning("Can't handle TextPane yet");
-			}
-			return new FIBEditorPaneWidget((FIBEditorPane) fibWidget, this.fibController);
-		}
-		if (fibWidget instanceof FIBEditorPane) {
-			return new FIBEditorPaneWidget((FIBEditorPane) fibWidget, this.fibController);
 		}
 		if (fibWidget instanceof FIBTextArea) {
 			return (FIBWidgetView<F, ? extends C, ?>) makeTextArea((FIBTextArea) fibWidget, controller);
 		}
-		if (fibWidget instanceof FIBHtmlEditor) {
-			return new FIBHtmlEditorWidgetImpl((FIBHtmlEditor) fibWidget, this.fibController);
-		}
-		if (fibWidget instanceof FIBLabel) {
-			return new FIBLabelWidgetImpl((FIBLabel) fibWidget, this.fibController);
-		}
 		if (fibWidget instanceof FIBImage) {
-			return new FIBImageWidgetImpl((FIBImage) fibWidget, this.fibController);
-		}
-		if (fibWidget instanceof FIBCheckBox) {
-			return new FIBCheckBoxWidgetImpl((FIBCheckBox) fibWidget, this.fibController);
-		}
-		if (fibWidget instanceof FIBTable) {
-			return new FIBTableWidget((FIBTable) fibWidget, this.fibController);
-		}
-		if (fibWidget instanceof FIBBrowser) {
-			return new FIBBrowserWidget((FIBBrowser) fibWidget, this.fibController);
-		}
-		if (fibWidget instanceof FIBDropDown) {
-			return new FIBDropDownWidget((FIBDropDown) fibWidget, this.fibController);
-		}
-		if (fibWidget instanceof FIBList) {
-			return new FIBListWidget((FIBList) fibWidget, this.fibController);
+			return (FIBWidgetView<F, ? extends C, ?>) makeImage((FIBImage) fibWidget, controller);
 		}
 		if (fibWidget instanceof FIBNumber) {
-			FIBNumber w = (FIBNumber) fibWidget;
-			switch (w.getNumberType()) {
-				case ByteType:
-					return new FIBNumberWidgetImpl.FIBByteWidget(w, this.fibController);
-				case ShortType:
-					return new FIBNumberWidgetImpl.FIBShortWidget(w, this.fibController);
-				case IntegerType:
-					return new FIBNumberWidgetImpl.FIBIntegerWidget(w, this.fibController);
-				case LongType:
-					return new FIBNumberWidgetImpl.FIBLongWidget(w, this.fibController);
-				case FloatType:
-					return new FIBNumberWidgetImpl.FIBFloatWidget(w, this.fibController);
-				case DoubleType:
-					return new FIBNumberWidgetImpl.FIBDoubleWidget(w, this.fibController);
-				default:
-					break;
-			}
+			return (FIBWidgetView<F, ? extends C, ?>) makeNumber((FIBNumber) fibWidget, controller);
+		}
+		if (fibWidget instanceof FIBCheckBox) {
+			return (FIBWidgetView<F, ? extends C, ?>) makeCheckbox((FIBCheckBox) fibWidget, controller);
+		}
+		if (fibWidget instanceof FIBDropDown) {
+			return (FIBWidgetView<F, ? extends C, ?>) makeDropDown((FIBDropDown) fibWidget, controller);
+		}
+		if (fibWidget instanceof FIBList) {
+			return (FIBWidgetView<F, ? extends C, ?>) makeList((FIBList) fibWidget, controller);
+		}
+		if (fibWidget instanceof FIBEditor) {
+			return (FIBWidgetView<F, ? extends C, ?>) makeEditor((FIBEditor) fibWidget, controller);
+		}
+		if (fibWidget instanceof FIBHtmlEditor) {
+			return (FIBWidgetView<F, ? extends C, ?>) makeHtmlEditor((FIBHtmlEditor) fibWidget, controller);
+		}
+		if (fibWidget instanceof FIBTable) {
+			return (FIBWidgetView<F, ? extends C, ?>) makeTable((FIBTable) fibWidget, controller);
+		}
+		if (fibWidget instanceof FIBBrowser) {
+			return (FIBWidgetView<F, ? extends C, ?>) makeBrowser((FIBBrowser) fibWidget, controller);
 		}
 		if (fibWidget instanceof FIBColor) {
-			return new FIBColorWidgetImpl((FIBColor) fibWidget, this.fibController);
+			return (FIBWidgetView<F, ? extends C, ?>) makeColor((FIBColor) fibWidget, controller);
 		}
 		if (fibWidget instanceof FIBFont) {
-			return new FIBFontWidgetImpl((FIBFont) fibWidget, this.fibController);
+			return (FIBWidgetView<F, ? extends C, ?>) makeFont((FIBFont) fibWidget, controller);
 		}
 		if (fibWidget instanceof FIBFile) {
-			return new FIBFileWidgetImpl((FIBFile) fibWidget, this.fibController);
+			return (FIBWidgetView<F, ? extends C, ?>) makeFile((FIBFile) fibWidget, controller);
 		}
 		if (fibWidget instanceof FIBButton) {
-			return new FIBButtonWidgetImpl((FIBButton) fibWidget, this.fibController);
+			return (FIBWidgetView<F, ? extends C, ?>) makeButton((FIBButton) fibWidget, controller);
 		}
 		if (fibWidget instanceof FIBRadioButtonList) {
-			return new FIBRadioButtonListWidget((FIBRadioButtonList) fibWidget, this.fibController);
+			return (FIBWidgetView<F, ? extends C, ?>) makeRadioButtonList((FIBRadioButtonList) fibWidget, controller);
 		}
 		if (fibWidget instanceof FIBCheckboxList) {
-			return new FIBCheckboxListWidget((FIBCheckboxList) fibWidget, this.fibController);
+			return (FIBWidgetView<F, ? extends C, ?>) makeCheckboxList((FIBCheckboxList) fibWidget, controller);
 		}
 		if (fibWidget instanceof FIBCustom) {
-			return new FIBCustomWidget((FIBCustom) fibWidget, this.fibController);
+			return (FIBWidgetView<F, ? extends C, ?>) makeCustomWidget((FIBCustom) fibWidget, controller);
 		}
 		if (fibWidget instanceof FIBReferencedComponent) {
-			return new FIBReferencedComponentWidget((FIBReferencedComponent) fibWidget, this.fibController, this);
+			return (FIBWidgetView<F, ? extends C, ?>) makeReferencedComponentWidget((FIBReferencedComponent) fibWidget,
+					controller);
 		}
 		return null;
 	}
+
+	public abstract FIBLabelWidget<? extends C> makeLabel(FIBLabel widget, FIBController controller);
 
 	public abstract FIBTextFieldWidget<? extends C> makeTextField(FIBTextField widget, FIBController controller);
 
 	public abstract FIBTextAreaWidgetImpl<? extends C> makeTextArea(FIBTextArea widget, FIBController controller);
 
+	public abstract FIBImageWidgetImpl<? extends C> makeImage(FIBImage widget, FIBController controller);
+
+	public abstract FIBNumberWidgetImpl<? extends C, ?> makeNumber(FIBNumber widget, FIBController controller);
+
+	public abstract FIBCheckBoxWidgetImpl<? extends C> makeCheckbox(FIBCheckBox widget, FIBController controller);
+
+	public abstract FIBCheckboxListWidgetImpl<? extends C, ?> makeCheckboxList(FIBCheckboxList widget,
+			FIBController controller);
+
+	public abstract FIBRadioButtonListWidgetImpl<? extends C, ?> makeRadioButtonList(FIBRadioButtonList widget,
+			FIBController controller);
+
+	public abstract FIBDropDownWidgetImpl<? extends C, ?> makeDropDown(FIBDropDown widget, FIBController controller);
+
+	public abstract FIBListWidgetImpl<? extends C, ?> makeList(FIBList widget, FIBController controller);
+
 	public abstract FIBEditorWidgetImpl<? extends C> makeEditor(FIBEditor widget, FIBController controller);
+
+	public abstract FIBHtmlEditorWidgetImpl<? extends C> makeHtmlEditor(FIBHtmlEditor widget, FIBController controller);
+
+	public abstract FIBTableWidgetImpl<? extends C, ?> makeTable(FIBTable widget, FIBController controller);
+
+	public abstract FIBBrowserWidgetImpl<? extends C, ?> makeBrowser(FIBBrowser widget, FIBController controller);
+
+	public abstract FIBColorWidgetImpl<? extends C> makeColor(FIBColor widget, FIBController controller);
+
+	public abstract FIBFontWidgetImpl<? extends C> makeFont(FIBFont widget, FIBController controller);
+
+	public abstract FIBFileWidgetImpl<? extends C> makeFile(FIBFile widget, FIBController controller);
+
+	public abstract FIBButtonWidgetImpl<? extends C> makeButton(FIBButton widget, FIBController controller);
+
+	public abstract FIBCustomWidgetImpl<? extends C, ?> makeCustomWidget(FIBCustom widget, FIBController controller);
+
+	public abstract FIBReferencedComponentWidgetImpl<? extends C> makeReferencedComponentWidget(
+			FIBReferencedComponent widget, FIBController controller);
+
 }
