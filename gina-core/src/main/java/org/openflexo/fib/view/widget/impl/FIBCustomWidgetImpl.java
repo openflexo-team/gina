@@ -46,9 +46,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-
+import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingValueChangeListener;
@@ -62,56 +60,63 @@ import org.openflexo.fib.model.FIBCustom.FIBCustomAssignment;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
 import org.openflexo.fib.view.impl.FIBWidgetViewImpl;
 import org.openflexo.fib.view.widget.FIBCustomWidget;
+import org.openflexo.fib.view.widget.FIBColorWidget.ColorWidgetRenderingTechnologyAdapter;
 import org.openflexo.kvc.InvalidKeyValuePropertyException;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 
 /**
- * Defines an abstract custom widget
+ * Generic Gina widget presenting a custom component<br>
+ * This base API allows to encapsulate any component in a Gina component to be integrated inside a FIB hierarchy
  * 
- * @author sguerin
+ * @param <C>
+ *            type of technology-specific component this view manage
+ * @param <T>
+ *            type of data beeing represented by this custom component
+ * 
+ * @author sylvain
  * 
  */
-public abstract class FIBCustomWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBCustom, C, T>implements FIBCustomWidget<C, T> {
+public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> extends FIBWidgetViewImpl<FIBCustom, C, T>implements FIBCustomWidget<C, T>, ApplyCancelListener, BindingEvaluationContext {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBCustomWidgetImpl.class.getPackage().getName());
 
 	public static final String COMPONENT = "component";
 
-	private FIBCustomComponent<T, C> customComponent;
+	//private FIBCustomComponent<T, C> customComponent;
 
-	private final JLabel ERROR_LABEL = new JLabel("<Cannot instanciate component>");
+	//private final JLabel ERROR_LABEL = new JLabel("<Cannot instanciate component>");
 
-	public FIBCustomWidgetImpl(FIBCustom model, FIBController controller, RenderingTechnologyAdapter<C> renderingTechnologyAdapter) {
+	public FIBCustomWidgetImpl(FIBCustom model, FIBController controller, CustomComponentRenderingTechnologyAdapter<C,T> renderingTechnologyAdapter) {
 		super(model, controller, renderingTechnologyAdapter);
-		try {
-			customComponent = makeCustomComponent((Class) model.getComponentClass(), (Class<T>) TypeUtils.getBaseClass(model.getDataType()),
-					controller);
-		} catch (ClassCastException e) {
-			LOGGER.warning("Could not instanciate component: ClassCastException, see logs for details");
-			e.printStackTrace();
-		}
-		if (customComponent != null) {
-			customComponent.addApplyCancelListener(this);
-		}
 
 		// We need here to "listen" all assignment values that may change
 		assignmentValueBindingValueChangeListeners = new ArrayList<BindingValueChangeListener<?>>();
 		listenAssignmentValuesChange();
 
-		updateFont();
 	}
 
-	private FIBCustomComponent<T, C> makeCustomComponent(Class<FIBCustomComponent<T, C>> customComponentClass, Class<T> dataClass,
+	@Override
+	public CustomComponentRenderingTechnologyAdapter<C,T> getRenderingTechnologyAdapter() {
+		return (CustomComponentRenderingTechnologyAdapter<C,T>) super.getRenderingTechnologyAdapter();
+	}
+
+	@Override
+	protected C makeTechnologyComponent() {
+		C customComponent = makeCustomComponent((Class)getWidget().getComponentClass(),(Class<T>) TypeUtils.getBaseClass(getWidget().getDataType()),getController());
+		return customComponent;
+	}
+	
+	private C makeCustomComponent(Class<C> customComponentClass, Class<T> dataClass,
 			FIBController controller) {
 		if (customComponentClass == null) {
 			LOGGER.warning("Could not instanciate custom component : no component class found");
-			return new NotFoundComponent();
+			return null;
 		}
 		Class[] types = new Class[1];
 		types[0] = dataClass;
 		try {
 			boolean found = false;
-			Constructor<FIBCustomComponent<T, C>> constructor = null;
+			Constructor<C> constructor = null;
 			while (!found && types[0] != null) {
 				try {
 					constructor = customComponentClass.getConstructor(types);
@@ -131,13 +136,12 @@ public abstract class FIBCustomWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBCus
 			if (constructor == null) {
 				LOGGER.warning("Could not instanciate class " + customComponentClass + " : no valid constructor found, (searched "
 						+ customComponentClass.getSimpleName() + "(" + dataClass.getSimpleName() + ")...)");
-				return new NotFoundComponent();
+				return null;
 			}
 			Object[] args = new Object[1];
 			args[0] = null;
-			FIBCustomComponent<T, C> returned = constructor.newInstance(args);
+			C returned = constructor.newInstance(args);
 			returned.init(getComponent(), controller);
-			setCustomComponent(returned);
 			return returned;
 		} catch (SecurityException e) {
 			e.printStackTrace();
@@ -161,19 +165,6 @@ public abstract class FIBCustomWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBCus
 	protected void performModelUpdating(Object value) {
 	}
 
-	@Override
-	public FIBCustomComponent<T, C> getCustomComponent() {
-		return customComponent;
-	}
-
-	public void setCustomComponent(FIBCustomComponent<T, C> customComponent) {
-		FIBCustomComponent<T, C> oldComponent = this.customComponent;
-		if (oldComponent != customComponent) {
-			this.customComponent = customComponent;
-			getPropertyChangeSupport().firePropertyChange(COMPONENT, oldComponent, customComponent);
-		}
-	}
-
 	public void performModelUpdating() {
 		performModelUpdating(getValue());
 	}
@@ -191,8 +182,8 @@ public abstract class FIBCustomWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBCus
 	}
 
 	public synchronized boolean updateModelFromWidget(boolean forceUpdate) {
-		if (forceUpdate || notEquals(getValue(), customComponent.getEditedObject())) {
-			setValue(customComponent.getEditedObject());
+		if (forceUpdate || notEquals(getValue(), getTechnologyComponent().getEditedObject())) {
+			setValue(getTechnologyComponent().getEditedObject());
 			FIBCustom widget = getWidget();
 			// NPE Protection
 			if (widget != null) {
@@ -212,22 +203,6 @@ public abstract class FIBCustomWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBCus
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public JComponent getJComponent() {
-		if (customComponent == null) {
-			return ERROR_LABEL;
-		}
-		return (JComponent) customComponent.getJComponent();
-	}
-
-	@Override
-	public C getTechnologyComponent() {
-		if (customComponent != null) {
-			return customComponent.getJComponent();
-		}
-		return null;
 	}
 
 	private void performAssignments() {
@@ -329,18 +304,18 @@ public abstract class FIBCustomWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBCus
 			return false;
 		}
 
-		if (customComponent != null) {
+		if (getTechnologyComponent() != null) {
 
 			// performAssignments();
 
 			try {
 				T val = getValue();
 				// if (val != null) {
-				customComponent.setEditedObject(getValue());
+				getTechnologyComponent().setEditedObject(getValue());
 				// }
 			} catch (ClassCastException e) {
-				customComponent.setEditedObject(null);
-				LOGGER.warning("Unexpected ClassCastException in " + customComponent + ": " + e.getMessage());
+				getTechnologyComponent().setEditedObject(null);
+				LOGGER.warning("Unexpected ClassCastException in " + getTechnologyComponent() + ": " + e.getMessage());
 				// e.printStackTrace();
 			}
 
@@ -350,10 +325,10 @@ public abstract class FIBCustomWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBCus
 			performAssignments();
 
 			try {
-				customComponent.setRevertValue(getValue());
+				getTechnologyComponent().setRevertValue(getValue());
 			} catch (ClassCastException e) {
-				customComponent.setRevertValue(null);
-				LOGGER.warning("Unexpected ClassCastException in " + customComponent + ": " + e.getMessage());
+				getTechnologyComponent().setRevertValue(null);
+				LOGGER.warning("Unexpected ClassCastException in " + getTechnologyComponent() + ": " + e.getMessage());
 				// e.printStackTrace();
 			}
 
@@ -366,7 +341,7 @@ public abstract class FIBCustomWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBCus
 	@Override
 	public void fireApplyPerformed() {
 		if (LOGGER.isLoggable(Level.FINE)) {
-			LOGGER.fine("fireApplyPerformed() in FIBCustomWidget, value=" + customComponent.getEditedObject());
+			LOGGER.fine("fireApplyPerformed() in FIBCustomWidget, value=" + getTechnologyComponent().getEditedObject());
 		}
 		// In this case, we force model updating
 		updateModelFromWidget(true);
@@ -379,12 +354,12 @@ public abstract class FIBCustomWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBCus
 	@Override
 	public Object getValue(BindingVariable variable) {
 		if (variable.getVariableName().equals("component")) {
-			return customComponent;
+			return getTechnologyComponent();
 		}
 		return null;
 	}
 
-	protected class NotFoundComponent implements FIBCustomComponent {
+	/*protected class NotFoundComponent implements FIBCustomComponent {
 
 		private JLabel label;
 
@@ -406,7 +381,7 @@ public abstract class FIBCustomWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBCus
 		}
 
 		@Override
-		public JComponent getJComponent() {
+		public JComponent getTechnologyComponent() {
 			return label;
 		}
 
@@ -436,6 +411,6 @@ public abstract class FIBCustomWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBCus
 		public void delete() {
 			label = null;
 		}
-	}
+	}*/
 
 }

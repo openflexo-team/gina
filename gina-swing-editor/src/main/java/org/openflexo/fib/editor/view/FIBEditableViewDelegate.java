@@ -390,8 +390,8 @@ public class FIBEditableViewDelegate<M extends FIBComponent, J extends JComponen
 			} else if (propertyName.equals(FIBComponent.BACKGROUND_COLOR_KEY) || propertyName.equals(FIBComponent.FOREGROUND_COLOR_KEY)
 					|| propertyName.equals(FIBComponent.OPAQUE_KEY)) {
 				((FIBView) view).updateGraphicalProperties();
-				((FIBView) view).getJComponent().revalidate();
-				((FIBView) view).getJComponent().repaint();
+				((FIBView) view).getTechnologyComponent().revalidate();
+				((FIBView) view).getTechnologyComponent().repaint();
 			}
 		}
 	}

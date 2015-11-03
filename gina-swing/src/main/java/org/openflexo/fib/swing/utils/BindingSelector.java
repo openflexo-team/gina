@@ -111,7 +111,7 @@ import org.openflexo.toolbox.StringUtils;
  * @author sguerin
  * 
  */
-public class BindingSelector extends TextFieldCustomPopup<DataBinding> implements FIBCustomComponent<DataBinding, BindingSelector>,
+public class BindingSelector extends TextFieldCustomPopup<DataBinding> implements FIBCustomComponent<DataBinding>,
 		Observer, PropertyChangeListener {
 	static final Logger LOGGER = Logger.getLogger(BindingSelector.class.getPackage().getName());
 
@@ -1479,11 +1479,6 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 
 	boolean textFieldNotSynchWithEditedObject() {
 		return !textFieldSynchWithEditedObject();
-	}
-
-	@Override
-	public BindingSelector getJComponent() {
-		return this;
 	}
 
 	public static class TestBindable extends DefaultBindable {

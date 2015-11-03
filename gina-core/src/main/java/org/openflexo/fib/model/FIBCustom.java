@@ -80,7 +80,14 @@ import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 @XMLElement(xmlTag = "Custom")
 public interface FIBCustom extends FIBWidget {
 
-	public static interface FIBCustomComponent<V, C> {
+	/**
+	 * Minimal API for a technology-specific component embeddable in a FIBCustom
+	 * 
+	 * @author sylvain
+	 *
+	 * @param <V>
+	 */
+	public static interface FIBCustomComponent<V> {
 		@Documented
 		@Retention(RetentionPolicy.RUNTIME)
 		public @interface CustomComponentParameter {
@@ -95,8 +102,6 @@ public interface FIBCustom extends FIBWidget {
 				MANDATORY, OPTIONAL
 			};
 		}
-
-		public C getJComponent();
 
 		public V getEditedObject();
 

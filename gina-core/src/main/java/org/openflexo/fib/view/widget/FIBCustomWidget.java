@@ -39,25 +39,46 @@
 
 package org.openflexo.fib.view.widget;
 
+import java.awt.Image;
+
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
 import org.openflexo.fib.view.FIBWidgetView;
+import org.openflexo.fib.view.FIBView.RenderingTechnologyAdapter;
+import org.openflexo.fib.view.widget.FIBImageWidget.ImageRenderingTechnologyAdapter;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 
 /**
- * Generic component that is customized
+ * Generic Gina widget presenting a custom component<br>
+ * This base API allows to encapsulate any component in a Gina component to be integrated inside a FIB hierarchy
  * 
  * @param <C>
- *            type of technology-specific component this view manage
+ *            type of technology-specific component this view manage (type of FIBCustomComponent)
  * @param <T>
  *            type of data beeing represented by this custom component
  * 
  * @author sylvain
  * 
  */
-public interface FIBCustomWidget<C, T> extends FIBWidgetView<FIBCustom, C, T>, ApplyCancelListener, BindingEvaluationContext {
+public interface FIBCustomWidget<C extends FIBCustomComponent<T>, T> extends FIBWidgetView<FIBCustom, C, T> {
 
-	public FIBCustomComponent<T, C> getCustomComponent();
+	@Override
+	public C getTechnologyComponent();
+	
+	@Override
+	public CustomComponentRenderingTechnologyAdapter<C,T> getRenderingTechnologyAdapter();
+
+	/**
+	 * Specification of an adapter for a given rendering technology (eg Swing)
+	 * 
+	 * @author sylvain
+	 *
+	 * @param <C>
+	 */
+	public static interface CustomComponentRenderingTechnologyAdapter<C,T> extends RenderingTechnologyAdapter<C> {
+
+	}
+
 
 }

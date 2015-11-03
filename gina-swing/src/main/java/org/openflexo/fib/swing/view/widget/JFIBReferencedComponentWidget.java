@@ -301,9 +301,9 @@ BindingEvaluationContext*/{
 	}
 
 	@Override
-	public synchronized JComponent getJComponent() {
+	public synchronized JComponent getTechnologyComponent() {
 		if (getReferencedComponentView() != null) {
-			JComponent returned = getReferencedComponentView().getJComponent();
+			JComponent returned = getReferencedComponentView().getTechnologyComponent();
 			/*if (returned != null && getWidget().getOpaque() != null) {
 					returned.setOpaque(getWidget().getOpaque());
 				}*/

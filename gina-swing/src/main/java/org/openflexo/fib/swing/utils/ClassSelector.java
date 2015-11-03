@@ -57,7 +57,7 @@ import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
 import org.openflexo.fib.swing.utils.logging.FlexoLoggingViewer;
-import org.openflexo.fib.swing.view.FIBView;
+import org.openflexo.fib.view.FIBView;
 import org.openflexo.logging.FlexoLoggingManager;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
@@ -70,7 +70,7 @@ import org.openflexo.swing.VerticalLayout;
  * @author sguerin
  * 
  */
-public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCustomComponent<Class, ClassSelector> {
+public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCustomComponent<Class> {
 	@SuppressWarnings("hiding")
 	static final Logger LOGGER = Logger.getLogger(ClassSelector.class.getPackage().getName());
 
@@ -138,7 +138,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 
 	public class ClassSelectorDetailsPanel extends ResizablePanel {
 		private final FIBComponent fibComponent;
-		private FIBView fibView;
+		private FIBView<?, ?> fibView;
 		private CustomFIBController controller;
 
 		protected ClassSelectorDetailsPanel(Class aClass) {
@@ -239,11 +239,6 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 
 	public ClassSelectorDetailsPanel getSelectorPanel() {
 		return _selectorPanel;
-	}
-
-	@Override
-	public ClassSelector getJComponent() {
-		return this;
 	}
 
 	@Override

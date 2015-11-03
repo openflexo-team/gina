@@ -100,20 +100,20 @@ public class PaletteElement implements FIBDraggable /*implements Transferable*/{
 
 		view = FIBController.makeView(representationComponent, FIBAbstractEditor.LOCALIZATION);
 
-		Dimension size = view.getJComponent().getPreferredSize();
-		view.getJComponent().setBounds(x, y, size.width, size.height);
+		Dimension size = view.getTechnologyComponent().getPreferredSize();
+		view.getTechnologyComponent().setBounds(x, y, size.width, size.height);
 
 		this.dgListener = new DGListener();
 		this.dragSource = DragSource.getDefaultDragSource();
 		this.dsListener = new DSListener();
 
-		recursivelyRemoveFocusableProperty(view.getJComponent());
+		recursivelyRemoveFocusableProperty(view.getTechnologyComponent());
 
 		dgr = new Hashtable<JComponent, DragGestureRecognizer>();
 
 		// component, action, listener
 		// dgr = dragSource.createDefaultDragGestureRecognizer(view.getJComponent(), dragAction, dgListener);
-		recursivelyAddDGR(view.getJComponent());
+		recursivelyAddDGR(view.getTechnologyComponent());
 
 		enableDragging();
 

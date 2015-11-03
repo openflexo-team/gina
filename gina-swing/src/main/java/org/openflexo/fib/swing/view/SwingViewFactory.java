@@ -79,7 +79,7 @@ import org.openflexo.fib.swing.view.widget.JFIBButtonWidget;
 import org.openflexo.fib.swing.view.widget.JFIBCheckBoxWidget;
 import org.openflexo.fib.swing.view.widget.JFIBCheckboxListWidget;
 import org.openflexo.fib.swing.view.widget.JFIBColorWidget;
-import org.openflexo.fib.swing.view.widget.FIBCustomWidget;
+import org.openflexo.fib.swing.view.widget.JFIBCustomWidget;
 import org.openflexo.fib.swing.view.widget.JFIBDropDownWidget;
 import org.openflexo.fib.swing.view.widget.FIBEditorPaneWidget;
 import org.openflexo.fib.swing.view.widget.JFIBEditorWidget;
@@ -211,7 +211,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<C> {
 			return new JFIBCheckboxListWidget((FIBCheckboxList) fibWidget, this.fibController);
 		}
 		if (fibWidget instanceof FIBCustom) {
-			return new FIBCustomWidget((FIBCustom) fibWidget, this.fibController);
+			return new JFIBCustomWidget((FIBCustom) fibWidget, this.fibController);
 		}
 		if (fibWidget instanceof FIBReferencedComponent) {
 			return new FIBReferencedComponentWidget((FIBReferencedComponent) fibWidget, this.fibController, this);

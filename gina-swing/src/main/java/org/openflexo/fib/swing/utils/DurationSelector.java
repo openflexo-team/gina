@@ -71,7 +71,7 @@ import org.openflexo.swing.TextFieldCustomPopup;
 import org.openflexo.toolbox.Duration;
 import org.openflexo.toolbox.Duration.DurationUnit;
 
-public class DurationSelector extends TextFieldCustomPopup<Duration> implements FIBCustomComponent<Duration, DurationSelector> {
+public class DurationSelector extends TextFieldCustomPopup<Duration> implements FIBCustomComponent<Duration> {
 	public static final Font NORMAL_FONT = new Font("SansSerif", Font.PLAIN, 11);
 
 	private static final String EMPTY_STRING = "";
@@ -312,11 +312,6 @@ public class DurationSelector extends TextFieldCustomPopup<Duration> implements 
 		if (durationChooserPanel != null) {
 			durationChooserPanel.controlPanel.applyFocusTraversablePolicyTo(durationChooserPanel, true);
 		}
-	}
-
-	@Override
-	public DurationSelector getJComponent() {
-		return this;
 	}
 
 	@Override

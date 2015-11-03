@@ -50,7 +50,7 @@ import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
-import org.openflexo.fib.swing.view.FIBView;
+import org.openflexo.fib.view.FIBView;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.rm.Resource;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
@@ -66,7 +66,7 @@ import org.openflexo.toolbox.HasPropertyChangeSupport;
  *            type of object beeing represented as 'data' in FIB
  */
 @SuppressWarnings("serial")
-public abstract class FIBJPanel<T> extends JPanel implements FIBCustomComponent<T, FIBJPanel<T>>, HasPropertyChangeSupport {
+public abstract class FIBJPanel<T> extends JPanel implements FIBCustomComponent<T>, HasPropertyChangeSupport {
 
 	@SuppressWarnings("unused")
 	private static final Logger LOGGER = Logger.getLogger(FIBJPanel.class.getPackage().getName());
@@ -127,11 +127,6 @@ public abstract class FIBJPanel<T> extends JPanel implements FIBCustomComponent<
 
 	@Override
 	public void init(FIBCustom component, FIBController controller) {
-	}
-
-	@Override
-	public FIBJPanel<T> getJComponent() {
-		return this;
 	}
 
 	@Override

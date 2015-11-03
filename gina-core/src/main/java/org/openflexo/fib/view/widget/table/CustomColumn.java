@@ -199,7 +199,7 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V>implements EditableC
 				FIBCustomComponent<V, ?> customWidgetView = getViewCustomWidget(elementAt(row));
 				if (customWidgetView != null) {
 					// TODO: this cast should disappear: we may not be a JComponent in other context than Swing
-					c = (Component) customWidgetView.getJComponent();
+					c = (Component) customWidgetView.getTechnologyComponent();
 				}
 				else {
 					c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -357,7 +357,7 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V>implements EditableC
 				});
 			}
 			// TODO: this cast should disappear: we may not be a JComponent in other context than Swing
-			JComponent jComponent = (JComponent) _customWidget.getJComponent();
+			JComponent jComponent = (JComponent) _customWidget.getTechnologyComponent();
 			jComponent.setBorder(null);
 			return jComponent;
 		}
