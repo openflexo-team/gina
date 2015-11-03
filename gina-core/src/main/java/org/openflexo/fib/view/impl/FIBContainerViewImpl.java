@@ -151,7 +151,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 
 	public JComponent geDynamicJComponentForObject(FIBComponent component) {
 		if (getComponent() == component) {
-			return getDynamicJComponent();
+			return getTechnologyComponent();
 		}
 		else {
 			for (FIBViewImpl v : getSubViewsMap().values()) {

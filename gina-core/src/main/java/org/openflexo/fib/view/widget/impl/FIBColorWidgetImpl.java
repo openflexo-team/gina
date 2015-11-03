@@ -75,7 +75,7 @@ public abstract class FIBColorWidgetImpl<C> extends FIBWidgetViewImpl<FIBColor, 
 	}
 
 	public final void updateCheckboxVisibility() {
-		getRenderingTechnologyAdapter().setCheckboxVisible(getDynamicJComponent(), getWidget().getAllowsNull());
+		getRenderingTechnologyAdapter().setCheckboxVisible(getTechnologyComponent(), getWidget().getAllowsNull());
 	}
 
 	@Override
@@ -96,14 +96,14 @@ public abstract class FIBColorWidgetImpl<C> extends FIBWidgetViewImpl<FIBColor, 
 	@Override
 	public synchronized boolean updateWidgetFromModel() {
 		Color editedObject = getSelectedColor();
-		if (!getRenderingTechnologyAdapter().isCheckboxSelected(getDynamicJComponent())) {
+		if (!getRenderingTechnologyAdapter().isCheckboxSelected(getTechnologyComponent())) {
 			editedObject = null;
 		}
 		if (notEquals(getValue(), editedObject)) {
 			widgetUpdating = true;
 			try {
-				getRenderingTechnologyAdapter().setCheckboxSelected(getDynamicJComponent(), getValue() != null);
-				getRenderingTechnologyAdapter().setCheckboxEnabled(getDynamicJComponent(),
+				getRenderingTechnologyAdapter().setCheckboxSelected(getTechnologyComponent(), getValue() != null);
+				getRenderingTechnologyAdapter().setCheckboxEnabled(getTechnologyComponent(),
 						(getValue() != null || !getWidget().getAllowsNull()) && isEnabled());
 				setSelectedColor(getValue());
 			} finally {
@@ -120,7 +120,7 @@ public abstract class FIBColorWidgetImpl<C> extends FIBWidgetViewImpl<FIBColor, 
 	@Override
 	public synchronized boolean updateModelFromWidget() {
 		Color editedObject = null;
-		if (getRenderingTechnologyAdapter().isCheckboxSelected(getDynamicJComponent())) {
+		if (getRenderingTechnologyAdapter().isCheckboxSelected(getTechnologyComponent())) {
 			editedObject = getSelectedColor();
 		}
 		if (notEquals(getValue(), editedObject)) {
@@ -139,11 +139,11 @@ public abstract class FIBColorWidgetImpl<C> extends FIBWidgetViewImpl<FIBColor, 
 	}
 
 	public Color getSelectedColor() {
-		return getRenderingTechnologyAdapter().getSelectedColor(getDynamicJComponent());
+		return getRenderingTechnologyAdapter().getSelectedColor(getTechnologyComponent());
 	}
 
 	public void setSelectedColor(Color aColor) {
-		getRenderingTechnologyAdapter().setSelectedColor(getDynamicJComponent(), aColor);
+		getRenderingTechnologyAdapter().setSelectedColor(getTechnologyComponent(), aColor);
 	}
 
 }

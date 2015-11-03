@@ -222,8 +222,8 @@ public class FIBDropDownWidgetTest extends FIBTestCase {
 		FIBDropDownWidget<?> w5 = (FIBDropDownWidget<?>) controller.viewForComponent(dropDown5);
 		FIBDropDownWidget<?> w6 = (FIBDropDownWidget<?>) controller.viewForComponent(dropDown6);
 
-		w5.getDynamicJComponent().setSelectedItem(family.getChildren().get(1));
-		w6.getDynamicJComponent().setSelectedItem(Gender.Male);
+		w5.getTechnologyComponent().setSelectedItem(family.getChildren().get(1));
+		w6.getTechnologyComponent().setSelectedItem(Gender.Male);
 
 		assertEquals(family.getChildren().get(1), family.getBiggestChild());
 		assertEquals(Gender.Male, family.getFather().getGender());
@@ -239,18 +239,18 @@ public class FIBDropDownWidgetTest extends FIBTestCase {
 
 		FIBDropDownWidget<?> w5 = (FIBDropDownWidget<?>) controller.viewForComponent(dropDown5);
 
-		assertEquals(5, w5.getDynamicJComponent().getModel().getSize());
+		assertEquals(5, w5.getTechnologyComponent().getModel().getSize());
 
 		Person junior = family.createChild();
 
-		assertEquals(6, w5.getDynamicJComponent().getModel().getSize());
+		assertEquals(6, w5.getTechnologyComponent().getModel().getSize());
 
 		// System.out.println("new children=" + family.getChildren());
 		// System.out.println("List model = " + w5.getDynamicJComponent().getModel());
 
 		family.setBiggestChild(junior);
 		assertEquals(junior, controller.viewForComponent(dropDown5).getData());
-		assertEquals(junior, w5.getDynamicJComponent().getSelectedItem());
+		assertEquals(junior, w5.getTechnologyComponent().getSelectedItem());
 
 	}
 

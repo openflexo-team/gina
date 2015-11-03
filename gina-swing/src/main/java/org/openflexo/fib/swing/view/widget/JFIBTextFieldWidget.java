@@ -107,7 +107,7 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>imple
 		super(model, controller, RENDERING_TECHNOLOGY_ADAPTER);
 		panel = new JPanel(new BorderLayout());
 		panel.setOpaque(false);
-		panel.add(getDynamicJComponent(), BorderLayout.CENTER);
+		panel.add(getTechnologyComponent(), BorderLayout.CENTER);
 		if (!ToolBox.isMacOSLaf()) {
 			panel.setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
 					RIGHT_COMPENSATING_BORDER));
@@ -149,7 +149,7 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>imple
 				GinaStackEvent stack = null;
 				try {
 					stack = GENotifier.raise(FIBEventFactory.getInstance().createTextEvent(FIBTextEventDescription.INSERTED, e.getOffset(),
-							e.getLength(), e.getDocument().getText(e.getOffset(), e.getLength()), getDynamicJComponent().getText()));
+							e.getLength(), e.getDocument().getText(e.getOffset(), e.getLength()), getTechnologyComponent().getText()));
 				} catch (BadLocationException e2) {
 					e2.printStackTrace();
 				}
@@ -158,7 +158,7 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>imple
 					try {
 						if (ToolBox.getPLATFORM() == ToolBox.MACOS) {
 							if (e.getLength() == 1) {
-								char c = getDynamicJComponent().getText().charAt(e.getOffset());
+								char c = getTechnologyComponent().getText().charAt(e.getOffset());
 								if (c == '´' || c == 'ˆ' || c == '˜' || c == '`' || c == '¨') {
 									if (stack != null)
 										stack.end();
@@ -191,7 +191,7 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>imple
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				updateModelFromWidget();
-				final Window w = SwingUtilities.windowForComponent(getDynamicJComponent());
+				final Window w = SwingUtilities.windowForComponent(getTechnologyComponent());
 				if (w instanceof JDialog) {
 					if (((JDialog) w).getRootPane().getDefaultButton() != null) {
 						SwingUtilities.invokeLater(new Runnable() {
@@ -218,7 +218,7 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>imple
 		GinaStackEvent stack = GENotifier.raise(FIBEventFactory.getInstance().createFocusEvent(FIBFocusEventDescription.FOCUS_GAINED));
 
 		super.focusGained(event);
-		getDynamicJComponent().selectAll();
+		getTechnologyComponent().selectAll();
 
 		stack.end();
 	}

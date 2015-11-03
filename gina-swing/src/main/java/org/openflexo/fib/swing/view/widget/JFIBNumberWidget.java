@@ -284,11 +284,11 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 	@Override
 	public void focusGained(FocusEvent event) {
 		super.focusGained(event);
-		if (event.getSource() == getDynamicJComponent().getTextField()) {
+		if (event.getSource() == getTechnologyComponent().getTextField()) {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					getDynamicJComponent().getTextField().selectAll();
+					getTechnologyComponent().getTextField().selectAll();
 				}
 			});
 		}
@@ -296,7 +296,7 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 
 	@Override
 	public JPanel getJComponent() {
-		return getDynamicJComponent();
+		return getTechnologyComponent();
 	}
 
 	@SuppressWarnings("serial")

@@ -369,61 +369,61 @@ public class FIBNumberWidgetTest extends FIBTestCase {
 	public void test4ModifyValueInWidget() {
 
 		FIBNumberWidget<Byte> bytePWidgetView = (FIBNumberWidget<Byte>) controller.viewForComponent(bytePWidget);
-		bytePWidgetView.getDynamicJComponent().setValue((byte) 201);
+		bytePWidgetView.getTechnologyComponent().setValue((byte) 201);
 		assertEquals((byte) 201, numbers.getByteP());
 
 		FIBNumberWidget<Byte> byteOWidgetView = (FIBNumberWidget<Byte>) controller.viewForComponent(byteOWidget);
-		byteOWidgetView.getDynamicJComponent().setValue((byte) 207);
+		byteOWidgetView.getTechnologyComponent().setValue((byte) 207);
 		assertEquals(Byte.valueOf((byte) 207), numbers.getByteO());
 
 		assertEquals((byte) 408, controller.viewForComponent(byteSWidget).getData());
 
 		FIBNumberWidget<Short> shortPWidgetView = (FIBNumberWidget<Short>) controller.viewForComponent(shortPWidget);
-		shortPWidgetView.getDynamicJComponent().setValue((short) 202);
+		shortPWidgetView.getTechnologyComponent().setValue((short) 202);
 		assertEquals((short) 202, numbers.getShortP());
 
 		FIBNumberWidget<Short> shortOWidgetView = (FIBNumberWidget<Short>) controller.viewForComponent(shortOWidget);
-		shortOWidgetView.getDynamicJComponent().setValue((short) 208);
+		shortOWidgetView.getTechnologyComponent().setValue((short) 208);
 		assertEquals(Short.valueOf((short) 208), numbers.getShortO());
 
 		assertEquals((short) 410, controller.viewForComponent(shortSWidget).getData());
 
 		FIBNumberWidget<Integer> integerPWidgetView = (FIBNumberWidget<Integer>) controller.viewForComponent(integerPWidget);
-		integerPWidgetView.getDynamicJComponent().setValue((int) 203);
+		integerPWidgetView.getTechnologyComponent().setValue((int) 203);
 		assertEquals((int) 203, numbers.getIntP());
 
 		FIBNumberWidget<Integer> integerOWidgetView = (FIBNumberWidget<Integer>) controller.viewForComponent(integerOWidget);
-		integerOWidgetView.getDynamicJComponent().setValue((int) 209);
+		integerOWidgetView.getTechnologyComponent().setValue((int) 209);
 		assertEquals(Integer.valueOf((int) 209), numbers.getIntO());
 
 		assertEquals((int) 412, controller.viewForComponent(integerSWidget).getData());
 
 		FIBNumberWidget<Long> longPWidgetView = (FIBNumberWidget<Long>) controller.viewForComponent(longPWidget);
-		longPWidgetView.getDynamicJComponent().setValue((long) 204);
+		longPWidgetView.getTechnologyComponent().setValue((long) 204);
 		assertEquals((long) 204, numbers.getLongP());
 
 		FIBNumberWidget<Long> longOWidgetView = (FIBNumberWidget<Long>) controller.viewForComponent(longOWidget);
-		longOWidgetView.getDynamicJComponent().setValue((long) 210);
+		longOWidgetView.getTechnologyComponent().setValue((long) 210);
 		assertEquals(Long.valueOf((long) 210), numbers.getLongO());
 
 		assertEquals((long) 414, controller.viewForComponent(longSWidget).getData());
 
 		FIBNumberWidget<Float> floatPWidgetView = (FIBNumberWidget<Float>) controller.viewForComponent(floatPWidget);
-		floatPWidgetView.getDynamicJComponent().setValue((float) 205);
+		floatPWidgetView.getTechnologyComponent().setValue((float) 205);
 		assertEquals(205, numbers.getFloatP(), 0.000001);
 
 		FIBNumberWidget<Float> floatOWidgetView = (FIBNumberWidget<Float>) controller.viewForComponent(floatOWidget);
-		floatOWidgetView.getDynamicJComponent().setValue((float) 211);
+		floatOWidgetView.getTechnologyComponent().setValue((float) 211);
 		assertEquals(Float.valueOf(211), numbers.getFloatO(), 0.000001);
 
 		assertEquals((float) 416, controller.viewForComponent(floatSWidget).getData());
 
 		FIBNumberWidget<Double> doublePWidgetView = (FIBNumberWidget<Double>) controller.viewForComponent(doublePWidget);
-		doublePWidgetView.getDynamicJComponent().setValue((double) 205);
+		doublePWidgetView.getTechnologyComponent().setValue((double) 205);
 		assertEquals(205, numbers.getDoubleP(), 0.000001);
 
 		FIBNumberWidget<Double> doubleOWidgetView = (FIBNumberWidget<Double>) controller.viewForComponent(doubleOWidget);
-		doubleOWidgetView.getDynamicJComponent().setValue((double) 211);
+		doubleOWidgetView.getTechnologyComponent().setValue((double) 211);
 		assertEquals(Double.valueOf(211), numbers.getDoubleO(), 0.000001);
 
 		assertEquals((double) 416, controller.viewForComponent(doubleSWidget).getData());

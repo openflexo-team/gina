@@ -174,13 +174,13 @@ public class FIBTextAreaWidgetTest extends FIBTestCase {
 		FIBTextAreaWidget w2 = (FIBTextAreaWidget) controller.viewForComponent(lastNameTF);
 		FIBTextAreaWidget w3 = (FIBTextAreaWidget) controller.viewForComponent(fullNameTF);
 
-		w1.getDynamicJComponent().setText("James");
-		w2.getDynamicJComponent().setText("Dean");
+		w1.getTechnologyComponent().setText("James");
+		w2.getTechnologyComponent().setText("Dean");
 
 		assertEquals("James", family1.getFather().getFirstName());
 		assertEquals("Dean", family1.getFather().getLastName());
 		assertEquals("James Dean", controller.viewForComponent(fullNameTF).getData());
-		assertEquals("James Dean", w3.getDynamicJComponent().getText());
+		assertEquals("James Dean", w3.getTechnologyComponent().getText());
 
 	}
 

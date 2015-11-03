@@ -155,8 +155,8 @@ public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T>implements 
 		widgetExecuting = true;
 		super.executeEvent(e);
 
-		getDynamicJComponent().revalidate();
-		getDynamicJComponent().repaint();
+		getTechnologyComponent().revalidate();
+		getTechnologyComponent().repaint();
 
 		System.out.println("Execute end");
 		widgetExecuting = false;
@@ -167,30 +167,30 @@ public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T>implements 
 	@Override
 	protected void proceedToListModelUpdate(FIBListModel aListModel) {
 		// logger.info("************* Updating GUI with " + aListModel);
-		if (getDynamicJComponent() != null) {
+		if (getTechnologyComponent() != null) {
 			widgetUpdating = true;
 			if (oldListModel != null) {
-				getDynamicJComponent().getSelectionModel().removeListSelectionListener(oldListModel);
+				getTechnologyComponent().getSelectionModel().removeListSelectionListener(oldListModel);
 			}
 			oldListModel = aListModel;
-			getDynamicJComponent().setLayoutOrientation(getWidget().getLayoutOrientation().getSwingValue());
-			getDynamicJComponent().setSelectionMode(getWidget().getSelectionMode().getMode());
+			getTechnologyComponent().setLayoutOrientation(getWidget().getLayoutOrientation().getSwingValue());
+			getTechnologyComponent().setSelectionMode(getWidget().getSelectionMode().getMode());
 			if (getWidget().getVisibleRowCount() != null) {
-				getDynamicJComponent().setVisibleRowCount(getWidget().getVisibleRowCount());
+				getTechnologyComponent().setVisibleRowCount(getWidget().getVisibleRowCount());
 			}
 			else {
-				getDynamicJComponent().setVisibleRowCount(-1);
+				getTechnologyComponent().setVisibleRowCount(-1);
 			}
 			if (getWidget().getRowHeight() != null) {
-				getDynamicJComponent().setFixedCellHeight(getWidget().getRowHeight());
+				getTechnologyComponent().setFixedCellHeight(getWidget().getRowHeight());
 			}
 			else {
-				getDynamicJComponent().setFixedCellHeight(-1);
+				getTechnologyComponent().setFixedCellHeight(-1);
 			}
-			getDynamicJComponent().setModel(aListModel);
-			getDynamicJComponent().revalidate();
-			getDynamicJComponent().repaint();
-			getDynamicJComponent().getSelectionModel().addListSelectionListener(aListModel);
+			getTechnologyComponent().setModel(aListModel);
+			getTechnologyComponent().revalidate();
+			getTechnologyComponent().repaint();
+			getTechnologyComponent().getSelectionModel().addListSelectionListener(aListModel);
 			widgetUpdating = false;
 			Object objectToSelect = null;
 			if (getComponent().getSelected().isValid()) {
@@ -204,17 +204,17 @@ public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T>implements 
 				}
 			}
 			if ((objectToSelect == null) && (getWidget().getData() == null || !getWidget().getData().isValid())
-					&& getWidget().getAutoSelectFirstRow() && getDynamicJComponent().getModel().getSize() > 0) {
-				objectToSelect = getDynamicJComponent().getModel().getElementAt(0);
+					&& getWidget().getAutoSelectFirstRow() && getTechnologyComponent().getModel().getSize() > 0) {
+				objectToSelect = getTechnologyComponent().getModel().getElementAt(0);
 			}
 			if (objectToSelect != null) {
-				for (int i = 0; i < getDynamicJComponent().getModel().getSize(); i++) {
-					if (getDynamicJComponent().getModel().getElementAt(i) == objectToSelect) {
+				for (int i = 0; i < getTechnologyComponent().getModel().getSize(); i++) {
+					if (getTechnologyComponent().getModel().getElementAt(i) == objectToSelect) {
 						final int index = i;
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
 							public void run() {
-								getDynamicJComponent().setSelectedIndex(index);
+								getTechnologyComponent().setSelectedIndex(index);
 							}
 						});
 					}
@@ -233,7 +233,7 @@ public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T>implements 
 
 	@Override
 	public JComponent getJComponent() {
-		return getDynamicJComponent();
+		return getTechnologyComponent();
 	}
 
 }

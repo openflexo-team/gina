@@ -90,13 +90,13 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 
 	public void updateVisibleRowCount() {
 		if (getWidget().getVisibleRowCount() != null && getWidget().getVisibleRowCount() > 0) {
-			getRenderingTechnologyAdapter().setVisibleRowCount(getDynamicJComponent(), getWidget().getVisibleRowCount());
+			getRenderingTechnologyAdapter().setVisibleRowCount(getTechnologyComponent(), getWidget().getVisibleRowCount());
 		}
 	}
 
 	public void updateRowHeight() {
 		if (getWidget().getRowHeight() != null && getWidget().getRowHeight() > 0) {
-			getRenderingTechnologyAdapter().setRowHeight(getDynamicJComponent(), getWidget().getVisibleRowCount());
+			getRenderingTechnologyAdapter().setRowHeight(getTechnologyComponent(), getWidget().getVisibleRowCount());
 		}
 	}
 
@@ -115,13 +115,13 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 	public synchronized boolean updateWidgetFromModel() {
 		// updateListModelWhenRequired();
 		if (getWidget().getData() != null
-				&& notEquals(getValue(), getRenderingTechnologyAdapter().getSelectedItem(getDynamicJComponent()))) {
+				&& notEquals(getValue(), getRenderingTechnologyAdapter().getSelectedItem(getTechnologyComponent()))) {
 
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine("updateWidgetFromModel()");
 			}
 			widgetUpdating = true;
-			getRenderingTechnologyAdapter().setSelectedItem(getDynamicJComponent(), getValue());
+			getRenderingTechnologyAdapter().setSelectedItem(getTechnologyComponent(), getValue());
 			widgetUpdating = false;
 			return true;
 		}
@@ -133,7 +133,7 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 	 */
 	@Override
 	public synchronized boolean updateModelFromWidget() {
-		T newValue = getRenderingTechnologyAdapter().getSelectedItem(getDynamicJComponent());
+		T newValue = getRenderingTechnologyAdapter().getSelectedItem(getTechnologyComponent());
 		if (notEquals(getValue(), newValue)) {
 			modelUpdating = true;
 			if (LOGGER.isLoggable(Level.FINE)) {
@@ -324,7 +324,7 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 	}
 
 	public ListSelectionModel getListSelectionModel() {
-		return getRenderingTechnologyAdapter().getListSelectionModel(getDynamicJComponent());
+		return getRenderingTechnologyAdapter().getListSelectionModel(getTechnologyComponent());
 	}
 
 	@Override

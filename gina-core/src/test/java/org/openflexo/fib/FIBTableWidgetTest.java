@@ -149,7 +149,7 @@ public class FIBTableWidgetTest extends FIBTestCase {
 
 		FIBTableWidget<?> w = (FIBTableWidget<?>) controller.viewForComponent(table);
 		assertEquals(family.getChildren(), w.getTableModel().getValues());
-		assertEquals(5, w.getDynamicJComponent().getModel().getRowCount());
+		assertEquals(5, w.getTechnologyComponent().getModel().getRowCount());
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class FIBTableWidgetTest extends FIBTestCase {
 
 		FIBTableWidget<?> w = (FIBTableWidget<?>) controller.viewForComponent(table);
 
-		assertEquals(5, w.getDynamicJComponent().getModel().getRowCount());
+		assertEquals(5, w.getTechnologyComponent().getModel().getRowCount());
 		assertEquals("Jacky3", w.getTableModel().getValueAt(4, 0));
 		assertEquals("Smith", w.getTableModel().getValueAt(4, 1));
 		assertEquals((long) 4, w.getTableModel().getValueAt(4, 2));
@@ -179,7 +179,7 @@ public class FIBTableWidgetTest extends FIBTestCase {
 
 		Person junior = family.createChild();
 
-		assertEquals(6, w.getDynamicJComponent().getModel().getRowCount());
+		assertEquals(6, w.getTechnologyComponent().getModel().getRowCount());
 		assertEquals("John Jr", w.getTableModel().getValueAt(5, 0));
 		assertEquals("Smith", w.getTableModel().getValueAt(5, 1));
 		assertEquals((long) 0, w.getTableModel().getValueAt(5, 2));
@@ -219,7 +219,7 @@ public class FIBTableWidgetTest extends FIBTestCase {
 	public void test5PerfomSomeTestsWithSelection() {
 
 		FIBTableWidget<?> w = (FIBTableWidget<?>) controller.viewForComponent(table);
-		assertEquals(6, w.getDynamicJComponent().getModel().getRowCount());
+		assertEquals(6, w.getTechnologyComponent().getModel().getRowCount());
 
 		// w.getDynamicJComponent().getSelectionModel().addSelectionInterval(0, 1);
 		assertEquals(Collections.singletonList(family.getChildren().get(0)), w.getSelection());
@@ -229,9 +229,9 @@ public class FIBTableWidgetTest extends FIBTestCase {
 		// indices[1] = 2;
 		// indices[2] = 4;
 		// w7.getDynamicJComponent().setSelectedIndices(indices);
-		w.getDynamicJComponent().getSelectionModel().clearSelection();
-		w.getDynamicJComponent().getSelectionModel().addSelectionInterval(1, 2);
-		w.getDynamicJComponent().getSelectionModel().addSelectionInterval(4, 4);
+		w.getTechnologyComponent().getSelectionModel().clearSelection();
+		w.getTechnologyComponent().getSelectionModel().addSelectionInterval(1, 2);
+		w.getTechnologyComponent().getSelectionModel().addSelectionInterval(4, 4);
 
 		List<Person> expectedSelection = new ArrayList<Person>();
 		expectedSelection.add(family.getChildren().get(1));

@@ -93,7 +93,7 @@ public abstract class FIBLabelWidgetImpl<C> extends FIBWidgetViewImpl<FIBLabel, 
 		if (getWidget().getAlign() == null) {
 			return;
 		}
-		getRenderingTechnologyAdapter().setHorizontalAlignment(getDynamicJComponent(), getWidget().getAlign().getAlign());
+		getRenderingTechnologyAdapter().setHorizontalAlignment(getTechnologyComponent(), getWidget().getAlign().getAlign());
 	}
 
 	final protected void updateLabel() {
@@ -104,7 +104,7 @@ public abstract class FIBLabelWidgetImpl<C> extends FIBWidgetViewImpl<FIBLabel, 
 		else if (StringUtils.isNotEmpty(getWidget().getLabel())) {
 			label = (getWidget().getLocalize() ? getLocalized(getWidget().getLabel()) : getWidget().getLabel());
 		}
-		getRenderingTechnologyAdapter().setText(getDynamicJComponent(), label);
+		getRenderingTechnologyAdapter().setText(getTechnologyComponent(), label);
 	}
 
 	@Override

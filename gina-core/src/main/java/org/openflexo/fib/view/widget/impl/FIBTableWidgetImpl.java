@@ -227,13 +227,13 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 			// if (debug) System.out.println("valuesBeforeUpdating: "+valuesBeforeUpdating);
 			// if (debug) System.out.println("wasSelected: "+wasSelected);
 
-			if (getRenderingTechnologyAdapter().isEditing(getDynamicJComponent())) {
+			if (getRenderingTechnologyAdapter().isEditing(getTechnologyComponent())) {
 				if (LOGGER.isLoggable(Level.FINE)) {
 					LOGGER.fine(getComponent().getName() + " - Table is currently editing at col:"
-							+ getRenderingTechnologyAdapter().getEditingColumn(getDynamicJComponent()) + " row:"
-							+ getRenderingTechnologyAdapter().getEditingRow(getDynamicJComponent()));
+							+ getRenderingTechnologyAdapter().getEditingColumn(getTechnologyComponent()) + " row:"
+							+ getRenderingTechnologyAdapter().getEditingRow(getTechnologyComponent()));
 				}
-				getRenderingTechnologyAdapter().cancelCellEditing(getDynamicJComponent());
+				getRenderingTechnologyAdapter().cancelCellEditing(getTechnologyComponent());
 			}
 			else {
 				if (LOGGER.isLoggable(Level.FINE)) {
@@ -332,7 +332,7 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 	}
 
 	public ListSelectionModel getListSelectionModel() {
-		return getRenderingTechnologyAdapter().getListSelectionModel(getDynamicJComponent());
+		return getRenderingTechnologyAdapter().getListSelectionModel(getTechnologyComponent());
 	}
 
 	@Override

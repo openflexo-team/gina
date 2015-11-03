@@ -241,11 +241,11 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		// if (debug) System.out.println("valuesBeforeUpdating: "+valuesBeforeUpdating);
 		// if (debug) System.out.println("wasSelected: "+wasSelected);
 
-		if (getRenderingTechnologyAdapter().isEditing(getDynamicJComponent())) {
+		if (getRenderingTechnologyAdapter().isEditing(getTechnologyComponent())) {
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine(getComponent().getName() + "  - Tree is currently editing");
 			}
-			getRenderingTechnologyAdapter().cancelCellEditing(getDynamicJComponent());
+			getRenderingTechnologyAdapter().cancelCellEditing(getTechnologyComponent());
 		}
 		else {
 			if (LOGGER.isLoggable(Level.FINE)) {
@@ -307,7 +307,7 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 	}
 
 	public TreeSelectionModel getTreeSelectionModel() {
-		return getRenderingTechnologyAdapter().getTreeSelectionModel(getDynamicJComponent());
+		return getRenderingTechnologyAdapter().getTreeSelectionModel(getTechnologyComponent());
 	}
 
 	@Override

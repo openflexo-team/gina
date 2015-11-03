@@ -223,7 +223,7 @@ public abstract class FIBCustomWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBCus
 	}
 
 	@Override
-	public C getDynamicJComponent() {
+	public C getTechnologyComponent() {
 		if (customComponent != null) {
 			return customComponent.getJComponent();
 		}

@@ -120,7 +120,7 @@ public class JFIBHtmlEditorWidget extends FIBHtmlEditorWidgetImpl<MetaphaseEdito
 
 	@Override
 	protected void updateHtmlEditorConfiguration() {
-		getDynamicJComponent().updateComponents(buildConfiguration());
+		getTechnologyComponent().updateComponents(buildConfiguration());
 	}
 
 	private MetaphaseEditorConfiguration buildConfiguration() {
@@ -139,7 +139,7 @@ public class JFIBHtmlEditorWidget extends FIBHtmlEditorWidgetImpl<MetaphaseEdito
 
 	@Override
 	public MetaphaseEditorPanel getJComponent() {
-		return getDynamicJComponent();
+		return getTechnologyComponent();
 	}
 
 }

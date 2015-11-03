@@ -121,7 +121,7 @@ public class FIBComponentGraphicalContextDelegate {
 	}
 
 	public void addTab(String title, FIBController controller) {
-		tabbedPane.add(title, controller.getRootView().getDynamicJComponent());
+		tabbedPane.add(title, controller.getRootView().getTechnologyComponent());
 	}
 
 	public void waitGUI() {

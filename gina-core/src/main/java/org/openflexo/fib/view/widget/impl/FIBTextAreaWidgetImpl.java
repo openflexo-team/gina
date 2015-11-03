@@ -70,7 +70,7 @@ public abstract class FIBTextAreaWidgetImpl<C> extends FIBGenericTextWidgetImpl<
 	}
 
 	public void updateColumns() {
-		getRenderingTechnologyAdapter().setColumns(getDynamicJComponent(),
+		getRenderingTechnologyAdapter().setColumns(getTechnologyComponent(),
 				getWidget().getColumns() != null && getWidget().getColumns() > 0 ? getWidget().getColumns() : getDefaultColumns());
 	}
 
@@ -79,7 +79,7 @@ public abstract class FIBTextAreaWidgetImpl<C> extends FIBGenericTextWidgetImpl<
 	}
 
 	public void updateRows() {
-		getRenderingTechnologyAdapter().setRows(getDynamicJComponent(),
+		getRenderingTechnologyAdapter().setRows(getTechnologyComponent(),
 				getWidget().getRows() != null && getWidget().getRows() > 0 ? getWidget().getRows() : getDefaultRows());
 	}
 

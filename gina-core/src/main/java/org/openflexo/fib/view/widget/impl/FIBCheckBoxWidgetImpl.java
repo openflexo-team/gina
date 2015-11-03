@@ -83,10 +83,10 @@ public abstract class FIBCheckBoxWidgetImpl<C> extends FIBWidgetViewImpl<FIBChec
 
 		switch (e.getAction()) {
 			case FIBValueEventDescription.CHECKED:
-				getRenderingTechnologyAdapter().setSelected(getDynamicJComponent(), true);
+				getRenderingTechnologyAdapter().setSelected(getTechnologyComponent(), true);
 				break;
 			case FIBValueEventDescription.UNCHECKED:
-				getRenderingTechnologyAdapter().setSelected(getDynamicJComponent(), false);
+				getRenderingTechnologyAdapter().setSelected(getTechnologyComponent(), false);
 				break;
 		}
 
@@ -103,13 +103,13 @@ public abstract class FIBCheckBoxWidgetImpl<C> extends FIBWidgetViewImpl<FIBChec
 	public synchronized boolean updateWidgetFromModel() {
 		Boolean value = getValue();
 		if (notEquals(isNegate ? value == null || !value : value != null && value,
-				getRenderingTechnologyAdapter().getSelected(getDynamicJComponent()))) {
+				getRenderingTechnologyAdapter().getSelected(getTechnologyComponent()))) {
 			widgetUpdating = true;
 			if (value != null) {
 				if (isNegate) {
 					value = !value;
 				}
-				getRenderingTechnologyAdapter().setSelected(getDynamicJComponent(), value);
+				getRenderingTechnologyAdapter().setSelected(getTechnologyComponent(), value);
 			}
 			widgetUpdating = false;
 			return true;
@@ -128,9 +128,9 @@ public abstract class FIBCheckBoxWidgetImpl<C> extends FIBWidgetViewImpl<FIBChec
 
 		Boolean value = getValue();
 		if (notEquals(isNegate ? value == null || !value : value != null && value,
-				getRenderingTechnologyAdapter().getSelected(getDynamicJComponent()))) {
-			setValue(isNegate ? !getRenderingTechnologyAdapter().getSelected(getDynamicJComponent())
-					: getRenderingTechnologyAdapter().getSelected(getDynamicJComponent()));
+				getRenderingTechnologyAdapter().getSelected(getTechnologyComponent()))) {
+			setValue(isNegate ? !getRenderingTechnologyAdapter().getSelected(getTechnologyComponent())
+					: getRenderingTechnologyAdapter().getSelected(getTechnologyComponent()));
 			return true;
 		}
 		return false;

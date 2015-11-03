@@ -99,7 +99,7 @@ public abstract class FIBEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBEditor
 	@Override
 	public synchronized boolean updateWidgetFromModel() {
 
-		String editedText = getRenderingTechnologyAdapter().getText(getDynamicJComponent());
+		String editedText = getRenderingTechnologyAdapter().getText(getTechnologyComponent());
 
 		if (notEquals(getValue(), editedText)) {
 			if (modelUpdating) {
@@ -110,9 +110,9 @@ public abstract class FIBEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBEditor
 			}
 			widgetUpdating = true;
 			try {
-				int caretPosition = getRenderingTechnologyAdapter().getCaretPosition(getDynamicJComponent());
-				getRenderingTechnologyAdapter().setText(getDynamicJComponent(), getValue());
-				getRenderingTechnologyAdapter().setCaretPosition(getDynamicJComponent(),
+				int caretPosition = getRenderingTechnologyAdapter().getCaretPosition(getTechnologyComponent());
+				getRenderingTechnologyAdapter().setText(getTechnologyComponent(), getValue());
+				getRenderingTechnologyAdapter().setCaretPosition(getTechnologyComponent(),
 						caretPosition < getValue().length() ? caretPosition : getValue().length());
 			} finally {
 				widgetUpdating = false;
@@ -128,7 +128,7 @@ public abstract class FIBEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBEditor
 	@Override
 	public synchronized boolean updateModelFromWidget() {
 
-		String editedText = getRenderingTechnologyAdapter().getText(getDynamicJComponent());
+		String editedText = getRenderingTechnologyAdapter().getText(getTechnologyComponent());
 
 		if (notEquals(getValue(), editedText)) {
 			if (LOGGER.isLoggable(Level.FINE)) {
@@ -147,7 +147,7 @@ public abstract class FIBEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBEditor
 
 	final public void updateTokenMarkerStyle() {
 		if (getWidget().getTokenMarkerStyle() != null) {
-			getRenderingTechnologyAdapter().setTokenMarker(getDynamicJComponent(), makeTokenMarker(getWidget().getTokenMarkerStyle()));
+			getRenderingTechnologyAdapter().setTokenMarker(getTechnologyComponent(), makeTokenMarker(getWidget().getTokenMarkerStyle()));
 		}
 	}
 

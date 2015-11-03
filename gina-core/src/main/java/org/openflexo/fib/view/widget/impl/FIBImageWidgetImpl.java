@@ -96,20 +96,20 @@ public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, 
 		if (getWidget().getAlign() == null) {
 			return;
 		}
-		getRenderingTechnologyAdapter().setHorizontalAlignment(getDynamicJComponent(), getWidget().getAlign().getAlign());
+		getRenderingTechnologyAdapter().setHorizontalAlignment(getTechnologyComponent(), getWidget().getAlign().getAlign());
 	}
 
 	final protected void updateImage() {
 		if (getWidget().getData().isValid()) {
 			Image image = getValue();
 			updateImageDefaultSize(image);
-			getRenderingTechnologyAdapter().setImage(getDynamicJComponent(), image, this);
+			getRenderingTechnologyAdapter().setImage(getTechnologyComponent(), image, this);
 		}
 		else if (getWidget().getImageFile() != null) {
 			if (getWidget().getImageFile().exists()) {
 				Image image = ImageUtils.loadImageFromFile(getWidget().getImageFile());
 				updateImageDefaultSize(image);
-				getRenderingTechnologyAdapter().setImage(getDynamicJComponent(), image, this);
+				getRenderingTechnologyAdapter().setImage(getTechnologyComponent(), image, this);
 			}
 		}
 	}

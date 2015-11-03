@@ -76,20 +76,20 @@ public abstract class FIBFontWidgetImpl<C> extends FIBWidgetViewImpl<FIBFont, C,
 	}
 
 	public final void updateCheckboxVisibility() {
-		getRenderingTechnologyAdapter().setCheckboxVisible(getDynamicJComponent(), getWidget().getAllowsNull());
+		getRenderingTechnologyAdapter().setCheckboxVisible(getTechnologyComponent(), getWidget().getAllowsNull());
 	}
 
 	@Override
 	public synchronized boolean updateWidgetFromModel() {
 		Font editedObject = getSelectedFont();
-		if (!getRenderingTechnologyAdapter().isCheckboxSelected(getDynamicJComponent())) {
+		if (!getRenderingTechnologyAdapter().isCheckboxSelected(getTechnologyComponent())) {
 			editedObject = null;
 		}
 		if (notEquals(getValue(), editedObject)) {
 			widgetUpdating = true;
 			try {
-				getRenderingTechnologyAdapter().setCheckboxSelected(getDynamicJComponent(), getValue() != null);
-				getRenderingTechnologyAdapter().setCheckboxEnabled(getDynamicJComponent(),
+				getRenderingTechnologyAdapter().setCheckboxSelected(getTechnologyComponent(), getValue() != null);
+				getRenderingTechnologyAdapter().setCheckboxEnabled(getTechnologyComponent(),
 						(getValue() != null || !getWidget().getAllowsNull()) && isEnabled());
 				setSelectedFont(getValue());
 			} finally {
@@ -106,7 +106,7 @@ public abstract class FIBFontWidgetImpl<C> extends FIBWidgetViewImpl<FIBFont, C,
 	@Override
 	public synchronized boolean updateModelFromWidget() {
 		Font editedObject = null;
-		if (getRenderingTechnologyAdapter().isCheckboxSelected(getDynamicJComponent())) {
+		if (getRenderingTechnologyAdapter().isCheckboxSelected(getTechnologyComponent())) {
 			editedObject = getSelectedFont();
 		}
 		if (notEquals(getValue(), editedObject)) {
@@ -125,11 +125,11 @@ public abstract class FIBFontWidgetImpl<C> extends FIBWidgetViewImpl<FIBFont, C,
 	}
 
 	public Font getSelectedFont() {
-		return getRenderingTechnologyAdapter().getSelectedFont(getDynamicJComponent());
+		return getRenderingTechnologyAdapter().getSelectedFont(getTechnologyComponent());
 	}
 
 	public void setSelectedFont(Font aFont) {
-		getRenderingTechnologyAdapter().setSelectedFont(getDynamicJComponent(), aFont);
+		getRenderingTechnologyAdapter().setSelectedFont(getTechnologyComponent(), aFont);
 	}
 
 	@Override

@@ -113,7 +113,7 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabel> {
 
 	@Override
 	public JLabel getJComponent() {
-		return getDynamicJComponent();
+		return getTechnologyComponent();
 	}
 
 }

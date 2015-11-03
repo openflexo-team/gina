@@ -60,7 +60,7 @@ public interface FIBEditableView<M extends FIBComponent, J extends JComponent> e
 
 	public abstract JComponent getJComponent();
 
-	public abstract J getDynamicJComponent();
+	public abstract J getTechnologyComponent();
 
 	// public boolean update(List<FIBComponent> callers);
 

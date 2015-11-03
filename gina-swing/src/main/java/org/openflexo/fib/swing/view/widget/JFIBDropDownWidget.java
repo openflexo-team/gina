@@ -119,7 +119,7 @@ public class JFIBDropDownWidget<T> extends FIBDropDownWidgetImpl<JComboBox<T>, T
 		resetButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				getDynamicJComponent().getModel().setSelectedItem(null);
+				getTechnologyComponent().getModel().setSelectedItem(null);
 				setValue(null);
 			}
 		});
@@ -128,7 +128,7 @@ public class JFIBDropDownWidget<T> extends FIBDropDownWidgetImpl<JComboBox<T>, T
 					BOTTOM_COMPENSATING_BORDER, RIGHT_COMPENSATING_BORDER));
 		}
 
-		dropdownPanel.add(getDynamicJComponent(), BorderLayout.CENTER);
+		dropdownPanel.add(getTechnologyComponent(), BorderLayout.CENTER);
 		if (model.getShowReset()) {
 			dropdownPanel.add(resetButton, BorderLayout.EAST);
 		}
@@ -197,10 +197,10 @@ public class JFIBDropDownWidget<T> extends FIBDropDownWidgetImpl<JComboBox<T>, T
 
 	@Override
 	protected void proceedToListModelUpdate() {
-		if (getDynamicJComponent() != null) {
-			getDynamicJComponent().setModel(getListModel());
+		if (getTechnologyComponent() != null) {
+			getTechnologyComponent().setModel(getListModel());
 			// System.out.println("New list model = " + getListModel());
-			if (!widgetUpdating && !isDeleted() && getDynamicJComponent() != null) {
+			if (!widgetUpdating && !isDeleted() && getTechnologyComponent() != null) {
 				updateWidgetFromModel();
 			}
 		}

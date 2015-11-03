@@ -313,7 +313,7 @@ BindingEvaluationContext*/{
 	}
 
 	@Override
-	public JComponent getDynamicJComponent() {
+	public JComponent getTechnologyComponent() {
 		return getJComponent();
 	}
 

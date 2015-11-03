@@ -231,8 +231,8 @@ public class FIBListWidgetTest extends FIBTestCase {
 		FIBListWidget<?> w5 = (FIBListWidget<?>) controller.viewForComponent(list5);
 		FIBListWidget<?> w6 = (FIBListWidget<?>) controller.viewForComponent(list6);
 
-		w5.getDynamicJComponent().setSelectedValue(family.getChildren().get(1), true);
-		w6.getDynamicJComponent().setSelectedValue(Gender.Male, true);
+		w5.getTechnologyComponent().setSelectedValue(family.getChildren().get(1), true);
+		w6.getTechnologyComponent().setSelectedValue(Gender.Male, true);
 
 		assertEquals(family.getChildren().get(1), family.getBiggestChild());
 		assertEquals(Gender.Male, family.getFather().getGender());
@@ -248,18 +248,18 @@ public class FIBListWidgetTest extends FIBTestCase {
 
 		FIBListWidget<?> w5 = (FIBListWidget<?>) controller.viewForComponent(list5);
 
-		assertEquals(5, w5.getDynamicJComponent().getModel().getSize());
+		assertEquals(5, w5.getTechnologyComponent().getModel().getSize());
 
 		Person junior = family.createChild();
 
-		assertEquals(6, w5.getDynamicJComponent().getModel().getSize());
+		assertEquals(6, w5.getTechnologyComponent().getModel().getSize());
 
 		// System.out.println("new children=" + family.getChildren());
 		// System.out.println("List model = " + w5.getDynamicJComponent().getModel());
 
 		family.setBiggestChild(junior);
 		assertEquals(junior, controller.viewForComponent(list5).getData());
-		assertEquals(junior, w5.getDynamicJComponent().getSelectedValue());
+		assertEquals(junior, w5.getTechnologyComponent().getSelectedValue());
 
 	}
 
@@ -271,7 +271,7 @@ public class FIBListWidgetTest extends FIBTestCase {
 	public void test6PerfomSomeTestsWithSelection() {
 
 		FIBListWidget<?> w7 = (FIBListWidget<?>) controller.viewForComponent(list7);
-		assertEquals(6, w7.getDynamicJComponent().getModel().getSize());
+		assertEquals(6, w7.getTechnologyComponent().getModel().getSize());
 
 		assertEquals(Collections.singletonList(family.getChildren().get(0)), w7.getSelection());
 
@@ -280,9 +280,9 @@ public class FIBListWidgetTest extends FIBTestCase {
 		// indices[1] = 2;
 		// indices[2] = 4;
 		// w7.getDynamicJComponent().setSelectedIndices(indices);
-		w7.getDynamicJComponent().getSelectionModel().clearSelection();
-		w7.getDynamicJComponent().getSelectionModel().addSelectionInterval(1, 2);
-		w7.getDynamicJComponent().getSelectionModel().addSelectionInterval(4, 4);
+		w7.getTechnologyComponent().getSelectionModel().clearSelection();
+		w7.getTechnologyComponent().getSelectionModel().addSelectionInterval(1, 2);
+		w7.getTechnologyComponent().getSelectionModel().addSelectionInterval(4, 4);
 
 		List<Person> expectedSelection = new ArrayList<Person>();
 		expectedSelection.add(family.getChildren().get(1));

@@ -68,7 +68,7 @@ public abstract class FIBTextFieldWidgetImpl<C> extends FIBGenericTextWidgetImpl
 	}
 
 	public void updateColumns() {
-		getRenderingTechnologyAdapter().setColumns(getDynamicJComponent(),
+		getRenderingTechnologyAdapter().setColumns(getTechnologyComponent(),
 				getWidget().getColumns() != null && getWidget().getColumns() > 0 ? getWidget().getColumns() : getDefaultColumns());
 	}
 

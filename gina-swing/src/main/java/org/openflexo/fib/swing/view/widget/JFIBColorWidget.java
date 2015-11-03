@@ -186,12 +186,12 @@ public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>imple
 	@Override
 	public void updateLanguage() {
 		super.updateLanguage();
-		getDynamicJComponent().updateLanguage();
+		getTechnologyComponent().updateLanguage();
 	}
 
 	@Override
 	public JComponent getJComponent() {
-		return getDynamicJComponent();
+		return getTechnologyComponent();
 	}
 
 }

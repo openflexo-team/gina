@@ -253,12 +253,14 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	public abstract JComponent getJComponent();
 
 	/**
-	 * Return the dynamic JComponent, ie the component on which dynamic is applied, and were actions are effective
+	 * Return technology-specific component representing widget<br>
+	 * Note that, depending on the underlying technology, this technology-specific component might be embedded in an other component before to 
+	 * be added in component hierarchy (for example if component need to be embedded in a scroll pane)
 	 * 
-	 * @return J
+	 * @return C
 	 */
 	@Override
-	public abstract C getDynamicJComponent();
+	public abstract C getTechnologyComponent();
 
 	/**
 	 * Return the effective component to be added to swing hierarchy This component may be the same as the one returned by
@@ -449,7 +451,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	protected void updateOpacity() {
 		if (getComponent().getOpaque() != null) {
-			renderingTechnologyAdapter.setOpaque(getDynamicJComponent(), getComponent().getOpaque());
+			renderingTechnologyAdapter.setOpaque(getTechnologyComponent(), getComponent().getOpaque());
 		}
 	}
 

@@ -186,12 +186,12 @@ public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel>implemen
 	@Override
 	public void updateLanguage() {
 		super.updateLanguage();
-		getDynamicJComponent().updateLanguage();
+		getTechnologyComponent().updateLanguage();
 	}
 
 	@Override
 	public JComponent getJComponent() {
-		return getDynamicJComponent();
+		return getTechnologyComponent();
 	}
 
 }

@@ -123,10 +123,10 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 	}
 
 	public T getSelectedValue() {
-		return getRenderingTechnologyAdapter().getSelectedItem(getDynamicJComponent());
+		return getRenderingTechnologyAdapter().getSelectedItem(getTechnologyComponent());
 	}
 
 	public void setSelectedValue(T selectedValue) {
-		getRenderingTechnologyAdapter().setSelectedItem(getDynamicJComponent(), selectedValue);
+		getRenderingTechnologyAdapter().setSelectedItem(getTechnologyComponent(), selectedValue);
 	}
 }

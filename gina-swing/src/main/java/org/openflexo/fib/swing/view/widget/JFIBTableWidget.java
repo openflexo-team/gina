@@ -182,8 +182,8 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 			getListSelectionModel().removeListSelectionListener(this);
 			getListSelectionModel().addSelectionInterval(event.getNewRow(), event.getNewRow());
 			getListSelectionModel().addListSelectionListener(this);
-			getDynamicJComponent().setEditingColumn(getDynamicJComponent().convertColumnIndexToView(event.getColumn()));
-			getDynamicJComponent().setEditingRow(getDynamicJComponent().convertRowIndexToView(event.getNewRow()));
+			getTechnologyComponent().setEditingColumn(getTechnologyComponent().convertColumnIndexToView(event.getColumn()));
+			getTechnologyComponent().setEditingRow(getTechnologyComponent().convertRowIndexToView(event.getNewRow()));
 		}
 	}
 
@@ -214,8 +214,8 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 
 	@Override
 	protected void deleteTable() {
-		if (getDynamicJComponent() != null) {
-			getDynamicJComponent().removeFocusListener(this);
+		if (getTechnologyComponent() != null) {
+			getTechnologyComponent().removeFocusListener(this);
 		}
 		if (getListSelectionModel() != null) {
 			getListSelectionModel().removeListSelectionListener(this);
@@ -225,8 +225,8 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 				scrollPane.removeMouseListener(l);
 			}
 		}
-		for (MouseListener l : getDynamicJComponent().getMouseListeners()) {
-			getDynamicJComponent().removeMouseListener(l);
+		for (MouseListener l : getTechnologyComponent().getMouseListeners()) {
+			getTechnologyComponent().removeMouseListener(l);
 		}
 	}
 
@@ -318,8 +318,8 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 			_table.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					if (getDynamicJComponent().getCellEditor() != null) {
-						getDynamicJComponent().getCellEditor().stopCellEditing();
+					if (getTechnologyComponent().getCellEditor() != null) {
+						getTechnologyComponent().getCellEditor().stopCellEditing();
 						e.consume();
 					}
 					if (getTable().getCreateNewRowOnClick()) {
@@ -329,7 +329,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 							while (en.hasMoreElements()) {
 								FIBTableActionListener<T> action = en.nextElement();
 								if (action.isAddAction()) {
-									action.actionPerformed(new ActionEvent(getDynamicJComponent(), ActionEvent.ACTION_PERFORMED, null,
+									action.actionPerformed(new ActionEvent(getTechnologyComponent(), ActionEvent.ACTION_PERFORMED, null,
 											EventQueue.getMostRecentEventTime(), e.getModifiers()));
 									break;
 								}
@@ -399,7 +399,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 		// System.out.println("received " + e);
 
 		if (leadIndex > -1) {
-			leadIndex = getDynamicJComponent().convertRowIndexToModel(leadIndex);
+			leadIndex = getTechnologyComponent().convertRowIndexToModel(leadIndex);
 		}
 
 		T newSelectedObject = getTableModel().elementAt(leadIndex);
@@ -408,7 +408,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 		List<T> newSelection = new ArrayList<T>();
 		for (i = getListSelectionModel().getMinSelectionIndex(); i <= getListSelectionModel().getMaxSelectionIndex(); i++) {
 			if (getListSelectionModel().isSelectedIndex(i)) {
-				newSelection.add(getTableModel().elementAt(getDynamicJComponent().convertRowIndexToModel(i)));
+				newSelection.add(getTableModel().elementAt(getTechnologyComponent().convertRowIndexToModel(i)));
 			}
 		}
 
@@ -457,7 +457,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 		if (object != null && getTableModel() != null && getTableModel().getValues() != null) {
 			int index = getTableModel().getValues().indexOf(object);
 			if (index > -1) {
-				index = getDynamicJComponent().convertRowIndexToView(index);
+				index = getTechnologyComponent().convertRowIndexToView(index);
 				// if (!notify) _table.getSelectionModel().removeListSelectionListener(getTableModel());
 				getListSelectionModel().setSelectionInterval(index, index);
 				// if (!notify) _table.getSelectionModel().addListSelectionListener(getTableModel());
@@ -474,7 +474,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 		if (index > -1) {
 			ignoreNotifications = true;
 			try {
-				index = getDynamicJComponent().convertRowIndexToView(index);
+				index = getTechnologyComponent().convertRowIndexToView(index);
 				getListSelectionModel().addSelectionInterval(index, index);
 			} catch (IndexOutOfBoundsException e) {
 				LOGGER.warning("Unexpected " + e);
@@ -489,7 +489,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 		if (index > -1) {
 			ignoreNotifications = true;
 			try {
-				index = getDynamicJComponent().convertRowIndexToView(index);
+				index = getTechnologyComponent().convertRowIndexToView(index);
 			} catch (IndexOutOfBoundsException e) {
 				LOGGER.warning("Unexpected " + e);
 			}
@@ -509,7 +509,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 	public void addToSelection(T o) {
 		int index = getTableModel().getValues().indexOf(o);
 		if (index > -1) {
-			index = getDynamicJComponent().convertRowIndexToView(index);
+			index = getTechnologyComponent().convertRowIndexToView(index);
 			getListSelectionModel().addSelectionInterval(index, index);
 		}
 	}
@@ -518,7 +518,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 	public void removeFromSelection(T o) {
 		int index = getTableModel().getValues().indexOf(o);
 		if (index > -1) {
-			index = getDynamicJComponent().convertRowIndexToView(index);
+			index = getTechnologyComponent().convertRowIndexToView(index);
 			getListSelectionModel().removeSelectionInterval(index, index);
 		}
 	}

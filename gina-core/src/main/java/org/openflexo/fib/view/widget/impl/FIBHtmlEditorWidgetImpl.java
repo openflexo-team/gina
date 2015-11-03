@@ -74,7 +74,7 @@ public abstract class FIBHtmlEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBHt
 	@Override
 	public synchronized boolean updateWidgetFromModel() {
 
-		String editedText = getRenderingTechnologyAdapter().getText(getDynamicJComponent());
+		String editedText = getRenderingTechnologyAdapter().getText(getTechnologyComponent());
 
 		if (notEquals(getValue(), editedText)) {
 			if (modelUpdating) {
@@ -85,10 +85,10 @@ public abstract class FIBHtmlEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBHt
 			}
 			widgetUpdating = true;
 			if (getValue() != null) {
-				getRenderingTechnologyAdapter().setText(getDynamicJComponent(), getValue());
+				getRenderingTechnologyAdapter().setText(getTechnologyComponent(), getValue());
 			}
 			else {
-				getRenderingTechnologyAdapter().setText(getDynamicJComponent(), "");
+				getRenderingTechnologyAdapter().setText(getTechnologyComponent(), "");
 			}
 			widgetUpdating = false;
 			return true;
@@ -102,7 +102,7 @@ public abstract class FIBHtmlEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBHt
 	@Override
 	public synchronized boolean updateModelFromWidget() {
 
-		String editedText = getRenderingTechnologyAdapter().getText(getDynamicJComponent());
+		String editedText = getRenderingTechnologyAdapter().getText(getTechnologyComponent());
 
 		if (notEquals(getValue(), editedText)) {
 			modelUpdating = true;

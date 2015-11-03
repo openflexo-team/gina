@@ -224,7 +224,7 @@ public class FIBCustomWidget<J extends JComponent, T> extends FIBWidgetView<FIBC
 	}
 
 	@Override
-	public J getDynamicJComponent() {
+	public J getTechnologyComponent() {
 		if (customComponent != null) {
 			return customComponent.getJComponent();
 		}

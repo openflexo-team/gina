@@ -77,18 +77,18 @@ public abstract class FIBDropDownWidgetImpl<C, T> extends FIBMultipleValueWidget
 	public synchronized boolean updateWidgetFromModel() {
 
 		if (notEquals(getValue(),
-				getRenderingTechnologyAdapter().getSelectedItem(getDynamicJComponent())) /*|| listModelRequireChange()*/) {
+				getRenderingTechnologyAdapter().getSelectedItem(getTechnologyComponent())) /*|| listModelRequireChange()*/) {
 
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("updateWidgetFromModel()");
 			}
 			widgetUpdating = true;
-			getRenderingTechnologyAdapter().setSelectedItem(getDynamicJComponent(), getValue());
+			getRenderingTechnologyAdapter().setSelectedItem(getTechnologyComponent(), getValue());
 
 			widgetUpdating = false;
 
 			if (getValue() == null && getWidget().getAutoSelectFirstRow() && getListModel().getSize() > 0) {
-				getRenderingTechnologyAdapter().setSelectedIndex(getDynamicJComponent(), 0);
+				getRenderingTechnologyAdapter().setSelectedIndex(getTechnologyComponent(), 0);
 			}
 
 			return true;
@@ -105,9 +105,9 @@ public abstract class FIBDropDownWidgetImpl<C, T> extends FIBMultipleValueWidget
 		if (widgetUpdating || modelUpdating) {
 			return false;
 		}
-		if (notEquals(getValue(), getRenderingTechnologyAdapter().getSelectedItem(getDynamicJComponent()))) {
+		if (notEquals(getValue(), getRenderingTechnologyAdapter().getSelectedItem(getTechnologyComponent()))) {
 			modelUpdating = true;
-			T newValue = getRenderingTechnologyAdapter().getSelectedItem(getDynamicJComponent());
+			T newValue = getRenderingTechnologyAdapter().getSelectedItem(getTechnologyComponent());
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("updateModelFromWidget with " + newValue);
 			}

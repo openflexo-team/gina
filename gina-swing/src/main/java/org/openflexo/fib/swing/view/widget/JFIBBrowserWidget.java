@@ -165,7 +165,7 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTree, T>implemen
 		if (returned) {
 			LOGGER.fine("RootValue changed for FIBBrowserWidget " + getRootValue());
 			try {
-				getDynamicJComponent().fireTreeWillExpand(new TreePath(getDynamicJComponent().getModel().getRoot()));
+				getTechnologyComponent().fireTreeWillExpand(new TreePath(getTechnologyComponent().getModel().getRoot()));
 			} catch (ExpandVetoException e1) {
 				e1.printStackTrace();
 			}
@@ -180,10 +180,10 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTree, T>implemen
 
 	@Override
 	public void deleteBrowser() {
-		if (getDynamicJComponent() != null) {
-			getDynamicJComponent().removeFocusListener(this);
-			for (MouseListener l : getDynamicJComponent().getMouseListeners()) {
-				getDynamicJComponent().removeMouseListener(l);
+		if (getTechnologyComponent() != null) {
+			getTechnologyComponent().removeFocusListener(this);
+			for (MouseListener l : getTechnologyComponent().getMouseListeners()) {
+				getTechnologyComponent().removeMouseListener(l);
 			}
 		}
 	}
@@ -347,7 +347,7 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTree, T>implemen
 							// See issue OPENFLEXO-516. Sometimes, the condition may have become false.
 							if (!getBrowser().getRootVisible() && (BrowserCell) getBrowserModel().getRoot() != null
 									&& ((BrowserCell) getBrowserModel().getRoot()).getChildCount() == 1) {
-								getDynamicJComponent().expandPath(new TreePath(new Object[] { (BrowserCell) getBrowserModel().getRoot(),
+								getTechnologyComponent().expandPath(new TreePath(new Object[] { (BrowserCell) getBrowserModel().getRoot(),
 										((BrowserCell) getBrowserModel().getRoot()).getChildAt(0) }));
 							}
 						}
@@ -394,7 +394,7 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTree, T>implemen
 					getTreeSelectionModel().addSelectionPath(treePath);
 				}
 				if (scrollTo != null) {
-					getDynamicJComponent().scrollPathToVisible(scrollTo);
+					getTechnologyComponent().scrollPathToVisible(scrollTo);
 				}
 			}
 		}
@@ -441,7 +441,7 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTree, T>implemen
 			getTreeSelectionModel().addSelectionPaths(treePathsAsList.toArray(new TreePath[treePathsAsList.size()]));
 
 			if (scrollTo != null) {
-				getDynamicJComponent().scrollPathToVisible(scrollTo);
+				getTechnologyComponent().scrollPathToVisible(scrollTo);
 			}
 
 		}
@@ -457,7 +457,7 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTree, T>implemen
 
 		for (TreePath path : getBrowserModel().getPaths(o)) {
 			getTreeSelectionModel().addSelectionPath(path);
-			getDynamicJComponent().scrollPathToVisible(path);
+			getTechnologyComponent().scrollPathToVisible(path);
 		}
 
 	}
@@ -468,7 +468,7 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTree, T>implemen
 		super.performExpand(o);
 
 		for (TreePath path : getBrowserModel().getPaths(o)) {
-			getDynamicJComponent().expandPath(path);
+			getTechnologyComponent().expandPath(path);
 		}
 
 	}

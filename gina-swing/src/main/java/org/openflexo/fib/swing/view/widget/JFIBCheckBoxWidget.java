@@ -112,7 +112,7 @@ public class JFIBCheckBoxWidget extends FIBCheckBoxWidgetImpl<JCheckBox>implemen
 				public void actionPerformed(ActionEvent e) {
 					GinaStackEvent stack = JFIBCheckBoxWidget.this.GENotifier.raise(FIBEventFactory.getInstance().createValueEvent(
 							getValue() ? FIBValueEventDescription.UNCHECKED : FIBValueEventDescription.CHECKED,
-							getDynamicJComponent().isSelected()));
+							getTechnologyComponent().isSelected()));
 
 					updateModelFromWidget();
 
@@ -126,7 +126,7 @@ public class JFIBCheckBoxWidget extends FIBCheckBoxWidgetImpl<JCheckBox>implemen
 
 	@Override
 	public JCheckBox getJComponent() {
-		return getDynamicJComponent();
+		return getTechnologyComponent();
 	}
 
 }

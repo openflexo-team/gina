@@ -163,7 +163,7 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 					text = getWidget().getLabel();
 				}
 			}
-			getRenderingTechnologyAdapter().setText(getDynamicJComponent(), text);
+			getRenderingTechnologyAdapter().setText(getTechnologyComponent(), text);
 		}
 	}
 
@@ -173,20 +173,20 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 			Icon icon;
 			try {
 				icon = getWidget().getButtonIcon().getBindingValue(getBindingEvaluationContext());
-				getRenderingTechnologyAdapter().setIcon(getDynamicJComponent(), icon);
+				getRenderingTechnologyAdapter().setIcon(getTechnologyComponent(), icon);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
-				getRenderingTechnologyAdapter().setIcon(getDynamicJComponent(), null);
+				getRenderingTechnologyAdapter().setIcon(getTechnologyComponent(), null);
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-				getRenderingTechnologyAdapter().setIcon(getDynamicJComponent(), null);
+				getRenderingTechnologyAdapter().setIcon(getTechnologyComponent(), null);
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
-				getRenderingTechnologyAdapter().setIcon(getDynamicJComponent(), null);
+				getRenderingTechnologyAdapter().setIcon(getTechnologyComponent(), null);
 			}
 		}
 		else {
-			getRenderingTechnologyAdapter().setIcon(getDynamicJComponent(), null);
+			getRenderingTechnologyAdapter().setIcon(getTechnologyComponent(), null);
 		}
 	}
 

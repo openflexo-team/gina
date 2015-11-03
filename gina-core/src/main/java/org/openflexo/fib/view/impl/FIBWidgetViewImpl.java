@@ -167,14 +167,14 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	protected abstract C makeTechnologyComponent();
 
 	/**
-	 * Return the dynamic JComponent, ie the component on which dynamic is applied, and were actions are effective. This component must be
-	 * either the same or a child of the one returned by {@link #getJComponent()}.
+	 * Return technology-specific component representing widget<br>
+	 * Note that, depending on the underlying technology, this technology-specific component might be embedded in an other component before to 
+	 * be added in component hierarchy (for example if component need to be embedded in a scroll pane)
 	 * 
-	 * @return J
+	 * @return C
 	 */
-	// TODO: renamed as getTechnologyComponent()
 	@Override
-	public final C getDynamicJComponent() {
+	public C getTechnologyComponent() {
 		return technologyComponent;
 	}
 
@@ -355,7 +355,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	@Override
 	public void updateData() {
 		setData(getValue());
-		if (!widgetUpdating && !isDeleted() && getDynamicJComponent() != null && isComponentVisible()) {
+		if (!widgetUpdating && !isDeleted() && getTechnologyComponent() != null && isComponentVisible()) {
 			updateWidgetFromModel();
 		}
 	}
@@ -861,7 +861,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		if (getComponent().getTooltip() != null && getComponent().getTooltip().isValid()) {
 			try {
 				String tooltipText = getComponent().getTooltip().getBindingValue(getBindingEvaluationContext());
-				getRenderingTechnologyAdapter().setToolTipText(getDynamicJComponent(), tooltipText);
+				getRenderingTechnologyAdapter().setToolTipText(getTechnologyComponent(), tooltipText);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
@@ -980,7 +980,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	@Override
 	public void updateFont() {
 		if (getFont() != null) {
-			getRenderingTechnologyAdapter().setFont(getDynamicJComponent(), getFont());
+			getRenderingTechnologyAdapter().setFont(getTechnologyComponent(), getFont());
 		}
 	}
 

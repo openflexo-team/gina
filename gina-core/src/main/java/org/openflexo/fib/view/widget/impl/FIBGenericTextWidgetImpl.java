@@ -78,12 +78,12 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 	}
 
 	public void updateEditable() {
-		getRenderingTechnologyAdapter().setEditable(getDynamicJComponent(), !isReadOnly());
+		getRenderingTechnologyAdapter().setEditable(getTechnologyComponent(), !isReadOnly());
 	}
 
 	public void updateText() {
 		if (getWidget().getText() != null) {
-			getRenderingTechnologyAdapter().setText(getDynamicJComponent(), getWidget().getText());
+			getRenderingTechnologyAdapter().setText(getTechnologyComponent(), getWidget().getText());
 		}
 	}
 
@@ -94,27 +94,27 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 		switch (e.getAction()) {
 			case FIBTextEventDescription.INSERTED: {
 				FIBTextEventDescription ev = (FIBTextEventDescription) e;
-				String text = getRenderingTechnologyAdapter().getText(getDynamicJComponent());
+				String text = getRenderingTechnologyAdapter().getText(getTechnologyComponent());
 				if (text.length() >= ev.getPosition()) {
-					getRenderingTechnologyAdapter().setText(getDynamicJComponent(),
+					getRenderingTechnologyAdapter().setText(getTechnologyComponent(),
 							(text.substring(0, ev.getPosition()) + e.getValue() + text.substring(ev.getPosition())));
-					getRenderingTechnologyAdapter().setCaretPosition(getDynamicJComponent(), ev.getPosition() + e.getValue().length());
+					getRenderingTechnologyAdapter().setCaretPosition(getTechnologyComponent(), ev.getPosition() + e.getValue().length());
 				}
 				break;
 			}
 			case FIBTextEventDescription.REMOVED: {
 				FIBTextEventDescription ev = (FIBTextEventDescription) e;
-				String text = getRenderingTechnologyAdapter().getText(getDynamicJComponent());
+				String text = getRenderingTechnologyAdapter().getText(getTechnologyComponent());
 				if (text.length() >= ev.getPosition() + ev.getLength())
-					getRenderingTechnologyAdapter().setText(getDynamicJComponent(),
+					getRenderingTechnologyAdapter().setText(getTechnologyComponent(),
 							text.substring(0, ev.getPosition()) + text.substring(ev.getPosition() + ev.getLength()));
 				break;
 			}
 			case FIBFocusEventDescription.FOCUS_GAINED:
-				getRenderingTechnologyAdapter().requestFocus(getDynamicJComponent());
+				getRenderingTechnologyAdapter().requestFocus(getTechnologyComponent());
 				break;
 			case FIBFocusEventDescription.FOCUS_LOST:
-				getRenderingTechnologyAdapter().requestFocusInParent(getDynamicJComponent());
+				getRenderingTechnologyAdapter().requestFocusInParent(getTechnologyComponent());
 				break;
 		}
 
@@ -124,7 +124,7 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 	@Override
 	public synchronized boolean updateWidgetFromModel() {
 
-		String currentWidgetValue = getRenderingTechnologyAdapter().getText(getDynamicJComponent());
+		String currentWidgetValue = getRenderingTechnologyAdapter().getText(getTechnologyComponent());
 		if (notEquals(getValue(), currentWidgetValue)) {
 			if (modelUpdating) {
 				return false;
@@ -134,10 +134,10 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 			}
 			widgetUpdating = true;
 			try {
-				int caret = getRenderingTechnologyAdapter().getCaretPosition(getDynamicJComponent());
-				getRenderingTechnologyAdapter().setText(getDynamicJComponent(), getValue());
+				int caret = getRenderingTechnologyAdapter().getCaretPosition(getTechnologyComponent());
+				getRenderingTechnologyAdapter().setText(getTechnologyComponent(), getValue());
 				if (caret > -1 && caret < getValue().length()) {
-					getRenderingTechnologyAdapter().setCaretPosition(getDynamicJComponent(), caret);
+					getRenderingTechnologyAdapter().setCaretPosition(getTechnologyComponent(), caret);
 				}
 			} finally {
 				widgetUpdating = false;
@@ -152,13 +152,13 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 	 */
 	@Override
 	public synchronized boolean updateModelFromWidget() {
-		if (notEquals(getValue(), getRenderingTechnologyAdapter().getText(getDynamicJComponent()))) {
+		if (notEquals(getValue(), getRenderingTechnologyAdapter().getText(getTechnologyComponent()))) {
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("updateModelFromWidget() in " + this);
 			}
 			modelUpdating = true;
 			try {
-				setValue(getRenderingTechnologyAdapter().getText(getDynamicJComponent()));
+				setValue(getRenderingTechnologyAdapter().getText(getTechnologyComponent()));
 			} finally {
 				modelUpdating = false;
 			}

@@ -109,6 +109,6 @@ public class JFIBButtonWidget extends FIBButtonWidgetImpl<JButton> {
 
 	@Override
 	public JButton getJComponent() {
-		return getDynamicJComponent();
+		return getTechnologyComponent();
 	}
 }

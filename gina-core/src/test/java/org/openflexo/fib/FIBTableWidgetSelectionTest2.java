@@ -246,7 +246,7 @@ public class FIBTableWidgetSelectionTest2 extends FIBTestCase {
 
 		FIBTableWidget<?> w = (FIBTableWidget<?>) controller.viewForComponent(table);
 		assertEquals(family.getChildren(), w.getTableModel().getValues());
-		assertEquals(5, w.getDynamicJComponent().getModel().getRowCount());
+		assertEquals(5, w.getTechnologyComponent().getModel().getRowCount());
 	}
 
 	/**
@@ -260,8 +260,8 @@ public class FIBTableWidgetSelectionTest2 extends FIBTestCase {
 		FIBPanelView<?, ?> details1 = (FIBPanelView<?, ?>) controller.viewForComponent(detailsPanel1);
 		FIBPanelView<?, ?> details2 = (FIBPanelView<?, ?>) controller.viewForComponent(detailsPanel2);
 
-		w.getDynamicJComponent().getSelectionModel().clearSelection();
-		w.getDynamicJComponent().getSelectionModel().addSelectionInterval(1, 1);
+		w.getTechnologyComponent().getSelectionModel().clearSelection();
+		w.getTechnologyComponent().getSelectionModel().addSelectionInterval(1, 1);
 
 		assertFalse(details1.isViewVisible());
 		assertTrue(details2.isViewVisible());
@@ -269,8 +269,8 @@ public class FIBTableWidgetSelectionTest2 extends FIBTestCase {
 		assertEquals("Smith", controller.viewForComponent(lastNameTF1).getData());
 		assertEquals("Suzy Smith", controller.viewForComponent(fullNameTF1).getData());
 
-		w.getDynamicJComponent().getSelectionModel().clearSelection();
-		w.getDynamicJComponent().getSelectionModel().addSelectionInterval(2, 2);
+		w.getTechnologyComponent().getSelectionModel().clearSelection();
+		w.getTechnologyComponent().getSelectionModel().addSelectionInterval(2, 2);
 
 		assertTrue(details1.isViewVisible());
 		assertFalse(details2.isViewVisible());

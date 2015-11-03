@@ -99,12 +99,12 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 
 	@Override
 	protected void proceedToListModelUpdate() {
-		getDynamicJComponent().update();
+		getTechnologyComponent().update();
 	}
 
 	@Override
 	public JPanel getJComponent() {
-		return getDynamicJComponent();
+		return getTechnologyComponent();
 	}
 
 	public static class JCheckBoxListPanel<T> extends JPanel {

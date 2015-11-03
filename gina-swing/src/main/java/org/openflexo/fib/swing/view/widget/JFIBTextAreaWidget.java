@@ -111,7 +111,7 @@ public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea>implemen
 		super(model, controller, RENDERING_TECHNOLOGY_ADAPTER);
 		panel = new JPanel(new BorderLayout());
 		panel.setOpaque(false);
-		panel.add(getDynamicJComponent(), BorderLayout.CENTER);
+		panel.add(getTechnologyComponent(), BorderLayout.CENTER);
 		Border border;
 		if (!ToolBox.isMacOSLaf()) {
 			border = BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
@@ -171,7 +171,7 @@ public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea>implemen
 	@Override
 	public void focusGained(FocusEvent event) {
 		super.focusGained(event);
-		getDynamicJComponent().selectAll();
+		getTechnologyComponent().selectAll();
 	}
 
 	@Override

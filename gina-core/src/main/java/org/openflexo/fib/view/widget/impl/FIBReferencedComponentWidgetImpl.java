@@ -327,7 +327,7 @@ public abstract class FIBReferencedComponentWidgetImpl<C, C2> extends FIBWidgetV
 	}
 
 	@Override
-	public C getDynamicJComponent() {
+	public C getTechnologyComponent() {
 		return (C) getJComponent();
 	}
 

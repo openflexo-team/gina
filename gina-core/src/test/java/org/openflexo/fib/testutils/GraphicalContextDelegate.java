@@ -104,7 +104,7 @@ public class GraphicalContextDelegate implements ChangeListener {
 	}
 
 	public void addTab(String title, FIBController controller) {
-		addTab(title, controller.getRootView().getDynamicJComponent());
+		addTab(title, controller.getRootView().getTechnologyComponent());
 	}
 
 	public void addTab(String title, JComponent component) {

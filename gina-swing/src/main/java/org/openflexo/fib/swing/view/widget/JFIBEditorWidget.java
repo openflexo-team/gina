@@ -222,7 +222,7 @@ public class JFIBEditorWidget extends FIBEditorWidgetImpl<JEditTextArea>implemen
 
 	@Override
 	public JComponent getJComponent() {
-		return getDynamicJComponent();
+		return getTechnologyComponent();
 	}
 
 }

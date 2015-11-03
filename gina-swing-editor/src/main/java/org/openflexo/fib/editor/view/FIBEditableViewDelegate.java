@@ -130,7 +130,7 @@ public class FIBEditableViewDelegate<M extends FIBComponent, J extends JComponen
 		dgListener = new MoveDGListener();
 
 		if (!(view instanceof FIBEditableSplitPanelView)) {
-			DragGestureRecognizer newDGR = dragSource.createDefaultDragGestureRecognizer(view.getDynamicJComponent(), dragAction,
+			DragGestureRecognizer newDGR = dragSource.createDefaultDragGestureRecognizer(view.getTechnologyComponent(), dragAction,
 					dgListener);
 		}
 

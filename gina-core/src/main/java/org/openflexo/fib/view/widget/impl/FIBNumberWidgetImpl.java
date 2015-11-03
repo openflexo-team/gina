@@ -88,7 +88,7 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 			case FIBValueEventDescription.CHANGED: {
 				T value = parseValue(e.getValue());
 				System.out.println(value);
-				getRenderingTechnologyAdapter().setNumber(getDynamicJComponent(), value);
+				getRenderingTechnologyAdapter().setNumber(getTechnologyComponent(), value);
 				break;
 			}
 		}
@@ -151,15 +151,15 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 	public synchronized boolean updateWidgetFromModel() {
 		// logger.info("updateWidgetFromModel() with "+getValue());
 		T editedValue = null;
-		if (!getRenderingTechnologyAdapter().isCheckboxSelected(getDynamicJComponent())) {
+		if (!getRenderingTechnologyAdapter().isCheckboxSelected(getTechnologyComponent())) {
 			editedValue = getEditedValue();
 		}
 		if (notEquals(getValue(), editedValue)) {
 
 			widgetUpdating = true;
-			getRenderingTechnologyAdapter().setWidgetEnabled(getDynamicJComponent(),
+			getRenderingTechnologyAdapter().setWidgetEnabled(getTechnologyComponent(),
 					(getValue() != null || !getWidget().getAllowsNull()) && isEnabled());
-			getRenderingTechnologyAdapter().setCheckboxSelected(getDynamicJComponent(), getValue() == null);
+			getRenderingTechnologyAdapter().setCheckboxSelected(getTechnologyComponent(), getValue() == null);
 			T currentValue = null;
 
 			if (getValue() == null) {
@@ -177,7 +177,7 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 
 			ignoreTextfieldChanges = true;
 			try {
-				getRenderingTechnologyAdapter().setNumber(getDynamicJComponent(), currentValue);
+				getRenderingTechnologyAdapter().setNumber(getTechnologyComponent(), currentValue);
 			} catch (IllegalArgumentException e) {
 				logger.warning("IllegalArgumentException: " + e.getMessage());
 			}
@@ -191,11 +191,11 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 	}
 
 	public T getEditedValue() {
-		return getRenderingTechnologyAdapter().getNumber(getDynamicJComponent());
+		return getRenderingTechnologyAdapter().getNumber(getTechnologyComponent());
 	}
 
 	public void setEditedValue(T aValue) {
-		getRenderingTechnologyAdapter().setNumber(getDynamicJComponent(), aValue);
+		getRenderingTechnologyAdapter().setNumber(getTechnologyComponent(), aValue);
 	}
 
 	/**
@@ -204,7 +204,7 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 	@Override
 	public synchronized boolean updateModelFromWidget() {
 		T editedValue = null;
-		if (!getRenderingTechnologyAdapter().isCheckboxSelected(getDynamicJComponent())) {
+		if (!getRenderingTechnologyAdapter().isCheckboxSelected(getTechnologyComponent())) {
 			editedValue = getEditedValue();
 		}
 		if (notEquals(getValue(), editedValue)) {
@@ -220,16 +220,16 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 	}
 
 	final public void updateCheckboxVisibility() {
-		getRenderingTechnologyAdapter().setCheckboxVisible(getDynamicJComponent(),
+		getRenderingTechnologyAdapter().setCheckboxVisible(getTechnologyComponent(),
 				getWidget().getAllowsNull() && !TypeUtils.isPrimitive(getComponent().getDataType()));
 	}
 
 	public void updateColumns() {
 		if (getComponent().getColumns() != null) {
-			getRenderingTechnologyAdapter().setColumns(getDynamicJComponent(), getComponent().getColumns());
+			getRenderingTechnologyAdapter().setColumns(getTechnologyComponent(), getComponent().getColumns());
 		}
 		else {
-			getRenderingTechnologyAdapter().setColumns(getDynamicJComponent(), 0);
+			getRenderingTechnologyAdapter().setColumns(getTechnologyComponent(), 0);
 		}
 	}
 

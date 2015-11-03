@@ -48,6 +48,11 @@ import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 /**
  * Generic component that is customized
  * 
+ * @param <C>
+ *            type of technology-specific component this view manage
+ * @param <T>
+ *            type of data beeing represented by this custom component
+ * 
  * @author sylvain
  * 
  */

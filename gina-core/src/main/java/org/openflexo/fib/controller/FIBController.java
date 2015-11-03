@@ -537,9 +537,9 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 	 */
 	protected final FIBWidgetView buildWidget(final FIBWidget fibWidget) {
 		final FIBWidgetView returned = makeWidget(fibWidget);
-		returned.getDynamicJComponent().addMouseListener(new FIBMouseAdapter(returned, fibWidget));
+		returned.getTechnologyComponent().addMouseListener(new FIBMouseAdapter(returned, fibWidget));
 
-		returned.getDynamicJComponent().addKeyListener(new KeyAdapter() {
+		returned.getTechnologyComponent().addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (fibWidget.hasEnterPressedAction() && e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -557,7 +557,7 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 			}
 		});
 		if (StringUtils.isNotEmpty(fibWidget.getTooltipText())) {
-			returned.getDynamicJComponent().setToolTipText(fibWidget.getTooltipText());
+			returned.getTechnologyComponent().setToolTipText(fibWidget.getTooltipText());
 		}
 		returned.updateGraphicalProperties();
 		return returned;

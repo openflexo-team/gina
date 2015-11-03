@@ -113,11 +113,11 @@ public abstract class FIBFileWidgetImpl<C> extends FIBWidgetViewImpl<FIBFile, C,
 	}
 
 	public File getSelectedFile() {
-		return getRenderingTechnologyAdapter().getSelectedFile(getDynamicJComponent());
+		return getRenderingTechnologyAdapter().getSelectedFile(getTechnologyComponent());
 	}
 
 	protected void setSelectedFile(File aFile) {
-		getRenderingTechnologyAdapter().setSelectedFile(getDynamicJComponent(), aFile);
+		getRenderingTechnologyAdapter().setSelectedFile(getTechnologyComponent(), aFile);
 	}
 
 }

@@ -115,7 +115,7 @@ public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel>implements ImageO
 
 	@Override
 	public JLabel getJComponent() {
-		return getDynamicJComponent();
+		return getTechnologyComponent();
 	}
 
 	private ImageIcon makeImageIcon(Image image) {

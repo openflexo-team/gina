@@ -107,8 +107,8 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 
 	@Override
 	protected void proceedToListModelUpdate() {
-		getDynamicJComponent().update();
-		if (!widgetUpdating && !isDeleted() && getDynamicJComponent() != null) {
+		getTechnologyComponent().update();
+		if (!widgetUpdating && !isDeleted() && getTechnologyComponent() != null) {
 			updateWidgetFromModel();
 		}
 	}
@@ -216,7 +216,7 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 
 	@Override
 	public JPanel getJComponent() {
-		return getDynamicJComponent();
+		return getTechnologyComponent();
 	}
 
 }

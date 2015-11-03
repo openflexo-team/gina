@@ -142,11 +142,11 @@ public abstract class FIBCheckboxListWidgetImpl<C, T> extends FIBMultipleValueWi
 	}
 
 	public List<T> getSelectedValues() {
-		return getRenderingTechnologyAdapter().getSelectedItems(getDynamicJComponent());
+		return getRenderingTechnologyAdapter().getSelectedItems(getTechnologyComponent());
 	}
 
 	public void setSelectedValues(List<T> selectedValues) {
-		getRenderingTechnologyAdapter().setSelectedItems(getDynamicJComponent(), selectedValues);
+		getRenderingTechnologyAdapter().setSelectedItems(getTechnologyComponent(), selectedValues);
 	}
 
 }
