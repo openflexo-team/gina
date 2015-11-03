@@ -39,6 +39,7 @@
 
 package org.openflexo.fib.view;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.openflexo.fib.model.FIBComponent;
@@ -62,7 +63,9 @@ import org.openflexo.fib.view.impl.FIBContainerViewImpl;
  */
 public interface FIBContainerView<M extends FIBContainer, C, C2> extends FIBView<M, C> {
 
-	public List<FIBView<?, C2>> getSubComponents();
+	public List<C2> getSubComponents();
+
+	public Collection<? extends FIBView<?, C2>> getSubViews();
 
 	public void updateLayout();
 

@@ -39,25 +39,19 @@
 
 package org.openflexo.fib.view.impl;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 import java.util.logging.Logger;
 
-import javax.swing.JComponent;
-
-import org.openflexo.connie.exception.NullReferenceException;
-import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBContainer;
 import org.openflexo.fib.view.FIBContainerView;
 import org.openflexo.fib.view.FIBView;
-import org.openflexo.fib.view.FIBWidgetView.RenderingAdapter;
 
 /**
  * Default generic (and abstract) implementation for a "view" associated with a {@link FIBContainer} in a given rendering engine environment
@@ -78,8 +72,9 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 
 	private static final Logger LOGGER = Logger.getLogger(FIBContainerViewImpl.class.getPackage().getName());
 
+	private final C technologyComponent;
 	private List<C2> subComponents;
-	private Hashtable<JComponent, Object> constraints;
+	private Hashtable<C2, Object> constraints;
 
 	protected Map<FIBComponent, FIBViewImpl<?, C2>> subViewsMap;
 
@@ -87,14 +82,21 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		super(model, controller, RenderingAdapter);
 
 		subComponents = new ArrayList<C2>();
-		constraints = new Hashtable<JComponent, Object>();
+		constraints = new Hashtable<C2, Object>();
 
 		subViewsMap = new Hashtable<FIBComponent, FIBViewImpl<?, C2>>();
 
-		createJComponent();
-		buildSubComponents();
+		technologyComponent = makeTechnologyComponent();
 
+		buildSubComponents();
 	}
+
+	/**
+	 * Create technology-specific component representing FIBWidget
+	 * 
+	 * @return
+	 */
+	protected abstract C makeTechnologyComponent();
 
 	@Override
 	public void delete() {
@@ -115,26 +117,26 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		super.delete();
 	}
 
-	protected synchronized void buildSubComponents() {
+	public void buildSubComponents() {
 		subViewsMap.clear();
 		subComponents.clear();
 		constraints.clear();
 
 		retrieveContainedJComponentsAndConstraints();
 
-		for (C2 j : subComponents) {
-			addJComponent(j);
+		for (C2 c2 : subComponents) {
+			addChildComponent(c2, constraints.get(c2));
 		}
 
 		updatePreferredSize();
 
 		updateFont();
 
-		getJComponent().revalidate();
-		getJComponent().repaint();
+		/*getJComponent().revalidate();
+		getJComponent().repaint();*/
 	}
 
-	public JComponent getJComponentForObject(FIBComponent component) {
+	/*public JComponent getJComponentForObject(FIBComponent component) {
 		if (getComponent() == component) {
 			return getJComponent();
 		}
@@ -147,9 +149,9 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 			}
 		}
 		return null;
-	}
+	}*/
 
-	public JComponent geDynamicJComponentForObject(FIBComponent component) {
+	/*public JComponent geDynamicJComponentForObject(FIBComponent component) {
 		if (getComponent() == component) {
 			return getTechnologyComponent();
 		}
@@ -162,29 +164,35 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 			}
 		}
 		return null;
-	}
+	}*/
 
-	protected abstract J createJComponent();
+	// protected abstract J createJComponent();
 
 	protected abstract void retrieveContainedJComponentsAndConstraints();
 
-	protected void addJComponent(C2 c) {
-		// logger.info("addJComponent constraints=" + c);
-		Object constraint = constraints.get(c);
-		LOGGER.fine(getComponent() + ": addJComponent " + c + " constraint=" + constraint);
-		if (constraint == null) {
-			getJComponent().add(c);
-		}
-		else {
-			getJComponent().add(c, constraint);
-		}
+	protected abstract void addChildComponent(C2 c, Object constraint);
+
+	/* {// logger.info("addJComponent constraints=" + c);
+														Object constraint = constraints.get(c);
+														LOGGER.fine(getComponent() + ": addJComponent " + c + " constraint=" + constraint);
+														if (constraint == null) {
+														getJComponent().add(c);
+														}
+														else {
+														getJComponent().add(c, constraint);
+														}
+														}*/
+
+	// @Override
+	// public abstract J getJComponent();
+
+	// TODO: refactor this
+	public Object getValue() {
+		LOGGER.warning("Please reimplement this !");
+		return null;
 	}
 
-	@Override
-	public abstract J getJComponent();
-
-	@Override
-	public T getValue() {
+	/*{
 		if (getDataObject() == null) {
 			return null;
 		}
@@ -203,7 +211,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 			e.printStackTrace();
 			return null;
 		}
-	}
+	}*/
 
 	@Override
 	public boolean update() {
@@ -281,15 +289,15 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		return returned;
 	}*/
 
-	protected void registerViewForComponent(FIBView view, FIBComponent component) {
+	protected void registerViewForComponent(FIBViewImpl<?, C2> view, FIBComponent component) {
 		subViewsMap.put(component, view);
 	}
 
-	protected void registerComponentWithConstraints(JComponent component, Object constraint) {
+	protected void registerComponentWithConstraints(C2 component, Object constraint) {
 		registerComponentWithConstraints(component, constraint, -1);
 	}
 
-	protected void registerComponentWithConstraints(JComponent component, Object constraint, int index) {
+	protected void registerComponentWithConstraints(C2 component, Object constraint, int index) {
 		LOGGER.fine("Register component: " + component + " constraint=" + constraint);
 		if (index < 0 || index > subComponents.size()) {
 			index = subComponents.size();
@@ -300,11 +308,11 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		}
 	}
 
-	protected void registerComponentWithConstraints(JComponent component, int index) {
+	protected void registerComponentWithConstraints(C2 component, int index) {
 		registerComponentWithConstraints(component, null, index);
 	}
 
-	protected void registerComponentWithConstraints(JComponent component) {
+	protected void registerComponentWithConstraints(C2 component) {
 		registerComponentWithConstraints(component, null, -1);
 	}
 
@@ -326,13 +334,18 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	}
 
 	@Override
-	protected Vector<JComponent> getSubComponents() {
+	public Collection<FIBViewImpl<?, C2>> getSubViews() {
+		return subViewsMap.values();
+	}
+
+	@Override
+	public List<C2> getSubComponents() {
 		return subComponents;
 	}
 
 	@Override
 	protected void hiddenComponentBecomesVisible() {
-		for (FIBViewImpl<?, ?, ?> view : subViewsMap.values()) {
+		for (FIBViewImpl<?, C2> view : subViewsMap.values()) {
 			view.updateVisibility();
 		}
 	}
@@ -354,7 +367,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		return returned;
 	}
 
-	protected Hashtable<JComponent, Object> getConstraints() {
+	protected Hashtable<C2, Object> getConstraints() {
 		return constraints;
 	}
 
