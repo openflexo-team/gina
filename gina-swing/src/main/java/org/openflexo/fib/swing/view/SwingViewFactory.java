@@ -62,9 +62,24 @@ import org.openflexo.fib.model.FIBReferencedComponent;
 import org.openflexo.fib.model.FIBTable;
 import org.openflexo.fib.model.FIBTextArea;
 import org.openflexo.fib.model.FIBTextField;
+import org.openflexo.fib.swing.view.widget.JFIBBrowserWidget;
+import org.openflexo.fib.swing.view.widget.JFIBButtonWidget;
+import org.openflexo.fib.swing.view.widget.JFIBCheckBoxWidget;
+import org.openflexo.fib.swing.view.widget.JFIBCheckboxListWidget;
+import org.openflexo.fib.swing.view.widget.JFIBColorWidget;
+import org.openflexo.fib.swing.view.widget.JFIBCustomWidget;
+import org.openflexo.fib.swing.view.widget.JFIBDropDownWidget;
+import org.openflexo.fib.swing.view.widget.JFIBEditorWidget;
+import org.openflexo.fib.swing.view.widget.JFIBFileWidget;
+import org.openflexo.fib.swing.view.widget.JFIBFontWidget;
+import org.openflexo.fib.swing.view.widget.JFIBHtmlEditorWidget;
 import org.openflexo.fib.swing.view.widget.JFIBImageWidget;
 import org.openflexo.fib.swing.view.widget.JFIBLabelWidget;
+import org.openflexo.fib.swing.view.widget.JFIBListWidget;
 import org.openflexo.fib.swing.view.widget.JFIBNumberWidget;
+import org.openflexo.fib.swing.view.widget.JFIBRadioButtonListWidget;
+import org.openflexo.fib.swing.view.widget.JFIBReferencedComponentWidget;
+import org.openflexo.fib.swing.view.widget.JFIBTableWidget;
 import org.openflexo.fib.swing.view.widget.JFIBTextAreaWidget;
 import org.openflexo.fib.swing.view.widget.JFIBTextFieldWidget;
 import org.openflexo.fib.view.GinaViewFactory;
@@ -98,8 +113,7 @@ import org.openflexo.fib.view.widget.impl.FIBTextAreaWidgetImpl;
  */
 public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 
-	public SwingViewFactory() {
-	}
+	public static final SwingViewFactory INSTANCE = new SwingViewFactory();
 
 	@Override
 	public FIBLabelWidget<? extends JComponent> makeLabel(FIBLabel widget, FIBController controller) {
@@ -128,95 +142,78 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 
 	@Override
 	public FIBCheckBoxWidgetImpl<? extends JComponent> makeCheckbox(FIBCheckBox widget, FIBController controller) {
-		// TODO Auto-generated method stub
-		return null;
+		return new JFIBCheckBoxWidget(widget, controller);
 	}
 
 	@Override
-	public FIBCheckboxListWidgetImpl<? extends JComponent, ?> makeCheckboxList(FIBCheckboxList widget,
-			FIBController controller) {
-		// TODO Auto-generated method stub
-		return null;
+	public FIBCheckboxListWidgetImpl<? extends JComponent, ?> makeCheckboxList(FIBCheckboxList widget, FIBController controller) {
+		return new JFIBCheckboxListWidget(widget, controller);
 	}
 
 	@Override
-	public FIBRadioButtonListWidgetImpl<? extends JComponent, ?> makeRadioButtonList(FIBRadioButtonList widget,
-			FIBController controller) {
-		// TODO Auto-generated method stub
-		return null;
+	public FIBRadioButtonListWidgetImpl<? extends JComponent, ?> makeRadioButtonList(FIBRadioButtonList widget, FIBController controller) {
+		return new JFIBRadioButtonListWidget(widget, controller);
 	}
 
 	@Override
 	public FIBDropDownWidgetImpl<? extends JComponent, ?> makeDropDown(FIBDropDown widget, FIBController controller) {
-		// TODO Auto-generated method stub
-		return null;
+		return new JFIBDropDownWidget(widget, controller);
 	}
 
 	@Override
 	public FIBListWidgetImpl<? extends JComponent, ?> makeList(FIBList widget, FIBController controller) {
-		// TODO Auto-generated method stub
-		return null;
+		return new JFIBListWidget(widget, controller);
 	}
 
 	@Override
 	public FIBEditorWidgetImpl<? extends JComponent> makeEditor(FIBEditor widget, FIBController controller) {
-		// TODO Auto-generated method stub
-		return null;
+		return new JFIBEditorWidget(widget, controller);
 	}
 
 	@Override
 	public FIBHtmlEditorWidgetImpl<? extends JComponent> makeHtmlEditor(FIBHtmlEditor widget, FIBController controller) {
-		// TODO Auto-generated method stub
-		return null;
+		return new JFIBHtmlEditorWidget(widget, controller);
 	}
 
 	@Override
 	public FIBTableWidgetImpl<? extends JComponent, ?> makeTable(FIBTable widget, FIBController controller) {
-		// TODO Auto-generated method stub
-		return null;
+		return new JFIBTableWidget(widget, controller);
 	}
 
 	@Override
 	public FIBBrowserWidgetImpl<? extends JComponent, ?> makeBrowser(FIBBrowser widget, FIBController controller) {
-		// TODO Auto-generated method stub
-		return null;
+		return new JFIBBrowserWidget(widget, controller);
 	}
 
 	@Override
 	public FIBColorWidgetImpl<? extends JComponent> makeColor(FIBColor widget, FIBController controller) {
-		// TODO Auto-generated method stub
-		return null;
+		return new JFIBColorWidget(widget, controller);
 	}
 
 	@Override
 	public FIBFontWidgetImpl<? extends JComponent> makeFont(FIBFont widget, FIBController controller) {
-		// TODO Auto-generated method stub
-		return null;
+		return new JFIBFontWidget(widget, controller);
 	}
 
 	@Override
 	public FIBFileWidgetImpl<? extends JComponent> makeFile(FIBFile widget, FIBController controller) {
-		// TODO Auto-generated method stub
-		return null;
+		return new JFIBFileWidget(widget, controller);
 	}
 
 	@Override
 	public FIBButtonWidgetImpl<? extends JComponent> makeButton(FIBButton widget, FIBController controller) {
-		// TODO Auto-generated method stub
-		return null;
+		return new JFIBButtonWidget(widget, controller);
 	}
 
 	@Override
 	public FIBCustomWidgetImpl<? extends JComponent, ?> makeCustomWidget(FIBCustom widget, FIBController controller) {
-		// TODO Auto-generated method stub
-		return null;
+		return new JFIBCustomWidget(widget, controller);
 	}
 
 	@Override
-	public FIBReferencedComponentWidgetImpl<? extends JComponent> makeReferencedComponentWidget(
-			FIBReferencedComponent widget, FIBController controller) {
-		// TODO Auto-generated method stub
-		return null;
+	public FIBReferencedComponentWidgetImpl<? extends JComponent> makeReferencedComponentWidget(FIBReferencedComponent widget,
+			FIBController controller) {
+		return new JFIBReferencedComponentWidget(widget, controller);
 	}
 
 }
