@@ -178,6 +178,21 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		return technologyComponent;
 	}
 
+	/**
+	 * Return technology component for supplied {@link FIBComponent}<br>
+	 * Return technology component if supplied {@link FIBComponent} is the represented widget itself, otherwise return null
+	 * 
+	 * @param component
+	 * @return
+	 */
+	@Override
+	public Object getTechnologyComponentForFIBComponent(FIBComponent component) {
+		if (getComponent() == component) {
+			return getTechnologyComponent();
+		}
+		return null;
+	}
+
 	private void listenDataValueChange() {
 		if (dataBindingValueChangeListener != null) {
 			dataBindingValueChangeListener.stopObserving();
@@ -939,6 +954,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	 * @param event
 	 *            platform-specific event which is translated into a generic FIBMouseEvent
 	 */
+	@Override
 	public void applySingleClickAction(FIBMouseEvent event) {
 		eventListener.setEvent(event);
 		try {
@@ -958,6 +974,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	 * @param event
 	 *            platform-specific event which is translated into a generic FIBMouseEvent
 	 */
+	@Override
 	public void applyDoubleClickAction(FIBMouseEvent event) {
 		eventListener.setEvent(event);
 		try {
@@ -977,6 +994,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	 * @param event
 	 *            platform-specific event which is translated into a generic FIBMouseEvent
 	 */
+	@Override
 	public void applyRightClickAction(FIBMouseEvent event) {
 		eventListener.setEvent(event);
 		try {

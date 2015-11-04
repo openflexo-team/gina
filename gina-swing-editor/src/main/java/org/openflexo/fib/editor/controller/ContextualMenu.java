@@ -59,7 +59,6 @@ import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.controller.FIBController.Status;
-import org.openflexo.fib.controller.FIBDialog;
 import org.openflexo.fib.editor.FIBEmbeddedEditor;
 import org.openflexo.fib.editor.controller.EditorAction.ActionAvailability;
 import org.openflexo.fib.editor.controller.EditorAction.ActionPerformer;
@@ -86,6 +85,7 @@ import org.openflexo.fib.model.TwoColsLayoutConstraints;
 import org.openflexo.fib.model.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.fib.swing.toolbox.JFIBPreferences;
 import org.openflexo.fib.swing.utils.BindingSelector;
+import org.openflexo.fib.swing.utils.JFIBDialog;
 import org.openflexo.fib.swing.view.widget.JFIBReferencedComponentWidget;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -265,7 +265,7 @@ public class ContextualMenu {
 		controlPanel.addToSubComponents(cancelButton);
 		panel.addToSubComponents(controlPanel, new TwoColsLayoutConstraints(TwoColsLayoutLocation.center, true, false));
 
-		FIBDialog dialog = FIBDialog.instanciateAndShowDialog(panel, params, editorController.getEditor().getFrame(), true);
+		JFIBDialog dialog = JFIBDialog.instanciateAndShowDialog(panel, params, editorController.getEditor().getFrame(), true);
 
 		if (dialog.getStatus() == Status.VALIDATED) {
 			if (params.reusableComponentFile != null) {

@@ -161,20 +161,27 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		return null;
 	}*/
 
-	/*public JComponent geDynamicJComponentForObject(FIBComponent component) {
+	/**
+	 * Return technology component for supplied FIBComponent<br>
+	 * Search is deeply performed inside the whole component hierarchy
+	 * 
+	 * @param component
+	 * @return
+	 */
+	public Object getTechnologyComponentForFIBComponent(FIBComponent component) {
 		if (getComponent() == component) {
 			return getTechnologyComponent();
 		}
 		else {
-			for (FIBViewImpl v : getSubViewsMap().values()) {
-				JComponent j = v.geDynamicJComponentForObject(component);
+			for (FIBViewImpl<?, ?> v : getSubViews()) {
+				Object j = v.getTechnologyComponentForFIBComponent(component);
 				if (j != null) {
 					return j;
 				}
 			}
 		}
 		return null;
-	}*/
+	}
 
 	// protected abstract J createJComponent();
 

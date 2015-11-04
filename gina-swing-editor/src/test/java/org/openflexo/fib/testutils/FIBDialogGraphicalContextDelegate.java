@@ -50,8 +50,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import org.openflexo.fib.controller.FIBDialog;
 import org.openflexo.fib.editor.FIBEmbeddedEditor;
+import org.openflexo.fib.swing.utils.JFIBDialog;
 import org.openflexo.rm.Resource;
 
 /**
@@ -65,7 +65,7 @@ public class FIBDialogGraphicalContextDelegate {
 	private final EventProcessor eventProcessor;
 	private boolean dontDestroyMe = false;
 
-	public FIBDialogGraphicalContextDelegate(final FIBDialog<?> dialog, final Resource componentResource) {
+	public FIBDialogGraphicalContextDelegate(final JFIBDialog<?> dialog, final Resource componentResource) {
 		eventProcessor = new EventProcessor();
 
 		try {

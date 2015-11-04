@@ -126,6 +126,15 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 	public JComponent getResultingJComponent();
 
 	/**
+	 * Return technology component for supplied FIBComponent<br>
+	 * Search is deeply performed inside the whole component hierarchy
+	 * 
+	 * @param component
+	 * @return
+	 */
+	public Object getTechnologyComponentForFIBComponent(FIBComponent component);
+
+	/**
 	 * This method is called to update view representing a FIBComponent.<br>
 	 * 
 	 * @return a flag indicating if component has been updated

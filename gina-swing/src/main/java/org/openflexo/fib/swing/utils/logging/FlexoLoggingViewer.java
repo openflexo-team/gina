@@ -51,8 +51,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.openflexo.fib.FIBLibrary;
-import org.openflexo.fib.controller.FIBDialog;
 import org.openflexo.fib.model.FIBComponent;
+import org.openflexo.fib.swing.utils.JFIBDialog;
 import org.openflexo.icon.UtilsIconLibrary;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.logging.FlexoLoggingManager;
@@ -93,14 +93,14 @@ public class FlexoLoggingViewer implements HasPropertyChangeSupport {
 	public boolean displayThread = true;
 
 	private static FlexoLoggingViewer instance;
-	private static FIBDialog<FlexoLoggingViewer> dialog;
+	private static JFIBDialog<FlexoLoggingViewer> dialog;
 
 	public static void showLoggingViewer(FlexoLoggingManager loggingManager, Window parent) {
 		System.out.println("showLoggingViewer with " + loggingManager);
 		FIBComponent loggingViewerComponent = FIBLibrary.instance().retrieveFIBComponent(LOGGING_VIEWER_FIB_NAME, true);
 		if (instance == null || dialog == null) {
 			instance = new FlexoLoggingViewer(loggingManager);
-			dialog = FIBDialog.instanciateAndShowDialog(loggingViewerComponent, instance, parent, false,
+			dialog = JFIBDialog.instanciateAndShowDialog(loggingViewerComponent, instance, parent, false,
 					FlexoLocalization.getMainLocalizer());
 		} else {
 			dialog.showDialog();
