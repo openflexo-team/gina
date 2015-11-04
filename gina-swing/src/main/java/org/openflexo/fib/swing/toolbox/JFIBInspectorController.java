@@ -55,10 +55,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.swing.view.FIBView;
 import org.openflexo.fib.swing.view.container.FIBTabPanelView;
 import org.openflexo.fib.utils.FIBInspector;
 import org.openflexo.fib.utils.InspectorGroup;
+import org.openflexo.fib.view.FIBView;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.rm.Resource;
@@ -131,7 +131,8 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 		if (newInspector == null) {
 			logger.warning("No inspector for " + object);
 			switchToEmptyContent();
-		} else {
+		}
+		else {
 			if (newInspector != currentInspector) {
 				switchToInspector(newInspector);
 			}
@@ -175,7 +176,8 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 			}
 			tabPanelView.getJComponent().addChangeListener(this);
 			// System.out.println("addChangeListener for "+tabPanelView.getJComponent());
-		} else {
+		}
+		else {
 			logger.warning("No inspector view for " + newInspector);
 			switchToEmptyContent();
 		}

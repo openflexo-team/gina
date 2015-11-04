@@ -54,6 +54,12 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 
+/**
+ * Represents a basic panel, as a container of some children component, with a given layout, and a border
+ *
+ * @author sylvain
+ *
+ */
 @ModelEntity
 @ImplementationClass(FIBPanel.FIBPanelImpl.class)
 @XMLElement(xmlTag = "Panel")

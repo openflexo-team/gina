@@ -39,11 +39,6 @@
 
 package org.openflexo.fib.model;
 
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-
-import javax.swing.JComponent;
-
 import org.openflexo.fib.model.FIBPanel.Layout;
 
 public class TwoColsLayoutConstraints extends ComponentConstraints {
@@ -140,46 +135,4 @@ public class TwoColsLayoutConstraints extends ComponentConstraints {
 	protected Layout getType() {
 		return Layout.twocols;
 	}
-
-	@Override
-	public void performConstrainedAddition(JComponent container, JComponent contained) {
-		GridBagConstraints c = new GridBagConstraints();
-		// c.insets = new Insets(3, 3, 3, 3);
-		c.insets = new Insets(getInsetsTop(), getInsetsLeft(), getInsetsBottom(), getInsetsRight());
-		if (getLocation() == TwoColsLayoutLocation.left) {
-			c.fill = GridBagConstraints.NONE;
-			c.weightx = 0; // 1.0;
-			c.gridwidth = 1;
-			c.anchor = GridBagConstraints.NORTHEAST;
-			if (getExpandVertically()) {
-				// c.weighty = 1.0;
-				c.fill = GridBagConstraints.VERTICAL;
-			} else {
-				// c.insets = new Insets(5, 2, 0, 2);
-			}
-		} else {
-			if (getExpandHorizontally()) {
-				c.fill = GridBagConstraints.BOTH;
-				c.anchor = GridBagConstraints.CENTER;
-				if (getExpandVertically()) {
-					c.weighty = 1.0;
-				}
-			} else {
-				c.fill = GridBagConstraints.NONE;
-				c.anchor = GridBagConstraints.WEST;
-			}
-			c.weightx = 1.0; // 2.0;
-			c.gridwidth = GridBagConstraints.REMAINDER;
-		}
-
-		container.add(contained, c);
-
-		/*GridBagLayout gridbag = (GridBagLayout)getJComponent().getLayout();
-		GridBagConstraints gridBagConstraints = (GridBagConstraints)getConstraints().get(c);
-		gridbag.setConstraints(c,gridBagConstraints);
-		getJComponent().add(c);
-
-		container.add(contained);*/
-	}
-
 }

@@ -45,7 +45,7 @@ import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBTab;
 import org.openflexo.fib.swing.view.FIBView;
 
-public class FIBTabView<C extends FIBTab, T> extends FIBPanelView<C, T> {
+public class FIBTabView<C extends FIBTab, T> extends JFIBPanelView<C, T> {
 
 	private static final Logger logger = Logger.getLogger(FIBTabView.class.getPackage().getName());
 

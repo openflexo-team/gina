@@ -110,8 +110,8 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 
 	/**
 	 * Return technology-specific component representing widget<br>
-	 * Note that, depending on the underlying technology, this technology-specific component might be embedded in an other component before to 
-	 * be added in component hierarchy (for example if component need to be embedded in a scroll pane)
+	 * Note that, depending on the underlying technology, this technology-specific component might be embedded in an other component before
+	 * to be added in component hierarchy (for example if component need to be embedded in a scroll pane)
 	 * 
 	 * @return C
 	 */
@@ -133,8 +133,6 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 	public boolean update();
 
 	public boolean isComponentVisible();
-
-	public boolean isComponentEnabled();
 
 	public FIBContainerView<?, ?, ?> getParentView();
 

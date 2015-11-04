@@ -46,10 +46,16 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
-import javax.swing.JComponent;
-
 import org.openflexo.fib.model.FIBPanel.Layout;
 
+/**
+ * This abstraction represent the constraints configuration of a component inside a container declaring a particular layout.<br>
+ * Stores a dictionary of String values associated to String keys.
+ * 
+ * @author sylvain
+ *
+ */
+@SuppressWarnings("serial")
 public abstract class ComponentConstraints extends Hashtable<String, String> {
 
 	static final Logger LOGGER = Logger.getLogger(FIBComponent.class.getPackage().getName());
@@ -229,8 +235,6 @@ public abstract class ComponentConstraints extends Hashtable<String, String> {
 	public void setComponent(FIBComponent component) {
 		this.component = component;
 	}
-
-	public abstract void performConstrainedAddition(JComponent container, JComponent contained);
 
 	public final int getIndex() {
 		if (hasIndex()) {

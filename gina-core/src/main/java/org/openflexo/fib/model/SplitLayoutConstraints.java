@@ -41,8 +41,6 @@ package org.openflexo.fib.model;
 
 import java.util.List;
 
-import javax.swing.JComponent;
-
 import org.openflexo.fib.model.FIBPanel.Layout;
 import org.openflexo.swing.layout.MultiSplitLayout.Leaf;
 
@@ -71,11 +69,6 @@ public class SplitLayoutConstraints extends ComponentConstraints {
 	@Override
 	protected Layout getType() {
 		return Layout.split;
-	}
-
-	@Override
-	public void performConstrainedAddition(JComponent container, JComponent contained) {
-		container.add(contained);
 	}
 
 	public String getSplitIdentifier() {

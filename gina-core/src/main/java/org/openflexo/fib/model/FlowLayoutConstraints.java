@@ -39,8 +39,6 @@
 
 package org.openflexo.fib.model;
 
-import javax.swing.JComponent;
-
 import org.openflexo.fib.model.FIBPanel.Layout;
 
 public class FlowLayoutConstraints extends ComponentConstraints {
@@ -60,11 +58,6 @@ public class FlowLayoutConstraints extends ComponentConstraints {
 	@Override
 	protected Layout getType() {
 		return Layout.flow;
-	}
-
-	@Override
-	public void performConstrainedAddition(JComponent container, JComponent contained) {
-		container.add(contained);
 	}
 
 }

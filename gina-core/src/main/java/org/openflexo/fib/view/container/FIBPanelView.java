@@ -1,6 +1,6 @@
 /**
  * 
- * Copyright (c) 2013-2014, Openflexo
+ * Copyright (c) 2013-2015, Openflexo
  * Copyright (c) 2011-2012, AgileBirds
  * 
  * This file is part of Gina-core, a component of the software infrastructure 
@@ -37,52 +37,35 @@
  * 
  */
 
-package org.openflexo.fib.model;
+package org.openflexo.fib.view.container;
 
-import org.openflexo.fib.model.FIBPanel.Layout;
+import org.openflexo.fib.model.FIBPanel;
+import org.openflexo.fib.view.FIBContainerView;
 
-public class GridLayoutConstraints extends ComponentConstraints {
-
-	private static final String X = "x";
-	private static final String Y = "y";
-
-	public int getX() {
-		return getIntValue(X, 0);
-	}
-
-	public void setX(int x) {
-		setIntValue(X, x);
-	}
-
-	public int getY() {
-		return getIntValue(Y, 0);
-	}
-
-	public void setY(int y) {
-		setIntValue(Y, y);
-	}
-
-	public GridLayoutConstraints() {
-		super();
-	}
-
-	public GridLayoutConstraints(int x, int y) {
-		this();
-		setX(x);
-		setY(y);
-	}
-
-	public GridLayoutConstraints(String someConstraints) {
-		super(someConstraints);
-	}
-
-	public GridLayoutConstraints(ComponentConstraints someConstraints) {
-		super(someConstraints);
-	}
+/**
+ * Represents a basic panel, as a container of some children component, with a given layout, and a border
+ * 
+ * @param <C>
+ *            type of technology-specific component this view manage
+ * @param <T>
+ *            type of row data
+ * 
+ * @author sylvain
+ */
+public interface FIBPanelView<C, C2> extends FIBContainerView<FIBPanel, C, C2> {
 
 	@Override
-	protected Layout getType() {
-		return Layout.grid;
+	public PanelRenderingAdapter<C, C2> getRenderingAdapter();
+
+	/**
+	 * Specification of an adapter for a given rendering technology (eg Swing)
+	 * 
+	 * @author sylvain
+	 *
+	 * @param <C>
+	 */
+	public static interface PanelRenderingAdapter<C, C2> extends ContainerRenderingAdapter<C, C2> {
+
 	}
 
 }

@@ -78,7 +78,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 
 	protected Map<FIBComponent, FIBViewImpl<?, C2>> subViewsMap;
 
-	public FIBContainerViewImpl(M model, FIBController controller, RenderingAdapter<C> RenderingAdapter) {
+	public FIBContainerViewImpl(M model, FIBController controller, ContainerRenderingAdapter<C, C2> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
 
 		subComponents = new ArrayList<C2>();
@@ -91,12 +91,22 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		buildSubComponents();
 	}
 
+	@Override
+	public ContainerRenderingAdapter<C, C2> getRenderingAdapter() {
+		return (ContainerRenderingAdapter<C, C2>) super.getRenderingAdapter();
+	}
+
 	/**
 	 * Create technology-specific component representing FIBWidget
 	 * 
 	 * @return
 	 */
 	protected abstract C makeTechnologyComponent();
+
+	@Override
+	public final C getTechnologyComponent() {
+		return technologyComponent;
+	}
 
 	@Override
 	public void delete() {

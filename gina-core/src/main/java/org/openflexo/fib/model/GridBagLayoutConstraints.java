@@ -40,9 +40,6 @@
 package org.openflexo.fib.model;
 
 import java.awt.GridBagConstraints;
-import java.awt.Insets;
-
-import javax.swing.JComponent;
 
 import org.openflexo.fib.model.FIBPanel.Layout;
 
@@ -150,7 +147,8 @@ public class GridBagLayoutConstraints extends ComponentConstraints {
 	}
 
 	public GridBagLayoutConstraints(int gridX, int gridY, int gridWidth, int gridHeight, double weightX, double weightY,
-			AnchorType anchorType, FillType fillType, int insetsTop, int insetsBottom, int insetsLeft, int insetsRight, int padX, int padY) {
+			AnchorType anchorType, FillType fillType, int insetsTop, int insetsBottom, int insetsLeft, int insetsRight, int padX,
+			int padY) {
 		super();
 		setGridX(gridX);
 		setGridY(gridY);
@@ -171,27 +169,6 @@ public class GridBagLayoutConstraints extends ComponentConstraints {
 	@Override
 	protected Layout getType() {
 		return Layout.gridbag;
-	}
-
-	@Override
-	public void performConstrainedAddition(JComponent container, JComponent contained) {
-		GridBagConstraints c = new GridBagConstraints();
-
-		c.gridx = getGridX();
-		c.gridy = getGridY();
-		c.gridwidth = getGridWidth();
-		c.gridheight = getGridHeight();
-
-		c.weightx = getWeightX();
-		c.weighty = getWeightY();
-		c.anchor = getAnchor().getAnchor();
-		c.fill = getFill().getFill();
-
-		c.insets = new Insets(getInsetsTop(), getInsetsLeft(), getInsetsBottom(), getInsetsRight());
-		c.ipadx = getPadX();
-		c.ipady = getPadY();
-
-		container.add(contained, c);
 	}
 
 	public AnchorType getAnchor() {
@@ -228,7 +205,8 @@ public class GridBagLayoutConstraints extends ComponentConstraints {
 	public void setGridXRelative(boolean flag) {
 		if (flag) {
 			setGridX(GridBagConstraints.RELATIVE);
-		} else {
+		}
+		else {
 			setGridX(0);
 		}
 	}
@@ -248,7 +226,8 @@ public class GridBagLayoutConstraints extends ComponentConstraints {
 	public void setGridYRelative(boolean flag) {
 		if (flag) {
 			setGridY(GridBagConstraints.RELATIVE);
-		} else {
+		}
+		else {
 			setGridY(0);
 		}
 	}
@@ -271,7 +250,8 @@ public class GridBagLayoutConstraints extends ComponentConstraints {
 	public void setGridWidthRelative(boolean flag) {
 		if (flag) {
 			setGridWidth(GridBagConstraints.RELATIVE);
-		} else {
+		}
+		else {
 			setGridWidth(1);
 		}
 	}
@@ -283,7 +263,8 @@ public class GridBagLayoutConstraints extends ComponentConstraints {
 	public void setGridWidthRemainder(boolean flag) {
 		if (flag) {
 			setGridWidth(GridBagConstraints.REMAINDER);
-		} else {
+		}
+		else {
 			setGridWidth(1);
 		}
 	}
@@ -303,7 +284,8 @@ public class GridBagLayoutConstraints extends ComponentConstraints {
 	public void setGridHeightRelative(boolean flag) {
 		if (flag) {
 			setGridHeight(GridBagConstraints.RELATIVE);
-		} else {
+		}
+		else {
 			setGridHeight(1);
 		}
 	}
@@ -315,7 +297,8 @@ public class GridBagLayoutConstraints extends ComponentConstraints {
 	public void setGridHeightRemainder(boolean flag) {
 		if (flag) {
 			setGridHeight(GridBagConstraints.REMAINDER);
-		} else {
+		}
+		else {
 			setGridHeight(1);
 		}
 	}

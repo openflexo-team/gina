@@ -39,8 +39,6 @@
 
 package org.openflexo.fib.model;
 
-import javax.swing.JComponent;
-
 import org.openflexo.fib.model.FIBPanel.Layout;
 
 public class NoneLayoutConstraints extends ComponentConstraints {
@@ -79,13 +77,6 @@ public class NoneLayoutConstraints extends ComponentConstraints {
 	@Override
 	protected Layout getType() {
 		return Layout.none;
-	}
-
-	@Override
-	public void performConstrainedAddition(JComponent container, JComponent contained) {
-		contained.setLocation(getX(), getY());
-		contained.setSize(contained.getPreferredSize());
-		container.add(contained);
 	}
 
 }

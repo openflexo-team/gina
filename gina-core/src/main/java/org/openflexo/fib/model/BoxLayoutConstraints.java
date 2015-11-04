@@ -39,8 +39,6 @@
 
 package org.openflexo.fib.model;
 
-import javax.swing.JComponent;
-
 import org.openflexo.fib.model.FIBPanel.Layout;
 
 public class BoxLayoutConstraints extends ComponentConstraints {
@@ -81,10 +79,4 @@ public class BoxLayoutConstraints extends ComponentConstraints {
 		setFloatValue(ALIGNMENT_Y, y);
 	}
 
-	@Override
-	public void performConstrainedAddition(JComponent container, JComponent contained) {
-		contained.setAlignmentX(getAlignmentX());
-		contained.setAlignmentY(getAlignmentY());
-		container.add(contained);
-	}
 }

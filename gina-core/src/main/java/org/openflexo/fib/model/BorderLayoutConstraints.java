@@ -42,8 +42,6 @@ package org.openflexo.fib.model;
 import java.awt.BorderLayout;
 import java.util.logging.Logger;
 
-import javax.swing.JComponent;
-
 import org.openflexo.fib.model.FIBPanel.Layout;
 
 public class BorderLayoutConstraints extends ComponentConstraints {
@@ -163,11 +161,6 @@ public class BorderLayoutConstraints extends ComponentConstraints {
 	@Override
 	protected Layout getType() {
 		return Layout.border;
-	}
-
-	@Override
-	public void performConstrainedAddition(JComponent container, JComponent contained) {
-		container.add(contained, getLocation().getConstraint());
 	}
 
 }

@@ -69,4 +69,19 @@ public interface FIBContainerView<M extends FIBContainer, C, C2> extends FIBView
 
 	public void updateLayout();
 
+	@Override
+	public ContainerRenderingAdapter<C, C2> getRenderingAdapter();
+
+	/**
+	 * Specification of an adapter for a given rendering technology (eg Swing)
+	 * 
+	 * @author sylvain
+	 *
+	 * @param <C>
+	 */
+	public static interface ContainerRenderingAdapter<C, C2> extends RenderingAdapter<C> {
+
+		public void addComponent(C2 child, C parent, Object constraints);
+	}
+
 }

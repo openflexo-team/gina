@@ -84,7 +84,7 @@ import org.openflexo.fib.model.FIBWidget;
 import org.openflexo.fib.swing.view.FIBContainerView;
 import org.openflexo.fib.swing.view.FIBView;
 import org.openflexo.fib.swing.view.FIBWidgetView;
-import org.openflexo.fib.swing.view.container.FIBPanelView;
+import org.openflexo.fib.swing.view.container.JFIBPanelView;
 import org.openflexo.fib.swing.view.container.FIBSplitPanelView;
 import org.openflexo.fib.swing.view.container.FIBTabView;
 import org.openflexo.fib.swing.view.widget.JFIBColorWidget;
@@ -312,18 +312,18 @@ public class FIBEditableViewDelegate<M extends FIBComponent, J extends JComponen
 			}
 		}
 
-		if (o instanceof FIBPanel && view instanceof FIBPanelView) {
+		if (o instanceof FIBPanel && view instanceof JFIBPanelView) {
 			if (propertyName.equals(FIBPanel.BORDER_KEY) || propertyName.equals(FIBPanel.BORDER_COLOR_KEY)
 					|| propertyName.equals(FIBPanel.BORDER_TITLE_KEY) || propertyName.equals(FIBPanel.BORDER_TOP_KEY)
 					|| propertyName.equals(FIBPanel.BORDER_LEFT_KEY) || propertyName.equals(FIBPanel.BORDER_RIGHT_KEY)
 					|| propertyName.equals(FIBPanel.BORDER_BOTTOM_KEY) || propertyName.equals(FIBPanel.TITLE_FONT_KEY)
 					|| propertyName.equals(FIBPanel.DARK_LEVEL_KEY)) {
-				((FIBPanelView) view).updateBorder();
+				((JFIBPanelView) view).updateBorder();
 			} else if (propertyName.equals(FIBPanel.LAYOUT_KEY) || propertyName.equals(FIBPanel.FLOW_ALIGNMENT_KEY)
 					|| propertyName.equals(FIBPanel.BOX_LAYOUT_AXIS_KEY) || propertyName.equals(FIBPanel.V_GAP_KEY)
 					|| propertyName.equals(FIBPanel.H_GAP_KEY) || propertyName.equals(FIBPanel.ROWS_KEY)
 					|| propertyName.equals(FIBPanel.COLS_KEY) || propertyName.equals(FIBPanel.PROTECT_CONTENT_KEY)) {
-				((FIBPanelView) view).updateLayout();
+				((JFIBPanelView) view).updateLayout();
 			}
 		}
 

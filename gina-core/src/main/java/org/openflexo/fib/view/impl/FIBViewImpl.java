@@ -268,6 +268,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	 * 
 	 * @return JComponent
 	 */
+	// TODO: this should disappear
+	@Deprecated
 	@Override
 	public JComponent getResultingJComponent() {
 		if (getComponent().getUseScrollBar()) {

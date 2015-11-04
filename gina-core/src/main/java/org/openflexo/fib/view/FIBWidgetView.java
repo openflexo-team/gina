@@ -82,6 +82,8 @@ public interface FIBWidgetView<M extends FIBWidget, C, T>
 
 	public void updateData();
 
+	public boolean isComponentEnabled();
+
 	@Override
 	public GinaEventNotifier<FIBEventDescription> getNotifier();
 
