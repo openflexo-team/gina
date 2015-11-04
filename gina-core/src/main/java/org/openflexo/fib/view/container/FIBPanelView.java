@@ -47,8 +47,8 @@ import org.openflexo.fib.view.FIBContainerView;
  * 
  * @param <C>
  *            type of technology-specific component this view manage
- * @param <T>
- *            type of row data
+ * @param <C2>
+ *            type of technology-specific component this view contains
  * 
  * @author sylvain
  */

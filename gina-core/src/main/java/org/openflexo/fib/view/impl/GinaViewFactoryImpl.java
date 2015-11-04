@@ -1,5 +1,7 @@
 package org.openflexo.fib.view.impl;
 
+import java.util.logging.Logger;
+
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBBrowser;
 import org.openflexo.fib.model.FIBButton;
@@ -17,8 +19,12 @@ import org.openflexo.fib.model.FIBImage;
 import org.openflexo.fib.model.FIBLabel;
 import org.openflexo.fib.model.FIBList;
 import org.openflexo.fib.model.FIBNumber;
+import org.openflexo.fib.model.FIBPanel;
 import org.openflexo.fib.model.FIBRadioButtonList;
 import org.openflexo.fib.model.FIBReferencedComponent;
+import org.openflexo.fib.model.FIBSplitPanel;
+import org.openflexo.fib.model.FIBTab;
+import org.openflexo.fib.model.FIBTabPanel;
 import org.openflexo.fib.model.FIBTable;
 import org.openflexo.fib.model.FIBTextArea;
 import org.openflexo.fib.model.FIBTextField;
@@ -26,6 +32,10 @@ import org.openflexo.fib.model.FIBWidget;
 import org.openflexo.fib.view.FIBContainerView;
 import org.openflexo.fib.view.FIBWidgetView;
 import org.openflexo.fib.view.GinaViewFactory;
+import org.openflexo.fib.view.container.FIBPanelView;
+import org.openflexo.fib.view.container.FIBSplitPanelView;
+import org.openflexo.fib.view.container.FIBTabPanelView;
+import org.openflexo.fib.view.container.FIBTabView;
 import org.openflexo.fib.view.widget.FIBLabelWidget;
 import org.openflexo.fib.view.widget.FIBTextFieldWidget;
 import org.openflexo.fib.view.widget.impl.FIBBrowserWidgetImpl;
@@ -57,18 +67,38 @@ import org.openflexo.fib.view.widget.impl.FIBTextAreaWidgetImpl;
  */
 public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 
+	private static final Logger LOGGER = Logger.getLogger(GinaViewFactoryImpl.class.getPackage().getName());
+
+	@Override
+	public boolean allowsFIBEdition() {
+		return false;
+	}
+
 	@Override
 	public <F extends FIBContainer> FIBContainerView<F, ? extends C, ? extends C> makeContainer(F fibContainer, FIBController controller) {
-		/*
-		 * if (fibContainer instanceof FIBTab) { return new FIBTabView((FIBTab)
-		 * fibContainer, this.fibController); } else if (fibContainer instanceof
-		 * FIBPanel) { return new FIBPanelView((FIBPanel) fibContainer,
-		 * this.fibController); } else if (fibContainer instanceof FIBTabPanel)
-		 * { return new FIBTabPanelView((FIBTabPanel) fibContainer,
-		 * this.fibController); } else if (fibContainer instanceof
-		 * FIBSplitPanel) { return new FIBSplitPanelView((FIBSplitPanel)
-		 * fibContainer, this.fibController); }
-		 */
+		FIBContainerView<F, ? extends C, ? extends C> returned = buildContainer(fibContainer, controller);
+		if (returned != null) {
+			returned.updateGraphicalProperties();
+		}
+		return returned;
+	}
+
+	private <F extends FIBContainer> FIBContainerView<F, ? extends C, ? extends C> buildContainer(F fibContainer,
+			FIBController controller) {
+
+		if (fibContainer instanceof FIBTab) {
+			return (FIBContainerView<F, ? extends C, ? extends C>) makeTabView((FIBTab) fibContainer, controller);
+		}
+		else if (fibContainer instanceof FIBPanel) {
+			return (FIBContainerView<F, ? extends C, ? extends C>) makePanelView((FIBPanel) fibContainer, controller);
+		}
+		else if (fibContainer instanceof FIBTabPanel) {
+			return (FIBContainerView<F, ? extends C, ? extends C>) makeTabPanelView((FIBTabPanel) fibContainer, controller);
+		}
+		else if (fibContainer instanceof FIBSplitPanel) {
+			return (FIBContainerView<F, ? extends C, ? extends C>) makeSplitPanelView((FIBSplitPanel) fibContainer, controller);
+		}
+
 		return null;
 	}
 
@@ -144,6 +174,14 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 		}
 		return null;
 	}
+
+	public abstract FIBTabView<? extends C, ? extends C> makeTabView(FIBTab container, FIBController controller);
+
+	public abstract FIBPanelView<? extends C, ? extends C> makePanelView(FIBPanel container, FIBController controller);
+
+	public abstract FIBTabPanelView<? extends C, ? extends C> makeTabPanelView(FIBTabPanel container, FIBController controller);
+
+	public abstract FIBSplitPanelView<? extends C, ? extends C> makeSplitPanelView(FIBSplitPanel container, FIBController controller);
 
 	public abstract FIBLabelWidget<? extends C> makeLabel(FIBLabel widget, FIBController controller);
 

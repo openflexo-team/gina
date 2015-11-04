@@ -78,12 +78,18 @@ import org.openflexo.fib.view.container.impl.FIBPanelViewImpl;
 import org.openflexo.swing.ButtonLayout;
 import org.openflexo.toolbox.StringUtils;
 
+/**
+ * Swing implementation for a basic panel, as a container of some children component, with a given layout, and a border<br>
+ * Implementation is based on JPanel
+ * 
+ * @author sylvain
+ */
 public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> {
 
 	private static final Logger logger = Logger.getLogger(JFIBPanelView.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingAdapter} implementation dedicated for Swing JTable<br>
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JPanel with a given layout<br>
 	 * 
 	 * @author sylvain
 	 * 
@@ -93,9 +99,109 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> {
 
 		@Override
 		public void addComponent(JComponent child, JPanel parent, Object constraints) {
-			// TODO Auto-generated method stub
-
+			if (constraints instanceof ComponentConstraints) {
+				// ((ComponentConstraints) constraint).performConstrainedAddition(getTechnologyComponent(), c);
+				performContrainedAddition(parent, child, (ComponentConstraints) constraints);
+			}
+			else {
+				if (constraints == null) {
+					parent.add(child);
+				}
+				else {
+					parent.add(child, constraints);
+				}
+			}
 		}
+
+		private void performContrainedAddition(JPanel container, JComponent contained, ComponentConstraints constraints) {
+			if (constraints instanceof BorderLayoutConstraints) {
+				BorderLayoutConstraints borderConstraints = (BorderLayoutConstraints) constraints;
+				container.add(contained, borderConstraints.getLocation().getConstraint());
+			}
+			else if (constraints instanceof BoxLayoutConstraints) {
+				BoxLayoutConstraints boxConstraints = (BoxLayoutConstraints) constraints;
+				contained.setAlignmentX(boxConstraints.getAlignmentX());
+				contained.setAlignmentY(boxConstraints.getAlignmentY());
+				container.add(contained);
+			}
+			else if (constraints instanceof ButtonLayoutConstraints) {
+				ButtonLayoutConstraints buttonConstraints = (ButtonLayoutConstraints) constraints;
+				container.add(contained);
+			}
+			else if (constraints instanceof FlowLayoutConstraints) {
+				FlowLayoutConstraints flowConstraints = (FlowLayoutConstraints) constraints;
+				container.add(contained);
+			}
+			else if (constraints instanceof GridBagLayoutConstraints) {
+				GridBagLayoutConstraints gridBagConstraints = (GridBagLayoutConstraints) constraints;
+				GridBagConstraints c = new GridBagConstraints();
+				c.gridx = gridBagConstraints.getGridX();
+				c.gridy = gridBagConstraints.getGridY();
+				c.gridwidth = gridBagConstraints.getGridWidth();
+				c.gridheight = gridBagConstraints.getGridHeight();
+				c.weightx = gridBagConstraints.getWeightX();
+				c.weighty = gridBagConstraints.getWeightY();
+				c.anchor = gridBagConstraints.getAnchor().getAnchor();
+				c.fill = gridBagConstraints.getFill().getFill();
+				c.insets = new Insets(gridBagConstraints.getInsetsTop(), gridBagConstraints.getInsetsLeft(),
+						gridBagConstraints.getInsetsBottom(), gridBagConstraints.getInsetsRight());
+				c.ipadx = gridBagConstraints.getPadX();
+				c.ipady = gridBagConstraints.getPadY();
+				container.add(contained, c);
+			}
+			else if (constraints instanceof GridLayoutConstraints) {
+				GridLayoutConstraints gridConstraints = (GridLayoutConstraints) constraints;
+				container.add(contained);
+			}
+			else if (constraints instanceof NoneLayoutConstraints) {
+				NoneLayoutConstraints noneConstraints = (NoneLayoutConstraints) constraints;
+				contained.setLocation(noneConstraints.getX(), noneConstraints.getY());
+				contained.setSize(contained.getPreferredSize());
+				container.add(contained);
+			}
+			else if (constraints instanceof SplitLayoutConstraints) {
+				SplitLayoutConstraints splitConstraints = (SplitLayoutConstraints) constraints;
+				container.add(contained);
+			}
+			else if (constraints instanceof TwoColsLayoutConstraints) {
+				TwoColsLayoutConstraints twoColsConstraints = (TwoColsLayoutConstraints) constraints;
+				GridBagConstraints c = new GridBagConstraints();
+				// c.insets = new Insets(3, 3, 3, 3);
+				c.insets = new Insets(twoColsConstraints.getInsetsTop(), twoColsConstraints.getInsetsLeft(),
+						twoColsConstraints.getInsetsBottom(), twoColsConstraints.getInsetsRight());
+				if (twoColsConstraints.getLocation() == TwoColsLayoutLocation.left) {
+					c.fill = GridBagConstraints.NONE;
+					c.weightx = 0; // 1.0;
+					c.gridwidth = 1;
+					c.anchor = GridBagConstraints.NORTHEAST;
+					if (twoColsConstraints.getExpandVertically()) {
+						// c.weighty = 1.0;
+						c.fill = GridBagConstraints.VERTICAL;
+					}
+					else {
+						// c.insets = new Insets(5, 2, 0, 2);
+					}
+				}
+				else {
+					if (twoColsConstraints.getExpandHorizontally()) {
+						c.fill = GridBagConstraints.BOTH;
+						c.anchor = GridBagConstraints.CENTER;
+						if (twoColsConstraints.getExpandVertically()) {
+							c.weighty = 1.0;
+						}
+					}
+					else {
+						c.fill = GridBagConstraints.NONE;
+						c.anchor = GridBagConstraints.WEST;
+					}
+					c.weightx = 1.0; // 2.0;
+					c.gridwidth = GridBagConstraints.REMAINDER;
+				}
+
+				container.add(contained, c);
+			}
+		}
+
 	}
 
 	public JFIBPanelView(FIBPanel model, FIBController controller) {
@@ -267,111 +373,6 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> {
 		_setPanelLayoutParameters();
 
 		return panel;
-	}
-
-	@Override
-	protected void addChildComponent(JComponent c, Object constraint) {
-		if (constraint instanceof ComponentConstraints) {
-			// ((ComponentConstraints) constraint).performConstrainedAddition(getTechnologyComponent(), c);
-			performContrainedAddition(getTechnologyComponent(), c, (ComponentConstraints) constraint);
-		}
-		else {
-			if (constraint == null) {
-				getTechnologyComponent().add(c);
-			}
-			else {
-				getTechnologyComponent().add(c, constraint);
-			}
-		}
-	}
-
-	private void performContrainedAddition(JPanel container, JComponent contained, ComponentConstraints constraints) {
-		if (constraints instanceof BorderLayoutConstraints) {
-			BorderLayoutConstraints borderConstraints = (BorderLayoutConstraints) constraints;
-			container.add(contained, borderConstraints.getLocation().getConstraint());
-		}
-		else if (constraints instanceof BoxLayoutConstraints) {
-			BoxLayoutConstraints boxConstraints = (BoxLayoutConstraints) constraints;
-			contained.setAlignmentX(boxConstraints.getAlignmentX());
-			contained.setAlignmentY(boxConstraints.getAlignmentY());
-			container.add(contained);
-		}
-		else if (constraints instanceof ButtonLayoutConstraints) {
-			ButtonLayoutConstraints buttonConstraints = (ButtonLayoutConstraints) constraints;
-			container.add(contained);
-		}
-		else if (constraints instanceof FlowLayoutConstraints) {
-			FlowLayoutConstraints flowConstraints = (FlowLayoutConstraints) constraints;
-			container.add(contained);
-		}
-		else if (constraints instanceof GridBagLayoutConstraints) {
-			GridBagLayoutConstraints gridBagConstraints = (GridBagLayoutConstraints) constraints;
-			GridBagConstraints c = new GridBagConstraints();
-			c.gridx = gridBagConstraints.getGridX();
-			c.gridy = gridBagConstraints.getGridY();
-			c.gridwidth = gridBagConstraints.getGridWidth();
-			c.gridheight = gridBagConstraints.getGridHeight();
-			c.weightx = gridBagConstraints.getWeightX();
-			c.weighty = gridBagConstraints.getWeightY();
-			c.anchor = gridBagConstraints.getAnchor().getAnchor();
-			c.fill = gridBagConstraints.getFill().getFill();
-			c.insets = new Insets(gridBagConstraints.getInsetsTop(), gridBagConstraints.getInsetsLeft(),
-					gridBagConstraints.getInsetsBottom(), gridBagConstraints.getInsetsRight());
-			c.ipadx = gridBagConstraints.getPadX();
-			c.ipady = gridBagConstraints.getPadY();
-			container.add(contained, c);
-		}
-		else if (constraints instanceof GridLayoutConstraints) {
-			GridLayoutConstraints gridConstraints = (GridLayoutConstraints) constraints;
-			container.add(contained);
-		}
-		else if (constraints instanceof NoneLayoutConstraints) {
-			NoneLayoutConstraints noneConstraints = (NoneLayoutConstraints) constraints;
-			contained.setLocation(noneConstraints.getX(), noneConstraints.getY());
-			contained.setSize(contained.getPreferredSize());
-			container.add(contained);
-		}
-		else if (constraints instanceof SplitLayoutConstraints) {
-			SplitLayoutConstraints splitConstraints = (SplitLayoutConstraints) constraints;
-			container.add(contained);
-		}
-		else if (constraints instanceof TwoColsLayoutConstraints) {
-			TwoColsLayoutConstraints twoColsConstraints = (TwoColsLayoutConstraints) constraints;
-			GridBagConstraints c = new GridBagConstraints();
-			// c.insets = new Insets(3, 3, 3, 3);
-			c.insets = new Insets(twoColsConstraints.getInsetsTop(), twoColsConstraints.getInsetsLeft(),
-					twoColsConstraints.getInsetsBottom(), twoColsConstraints.getInsetsRight());
-			if (twoColsConstraints.getLocation() == TwoColsLayoutLocation.left) {
-				c.fill = GridBagConstraints.NONE;
-				c.weightx = 0; // 1.0;
-				c.gridwidth = 1;
-				c.anchor = GridBagConstraints.NORTHEAST;
-				if (twoColsConstraints.getExpandVertically()) {
-					// c.weighty = 1.0;
-					c.fill = GridBagConstraints.VERTICAL;
-				}
-				else {
-					// c.insets = new Insets(5, 2, 0, 2);
-				}
-			}
-			else {
-				if (twoColsConstraints.getExpandHorizontally()) {
-					c.fill = GridBagConstraints.BOTH;
-					c.anchor = GridBagConstraints.CENTER;
-					if (twoColsConstraints.getExpandVertically()) {
-						c.weighty = 1.0;
-					}
-				}
-				else {
-					c.fill = GridBagConstraints.NONE;
-					c.anchor = GridBagConstraints.WEST;
-				}
-				c.weightx = 1.0; // 2.0;
-				c.gridwidth = GridBagConstraints.REMAINDER;
-			}
-
-			container.add(contained, c);
-		}
 	}
 
 	@Override

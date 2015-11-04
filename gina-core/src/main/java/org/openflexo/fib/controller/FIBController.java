@@ -41,13 +41,10 @@ package org.openflexo.fib.controller;
 
 import java.awt.Component;
 import java.awt.Window;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -61,20 +58,17 @@ import java.util.Observer;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.type.TypeUtils;
-import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBContainer;
 import org.openflexo.fib.model.FIBLocalizedDictionary;
 import org.openflexo.fib.model.FIBWidget;
 import org.openflexo.fib.model.listener.FIBMouseClickListener;
 import org.openflexo.fib.model.listener.FIBSelectionListener;
-import org.openflexo.fib.view.FIBContainerView;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.fib.view.FIBWidgetView;
 import org.openflexo.fib.view.GinaViewFactory;
@@ -86,8 +80,6 @@ import org.openflexo.gina.manager.URID;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
 import org.openflexo.localization.LocalizedDelegate;
-import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
-import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
@@ -397,50 +389,14 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 		}
 	}
 
-	protected static void recursivelyAddEditorLauncher(EditorLauncher editorLauncher,
-			FIBContainerView<? extends FIBContainer, JComponent, ?> container) {
-		container.getJComponent().addMouseListener(editorLauncher);
-		for (FIBComponent c : container.getComponent().getSubComponents()) {
-			FIBView<?, ?> subView = container.getController().viewForComponent(c);
-			if (subView instanceof FIBContainerView) {
-				recursivelyAddEditorLauncher(editorLauncher, (FIBContainerView) subView);
-			}
-		}
-	}
-
 	public final <M extends FIBComponent> FIBView<M, ?> buildView(M fibComponent) {
 		if (fibComponent instanceof FIBContainer) {
-			return (FIBView<M, ?>) buildContainer((FIBContainer) fibComponent);
+			return (FIBView<M, ?>) getViewFactory().makeContainer((FIBContainer) fibComponent, this);
 		}
 		else if (fibComponent instanceof FIBWidget) {
 			return (FIBView<M, ?>) getViewFactory().makeWidget((FIBWidget) fibComponent, this);
 		}
 		return null;
-	}
-
-	protected final <F extends FIBContainer> FIBContainerView<F, ?, ?> buildContainer(F fibContainer) {
-		FIBContainerView<F, ?, ?> returned = makeContainer(fibContainer);
-		if (returned != null && fibContainer.isRootComponent()) {
-			if (returned instanceof FIBContainerView && allowsFIBEdition()) {
-				EditorLauncher editorLauncher = new EditorLauncher(this, fibContainer);
-				recursivelyAddEditorLauncher(editorLauncher, (FIBContainerView) returned);
-			}
-			return returned;
-		}
-		if (returned != null) {
-			returned.updateGraphicalProperties();
-		}
-		return returned;
-	}
-
-	protected final <F extends FIBContainer> FIBContainerView<F, ?, ?> makeContainer(F fibContainer) {
-		try {
-			return getViewFactory().makeContainer(fibContainer, this);
-		} catch (RuntimeException e) {
-			LOGGER.warning("Unexpected exception " + e.getMessage() + ". See logs for details.");
-			e.printStackTrace();
-			return null;
-		}
 	}
 
 	/**
@@ -866,77 +822,6 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 
 	public void removeMouseClickListener(FIBMouseClickListener l) {
 		mouseClickListeners.remove(l);
-	}
-
-	private static class EditorLauncher extends MouseAdapter {
-		private final FIBComponent component;
-		private final FIBController controller;
-
-		public EditorLauncher(FIBController controller, FIBComponent component) {
-			LOGGER.fine("make EditorLauncher for component: " + component.getResource());
-			this.component = component;
-			this.controller = controller;
-		}
-
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			super.mouseClicked(e);
-			if (e.isAltDown()) {
-				controller.openFIBEditor(component, e);
-			}
-		}
-	}
-
-	protected void openFIBEditor(final FIBComponent component, MouseEvent event) {
-		if (component.getResource() == null) {
-			try {
-				File fibFile = File.createTempFile("FIBComponent", ".fib");
-				FileResourceImpl fibLocation = null;
-				try {
-					fibLocation = new FileResourceImpl(fibFile.getCanonicalPath(), fibFile.toURI().toURL(), fibFile);
-				} catch (LocatorNotFoundException e) {
-					LOGGER.severe("No Locator found for managing FileResources!! ");
-					e.printStackTrace();
-				}
-				component.setResource(fibLocation);
-				FIBLibrary.save(component, fibFile);
-			} catch (IOException e) {
-				e.printStackTrace();
-				LOGGER.warning("Cannot create FIB temp file definition for component, aborting FIB edition");
-				return;
-			}
-		}
-		Class embeddedEditor = null;
-		Constructor c = null;
-		try {
-			embeddedEditor = Class.forName("org.openflexo.fib.editor.FIBEmbeddedEditor");
-			c = embeddedEditor.getConstructors()[0];
-			/*File fibFile = ((FileResourceImpl) component.getResource()).getFile();
-			if (!fibFile.exists()) {
-				logger.warning("Cannot find FIB file definition for component, aborting FIB edition");
-				return;
-			}*/
-			Object[] args = new Object[2];
-			args[0] = component.getResource();
-			args[1] = getDataObject();
-			LOGGER.info("Opening FIB editor for " + component.getResource());
-			c.newInstance(args);
-		} catch (ClassNotFoundException e) {
-			LOGGER.warning("Cannot open FIB Editor, please add org.openflexo.fib.editor.FIBEmbeddedEditor in the class path");
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			LOGGER.warning("Cannot instanciate " + embeddedEditor + " with constructor " + c + " because of unexpected exception ");
-			e.getTargetException().printStackTrace();
-		}
-	}
-
-	protected boolean allowsFIBEdition() {
-		return true;
 	}
 
 	public MouseEvent getMouseEvent() {

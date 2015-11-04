@@ -1,8 +1,9 @@
 /**
  * 
- * Copyright (c) 2014, Openflexo
+ * Copyright (c) 2013-2014, Openflexo
+ * Copyright (c) 2011-2012, AgileBirds
  * 
- * This file is part of Diana-core, a component of the software infrastructure 
+ * This file is part of Gina-core, a component of the software infrastructure 
  * developed at Openflexo.
  * 
  * 
@@ -36,26 +37,38 @@
  * 
  */
 
-package org.openflexo.fib.view;
+package org.openflexo.fib.view.container;
 
-import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBContainer;
-import org.openflexo.fib.model.FIBWidget;
+import org.openflexo.fib.model.FIBTabPanel;
+import org.openflexo.fib.view.FIBContainerView;
 
 /**
- * Represent the view factory for a given technology (eg. Swing)
- * 
- * @author sylvain
+ * Represents a panel presenting some children component as tabs
  * 
  * @param <C>
- *            base minimal class of components build by this tool factory (eg JComponent for Swing)
+ *            type of technology-specific component this view manage
+ * @param <C2>
+ *            type of technology-specific component this view contains
+ * 
+ * @author sylvain
  */
-public interface GinaViewFactory<C> {
+public interface FIBTabPanelView<C, C2> extends FIBContainerView<FIBTabPanel, C, C2> {
 
-	public boolean allowsFIBEdition();
+	@Override
+	public TabPanelRenderingAdapter<C, C2> getRenderingAdapter();
 
-	public <F extends FIBContainer> FIBContainerView<F, ? extends C, ? extends C> makeContainer(F fibContainer, FIBController controller);
+	/**
+	 * Specification of an adapter for a given rendering technology (eg Swing)
+	 * 
+	 * @author sylvain
+	 *
+	 * @param <C>
+	 */
+	public static interface TabPanelRenderingAdapter<C, C2> extends ContainerRenderingAdapter<C, C2> {
 
-	public <F extends FIBWidget> FIBWidgetView<F, ? extends C, ?> makeWidget(F fibWidget, FIBController controller);
+		public int getSelectedIndex(C component);
+
+		public void setSelectedIndex(C component, int selectedIndex);
+	}
 
 }

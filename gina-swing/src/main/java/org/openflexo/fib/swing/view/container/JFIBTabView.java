@@ -41,27 +41,28 @@ package org.openflexo.fib.swing.view.container;
 
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBTab;
-import org.openflexo.fib.swing.view.FIBView;
+import org.openflexo.fib.view.FIBView;
+import org.openflexo.fib.view.container.FIBTabView;
 
-public class FIBTabView<C extends FIBTab, T> extends JFIBPanelView<C, T> {
+public class JFIBTabView extends JFIBPanelView implements FIBTabView<JPanel, JComponent> {
 
-	private static final Logger logger = Logger.getLogger(FIBTabView.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(JFIBTabView.class.getPackage().getName());
 
 	private boolean wasSelected = false;
 
-	public FIBTabView(C model, FIBController controller) {
+	public JFIBTabView(FIBTab model, FIBController controller) {
 		super(model, controller);
 	}
 
-	/*
-	 * @Override public void updateDataObject(Object dataObject) {
-	 * System.out.println("Je suis le FIBTabView " + getComponent().getName());
-	 * System.out.println("J'etais visible " + isVisible() +
-	 * " et je deviens visible " + isComponentVisible());
-	 * super.updateDataObject(dataObject); }
-	 */
+	@Override
+	public FIBTab getComponent() {
+		return (FIBTab) super.getComponent();
+	}
 
 	@Override
 	protected void updateVisibility() {
@@ -71,13 +72,13 @@ public class FIBTabView<C extends FIBTab, T> extends JFIBPanelView<C, T> {
 		super.updateVisibility();
 		// We need to perform this additional operation here, because JTabbedPane already plays with the "visible" flag to handle the
 		// currently selected/visible tab
-		if (getParentView() instanceof FIBTabPanelView) {
-			FIBTabPanelView parent = (FIBTabPanelView) getParentView();
+		if (getParentView() instanceof JFIBTabPanelView) {
+			JFIBTabPanelView parent = (JFIBTabPanelView) getParentView();
 			if (isViewVisible() && getResultingJComponent().getParent() == null) {
 				int newIndex = 0;
-				for (FIBView<?, ?> v : getParentView().getSubViews().values()) {
-					if (v instanceof FIBTabView && v.isComponentVisible()) {
-						FIBTab tab = ((FIBTabView<?, ?>) v).getComponent();
+				for (FIBView<?, ?> v : getParentView().getSubViews()) {
+					if (v instanceof JFIBTabView && v.isComponentVisible()) {
+						FIBTab tab = ((JFIBTabView) v).getComponent();
 						if (getComponent().getParent().getIndex(getComponent()) > tab.getParent().getIndex(tab)) {
 							newIndex = parent.getJComponent().indexOfComponent(v.getResultingJComponent()) + 1;
 						}
@@ -90,7 +91,8 @@ public class FIBTabView<C extends FIBTab, T> extends JFIBPanelView<C, T> {
 				if (wasSelected) {
 					parent.getJComponent().setSelectedComponent(getResultingJComponent());
 				}
-			} else if (!isViewVisible() && getResultingJComponent().getParent() != null) {
+			}
+			else if (!isViewVisible() && getResultingJComponent().getParent() != null) {
 				wasSelected = parent.getJComponent().getSelectedComponent() == getResultingJComponent();
 				parent.getJComponent().remove(getResultingJComponent());
 				logger.fine("********** Removing component " + getComponent().getTitle());

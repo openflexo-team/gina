@@ -43,28 +43,63 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
-import java.util.Vector;
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBTab;
 import org.openflexo.fib.model.FIBTabPanel;
-import org.openflexo.fib.swing.view.FIBContainerView;
-import org.openflexo.fib.swing.view.FIBView;
+import org.openflexo.fib.swing.view.SwingRenderingAdapter;
+import org.openflexo.fib.view.FIBView;
+import org.openflexo.fib.view.container.impl.FIBTabPanelViewImpl;
 
-public class FIBTabPanelView<T> extends FIBContainerView<FIBTabPanel, JTabbedPane, T> {
+/**
+ * Swing implementation for a panel presenting some children component as tabs<br>
+ * Implementation is based on {@link JTabbedPane}
+ * 
+ * @author sylvain
+ */
+public class JFIBTabPanelView extends FIBTabPanelViewImpl<JTabbedPane, JComponent> {
 
-	private static final Logger logger = Logger.getLogger(FIBTabPanelView.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(JFIBTabPanelView.class.getPackage().getName());
 
-	private JTabbedPane tabbedPane;
+	/**
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JPanel with a given layout<br>
+	 * 
+	 * @author sylvain
+	 * 
+	 */
+	public static class SwingTabPanelRenderingAdapter extends SwingRenderingAdapter<JTabbedPane>
+			implements TabPanelRenderingAdapter<JTabbedPane, JComponent> {
 
-	public FIBTabPanelView(FIBTabPanel model, FIBController controller) {
-		super(model, controller);
+		@Override
+		public void addComponent(JComponent child, JTabbedPane parent, Object constraints) {
+			if (constraints instanceof String) {
+				parent.add((String) constraints, child);
+			}
+			else {
+				logger.warning("Unexpected constraint: " + constraints);
+				parent.add(child);
+			}
+		}
+
+		@Override
+		public int getSelectedIndex(JTabbedPane component) {
+			return component.getSelectedIndex();
+		}
+
+		@Override
+		public void setSelectedIndex(JTabbedPane component, int selectedIndex) {
+			component.setSelectedIndex(selectedIndex);
+		}
+	}
+
+	public JFIBTabPanelView(FIBTabPanel model, FIBController controller) {
+		super(model, controller, new SwingTabPanelRenderingAdapter());
 	}
 
 	@Override
@@ -73,8 +108,8 @@ public class FIBTabPanelView<T> extends FIBContainerView<FIBTabPanel, JTabbedPan
 	}
 
 	@Override
-	protected JTabbedPane createJComponent() {
-		tabbedPane = new JTabbedPane();
+	protected JTabbedPane makeTechnologyComponent() {
+		JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.addChangeListener(new ChangeListener() {
 
 			@Override
@@ -101,62 +136,41 @@ public class FIBTabPanelView<T> extends FIBContainerView<FIBTabPanel, JTabbedPan
 	}
 
 	private void updatePreferredSizeWhenRestrictPreferredSizeToSelectedComponent() {
-		for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-			Component tab = tabbedPane.getComponentAt(i);
+		for (int i = 0; i < getTechnologyComponent().getTabCount(); i++) {
+			Component tab = getTechnologyComponent().getComponentAt(i);
 			if (tab != null) {
 				tab.setPreferredSize(new Dimension(0, 0));
 			}
 		}
-		if (tabbedPane.getSelectedIndex() > -1) {
-			Component tab = tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
+		if (getTechnologyComponent().getSelectedIndex() > -1) {
+			Component tab = getTechnologyComponent().getComponentAt(getTechnologyComponent().getSelectedIndex());
 			if (tab != null) {
 				tab.setPreferredSize(null);
 			}
 		}
-		tabbedPane.revalidate();
+		getTechnologyComponent().revalidate();
 	}
 
 	@Override
 	public JTabbedPane getJComponent() {
-		return tabbedPane;
-	}
-
-	@Override
-	protected void retrieveContainedJComponentsAndConstraints() {
-		Vector<FIBTab> allTabs = new Vector<FIBTab>();
-		for (FIBComponent subComponent : getNotHiddenSubComponents()) {
-			if (subComponent instanceof FIBTab) {
-				allTabs.add((FIBTab) subComponent);
-			}
-		}
-
-		for (FIBTab tab : allTabs) {
-			// logger.info("!!!!!!!!!!!!!!!!!!!! Build view for tab " + tab);
-			FIBView subView = getController().buildView(tab);
-			if (subView != null) {
-				registerViewForComponent(subView, tab);
-				registerComponentWithConstraints(subView.getResultingJComponent(), getLocalized(tab.getTitle()));
-			}
-		}
-
+		return getTechnologyComponent();
 	}
 
 	// TODO: optimize it
 	@Override
 	public synchronized void updateLayout() {
-		int index = tabbedPane.getSelectedIndex();
-		for (FIBView v : getSubViews().values()) {
+		int index = getTechnologyComponent().getSelectedIndex();
+		for (FIBView<?, JComponent> v : getSubViews()) {
 			v.delete();
 		}
-		getResultingJComponent().removeAll();
+		getTechnologyComponent().removeAll();
 		buildSubComponents();
-		// updateDataObject(getDataObject());
 
 		update();
 
-		index = Math.min(index, tabbedPane.getTabCount() - 1);
+		index = Math.min(index, getTechnologyComponent().getTabCount() - 1);
 		if (index > -1) {
-			tabbedPane.setSelectedIndex(index);
+			getTechnologyComponent().setSelectedIndex(index);
 		}
 	}
 
@@ -164,21 +178,17 @@ public class FIBTabPanelView<T> extends FIBContainerView<FIBTabPanel, JTabbedPan
 	public void updateLanguage() {
 		super.updateLanguage();
 		int index = 0;
-		for (FIBView v : getSubViews().values()) {
+		for (FIBView<?, JComponent> v : getSubViews()) {
 			if (v.getComponent() instanceof FIBTab) {
 				if (v.getTechnologyComponent().getParent() != null) {
-					tabbedPane.setTitleAt(index, getLocalized(((FIBTab) v.getComponent()).getTitle()));
+					getTechnologyComponent().setTitleAt(index, getLocalized(((FIBTab) v.getComponent()).getTitle()));
 					index++;
-				} else {
-					getLocalized(((FIBTab) v.getComponent()).getTitle());
 				}
-			} else {
+			}
+			else {
 				logger.warning("Unexpected component found in TabPanel: " + v.getComponent());
 			}
 		}
 	}
 
-	public void setSelectedIndex(int index) {
-		getJComponent().setSelectedIndex(index);
-	}
 }

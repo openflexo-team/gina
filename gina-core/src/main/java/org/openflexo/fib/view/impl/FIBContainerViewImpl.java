@@ -180,7 +180,9 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 
 	protected abstract void retrieveContainedJComponentsAndConstraints();
 
-	protected abstract void addChildComponent(C2 c, Object constraint);
+	protected final void addChildComponent(C2 c, Object constraint) {
+		getRenderingAdapter().addComponent(c, getTechnologyComponent(), constraint);
+	}
 
 	/* {// logger.info("addJComponent constraints=" + c);
 														Object constraint = constraints.get(c);

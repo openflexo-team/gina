@@ -235,7 +235,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	}
 
 	@Override
-	public final M getComponent() {
+	public M getComponent() {
 		return component;
 	}
 

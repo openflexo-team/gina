@@ -41,27 +41,55 @@ package org.openflexo.fib.swing.view.container;
 
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBSplitPanel;
-import org.openflexo.fib.model.SplitLayoutConstraints;
-import org.openflexo.fib.swing.view.FIBContainerView;
-import org.openflexo.fib.swing.view.FIBView;
+import org.openflexo.fib.swing.view.SwingRenderingAdapter;
+import org.openflexo.fib.view.container.impl.FIBSplitPanelViewImpl;
 import org.openflexo.swing.layout.JXMultiSplitPane;
 import org.openflexo.swing.layout.KnobDividerPainter;
 import org.openflexo.swing.layout.MultiSplitLayout;
 
-public class FIBSplitPanelView<T> extends FIBContainerView<FIBSplitPanel, JXMultiSplitPane, T> {
+/**
+ * Swing implementation of a panel split into a given policy, with adjustable sliders<br>
+ * Implementation is based on JXMultiSplitPane
+ * 
+ * 
+ * @author sylvain
+ */
+public class JFIBSplitPanelView extends FIBSplitPanelViewImpl<JXMultiSplitPane, JComponent> {
 
-	private static final Logger logger = Logger.getLogger(FIBSplitPanelView.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(JFIBSplitPanelView.class.getPackage().getName());
 
-	private JXMultiSplitPane splitPane;
+	/**
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JPanel with a given layout<br>
+	 * 
+	 * @author sylvain
+	 * 
+	 */
+	public static class SwingSplitPanelRenderingAdapter extends SwingRenderingAdapter<JXMultiSplitPane>
+			implements SplitPanelRenderingAdapter<JXMultiSplitPane, JComponent> {
+
+		@Override
+		public void addComponent(JComponent child, JXMultiSplitPane parent, Object constraints) {
+			if (constraints instanceof String) {
+				String splitIdentifier = (String) constraints;
+				parent.add(child, splitIdentifier);
+			}
+			else {
+				logger.warning("Unexpected constraint: " + constraints);
+				parent.add(child);
+			}
+		}
+	}
+
 	private MultiSplitLayout layout;
 
-	public FIBSplitPanelView(FIBSplitPanel model, FIBController controller) {
-		super(model, controller);
+	public JFIBSplitPanelView(FIBSplitPanel model, FIBController controller) {
+		super(model, controller, new SwingSplitPanelRenderingAdapter());
+		// updateLayout();
 	}
 
 	@Override
@@ -70,21 +98,16 @@ public class FIBSplitPanelView<T> extends FIBContainerView<FIBSplitPanel, JXMult
 	}
 
 	@Override
-	protected JXMultiSplitPane createJComponent() {
+	protected JXMultiSplitPane makeTechnologyComponent() {
 		layout = new MultiSplitLayout(getComponent().getSplitLayoutFactory());
 		layout.setLayoutByWeight(false);
 		layout.setFloatingDividers(true);
 
 		layout.setModel(getComponent().getSplit());
 
-		splitPane = new JXMultiSplitPane(layout);
+		JXMultiSplitPane splitPane = new JXMultiSplitPane(layout);
 
 		splitPane.setDividerPainter(new KnobDividerPainter());
-
-		updateLayout();
-
-		// layout.setLayoutByWeight(false);
-		// layout.setFloatingDividers(false);
 
 		return splitPane;
 	}
@@ -95,24 +118,7 @@ public class FIBSplitPanelView<T> extends FIBContainerView<FIBSplitPanel, JXMult
 
 	@Override
 	public JXMultiSplitPane getJComponent() {
-		return splitPane;
-	}
-
-	@Override
-	protected void retrieveContainedJComponentsAndConstraints() {
-
-		for (FIBComponent subComponent : getNotHiddenSubComponents()) {
-			FIBView subView = getController().viewForComponent(subComponent);
-			if (subView == null) {
-				subView = getController().buildView(subComponent);
-			}
-			// FIBViewImpl subView = getController().buildView(subComponent);
-			// if (subView != null) {
-			registerViewForComponent(subView, subComponent);
-			registerComponentWithConstraints(subView.getResultingJComponent(),
-					((SplitLayoutConstraints) subComponent.getConstraints()).getSplitIdentifier());
-			// }
-		}
+		return getTechnologyComponent();
 	}
 
 	@Override
@@ -146,21 +152,10 @@ public class FIBSplitPanelView<T> extends FIBContainerView<FIBSplitPanel, JXMult
 			}
 		});
 	}
-	/*@Override
+
+	@Override
 	public void updateLanguage() {
 		super.updateLanguage();
-		int index = 0;
-		for (FIBViewImpl v : subViews) {
-			if (v.getComponent() instanceof FIBTab) {
-				tabbedPane.setTitleAt(index, getLocalized(((FIBTab) v.getComponent()).getTitle()));
-			} else {
-				logger.warning("Unexpected component found in TabPanel: " + v.getComponent());
-			}
-			index++;
-		}
-	}*/
+	}
 
-	/*	public void setSelectedIndex(int index) {
-			getJComponent().setSelectedIndex(index);
-		}*/
 }

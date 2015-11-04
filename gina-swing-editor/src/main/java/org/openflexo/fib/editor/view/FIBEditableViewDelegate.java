@@ -85,8 +85,8 @@ import org.openflexo.fib.swing.view.FIBContainerView;
 import org.openflexo.fib.swing.view.FIBView;
 import org.openflexo.fib.swing.view.FIBWidgetView;
 import org.openflexo.fib.swing.view.container.JFIBPanelView;
-import org.openflexo.fib.swing.view.container.FIBSplitPanelView;
-import org.openflexo.fib.swing.view.container.FIBTabView;
+import org.openflexo.fib.swing.view.container.JFIBSplitPanelView;
+import org.openflexo.fib.swing.view.container.JFIBTabView;
 import org.openflexo.fib.swing.view.widget.JFIBColorWidget;
 import org.openflexo.fib.swing.view.widget.JFIBFontWidget;
 import org.openflexo.fib.swing.view.widget.FIBMultipleValueWidget;
@@ -300,13 +300,13 @@ public class FIBEditableViewDelegate<M extends FIBComponent, J extends JComponen
 			}
 		}
 
-		if (o instanceof FIBSplitPanel && view instanceof FIBSplitPanelView) {
+		if (o instanceof FIBSplitPanel && view instanceof JFIBSplitPanelView) {
 			if (propertyName.equals(FIBSplitPanel.SPLIT_KEY)) {
-				((FIBSplitPanelView) view).updateLayout();
+				((JFIBSplitPanelView) view).updateLayout();
 			}
 		}
 
-		if (o instanceof FIBTab && view instanceof FIBTabView) {
+		if (o instanceof FIBTab && view instanceof JFIBTabView) {
 			if (propertyName.equals(FIBTab.TITLE_KEY)) {
 				// Arghlll how do we update titles on this.
 			}

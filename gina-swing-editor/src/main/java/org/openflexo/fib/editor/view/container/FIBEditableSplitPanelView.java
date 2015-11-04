@@ -53,14 +53,14 @@ import org.openflexo.fib.model.FIBModelObject;
 import org.openflexo.fib.model.FIBMultiSplitLayoutFactory.FIBLeaf;
 import org.openflexo.fib.model.FIBMultiSplitLayoutFactory.FIBNode;
 import org.openflexo.fib.model.FIBMultiSplitLayoutFactory.FIBSplit;
-import org.openflexo.fib.swing.view.container.FIBSplitPanelView;
+import org.openflexo.fib.swing.view.container.JFIBSplitPanelView;
 import org.openflexo.fib.model.FIBSplitPanel;
 import org.openflexo.fib.model.SplitLayoutConstraints;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.swing.layout.JXMultiSplitPane;
 import org.openflexo.swing.layout.MultiSplitLayout.Node;
 
-public class FIBEditableSplitPanelView<T> extends FIBSplitPanelView<T> implements FIBEditableView<FIBSplitPanel, JXMultiSplitPane> {
+public class FIBEditableSplitPanelView<T> extends JFIBSplitPanelView<T> implements FIBEditableView<FIBSplitPanel, JXMultiSplitPane> {
 
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditableSplitPanelView.class.getPackage().getName());
 

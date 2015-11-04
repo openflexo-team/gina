@@ -1,8 +1,9 @@
 /**
  * 
- * Copyright (c) 2014, Openflexo
+ * Copyright (c) 2013-2015, Openflexo
+ * Copyright (c) 2011-2012, AgileBirds
  * 
- * This file is part of Diana-core, a component of the software infrastructure 
+ * This file is part of Gina-core, a component of the software infrastructure 
  * developed at Openflexo.
  * 
  * 
@@ -36,26 +37,18 @@
  * 
  */
 
-package org.openflexo.fib.view;
-
-import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBContainer;
-import org.openflexo.fib.model.FIBWidget;
+package org.openflexo.fib.view.container;
 
 /**
- * Represent the view factory for a given technology (eg. Swing)
- * 
- * @author sylvain
+ * Represents a basic panel, as a container of some children component, with a given layout, and a border
  * 
  * @param <C>
- *            base minimal class of components build by this tool factory (eg JComponent for Swing)
+ *            type of technology-specific component this view manage
+ * @param <C2>
+ *            type of technology-specific component this view contains
+ * 
+ * @author sylvain
  */
-public interface GinaViewFactory<C> {
-
-	public boolean allowsFIBEdition();
-
-	public <F extends FIBContainer> FIBContainerView<F, ? extends C, ? extends C> makeContainer(F fibContainer, FIBController controller);
-
-	public <F extends FIBWidget> FIBWidgetView<F, ? extends C, ?> makeWidget(F fibWidget, FIBController controller);
+public interface FIBTabView<C, C2> extends FIBPanelView<C, C2> {
 
 }

@@ -44,18 +44,25 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBBrowser;
 import org.openflexo.fib.model.FIBButton;
 import org.openflexo.fib.model.FIBCheckBox;
 import org.openflexo.fib.model.FIBCheckboxList;
 import org.openflexo.fib.model.FIBColor;
+import org.openflexo.fib.model.FIBComponent;
+import org.openflexo.fib.model.FIBContainer;
 import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBDropDown;
 import org.openflexo.fib.model.FIBEditor;
@@ -67,12 +74,20 @@ import org.openflexo.fib.model.FIBLabel;
 import org.openflexo.fib.model.FIBList;
 import org.openflexo.fib.model.FIBMouseEvent;
 import org.openflexo.fib.model.FIBNumber;
+import org.openflexo.fib.model.FIBPanel;
 import org.openflexo.fib.model.FIBRadioButtonList;
 import org.openflexo.fib.model.FIBReferencedComponent;
+import org.openflexo.fib.model.FIBSplitPanel;
+import org.openflexo.fib.model.FIBTab;
+import org.openflexo.fib.model.FIBTabPanel;
 import org.openflexo.fib.model.FIBTable;
 import org.openflexo.fib.model.FIBTextArea;
 import org.openflexo.fib.model.FIBTextField;
 import org.openflexo.fib.model.FIBWidget;
+import org.openflexo.fib.swing.view.container.JFIBPanelView;
+import org.openflexo.fib.swing.view.container.JFIBSplitPanelView;
+import org.openflexo.fib.swing.view.container.JFIBTabPanelView;
+import org.openflexo.fib.swing.view.container.JFIBTabView;
 import org.openflexo.fib.swing.view.widget.JFIBBrowserWidget;
 import org.openflexo.fib.swing.view.widget.JFIBButtonWidget;
 import org.openflexo.fib.swing.view.widget.JFIBCheckBoxWidget;
@@ -93,8 +108,14 @@ import org.openflexo.fib.swing.view.widget.JFIBReferencedComponentWidget;
 import org.openflexo.fib.swing.view.widget.JFIBTableWidget;
 import org.openflexo.fib.swing.view.widget.JFIBTextAreaWidget;
 import org.openflexo.fib.swing.view.widget.JFIBTextFieldWidget;
+import org.openflexo.fib.view.FIBContainerView;
+import org.openflexo.fib.view.FIBView;
 import org.openflexo.fib.view.FIBWidgetView;
 import org.openflexo.fib.view.GinaViewFactory;
+import org.openflexo.fib.view.container.FIBPanelView;
+import org.openflexo.fib.view.container.FIBSplitPanelView;
+import org.openflexo.fib.view.container.FIBTabPanelView;
+import org.openflexo.fib.view.container.FIBTabView;
 import org.openflexo.fib.view.impl.GinaViewFactoryImpl;
 import org.openflexo.fib.view.widget.FIBLabelWidget;
 import org.openflexo.fib.view.widget.FIBTextFieldWidget;
@@ -116,6 +137,8 @@ import org.openflexo.fib.view.widget.impl.FIBRadioButtonListWidgetImpl;
 import org.openflexo.fib.view.widget.impl.FIBReferencedComponentWidgetImpl;
 import org.openflexo.fib.view.widget.impl.FIBTableWidgetImpl;
 import org.openflexo.fib.view.widget.impl.FIBTextAreaWidgetImpl;
+import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
+import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.toolbox.StringUtils;
 
 /**
@@ -126,83 +149,30 @@ import org.openflexo.toolbox.StringUtils;
  */
 public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 
+	private static final Logger LOGGER = Logger.getLogger(SwingViewFactory.class.getPackage().getName());
+
 	public static final SwingViewFactory INSTANCE = new SwingViewFactory();
 
-	/**
-	 * A MouseAdapter which handle click actions<br>
-	 * Also perform mouse binding execution
-	 * 
-	 * @author sylvain
-	 * 
-	 */
-	protected class FIBMouseAdapter extends MouseAdapter {
+	@Override
+	public boolean allowsFIBEdition() {
+		return true;
+	}
 
-		private final FIBWidgetView<?, ? extends JComponent, ?> widgetView;
-
-		public FIBMouseAdapter(FIBWidgetView<?, ? extends JComponent, ?> widgetView, FIBWidget fibWidget) {
-			this.widgetView = widgetView;
-		}
-
-		private FIBMouseEvent makeMouseEvent(final MouseEvent e) {
-			return new FIBMouseEvent() {
-
-				@Override
-				public int getY() {
-					return e.getY();
-				}
-
-				@Override
-				public int getX() {
-					return e.getX();
-				}
-
-				@Override
-				public Object getSource() {
-					return e.getSource();
-				}
-
-				@Override
-				public Point getPoint() {
-					return e.getPoint();
-				}
-
-				@Override
-				public Point getLocationOnScreen() {
-					return e.getLocationOnScreen();
-				}
-
-				@Override
-				public int getClickCount() {
-					return e.getClickCount();
-				}
-
-				@Override
-				public int getButton() {
-					return e.getButton();
-				}
-			};
-		}
-
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			widgetView.getController().fireMouseClicked(widgetView, e.getClickCount());
-			if (e.getClickCount() == 1) {
-				if (widgetView.getWidget().hasRightClickAction() && (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3)) {
-					// Detected right-click associated with action
-					widgetView.applyRightClickAction(makeMouseEvent(e));
-				}
-				else if (widgetView.getWidget().hasClickAction()) {
-					// Detected click associated with action
-					widgetView.applySingleClickAction(makeMouseEvent(e));
-				}
+	@Override
+	public final <F extends FIBContainer> FIBContainerView<F, ? extends JComponent, ? extends JComponent> makeContainer(F fibContainer,
+			FIBController controller) {
+		FIBContainerView<F, ? extends JComponent, ? extends JComponent> returned = super.makeContainer(fibContainer, controller);
+		if (returned != null && fibContainer.isRootComponent()) {
+			if (returned instanceof FIBContainerView && allowsFIBEdition()) {
+				EditorLauncher editorLauncher = new EditorLauncher(controller, fibContainer);
+				recursivelyAddEditorLauncher(editorLauncher, (FIBContainerView) returned);
 			}
-			else if (e.getClickCount() == 2) {
-				if (widgetView.getWidget().hasDoubleClickAction()) {
-					// Detected double-click associated with action
-					widgetView.applyDoubleClickAction(makeMouseEvent(e));
-				}
-			}
+			return returned;
 		}
+		if (returned != null) {
+			returned.updateGraphicalProperties();
+		}
+		return returned;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -234,6 +204,27 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 		}
 		returned.updateGraphicalProperties();
 		return returned;
+	}
+
+	@Override
+	public FIBTabView<? extends JComponent, ? extends JComponent> makeTabView(FIBTab container, FIBController controller) {
+		return new JFIBTabView(container, controller);
+	}
+
+	@Override
+	public FIBPanelView<? extends JComponent, ? extends JComponent> makePanelView(FIBPanel container, FIBController controller) {
+		return new JFIBPanelView(container, controller);
+	}
+
+	@Override
+	public FIBTabPanelView<? extends JComponent, ? extends JComponent> makeTabPanelView(FIBTabPanel container, FIBController controller) {
+		return new JFIBTabPanelView(container, controller);
+	}
+
+	@Override
+	public FIBSplitPanelView<? extends JComponent, ? extends JComponent> makeSplitPanelView(FIBSplitPanel container,
+			FIBController controller) {
+		return new JFIBSplitPanelView(container, controller);
 	}
 
 	@Override
@@ -335,6 +326,162 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 	public FIBReferencedComponentWidgetImpl<? extends JComponent> makeReferencedComponentWidget(FIBReferencedComponent widget,
 			FIBController controller) {
 		return new JFIBReferencedComponentWidget(widget, controller);
+	}
+
+	protected void recursivelyAddEditorLauncher(EditorLauncher editorLauncher,
+			FIBContainerView<? extends FIBContainer, JComponent, ?> container) {
+		container.getJComponent().addMouseListener(editorLauncher);
+		for (FIBComponent c : container.getComponent().getSubComponents()) {
+			FIBView<?, ?> subView = container.getController().viewForComponent(c);
+			if (subView instanceof FIBContainerView) {
+				recursivelyAddEditorLauncher(editorLauncher, (FIBContainerView) subView);
+			}
+		}
+	}
+
+	/**
+	 * A MouseAdapter which handle click actions<br>
+	 * Also perform mouse binding execution
+	 * 
+	 * @author sylvain
+	 * 
+	 */
+	protected class FIBMouseAdapter extends MouseAdapter {
+
+		private final FIBWidgetView<?, ? extends JComponent, ?> widgetView;
+
+		public FIBMouseAdapter(FIBWidgetView<?, ? extends JComponent, ?> widgetView, FIBWidget fibWidget) {
+			this.widgetView = widgetView;
+		}
+
+		private FIBMouseEvent makeMouseEvent(final MouseEvent e) {
+			return new FIBMouseEvent() {
+
+				@Override
+				public int getY() {
+					return e.getY();
+				}
+
+				@Override
+				public int getX() {
+					return e.getX();
+				}
+
+				@Override
+				public Object getSource() {
+					return e.getSource();
+				}
+
+				@Override
+				public Point getPoint() {
+					return e.getPoint();
+				}
+
+				@Override
+				public Point getLocationOnScreen() {
+					return e.getLocationOnScreen();
+				}
+
+				@Override
+				public int getClickCount() {
+					return e.getClickCount();
+				}
+
+				@Override
+				public int getButton() {
+					return e.getButton();
+				}
+			};
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			widgetView.getController().fireMouseClicked(widgetView, e.getClickCount());
+			if (e.getClickCount() == 1) {
+				if (widgetView.getWidget().hasRightClickAction() && (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3)) {
+					// Detected right-click associated with action
+					widgetView.applyRightClickAction(makeMouseEvent(e));
+				}
+				else if (widgetView.getWidget().hasClickAction()) {
+					// Detected click associated with action
+					widgetView.applySingleClickAction(makeMouseEvent(e));
+				}
+			}
+			else if (e.getClickCount() == 2) {
+				if (widgetView.getWidget().hasDoubleClickAction()) {
+					// Detected double-click associated with action
+					widgetView.applyDoubleClickAction(makeMouseEvent(e));
+				}
+			}
+		}
+	}
+
+	private static class EditorLauncher extends MouseAdapter {
+		private final FIBComponent component;
+		private final FIBController controller;
+
+		public EditorLauncher(FIBController controller, FIBComponent component) {
+			LOGGER.fine("make EditorLauncher for component: " + component.getResource());
+			this.component = component;
+			this.controller = controller;
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			super.mouseClicked(e);
+			if (e.isAltDown()) {
+				openFIBEditor(component, e);
+			}
+		}
+
+		protected void openFIBEditor(final FIBComponent component, MouseEvent event) {
+			if (component.getResource() == null) {
+				try {
+					File fibFile = File.createTempFile("FIBComponent", ".fib");
+					FileResourceImpl fibLocation = null;
+					try {
+						fibLocation = new FileResourceImpl(fibFile.getCanonicalPath(), fibFile.toURI().toURL(), fibFile);
+					} catch (LocatorNotFoundException e) {
+						LOGGER.severe("No Locator found for managing FileResources!! ");
+						e.printStackTrace();
+					}
+					component.setResource(fibLocation);
+					FIBLibrary.save(component, fibFile);
+				} catch (IOException e) {
+					e.printStackTrace();
+					LOGGER.warning("Cannot create FIB temp file definition for component, aborting FIB edition");
+					return;
+				}
+			}
+			Class embeddedEditor = null;
+			Constructor c = null;
+			try {
+				embeddedEditor = Class.forName("org.openflexo.fib.editor.FIBEmbeddedEditor");
+				c = embeddedEditor.getConstructors()[0];
+				/*File fibFile = ((FileResourceImpl) component.getResource()).getFile();
+				if (!fibFile.exists()) {
+					logger.warning("Cannot find FIB file definition for component, aborting FIB edition");
+					return;
+				}*/
+				Object[] args = new Object[2];
+				args[0] = component.getResource();
+				args[1] = controller.getDataObject();
+				LOGGER.info("Opening FIB editor for " + component.getResource());
+				c.newInstance(args);
+			} catch (ClassNotFoundException e) {
+				LOGGER.warning("Cannot open FIB Editor, please add org.openflexo.fib.editor.FIBEmbeddedEditor in the class path");
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				LOGGER.warning("Cannot instanciate " + embeddedEditor + " with constructor " + c + " because of unexpected exception ");
+				e.getTargetException().printStackTrace();
+			}
+		}
+
 	}
 
 }

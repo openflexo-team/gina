@@ -64,10 +64,10 @@ import org.openflexo.fib.model.GridBagLayoutConstraints;
 import org.openflexo.fib.model.GridLayoutConstraints;
 import org.openflexo.fib.model.TwoColsLayoutConstraints;
 import org.openflexo.fib.model.TwoColsLayoutConstraints.TwoColsLayoutLocation;
-import org.openflexo.fib.swing.view.container.FIBTabView;
+import org.openflexo.fib.swing.view.container.JFIBTabView;
 import org.openflexo.logging.FlexoLogger;
 
-public class FIBEditableTabView<T> extends FIBTabView<FIBTab, T> implements FIBEditableView<FIBTab, JPanel> {
+public class FIBEditableTabView<T> extends JFIBTabView<FIBTab, T> implements FIBEditableView<FIBTab, JPanel> {
 
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditableTabView.class.getPackage().getName());
 

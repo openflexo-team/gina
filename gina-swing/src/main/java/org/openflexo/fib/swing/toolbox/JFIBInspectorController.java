@@ -55,7 +55,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.swing.view.container.FIBTabPanelView;
+import org.openflexo.fib.swing.view.container.JFIBTabPanelView;
 import org.openflexo.fib.utils.FIBInspector;
 import org.openflexo.fib.utils.InspectorGroup;
 import org.openflexo.fib.view.FIBView;
@@ -170,7 +170,7 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 			rootPane.repaint();
 			currentInspector = newInspector;
 			inspectorDialog.setTitle(newInspector.getParameter("title"));
-			tabPanelView = (FIBTabPanelView) currentInspectorView.getController().viewForComponent(currentInspector.getTabPanel());
+			tabPanelView = (JFIBTabPanelView) currentInspectorView.getController().viewForComponent(currentInspector.getTabPanel());
 			if (lastInspectedTabIndex >= 0 && lastInspectedTabIndex < tabPanelView.getJComponent().getTabCount()) {
 				tabPanelView.getJComponent().setSelectedIndex(lastInspectedTabIndex);
 			}
@@ -196,7 +196,7 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 	}
 
 	private int lastInspectedTabIndex = -1;
-	private FIBTabPanelView tabPanelView;
+	private JFIBTabPanelView tabPanelView;
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
