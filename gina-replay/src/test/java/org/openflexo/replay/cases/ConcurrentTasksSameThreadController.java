@@ -2,15 +2,16 @@ package org.openflexo.replay.cases;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
+import org.openflexo.fib.view.GinaViewFactory;
 import org.openflexo.replay.utils.Case;
 import org.openflexo.replay.utils.Task;
 
 public class ConcurrentTasksSameThreadController extends FIBController {
 
-	public ConcurrentTasksSameThreadController(FIBComponent rootComponent) {
-		super(rootComponent);
+	public ConcurrentTasksSameThreadController(FIBComponent rootComponent, GinaViewFactory<?> viewFactory) {
+		super(rootComponent, viewFactory);
 	}
-	
+
 	public void startTask() {
 		Task task = new ChangeFirstnameTask(Case.getEventManager(), "Count task", ConcurrentTasksSameThreadCase.getPersonA());
 		Case.getTaskExecutor().execute(task);

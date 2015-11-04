@@ -50,7 +50,7 @@ import org.openflexo.fib.editor.view.FIBEditableViewDelegate;
 import org.openflexo.fib.editor.view.PlaceHolder;
 import org.openflexo.fib.model.FIBDropDown;
 import org.openflexo.fib.model.FIBModelObject;
-import org.openflexo.fib.swing.view.widget.FIBDropDownWidget;
+import org.openflexo.fib.swing.utils.swing.view.widget.FIBDropDownWidget;
 import org.openflexo.logging.FlexoLogger;
 
 public class FIBEditableDropDownWidget<T> extends FIBDropDownWidget<T> implements FIBEditableView<FIBDropDown, JComboBox> {

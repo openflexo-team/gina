@@ -2,24 +2,21 @@ package org.openflexo.replay.cases;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.replay.sampleData.Person;
-import org.openflexo.replay.utils.Case;
-import org.openflexo.replay.utils.Task;
-import org.openflexo.replay.utils.Window;
+import org.openflexo.fib.view.GinaViewFactory;
 
 public class MultiEventsController extends FIBController {
 
-	public MultiEventsController(FIBComponent rootComponent) {
-		super(rootComponent);
+	public MultiEventsController(FIBComponent rootComponent, GinaViewFactory<?> viewFactory) {
+		super(rootComponent, viewFactory);
 	}
 
 	public void openCopy(String windowLetter) {
-		//System.out.println("openCopy");
-		
-		final char letter = windowLetter.charAt(0);
-		
-		/*MultiEventsCase.getTaskManager().scheduleExecution(new GinaTaskTemp("Open Window") {
+		// System.out.println("openCopy");
 
+		final char letter = windowLetter.charAt(0);
+
+		/*MultiEventsCase.getTaskManager().scheduleExecution(new GinaTaskTemp("Open Window") {
+		
 			@Override
 			public void performTask() throws InterruptedException {
 				switch(letter)
@@ -34,7 +31,7 @@ public class MultiEventsController extends FIBController {
 			}
 			
 		});*/
-		
+
 		/*SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -48,7 +45,7 @@ public class MultiEventsController extends FIBController {
 					break;
 				}
 			}
-
+		
 		});*/
 
 		/*Thread t = new Thread(new Runnable() {
@@ -64,36 +61,35 @@ public class MultiEventsController extends FIBController {
 					break;
 				}
 			}
-
+		
 		});
 		t.start();*/
 	}
 
 	public void copyTo(String windowLetter) {
-		//System.out.println("copyToB");
-		
+		// System.out.println("copyToB");
+
 		char letter = windowLetter.charAt(0);
-		
-		switch(letter)
-		{
-		case 'A':
-			MultiEventsCase.setPersonA(MultiEventsCase.getPersonB());
-			break;
-		case 'B':
-			MultiEventsCase.setPersonB(MultiEventsCase.getPersonA());
-			break;
+
+		switch (letter) {
+			case 'A':
+				MultiEventsCase.setPersonA(MultiEventsCase.getPersonB());
+				break;
+			case 'B':
+				MultiEventsCase.setPersonB(MultiEventsCase.getPersonA());
+				break;
 		}
 	}
-	
+
 	public void startTask() {
 		/*Task task = new Task(Case.getManager(), "Count task", MultiEventsCase.getPersonA());
 		MultiEventsCase.getTaskManager().scheduleExecution(task);
 		Task task2 = new Task(Case.getManager(), "Count task 2", MultiEventsCase.getPersonA());
 		MultiEventsCase.getTaskManager().scheduleExecution(task2);*/
 	}
-	
+
 	public void save() {
-		//GinaRecorderManager.getInstance().getCurrentRecorder().save(new File("D:/test-gina-recorder"));
+		// GinaRecorderManager.getInstance().getCurrentRecorder().save(new File("D:/test-gina-recorder"));
 	}
 
 }

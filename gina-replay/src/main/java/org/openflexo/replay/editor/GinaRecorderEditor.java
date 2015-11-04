@@ -1,16 +1,12 @@
 package org.openflexo.replay.editor;
 
-import java.io.File;
-
 import javax.swing.JFrame;
 
 import org.openflexo.fib.FIBLibrary;
-import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
+import org.openflexo.fib.swing.view.SwingViewFactory;
 import org.openflexo.fib.view.FIBView;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
-import org.openflexo.replay.GinaReplayManager;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 
@@ -27,10 +23,10 @@ public class GinaRecorderEditor {
 
 		JFrame frame = new JFrame();
 
-		//FIBRecorderEditorController controller = FIBController.instanciateController(fibComponent, FlexoLocalization.getMainLocalizer());
-		FIBView editor = GinaRecorderEditorController.makeView(fibComponent, (LocalizedDelegate) null);
+		// FIBRecorderEditorController controller = FIBController.instanciateController(fibComponent, FlexoLocalization.getMainLocalizer());
+		FIBView editor = GinaRecorderEditorController.makeView(fibComponent, SwingViewFactory.INSTANCE, (LocalizedDelegate) null);
 
-		//FIBRecorderManager.getInstance().getCurrentRecorder().load(new File("D:/test-gina-recorder"));
+		// FIBRecorderManager.getInstance().getCurrentRecorder().load(new File("D:/test-gina-recorder"));
 		// TODO editor.getController().setDataObject(GinaManager.getInstance().getCurrentRecorder().getRootNode());
 
 		frame.getContentPane().add(editor.getResultingJComponent());

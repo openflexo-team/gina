@@ -51,7 +51,7 @@ import org.openflexo.fib.editor.view.PlaceHolder;
 import org.openflexo.fib.model.FIBModelObject;
 import org.openflexo.fib.model.FIBRadioButtonList;
 import org.openflexo.fib.model.FIBWidget;
-import org.openflexo.fib.swing.view.widget.FIBRadioButtonListWidget;
+import org.openflexo.fib.swing.utils.swing.view.widget.FIBRadioButtonListWidget;
 import org.openflexo.logging.FlexoLogger;
 
 public class FIBEditableRadioButtonListWidget<T> extends FIBRadioButtonListWidget<T> implements FIBEditableView<FIBRadioButtonList, JPanel> {

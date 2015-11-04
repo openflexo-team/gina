@@ -48,6 +48,7 @@ import javax.swing.Icon;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
+import org.openflexo.fib.view.GinaViewFactory;
 import org.openflexo.icon.UtilsIconLibrary;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
@@ -81,8 +82,8 @@ public class FIBLocalizedEditorController extends FIBController {
 
 	private LocalizedEntry selectedEntry;
 
-	public FIBLocalizedEditorController(FIBComponent rootComponent) {
-		super(rootComponent);
+	public FIBLocalizedEditorController(FIBComponent rootComponent, GinaViewFactory<?> viewFactory) {
+		super(rootComponent, viewFactory);
 	}
 
 	@Override
@@ -168,50 +169,50 @@ public class FIBLocalizedEditorController extends FIBController {
 		if (StringUtils.isNotEmpty(text)) {
 			for (LocalizedEntry e : getDataObject().getEntries()) {
 				switch (searchMode) {
-				case Contains:
-					if (e.getKey().contains(text)) {
-						if (!matchingEntries.contains(e)) {
+					case Contains:
+						if (e.getKey().contains(text)) {
+							if (!matchingEntries.contains(e)) {
+								matchingEntries.add(e);
+							}
+						}
+						for (Language l : Language.getAvailableLanguages()) {
+							if (getDataObject().getLocalizedForKeyAndLanguage(e.getKey(), l) != null
+									&& getDataObject().getLocalizedForKeyAndLanguage(e.getKey(), l).contains(text)) {
+								if (!matchingEntries.contains(e)) {
+									matchingEntries.add(e);
+								}
+							}
+						}
+						break;
+					case BeginsWith:
+						if (e.getKey().startsWith(text)) {
 							matchingEntries.add(e);
 						}
-					}
-					for (Language l : Language.getAvailableLanguages()) {
-						if (getDataObject().getLocalizedForKeyAndLanguage(e.getKey(), l) != null
-								&& getDataObject().getLocalizedForKeyAndLanguage(e.getKey(), l).contains(text)) {
-							if (!matchingEntries.contains(e)) {
-								matchingEntries.add(e);
+						for (Language l : Language.getAvailableLanguages()) {
+							if (getDataObject().getLocalizedForKeyAndLanguage(e.getKey(), l) != null
+									&& getDataObject().getLocalizedForKeyAndLanguage(e.getKey(), l).startsWith(text)) {
+								if (!matchingEntries.contains(e)) {
+									matchingEntries.add(e);
+								}
 							}
 						}
-					}
-					break;
-				case BeginsWith:
-					if (e.getKey().startsWith(text)) {
-						matchingEntries.add(e);
-					}
-					for (Language l : Language.getAvailableLanguages()) {
-						if (getDataObject().getLocalizedForKeyAndLanguage(e.getKey(), l) != null
-								&& getDataObject().getLocalizedForKeyAndLanguage(e.getKey(), l).startsWith(text)) {
-							if (!matchingEntries.contains(e)) {
-								matchingEntries.add(e);
+						break;
+					case EndsWith:
+						if (e.getKey().endsWith(text)) {
+							matchingEntries.add(e);
+						}
+						for (Language l : Language.getAvailableLanguages()) {
+							if (getDataObject().getLocalizedForKeyAndLanguage(e.getKey(), l) != null
+									&& getDataObject().getLocalizedForKeyAndLanguage(e.getKey(), l).endsWith(text)) {
+								if (!matchingEntries.contains(e)) {
+									matchingEntries.add(e);
+								}
 							}
 						}
-					}
-					break;
-				case EndsWith:
-					if (e.getKey().endsWith(text)) {
-						matchingEntries.add(e);
-					}
-					for (Language l : Language.getAvailableLanguages()) {
-						if (getDataObject().getLocalizedForKeyAndLanguage(e.getKey(), l) != null
-								&& getDataObject().getLocalizedForKeyAndLanguage(e.getKey(), l).endsWith(text)) {
-							if (!matchingEntries.contains(e)) {
-								matchingEntries.add(e);
-							}
-						}
-					}
-					break;
+						break;
 
-				default:
-					break;
+					default:
+						break;
 				}
 			}
 		}

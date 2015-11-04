@@ -45,8 +45,6 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
@@ -66,7 +64,7 @@ import org.openflexo.fge.swing.JDianaInteractiveViewer;
 import org.openflexo.fge.swing.SwingViewFactory;
 import org.openflexo.fge.swing.control.SwingToolFactory;
 import org.openflexo.fge.swing.control.tools.JDianaScaleSelector;
-import org.openflexo.fib.swing.logging.FlexoLoggingViewer;
+import org.openflexo.fib.swing.utils.logging.FlexoLoggingViewer;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.logging.FlexoLoggingManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -76,7 +74,7 @@ import org.openflexo.replay.utils.Window;
 public class DrawindTreeNodeCase extends Case {
 
 	private static final Logger LOGGER = FlexoLogger.getLogger(DrawindTreeNodeCase.class.getPackage().getName());
-	
+
 	public static void main(String[] args) {
 		initCase(new DrawindTreeNodeCase());
 	}
@@ -91,7 +89,7 @@ public class DrawindTreeNodeCase extends Case {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+	
 		showPanel();
 	}*/
 
@@ -117,7 +115,7 @@ public class DrawindTreeNodeCase extends Case {
 				notifyObservers(new MultipleSelection());
 			}
 		}
-
+		
 		@Override
 		public void removeFromSelectedObjects(DrawingTreeNode<?,?> anObject) {
 			super.removeFromSelectedObjects(anObject);
@@ -129,13 +127,13 @@ public class DrawindTreeNodeCase extends Case {
 				notifyObservers(new MultipleSelection());
 			}
 		}
-
+		
 		@Override
 		public void clearSelection() {
 			super.clearSelection();
 			notifyObservers(new EmptySelection());
 		}
-
+		
 		@Override
 		public void selectDrawing() {
 			super.selectDrawing();
@@ -265,14 +263,14 @@ public class DrawindTreeNodeCase extends Case {
 		node3.connectTo(node2);
 		GraphDrawing1 returned = new GraphDrawing1(graph, factory);
 		returned.printGraphicalObjectHierarchy();
-		//returned.setEventManager(getManager().getEventManager());
+		// returned.setEventManager(getManager().getEventManager());
 		return returned;
 	}
 
 	@Override
 	public void initWindow(Window w) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

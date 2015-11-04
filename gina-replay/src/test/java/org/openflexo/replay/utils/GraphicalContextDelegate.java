@@ -64,12 +64,12 @@ public class GraphicalContextDelegate implements ChangeListener {
 	private JFrame frame;
 	private final EventProcessor eventProcessor;
 	private JTabbedPane tabbedPane;
-	private boolean dontDestroyMe = false;
-	
+	private final boolean dontDestroyMe = false;
+
 	public GraphicalContextDelegate(final String frameTitle) {
 		this(frameTitle, new Dimension(560, 80), false);
 	}
-	
+
 	public GraphicalContextDelegate(final String frameTitle, final Dimension dim) {
 		this(frameTitle, dim, true);
 	}
@@ -100,7 +100,7 @@ public class GraphicalContextDelegate implements ChangeListener {
 						}
 					});
 					frame.getContentPane().add(myButton, BorderLayout.NORTH);*/
-					//frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
+					// frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 					frame.setVisible(true);
 				}
 			});
@@ -111,14 +111,14 @@ public class GraphicalContextDelegate implements ChangeListener {
 		}
 
 	}
-	
+
 	public void setController(FIBController controller) {
-		frame.getContentPane().add(controller.getRootView().getTechnologyComponent(), BorderLayout.CENTER);
+		frame.getContentPane().add((JComponent) controller.getRootView().getTechnologyComponent(), BorderLayout.CENTER);
 		frame.revalidate();
 	}
 
 	public void addTab(String title, FIBController controller) {
-		addTab(title, controller.getRootView().getTechnologyComponent());
+		addTab(title, (JComponent) controller.getRootView().getTechnologyComponent());
 	}
 
 	public void addTab(String title, JComponent component) {
@@ -193,7 +193,7 @@ public class GraphicalContextDelegate implements ChangeListener {
 			return exception;
 		}
 	}
-	
+
 	public static FIBModelFactory getFactory() {
 		if (factory == null) {
 			try {
@@ -202,7 +202,7 @@ public class GraphicalContextDelegate implements ChangeListener {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return factory;
 	}
 

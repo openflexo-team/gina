@@ -142,7 +142,8 @@ import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.toolbox.StringUtils;
 
 /**
- * A {@link GinaViewFactory} implementation dedicated for Swing
+ * A {@link GinaViewFactory} implementation dedicated for Swing<br>
+ * Developers note: We want this class to be stateless: please do not reference any data inside this class
  * 
  * @author sylvain
  * 

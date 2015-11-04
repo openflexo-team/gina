@@ -63,8 +63,7 @@ public abstract class FIBDropDownWidgetImpl<C, T> extends FIBMultipleValueWidget
 
 	static final Logger logger = Logger.getLogger(FIBDropDownWidgetImpl.class.getPackage().getName());
 
-	public FIBDropDownWidgetImpl(FIBDropDown model, FIBController controller,
-			DropDownRenderingAdapter<C, T> RenderingAdapter) {
+	public FIBDropDownWidgetImpl(FIBDropDown model, FIBController controller, DropDownRenderingAdapter<C, T> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
 	}
 
@@ -76,8 +75,7 @@ public abstract class FIBDropDownWidgetImpl<C, T> extends FIBMultipleValueWidget
 	@Override
 	public synchronized boolean updateWidgetFromModel() {
 
-		if (notEquals(getValue(),
-				getRenderingAdapter().getSelectedItem(getTechnologyComponent())) /*|| listModelRequireChange()*/) {
+		if (notEquals(getValue(), getRenderingAdapter().getSelectedItem(getTechnologyComponent())) /*|| listModelRequireChange()*/) {
 
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("updateWidgetFromModel()");
@@ -172,6 +170,16 @@ public abstract class FIBDropDownWidgetImpl<C, T> extends FIBMultipleValueWidget
 			return super.equals(object);
 		}
 
+	}
+
+	@Override
+	public T getSelectedItem() {
+		return getRenderingAdapter().getSelectedItem(getTechnologyComponent());
+	}
+
+	@Override
+	public void setSelectedItem(T item) {
+		getRenderingAdapter().setSelectedItem(getTechnologyComponent(), item);
 	}
 
 }

@@ -50,6 +50,7 @@ import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
+import org.openflexo.fib.swing.view.SwingViewFactory;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.rm.Resource;
@@ -122,7 +123,7 @@ public abstract class FIBJPanel<T> extends JPanel implements FIBCustomComponent<
 	}
 
 	protected FIBController makeFIBController(FIBComponent fibComponent, LocalizedDelegate parentLocalizer) {
-		return FIBController.instanciateController(fibComponent, parentLocalizer);
+		return FIBController.instanciateController(fibComponent, SwingViewFactory.INSTANCE, parentLocalizer);
 	}
 
 	@Override

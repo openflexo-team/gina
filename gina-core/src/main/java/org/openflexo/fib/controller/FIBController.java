@@ -69,6 +69,7 @@ import org.openflexo.fib.model.FIBLocalizedDictionary;
 import org.openflexo.fib.model.FIBWidget;
 import org.openflexo.fib.model.listener.FIBMouseClickListener;
 import org.openflexo.fib.model.listener.FIBSelectionListener;
+import org.openflexo.fib.view.FIBContainerView;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.fib.view.FIBWidgetView;
 import org.openflexo.fib.view.GinaViewFactory;
@@ -111,9 +112,10 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 
 			try {
 				// System.out.println("Class=" + fibComponent.getControllerClass());
-				Constructor<? extends FIBController> c = fibComponent.getControllerClass().getConstructor(FIBComponent.class);
+				Constructor<? extends FIBController> c = fibComponent.getControllerClass().getConstructor(FIBComponent.class,
+						GinaViewFactory.class);
 				// System.out.println("Constructor=" + c);
-				returned = c.newInstance(fibComponent);
+				returned = c.newInstance(fibComponent, viewFactory);
 				// System.out.println("returned=" + returned);
 			} catch (SecurityException e) {
 				LOGGER.warning("SecurityException: Could not instanciate " + fibComponent.getControllerClass());
@@ -279,8 +281,8 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 		views.remove(view.getComponent());
 	}
 
-	public FIBView<?, ?> viewForComponent(FIBComponent component) {
-		return views.get(component);
+	public <M extends FIBComponent> FIBView<M, ?> viewForComponent(M component) {
+		return (FIBView<M, ?>) views.get(component);
 	}
 
 	public FIBView<?, ?> viewForComponent(String componentName) {
@@ -293,6 +295,14 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 		}
 		return null;
 
+	}
+
+	public <W extends FIBWidget> FIBWidgetView<W, ?, ?> viewForWidget(W widget) {
+		return (FIBWidgetView<W, ?, ?>) views.get(widget);
+	}
+
+	public <M extends FIBContainer> FIBContainerView<M, ?, ?> viewForContainer(M container) {
+		return (FIBContainerView<M, ?, ?>) views.get(container);
 	}
 
 	public Collection<FIBView<?, ?>> getViews() {

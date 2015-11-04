@@ -28,7 +28,7 @@
 		</dependency>
         <dependency>
             <groupId>org.openflexo</groupId>
-            <artifactId>gina-core</artifactId>
+            <artifactId>gina-swing</artifactId>
             <version>${project.version}</version>
         </dependency>
 		<dependency>

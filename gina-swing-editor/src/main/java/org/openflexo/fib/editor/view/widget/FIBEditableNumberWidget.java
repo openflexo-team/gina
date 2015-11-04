@@ -50,12 +50,12 @@ import org.openflexo.fib.editor.view.FIBEditableViewDelegate;
 import org.openflexo.fib.editor.view.PlaceHolder;
 import org.openflexo.fib.model.FIBModelObject;
 import org.openflexo.fib.model.FIBNumber;
-import org.openflexo.fib.swing.view.widget.JFIBNumberWidget.FIBByteWidget;
-import org.openflexo.fib.swing.view.widget.JFIBNumberWidget.FIBDoubleWidget;
-import org.openflexo.fib.swing.view.widget.JFIBNumberWidget.FIBFloatWidget;
-import org.openflexo.fib.swing.view.widget.JFIBNumberWidget.FIBIntegerWidget;
-import org.openflexo.fib.swing.view.widget.JFIBNumberWidget.FIBLongWidget;
-import org.openflexo.fib.swing.view.widget.JFIBNumberWidget.FIBShortWidget;
+import org.openflexo.fib.swing.utils.swing.view.widget.JFIBNumberWidget.FIBByteWidget;
+import org.openflexo.fib.swing.utils.swing.view.widget.JFIBNumberWidget.FIBDoubleWidget;
+import org.openflexo.fib.swing.utils.swing.view.widget.JFIBNumberWidget.FIBFloatWidget;
+import org.openflexo.fib.swing.utils.swing.view.widget.JFIBNumberWidget.FIBIntegerWidget;
+import org.openflexo.fib.swing.utils.swing.view.widget.JFIBNumberWidget.FIBLongWidget;
+import org.openflexo.fib.swing.utils.swing.view.widget.JFIBNumberWidget.FIBShortWidget;
 import org.openflexo.logging.FlexoLogger;
 
 public class FIBEditableNumberWidget {

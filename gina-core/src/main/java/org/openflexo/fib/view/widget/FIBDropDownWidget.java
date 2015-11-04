@@ -57,6 +57,10 @@ public interface FIBDropDownWidget<C, T> extends FIBMultipleValueWidget<FIBDropD
 
 	static final Logger logger = Logger.getLogger(FIBDropDownWidget.class.getPackage().getName());
 
+	public T getSelectedItem();
+
+	public void setSelectedItem(T item);
+
 	@Override
 	public DropDownRenderingAdapter<C, T> getRenderingAdapter();
 

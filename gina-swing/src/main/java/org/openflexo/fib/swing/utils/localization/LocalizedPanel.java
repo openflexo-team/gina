@@ -44,6 +44,7 @@ import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.swing.utils.FIBJPanel;
+import org.openflexo.fib.swing.view.SwingViewFactory;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.localization.LocalizedDelegateImpl;
 import org.openflexo.rm.Resource;
@@ -78,7 +79,7 @@ public class LocalizedPanel extends FIBJPanel<LocalizedDelegate> {
 
 	@Override
 	protected FIBController makeFIBController(FIBComponent fibComponent, LocalizedDelegate parentLocalizer) {
-		return new FIBLocalizedEditorController(fibComponent) {
+		return new FIBLocalizedEditorController(fibComponent, SwingViewFactory.INSTANCE) {
 			@Override
 			public boolean displaySaveButton() {
 				return LocalizedPanel.this.displaySaveButton();
@@ -126,17 +127,18 @@ public class LocalizedPanel extends FIBJPanel<LocalizedDelegate> {
 	public void save() {
 		if (getEditedObject() instanceof LocalizedDelegateImpl) {
 			((LocalizedDelegateImpl) getEditedObject()).saveAllDictionaries();
-		} else {
+		}
+		else {
 			LOGGER.warning("save localized not implemented");
 		}
 	}
 
 	/*public static void main(String[] args) {
-
+	
 		Resource fibValidationLocalizedDelegate = ResourceLocator.locateResource("FIBValidationLocalized");
 		LocalizedDelegate VALIDATION_LOCALIZATION = FlexoLocalization
 				.getLocalizedDelegate(fibValidationLocalizedDelegate, null, true, true);
-
+	
 		JFrame f = new JFrame();
 		LocalizedPanel editor = new LocalizedPanel(VALIDATION_LOCALIZATION, null);
 		f.getContentPane().add(editor);

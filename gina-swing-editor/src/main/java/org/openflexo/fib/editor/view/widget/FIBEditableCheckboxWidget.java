@@ -50,7 +50,7 @@ import org.openflexo.fib.editor.view.FIBEditableViewDelegate;
 import org.openflexo.fib.editor.view.PlaceHolder;
 import org.openflexo.fib.model.FIBCheckBox;
 import org.openflexo.fib.model.FIBModelObject;
-import org.openflexo.fib.swing.view.widget.FIBCheckBoxWidget;
+import org.openflexo.fib.swing.utils.swing.view.widget.FIBCheckBoxWidget;
 import org.openflexo.logging.FlexoLogger;
 
 public class FIBEditableCheckboxWidget extends FIBCheckBoxWidget implements FIBEditableView<FIBCheckBox, JCheckBox> {

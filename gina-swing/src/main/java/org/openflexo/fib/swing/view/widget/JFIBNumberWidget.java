@@ -91,8 +91,7 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingNumberWidgetRenderingAdapter<T extends Number>
-			extends SwingRenderingAdapter<NumberSelectorPanel<T>>
+	public static class SwingNumberWidgetRenderingAdapter<T extends Number> extends SwingRenderingAdapter<NumberSelectorPanel<T>>
 			implements NumberWidgetRenderingAdapter<NumberSelectorPanel<T>, T> {
 
 		@Override

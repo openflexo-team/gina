@@ -44,7 +44,7 @@ import javax.swing.JFrame;
 import org.openflexo.fib.editor.controller.FIBEditorController;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelObject;
-import org.openflexo.fib.swing.validation.ValidationPanel;
+import org.openflexo.fib.swing.utils.validation.ValidationPanel;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.validation.ValidationIssue;
 

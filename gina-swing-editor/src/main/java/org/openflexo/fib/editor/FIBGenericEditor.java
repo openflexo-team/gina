@@ -44,7 +44,7 @@ import java.io.File;
 import javax.swing.JFrame;
 
 import org.openflexo.fib.editor.controller.FIBEditorPalette;
-import org.openflexo.fib.swing.toolbox.JFIBInspectorController;
+import org.openflexo.fib.swing.utils.JFIBInspectorController;
 
 public interface FIBGenericEditor {
 	

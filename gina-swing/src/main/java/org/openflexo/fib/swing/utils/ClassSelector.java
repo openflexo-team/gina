@@ -57,7 +57,9 @@ import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
 import org.openflexo.fib.swing.utils.logging.FlexoLoggingViewer;
+import org.openflexo.fib.swing.view.SwingViewFactory;
 import org.openflexo.fib.view.FIBView;
+import org.openflexo.fib.view.GinaViewFactory;
 import org.openflexo.logging.FlexoLoggingManager;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
@@ -70,7 +72,7 @@ import org.openflexo.swing.VerticalLayout;
  * @author sguerin
  * 
  */
-public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCustomComponent<Class> {
+public class ClassSelector extends TextFieldCustomPopup<Class>implements FIBCustomComponent<Class> {
 	@SuppressWarnings("hiding")
 	static final Logger LOGGER = Logger.getLogger(ClassSelector.class.getPackage().getName());
 
@@ -105,7 +107,8 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 		// WARNING: we need here to clone to keep track back of previous data !!!
 		if (oldValue != null) {
 			_revertValue = oldValue;
-		} else {
+		}
+		else {
 			_revertValue = null;
 		}
 		if (LOGGER.isLoggable(Level.FINE)) {
@@ -145,7 +148,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 			super();
 
 			fibComponent = FIBLibrary.instance().retrieveFIBComponent(FIB_FILE_NAME, true);
-			controller = new CustomFIBController(fibComponent);
+			controller = new CustomFIBController(fibComponent, SwingViewFactory.INSTANCE);
 			fibView = controller.buildView(fibComponent);
 
 			controller.setDataObject(new LoadedClassesInfo(aClass));
@@ -172,8 +175,8 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 		}
 
 		public class CustomFIBController extends FIBController {
-			public CustomFIBController(FIBComponent component) {
-				super(component);
+			public CustomFIBController(FIBComponent component, GinaViewFactory<?> viewFactory) {
+				super(component, viewFactory);
 			}
 
 			public void apply() {
@@ -255,19 +258,19 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 	}
 
 	/*public static void main(String[] args) {
-
+	
 		FIBAbstractEditor editor = new FIBAbstractEditor() {
 			@Override
 			public Object[] getData() {
 				return FIBAbstractEditor.makeArray(new LoadedClassesInfo(java.lang.Object.class));
 			}
-
+	
 			@Override
 			public File getFIBFile() {
 				return FIB_FILE;
 			}
 		};
-
+	
 		editor.launch();
 	}*/
 

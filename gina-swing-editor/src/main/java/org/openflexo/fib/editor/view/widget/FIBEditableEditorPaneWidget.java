@@ -48,11 +48,11 @@ import org.openflexo.fib.editor.controller.FIBEditorController;
 import org.openflexo.fib.editor.view.FIBEditableView;
 import org.openflexo.fib.editor.view.FIBEditableViewDelegate;
 import org.openflexo.fib.editor.view.PlaceHolder;
-import org.openflexo.fib.model.FIBEditorPane;
 import org.openflexo.fib.model.FIBLabel;
 import org.openflexo.fib.model.FIBModelObject;
-import org.openflexo.fib.swing.view.FIBContainerView;
-import org.openflexo.fib.swing.view.widget.FIBEditorPaneWidget;
+import org.openflexo.fib.swing.utils.model.FIBEditorPane;
+import org.openflexo.fib.swing.utils.swing.view.FIBContainerView;
+import org.openflexo.fib.swing.utils.swing.view.widget.FIBEditorPaneWidget;
 import org.openflexo.logging.FlexoLogger;
 
 public class FIBEditableEditorPaneWidget extends FIBEditorPaneWidget implements FIBEditableView<FIBEditorPane, JEditorPane> {

@@ -1,16 +1,13 @@
 package org.openflexo.replay.editor;
 
-import java.io.File;
-
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.gina.event.InvalidRecorderStateException;
-import org.openflexo.replay.GinaReplayManager;
+import org.openflexo.fib.view.GinaViewFactory;
 
 public class GinaRecorderEditorController extends FIBController {
 
-	public GinaRecorderEditorController(FIBComponent rootComponent) {
-		super(rootComponent);
+	public GinaRecorderEditorController(FIBComponent rootComponent, GinaViewFactory<?> viewFactory) {
+		super(rootComponent, viewFactory);
 	}
 
 	public void nextStep() {
@@ -23,10 +20,10 @@ public class GinaRecorderEditorController extends FIBController {
 
 	public void play() {
 	}
-	
+
 	public void reset() {
 	}
-	
+
 	public void gotoEnd() {
 	}
 

@@ -56,6 +56,7 @@ import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.controller.FIBController.Status;
 import org.openflexo.fib.model.FIBButton;
 import org.openflexo.fib.model.FIBComponent;
+import org.openflexo.fib.swing.view.SwingViewFactory;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.fib.view.GinaViewFactory;
 import org.openflexo.fib.view.impl.FIBContainerViewImpl;
@@ -63,13 +64,14 @@ import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.rm.Resource;
 
 /**
- * A JDialog representing a given FIBComponent<br>
+ * A JDialog (Swing implementation of a Dialog) representing a given FIBComponent and a data<br>
  * 
  * This implementation contains many helpers methods used to manage this.
  * 
  * @author sylvain
  *
  * @param <T>
+ *            type of data beeing represented by this dialog
  * 
  */
 // TODO: move to swing and rename JFIBDialog as this is pure swing
@@ -80,19 +82,18 @@ public class JFIBDialog<T> extends JDialog {
 
 	private FIBView view;
 
-	public static <T> JFIBDialog<T> instanciateDialog(Resource componentFile, T data, Window frame, boolean modal,
-			GinaViewFactory<?> viewFactory) {
-		return instanciateDialog(componentFile, data, frame, modal, viewFactory, null);
+	public static <T> JFIBDialog<T> instanciateDialog(Resource componentFile, T data, Window frame, boolean modal) {
+		return instanciateDialog(componentFile, data, frame, modal, null);
 	}
 
 	public static <T> JFIBDialog<T> instanciateDialog(Resource componentFile, T data, Window frame, boolean modal,
-			GinaViewFactory<?> viewFactory, LocalizedDelegate localizer) {
+			LocalizedDelegate localizer) {
 		FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(componentFile);
 		if (fibComponent == null) {
 			LOGGER.warning("FileNotFoundException: " + componentFile.getURI());
 			return null;
 		}
-		return instanciateDialog(fibComponent, data, frame, modal, viewFactory, localizer);
+		return instanciateDialog(fibComponent, data, frame, modal, localizer);
 	}
 
 	/*
@@ -107,42 +108,41 @@ public class JFIBDialog<T> extends JDialog {
 	*/
 
 	public static <T> JFIBDialog<T> instanciateDialog(FIBComponent fibComponent, T data, Window frame, boolean modal,
-			GinaViewFactory<?> viewFactory, LocalizedDelegate localizer) {
-		return new JFIBDialog<T>(fibComponent, data, frame, modal, viewFactory, localizer);
+			LocalizedDelegate localizer) {
+		return new JFIBDialog<T>(fibComponent, data, frame, modal, localizer);
 	}
 
 	public static <T> JFIBDialog<T> instanciateDialog(FIBComponent fibComponent, T data, Window frame, boolean modal,
-			FIBController controller, GinaViewFactory<?> viewFactory) {
-		return new JFIBDialog<T>(fibComponent, data, frame, modal, controller, viewFactory);
+			FIBController controller) {
+		return new JFIBDialog<T>(fibComponent, data, frame, modal, controller);
+	}
+
+	public static <T> JFIBDialog<T> instanciateAndShowDialog(FIBComponent fibComponent, T data, Window frame, boolean modal) {
+		return instanciateAndShowDialog(fibComponent, data, frame, modal, (LocalizedDelegate) null);
 	}
 
 	public static <T> JFIBDialog<T> instanciateAndShowDialog(FIBComponent fibComponent, T data, Window frame, boolean modal,
-			GinaViewFactory<?> viewFactory) {
-		return instanciateAndShowDialog(fibComponent, data, frame, modal, viewFactory, (LocalizedDelegate) null);
-	}
-
-	public static <T> JFIBDialog<T> instanciateAndShowDialog(FIBComponent fibComponent, T data, Window frame, boolean modal,
-			GinaViewFactory<?> viewFactory, LocalizedDelegate localizer) {
-		JFIBDialog<T> dialog = instanciateDialog(fibComponent, data, frame, modal, viewFactory, localizer);
+			LocalizedDelegate localizer) {
+		JFIBDialog<T> dialog = instanciateDialog(fibComponent, data, frame, modal, localizer);
 		dialog.showDialog();
 		return dialog;
 	}
 
 	public static <T> JFIBDialog<T> instanciateAndShowDialog(FIBComponent fibComponent, T data, Window frame, boolean modal,
-			GinaViewFactory<?> viewFactory, FIBController controller) {
-		JFIBDialog<T> dialog = instanciateDialog(fibComponent, data, frame, modal, controller, viewFactory);
+			FIBController controller) {
+		JFIBDialog<T> dialog = instanciateDialog(fibComponent, data, frame, modal, controller);
 		dialog.showDialog();
 		return dialog;
 	}
 
 	public static <T> JFIBDialog<T> instanciateAndShowDialog(Resource componentFile, T data, Window frame, boolean modal,
-			GinaViewFactory<?> viewFactory, LocalizedDelegate localizer) {
+			LocalizedDelegate localizer) {
 		FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(componentFile);
 		if (fibComponent == null) {
 			LOGGER.warning("FileNotFoundException: " + componentFile.getURI());
 			return null;
 		}
-		return instanciateAndShowDialog(fibComponent, data, frame, modal, viewFactory, localizer);
+		return instanciateAndShowDialog(fibComponent, data, frame, modal, localizer);
 	}
 
 	/*
@@ -157,31 +157,28 @@ public class JFIBDialog<T> extends JDialog {
 		}
 		*/
 
-	protected JFIBDialog(FIBComponent fibComponent, T data, Window frame, boolean modal, GinaViewFactory<?> viewFactory,
-			LocalizedDelegate localizer) {
-		this(frame, modal, fibComponent, viewFactory, localizer);
+	protected JFIBDialog(FIBComponent fibComponent, T data, Window frame, boolean modal, LocalizedDelegate localizer) {
+		this(frame, modal, fibComponent, localizer);
 		getController().setDataObject(data);
 	}
 
-	protected JFIBDialog(FIBComponent fibComponent, T data, Window frame, boolean modal, FIBController controller,
-			GinaViewFactory<?> viewFactory) {
-		this(frame, modal, fibComponent, controller, viewFactory);
+	protected JFIBDialog(FIBComponent fibComponent, T data, Window frame, boolean modal, FIBController controller) {
+		this(frame, modal, fibComponent, controller);
 		getController().setDataObject(data);
 	}
 
-	private JFIBDialog(Window window, boolean modal, FIBComponent fibComponent, GinaViewFactory<?> viewFactory,
-			LocalizedDelegate localizer) {
+	private JFIBDialog(Window window, boolean modal, FIBComponent fibComponent, LocalizedDelegate localizer) {
 		super(window, fibComponent.getParameter("title"), modal ? DEFAULT_MODALITY_TYPE : ModalityType.MODELESS);
-		initDialog(fibComponent, viewFactory, localizer);
+		initDialog(fibComponent, localizer);
 	}
 
-	private JFIBDialog(Window window, boolean modal, FIBComponent fibComponent, FIBController controller, GinaViewFactory<?> viewFactory) {
+	private JFIBDialog(Window window, boolean modal, FIBComponent fibComponent, FIBController controller) {
 		super(window, fibComponent.getParameter("title"), modal ? DEFAULT_MODALITY_TYPE : ModalityType.MODELESS);
-		initDialog(fibComponent, controller, viewFactory);
+		initDialog(fibComponent, controller);
 	}
 
-	public void initDialog(FIBComponent fibComponent, GinaViewFactory<?> viewFactory, LocalizedDelegate localizer) {
-		initDialog(fibComponent, makeFIBController(fibComponent, viewFactory, localizer), viewFactory);
+	public void initDialog(FIBComponent fibComponent, LocalizedDelegate localizer) {
+		initDialog(fibComponent, makeFIBController(fibComponent, SwingViewFactory.INSTANCE, localizer));
 	}
 
 	protected FIBController makeFIBController(FIBComponent fibComponent, GinaViewFactory<?> viewFactory,
@@ -189,7 +186,7 @@ public class JFIBDialog<T> extends JDialog {
 		return FIBController.instanciateController(fibComponent, viewFactory, parentLocalizer);
 	}
 
-	public void initDialog(FIBComponent fibComponent, FIBController controller, GinaViewFactory<?> viewFactory) {
+	public void initDialog(FIBComponent fibComponent, FIBController controller) {
 		getRootPane().registerKeyboardAction(new ActionListener() {
 
 			@Override
@@ -198,7 +195,7 @@ public class JFIBDialog<T> extends JDialog {
 			}
 		}, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-		view = FIBController.makeView(fibComponent, viewFactory, controller);
+		view = FIBController.makeView(fibComponent, SwingViewFactory.INSTANCE, controller);
 		getContentPane().add(view.getResultingJComponent());
 		List<FIBButton> def = fibComponent.getDefaultButtons();
 		boolean defaultButtonSet = false;
