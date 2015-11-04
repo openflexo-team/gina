@@ -39,6 +39,7 @@
 
 package org.openflexo.fib.view;
 
+import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.JComponent;
@@ -173,11 +174,25 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 	 */
 	public static interface RenderingAdapter<C> {
 
-		public void setOpaque(C component, boolean opaque);
+		public Color getForegroundColor(C component);
+
+		public void setForegroundColor(C component, Color aColor);
+
+		public Color getBackgroundColor(C component);
+
+		public void setBackgroundColor(C component, Color aColor);
+
+		public Font getFont(C component);
 
 		public void setFont(C component, Font aFont);
 
+		public String getToolTipText(C component);
+
 		public void setToolTipText(C component, String aText);
+
+		public boolean isOpaque(C component);
+
+		public void setOpaque(C component, boolean opaque);
 
 		public void requestFocus(C component);
 

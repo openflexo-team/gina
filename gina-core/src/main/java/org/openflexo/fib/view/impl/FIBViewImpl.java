@@ -497,11 +497,15 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	}
 
 	protected void updateBackgroundColor() {
-		getJComponent().setBackground(getComponent().getBackgroundColor());
+		if (getComponent().getBackgroundColor() != null) {
+			getRenderingAdapter().setBackgroundColor(getTechnologyComponent(), getComponent().getBackgroundColor());
+		}
 	}
 
 	protected void updateForegroundColor() {
-		getJComponent().setForeground(getComponent().getForegroundColor());
+		if (getComponent().getForegroundColor() != null) {
+			getRenderingAdapter().setForegroundColor(getTechnologyComponent(), getComponent().getForegroundColor());
+		}
 	}
 
 	public static boolean equals(Object o1, Object o2) {

@@ -89,7 +89,7 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 	/**
 	 * Called to configure technology-specific component with relevant layout
 	 */
-	protected abstract void _setPanelLayoutParameters();
+	protected abstract void setPanelLayoutParameters(C technologyComponent);
 
 	@Override
 	public synchronized void updateLayout() {
@@ -106,7 +106,7 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 		}*/
 		getJComponent().removeAll();
 
-		_setPanelLayoutParameters();
+		setPanelLayoutParameters(getTechnologyComponent());
 		buildSubComponents();
 		// updateDataObject(getDataObject());
 		update();

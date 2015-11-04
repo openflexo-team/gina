@@ -39,6 +39,7 @@
 
 package org.openflexo.fib.swing.view;
 
+import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.JComponent;
@@ -54,8 +55,28 @@ import org.openflexo.fib.view.FIBView.RenderingAdapter;
 public class SwingRenderingAdapter<J extends JComponent> implements RenderingAdapter<J> {
 
 	@Override
-	public void setOpaque(J component, boolean opaque) {
-		component.setOpaque(opaque);
+	public Color getForegroundColor(J component) {
+		return component.getForeground();
+	}
+
+	@Override
+	public void setForegroundColor(J component, Color aColor) {
+		component.setForeground(aColor);
+	}
+
+	@Override
+	public Color getBackgroundColor(J component) {
+		return component.getBackground();
+	}
+
+	@Override
+	public void setBackgroundColor(J component, Color aColor) {
+		component.setBackground(aColor);
+	}
+
+	@Override
+	public Font getFont(J component) {
+		return component.getFont();
 	}
 
 	@Override
@@ -64,8 +85,23 @@ public class SwingRenderingAdapter<J extends JComponent> implements RenderingAda
 	}
 
 	@Override
+	public String getToolTipText(J component) {
+		return component.getToolTipText();
+	}
+
+	@Override
 	public void setToolTipText(J component, String aText) {
 		component.setToolTipText(aText);
+	}
+
+	@Override
+	public boolean isOpaque(J component) {
+		return component.isOpaque();
+	}
+
+	@Override
+	public void setOpaque(J component, boolean opaque) {
+		component.setOpaque(opaque);
 	}
 
 	@Override

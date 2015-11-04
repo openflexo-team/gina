@@ -256,34 +256,34 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> {
 	}
 
 	@Override
-	protected void _setPanelLayoutParameters() {
+	protected void setPanelLayoutParameters(JPanel technologyComponent) {
 		switch (getComponent().getLayout()) {
 			case none:
-				getTechnologyComponent().setLayout(null);
+				technologyComponent.setLayout(null);
 				break;
 			case flow:
-				getTechnologyComponent().setLayout(
+				technologyComponent.setLayout(
 						new FlowLayout(getComponent().getFlowAlignment().getAlign(), getComponent().getHGap(), getComponent().getVGap()));
 				break;
 			case border:
-				getTechnologyComponent().setLayout(new BorderLayout());
+				technologyComponent.setLayout(new BorderLayout());
 				break;
 			case grid:
 				// logger.info("rows="+getComponent().getRows()+" cols="+getComponent().getCols());
-				getTechnologyComponent().setLayout(new GridLayout(getComponent().getRows(), getComponent().getCols(),
-						getComponent().getHGap(), getComponent().getVGap()));
+				technologyComponent.setLayout(new GridLayout(getComponent().getRows(), getComponent().getCols(), getComponent().getHGap(),
+						getComponent().getVGap()));
 				break;
 			case box:
-				getTechnologyComponent().setLayout(new BoxLayout(getTechnologyComponent(), getComponent().getBoxLayoutAxis().getAxis()));
+				technologyComponent.setLayout(new BoxLayout(getTechnologyComponent(), getComponent().getBoxLayoutAxis().getAxis()));
 				break;
 			case twocols:
-				getTechnologyComponent().setLayout(new GridBagLayout());
+				technologyComponent.setLayout(new GridBagLayout());
 				break;
 			case gridbag:
-				getTechnologyComponent().setLayout(new GridBagLayout());
+				technologyComponent.setLayout(new GridBagLayout());
 				break;
 			case buttons:
-				getTechnologyComponent().setLayout(
+				technologyComponent.setLayout(
 						new ButtonLayout(getComponent().getFlowAlignment() != null ? getComponent().getFlowAlignment().getAlign() : -1,
 								getComponent().getHGap() != null ? getComponent().getHGap() : 5));
 				break;
@@ -368,9 +368,9 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> {
 
 		ScrollablePanel panel = new ScrollablePanel();
 		panel.setOpaque(false);
-		updateGraphicalProperties();
+		// updateGraphicalProperties();
 
-		_setPanelLayoutParameters();
+		setPanelLayoutParameters(panel);
 
 		return panel;
 	}

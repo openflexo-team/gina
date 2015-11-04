@@ -62,8 +62,7 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 
 	protected boolean validateOnReturn;
 
-	public FIBGenericTextWidgetImpl(F model, FIBController controller,
-			GenericTextRenderingAdapter<C> RenderingAdapter) {
+	public FIBGenericTextWidgetImpl(F model, FIBController controller, GenericTextRenderingAdapter<C> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
 
 		validateOnReturn = model.isValidateOnReturn();
@@ -136,7 +135,7 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 			try {
 				int caret = getRenderingAdapter().getCaretPosition(getTechnologyComponent());
 				getRenderingAdapter().setText(getTechnologyComponent(), getValue());
-				if (caret > -1 && caret < getValue().length()) {
+				if (caret > -1 && getValue() != null && caret < getValue().length()) {
 					getRenderingAdapter().setCaretPosition(getTechnologyComponent(), caret);
 				}
 			} finally {

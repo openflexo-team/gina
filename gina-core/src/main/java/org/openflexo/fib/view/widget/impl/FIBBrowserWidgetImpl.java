@@ -83,7 +83,6 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 	public static final String SELECTED = "selected";
 	public static final String SELECTION = "selection";
 
-	private final FIBBrowser _fibBrowser;
 	private FIBBrowserModel _browserModel;
 	private final FIBBrowserWidgetFooter<?, T> _footer;
 
@@ -94,11 +93,8 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 	private BindingValueListChangeListener<T, List<T>> selectionBindingValueChangeListener;
 	private BindingValueChangeListener<Object> rootBindingValueChangeListener;
 
-	public FIBBrowserWidgetImpl(FIBBrowser fibBrowser, FIBController controller,
-			BrowserRenderingAdapter<C, T> RenderingAdapter) {
+	public FIBBrowserWidgetImpl(FIBBrowser fibBrowser, FIBController controller, BrowserRenderingAdapter<C, T> RenderingAdapter) {
 		super(fibBrowser, controller, RenderingAdapter);
-
-		_fibBrowser = fibBrowser;
 
 		_footer = makeFooter();
 
@@ -191,12 +187,13 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 	}
 
 	public FIBBrowser getBrowser() {
-		return _fibBrowser;
+		return getWidget();
 	}
 
+	@Override
 	public FIBBrowserModel getBrowserModel() {
 		if (_browserModel == null) {
-			_browserModel = new FIBBrowserModel(_fibBrowser, this, getController());
+			_browserModel = new FIBBrowserModel(getBrowser(), this, getController());
 		}
 		return _browserModel;
 	}
