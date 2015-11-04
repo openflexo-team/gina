@@ -45,6 +45,7 @@
     <modules>
         <module>flexolocalization</module>
         <module>flexographicutils</module>
+        <module>gina-api</module>
         <module>gina-core</module>
         <module>gina-events</module>
         <module>gina-replay</module>
