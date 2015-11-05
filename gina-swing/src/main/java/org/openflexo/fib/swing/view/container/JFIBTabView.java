@@ -45,7 +45,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBTab;
+import org.openflexo.fib.model.container.FIBTab;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.fib.view.container.FIBTabView;
 

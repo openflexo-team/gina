@@ -43,8 +43,8 @@ import java.util.logging.Logger;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.fib.model.FIBSplitPanel;
-import org.openflexo.fib.model.SplitLayoutConstraints;
+import org.openflexo.fib.model.container.FIBSplitPanel;
+import org.openflexo.fib.model.container.SplitLayoutConstraints;
 import org.openflexo.fib.view.container.FIBSplitPanelView;
 import org.openflexo.fib.view.impl.FIBContainerViewImpl;
 import org.openflexo.fib.view.impl.FIBViewImpl;

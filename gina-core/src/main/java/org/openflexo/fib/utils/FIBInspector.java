@@ -40,8 +40,8 @@
 package org.openflexo.fib.utils;
 
 import org.openflexo.fib.model.FIBModelFactory;
-import org.openflexo.fib.model.FIBPanel;
-import org.openflexo.fib.model.FIBTabPanel;
+import org.openflexo.fib.model.container.FIBPanel;
+import org.openflexo.fib.model.container.FIBTabPanel;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;

@@ -47,7 +47,7 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBButton;
+import org.openflexo.fib.model.widget.FIBButton;
 import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.view.widget.FIBButtonWidget.ButtonWidgetRenderingAdapter;
 import org.openflexo.fib.view.widget.impl.FIBButtonWidgetImpl;

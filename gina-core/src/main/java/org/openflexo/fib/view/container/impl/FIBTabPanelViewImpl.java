@@ -44,8 +44,8 @@ import java.util.logging.Logger;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.fib.model.FIBTab;
-import org.openflexo.fib.model.FIBTabPanel;
+import org.openflexo.fib.model.container.FIBTab;
+import org.openflexo.fib.model.container.FIBTabPanel;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.fib.view.container.FIBTabPanelView;
 import org.openflexo.fib.view.impl.FIBContainerViewImpl;

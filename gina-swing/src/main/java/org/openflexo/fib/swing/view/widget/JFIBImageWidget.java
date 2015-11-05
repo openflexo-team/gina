@@ -48,7 +48,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBImage;
+import org.openflexo.fib.model.widget.FIBImage;
 import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.view.widget.FIBImageWidget;
 import org.openflexo.fib.view.widget.impl.FIBImageWidgetImpl;

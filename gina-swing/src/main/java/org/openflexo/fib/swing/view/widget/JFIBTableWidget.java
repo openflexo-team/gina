@@ -74,12 +74,12 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.controller.FIBSelectable;
-import org.openflexo.fib.model.FIBTable;
+import org.openflexo.fib.model.widget.FIBTable;
 import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.swing.view.widget.JFIBTableWidget.JTablePanel;
 import org.openflexo.fib.view.widget.impl.FIBTableWidgetImpl;
-import org.openflexo.fib.view.widget.table.FIBTableActionListener;
-import org.openflexo.fib.view.widget.table.FIBTableModel;
+import org.openflexo.fib.view.widget.table.impl.FIBTableActionListener;
+import org.openflexo.fib.view.widget.table.impl.FIBTableModel;
 import org.openflexo.gina.event.description.FIBEventFactory;
 import org.openflexo.gina.manager.GinaStackEvent;
 

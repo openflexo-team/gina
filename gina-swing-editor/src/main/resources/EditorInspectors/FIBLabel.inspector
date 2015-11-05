@@ -1,7 +1,7 @@
 <Inspector 
 	   name="Inspector" 
 	   layout="border" 
-	   dataClassName="org.openflexo.fib.model.FIBLabel">
+	   dataClassName="org.openflexo.fib.model.widget.FIBLabel">
 	<Parameter name="title" value="Label"/>
 
 		<TabPanel name="Tab" constraints="border(location=center)">

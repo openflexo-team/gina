@@ -56,7 +56,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBCheckboxList;
+import org.openflexo.fib.model.widget.FIBCheckboxList;
 import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.swing.view.widget.JFIBCheckboxListWidget.JCheckBoxListPanel;
 import org.openflexo.fib.view.widget.impl.FIBCheckboxListWidgetImpl;

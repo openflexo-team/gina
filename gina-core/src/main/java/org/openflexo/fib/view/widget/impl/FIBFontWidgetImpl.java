@@ -43,7 +43,7 @@ import java.awt.Font;
 import java.util.logging.Logger;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBFont;
+import org.openflexo.fib.model.widget.FIBFont;
 import org.openflexo.fib.view.impl.FIBWidgetViewImpl;
 import org.openflexo.fib.view.widget.FIBFontWidget;
 import org.openflexo.gina.event.description.FIBEventFactory;

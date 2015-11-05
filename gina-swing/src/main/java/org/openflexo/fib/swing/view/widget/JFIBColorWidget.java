@@ -52,8 +52,8 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBColor;
 import org.openflexo.fib.model.FIBModelObject.FIBModelObjectImpl;
+import org.openflexo.fib.model.widget.FIBColor;
 import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.swing.view.widget.JFIBColorWidget.ColorSelectorPanel;
 import org.openflexo.fib.view.widget.impl.FIBColorWidgetImpl;

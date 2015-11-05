@@ -42,7 +42,7 @@ package org.openflexo.fib.view.widget.impl;
 import java.util.logging.Logger;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBTextArea;
+import org.openflexo.fib.model.widget.FIBTextArea;
 import org.openflexo.fib.view.widget.FIBTextAreaWidget;
 
 /**

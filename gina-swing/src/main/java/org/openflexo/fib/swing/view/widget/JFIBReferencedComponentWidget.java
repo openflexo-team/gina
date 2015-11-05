@@ -44,7 +44,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBReferencedComponent;
+import org.openflexo.fib.model.widget.FIBReferencedComponent;
 import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.view.widget.impl.FIBReferencedComponentWidgetImpl;
 

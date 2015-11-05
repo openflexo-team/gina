@@ -52,7 +52,7 @@ import javax.swing.SwingUtilities;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBList;
+import org.openflexo.fib.model.widget.FIBList;
 import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.view.widget.impl.FIBListWidgetImpl;
 import org.openflexo.gina.event.description.EventDescription;

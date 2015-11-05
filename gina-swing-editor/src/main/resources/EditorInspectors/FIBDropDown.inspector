@@ -1,7 +1,7 @@
 <Inspector 
 	   name="Inspector" 
 	   layout="border" 
-	   dataClassName="org.openflexo.fib.model.FIBDropDown">
+	   dataClassName="org.openflexo.fib.model.widget.FIBDropDown">
 	<Parameter name="title" value="DropDown"/>
 
 		<TabPanel name="Tab" constraints="border(location=center)">

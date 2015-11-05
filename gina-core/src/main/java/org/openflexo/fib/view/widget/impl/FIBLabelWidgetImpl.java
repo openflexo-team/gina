@@ -43,7 +43,7 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBLabel;
+import org.openflexo.fib.model.widget.FIBLabel;
 import org.openflexo.fib.view.impl.FIBWidgetViewImpl;
 import org.openflexo.fib.view.widget.FIBLabelWidget;
 

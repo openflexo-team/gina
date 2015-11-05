@@ -45,7 +45,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBLabel;
+import org.openflexo.fib.model.widget.FIBLabel;
 import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.view.widget.impl.FIBLabelWidgetImpl;
 

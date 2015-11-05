@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Inspector layout="border" darkLevel="0" dataClassName="org.openflexo.fib.model.FIBBrowser" name="Inspector">
+<Inspector layout="border" darkLevel="0" dataClassName="org.openflexo.fib.model.widget.FIBBrowser" name="Inspector">
   <TabPanel name="Tab" constraints="border(location=center)">
     <Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
       <Label label="root" constraints="twocols(location=left)" localize="true" />
@@ -20,7 +20,7 @@
       <Label label="show_roots_handle" constraints="twocols(expandHorizontally=true;location=right)" localize="true" />
     </Tab>
     <Tab title="Browser" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="1" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab">
-      <Table iteratorClassName="org.openflexo.fib.model.FIBBrowserElement" visibleRowCount="8" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="ElementsTable" data="data.elements" constraints="twocols(expandHorizontally=true;expandVertically=true;location=center)" font="SansSerif,0,11">
+      <Table iteratorClassName="org.openflexo.fib.model.widget.FIBBrowserElement" visibleRowCount="8" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="ElementsTable" data="data.elements" constraints="twocols(expandHorizontally=true;expandVertically=true;location=center)" font="SansSerif,0,11">
         <IconColumn data="iterator.imageIcon" columnWidth="20" resizable="false" displayTitle="true" name="icon" />
         <TextFieldColumn data="iterator.name" title="name" columnWidth="100" resizable="true" displayTitle="true" name="name" />
         <LabelColumn data="iterator.dataClass" title="class" columnWidth="200" resizable="true" displayTitle="true" name="class" />
@@ -31,7 +31,7 @@
         <CustomAction method="data.moveDown(selected)" name="move_down" />
         <CustomAction method="data.moveToBottom(selected)" name="move_to_bottom" />
       </Table>
-      <TabPanel name="ElementDetailsPanel" data="ElementsTable.selected" dataClassName="org.openflexo.fib.model.FIBBrowserElement" constraints="twocols(expandHorizontally=true;expandVertically=true;location=center)" visible="(ElementsTable.selected != null)" font="SansSerif,0,12">
+      <TabPanel name="ElementDetailsPanel" data="ElementsTable.selected" dataClassName="org.openflexo.fib.model.widget.FIBBrowserElement" constraints="twocols(expandHorizontally=true;expandVertically=true;location=center)" visible="(ElementsTable.selected != null)" font="SansSerif,0,12">
         <Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="0" font="SansSerif,0,11" name="DetailsBasicTab">
           <Label label="name" constraints="twocols(location=left)" localize="true" />
           <TextField data="ElementsTable.selected.name" constraints="twocols(expandHorizontally=true;location=right)" localize="true" columns="15" />
@@ -106,7 +106,7 @@
           </Table>
         </Tab>
         <Tab title="Actions" layout="border" titleFont="SansSerif,0,11" darkLevel="0" index="3" font="SansSerif,0,11" name="ActionTab">
-          <Table iteratorClassName="org.openflexo.fib.model.FIBBrowserAction" visibleRowCount="5" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="ActionsTable" data="ElementsTable.selected.actions" constraints="border(location=center)" font="SansSerif,0,11">
+          <Table iteratorClassName="org.openflexo.fib.model.widget.FIBBrowserAction" visibleRowCount="5" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="ActionsTable" data="ElementsTable.selected.actions" constraints="border(location=center)" font="SansSerif,0,11">
             <TextFieldColumn data="iterator.name" title="action" columnWidth="200" resizable="true" displayTitle="true" name="name" />
             <LabelColumn data="iterator.actionType" title="type" columnWidth="80" resizable="true" displayTitle="true" name="type" />
             <CustomColumn componentClassName="org.openflexo.fib.swing.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.method" title="method" columnWidth="300" resizable="true" displayTitle="true" name="method">
@@ -133,7 +133,7 @@
       <CheckBox selected="false" data="data.deepExploration" constraints="twocols(location=left)" localize="true" />
       <Label label="deep_exploration_support" constraints="twocols(location=right)" localize="true" />
       <Label label="selectionMode" constraints="twocols(location=left)" localize="true" />
-      <DropDown data="data.treeSelectionMode" constraints="twocols(location=right)" localize="true" iteratorClassName="org.openflexo.fib.model.TreeSelectionMode" autoSelectFirstRow="false" />
+      <DropDown data="data.treeSelectionMode" constraints="twocols(location=right)" localize="true" iteratorClassName="org.openflexo.fib.model.widget.TreeSelectionMode" autoSelectFirstRow="false" />
     </Tab>
     <Tab title="Layout" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="3" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="LayoutTab" />
     <Tab title="Graphics" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="4" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="GraphicsTab">

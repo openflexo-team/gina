@@ -40,7 +40,7 @@
 package org.openflexo.fib.view.widget.impl;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBBrowserElement;
+import org.openflexo.fib.model.widget.FIBBrowserElement;
 import org.openflexo.fib.view.widget.FIBBrowserWidget;
 
 /**

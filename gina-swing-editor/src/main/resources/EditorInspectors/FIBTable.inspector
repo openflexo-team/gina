@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Inspector layout="border" darkLevel="0" dataClassName="org.openflexo.fib.model.FIBTable" name="Inspector">
+<Inspector layout="border" darkLevel="0" dataClassName="org.openflexo.fib.model.widget.FIBTable" name="Inspector">
   <TabPanel name="Tab" constraints="border(location=center)">
     <Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
       <Label label="iterator_class" constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true" />
@@ -18,7 +18,7 @@
     <Tab title="Table" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="1" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab">
       <TabPanel constraints="twocols(expandHorizontally=true;expandVertically=true;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=center)">
         <Tab title="Columns" layout="gridbag" titleFont="SansSerif,0,11" darkLevel="0" index="0">
-          <Table iteratorClassName="org.openflexo.fib.model.FIBTableColumn" visibleRowCount="5" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="ColumnsTable" index="0" data="data.columns" constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)">
+          <Table iteratorClassName="org.openflexo.fib.model.widget.FIBTableColumn" visibleRowCount="5" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="ColumnsTable" index="0" data="data.columns" constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)">
             <TextFieldColumn data="iterator.title" title="title" columnWidth="200" resizable="true" displayTitle="true" name="title" />
             <LabelColumn data="iterator.columnType" title="type" columnWidth="150" resizable="true" displayTitle="true" name="type" />
             <CheckBoxColumn data="iterator.resizable" title="Resize" columnWidth="50" resizable="false" displayTitle="true" name="resizable" />
@@ -71,13 +71,13 @@
               <Assignment variable="component.bindable" value="ColumnsTable.selected" />
             </Custom>
             <Label label="action" index="22" constraints="twocols(expandHorizontally=true;expandVertically=false;index=22;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" visible="ColumnsTable.selected.class.simpleName == &quot;FIBButtonColumn&quot;" localize="true" />
-            <Panel layout="border" titleFont="SansSerif,0,11" darkLevel="0" index="23" data="($org.openflexo.fib.model.FIBButtonColumn)ColumnsTable.selected" dataClassName="org.openflexo.fib.model.FIBButtonColumn" constraints="twocols(expandHorizontally=true;expandVertically=false;index=23;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)" visible="ColumnsTable.selected.class.simpleName == &quot;FIBButtonColumn&quot;" name="buttonColumn">
+            <Panel layout="border" titleFont="SansSerif,0,11" darkLevel="0" index="23" data="($org.openflexo.fib.model.FIBButtonColumn)ColumnsTable.selected" dataClassName="org.openflexo.fib.model.widget.FIBButtonColumn" constraints="twocols(expandHorizontally=true;expandVertically=false;index=23;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)" visible="ColumnsTable.selected.class.simpleName == &quot;FIBButtonColumn&quot;" name="buttonColumn">
               <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" name="actionvalue" data="buttonColumn.data.action" constraints="border(location=center)">
                 <Assignment variable="component.bindable" value="buttonColumn.data" />
               </Custom>
             </Panel>
             <Label label="enable" index="24" constraints="twocols(expandHorizontally=true;expandVertically=false;index=24;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" visible="ColumnsTable.selected.class.simpleName == &quot;FIBButtonColumn&quot;" localize="true" />
-            <Panel layout="border" titleFont="SansSerif,0,11" darkLevel="0" index="25" data="($org.openflexo.fib.model.FIBButtonColumn)ColumnsTable.selected" dataClassName="org.openflexo.fib.model.FIBButtonColumn" constraints="twocols(expandHorizontally=true;expandVertically=false;index=25;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)" visible="ColumnsTable.selected.class.simpleName == &quot;FIBButtonColumn&quot;" name="buttonColumnEnabled">
+            <Panel layout="border" titleFont="SansSerif,0,11" darkLevel="0" index="25" data="($org.openflexo.fib.model.FIBButtonColumn)ColumnsTable.selected" dataClassName="org.openflexo.fib.model.widget.FIBButtonColumn" constraints="twocols(expandHorizontally=true;expandVertically=false;index=25;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)" visible="ColumnsTable.selected.class.simpleName == &quot;FIBButtonColumn&quot;" name="buttonColumnEnabled">
               <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" name="enabledvalue" data="buttonColumnEnabled.data.enabled" constraints="border(location=center)">
                 <Assignment variable="component.bindable" value="buttonColumnEnabled.data" />
               </Custom>
@@ -90,7 +90,7 @@
           </Panel>
         </Tab>
         <Tab title="Actions" layout="border" titleFont="SansSerif,0,11" darkLevel="0" index="1">
-          <Table iteratorClassName="org.openflexo.fib.model.FIBTableAction" visibleRowCount="5" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="ActionsTable" data="data.actions" constraints="border(location=center)">
+          <Table iteratorClassName="org.openflexo.fib.model.widget.FIBTableAction" visibleRowCount="5" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="ActionsTable" data="data.actions" constraints="border(location=center)">
             <TextFieldColumn data="iterator.name" title="action" columnWidth="200" resizable="true" displayTitle="true" name="name" />
             <LabelColumn data="iterator.actionType" title="type" columnWidth="80" resizable="true" displayTitle="true" name="type" />
             <CustomColumn componentClassName="org.openflexo.fib.swing.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.method" title="method" columnWidth="300" resizable="true" displayTitle="true" name="visibleValue">

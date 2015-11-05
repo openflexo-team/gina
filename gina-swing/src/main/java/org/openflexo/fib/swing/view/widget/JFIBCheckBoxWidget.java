@@ -48,7 +48,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBCheckBox;
+import org.openflexo.fib.model.widget.FIBCheckBox;
 import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.view.widget.impl.FIBCheckBoxWidgetImpl;
 import org.openflexo.gina.event.description.FIBEventFactory;

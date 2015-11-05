@@ -56,19 +56,20 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.fib.FIBTestCase;
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBBrowser;
-import org.openflexo.fib.model.FIBBrowserElement;
-import org.openflexo.fib.model.FIBBrowserElement.FIBBrowserElementChildren;
-import org.openflexo.fib.model.FIBPanel;
-import org.openflexo.fib.model.FIBPanel.Layout;
-import org.openflexo.fib.model.TwoColsLayoutConstraints;
-import org.openflexo.fib.model.TwoColsLayoutConstraints.TwoColsLayoutLocation;
+import org.openflexo.fib.model.container.FIBPanel;
+import org.openflexo.fib.model.container.TwoColsLayoutConstraints;
+import org.openflexo.fib.model.container.FIBPanel.Layout;
+import org.openflexo.fib.model.container.TwoColsLayoutConstraints.TwoColsLayoutLocation;
+import org.openflexo.fib.model.widget.FIBBrowser;
+import org.openflexo.fib.model.widget.FIBBrowserElement;
+import org.openflexo.fib.model.widget.FIBBrowserElement.FIBBrowserElementChildren;
 import org.openflexo.fib.sampleData.Family;
 import org.openflexo.fib.sampleData.Person;
 import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.fib.swing.view.SwingViewFactory;
+import org.openflexo.fib.swing.view.widget.JFIBBrowserWidget;
 import org.openflexo.fib.view.widget.FIBBrowserWidget;
-import org.openflexo.fib.view.widget.browser.FIBBrowserModel.BrowserCell;
+import org.openflexo.fib.view.widget.browser.impl.FIBBrowserModel.BrowserCell;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
@@ -161,7 +162,7 @@ public class FIBBrowserWidgetTest extends FIBTestCase {
 	@TestOrder(3)
 	public void test3ModifyValueInModel() {
 
-		FIBBrowserWidget w = (FIBBrowserWidget) controller.viewForComponent(browser);
+		JFIBBrowserWidget w = (JFIBBrowserWidget) controller.viewForComponent(browser);
 
 		BrowserCell root = (BrowserCell) w.getBrowserModel().getRoot();
 

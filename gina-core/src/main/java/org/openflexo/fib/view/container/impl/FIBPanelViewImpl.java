@@ -46,9 +46,9 @@ import javax.swing.JPanel;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.fib.model.FIBPanel;
-import org.openflexo.fib.model.FIBPanel.Layout;
-import org.openflexo.fib.model.GridLayoutConstraints;
+import org.openflexo.fib.model.container.FIBPanel;
+import org.openflexo.fib.model.container.GridLayoutConstraints;
+import org.openflexo.fib.model.container.FIBPanel.Layout;
 import org.openflexo.fib.view.container.FIBPanelView;
 import org.openflexo.fib.view.impl.FIBContainerViewImpl;
 import org.openflexo.fib.view.impl.FIBViewImpl;

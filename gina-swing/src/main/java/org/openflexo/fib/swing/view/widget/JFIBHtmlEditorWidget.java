@@ -42,8 +42,8 @@ package org.openflexo.fib.swing.view.widget;
 import java.util.logging.Logger;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBHtmlEditor;
-import org.openflexo.fib.model.FIBHtmlEditorOption;
+import org.openflexo.fib.model.widget.FIBHtmlEditor;
+import org.openflexo.fib.model.widget.FIBHtmlEditorOption;
 import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.view.widget.impl.FIBHtmlEditorWidgetImpl;
 

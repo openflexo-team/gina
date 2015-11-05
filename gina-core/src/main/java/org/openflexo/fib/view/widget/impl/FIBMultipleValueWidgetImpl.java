@@ -61,7 +61,7 @@ import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelObject.FIBModelObjectImpl;
-import org.openflexo.fib.model.FIBMultipleValues;
+import org.openflexo.fib.model.widget.FIBMultipleValues;
 import org.openflexo.fib.view.impl.FIBWidgetViewImpl;
 import org.openflexo.fib.view.widget.FIBMultipleValueWidget;
 import org.openflexo.localization.FlexoLocalization;

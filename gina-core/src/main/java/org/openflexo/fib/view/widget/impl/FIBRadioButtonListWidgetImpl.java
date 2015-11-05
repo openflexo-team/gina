@@ -43,7 +43,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBRadioButtonList;
+import org.openflexo.fib.model.widget.FIBRadioButtonList;
 import org.openflexo.fib.view.widget.FIBRadioButtonListWidget;
 
 /**

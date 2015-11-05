@@ -51,8 +51,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBTab;
-import org.openflexo.fib.model.FIBTabPanel;
+import org.openflexo.fib.model.container.FIBTab;
+import org.openflexo.fib.model.container.FIBTabPanel;
 import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.view.FIBView;
 import org.openflexo.fib.view.container.impl.FIBTabPanelViewImpl;

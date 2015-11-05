@@ -64,8 +64,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBCustom;
-import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
+import org.openflexo.fib.model.widget.FIBCustom;
+import org.openflexo.fib.model.widget.FIBCustom.FIBCustomComponent;
 import org.openflexo.swing.ButtonsControlPanel;
 import org.openflexo.swing.TextFieldCustomPopup;
 import org.openflexo.toolbox.Duration;

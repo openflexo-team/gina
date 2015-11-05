@@ -43,7 +43,7 @@ import java.util.Enumeration;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.view.widget.FIBTableWidget;
-import org.openflexo.fib.view.widget.table.FIBTableActionListener;
+import org.openflexo.fib.view.widget.table.impl.FIBTableActionListener;
 
 /**
  * Represent a table widget footer (the footer is synchronized with the selection of table)

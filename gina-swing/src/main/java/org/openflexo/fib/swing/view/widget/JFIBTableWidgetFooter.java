@@ -54,11 +54,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
-import org.openflexo.fib.model.FIBTableAction;
+import org.openflexo.fib.model.widget.FIBTableAction;
 import org.openflexo.fib.utils.FIBIconLibrary;
 import org.openflexo.fib.view.widget.FIBTableWidget;
-import org.openflexo.fib.view.widget.table.FIBTableActionListener;
-import org.openflexo.fib.view.widget.table.FIBTableWidgetFooterImpl;
+import org.openflexo.fib.view.widget.table.impl.FIBTableActionListener;
+import org.openflexo.fib.view.widget.table.impl.FIBTableWidgetFooterImpl;
 
 /**
  * Swing implementation for a table widget footer (the footer is synchronized with the selection of table)<br>

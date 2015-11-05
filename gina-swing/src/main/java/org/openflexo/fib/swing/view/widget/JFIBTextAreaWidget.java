@@ -56,7 +56,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBTextArea;
+import org.openflexo.fib.model.widget.FIBTextArea;
 import org.openflexo.fib.swing.view.SwingTextRenderingAdapter;
 import org.openflexo.fib.view.widget.impl.FIBTextAreaWidgetImpl;
 import org.openflexo.toolbox.ToolBox;

@@ -64,14 +64,14 @@ import javax.swing.JOptionPane;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.editor.FIBAbstractEditor;
 import org.openflexo.fib.editor.view.FIBEditableViewDelegate.FIBDropTarget;
-import org.openflexo.fib.model.ComponentConstraints;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBContainer;
-import org.openflexo.fib.model.FIBPanel;
-import org.openflexo.fib.model.FIBPanel.Layout;
+import org.openflexo.fib.model.container.ComponentConstraints;
+import org.openflexo.fib.model.container.FIBPanel;
+import org.openflexo.fib.model.container.FIBTab;
+import org.openflexo.fib.model.container.FIBTabPanel;
+import org.openflexo.fib.model.container.FIBPanel.Layout;
 import org.openflexo.fib.swing.utils.swing.view.FIBView;
-import org.openflexo.fib.model.FIBTab;
-import org.openflexo.fib.model.FIBTabPanel;
 import org.openflexo.logging.FlexoLogger;
 
 public class PaletteElement implements FIBDraggable /*implements Transferable*/{

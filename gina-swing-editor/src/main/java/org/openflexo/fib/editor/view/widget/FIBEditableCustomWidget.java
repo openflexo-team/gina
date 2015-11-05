@@ -48,8 +48,8 @@ import org.openflexo.fib.editor.controller.FIBEditorController;
 import org.openflexo.fib.editor.view.FIBEditableView;
 import org.openflexo.fib.editor.view.FIBEditableViewDelegate;
 import org.openflexo.fib.editor.view.PlaceHolder;
-import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBModelObject;
+import org.openflexo.fib.model.widget.FIBCustom;
 import org.openflexo.fib.swing.view.widget.JFIBCustomWidget;
 import org.openflexo.logging.FlexoLogger;
 

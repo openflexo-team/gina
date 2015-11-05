@@ -56,8 +56,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBFile;
 import org.openflexo.fib.model.FIBModelObject.FIBModelObjectImpl;
+import org.openflexo.fib.model.widget.FIBFile;
 import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.swing.view.widget.JFIBFileWidget.FileSelectorPanel;
 import org.openflexo.fib.view.widget.impl.FIBFileWidgetImpl;

@@ -11,11 +11,11 @@ import static org.junit.Assert.assertTrue;
 
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
-import org.openflexo.fib.model.FIBButton;
-import org.openflexo.fib.model.FIBLabel;
-import org.openflexo.fib.model.FIBTextField;
-import org.openflexo.fib.model.TwoColsLayoutConstraints;
-import org.openflexo.fib.model.TwoColsLayoutConstraints.TwoColsLayoutLocation;
+import org.openflexo.fib.model.container.TwoColsLayoutConstraints;
+import org.openflexo.fib.model.container.TwoColsLayoutConstraints.TwoColsLayoutLocation;
+import org.openflexo.fib.model.widget.FIBButton;
+import org.openflexo.fib.model.widget.FIBLabel;
+import org.openflexo.fib.model.widget.FIBTextField;
 import org.openflexo.replay.sampleData.Gender;
 //import org.openflexo.replay.sampleData.Family.Gender;
 import org.openflexo.replay.sampleData.Person;

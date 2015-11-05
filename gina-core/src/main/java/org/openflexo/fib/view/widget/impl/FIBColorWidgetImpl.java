@@ -43,7 +43,7 @@ import java.awt.Color;
 import java.util.logging.Logger;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBColor;
+import org.openflexo.fib.model.widget.FIBColor;
 import org.openflexo.fib.view.impl.FIBWidgetViewImpl;
 import org.openflexo.fib.view.widget.FIBColorWidget;
 import org.openflexo.gina.event.description.FIBEventFactory;

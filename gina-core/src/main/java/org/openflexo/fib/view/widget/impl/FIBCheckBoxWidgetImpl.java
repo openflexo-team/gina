@@ -42,7 +42,7 @@ package org.openflexo.fib.view.widget.impl;
 import java.util.logging.Logger;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBCheckBox;
+import org.openflexo.fib.model.widget.FIBCheckBox;
 import org.openflexo.fib.view.impl.FIBWidgetViewImpl;
 import org.openflexo.fib.view.widget.FIBCheckBoxWidget;
 import org.openflexo.gina.event.description.EventDescription;

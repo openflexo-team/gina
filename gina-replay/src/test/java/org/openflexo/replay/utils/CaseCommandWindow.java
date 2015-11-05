@@ -2,12 +2,12 @@ package org.openflexo.replay.utils;
 
 import org.openflexo.connie.DataBinding;
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBButton;
-import org.openflexo.fib.model.FIBLabel;
-import org.openflexo.fib.model.FIBPanel;
-import org.openflexo.fib.model.FIBPanel.Layout;
-import org.openflexo.fib.model.TwoColsLayoutConstraints;
-import org.openflexo.fib.model.TwoColsLayoutConstraints.TwoColsLayoutLocation;
+import org.openflexo.fib.model.container.FIBPanel;
+import org.openflexo.fib.model.container.TwoColsLayoutConstraints;
+import org.openflexo.fib.model.container.FIBPanel.Layout;
+import org.openflexo.fib.model.container.TwoColsLayoutConstraints.TwoColsLayoutLocation;
+import org.openflexo.fib.model.widget.FIBButton;
+import org.openflexo.fib.model.widget.FIBLabel;
 import org.openflexo.fib.swing.view.SwingViewFactory;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.replay.GinaReplayManager;

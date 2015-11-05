@@ -54,8 +54,8 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBDropDown;
 import org.openflexo.fib.model.FIBModelObject.FIBModelObjectImpl;
+import org.openflexo.fib.model.widget.FIBDropDown;
 import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.view.widget.impl.FIBDropDownWidgetImpl;
 import org.openflexo.localization.FlexoLocalization;

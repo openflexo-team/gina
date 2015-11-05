@@ -48,10 +48,10 @@ import org.openflexo.fib.editor.controller.FIBEditorController;
 import org.openflexo.fib.editor.view.FIBEditableView;
 import org.openflexo.fib.editor.view.FIBEditableViewDelegate;
 import org.openflexo.fib.editor.view.PlaceHolder;
-import org.openflexo.fib.model.FIBCheckboxList;
 import org.openflexo.fib.model.FIBModelObject;
-import org.openflexo.fib.model.FIBMultipleValues;
 import org.openflexo.fib.model.FIBWidget;
+import org.openflexo.fib.model.widget.FIBCheckboxList;
+import org.openflexo.fib.model.widget.FIBMultipleValues;
 import org.openflexo.fib.swing.utils.swing.view.widget.FIBCheckboxListWidget;
 import org.openflexo.logging.FlexoLogger;
 

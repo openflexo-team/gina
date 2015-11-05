@@ -45,7 +45,7 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBSplitPanel;
+import org.openflexo.fib.model.container.FIBSplitPanel;
 import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.view.container.impl.FIBSplitPanelViewImpl;
 import org.openflexo.swing.layout.JXMultiSplitPane;

@@ -57,11 +57,11 @@ import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBBrowser;
+import org.openflexo.fib.model.widget.FIBBrowser;
 import org.openflexo.fib.view.impl.FIBWidgetViewImpl;
 import org.openflexo.fib.view.widget.FIBBrowserWidget;
-import org.openflexo.fib.view.widget.browser.FIBBrowserModel;
-import org.openflexo.fib.view.widget.browser.FIBBrowserModel.BrowserCell;
+import org.openflexo.fib.view.widget.browser.impl.FIBBrowserModel;
+import org.openflexo.fib.view.widget.browser.impl.FIBBrowserModel.BrowserCell;
 import org.openflexo.gina.event.description.FIBEventFactory;
 import org.openflexo.gina.manager.GinaStackEvent;
 
@@ -190,7 +190,6 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		return getWidget();
 	}
 
-	@Override
 	public FIBBrowserModel getBrowserModel() {
 		if (_browserModel == null) {
 			_browserModel = new FIBBrowserModel(getBrowser(), this, getController());

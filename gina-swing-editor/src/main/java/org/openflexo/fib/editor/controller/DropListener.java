@@ -54,8 +54,8 @@ import java.util.logging.Logger;
 import org.openflexo.fib.editor.view.FIBEditableView;
 import org.openflexo.fib.editor.view.FIBEditableViewDelegate;
 import org.openflexo.fib.editor.view.FIBEditableViewDelegate.FIBDropTarget;
-import org.openflexo.fib.editor.view.PlaceHolder;
 import org.openflexo.fib.model.FIBContainer;
+import org.openflexo.fib.editor.view.PlaceHolder;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.swing.Focusable;
 

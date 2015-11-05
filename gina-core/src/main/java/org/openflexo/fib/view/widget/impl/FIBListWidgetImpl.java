@@ -56,7 +56,7 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.controller.FIBSelectable;
-import org.openflexo.fib.model.FIBList;
+import org.openflexo.fib.model.widget.FIBList;
 import org.openflexo.fib.view.widget.FIBListWidget;
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.event.description.FIBEventFactory;

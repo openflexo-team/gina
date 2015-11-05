@@ -43,7 +43,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBNumber;
+import org.openflexo.fib.model.widget.FIBNumber;
 import org.openflexo.fib.view.impl.FIBWidgetViewImpl;
 import org.openflexo.fib.view.widget.FIBNumberWidget;
 import org.openflexo.gina.event.description.EventDescription;

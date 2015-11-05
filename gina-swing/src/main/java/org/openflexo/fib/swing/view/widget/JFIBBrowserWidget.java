@@ -67,12 +67,12 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBBrowser;
+import org.openflexo.fib.model.widget.FIBBrowser;
 import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.swing.view.widget.JFIBBrowserWidget.JTreePanel;
-import org.openflexo.fib.view.widget.browser.FIBBrowserCellEditor;
-import org.openflexo.fib.view.widget.browser.FIBBrowserCellRenderer;
-import org.openflexo.fib.view.widget.browser.FIBBrowserModel.BrowserCell;
+import org.openflexo.fib.view.widget.browser.impl.FIBBrowserCellEditor;
+import org.openflexo.fib.view.widget.browser.impl.FIBBrowserCellRenderer;
+import org.openflexo.fib.view.widget.browser.impl.FIBBrowserModel.BrowserCell;
 import org.openflexo.fib.view.widget.impl.FIBBrowserWidgetImpl;
 import org.openflexo.toolbox.ToolBox;
 

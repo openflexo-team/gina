@@ -49,7 +49,7 @@ import org.openflexo.fib.editor.view.FIBEditableView;
 import org.openflexo.fib.editor.view.FIBEditableViewDelegate;
 import org.openflexo.fib.editor.view.PlaceHolder;
 import org.openflexo.fib.model.FIBModelObject;
-import org.openflexo.fib.model.FIBTable;
+import org.openflexo.fib.model.widget.FIBTable;
 import org.openflexo.fib.swing.view.widget.JFIBTableWidget;
 import org.openflexo.logging.FlexoLogger;
 

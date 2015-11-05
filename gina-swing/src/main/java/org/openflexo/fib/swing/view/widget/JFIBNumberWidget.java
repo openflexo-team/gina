@@ -63,7 +63,7 @@ import javax.swing.event.ChangeListener;
 
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBModelObject.FIBModelObjectImpl;
-import org.openflexo.fib.model.FIBNumber;
+import org.openflexo.fib.model.widget.FIBNumber;
 import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.swing.view.widget.JFIBNumberWidget.NumberSelectorPanel;
 import org.openflexo.fib.view.widget.impl.FIBNumberWidgetImpl;

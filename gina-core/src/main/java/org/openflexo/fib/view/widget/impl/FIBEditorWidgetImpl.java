@@ -43,8 +43,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBEditor;
-import org.openflexo.fib.model.FIBEditor.FIBTokenMarkerStyle;
+import org.openflexo.fib.model.widget.FIBEditor;
+import org.openflexo.fib.model.widget.FIBEditor.FIBTokenMarkerStyle;
 import org.openflexo.fib.view.impl.FIBWidgetViewImpl;
 import org.openflexo.fib.view.widget.FIBEditorWidget;
 import org.openflexo.jedit.BatchFileTokenMarker;

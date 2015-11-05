@@ -59,7 +59,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBTextField;
+import org.openflexo.fib.model.widget.FIBTextField;
 import org.openflexo.fib.swing.view.SwingTextRenderingAdapter;
 import org.openflexo.fib.view.widget.impl.FIBTextFieldWidgetImpl;
 import org.openflexo.gina.event.description.FIBEventFactory;

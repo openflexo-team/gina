@@ -54,7 +54,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBRadioButtonList;
+import org.openflexo.fib.model.widget.FIBRadioButtonList;
 import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.swing.view.widget.JFIBRadioButtonListWidget.JRadioButtonPanel;
 import org.openflexo.fib.view.impl.FIBViewImpl;

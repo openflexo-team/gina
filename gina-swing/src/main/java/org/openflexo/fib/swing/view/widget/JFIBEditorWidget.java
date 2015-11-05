@@ -52,7 +52,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBEditor;
+import org.openflexo.fib.model.widget.FIBEditor;
 import org.openflexo.fib.swing.view.SwingRenderingAdapter;
 import org.openflexo.fib.view.widget.impl.FIBEditorWidgetImpl;
 import org.openflexo.jedit.JEditTextArea;

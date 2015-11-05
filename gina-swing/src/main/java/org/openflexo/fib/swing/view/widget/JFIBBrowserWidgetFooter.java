@@ -68,13 +68,13 @@ import javax.swing.JPopupMenu;
 import javax.swing.event.MenuKeyEvent;
 import javax.swing.event.MenuKeyListener;
 
-import org.openflexo.fib.model.FIBBrowserAction;
-import org.openflexo.fib.model.FIBBrowserElement;
+import org.openflexo.fib.model.widget.FIBBrowserAction;
+import org.openflexo.fib.model.widget.FIBBrowserElement;
 import org.openflexo.fib.utils.FIBIconLibrary;
-import org.openflexo.fib.view.widget.browser.FIBBrowserActionListener;
-import org.openflexo.fib.view.widget.browser.FIBBrowserElementType;
-import org.openflexo.fib.view.widget.browser.FIBBrowserFilterMenuItem;
-import org.openflexo.fib.view.widget.browser.FIBBrowserWidgetFooterImpl;
+import org.openflexo.fib.view.widget.browser.impl.FIBBrowserActionListener;
+import org.openflexo.fib.view.widget.browser.impl.FIBBrowserElementType;
+import org.openflexo.fib.view.widget.browser.impl.FIBBrowserFilterMenuItem;
+import org.openflexo.fib.view.widget.browser.impl.FIBBrowserWidgetFooterImpl;
 import org.openflexo.fib.view.widget.impl.FIBBrowserWidgetImpl;
 import org.openflexo.swing.ImageButton;
 

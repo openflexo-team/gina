@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBDropDown;
+import org.openflexo.fib.model.widget.FIBDropDown;
 import org.openflexo.fib.view.widget.FIBDropDownWidget;
 
 /**

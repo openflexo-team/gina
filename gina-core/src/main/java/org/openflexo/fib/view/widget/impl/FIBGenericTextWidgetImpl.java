@@ -43,7 +43,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBTextWidget;
+import org.openflexo.fib.model.widget.FIBTextWidget;
 import org.openflexo.fib.view.impl.FIBWidgetViewImpl;
 import org.openflexo.fib.view.widget.FIBGenericTextWidget;
 import org.openflexo.gina.event.description.EventDescription;
