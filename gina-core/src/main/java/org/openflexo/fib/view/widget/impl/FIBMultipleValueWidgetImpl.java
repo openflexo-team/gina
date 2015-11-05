@@ -90,17 +90,16 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 	private int selectedIndex;
 
 	private FIBMultipleValueCellRenderer listCellRenderer;
-	protected FIBMultipleValueModel multipleValueModel;
+	protected FIBMultipleValueModel<I> multipleValueModel;
 
 	private BindingValueListChangeListener<Object, List<Object>> listBindingValueChangeListener;
 	private BindingValueArrayChangeListener<Object> arrayBindingValueChangeListener;
 
-	public FIBMultipleValueWidgetImpl(M model, FIBController controller,
-			MultipleValueRenderingAdapter<C, I> RenderingAdapter) {
+	public FIBMultipleValueWidgetImpl(M model, FIBController controller, MultipleValueRenderingAdapter<C, I> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
 		listenListValueChange();
 		listenArrayValueChange();
-		getMultipleValueModel().update();
+		((FIBMultipleValueModelImpl) getMultipleValueModel()).update();
 		proceedToListModelUpdate();
 	}
 
@@ -173,11 +172,11 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 	}
 
 	@SuppressWarnings("serial")
-	public class FIBMultipleValueModel extends AbstractListModel<I> {
+	public class FIBMultipleValueModelImpl extends AbstractListModel<I>implements FIBMultipleValueModel<I> {
 		private List<I> list = null;
 		private I[] array = null;
 
-		protected FIBMultipleValueModel() {
+		protected FIBMultipleValueModelImpl() {
 			super();
 			update();
 		}
@@ -465,14 +464,15 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 		return listCellRenderer;
 	}
 
-	public FIBMultipleValueModel getMultipleValueModel() {
+	@Override
+	public FIBMultipleValueModel<I> getMultipleValueModel() {
 		if (multipleValueModel == null) {
 			multipleValueModel = createMultipleValueModel();
 		}
 		return multipleValueModel;
 	}
 
-	protected abstract FIBMultipleValueModel createMultipleValueModel();
+	protected abstract FIBMultipleValueModel<I> createMultipleValueModel();
 
 	protected abstract void proceedToListModelUpdate();
 
@@ -542,7 +542,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 	}*/
 
 	public void updateMultipleValues() {
-		getMultipleValueModel().update();
+		((FIBMultipleValueModelImpl) getMultipleValueModel()).update();
 		proceedToListModelUpdate();
 	}
 

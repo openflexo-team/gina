@@ -127,7 +127,8 @@ public abstract class FIBDropDownWidgetImpl<C, T> extends FIBMultipleValueWidget
 		return new MyComboBoxModel(getValue());
 	}
 
-	protected class MyComboBoxModel extends FIBMultipleValueModel implements ComboBoxModel<T> {
+	@SuppressWarnings("serial")
+	protected class MyComboBoxModel extends FIBMultipleValueModelImpl implements ComboBoxModel<T> {
 		protected Object selectedItem = null;
 
 		public MyComboBoxModel(Object selectedObject) {

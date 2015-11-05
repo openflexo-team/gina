@@ -163,6 +163,12 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 
 	public void delete();
 
+	public void requestFocus();
+
+	public void requestFocusInWindow();
+
+	public void requestFocusInParent();
+
 	public RenderingAdapter<C> getRenderingAdapter();
 
 	/**
@@ -195,6 +201,8 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 		public void setOpaque(C component, boolean opaque);
 
 		public void requestFocus(C component);
+
+		public void requestFocusInWindow(C component);
 
 		public void requestFocusInParent(C component);
 

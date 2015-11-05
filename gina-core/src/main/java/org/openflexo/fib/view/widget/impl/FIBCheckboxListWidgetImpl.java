@@ -56,8 +56,7 @@ public abstract class FIBCheckboxListWidgetImpl<C, T> extends FIBMultipleValueWi
 
 	private BindingValueListChangeListener<T, List<T>> listenerToDataAsListValue;
 
-	public FIBCheckboxListWidgetImpl(FIBCheckboxList model, FIBController controller,
-			CheckboxListRenderingAdapter<C, T> RenderingAdapter) {
+	public FIBCheckboxListWidgetImpl(FIBCheckboxList model, FIBController controller, CheckboxListRenderingAdapter<C, T> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
 		listenDataAsListValueChange();
 	}
@@ -99,8 +98,8 @@ public abstract class FIBCheckboxListWidgetImpl<C, T> extends FIBMultipleValueWi
 	}
 
 	@Override
-	protected FIBMultipleValueModel createMultipleValueModel() {
-		return new FIBMultipleValueModel();
+	protected FIBMultipleValueModel<T> createMultipleValueModel() {
+		return new FIBMultipleValueModelImpl();
 	}
 
 	@Override

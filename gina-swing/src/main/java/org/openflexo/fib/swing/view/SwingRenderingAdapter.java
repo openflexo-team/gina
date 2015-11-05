@@ -110,6 +110,11 @@ public class SwingRenderingAdapter<J extends JComponent> implements RenderingAda
 	}
 
 	@Override
+	public void requestFocusInWindow(J component) {
+		component.requestFocusInWindow();
+	}
+
+	@Override
 	public void requestFocusInParent(J component) {
 		component.getParent().requestFocus();
 	}

@@ -41,6 +41,8 @@ package org.openflexo.fib.view.widget;
 
 import java.util.List;
 
+import javax.swing.ListModel;
+
 import org.openflexo.fib.model.FIBMultipleValues;
 import org.openflexo.fib.view.FIBWidgetView;
 
@@ -62,6 +64,8 @@ public interface FIBMultipleValueWidget<M extends FIBMultipleValues, C, T, I> ex
 
 	public static final String SELECTED = "selected";
 	public static final String SELECTED_INDEX = "selectedIndex";
+
+	public FIBMultipleValueModel<I> getMultipleValueModel();
 
 	public T getSelected();
 
@@ -86,8 +90,7 @@ public interface FIBMultipleValueWidget<M extends FIBMultipleValues, C, T, I> ex
 
 	}
 
-	public static interface SingleSelectionMultipleValueRenderingAdapter<C, T>
-			extends MultipleValueRenderingAdapter<C, T> {
+	public static interface SingleSelectionMultipleValueRenderingAdapter<C, T> extends MultipleValueRenderingAdapter<C, T> {
 
 		public T getSelectedItem(C component);
 
@@ -99,12 +102,17 @@ public interface FIBMultipleValueWidget<M extends FIBMultipleValues, C, T, I> ex
 
 	}
 
-	public static interface MultipleSelectionMultipleValueRenderingAdapter<C, T>
-			extends MultipleValueRenderingAdapter<C, T> {
+	public static interface MultipleSelectionMultipleValueRenderingAdapter<C, T> extends MultipleValueRenderingAdapter<C, T> {
 
 		public List<T> getSelectedItems(C component);
 
 		public void setSelectedItems(C component, List<T> items);
+
+	}
+
+	public interface FIBMultipleValueModel<I> extends ListModel<I> {
+
+		public int indexOf(I item);
 
 	}
 

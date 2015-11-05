@@ -114,8 +114,7 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 	@Override
 	public synchronized boolean updateWidgetFromModel() {
 		// updateListModelWhenRequired();
-		if (getWidget().getData() != null
-				&& notEquals(getValue(), getRenderingAdapter().getSelectedItem(getTechnologyComponent()))) {
+		if (getWidget().getData() != null && notEquals(getValue(), getRenderingAdapter().getSelectedItem(getTechnologyComponent()))) {
 
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine("updateWidgetFromModel()");
@@ -194,7 +193,7 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 	protected abstract void proceedToListModelUpdate(FIBListModel aListModel);
 
 	@SuppressWarnings("serial")
-	protected class FIBListModel extends FIBMultipleValueModel implements ListSelectionListener {
+	protected class FIBListModel extends FIBMultipleValueModelImpl implements ListSelectionListener {
 		private T selectedObject;
 		private final List<T> selection;
 

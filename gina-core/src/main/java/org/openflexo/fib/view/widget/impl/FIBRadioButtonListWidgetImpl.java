@@ -80,8 +80,8 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 	}
 
 	@Override
-	protected FIBMultipleValueModel createMultipleValueModel() {
-		return new FIBMultipleValueModel();
+	protected FIBMultipleValueModel<T> createMultipleValueModel() {
+		return new FIBMultipleValueModelImpl();
 	}
 
 	@Override

@@ -536,4 +536,20 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		}*/
 		this.embeddingComponent = embeddingComponent;
 	}
+
+	@Override
+	public void requestFocus() {
+		getRenderingAdapter().requestFocus(getTechnologyComponent());
+	}
+
+	@Override
+	public void requestFocusInWindow() {
+		getRenderingAdapter().requestFocusInWindow(getTechnologyComponent());
+	}
+
+	@Override
+	public void requestFocusInParent() {
+		getRenderingAdapter().requestFocusInParent(getTechnologyComponent());
+	}
+
 }
