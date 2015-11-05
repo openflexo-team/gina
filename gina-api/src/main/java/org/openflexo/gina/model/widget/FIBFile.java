@@ -150,7 +150,7 @@ public interface FIBFile extends FIBWidget {
 		}
 
 		@Override
-		public Type getDefaultDataClass() {
+		public Type getDefaultDataType() {
 			return File.class;
 		}
 

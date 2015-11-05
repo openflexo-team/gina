@@ -81,7 +81,7 @@ public interface FIBColor extends FIBWidget {
 		}
 
 		@Override
-		public Type getDefaultDataClass() {
+		public Type getDefaultDataType() {
 			return Color.class;
 		}
 

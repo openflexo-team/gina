@@ -55,10 +55,8 @@ import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.DataBinding.CachingStrategy;
 import org.openflexo.connie.DefaultBindable;
 import org.openflexo.connie.binding.BindingDefinition;
-import org.openflexo.connie.type.ParameterizedTypeImpl;
-import org.openflexo.connie.type.WilcardTypeImpl;
+import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.model.widget.FIBDropDown;
-import org.openflexo.gina.view.FIBWidgetView;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -76,6 +74,8 @@ import org.openflexo.toolbox.StringUtils;
 @ImplementationClass(FIBWidget.FIBWidgetImpl.class)
 public abstract interface FIBWidget extends FIBComponent {
 
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String DATA_KEY = "data";
 	@PropertyIdentifier(type = Boolean.class)
 	public static final String READ_ONLY_KEY = "readOnly";
 	@PropertyIdentifier(type = DataBinding.class)
@@ -106,6 +106,18 @@ public abstract interface FIBWidget extends FIBComponent {
 	public static final String VALUE_TRANSFORM_KEY = "valueTransform";
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String VALUE_VALIDATOR_KEY = "valueValidator";
+
+	@Getter(value = DATA_KEY)
+	@XMLAttribute
+	public DataBinding<?> getData();
+
+	@Setter(DATA_KEY)
+	public void setData(DataBinding<?> data);
+
+	public Type getDataType();
+
+	public Class<?> getDataClass();
+	// public void setDataType(Type type);
 
 	@Getter(value = READ_ONLY_KEY, defaultValue = "false")
 	@XMLAttribute
@@ -229,6 +241,8 @@ public abstract interface FIBWidget extends FIBComponent {
 	/*public void addFibListener(GinaEventListener l);
 	
 	public List<GinaEventListener> getFibListeners();*/
+
+	public Type getDefaultDataType();
 
 	public static abstract class FIBWidgetImpl extends FIBComponentImpl implements FIBWidget {
 
@@ -451,14 +465,19 @@ public abstract interface FIBWidget extends FIBComponent {
 			/*if (getData() != null && getData().isSet()) {
 				return getData().getAnalyzedType();
 			}*/
-			return getDefaultDataClass();
+			return getDefaultDataType();
 
 		}
 
 		@Override
-		public abstract Type getDefaultDataClass();
+		public Class<?> getDataClass() {
+			return TypeUtils.getBaseClass(getDataType());
+		}
 
 		@Override
+		public abstract Type getDefaultDataType();
+
+		/*@Override
 		public Type getDynamicAccessType() {
 			if (getManageDynamicModel()) {
 				if (getData() != null && getData().isSet()) {
@@ -473,6 +492,23 @@ public abstract interface FIBWidget extends FIBComponent {
 				}
 			}
 			return null;
+		}*/
+
+		/**
+		 * Return (create when null) binding variable identified by component name (this is dynamic access to data beeing edited in the
+		 * component)<br>
+		 * 
+		 * @return
+		 */
+		@Override
+		public BindingVariable getDynamicAccessBindingVariable() {
+			if (dynamicAccessBindingVariable == null) {
+				if (StringUtils.isNotEmpty(getName()) && getDynamicAccessType() != null && getManageDynamicModel()) {
+					dynamicAccessBindingVariable = new BindingVariable(getName(), getDynamicAccessType());
+					getBindingModel().addToBindingVariables(dynamicAccessBindingVariable);
+				}
+			}
+			return dynamicAccessBindingVariable;
 		}
 
 		@Override

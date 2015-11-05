@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.model;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -54,8 +55,9 @@ import java.util.logging.Logger;
 import javax.swing.tree.TreeNode;
 
 import org.openflexo.connie.BindingModel;
+import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.model.container.ComponentConstraints;
-import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
@@ -69,12 +71,17 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(FIBContainer.FIBContainerImpl.class)
 public abstract interface FIBContainer extends FIBComponent {
 
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String DATA_KEY = "data";
+	@PropertyIdentifier(type = Class.class)
+	public static final String DATA_CLASS_KEY = "dataClass";
 	@PropertyIdentifier(type = List.class)
 	public static final String SUB_COMPONENTS_KEY = "subComponents";
 
@@ -146,6 +153,27 @@ public abstract interface FIBContainer extends FIBComponent {
 	public void componentLast(FIBComponent c);
 
 	public boolean checkContainmentIntegrity();
+
+	@Getter(value = DATA_KEY)
+	@XMLAttribute
+	@Deprecated
+	public DataBinding<?> getData();
+
+	@Setter(DATA_KEY)
+	@Deprecated
+	public void setData(DataBinding<?> data);
+
+	@Getter(value = DATA_CLASS_KEY)
+	@XMLAttribute(xmlTag = "dataClassName")
+	@Deprecated
+	public Class<?> getDataClass();
+
+	@Setter(DATA_CLASS_KEY)
+	@Deprecated
+	public void setDataClass(Class<?> dataClass);
+
+	@Deprecated
+	public Type getDataType();
 
 	public static abstract class FIBContainerImpl extends FIBComponentImpl implements FIBContainer {
 
@@ -281,11 +309,13 @@ public abstract interface FIBContainer extends FIBComponent {
 						if (component.getIndex() != null && component.getIndex() < 0) {
 							component.setIndex(null);
 						}
-					} else if (previous.getIndex() < 0) {
+					}
+					else if (previous.getIndex() < 0) {
 						if (component.getIndex() != null && component.getIndex() < previous.getIndex()) {
 							component.setIndex(previous.getIndex());
 						}
-					} else {
+					}
+					else {
 						if (component.getIndex() == null || component.getIndex() < previous.getIndex()) {
 							component.setIndex(previous.getIndex());
 						}
@@ -296,11 +326,13 @@ public abstract interface FIBContainer extends FIBComponent {
 						if (component.getIndex() != null && component.getIndex() >= 0) {
 							component.setIndex(null);
 						}
-					} else if (next.getIndex() < 0) {
+					}
+					else if (next.getIndex() < 0) {
 						if (component.getIndex() == null || component.getIndex() > next.getIndex()) {
 							component.setIndex(next.getIndex());
 						}
-					} else {
+					}
+					else {
 						if (component.getIndex() != null && component.getIndex() > next.getIndex()) {
 							component.setIndex(next.getIndex());
 						}
@@ -324,7 +356,7 @@ public abstract interface FIBContainer extends FIBComponent {
 			removeFromSubComponentsNoNotification(aComponent);
 			getPropertyChangeSupport().firePropertyChange(Parameters.subComponents.name(), null, subComponents);
 		}
-
+		
 		public void removeFromSubComponentsNoNotification(FIBComponent aComponent) {
 			aComponent.setParent(null);
 			subComponents.remove(aComponent);
@@ -446,7 +478,8 @@ public abstract interface FIBContainer extends FIBComponent {
 								break;
 							}
 						}
-					} else if (child.getIndex() < 0) {
+					}
+					else if (child.getIndex() < 0) {
 						indexInsertion = 0;
 						for (int j = 0; j < getSubComponents().size(); j++) {
 							FIBComponent c = getSubComponents().get(j);
@@ -467,7 +500,8 @@ public abstract interface FIBContainer extends FIBComponent {
 											if (c.getIndex() != null && c.getIndex() == previous + 1) {
 												previous = c.getIndex();
 												j++;
-											} else {
+											}
+											else {
 												break;
 											}
 										}
@@ -479,7 +513,8 @@ public abstract interface FIBContainer extends FIBComponent {
 							}
 						}
 
-					} else {
+					}
+					else {
 
 						indexInsertion = getSubComponents().size();
 						for (int j = 0; j < getSubComponents().size(); j++) {
@@ -500,7 +535,8 @@ public abstract interface FIBContainer extends FIBComponent {
 											if (c.getIndex() != null && c.getIndex() == previous + 1) {
 												previous = c.getIndex();
 												j++;
-											} else {
+											}
+											else {
 												break;
 											}
 										}
@@ -525,14 +561,12 @@ public abstract interface FIBContainer extends FIBComponent {
 						if (i + 1 < container.getSubComponents().size()) {
 							Integer previousInteger = child.getIndex();
 							child = container.getSubComponents().get(i + 1);
-							insert = previousInteger == null
-									&& child.getIndex() == null
-									|| previousInteger != null
-									&& child.getIndex() != null
-									&& previousInteger + 1 == child.getIndex()
+							insert = previousInteger == null && child.getIndex() == null
+									|| previousInteger != null && child.getIndex() != null && previousInteger + 1 == child.getIndex()
 									|| child.getIndex() != null
-									&& (startIndex == null && child.getIndex() == startIndex || startIndex != null
-											&& startIndex.equals(child.getIndex())) && !mergedComponents.contains(child);
+											&& (startIndex == null && child.getIndex() == startIndex
+													|| startIndex != null && startIndex.equals(child.getIndex()))
+											&& !mergedComponents.contains(child);
 							if (insert) {
 								i++;
 								if (child.getName() != null) {
@@ -545,10 +579,12 @@ public abstract interface FIBContainer extends FIBComponent {
 										removeFromSubComponents(overridingComponent);
 									}*/
 								}
-							} else {
+							}
+							else {
 								break;
 							}
-						} else {
+						}
+						else {
 							break;
 						}
 					}
@@ -651,8 +687,8 @@ public abstract interface FIBContainer extends FIBComponent {
 
 		private void notifyComponentIndexChanged(FIBComponent component) {
 			FIBPropertyNotification<ComponentConstraints> notification = new FIBPropertyNotification<ComponentConstraints>(
-					(FIBProperty<ComponentConstraints>) FIBProperty.getFIBProperty(getClass(), CONSTRAINTS_KEY),
-					component.getConstraints(), component.getConstraints());
+					(FIBProperty<ComponentConstraints>) FIBProperty.getFIBProperty(getClass(), CONSTRAINTS_KEY), component.getConstraints(),
+					component.getConstraints());
 			component.notify(notification);
 			getPropertyChangeSupport().firePropertyChange(SUB_COMPONENTS_KEY, null, getSubComponents());
 		}
@@ -686,13 +722,16 @@ public abstract interface FIBContainer extends FIBComponent {
 						}
 						if (o2.getIndex() < 0) {
 							return 1;
-						} else {
+						}
+						else {
 							return -1;
 						}
-					} else {
+					}
+					else {
 						if (o2.getIndex() == null) {
 							return o1.getIndex();
-						} else {
+						}
+						else {
 							return o1.getIndex() - o2.getIndex();
 						}
 					}
@@ -707,14 +746,63 @@ public abstract interface FIBContainer extends FIBComponent {
 		}
 
 		@Override
-		public void setDataClass(Class<?> dataClass) {
-			FIBPropertyNotification<Class> notification = requireChange(DATA_CLASS_KEY, (Class) dataClass);
-			if (notification != null) {
-				super.setDataClass(dataClass);
-				for (FIBComponent c : retrieveAllSubComponents()) {
-					c.getData().markedAsToBeReanalized();
-				}
+		public void notifiedBindingChanged(DataBinding<?> binding) {
+			super.notifiedBindingChanged(binding);
+			if (binding == getData()) {
+				logger.info("notified data changed");
 			}
+		}
+
+		@Deprecated
+		private FIBVariable<?> getDefaultDataVariable(boolean createWhenNonExistant) {
+			FIBVariable<?> returned = getVariable(DEFAULT_DATA_VARIABLE);
+			if (returned == null) {
+				returned = getFactory().newFIBVariable(this, DEFAULT_DATA_VARIABLE);
+			}
+			return returned;
+		}
+
+		@Deprecated
+		private FIBVariable<?> getDefaultDataVariable() {
+			return getDefaultDataVariable(false);
+		}
+
+		@Override
+		@Deprecated
+		public DataBinding<?> getData() {
+			if (getDefaultDataVariable() != null) {
+				return getDefaultDataVariable().getValue();
+			}
+			return null;
+		}
+
+		@Override
+		@Deprecated
+		public void setData(DataBinding<?> data) {
+			getDefaultDataVariable(true).setValue((DataBinding) data);
+		}
+
+		@Override
+		@Deprecated
+		public Class<?> getDataClass() {
+			if (getDefaultDataVariable() != null) {
+				return TypeUtils.getBaseClass(getDefaultDataVariable().getType());
+			}
+			return null;
+		}
+
+		@Override
+		@Deprecated
+		public void setDataClass(Class<?> dataClass) {
+			getDefaultDataVariable(true).setType(dataClass);
+		}
+
+		@Override
+		public Type getDataType() {
+			if (getDefaultDataVariable() != null) {
+				return getDefaultDataVariable().getType();
+			}
+			return null;
 		}
 
 		@Override

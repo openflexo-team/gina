@@ -40,15 +40,11 @@
 package org.openflexo.gina.model.widget;
 
 import java.awt.Color;
-import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingDefinition;
-import org.openflexo.connie.type.ParameterizedTypeImpl;
-import org.openflexo.connie.type.WilcardTypeImpl;
 import org.openflexo.gina.model.FIBPropertyNotification;
-import org.openflexo.gina.view.widget.FIBListWidget;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -232,13 +228,13 @@ public interface FIBList extends FIBMultipleValues {
 			return "List";
 		}
 
-		@Override
+		/*@Override
 		public Type getDynamicAccessType() {
 			Type[] args = new Type[2];
 			args[0] = new WilcardTypeImpl(Object.class);
 			args[1] = getIteratorType();
 			return new ParameterizedTypeImpl(FIBListWidget.class, args);
-		}
+		}*/
 
 		@Override
 		public DataBinding<Object> getSelected() {

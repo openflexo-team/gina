@@ -87,7 +87,7 @@ public interface FIBCheckBox extends FIBWidget {
 		}
 
 		@Override
-		public Type getDefaultDataClass() {
+		public Type getDefaultDataType() {
 			return Boolean.class;
 		}
 

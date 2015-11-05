@@ -124,7 +124,7 @@ public abstract interface FIBTextWidget extends FIBWidget {
 		}
 
 		@Override
-		public Type getDefaultDataClass() {
+		public Type getDefaultDataType() {
 			return String.class;
 		}
 

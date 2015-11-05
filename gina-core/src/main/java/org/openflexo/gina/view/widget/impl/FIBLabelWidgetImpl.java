@@ -60,13 +60,19 @@ public abstract class FIBLabelWidgetImpl<C> extends FIBWidgetViewImpl<FIBLabel, 
 
 	public FIBLabelWidgetImpl(FIBLabel model, FIBController controller, LabelRenderingAdapter<C> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
-		updateAlign();
-		updateLabel();
 	}
 
 	@Override
 	public LabelRenderingAdapter<C> getRenderingAdapter() {
 		return (LabelRenderingAdapter) super.getRenderingAdapter();
+	}
+
+	@Override
+	public boolean update() {
+		boolean returned = super.update();
+		updateAlign();
+		updateLabel();
+		return returned;
 	}
 
 	@Override
@@ -98,7 +104,7 @@ public abstract class FIBLabelWidgetImpl<C> extends FIBWidgetViewImpl<FIBLabel, 
 
 	final protected void updateLabel() {
 		String label = "";
-		if (getWidget().getData().isSet() && getWidget().getData().isValid()) {
+		if (getWidget().getData() != null && getWidget().getData().isSet() && getWidget().getData().isValid()) {
 			label = (getWidget().getLocalize() ? getLocalized(getValue()) : getValue());
 		}
 		else if (StringUtils.isNotEmpty(getWidget().getLabel())) {

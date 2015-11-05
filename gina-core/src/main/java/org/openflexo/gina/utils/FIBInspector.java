@@ -71,21 +71,21 @@ public interface FIBInspector extends FIBPanel {
 			if (alreadyDone == null) {
 				alreadyDone = false;
 			}
-
+			
 			if (!alreadyDone) {*/
 
 			if (!superInspectorWereAppened) {
 
-				if (getDataType() == null) {
+				if (getDataClass() == null) {
 					return;
 				}
-				if (getDataType() instanceof Class) {
-					FIBInspector superInspector = inspectorGroup.inspectorForClass(((Class) getDataType()).getSuperclass());
+				else {
+					FIBInspector superInspector = inspectorGroup.inspectorForClass(((Class) getDataClass()).getSuperclass());
 					if (superInspector != null) {
 						superInspector.appendSuperInspectors(inspectorGroup);
 						appendSuperInspector(superInspector, inspectorGroup.getFIBModelFactory());
 					}
-					for (Class superInterface : ((Class) getDataType()).getInterfaces()) {
+					for (Class superInterface : ((Class) getDataClass()).getInterfaces()) {
 						FIBInspector superInterfaceInspector = inspectorGroup.inspectorForClass(superInterface);
 						if (superInterfaceInspector != null) {
 							superInterfaceInspector.appendSuperInspectors(inspectorGroup);
@@ -101,7 +101,7 @@ public interface FIBInspector extends FIBPanel {
 
 		@Override
 		public String toString() {
-			return "Inspector[" + getDataType() + "]";
+			return "Inspector[" + getDataClass() + "]";
 		}
 
 		@Override

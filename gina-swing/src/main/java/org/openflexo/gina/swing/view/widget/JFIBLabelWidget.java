@@ -64,8 +64,7 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabel> {
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingLabelRenderingAdapter extends SwingRenderingAdapter<JLabel>
-			implements LabelRenderingAdapter<JLabel> {
+	public static class SwingLabelRenderingAdapter extends SwingRenderingAdapter<JLabel>implements LabelRenderingAdapter<JLabel> {
 
 		@Override
 		public String getText(JLabel component) {
@@ -98,12 +97,12 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabel> {
 	@Override
 	protected JLabel makeTechnologyComponent() {
 		JLabel returned;
-		if (getWidget().getData().isValid()) {
+		/*if (getWidget().getData().isValid()) {
 			returned = new JLabel(" ");
 		}
-		else {
-			returned = new JLabel();
-		}
+		else {*/
+		returned = new JLabel();
+		// }
 		// There is not much point in giving focus to a label since there is no KeyBindings nor KeyListener on it.
 		returned.setFocusable(false);
 		returned.setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, TOP_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,

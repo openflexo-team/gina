@@ -147,7 +147,7 @@ public interface FIBImage extends FIBWidget {
 		}
 
 		@Override
-		public Type getDefaultDataClass() {
+		public Type getDefaultDataType() {
 			return Image.class;
 		}
 

@@ -88,7 +88,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 	public static final String NAME_KEY = "name";
 	@PropertyIdentifier(type = String.class)
 	public static final String DESCRIPTION_KEY = "description";
-	@PropertyIdentifier(type = List.class)
+	@PropertyIdentifier(type = FIBParameter.class, cardinality = Cardinality.LIST)
 	public static final String PARAMETERS_KEY = "parameters";
 
 	@Getter(value = NAME_KEY)
@@ -173,13 +173,16 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 				if (generalLocalizedDelegate != null) {
 					LOCALIZATION = FlexoLocalization.getLocalizedDelegate(fibLocalizedDelegate,
 							FlexoLocalization.getLocalizedDelegate(generalLocalizedDelegate, null, false, false), true, true);
-				} else {
+				}
+				else {
 					LOCALIZATION = FlexoLocalization.getLocalizedDelegate(fibLocalizedDelegate, null, true, true);
 				}
-			} else {
+			}
+			else {
 				if (generalLocalizedDelegate != null) {
 					LOCALIZATION = FlexoLocalization.getLocalizedDelegate(generalLocalizedDelegate, null, true, true);
-				} else {
+				}
+				else {
 					LOCALIZATION = FlexoLocalization.getLocalizedDelegate(generalLocalizedDelegate, null, false, false);
 				}
 			}
@@ -302,9 +305,9 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 		}
 
 		/*public void initializeDeserialization() {
-
+		
 		}
-
+		
 		public void finalizeDeserialization() {
 		}*/
 
@@ -329,13 +332,16 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 			if (oldValue == null) {
 				if (value == null) {
 					return null; // No change
-				} else {
+				}
+				else {
 					return new FIBPropertyNotification<T>(property, oldValue, value);
 				}
-			} else {
+			}
+			else {
 				if (oldValue.equals(value)) {
 					return null; // No change
-				} else {
+				}
+				else {
 					return new FIBPropertyNotification<T>(property, oldValue, value);
 				}
 			}
@@ -351,8 +357,8 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 				LOGGER.fine("Change attribute " + notification.getAttributeName() + " for object " + this + " was: "
 						+ notification.oldValue() + " is now: " + notification.newValue());
 			}
-			getPropertyChangeSupport()
-					.firePropertyChange(notification.getAttributeName(), notification.oldValue(), notification.newValue());
+			getPropertyChangeSupport().firePropertyChange(notification.getAttributeName(), notification.oldValue(),
+					notification.newValue());
 		}
 
 		/**
@@ -370,7 +376,8 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 			}
 			if (o1 == null) {
 				return o2 == null;
-			} else {
+			}
+			else {
 				return o1.equals(o2);
 			}
 		}
@@ -475,7 +482,8 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 					if (object instanceof FIBWidget && ((FIBWidget) object).getManageDynamicModel()) {
 						returned = new ValidationError<FIBModelObjectShouldHaveAUniqueName, FIBModelObject>(this, object,
 								"object_($object.toString)_has_duplicated_name", fixProposal);
-					} else {
+					}
+					else {
 						returned = new ValidationWarning<FIBModelObjectShouldHaveAUniqueName, FIBModelObject>(this, object,
 								"object_($object.toString)_has_duplicated_name", fixProposal);
 					}

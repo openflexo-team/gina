@@ -152,7 +152,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 		}
 
 		@Override
-		public Type getDefaultDataClass() {
+		public Type getDefaultDataType() {
 			/*if (referencedComponent != null) {
 				return referencedComponent.getDataType();
 			}*/

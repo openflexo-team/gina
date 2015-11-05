@@ -54,7 +54,6 @@ import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.connie.type.WilcardTypeImpl;
 import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.gina.model.FIBWidget;
-import org.openflexo.gina.view.widget.FIBMultipleValueWidget;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -164,14 +163,14 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 			}
 		};
 
-		@Deprecated
+		/*@Deprecated
 		private final BindingDefinition DATA = new BindingDefinition("data", Object.class, DataBinding.BindingDefinitionType.GET_SET,
 				false) {
 			@Override
 			public Type getType() {
 				return getDataType();
 			};
-		};
+		};*/
 
 		private String staticList;
 
@@ -341,11 +340,11 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 			return getDataType();
 		}
 
-		@Deprecated
+		/*@Deprecated
 		@Override
 		public BindingDefinition getDataBindingDefinition() {
 			return DATA;
-		}
+		}*/
 
 		/*@Override
 		public final Type getDefaultDataClass()
@@ -354,7 +353,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		}*/
 
 		@Override
-		public final Type getDefaultDataClass() {
+		public final Type getDefaultDataType() {
 			return Object.class;
 		}
 
@@ -447,7 +446,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 			}
 		}
 
-		@Override
+		/*@Override
 		public Type getDynamicAccessType() {
 			Type[] args = new Type[4];
 			args[0] = new WilcardTypeImpl(getClass());
@@ -455,7 +454,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 			args[2] = getDataType();
 			args[3] = getIteratorType();
 			return new ParameterizedTypeImpl(FIBMultipleValueWidget.class, args);
-		}
+		}*/
 
 		@Override
 		public boolean getAutoSelectFirstRow() {

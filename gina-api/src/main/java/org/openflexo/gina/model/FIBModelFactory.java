@@ -39,6 +39,7 @@
 package org.openflexo.gina.model;
 
 import java.io.File;
+import java.lang.reflect.Type;
 
 import org.openflexo.connie.DataBinding;
 import org.openflexo.gina.FIBLibrary;
@@ -48,10 +49,12 @@ import org.openflexo.gina.model.container.FIBTab;
 import org.openflexo.gina.model.converter.ComponentConstraintsConverter;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBBrowserElement;
+import org.openflexo.gina.model.widget.FIBBrowserElement.FIBBrowserElementChildren;
 import org.openflexo.gina.model.widget.FIBButton;
 import org.openflexo.gina.model.widget.FIBCheckBox;
 import org.openflexo.gina.model.widget.FIBCheckboxList;
 import org.openflexo.gina.model.widget.FIBCustom;
+import org.openflexo.gina.model.widget.FIBCustom.FIBCustomAssignment;
 import org.openflexo.gina.model.widget.FIBDropDown;
 import org.openflexo.gina.model.widget.FIBDropDownColumn;
 import org.openflexo.gina.model.widget.FIBFile;
@@ -66,8 +69,6 @@ import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTextArea;
 import org.openflexo.gina.model.widget.FIBTextField;
 import org.openflexo.gina.model.widget.FIBTextFieldColumn;
-import org.openflexo.gina.model.widget.FIBBrowserElement.FIBBrowserElementChildren;
-import org.openflexo.gina.model.widget.FIBCustom.FIBCustomAssignment;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.converter.DataBindingConverter;
 import org.openflexo.model.converter.RelativePathFileConverter;
@@ -108,6 +109,28 @@ public class FIBModelFactory extends ModelFactory {
 
 	public FIBValidationModel getValidationModel() {
 		return validationModel;
+	}
+
+	public FIBVariable<?> newFIBVariable(FIBComponent component, String name) {
+		return newFIBVariable(component, name, (Type) null);
+	}
+
+	public FIBVariable<?> newFIBVariable(FIBComponent component, String name, Type type) {
+		FIBVariable<?> returned = newInstance(FIBVariable.class);
+		returned.setName(name);
+		if (type != null) {
+			returned.setType(type);
+		}
+		component.addToVariables(returned);
+		return returned;
+	}
+
+	public FIBVariable<?> newFIBVariable(FIBComponent component, String name, DataBinding<?> value) {
+		FIBVariable returned = newInstance(FIBVariable.class);
+		returned.setName(name);
+		returned.setValue(value);
+		component.addToVariables(returned);
+		return returned;
 	}
 
 	public FIBPanel newFIBPanel() {

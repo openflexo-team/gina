@@ -92,7 +92,7 @@ public interface FIBFont extends FIBWidget {
 		}
 
 		@Override
-		public Type getDefaultDataClass() {
+		public Type getDefaultDataType() {
 			return Font.class;
 		}
 

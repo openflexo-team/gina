@@ -57,8 +57,6 @@ import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingDefinition;
-import org.openflexo.connie.type.ParameterizedTypeImpl;
-import org.openflexo.connie.type.WilcardTypeImpl;
 import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.manager.HasBaseIdentifier;
@@ -96,7 +94,6 @@ import org.openflexo.gina.model.widget.FIBReferencedComponent;
 import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTextArea;
 import org.openflexo.gina.model.widget.FIBTextField;
-import org.openflexo.gina.view.FIBView;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -104,6 +101,7 @@ import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.DeserializationFinalizer;
 import org.openflexo.model.annotations.DeserializationInitializer;
 import org.openflexo.model.annotations.Embedded;
+import org.openflexo.model.annotations.Finder;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -122,6 +120,28 @@ import org.openflexo.model.validation.ValidationWarning;
 import org.openflexo.rm.Resource;
 import org.openflexo.toolbox.StringUtils;
 
+/**
+ * Represent a component in GINA model<br>
+ * This is the base interface for any piece of graphical user interface which might be composed.<br>
+ * 
+ * They are mainly two kinds of components:
+ * <ul>
+ * <li>the containers, which contains other components (containers or widgets), with some layout, see {@link FIBContainer}</li>
+ * <li>the widgets, that are atomic piece of GUI, and representing a particular data, see {@link FIBWidget}</li>
+ * </ul>
+ * 
+ * The {@link FIBComponent} interface provides:
+ * <ul>
+ * <li>support for FIBVariable API</li>
+ * <li>support for visibility</li>
+ * <li>support for foreground and background colors</li>
+ * <li>support for prefered, min and max sizes</li>
+ * <li>support for scrollbar</li>
+ * </ul>
+ * 
+ * @author sylvain
+ *
+ */
 @ModelEntity(isAbstract = true)
 @ImplementationClass(FIBComponent.FIBComponentImpl.class)
 @Imports({ @Import(FIBPanel.class), @Import(FIBTab.class), @Import(FIBSplitPanel.class), @Import(FIBTabPanel.class),
@@ -180,10 +200,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	public static final String PARENT_KEY = "parent";
 	@PropertyIdentifier(type = Integer.class)
 	public static final String INDEX_KEY = "index";
-	@PropertyIdentifier(type = DataBinding.class)
-	public static final String DATA_KEY = "data";
-	@PropertyIdentifier(type = Class.class)
-	public static final String DATA_CLASS_KEY = "dataClass";
 	@PropertyIdentifier(type = Class.class)
 	public static final String CONTROLLER_CLASS_KEY = "controllerClass";
 	@PropertyIdentifier(type = ComponentConstraints.class)
@@ -220,6 +236,10 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	public static final String EXPLICIT_DEPENDANCIES_KEY = "explicitDependancies";
 	@PropertyIdentifier(type = FIBLocalizedDictionary.class)
 	public static final String LOCALIZED_DICTIONARY_KEY = "localizedDictionary";
+	@PropertyIdentifier(type = FIBVariable.class, cardinality = Cardinality.LIST)
+	public static final String VARIABLES_KEY = "variables";
+
+	public static final String DEFAULT_DATA_VARIABLE = "data";
 
 	@Override
 	@Getter(value = PARENT_KEY/*, inverse = FIBContainer.SUB_COMPONENTS_KEY*/)
@@ -235,20 +255,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 	@Setter(INDEX_KEY)
 	public void setIndex(Integer index);
-
-	@Getter(value = DATA_KEY)
-	@XMLAttribute
-	public DataBinding<?> getData();
-
-	@Setter(DATA_KEY)
-	public void setData(DataBinding<?> data);
-
-	@Getter(value = DATA_CLASS_KEY)
-	@XMLAttribute(xmlTag = "dataClassName")
-	public Class<?> getDataClass();
-
-	@Setter(DATA_CLASS_KEY)
-	public void setDataClass(Class<?> dataClass);
 
 	@Getter(value = CONTROLLER_CLASS_KEY)
 	@XMLAttribute(xmlTag = "controllerClassName")
@@ -425,9 +431,9 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 	public FIBLocalizedDictionary retrieveFIBLocalizedDictionary();
 
-	public Type getDataType();
-
-	public void setDataType(Type type);
+	/*public Type getDataType();
+	
+	public void setDataType(Type type);*/
 
 	public boolean definePreferredDimensions();
 
@@ -447,6 +453,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 	public abstract String getIdentifier();
 
+	@Deprecated
 	public List<DataBinding<?>> getDeclaredBindings();
 
 	@DeserializationInitializer
@@ -470,7 +477,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	 * Return (create when null) binding variable identified by "data"<br>
 	 * Default behavior is to generate a binding variable with the java type identified by data class
 	 */
-	public BindingVariable getDataBindingVariable();
+	// public BindingVariable getDataBindingVariable();
 
 	/**
 	 * Return (create when null) binding variable identified by "controller"<br>
@@ -488,7 +495,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	 */
 	public BindingVariable getDynamicAccessBindingVariable();
 
-	public void updateDataBindingVariable();
+	// public void updateDataBindingVariable();
 
 	public void updateControllerBindingVariable();
 
@@ -514,6 +521,25 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	 */
 	public boolean isHidden();
 
+	@Getter(value = VARIABLES_KEY, cardinality = Cardinality.LIST, inverse = FIBVariable.OWNER_KEY)
+	@XMLElement
+	@CloningStrategy(StrategyType.CLONE)
+	public List<FIBVariable<?>> getVariables();
+
+	@Setter(VARIABLES_KEY)
+	public void setVariables(List<FIBVariable<?>> variables);
+
+	@Adder(VARIABLES_KEY)
+	public void addToVariables(FIBVariable<?> aVariable);
+
+	@Remover(VARIABLES_KEY)
+	public void removeFromVariables(FIBVariable<?> aVariable);
+
+	@Finder(collection = VARIABLES_KEY, attribute = FIBVariable.NAME_KEY)
+	public FIBVariable<?> getVariable(String variableName);
+
+	public FIBComponentType getComponentType();
+
 	public static abstract class FIBComponentImpl extends FIBModelObjectImpl implements FIBComponent {
 
 		private static final Logger LOGGER = Logger.getLogger(FIBComponent.class.getPackage().getName());
@@ -524,20 +550,20 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		@Deprecated
 		public static BindingDefinition VISIBLE = new BindingDefinition("visible", Boolean.class, DataBinding.BindingDefinitionType.GET,
 				false);
-		@Deprecated
-		private BindingDefinition DATA;
+		// @Deprecated
+		// private BindingDefinition DATA;
 
 		private Resource definitionFile;
 
 		private Date lastModified;
 
-		@Deprecated
+		/*@Deprecated
 		public BindingDefinition getDataBindingDefinition() {
 			if (DATA == null) {
-				DATA = new BindingDefinition("data", getDefaultDataClass(), DataBinding.BindingDefinitionType.GET, false);
+				DATA = new BindingDefinition("data", getDefaultDataType(), DataBinding.BindingDefinitionType.GET, false);
 			}
 			return DATA;
-		}
+		}*/
 
 		private Integer index;
 		private DataBinding<?> data;
@@ -565,7 +591,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		private final Vector<FIBComponent> mayDepends;
 		private final Vector<FIBComponent> mayAlters;
 
-		protected Class dataClass;
+		// protected Class dataClass;
 		private Class<? extends FIBController> controllerClass;
 
 		private FIBContainer parent;
@@ -575,11 +601,25 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		protected BindingVariable controllerBindingVariable;
 		protected BindingVariable dynamicAccessBindingVariable;
 
+		private FIBComponentType componentType;
+
 		public FIBComponentImpl() {
 			super();
 			explicitDependancies = new Vector<FIBDependancy>();
 			mayDepends = new Vector<FIBComponent>();
 			mayAlters = new Vector<FIBComponent>();
+		}
+
+		@Override
+		public FIBComponentType getComponentType() {
+			if (componentType == null) {
+				componentType = makeComponentType();
+			}
+			return componentType;
+		}
+
+		protected FIBComponentType makeComponentType() {
+			return new FIBComponentType(this);
 		}
 
 		@Override
@@ -605,6 +645,32 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				bindingModelMightChange(oldBindingModel);
 			}
 		}
+
+		@Override
+		public void addToVariables(FIBVariable<?> aVariable) {
+			performSuperAdder(VARIABLES_KEY, aVariable);
+			if (isRootComponent() && getBindingModel().bindingVariableNamed(aVariable.getName()) == null) {
+				getBindingModel().addToBindingVariables(aVariable.getBindingVariable());
+			}
+		}
+
+		@Override
+		public void removeFromVariables(FIBVariable<?> aVariable) {
+			performSuperRemover(VARIABLES_KEY, aVariable);
+			if (isRootComponent()) {
+				getBindingModel().removeFromBindingVariables(aVariable.getBindingVariable());
+			}
+		}
+
+		/*@Override
+		public FIBVariable<?> getVariable(String variableName) {
+			for (FIBVariable<?> v : getVariables()) {
+				if (v.getName().equals(variableName)) {
+					return v;
+				}
+			}
+			return null;
+		}*/
 
 		/**
 		 * Return a boolean indicating if hierarchy is valid (no cycle was detected in hierarchy)
@@ -908,14 +974,14 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		 * Return (create when null) binding variable identified by "data"<br>
 		 * Default behavior is to generate a binding variable with the java type identified by data class
 		 */
-		@Override
+		/*@Override
 		public BindingVariable getDataBindingVariable() {
 			if (dataBindingVariable == null) {
 				dataBindingVariable = new BindingVariable("data", getDataType());
 				getBindingModel().addToBindingVariables(dataBindingVariable);
 			}
 			return dataBindingVariable;
-		}
+		}*/
 
 		/**
 		 * Return (create when null) binding variable identified by "controller"<br>
@@ -961,10 +1027,10 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			}
 		}*/
 
-		@Override
+		/*@Override
 		public void updateDataBindingVariable() {
 			getDataBindingVariable().setType(getDataType());
-		}
+		}*/
 
 		@Override
 		public void updateControllerBindingVariable() {
@@ -1023,7 +1089,11 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		private void createBindingModel() {
 
 			bindingModel = new BindingModel();
-			getDataBindingVariable();
+			for (FIBVariable<?> v : getVariables()) {
+				v.appendToBindingModel(bindingModel);
+			}
+
+			// getDataBindingVariable();
 			getControllerBindingVariable();
 			getDynamicAccessBindingVariable();
 		}
@@ -1067,14 +1137,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			}
 			// logger.info("Created binding model at root component level:\n"+_bindingModel);
 		}*/
-
-		@Override
-		public void notifiedBindingChanged(DataBinding<?> binding) {
-			super.notifiedBindingChanged(binding);
-			if (binding == getData()) {
-				LOGGER.info("notified data changed");
-			}
-		}
 
 		/*@Override
 		@Deprecated
@@ -1199,7 +1261,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			}
 		}
 
-		@Override
+		/*@Override
 		public DataBinding<?> getData() {
 			if (data == null) {
 				data = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.GET) {
@@ -1212,7 +1274,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			}
 			return data;
 		}
-
+		
 		@Override
 		public void setData(DataBinding<?> data) {
 			if (data != null) {
@@ -1222,16 +1284,16 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 						return getDataType();
 					}
 				};
-
+		
 				this.data.setBindingName("data");
-
+		
 				updateDynamicAccessBindingVariable();
-
+		
 			}
 			else {
 				this.data = null;
 			}
-		}
+		}*/
 
 		@Override
 		public DataBinding<Boolean> getVisible() {
@@ -1266,8 +1328,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			return this;
 		}
 
-		private Type dataType;
-
+		/*private Type dataType;
+		
 		@Override
 		public Type getDataType() {
 			if (dataType != null) {
@@ -1278,7 +1340,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			}
 			return dataClass;
 		}
-
+		
 		@Override
 		public void setDataType(Type type) {
 			if (type != null && !type.equals(this.dataType)) {
@@ -1287,13 +1349,13 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				updateDataBindingVariable();
 				getPropertyChangeSupport().firePropertyChange("dataType", oldType, type);
 			}
-		}
+		}*/
 
-		@Override
+		/*@Override
 		public Class<?> getDataClass() {
 			return dataClass;
 		}
-
+		
 		@Override
 		@SuppressWarnings("rawtypes")
 		public void setDataClass(Class<?> dataClass) {
@@ -1309,7 +1371,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				updateDynamicAccessBindingVariable();
 				hasChanged(notification);
 			}
-		}
+		}*/
 
 		@Override
 		public Class<? extends FIBController> getControllerClass() {
@@ -1330,20 +1392,18 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			}
 		}
 
-		public Type getDefaultDataClass() {
+		/*public Type getDefaultDataClass() {
 			return Object.class;
-
-		}
+		
+		}*/
 
 		@Override
-		public Type getDynamicAccessType() {
-			if (getDataType() != null) {
-				Type[] args = new Type[2];
-				args[0] = new WilcardTypeImpl(getClass());
-				args[1] = new WilcardTypeImpl(Object.class);
-				return new ParameterizedTypeImpl(FIBView.class, args);
-			}
-			return null;
+		public final Type getDynamicAccessType() {
+			return getComponentType();
+			/*Type[] args = new Type[2];
+			args[0] = new WilcardTypeImpl(getClass());
+			args[1] = new WilcardTypeImpl(Object.class);
+			return new ParameterizedTypeImpl(FIBView.class, args);*/
 		}
 
 		@Override
@@ -1797,7 +1857,13 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		@Override
 		public List<DataBinding<?>> getDeclaredBindings() {
 			List<DataBinding<?>> returned = new ArrayList<DataBinding<?>>();
-			returned.add(getData());
+			// returned.add(getData());
+			for (FIBVariable<?> v : getVariables()) {
+				if (v.getValue() != null && v.getValue().isSet()) {
+					returned.add(v.getValue());
+				}
+			}
+
 			returned.add(getVisible());
 			return returned;
 		}
@@ -1941,9 +2007,9 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		@Override
 		public ValidationIssue<RootComponentShouldHaveDataClass, FIBComponent> applyValidation(FIBComponent object) {
-			if (object.isRootComponent() && object.getDataClass() == null) {
+			if (object.isRootComponent() && object.getVariables().size() == 0) {
 				return new ValidationWarning<RootComponentShouldHaveDataClass, FIBComponent>(this, object,
-						"component_($object.toString)_is_declared_as_root_but_does_not_have_any_data_class");
+						"component_($object.toString)_is_declared_as_root_but_does_not_declare_any_variables");
 			}
 			return null;
 		}
@@ -1998,19 +2064,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				}
 			}
 			return null;
-		}
-
-	}
-
-	@DefineValidationRule
-	public static class DataBindingMustBeValid extends BindingMustBeValid<FIBComponent> {
-		public DataBindingMustBeValid() {
-			super("'data'_binding_is_not_valid", FIBComponent.class);
-		}
-
-		@Override
-		public DataBinding<?> getBinding(FIBComponent object) {
-			return object.getData();
 		}
 
 	}

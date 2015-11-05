@@ -45,8 +45,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import java.lang.reflect.ParameterizedType;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -61,15 +59,17 @@ import org.openflexo.fib.sampleData.Person;
 import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.FIBComponentType;
+import org.openflexo.gina.model.FIBVariable;
 import org.openflexo.gina.model.container.FIBPanel;
-import org.openflexo.gina.model.container.TwoColsLayoutConstraints;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
+import org.openflexo.gina.model.container.TwoColsLayoutConstraints;
 import org.openflexo.gina.model.container.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.gina.model.widget.FIBCheckBox;
 import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.gina.model.widget.FIBNumber;
-import org.openflexo.gina.model.widget.FIBTextField;
 import org.openflexo.gina.model.widget.FIBNumber.NumberType;
+import org.openflexo.gina.model.widget.FIBTextField;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.gina.view.GinaViewFactory;
 import org.openflexo.localization.FlexoLocalization;
@@ -120,14 +120,14 @@ public class TestBindingModel extends FIBTestCase {
 		assertEquals(2, panel1.getBindingModel().getBindingVariablesCount());
 		assertNotNull(panel1.getBindingModel().bindingVariableNamed("data"));
 		assertNotNull(panel1.getBindingModel().bindingVariableNamed("controller"));
-		assertSame(panel1.getDataBindingVariable(), panel1.getBindingModel().bindingVariableNamed("data"));
+		assertSame(panel1.getVariable("data").getBindingVariable(), panel1.getBindingModel().bindingVariableNamed("data"));
 		assertSame(panel1.getControllerBindingVariable(), panel1.getBindingModel().bindingVariableNamed("controller"));
-		assertEquals(Person.class, panel1.getDataBindingVariable().getType());
+		assertEquals(Person.class, panel1.getVariable("data").getBindingVariable().getType());
 		assertEquals(FIBController.class, panel1.getControllerBindingVariable().getType());
 
 		// Change the data class, check that 'data' BindingVariable changed its type
 		panel1.setDataClass(Family.class);
-		assertEquals(Family.class, panel1.getDataBindingVariable().getType());
+		assertEquals(Family.class, panel1.getVariable("data").getBindingVariable().getType());
 
 		// Change the controller class, check that 'controller' BindingVariable changed its type
 		panel1.setControllerClass(TestCustomFIBController.class);
@@ -161,12 +161,12 @@ public class TestBindingModel extends FIBTestCase {
 
 		// Perform some checks on BindingModel on disconnected widget
 		assertNotNull(textfield1.getBindingModel());
-		assertEquals(2, textfield1.getBindingModel().getBindingVariablesCount());
-		assertNotNull(textfield1.getBindingModel().bindingVariableNamed("data"));
+		assertEquals(1, textfield1.getBindingModel().getBindingVariablesCount());
+		assertNull(textfield1.getBindingModel().bindingVariableNamed("data")); // data was not set !
 		assertNotNull(textfield1.getBindingModel().bindingVariableNamed("controller"));
-		assertSame(textfield1.getDataBindingVariable(), textfield1.getBindingModel().bindingVariableNamed("data"));
+		// assertSame(textfield1.getDataBindingVariable(), textfield1.getBindingModel().bindingVariableNamed("data"));
 		assertSame(textfield1.getControllerBindingVariable(), textfield1.getBindingModel().bindingVariableNamed("controller"));
-		assertEquals(String.class, textfield1.getDataBindingVariable().getType());
+		// assertEquals(String.class, textfield1.getDataBindingVariable().getType());
 		assertEquals(FIBController.class, textfield1.getControllerBindingVariable().getType());
 
 		assertFalse(textfield1.getData().isValid());
@@ -222,12 +222,12 @@ public class TestBindingModel extends FIBTestCase {
 
 		// Perform some checks on BindingModel
 		assertNotNull(panel2.getBindingModel());
-		assertEquals(2, panel2.getBindingModel().getBindingVariablesCount());
-		assertNotNull(panel2.getBindingModel().bindingVariableNamed("data"));
+		assertEquals(1, panel2.getBindingModel().getBindingVariablesCount());
+		assertNull(panel2.getBindingModel().bindingVariableNamed("data")); // data was not set !
 		assertNotNull(panel2.getBindingModel().bindingVariableNamed("controller"));
-		assertSame(panel2.getDataBindingVariable(), panel2.getBindingModel().bindingVariableNamed("data"));
+		// assertSame(panel2.getVariable("data").getBindingVariable(), panel2.getBindingModel().bindingVariableNamed("data"));
 		assertSame(panel2.getControllerBindingVariable(), panel2.getBindingModel().bindingVariableNamed("controller"));
-		assertEquals(Object.class, panel2.getDataBindingVariable().getType());
+		// assertEquals(Object.class, panel2.getVariable("data").getBindingVariable().getType());
 		assertEquals(FIBController.class, panel2.getControllerBindingVariable().getType());
 
 		FIBLabel l1 = newFIBLabel("textfield");
@@ -256,17 +256,23 @@ public class TestBindingModel extends FIBTestCase {
 
 		// Gives a name to the root panel, dynamic access should now be accessible and a third BindingVariable should be managed
 		panel2.setName("Panel");
-		assertEquals(3, panel2.getBindingModel().getBindingVariablesCount());
+		assertEquals(2, panel2.getBindingModel().getBindingVariablesCount());
 		assertNotNull(panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
 		assertSame(panel2.getDynamicAccessBindingVariable(), panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
-		assertTrue(panel2.getDynamicAccessBindingVariable().getType() instanceof ParameterizedType);
-		assertEquals(Object.class, ((ParameterizedType) panel2.getDynamicAccessBindingVariable().getType()).getActualTypeArguments()[2]);
+		assertTrue(panel2.getDynamicAccessBindingVariable().getType() instanceof FIBComponentType);
+		// assertEquals(Object.class, ((ParameterizedType) panel2.getDynamicAccessBindingVariable().getType()).getActualTypeArguments()[1]);
 
 		panel2.setDataClass(Person.class);
 		assertEquals(3, panel2.getBindingModel().getBindingVariablesCount());
 		assertNotNull(panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
 		assertSame(panel2.getDynamicAccessBindingVariable(), panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
-		assertEquals(Person.class, ((ParameterizedType) panel2.getDynamicAccessBindingVariable().getType()).getActualTypeArguments()[2]);
+		// assertEquals(Person.class, ((ParameterizedType) panel2.getDynamicAccessBindingVariable().getType()).getActualTypeArguments()[2]);
+		System.out.println("hop: " + panel2.getVariables());
+		for (FIBVariable<?> v : panel2.getVariables()) {
+			System.out.println("> Hop: " + v + " name=" + v.getName() + " type=" + v.getType());
+		}
+		System.out.println("panel2.getVariable('name')=" + panel2.getVariable("data"));
+		assertEquals(Person.class, panel2.getVariable("data").getType());
 
 		// Bindings are still not valid because
 		assertFalse(textfield2.getData().isValid());

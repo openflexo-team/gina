@@ -339,10 +339,11 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 
 		boolean returned = updateDynamicallyReferencedComponentWhenRequired();
 
-		if (getReferencedComponentView() != null) {
+		if (getReferencedComponentView() != null && embeddedFIBController.getRootComponent() instanceof FIBContainer) {
 
 			if ((getValue() == null)
-					|| (TypeUtils.isTypeAssignableFrom(embeddedFIBController.getRootComponent().getDataType(), getValue().getClass()))) {
+					|| (TypeUtils.isTypeAssignableFrom(((FIBContainer) embeddedFIBController.getRootComponent()).getDataType(),
+							getValue().getClass()))) {
 
 				performAssignments();
 
@@ -351,7 +352,8 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 				referencedComponentView.update();
 			}
 			else {
-				logger.warning("Inconsistant data: " + getValue() + " is not a " + embeddedFIBController.getRootComponent().getDataType());
+				logger.warning("Inconsistant data: " + getValue() + " is not a "
+						+ ((FIBContainer) embeddedFIBController.getRootComponent()).getDataType());
 			}
 
 		}

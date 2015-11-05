@@ -64,7 +64,6 @@ import org.openflexo.gina.model.widget.FIBTableAction.FIBAddAction;
 import org.openflexo.gina.model.widget.FIBTableAction.FIBCustomAction;
 import org.openflexo.gina.model.widget.FIBTableAction.FIBRemoveAction;
 import org.openflexo.gina.model.widget.FIBTableColumn.FIBTableColumnImpl;
-import org.openflexo.gina.view.widget.FIBTableWidget;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -559,19 +558,19 @@ public interface FIBTable extends FIBWidget {
 		}
 
 		@Override
-		public Type getDefaultDataClass() {
+		public Type getDefaultDataType() {
 			Type[] args = new Type[1];
 			args[0] = new WilcardTypeImpl(getIteratorClass());
 			return new ParameterizedTypeImpl(Collection.class, args);
 		}
 
-		@Override
+		/*@Override
 		public Type getDynamicAccessType() {
 			// Type[] args = new Type[2];
 			// args[0] = getDataType();
 			// args[1] = getIteratorType();
 			return new ParameterizedTypeImpl(FIBTableWidget.class, new Type[] { Object.class, getIteratorType() });
-		}
+		}*/
 
 		@Override
 		public Boolean getManageDynamicModel() {

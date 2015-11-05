@@ -56,13 +56,11 @@ import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingDefinition;
-import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.gina.model.FIBWidget;
-import org.openflexo.gina.view.widget.FIBCustomWidget;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -199,12 +197,12 @@ public interface FIBCustom extends FIBWidget {
 			/*if (getData() != null && getData().isSet() && getData().isValid()) {
 				return getData().getAnalyzedType();
 			}*/
-			return getDefaultDataClass();
+			return getDefaultDataType();
 
 		}
 
 		@Override
-		public Type getDefaultDataClass() {
+		public Type getDefaultDataType() {
 			if (getDataClassForComponent() != null) {
 				return getDataClassForComponent();
 			}
@@ -334,13 +332,13 @@ public interface FIBCustom extends FIBWidget {
 			}
 		}
 
-		@Override
+		/*@Override
 		public Type getDynamicAccessType() {
 			Type[] args = new Type[2];
 			args[0] = getComponentClass();
 			args[1] = getDataType();
 			return new ParameterizedTypeImpl(FIBCustomWidget.class, args);
-		}
+		}*/
 
 		@Override
 		public Boolean getManageDynamicModel() {

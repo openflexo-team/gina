@@ -145,7 +145,7 @@ public interface FIBButton extends FIBWidget {
 		}
 
 		@Override
-		public Type getDefaultDataClass() {
+		public Type getDefaultDataType() {
 			return String.class;
 		}
 
