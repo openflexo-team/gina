@@ -45,7 +45,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.openflexo.fib.editor.FIBAbstractEditor;
+import org.openflexo.gina.swing.editor.FIBAbstractEditor;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.HasPropertyChangeSupport;

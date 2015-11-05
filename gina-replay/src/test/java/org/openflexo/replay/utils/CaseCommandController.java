@@ -1,8 +1,8 @@
 package org.openflexo.replay.utils;
 
-import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.fib.view.GinaViewFactory;
+import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.view.GinaViewFactory;
 
 public class CaseCommandController extends FIBController {
 

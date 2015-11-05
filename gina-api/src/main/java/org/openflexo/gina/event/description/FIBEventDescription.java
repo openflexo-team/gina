@@ -2,13 +2,13 @@ package org.openflexo.gina.event.description;
 
 import java.util.List;
 
-import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.view.FIBView;
-import org.openflexo.fib.view.FIBWidgetView;
+import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.event.InvalidRecorderStateException;
 import org.openflexo.gina.event.MissingIdentityParameterException;
 import org.openflexo.gina.manager.EventManager;
 import org.openflexo.gina.manager.Registerable;
+import org.openflexo.gina.view.FIBView;
+import org.openflexo.gina.view.FIBWidgetView;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.Import;

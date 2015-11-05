@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Inspector layout="border" darkLevel="0" dataClassName="org.openflexo.fib.model.FIBContainer" name="Inspector">
+<Inspector layout="border" darkLevel="0" dataClassName="org.openflexo.gina.model.FIBContainer" name="Inspector">
   <TabPanel name="Tab" constraints="border(location=center)">
     <Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab" />
     <Tab title="Components" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="1" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab">
       <Panel layout="border" borderTitle="Components" titleFont="SansSerif,0,11" darkLevel="0" constraints="twocols(expandHorizontally=true;expandVertically=true;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=center)" name="ComponentsPanel">
-        <Table iteratorClassName="org.openflexo.fib.model.FIBComponent" visibleRowCount="5" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="ComponentsTable" data="data.subComponents" constraints="border(location=center)" font="SansSerif,0,11">
+        <Table iteratorClassName="org.openflexo.gina.model.FIBComponent" visibleRowCount="5" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="ComponentsTable" data="data.subComponents" constraints="border(location=center)" font="SansSerif,0,11">
           <NumberColumn numberType="IntegerType" data="iterator.index" title="index" columnWidth="40" resizable="false" displayTitle="true" />
           <LabelColumn data="iterator.toString" title="Component" columnWidth="200" resizable="true" displayTitle="true" />
           <LabelColumn data="iterator.constraints.stringRepresentation" title="Constraints" columnWidth="300" resizable="true" displayTitle="true" />

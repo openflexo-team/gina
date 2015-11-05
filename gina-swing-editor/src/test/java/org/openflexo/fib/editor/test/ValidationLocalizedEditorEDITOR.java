@@ -38,7 +38,7 @@
 
 package org.openflexo.fib.editor.test;
 
-import org.openflexo.fib.editor.FIBAbstractEditor;
+import org.openflexo.gina.swing.editor.FIBAbstractEditor;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.rm.Resource;

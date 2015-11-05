@@ -39,7 +39,7 @@
 package org.openflexo.fib.editor.test;
 
 
-import org.openflexo.fib.editor.FIBAbstractEditor;
+import org.openflexo.gina.swing.editor.FIBAbstractEditor;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 

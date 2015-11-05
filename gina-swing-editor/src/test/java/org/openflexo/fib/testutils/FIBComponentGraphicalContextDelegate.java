@@ -53,8 +53,8 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
-import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.editor.FIBEmbeddedEditor;
+import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.swing.editor.FIBEmbeddedEditor;
 import org.openflexo.rm.Resource;
 
 /**

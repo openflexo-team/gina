@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Inspector layout="border" darkLevel="0" dataClassName="org.openflexo.fib.model.widget.FIBColor" name="Inspector">
+<Inspector layout="border" darkLevel="0" dataClassName="org.openflexo.gina.model.widget.FIBColor" name="Inspector">
   <TabPanel name="Tab" constraints="border(location=center)">
     <Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
       <Label label="allowsNull" constraints="twocols(location=left)" localize="true" />

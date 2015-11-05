@@ -56,7 +56,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.openflexo.fib.controller.FIBController;
+import org.openflexo.gina.controller.FIBController;
 
 public class SwingGraphicalContextDelegate implements ChangeListener {
 

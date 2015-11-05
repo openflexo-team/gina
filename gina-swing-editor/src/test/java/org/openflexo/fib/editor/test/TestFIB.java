@@ -45,11 +45,11 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import org.openflexo.fib.FIBLibrary;
-import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.editor.FIBAbstractEditor;
-import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.fib.swing.utils.swing.view.FIBView;
+import org.openflexo.gina.FIBLibrary;
+import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.swing.editor.FIBAbstractEditor;
+import org.openflexo.gina.swing.utils.swing.view.FIBView;
 import org.openflexo.logging.FlexoLoggingManager;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;

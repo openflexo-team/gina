@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Inspector layout="border" darkLevel="0" dataClassName="org.openflexo.fib.model.widget.FIBNumber" name="Inspector">
+<Inspector layout="border" darkLevel="0" dataClassName="org.openflexo.gina.model.widget.FIBNumber" name="Inspector">
   <TabPanel name="Tab" constraints="border(location=center)">
     <Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
       <Label label="type" constraints="twocols(location=left)" localize="true" />
-      <DropDown data="data.numberType" constraints="twocols(location=right)" localize="true" iteratorClassName="org.openflexo.fib.model.widget.FIBNumber$NumberType" autoSelectFirstRow="false" />
+      <DropDown data="data.numberType" constraints="twocols(location=right)" localize="true" iteratorClassName="org.openflexo.gina.model.widget.FIBNumber$NumberType" autoSelectFirstRow="false" />
       <Label label="columns" constraints="twocols(location=left)" localize="true" />
       <Number numberType="IntegerType" data="data.columns" constraints="twocols()" localize="true" />
       <Label label="min" constraints="twocols(location=left)" localize="true" />

@@ -1,9 +1,9 @@
 package org.openflexo.replay.utils;
 
-import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.container.FIBPanel;
-import org.openflexo.fib.model.container.FIBPanel.Layout;
-import org.openflexo.fib.swing.view.SwingViewFactory;
+import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.container.FIBPanel;
+import org.openflexo.gina.model.container.FIBPanel.Layout;
+import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.replay.GinaReplayManager;
 

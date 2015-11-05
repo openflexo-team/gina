@@ -55,7 +55,7 @@ import java.util.regex.PatternSyntaxException;
 
 import javax.swing.Icon;
 
-import org.openflexo.fib.utils.FIBIconLibrary;
+import org.openflexo.gina.utils.FIBIconLibrary;
 import org.openflexo.toolbox.ClassScope;
 import org.openflexo.toolbox.StringUtils;
 
@@ -401,7 +401,7 @@ public class LoadedClassesInfo extends Observable {
 	{
 		System.out.println("Hello world");
 		try {
-			Class.forName("org.openflexo.fib.TestFIBBrowser");
+			Class.forName("org.openflexo.gina.TestFIBBrowser");
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

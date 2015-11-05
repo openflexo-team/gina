@@ -46,10 +46,10 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.fib.FIBTestCase;
-import org.openflexo.fib.model.container.FIBPanel;
-import org.openflexo.fib.model.container.FIBTab;
-import org.openflexo.fib.model.container.FIBTabPanel;
-import org.openflexo.fib.model.widget.FIBLabel;
+import org.openflexo.gina.model.container.FIBPanel;
+import org.openflexo.gina.model.container.FIBTab;
+import org.openflexo.gina.model.container.FIBTabPanel;
+import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 

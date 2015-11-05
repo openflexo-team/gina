@@ -47,8 +47,8 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.fib.editor.FIBAbstractEditor;
-import org.openflexo.fib.editor.controller.FIBEditorIconLibrary;
+import org.openflexo.gina.swing.editor.FIBAbstractEditor;
+import org.openflexo.gina.swing.editor.controller.FIBEditorIconLibrary;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.HasPropertyChangeSupport;

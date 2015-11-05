@@ -50,8 +50,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import org.openflexo.fib.editor.FIBEmbeddedEditor;
-import org.openflexo.fib.swing.utils.JFIBDialog;
+import org.openflexo.gina.swing.editor.FIBEmbeddedEditor;
+import org.openflexo.gina.swing.utils.JFIBDialog;
 import org.openflexo.rm.Resource;
 
 /**

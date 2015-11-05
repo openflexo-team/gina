@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Inspector layout="border" darkLevel="0" dataClassName="org.openflexo.fib.model.widget.FIBList" name="Inspector">
+<Inspector layout="border" darkLevel="0" dataClassName="org.openflexo.gina.model.widget.FIBList" name="Inspector">
   <TabPanel name="Tab" constraints="border(location=center)">
     <Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
       <Label label="visible_row_count" constraints="twocols(location=left)" localize="true" />
@@ -15,7 +15,7 @@
     </Tab>
     <Tab title="Controls" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="2" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="ControlsTab">
       <Label label="selected" constraints="twocols(location=left)" localize="true" />
-      <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.selected" constraints="twocols(expandHorizontally=true;location=right)">
+      <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.selected" constraints="twocols(expandHorizontally=true;location=right)">
         <Assignment variable="component.bindable" value="data" />
       </Custom>
       <CheckBox selected="false" data="data.boundToSelectionManager" constraints="twocols(location=left)" localize="true" />

@@ -2,10 +2,10 @@ package org.openflexo.replay.editor;
 
 import javax.swing.JFrame;
 
-import org.openflexo.fib.FIBLibrary;
-import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.fib.swing.view.SwingViewFactory;
-import org.openflexo.fib.view.FIBView;
+import org.openflexo.gina.FIBLibrary;
+import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.swing.view.SwingViewFactory;
+import org.openflexo.gina.view.FIBView;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Inspector layout="border" darkLevel="0" dataClassName="org.openflexo.fib.model.FIBModelObject" name="Inspector">
+<Inspector layout="border" darkLevel="0" dataClassName="org.openflexo.gina.model.FIBModelObject" name="Inspector">
   <TabPanel name="Tab" constraints="border(location=center)">
     <Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
       <Label label="name" constraints="twocols(location=left)" localize="true" />
@@ -14,7 +14,7 @@
       <TextArea data="data.description" constraints="twocols(expandHorizontally=true;expandVertically=true;location=center)" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" localize="true" />
     </Tab>
     <Tab title="Params" layout="border" titleFont="SansSerif,0,11" darkLevel="0" index="7" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="ParametersTab">
-      <Table iteratorClassName="org.openflexo.fib.model.FIBParameter" visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="ParametersTable" data="data.parameters" constraints="border(location=center)">
+      <Table iteratorClassName="org.openflexo.gina.model.FIBParameter" visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="ParametersTable" data="data.parameters" constraints="border(location=center)">
         <TextFieldColumn data="iterator.name" title="name" columnWidth="100" resizable="true" displayTitle="true" name="name" />
         <TextFieldColumn data="iterator.value" title="value" columnWidth="200" resizable="true" displayTitle="true" name="description" />
         <AddAction method="data.createNewParameter()" isAvailable="data.isParameterAddable()" name="make_new_parameter" />

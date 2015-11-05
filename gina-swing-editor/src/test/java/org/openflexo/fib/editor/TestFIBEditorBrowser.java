@@ -43,11 +43,11 @@ import static org.junit.Assert.assertEquals;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Test;
-import org.openflexo.fib.editor.widget.FIBEditorBrowser;
-import org.openflexo.fib.model.FIBModelFactory;
-import org.openflexo.fib.model.container.FIBPanel;
-import org.openflexo.fib.model.widget.FIBLabel;
 import org.openflexo.fib.testutils.FIBComponentGraphicalContextDelegate;
+import org.openflexo.gina.model.FIBModelFactory;
+import org.openflexo.gina.model.container.FIBPanel;
+import org.openflexo.gina.model.widget.FIBLabel;
+import org.openflexo.gina.swing.editor.widget.FIBEditorBrowser;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.validation.ValidationReport;
 
