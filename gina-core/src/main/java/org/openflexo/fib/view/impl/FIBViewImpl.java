@@ -288,12 +288,15 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	}
 
 	/**
-	 * This method is called to update view representing a FIBComponent.<br>
+	 * This method is called to update view representing a {@link FIBComponent}.<br>
+	 * Usually, this method should be called only once, when the component has been added to the whole hierarchy.
 	 * 
 	 * @return a flag indicating if component has been updated
 	 */
 	@Override
 	public boolean update() {
+
+		System.out.println("update of " + this);
 
 		updateVisibility();
 

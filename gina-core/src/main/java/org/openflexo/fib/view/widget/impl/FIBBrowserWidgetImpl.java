@@ -375,6 +375,7 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 	@Override
 	public boolean update() {
 		super.update();
+		updateSelectionMode();
 		updateSelected(false);
 		updateSelection(false);
 		// TODO: this should be not necessary
@@ -387,6 +388,8 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		}
 		return true;
 	}
+
+	protected abstract void updateSelectionMode();
 
 	private final void updateSelected(boolean force) {
 

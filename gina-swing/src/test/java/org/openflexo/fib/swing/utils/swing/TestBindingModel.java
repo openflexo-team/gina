@@ -107,9 +107,13 @@ public class TestBindingModel extends FIBTestCase {
 	@TestOrder(1)
 	public void test1CreateRootPanel() {
 
+		log("test1CreateRootPanel");
+
 		panel1 = newFIBPanel();
 		panel1.setLayout(Layout.twocols);
 		panel1.setDataClass(Person.class);
+
+		System.out.println("BindingModel for panel1 =" + panel1.getBindingModel());
 
 		// Perform some checks on BindingModel
 		assertNotNull(panel1.getBindingModel());
@@ -143,11 +147,17 @@ public class TestBindingModel extends FIBTestCase {
 	@TestOrder(2)
 	public void test2TestBindingModelOnSingleWidget() {
 
+		log("test2TestBindingModelOnSingleWidget");
+
 		label = newFIBLabel("person");
 		panel1.addToSubComponents(label, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false, false));
 
 		textfield1 = newFIBTextField();
 		textfield1.setData(new DataBinding<String>("data.father.firstName", textfield1, String.class, BindingDefinitionType.GET_SET));
+
+		System.out.println("BindingModel for panel1 =" + panel1.getBindingModel());
+		System.out.println("BindingModel for label =" + label.getBindingModel());
+		System.out.println("BindingModel for textfield1 =" + textfield1.getBindingModel());
 
 		// Perform some checks on BindingModel on disconnected widget
 		assertNotNull(textfield1.getBindingModel());
@@ -163,6 +173,11 @@ public class TestBindingModel extends FIBTestCase {
 
 		// Now connect the widget in hierarchy, check BindingModel validity
 		panel1.addToSubComponents(textfield1, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false));
+
+		System.out.println("BindingModel for panel1 =" + panel1.getBindingModel());
+		System.out.println("BindingModel for label =" + label.getBindingModel());
+		System.out.println("BindingModel for textfield1 =" + textfield1.getBindingModel());
+
 		assertNotNull(textfield1.getBindingModel());
 		assertSame(panel1.getBindingModel(), textfield1.getBindingModel());
 		assertEquals(3, textfield1.getBindingModel().getBindingVariablesCount());
@@ -199,6 +214,8 @@ public class TestBindingModel extends FIBTestCase {
 	@Test
 	@TestOrder(3)
 	public void test3TestBindingModelWithMultipleWidgetsInContainer() {
+
+		log("test3TestBindingModelWithMultipleWidgetsInContainer");
 
 		panel2 = newFIBPanel();
 		panel2.setLayout(Layout.twocols);
@@ -258,6 +275,12 @@ public class TestBindingModel extends FIBTestCase {
 
 		// We change name to panel2
 		panel2.setName("Panel2");
+
+		System.out.println("BindingModel for panel2 =" + panel2.getBindingModel());
+		System.out.println("BindingModel for textfield2 =" + textfield2.getBindingModel());
+		System.out.println("textfield2.data =" + textfield2.getData());
+		System.out.println("valid =" + textfield2.getData().isValid());
+		System.out.println("reason =" + textfield2.getData().invalidBindingReason());
 
 		// Now the bindings should become valid
 		assertTrue(textfield2.getData().isValid());
@@ -336,6 +359,8 @@ public class TestBindingModel extends FIBTestCase {
 	@TestOrder(4)
 	public void test4TestComponentHierarchy() {
 
+		log("test4TestComponentHierarchy");
+
 		assertEquals(4, panel1.getBindingModel().getBindingVariablesCount());
 
 		panel1.addToSubComponents(panel2, new TwoColsLayoutConstraints(TwoColsLayoutLocation.center, true, true));
@@ -389,6 +414,8 @@ public class TestBindingModel extends FIBTestCase {
 	@Test
 	@TestOrder(5)
 	public void test5TestWidgetMove() {
+
+		log("test5TestWidgetMove");
 
 		assertEquals(8, panel1.getBindingModel().getBindingVariablesCount());
 		assertSame(panel2.getBindingModel(), panel1.getBindingModel());

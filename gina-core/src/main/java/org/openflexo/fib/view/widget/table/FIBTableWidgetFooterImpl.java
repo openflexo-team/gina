@@ -85,8 +85,6 @@ public abstract class FIBTableWidgetFooterImpl<C, T> implements FIBTableWidgetFo
 
 		initializeActions(widget);
 
-		handleSelectionCleared();
-
 	}
 
 	@Override

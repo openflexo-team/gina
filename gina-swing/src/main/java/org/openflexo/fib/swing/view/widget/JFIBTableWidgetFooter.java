@@ -255,6 +255,7 @@ public class JFIBTableWidgetFooter<T> extends FIBTableWidgetFooterImpl<JPanel, T
 		plusButton.setEnabled((focusedObject != null) && (getActionTypesWithAddType(focusedObject).size() > 0));
 		minusButton.setEnabled((focusedObject != null) && (getActionTypesWithDeleteType(focusedObject, globalSelection).size() > 0));
 		plusActionMenuNeedsRecomputed = true;*/
+
 	}
 
 	private JPopupMenu getPlusActionMenu() {

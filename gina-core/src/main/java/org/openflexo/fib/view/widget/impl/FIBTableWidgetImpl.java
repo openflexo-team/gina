@@ -82,7 +82,6 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 	public static final String SELECTED = "selected";
 	public static final String SELECTION = "selection";
 
-	private final FIBTable table;
 	private FIBTableModel<T> _tableModel;
 
 	protected final FIBTableWidgetFooter<?, T> footer;
@@ -94,10 +93,8 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 
 	private BindingValueListChangeListener<T, List<T>> listenerToDataAsListValue;
 
-	public FIBTableWidgetImpl(FIBTable fibTable, FIBController controller,
-			TableRenderingAdapter<C, T> RenderingAdapter) {
+	public FIBTableWidgetImpl(FIBTable fibTable, FIBController controller, TableRenderingAdapter<C, T> RenderingAdapter) {
 		super(fibTable, controller, RenderingAdapter);
-		table = fibTable;
 		footer = makeFooter();
 		listenDataAsListValueChange();
 		listenSelectedValueChange();
@@ -149,7 +146,7 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 	}
 
 	public FIBTable getTable() {
-		return table;
+		return getWidget();
 	}
 
 	public FIBTableWidgetFooter<?, T> getFooter() {
@@ -158,7 +155,7 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 
 	public FIBTableModel<T> getTableModel() {
 		if (_tableModel == null) {
-			_tableModel = new FIBTableModel<T>(table, this, getController());
+			_tableModel = new FIBTableModel<T>(getTable(), this, getController());
 		}
 		return _tableModel;
 	}

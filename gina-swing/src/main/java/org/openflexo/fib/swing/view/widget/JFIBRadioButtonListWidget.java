@@ -160,7 +160,8 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 				add(rb);
 				buttonGroup.add(rb);
 				if (object.equals(widget.getValue())) {
-					rb.doClick();
+					rb.setSelected(true);
+					// rb.doClick();
 					selectedValue = widget.getValue();
 				}
 			}

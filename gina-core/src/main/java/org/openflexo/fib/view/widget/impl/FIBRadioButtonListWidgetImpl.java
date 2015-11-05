@@ -64,7 +64,6 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 	public FIBRadioButtonListWidgetImpl(FIBRadioButtonList model, FIBController controller,
 			RadioButtonRenderingAdapter<C, T> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
-		selectFirstRowIfRequired();
 	}
 
 	@Override
@@ -72,9 +71,15 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 		return (RadioButtonRenderingAdapter<C, T>) super.getRenderingAdapter();
 	}
 
+	@Override
+	public boolean update() {
+		boolean returned = super.update();
+		selectFirstRowIfRequired();
+		return returned;
+	}
+
 	private void selectFirstRowIfRequired() {
-		if (getSelectedValue() == null && (getWidget().getData() != null && getWidget().getData().isValid())
-				&& getWidget().getAutoSelectFirstRow() && getMultipleValueModel().getSize() > 0) {
+		if (getSelectedValue() == null && getWidget().getAutoSelectFirstRow() && getMultipleValueModel().getSize() > 0) {
 			setSelectedValue(getMultipleValueModel().getElementAt(0));
 		}
 	}

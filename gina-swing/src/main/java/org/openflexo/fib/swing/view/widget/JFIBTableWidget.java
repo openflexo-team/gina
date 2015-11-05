@@ -76,6 +76,7 @@ import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.controller.FIBSelectable;
 import org.openflexo.fib.model.FIBTable;
 import org.openflexo.fib.swing.view.SwingRenderingAdapter;
+import org.openflexo.fib.swing.view.widget.JFIBTableWidget.JTablePanel;
 import org.openflexo.fib.view.widget.impl.FIBTableWidgetImpl;
 import org.openflexo.fib.view.widget.table.FIBTableActionListener;
 import org.openflexo.fib.view.widget.table.FIBTableModel;
@@ -87,7 +88,7 @@ import org.openflexo.gina.manager.GinaStackEvent;
  * 
  * @author sguerin
  */
-public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
+public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 		implements TableModelListener, FIBSelectable<T>, ListSelectionListener, FocusListener {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBTableWidget.class.getPackage().getName());
@@ -98,65 +99,60 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingTableRenderingAdapter<T> extends SwingRenderingAdapter<JXTable>
-			implements TableRenderingAdapter<JXTable, T> {
+	public static class SwingTableRenderingAdapter<T> extends SwingRenderingAdapter<JTablePanel<T>>
+			implements TableRenderingAdapter<JTablePanel<T>, T> {
 
 		@Override
-		public int getVisibleRowCount(JXTable component) {
-			return component.getVisibleRowCount();
+		public int getVisibleRowCount(JTablePanel<T> component) {
+			return component.getJTable().getVisibleRowCount();
 		}
 
 		@Override
-		public void setVisibleRowCount(JXTable component, int visibleRowCount) {
-			component.setVisibleRowCount(visibleRowCount);
+		public void setVisibleRowCount(JTablePanel<T> component, int visibleRowCount) {
+			component.getJTable().setVisibleRowCount(visibleRowCount);
 		}
 
 		@Override
-		public int getRowHeight(JXTable component) {
-			return component.getRowHeight();
+		public int getRowHeight(JTablePanel<T> component) {
+			return component.getJTable().getRowHeight();
 		}
 
 		@Override
-		public void setRowHeight(JXTable component, int rowHeight) {
-			component.setRowHeight(rowHeight);
+		public void setRowHeight(JTablePanel<T> component, int rowHeight) {
+			component.getJTable().setRowHeight(rowHeight);
 		}
 
 		@Override
-		public ListSelectionModel getListSelectionModel(JXTable component) {
-			return component.getSelectionModel();
+		public ListSelectionModel getListSelectionModel(JTablePanel<T> component) {
+			return component.getJTable().getSelectionModel();
 		}
 
 		@Override
-		public boolean isEditing(JXTable component) {
-			return component.isEditing();
+		public boolean isEditing(JTablePanel<T> component) {
+			return component.getJTable().isEditing();
 		}
 
 		@Override
-		public int getEditingRow(JXTable component) {
-			return component.getEditingRow();
+		public int getEditingRow(JTablePanel<T> component) {
+			return component.getJTable().getEditingRow();
 		}
 
 		@Override
-		public int getEditingColumn(JXTable component) {
-			return component.getEditingColumn();
+		public int getEditingColumn(JTablePanel<T> component) {
+			return component.getJTable().getEditingColumn();
 		}
 
 		@Override
-		public void cancelCellEditing(JXTable component) {
-			component.getCellEditor().cancelCellEditing();
+		public void cancelCellEditing(JTablePanel<T> component) {
+			component.getJTable().getCellEditor().cancelCellEditing();
 		}
 
 	}
 
-	private final JPanel _dynamicComponent;
-	private JScrollPane scrollPane;
-
 	public JFIBTableWidget(FIBTable fibTable, FIBController controller) {
 		super(fibTable, controller, new SwingTableRenderingAdapter<T>());
 
-		_dynamicComponent = new JPanel();
-		_dynamicComponent.setOpaque(false);
-		_dynamicComponent.setLayout(new BorderLayout());
+		getTableModel().addTableModelListener(this);
 
 	}
 
@@ -182,14 +178,16 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 			getListSelectionModel().removeListSelectionListener(this);
 			getListSelectionModel().addSelectionInterval(event.getNewRow(), event.getNewRow());
 			getListSelectionModel().addListSelectionListener(this);
-			getTechnologyComponent().setEditingColumn(getTechnologyComponent().convertColumnIndexToView(event.getColumn()));
-			getTechnologyComponent().setEditingRow(getTechnologyComponent().convertRowIndexToView(event.getNewRow()));
+			getTechnologyComponent().getJTable()
+					.setEditingColumn(getTechnologyComponent().getJTable().convertColumnIndexToView(event.getColumn()));
+			getTechnologyComponent().getJTable()
+					.setEditingRow(getTechnologyComponent().getJTable().convertRowIndexToView(event.getNewRow()));
 		}
 	}
 
 	@Override
 	public JPanel getJComponent() {
-		return _dynamicComponent;
+		return getTechnologyComponent();
 	}
 
 	@Override
@@ -220,137 +218,15 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 		if (getListSelectionModel() != null) {
 			getListSelectionModel().removeListSelectionListener(this);
 		}
-		if (scrollPane != null && getTable().getCreateNewRowOnClick()) {
-			for (MouseListener l : scrollPane.getMouseListeners()) {
-				scrollPane.removeMouseListener(l);
-			}
-		}
 		for (MouseListener l : getTechnologyComponent().getMouseListeners()) {
 			getTechnologyComponent().removeMouseListener(l);
 		}
+		getTechnologyComponent().delete();
 	}
 
 	@Override
-	protected JXTable makeTechnologyComponent() {
-
-		getTableModel().addTableModelListener(this);
-
-		JXTable _table = new JXTable(getTableModel()) {
-
-			@Override
-			protected void resetDefaultTableCellRendererColors(Component renderer, int row, int column) {
-			}
-
-		};
-		_table.setVisibleRowCount(0);
-		_table.setSortOrderCycle(SortOrder.ASCENDING, SortOrder.DESCENDING, SortOrder.UNSORTED);
-		_table.setAutoCreateRowSorter(true);
-		_table.setFillsViewportHeight(true);
-		_table.setShowHorizontalLines(false);
-		_table.setShowVerticalLines(false);
-		_table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-		_table.addFocusListener(this);
-
-		for (int i = 0; i < getTableModel().getColumnCount(); i++) {
-			TableColumn col = _table.getColumnModel().getColumn(i);
-			// FlexoLocalization.localizedForKey(getController().getLocalizer(),getTableModel().columnAt(i).getTitle());
-			col.setWidth(getTableModel().getDefaultColumnSize(i));
-			col.setPreferredWidth(getTableModel().getDefaultColumnSize(i));
-			if (getTableModel().getColumnResizable(i)) {
-				col.setResizable(true);
-			}
-			else {
-				// L'idee, c'est d'etre vraiment sur ;-) !
-				col.setWidth(getTableModel().getDefaultColumnSize(i));
-				col.setMinWidth(getTableModel().getDefaultColumnSize(i));
-				col.setMaxWidth(getTableModel().getDefaultColumnSize(i));
-				col.setResizable(false);
-			}
-			if (getTableModel().columnAt(i).requireCellRenderer()) {
-				col.setCellRenderer(getTableModel().columnAt(i).getCellRenderer());
-			}
-			if (getTableModel().columnAt(i).requireCellEditor()) {
-				col.setCellEditor(getTableModel().columnAt(i).getCellEditor());
-			}
-		}
-		if (getTable().getRowHeight() != null) {
-			_table.setRowHeight(getTable().getRowHeight());
-		}
-		if (getTable().getVisibleRowCount() != null) {
-			_table.setVisibleRowCount(getTable().getVisibleRowCount());
-			if (_table.getRowHeight() == 0) {
-				_table.setRowHeight(18);
-			}
-		}
-
-		_table.setSelectionMode(getTable().getSelectionMode().getMode());
-		// _table.getTableHeader().setReorderingAllowed(false);
-
-		_table.getSelectionModel().addListSelectionListener(this);
-
-		// _listSelectionModel = _table.getSelectionModel();
-		// _listSelectionModel.addListSelectionListener(this);
-
-		if (getWidget().getBoundToSelectionManager()) {
-			_table.registerKeyboardAction(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					getController().performCopyAction(getSelected(), getSelection());
-				}
-			}, KeyStroke.getKeyStroke(KeyEvent.VK_C, META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-			_table.registerKeyboardAction(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					getController().performCutAction(getSelected(), getSelection());
-				}
-			}, KeyStroke.getKeyStroke(KeyEvent.VK_X, META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-			_table.registerKeyboardAction(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					getController().performPasteAction(getSelected(), getSelection());
-				}
-			}, KeyStroke.getKeyStroke(KeyEvent.VK_V, META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-		}
-
-		scrollPane = new JScrollPane(_table);
-		scrollPane.setOpaque(false);
-		if (getTable().getCreateNewRowOnClick()) {
-			_table.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					if (getTechnologyComponent().getCellEditor() != null) {
-						getTechnologyComponent().getCellEditor().stopCellEditing();
-						e.consume();
-					}
-					if (getTable().getCreateNewRowOnClick()) {
-						if (!e.isConsumed() && e.getClickCount() == 2) {
-							// System.out.println("OK, on essaie de gerer un new par double click");
-							Enumeration<FIBTableActionListener<T>> en = getFooter().getAddActionListeners();
-							while (en.hasMoreElements()) {
-								FIBTableActionListener<T> action = en.nextElement();
-								if (action.isAddAction()) {
-									action.actionPerformed(new ActionEvent(getTechnologyComponent(), ActionEvent.ACTION_PERFORMED, null,
-											EventQueue.getMostRecentEventTime(), e.getModifiers()));
-									break;
-								}
-							}
-						}
-					}
-				}
-			});
-		}
-
-		_dynamicComponent.removeAll();
-		_dynamicComponent.add(scrollPane, BorderLayout.CENTER);
-
-		if (getTable().getShowFooter()) {
-			_dynamicComponent.add(getFooter().getFooterComponent(), BorderLayout.SOUTH);
-		}
-
-		_dynamicComponent.revalidate();
-		_dynamicComponent.repaint();
-
-		return _table;
+	protected JTablePanel<T> makeTechnologyComponent() {
+		return new JTablePanel<>(this);
 	}
 
 	@Override
@@ -360,7 +236,9 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 
 	@Override
 	public JFIBTableWidgetFooter<T> makeFooter() {
-		return new JFIBTableWidgetFooter<T>(this);
+		JFIBTableWidgetFooter<T> returned = new JFIBTableWidgetFooter<T>(this);
+		getTechnologyComponent().add(returned.getFooterComponent(), BorderLayout.SOUTH);
+		return returned;
 	}
 
 	@Override
@@ -399,7 +277,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 		// System.out.println("received " + e);
 
 		if (leadIndex > -1) {
-			leadIndex = getTechnologyComponent().convertRowIndexToModel(leadIndex);
+			leadIndex = getTechnologyComponent().getJTable().convertRowIndexToModel(leadIndex);
 		}
 
 		T newSelectedObject = getTableModel().elementAt(leadIndex);
@@ -408,7 +286,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 		List<T> newSelection = new ArrayList<T>();
 		for (i = getListSelectionModel().getMinSelectionIndex(); i <= getListSelectionModel().getMaxSelectionIndex(); i++) {
 			if (getListSelectionModel().isSelectedIndex(i)) {
-				newSelection.add(getTableModel().elementAt(getTechnologyComponent().convertRowIndexToModel(i)));
+				newSelection.add(getTableModel().elementAt(getTechnologyComponent().getJTable().convertRowIndexToModel(i)));
 			}
 		}
 
@@ -457,7 +335,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 		if (object != null && getTableModel() != null && getTableModel().getValues() != null) {
 			int index = getTableModel().getValues().indexOf(object);
 			if (index > -1) {
-				index = getTechnologyComponent().convertRowIndexToView(index);
+				index = getTechnologyComponent().getJTable().convertRowIndexToView(index);
 				// if (!notify) _table.getSelectionModel().removeListSelectionListener(getTableModel());
 				getListSelectionModel().setSelectionInterval(index, index);
 				// if (!notify) _table.getSelectionModel().addListSelectionListener(getTableModel());
@@ -474,7 +352,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 		if (index > -1) {
 			ignoreNotifications = true;
 			try {
-				index = getTechnologyComponent().convertRowIndexToView(index);
+				index = getTechnologyComponent().getJTable().convertRowIndexToView(index);
 				getListSelectionModel().addSelectionInterval(index, index);
 			} catch (IndexOutOfBoundsException e) {
 				LOGGER.warning("Unexpected " + e);
@@ -489,7 +367,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 		if (index > -1) {
 			ignoreNotifications = true;
 			try {
-				index = getTechnologyComponent().convertRowIndexToView(index);
+				index = getTechnologyComponent().getJTable().convertRowIndexToView(index);
 			} catch (IndexOutOfBoundsException e) {
 				LOGGER.warning("Unexpected " + e);
 			}
@@ -509,7 +387,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 	public void addToSelection(T o) {
 		int index = getTableModel().getValues().indexOf(o);
 		if (index > -1) {
-			index = getTechnologyComponent().convertRowIndexToView(index);
+			index = getTechnologyComponent().getJTable().convertRowIndexToView(index);
 			getListSelectionModel().addSelectionInterval(index, index);
 		}
 	}
@@ -518,7 +396,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 	public void removeFromSelection(T o) {
 		int index = getTableModel().getValues().indexOf(o);
 		if (index > -1) {
-			index = getTechnologyComponent().convertRowIndexToView(index);
+			index = getTechnologyComponent().getJTable().convertRowIndexToView(index);
 			getListSelectionModel().removeSelectionInterval(index, index);
 		}
 	}
@@ -526,6 +404,144 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JXTable, T>
 	@Override
 	public void resetSelection() {
 		getListSelectionModel().clearSelection();
+	}
+
+	@SuppressWarnings("serial")
+	public static class JTablePanel<T> extends JPanel {
+
+		private final JXTable jTable;
+		private final JScrollPane scrollPane;
+		private final JFIBTableWidget<T> widget;
+
+		public JTablePanel(JFIBTableWidget<T> aWidget) {
+			super(new BorderLayout());
+			setOpaque(false);
+			this.widget = aWidget;
+
+			jTable = new JXTable(widget.getTableModel()) {
+
+				@Override
+				protected void resetDefaultTableCellRendererColors(Component renderer, int row, int column) {
+				}
+
+			};
+			jTable.setVisibleRowCount(0);
+			jTable.setSortOrderCycle(SortOrder.ASCENDING, SortOrder.DESCENDING, SortOrder.UNSORTED);
+			jTable.setAutoCreateRowSorter(true);
+			jTable.setFillsViewportHeight(true);
+			jTable.setShowHorizontalLines(false);
+			jTable.setShowVerticalLines(false);
+			jTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+			jTable.addFocusListener(widget);
+
+			for (int i = 0; i < widget.getTableModel().getColumnCount(); i++) {
+				TableColumn col = jTable.getColumnModel().getColumn(i);
+				// FlexoLocalization.localizedForKey(getController().getLocalizer(),getTableModel().columnAt(i).getTitle());
+				col.setWidth(widget.getTableModel().getDefaultColumnSize(i));
+				col.setPreferredWidth(widget.getTableModel().getDefaultColumnSize(i));
+				if (widget.getTableModel().getColumnResizable(i)) {
+					col.setResizable(true);
+				}
+				else {
+					// L'idee, c'est d'etre vraiment sur ;-) !
+					col.setWidth(widget.getTableModel().getDefaultColumnSize(i));
+					col.setMinWidth(widget.getTableModel().getDefaultColumnSize(i));
+					col.setMaxWidth(widget.getTableModel().getDefaultColumnSize(i));
+					col.setResizable(false);
+				}
+				if (widget.getTableModel().columnAt(i).requireCellRenderer()) {
+					col.setCellRenderer(widget.getTableModel().columnAt(i).getCellRenderer());
+				}
+				if (widget.getTableModel().columnAt(i).requireCellEditor()) {
+					col.setCellEditor(widget.getTableModel().columnAt(i).getCellEditor());
+				}
+			}
+			if (widget.getTable().getRowHeight() != null) {
+				jTable.setRowHeight(widget.getTable().getRowHeight());
+			}
+			if (widget.getTable().getVisibleRowCount() != null) {
+				jTable.setVisibleRowCount(widget.getTable().getVisibleRowCount());
+				if (jTable.getRowHeight() == 0) {
+					jTable.setRowHeight(18);
+				}
+			}
+
+			jTable.setSelectionMode(widget.getTable().getSelectionMode().getMode());
+			// jTable.getTableHeader().setReorderingAllowed(false);
+
+			jTable.getSelectionModel().addListSelectionListener(widget);
+
+			// _listSelectionModel = jTable.getSelectionModel();
+			// _listSelectionModel.addListSelectionListener(this);
+
+			if (widget.getWidget().getBoundToSelectionManager()) {
+				jTable.registerKeyboardAction(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						widget.getController().performCopyAction(widget.getSelected(), widget.getSelection());
+					}
+				}, KeyStroke.getKeyStroke(KeyEvent.VK_C, META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+				jTable.registerKeyboardAction(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						widget.getController().performCutAction(widget.getSelected(), widget.getSelection());
+					}
+				}, KeyStroke.getKeyStroke(KeyEvent.VK_X, META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+				jTable.registerKeyboardAction(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						widget.getController().performPasteAction(widget.getSelected(), widget.getSelection());
+					}
+				}, KeyStroke.getKeyStroke(KeyEvent.VK_V, META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+			}
+
+			scrollPane = new JScrollPane(jTable);
+			scrollPane.setOpaque(false);
+			if (widget.getTable().getCreateNewRowOnClick()) {
+				jTable.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						if (jTable.getCellEditor() != null) {
+							jTable.getCellEditor().stopCellEditing();
+							e.consume();
+						}
+						if (widget.getTable().getCreateNewRowOnClick()) {
+							if (!e.isConsumed() && e.getClickCount() == 2) {
+								// System.out.println("OK, on essaie de gerer un new par double click");
+								Enumeration<FIBTableActionListener<T>> en = widget.getFooter().getAddActionListeners();
+								while (en.hasMoreElements()) {
+									FIBTableActionListener<T> action = en.nextElement();
+									if (action.isAddAction()) {
+										action.actionPerformed(new ActionEvent(jTable, ActionEvent.ACTION_PERFORMED, null,
+												EventQueue.getMostRecentEventTime(), e.getModifiers()));
+										break;
+									}
+								}
+							}
+						}
+					}
+				});
+			}
+
+			add(scrollPane, BorderLayout.CENTER);
+
+			if (widget.getTable().getShowFooter() && widget.getFooter() != null) {
+				add(widget.getFooter().getFooterComponent(), BorderLayout.SOUTH);
+			}
+
+		}
+
+		public void delete() {
+			if (scrollPane != null && widget.getTable().getCreateNewRowOnClick()) {
+				for (MouseListener l : scrollPane.getMouseListeners()) {
+					scrollPane.removeMouseListener(l);
+				}
+			}
+		}
+
+		public JXTable getJTable() {
+			return jTable;
+		}
 	}
 
 }

@@ -69,6 +69,7 @@ import javax.swing.tree.TreeSelectionModel;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBBrowser;
 import org.openflexo.fib.swing.view.SwingRenderingAdapter;
+import org.openflexo.fib.swing.view.widget.JFIBBrowserWidget.JTreePanel;
 import org.openflexo.fib.view.widget.browser.FIBBrowserCellEditor;
 import org.openflexo.fib.view.widget.browser.FIBBrowserCellRenderer;
 import org.openflexo.fib.view.widget.browser.FIBBrowserModel.BrowserCell;
@@ -84,7 +85,7 @@ import org.openflexo.toolbox.ToolBox;
  * 
  * @author sylvain
  */
-public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTree, T>implements FocusListener {
+public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>implements FocusListener {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBBrowserWidget.class.getPackage().getName());
 
@@ -94,64 +95,60 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTree, T>implemen
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingBrowserRenderingAdapter<T> extends SwingRenderingAdapter<JTree>
-			implements BrowserRenderingAdapter<JTree, T> {
+	public static class SwingBrowserRenderingAdapter<T> extends SwingRenderingAdapter<JTreePanel<T>>
+			implements BrowserRenderingAdapter<JTreePanel<T>, T> {
 
 		@Override
-		public int getVisibleRowCount(JTree component) {
-			return component.getVisibleRowCount();
+		public int getVisibleRowCount(JTreePanel<T> component) {
+			return component.getJTree().getVisibleRowCount();
 		}
 
 		@Override
-		public void setVisibleRowCount(JTree component, int visibleRowCount) {
-			component.setVisibleRowCount(visibleRowCount);
+		public void setVisibleRowCount(JTreePanel<T> component, int visibleRowCount) {
+			component.getJTree().setVisibleRowCount(visibleRowCount);
 		}
 
 		@Override
-		public int getRowHeight(JTree component) {
-			return component.getRowHeight();
+		public int getRowHeight(JTreePanel<T> component) {
+			return component.getJTree().getRowHeight();
 		}
 
 		@Override
-		public void setRowHeight(JTree component, int rowHeight) {
-			component.setRowHeight(rowHeight);
+		public void setRowHeight(JTreePanel<T> component, int rowHeight) {
+			component.getJTree().setRowHeight(rowHeight);
 		}
 
 		@Override
-		public TreeSelectionModel getTreeSelectionModel(JTree component) {
-			return component.getSelectionModel();
+		public TreeSelectionModel getTreeSelectionModel(JTreePanel<T> component) {
+			return component.getJTree().getSelectionModel();
 		}
 
 		@Override
-		public boolean isEditing(JTree component) {
-			return component.isEditing();
+		public boolean isEditing(JTreePanel<T> component) {
+			return component.getJTree().isEditing();
 		}
 
 		@Override
-		public void cancelCellEditing(JTree component) {
-			component.getCellEditor().cancelCellEditing();
+		public void cancelCellEditing(JTreePanel<T> component) {
+			component.getJTree().getCellEditor().cancelCellEditing();
 		}
 
 		@Override
-		public boolean isExpanded(JTree component, TreePath treePath) {
-			return component.isExpanded(treePath);
+		public boolean isExpanded(JTreePanel<T> component, TreePath treePath) {
+			return component.getJTree().isExpanded(treePath);
 		}
 
 	}
 
-	private final JPanel _dynamicComponent;
-	private JScrollPane scrollPane;
-
 	public JFIBBrowserWidget(FIBBrowser fibBrowser, FIBController controller) {
 		super(fibBrowser, controller, new SwingBrowserRenderingAdapter<T>());
-		_dynamicComponent = new JPanel();
-		_dynamicComponent.setOpaque(false);
-		_dynamicComponent.setLayout(new BorderLayout());
 	}
 
 	@Override
 	public JFIBBrowserWidgetFooter<T> makeFooter() {
-		return new JFIBBrowserWidgetFooter<>(this);
+		JFIBBrowserWidgetFooter<T> returned = new JFIBBrowserWidgetFooter<T>(this);
+		getTechnologyComponent().add(returned.getFooterComponent(), BorderLayout.SOUTH);
+		return returned;
 	}
 
 	@Override
@@ -165,7 +162,8 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTree, T>implemen
 		if (returned) {
 			LOGGER.fine("RootValue changed for FIBBrowserWidget " + getRootValue());
 			try {
-				getTechnologyComponent().fireTreeWillExpand(new TreePath(getTechnologyComponent().getModel().getRoot()));
+				getTechnologyComponent().getJTree()
+						.fireTreeWillExpand(new TreePath(getTechnologyComponent().getJTree().getModel().getRoot()));
 			} catch (ExpandVetoException e1) {
 				e1.printStackTrace();
 			}
@@ -174,8 +172,8 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTree, T>implemen
 	}
 
 	@Override
-	public JPanel getJComponent() {
-		return _dynamicComponent;
+	public JTreePanel<T> getJComponent() {
+		return getTechnologyComponent();
 	}
 
 	@Override
@@ -189,180 +187,15 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTree, T>implemen
 	}
 
 	@Override
-	protected JTree makeTechnologyComponent() {
-		JTree _tree = new JTree(getBrowserModel()) {
-			@Override
-			protected void paintComponent(Graphics g) {
-				// We try here to handle exception which may occur in SWING layers
-				try {
-					super.paintComponent(g);
-				} catch (Exception e) {
-					LOGGER.warning("Unexpected exception occured in SWING: " + e);
-					e.printStackTrace();
-				}
-				/*if (ToolBox.isMacOSLaf()) {
-					if (getSelectionRows() != null && getSelectionRows().length > 0) {
-						for (int selected : getSelectionRows()) {
-							Rectangle rowBounds = getRowBounds(selected);
-							if (getVisibleRect().intersects(rowBounds)) {
-								Object value = getPathForRow(selected).getLastPathComponent();
-								Component treeCellRendererComponent = getCellRenderer().getTreeCellRendererComponent(this, value, true,
-										isExpanded(selected), getModel().isLeaf(value), selected, getLeadSelectionRow() == selected);
-								Color bgColor = treeCellRendererComponent.getBackground();
-								if (treeCellRendererComponent instanceof DefaultTreeCellRenderer) {
-									bgColor = ((DefaultTreeCellRenderer) treeCellRendererComponent).getBackgroundSelectionColor();
-								}
-								if (bgColor != null) {
-									g.setColor(bgColor);
-									g.fillRect(0, rowBounds.y, getWidth(), rowBounds.height);
-									Graphics g2 = g.create(rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height);
-									treeCellRendererComponent.setBounds(rowBounds);
-									treeCellRendererComponent.paint(g2);
-									g2.dispose();
-								}
-							}
-						}
-					}
-				}*/
-			}
-		};
-		_tree.addTreeWillExpandListener(new TreeWillExpandListener() {
-
-			@Override
-			public void treeWillExpand(TreeExpansionEvent event) throws ExpandVetoException {
-				TreePath path = event.getPath();
-				if (path.getLastPathComponent() instanceof BrowserCell) {
-					BrowserCell node = (BrowserCell) path.getLastPathComponent();
-					node.loadChildren(getBrowserModel(), null);
-				}
-			}
-
-			@Override
-			public void treeWillCollapse(TreeExpansionEvent event) throws ExpandVetoException {
-
-			}
-		});
-
-		if (ToolBox.isMacOS()) {
-			_tree.setSelectionModel(new DefaultTreeSelectionModel() {
-				@Override
-				public int[] getSelectionRows() {
-					int[] selectionRows = super.getSelectionRows();
-					// MacOS X does not support that we return null here during DnD operations.
-					if (selectionRows == null) {
-						return new int[0];
-					}
-					return selectionRows;
-				}
-			});
+	protected void updateSelectionMode() {
+		if (getBrowser() != null) {
+			getTreeSelectionModel().setSelectionMode(getBrowser().getTreeSelectionMode().getMode());
 		}
-		_tree.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-		_tree.addFocusListener(this);
-		_tree.setEditable(true);
-		_tree.setScrollsOnExpand(true);
-		FIBBrowserCellRenderer renderer = new FIBBrowserCellRenderer(this);
-		_tree.setCellRenderer(renderer);
-		_tree.setCellEditor(new FIBBrowserCellEditor(_tree, renderer));
-		ToolTipManager.sharedInstance().registerComponent(_tree);
-		_tree.setAutoscrolls(true);
+	}
 
-		/** Beginning of model dependent settings */
-		_tree.setRootVisible(getBrowser().getRootVisible());
-		_tree.setShowsRootHandles(getBrowser().getShowRootsHandle());
-
-		// If a double-click action is set, desactivate tree expanding/collabsing with double-click
-		if (getBrowser().getDoubleClickAction().isSet()) {
-			_tree.setToggleClickCount(-1);
-		}
-
-		if (getWidget().getRowHeight() != null) {
-			_tree.setRowHeight(getWidget().getRowHeight());
-		}
-		else {
-			_tree.setRowHeight(0);
-		}
-		if (getWidget().getVisibleRowCount() != null) {
-			_tree.setVisibleRowCount(getWidget().getVisibleRowCount());
-		}
-
-		getTreeSelectionModel().setSelectionMode(getBrowser().getTreeSelectionMode().getMode());
-		getTreeSelectionModel().addTreeSelectionListener(this);
-
-		scrollPane = new JScrollPane(_tree);
-
-		_dynamicComponent.removeAll();
-		_dynamicComponent.add(scrollPane, BorderLayout.CENTER);
-
-		if (getWidget().getBoundToSelectionManager()) {
-			_tree.registerKeyboardAction(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					getController().performCopyAction(getSelected(), getSelection());
-				}
-			}, KeyStroke.getKeyStroke(KeyEvent.VK_C, META_MASK, false), JComponent.WHEN_FOCUSED);
-			_tree.registerKeyboardAction(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					getController().performCutAction(getSelected(), getSelection());
-				}
-			}, KeyStroke.getKeyStroke(KeyEvent.VK_X, META_MASK, false), JComponent.WHEN_FOCUSED);
-			_tree.registerKeyboardAction(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					getController().performPasteAction(getSelected(), getSelection());
-				}
-			}, KeyStroke.getKeyStroke(KeyEvent.VK_V, META_MASK, false), JComponent.WHEN_FOCUSED);
-		}
-
-		if (getWidget().getShowFooter()) {
-			_dynamicComponent.add(getFooter().getFooterComponent(), BorderLayout.SOUTH);
-		}
-		_dynamicComponent.revalidate();
-		_dynamicComponent.repaint();
-		getBrowserModel().addTreeModelListener(new TreeModelListener() {
-
-			@Override
-			public void treeStructureChanged(TreeModelEvent e) {
-				ensureRootExpanded();
-			}
-
-			@Override
-			public void treeNodesRemoved(TreeModelEvent e) {
-
-			}
-
-			@Override
-			public void treeNodesInserted(TreeModelEvent e) {
-				ensureRootExpanded();
-			}
-
-			private void ensureRootExpanded() {
-				if (!getBrowser().getRootVisible() && (BrowserCell) getBrowserModel().getRoot() != null
-						&& ((BrowserCell) getBrowserModel().getRoot()).getChildCount() == 1) {
-					// Only one cell and roots are hidden, expand this first cell
-
-					invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							// See issue OPENFLEXO-516. Sometimes, the condition may have become false.
-							if (!getBrowser().getRootVisible() && (BrowserCell) getBrowserModel().getRoot() != null
-									&& ((BrowserCell) getBrowserModel().getRoot()).getChildCount() == 1) {
-								getTechnologyComponent().expandPath(new TreePath(new Object[] { (BrowserCell) getBrowserModel().getRoot(),
-										((BrowserCell) getBrowserModel().getRoot()).getChildAt(0) }));
-							}
-						}
-					}, 1000);
-				}
-			}
-
-			@Override
-			public void treeNodesChanged(TreeModelEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-
-		return _tree;
+	@Override
+	protected JTreePanel<T> makeTechnologyComponent() {
+		return new JTreePanel<>(this);
 	}
 
 	@Override
@@ -394,7 +227,7 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTree, T>implemen
 					getTreeSelectionModel().addSelectionPath(treePath);
 				}
 				if (scrollTo != null) {
-					getTechnologyComponent().scrollPathToVisible(scrollTo);
+					getTechnologyComponent().getJTree().scrollPathToVisible(scrollTo);
 				}
 			}
 		}
@@ -441,7 +274,7 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTree, T>implemen
 			getTreeSelectionModel().addSelectionPaths(treePathsAsList.toArray(new TreePath[treePathsAsList.size()]));
 
 			if (scrollTo != null) {
-				getTechnologyComponent().scrollPathToVisible(scrollTo);
+				getTechnologyComponent().getJTree().scrollPathToVisible(scrollTo);
 			}
 
 		}
@@ -457,7 +290,7 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTree, T>implemen
 
 		for (TreePath path : getBrowserModel().getPaths(o)) {
 			getTreeSelectionModel().addSelectionPath(path);
-			getTechnologyComponent().scrollPathToVisible(path);
+			getTechnologyComponent().getJTree().scrollPathToVisible(path);
 		}
 
 	}
@@ -468,9 +301,200 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTree, T>implemen
 		super.performExpand(o);
 
 		for (TreePath path : getBrowserModel().getPaths(o)) {
-			getTechnologyComponent().expandPath(path);
+			getTechnologyComponent().getJTree().expandPath(path);
 		}
 
+	}
+
+	@SuppressWarnings("serial")
+	public static class JTreePanel<T> extends JPanel {
+
+		private JTree jTree;
+		private JScrollPane scrollPane;
+		private final JFIBBrowserWidget<T> widget;
+
+		public JTreePanel(JFIBBrowserWidget<T> aWidget) {
+			super(new BorderLayout());
+			setOpaque(false);
+			this.widget = aWidget;
+
+			jTree = new JTree(widget.getBrowserModel()) {
+				@Override
+				protected void paintComponent(Graphics g) {
+					// We try here to handle exception which may occur in SWING layers
+					try {
+						super.paintComponent(g);
+					} catch (Exception e) {
+						LOGGER.warning("Unexpected exception occured in SWING: " + e);
+						e.printStackTrace();
+					}
+					/*if (ToolBox.isMacOSLaf()) {
+						if (getSelectionRows() != null && getSelectionRows().length > 0) {
+							for (int selected : getSelectionRows()) {
+								Rectangle rowBounds = getRowBounds(selected);
+								if (getVisibleRect().intersects(rowBounds)) {
+									Object value = getPathForRow(selected).getLastPathComponent();
+									Component treeCellRendererComponent = getCellRenderer().getTreeCellRendererComponent(this, value, true,
+											isExpanded(selected), getModel().isLeaf(value), selected, getLeadSelectionRow() == selected);
+									Color bgColor = treeCellRendererComponent.getBackground();
+									if (treeCellRendererComponent instanceof DefaultTreeCellRenderer) {
+										bgColor = ((DefaultTreeCellRenderer) treeCellRendererComponent).getBackgroundSelectionColor();
+									}
+									if (bgColor != null) {
+										g.setColor(bgColor);
+										g.fillRect(0, rowBounds.y, getWidth(), rowBounds.height);
+										Graphics g2 = g.create(rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height);
+										treeCellRendererComponent.setBounds(rowBounds);
+										treeCellRendererComponent.paint(g2);
+										g2.dispose();
+									}
+								}
+							}
+						}
+					}*/
+				}
+			};
+			jTree.addTreeWillExpandListener(new TreeWillExpandListener() {
+
+				@Override
+				public void treeWillExpand(TreeExpansionEvent event) throws ExpandVetoException {
+					TreePath path = event.getPath();
+					if (path.getLastPathComponent() instanceof BrowserCell) {
+						BrowserCell node = (BrowserCell) path.getLastPathComponent();
+						node.loadChildren(widget.getBrowserModel(), null);
+					}
+				}
+
+				@Override
+				public void treeWillCollapse(TreeExpansionEvent event) throws ExpandVetoException {
+
+				}
+			});
+
+			if (ToolBox.isMacOS()) {
+				jTree.setSelectionModel(new DefaultTreeSelectionModel() {
+					@Override
+					public int[] getSelectionRows() {
+						int[] selectionRows = super.getSelectionRows();
+						// MacOS X does not support that we return null here during DnD operations.
+						if (selectionRows == null) {
+							return new int[0];
+						}
+						return selectionRows;
+					}
+				});
+			}
+			jTree.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+			jTree.addFocusListener(widget);
+			jTree.setEditable(true);
+			jTree.setScrollsOnExpand(true);
+			FIBBrowserCellRenderer renderer = new FIBBrowserCellRenderer(widget);
+			jTree.setCellRenderer(renderer);
+			jTree.setCellEditor(new FIBBrowserCellEditor(jTree, renderer));
+			ToolTipManager.sharedInstance().registerComponent(jTree);
+			jTree.setAutoscrolls(true);
+
+			/** Beginning of model dependent settings */
+			jTree.setRootVisible(widget.getBrowser().getRootVisible());
+			jTree.setShowsRootHandles(widget.getBrowser().getShowRootsHandle());
+
+			// If a double-click action is set, desactivate tree expanding/collabsing with double-click
+			if (widget.getBrowser().getDoubleClickAction().isSet()) {
+				jTree.setToggleClickCount(-1);
+			}
+
+			if (widget.getWidget().getRowHeight() != null) {
+				jTree.setRowHeight(widget.getWidget().getRowHeight());
+			}
+			else {
+				jTree.setRowHeight(0);
+			}
+			if (widget.getWidget().getVisibleRowCount() != null) {
+				jTree.setVisibleRowCount(widget.getWidget().getVisibleRowCount());
+			}
+
+			// getTreeSelectionModel().setSelectionMode(getBrowser().getTreeSelectionMode().getMode());
+
+			// getTreeSelectionModel().addTreeSelectionListener(this);
+			jTree.getSelectionModel().addTreeSelectionListener(widget);
+
+			scrollPane = new JScrollPane(jTree);
+
+			add(scrollPane, BorderLayout.CENTER);
+
+			if (widget.getWidget().getBoundToSelectionManager()) {
+				jTree.registerKeyboardAction(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						widget.getController().performCopyAction(widget.getSelected(), widget.getSelection());
+					}
+				}, KeyStroke.getKeyStroke(KeyEvent.VK_C, META_MASK, false), JComponent.WHEN_FOCUSED);
+				jTree.registerKeyboardAction(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						widget.getController().performCutAction(widget.getSelected(), widget.getSelection());
+					}
+				}, KeyStroke.getKeyStroke(KeyEvent.VK_X, META_MASK, false), JComponent.WHEN_FOCUSED);
+				jTree.registerKeyboardAction(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						widget.getController().performPasteAction(widget.getSelected(), widget.getSelection());
+					}
+				}, KeyStroke.getKeyStroke(KeyEvent.VK_V, META_MASK, false), JComponent.WHEN_FOCUSED);
+			}
+
+			if (widget.getWidget().getShowFooter() && widget.getFooter() != null) {
+				add(widget.getFooter().getFooterComponent(), BorderLayout.SOUTH);
+			}
+
+			widget.getBrowserModel().addTreeModelListener(new TreeModelListener() {
+
+				@Override
+				public void treeStructureChanged(TreeModelEvent e) {
+					ensureRootExpanded();
+				}
+
+				@Override
+				public void treeNodesRemoved(TreeModelEvent e) {
+
+				}
+
+				@Override
+				public void treeNodesInserted(TreeModelEvent e) {
+					ensureRootExpanded();
+				}
+
+				private void ensureRootExpanded() {
+					if (!widget.getBrowser().getRootVisible() && (BrowserCell) widget.getBrowserModel().getRoot() != null
+							&& ((BrowserCell) widget.getBrowserModel().getRoot()).getChildCount() == 1) {
+						// Only one cell and roots are hidden, expand this first cell
+
+						widget.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								// See issue OPENFLEXO-516. Sometimes, the condition may have become false.
+								if (!widget.getBrowser().getRootVisible() && (BrowserCell) widget.getBrowserModel().getRoot() != null
+										&& ((BrowserCell) widget.getBrowserModel().getRoot()).getChildCount() == 1) {
+									jTree.expandPath(new TreePath(new Object[] { (BrowserCell) widget.getBrowserModel().getRoot(),
+											((BrowserCell) widget.getBrowserModel().getRoot()).getChildAt(0) }));
+								}
+							}
+						}, 1000);
+					}
+				}
+
+				@Override
+				public void treeNodesChanged(TreeModelEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+			});
+
+		}
+
+		public JTree getJTree() {
+			return jTree;
+		}
 	}
 
 }

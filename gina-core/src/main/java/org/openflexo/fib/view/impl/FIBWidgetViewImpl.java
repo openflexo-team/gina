@@ -151,9 +151,6 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 		};
 
-		updateData();
-		updateFont();
-
 		// addBindingValueChangeListeners();
 		listenDataValueChange();
 		listenEnableValueChange();
@@ -703,6 +700,9 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		super.update();
 
 		updateData();
+
+		updateFont();
+
 		updateEnability();
 		// if (isComponentVisible()) {
 		updateDynamicTooltip();

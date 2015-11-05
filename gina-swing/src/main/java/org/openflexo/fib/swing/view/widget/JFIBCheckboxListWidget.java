@@ -187,13 +187,19 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 		@Override
 		public void setFont(Font font) {
 			super.setFont(font);
-			for (JCheckBox cb : checkboxesArray) {
-				cb.setFont(getFont());
+			if (checkboxesArray != null) {
+				for (JCheckBox cb : checkboxesArray) {
+					cb.setFont(getFont());
+				}
 			}
-			if (widget.getWidget().getShowIcon() && widget.getWidget().getIcon().isSet() && widget.getWidget().getIcon().isValid()) {
-				for (JLabel l : labelsArray) {
-					if (l != null) {
-						l.setFont(getFont());
+			if (widget != null) {
+				if (widget.getWidget().getShowIcon() && widget.getWidget().getIcon().isSet() && widget.getWidget().getIcon().isValid()) {
+					if (labelsArray != null) {
+						for (JLabel l : labelsArray) {
+							if (l != null) {
+								l.setFont(getFont());
+							}
+						}
 					}
 				}
 			}

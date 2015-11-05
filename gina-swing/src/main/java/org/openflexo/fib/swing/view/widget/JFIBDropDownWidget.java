@@ -186,13 +186,19 @@ public class JFIBDropDownWidget<T> extends FIBDropDownWidgetImpl<JComboBox<T>, T
 		// Important: otherwise might be desynchronized
 		jComboBox.revalidate();
 
-		if ((getWidget().getData() == null || !getWidget().getData().isValid()) && getWidget().getAutoSelectFirstRow()
-				&& getListModel().getSize() > 0) {
-			jComboBox.setSelectedIndex(0);
-		}
 		jComboBox.setEnabled(isComponentEnabled());
 
 		return jComboBox;
+	}
+
+	@Override
+	public boolean update() {
+		boolean returned = super.update();
+		if ((getWidget().getData() == null || !getWidget().getData().isValid()) && getWidget().getAutoSelectFirstRow()
+				&& getListModel().getSize() > 0) {
+			getTechnologyComponent().setSelectedIndex(0);
+		}
+		return returned;
 	}
 
 	@Override
