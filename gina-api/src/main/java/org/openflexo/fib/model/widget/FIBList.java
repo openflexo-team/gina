@@ -46,8 +46,8 @@ import java.util.logging.Logger;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.connie.type.ParameterizedTypeImpl;
+import org.openflexo.connie.type.WilcardTypeImpl;
 import org.openflexo.fib.model.FIBPropertyNotification;
-import org.openflexo.fib.model.widget.FIBMultipleValues.FIBMultipleValuesImpl;
 import org.openflexo.fib.view.widget.FIBListWidget;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -235,7 +235,7 @@ public interface FIBList extends FIBMultipleValues {
 		@Override
 		public Type getDynamicAccessType() {
 			Type[] args = new Type[2];
-			args[0] = getDataType();
+			args[0] = new WilcardTypeImpl(Object.class);
 			args[1] = getIteratorType();
 			return new ParameterizedTypeImpl(FIBListWidget.class, args);
 		}

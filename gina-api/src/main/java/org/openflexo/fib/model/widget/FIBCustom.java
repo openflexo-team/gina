@@ -56,14 +56,13 @@ import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingDefinition;
+import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelObject;
 import org.openflexo.fib.model.FIBPropertyNotification;
 import org.openflexo.fib.model.FIBWidget;
-import org.openflexo.fib.model.FIBModelObject.BindingMustBeValid;
-import org.openflexo.fib.model.FIBModelObject.FIBModelObjectImpl;
-import org.openflexo.fib.model.FIBWidget.FIBWidgetImpl;
+import org.openflexo.fib.view.widget.FIBCustomWidget;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -337,11 +336,10 @@ public interface FIBCustom extends FIBWidget {
 
 		@Override
 		public Type getDynamicAccessType() {
-			/*Type[] args = new Type[2];
-			args[0] = getDataType();
-			args[1] = getComponentClass();
-			return new ParameterizedTypeImpl(FIBCustomWidget.class, args);*/
-			return getComponentClass();
+			Type[] args = new Type[2];
+			args[0] = getComponentClass();
+			args[1] = getDataType();
+			return new ParameterizedTypeImpl(FIBCustomWidget.class, args);
 		}
 
 		@Override

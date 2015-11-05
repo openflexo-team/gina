@@ -9,7 +9,7 @@
         <Assignment variable="component.bindable" value="data" />
       </Custom>
       <Label label="assignments" align="center" constraints="twocols(expandHorizontally=true;location=center)" localize="true" />
-      <Table iteratorClassName="org.openflexo.fib.model.FIBReferencedComponent$FIBReferenceAssignment" visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="AssignmentsTable" data="data.assignments" constraints="twocols(expandHorizontally=true;expandVertically=true;location=center)">
+      <Table iteratorClassName="org.openflexo.fib.model.widget.FIBReferencedComponent$FIBReferenceAssignment" visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="AssignmentsTable" data="data.assignments" constraints="twocols(expandHorizontally=true;expandVertically=true;location=center)">
         <CustomColumn componentClassName="org.openflexo.fib.swing.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.variable" title="Variable" columnWidth="200" resizable="true" displayTitle="true">
           <ColumnAssignment variable="component.bindable" value="iterator" />
         </CustomColumn>

@@ -5,7 +5,7 @@
       <Label label="component_class" constraints="twocols(location=left)" localize="true" />
       <Custom componentClassName="org.openflexo.fib.swing.utils.ClassSelector" localize="true" manageDynamicModel="true" data="data.componentClass" constraints="twocols(expandHorizontally=true;location=right)" />
       <Label label="assignments" align="center" constraints="twocols(expandHorizontally=true;location=center)" localize="true" />
-      <Table iteratorClassName="org.openflexo.fib.model.FIBCustom$FIBCustomAssignment" visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="AssignmentsTable" data="data.assignments" constraints="twocols(expandHorizontally=true;expandVertically=true;location=center)">
+      <Table iteratorClassName="org.openflexo.fib.model.widget.FIBCustom$FIBCustomAssignment" visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="AssignmentsTable" data="data.assignments" constraints="twocols(expandHorizontally=true;expandVertically=true;location=center)">
         <CustomColumn componentClassName="org.openflexo.fib.swing.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.variable" title="Variable" columnWidth="200" resizable="true" displayTitle="true">
           <ColumnAssignment variable="component.bindable" value="iterator" />
         </CustomColumn>

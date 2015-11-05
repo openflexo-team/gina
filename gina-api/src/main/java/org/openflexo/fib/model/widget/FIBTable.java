@@ -57,12 +57,9 @@ import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.connie.type.WilcardTypeImpl;
-import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBModelObject;
 import org.openflexo.fib.model.FIBPropertyNotification;
 import org.openflexo.fib.model.FIBWidget;
-import org.openflexo.fib.model.FIBComponent.LocalizationEntryRetriever;
-import org.openflexo.fib.model.FIBWidget.FIBWidgetImpl;
 import org.openflexo.fib.model.widget.FIBTableAction.FIBAddAction;
 import org.openflexo.fib.model.widget.FIBTableAction.FIBCustomAction;
 import org.openflexo.fib.model.widget.FIBTableAction.FIBRemoveAction;
@@ -573,7 +570,7 @@ public interface FIBTable extends FIBWidget {
 			// Type[] args = new Type[2];
 			// args[0] = getDataType();
 			// args[1] = getIteratorType();
-			return new ParameterizedTypeImpl(FIBTableWidget.class, getIteratorType());
+			return new ParameterizedTypeImpl(FIBTableWidget.class, new Type[] { Object.class, getIteratorType() });
 		}
 
 		@Override

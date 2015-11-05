@@ -46,21 +46,14 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
-import javax.swing.JComponent;
-
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.connie.type.GenericArrayTypeImpl;
 import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.connie.type.WilcardTypeImpl;
-import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.fib.model.FIBModelObject;
 import org.openflexo.fib.model.FIBPropertyNotification;
 import org.openflexo.fib.model.FIBWidget;
-import org.openflexo.fib.model.FIBComponent.LocalizationEntryRetriever;
-import org.openflexo.fib.model.FIBModelObject.BindingMustBeValid;
-import org.openflexo.fib.model.FIBWidget.FIBWidgetImpl;
 import org.openflexo.fib.view.widget.FIBMultipleValueWidget;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
@@ -457,8 +450,8 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		@Override
 		public Type getDynamicAccessType() {
 			Type[] args = new Type[4];
-			args[0] = new WilcardTypeImpl(FIBMultipleValues.class);
-			args[1] = new WilcardTypeImpl(JComponent.class);
+			args[0] = new WilcardTypeImpl(getClass());
+			args[1] = new WilcardTypeImpl(Object.class);
 			args[2] = getDataType();
 			args[3] = getIteratorType();
 			return new ParameterizedTypeImpl(FIBMultipleValueWidget.class, args);

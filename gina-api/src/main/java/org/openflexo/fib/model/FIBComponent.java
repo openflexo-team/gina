@@ -49,7 +49,6 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import javax.swing.JComponent;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.tree.TreeNode;
 
@@ -1339,10 +1338,9 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		@Override
 		public Type getDynamicAccessType() {
 			if (getDataType() != null) {
-				Type[] args = new Type[3];
-				args[0] = new WilcardTypeImpl(FIBComponent.class);
-				args[1] = new WilcardTypeImpl(JComponent.class);
-				args[2] = getDataType();
+				Type[] args = new Type[2];
+				args[0] = new WilcardTypeImpl(getClass());
+				args[1] = new WilcardTypeImpl(Object.class);
 				return new ParameterizedTypeImpl(FIBView.class, args);
 			}
 			return null;

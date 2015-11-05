@@ -53,13 +53,10 @@ import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.connie.type.TypeUtils;
-import org.openflexo.fib.model.FIBComponent;
+import org.openflexo.connie.type.WilcardTypeImpl;
 import org.openflexo.fib.model.FIBModelObject;
 import org.openflexo.fib.model.FIBPropertyNotification;
 import org.openflexo.fib.model.FIBWidget;
-import org.openflexo.fib.model.FIBComponent.LocalizationEntryRetriever;
-import org.openflexo.fib.model.FIBModelObject.BindingMustBeValid;
-import org.openflexo.fib.model.FIBWidget.FIBWidgetImpl;
 import org.openflexo.fib.model.widget.FIBBrowserElement.FIBBrowserElementImpl;
 import org.openflexo.fib.view.widget.FIBBrowserWidget;
 import org.openflexo.model.annotations.Adder;
@@ -421,7 +418,7 @@ public interface FIBBrowser extends FIBWidget {
 		@Override
 		public Type getDynamicAccessType() {
 			Type[] args = new Type[2];
-			args[0] = getIteratorClass();
+			args[0] = new WilcardTypeImpl(Object.class);
 			args[1] = getIteratorClass();
 			return new ParameterizedTypeImpl(FIBBrowserWidget.class, args);
 		}

@@ -85,7 +85,7 @@
           </Custom>
         </Tab>
         <Tab title="Children" layout="border" titleFont="SansSerif,0,11" darkLevel="0" index="2" font="SansSerif,0,11" name="ChildrenTab">
-          <Table iteratorClassName="org.openflexo.fib.model.FIBBrowserElement$FIBBrowserElementChildren" visibleRowCount="4" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="ChildrenTable" data="ElementsTable.selected.children" constraints="border(location=center)" font="SansSerif,0,11">
+          <Table iteratorClassName="org.openflexo.fib.model.widget.FIBBrowserElement$FIBBrowserElementChildren" visibleRowCount="4" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="ChildrenTable" data="ElementsTable.selected.children" constraints="border(location=center)" font="SansSerif,0,11">
             <IconColumn data="iterator.imageIcon" columnWidth="20" resizable="false" displayTitle="true" name="icon" />
             <TextFieldColumn data="iterator.name" title="name" columnWidth="100" resizable="true" displayTitle="true" name="name" />
             <CustomColumn componentClassName="org.openflexo.fib.swing.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.data" title="data" columnWidth="200" resizable="true" displayTitle="true" name="data">

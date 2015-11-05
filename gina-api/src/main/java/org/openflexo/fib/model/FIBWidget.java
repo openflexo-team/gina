@@ -44,7 +44,6 @@ import java.util.Enumeration;
 import java.util.List;
 
 import javax.swing.Icon;
-import javax.swing.JComponent;
 import javax.swing.tree.TreeNode;
 
 import org.openflexo.connie.Bindable;
@@ -467,8 +466,8 @@ public abstract interface FIBWidget extends FIBComponent {
 				}
 				else {
 					Type[] args = new Type[3];
-					args[0] = new WilcardTypeImpl(FIBComponent.class);
-					args[1] = new WilcardTypeImpl(JComponent.class);
+					args[0] = new WilcardTypeImpl(getClass());
+					args[1] = new WilcardTypeImpl(Object.class);
 					args[2] = getDataType();
 					return new ParameterizedTypeImpl(FIBWidgetView.class, args);
 				}
