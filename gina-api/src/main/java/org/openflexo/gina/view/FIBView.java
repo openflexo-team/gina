@@ -47,13 +47,15 @@ import javax.swing.JComponent;
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.FIBVariable;
 import org.openflexo.gina.view.widget.FIBReferencedComponentWidget;
 import org.openflexo.localization.Language;
 import org.openflexo.localization.LocalizationListener;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 /**
- * Represent the "view" associated with a {@link FIBComponent} in a given rendering engine environment (eg Swing)<br>
+ * Represent the "view" associated with a {@link FIBComponent} in a given
+ * rendering engine environment (eg Swing)<br>
  * 
  * A default implementation is provided in this library, see {@link FIBViewImpl}
  * 
@@ -79,6 +81,22 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 	public FIBController getController();
 
 	/**
+	 * Return value of supplied variable
+	 * 
+	 * @param variable
+	 * @return
+	 */
+	public <T> T getVariableValue(FIBVariable<T> variable);
+
+	/**
+	 * Sets value of supplied variable
+	 * 
+	 * @param variable
+	 * @param value
+	 */
+	public <T> void setVariableValue(FIBVariable<T> variable, T value);
+
+	/**
 	 * Return boolean indicating if this view is visible
 	 * 
 	 * @return
@@ -86,9 +104,11 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 	public boolean isViewVisible();
 
 	/**
-	 * Return the BindingEvaluationContext valid in the context of current widget.<br>
-	 * Note that embedded component (components used in the context of FIBReferencedComponent) should point to the BindingEvaluationContext
-	 * of their embedding component
+	 * Return the BindingEvaluationContext valid in the context of current
+	 * widget.<br>
+	 * Note that embedded component (components used in the context of
+	 * FIBReferencedComponent) should point to the BindingEvaluationContext of
+	 * their embedding component
 	 * 
 	 * @return
 	 */
@@ -102,7 +122,8 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 	public void updateLanguage();
 
 	/**
-	 * Return the effective base component to be added to swing hierarchy This component may be encapsulated in a JScrollPane
+	 * Return the effective base component to be added to swing hierarchy This
+	 * component may be encapsulated in a JScrollPane
 	 * 
 	 * @return JComponent
 	 */
@@ -110,16 +131,19 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 
 	/**
 	 * Return technology-specific component representing widget<br>
-	 * Note that, depending on the underlying technology, this technology-specific component might be embedded in an other component before
-	 * to be added in component hierarchy (for example if component need to be embedded in a scroll pane)
+	 * Note that, depending on the underlying technology, this
+	 * technology-specific component might be embedded in an other component
+	 * before to be added in component hierarchy (for example if component need
+	 * to be embedded in a scroll pane)
 	 * 
 	 * @return C
 	 */
 	public abstract C getTechnologyComponent();
 
 	/**
-	 * Return the effective component to be added to swing hierarchy This component may be the same as the one returned by
-	 * {@link #getJComponent()} or a encapsulation in a JScrollPane
+	 * Return the effective component to be added to swing hierarchy This
+	 * component may be the same as the one returned by {@link #getJComponent()}
+	 * or a encapsulation in a JScrollPane
 	 * 
 	 * @return JComponent
 	 */
@@ -136,7 +160,8 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 
 	/**
 	 * This method is called to update view representing a {@link FIBComponent}.<br>
-	 * Usually, this method should be called only once, when the component has been added to the whole hierarchy.
+	 * Usually, this method should be called only once, when the component has
+	 * been added to the whole hierarchy.
 	 * 
 	 * @return a flag indicating if component has been updated
 	 */

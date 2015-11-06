@@ -50,7 +50,7 @@ import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.model.FIBVariable;
-import org.openflexo.gina.view.FIBWidgetView;
+import org.openflexo.gina.view.FIBView;
 
 public class FIBVariablePathElement extends SimplePathElement implements PropertyChangeListener {
 
@@ -100,8 +100,8 @@ public class FIBVariablePathElement extends SimplePathElement implements Propert
 	@Override
 	public Object getBindingValue(Object target, BindingEvaluationContext context) throws TypeMismatchException,
 			NullReferenceException {
-		if (target instanceof FIBWidgetView) {
-			return ((FIBWidgetView) target).getData();
+		if (target instanceof FIBView) {
+			return ((FIBView) target).getVariableValue(fibVariable);
 		}
 		logger.warning("Please implement me, target=" + target + " context=" + context);
 		return null;
@@ -110,8 +110,8 @@ public class FIBVariablePathElement extends SimplePathElement implements Propert
 	@Override
 	public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
 			throws TypeMismatchException, NullReferenceException {
-		if (target instanceof FIBWidgetView) {
-			((FIBWidgetView) target).setData(value);
+		if (target instanceof FIBView) {
+			((FIBView) target).setVariableValue(fibVariable, value);
 			return;
 		}
 		logger.warning("Please implement me, target=" + target + " context=" + context);

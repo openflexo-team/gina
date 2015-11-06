@@ -43,6 +43,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.beans.PropertyChangeSupport;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
@@ -55,6 +57,7 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.FIBVariable;
 import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.widget.FIBReferencedComponentWidget;
@@ -98,6 +101,9 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	private final RenderingAdapter<C> renderingAdapter;
 
+	private Map<FIBVariable<?>, Object> variables;
+	private Map<FIBVariable<?>, BindingValueChangeListener<?>> variableListeners;
+
 	public FIBViewImpl(M model, FIBController controller, RenderingAdapter<C> renderingAdapter) {
 		super();
 		this.controller = controller;
@@ -109,8 +115,68 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 		controller.registerView(this);
 
+		variables = new HashMap<FIBVariable<?>, Object>();
+		variableListeners = new HashMap<FIBVariable<?>, BindingValueChangeListener<?>>();
+
+		for (FIBVariable<?> variable : getComponent().getVariables()) {
+			listenVariableValueChange(variable);
+		}
+
 		listenVisibleValueChange();
 
+	}
+
+	private <T> void listenVariableValueChange(final FIBVariable<T> variable) {
+
+		BindingValueChangeListener<T> dataBindingValueChangeListener = (BindingValueChangeListener<T>) variableListeners
+				.get(variable);
+
+		if (dataBindingValueChangeListener != null) {
+			dataBindingValueChangeListener.stopObserving();
+			dataBindingValueChangeListener.delete();
+		}
+
+		if (variable.getValue() != null && variable.getValue().isValid()) {
+			dataBindingValueChangeListener = new BindingValueChangeListener<T>(variable.getValue(),
+					getBindingEvaluationContext()) {
+				@Override
+				public void bindingValueChanged(Object source, T newValue) {
+					// System.out.println(" bindingValueChanged() detected for data="
+					// + getComponent().getData() + " with newValue="
+					// + newValue + " source=" + source);
+
+					setVariableValue(variable, newValue);
+				}
+			};
+		}
+	}
+
+	/**
+	 * Return value of supplied variable
+	 * 
+	 * @param variable
+	 * @return
+	 */
+	@Override
+	public <T> T getVariableValue(FIBVariable<T> variable) {
+		return (T) variables.get(variable);
+	}
+
+	/**
+	 * Sets value of supplied variable
+	 * 
+	 * @param variable
+	 * @param value
+	 */
+	@Override
+	public <T> void setVariableValue(FIBVariable<T> variable, T value) {
+
+		T oldValue = (T) variables.get(variable);
+
+		if (notEquals(oldValue, value)) {
+			variables.put(variable, value);
+			getPropertyChangeSupport().firePropertyChange(variable.getName(), oldValue, value);
+		}
 	}
 
 	@Override
@@ -128,7 +194,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, Boolean newValue) {
-					// System.out.println(" bindingValueChanged() detected for visible=" + getComponent().getVisible() + " with newValue="
+					// System.out.println(" bindingValueChanged() detected for visible="
+					// + getComponent().getVisible() + " with newValue="
 					// + newValue + " source=" + source);
 					updateVisibility();
 				}
@@ -139,10 +206,13 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 				}
 
 			};
-			/*if (getComponent().getVisible().toString().equals("EnableMultipleLayoutsCheckBox.data")) {
-				System.out.println("******** ok je l'ai");
-				System.out.println(visibleBindingValueChangeListener.toString());
-			}*/
+			/*
+			 * if (getComponent().getVisible().toString().equals(
+			 * "EnableMultipleLayoutsCheckBox.data")) {
+			 * System.out.println("******** ok je l'ai");
+			 * System.out.println(visibleBindingValueChangeListener.toString());
+			 * }
+			 */
 		}
 	}
 
@@ -203,23 +273,29 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	}
 
 	/**
-	 * Return the BindingEvaluationContext valid in the context of current widget.<br>
-	 * Note that embedded component (components used in the context of FIBReferencedComponent) should point to the BindingEvaluationContext
-	 * of their embedding component
+	 * Return the BindingEvaluationContext valid in the context of current
+	 * widget.<br>
+	 * Note that embedded component (components used in the context of
+	 * FIBReferencedComponent) should point to the BindingEvaluationContext of
+	 * their embedding component
 	 * 
 	 * @return
 	 */
 	@Override
 	public BindingEvaluationContext getBindingEvaluationContext() {
 		/*
-		if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("DropSchemePanel")) {
-			if (getEmbeddingComponent() == null) {
-				System.out.println("for DropSchemePanel embedding component is " + getEmbeddingComponent());
-			}
-		}*/
-		/*if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("DropSchemeWidget")) {
-			System.out.println("for DropSchemeWidget embedding component is " + getEmbeddingComponent());
-		}*/
+		 * if (getComponent() != null && getComponent().getName() != null &&
+		 * getComponent().getName().equals("DropSchemePanel")) { if
+		 * (getEmbeddingComponent() == null) {
+		 * System.out.println("for DropSchemePanel embedding component is " +
+		 * getEmbeddingComponent()); } }
+		 */
+		/*
+		 * if (getComponent() != null && getComponent().getName() != null &&
+		 * getComponent().getName().equals("DropSchemeWidget")) {
+		 * System.out.println("for DropSchemeWidget embedding component is " +
+		 * getEmbeddingComponent()); }
+		 */
 		if (getEmbeddingComponent() != null) {
 			return getEmbeddingComponent().getEmbeddedBindingEvaluationContext();
 		}
@@ -245,7 +321,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	public abstract void updateLanguage();
 
 	/**
-	 * Return the effective base component to be added to swing hierarchy This component may be encapsulated in a JScrollPane
+	 * Return the effective base component to be added to swing hierarchy This
+	 * component may be encapsulated in a JScrollPane
 	 * 
 	 * @return JComponent
 	 */
@@ -254,8 +331,10 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	/**
 	 * Return technology-specific component representing widget<br>
-	 * Note that, depending on the underlying technology, this technology-specific component might be embedded in an other component before
-	 * to be added in component hierarchy (for example if component need to be embedded in a scroll pane)
+	 * Note that, depending on the underlying technology, this
+	 * technology-specific component might be embedded in an other component
+	 * before to be added in component hierarchy (for example if component need
+	 * to be embedded in a scroll pane)
 	 * 
 	 * @return C
 	 */
@@ -263,8 +342,9 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	public abstract C getTechnologyComponent();
 
 	/**
-	 * Return the effective component to be added to swing hierarchy This component may be the same as the one returned by
-	 * {@link #getJComponent()} or a encapsulation in a JScrollPane
+	 * Return the effective component to be added to swing hierarchy This
+	 * component may be the same as the one returned by {@link #getJComponent()}
+	 * or a encapsulation in a JScrollPane
 	 * 
 	 * @return JComponent
 	 */
@@ -274,22 +354,22 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	public JComponent getResultingJComponent() {
 		if (getComponent().getUseScrollBar()) {
 			if (scrolledComponent == null) {
-				scrolledComponent = new JScrollPane(getJComponent(), getComponent().getVerticalScrollbarPolicy().getPolicy(),
-						getComponent().getHorizontalScrollbarPolicy().getPolicy());
+				scrolledComponent = new JScrollPane(getJComponent(), getComponent().getVerticalScrollbarPolicy()
+						.getPolicy(), getComponent().getHorizontalScrollbarPolicy().getPolicy());
 				scrolledComponent.setOpaque(false);
 				scrolledComponent.getViewport().setOpaque(false);
 				scrolledComponent.setBorder(BorderFactory.createEmptyBorder());
 			}
 			return scrolledComponent;
-		}
-		else {
+		} else {
 			return getJComponent();
 		}
 	}
 
 	/**
 	 * This method is called to update view representing a {@link FIBComponent}.<br>
-	 * Usually, this method should be called only once, when the component has been added to the whole hierarchy.
+	 * Usually, this method should be called only once, when the component has
+	 * been added to the whole hierarchy.
 	 * 
 	 * @return a flag indicating if component has been updated
 	 */
@@ -303,60 +383,63 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		// IMPORTANT (Sylvain):
 		// I commented out following statement which seems to me unnecessary
 		// I'm not really sure not to have caused any regression
-		/*if (dataBindingValueChangeListener != null) {
-			dataBindingValueChangeListener.refreshObserving();
-		}
-		if (visibleBindingValueChangeListener != null) {
-			visibleBindingValueChangeListener.refreshObserving();
-		}*/
+		/*
+		 * if (dataBindingValueChangeListener != null) {
+		 * dataBindingValueChangeListener.refreshObserving(); } if
+		 * (visibleBindingValueChangeListener != null) {
+		 * visibleBindingValueChangeListener.refreshObserving(); }
+		 */
 
 		return true;
 	}
 
 	/**
 	 * This method is called to update view representing a FIBComponent.<br>
-	 * Callers are all the components that have been updated during current update loop. If the callers contains the component itself, does
-	 * nothing and return.
+	 * Callers are all the components that have been updated during current
+	 * update loop. If the callers contains the component itself, does nothing
+	 * and return.
 	 * 
 	 * @param callers
-	 *            all the components that have been previously updated during current update loop
+	 *            all the components that have been previously updated during
+	 *            current update loop
 	 * @return a flag indicating if component has been updated
 	 */
-	/*public boolean update(List<FIBComponent> callers) {
-		if (callers.contains(getComponent())) {
-			return false;
-		}
-		updateVisibility();
-		return true;
-	}*/
+	/*
+	 * public boolean update(List<FIBComponent> callers) { if
+	 * (callers.contains(getComponent())) { return false; } updateVisibility();
+	 * return true; }
+	 */
 
 	protected abstract boolean checkValidDataPath();
 
 	@Override
 	public final boolean isComponentVisible() {
-		/*if (getComponent().getName() != null && getComponent().getName().equals("DropSchemePanel")) {
-			System.out.println("Bon, je me demande si c'est visible");
-			System.out.println("getComponent().getVisible()=" + getComponent().getVisible());
-			System.out.println("valid=" + getComponent().getVisible().isValid());
-			System.out.println("getBindingEvaluationContext=" + getBindingEvaluationContext());
-			try {
-				System.out.println("result=" + getComponent().getVisible().getBindingValue(getBindingEvaluationContext()));
-				DataBinding<Object> binding1 = new DataBinding<Object>("data", getComponent(), Object.class, BindingDefinitionType.GET);
-				System.out.println("data=" + binding1.getBindingValue(getBindingEvaluationContext()));
-				DataBinding<Object> binding2 = new DataBinding<Object>("EditionActionBrowser.selected", getComponent(), Object.class,
-						BindingDefinitionType.GET);
-				System.out.println("EditionActionBrowser.selected=" + binding2.getBindingValue(getBindingEvaluationContext()));
-			} catch (TypeMismatchException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NullReferenceException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}*/
+		/*
+		 * if (getComponent().getName() != null &&
+		 * getComponent().getName().equals("DropSchemePanel")) {
+		 * System.out.println("Bon, je me demande si c'est visible");
+		 * System.out.println("getComponent().getVisible()=" +
+		 * getComponent().getVisible()); System.out.println("valid=" +
+		 * getComponent().getVisible().isValid());
+		 * System.out.println("getBindingEvaluationContext=" +
+		 * getBindingEvaluationContext()); try { System.out.println("result=" +
+		 * getComponent
+		 * ().getVisible().getBindingValue(getBindingEvaluationContext()));
+		 * DataBinding<Object> binding1 = new DataBinding<Object>("data",
+		 * getComponent(), Object.class, BindingDefinitionType.GET);
+		 * System.out.println("data=" +
+		 * binding1.getBindingValue(getBindingEvaluationContext()));
+		 * DataBinding<Object> binding2 = new
+		 * DataBinding<Object>("EditionActionBrowser.selected", getComponent(),
+		 * Object.class, BindingDefinitionType.GET);
+		 * System.out.println("EditionActionBrowser.selected=" +
+		 * binding2.getBindingValue(getBindingEvaluationContext())); } catch
+		 * (TypeMismatchException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); } catch (NullReferenceException e) { // TODO
+		 * Auto-generated catch block e.printStackTrace(); } catch
+		 * (InvocationTargetException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); } }
+		 */
 
 		if (getParentView() != null && !getParentView().isComponentVisible()) {
 			return false;
@@ -373,7 +456,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 				LOGGER.warning("Unable to evaluate " + getComponent().getVisible());
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				// NullReferenceException is allowed, in this case, default visibility is true
+				// NullReferenceException is allowed, in this case, default
+				// visibility is true
 				componentVisible = true;
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
@@ -389,8 +473,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			getResultingJComponent().setVisible(visible);
 			if (getResultingJComponent().getParent() instanceof JComponent) {
 				((JComponent) getResultingJComponent().getParent()).revalidate();
-			}
-			else if (getResultingJComponent().getParent() != null) {
+			} else if (getResultingJComponent().getParent() != null) {
 				getResultingJComponent().getParent().validate();
 			}
 			if (getResultingJComponent().getParent() != null) {
@@ -517,8 +600,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		}
 		if (o1 == null) {
 			return o2 == null;
-		}
-		else {
+		} else {
 			return o1.equals(o2);
 		}
 	}
@@ -534,9 +616,13 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	@Override
 	public void setEmbeddingComponent(FIBReferencedComponentWidget<C> embeddingComponent) {
-		/* if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("DropSchemePanel")) {
-			System.out.println("Set emmbedding component for DropSchemePanel with " + embeddingComponent);
-		}*/
+		/*
+		 * if (getComponent() != null && getComponent().getName() != null &&
+		 * getComponent().getName().equals("DropSchemePanel")) {
+		 * System.out.println
+		 * ("Set emmbedding component for DropSchemePanel with " +
+		 * embeddingComponent); }
+		 */
 		this.embeddingComponent = embeddingComponent;
 	}
 
