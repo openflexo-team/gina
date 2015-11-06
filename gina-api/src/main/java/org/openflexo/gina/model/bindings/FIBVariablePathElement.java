@@ -44,6 +44,7 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingEvaluationContext;
+import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.NullReferenceException;
@@ -58,14 +59,14 @@ public class FIBVariablePathElement extends SimplePathElement implements Propert
 	private Type lastKnownType = null;
 	private final FIBVariable<?> fibVariable;
 
-	public FIBVariablePathElement(BindingPathElement parent, FIBVariable flexoProperty) {
-		super(parent, flexoProperty.getName(), flexoProperty.getType());
-		this.fibVariable = flexoProperty;
-		if (flexoProperty != null) {
-			lastKnownType = flexoProperty.getType();
+	public FIBVariablePathElement(BindingPathElement parent, FIBVariable<?> fibVariable) {
+		super(parent, fibVariable.getName(), fibVariable.getType());
+		this.fibVariable = fibVariable;
+		if (fibVariable != null) {
+			lastKnownType = fibVariable.getType();
 		}
-		if (flexoProperty != null && flexoProperty.getPropertyChangeSupport() != null) {
-			flexoProperty.getPropertyChangeSupport().addPropertyChangeListener(this);
+		if (fibVariable != null && fibVariable.getPropertyChangeSupport() != null) {
+			fibVariable.getPropertyChangeSupport().addPropertyChangeListener(this);
 		}
 	}
 
@@ -97,7 +98,8 @@ public class FIBVariablePathElement extends SimplePathElement implements Propert
 	}
 
 	@Override
-	public Object getBindingValue(Object target, BindingEvaluationContext context) throws TypeMismatchException, NullReferenceException {
+	public Object getBindingValue(Object target, BindingEvaluationContext context) throws TypeMismatchException,
+			NullReferenceException {
 		if (target instanceof FIBWidgetView) {
 			return ((FIBWidgetView) target).getData();
 		}
@@ -118,24 +120,37 @@ public class FIBVariablePathElement extends SimplePathElement implements Propert
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getSource() == getFIBVariable()) {
-			if (evt.getPropertyName().equals(FIBVariable.NAME_KEY) || evt.getPropertyName().equals(FIBVariable.TYPE_KEY)) {
-				// System.out.println("Notify name changing for " + getFlexoProperty() + " new=" + getVariableName());
+			if (evt.getPropertyName().equals(FIBVariable.NAME_KEY)) {
+				// System.out.println("Notify name changing for " +
+				// getFlexoProperty() + " new=" + getVariableName());
 				getPropertyChangeSupport().firePropertyChange(NAME_PROPERTY, evt.getOldValue(), getLabel());
+				fibVariable
+						.getOwner()
+						.getBindingModel()
+						.getPropertyChangeSupport()
+						.firePropertyChange(BindingModel.BINDING_PATH_ELEMENT_NAME_CHANGED, evt.getOldValue(),
+								getLabel());
 			}
-			if (evt.getPropertyName().equals(TYPE_PROPERTY)) {
+			if (evt.getPropertyName().equals(FIBVariable.TYPE_KEY)) {
 				Type newType = getFIBVariable().getType();
 				if (lastKnownType == null || !lastKnownType.equals(newType)) {
 					getPropertyChangeSupport().firePropertyChange(TYPE_PROPERTY, lastKnownType, newType);
+					fibVariable.getOwner().getBindingModel().getPropertyChangeSupport()
+							.firePropertyChange(BindingModel.BINDING_PATH_ELEMENT_TYPE_CHANGED, lastKnownType, newType);
 					lastKnownType = newType;
 				}
 			}
 			if (lastKnownType != getType()) {
-				// We might arrive here only in the case of a FlexoProperty does not correctely notify
-				// its type change. We warn it to 'tell' the developper that such notification should be done
+				// We might arrive here only in the case of a FIBVariable does
+				// not correctely notify
+				// its type change. We warn it to 'tell' the developper that
+				// such notification should be done
 				// in FlexoProperty (see IndividualProperty for example)
-				logger.warning("Detecting un-notified type changing for FlexoProperty " + fibVariable + " from " + lastKnownType + " to "
-						+ getType() + ". Trying to handle case.");
+				logger.warning("Detecting un-notified type changing for FIBVariable " + fibVariable + " from "
+						+ lastKnownType + " to " + getType() + ". Trying to handle case.");
 				getPropertyChangeSupport().firePropertyChange(TYPE_PROPERTY, lastKnownType, getType());
+				fibVariable.getOwner().getBindingModel().getPropertyChangeSupport()
+						.firePropertyChange(BindingModel.BINDING_PATH_ELEMENT_TYPE_CHANGED, lastKnownType, getType());
 				lastKnownType = getType();
 			}
 		}

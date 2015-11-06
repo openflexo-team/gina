@@ -57,12 +57,14 @@ import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 
 /**
- * A {@link FIBVariable} allows to define an accessible and named value in a {@link FIBComponent}<br>
+ * A {@link FIBVariable} allows to define an accessible and named value in a
+ * {@link FIBComponent}<br>
  * 
  * They are mainly two cases in which variables are usefull:
  * <ul>
  * <li>to define an external API for a component</li>
- * <li>to maintain some internal value inside the scope of a {@link FIBComponent}</li>
+ * <li>to maintain some internal value inside the scope of a
+ * {@link FIBComponent}</li>
  * </ul>
  * 
  * @param T
@@ -131,14 +133,14 @@ public interface FIBVariable<T> extends FIBModelObject {
 
 		@Override
 		public Type getType() {
+			Type returned = (Type) performSuperGetter(TYPE_KEY);
+			if (returned != null) {
+				return returned;
+			}
 			if (getValue() != null && getValue().isSet() && getValue().isValid()) {
 				return getValue().getAnalyzedType();
 			}
-			Type returned = (Type) performSuperGetter(TYPE_KEY);
-			if (returned == null) {
-				return Object.class;
-			}
-			return returned;
+			return Object.class;
 		}
 
 		@Override
@@ -159,11 +161,11 @@ public interface FIBVariable<T> extends FIBModelObject {
 		@Override
 		public void setValue(DataBinding<T> value) {
 			if (value != null) {
-				this.value = new DataBinding<T>(value.toString(), getOwner(), Object.class, DataBinding.BindingDefinitionType.GET);
+				this.value = new DataBinding<T>(value.toString(), getOwner(), Object.class,
+						DataBinding.BindingDefinitionType.GET);
 				this.value.setBindingName(getName());
 				// updateDynamicAccessBindingVariable();
-			}
-			else {
+			} else {
 				this.value = null;
 			}
 			getBindingVariable().setType(getType());
@@ -181,12 +183,18 @@ public interface FIBVariable<T> extends FIBModelObject {
 
 		/**
 		 * Return (create when null) binding variable identified by "data"<br>
-		 * Default behavior is to generate a binding variable with the java type identified by data class
+		 * Default behavior is to generate a binding variable with the java type
+		 * identified by data class
 		 */
 		@Override
 		public BindingVariable appendToBindingModel(BindingModel bindingModel) {
 			bindingModel.addToBindingVariables(getBindingVariable());
 			return getBindingVariable();
+		}
+
+		@Override
+		public FIBComponent getComponent() {
+			return getOwner();
 		}
 
 		@Override
