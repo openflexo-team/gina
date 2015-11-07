@@ -73,6 +73,8 @@ public interface FIBWidgetView<M extends FIBWidget, C, T>
 
 	public T getValue();
 
+	public void setValue(T value);
+
 	public T getData();
 
 	public void setData(T data);

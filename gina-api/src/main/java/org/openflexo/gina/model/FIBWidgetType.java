@@ -38,12 +38,22 @@
 
 package org.openflexo.gina.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.gina.model.bindings.WidgetPathElement;
+import org.openflexo.gina.model.bindings.WidgetValuePathElement;
+import org.openflexo.gina.view.FIBWidgetView;
 import org.openflexo.logging.FlexoLogger;
 
 /**
- * Represent the type of a FlexoConceptInstance of a given FlexoConcept
+ * Represent the type of a {@link FIBWidgetView} representing a given {@link FIBWidget}<br>
+ * Note that to be able to expose dynamic properties, this class should be extended.
  * 
  * @author sylvain
  * 
@@ -52,8 +62,33 @@ public class FIBWidgetType<W extends FIBWidget> extends FIBViewType<W> {
 
 	protected static final Logger logger = FlexoLogger.getLogger(FIBWidgetType.class.getPackage().getName());
 
+	protected final Map<BindingPathElement, List<WidgetPathElement<? super W>>> pathElements;
+
 	public FIBWidgetType(W aWidget) {
 		super(aWidget);
+		pathElements = new HashMap<BindingPathElement, List<WidgetPathElement<? super W>>>();
+	}
+
+	@Override
+	public Class<? extends FIBWidgetView> getBaseClass() {
+		return FIBWidgetView.class;
+	}
+
+	@Override
+	public List<WidgetPathElement<? super W>> getAccessibleSimplePathElements(BindingPathElement parent) {
+
+		if (parent != null && parent.getType() instanceof FIBWidgetType) {
+
+			List<WidgetPathElement<? super W>> returned = pathElements.get(parent);
+			if (returned == null) {
+				returned = new ArrayList<>();
+				returned.add(new WidgetValuePathElement(parent, getFIBComponent()));
+				pathElements.put(parent, returned);
+			}
+			return returned;
+		}
+
+		return Collections.emptyList();
 	}
 
 }

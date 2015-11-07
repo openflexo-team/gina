@@ -46,44 +46,44 @@ import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.gina.model.widget.FIBTable;
-import org.openflexo.gina.view.widget.FIBTableWidget;
+import org.openflexo.gina.model.FIBWidget;
+import org.openflexo.gina.view.FIBWidgetView;
 
 /**
- * BindingPathElement representing "selected" dynamic property for {@link FIBTable}<br>
+ * BindingPathElement representing "data" dynamic property for a {@link FIBWidget}<br>
  * 
  * @author sylvain
  *
  */
-public class TableSelectedPathElement extends WidgetPathElement<FIBTable> {
+public class WidgetValuePathElement extends WidgetPathElement<FIBWidget> {
 
-	private static final Logger logger = Logger.getLogger(TableSelectedPathElement.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(WidgetValuePathElement.class.getPackage().getName());
 
-	public static final String SELECTED = "selected";
+	public static final String VALUE = "data";
 
-	public TableSelectedPathElement(BindingPathElement parent, FIBTable table) {
-		super(parent, table);
+	public WidgetValuePathElement(BindingPathElement parent, FIBWidget widget) {
+		super(parent, widget);
 	}
 
 	@Override
-	protected String getDynamicPropertyName(FIBTable table) {
-		return SELECTED;
+	protected String getDynamicPropertyName(FIBWidget widget) {
+		return VALUE;
 	}
 
 	@Override
-	protected Type getDynamicPropertyType(FIBTable table) {
-		return table.getIteratorClass();
+	protected Type getDynamicPropertyType(FIBWidget widget) {
+		return widget.getDataType();
 	}
 
 	@Override
-	protected String getDynamicPropertyTooltip(FIBTable widget) {
-		return "value_being_currently_selected_in_table";
+	protected String getDynamicPropertyTooltip(FIBWidget widget) {
+		return "value_being_represented_by_widget";
 	}
 
 	@Override
 	public Object getBindingValue(Object target, BindingEvaluationContext context) throws TypeMismatchException, NullReferenceException {
-		if (target instanceof FIBTableWidget) {
-			return ((FIBTableWidget<?, ?>) target).getSelected();
+		if (target instanceof FIBWidgetView) {
+			return ((FIBWidgetView<?, ?, ?>) target).getValue();
 		}
 		logger.warning("Unexpected target=" + target + " context=" + context);
 		return null;
@@ -92,8 +92,8 @@ public class TableSelectedPathElement extends WidgetPathElement<FIBTable> {
 	@Override
 	public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
 			throws TypeMismatchException, NullReferenceException {
-		if (target instanceof FIBTableWidget) {
-			((FIBTableWidget) target).performSelect(value);
+		if (target instanceof FIBWidgetView) {
+			((FIBWidgetView) target).setValue(value);
 			return;
 		}
 		logger.warning("Unexpected target=" + target + " context=" + context);
@@ -102,9 +102,10 @@ public class TableSelectedPathElement extends WidgetPathElement<FIBTable> {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getSource() == getWidget()) {
-			if (evt.getPropertyName().equals(FIBTable.ITERATOR_CLASS_KEY)) {
+			// TODO: handle widget type change here
+			/*if (evt.getPropertyName().equals(FIBWidget.TYPE_KEY)) {
 				handleTypeMightHaveChanged();
-			}
+			}*/
 		}
 		super.propertyChange(evt);
 	}

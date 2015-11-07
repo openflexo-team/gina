@@ -46,8 +46,9 @@ import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBTable;
-import org.openflexo.gina.view.widget.FIBTableWidget;
+import org.openflexo.gina.view.widget.FIBBrowserWidget;
 
 /**
  * BindingPathElement representing "selected" dynamic property for {@link FIBTable}<br>
@@ -55,35 +56,35 @@ import org.openflexo.gina.view.widget.FIBTableWidget;
  * @author sylvain
  *
  */
-public class TableSelectedPathElement extends WidgetPathElement<FIBTable> {
+public class BrowserSelectedPathElement extends WidgetPathElement<FIBBrowser> {
 
-	private static final Logger logger = Logger.getLogger(TableSelectedPathElement.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(BrowserSelectedPathElement.class.getPackage().getName());
 
 	public static final String SELECTED = "selected";
 
-	public TableSelectedPathElement(BindingPathElement parent, FIBTable table) {
-		super(parent, table);
+	public BrowserSelectedPathElement(BindingPathElement parent, FIBBrowser browser) {
+		super(parent, browser);
 	}
 
 	@Override
-	protected String getDynamicPropertyName(FIBTable table) {
+	protected String getDynamicPropertyName(FIBBrowser browser) {
 		return SELECTED;
 	}
 
 	@Override
-	protected Type getDynamicPropertyType(FIBTable table) {
-		return table.getIteratorClass();
+	protected Type getDynamicPropertyType(FIBBrowser browser) {
+		return browser.getIteratorClass();
 	}
 
 	@Override
-	protected String getDynamicPropertyTooltip(FIBTable widget) {
-		return "value_being_currently_selected_in_table";
+	protected String getDynamicPropertyTooltip(FIBBrowser browser) {
+		return "value_being_currently_selected_in_browser";
 	}
 
 	@Override
 	public Object getBindingValue(Object target, BindingEvaluationContext context) throws TypeMismatchException, NullReferenceException {
-		if (target instanceof FIBTableWidget) {
-			return ((FIBTableWidget<?, ?>) target).getSelected();
+		if (target instanceof FIBBrowserWidget) {
+			return ((FIBBrowserWidget<?, ?>) target).getSelected();
 		}
 		logger.warning("Unexpected target=" + target + " context=" + context);
 		return null;
@@ -92,8 +93,8 @@ public class TableSelectedPathElement extends WidgetPathElement<FIBTable> {
 	@Override
 	public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
 			throws TypeMismatchException, NullReferenceException {
-		if (target instanceof FIBTableWidget) {
-			((FIBTableWidget) target).performSelect(value);
+		if (target instanceof FIBBrowserWidget) {
+			((FIBBrowserWidget) target).performSelect(value, true);
 			return;
 		}
 		logger.warning("Unexpected target=" + target + " context=" + context);
@@ -102,7 +103,7 @@ public class TableSelectedPathElement extends WidgetPathElement<FIBTable> {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getSource() == getWidget()) {
-			if (evt.getPropertyName().equals(FIBTable.ITERATOR_CLASS_KEY)) {
+			if (evt.getPropertyName().equals(FIBBrowser.ITERATOR_CLASS_KEY)) {
 				handleTypeMightHaveChanged();
 			}
 		}

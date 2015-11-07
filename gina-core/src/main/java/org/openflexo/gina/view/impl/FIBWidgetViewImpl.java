@@ -516,6 +516,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public void setValue(T aValue) {
 		if (!isEnabled()) {

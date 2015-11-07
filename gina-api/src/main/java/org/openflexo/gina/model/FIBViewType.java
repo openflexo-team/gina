@@ -47,10 +47,12 @@ import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.type.CustomType;
 import org.openflexo.connie.type.CustomTypeFactory;
+import org.openflexo.gina.view.FIBView;
 import org.openflexo.logging.FlexoLogger;
 
 /**
- * Represent the type of a FlexoConceptInstance of a given FlexoConcept
+ * Represent the type of a {@link FIBView} representing a given {@link FIBComponent}<br>
+ * Note that to be able to expose dynamic properties, this class should be extended.
  * 
  * @author sylvain
  * 
@@ -70,11 +72,8 @@ public class FIBViewType<F extends FIBComponent> implements CustomType {
 	}
 
 	@Override
-	public Class<?> getBaseClass() {
-		if (fibComponent != null) {
-			return fibComponent.getClass();
-		}
-		return FIBComponent.class;
+	public Class<? extends FIBView> getBaseClass() {
+		return FIBView.class;
 	}
 
 	@Override
@@ -147,6 +146,6 @@ public class FIBViewType<F extends FIBComponent> implements CustomType {
 	}
 
 	public List<? extends SimplePathElement> getAccessibleSimplePathElements(BindingPathElement parent) {
-		return Collections.EMPTY_LIST;
+		return Collections.emptyList();
 	}
 }

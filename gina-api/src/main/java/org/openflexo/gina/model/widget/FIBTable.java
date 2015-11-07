@@ -337,11 +337,6 @@ public interface FIBTable extends FIBWidget {
 		private Color backgroundSecondarySelectionColor;
 		private Color backgroundNonSelectionColor;
 
-		/*
-		 * public FIBTableImpl() { columns = new ArrayList<FIBTableColumn>();
-		 * actions = new ArrayList<FIBTableAction>(); }
-		 */
-
 		@Override
 		protected FIBTableType makeComponentType() {
 			return new FIBTableType(this);

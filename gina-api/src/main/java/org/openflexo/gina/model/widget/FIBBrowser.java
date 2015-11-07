@@ -297,13 +297,15 @@ public interface FIBBrowser extends FIBWidget {
 
 		private Class iteratorClass;
 
-		// private Vector<FIBBrowserElement> elements;
-
 		private final Hashtable<Class<?>, FIBBrowserElement> elementsForClasses;
 
 		public FIBBrowserImpl() {
-			// elements = new Vector<FIBBrowserElement>();
 			elementsForClasses = new Hashtable<Class<?>, FIBBrowserElement>();
+		}
+
+		@Override
+		protected FIBBrowserType makeComponentType() {
+			return new FIBBrowserType(this);
 		}
 
 		@Override
@@ -459,8 +461,7 @@ public interface FIBBrowser extends FIBWidget {
 
 		@Override
 		public void setBoundToSelectionManager(boolean boundToSelectionManager) {
-			FIBPropertyNotification<Boolean> notification = requireChange(BOUND_TO_SELECTION_MANAGER_KEY,
-					boundToSelectionManager);
+			FIBPropertyNotification<Boolean> notification = requireChange(BOUND_TO_SELECTION_MANAGER_KEY, boundToSelectionManager);
 			if (notification != null) {
 				this.boundToSelectionManager = boundToSelectionManager;
 				hasChanged(notification);
@@ -648,8 +649,7 @@ public interface FIBBrowser extends FIBWidget {
 
 		@Override
 		public void setTextNonSelectionColor(Color textNonSelectionColor) {
-			FIBPropertyNotification<Color> notification = requireChange(TEXT_NON_SELECTION_COLOR_KEY,
-					textNonSelectionColor);
+			FIBPropertyNotification<Color> notification = requireChange(TEXT_NON_SELECTION_COLOR_KEY, textNonSelectionColor);
 			if (notification != null) {
 				this.textNonSelectionColor = textNonSelectionColor;
 				hasChanged(notification);
@@ -666,8 +666,7 @@ public interface FIBBrowser extends FIBWidget {
 
 		@Override
 		public void setBackgroundSelectionColor(Color backgroundSelectionColor) {
-			FIBPropertyNotification<Color> notification = requireChange(BACKGROUND_SELECTION_COLOR_KEY,
-					backgroundSelectionColor);
+			FIBPropertyNotification<Color> notification = requireChange(BACKGROUND_SELECTION_COLOR_KEY, backgroundSelectionColor);
 			if (notification != null) {
 				this.backgroundSelectionColor = backgroundSelectionColor;
 				hasChanged(notification);
@@ -702,8 +701,7 @@ public interface FIBBrowser extends FIBWidget {
 
 		@Override
 		public void setBackgroundNonSelectionColor(Color backgroundNonSelectionColor) {
-			FIBPropertyNotification<Color> notification = requireChange(BACKGROUND_NON_SELECTION_COLOR_KEY,
-					backgroundNonSelectionColor);
+			FIBPropertyNotification<Color> notification = requireChange(BACKGROUND_NON_SELECTION_COLOR_KEY, backgroundNonSelectionColor);
 			if (notification != null) {
 				this.backgroundNonSelectionColor = backgroundNonSelectionColor;
 				hasChanged(notification);
@@ -717,8 +715,7 @@ public interface FIBBrowser extends FIBWidget {
 
 		@Override
 		public void setBorderSelectionColor(Color borderSelectionColor) {
-			FIBPropertyNotification<Color> notification = requireChange(BORDER_SELECTION_COLOR_KEY,
-					borderSelectionColor);
+			FIBPropertyNotification<Color> notification = requireChange(BORDER_SELECTION_COLOR_KEY, borderSelectionColor);
 			if (notification != null) {
 				this.borderSelectionColor = borderSelectionColor;
 				hasChanged(notification);
@@ -726,8 +723,7 @@ public interface FIBBrowser extends FIBWidget {
 		}
 
 		/**
-		 * Return a list of all bindings declared in the context of this
-		 * component
+		 * Return a list of all bindings declared in the context of this component
 		 * 
 		 * @return
 		 */

@@ -43,40 +43,40 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.gina.model.FIBWidgetType;
-import org.openflexo.gina.model.bindings.TableSelectedPathElement;
+import org.openflexo.gina.model.bindings.BrowserSelectedPathElement;
 import org.openflexo.gina.model.bindings.WidgetPathElement;
-import org.openflexo.gina.view.widget.FIBTableWidget;
+import org.openflexo.gina.view.widget.FIBBrowserWidget;
 import org.openflexo.logging.FlexoLogger;
 
 /**
- * Represent the type of a {@link FIBTableWidget} representing a given {@link FIBTable}<br>
+ * Represent the type of a {@link FIBBrowserWidget} representing a given {@link FIBBrowser}<br>
  * Extends base {@link FIBWidgetType} by exposing "selected" dynamic property
  * 
  * @author sylvain
  * 
  */
-public class FIBTableType extends FIBWidgetType<FIBTable> {
+public class FIBBrowserType extends FIBWidgetType<FIBBrowser> {
 
-	protected static final Logger logger = FlexoLogger.getLogger(FIBTableType.class.getPackage().getName());
+	protected static final Logger logger = FlexoLogger.getLogger(FIBBrowserType.class.getPackage().getName());
 
-	public FIBTableType(FIBTable aWidget) {
+	public FIBBrowserType(FIBBrowser aWidget) {
 		super(aWidget);
 	}
 
 	@Override
-	public Class<FIBTableWidget> getBaseClass() {
-		return FIBTableWidget.class;
+	public Class<FIBBrowserWidget> getBaseClass() {
+		return FIBBrowserWidget.class;
 	}
 
 	@Override
-	public List<WidgetPathElement<? super FIBTable>> getAccessibleSimplePathElements(BindingPathElement parent) {
+	public List<WidgetPathElement<? super FIBBrowser>> getAccessibleSimplePathElements(BindingPathElement parent) {
 
-		if (parent != null && parent.getType() instanceof FIBTableType) {
+		if (parent != null && parent.getType() instanceof FIBBrowserType) {
 
-			List<WidgetPathElement<? super FIBTable>> returned = pathElements.get(parent);
+			List<WidgetPathElement<? super FIBBrowser>> returned = pathElements.get(parent);
 			if (returned == null) {
 				returned = super.getAccessibleSimplePathElements(parent);
-				returned.add(new TableSelectedPathElement(parent, getFIBComponent()));
+				returned.add(new BrowserSelectedPathElement(parent, getFIBComponent()));
 				pathElements.put(parent, returned);
 			}
 			return returned;
