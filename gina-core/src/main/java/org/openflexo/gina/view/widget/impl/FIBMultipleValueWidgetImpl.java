@@ -68,12 +68,14 @@ import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.toolbox.StringUtils;
 
 /**
- * Default base implementation for a generic and abstract widget allowing to handle a list of values
+ * Default base implementation for a generic and abstract widget allowing to
+ * handle a list of values
  * 
  * @author sylvain
  * 
  * @param <M>
- *            type of {@link FIBComponent} this view represents (here a subclass of FIBMultipleValues)
+ *            type of {@link FIBComponent} this view represents (here a subclass
+ *            of FIBMultipleValues)
  * @param <C>
  *            type of technology-specific component this view manage
  * @param <T>
@@ -81,8 +83,8 @@ import org.openflexo.toolbox.StringUtils;
  * @param <I>
  *            type of iterable beeing managed by this widget
  */
-public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C, T, I> extends FIBWidgetViewImpl<M, C, T>
-		implements FIBMultipleValueWidget<M, C, T, I> {
+public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C, T, I> extends
+		FIBWidgetViewImpl<M, C, T> implements FIBMultipleValueWidget<M, C, T, I> {
 
 	static final Logger LOGGER = Logger.getLogger(FIBMultipleValueWidgetImpl.class.getPackage().getName());
 
@@ -95,7 +97,8 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 	private BindingValueListChangeListener<Object, List<Object>> listBindingValueChangeListener;
 	private BindingValueArrayChangeListener<Object> arrayBindingValueChangeListener;
 
-	public FIBMultipleValueWidgetImpl(M model, FIBController controller, MultipleValueRenderingAdapter<C, I> RenderingAdapter) {
+	public FIBMultipleValueWidgetImpl(M model, FIBController controller,
+			MultipleValueRenderingAdapter<C, I> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
 		listenListValueChange();
 		listenArrayValueChange();
@@ -119,7 +122,8 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 
 				@Override
 				public void bindingValueChanged(Object source, List<Object> newValue) {
-					// System.out.println(" bindingValueChanged() detected for list=" + getComponent().getEnable() + " with newValue="
+					// System.out.println(" bindingValueChanged() detected for list="
+					// + getComponent().getEnable() + " with newValue="
 					// + newValue + " source=" + source);
 					updateMultipleValues();
 				}
@@ -137,7 +141,8 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, Object[] newValue) {
-					// System.out.println(" bindingValueChanged() detected for array=" + getComponent().getArray() + " with newValue="
+					// System.out.println(" bindingValueChanged() detected for array="
+					// + getComponent().getArray() + " with newValue="
 					// + newValue + " source=" + source);
 					updateMultipleValues();
 				}
@@ -151,9 +156,11 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 			return;
 		}
 		super.updateData();
-		Type type = getWidget().getData().getAnalyzedType();
-		if (type instanceof Class && ((Class) type).isEnum()) {
-			updateMultipleValues();
+		if (getWidget().getData() != null && getWidget().getData().isSet() && getWidget().getData().isValid()) {
+			Type type = getWidget().getData().getAnalyzedType();
+			if (type instanceof Class && ((Class) type).isEnum()) {
+				updateMultipleValues();
+			}
 		}
 
 	}
@@ -172,7 +179,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 	}
 
 	@SuppressWarnings("serial")
-	public class FIBMultipleValueModelImpl extends AbstractListModel<I>implements FIBMultipleValueModel<I> {
+	public class FIBMultipleValueModelImpl extends AbstractListModel<I> implements FIBMultipleValueModel<I> {
 		private List<I> list = null;
 		private I[] array = null;
 
@@ -191,7 +198,14 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 			list = null;
 			array = null;
 
-			if (getWidget() != null && getWidget().getList() != null && getWidget().getList().isValid() /*&& getDataObject() != null*/) {
+			if (getWidget() != null && getWidget().getList() != null && getWidget().getList().isValid() /*
+																										 * &&
+																										 * getDataObject
+																										 * (
+																										 * )
+																										 * !=
+																										 * null
+																										 */) {
 
 				Object accessedList = null;
 				try {
@@ -209,8 +223,14 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 
 			}
 
-			else if (getWidget() != null && getWidget().getArray() != null
-					&& getWidget().getArray().isValid() /*&& getDataObject() != null*/) {
+			else if (getWidget() != null && getWidget().getArray() != null && getWidget().getArray().isValid() /*
+																												 * &&
+																												 * getDataObject
+																												 * (
+																												 * )
+																												 * !=
+																												 * null
+																												 */) {
 
 				Object accessedArray = null;
 				try {
@@ -228,30 +248,47 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 				} catch (ClassCastException e) {
 					LOGGER.warning("ClassCastException " + e.getMessage());
 				}
-				/*for (int i=0; i<array.length; i++) {
-					System.out.println("> "+array[i]);
-				}*/
+				/*
+				 * for (int i=0; i<array.length; i++) {
+				 * System.out.println("> "+array[i]); }
+				 */
 			}
 
-			else if (getWidget() != null && getWidget().getData() != null
-					&& getWidget().getData().isValid() /*&& getDataObject() != null*/) {
-				/*System.out.println("Binding: "+getWidget().getData().getBinding());
-				System.out.println("isBindingValid: "+getWidget().getData().getBinding().isBindingValid());
-				if (!getWidget().getData().getBinding().isBindingValid()) {
-					System.out.println("Owner: "+getWidget().getData().getOwner());
-					System.out.println("BindingModel: "+getWidget().getData().getOwner().getBindingModel());
-					
-					BindingExpression.logger.setLevel(Level.FINE);
-					AbstractBinding binding = AbstractBinding.abstractBindingConverter.convertFromString(getWidget().getData().getBinding().toString());
-					binding.isBindingValid();
-				}*/
+			else if (getWidget() != null && getWidget().getData() != null && getWidget().getData().isValid() /*
+																											 * &&
+																											 * getDataObject
+																											 * (
+																											 * )
+																											 * !=
+																											 * null
+																											 */) {
+				/*
+				 * System.out.println("Binding: "+getWidget().getData().getBinding
+				 * ());
+				 * System.out.println("isBindingValid: "+getWidget().getData
+				 * ().getBinding().isBindingValid()); if
+				 * (!getWidget().getData().getBinding().isBindingValid()) {
+				 * System
+				 * .out.println("Owner: "+getWidget().getData().getOwner());
+				 * System
+				 * .out.println("BindingModel: "+getWidget().getData().getOwner
+				 * ().getBindingModel());
+				 * 
+				 * BindingExpression.logger.setLevel(Level.FINE);
+				 * AbstractBinding binding =
+				 * AbstractBinding.abstractBindingConverter
+				 * .convertFromString(getWidget
+				 * ().getData().getBinding().toString());
+				 * binding.isBindingValid(); }
+				 */
 				Type type = getWidget().getData().getAnalyzedType();
 				if (type instanceof Class && ((Class) type).isEnum()) {
 					array = (I[]) ((Class) type).getEnumConstants();
 				}
 			}
 
-			if (list == null && array == null && getWidget().getIteratorClass() != null && getWidget().getIteratorClass().isEnum()) {
+			if (list == null && array == null && getWidget().getIteratorClass() != null
+					&& getWidget().getIteratorClass().isEnum()) {
 				array = (I[]) getWidget().getIteratorClass().getEnumConstants();
 			}
 
@@ -269,68 +306,51 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 
 		}
 
-		/*private boolean requireChange = true;
-		
-		private boolean requireChange() {
-			if (requireChange) {
-				if (getWidget().getList() != null && !getWidget().getList().isSet() && getWidget().getArray() != null
-						&& !getWidget().getArray().isSet()) {
-					requireChange = false;
-				}
-				// Always return true first time
-				return true;
-			}
-			requireChange = false;
-		
-			if (getWidget().getList() != null && getWidget().getList().isSet() && getDataObject() != null) {
-		
-				Object accessedList = null;
-				try {
-					accessedList = getWidget().getList().getBindingValue(getBindingEvaluationContext());
-				} catch (TypeMismatchException e) {
-					e.printStackTrace();
-				} catch (NullReferenceException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
-				}
-				return accessedList != null && !accessedList.equals(list);
-		
-			}
-		
-			else if (getWidget().getArray() != null && getWidget().getArray().isSet() && getDataObject() != null) {
-		
-				try {
-					Object accessedArray = getWidget().getArray().getBindingValue(getBindingEvaluationContext());
-				} catch (TypeMismatchException e) {
-					e.printStackTrace();
-				} catch (NullReferenceException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
-				}
-				// TODO: you can do better
-				return true;
-			}
-		
-			else if (getWidget().getData() != null && getWidget().getData().isValid() && getDataObject() != null) {
-				Type type = getWidget().getData().getAnalyzedType();
-				if (type instanceof Class && ((Class<?>) type).isEnum()) {
-					return false;
-				}
-			}
-		
-			else if (StringUtils.isNotEmpty(getWidget().getStaticList())) {
-				return false;
-			}
-		
-			if (getWidget().getList() != null && !getWidget().getList().isSet() && getWidget().getArray() != null
-					&& !getWidget().getArray().isSet()) {
-				return false;
-			}
-		
-			return true;
-		}*/
+		/*
+		 * private boolean requireChange = true;
+		 * 
+		 * private boolean requireChange() { if (requireChange) { if
+		 * (getWidget().getList() != null && !getWidget().getList().isSet() &&
+		 * getWidget().getArray() != null && !getWidget().getArray().isSet()) {
+		 * requireChange = false; } // Always return true first time return
+		 * true; } requireChange = false;
+		 * 
+		 * if (getWidget().getList() != null && getWidget().getList().isSet() &&
+		 * getDataObject() != null) {
+		 * 
+		 * Object accessedList = null; try { accessedList =
+		 * getWidget().getList().getBindingValue(getBindingEvaluationContext());
+		 * } catch (TypeMismatchException e) { e.printStackTrace(); } catch
+		 * (NullReferenceException e) { e.printStackTrace(); } catch
+		 * (InvocationTargetException e) { e.printStackTrace(); } return
+		 * accessedList != null && !accessedList.equals(list);
+		 * 
+		 * }
+		 * 
+		 * else if (getWidget().getArray() != null &&
+		 * getWidget().getArray().isSet() && getDataObject() != null) {
+		 * 
+		 * try { Object accessedArray =
+		 * getWidget().getArray().getBindingValue(getBindingEvaluationContext
+		 * ()); } catch (TypeMismatchException e) { e.printStackTrace(); } catch
+		 * (NullReferenceException e) { e.printStackTrace(); } catch
+		 * (InvocationTargetException e) { e.printStackTrace(); } // TODO: you
+		 * can do better return true; }
+		 * 
+		 * else if (getWidget().getData() != null &&
+		 * getWidget().getData().isValid() && getDataObject() != null) { Type
+		 * type = getWidget().getData().getAnalyzedType(); if (type instanceof
+		 * Class && ((Class<?>) type).isEnum()) { return false; } }
+		 * 
+		 * else if (StringUtils.isNotEmpty(getWidget().getStaticList())) {
+		 * return false; }
+		 * 
+		 * if (getWidget().getList() != null && !getWidget().getList().isSet()
+		 * && getWidget().getArray() != null && !getWidget().getArray().isSet())
+		 * { return false; }
+		 * 
+		 * return true; }
+		 */
 
 		@Override
 		public int getSize() {
@@ -354,6 +374,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 			return null;
 		}
 
+		@Override
 		public int indexOf(Object cur) {
 			for (int i = 0; i < getSize(); i++) {
 				if (getElementAt(i).equals(cur)) {
@@ -365,7 +386,8 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 
 		@Override
 		public String toString() {
-			return getClass().getSimpleName() + "[" + (list != null ? list.size() + " " + list.toString() : "null") + "]";
+			return getClass().getSimpleName() + "[" + (list != null ? list.size() + " " + list.toString() : "null")
+					+ "]";
 		}
 
 		protected ArrayList<Object> toArrayList() {
@@ -376,54 +398,47 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 			return returned;
 		}
 
-		/*protected boolean equalsToList(List l) {
-			if (l == null) {
-				return getSize() == 0;
-			}
-			if (getSize() == l.size()) {
-				for (int i = 0; i < getSize(); i++) {
-					if (!getElementAt(i).equals(l.get(i))) {
-						return false;
-					}
-				}
-				return true;
-			} else {
-				return false;
-			}
-		}*/
+		/*
+		 * protected boolean equalsToList(List l) { if (l == null) { return
+		 * getSize() == 0; } if (getSize() == l.size()) { for (int i = 0; i <
+		 * getSize(); i++) { if (!getElementAt(i).equals(l.get(i))) { return
+		 * false; } } return true; } else { return false; } }
+		 */
 	}
 
-	/*protected boolean listModelRequireChange() {
-		return getMultipleValueModel().requireChange();
-	}*/
+	/*
+	 * protected boolean listModelRequireChange() { return
+	 * getMultipleValueModel().requireChange(); }
+	 */
 
 	protected class FIBMultipleValueCellRenderer extends DefaultListCellRenderer {
 		private Dimension nullDimesion;
 
 		@Override
-		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-			FIBMultipleValueCellRenderer label = (FIBMultipleValueCellRenderer) super.getListCellRendererComponent(list, value, index,
-					isSelected, cellHasFocus);
+		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+				boolean cellHasFocus) {
+			FIBMultipleValueCellRenderer label = (FIBMultipleValueCellRenderer) super.getListCellRendererComponent(
+					list, value, index, isSelected, cellHasFocus);
 			if (value != null && nullDimesion == null) {
-				nullDimesion = ((JComponent) getListCellRendererComponent(list, null, -1, false, false)).getPreferredSize();
+				nullDimesion = ((JComponent) getListCellRendererComponent(list, null, -1, false, false))
+						.getPreferredSize();
 			}
 			if (getWidget().getShowText()) {
 				if (value != null) {
 					String stringRepresentation = getStringRepresentation(value);
 					if (stringRepresentation == null || stringRepresentation.length() == 0) {
 						stringRepresentation = "<html><i>"
-								+ FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "empty_string") + "</i></html>";
+								+ FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "empty_string")
+								+ "</i></html>";
 					}
 					label.setText(stringRepresentation);
-				}
-				else {
+				} else {
 					label.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "no_selection"));
 				}
 				if (FIBMultipleValueWidgetImpl.this.getFont() != null) {
 					label.setFont(FIBMultipleValueWidgetImpl.this.getFont());
 				}
-			}
-			else {
+			} else {
 				label.setText(null);
 			}
 			// label.setBorder(BorderFactory.createEmptyBorder(1, 2, 1, 2));
@@ -476,70 +491,54 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 
 	protected abstract void proceedToListModelUpdate();
 
-	/*protected FIBMultipleValueModel updateListModelWhenRequired() {
-		if (multipleValueModel == null) {
-			multipleValueModel = new FIBMultipleValueModel();
-		} else {
-			FIBMultipleValueModel aNewListModel = new FIBMultipleValueModel();
-			if (!aNewListModel.equals(multipleValueModel) || didLastKnownValuesChange()) {
-				multipleValueModel = aNewListModel;
-			}
-		}
-		return multipleValueModel;
-	}*/
+	/*
+	 * protected FIBMultipleValueModel updateListModelWhenRequired() { if
+	 * (multipleValueModel == null) { multipleValueModel = new
+	 * FIBMultipleValueModel(); } else { FIBMultipleValueModel aNewListModel =
+	 * new FIBMultipleValueModel(); if
+	 * (!aNewListModel.equals(multipleValueModel) || didLastKnownValuesChange())
+	 * { multipleValueModel = aNewListModel; } } return multipleValueModel; }
+	 */
 
-	/*protected FIBMultipleValueModel updateListModel() {
-		multipleValueModel = null;
-		updateListModelWhenRequired();
-		return multipleValueModel;
-	}*/
+	/*
+	 * protected FIBMultipleValueModel updateListModel() { multipleValueModel =
+	 * null; updateListModelWhenRequired(); return multipleValueModel; }
+	 */
 
 	// private ArrayList<Object> lastKnownValues = null;
 
 	/**
-	 * Return a flag indicating if last known values declared as ListModel have changed since the last time this method was called.
+	 * Return a flag indicating if last known values declared as ListModel have
+	 * changed since the last time this method was called.
 	 * 
 	 * @return
 	 */
-	/*protected boolean didLastKnownValuesChange() {
-		boolean returned;
-		if (multipleValueModel != null) {
-			returned = !multipleValueModel.equalsToList(lastKnownValues);
-			lastKnownValues = multipleValueModel.toArrayList();
-		} else {
-			returned = lastKnownValues != null;
-			lastKnownValues = null;
-		}
-		return returned;
-	}*/
+	/*
+	 * protected boolean didLastKnownValuesChange() { boolean returned; if
+	 * (multipleValueModel != null) { returned =
+	 * !multipleValueModel.equalsToList(lastKnownValues); lastKnownValues =
+	 * multipleValueModel.toArrayList(); } else { returned = lastKnownValues !=
+	 * null; lastKnownValues = null; } return returned; }
+	 */
 
-	/*protected final FIBListModel rebuildListModel()
-	{
-		return multipleValueModel = buildListModel();
-	}
-	
-	protected final FIBListModel buildListModel()
-	{
-		return new FIBListModel();
-	}*/
+	/*
+	 * protected final FIBListModel rebuildListModel() { return
+	 * multipleValueModel = buildListModel(); }
+	 * 
+	 * protected final FIBListModel buildListModel() { return new
+	 * FIBListModel(); }
+	 */
 
-	/*@Override
-	public final void updateDataObject(final Object dataObject) {
-		if (!SwingUtilities.isEventDispatchThread()) {
-			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Update data object invoked outside the EDT!!! please investigate and make sure this is no longer the case. \n\tThis is a very SERIOUS problem! Do not let this pass.");
-			}
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					updateDataObject(dataObject);
-				}
-			});
-			return;
-		}
-		updateListModelWhenRequired();
-		super.updateDataObject(dataObject);
-	}*/
+	/*
+	 * @Override public final void updateDataObject(final Object dataObject) {
+	 * if (!SwingUtilities.isEventDispatchThread()) { if
+	 * (logger.isLoggable(Level.WARNING)) { logger.warning(
+	 * "Update data object invoked outside the EDT!!! please investigate and make sure this is no longer the case. \n\tThis is a very SERIOUS problem! Do not let this pass."
+	 * ); } SwingUtilities.invokeLater(new Runnable() {
+	 * 
+	 * @Override public void run() { updateDataObject(dataObject); } }); return;
+	 * } updateListModelWhenRequired(); super.updateDataObject(dataObject); }
+	 */
 
 	public void updateMultipleValues() {
 		((FIBMultipleValueModelImpl) getMultipleValueModel()).update();
@@ -567,7 +566,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 		if (getComponent().getLocalize()) {
 			FIBMultipleValueModel mvModel = getMultipleValueModel();
 			for (int i = 0; i < mvModel.getSize(); i++) {
-				/*String s =*/getStringRepresentation(mvModel.getElementAt(i));
+				/* String s = */getStringRepresentation(mvModel.getElementAt(i));
 				// getLocalized(s);
 			}
 		}

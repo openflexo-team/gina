@@ -57,7 +57,8 @@ import org.openflexo.gina.view.widget.FIBNumberWidget;
  *
  * @author sylvain
  */
-public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidgetViewImpl<FIBNumber, C, T>implements FIBNumberWidget<C, T> {
+public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidgetViewImpl<FIBNumber, C, T> implements
+		FIBNumberWidget<C, T> {
 
 	static final Logger logger = Logger.getLogger(FIBNumberWidgetImpl.class.getPackage().getName());
 
@@ -71,8 +72,18 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 			NumberWidgetRenderingAdapter<C, T> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
 		validateOnReturn = model.getValidateOnReturn();
+	}
+
+	@Override
+	public boolean update() {
+		System.out.println("Update in FIBNumberWidget, getValue()=" + getValue());
+		System.out.println("getData()=" + getData());
+		boolean returned = super.update();
+		System.out.println("getData()=" + getData());
 		updateCheckboxVisibility();
 		updateColumns();
+		System.out.println("getData()=" + getData());
+		return returned;
 	}
 
 	@Override
@@ -85,12 +96,12 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 		widgetExecuting = true;
 
 		switch (e.getAction()) {
-			case FIBValueEventDescription.CHANGED: {
-				T value = parseValue(e.getValue());
-				System.out.println(value);
-				getRenderingAdapter().setNumber(getTechnologyComponent(), value);
-				break;
-			}
+		case FIBValueEventDescription.CHANGED: {
+			T value = parseValue(e.getValue());
+			System.out.println(value);
+			getRenderingAdapter().setNumber(getTechnologyComponent(), value);
+			break;
+		}
 		}
 
 		widgetExecuting = false;
@@ -99,23 +110,22 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 	public T parseValue(String str) {
 		if (getWidget().getNumberType() == null) {
 			return null;
-		}
-		else {
+		} else {
 			switch (getWidget().getNumberType()) {
-				case ByteType:
-					return (T) (Byte) Byte.parseByte(str);
-				case ShortType:
-					return (T) (Short) Short.parseShort(str);
-				case IntegerType:
-					return (T) (Integer) Integer.parseInt(str);
-				case LongType:
-					return (T) (Long) Long.parseLong(str);
-				case FloatType:
-					return (T) (Float) Float.parseFloat(str);
-				case DoubleType:
-					return (T) (Double) Double.parseDouble(str);
-				default:
-					return null;
+			case ByteType:
+				return (T) (Byte) Byte.parseByte(str);
+			case ShortType:
+				return (T) (Short) Short.parseShort(str);
+			case IntegerType:
+				return (T) (Integer) Integer.parseInt(str);
+			case LongType:
+				return (T) (Long) Long.parseLong(str);
+			case FloatType:
+				return (T) (Float) Float.parseFloat(str);
+			case DoubleType:
+				return (T) (Double) Double.parseDouble(str);
+			default:
+				return null;
 			}
 		}
 	}
@@ -126,23 +136,22 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 		}
 		if (getWidget().getNumberType() == null) {
 			return null;
-		}
-		else {
+		} else {
 			switch (getWidget().getNumberType()) {
-				case ByteType:
-					return (T) (new Byte((byte) 0));
-				case ShortType:
-					return (T) (new Short((short) 0));
-				case IntegerType:
-					return (T) Integer.valueOf(0);
-				case LongType:
-					return (T) Long.valueOf(0);
-				case FloatType:
-					return (T) Float.valueOf(0);
-				case DoubleType:
-					return (T) Double.valueOf(0);
-				default:
-					return null;
+			case ByteType:
+				return (T) (new Byte((byte) 0));
+			case ShortType:
+				return (T) (new Short((short) 0));
+			case IntegerType:
+				return (T) Integer.valueOf(0);
+			case LongType:
+				return (T) Long.valueOf(0);
+			case FloatType:
+				return (T) Float.valueOf(0);
+			case DoubleType:
+				return (T) Double.valueOf(0);
+			default:
+				return null;
 			}
 		}
 	}
@@ -165,8 +174,7 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 			if (getValue() == null) {
 				// setValue(getDefaultValue());
 				currentValue = getDefaultValue();
-			}
-			else {
+			} else {
 				try {
 					currentValue = getValue();
 				} catch (ClassCastException e) {
@@ -227,8 +235,7 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 	public void updateColumns() {
 		if (getComponent().getColumns() != null) {
 			getRenderingAdapter().setColumns(getTechnologyComponent(), getComponent().getColumns());
-		}
-		else {
+		} else {
 			getRenderingAdapter().setColumns(getTechnologyComponent(), 0);
 		}
 	}

@@ -81,7 +81,8 @@ import org.openflexo.toolbox.ToolBox;
  *
  * @author sylvain
  */
-public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<NumberSelectorPanel<T>, T>implements FocusListener {
+public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<NumberSelectorPanel<T>, T> implements
+		FocusListener {
 
 	static final Logger logger = Logger.getLogger(JFIBNumberWidget.class.getPackage().getName());
 
@@ -91,8 +92,9 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingNumberWidgetRenderingAdapter<T extends Number> extends SwingRenderingAdapter<NumberSelectorPanel<T>>
-			implements NumberWidgetRenderingAdapter<NumberSelectorPanel<T>, T> {
+	public static class SwingNumberWidgetRenderingAdapter<T extends Number> extends
+			SwingRenderingAdapter<NumberSelectorPanel<T>> implements
+			NumberWidgetRenderingAdapter<NumberSelectorPanel<T>, T> {
 
 		@Override
 		public T getNumber(NumberSelectorPanel<T> component) {
@@ -116,38 +118,32 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 
 		@Override
 		public boolean isCheckboxVisible(NumberSelectorPanel<T> component) {
-			// TODO Auto-generated method stub
-			return false;
+			return component.checkBox.isVisible();
 		}
 
 		@Override
 		public void setCheckboxVisible(NumberSelectorPanel<T> component, boolean visible) {
-			// TODO Auto-generated method stub
-
+			component.checkBox.setVisible(visible);
 		}
 
 		@Override
 		public boolean isCheckboxSelected(NumberSelectorPanel<T> component) {
-			// TODO Auto-generated method stub
-			return false;
+			return component.checkBox.isSelected();
 		}
 
 		@Override
 		public void setCheckboxSelected(NumberSelectorPanel<T> component, boolean selected) {
-			// TODO Auto-generated method stub
-
+			component.checkBox.setSelected(selected);
 		}
 
 		@Override
 		public boolean isWidgetEnabled(NumberSelectorPanel<T> component) {
-			// TODO Auto-generated method stub
-			return false;
+			return component.checkBox.isEnabled();
 		}
 
 		@Override
 		public void setWidgetEnabled(NumberSelectorPanel<T> component, boolean enabled) {
-			// TODO Auto-generated method stub
-
+			component.checkBox.setEnabled(enabled);
 		}
 
 	}
@@ -174,14 +170,17 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 			});
 			SpinnerNumberModel valueModel = makeSpinnerModel();
 			valueChooser = new JSpinner(valueModel);
-			valueChooser.setEditor(new JSpinner.NumberEditor(valueChooser /* , "#.##" */));
+			valueChooser.setEditor(new JSpinner.NumberEditor(valueChooser /*
+																		 * ,
+																		 * "#.##"
+																		 */));
 			valueChooser.setValue(widget.getDefaultValue());
 			valueChooser.addChangeListener(new ChangeListener() {
 				@Override
 				public void stateChanged(ChangeEvent e) {
 					if (e.getSource() == valueChooser && !widget.ignoreTextfieldChanges) {
-						GinaStackEvent stack = widget.GENotifier.raise(
-								FIBEventFactory.getInstance().createValueEvent(FIBValueEventDescription.CHANGED, valueChooser.getValue()));
+						GinaStackEvent stack = widget.GENotifier.raise(FIBEventFactory.getInstance().createValueEvent(
+								FIBValueEventDescription.CHANGED, valueChooser.getValue()));
 						widget.updateModelFromWidget();
 						stack.end();
 					}
@@ -198,8 +197,7 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 
 			if (widget.getWidget().getColumns() != null) {
 				getTextField().setColumns(widget.getWidget().getColumns());
-			}
-			else {
+			} else {
 				getTextField().setColumns(getDefaultColumns());
 			}
 
@@ -218,14 +216,15 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 			gbc.anchor = GridBagConstraints.LINE_START;
 			add(checkBox, gbc);
 			if (!ToolBox.isMacOSLaf()) {
-				setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
-						RIGHT_COMPENSATING_BORDER));
+				setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER,
+						BOTTOM_COMPENSATING_BORDER, RIGHT_COMPENSATING_BORDER));
 			}
 
 		}
 
 		public void updateLanguage() {
-			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
+			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION,
+					"undefined_value", checkBox));
 		}
 
 		protected abstract SpinnerNumberModel makeSpinnerModel();
@@ -259,23 +258,22 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 	protected NumberSelectorPanel<T> makeTechnologyComponent() {
 		if (getWidget().getNumberType() == null) {
 			return null;
-		}
-		else {
+		} else {
 			switch (getWidget().getNumberType()) {
-				case ByteType:
-					return (NumberSelectorPanel) new ByteSelectorPanel((JFIBNumberWidget) this);
-				case ShortType:
-					return (NumberSelectorPanel) new ShortSelectorPanel((JFIBNumberWidget) this);
-				case IntegerType:
-					return (NumberSelectorPanel) new IntegerSelectorPanel((JFIBNumberWidget) this);
-				case LongType:
-					return (NumberSelectorPanel) new LongSelectorPanel((JFIBNumberWidget) this);
-				case FloatType:
-					return (NumberSelectorPanel) new FloatSelectorPanel((JFIBNumberWidget) this);
-				case DoubleType:
-					return (NumberSelectorPanel) new DoubleSelectorPanel((JFIBNumberWidget) this);
-				default:
-					return null;
+			case ByteType:
+				return (NumberSelectorPanel) new ByteSelectorPanel((JFIBNumberWidget) this);
+			case ShortType:
+				return (NumberSelectorPanel) new ShortSelectorPanel((JFIBNumberWidget) this);
+			case IntegerType:
+				return (NumberSelectorPanel) new IntegerSelectorPanel((JFIBNumberWidget) this);
+			case LongType:
+				return (NumberSelectorPanel) new LongSelectorPanel((JFIBNumberWidget) this);
+			case FloatType:
+				return (NumberSelectorPanel) new FloatSelectorPanel((JFIBNumberWidget) this);
+			case DoubleType:
+				return (NumberSelectorPanel) new DoubleSelectorPanel((JFIBNumberWidget) this);
+			default:
+				return null;
 			}
 		}
 	}

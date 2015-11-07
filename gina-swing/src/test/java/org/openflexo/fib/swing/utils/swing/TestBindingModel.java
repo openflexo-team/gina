@@ -506,6 +506,13 @@ public class TestBindingModel extends FIBTestCase {
 		gcDelegate.addTab("TestBindingModel", controller);
 
 		assertNotNull(controller.getRootView());
+
+		System.out.println("Panel1: ");
+		System.out.println(panel1.getFactory().stringRepresentation(panel1));
+
+		System.out.println("Panel2: ");
+		System.out.println(panel2.getFactory().stringRepresentation(panel2));
+
 	}
 
 	@BeforeClass

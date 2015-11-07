@@ -412,16 +412,15 @@ public interface FIBBrowser extends FIBWidget {
 			return Object.class;
 		}
 
-		/*@Override
-		public Type getDynamicAccessType() {
-			Type[] args = new Type[2];
-			args[0] = new WilcardTypeImpl(Object.class);
-			args[1] = getIteratorClass();
-			return new ParameterizedTypeImpl(FIBBrowserWidget.class, args);
-		}*/
+		/*
+		 * @Override public Type getDynamicAccessType() { Type[] args = new
+		 * Type[2]; args[0] = new WilcardTypeImpl(Object.class); args[1] =
+		 * getIteratorClass(); return new
+		 * ParameterizedTypeImpl(FIBBrowserWidget.class, args); }
+		 */
 
 		@Override
-		public Boolean getManageDynamicModel() {
+		public boolean getManageDynamicModel() {
 			return true;
 		}
 
@@ -460,17 +459,18 @@ public interface FIBBrowser extends FIBWidget {
 
 		@Override
 		public void setBoundToSelectionManager(boolean boundToSelectionManager) {
-			FIBPropertyNotification<Boolean> notification = requireChange(BOUND_TO_SELECTION_MANAGER_KEY, boundToSelectionManager);
+			FIBPropertyNotification<Boolean> notification = requireChange(BOUND_TO_SELECTION_MANAGER_KEY,
+					boundToSelectionManager);
 			if (notification != null) {
 				this.boundToSelectionManager = boundToSelectionManager;
 				hasChanged(notification);
 			}
 		}
 
-		/*@Override
-		public Vector<FIBBrowserElement> getElements() {
-			return elements;
-		}*/
+		/*
+		 * @Override public Vector<FIBBrowserElement> getElements() { return
+		 * elements; }
+		 */
 
 		@Override
 		public void setElements(List<FIBBrowserElement> elements) {
@@ -481,7 +481,8 @@ public interface FIBBrowser extends FIBWidget {
 		@Override
 		public void addToElements(FIBBrowserElement anElement) {
 			performSuperAdder(ELEMENTS_KEY, anElement);
-			// System.out.println("**** Adding element " + anElement.getName() + " for class " + anElement.getDataClass());
+			// System.out.println("**** Adding element " + anElement.getName() +
+			// " for class " + anElement.getDataClass());
 			// Thread.dumpStack();
 			updateElementsForClasses();
 		}
@@ -647,7 +648,8 @@ public interface FIBBrowser extends FIBWidget {
 
 		@Override
 		public void setTextNonSelectionColor(Color textNonSelectionColor) {
-			FIBPropertyNotification<Color> notification = requireChange(TEXT_NON_SELECTION_COLOR_KEY, textNonSelectionColor);
+			FIBPropertyNotification<Color> notification = requireChange(TEXT_NON_SELECTION_COLOR_KEY,
+					textNonSelectionColor);
 			if (notification != null) {
 				this.textNonSelectionColor = textNonSelectionColor;
 				hasChanged(notification);
@@ -664,7 +666,8 @@ public interface FIBBrowser extends FIBWidget {
 
 		@Override
 		public void setBackgroundSelectionColor(Color backgroundSelectionColor) {
-			FIBPropertyNotification<Color> notification = requireChange(BACKGROUND_SELECTION_COLOR_KEY, backgroundSelectionColor);
+			FIBPropertyNotification<Color> notification = requireChange(BACKGROUND_SELECTION_COLOR_KEY,
+					backgroundSelectionColor);
 			if (notification != null) {
 				this.backgroundSelectionColor = backgroundSelectionColor;
 				hasChanged(notification);
@@ -699,7 +702,8 @@ public interface FIBBrowser extends FIBWidget {
 
 		@Override
 		public void setBackgroundNonSelectionColor(Color backgroundNonSelectionColor) {
-			FIBPropertyNotification<Color> notification = requireChange(BACKGROUND_NON_SELECTION_COLOR_KEY, backgroundNonSelectionColor);
+			FIBPropertyNotification<Color> notification = requireChange(BACKGROUND_NON_SELECTION_COLOR_KEY,
+					backgroundNonSelectionColor);
 			if (notification != null) {
 				this.backgroundNonSelectionColor = backgroundNonSelectionColor;
 				hasChanged(notification);
@@ -713,7 +717,8 @@ public interface FIBBrowser extends FIBWidget {
 
 		@Override
 		public void setBorderSelectionColor(Color borderSelectionColor) {
-			FIBPropertyNotification<Color> notification = requireChange(BORDER_SELECTION_COLOR_KEY, borderSelectionColor);
+			FIBPropertyNotification<Color> notification = requireChange(BORDER_SELECTION_COLOR_KEY,
+					borderSelectionColor);
 			if (notification != null) {
 				this.borderSelectionColor = borderSelectionColor;
 				hasChanged(notification);
@@ -721,7 +726,8 @@ public interface FIBBrowser extends FIBWidget {
 		}
 
 		/**
-		 * Return a list of all bindings declared in the context of this component
+		 * Return a list of all bindings declared in the context of this
+		 * component
 		 * 
 		 * @return
 		 */

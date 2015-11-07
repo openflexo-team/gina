@@ -194,9 +194,10 @@ public interface FIBCustom extends FIBWidget {
 
 		@Override
 		public Type getDataType() {
-			/*if (getData() != null && getData().isSet() && getData().isValid()) {
-				return getData().getAnalyzedType();
-			}*/
+			/*
+			 * if (getData() != null && getData().isSet() &&
+			 * getData().isValid()) { return getData().getAnalyzedType(); }
+			 */
 			return getDefaultDataType();
 
 		}
@@ -233,7 +234,8 @@ public interface FIBCustom extends FIBWidget {
 								newAssigment.setOwner(this);
 								newAssigment.setVariable(new DataBinding<Object>(variableName));
 								newAssigment.setValue(null);
-								newAssigment.setMandatory(annotation.type() == FIBCustomComponent.CustomComponentParameter.Type.MANDATORY);
+								newAssigment
+										.setMandatory(annotation.type() == FIBCustomComponent.CustomComponentParameter.Type.MANDATORY);
 								addToAssignments(newAssigment);
 							}
 						}
@@ -294,18 +296,20 @@ public interface FIBCustom extends FIBWidget {
 				performSuperAdder(ASSIGNMENTS_KEY, a);
 				return;
 			}
-			/*a.setOwner(this);
-			assignments.add(a);
-			getPropertyChangeSupport().firePropertyChange(ASSIGNMENTS_KEY, null, assignments);*/
+			/*
+			 * a.setOwner(this); assignments.add(a);
+			 * getPropertyChangeSupport().firePropertyChange(ASSIGNMENTS_KEY,
+			 * null, assignments);
+			 */
 			performSuperAdder(ASSIGNMENTS_KEY, a);
 		}
 
-		/*@Override
-		public void removeFromAssignments(FIBCustomAssignment a) {
-			a.setOwner(null);
-			assignments.remove(a);
-			getPropertyChangeSupport().firePropertyChange(ASSIGNMENTS_KEY, null, assignments);
-		}*/
+		/*
+		 * @Override public void removeFromAssignments(FIBCustomAssignment a) {
+		 * a.setOwner(null); assignments.remove(a);
+		 * getPropertyChangeSupport().firePropertyChange(ASSIGNMENTS_KEY, null,
+		 * assignments); }
+		 */
 
 		private BindingModel customComponentBindingModel;
 
@@ -332,16 +336,14 @@ public interface FIBCustom extends FIBWidget {
 			}
 		}
 
-		/*@Override
-		public Type getDynamicAccessType() {
-			Type[] args = new Type[2];
-			args[0] = getComponentClass();
-			args[1] = getDataType();
-			return new ParameterizedTypeImpl(FIBCustomWidget.class, args);
-		}*/
+		/*
+		 * @Override public Type getDynamicAccessType() { Type[] args = new
+		 * Type[2]; args[0] = getComponentClass(); args[1] = getDataType();
+		 * return new ParameterizedTypeImpl(FIBCustomWidget.class, args); }
+		 */
 
 		@Override
-		public Boolean getManageDynamicModel() {
+		public boolean getManageDynamicModel() {
 			return true;
 		}
 
@@ -469,7 +471,8 @@ public interface FIBCustom extends FIBWidget {
 			public static BindingDefinition VARIABLE = new BindingDefinition("variable", Object.class,
 					DataBinding.BindingDefinitionType.GET_SET, true);
 			@Deprecated
-			public BindingDefinition VALUE = new BindingDefinition("value", Object.class, DataBinding.BindingDefinitionType.GET, true);
+			public BindingDefinition VALUE = new BindingDefinition("value", Object.class,
+					DataBinding.BindingDefinitionType.GET, true);
 
 			private DataBinding<?> variable;
 			private DataBinding<?> value;
@@ -479,13 +482,12 @@ public interface FIBCustom extends FIBWidget {
 			public FIBCustomAssignmentImpl() {
 			}
 
-			/*public FIBCustomAssignmentImpl(FIBCustomColumn customColumn, DataBinding<Object> variable, DataBinding<Object> value,
-					boolean mandatory) {
-				this();
-				this.mandatory = mandatory;
-				setVariable(variable);
-				setValue(value);
-			}*/
+			/*
+			 * public FIBCustomAssignmentImpl(FIBCustomColumn customColumn,
+			 * DataBinding<Object> variable, DataBinding<Object> value, boolean
+			 * mandatory) { this(); this.mandatory = mandatory;
+			 * setVariable(variable); setValue(value); }
+			 */
 
 			@Override
 			public boolean isMandatory() {
@@ -549,13 +551,13 @@ public interface FIBCustom extends FIBWidget {
 			@Override
 			public void setValue(DataBinding<?> value) {
 				if (value != null) {
-					value.setOwner(getOwner()); // Warning, still null while deserializing
+					value.setOwner(getOwner()); // Warning, still null while
+												// deserializing
 					value.setDeclaredType(Object.class);
 					value.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 					value.setBindingName("value");
 					this.value = value;
-				}
-				else {
+				} else {
 					getValue();
 				}
 			}
