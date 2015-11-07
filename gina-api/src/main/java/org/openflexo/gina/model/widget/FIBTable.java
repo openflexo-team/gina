@@ -307,8 +307,7 @@ public interface FIBTable extends FIBWidget {
 		@Deprecated
 		public BindingDefinition getSelectedBindingDefinition() {
 			if (SELECTED == null) {
-				SELECTED = new BindingDefinition("selected", getIteratorType(),
-						DataBinding.BindingDefinitionType.GET_SET, false);
+				SELECTED = new BindingDefinition("selected", getIteratorType(), DataBinding.BindingDefinitionType.GET_SET, false);
 			}
 			return SELECTED;
 		}
@@ -342,6 +341,11 @@ public interface FIBTable extends FIBWidget {
 		 * public FIBTableImpl() { columns = new ArrayList<FIBTableColumn>();
 		 * actions = new ArrayList<FIBTableAction>(); }
 		 */
+
+		@Override
+		protected FIBTableType makeComponentType() {
+			return new FIBTableType(this);
+		}
 
 		@Override
 		public String getBaseName() {
@@ -565,10 +569,8 @@ public interface FIBTable extends FIBWidget {
 					Type accessedType = getData().getAnalyzedType();
 					if (accessedType instanceof ParameterizedType
 							&& ((ParameterizedType) accessedType).getActualTypeArguments().length > 0) {
-						Class newIteratorClass = TypeUtils.getBaseClass(((ParameterizedType) accessedType)
-								.getActualTypeArguments()[0]);
-						if (getIteratorClass() == null
-								|| !TypeUtils.isClassAncestorOf(newIteratorClass, getIteratorClass())) {
+						Class newIteratorClass = TypeUtils.getBaseClass(((ParameterizedType) accessedType).getActualTypeArguments()[0]);
+						if (getIteratorClass() == null || !TypeUtils.isClassAncestorOf(newIteratorClass, getIteratorClass())) {
 							setIteratorClass(newIteratorClass);
 						}
 					}
@@ -636,8 +638,7 @@ public interface FIBTable extends FIBWidget {
 
 		@Override
 		public void setCreateNewRowOnClick(boolean createNewRowOnClick) {
-			FIBPropertyNotification<Boolean> notification = requireChange(CREATE_NEW_ROW_ON_CLICK_KEY,
-					createNewRowOnClick);
+			FIBPropertyNotification<Boolean> notification = requireChange(CREATE_NEW_ROW_ON_CLICK_KEY, createNewRowOnClick);
 			if (notification != null) {
 				this.createNewRowOnClick = createNewRowOnClick;
 				hasChanged(notification);
@@ -665,8 +666,7 @@ public interface FIBTable extends FIBWidget {
 
 		@Override
 		public void setBoundToSelectionManager(boolean boundToSelectionManager) {
-			FIBPropertyNotification<Boolean> notification = requireChange(BOUND_TO_SELECTION_MANAGER_KEY,
-					boundToSelectionManager);
+			FIBPropertyNotification<Boolean> notification = requireChange(BOUND_TO_SELECTION_MANAGER_KEY, boundToSelectionManager);
 			if (notification != null) {
 				this.boundToSelectionManager = boundToSelectionManager;
 				hasChanged(notification);
@@ -925,8 +925,7 @@ public interface FIBTable extends FIBWidget {
 
 		@Override
 		public void setTextNonSelectionColor(Color textNonSelectionColor) {
-			FIBPropertyNotification<Color> notification = requireChange(TEXT_NON_SELECTION_COLOR_KEY,
-					textNonSelectionColor);
+			FIBPropertyNotification<Color> notification = requireChange(TEXT_NON_SELECTION_COLOR_KEY, textNonSelectionColor);
 			if (notification != null) {
 				this.textNonSelectionColor = textNonSelectionColor;
 				hasChanged(notification);
@@ -943,8 +942,7 @@ public interface FIBTable extends FIBWidget {
 
 		@Override
 		public void setBackgroundSelectionColor(Color backgroundSelectionColor) {
-			FIBPropertyNotification<Color> notification = requireChange(BACKGROUND_SELECTION_COLOR_KEY,
-					backgroundSelectionColor);
+			FIBPropertyNotification<Color> notification = requireChange(BACKGROUND_SELECTION_COLOR_KEY, backgroundSelectionColor);
 			if (notification != null) {
 				this.backgroundSelectionColor = backgroundSelectionColor;
 				hasChanged(notification);
@@ -979,8 +977,7 @@ public interface FIBTable extends FIBWidget {
 
 		@Override
 		public void setBackgroundNonSelectionColor(Color backgroundNonSelectionColor) {
-			FIBPropertyNotification<Color> notification = requireChange(BACKGROUND_NON_SELECTION_COLOR_KEY,
-					backgroundNonSelectionColor);
+			FIBPropertyNotification<Color> notification = requireChange(BACKGROUND_NON_SELECTION_COLOR_KEY, backgroundNonSelectionColor);
 			if (notification != null) {
 				this.backgroundNonSelectionColor = backgroundNonSelectionColor;
 				hasChanged(notification);
@@ -988,8 +985,7 @@ public interface FIBTable extends FIBWidget {
 		}
 
 		/**
-		 * Return a list of all bindings declared in the context of this
-		 * component
+		 * Return a list of all bindings declared in the context of this component
 		 * 
 		 * @return
 		 */

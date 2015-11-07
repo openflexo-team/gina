@@ -59,19 +59,19 @@ import org.openflexo.fib.sampleData.Person;
 import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.container.BorderLayoutConstraints;
-import org.openflexo.gina.model.container.FIBPanel;
-import org.openflexo.gina.model.container.TwoColsLayoutConstraints;
 import org.openflexo.gina.model.container.BorderLayoutConstraints.BorderLayoutLocation;
+import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
+import org.openflexo.gina.model.container.TwoColsLayoutConstraints;
 import org.openflexo.gina.model.container.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.gina.model.widget.FIBDropDownColumn;
 import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.gina.model.widget.FIBLabelColumn;
+import org.openflexo.gina.model.widget.FIBNumber.NumberType;
 import org.openflexo.gina.model.widget.FIBNumberColumn;
 import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTextField;
 import org.openflexo.gina.model.widget.FIBTextFieldColumn;
-import org.openflexo.gina.model.widget.FIBNumber.NumberType;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.gina.swing.view.widget.JFIBTableWidget;
 import org.openflexo.localization.FlexoLocalization;
@@ -165,6 +165,11 @@ public class FIBTableWidgetSelectionTest extends FIBTestCase {
 		component.addToSubComponents(detailsPanel, new BorderLayoutConstraints(BorderLayoutLocation.center));
 
 		assertTrue(table.getData().isValid());
+
+		System.out.println("firstNameTF.getData()=" + firstNameTF.getData());
+		System.out.println("firstNameTF.getData().isValid()=" + firstNameTF.getData().isValid());
+		System.out.println("firstNameTF.getData().invalidBindingReason()=" + firstNameTF.getData().invalidBindingReason());
+
 		assertTrue(firstNameTF.getData().isValid());
 		assertTrue(lastNameTF.getData().isValid());
 		assertTrue(fullNameTF.getData().isValid());

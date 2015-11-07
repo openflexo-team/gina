@@ -85,13 +85,11 @@ import org.openflexo.toolbox.ToolBox;
  * 
  * @author sylvain
  */
-public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBViewImpl<M, C> implements
-		FIBWidgetView<M, C, T> {
+public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBViewImpl<M, C>implements FIBWidgetView<M, C, T> {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBWidgetViewImpl.class.getPackage().getName());
 
-	public static final int META_MASK = ToolBox.getPLATFORM() == ToolBox.MACOS ? InputEvent.META_MASK
-			: InputEvent.CTRL_MASK;
+	public static final int META_MASK = ToolBox.getPLATFORM() == ToolBox.MACOS ? InputEvent.META_MASK : InputEvent.CTRL_MASK;
 
 	public static final String ENABLED = "enabled";
 
@@ -136,8 +134,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 		technologyComponent = makeTechnologyComponent();
 
-		GENotifier = new GinaEventNotifier<FIBEventDescription>(this.getController().getEventManager(),
-				this.getController()) {
+		GENotifier = new GinaEventNotifier<FIBEventDescription>(this.getController().getEventManager(), this.getController()) {
 
 			@Override
 			public KIND computeClass(FIBEventDescription e) {
@@ -168,10 +165,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 	/**
 	 * Return technology-specific component representing widget<br>
-	 * Note that, depending on the underlying technology, this
-	 * technology-specific component might be embedded in an other component
-	 * before to be added in component hierarchy (for example if component need
-	 * to be embedded in a scroll pane)
+	 * Note that, depending on the underlying technology, this technology-specific component might be embedded in an other component before
+	 * to be added in component hierarchy (for example if component need to be embedded in a scroll pane)
 	 * 
 	 * @return C
 	 */
@@ -182,8 +177,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 	/**
 	 * Return technology component for supplied {@link FIBComponent}<br>
-	 * Return technology component if supplied {@link FIBComponent} is the
-	 * represented widget itself, otherwise return null
+	 * Return technology component if supplied {@link FIBComponent} is the represented widget itself, otherwise return null
 	 * 
 	 * @param component
 	 * @return
@@ -203,8 +197,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		}
 
 		if (getComponent().getData() != null && getComponent().getData().isValid()) {
-			dataBindingValueChangeListener = new BindingValueChangeListener<T>((DataBinding<T>) getComponent()
-					.getData(), getBindingEvaluationContext()) {
+			dataBindingValueChangeListener = new BindingValueChangeListener<T>((DataBinding<T>) getComponent().getData(),
+					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
 					// System.out.println(" bindingValueChanged() detected for data="
@@ -257,7 +251,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 					|| getComponent().getDataClass().isAssignableFrom(data.getClass())) {
 				this.data = data;
 				getPropertyChangeSupport().firePropertyChange(DATA, oldData, data);
-			} else {
+			}
+			else {
 				if ((getComponent().getDataType() == null)
 						|| TypeUtils.isTypeAssignableFrom(getComponent().getDataType(), data.getClass(), true)) {
 					// System.out.println("OK, data " + data + " of " +
@@ -375,16 +370,13 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	@Override
 	public void updateData() {
 		setData(getValue());
-		System.out.println("hop, data=" + getData() + " value=" + getValue());
 		if (!widgetUpdating && !isDeleted() && getTechnologyComponent() != null && isComponentVisible()) {
 			updateWidgetFromModel();
 		}
-		System.out.println("rehop, data=" + getData() + " value=" + getValue());
 	}
 
 	/**
-	 * Update the widget retrieving data from the model. This method is called
-	 * when the observed property change.
+	 * Update the widget retrieving data from the model. This method is called when the observed property change.
 	 * 
 	 * @return boolean indicating if changes were required or not
 	 */
@@ -422,10 +414,10 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			LOGGER.fine("focusLost()");
 		}
 
-		if (event.getOppositeComponent() != null
-				&& SwingUtilities.isDescendingFrom(event.getOppositeComponent(), getJComponent())) {
+		if (event.getOppositeComponent() != null && SwingUtilities.isDescendingFrom(event.getOppositeComponent(), getJComponent())) {
 			// Not relevant in this case
-		} else {
+		}
+		else {
 			looseFocus();
 		}
 	}
@@ -539,16 +531,13 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			try {
 				aValue = (T) getWidget().getValueTransform().getBindingValue(getValueBindingContext(aValue));
 			} catch (TypeMismatchException e) {
-				LOGGER.warning("Unexpected TypeMismatchException while evaluating " + getWidget().getValueTransform()
-						+ e.getMessage());
+				LOGGER.warning("Unexpected TypeMismatchException while evaluating " + getWidget().getValueTransform() + e.getMessage());
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				LOGGER.warning("Unexpected NullReferenceException while evaluating " + getWidget().getValueTransform()
-						+ e.getMessage());
+				LOGGER.warning("Unexpected NullReferenceException while evaluating " + getWidget().getValueTransform() + e.getMessage());
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				LOGGER.warning("Unexpected InvocationTargetException while evaluating "
-						+ getWidget().getValueTransform() + e.getMessage());
+				LOGGER.warning("Unexpected InvocationTargetException while evaluating " + getWidget().getValueTransform() + e.getMessage());
 				e.printStackTrace();
 			}
 			if (!equals(old, aValue)) {
@@ -567,21 +556,19 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			try {
 				object = getWidget().getValueValidator().getBindingValue(getValueBindingContext(aValue));
 			} catch (TypeMismatchException e) {
-				LOGGER.warning("Unexpected TypeMismatchException while evaluating " + getWidget().getValueValidator()
-						+ e.getMessage());
+				LOGGER.warning("Unexpected TypeMismatchException while evaluating " + getWidget().getValueValidator() + e.getMessage());
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				LOGGER.warning("Unexpected NullReferenceException while evaluating " + getWidget().getValueValidator()
-						+ e.getMessage());
+				LOGGER.warning("Unexpected NullReferenceException while evaluating " + getWidget().getValueValidator() + e.getMessage());
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				LOGGER.warning("Unexpected InvocationTargetException while evaluating "
-						+ getWidget().getValueValidator() + e.getMessage());
+				LOGGER.warning("Unexpected InvocationTargetException while evaluating " + getWidget().getValueValidator() + e.getMessage());
 				e.printStackTrace();
 			}
 			if (object == null) {
 				isValid = false;
-			} else if (object instanceof Boolean) {
+			}
+			else if (object instanceof Boolean) {
 				isValid = (Boolean) object;
 			}
 		}
@@ -598,7 +585,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		setData(aValue);
 
 		if (getWidget().getData() == null || getWidget().getData().isUnset()) {
-		} else {
+		}
+		else {
 			if (getDataObject() == null) {
 				return;
 			}
@@ -607,8 +595,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				LOGGER.warning("Unexpected " + e + " cannot setValue() with " + getWidget().getData() + " and value "
-						+ aValue + " message=" + e.getMessage());
+				LOGGER.warning("Unexpected " + e + " cannot setValue() with " + getWidget().getData() + " and value " + aValue + " message="
+						+ e.getMessage());
 				// e.printStackTrace();
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
@@ -676,8 +664,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		// System.out.println("Widget " + getWidget() + " : propertyChange " +
 		// evt);
 		if (evt.getSource() instanceof FIBModelObject && (!((FIBModelObject) evt.getSource()).isDeleted())) {
-			receivedModelNotifications((FIBModelObject) evt.getSource(), evt.getPropertyName(), evt.getOldValue(),
-					evt.getNewValue());
+			receivedModelNotifications((FIBModelObject) evt.getSource(), evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
 		}
 		/*
 		 * if (!SwingUtilities.isEventDispatchThread()) {
@@ -745,13 +732,11 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 	/**
 	 * This method is called to update view representing a FIBComponent.<br>
-	 * Callers are all the components that have been updated during current
-	 * update loop. If the callers contains the component itself, does nothing
-	 * and return.
+	 * Callers are all the components that have been updated during current update loop. If the callers contains the component itself, does
+	 * nothing and return.
 	 * 
 	 * @param callers
-	 *            all the components that have been previously updated during
-	 *            current update loop
+	 *            all the components that have been previously updated during current update loop
 	 * @return a flag indicating if component has been updated
 	 */
 	/*
@@ -791,7 +776,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 				if (v.isComponentVisible()) {
 					v.update();
 				}
-			} else {
+			}
+			else {
 				LOGGER.warning("Cannot find FIBViewImpl for component " + c);
 			}
 		}
@@ -830,8 +816,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	}
 
 	/**
-	 * Return the effective base component to be added to swing hierarchy This
-	 * component may be encapsulated in a JScrollPane
+	 * Return the effective base component to be added to swing hierarchy This component may be encapsulated in a JScrollPane
 	 * 
 	 * @return JComponent
 	 */
@@ -914,7 +899,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			}
 			if (getWidget().getLocalize() && returned != null) {
 				return getLocalized(returned);
-			} else {
+			}
+			else {
 				return returned;
 			}
 		}
@@ -922,7 +908,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			String returned = value != null ? ((Enum<?>) value).name() : null;
 			if (getWidget().getLocalize() && returned != null) {
 				return getLocalized(returned);
-			} else {
+			}
+			else {
 				return returned;
 			}
 		}
@@ -955,12 +942,10 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	}
 
 	/**
-	 * Called after the platform-specific controller has detected a mouse event
-	 * matching a single-click action<br>
+	 * Called after the platform-specific controller has detected a mouse event matching a single-click action<br>
 	 * 
 	 * @param event
-	 *            platform-specific event which is translated into a generic
-	 *            FIBMouseEvent
+	 *            platform-specific event which is translated into a generic FIBMouseEvent
 	 */
 	@Override
 	public void applySingleClickAction(FIBMouseEvent event) {
@@ -977,12 +962,10 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	}
 
 	/**
-	 * Called after the platform-specific controller has detected a mouse event
-	 * matching a double-click action<br>
+	 * Called after the platform-specific controller has detected a mouse event matching a double-click action<br>
 	 * 
 	 * @param event
-	 *            platform-specific event which is translated into a generic
-	 *            FIBMouseEvent
+	 *            platform-specific event which is translated into a generic FIBMouseEvent
 	 */
 	@Override
 	public void applyDoubleClickAction(FIBMouseEvent event) {
@@ -999,12 +982,10 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	}
 
 	/**
-	 * Called after the platform-specific controller has detected a mouse event
-	 * matching a right-click action<br>
+	 * Called after the platform-specific controller has detected a mouse event matching a right-click action<br>
 	 * 
 	 * @param event
-	 *            platform-specific event which is translated into a generic
-	 *            FIBMouseEvent
+	 *            platform-specific event which is translated into a generic FIBMouseEvent
 	 */
 	@Override
 	public void applyRightClickAction(FIBMouseEvent event) {
@@ -1045,8 +1026,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 	/**
 	 * Called when a widget becomes visible<br>
-	 * There is no guarantee that widget is in sync with the model, so, we need
-	 * to call updateWidgetFromModel again
+	 * There is no guarantee that widget is in sync with the model, so, we need to call updateWidgetFromModel again
 	 */
 	@Override
 	protected void hiddenComponentBecomesVisible() {
@@ -1063,7 +1043,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 				enableComponent(getJComponent());
 				setEnabled(true);
 			}
-		} else {
+		}
+		else {
 			if (enabled) {
 				// Becomes disabled
 				LOGGER.fine("Component becomes disabled");
@@ -1106,8 +1087,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		}
 	}
 
-	public abstract class FIBDynamicBindingEvaluationContext implements BindingEvaluationContext,
-			HasPropertyChangeSupport {
+	public abstract class FIBDynamicBindingEvaluationContext implements BindingEvaluationContext, HasPropertyChangeSupport {
 		private final PropertyChangeSupport pcSupport;
 
 		public FIBDynamicBindingEvaluationContext() {
@@ -1140,7 +1120,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		public Object getValue(BindingVariable variable) {
 			if (variable.getVariableName().equals(VALUE)) {
 				return value;
-			} else {
+			}
+			else {
 				return getBindingEvaluationContext().getValue(variable);
 			}
 		}
@@ -1160,7 +1141,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		public Object getValue(BindingVariable variable) {
 			if (variable.getVariableName().equals(OBJECT)) {
 				return value;
-			} else {
+			}
+			else {
 				return getBindingEvaluationContext().getValue(variable);
 			}
 		}
@@ -1180,19 +1162,18 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		public Object getValue(BindingVariable variable) {
 			if (variable.getVariableName().equals(EVENT)) {
 				return mouseEvent;
-			} else {
+			}
+			else {
 				return getBindingEvaluationContext().getValue(variable);
 			}
 		}
 	}
 
 	/**
-	 * Semantics of this method is not trivial: the goal is to aggregate some
-	 * notifications within a given time (supplied as a aggregationTimeOut), to
-	 * do it only once.<br>
-	 * Within this delay, all requests to this method will simply reinitialize
-	 * time-out, and will be ignored. Only the first call will be executed in a
-	 * new thread which will die immediately after.
+	 * Semantics of this method is not trivial: the goal is to aggregate some notifications within a given time (supplied as a
+	 * aggregationTimeOut), to do it only once.<br>
+	 * Within this delay, all requests to this method will simply reinitialize time-out, and will be ignored. Only the first call will be
+	 * executed in a new thread which will die immediately after.
 	 * 
 	 * @param r
 	 *            runnable to run after last request + timeout
@@ -1224,7 +1205,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 					}
 				}, "InvokeLaterThread");
 				invokeLaterThread.start();
-			} else {
+			}
+			else {
 				LOGGER.fine("Ignoring invokeLater");
 			}
 		}

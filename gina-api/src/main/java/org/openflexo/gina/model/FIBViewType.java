@@ -39,8 +39,12 @@
 package org.openflexo.gina.model;
 
 import java.lang.reflect.Type;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.type.CustomType;
 import org.openflexo.connie.type.CustomTypeFactory;
 import org.openflexo.logging.FlexoLogger;
@@ -51,17 +55,17 @@ import org.openflexo.logging.FlexoLogger;
  * @author sylvain
  * 
  */
-public class FIBComponentType implements CustomType {
+public class FIBViewType<F extends FIBComponent> implements CustomType {
 
-	protected final FIBComponent fibComponent;
+	protected final F fibComponent;
 
-	protected static final Logger logger = FlexoLogger.getLogger(FIBComponentType.class.getPackage().getName());
+	protected static final Logger logger = FlexoLogger.getLogger(FIBViewType.class.getPackage().getName());
 
-	public FIBComponentType(FIBComponent aFIBComponent) {
+	public FIBViewType(F aFIBComponent) {
 		this.fibComponent = aFIBComponent;
 	}
 
-	public FIBComponent getFIBComponent() {
+	public F getFIBComponent() {
 		return fibComponent;
 	}
 
@@ -75,8 +79,8 @@ public class FIBComponentType implements CustomType {
 
 	@Override
 	public boolean isTypeAssignableFrom(Type aType, boolean permissive) {
-		if (aType instanceof FIBComponentType) {
-			return getFIBComponent() == null || getFIBComponent() == ((FIBComponentType) aType).getFIBComponent();
+		if (aType instanceof FIBViewType) {
+			return getFIBComponent() == null || getFIBComponent() == ((FIBViewType) aType).getFIBComponent();
 		}
 		return false;
 	}
@@ -84,9 +88,9 @@ public class FIBComponentType implements CustomType {
 	@Override
 	public String simpleRepresentation() {
 		if (fibComponent != null) {
-			return fibComponent.getName();
+			return "FIBViewType<" + fibComponent.getName() + ">";
 		}
-		return "FIBComponent";
+		return "FIBViewType<>";
 	}
 
 	@Override
@@ -131,7 +135,7 @@ public class FIBComponentType implements CustomType {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		FIBComponentType other = (FIBComponentType) obj;
+		FIBViewType other = (FIBViewType) obj;
 		if (fibComponent == null) {
 			if (other.fibComponent != null)
 				return false;
@@ -142,4 +146,7 @@ public class FIBComponentType implements CustomType {
 		return true;
 	}
 
+	public List<? extends SimplePathElement> getAccessibleSimplePathElements(BindingPathElement parent) {
+		return Collections.EMPTY_LIST;
+	}
 }

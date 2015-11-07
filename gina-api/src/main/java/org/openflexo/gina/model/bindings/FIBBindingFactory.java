@@ -50,8 +50,8 @@ import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.java.JavaBindingFactory;
 import org.openflexo.gina.model.FIBComponent;
-import org.openflexo.gina.model.FIBComponentType;
 import org.openflexo.gina.model.FIBVariable;
+import org.openflexo.gina.model.FIBViewType;
 
 public class FIBBindingFactory extends JavaBindingFactory {
 
@@ -87,15 +87,18 @@ public class FIBBindingFactory extends JavaBindingFactory {
 		if (parent != null) {
 			Type pType = parent.getType();
 
-			if (pType instanceof FIBComponentType) {
+			if (pType instanceof FIBViewType) {
 				List<SimplePathElement> returned = new ArrayList<SimplePathElement>();
-				FIBComponent concept = ((FIBComponentType) pType).getFIBComponent();
+				FIBComponent concept = ((FIBViewType) pType).getFIBComponent();
 
 				if (concept != null) {
-					for (FIBVariable<?> pr : concept.getVariables()) {
-						returned.add(getSimplePathElement(pr, parent));
+					for (FIBVariable<?> variable : concept.getVariables()) {
+						returned.add(getSimplePathElement(variable, parent));
 					}
 				}
+
+				returned.addAll(((FIBViewType) pType).getAccessibleSimplePathElements(parent));
+
 				return returned;
 			}
 
@@ -121,9 +124,9 @@ public class FIBBindingFactory extends JavaBindingFactory {
 			}
 		}
 		// We cannot find a simple path element at this level, retrieve from java
-		if (returned == null) {
+		/*if (returned == null) {
 			returned = super.makeSimplePathElement(parent, propertyName);
-		}
+		}*/
 
 		return returned;
 	}

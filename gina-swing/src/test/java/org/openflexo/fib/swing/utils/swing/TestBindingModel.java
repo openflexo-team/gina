@@ -59,7 +59,7 @@ import org.openflexo.fib.sampleData.Person;
 import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
-import org.openflexo.gina.model.FIBComponentType;
+import org.openflexo.gina.model.FIBViewType;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.model.container.TwoColsLayoutConstraints;
@@ -284,7 +284,7 @@ public class TestBindingModel extends FIBTestCase {
 		assertNotNull(panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
 		assertSame(panel2.getDynamicAccessBindingVariable(),
 				panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
-		assertTrue(panel2.getDynamicAccessBindingVariable().getType() instanceof FIBComponentType);
+		assertTrue(panel2.getDynamicAccessBindingVariable().getType() instanceof FIBViewType);
 		// assertEquals(Object.class, ((ParameterizedType)
 		// panel2.getDynamicAccessBindingVariable().getType()).getActualTypeArguments()[1]);
 
