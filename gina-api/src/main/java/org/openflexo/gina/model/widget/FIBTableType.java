@@ -38,19 +38,22 @@
 
 package org.openflexo.gina.model.widget;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.BindingEvaluationContext;
+import org.openflexo.connie.exception.NullReferenceException;
+import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.gina.model.FIBWidgetType;
-import org.openflexo.gina.model.bindings.TableSelectedPathElement;
-import org.openflexo.gina.model.bindings.WidgetPathElement;
 import org.openflexo.gina.view.widget.FIBTableWidget;
 import org.openflexo.logging.FlexoLogger;
 
 /**
  * Represent the type of a {@link FIBTableWidget} representing a given {@link FIBTable}<br>
- * Extends base {@link FIBWidgetType} by exposing "selected" dynamic property
+ * Extends base {@link FIBWidgetType} by exposing "selected","selectedIndex" and "selection" dynamic properties
  * 
  * @author sylvain
  * 
@@ -58,6 +61,121 @@ import org.openflexo.logging.FlexoLogger;
 public class FIBTableType extends FIBWidgetType<FIBTable> {
 
 	protected static final Logger logger = FlexoLogger.getLogger(FIBTableType.class.getPackage().getName());
+
+	public final DynamicProperty SELECTED = new DynamicProperty() {
+		@Override
+		public String getName() {
+			return "selected";
+		}
+
+		@Override
+		public Type getType() {
+			return getFIBComponent().getIteratorClass();
+		}
+
+		@Override
+		public String getTooltip() {
+			return "value_being_currently_selected_in_browser";
+		}
+
+		@Override
+		public Object getBindingValue(Object target, BindingEvaluationContext context)
+				throws TypeMismatchException, NullReferenceException {
+			if (target instanceof FIBTableWidget) {
+				return ((FIBTableWidget<?, ?>) target).getSelected();
+			}
+			logger.warning("Unexpected target=" + target + " context=" + context);
+			return null;
+		}
+
+		@Override
+		public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+				throws TypeMismatchException, NullReferenceException {
+			if (target instanceof FIBTableWidget) {
+				((FIBTableWidget) target).performSelect(value);
+				return;
+			}
+			logger.warning("Unexpected target=" + target + " context=" + context);
+		}
+
+	};
+
+	public final DynamicProperty SELECTED_INDEX = new DynamicProperty() {
+		@Override
+		public String getName() {
+			return "selectedIndex";
+		}
+
+		@Override
+		public Type getType() {
+			return Integer.TYPE;
+		}
+
+		@Override
+		public String getTooltip() {
+			return "index_of_value_being_currently_selected_in_browser";
+		}
+
+		@Override
+		public Object getBindingValue(Object target, BindingEvaluationContext context)
+				throws TypeMismatchException, NullReferenceException {
+			if (target instanceof FIBTableWidget) {
+				return ((FIBTableWidget<?, ?>) target).getSelected();
+			}
+			logger.warning("Unexpected target=" + target + " context=" + context);
+			return null;
+		}
+
+		@Override
+		public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+				throws TypeMismatchException, NullReferenceException {
+			if (target instanceof FIBTableWidget) {
+				((FIBTableWidget) target).performSelect(value);
+				return;
+			}
+			logger.warning("Unexpected target=" + target + " context=" + context);
+		}
+
+	};
+
+	public final DynamicProperty SELECTION = new DynamicProperty() {
+		@Override
+		public String getName() {
+			return "selection";
+		}
+
+		@Override
+		public Type getType() {
+			return new ParameterizedTypeImpl(List.class, getFIBComponent().getIteratorClass());
+		}
+
+		@Override
+		public String getTooltip() {
+			return "list_of_values_being_currently_selected_in_table";
+		}
+
+		@Override
+		public Object getBindingValue(Object target, BindingEvaluationContext context)
+				throws TypeMismatchException, NullReferenceException {
+			if (target instanceof FIBTableWidget) {
+				return ((FIBTableWidget<?, ?>) target).getSelection();
+			}
+			logger.warning("Unexpected target=" + target + " context=" + context);
+			return null;
+		}
+
+		@Override
+		public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+				throws TypeMismatchException, NullReferenceException {
+			if (target instanceof FIBTableWidget) {
+				logger.warning("setSelection() not implemented !!!!!");
+				// ((FIBTableWidget) target).performSelect(value);
+				return;
+			}
+			logger.warning("Unexpected target=" + target + " context=" + context);
+		}
+
+	};
 
 	public FIBTableType(FIBTable aWidget) {
 		super(aWidget);
@@ -69,20 +187,14 @@ public class FIBTableType extends FIBWidgetType<FIBTable> {
 	}
 
 	@Override
-	public List<WidgetPathElement<? super FIBTable>> getAccessibleSimplePathElements(BindingPathElement parent) {
+	public List<DynamicProperty> getDynamicProperties() {
 
-		if (parent != null && parent.getType() instanceof FIBTableType) {
-
-			List<WidgetPathElement<? super FIBTable>> returned = pathElements.get(parent);
-			if (returned == null) {
-				returned = super.getAccessibleSimplePathElements(parent);
-				returned.add(new TableSelectedPathElement(parent, getFIBComponent()));
-				pathElements.put(parent, returned);
-			}
-			return returned;
-		}
-
-		return super.getAccessibleSimplePathElements(parent);
+		List<DynamicProperty> returned = new ArrayList<DynamicProperty>();
+		returned.addAll(super.getDynamicProperties());
+		returned.add(SELECTED);
+		returned.add(SELECTED_INDEX);
+		returned.add(SELECTION);
+		return returned;
 	}
 
 }

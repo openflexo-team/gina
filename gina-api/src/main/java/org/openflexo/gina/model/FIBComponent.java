@@ -60,6 +60,7 @@ import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.manager.HasBaseIdentifier;
+import org.openflexo.gina.model.FIBViewType.DynamicProperty;
 import org.openflexo.gina.model.container.BorderLayoutConstraints;
 import org.openflexo.gina.model.container.BoxLayoutConstraints;
 import org.openflexo.gina.model.container.ButtonLayoutConstraints;
@@ -540,7 +541,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	@Finder(collection = VARIABLES_KEY, attribute = FIBVariable.NAME_KEY)
 	public FIBVariable<?> getVariable(String variableName);
 
-	public FIBViewType getComponentType();
+	public FIBViewType getViewType();
 
 	public static abstract class FIBComponentImpl extends FIBModelObjectImpl implements FIBComponent {
 
@@ -602,7 +603,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		protected BindingVariable controllerBindingVariable;
 		protected BindingVariable dynamicAccessBindingVariable;
 
-		private FIBViewType componentType;
+		private FIBViewType<?> componentType;
 
 		public FIBComponentImpl() {
 			super();
@@ -612,14 +613,14 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		}
 
 		@Override
-		public FIBViewType getComponentType() {
+		public FIBViewType<?> getViewType() {
 			if (componentType == null) {
-				componentType = makeComponentType();
+				componentType = makeViewType();
 			}
 			return componentType;
 		}
 
-		protected FIBViewType<?> makeComponentType() {
+		protected FIBViewType<?> makeViewType() {
 			return new FIBViewType(this);
 		}
 
@@ -1043,8 +1044,15 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		private void createBindingModel() {
 
 			bindingModel = new BindingModel();
+
+			// Declare first all the variable of this component
 			for (FIBVariable<?> v : getVariables()) {
 				v.appendToBindingModel(bindingModel);
+			}
+
+			// Also add dynamic properties
+			for (DynamicProperty p : getViewType().getDynamicProperties()) {
+				p.appendToBindingModel(bindingModel);
 			}
 
 			// getDataBindingVariable();
@@ -1323,7 +1331,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		@Override
 		public final Type getDynamicAccessType() {
-			return getComponentType();
+			return getViewType();
 			/*
 			 * Type[] args = new Type[2]; args[0] = new
 			 * WilcardTypeImpl(getClass()); args[1] = new

@@ -304,7 +304,7 @@ public interface FIBBrowser extends FIBWidget {
 		}
 
 		@Override
-		protected FIBBrowserType makeComponentType() {
+		protected FIBBrowserType makeViewType() {
 			return new FIBBrowserType(this);
 		}
 
@@ -411,7 +411,7 @@ public interface FIBBrowser extends FIBWidget {
 
 		@Override
 		public Type getDefaultDataType() {
-			return Object.class;
+			return getIteratorClass();
 		}
 
 		/*

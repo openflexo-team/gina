@@ -319,7 +319,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		}
 
 		@Override
-		protected FIBWidgetType<?> makeComponentType() {
+		protected FIBWidgetType<?> makeViewType() {
 			return new FIBWidgetType(this);
 		}
 

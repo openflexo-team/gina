@@ -338,7 +338,7 @@ public interface FIBTable extends FIBWidget {
 		private Color backgroundNonSelectionColor;
 
 		@Override
-		protected FIBTableType makeComponentType() {
+		protected FIBTableType makeViewType() {
 			return new FIBTableType(this);
 		}
 

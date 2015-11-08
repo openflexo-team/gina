@@ -43,12 +43,16 @@ import java.beans.PropertyChangeListener;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
+import org.openflexo.connie.exception.InvocationTargetTransformException;
+import org.openflexo.connie.exception.NullReferenceException;
+import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.gina.model.FIBViewType.DynamicProperty;
 import org.openflexo.gina.model.FIBWidget;
 import org.openflexo.gina.model.FIBWidgetType;
-import org.openflexo.localization.FlexoLocalization;
 
 /**
  * Abstract BindingPathElement representing a widget dynamic property<br>
@@ -62,31 +66,27 @@ import org.openflexo.localization.FlexoLocalization;
  * @author sylvain
  *
  */
-public abstract class WidgetPathElement<W extends FIBWidget> extends SimplePathElement implements PropertyChangeListener {
+public class DynamicPropertyPathElement<W extends FIBWidget> extends SimplePathElement implements PropertyChangeListener {
 
-	private static final Logger logger = Logger.getLogger(WidgetPathElement.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(DynamicPropertyPathElement.class.getPackage().getName());
 
 	private Type lastKnownType = null;
 	private final W widget;
+	private final DynamicProperty dynamicProperty;
 
-	public WidgetPathElement(BindingPathElement parent, W widget) {
+	public DynamicPropertyPathElement(BindingPathElement parent, W widget, DynamicProperty dynamicProperty) {
 		super(parent, "", Object.class);
+		this.dynamicProperty = dynamicProperty;
 		this.widget = widget;
-		if (widget != null) {
-			setPropertyName(getDynamicPropertyName(widget));
-			setType(getDynamicPropertyType(widget));
+		if (dynamicProperty != null) {
+			setPropertyName(dynamicProperty.getName());
+			setType(dynamicProperty.getType());
 			lastKnownType = getType();
 		}
 		if (widget != null && widget.getPropertyChangeSupport() != null) {
 			widget.getPropertyChangeSupport().addPropertyChangeListener(this);
 		}
 	}
-
-	protected abstract String getDynamicPropertyName(W widget);
-
-	protected abstract Type getDynamicPropertyType(W widget);
-
-	protected abstract String getDynamicPropertyTooltip(W widget);
 
 	@Override
 	public void delete() {
@@ -102,17 +102,17 @@ public abstract class WidgetPathElement<W extends FIBWidget> extends SimplePathE
 
 	@Override
 	public String getLabel() {
-		return getDynamicPropertyName(widget);
+		return dynamicProperty.getName();
 	}
 
 	@Override
 	public Type getType() {
-		return getDynamicPropertyType(widget);
+		return dynamicProperty.getType();
 	}
 
 	@Override
 	public String getTooltipText(Type resultingType) {
-		return FlexoLocalization.localizedForKey(getDynamicPropertyTooltip(widget));
+		return dynamicProperty.getTooltip();
 	}
 
 	@Override
@@ -135,6 +135,18 @@ public abstract class WidgetPathElement<W extends FIBWidget> extends SimplePathE
 					lastKnownType, getType());
 			lastKnownType = getType();
 		}
+	}
+
+	@Override
+	public Object getBindingValue(Object target, BindingEvaluationContext context)
+			throws TypeMismatchException, NullReferenceException, InvocationTargetTransformException {
+		return dynamicProperty.getBindingValue(target, context);
+	}
+
+	@Override
+	public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+			throws TypeMismatchException, NullReferenceException {
+		dynamicProperty.setBindingValue(value, target, context);
 	}
 
 }

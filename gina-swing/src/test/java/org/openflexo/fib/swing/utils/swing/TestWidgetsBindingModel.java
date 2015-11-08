@@ -60,19 +60,19 @@ import org.openflexo.fib.sampleData.Person;
 import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.container.BorderLayoutConstraints;
-import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.BorderLayoutConstraints.BorderLayoutLocation;
+import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBBrowserElement;
+import org.openflexo.gina.model.widget.FIBBrowserElement.FIBBrowserElementChildren;
 import org.openflexo.gina.model.widget.FIBDropDownColumn;
 import org.openflexo.gina.model.widget.FIBLabelColumn;
+import org.openflexo.gina.model.widget.FIBNumber.NumberType;
 import org.openflexo.gina.model.widget.FIBNumberColumn;
 import org.openflexo.gina.model.widget.FIBTable;
-import org.openflexo.gina.model.widget.FIBTextFieldColumn;
-import org.openflexo.gina.model.widget.FIBBrowserElement.FIBBrowserElementChildren;
-import org.openflexo.gina.model.widget.FIBNumber.NumberType;
 import org.openflexo.gina.model.widget.FIBTableAction.FIBAddAction;
+import org.openflexo.gina.model.widget.FIBTextFieldColumn;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.test.OrderedRunner;
@@ -129,13 +129,17 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 
 		// System.out.println("Browser BM = " + browser.getBindingModel());
 
-		assertEquals(3, browser.getBindingModel().getBindingVariablesCount());
+		assertEquals(5, browser.getBindingModel().getBindingVariablesCount());
 		assertNotNull(browser.getBindingModel().bindingVariableNamed("data"));
+		assertNotNull(browser.getBindingModel().bindingVariableNamed("selected"));
+		assertNotNull(browser.getBindingModel().bindingVariableNamed("selection"));
 		assertNotNull(browser.getBindingModel().bindingVariableNamed("controller"));
 		assertNotNull(browser.getBindingModel().bindingVariableNamed("browser"));
 
-		assertEquals(4, browser.getFormat().getOwner().getBindingModel().getBindingVariablesCount());
+		assertEquals(6, browser.getFormat().getOwner().getBindingModel().getBindingVariablesCount());
 		assertNotNull(browser.getFormat().getOwner().getBindingModel().bindingVariableNamed("data"));
+		assertNotNull(browser.getFormat().getOwner().getBindingModel().bindingVariableNamed("selected"));
+		assertNotNull(browser.getFormat().getOwner().getBindingModel().bindingVariableNamed("selection"));
 		assertNotNull(browser.getFormat().getOwner().getBindingModel().bindingVariableNamed("controller"));
 		assertNotNull(browser.getFormat().getOwner().getBindingModel().bindingVariableNamed("browser"));
 		assertNotNull(browser.getFormat().getOwner().getBindingModel().bindingVariableNamed("object"));
@@ -258,19 +262,28 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 		action.setMethod(new DataBinding<Object>("selected.toString"));
 		table.addToActions(action);
 
-		assertEquals(3, table.getBindingModel().getBindingVariablesCount());
+		assertEquals(6, table.getBindingModel().getBindingVariablesCount());
 		assertNotNull(table.getBindingModel().bindingVariableNamed("data"));
+		assertNotNull(table.getBindingModel().bindingVariableNamed("selected"));
+		assertNotNull(table.getBindingModel().bindingVariableNamed("selectedIndex"));
+		assertNotNull(table.getBindingModel().bindingVariableNamed("selection"));
 		assertNotNull(table.getBindingModel().bindingVariableNamed("controller"));
 		assertNotNull(table.getBindingModel().bindingVariableNamed("table"));
 
-		assertEquals(4, c1.getBindingModel().getBindingVariablesCount());
+		assertEquals(7, c1.getBindingModel().getBindingVariablesCount());
 		assertNotNull(c1.getBindingModel().bindingVariableNamed("data"));
+		assertNotNull(c1.getBindingModel().bindingVariableNamed("selected"));
+		assertNotNull(c1.getBindingModel().bindingVariableNamed("selectedIndex"));
+		assertNotNull(c1.getBindingModel().bindingVariableNamed("selection"));
 		assertNotNull(c1.getBindingModel().bindingVariableNamed("controller"));
 		assertNotNull(c1.getBindingModel().bindingVariableNamed("table"));
 		assertNotNull(c1.getBindingModel().bindingVariableNamed("iterator"));
 
-		assertEquals(4, action.getBindingModel().getBindingVariablesCount());
+		assertEquals(7, action.getBindingModel().getBindingVariablesCount());
 		assertNotNull(action.getBindingModel().bindingVariableNamed("data"));
+		assertNotNull(action.getBindingModel().bindingVariableNamed("selected"));
+		assertNotNull(action.getBindingModel().bindingVariableNamed("selectedIndex"));
+		assertNotNull(action.getBindingModel().bindingVariableNamed("selection"));
 		assertNotNull(action.getBindingModel().bindingVariableNamed("controller"));
 		assertNotNull(action.getBindingModel().bindingVariableNamed("table"));
 		assertNotNull(action.getBindingModel().bindingVariableNamed("selected"));

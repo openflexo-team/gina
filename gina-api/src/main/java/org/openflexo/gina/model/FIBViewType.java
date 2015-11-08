@@ -43,8 +43,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.BindingEvaluationContext;
+import org.openflexo.connie.BindingModel;
+import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
+import org.openflexo.connie.exception.InvocationTargetTransformException;
+import org.openflexo.connie.exception.NullReferenceException;
+import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.CustomType;
 import org.openflexo.connie.type.CustomTypeFactory;
 import org.openflexo.gina.view.FIBView;
@@ -147,5 +153,47 @@ public class FIBViewType<F extends FIBComponent> implements CustomType {
 
 	public List<? extends SimplePathElement> getAccessibleSimplePathElements(BindingPathElement parent) {
 		return Collections.emptyList();
+	}
+
+	public List<DynamicProperty> getDynamicProperties() {
+		return Collections.emptyList();
+	}
+
+	public static abstract class DynamicProperty {
+
+		public abstract String getName();
+
+		public abstract Type getType();
+
+		private BindingVariable bindingVariable;
+
+		public abstract String getTooltip();
+
+		public BindingVariable getBindingVariable() {
+			if (bindingVariable == null) {
+				bindingVariable = new BindingVariable(getName(), getType()) {
+					@Override
+					public Type getType() {
+						return DynamicProperty.this.getType();
+					}
+				};
+			}
+			return bindingVariable;
+		}
+
+		/**
+		 * Return (create when null) binding variable identified by this dynamic property
+		 */
+		public BindingVariable appendToBindingModel(BindingModel bindingModel) {
+			bindingModel.addToBindingVariables(getBindingVariable());
+			return getBindingVariable();
+		}
+
+		public abstract Object getBindingValue(Object target, BindingEvaluationContext context)
+				throws TypeMismatchException, NullReferenceException, InvocationTargetTransformException;
+
+		public abstract void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+				throws TypeMismatchException, NullReferenceException;
+
 	}
 }

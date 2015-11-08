@@ -224,6 +224,11 @@ public interface FIBList extends FIBMultipleValues {
 		}
 
 		@Override
+		protected FIBListType makeViewType() {
+			return new FIBListType(this);
+		}
+
+		@Override
 		public String getBaseName() {
 			return "List";
 		}

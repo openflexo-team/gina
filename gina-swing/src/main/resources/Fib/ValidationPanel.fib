@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel id="0" darkLevel="0" useScrollBar="false" protectContent="false" height="650" name="main" layout="gridbag" controllerClassName="org.openflexo.gina.swing.validation.FIBValidationController" border="empty" trackViewPortWidth="true" width="600" dataClassName="org.openflexo.model.validation.ValidationReport" titleFont="SansSerif,0,13" trackViewPortHeight="true">
+<Panel id="0" darkLevel="0" useScrollBar="false" protectContent="false" height="650" name="main" layout="gridbag" controllerClassName="org.openflexo.gina.swing.utils.validation.FIBValidationController" border="empty" trackViewPortWidth="true" width="600" dataClassName="org.openflexo.model.validation.ValidationReport" titleFont="SansSerif,0,13" trackViewPortHeight="true">
   <LocalizedDictionary id="1">
     <Localized id="2" value="All" lang="English" key="all" />
     <Localized id="3" value="Tout" lang="French" key="all" />

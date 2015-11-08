@@ -36,58 +36,52 @@
  * 
  */
 
-package org.openflexo.gina.model;
+package org.openflexo.gina.model.widget;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingEvaluationContext;
-import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.gina.model.bindings.DynamicPropertyPathElement;
-import org.openflexo.gina.view.FIBWidgetView;
+import org.openflexo.gina.model.FIBWidgetType;
+import org.openflexo.gina.view.widget.FIBRadioButtonListWidget;
 import org.openflexo.logging.FlexoLogger;
 
 /**
- * Represent the type of a {@link FIBWidgetView} representing a given {@link FIBWidget}<br>
- * Note that to be able to expose dynamic properties, this class should be extended.
+ * Represent the type of a {@link FIBRadioButtonListWidget} representing a given {@link FIBRadioButtonList}<br>
+ * Extends base {@link FIBWidgetType} by exposing "selected","selectedIndex" and "selection" dynamic properties
  * 
  * @author sylvain
  * 
  */
-public class FIBWidgetType<W extends FIBWidget> extends FIBViewType<W> {
+public class FIBRadioButtonListType extends FIBWidgetType<FIBRadioButtonList> {
 
-	protected static final Logger logger = FlexoLogger.getLogger(FIBWidgetType.class.getPackage().getName());
+	protected static final Logger logger = FlexoLogger.getLogger(FIBRadioButtonListType.class.getPackage().getName());
 
-	protected final Map<BindingPathElement, List<DynamicPropertyPathElement<? super W>>> pathElements;
-
-	public final DynamicProperty VALUE = new DynamicProperty() {
+	public final DynamicProperty SELECTED = new DynamicProperty() {
 		@Override
 		public String getName() {
-			return "data";
+			return "selected";
 		}
 
 		@Override
 		public Type getType() {
-			return getFIBComponent().getDataType();
+			return getFIBComponent().getIteratorClass();
 		}
 
 		@Override
 		public String getTooltip() {
-			return "value_being_represented_by_widget";
+			return "value_being_currently_selected_in_list";
 		}
 
 		@Override
 		public Object getBindingValue(Object target, BindingEvaluationContext context)
 				throws TypeMismatchException, NullReferenceException {
-			if (target instanceof FIBWidgetView) {
-				return ((FIBWidgetView<?, ?, ?>) target).getValue();
+			if (target instanceof FIBRadioButtonListWidget) {
+				return ((FIBRadioButtonListWidget<?, ?>) target).getSelected();
 			}
 			logger.warning("Unexpected target=" + target + " context=" + context);
 			return null;
@@ -96,8 +90,8 @@ public class FIBWidgetType<W extends FIBWidget> extends FIBViewType<W> {
 		@Override
 		public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
 				throws TypeMismatchException, NullReferenceException {
-			if (target instanceof FIBWidgetView) {
-				((FIBWidgetView) target).setValue(value);
+			if (target instanceof FIBRadioButtonListWidget) {
+				((FIBRadioButtonListWidget) target).setSelected(value);
 				return;
 			}
 			logger.warning("Unexpected target=" + target + " context=" + context);
@@ -105,38 +99,61 @@ public class FIBWidgetType<W extends FIBWidget> extends FIBViewType<W> {
 
 	};
 
-	public FIBWidgetType(W aWidget) {
-		super(aWidget);
-		pathElements = new HashMap<BindingPathElement, List<DynamicPropertyPathElement<? super W>>>();
-	}
-
-	@Override
-	public Class<? extends FIBWidgetView> getBaseClass() {
-		return FIBWidgetView.class;
-	}
-
-	@Override
-	public List<DynamicPropertyPathElement<? super W>> getAccessibleSimplePathElements(BindingPathElement parent) {
-
-		if (parent != null && parent.getType() instanceof FIBWidgetType) {
-
-			List<DynamicPropertyPathElement<? super W>> returned = pathElements.get(parent);
-			if (returned == null) {
-				returned = new ArrayList<>();
-				for (DynamicProperty p : getDynamicProperties()) {
-					returned.add(new DynamicPropertyPathElement<FIBWidget>(parent, getFIBComponent(), p));
-				}
-				pathElements.put(parent, returned);
-			}
-			return returned;
+	public final DynamicProperty SELECTED_INDEX = new DynamicProperty() {
+		@Override
+		public String getName() {
+			return "selectedIndex";
 		}
 
-		return Collections.emptyList();
+		@Override
+		public Type getType() {
+			return Integer.TYPE;
+		}
+
+		@Override
+		public String getTooltip() {
+			return "index_of_value_being_currently_selected_in_browser";
+		}
+
+		@Override
+		public Object getBindingValue(Object target, BindingEvaluationContext context)
+				throws TypeMismatchException, NullReferenceException {
+			if (target instanceof FIBRadioButtonListWidget) {
+				return ((FIBRadioButtonListWidget<?, ?>) target).getSelectedIndex();
+			}
+			logger.warning("Unexpected target=" + target + " context=" + context);
+			return null;
+		}
+
+		@Override
+		public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+				throws TypeMismatchException, NullReferenceException {
+			if (target instanceof FIBRadioButtonListWidget) {
+				((FIBRadioButtonListWidget) target).setSelectedIndex((Integer) value);
+				return;
+			}
+			logger.warning("Unexpected target=" + target + " context=" + context);
+		}
+
+	};
+
+	public FIBRadioButtonListType(FIBRadioButtonList aWidget) {
+		super(aWidget);
+	}
+
+	@Override
+	public Class<FIBRadioButtonListWidget> getBaseClass() {
+		return FIBRadioButtonListWidget.class;
 	}
 
 	@Override
 	public List<DynamicProperty> getDynamicProperties() {
-		return Collections.singletonList(VALUE);
+
+		List<DynamicProperty> returned = new ArrayList<DynamicProperty>();
+		returned.addAll(super.getDynamicProperties());
+		returned.add(SELECTED);
+		returned.add(SELECTED_INDEX);
+		return returned;
 	}
 
 }

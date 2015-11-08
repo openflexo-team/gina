@@ -119,8 +119,7 @@ public class TestBindingModel extends FIBTestCase {
 		assertEquals(2, panel1.getBindingModel().getBindingVariablesCount());
 		assertNotNull(panel1.getBindingModel().bindingVariableNamed("data"));
 		assertNotNull(panel1.getBindingModel().bindingVariableNamed("controller"));
-		assertSame(panel1.getVariable("data").getBindingVariable(),
-				panel1.getBindingModel().bindingVariableNamed("data"));
+		assertSame(panel1.getVariable("data").getBindingVariable(), panel1.getBindingModel().bindingVariableNamed("data"));
 		assertSame(panel1.getControllerBindingVariable(), panel1.getBindingModel().bindingVariableNamed("controller"));
 		assertEquals(Person.class, panel1.getVariable("data").getBindingVariable().getType());
 		assertEquals(FIBController.class, panel1.getControllerBindingVariable().getType());
@@ -140,8 +139,7 @@ public class TestBindingModel extends FIBTestCase {
 		panel1.setName("RootPanel");
 		assertEquals(3, panel1.getBindingModel().getBindingVariablesCount());
 		assertNotNull(panel1.getBindingModel().bindingVariableNamed(panel1.getName()));
-		assertSame(panel1.getDynamicAccessBindingVariable(),
-				panel1.getBindingModel().bindingVariableNamed(panel1.getName()));
+		assertSame(panel1.getDynamicAccessBindingVariable(), panel1.getBindingModel().bindingVariableNamed(panel1.getName()));
 	}
 
 	/**
@@ -157,8 +155,7 @@ public class TestBindingModel extends FIBTestCase {
 		panel1.addToSubComponents(label, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false, false));
 
 		textfield1 = newFIBTextField();
-		textfield1.setData(new DataBinding<String>("data.father.firstName", textfield1, String.class,
-				BindingDefinitionType.GET_SET));
+		textfield1.setData(new DataBinding<String>("data.father.firstName", textfield1, String.class, BindingDefinitionType.GET_SET));
 
 		System.out.println("BindingModel for panel1 =" + panel1.getBindingModel());
 		System.out.println("BindingModel for label =" + label.getBindingModel());
@@ -166,17 +163,13 @@ public class TestBindingModel extends FIBTestCase {
 
 		// Perform some checks on BindingModel on disconnected widget
 		assertNotNull(textfield1.getBindingModel());
-		assertEquals(1, textfield1.getBindingModel().getBindingVariablesCount());
-		assertNull(textfield1.getBindingModel().bindingVariableNamed("data")); // data
-																				// was
-																				// not
-																				// set
-																				// !
+
+		assertEquals(2, textfield1.getBindingModel().getBindingVariablesCount());
+		assertNotNull(textfield1.getBindingModel().bindingVariableNamed("data"));
 		assertNotNull(textfield1.getBindingModel().bindingVariableNamed("controller"));
 		// assertSame(textfield1.getDataBindingVariable(),
 		// textfield1.getBindingModel().bindingVariableNamed("data"));
-		assertSame(textfield1.getControllerBindingVariable(),
-				textfield1.getBindingModel().bindingVariableNamed("controller"));
+		assertSame(textfield1.getControllerBindingVariable(), textfield1.getBindingModel().bindingVariableNamed("controller"));
 		// assertEquals(String.class,
 		// textfield1.getDataBindingVariable().getType());
 		assertEquals(FIBController.class, textfield1.getControllerBindingVariable().getType());
@@ -254,15 +247,13 @@ public class TestBindingModel extends FIBTestCase {
 		FIBLabel l1 = newFIBLabel("textfield");
 		panel2.addToSubComponents(l1, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false, false));
 		textfield2 = newFIBTextField();
-		textfield2.setData(new DataBinding<String>("Panel2.data.firstName", textfield2, String.class,
-				BindingDefinitionType.GET_SET));
+		textfield2.setData(new DataBinding<String>("Panel2.data.firstName", textfield2, String.class, BindingDefinitionType.GET_SET));
 		panel2.addToSubComponents(textfield2, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false));
 
 		FIBLabel l2 = newFIBLabel("checkbox");
 		panel2.addToSubComponents(l2, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false, false));
 		checkbox = newFIBCheckBox();
-		checkbox.setData(new DataBinding<Boolean>("Panel2.data.firstName = 'Robert'", checkbox, Boolean.class,
-				BindingDefinitionType.GET));
+		checkbox.setData(new DataBinding<Boolean>("Panel2.data.firstName = 'Robert'", checkbox, Boolean.class, BindingDefinitionType.GET));
 		panel2.addToSubComponents(checkbox, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false));
 
 		FIBLabel l3 = newFIBLabel("number");
@@ -282,8 +273,7 @@ public class TestBindingModel extends FIBTestCase {
 		panel2.setName("Panel");
 		assertEquals(2, panel2.getBindingModel().getBindingVariablesCount());
 		assertNotNull(panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
-		assertSame(panel2.getDynamicAccessBindingVariable(),
-				panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
+		assertSame(panel2.getDynamicAccessBindingVariable(), panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
 		assertTrue(panel2.getDynamicAccessBindingVariable().getType() instanceof FIBViewType);
 		// assertEquals(Object.class, ((ParameterizedType)
 		// panel2.getDynamicAccessBindingVariable().getType()).getActualTypeArguments()[1]);
@@ -291,8 +281,7 @@ public class TestBindingModel extends FIBTestCase {
 		panel2.setDataClass(Person.class);
 		assertEquals(3, panel2.getBindingModel().getBindingVariablesCount());
 		assertNotNull(panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
-		assertSame(panel2.getDynamicAccessBindingVariable(),
-				panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
+		assertSame(panel2.getDynamicAccessBindingVariable(), panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
 		// assertEquals(Person.class, ((ParameterizedType)
 		// panel2.getDynamicAccessBindingVariable().getType()).getActualTypeArguments()[2]);
 		assertEquals(Person.class, panel2.getVariable("data").getType());
@@ -345,47 +334,39 @@ public class TestBindingModel extends FIBTestCase {
 		assertNotNull(panel2.getBindingModel().bindingVariableNamed("data"));
 		assertNotNull(panel2.getBindingModel().bindingVariableNamed("controller"));
 		assertNotNull(panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
-		assertSame(panel2.getDynamicAccessBindingVariable(),
-				panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
+		assertSame(panel2.getDynamicAccessBindingVariable(), panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
 
 		textfield2.setName("TextField2");
 		assertEquals(3, panel2.getBindingModel().getBindingVariablesCount());
 		assertNotNull(panel2.getBindingModel().bindingVariableNamed("data"));
 		assertNotNull(panel2.getBindingModel().bindingVariableNamed("controller"));
 		assertNotNull(panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
-		assertSame(panel2.getDynamicAccessBindingVariable(),
-				panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
+		assertSame(panel2.getDynamicAccessBindingVariable(), panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
 
 		textfield2.setManageDynamicModel(true);
 		assertEquals(4, panel2.getBindingModel().getBindingVariablesCount());
 		assertNotNull(panel2.getBindingModel().bindingVariableNamed("data"));
 		assertNotNull(panel2.getBindingModel().bindingVariableNamed("controller"));
 		assertNotNull(panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
-		assertSame(panel2.getDynamicAccessBindingVariable(),
-				panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
+		assertSame(panel2.getDynamicAccessBindingVariable(), panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
 		assertNotNull(panel2.getBindingModel().bindingVariableNamed(textfield2.getName()));
-		assertSame(textfield2.getDynamicAccessBindingVariable(),
-				textfield2.getBindingModel().bindingVariableNamed(textfield2.getName()));
+		assertSame(textfield2.getDynamicAccessBindingVariable(), textfield2.getBindingModel().bindingVariableNamed(textfield2.getName()));
 
 		checkbox.setManageDynamicModel(true);
 		assertEquals(4, panel2.getBindingModel().getBindingVariablesCount());
 
 		checkbox.setName("CheckBox");
 		assertEquals(5, panel2.getBindingModel().getBindingVariablesCount());
-		assertSame(panel2.getDynamicAccessBindingVariable(),
-				panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
+		assertSame(panel2.getDynamicAccessBindingVariable(), panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
 		assertNotNull(panel2.getBindingModel().bindingVariableNamed(checkbox.getName()));
-		assertSame(checkbox.getDynamicAccessBindingVariable(),
-				checkbox.getBindingModel().bindingVariableNamed(checkbox.getName()));
+		assertSame(checkbox.getDynamicAccessBindingVariable(), checkbox.getBindingModel().bindingVariableNamed(checkbox.getName()));
 
 		number.setName("Number");
 		number.setManageDynamicModel(true);
 		assertEquals(6, panel2.getBindingModel().getBindingVariablesCount());
-		assertSame(panel2.getDynamicAccessBindingVariable(),
-				panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
+		assertSame(panel2.getDynamicAccessBindingVariable(), panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
 		assertNotNull(panel2.getBindingModel().bindingVariableNamed(number.getName()));
-		assertSame(number.getDynamicAccessBindingVariable(),
-				number.getBindingModel().bindingVariableNamed(number.getName()));
+		assertSame(number.getDynamicAccessBindingVariable(), number.getBindingModel().bindingVariableNamed(number.getName()));
 
 	}
 
@@ -495,8 +476,7 @@ public class TestBindingModel extends FIBTestCase {
 	@TestOrder(10)
 	public void test10InstanciateComponent() {
 
-		controller = FIBController.instanciateController(panel1, SwingViewFactory.INSTANCE,
-				FlexoLocalization.getMainLocalizer());
+		controller = FIBController.instanciateController(panel1, SwingViewFactory.INSTANCE, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);
 		assertTrue(controller instanceof TestCustomFIBController);
 		family = new Family();

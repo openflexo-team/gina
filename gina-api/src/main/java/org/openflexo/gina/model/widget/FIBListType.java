@@ -48,19 +48,19 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.gina.model.FIBWidgetType;
-import org.openflexo.gina.view.widget.FIBBrowserWidget;
+import org.openflexo.gina.view.widget.FIBListWidget;
 import org.openflexo.logging.FlexoLogger;
 
 /**
- * Represent the type of a {@link FIBBrowserWidget} representing a given {@link FIBBrowser}<br>
- * Extends base {@link FIBWidgetType} by exposing "selected" dynamic property
+ * Represent the type of a {@link FIBListWidget} representing a given {@link FIBList}<br>
+ * Extends base {@link FIBWidgetType} by exposing "selected","selectedIndex" and "selection" dynamic properties
  * 
  * @author sylvain
  * 
  */
-public class FIBBrowserType extends FIBWidgetType<FIBBrowser> {
+public class FIBListType extends FIBWidgetType<FIBList> {
 
-	protected static final Logger logger = FlexoLogger.getLogger(FIBBrowserType.class.getPackage().getName());
+	protected static final Logger logger = FlexoLogger.getLogger(FIBListType.class.getPackage().getName());
 
 	public final DynamicProperty SELECTED = new DynamicProperty() {
 		@Override
@@ -75,14 +75,14 @@ public class FIBBrowserType extends FIBWidgetType<FIBBrowser> {
 
 		@Override
 		public String getTooltip() {
-			return "value_being_currently_selected_in_browser";
+			return "value_being_currently_selected_in_list";
 		}
 
 		@Override
 		public Object getBindingValue(Object target, BindingEvaluationContext context)
 				throws TypeMismatchException, NullReferenceException {
-			if (target instanceof FIBBrowserWidget) {
-				return ((FIBBrowserWidget<?, ?>) target).getSelected();
+			if (target instanceof FIBListWidget) {
+				return ((FIBListWidget<?, ?>) target).getSelected();
 			}
 			logger.warning("Unexpected target=" + target + " context=" + context);
 			return null;
@@ -91,8 +91,46 @@ public class FIBBrowserType extends FIBWidgetType<FIBBrowser> {
 		@Override
 		public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
 				throws TypeMismatchException, NullReferenceException {
-			if (target instanceof FIBBrowserWidget) {
-				((FIBBrowserWidget) target).performSelect(value, true);
+			if (target instanceof FIBListWidget) {
+				((FIBListWidget) target).setSelected(value);
+				return;
+			}
+			logger.warning("Unexpected target=" + target + " context=" + context);
+		}
+
+	};
+
+	public final DynamicProperty SELECTED_INDEX = new DynamicProperty() {
+		@Override
+		public String getName() {
+			return "selectedIndex";
+		}
+
+		@Override
+		public Type getType() {
+			return Integer.TYPE;
+		}
+
+		@Override
+		public String getTooltip() {
+			return "index_of_value_being_currently_selected_in_browser";
+		}
+
+		@Override
+		public Object getBindingValue(Object target, BindingEvaluationContext context)
+				throws TypeMismatchException, NullReferenceException {
+			if (target instanceof FIBListWidget) {
+				return ((FIBListWidget<?, ?>) target).getSelectedIndex();
+			}
+			logger.warning("Unexpected target=" + target + " context=" + context);
+			return null;
+		}
+
+		@Override
+		public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+				throws TypeMismatchException, NullReferenceException {
+			if (target instanceof FIBListWidget) {
+				((FIBListWidget) target).setSelectedIndex((Integer) value);
 				return;
 			}
 			logger.warning("Unexpected target=" + target + " context=" + context);
@@ -113,14 +151,14 @@ public class FIBBrowserType extends FIBWidgetType<FIBBrowser> {
 
 		@Override
 		public String getTooltip() {
-			return "list_of_values_being_currently_selected_in_browser";
+			return "list_of_values_being_currently_selected_in_table";
 		}
 
 		@Override
 		public Object getBindingValue(Object target, BindingEvaluationContext context)
 				throws TypeMismatchException, NullReferenceException {
-			if (target instanceof FIBBrowserWidget) {
-				return ((FIBBrowserWidget<?, ?>) target).getSelection();
+			if (target instanceof FIBListWidget) {
+				return ((FIBListWidget<?, ?>) target).getSelection();
 			}
 			logger.warning("Unexpected target=" + target + " context=" + context);
 			return null;
@@ -129,9 +167,9 @@ public class FIBBrowserType extends FIBWidgetType<FIBBrowser> {
 		@Override
 		public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
 				throws TypeMismatchException, NullReferenceException {
-			if (target instanceof FIBBrowserWidget) {
+			if (target instanceof FIBListWidget) {
 				logger.warning("setSelection() not implemented !!!!!");
-				// ((FIBBrowserWidget) target).performSelect(value, true);
+				// ((FIBTableWidget) target).performSelect(value);
 				return;
 			}
 			logger.warning("Unexpected target=" + target + " context=" + context);
@@ -139,13 +177,13 @@ public class FIBBrowserType extends FIBWidgetType<FIBBrowser> {
 
 	};
 
-	public FIBBrowserType(FIBBrowser aWidget) {
+	public FIBListType(FIBList aWidget) {
 		super(aWidget);
 	}
 
 	@Override
-	public Class<FIBBrowserWidget> getBaseClass() {
-		return FIBBrowserWidget.class;
+	public Class<FIBListWidget> getBaseClass() {
+		return FIBListWidget.class;
 	}
 
 	@Override
@@ -154,6 +192,7 @@ public class FIBBrowserType extends FIBWidgetType<FIBBrowser> {
 		List<DynamicProperty> returned = new ArrayList<DynamicProperty>();
 		returned.addAll(super.getDynamicProperties());
 		returned.add(SELECTED);
+		returned.add(SELECTED_INDEX);
 		returned.add(SELECTION);
 		return returned;
 	}

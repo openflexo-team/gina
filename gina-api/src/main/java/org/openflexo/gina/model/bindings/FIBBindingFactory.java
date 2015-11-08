@@ -124,9 +124,9 @@ public class FIBBindingFactory extends JavaBindingFactory {
 			}
 		}
 		// We cannot find a simple path element at this level, retrieve from java
-		/*if (returned == null) {
+		if (returned == null) {
 			returned = super.makeSimplePathElement(parent, propertyName);
-		}*/
+		}
 
 		return returned;
 	}

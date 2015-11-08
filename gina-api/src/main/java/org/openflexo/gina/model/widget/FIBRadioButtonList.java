@@ -95,6 +95,11 @@ public interface FIBRadioButtonList extends FIBMultipleValues {
 		}
 
 		@Override
+		protected FIBRadioButtonListType makeViewType() {
+			return new FIBRadioButtonListType(this);
+		}
+
+		@Override
 		public String getBaseName() {
 			return "RadioButtonList";
 		}
