@@ -255,6 +255,8 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 	@Override
 	protected C makeTechnologyComponent() {
 
+		updateDynamicallyReferencedComponentWhenRequired();
+
 		FIBComponent loaded = getReferencedComponent();
 
 		// If an embedded FIBController is already declared, delete it
@@ -286,11 +288,14 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 		}
 		else {
 			if (!isComponentLoading) {
-				logger.warning("ReferencedComponent = null and I'm NOT loading anything... : " + this.getComponentFile().getURI());
+				logger.warning("ReferencedComponent = null and I'm NOT loading anything... : " + this.getComponentFile());
 			}
 		}
 
-		return referencedComponentView.getTechnologyComponent();
+		if (referencedComponentView != null) {
+			return referencedComponentView.getTechnologyComponent();
+		}
+		return null;
 	}
 
 	@Override

@@ -181,27 +181,34 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 	public <F extends FIBWidget> FIBWidgetView<F, ? extends JComponent, ?> makeWidget(final F fibWidget, FIBController controller) {
 		final FIBWidgetView<F, ? extends JComponent, ?> returned = super.makeWidget(fibWidget, controller);
 
-		returned.getTechnologyComponent().addMouseListener(new FIBMouseAdapter(returned, fibWidget));
+		if (returned.getTechnologyComponent() == null) {
+			System.out.println(
+					"For fibWidget " + fibWidget + " returned=" + returned + " technologyComponent=" + returned.getTechnologyComponent());
+		}
 
-		returned.getTechnologyComponent().addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (fibWidget.hasEnterPressedAction() && e.getKeyCode() == KeyEvent.VK_ENTER) {
-					// Detected double-click associated with action
-					try {
-						fibWidget.getEnterPressedAction().execute(returned.getBindingEvaluationContext());
-					} catch (TypeMismatchException e1) {
-						e1.printStackTrace();
-					} catch (NullReferenceException e1) {
-						e1.printStackTrace();
-					} catch (InvocationTargetException e1) {
-						e1.printStackTrace();
+		else {
+			returned.getTechnologyComponent().addMouseListener(new FIBMouseAdapter(returned, fibWidget));
+
+			returned.getTechnologyComponent().addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyPressed(KeyEvent e) {
+					if (fibWidget.hasEnterPressedAction() && e.getKeyCode() == KeyEvent.VK_ENTER) {
+						// Detected double-click associated with action
+						try {
+							fibWidget.getEnterPressedAction().execute(returned.getBindingEvaluationContext());
+						} catch (TypeMismatchException e1) {
+							e1.printStackTrace();
+						} catch (NullReferenceException e1) {
+							e1.printStackTrace();
+						} catch (InvocationTargetException e1) {
+							e1.printStackTrace();
+						}
 					}
 				}
+			});
+			if (StringUtils.isNotEmpty(fibWidget.getTooltipText())) {
+				returned.getTechnologyComponent().setToolTipText(fibWidget.getTooltipText());
 			}
-		});
-		if (StringUtils.isNotEmpty(fibWidget.getTooltipText())) {
-			returned.getTechnologyComponent().setToolTipText(fibWidget.getTooltipText());
 		}
 		returned.updateGraphicalProperties();
 		return returned;

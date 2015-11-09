@@ -135,7 +135,8 @@ public interface FIBVariable<T> extends FIBModelObject {
 			if (returned != null) {
 				return returned;
 			}
-			if (!isDeserializing() && getValue() != null && getValue().isSet() && getValue().isValid()) {
+			if (getOwner() != null && getOwner().getRootComponent() != null && !getOwner().getRootComponent().isDeserializing()
+					&& getValue() != null && getValue().isSet() && getValue().isValid()) {
 				return getValue().getAnalyzedType();
 			}
 			return Object.class;

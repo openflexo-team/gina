@@ -283,7 +283,7 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> {
 						getComponent().getVGap()));
 				break;
 			case box:
-				technologyComponent.setLayout(new BoxLayout(getTechnologyComponent(), getComponent().getBoxLayoutAxis().getAxis()));
+				technologyComponent.setLayout(new BoxLayout(technologyComponent, getComponent().getBoxLayoutAxis().getAxis()));
 				break;
 			case twocols:
 				technologyComponent.setLayout(new GridBagLayout());
