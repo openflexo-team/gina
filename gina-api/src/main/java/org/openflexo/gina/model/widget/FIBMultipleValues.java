@@ -178,7 +178,6 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		private DataBinding<Object[]> array;
 
 		private Class iteratorClass;
-		private Class expectedIteratorClass;
 
 		private boolean showIcon = false;
 		private boolean showText = true;
@@ -263,16 +262,13 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 
 		@Override
 		public boolean isEnumType() {
-			if (getData() != null) {
+			/*if (getData() != null ) {
 				Type type = getData().getAnalyzedType();
 				if (type instanceof Class && ((Class) type).isEnum()) {
 					return true;
 				}
-			}
-			if (iteratorClass != null && iteratorClass.isEnum()) {
-				return true;
-			}
-			if (expectedIteratorClass != null && expectedIteratorClass.isEnum()) {
+			}*/
+			if (getIteratorClass() != null && getIteratorClass().isEnum()) {
 				return true;
 			}
 			return false;
@@ -297,12 +293,13 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 				return String.class;
 			}
 			if (iteratorClass == null) {
-				if (expectedIteratorClass != null) {
-					return expectedIteratorClass;
+				if (getData() != null && getData().isSet() && getData().isValid()) {
+					if (getData().getAnalyzedType() instanceof Class && ((Class) getData().getAnalyzedType()).isEnum()) {
+						// System.out.println("For " + this + " iteratorClass=" + getData().getAnalyzedType());
+						return (Class) getData().getAnalyzedType();
+					}
 				}
-				else {
-					return Object.class;
-				}
+				return Object.class;
 			}
 			return iteratorClass;
 		}
@@ -390,10 +387,8 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 					/*if (accessedType instanceof Class && ((Class)accessedType).isEnum()) {
 						setIteratorClass((Class)accessedType);
 					}*/
-					if (accessedType instanceof Class) {
-						expectedIteratorClass = (Class) accessedType;
-					}
-
+					getPropertyChangeSupport().firePropertyChange(ITERATOR_CLASS_KEY, null, getIteratorClass());
+					getPropertyChangeSupport().firePropertyChange("iteratorType", null, getIteratorType());
 				}
 			}
 			else if (binding == getFormat()) {
@@ -497,7 +492,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 			/*if (isEnumType()) {
 				Class<? extends Enum<?>> type = getIteratorClass();
 				for (Enum<?> e : type.getEnumConstants()) {
-					
+			
 				}
 			}*/
 		}

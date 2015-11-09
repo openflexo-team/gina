@@ -286,6 +286,8 @@ public abstract interface FIBWidget extends FIBComponent {
 		 * Void.class, DataBinding.BindingDefinitionType.EXECUTE, false);
 		 */
 
+		private DataBinding<?> data;
+
 		private DataBinding<String> tooltip;
 
 		private DataBinding<Boolean> enable;
@@ -391,6 +393,26 @@ public abstract interface FIBWidget extends FIBComponent {
 		@Override
 		public boolean isLeaf() {
 			return true;
+		}
+
+		@Override
+		public DataBinding<?> getData() {
+			if (data == null) {
+				data = new DataBinding(this, getDataType(), DataBinding.BindingDefinitionType.GET_SET);
+				data.setBindingName(DATA_KEY);
+			}
+			return data;
+		}
+
+		@Override
+		public void setData(DataBinding<?> data) {
+			if (data != null) {
+				data.setOwner(this);
+				data.setDeclaredType(getDataType());
+				data.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET_SET);
+				data.setBindingName(DATA_KEY);
+			}
+			this.data = data;
 		}
 
 		@Override
