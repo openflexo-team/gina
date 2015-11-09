@@ -102,11 +102,6 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 		getTechnologyComponent().update();
 	}
 
-	@Override
-	public JPanel getJComponent() {
-		return getTechnologyComponent();
-	}
-
 	public static class JCheckBoxListPanel<T> extends JPanel {
 		private JCheckBox[] checkboxesArray;
 		private JLabel[] labelsArray;

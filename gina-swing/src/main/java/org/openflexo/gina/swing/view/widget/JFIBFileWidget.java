@@ -251,9 +251,4 @@ public class JFIBFileWidget extends FIBFileWidgetImpl<FileSelectorPanel>implemen
 		return new FileSelectorPanel(this);
 	}
 
-	@Override
-	public JPanel getJComponent() {
-		return getTechnologyComponent();
-	}
-
 }

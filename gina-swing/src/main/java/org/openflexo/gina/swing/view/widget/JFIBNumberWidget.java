@@ -290,11 +290,6 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 		}
 	}
 
-	@Override
-	public JPanel getJComponent() {
-		return getTechnologyComponent();
-	}
-
 	@SuppressWarnings("serial")
 	public static class ByteSelectorPanel extends NumberSelectorPanel<Byte> {
 		public ByteSelectorPanel(JFIBNumberWidget<Byte> aWidget) {

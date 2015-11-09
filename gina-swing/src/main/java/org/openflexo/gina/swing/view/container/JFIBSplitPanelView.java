@@ -117,11 +117,6 @@ public class JFIBSplitPanelView extends FIBSplitPanelViewImpl<JXMultiSplitPane, 
 	}
 
 	@Override
-	public JXMultiSplitPane getJComponent() {
-		return getTechnologyComponent();
-	}
-
-	@Override
 	public synchronized void updateLayout() {
 
 		logger.info("relayout split panel " + getComponent());

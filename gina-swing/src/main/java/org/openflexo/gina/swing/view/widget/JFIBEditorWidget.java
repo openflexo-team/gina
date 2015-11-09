@@ -46,7 +46,6 @@ import java.awt.event.KeyEvent;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
-import javax.swing.JComponent;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -218,11 +217,6 @@ public class JFIBEditorWidget extends FIBEditorWidgetImpl<JEditTextArea>implemen
 		textArea.setCaretPosition(0);
 
 		return textArea;
-	}
-
-	@Override
-	public JComponent getJComponent() {
-		return getTechnologyComponent();
 	}
 
 }

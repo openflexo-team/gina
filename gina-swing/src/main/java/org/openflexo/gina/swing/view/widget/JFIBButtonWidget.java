@@ -63,8 +63,7 @@ public class JFIBButtonWidget extends FIBButtonWidgetImpl<JButton> {
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingButtonRenderingAdapter extends SwingRenderingAdapter<JButton>
-			implements ButtonWidgetRenderingAdapter<JButton> {
+	public static class SwingButtonRenderingAdapter extends SwingRenderingAdapter<JButton>implements ButtonWidgetRenderingAdapter<JButton> {
 
 		@Override
 		public String getText(JButton component) {
@@ -107,8 +106,4 @@ public class JFIBButtonWidget extends FIBButtonWidgetImpl<JButton> {
 		return buttonWidget;
 	}
 
-	@Override
-	public JButton getJComponent() {
-		return getTechnologyComponent();
-	}
 }

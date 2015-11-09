@@ -39,7 +39,9 @@
 
 package org.openflexo.gina.swing.view;
 
+import java.awt.Component;
 import java.awt.Point;
+import java.awt.Window;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -51,6 +53,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -336,9 +339,45 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 		return new JFIBReferencedComponentWidget(widget, controller);
 	}
 
+	@Override
+	public void show(FIBController controller) {
+		Window w = retrieveWindow(controller);
+		if (w != null) {
+			w.setVisible(true);
+		}
+	}
+
+	@Override
+	public void hide(FIBController controller) {
+		Window w = retrieveWindow(controller);
+		if (w != null) {
+			w.setVisible(false);
+		}
+	}
+
+	@Override
+	public void disposeWindow(FIBController controller) {
+		Window w = retrieveWindow(controller);
+		if (w != null) {
+			w.dispose();
+		}
+	}
+
+	private Window retrieveWindow(FIBController controller) {
+		Component c = SwingUtilities.getRoot(((SwingRenderingAdapter) controller.getRootView().getRenderingAdapter())
+				.getJComponent((JComponent) controller.getRootView().getTechnologyComponent()));
+		if (c instanceof Window) {
+			return (Window) c;
+		}
+		return null;
+	}
+
 	protected void recursivelyAddEditorLauncher(EditorLauncher editorLauncher,
 			FIBContainerView<? extends FIBContainer, JComponent, ?> container) {
-		container.getJComponent().addMouseListener(editorLauncher);
+
+		((SwingRenderingAdapter) container.getRenderingAdapter()).getJComponent(container.getTechnologyComponent())
+				.addMouseListener(editorLauncher);
+
 		for (FIBComponent c : container.getComponent().getSubComponents()) {
 			FIBView<?, ?> subView = container.getController().viewForComponent(c);
 			if (subView instanceof FIBContainerView) {

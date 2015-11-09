@@ -50,6 +50,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.util.Vector;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
@@ -62,11 +63,13 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
 import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.BorderLayoutConstraints;
 import org.openflexo.gina.model.container.BoxLayoutConstraints;
 import org.openflexo.gina.model.container.ButtonLayoutConstraints;
 import org.openflexo.gina.model.container.ComponentConstraints;
 import org.openflexo.gina.model.container.FIBPanel;
+import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.model.container.FlowLayoutConstraints;
 import org.openflexo.gina.model.container.GridBagLayoutConstraints;
 import org.openflexo.gina.model.container.GridLayoutConstraints;
@@ -76,6 +79,7 @@ import org.openflexo.gina.model.container.TwoColsLayoutConstraints;
 import org.openflexo.gina.model.container.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.view.container.impl.FIBPanelViewImpl;
+import org.openflexo.gina.view.impl.FIBViewImpl;
 import org.openflexo.swing.ButtonLayout;
 import org.openflexo.toolbox.StringUtils;
 
@@ -217,6 +221,11 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> {
 		super(model, controller, new SwingPanelRenderingAdapter());
 
 		updateBorder();
+	}
+
+	@Override
+	public SwingPanelRenderingAdapter getRenderingAdapter() {
+		return (SwingPanelRenderingAdapter) super.getRenderingAdapter();
 	}
 
 	@Override
@@ -394,6 +403,88 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> {
 	@Override
 	public void delete() {
 		super.delete();
+	}
+
+	@Override
+	protected void clearContainer() {
+		getRenderingAdapter().getJComponent(getTechnologyComponent()).removeAll();
+	}
+
+	@Override
+	protected void retrieveContainedJComponentsAndConstraints() {
+		Vector<FIBComponent> allSubComponents = new Vector<FIBComponent>();
+		allSubComponents.addAll(getNotHiddenSubComponents());
+
+		if (getComponent().getLayout() == Layout.flow || getComponent().getLayout() == Layout.box
+				|| getComponent().getLayout() == Layout.buttons || getComponent().getLayout() == Layout.twocols
+				|| getComponent().getLayout() == Layout.gridbag) {
+
+			/*System.out.println("Apres le retrieve: ");
+			for (FIBComponent c : allSubComponents) {
+				if (c.getConstraints() != null) {
+					if (!c.getConstraints().hasIndex()) {
+						System.out.println("> Index: ? "+c);
+					}
+					else {
+						System.out.println("> Index: "+c.getConstraints().getIndex()+" "+c);
+					}
+				}
+			}
+			
+			System.out.println("*********************************************");*/
+
+		}
+
+		if (getComponent().getLayout() == Layout.grid) {
+
+			for (FIBComponent subComponent : getNotHiddenSubComponents()) {
+				FIBViewImpl<?, C2> subView = (FIBViewImpl<?, C2>) getController().viewForComponent(subComponent);
+				if (subView == null) {
+					subView = (FIBViewImpl<?, C2>) getController().buildView(subComponent);
+				}
+				// FIBViewImpl subView = getController().buildView(c);
+				registerViewForComponent(subView, subComponent);
+			}
+
+			for (int i = 0; i < getComponent().getRows(); i++) {
+				for (int j = 0; j < getComponent().getCols(); j++) {
+					registerComponentWithConstraints(getChildComponent(j, i), null);
+				}
+			}
+		}
+
+		else {
+			for (FIBComponent subComponent : allSubComponents) {
+				FIBViewImpl<?, C2> subView = (FIBViewImpl<?, C2>) getController().viewForComponent(subComponent);
+				if (subView == null) {
+					subView = (FIBViewImpl<?, C2>) getController().buildView(subComponent);
+				}
+				// FIBViewImpl subView = getController().buildView(c);
+				registerViewForComponent(subView, subComponent);
+
+				// TODO: please handle issue with getResultingJComponent()
+				registerComponentWithConstraints((C2) subView.getResultingJComponent(), subComponent.getConstraints());
+			}
+		}
+	}
+
+	/*@Override
+	public JPanel getJComponent() {
+		return (JPanel) getTechnologyComponent();
+	}*/
+
+	// Special case for GridLayout
+	@Override
+	protected C2 getChildComponent(int col, int row) {
+		for (FIBComponent subComponent : getComponent().getSubComponents()) {
+			GridLayoutConstraints glc = (GridLayoutConstraints) subComponent.getConstraints();
+			if (glc.getX() == col && glc.getY() == row) {
+				return (C2) getController().viewForComponent(subComponent).getResultingJComponent();
+			}
+		}
+		// Otherwise, it's an empty cell
+		return makeEmptyPanel();
+
 	}
 
 }

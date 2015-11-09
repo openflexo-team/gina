@@ -48,10 +48,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import javax.swing.JScrollPane;
-
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.binding.BindingValueChangeListener;
 import org.openflexo.connie.exception.NullReferenceException;
@@ -92,8 +88,6 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	private boolean visible = true;
 	private boolean isDeleted = false;
 
-	private JScrollPane scrolledComponent;
-
 	private FIBReferencedComponentWidget<C> embeddingComponent;
 
 	private final PropertyChangeSupport pcSupport;
@@ -129,6 +123,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	}
 
+	@SuppressWarnings("unchecked")
 	private <T> void listenVariableValueChange(final FIBVariable<T> variable) {
 
 		BindingValueChangeListener<T> dataBindingValueChangeListener = (BindingValueChangeListener<T>) variableListeners.get(variable);
@@ -158,6 +153,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	 * @param variable
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getVariableValue(FIBVariable<T> variable) {
 		return (T) variables.get(variable);
@@ -169,6 +165,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	 * @param variable
 	 * @param value
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> void setVariableValue(FIBVariable<T> variable, T value) {
 
@@ -322,14 +319,6 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	public abstract void updateLanguage();
 
 	/**
-	 * Return the effective base component to be added to swing hierarchy This component may be encapsulated in a JScrollPane
-	 * 
-	 * @return JComponent
-	 */
-	@Override
-	public abstract JComponent getJComponent();
-
-	/**
 	 * Return technology-specific component representing widget<br>
 	 * Note that, depending on the underlying technology, this technology-specific component might be embedded in an other component before
 	 * to be added in component hierarchy (for example if component need to be embedded in a scroll pane)
@@ -338,31 +327,6 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	 */
 	@Override
 	public abstract C getTechnologyComponent();
-
-	/**
-	 * Return the effective component to be added to swing hierarchy This component may be the same as the one returned by
-	 * {@link #getJComponent()} or a encapsulation in a JScrollPane
-	 * 
-	 * @return JComponent
-	 */
-	// TODO: this should disappear
-	@Deprecated
-	@Override
-	public JComponent getResultingJComponent() {
-		if (getComponent().getUseScrollBar()) {
-			if (scrolledComponent == null) {
-				scrolledComponent = new JScrollPane(getJComponent(), getComponent().getVerticalScrollbarPolicy().getPolicy(),
-						getComponent().getHorizontalScrollbarPolicy().getPolicy());
-				scrolledComponent.setOpaque(false);
-				scrolledComponent.getViewport().setOpaque(false);
-				scrolledComponent.setBorder(BorderFactory.createEmptyBorder());
-			}
-			return scrolledComponent;
-		}
-		else {
-			return getJComponent();
-		}
-	}
 
 	/**
 	 * This method is called to update view representing a {@link FIBComponent}.<br>
@@ -465,16 +429,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	protected void updateVisibility() {
 		if (isComponentVisible() != visible) {
 			visible = !visible;
-			getResultingJComponent().setVisible(visible);
-			if (getResultingJComponent().getParent() instanceof JComponent) {
-				((JComponent) getResultingJComponent().getParent()).revalidate();
-			}
-			else if (getResultingJComponent().getParent() != null) {
-				getResultingJComponent().getParent().validate();
-			}
-			if (getResultingJComponent().getParent() != null) {
-				getResultingJComponent().getParent().repaint();
-			}
+			getRenderingAdapter().setVisible(getTechnologyComponent(), visible);
 			if (visible) {
 				hiddenComponentBecomesVisible();
 			}
@@ -541,40 +496,40 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	protected void updatePreferredSize() {
 		if (getComponent().definePreferredDimensions()) {
-			Dimension preferredSize = getJComponent().getPreferredSize();
+			Dimension preferredSize = getRenderingAdapter().getPreferredSize(getTechnologyComponent());
 			if (getComponent().getWidth() != null) {
 				preferredSize.width = getComponent().getWidth();
 			}
 			if (getComponent().getHeight() != null) {
 				preferredSize.height = getComponent().getHeight();
 			}
-			getJComponent().setPreferredSize(preferredSize);
+			getRenderingAdapter().setPreferredSize(getTechnologyComponent(), preferredSize);
 		}
 	}
 
 	protected void updateMinimumSize() {
 		if (getComponent().defineMinDimensions()) {
-			Dimension minSize = getJComponent().getMinimumSize();
+			Dimension minSize = getRenderingAdapter().getMinimumSize(getTechnologyComponent());
 			if (getComponent().getMinWidth() != null) {
 				minSize.width = getComponent().getMinWidth();
 			}
 			if (getComponent().getMinHeight() != null) {
 				minSize.height = getComponent().getMinHeight();
 			}
-			getJComponent().setMinimumSize(minSize);
+			getRenderingAdapter().setMinimumSize(getTechnologyComponent(), minSize);
 		}
 	}
 
 	protected void updateMaximumSize() {
 		if (getComponent().defineMaxDimensions()) {
-			Dimension maxSize = getJComponent().getMaximumSize();
+			Dimension maxSize = getRenderingAdapter().getMaximumSize(getTechnologyComponent());
 			if (getComponent().getMaxWidth() != null) {
 				maxSize.width = getComponent().getMaxWidth();
 			}
 			if (getComponent().getMaxHeight() != null) {
 				maxSize.height = getComponent().getMaxHeight();
 			}
-			getJComponent().setMinimumSize(maxSize);
+			getRenderingAdapter().setMinimumSize(getTechnologyComponent(), maxSize);
 		}
 	}
 

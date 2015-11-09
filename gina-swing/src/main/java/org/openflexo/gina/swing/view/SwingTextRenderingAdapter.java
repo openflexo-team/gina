@@ -50,8 +50,7 @@ import org.openflexo.gina.view.widget.FIBGenericTextWidget.GenericTextRenderingA
  * @author sylvain
  * 
  */
-public class SwingTextRenderingAdapter<J extends JTextComponent> extends SwingRenderingAdapter<J>
-		implements GenericTextRenderingAdapter<J> {
+public class SwingTextRenderingAdapter<J extends JTextComponent> extends SwingRenderingAdapter<J>implements GenericTextRenderingAdapter<J> {
 
 	@Override
 	public String getText(J component) {

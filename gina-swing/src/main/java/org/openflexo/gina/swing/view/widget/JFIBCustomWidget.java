@@ -39,40 +39,16 @@
 
 package org.openflexo.gina.swing.view.widget;
 
-import java.awt.Image;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.openflexo.connie.BindingEvaluationContext;
-import org.openflexo.connie.BindingVariable;
-import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingValueChangeListener;
-import org.openflexo.connie.exception.NotSettableContextException;
-import org.openflexo.connie.exception.NullReferenceException;
-import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.controller.FIBController;
-import org.openflexo.gina.controller.FIBSelectable;
 import org.openflexo.gina.model.widget.FIBCustom;
-import org.openflexo.gina.model.widget.FIBCustom.FIBCustomAssignment;
 import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
-import org.openflexo.gina.swing.view.widget.JFIBImageWidget.SwingImageRenderingAdapter;
-import org.openflexo.gina.view.FIBView.RenderingAdapter;
-import org.openflexo.gina.view.impl.FIBWidgetViewImpl;
-import org.openflexo.gina.view.widget.FIBImageWidget;
-import org.openflexo.gina.view.widget.FIBImageWidget.ImageRenderingAdapter;
 import org.openflexo.gina.view.widget.impl.FIBCustomWidgetImpl;
-import org.openflexo.kvc.InvalidKeyValuePropertyException;
-import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 
 /**
  * Defines an abstract custom widget
@@ -90,75 +66,72 @@ public class JFIBCustomWidget<J extends JComponent & FIBCustomComponent<T>, T> e
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingCustomComponentRenderingAdapter<J extends JComponent,T> extends SwingRenderingAdapter<J>
-			implements CustomComponentRenderingAdapter<J,T> {
+	public static class SwingCustomComponentRenderingAdapter<J extends JComponent, T> extends SwingRenderingAdapter<J>
+			implements CustomComponentRenderingAdapter<J, T> {
 
 	}
-	
+
 	private final JLabel ERROR_LABEL = new JLabel("<Cannot instanciate component>");
 
 	public JFIBCustomWidget(FIBCustom model, FIBController controller) {
-		super(model, controller, new SwingCustomComponentRenderingAdapter<J,T>());
+		super(model, controller, new SwingCustomComponentRenderingAdapter<J, T>());
 	}
 
-
-
-
 	/*protected class NotFoundComponent implements FIBCustomComponent {
-
+	
 		private JLabel label;
-
+	
 		public NotFoundComponent() {
 			label = new JLabel("< Custom component >");
 		}
-
+	
 		@Override
 		public void init(FIBCustom component, FIBController controller) {
 		}
-
+	
 		@Override
 		public void addApplyCancelListener(ApplyCancelListener l) {
 		}
-
+	
 		@Override
 		public Object getEditedObject() {
 			return null;
 		}
-
+	
 		@Override
 		public Class<T> getRepresentedType() {
 			return null;
 		}
-
+	
 		@Override
 		public T getRevertValue() {
 			return null;
 		}
-
+	
 		@Override
 		public void removeApplyCancelListener(ApplyCancelListener l) {
 		}
-
+	
 		@Override
 		public void setEditedObject(Object object) {
 		}
-
+	
 		@Override
 		public void setRevertValue(Object object) {
 		}
-
+	
 		@Override
 		public void delete() {
 			label = null;
 		}
 	}*/
 
-
-
-
-	@Override
-	public JComponent getJComponent() {
-		return getTechnologyComponent();
+	// Return default label if technology component cannot be set
+	public JComponent getJComponent(J component) {
+		if (component == null) {
+			return new JLabel("<Undefined>");
+		}
+		return component;
 	}
 
 }

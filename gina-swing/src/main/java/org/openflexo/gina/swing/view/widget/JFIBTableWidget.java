@@ -186,11 +186,6 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 	}
 
 	@Override
-	public JPanel getJComponent() {
-		return getTechnologyComponent();
-	}
-
-	@Override
 	public void updateTable() {
 
 		if (getTableModel() != null) {

@@ -42,6 +42,7 @@ package org.openflexo.gina.swing.view.widget;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.openflexo.gina.controller.FIBController;
@@ -55,7 +56,8 @@ import org.openflexo.gina.view.widget.impl.FIBLabelWidgetImpl;
  * @author sylvain
  */
 public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabel> {
-	private static final Logger LOGGER = Logger.getLogger(JFIBLabelWidget.class.getPackage().getName());
+	@SuppressWarnings("unused")
+	private static final Logger logger = Logger.getLogger(JFIBLabelWidget.class.getPackage().getName());
 
 	/**
 	 * A {@link RenderingAdapter} implementation dedicated for Swing JLabel<br>
@@ -86,6 +88,10 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabel> {
 			component.setHorizontalAlignment(align);
 		}
 
+		@Override
+		public JComponent getJComponent(JLabel component) {
+			return component;
+		}
 	}
 
 	public static SwingLabelRenderingAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingLabelRenderingAdapter();
@@ -108,11 +114,6 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabel> {
 		returned.setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, TOP_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
 				RIGHT_COMPENSATING_BORDER));
 		return returned;
-	}
-
-	@Override
-	public JLabel getJComponent() {
-		return getTechnologyComponent();
 	}
 
 }

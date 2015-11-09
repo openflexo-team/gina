@@ -137,9 +137,4 @@ public class JFIBHtmlEditorWidget extends FIBHtmlEditorWidgetImpl<MetaphaseEdito
 		return returned;
 	}
 
-	@Override
-	public MetaphaseEditorPanel getJComponent() {
-		return getTechnologyComponent();
-	}
-
 }

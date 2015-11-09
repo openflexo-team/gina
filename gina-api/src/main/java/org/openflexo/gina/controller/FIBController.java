@@ -39,8 +39,6 @@
 
 package org.openflexo.gina.controller;
 
-import java.awt.Component;
-import java.awt.Window;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -57,8 +55,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
 import java.util.logging.Logger;
-
-import javax.swing.SwingUtilities;
 
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingVariable;
@@ -177,6 +173,8 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 	private final Vector<FIBSelectionListener> selectionListeners;
 	private final Vector<FIBMouseClickListener> mouseClickListeners;
 
+	// TODO: check this: Is it this still usefull ?
+	@Deprecated
 	private MouseEvent mouseEvent;
 
 	private boolean deleted = false;
@@ -430,97 +428,56 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 	}
 
 	public void show() {
-		Window w = retrieveWindow();
-		if (w != null) {
-			w.setVisible(true);
-		}
+		getViewFactory().show(this);
 	}
 
 	public void hide() {
-		Window w = retrieveWindow();
-		if (w != null) {
-			w.setVisible(false);
-		}
-	}
-
-	private Window retrieveWindow() {
-		Component c = SwingUtilities.getRoot(getRootView().getJComponent());
-		if (c instanceof Window) {
-			return (Window) c;
-		}
-		return null;
+		getViewFactory().hide(this);
 	}
 
 	public void validateAndDispose() {
 		status = Status.VALIDATED;
-		Window w = retrieveWindow();
-		if (w != null) {
-			w.dispose();
-		}
+		getViewFactory().disposeWindow(this);
 	}
 
 	public void nextAndDispose() {
 		status = Status.NEXT;
-		Window w = retrieveWindow();
-		if (w != null) {
-			w.dispose();
-		}
+		getViewFactory().disposeWindow(this);
 	}
 
 	public void backAndDispose() {
 		status = Status.BACK;
-		Window w = retrieveWindow();
-		if (w != null) {
-			w.dispose();
-		}
+		getViewFactory().disposeWindow(this);
 	}
 
 	public void cancelAndDispose() {
 		status = Status.CANCELED;
-		Window w = retrieveWindow();
-		if (w != null) {
-			w.dispose();
-		}
+		getViewFactory().disposeWindow(this);
 	}
 
 	public void abortAndDispose() {
 		status = Status.ABORTED;
-		Window w = retrieveWindow();
-		if (w != null) {
-			w.dispose();
-		}
+		getViewFactory().disposeWindow(this);
 	}
 
 	public void resetAndDispose() {
 		status = Status.RESET;
-		Window w = retrieveWindow();
-		if (w != null) {
-			w.dispose();
-		}
+		getViewFactory().disposeWindow(this);
 	}
 
 	public void chooseYesAndDispose() {
 		status = Status.YES;
-		Window w = retrieveWindow();
-		if (w != null) {
-			w.dispose();
-		}
+		getViewFactory().disposeWindow(this);
 	}
 
 	public void chooseNoAndDispose() {
 		status = Status.NO;
-		Window w = retrieveWindow();
-		if (w != null) {
-			w.dispose();
-		}
+		getViewFactory().disposeWindow(this);
 	}
 
 	public void chooseQuitAndDispose() {
 		status = Status.QUIT;
-		Window w = retrieveWindow();
-		if (w != null) {
-			w.dispose();
-		}
+		getViewFactory().disposeWindow(this);
 	}
 
 	public Status getStatus() {
@@ -648,10 +605,10 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 			FIBWidgetView oldFocusedWidget = focusedWidget;
 			focusedWidget = newFocusedWidget;
 			if (oldFocusedWidget != null) {
-				oldFocusedWidget.getJComponent().repaint();
+				oldFocusedWidget.getRenderingAdapter().repaint(oldFocusedWidget.getTechnologyComponent());
 			}
 			if (newFocusedWidget != null) {
-				newFocusedWidget.getJComponent().repaint();
+				newFocusedWidget.getRenderingAdapter().repaint(newFocusedWidget.getTechnologyComponent());
 				if (newFocusedWidget instanceof FIBSelectable) {
 					setLastFocusedSelectable((FIBSelectable) newFocusedWidget);
 					if (getLastFocusedSelectable().synchronizedWithSelection()) {

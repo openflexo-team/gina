@@ -39,8 +39,6 @@
 
 package org.openflexo.gina.view.impl;
 
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
@@ -53,8 +51,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.Icon;
-import javax.swing.JComponent;
-import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import org.openflexo.connie.BindingEvaluationContext;
@@ -413,7 +409,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			LOGGER.fine("focusLost()");
 		}
 
-		if (event.getOppositeComponent() != null && SwingUtilities.isDescendingFrom(event.getOppositeComponent(), getJComponent())) {
+		if (getRenderingAdapter().newFocusedComponentIsDescendingFrom(getTechnologyComponent(), event)) {
 			// Not relevant in this case
 		}
 		else {
@@ -786,14 +782,6 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		return valueBindingContext;
 	}
 
-	/**
-	 * Return the effective base component to be added to swing hierarchy This component may be encapsulated in a JScrollPane
-	 * 
-	 * @return JComponent
-	 */
-	@Override
-	public abstract JComponent getJComponent();
-
 	@Override
 	public boolean isReadOnly() {
 		return getWidget().getReadOnly();
@@ -1010,8 +998,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			if (!enabled) {
 				// Becomes enabled
 				LOGGER.fine("Component becomes enabled");
-				// System.out.println("Component becomes enabled "+getJComponent());
-				enableComponent(getJComponent());
+				getRenderingAdapter().setEnabled(getTechnologyComponent(), true);
 				setEnabled(true);
 			}
 		}
@@ -1020,40 +1007,9 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 				// Becomes disabled
 				LOGGER.fine("Component becomes disabled");
 				// System.out.println("Component becomes disabled "+getJComponent());
-				disableComponent(getJComponent());
+				getRenderingAdapter().setEnabled(getTechnologyComponent(), false);
 				setEnabled(false);
-			}
-		}
-	}
-
-	private void enableComponent(Component component) {
-		if (component instanceof JScrollPane) {
-			component = ((JScrollPane) component).getViewport().getView();
-			if (component == null) {
-				return;
-			}
-		}
-		component.setEnabled(true);
-		if (component instanceof Container) {
-			for (Component c : ((Container) component).getComponents()) {
-				enableComponent(c);
-			}
-		}
-	}
-
-	private void disableComponent(Component component) {
-		if (component instanceof JScrollPane) {
-			component = ((JScrollPane) component).getViewport().getView();
-			if (component == null) {
-				return;
-			}
-		}
-		if (component != null) {
-			component.setEnabled(false);
-		}
-		if (component instanceof Container) {
-			for (Component c : ((Container) component).getComponents()) {
-				disableComponent(c);
+				setEnabled(false);
 			}
 		}
 	}

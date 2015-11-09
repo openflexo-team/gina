@@ -395,13 +395,12 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	@Override
 	public synchronized void updateFont() {
 		if (getFont() != null) {
-			getJComponent().setFont(getFont());
+			getRenderingAdapter().setFont(getTechnologyComponent(), getFont());
 		}
-		for (FIBView v : subViewsMap.values()) {
+		for (FIBView<?, C2> v : subViewsMap.values()) {
 			v.updateFont();
 		}
-		getJComponent().revalidate();
-		getJComponent().repaint();
+		getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
 	}
 
 	@Override

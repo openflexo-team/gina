@@ -75,6 +75,7 @@ import org.openflexo.toolbox.ToolBox;
  */
 public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>implements FocusListener {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(JFIBTextFieldWidget.class.getPackage().getName());
 
 	/**
@@ -230,11 +231,6 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>imple
 		super.focusLost(arg0);
 
 		stack.end();
-	}
-
-	@Override
-	public JPanel getJComponent() {
-		return panel;
 	}
 
 }

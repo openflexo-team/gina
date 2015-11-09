@@ -124,9 +124,4 @@ public class JFIBCheckBoxWidget extends FIBCheckBoxWidgetImpl<JCheckBox>implemen
 		return checkbox;
 	}
 
-	@Override
-	public JCheckBox getJComponent() {
-		return getTechnologyComponent();
-	}
-
 }

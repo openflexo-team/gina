@@ -60,7 +60,7 @@ public class JFIBReferencedComponentWidget extends FIBReferencedComponentWidgetI
 
 	private static final Logger logger = Logger.getLogger(JFIBReferencedComponentWidget.class.getPackage().getName());
 
-	private final JLabel NOT_FOUND_LABEL;
+	private final JLabel NOT_FOUND_LABEL = new JLabel("<Not found>");;
 
 	/**
 	 * A {@link RenderingAdapter} implementation dedicated for Swing referenced component<br>
@@ -77,18 +77,14 @@ public class JFIBReferencedComponentWidget extends FIBReferencedComponentWidgetI
 	public JFIBReferencedComponentWidget(FIBReferencedComponent model, FIBController controller) {
 		super(model, controller, RENDERING_TECHNOLOGY_ADAPTER);
 		// this.factory = factory;
-		NOT_FOUND_LABEL = new JLabel(""/*
-										 * "<" + model.getName() +
-										 * ": not found component>"
-										 */);
 	}
 
-	@Override
-	public synchronized JComponent getJComponent() {
-		if (getTechnologyComponent() != null) {
-			return getTechnologyComponent();
+	// Return default label if referenced component cannot be found
+	public JComponent getJComponent(JComponent component) {
+		if (component == null) {
+			return NOT_FOUND_LABEL;
 		}
-		return NOT_FOUND_LABEL;
+		return component;
 	}
 
 }

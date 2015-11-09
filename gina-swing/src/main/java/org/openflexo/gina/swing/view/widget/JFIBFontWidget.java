@@ -48,7 +48,6 @@ import java.awt.event.FocusListener;
 import java.util.logging.Logger;
 
 import javax.swing.JCheckBox;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.openflexo.gina.controller.FIBController;
@@ -188,11 +187,6 @@ public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel>implemen
 	public void updateLanguage() {
 		super.updateLanguage();
 		getTechnologyComponent().updateLanguage();
-	}
-
-	@Override
-	public JComponent getJComponent() {
-		return getTechnologyComponent();
 	}
 
 }

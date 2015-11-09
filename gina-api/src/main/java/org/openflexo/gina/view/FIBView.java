@@ -40,10 +40,10 @@
 package org.openflexo.gina.view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeListener;
-
-import javax.swing.JComponent;
 
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.gina.controller.FIBController;
@@ -120,13 +120,6 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 	public void updateLanguage();
 
 	/**
-	 * Return the effective base component to be added to swing hierarchy This component may be encapsulated in a JScrollPane
-	 * 
-	 * @return JComponent
-	 */
-	public abstract JComponent getJComponent();
-
-	/**
 	 * Return technology-specific component representing widget<br>
 	 * Note that, depending on the underlying technology, this technology-specific component might be embedded in an other component before
 	 * to be added in component hierarchy (for example if component need to be embedded in a scroll pane)
@@ -134,14 +127,6 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 	 * @return C
 	 */
 	public abstract C getTechnologyComponent();
-
-	/**
-	 * Return the effective component to be added to swing hierarchy This component may be the same as the one returned by
-	 * {@link #getJComponent()} or a encapsulation in a JScrollPane
-	 * 
-	 * @return JComponent
-	 */
-	public JComponent getResultingJComponent();
 
 	/**
 	 * Return technology component for supplied FIBComponent<br>
@@ -198,6 +183,26 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 	 */
 	public static interface RenderingAdapter<C> {
 
+		public boolean isVisible(C component);
+
+		public void setVisible(C component, boolean visible);
+
+		public boolean getEnable(C component);
+
+		public void setEnabled(C component, boolean enabled);
+
+		public Dimension getPreferredSize(C component);
+
+		public void setPreferredSize(C component, Dimension size);
+
+		public Dimension getMinimumSize(C component);
+
+		public void setMinimumSize(C component, Dimension size);
+
+		public Dimension getMaximumSize(C component);
+
+		public void setMaximumSize(C component, Dimension size);
+
 		public Color getForegroundColor(C component);
 
 		public void setForegroundColor(C component, Color aColor);
@@ -224,6 +229,11 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 
 		public void requestFocusInParent(C component);
 
+		public void repaint(C component);
+
+		public void revalidateAndRepaint(C component);
+
+		public boolean newFocusedComponentIsDescendingFrom(C technologyComponent, FocusEvent event);
 	}
 
 }

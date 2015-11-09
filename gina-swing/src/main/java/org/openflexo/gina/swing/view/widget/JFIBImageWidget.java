@@ -68,8 +68,7 @@ public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel>implements ImageO
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingImageRenderingAdapter extends SwingRenderingAdapter<JLabel>
-			implements ImageRenderingAdapter<JLabel> {
+	public static class SwingImageRenderingAdapter extends SwingRenderingAdapter<JLabel>implements ImageRenderingAdapter<JLabel> {
 
 		@Override
 		public Image getImage(JLabel component, FIBImageWidget<JLabel> widget) {
@@ -111,11 +110,6 @@ public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel>implements ImageO
 			labelWidget.setText(" ");
 		}
 		return labelWidget;
-	}
-
-	@Override
-	public JLabel getJComponent() {
-		return getTechnologyComponent();
 	}
 
 	private ImageIcon makeImageIcon(Image image) {

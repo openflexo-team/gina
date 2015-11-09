@@ -58,4 +58,10 @@ public interface GinaViewFactory<C> {
 
 	public <F extends FIBWidget> FIBWidgetView<F, ? extends C, ?> makeWidget(F fibWidget, FIBController controller);
 
+	public void show(FIBController controller);
+
+	public void hide(FIBController controller);
+
+	public void disposeWindow(FIBController controller);
+
 }

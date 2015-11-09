@@ -40,10 +40,19 @@
 package org.openflexo.gina.swing.view;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.FocusEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
+import org.openflexo.gina.model.FIBComponent.HorizontalScrollBarPolicy;
+import org.openflexo.gina.model.FIBComponent.VerticalScrollBarPolicy;
 import org.openflexo.gina.view.FIBView.RenderingAdapter;
 
 /**
@@ -52,7 +61,148 @@ import org.openflexo.gina.view.FIBView.RenderingAdapter;
  * @author sylvain
  * 
  */
-public class SwingRenderingAdapter<J extends JComponent> implements RenderingAdapter<J> {
+public abstract class SwingRenderingAdapter<J extends JComponent> implements RenderingAdapter<J> {
+
+	private JScrollPane scrolledComponent;
+
+	/**
+	 * Return the effective component to be added to swing hierarchy<br>
+	 * This component may be the same as the one returned by {@link #getJComponent()} (if useScrollBar set to false) or an encapsulation in
+	 * a JScrollPane
+	 * 
+	 * @return JComponent
+	 */
+	public JComponent getResultingJComponent(J component, boolean useScrollBar, VerticalScrollBarPolicy vPolicy,
+			HorizontalScrollBarPolicy hPolicy) {
+		if (useScrollBar) {
+			if (scrolledComponent == null) {
+				scrolledComponent = new JScrollPane(getJComponent(component), vPolicy.getPolicy(), hPolicy.getPolicy());
+				scrolledComponent.setOpaque(false);
+				scrolledComponent.getViewport().setOpaque(false);
+				scrolledComponent.setBorder(BorderFactory.createEmptyBorder());
+			}
+			return scrolledComponent;
+		}
+		else {
+			scrolledComponent = null;
+			return getJComponent(component);
+		}
+	}
+
+	// Default behaviour is to return component itself
+	public JComponent getJComponent(J component) {
+		return component;
+	}
+
+	@Override
+	public boolean isVisible(J component) {
+		if (scrolledComponent != null) {
+			return scrolledComponent.isVisible();
+		}
+		return getJComponent(component).isVisible();
+	}
+
+	@Override
+	public void setVisible(J component, boolean visible) {
+		if (scrolledComponent != null) {
+			scrolledComponent.setVisible(visible);
+			if (scrolledComponent.getParent() instanceof JComponent) {
+				scrolledComponent.getParent().revalidate();
+				scrolledComponent.getParent().repaint();
+			}
+		}
+		getJComponent(component).setVisible(visible);
+		getJComponent(component).getParent().revalidate();
+		getJComponent(component).getParent().repaint();
+	}
+
+	@Override
+	public boolean getEnable(J component) {
+		if (scrolledComponent != null) {
+			return scrolledComponent.isEnabled();
+		}
+		return getJComponent(component).isEnabled();
+	}
+
+	@Override
+	public void setEnabled(J component, boolean enabled) {
+		if (scrolledComponent != null) {
+			if (enabled) {
+				enableComponent(scrolledComponent);
+			}
+			else {
+				disableComponent(scrolledComponent);
+			}
+		}
+		if (enabled) {
+			enableComponent(getJComponent(component));
+		}
+		else {
+			disableComponent(getJComponent(component));
+		}
+	}
+
+	private void enableComponent(Component component) {
+		if (component instanceof JScrollPane) {
+			component = ((JScrollPane) component).getViewport().getView();
+			if (component == null) {
+				return;
+			}
+		}
+		component.setEnabled(true);
+		if (component instanceof Container) {
+			for (Component c : ((Container) component).getComponents()) {
+				enableComponent(c);
+			}
+		}
+	}
+
+	private void disableComponent(Component component) {
+		if (component instanceof JScrollPane) {
+			component = ((JScrollPane) component).getViewport().getView();
+			if (component == null) {
+				return;
+			}
+		}
+		if (component != null) {
+			component.setEnabled(false);
+		}
+		if (component instanceof Container) {
+			for (Component c : ((Container) component).getComponents()) {
+				disableComponent(c);
+			}
+		}
+	}
+
+	@Override
+	public Dimension getPreferredSize(J component) {
+		return component.getPreferredSize();
+	}
+
+	@Override
+	public void setPreferredSize(J component, Dimension size) {
+		component.setPreferredSize(size);
+	}
+
+	@Override
+	public Dimension getMinimumSize(J component) {
+		return component.getMinimumSize();
+	}
+
+	@Override
+	public void setMinimumSize(J component, Dimension size) {
+		component.setMinimumSize(size);
+	}
+
+	@Override
+	public Dimension getMaximumSize(J component) {
+		return component.getMaximumSize();
+	}
+
+	@Override
+	public void setMaximumSize(J component, Dimension size) {
+		component.setMaximumSize(size);
+	}
 
 	@Override
 	public Color getForegroundColor(J component) {
@@ -119,4 +269,21 @@ public class SwingRenderingAdapter<J extends JComponent> implements RenderingAda
 		component.getParent().requestFocus();
 	}
 
+	@Override
+	public void repaint(J component) {
+		component.repaint();
+	}
+
+	@Override
+	public void revalidateAndRepaint(J component) {
+		component.revalidate();
+		component.repaint();
+	}
+
+	@Override
+	public boolean newFocusedComponentIsDescendingFrom(J component, FocusEvent event) {
+		// TODO Auto-generated method stub
+		return event.getOppositeComponent() != null
+				&& SwingUtilities.isDescendingFrom(event.getOppositeComponent(), getJComponent(component));
+	}
 }

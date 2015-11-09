@@ -44,7 +44,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
-import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
@@ -68,8 +67,7 @@ public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T>implements 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingListRenderingAdapter<T> extends SwingRenderingAdapter<JList<T>>
-			implements ListRenderingAdapter<JList<T>, T> {
+	public static class SwingListRenderingAdapter<T> extends SwingRenderingAdapter<JList<T>>implements ListRenderingAdapter<JList<T>, T> {
 
 		@Override
 		public T getSelectedItem(JList<T> component) {
@@ -229,11 +227,6 @@ public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T>implements 
 				}
 			});
 		}*/
-	}
-
-	@Override
-	public JComponent getJComponent() {
-		return getTechnologyComponent();
 	}
 
 }

@@ -172,11 +172,6 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 	}
 
 	@Override
-	public JTreePanel<T> getJComponent() {
-		return getTechnologyComponent();
-	}
-
-	@Override
 	public void deleteBrowser() {
 		if (getTechnologyComponent() != null) {
 			getTechnologyComponent().removeFocusListener(this);

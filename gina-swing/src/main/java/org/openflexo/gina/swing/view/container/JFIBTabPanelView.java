@@ -151,11 +151,6 @@ public class JFIBTabPanelView extends FIBTabPanelViewImpl<JTabbedPane, JComponen
 		getTechnologyComponent().revalidate();
 	}
 
-	@Override
-	public JTabbedPane getJComponent() {
-		return getTechnologyComponent();
-	}
-
 	// TODO: optimize it
 	@Override
 	public synchronized void updateLayout() {
