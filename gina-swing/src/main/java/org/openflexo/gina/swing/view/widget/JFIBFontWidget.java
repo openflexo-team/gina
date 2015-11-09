@@ -133,6 +133,7 @@ public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel>implemen
 		public FontSelectorPanel(JFIBFontWidget widget) {
 			super(new GridBagLayout());
 			this.widget = widget;
+			selector = new FontSelector();
 			selector.addApplyCancelListener(widget);
 			selector.addFocusListener(widget);
 			selector.setEnabled(false);

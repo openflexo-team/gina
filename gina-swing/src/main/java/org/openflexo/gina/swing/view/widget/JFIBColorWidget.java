@@ -133,6 +133,7 @@ public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>imple
 		public ColorSelectorPanel(JFIBColorWidget widget) {
 			super(new GridBagLayout());
 			this.widget = widget;
+			selector = new ColorSelector();
 			selector.addApplyCancelListener(widget);
 			selector.addFocusListener(widget);
 			selector.setEnabled(false);

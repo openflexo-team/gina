@@ -211,7 +211,9 @@ public class JFIBFileWidget extends FIBFileWidgetImpl<FileSelectorPanel>implemen
 		@Override
 		public void setFont(Font font) {
 			super.setFont(font);
-			chooseButton.setFont(getFont());
+			if (chooseButton != null) {
+				chooseButton.setFont(getFont());
+			}
 		}
 
 	}

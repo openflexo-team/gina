@@ -398,7 +398,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		@Override
 		public DataBinding<?> getData() {
 			if (data == null) {
-				data = new DataBinding(this, getDataType(), DataBinding.BindingDefinitionType.GET_SET);
+				data = new DataBinding(this, getDataType(), DataBinding.BindingDefinitionType.GET);
 				data.setBindingName(DATA_KEY);
 			}
 			return data;
@@ -409,7 +409,7 @@ public abstract interface FIBWidget extends FIBComponent {
 			if (data != null) {
 				data.setOwner(this);
 				data.setDeclaredType(getDataType());
-				data.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET_SET);
+				data.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 				data.setBindingName(DATA_KEY);
 			}
 			this.data = data;

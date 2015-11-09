@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.swing.view.container;
 
+import java.awt.AWTError;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -122,7 +123,15 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> {
 				BoxLayoutConstraints boxConstraints = (BoxLayoutConstraints) constraints;
 				contained.setAlignmentX(boxConstraints.getAlignmentX());
 				contained.setAlignmentY(boxConstraints.getAlignmentY());
-				container.add(contained);
+				try {
+					container.add(contained);
+				} catch (AWTError e) {
+					System.out.println("prout alors");
+					System.out.println("container.lm=" + container.getLayout());
+					System.out.println("container.lm.target=" + ((BoxLayout) container.getLayout()).getTarget());
+					e.printStackTrace();
+					System.out.println("hop");
+				}
 			}
 			else if (constraints instanceof ButtonLayoutConstraints) {
 				ButtonLayoutConstraints buttonConstraints = (ButtonLayoutConstraints) constraints;
