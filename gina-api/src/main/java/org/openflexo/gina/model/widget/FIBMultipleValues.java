@@ -293,7 +293,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 				return String.class;
 			}
 			if (iteratorClass == null) {
-				if (getData() != null && getData().isSet() && getData().isValid()) {
+				if (!isDeserializing() && getData() != null && getData().isSet() && getData().isValid()) {
 					if (getData().getAnalyzedType() instanceof Class && ((Class) getData().getAnalyzedType()).isEnum()) {
 						// System.out.println("For " + this + " iteratorClass=" + getData().getAnalyzedType());
 						return (Class) getData().getAnalyzedType();

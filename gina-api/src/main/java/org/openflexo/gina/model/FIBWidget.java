@@ -395,11 +395,15 @@ public abstract interface FIBWidget extends FIBComponent {
 			return true;
 		}
 
+		private boolean isSettingData = false;
+
 		@Override
 		public DataBinding<?> getData() {
-			if (data == null) {
+			if (data == null && !isSettingData) {
+				isSettingData = true;
 				data = new DataBinding(this, getDataType(), DataBinding.BindingDefinitionType.GET);
 				data.setBindingName(DATA_KEY);
+				isSettingData = false;
 			}
 			return data;
 		}
