@@ -40,10 +40,12 @@
 package org.openflexo.gina.view.widget.impl;
 
 import java.awt.Image;
+import java.beans.PropertyChangeEvent;
 import java.util.logging.Logger;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBImage;
+import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.impl.FIBWidgetViewImpl;
 import org.openflexo.gina.view.widget.FIBImageWidget;
 import org.openflexo.swing.ImageUtils;
@@ -115,5 +117,25 @@ public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, 
 	}
 
 	protected abstract void updateImageDefaultSize(Image image);
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+
+		if ((evt.getPropertyName().equals(FIBImage.ALIGN_KEY))) {
+			updateAlign();
+		}
+		else if ((evt.getPropertyName().equals(FIBImage.IMAGE_FILE_KEY)) || (evt.getPropertyName().equals(FIBImage.SIZE_ADJUSTMENT_KEY))
+				|| (evt.getPropertyName().equals(FIBImage.IMAGE_HEIGHT_KEY)) || (evt.getPropertyName().equals(FIBImage.IMAGE_WIDTH_KEY))) {
+			relayoutParentBecauseImageChanged();
+		}
+		super.propertyChange(evt);
+	}
+
+	protected void relayoutParentBecauseImageChanged() {
+		FIBContainerView<?, ?, ?> parentView = getParentView();
+		parentView.updateLayout();
+		// FIBEditorController controller = getEditorController();
+		// controller.notifyFocusedAndSelectedObject();
+	}
 
 }

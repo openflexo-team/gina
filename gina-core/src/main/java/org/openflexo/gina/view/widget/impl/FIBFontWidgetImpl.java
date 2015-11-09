@@ -40,6 +40,7 @@
 package org.openflexo.gina.view.widget.impl;
 
 import java.awt.Font;
+import java.beans.PropertyChangeEvent;
 import java.util.logging.Logger;
 
 import org.openflexo.gina.controller.FIBController;
@@ -147,4 +148,11 @@ public abstract class FIBFontWidgetImpl<C> extends FIBWidgetViewImpl<FIBFont, C,
 		setValue(revertValue);
 	}
 
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getPropertyName().equals(FIBFont.ALLOWS_NULL_KEY)) {
+			updateCheckboxVisibility();
+		}
+		super.propertyChange(evt);
+	}
 }

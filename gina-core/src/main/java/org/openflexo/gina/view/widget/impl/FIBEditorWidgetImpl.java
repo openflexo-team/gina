@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.view.widget.impl;
 
+import java.beans.PropertyChangeEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -83,8 +84,7 @@ public abstract class FIBEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBEditor
 
 	protected boolean validateOnReturn;
 
-	public FIBEditorWidgetImpl(FIBEditor model, FIBController controller,
-			EditorWidgetRenderingAdapter<C> RenderingAdapter) {
+	public FIBEditorWidgetImpl(FIBEditor model, FIBController controller, EditorWidgetRenderingAdapter<C> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
 		validateOnReturn = model.isValidateOnReturn();
 		updateFont();
@@ -215,6 +215,16 @@ public abstract class FIBEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBEditor
 		else {
 			return null;
 		}
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+
+		if (evt.getPropertyName().equals(FIBEditor.TOKEN_MARKER_STYLE_KEY)) {
+			updateTokenMarkerStyle();
+		}
+
+		super.propertyChange(evt);
 	}
 
 }

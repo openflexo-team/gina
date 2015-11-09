@@ -39,28 +39,23 @@
 
 package org.openflexo.gina.swing.editor.view.widget;
 
-import java.util.Vector;
 import java.util.logging.Logger;
 
-import javax.swing.JComponent;
+import javax.swing.JTextField;
 
-import org.openflexo.gina.model.FIBModelObject;
-import org.openflexo.gina.model.widget.FIBReferencedComponent;
+import org.openflexo.gina.model.widget.FIBTextField;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.view.FIBEditableView;
-import org.openflexo.gina.swing.editor.view.FIBEditableViewDelegate;
-import org.openflexo.gina.swing.editor.view.PlaceHolder;
-import org.openflexo.gina.swing.utils.controller.FIBViewFactory;
-import org.openflexo.gina.swing.view.widget.JFIBReferencedComponentWidget;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate;
+import org.openflexo.gina.swing.view.widget.JFIBTextFieldWidget;
 import org.openflexo.logging.FlexoLogger;
 
-public class FIBEditableReferencedComponentWidget extends JFIBReferencedComponentWidget implements
-		FIBEditableView<FIBReferencedComponent, JComponent> {
+public class JFIBEditableTextFieldWidget extends JFIBTextFieldWidget implements FIBSwingEditableView<FIBTextField, JTextField> {
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = FlexoLogger.getLogger(FIBEditableReferencedComponentWidget.class.getPackage().getName());
+	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableTextFieldWidget.class.getPackage().getName());
 
-	private final FIBEditableViewDelegate<FIBReferencedComponent, JComponent> delegate;
+	private final FIBSwingEditableViewDelegate<FIBTextField, JTextField> delegate;
 
 	private final FIBEditorController editorController;
 
@@ -69,41 +64,22 @@ public class FIBEditableReferencedComponentWidget extends JFIBReferencedComponen
 		return editorController;
 	}
 
-	public FIBEditableReferencedComponentWidget(FIBReferencedComponent model, FIBEditorController editorController, FIBViewFactory factory) {
-		super(model, editorController.getController(), factory);
+	public JFIBEditableTextFieldWidget(FIBTextField model, FIBEditorController editorController) {
+		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBEditableViewDelegate<FIBReferencedComponent, JComponent>(this);
-		model.getPropertyChangeSupport().addPropertyChangeListener(this);
+		delegate = new FIBSwingEditableViewDelegate<FIBTextField, JTextField>(this);
 	}
 
 	@Override
 	public void delete() {
 		delegate.delete();
-		getComponent().getPropertyChangeSupport().removePropertyChangeListener(this);
 		super.delete();
 	}
 
 	@Override
-	public Vector<PlaceHolder> getPlaceHolders() {
-		return null;
-	}
-
-	@Override
-	public FIBEditableViewDelegate<FIBReferencedComponent, JComponent> getDelegate() {
+	public FIBSwingEditableViewDelegate<FIBTextField, JTextField> getDelegate() {
 		return delegate;
-	}
-
-	@Override
-	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
-		if (isDeleted()) {
-			return;
-		}
-		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
-		if (propertyName.equals(FIBReferencedComponent.COMPONENT_FILE_KEY)) {
-			updateComponent();
-		}
-		delegate.receivedModelNotifications(o, propertyName, oldValue, newValue);
 	}
 
 }

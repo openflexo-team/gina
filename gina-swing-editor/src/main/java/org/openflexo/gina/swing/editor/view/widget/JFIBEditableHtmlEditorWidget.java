@@ -39,25 +39,23 @@
 
 package org.openflexo.gina.swing.editor.view.widget;
 
-import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.openflexo.gina.model.FIBModelObject;
-import org.openflexo.gina.model.widget.FIBFont;
+import org.openflexo.gina.model.widget.FIBHtmlEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.view.FIBEditableView;
-import org.openflexo.gina.swing.editor.view.FIBEditableViewDelegate;
-import org.openflexo.gina.swing.editor.view.PlaceHolder;
-import org.openflexo.gina.swing.view.widget.JFIBFontWidget;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate;
+import org.openflexo.gina.swing.view.widget.JFIBHtmlEditorWidget;
 import org.openflexo.logging.FlexoLogger;
-import org.openflexo.swing.FontSelector;
 
-public class FIBEditableFontWidget extends JFIBFontWidget implements FIBEditableView<FIBFont, FontSelector> {
+import com.metaphaseeditor.MetaphaseEditorPanel;
+
+public class JFIBEditableHtmlEditorWidget extends JFIBHtmlEditorWidget implements FIBSwingEditableView<FIBHtmlEditor, MetaphaseEditorPanel> {
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = FlexoLogger.getLogger(FIBEditableFontWidget.class.getPackage().getName());
+	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableHtmlEditorWidget.class.getPackage().getName());
 
-	private final FIBEditableViewDelegate<FIBFont, FontSelector> delegate;
+	private final FIBSwingEditableViewDelegate<FIBHtmlEditor, MetaphaseEditorPanel> delegate;
 
 	private final FIBEditorController editorController;
 
@@ -66,11 +64,11 @@ public class FIBEditableFontWidget extends JFIBFontWidget implements FIBEditable
 		return editorController;
 	}
 
-	public FIBEditableFontWidget(FIBFont model, FIBEditorController editorController) {
+	public JFIBEditableHtmlEditorWidget(FIBHtmlEditor model, FIBEditorController editorController) {
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBEditableViewDelegate<FIBFont, FontSelector>(this);
+		delegate = new FIBSwingEditableViewDelegate<FIBHtmlEditor, MetaphaseEditorPanel>(this);
 		model.getPropertyChangeSupport().addPropertyChangeListener(this);
 	}
 
@@ -82,22 +80,8 @@ public class FIBEditableFontWidget extends JFIBFontWidget implements FIBEditable
 	}
 
 	@Override
-	public Vector<PlaceHolder> getPlaceHolders() {
-		return null;
-	}
-
-	@Override
-	public FIBEditableViewDelegate<FIBFont, FontSelector> getDelegate() {
+	public FIBSwingEditableViewDelegate<FIBHtmlEditor, MetaphaseEditorPanel> getDelegate() {
 		return delegate;
-	}
-
-	@Override
-	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
-		if (isDeleted()) {
-			return;
-		}
-		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
-		delegate.receivedModelNotifications(o, propertyName, oldValue, newValue);
 	}
 
 }

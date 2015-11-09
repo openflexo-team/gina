@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.view.widget.impl;
 
+import java.beans.PropertyChangeEvent;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,7 +47,9 @@ import java.util.logging.Logger;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingValueListChangeListener;
 import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.FIBWidget;
 import org.openflexo.gina.model.widget.FIBCheckboxList;
+import org.openflexo.gina.model.widget.FIBMultipleValues;
 import org.openflexo.gina.view.widget.FIBCheckboxListWidget;
 
 public abstract class FIBCheckboxListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl<FIBCheckboxList, C, List<T>, T>
@@ -147,5 +150,19 @@ public abstract class FIBCheckboxListWidgetImpl<C, T> extends FIBMultipleValueWi
 	public void setSelectedValues(List<T> selectedValues) {
 		getRenderingAdapter().setSelectedItems(getTechnologyComponent(), selectedValues);
 	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if ((evt.getPropertyName().equals(FIBWidget.FORMAT_KEY)) || (evt.getPropertyName().equals(FIBWidget.LOCALIZE_KEY))
+				|| (evt.getPropertyName().equals(FIBCheckboxList.COLUMNS_KEY)) || (evt.getPropertyName().equals(FIBCheckboxList.H_GAP_KEY))
+				|| (evt.getPropertyName().equals(FIBCheckboxList.V_GAP_KEY)) || (evt.getPropertyName().equals(FIBWidget.ICON_KEY))
+				|| (evt.getPropertyName().equals(FIBMultipleValues.SHOW_ICON_KEY))
+				|| (evt.getPropertyName().equals(FIBMultipleValues.SHOW_TEXT_KEY))) {
+			updateCheckboxListLayout();
+		}
+		super.propertyChange(evt);
+	}
+
+	protected abstract void updateCheckboxListLayout();
 
 }

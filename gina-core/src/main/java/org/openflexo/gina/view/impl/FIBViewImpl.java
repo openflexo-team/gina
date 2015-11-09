@@ -41,6 +41,7 @@ package org.openflexo.gina.view.impl;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -101,8 +102,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	private final RenderingAdapter<C> renderingAdapter;
 
-	private Map<FIBVariable<?>, Object> variables;
-	private Map<FIBVariable<?>, BindingValueChangeListener<?>> variableListeners;
+	private final Map<FIBVariable<?>, Object> variables;
+	private final Map<FIBVariable<?>, BindingValueChangeListener<?>> variableListeners;
 
 	public FIBViewImpl(M model, FIBController controller, RenderingAdapter<C> renderingAdapter) {
 		super();
@@ -114,6 +115,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		pcSupport = new PropertyChangeSupport(this);
 
 		controller.registerView(this);
+
+		model.getPropertyChangeSupport().addPropertyChangeListener(this);
 
 		variables = new HashMap<FIBVariable<?>, Object>();
 		variableListeners = new HashMap<FIBVariable<?>, BindingValueChangeListener<?>>();
@@ -128,8 +131,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	private <T> void listenVariableValueChange(final FIBVariable<T> variable) {
 
-		BindingValueChangeListener<T> dataBindingValueChangeListener = (BindingValueChangeListener<T>) variableListeners
-				.get(variable);
+		BindingValueChangeListener<T> dataBindingValueChangeListener = (BindingValueChangeListener<T>) variableListeners.get(variable);
 
 		if (dataBindingValueChangeListener != null) {
 			dataBindingValueChangeListener.stopObserving();
@@ -137,8 +139,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		}
 
 		if (variable.getValue() != null && variable.getValue().isValid()) {
-			dataBindingValueChangeListener = new BindingValueChangeListener<T>(variable.getValue(),
-					getBindingEvaluationContext()) {
+			dataBindingValueChangeListener = new BindingValueChangeListener<T>(variable.getValue(), getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
 					// System.out.println(" bindingValueChanged() detected for data="
@@ -235,6 +236,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			return;
 		}
 
+		getComponent().getPropertyChangeSupport().removePropertyChangeListener(this);
+
 		if (visibleBindingValueChangeListener != null) {
 			visibleBindingValueChangeListener.stopObserving();
 			visibleBindingValueChangeListener.delete();
@@ -273,11 +276,9 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	}
 
 	/**
-	 * Return the BindingEvaluationContext valid in the context of current
-	 * widget.<br>
-	 * Note that embedded component (components used in the context of
-	 * FIBReferencedComponent) should point to the BindingEvaluationContext of
-	 * their embedding component
+	 * Return the BindingEvaluationContext valid in the context of current widget.<br>
+	 * Note that embedded component (components used in the context of FIBReferencedComponent) should point to the BindingEvaluationContext
+	 * of their embedding component
 	 * 
 	 * @return
 	 */
@@ -321,8 +322,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	public abstract void updateLanguage();
 
 	/**
-	 * Return the effective base component to be added to swing hierarchy This
-	 * component may be encapsulated in a JScrollPane
+	 * Return the effective base component to be added to swing hierarchy This component may be encapsulated in a JScrollPane
 	 * 
 	 * @return JComponent
 	 */
@@ -331,10 +331,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	/**
 	 * Return technology-specific component representing widget<br>
-	 * Note that, depending on the underlying technology, this
-	 * technology-specific component might be embedded in an other component
-	 * before to be added in component hierarchy (for example if component need
-	 * to be embedded in a scroll pane)
+	 * Note that, depending on the underlying technology, this technology-specific component might be embedded in an other component before
+	 * to be added in component hierarchy (for example if component need to be embedded in a scroll pane)
 	 * 
 	 * @return C
 	 */
@@ -342,9 +340,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	public abstract C getTechnologyComponent();
 
 	/**
-	 * Return the effective component to be added to swing hierarchy This
-	 * component may be the same as the one returned by {@link #getJComponent()}
-	 * or a encapsulation in a JScrollPane
+	 * Return the effective component to be added to swing hierarchy This component may be the same as the one returned by
+	 * {@link #getJComponent()} or a encapsulation in a JScrollPane
 	 * 
 	 * @return JComponent
 	 */
@@ -354,22 +351,22 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	public JComponent getResultingJComponent() {
 		if (getComponent().getUseScrollBar()) {
 			if (scrolledComponent == null) {
-				scrolledComponent = new JScrollPane(getJComponent(), getComponent().getVerticalScrollbarPolicy()
-						.getPolicy(), getComponent().getHorizontalScrollbarPolicy().getPolicy());
+				scrolledComponent = new JScrollPane(getJComponent(), getComponent().getVerticalScrollbarPolicy().getPolicy(),
+						getComponent().getHorizontalScrollbarPolicy().getPolicy());
 				scrolledComponent.setOpaque(false);
 				scrolledComponent.getViewport().setOpaque(false);
 				scrolledComponent.setBorder(BorderFactory.createEmptyBorder());
 			}
 			return scrolledComponent;
-		} else {
+		}
+		else {
 			return getJComponent();
 		}
 	}
 
 	/**
 	 * This method is called to update view representing a {@link FIBComponent}.<br>
-	 * Usually, this method should be called only once, when the component has
-	 * been added to the whole hierarchy.
+	 * Usually, this method should be called only once, when the component has been added to the whole hierarchy.
 	 * 
 	 * @return a flag indicating if component has been updated
 	 */
@@ -395,13 +392,11 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	/**
 	 * This method is called to update view representing a FIBComponent.<br>
-	 * Callers are all the components that have been updated during current
-	 * update loop. If the callers contains the component itself, does nothing
-	 * and return.
+	 * Callers are all the components that have been updated during current update loop. If the callers contains the component itself, does
+	 * nothing and return.
 	 * 
 	 * @param callers
-	 *            all the components that have been previously updated during
-	 *            current update loop
+	 *            all the components that have been previously updated during current update loop
 	 * @return a flag indicating if component has been updated
 	 */
 	/*
@@ -473,7 +468,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			getResultingJComponent().setVisible(visible);
 			if (getResultingJComponent().getParent() instanceof JComponent) {
 				((JComponent) getResultingJComponent().getParent()).revalidate();
-			} else if (getResultingJComponent().getParent() != null) {
+			}
+			else if (getResultingJComponent().getParent() != null) {
 				getResultingJComponent().getParent().validate();
 			}
 			if (getResultingJComponent().getParent() != null) {
@@ -600,7 +596,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		}
 		if (o1 == null) {
 			return o2 == null;
-		} else {
+		}
+		else {
 			return o1.equals(o2);
 		}
 	}
@@ -639,6 +636,32 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	@Override
 	public void requestFocusInParent() {
 		getRenderingAdapter().requestFocusInParent(getTechnologyComponent());
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getPropertyName().equals(FIBComponent.CONSTRAINTS_KEY) || evt.getPropertyName().equals(FIBComponent.WIDTH_KEY)
+				|| evt.getPropertyName().equals(FIBComponent.HEIGHT_KEY) || evt.getPropertyName().equals(FIBComponent.MIN_WIDTH_KEY)
+				|| evt.getPropertyName().equals(FIBComponent.MIN_HEIGHT_KEY) || evt.getPropertyName().equals(FIBComponent.MAX_WIDTH_KEY)
+				|| evt.getPropertyName().equals(FIBComponent.MAX_HEIGHT_KEY)
+				|| evt.getPropertyName().equals(FIBComponent.USE_SCROLL_BAR_KEY)
+				|| evt.getPropertyName().equals(FIBComponent.HORIZONTAL_SCROLLBAR_POLICY_KEY)
+				|| evt.getPropertyName().equals(FIBComponent.VERTICAL_SCROLLBAR_POLICY_KEY)) {
+			getParentView().updateLayout();
+			// FIBEditorController controller = getEditorController();
+			// controller.notifyFocusedAndSelectedObject();
+		}
+		else if (evt.getPropertyName().equals(FIBComponent.FONT_KEY)) {
+			updateFont();
+		}
+		else if (evt.getPropertyName().equals(FIBComponent.BACKGROUND_COLOR_KEY)
+				|| evt.getPropertyName().equals(FIBComponent.FOREGROUND_COLOR_KEY)
+				|| evt.getPropertyName().equals(FIBComponent.OPAQUE_KEY)) {
+			updateGraphicalProperties();
+			// getTechnologyComponent().revalidate();
+			// getTechnologyComponent().repaint();
+		}
+
 	}
 
 }

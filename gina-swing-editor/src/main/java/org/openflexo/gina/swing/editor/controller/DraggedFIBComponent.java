@@ -44,7 +44,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
-import org.openflexo.gina.swing.editor.view.FIBEditableViewDelegate.FIBDropTarget;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate.FIBDropTarget;
 import org.openflexo.logging.FlexoLogger;
 
 public class DraggedFIBComponent implements FIBDraggable {

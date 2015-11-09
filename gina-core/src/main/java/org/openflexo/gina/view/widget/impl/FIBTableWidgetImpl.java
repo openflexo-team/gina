@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.view.widget.impl;
 
+import java.beans.PropertyChangeEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -495,4 +496,18 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 		}
 		return true;
 	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+
+		if ((evt.getPropertyName().equals(FIBTable.CREATE_NEW_ROW_ON_CLICK_KEY))
+				|| (evt.getPropertyName().equals(FIBTable.ITERATOR_CLASS_KEY)) || (evt.getPropertyName().equals(FIBTable.ROW_HEIGHT_KEY))
+				|| (evt.getPropertyName().equals(FIBTable.VISIBLE_ROW_COUNT_KEY))
+				|| (evt.getPropertyName().equals(FIBTable.SHOW_FOOTER_KEY))) {
+			updateTable();
+		}
+
+		super.propertyChange(evt);
+	}
+
 }

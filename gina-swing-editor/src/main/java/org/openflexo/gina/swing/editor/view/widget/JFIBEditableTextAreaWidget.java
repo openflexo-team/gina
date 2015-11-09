@@ -39,26 +39,23 @@
 
 package org.openflexo.gina.swing.editor.view.widget;
 
-import java.util.Vector;
 import java.util.logging.Logger;
 
-import javax.swing.JTable;
+import javax.swing.JTextArea;
 
-import org.openflexo.gina.model.FIBModelObject;
-import org.openflexo.gina.model.widget.FIBTable;
+import org.openflexo.gina.model.widget.FIBTextArea;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.view.FIBEditableView;
-import org.openflexo.gina.swing.editor.view.FIBEditableViewDelegate;
-import org.openflexo.gina.swing.editor.view.PlaceHolder;
-import org.openflexo.gina.swing.view.widget.JFIBTableWidget;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate;
+import org.openflexo.gina.swing.view.widget.JFIBTextAreaWidget;
 import org.openflexo.logging.FlexoLogger;
 
-public class FIBEditableTableWidget<T> extends JFIBTableWidget<T> implements FIBEditableView<FIBTable, JTable> {
+public class JFIBEditableTextAreaWidget extends JFIBTextAreaWidget implements FIBSwingEditableView<FIBTextArea, JTextArea> {
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = FlexoLogger.getLogger(FIBEditableTableWidget.class.getPackage().getName());
+	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableTextAreaWidget.class.getPackage().getName());
 
-	private final FIBEditableViewDelegate<FIBTable, JTable> delegate;
+	private final FIBSwingEditableViewDelegate<FIBTextArea, JTextArea> delegate;
 
 	private final FIBEditorController editorController;
 
@@ -67,43 +64,22 @@ public class FIBEditableTableWidget<T> extends JFIBTableWidget<T> implements FIB
 		return editorController;
 	}
 
-	public FIBEditableTableWidget(FIBTable model, FIBEditorController editorController) {
+	public JFIBEditableTextAreaWidget(FIBTextArea model, FIBEditorController editorController) {
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBEditableViewDelegate<FIBTable, JTable>(this);
-		model.getPropertyChangeSupport().addPropertyChangeListener(this);
+		delegate = new FIBSwingEditableViewDelegate<FIBTextArea, JTextArea>(this);
 	}
 
 	@Override
 	public void delete() {
 		delegate.delete();
-		getComponent().getPropertyChangeSupport().removePropertyChangeListener(this);
 		super.delete();
 	}
 
 	@Override
-	public Vector<PlaceHolder> getPlaceHolders() {
-		return null;
-	}
-
-	@Override
-	public FIBEditableViewDelegate<FIBTable, JTable> getDelegate() {
+	public FIBSwingEditableViewDelegate<FIBTextArea, JTextArea> getDelegate() {
 		return delegate;
-	}
-
-	@Override
-	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
-		if (isDeleted()) {
-			return;
-		}
-		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
-		if ((propertyName.equals(FIBTable.CREATE_NEW_ROW_ON_CLICK_KEY)) || (propertyName.equals(FIBTable.ITERATOR_CLASS_KEY))
-				|| (propertyName.equals(FIBTable.ROW_HEIGHT_KEY)) || (propertyName.equals(FIBTable.VISIBLE_ROW_COUNT_KEY))
-				|| (propertyName.equals(FIBTable.SHOW_FOOTER_KEY))) {
-			updateTable();
-		}
-		delegate.receivedModelNotifications(o, propertyName, oldValue, newValue);
 	}
 
 }

@@ -143,14 +143,14 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 		return returned;
 	}
 
-	public static <F extends FIBComponent> FIBView<F, ?> makeView(F fibComponent, GinaViewFactory<?> viewFactory,
+	public static <F extends FIBComponent, C> FIBView<F, ? extends C> makeView(F fibComponent, GinaViewFactory<C> viewFactory,
 			LocalizedDelegate parentLocalizer) {
 		return makeView(fibComponent, viewFactory, instanciateController(fibComponent, viewFactory, parentLocalizer));
 	}
 
-	public static <F extends FIBComponent> FIBView<F, ?> makeView(F fibComponent, GinaViewFactory<?> viewFactory,
+	public static <F extends FIBComponent, C> FIBView<F, ? extends C> makeView(F fibComponent, GinaViewFactory<C> viewFactory,
 			FIBController controller) {
-		return controller.buildView(fibComponent);
+		return (FIBView<F, ? extends C>) controller.buildView(fibComponent);
 	}
 
 	private Object dataObject;

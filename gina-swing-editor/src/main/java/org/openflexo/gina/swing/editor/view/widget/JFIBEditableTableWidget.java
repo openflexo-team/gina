@@ -39,27 +39,22 @@
 
 package org.openflexo.gina.swing.editor.view.widget;
 
-import java.util.Vector;
 import java.util.logging.Logger;
 
-import javax.swing.JLabel;
-
-import org.openflexo.gina.model.FIBModelObject;
-import org.openflexo.gina.model.widget.FIBImage;
+import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.view.FIBEditableView;
-import org.openflexo.gina.swing.editor.view.FIBEditableViewDelegate;
-import org.openflexo.gina.swing.editor.view.PlaceHolder;
-import org.openflexo.gina.swing.utils.swing.view.FIBContainerView;
-import org.openflexo.gina.swing.utils.swing.view.widget.FIBImageWidget;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate;
+import org.openflexo.gina.swing.view.widget.JFIBTableWidget;
+import org.openflexo.gina.swing.view.widget.JFIBTableWidget.JTablePanel;
 import org.openflexo.logging.FlexoLogger;
 
-public class FIBEditableImageWidget extends FIBImageWidget implements FIBEditableView<FIBImage, JLabel> {
+public class JFIBEditableTableWidget<T> extends JFIBTableWidget<T>implements FIBSwingEditableView<FIBTable, JTablePanel<T>> {
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = FlexoLogger.getLogger(FIBEditableImageWidget.class.getPackage().getName());
+	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableTableWidget.class.getPackage().getName());
 
-	private final FIBEditableViewDelegate<FIBImage, JLabel> delegate;
+	private final FIBSwingEditableViewDelegate<FIBTable, JTablePanel<T>> delegate;
 
 	private final FIBEditorController editorController;
 
@@ -68,51 +63,22 @@ public class FIBEditableImageWidget extends FIBImageWidget implements FIBEditabl
 		return editorController;
 	}
 
-	public FIBEditableImageWidget(FIBImage model, FIBEditorController editorController) {
+	public JFIBEditableTableWidget(FIBTable model, FIBEditorController editorController) {
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBEditableViewDelegate<FIBImage, JLabel>(this);
-		model.getPropertyChangeSupport().addPropertyChangeListener(this);
+		delegate = new FIBSwingEditableViewDelegate<FIBTable, JTablePanel<T>>(this);
 	}
 
 	@Override
 	public void delete() {
 		delegate.delete();
-		getComponent().getPropertyChangeSupport().removePropertyChangeListener(this);
 		super.delete();
 	}
 
 	@Override
-	public Vector<PlaceHolder> getPlaceHolders() {
-		return null;
-	}
-
-	@Override
-	public FIBEditableViewDelegate<FIBImage, JLabel> getDelegate() {
+	public FIBSwingEditableViewDelegate<FIBTable, JTablePanel<T>> getDelegate() {
 		return delegate;
-	}
-
-	@Override
-	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
-		if (isDeleted()) {
-			return;
-		}
-		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
-		if ((propertyName.equals(FIBImage.ALIGN_KEY))) {
-			updateAlign();
-		} else if ((propertyName.equals(FIBImage.IMAGE_FILE_KEY)) || (propertyName.equals(FIBImage.SIZE_ADJUSTMENT_KEY))
-				|| (propertyName.equals(FIBImage.IMAGE_HEIGHT_KEY)) || (propertyName.equals(FIBImage.IMAGE_WIDTH_KEY))) {
-			relayoutParentBecauseImageChanged();
-		}
-		delegate.receivedModelNotifications(o, propertyName, oldValue, newValue);
-	}
-
-	protected void relayoutParentBecauseImageChanged() {
-		FIBContainerView<?, ?, ?> parentView = getParentView();
-		FIBEditorController controller = getEditorController();
-		parentView.updateLayout();
-		controller.notifyFocusedAndSelectedObject();
 	}
 
 }

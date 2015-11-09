@@ -220,4 +220,9 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 		return getTechnologyComponent();
 	}
 
+	@Override
+	protected void updateRadioButtonListLayout() {
+		getTechnologyComponent().update();
+	}
+
 }

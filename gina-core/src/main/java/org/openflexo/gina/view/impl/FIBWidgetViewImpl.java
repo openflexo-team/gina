@@ -72,7 +72,6 @@ import org.openflexo.gina.event.MissingIdentityParameterException;
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.event.description.FIBEventDescription;
 import org.openflexo.gina.model.FIBComponent;
-import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.model.FIBMouseEvent;
 import org.openflexo.gina.model.FIBWidget;
 import org.openflexo.gina.view.FIBView;
@@ -635,49 +634,20 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		// updateBindingValueChangeListeners();
 	}
 
-	/*
-	 * public <T> void bindingValueHasChanged(DataBinding<T> dataBinding, T
-	 * newValue) { //
-	 * System.out.println("Widget "+getWidget()+" : receive notification "+o);
-	 * if (!SwingUtilities.isEventDispatchThread()) {
-	 * SwingUtilities.invokeLater(new Runnable() {
-	 * 
-	 * @Override public void run() { update(new ArrayList<FIBComponent>()); }
-	 * }); } else { update(new ArrayList<FIBComponent>()); } }
-	 */
-
-	/*
-	 * @Override public void update(Observable o, Object arg) {
-	 * System.out.println("Widget " + getWidget() + " : receive notification " +
-	 * o);
-	 */
-	/*
-	 * if (!SwingUtilities.isEventDispatchThread()) {
-	 * SwingUtilities.invokeLater(new Runnable() {
-	 * 
-	 * @Override public void run() { update(new ArrayList<FIBComponent>()); }
-	 * }); } else { update(new ArrayList<FIBComponent>()); }
-	 */
-	// }
-
 	@Override
-	public final void propertyChange(PropertyChangeEvent evt) {
-		// System.out.println("Widget " + getWidget() + " : propertyChange " +
-		// evt);
-		if (evt.getSource() instanceof FIBModelObject && (!((FIBModelObject) evt.getSource()).isDeleted())) {
-			receivedModelNotifications((FIBModelObject) evt.getSource(), evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+	public void propertyChange(PropertyChangeEvent evt) {
+
+		if (evt.getPropertyName().equals(FIBWidget.DATA_KEY)) {
+			updateData();
 		}
-		/*
-		 * if (!SwingUtilities.isEventDispatchThread()) {
-		 * SwingUtilities.invokeLater(new Runnable() {
-		 * 
-		 * @Override public void run() { update(new ArrayList<FIBComponent>());
-		 * } }); } else { update(new ArrayList<FIBComponent>()); }
-		 */
-	}
+		if (evt.getPropertyName().equals(FIBWidget.MANAGE_DYNAMIC_MODEL_KEY)) {
+			getComponent().updateDynamicAccessBindingVariable();
+		}
+		else if (evt.getPropertyName().equals(FIBWidget.READ_ONLY_KEY) || evt.getPropertyName().equals(FIBWidget.ENABLE_KEY)) {
+			updateEnability();
+		}
 
-	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
-
+		super.propertyChange(evt);
 	}
 
 	@Override
@@ -718,11 +688,11 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			updateComponentsExplicitelyDeclaredAsDependant();
 		}
 		/* } *//*
-				 * else if (checkValidDataPath()) { // Even if the component is
-				 * not visible, its visibility may depend // it self from some
-				 * depending component (which in that situation, // are very
-				 * important to know, aren'they ?) updateDependingObjects(); }
-				 */
+				* else if (checkValidDataPath()) { // Even if the component is
+				* not visible, its visibility may depend // it self from some
+				* depending component (which in that situation, // are very
+				* important to know, aren'they ?) updateDependingObjects(); }
+				*/
 
 		if (enableBindingValueChangeListener != null) {
 			enableBindingValueChangeListener.refreshObserving();

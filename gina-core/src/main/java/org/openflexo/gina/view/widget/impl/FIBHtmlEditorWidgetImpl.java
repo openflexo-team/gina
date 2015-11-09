@@ -39,10 +39,12 @@
 
 package org.openflexo.gina.view.widget.impl;
 
+import java.beans.PropertyChangeEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.FIBWidget;
 import org.openflexo.gina.model.widget.FIBHtmlEditor;
 import org.openflexo.gina.view.impl.FIBWidgetViewImpl;
 import org.openflexo.gina.view.widget.FIBHtmlEditorWidget;
@@ -58,8 +60,7 @@ public abstract class FIBHtmlEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBHt
 
 	boolean validateOnReturn;
 
-	public FIBHtmlEditorWidgetImpl(FIBHtmlEditor model, FIBController controller,
-			HtmlEditorWidgetRenderingAdapter<C> RenderingAdapter) {
+	public FIBHtmlEditorWidgetImpl(FIBHtmlEditor model, FIBController controller, HtmlEditorWidgetRenderingAdapter<C> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
 		updateHtmlEditorConfiguration();
 	}
@@ -114,6 +115,18 @@ public abstract class FIBHtmlEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBHt
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+
+		if ((evt.getPropertyName().equals(FIBHtmlEditor.OPTIONS_IN_LINE1_KEY))
+				|| (evt.getPropertyName().equals(FIBHtmlEditor.OPTIONS_IN_LINE2_KEY))
+				|| (evt.getPropertyName().equals(FIBHtmlEditor.OPTIONS_IN_LINE3_KEY))
+				|| (evt.getPropertyName().equals(FIBWidget.ICON_KEY))) {
+			updateHtmlEditorConfiguration();
+		}
+		super.propertyChange(evt);
 	}
 
 }

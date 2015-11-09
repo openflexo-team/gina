@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.view.impl;
 
+import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
@@ -168,6 +169,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	 * @param component
 	 * @return
 	 */
+	@Override
 	public Object getTechnologyComponentForFIBComponent(FIBComponent component) {
 		if (getComponent() == component) {
 			return getTechnologyComponent();
@@ -405,4 +407,13 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	@Override
 	public abstract void updateLayout();
 
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+
+		if (evt.getPropertyName().equals(FIBContainer.SUB_COMPONENTS_KEY)) {
+			updateLayout();
+		}
+
+		super.propertyChange(evt);
+	}
 }

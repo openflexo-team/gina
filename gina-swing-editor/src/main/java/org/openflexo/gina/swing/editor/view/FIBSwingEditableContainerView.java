@@ -1,7 +1,7 @@
 /**
  * 
  * Copyright (c) 2013-2014, Openflexo
- * Copyright (c) 2012-2012, AgileBirds
+ * Copyright (c) 2011-2012, AgileBirds
  * 
  * This file is part of Gina-swing-editor, a component of the software infrastructure 
  * developed at Openflexo.
@@ -37,19 +37,28 @@
  * 
  */
 
-package org.openflexo.gina.swing.editor.controller;
+package org.openflexo.gina.swing.editor.view;
 
-import java.awt.Point;
+import java.util.Vector;
 
-import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate.FIBDropTarget;
+import javax.swing.JComponent;
 
-public interface FIBDraggable {
+import org.openflexo.gina.model.FIBContainer;
+import org.openflexo.gina.view.FIBView;
 
-	public void enableDragging();
+/**
+ * Represent a {@link FIBView} with editing features
+ * 
+ * @author sylvain
+ *
+ * @param <M>
+ * @param <C>
+ */
+public interface FIBSwingEditableContainerView<M extends FIBContainer, J extends JComponent> extends FIBSwingEditableView<M, J> {
 
-	public void disableDragging();
+	@Override
+	public FIBSwingEditableContainerViewDelegate<M, J> getDelegate();
 
-	public boolean acceptDragging(FIBDropTarget target);
+	public Vector<PlaceHolder> getPlaceHolders();
 
-	public boolean elementDragged(FIBDropTarget target, Point pt);
 }

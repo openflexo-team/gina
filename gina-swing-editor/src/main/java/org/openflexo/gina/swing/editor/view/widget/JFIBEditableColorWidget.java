@@ -39,26 +39,22 @@
 
 package org.openflexo.gina.swing.editor.view.widget;
 
-import java.util.Vector;
 import java.util.logging.Logger;
 
-import javax.swing.JComboBox;
-
-import org.openflexo.gina.model.FIBModelObject;
-import org.openflexo.gina.model.widget.FIBDropDown;
+import org.openflexo.gina.model.widget.FIBColor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.view.FIBEditableView;
-import org.openflexo.gina.swing.editor.view.FIBEditableViewDelegate;
-import org.openflexo.gina.swing.editor.view.PlaceHolder;
-import org.openflexo.gina.swing.utils.swing.view.widget.FIBDropDownWidget;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate;
+import org.openflexo.gina.swing.view.widget.JFIBColorWidget;
+import org.openflexo.gina.swing.view.widget.JFIBColorWidget.ColorSelectorPanel;
 import org.openflexo.logging.FlexoLogger;
 
-public class FIBEditableDropDownWidget<T> extends FIBDropDownWidget<T> implements FIBEditableView<FIBDropDown, JComboBox> {
+public class JFIBEditableColorWidget extends JFIBColorWidget implements FIBSwingEditableView<FIBColor, ColorSelectorPanel> {
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = FlexoLogger.getLogger(FIBEditableDropDownWidget.class.getPackage().getName());
+	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableColorWidget.class.getPackage().getName());
 
-	private final FIBEditableViewDelegate<FIBDropDown, JComboBox> delegate;
+	private final FIBSwingEditableViewDelegate<FIBColor, ColorSelectorPanel> delegate;
 
 	private final FIBEditorController editorController;
 
@@ -67,38 +63,22 @@ public class FIBEditableDropDownWidget<T> extends FIBDropDownWidget<T> implement
 		return editorController;
 	}
 
-	public FIBEditableDropDownWidget(FIBDropDown model, FIBEditorController editorController) {
+	public JFIBEditableColorWidget(FIBColor model, FIBEditorController editorController) {
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBEditableViewDelegate<FIBDropDown, JComboBox>(this);
-		model.getPropertyChangeSupport().addPropertyChangeListener(this);
+		delegate = new FIBSwingEditableViewDelegate<FIBColor, ColorSelectorPanel>(this);
 	}
 
 	@Override
 	public void delete() {
 		delegate.delete();
-		getComponent().getPropertyChangeSupport().removePropertyChangeListener(this);
 		super.delete();
 	}
 
 	@Override
-	public Vector<PlaceHolder> getPlaceHolders() {
-		return null;
-	}
-
-	@Override
-	public FIBEditableViewDelegate<FIBDropDown, JComboBox> getDelegate() {
+	public FIBSwingEditableViewDelegate<FIBColor, ColorSelectorPanel> getDelegate() {
 		return delegate;
-	}
-
-	@Override
-	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
-		if (isDeleted()) {
-			return;
-		}
-		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
-		delegate.receivedModelNotifications(o, propertyName, oldValue, newValue);
 	}
 
 }

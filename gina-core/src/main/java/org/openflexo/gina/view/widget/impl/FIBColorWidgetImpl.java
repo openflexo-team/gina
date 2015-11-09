@@ -40,6 +40,7 @@
 package org.openflexo.gina.view.widget.impl;
 
 import java.awt.Color;
+import java.beans.PropertyChangeEvent;
 import java.util.logging.Logger;
 
 import org.openflexo.gina.controller.FIBController;
@@ -63,8 +64,7 @@ public abstract class FIBColorWidgetImpl<C> extends FIBWidgetViewImpl<FIBColor, 
 
 	private static final Logger logger = Logger.getLogger(FIBColorWidgetImpl.class.getPackage().getName());
 
-	public FIBColorWidgetImpl(FIBColor model, FIBController controller,
-			ColorWidgetRenderingAdapter<C> RenderingAdapter) {
+	public FIBColorWidgetImpl(FIBColor model, FIBController controller, ColorWidgetRenderingAdapter<C> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
 		updateCheckboxVisibility();
 	}
@@ -144,6 +144,14 @@ public abstract class FIBColorWidgetImpl<C> extends FIBWidgetViewImpl<FIBColor, 
 
 	public void setSelectedColor(Color aColor) {
 		getRenderingAdapter().setSelectedColor(getTechnologyComponent(), aColor);
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getPropertyName().equals(FIBColor.ALLOWS_NULL_KEY)) {
+			updateCheckboxVisibility();
+		}
+		super.propertyChange(evt);
 	}
 
 }

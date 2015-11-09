@@ -40,6 +40,7 @@
 package org.openflexo.gina.view.widget.impl;
 
 import java.awt.Component;
+import java.beans.PropertyChangeEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -426,6 +427,16 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 
 			return label;
 		}
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if ((evt.getPropertyName().equals(FIBList.CREATE_NEW_ROW_ON_CLICK_KEY)) || (evt.getPropertyName().equals(FIBList.ROW_HEIGHT_KEY))
+				|| (evt.getPropertyName().equals(FIBList.VISIBLE_ROW_COUNT_KEY))
+				|| (evt.getPropertyName().equals(FIBList.LAYOUT_ORIENTATION_KEY))) {
+			proceedToListModelUpdate();
+		}
+		super.propertyChange(evt);
 	}
 
 }

@@ -59,10 +59,8 @@ public class FIBEditorBrowser extends FIBJPanel<FIBComponent> {
 
 	protected static final Logger logger = Logger.getLogger(FIBEditorBrowser.class.getPackage().getName());
 
-	
- 
 	public static Resource FIB_FILE = ResourceLocator.locateResource("Fib/Browser.fib");
-	
+
 	private final FIBEditorController editorController;
 
 	public FIBEditorBrowser(FIBComponent fibComponent, FIBEditorController editorController) {

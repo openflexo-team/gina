@@ -39,39 +39,26 @@
 
 package org.openflexo.gina.swing.editor.view;
 
-import java.beans.PropertyChangeListener;
-import java.util.Vector;
-
 import javax.swing.JComponent;
 
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.utils.swing.view.FIBView;
+import org.openflexo.gina.view.FIBView;
 
-public interface FIBEditableView<M extends FIBComponent, J extends JComponent> extends PropertyChangeListener {
+/**
+ * Represent a {@link FIBView} with editing features
+ * 
+ * @author sylvain
+ *
+ * @param <M>
+ * @param <C>
+ */
+public interface FIBSwingEditableView<M extends FIBComponent, J extends JComponent> extends FIBView<M, J> {
 
 	public abstract FIBEditorController getEditorController();
 
-	public abstract Object getDataObject();
+	// public abstract boolean hasValue();
 
-	public abstract M getComponent();
-
-	// public abstract void updateDataObject(Object anObject);
-
-	public abstract JComponent getJComponent();
-
-	public abstract J getTechnologyComponent();
-
-	// public boolean update(List<FIBComponent> callers);
-
-	public abstract boolean isComponentVisible();
-
-	public abstract boolean hasValue();
-
-	public abstract FIBView getParentView();
-
-	public Vector<PlaceHolder> getPlaceHolders();
-
-	public FIBEditableViewDelegate<M, J> getDelegate();
+	public FIBSwingEditableViewDelegate<M, J> getDelegate();
 
 }

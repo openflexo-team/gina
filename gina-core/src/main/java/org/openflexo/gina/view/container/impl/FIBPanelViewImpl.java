@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.view.container.impl;
 
+import java.beans.PropertyChangeEvent;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -47,8 +48,9 @@ import javax.swing.JPanel;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBPanel;
-import org.openflexo.gina.model.container.GridLayoutConstraints;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
+import org.openflexo.gina.model.container.FIBTab;
+import org.openflexo.gina.model.container.GridLayoutConstraints;
 import org.openflexo.gina.view.container.FIBPanelView;
 import org.openflexo.gina.view.impl.FIBContainerViewImpl;
 import org.openflexo.gina.view.impl.FIBViewImpl;
@@ -197,6 +199,27 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 	@Override
 	public void delete() {
 		super.delete();
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getPropertyName().equals(FIBPanel.BORDER_KEY) || evt.getPropertyName().equals(FIBPanel.BORDER_COLOR_KEY)
+				|| evt.getPropertyName().equals(FIBPanel.BORDER_TITLE_KEY) || evt.getPropertyName().equals(FIBPanel.BORDER_TOP_KEY)
+				|| evt.getPropertyName().equals(FIBPanel.BORDER_LEFT_KEY) || evt.getPropertyName().equals(FIBPanel.BORDER_RIGHT_KEY)
+				|| evt.getPropertyName().equals(FIBPanel.BORDER_BOTTOM_KEY) || evt.getPropertyName().equals(FIBPanel.TITLE_FONT_KEY)
+				|| evt.getPropertyName().equals(FIBPanel.DARK_LEVEL_KEY)) {
+			updateBorder();
+		}
+		if (evt.getPropertyName().equals(FIBPanel.LAYOUT_KEY) || evt.getPropertyName().equals(FIBPanel.FLOW_ALIGNMENT_KEY)
+				|| evt.getPropertyName().equals(FIBPanel.BOX_LAYOUT_AXIS_KEY) || evt.getPropertyName().equals(FIBPanel.V_GAP_KEY)
+				|| evt.getPropertyName().equals(FIBPanel.H_GAP_KEY) || evt.getPropertyName().equals(FIBPanel.ROWS_KEY)
+				|| evt.getPropertyName().equals(FIBPanel.COLS_KEY) || evt.getPropertyName().equals(FIBPanel.PROTECT_CONTENT_KEY)) {
+			updateLayout();
+		}
+		if (getComponent() instanceof FIBTab && evt.getPropertyName().equals(FIBTab.TITLE_KEY)) {
+			// Arghlll how do we update titles on this.
+		}
+		super.propertyChange(evt);
 	}
 
 }

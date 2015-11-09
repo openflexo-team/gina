@@ -39,11 +39,13 @@
 
 package org.openflexo.gina.view.widget.impl;
 
+import java.beans.PropertyChangeEvent;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBLabel;
+import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.impl.FIBWidgetViewImpl;
 import org.openflexo.gina.view.widget.FIBLabelWidget;
 
@@ -113,9 +115,35 @@ public abstract class FIBLabelWidgetImpl<C> extends FIBWidgetViewImpl<FIBLabel, 
 		getRenderingAdapter().setText(getTechnologyComponent(), label);
 	}
 
+	final protected void relayoutParentBecauseLabelChanged() {
+		FIBContainerView<?, ?, ?> parentView = getParentView();
+		if (parentView != null) {
+			parentView.updateLayout();
+		}
+		/*FIBEditorController controller = getEditorController();
+		if (controller != null) {
+			controller.notifyFocusedAndSelectedObject();
+		}*/
+	}
+
 	@Override
 	public void updateLanguage() {
 		super.updateLanguage();
 		updateLabel();
 	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+
+		if (evt.getPropertyName().equals(FIBLabel.ALIGN_KEY)) {
+			updateAlign();
+		}
+		if (evt.getPropertyName().equals(FIBLabel.LABEL_KEY)) {
+			relayoutParentBecauseLabelChanged();
+		}
+
+		super.propertyChange(evt);
+
+	}
+
 }

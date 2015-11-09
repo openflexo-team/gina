@@ -39,26 +39,23 @@
 
 package org.openflexo.gina.swing.editor.view.widget;
 
-import java.util.Vector;
 import java.util.logging.Logger;
 
-import javax.swing.JTextArea;
-
-import org.openflexo.gina.model.FIBModelObject;
-import org.openflexo.gina.model.widget.FIBTextArea;
+import org.openflexo.gina.model.widget.FIBCheckboxList;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.view.FIBEditableView;
-import org.openflexo.gina.swing.editor.view.FIBEditableViewDelegate;
-import org.openflexo.gina.swing.editor.view.PlaceHolder;
-import org.openflexo.gina.swing.utils.swing.view.widget.FIBTextAreaWidget;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate;
+import org.openflexo.gina.swing.view.widget.JFIBCheckboxListWidget;
+import org.openflexo.gina.swing.view.widget.JFIBCheckboxListWidget.JCheckBoxListPanel;
 import org.openflexo.logging.FlexoLogger;
 
-public class FIBEditableTextAreaWidget extends FIBTextAreaWidget implements FIBEditableView<FIBTextArea, JTextArea> {
+public class JFIBEditableCheckboxListWidget<T> extends JFIBCheckboxListWidget<T>
+		implements FIBSwingEditableView<FIBCheckboxList, JCheckBoxListPanel<T>> {
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = FlexoLogger.getLogger(FIBEditableTextAreaWidget.class.getPackage().getName());
+	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableCheckboxListWidget.class.getPackage().getName());
 
-	private final FIBEditableViewDelegate<FIBTextArea, JTextArea> delegate;
+	private final FIBSwingEditableViewDelegate<FIBCheckboxList, JCheckBoxListPanel<T>> delegate;
 
 	private final FIBEditorController editorController;
 
@@ -67,38 +64,22 @@ public class FIBEditableTextAreaWidget extends FIBTextAreaWidget implements FIBE
 		return editorController;
 	}
 
-	public FIBEditableTextAreaWidget(FIBTextArea model, FIBEditorController editorController) {
+	public JFIBEditableCheckboxListWidget(FIBCheckboxList model, FIBEditorController editorController) {
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBEditableViewDelegate<FIBTextArea, JTextArea>(this);
-		model.getPropertyChangeSupport().addPropertyChangeListener(this);
+		delegate = new FIBSwingEditableViewDelegate<FIBCheckboxList, JCheckBoxListPanel<T>>(this);
 	}
 
 	@Override
 	public void delete() {
 		delegate.delete();
-		getComponent().getPropertyChangeSupport().removePropertyChangeListener(this);
 		super.delete();
 	}
 
 	@Override
-	public Vector<PlaceHolder> getPlaceHolders() {
-		return null;
-	}
-
-	@Override
-	public FIBEditableViewDelegate<FIBTextArea, JTextArea> getDelegate() {
+	public FIBSwingEditableViewDelegate<FIBCheckboxList, JCheckBoxListPanel<T>> getDelegate() {
 		return delegate;
-	}
-
-	@Override
-	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
-		if (isDeleted()) {
-			return;
-		}
-		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
-		delegate.receivedModelNotifications(o, propertyName, oldValue, newValue);
 	}
 
 }

@@ -39,10 +39,12 @@
 
 package org.openflexo.gina.view.widget.impl;
 
+import java.beans.PropertyChangeEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.FIBWidget;
 import org.openflexo.gina.model.widget.FIBRadioButtonList;
 import org.openflexo.gina.view.widget.FIBRadioButtonListWidget;
 
@@ -134,4 +136,18 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 	public void setSelectedValue(T selectedValue) {
 		getRenderingAdapter().setSelectedItem(getTechnologyComponent(), selectedValue);
 	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if ((evt.getPropertyName().equals(FIBWidget.FORMAT_KEY)) || (evt.getPropertyName().equals(FIBWidget.LOCALIZE_KEY))
+				|| (evt.getPropertyName().equals(FIBRadioButtonList.COLUMNS_KEY))
+				|| (evt.getPropertyName().equals(FIBRadioButtonList.H_GAP_KEY))
+				|| (evt.getPropertyName().equals(FIBRadioButtonList.V_GAP_KEY))) {
+			updateRadioButtonListLayout();
+		}
+		super.propertyChange(evt);
+	}
+
+	protected abstract void updateRadioButtonListLayout();
+
 }

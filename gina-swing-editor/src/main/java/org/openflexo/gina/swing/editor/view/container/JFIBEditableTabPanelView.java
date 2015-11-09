@@ -41,7 +41,6 @@ package org.openflexo.gina.swing.editor.view.container;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -49,22 +48,21 @@ import javax.swing.DefaultSingleSelectionModel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import org.openflexo.gina.model.FIBModelObject;
+import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.model.container.FIBTab;
 import org.openflexo.gina.model.container.FIBTabPanel;
-import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.view.FIBEditableView;
-import org.openflexo.gina.swing.editor.view.FIBEditableViewDelegate;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerViewDelegate;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.view.container.JFIBTabPanelView;
 import org.openflexo.logging.FlexoLogger;
 
-public class FIBEditableTabPanelView<T> extends JFIBTabPanelView<T> implements FIBEditableView<FIBTabPanel, JTabbedPane> {
+public class JFIBEditableTabPanelView extends JFIBTabPanelView implements FIBSwingEditableContainerView<FIBTabPanel, JTabbedPane> {
 
-	private static final Logger logger = FlexoLogger.getLogger(FIBEditableTabPanelView.class.getPackage().getName());
+	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableTabPanelView.class.getPackage().getName());
 
-	private final FIBEditableViewDelegate<FIBTabPanel, JTabbedPane> delegate;
+	private final FIBSwingEditableContainerViewDelegate<FIBTabPanel, JTabbedPane> delegate;
 
 	private Vector<PlaceHolder> placeholders;
 
@@ -75,12 +73,11 @@ public class FIBEditableTabPanelView<T> extends JFIBTabPanelView<T> implements F
 		return editorController;
 	}
 
-	public FIBEditableTabPanelView(FIBTabPanel model, FIBEditorController editorController) {
+	public JFIBEditableTabPanelView(FIBTabPanel model, FIBEditorController editorController) {
 		super(model, editorController.getController());
 		this.editorController = editorController;
-		delegate = new FIBEditableViewDelegate<FIBTabPanel, JTabbedPane>(this);
+		delegate = new FIBSwingEditableContainerViewDelegate<FIBTabPanel, JTabbedPane>(this);
 		placeholders = new Vector<PlaceHolder>();
-		model.getPropertyChangeSupport().addPropertyChangeListener(this);
 	}
 
 	@Override
@@ -88,7 +85,6 @@ public class FIBEditableTabPanelView<T> extends JFIBTabPanelView<T> implements F
 		placeholders.clear();
 		placeholders = null;
 		delegate.delete();
-		getComponent().getPropertyChangeSupport().removePropertyChangeListener(this);
 		super.delete();
 	}
 
@@ -98,7 +94,7 @@ public class FIBEditableTabPanelView<T> extends JFIBTabPanelView<T> implements F
 	}
 
 	@Override
-	public FIBEditableViewDelegate<FIBTabPanel, JTabbedPane> getDelegate() {
+	public FIBSwingEditableContainerViewDelegate<FIBTabPanel, JTabbedPane> getDelegate() {
 		return delegate;
 	}
 
@@ -128,11 +124,6 @@ public class FIBEditableTabPanelView<T> extends JFIBTabPanelView<T> implements F
 				}
 			}
 		});
-	}
-
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		delegate.receivedModelNotifications((FIBModelObject) evt.getSource(), evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
 	}
 
 }

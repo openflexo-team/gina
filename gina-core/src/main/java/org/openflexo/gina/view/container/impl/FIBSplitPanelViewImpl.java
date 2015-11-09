@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.view.container.impl;
 
+import java.beans.PropertyChangeEvent;
 import java.util.logging.Logger;
 
 import org.openflexo.gina.controller.FIBController;
@@ -92,6 +93,14 @@ public abstract class FIBSplitPanelViewImpl<C, C2> extends FIBContainerViewImpl<
 					((SplitLayoutConstraints) subComponent.getConstraints()).getSplitIdentifier());
 			// }
 		}
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getPropertyName().equals(FIBSplitPanel.SPLIT_KEY)) {
+			updateLayout();
+		}
+		super.propertyChange(evt);
 	}
 
 }

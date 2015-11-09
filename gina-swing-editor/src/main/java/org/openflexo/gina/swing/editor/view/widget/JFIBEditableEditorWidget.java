@@ -39,27 +39,22 @@
 
 package org.openflexo.gina.swing.editor.view.widget;
 
-import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.openflexo.gina.model.FIBModelObject;
-import org.openflexo.gina.model.FIBWidget;
-import org.openflexo.gina.model.widget.FIBHtmlEditor;
+import org.openflexo.gina.model.widget.FIBEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.view.FIBEditableView;
-import org.openflexo.gina.swing.editor.view.FIBEditableViewDelegate;
-import org.openflexo.gina.swing.editor.view.PlaceHolder;
-import org.openflexo.gina.swing.view.widget.JFIBHtmlEditorWidget;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate;
+import org.openflexo.gina.swing.view.widget.JFIBEditorWidget;
+import org.openflexo.jedit.JEditTextArea;
 import org.openflexo.logging.FlexoLogger;
 
-import com.metaphaseeditor.MetaphaseEditorPanel;
-
-public class FIBEditableHtmlEditorWidget extends JFIBHtmlEditorWidget implements FIBEditableView<FIBHtmlEditor, MetaphaseEditorPanel> {
+public class JFIBEditableEditorWidget extends JFIBEditorWidget implements FIBSwingEditableView<FIBEditor, JEditTextArea> {
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = FlexoLogger.getLogger(FIBEditableHtmlEditorWidget.class.getPackage().getName());
+	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableEditorWidget.class.getPackage().getName());
 
-	private final FIBEditableViewDelegate<FIBHtmlEditor, MetaphaseEditorPanel> delegate;
+	private final FIBSwingEditableViewDelegate<FIBEditor, JEditTextArea> delegate;
 
 	private final FIBEditorController editorController;
 
@@ -68,46 +63,21 @@ public class FIBEditableHtmlEditorWidget extends JFIBHtmlEditorWidget implements
 		return editorController;
 	}
 
-	public FIBEditableHtmlEditorWidget(FIBHtmlEditor model, FIBEditorController editorController) {
+	public JFIBEditableEditorWidget(FIBEditor model, FIBEditorController editorController) {
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBEditableViewDelegate<FIBHtmlEditor, MetaphaseEditorPanel>(this);
-		model.getPropertyChangeSupport().addPropertyChangeListener(this);
+		delegate = new FIBSwingEditableViewDelegate<FIBEditor, JEditTextArea>(this);
 	}
 
 	@Override
 	public void delete() {
 		delegate.delete();
-		getComponent().getPropertyChangeSupport().removePropertyChangeListener(this);
 		super.delete();
 	}
 
 	@Override
-	public Vector<PlaceHolder> getPlaceHolders() {
-		return null;
-	}
-
-	@Override
-	public FIBEditableViewDelegate<FIBHtmlEditor, MetaphaseEditorPanel> getDelegate() {
+	public FIBSwingEditableViewDelegate<FIBEditor, JEditTextArea> getDelegate() {
 		return delegate;
 	}
-
-	@Override
-	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
-		if (isDeleted()) {
-			return;
-		}
-		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
-		if ((propertyName.equals(FIBHtmlEditor.OPTIONS_IN_LINE1_KEY)) || (propertyName.equals(FIBHtmlEditor.OPTIONS_IN_LINE2_KEY))
-				|| (propertyName.equals(FIBHtmlEditor.OPTIONS_IN_LINE3_KEY))
-				/*|| (propertyName.equals(FIBHtmlEditor.Parameters.firstLevelOptionsInLine1.name()))
-				|| (propertyName.equals(FIBHtmlEditor.Parameters.firstLevelOptionsInLine2.name()))
-				|| (propertyName.equals(FIBHtmlEditor.Parameters.firstLevelOptionsInLine3.name()))*/
-				|| (propertyName.equals(FIBWidget.ICON_KEY))) {
-			updateHtmlEditorConfiguration();
-		}
-		delegate.receivedModelNotifications(o, propertyName, oldValue, newValue);
-	}
-
 }

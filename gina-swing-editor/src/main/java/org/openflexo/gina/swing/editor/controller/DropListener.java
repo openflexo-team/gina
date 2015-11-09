@@ -52,10 +52,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.gina.model.FIBContainer;
-import org.openflexo.gina.swing.editor.view.FIBEditableView;
-import org.openflexo.gina.swing.editor.view.FIBEditableViewDelegate;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerViewDelegate;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate.FIBDropTarget;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
-import org.openflexo.gina.swing.editor.view.FIBEditableViewDelegate.FIBDropTarget;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.swing.Focusable;
 
@@ -69,13 +70,13 @@ public class DropListener implements DropTargetListener {
 
 	static final Logger logger = FlexoLogger.getLogger(DropListener.class.getPackage().getName());
 
-	private int acceptableActions = DnDConstants.ACTION_COPY | DnDConstants.ACTION_MOVE;
+	private final int acceptableActions = DnDConstants.ACTION_COPY | DnDConstants.ACTION_MOVE;
 
-	private final FIBEditableView<?, ?> editableView;
+	private final FIBSwingEditableView<?, ?> editableView;
 
 	private final PlaceHolder placeHolder;
 
-	public DropListener(FIBEditableView<?, ?> editableView, PlaceHolder placeHolder) {
+	public DropListener(FIBSwingEditableView<?, ?> editableView, PlaceHolder placeHolder) {
 		this.editableView = editableView;
 		this.placeHolder = placeHolder;
 	}
@@ -177,15 +178,17 @@ public class DropListener implements DropTargetListener {
 			 * please check...
 			 * 
 			 */
-			if (placeHolder == null && editableView.getPlaceHolders() != null) {
-				for (PlaceHolder ph2 : editableView.getPlaceHolders()) {
+			if (placeHolder == null && editableView instanceof FIBSwingEditableContainerView
+					&& ((FIBSwingEditableContainerView<?, ?>) editableView).getPlaceHolders() != null) {
+				for (PlaceHolder ph2 : ((FIBSwingEditableContainerView<?, ?>) editableView).getPlaceHolders()) {
 					if (ph2.getBounds().contains(e.getLocation())) {
 						getContainerDelegate().addToPlaceHolderVisibleRequesters(ph2);
 					}
 				}
 			}
 			e.acceptDrag(e.getDropAction());
-		} else {
+		}
+		else {
 			e.rejectDrag();
 			return;
 		}
@@ -205,7 +208,8 @@ public class DropListener implements DropTargetListener {
 		 */
 		if (isDragOk(e)) {
 			e.acceptDrag(e.getDropAction());
-		} else {
+		}
+		else {
 			e.rejectDrag();
 		}
 	}
@@ -214,7 +218,8 @@ public class DropListener implements DropTargetListener {
 	public void dropActionChanged(DropTargetDragEvent e) {
 		if (isDragOk(e)) {
 			e.acceptDrag(e.getDropAction());
-		} else {
+		}
+		else {
 			e.rejectDrag();
 		}
 	}
@@ -322,13 +327,13 @@ public class DropListener implements DropTargetListener {
 		}
 	}
 
-	public FIBEditableViewDelegate<?, ?> getContainerDelegate() {
+	public FIBSwingEditableContainerViewDelegate<?, ?> getContainerDelegate() {
 		if (!(editableView.getComponent() instanceof FIBContainer)) {
-			if (editableView.getParentView() != null && editableView.getParentView() instanceof FIBEditableView) {
-				return ((FIBEditableView<?, ?>) editableView.getParentView()).getDelegate();
+			if (editableView.getParentView() != null && editableView.getParentView() instanceof FIBSwingEditableView) {
+				return ((FIBSwingEditableContainerView<?, ?>) editableView.getParentView()).getDelegate();
 			}
 		}
-		return editableView.getDelegate();
+		return ((FIBSwingEditableContainerView<?, ?>) editableView).getDelegate();
 	}
 
 }

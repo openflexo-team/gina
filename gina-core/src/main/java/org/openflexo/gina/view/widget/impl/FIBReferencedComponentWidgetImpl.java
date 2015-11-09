@@ -38,6 +38,7 @@
 
 package org.openflexo.gina.view.widget.impl;
 
+import java.beans.PropertyChangeEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
@@ -383,6 +384,18 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 		// return getBindingEvaluationContext();
 		// return this;
 		return embeddedFIBController;
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+
+		if (evt.getPropertyName().equals(FIBReferencedComponent.COMPONENT_FILE_KEY)
+				|| evt.getPropertyName().equals(FIBReferencedComponent.DYNAMIC_COMPONENT_FILE_KEY)
+				|| evt.getPropertyName().equals(FIBReferencedComponent.DYNAMIC_COMPONENT_KEY)) {
+			updateComponent();
+		}
+
+		super.propertyChange(evt);
 	}
 
 }

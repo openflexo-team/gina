@@ -39,28 +39,23 @@
 
 package org.openflexo.gina.swing.editor.view.widget;
 
-import java.util.Vector;
 import java.util.logging.Logger;
 
-import javax.swing.JPanel;
+import javax.swing.JComboBox;
 
-import org.openflexo.gina.model.FIBModelObject;
-import org.openflexo.gina.model.FIBWidget;
-import org.openflexo.gina.model.widget.FIBCheckboxList;
-import org.openflexo.gina.model.widget.FIBMultipleValues;
+import org.openflexo.gina.model.widget.FIBDropDown;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.view.FIBEditableView;
-import org.openflexo.gina.swing.editor.view.FIBEditableViewDelegate;
-import org.openflexo.gina.swing.editor.view.PlaceHolder;
-import org.openflexo.gina.swing.utils.swing.view.widget.FIBCheckboxListWidget;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate;
+import org.openflexo.gina.swing.view.widget.JFIBDropDownWidget;
 import org.openflexo.logging.FlexoLogger;
 
-public class FIBEditableCheckboxListWidget<T> extends FIBCheckboxListWidget<T> implements FIBEditableView<FIBCheckboxList, JPanel> {
+public class JFIBEditableDropDownWidget<T> extends JFIBDropDownWidget<T>implements FIBSwingEditableView<FIBDropDown, JComboBox<T>> {
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = FlexoLogger.getLogger(FIBEditableCheckboxListWidget.class.getPackage().getName());
+	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableDropDownWidget.class.getPackage().getName());
 
-	private final FIBEditableViewDelegate<FIBCheckboxList, JPanel> delegate;
+	private final FIBSwingEditableViewDelegate<FIBDropDown, JComboBox<T>> delegate;
 
 	private final FIBEditorController editorController;
 
@@ -69,44 +64,22 @@ public class FIBEditableCheckboxListWidget<T> extends FIBCheckboxListWidget<T> i
 		return editorController;
 	}
 
-	public FIBEditableCheckboxListWidget(FIBCheckboxList model, FIBEditorController editorController) {
+	public JFIBEditableDropDownWidget(FIBDropDown model, FIBEditorController editorController) {
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBEditableViewDelegate<FIBCheckboxList, JPanel>(this);
-		model.getPropertyChangeSupport().addPropertyChangeListener(this);
+		delegate = new FIBSwingEditableViewDelegate<FIBDropDown, JComboBox<T>>(this);
 	}
 
 	@Override
 	public void delete() {
 		delegate.delete();
-		getComponent().getPropertyChangeSupport().removePropertyChangeListener(this);
 		super.delete();
 	}
 
 	@Override
-	public Vector<PlaceHolder> getPlaceHolders() {
-		return null;
-	}
-
-	@Override
-	public FIBEditableViewDelegate<FIBCheckboxList, JPanel> getDelegate() {
+	public FIBSwingEditableViewDelegate<FIBDropDown, JComboBox<T>> getDelegate() {
 		return delegate;
-	}
-
-	@Override
-	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
-		if (isDeleted()) {
-			return;
-		}
-		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
-		if ((propertyName.equals(FIBWidget.FORMAT_KEY)) || (propertyName.equals(FIBWidget.LOCALIZE_KEY))
-				|| (propertyName.equals(FIBCheckboxList.COLUMNS_KEY)) || (propertyName.equals(FIBCheckboxList.H_GAP_KEY))
-				|| (propertyName.equals(FIBCheckboxList.V_GAP_KEY)) || (propertyName.equals(FIBWidget.ICON_KEY))
-				|| (propertyName.equals(FIBMultipleValues.SHOW_ICON_KEY)) || (propertyName.equals(FIBMultipleValues.SHOW_TEXT_KEY))) {
-			rebuildCheckboxes();
-		}
-		delegate.receivedModelNotifications(o, propertyName, oldValue, newValue);
 	}
 
 }

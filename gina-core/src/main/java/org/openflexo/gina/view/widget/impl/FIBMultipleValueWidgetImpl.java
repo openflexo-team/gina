@@ -41,6 +41,7 @@ package org.openflexo.gina.view.widget.impl;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.beans.PropertyChangeEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -68,14 +69,12 @@ import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.toolbox.StringUtils;
 
 /**
- * Default base implementation for a generic and abstract widget allowing to
- * handle a list of values
+ * Default base implementation for a generic and abstract widget allowing to handle a list of values
  * 
  * @author sylvain
  * 
  * @param <M>
- *            type of {@link FIBComponent} this view represents (here a subclass
- *            of FIBMultipleValues)
+ *            type of {@link FIBComponent} this view represents (here a subclass of FIBMultipleValues)
  * @param <C>
  *            type of technology-specific component this view manage
  * @param <T>
@@ -83,8 +82,8 @@ import org.openflexo.toolbox.StringUtils;
  * @param <I>
  *            type of iterable beeing managed by this widget
  */
-public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C, T, I> extends
-		FIBWidgetViewImpl<M, C, T> implements FIBMultipleValueWidget<M, C, T, I> {
+public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C, T, I> extends FIBWidgetViewImpl<M, C, T>
+		implements FIBMultipleValueWidget<M, C, T, I> {
 
 	static final Logger LOGGER = Logger.getLogger(FIBMultipleValueWidgetImpl.class.getPackage().getName());
 
@@ -97,8 +96,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 	private BindingValueListChangeListener<Object, List<Object>> listBindingValueChangeListener;
 	private BindingValueArrayChangeListener<Object> arrayBindingValueChangeListener;
 
-	public FIBMultipleValueWidgetImpl(M model, FIBController controller,
-			MultipleValueRenderingAdapter<C, I> RenderingAdapter) {
+	public FIBMultipleValueWidgetImpl(M model, FIBController controller, MultipleValueRenderingAdapter<C, I> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
 		listenListValueChange();
 		listenArrayValueChange();
@@ -179,7 +177,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 	}
 
 	@SuppressWarnings("serial")
-	public class FIBMultipleValueModelImpl extends AbstractListModel<I> implements FIBMultipleValueModel<I> {
+	public class FIBMultipleValueModelImpl extends AbstractListModel<I>implements FIBMultipleValueModel<I> {
 		private List<I> list = null;
 		private I[] array = null;
 
@@ -255,13 +253,13 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 			}
 
 			else if (getWidget() != null && getWidget().getData() != null && getWidget().getData().isValid() /*
-																											 * &&
-																											 * getDataObject
-																											 * (
-																											 * )
-																											 * !=
-																											 * null
-																											 */) {
+																												* &&
+																												* getDataObject
+																												* (
+																												* )
+																												* !=
+																												* null
+																												*/) {
 				/*
 				 * System.out.println("Binding: "+getWidget().getData().getBinding
 				 * ());
@@ -287,8 +285,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 				}
 			}
 
-			if (list == null && array == null && getWidget().getIteratorClass() != null
-					&& getWidget().getIteratorClass().isEnum()) {
+			if (list == null && array == null && getWidget().getIteratorClass() != null && getWidget().getIteratorClass().isEnum()) {
 				array = (I[]) getWidget().getIteratorClass().getEnumConstants();
 			}
 
@@ -386,8 +383,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 
 		@Override
 		public String toString() {
-			return getClass().getSimpleName() + "[" + (list != null ? list.size() + " " + list.toString() : "null")
-					+ "]";
+			return getClass().getSimpleName() + "[" + (list != null ? list.size() + " " + list.toString() : "null") + "]";
 		}
 
 		protected ArrayList<Object> toArrayList() {
@@ -415,30 +411,29 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 		private Dimension nullDimesion;
 
 		@Override
-		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
-				boolean cellHasFocus) {
-			FIBMultipleValueCellRenderer label = (FIBMultipleValueCellRenderer) super.getListCellRendererComponent(
-					list, value, index, isSelected, cellHasFocus);
+		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+			FIBMultipleValueCellRenderer label = (FIBMultipleValueCellRenderer) super.getListCellRendererComponent(list, value, index,
+					isSelected, cellHasFocus);
 			if (value != null && nullDimesion == null) {
-				nullDimesion = ((JComponent) getListCellRendererComponent(list, null, -1, false, false))
-						.getPreferredSize();
+				nullDimesion = ((JComponent) getListCellRendererComponent(list, null, -1, false, false)).getPreferredSize();
 			}
 			if (getWidget().getShowText()) {
 				if (value != null) {
 					String stringRepresentation = getStringRepresentation(value);
 					if (stringRepresentation == null || stringRepresentation.length() == 0) {
 						stringRepresentation = "<html><i>"
-								+ FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "empty_string")
-								+ "</i></html>";
+								+ FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "empty_string") + "</i></html>";
 					}
 					label.setText(stringRepresentation);
-				} else {
+				}
+				else {
 					label.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "no_selection"));
 				}
 				if (FIBMultipleValueWidgetImpl.this.getFont() != null) {
 					label.setFont(FIBMultipleValueWidgetImpl.this.getFont());
 				}
-			} else {
+			}
+			else {
 				label.setText(null);
 			}
 			// label.setBorder(BorderFactory.createEmptyBorder(1, 2, 1, 2));
@@ -508,8 +503,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 	// private ArrayList<Object> lastKnownValues = null;
 
 	/**
-	 * Return a flag indicating if last known values declared as ListModel have
-	 * changed since the last time this method was called.
+	 * Return a flag indicating if last known values declared as ListModel have changed since the last time this method was called.
 	 * 
 	 * @return
 	 */
@@ -598,6 +592,17 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 			this.selectedIndex = selectedIndex;
 			getPropertyChangeSupport().firePropertyChange(SELECTED_INDEX, oldSelectedIndex, selectedIndex);
 		}
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getPropertyName().equals(FIBMultipleValues.STATIC_LIST_KEY) || evt.getPropertyName().equals(FIBMultipleValues.LIST_KEY)
+				|| evt.getPropertyName().equals(FIBMultipleValues.ARRAY_KEY)) {
+			// view.updateDataObject(view.getDataObject());
+			updateMultipleValues();
+
+		}
+		super.propertyChange(evt);
 	}
 
 }

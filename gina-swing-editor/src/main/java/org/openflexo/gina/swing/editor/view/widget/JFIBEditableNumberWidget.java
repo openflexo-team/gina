@@ -39,26 +39,22 @@
 
 package org.openflexo.gina.swing.editor.view.widget;
 
-import java.util.Vector;
 import java.util.logging.Logger;
 
-import javax.swing.JComponent;
-
-import org.openflexo.gina.model.FIBModelObject;
-import org.openflexo.gina.model.widget.FIBCustom;
+import org.openflexo.gina.model.widget.FIBNumber;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.view.FIBEditableView;
-import org.openflexo.gina.swing.editor.view.FIBEditableViewDelegate;
-import org.openflexo.gina.swing.editor.view.PlaceHolder;
-import org.openflexo.gina.swing.view.widget.JFIBCustomWidget;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate;
+import org.openflexo.gina.swing.view.widget.JFIBNumberWidget;
+import org.openflexo.gina.swing.view.widget.JFIBNumberWidget.NumberSelectorPanel;
 import org.openflexo.logging.FlexoLogger;
 
-public class FIBEditableCustomWidget<J extends JComponent, T> extends JFIBCustomWidget<J, T> implements FIBEditableView<FIBCustom, J> {
+public class JFIBEditableNumberWidget<T extends Number> extends JFIBNumberWidget<T>
+		implements FIBSwingEditableView<FIBNumber, NumberSelectorPanel<T>> {
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = FlexoLogger.getLogger(FIBEditableCustomWidget.class.getPackage().getName());
+	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableNumberWidget.class.getPackage().getName());
 
-	private final FIBEditableViewDelegate<FIBCustom, J> delegate;
+	private final FIBSwingEditableViewDelegate<FIBNumber, NumberSelectorPanel<T>> delegate;
 
 	private final FIBEditorController editorController;
 
@@ -67,38 +63,22 @@ public class FIBEditableCustomWidget<J extends JComponent, T> extends JFIBCustom
 		return editorController;
 	}
 
-	public FIBEditableCustomWidget(FIBCustom model, FIBEditorController editorController) {
+	public JFIBEditableNumberWidget(FIBNumber model, FIBEditorController editorController) {
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBEditableViewDelegate<FIBCustom, J>(this);
-		model.getPropertyChangeSupport().addPropertyChangeListener(this);
+		delegate = new FIBSwingEditableViewDelegate<FIBNumber, NumberSelectorPanel<T>>(this);
 	}
 
 	@Override
 	public void delete() {
 		delegate.delete();
-		getComponent().getPropertyChangeSupport().removePropertyChangeListener(this);
 		super.delete();
 	}
 
 	@Override
-	public Vector<PlaceHolder> getPlaceHolders() {
-		return null;
-	}
-
-	@Override
-	public FIBEditableViewDelegate<FIBCustom, J> getDelegate() {
+	public FIBSwingEditableViewDelegate<FIBNumber, NumberSelectorPanel<T>> getDelegate() {
 		return delegate;
-	}
-
-	@Override
-	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
-		if (isDeleted()) {
-			return;
-		}
-		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
-		delegate.receivedModelNotifications(o, propertyName, oldValue, newValue);
 	}
 
 }

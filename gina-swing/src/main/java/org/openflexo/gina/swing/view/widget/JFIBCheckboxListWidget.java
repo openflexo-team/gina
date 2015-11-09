@@ -259,6 +259,11 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 
 	}
 
+	@Override
+	protected void updateCheckboxListLayout() {
+		getTechnologyComponent().update();
+	}
+
 	public JCheckBox getCheckboxAtIndex(int index) {
 		return getTechnologyComponent().getCheckboxAtIndex(index);
 	}

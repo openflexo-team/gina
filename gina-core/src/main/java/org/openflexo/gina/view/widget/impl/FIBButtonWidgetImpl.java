@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.view.widget.impl;
 
+import java.beans.PropertyChangeEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -69,8 +70,7 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 
 	private static final Logger logger = Logger.getLogger(FIBButtonWidgetImpl.class.getPackage().getName());
 
-	public FIBButtonWidgetImpl(FIBButton model, FIBController controller,
-			ButtonWidgetRenderingAdapter<C> RenderingAdapter) {
+	public FIBButtonWidgetImpl(FIBButton model, FIBController controller, ButtonWidgetRenderingAdapter<C> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
 		updateLabel();
 		updateIcon();
@@ -194,6 +194,19 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 	public void updateLanguage() {
 		super.updateLanguage();
 		updateLabel();
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+
+		if (evt.getPropertyName().equals(FIBButton.LABEL_KEY)) {
+			updateLabel();
+		}
+		if (evt.getPropertyName().equals(FIBButton.BUTTON_ICON_KEY)) {
+			updateIcon();
+		}
+
+		super.propertyChange(evt);
 	}
 
 }

@@ -48,6 +48,7 @@ import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -121,7 +122,7 @@ public class FIBComponentGraphicalContextDelegate {
 	}
 
 	public void addTab(String title, FIBController controller) {
-		tabbedPane.add(title, controller.getRootView().getTechnologyComponent());
+		tabbedPane.add(title, (JComponent) controller.getRootView().getTechnologyComponent());
 	}
 
 	public void waitGUI() {

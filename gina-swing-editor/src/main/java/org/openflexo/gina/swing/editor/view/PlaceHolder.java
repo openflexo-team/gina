@@ -63,10 +63,10 @@ public abstract class PlaceHolder extends JPanel implements Focusable {
 
 	private boolean isFocused = false;
 
-	private FIBEditableView view;
-	private String text;
+	private final FIBSwingEditableContainerView<?, ?> view;
+	private final String text;
 
-	public PlaceHolder(FIBEditableView view, String text) {
+	public PlaceHolder(FIBSwingEditableContainerView<?, ?> view, String text) {
 		super(new BorderLayout());
 		this.view = view;
 		this.text = text;
@@ -83,7 +83,8 @@ public abstract class PlaceHolder extends JPanel implements Focusable {
 		if (aFlag) {
 			isFocused = true;
 			setBorder(focusBorder);
-		} else {
+		}
+		else {
 			isFocused = false;
 			setBorder(nonFocusBorder);
 		}
@@ -94,7 +95,7 @@ public abstract class PlaceHolder extends JPanel implements Focusable {
 		return isFocused;
 	}
 
-	public FIBEditableView getView() {
+	public FIBSwingEditableContainerView<?, ?> getView() {
 		return view;
 	}
 

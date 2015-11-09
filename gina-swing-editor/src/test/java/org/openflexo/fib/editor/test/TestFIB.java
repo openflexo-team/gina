@@ -49,7 +49,8 @@ import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.swing.editor.FIBAbstractEditor;
-import org.openflexo.gina.swing.utils.swing.view.FIBView;
+import org.openflexo.gina.swing.view.SwingViewFactory;
+import org.openflexo.gina.view.FIBView;
 import org.openflexo.logging.FlexoLoggingManager;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
@@ -66,7 +67,7 @@ public class TestFIB extends JPanel {
 
 	/*  private TabModelView paramsPanel;
 	private InspectableObject _inspected;
-
+	
 	public FIBPanel(TabModel model, InspectableObject inspected)
 	{
 		super();
@@ -83,25 +84,25 @@ public class TestFIB extends JPanel {
 	    	}
 	    });
 	}
-
+	
 	public DenaliWidget getInspectorWidgetForParameter (ParameterDefinition parameterDefinition)
 	{
 		return paramsPanel.getInspectorWidgetFor(parameterDefinition.getName());
 	}
-
+	
 	public void update()
 	{
 	    paramsPanel.valueChange(_inspected);
 	    paramsPanel.performObserverSwitch(_inspected);
 	}
-
+	
 	public void setBackground(Color aColor)
 	{
 	    super.setBackground(aColor);
 	    if (paramsPanel != null)
 	        paramsPanel.setBackground(aColor);
 	}
-
+	
 	 */
 
 	public static void main(String[] args) {
@@ -126,23 +127,23 @@ public class TestFIB extends JPanel {
 
 		Coucou coucou = new Coucou();
 
-		FIBView testFibPanel = FIBController.makeView(fibComponent, FIBAbstractEditor.LOCALIZATION);
+		FIBView testFibPanel = FIBController.makeView(fibComponent, SwingViewFactory.INSTANCE, FIBAbstractEditor.LOCALIZATION);
 		testFibPanel.getController().setDataObject(coucou);
 
 		frame.getContentPane().add(testFibPanel.getResultingJComponent());
 		frame.setVisible(true);
 
 		/*TabModel tabModel = null;
-
+		
 		try {
 			tabModel = FIBController.instance().importInspectorFile(fibFile);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
 		FIBPanel testFib = new FIBPanel(tabModel, new Coucou());
-
+		
 		frame.getContentPane().add(testFib);
 		frame.setVisible(true);*/
 	}

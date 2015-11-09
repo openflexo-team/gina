@@ -62,6 +62,7 @@ import org.openflexo.gina.model.widget.FIBTextArea;
 import org.openflexo.gina.model.widget.FIBTextField;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.controller.FIBEditorIconLibrary;
+import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.gina.view.GinaViewFactory;
 import org.openflexo.model.ModelEntity;
 
@@ -73,8 +74,8 @@ public class FIBBrowserController extends FIBController implements Observer {
 
 	private String searchedLabel;
 
-	public FIBBrowserController(FIBComponent rootComponent, FIBEditorController editorController, GinaViewFactory<?> viewFactory) {
-		this(rootComponent, viewFactory);
+	public FIBBrowserController(FIBComponent rootComponent, FIBEditorController editorController) {
+		this(rootComponent, SwingViewFactory.INSTANCE);
 		setEditorController(editorController);
 	}
 

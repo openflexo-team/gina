@@ -39,26 +39,23 @@
 
 package org.openflexo.gina.swing.editor.view.widget;
 
-import java.util.Vector;
 import java.util.logging.Logger;
 
-import javax.swing.JCheckBox;
-
-import org.openflexo.gina.model.FIBModelObject;
-import org.openflexo.gina.model.widget.FIBCheckBox;
+import org.openflexo.gina.model.widget.FIBRadioButtonList;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.view.FIBEditableView;
-import org.openflexo.gina.swing.editor.view.FIBEditableViewDelegate;
-import org.openflexo.gina.swing.editor.view.PlaceHolder;
-import org.openflexo.gina.swing.utils.swing.view.widget.FIBCheckBoxWidget;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate;
+import org.openflexo.gina.swing.view.widget.JFIBRadioButtonListWidget;
+import org.openflexo.gina.swing.view.widget.JFIBRadioButtonListWidget.JRadioButtonPanel;
 import org.openflexo.logging.FlexoLogger;
 
-public class FIBEditableCheckboxWidget extends FIBCheckBoxWidget implements FIBEditableView<FIBCheckBox, JCheckBox> {
+public class JFIBEditableRadioButtonListWidget<T> extends JFIBRadioButtonListWidget<T>
+		implements FIBSwingEditableView<FIBRadioButtonList, JRadioButtonPanel<T>> {
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = FlexoLogger.getLogger(FIBEditableCheckboxWidget.class.getPackage().getName());
+	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableRadioButtonListWidget.class.getPackage().getName());
 
-	private final FIBEditableViewDelegate<FIBCheckBox, JCheckBox> delegate;
+	private final FIBSwingEditableViewDelegate<FIBRadioButtonList, JRadioButtonPanel<T>> delegate;
 
 	private final FIBEditorController editorController;
 
@@ -67,38 +64,22 @@ public class FIBEditableCheckboxWidget extends FIBCheckBoxWidget implements FIBE
 		return editorController;
 	}
 
-	public FIBEditableCheckboxWidget(FIBCheckBox model, FIBEditorController editorController) {
+	public JFIBEditableRadioButtonListWidget(FIBRadioButtonList model, FIBEditorController editorController) {
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBEditableViewDelegate<FIBCheckBox, JCheckBox>(this);
-		model.getPropertyChangeSupport().addPropertyChangeListener(this);
+		delegate = new FIBSwingEditableViewDelegate<FIBRadioButtonList, JRadioButtonPanel<T>>(this);
 	}
 
 	@Override
 	public void delete() {
 		delegate.delete();
-		getComponent().getPropertyChangeSupport().removePropertyChangeListener(this);
 		super.delete();
 	}
 
 	@Override
-	public Vector<PlaceHolder> getPlaceHolders() {
-		return null;
-	}
-
-	@Override
-	public FIBEditableViewDelegate<FIBCheckBox, JCheckBox> getDelegate() {
+	public FIBSwingEditableViewDelegate<FIBRadioButtonList, JRadioButtonPanel<T>> getDelegate() {
 		return delegate;
-	}
-
-	@Override
-	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
-		if (isDeleted()) {
-			return;
-		}
-		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
-		delegate.receivedModelNotifications(o, propertyName, oldValue, newValue);
 	}
 
 }

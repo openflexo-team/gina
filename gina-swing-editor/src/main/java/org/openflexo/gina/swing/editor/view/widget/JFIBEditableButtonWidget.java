@@ -39,26 +39,22 @@
 
 package org.openflexo.gina.swing.editor.view.widget;
 
-import java.util.Vector;
 import java.util.logging.Logger;
 
-import javax.swing.JTextField;
+import javax.swing.JButton;
 
-import org.openflexo.gina.model.FIBModelObject;
-import org.openflexo.gina.model.widget.FIBFile;
+import org.openflexo.gina.model.widget.FIBButton;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.view.FIBEditableView;
-import org.openflexo.gina.swing.editor.view.FIBEditableViewDelegate;
-import org.openflexo.gina.swing.editor.view.PlaceHolder;
-import org.openflexo.gina.swing.view.widget.JFIBFileWidget;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate;
+import org.openflexo.gina.swing.view.widget.JFIBButtonWidget;
 import org.openflexo.logging.FlexoLogger;
 
-public class FIBEditableFileWidget extends JFIBFileWidget implements FIBEditableView<FIBFile, JTextField> {
+public class JFIBEditableButtonWidget extends JFIBButtonWidget implements FIBSwingEditableView<FIBButton, JButton> {
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = FlexoLogger.getLogger(FIBEditableFileWidget.class.getPackage().getName());
+	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableButtonWidget.class.getPackage().getName());
 
-	private final FIBEditableViewDelegate<FIBFile, JTextField> delegate;
+	private final FIBSwingEditableViewDelegate<FIBButton, JButton> delegate;
 
 	private final FIBEditorController editorController;
 
@@ -67,38 +63,27 @@ public class FIBEditableFileWidget extends JFIBFileWidget implements FIBEditable
 		return editorController;
 	}
 
-	public FIBEditableFileWidget(FIBFile model, FIBEditorController editorController) {
+	public JFIBEditableButtonWidget(FIBButton model, FIBEditorController editorController) {
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBEditableViewDelegate<FIBFile, JTextField>(this);
-		model.getPropertyChangeSupport().addPropertyChangeListener(this);
+		delegate = new FIBSwingEditableViewDelegate<FIBButton, JButton>(this);
 	}
 
 	@Override
 	public void delete() {
 		delegate.delete();
-		getComponent().getPropertyChangeSupport().removePropertyChangeListener(this);
 		super.delete();
 	}
 
 	@Override
-	public Vector<PlaceHolder> getPlaceHolders() {
-		return null;
-	}
-
-	@Override
-	public FIBEditableViewDelegate<FIBFile, JTextField> getDelegate() {
+	public FIBSwingEditableViewDelegate<FIBButton, JButton> getDelegate() {
 		return delegate;
 	}
 
 	@Override
-	public void receivedModelNotifications(FIBModelObject o, String propertyName, Object oldValue, Object newValue) {
-		if (isDeleted()) {
-			return;
-		}
-		super.receivedModelNotifications(o, propertyName, oldValue, newValue);
-		delegate.receivedModelNotifications(o, propertyName, oldValue, newValue);
+	public synchronized void buttonClicked() {
+		logger.info("Button " + getWidget() + " has clicked: NOT ACTIVE in EDIT mode");
 	}
 
 }

@@ -39,32 +39,31 @@
 
 package org.openflexo.gina.swing.editor.view.container;
 
-import java.beans.PropertyChangeEvent;
 import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.openflexo.gina.model.FIBComponent;
-import org.openflexo.gina.model.FIBModelObject;
-import org.openflexo.gina.model.container.FIBSplitPanel;
-import org.openflexo.gina.model.container.SplitLayoutConstraints;
 import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBLeaf;
 import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBNode;
 import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBSplit;
+import org.openflexo.gina.model.container.FIBSplitPanel;
+import org.openflexo.gina.model.container.SplitLayoutConstraints;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.view.FIBEditableView;
-import org.openflexo.gina.swing.editor.view.FIBEditableViewDelegate;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerViewDelegate;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate.FIBDropTarget;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
-import org.openflexo.gina.swing.editor.view.FIBEditableViewDelegate.FIBDropTarget;
 import org.openflexo.gina.swing.view.container.JFIBSplitPanelView;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.swing.layout.JXMultiSplitPane;
 import org.openflexo.swing.layout.MultiSplitLayout.Node;
 
-public class FIBEditableSplitPanelView<T> extends JFIBSplitPanelView<T> implements FIBEditableView<FIBSplitPanel, JXMultiSplitPane> {
+public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
+		implements FIBSwingEditableContainerView<FIBSplitPanel, JXMultiSplitPane> {
 
-	private static final Logger logger = FlexoLogger.getLogger(FIBEditableSplitPanelView.class.getPackage().getName());
+	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableSplitPanelView.class.getPackage().getName());
 
-	private final FIBEditableViewDelegate<FIBSplitPanel, JXMultiSplitPane> delegate;
+	private final FIBSwingEditableContainerViewDelegate<FIBSplitPanel, JXMultiSplitPane> delegate;
 
 	private Vector<PlaceHolder> placeholders;
 
@@ -75,12 +74,11 @@ public class FIBEditableSplitPanelView<T> extends JFIBSplitPanelView<T> implemen
 		return editorController;
 	}
 
-	public FIBEditableSplitPanelView(FIBSplitPanel model, FIBEditorController editorController) {
+	public JFIBEditableSplitPanelView(FIBSplitPanel model, FIBEditorController editorController) {
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBEditableViewDelegate<FIBSplitPanel, JXMultiSplitPane>(this);
-		model.getPropertyChangeSupport().addPropertyChangeListener(this);
+		delegate = new FIBSwingEditableContainerViewDelegate<FIBSplitPanel, JXMultiSplitPane>(this);
 	}
 
 	@Override
@@ -88,7 +86,6 @@ public class FIBEditableSplitPanelView<T> extends JFIBSplitPanelView<T> implemen
 		placeholders.clear();
 		placeholders = null;
 		delegate.delete();
-		getComponent().getPropertyChangeSupport().removePropertyChangeListener(this);
 		super.delete();
 	}
 
@@ -105,8 +102,8 @@ public class FIBEditableSplitPanelView<T> extends JFIBSplitPanelView<T> implemen
 			PlaceHolder newPlaceHolder = new PlaceHolder(this, "<" + n.getName() + ">") {
 				@Override
 				public void insertComponent(FIBComponent newComponent) {
-					System.out.println("getComponent=" + FIBEditableSplitPanelView.this.getComponent());
-					FIBEditableSplitPanelView.this.getComponent().addToSubComponents(newComponent, splitLayoutConstraints);
+					System.out.println("getComponent=" + JFIBEditableSplitPanelView.this.getComponent());
+					JFIBEditableSplitPanelView.this.getComponent().addToSubComponents(newComponent, splitLayoutConstraints);
 				}
 			};
 			registerComponentWithConstraints(newPlaceHolder, n.getName());
@@ -126,7 +123,8 @@ public class FIBEditableSplitPanelView<T> extends JFIBSplitPanelView<T> implemen
 	private void appendPlaceHolders(Node n) {
 		if (n instanceof FIBSplit) {
 			appendPlaceHolders((FIBSplit) n);
-		} else if (n instanceof FIBLeaf) {
+		}
+		else if (n instanceof FIBLeaf) {
 			appendPlaceHolder((FIBLeaf) n);
 		}
 	}
@@ -152,7 +150,7 @@ public class FIBEditableSplitPanelView<T> extends JFIBSplitPanelView<T> implemen
 		}
 		/*else {
 				SwingUtilities.invokeLater(new Runnable() {
-
+		
 					@Override
 					public void run() {
 						updateLayout();
@@ -167,13 +165,8 @@ public class FIBEditableSplitPanelView<T> extends JFIBSplitPanelView<T> implemen
 	}
 
 	@Override
-	public FIBEditableViewDelegate<FIBSplitPanel, JXMultiSplitPane> getDelegate() {
+	public FIBSwingEditableContainerViewDelegate<FIBSplitPanel, JXMultiSplitPane> getDelegate() {
 		return delegate;
-	}
-
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		delegate.receivedModelNotifications((FIBModelObject) evt.getSource(), evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
 	}
 
 }
