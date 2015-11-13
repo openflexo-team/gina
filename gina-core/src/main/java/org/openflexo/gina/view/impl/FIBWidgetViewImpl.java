@@ -149,6 +149,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		// addBindingValueChangeListeners();
 		listenDataValueChange();
 		listenEnableValueChange();
+
+		update();
 	}
 
 	/**
@@ -672,8 +674,6 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		super.update();
 
 		updateData();
-
-		updateFont();
 
 		updateEnability();
 		// if (isComponentVisible()) {

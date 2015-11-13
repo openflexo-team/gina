@@ -72,9 +72,8 @@ public abstract class SwingRenderingAdapter<J extends JComponent> implements Ren
 
 	/**
 	 * Return the effective component to be added to swing hierarchy<br>
-	 * This component may be the same as the one returned by
-	 * {@link #getJComponent()} (if useScrollBar set to false) or an
-	 * encapsulation in a JScrollPane
+	 * This component may be the same as the one returned by {@link #getJComponent()} (if useScrollBar set to false) or an encapsulation in
+	 * a JScrollPane
 	 * 
 	 * @return JComponent
 	 */
@@ -82,25 +81,26 @@ public abstract class SwingRenderingAdapter<J extends JComponent> implements Ren
 		if (view.getComponent().getUseScrollBar()) {
 			if (view.getTechnologyComponent().getParent() instanceof JScrollPane) {
 				return (JScrollPane) view.getTechnologyComponent().getParent();
-			} else {
-				JScrollPane scrolledComponent = new JScrollPane(getJComponent(view.getTechnologyComponent()), view
-						.getComponent().getVerticalScrollbarPolicy().getPolicy(), view.getComponent()
-						.getHorizontalScrollbarPolicy().getPolicy());
+			}
+			else {
+				JScrollPane scrolledComponent = new JScrollPane(getJComponent(view.getTechnologyComponent()),
+						view.getComponent().getVerticalScrollbarPolicy().getPolicy(),
+						view.getComponent().getHorizontalScrollbarPolicy().getPolicy());
 				scrolledComponent.setOpaque(false);
 				scrolledComponent.getViewport().setOpaque(false);
 				scrolledComponent.setBorder(BorderFactory.createEmptyBorder());
 				return scrolledComponent;
 			}
-		} else {
+		}
+		else {
 			return getJComponent(view.getTechnologyComponent());
 		}
 	}
 
 	/**
 	 * Return the effective component to be added to swing hierarchy<br>
-	 * This component may be the same as the one returned by
-	 * {@link #getJComponent()} (if useScrollBar set to false) or an
-	 * encapsulation in a JScrollPane
+	 * This component may be the same as the one returned by {@link #getJComponent()} (if useScrollBar set to false) or an encapsulation in
+	 * a JScrollPane
 	 * 
 	 * @return JComponent
 	 */
@@ -142,8 +142,11 @@ public abstract class SwingRenderingAdapter<J extends JComponent> implements Ren
 		 * scrolledComponent.getParent().repaint(); } }
 		 */
 		getJComponent(component).setVisible(visible);
-		getJComponent(component).getParent().revalidate();
-		getJComponent(component).getParent().repaint();
+
+		if (getJComponent(component).getParent() != null) {
+			getJComponent(component).getParent().revalidate();
+			getJComponent(component).getParent().repaint();
+		}
 	}
 
 	@Override
@@ -165,7 +168,8 @@ public abstract class SwingRenderingAdapter<J extends JComponent> implements Ren
 		 */
 		if (enabled) {
 			enableComponent(getJComponent(component));
-		} else {
+		}
+		else {
 			disableComponent(getJComponent(component));
 		}
 	}

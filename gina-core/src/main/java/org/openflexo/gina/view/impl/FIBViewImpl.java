@@ -340,6 +340,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		System.out.println("update of " + this);
 
 		updateVisibility();
+		updatePreferredSize();
+		updateFont();
 
 		// IMPORTANT (Sylvain):
 		// I commented out following statement which seems to me unnecessary

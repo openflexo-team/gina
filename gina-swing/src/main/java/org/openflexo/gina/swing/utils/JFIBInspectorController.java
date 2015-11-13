@@ -58,7 +58,6 @@ import javax.swing.event.ChangeListener;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.swing.view.JFIBView;
-import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.gina.swing.view.container.JFIBTabPanelView;
 import org.openflexo.gina.utils.FIBInspector;
@@ -88,8 +87,7 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 		inspectorViews = new Hashtable<FIBInspector, JFIBView<?, ?>>();
 
 		for (FIBInspector inspector : inspectorGroup.getInspectors().values()) {
-			JFIBView<?, ?> inspectorView = (JFIBView<?, ?>) FIBController.makeView(inspector,
-					SwingViewFactory.INSTANCE, localizer);
+			JFIBView<?, ?> inspectorView = (JFIBView<?, ?>) FIBController.makeView(inspector, SwingViewFactory.INSTANCE, localizer);
 			FlexoLocalization.addToLocalizationListeners(inspectorView);
 			inspectorViews.put(inspector, inspectorView);
 			logger.info("Initialized inspector for " + inspector.getDataClass());
@@ -136,7 +134,8 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 		if (newInspector == null) {
 			logger.warning("No inspector for " + object);
 			switchToEmptyContent();
-		} else {
+		}
+		else {
 			if (newInspector != currentInspector) {
 				switchToInspector(newInspector);
 			}
@@ -160,10 +159,10 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 		 * System.out.println("Hop: "+newInspector.getXMLRepresentation()); }
 		 */
 
-		JTabbedPane tabPanelViewJComponent = (JTabbedPane) ((SwingRenderingAdapter) tabPanelView.getRenderingAdapter())
-				.getJComponent(tabPanelView.getTechnologyComponent());
+		JTabbedPane tabPanelViewJComponent = null;
 
 		if (tabPanelView != null) {
+			tabPanelViewJComponent = (JTabbedPane) tabPanelView.getJComponent();
 			tabPanelViewJComponent.removeChangeListener(this);
 			// System.out.println("removeChangeListener for "+tabPanelView.getJComponent());
 		}
@@ -179,14 +178,15 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 			rootPane.repaint();
 			currentInspector = newInspector;
 			inspectorDialog.setTitle(newInspector.getParameter("title"));
-			tabPanelView = (JFIBTabPanelView) currentInspectorView.getController().viewForComponent(
-					currentInspector.getTabPanel());
+			tabPanelView = (JFIBTabPanelView) currentInspectorView.getController().viewForComponent(currentInspector.getTabPanel());
+			tabPanelViewJComponent = (JTabbedPane) tabPanelView.getJComponent();
 			if (lastInspectedTabIndex >= 0 && lastInspectedTabIndex < tabPanelViewJComponent.getTabCount()) {
 				tabPanelViewJComponent.setSelectedIndex(lastInspectedTabIndex);
 			}
 			tabPanelViewJComponent.addChangeListener(this);
 			// System.out.println("addChangeListener for "+tabPanelView.getJComponent());
-		} else {
+		}
+		else {
 			logger.warning("No inspector view for " + newInspector);
 			switchToEmptyContent();
 		}

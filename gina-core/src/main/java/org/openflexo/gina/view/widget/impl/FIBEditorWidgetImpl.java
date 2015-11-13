@@ -112,8 +112,10 @@ public abstract class FIBEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBEditor
 			try {
 				int caretPosition = getRenderingAdapter().getCaretPosition(getTechnologyComponent());
 				getRenderingAdapter().setText(getTechnologyComponent(), getValue());
-				getRenderingAdapter().setCaretPosition(getTechnologyComponent(),
-						caretPosition < getValue().length() ? caretPosition : getValue().length());
+				if (getValue() != null) {
+					getRenderingAdapter().setCaretPosition(getTechnologyComponent(),
+							caretPosition < getValue().length() ? caretPosition : getValue().length());
+				}
 			} finally {
 				widgetUpdating = false;
 			}

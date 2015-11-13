@@ -106,6 +106,9 @@ public abstract class FIBLabelWidgetImpl<C> extends FIBWidgetViewImpl<FIBLabel, 
 
 	final protected void updateLabel() {
 		String label = "";
+
+		System.out.println("update label " + this + " data=" + getWidget().getData());
+
 		if (getWidget().getData() != null && getWidget().getData().isSet() && getWidget().getData().isValid()) {
 			label = (getWidget().getLocalize() ? getLocalized(getValue()) : getValue());
 		}
@@ -113,6 +116,7 @@ public abstract class FIBLabelWidgetImpl<C> extends FIBWidgetViewImpl<FIBLabel, 
 			label = (getWidget().getLocalize() ? getLocalized(getWidget().getLabel()) : getWidget().getLabel());
 		}
 		getRenderingAdapter().setText(getTechnologyComponent(), label);
+		getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
 	}
 
 	final protected void relayoutParentBecauseLabelChanged() {

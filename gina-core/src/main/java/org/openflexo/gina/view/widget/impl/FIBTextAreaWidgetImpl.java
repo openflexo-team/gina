@@ -57,11 +57,16 @@ public abstract class FIBTextAreaWidgetImpl<C> extends FIBGenericTextWidgetImpl<
 	public static final int DEFAULT_COLUMNS = 30;
 	public static final int DEFAULT_ROWS = 5;
 
-	public FIBTextAreaWidgetImpl(FIBTextArea model, FIBController controller,
-			TextAreaRenderingAdapter<C> RenderingAdapter) {
+	public FIBTextAreaWidgetImpl(FIBTextArea model, FIBController controller, TextAreaRenderingAdapter<C> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
+	}
+
+	@Override
+	public boolean update() {
+		boolean returned = super.update();
 		updateColumns();
 		updateRows();
+		return returned;
 	}
 
 	@Override
