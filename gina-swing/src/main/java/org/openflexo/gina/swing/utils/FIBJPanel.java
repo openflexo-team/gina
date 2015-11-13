@@ -43,6 +43,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.openflexo.gina.FIBLibrary;
@@ -50,16 +51,18 @@ import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.widget.FIBCustom;
 import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingViewFactory;
-import org.openflexo.gina.view.FIBView;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.rm.Resource;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 /**
- * This is the default implementation for a Swing panel defined using a FIB model<br>
- * This class is an instanceof JPanel in which Swing FIB instantiation is performed
+ * This is the default implementation for a Swing panel defined using a FIB
+ * model<br>
+ * This class is an instanceof JPanel in which Swing FIB instantiation is
+ * performed
  * 
  * @author sylvain
  * 
@@ -77,7 +80,7 @@ public abstract class FIBJPanel<T> extends JPanel implements FIBCustomComponent<
 	private T editedObject;
 
 	protected FIBComponent fibComponent;
-	protected FIBView<?, ?> fibView;
+	protected JFIBView<?, ?> fibView;
 	protected FIBController controller;
 	protected LocalizedDelegate localizer;
 
@@ -93,12 +96,13 @@ public abstract class FIBJPanel<T> extends JPanel implements FIBCustomComponent<
 
 		fibComponent = component;
 		controller = makeFIBController(fibComponent, parentLocalizer);
-		fibView = controller.buildView(fibComponent);
+		fibView = (JFIBView<?, ?>) controller.buildView(fibComponent);
 
 		controller.setDataObject(editedObject);
 
 		setLayout(new BorderLayout());
-		add(fibView.getResultingJComponent(), BorderLayout.CENTER);
+		JComponent resultingJComponent = fibView.getResultingJComponent();
+		add(resultingJComponent, BorderLayout.CENTER);
 
 		applyCancelListener = new Vector<ApplyCancelListener>();
 	}
@@ -108,10 +112,11 @@ public abstract class FIBJPanel<T> extends JPanel implements FIBCustomComponent<
 	}
 
 	/*
-	public FIBJPanel(File fibFile, T editedObject, LocalizedDelegate parentLocalizer) {
-		this(FIBLibrary.instance().retrieveFIBComponent(fibFile), editedObject, parentLocalizer);
-	}
-	*/
+	 * public FIBJPanel(File fibFile, T editedObject, LocalizedDelegate
+	 * parentLocalizer) {
+	 * this(FIBLibrary.instance().retrieveFIBComponent(fibFile), editedObject,
+	 * parentLocalizer); }
+	 */
 	@Override
 	public PropertyChangeSupport getPropertyChangeSupport() {
 		return pcSupport;

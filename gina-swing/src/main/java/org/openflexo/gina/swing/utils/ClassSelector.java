@@ -57,8 +57,8 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.widget.FIBCustom;
 import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent;
 import org.openflexo.gina.swing.utils.logging.FlexoLoggingViewer;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingViewFactory;
-import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.GinaViewFactory;
 import org.openflexo.logging.FlexoLoggingManager;
 import org.openflexo.rm.Resource;
@@ -72,7 +72,7 @@ import org.openflexo.swing.VerticalLayout;
  * @author sguerin
  * 
  */
-public class ClassSelector extends TextFieldCustomPopup<Class>implements FIBCustomComponent<Class> {
+public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCustomComponent<Class> {
 	@SuppressWarnings("hiding")
 	static final Logger LOGGER = Logger.getLogger(ClassSelector.class.getPackage().getName());
 
@@ -104,11 +104,11 @@ public class ClassSelector extends TextFieldCustomPopup<Class>implements FIBCust
 
 	@Override
 	public void setRevertValue(Class oldValue) {
-		// WARNING: we need here to clone to keep track back of previous data !!!
+		// WARNING: we need here to clone to keep track back of previous data
+		// !!!
 		if (oldValue != null) {
 			_revertValue = oldValue;
-		}
-		else {
+		} else {
 			_revertValue = null;
 		}
 		if (LOGGER.isLoggable(Level.FINE)) {
@@ -141,7 +141,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class>implements FIBCust
 
 	public class ClassSelectorDetailsPanel extends ResizablePanel {
 		private final FIBComponent fibComponent;
-		private FIBView<?, ?> fibView;
+		private JFIBView<?, ?> fibView;
 		private CustomFIBController controller;
 
 		protected ClassSelectorDetailsPanel(Class aClass) {
@@ -149,7 +149,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class>implements FIBCust
 
 			fibComponent = FIBLibrary.instance().retrieveFIBComponent(FIB_FILE_NAME, true);
 			controller = new CustomFIBController(fibComponent, SwingViewFactory.INSTANCE);
-			fibView = controller.buildView(fibComponent);
+			fibView = (JFIBView<?, ?>) controller.buildView(fibComponent);
 
 			controller.setDataObject(new LoadedClassesInfo(aClass));
 
@@ -202,12 +202,11 @@ public class ClassSelector extends TextFieldCustomPopup<Class>implements FIBCust
 
 	}
 
-	/* @Override
-	 public void setEditedObject(BackgroundStyle object)
-	 {
-	 	logger.info("setEditedObject with "+object);
-	 	super.setEditedObject(object);
-	 }*/
+	/*
+	 * @Override public void setEditedObject(BackgroundStyle object) {
+	 * logger.info("setEditedObject with "+object);
+	 * super.setEditedObject(object); }
+	 */
 
 	@Override
 	public void apply() {
@@ -235,10 +234,9 @@ public class ClassSelector extends TextFieldCustomPopup<Class>implements FIBCust
 		super.deletePopup();
 	}
 
-	/*protected void pointerLeavesPopup()
-	{
-	   cancel();
-	}*/
+	/*
+	 * protected void pointerLeavesPopup() { cancel(); }
+	 */
 
 	public ClassSelectorDetailsPanel getSelectorPanel() {
 		return _selectorPanel;
@@ -257,22 +255,19 @@ public class ClassSelector extends TextFieldCustomPopup<Class>implements FIBCust
 		return editedObject.getSimpleName();
 	}
 
-	/*public static void main(String[] args) {
-	
-		FIBAbstractEditor editor = new FIBAbstractEditor() {
-			@Override
-			public Object[] getData() {
-				return FIBAbstractEditor.makeArray(new LoadedClassesInfo(java.lang.Object.class));
-			}
-	
-			@Override
-			public File getFIBFile() {
-				return FIB_FILE;
-			}
-		};
-	
-		editor.launch();
-	}*/
+	/*
+	 * public static void main(String[] args) {
+	 * 
+	 * FIBAbstractEditor editor = new FIBAbstractEditor() {
+	 * 
+	 * @Override public Object[] getData() { return
+	 * FIBAbstractEditor.makeArray(new
+	 * LoadedClassesInfo(java.lang.Object.class)); }
+	 * 
+	 * @Override public File getFIBFile() { return FIB_FILE; } };
+	 * 
+	 * editor.launch(); }
+	 */
 
 	/**
 	 * This main allows to launch an application testing the TypeSelector

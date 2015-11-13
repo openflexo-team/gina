@@ -52,16 +52,19 @@ import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBCheckboxList;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.swing.view.widget.JFIBCheckboxListWidget.JCheckBoxListPanel;
 import org.openflexo.gina.view.widget.impl.FIBCheckboxListWidgetImpl;
 
-public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckBoxListPanel<T>, T> {
+public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckBoxListPanel<T>, T> implements
+		JFIBView<FIBCheckboxList, JCheckBoxListPanel<T>> {
 
 	static final Logger logger = Logger.getLogger(JFIBCheckboxListWidget.class.getPackage().getName());
 
@@ -93,6 +96,21 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 	}
 
 	@Override
+	public SwingCheckboxListRenderingAdapter<T> getRenderingAdapter() {
+		return (SwingCheckboxListRenderingAdapter<T>) super.getRenderingAdapter();
+	}
+
+	@Override
+	public JComponent getJComponent() {
+		return getRenderingAdapter().getJComponent(getTechnologyComponent());
+	}
+
+	@Override
+	public JComponent getResultingJComponent() {
+		return getRenderingAdapter().getResultingJComponent(this);
+	}
+
+	@Override
 	protected JCheckBoxListPanel<T> makeTechnologyComponent() {
 		return new JCheckBoxListPanel<>(this);
 	}
@@ -109,7 +127,8 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 		private List<T> selectedValues;
 
 		public JCheckBoxListPanel(JFIBCheckboxListWidget<T> widget) {
-			super(new GridLayout(0, widget.getWidget().getColumns(), widget.getWidget().getHGap(), widget.getWidget().getVGap()));
+			super(new GridLayout(0, widget.getWidget().getColumns(), widget.getWidget().getHGap(), widget.getWidget()
+					.getVGap()));
 			setOpaque(false);
 			this.widget = widget;
 			rebuildCheckboxes();
@@ -127,8 +146,7 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 					T o = widget.getMultipleValueModel().getElementAt(i);
 					if (selectedValues != null) {
 						checkboxesArray[i].setSelected(selectedValues.contains(o));
-					}
-					else {
+					} else {
 						checkboxesArray[i].setSelected(false);
 					}
 				}
@@ -155,7 +173,8 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 				cb.setOpaque(false);
 				cb.addActionListener(new CheckboxListener(cb, object, i));
 				checkboxesArray[i] = cb;
-				if (widget.getWidget().getShowIcon() && widget.getWidget().getIcon().isSet() && widget.getWidget().getIcon().isValid()) {
+				if (widget.getWidget().getShowIcon() && widget.getWidget().getIcon().isSet()
+						&& widget.getWidget().getIcon().isValid()) {
 					cb.setHorizontalAlignment(JCheckBox.LEFT);
 					cb.setText(null);
 					final JLabel label = new JLabel(text, widget.getIconRepresentation(object), JLabel.LEADING);
@@ -188,7 +207,8 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 				}
 			}
 			if (widget != null) {
-				if (widget.getWidget().getShowIcon() && widget.getWidget().getIcon().isSet() && widget.getWidget().getIcon().isValid()) {
+				if (widget.getWidget().getShowIcon() && widget.getWidget().getIcon().isSet()
+						&& widget.getWidget().getIcon().isValid()) {
 					if (labelsArray != null) {
 						for (JLabel l : labelsArray) {
 							if (l != null) {
@@ -210,8 +230,7 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 		private boolean containsObject(Object object) {
 			if (selectedValues == null) {
 				return false;
-			}
-			else {
+			} else {
 				return selectedValues.contains(object);
 			}
 		}
@@ -238,8 +257,7 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 							}
 							selectedValues.add(value);
 						}
-					}
-					else {
+					} else {
 						if (containsObject(value)) {
 							selectedValues.remove(value);
 						}

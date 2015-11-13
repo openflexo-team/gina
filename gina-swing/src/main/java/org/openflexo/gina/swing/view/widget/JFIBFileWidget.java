@@ -50,6 +50,7 @@ import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -58,6 +59,7 @@ import javax.swing.SwingUtilities;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.gina.model.widget.FIBFile;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.swing.view.widget.JFIBFileWidget.FileSelectorPanel;
 import org.openflexo.gina.view.widget.impl.FIBFileWidgetImpl;
@@ -74,7 +76,8 @@ import org.openflexo.toolbox.ToolBox;
  *
  * @author sylvain
  */
-public class JFIBFileWidget extends FIBFileWidgetImpl<FileSelectorPanel>implements FocusListener {
+public class JFIBFileWidget extends FIBFileWidgetImpl<FileSelectorPanel> implements FocusListener,
+		JFIBView<FIBFile, FileSelectorPanel> {
 
 	static final Logger LOGGER = Logger.getLogger(JFIBFileWidget.class.getPackage().getName());
 
@@ -94,10 +97,12 @@ public class JFIBFileWidget extends FIBFileWidgetImpl<FileSelectorPanel>implemen
 			this.widget = widget;
 			setOpaque(false);
 			chooseButton = new JButton();
-			chooseButton.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "choose", chooseButton));
+			chooseButton.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "choose",
+					chooseButton));
 			addActionListenerToChooseButton();
 			currentDirectoryLabel = new JTextField("");
-			currentDirectoryLabel.setColumns(widget.getWidget().getColumns() != null ? widget.getWidget().getColumns() : DEFAULT_COLUMNS);
+			currentDirectoryLabel.setColumns(widget.getWidget().getColumns() != null ? widget.getWidget().getColumns()
+					: DEFAULT_COLUMNS);
 			currentDirectoryLabel.setMinimumSize(MINIMUM_SIZE);
 			currentDirectoryLabel.setPreferredSize(MINIMUM_SIZE);
 			currentDirectoryLabel.setEditable(false);
@@ -107,8 +112,8 @@ public class JFIBFileWidget extends FIBFileWidgetImpl<FileSelectorPanel>implemen
 			add(chooseButton, BorderLayout.EAST);
 			addFocusListener(widget);
 			if (!ToolBox.isMacOSLaf()) {
-				setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
-						RIGHT_COMPENSATING_BORDER));
+				setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER,
+						BOTTOM_COMPENSATING_BORDER, RIGHT_COMPENSATING_BORDER));
 			}
 		}
 
@@ -116,21 +121,18 @@ public class JFIBFileWidget extends FIBFileWidgetImpl<FileSelectorPanel>implemen
 			if (!widget.isDirectory) {
 				// System.out.println("Looking for files");
 				chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-				chooser.setDialogTitle(StringUtils.isEmpty(widget.title)
-						? FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "select_a_file")
-						: FlexoLocalization.localizedForKey(widget.getController().getLocalizerForComponent(widget.getWidget()),
-								widget.title));
+				chooser.setDialogTitle(StringUtils.isEmpty(widget.title) ? FlexoLocalization.localizedForKey(
+						FIBModelObjectImpl.LOCALIZATION, "select_a_file") : FlexoLocalization.localizedForKey(widget
+						.getController().getLocalizerForComponent(widget.getWidget()), widget.title));
 				chooser.setFileFilterAsString(widget.filter);
 				chooser.setDialogType(widget.mode.getMode());
 				System.setProperty("apple.awt.fileDialogForDirectories", "false");
-			}
-			else {
+			} else {
 				// System.out.println("Looking for directories");
 				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				chooser.setDialogTitle(StringUtils.isEmpty(widget.title)
-						? FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "select_directory")
-						: FlexoLocalization.localizedForKey(widget.getController().getLocalizerForComponent(widget.getWidget()),
-								widget.title));
+				chooser.setDialogTitle(StringUtils.isEmpty(widget.title) ? FlexoLocalization.localizedForKey(
+						FIBModelObjectImpl.LOCALIZATION, "select_directory") : FlexoLocalization.localizedForKey(widget
+						.getController().getLocalizerForComponent(widget.getWidget()), widget.title));
 				chooser.setFileFilterAsString(widget.filter);
 				chooser.setDialogType(widget.mode.getMode());
 				System.setProperty("apple.awt.fileDialogForDirectories", "true");
@@ -153,39 +155,37 @@ public class JFIBFileWidget extends FIBFileWidgetImpl<FileSelectorPanel>implemen
 					configureFileChooser(chooser);
 
 					switch (widget.mode) {
-						case OpenMode:
-							if (chooser.showOpenDialog(chooseButton) == JFileChooser.APPROVE_OPTION) {
-								// a dir has been picked...
+					case OpenMode:
+						if (chooser.showOpenDialog(chooseButton) == JFileChooser.APPROVE_OPTION) {
+							// a dir has been picked...
 
-								try {
-									widget.setSelectedFile(chooser.getSelectedFile());
-									widget.updateModelFromWidget();
-								} catch (Exception e1) {
-									e1.printStackTrace();
-								}
+							try {
+								widget.setSelectedFile(chooser.getSelectedFile());
+								widget.updateModelFromWidget();
+							} catch (Exception e1) {
+								e1.printStackTrace();
 							}
-							else {
-								// cancelled, return.
-							}
-							break;
+						} else {
+							// cancelled, return.
+						}
+						break;
 
-						case SaveMode:
-							if (chooser.showSaveDialog(chooseButton) == JFileChooser.APPROVE_OPTION) {
-								// a dir has been picked...
-								try {
-									widget.setSelectedFile(chooser.getSelectedFile());
-									widget.updateModelFromWidget();
-								} catch (Exception e1) {
-									e1.printStackTrace();
-								}
+					case SaveMode:
+						if (chooser.showSaveDialog(chooseButton) == JFileChooser.APPROVE_OPTION) {
+							// a dir has been picked...
+							try {
+								widget.setSelectedFile(chooser.getSelectedFile());
+								widget.updateModelFromWidget();
+							} catch (Exception e1) {
+								e1.printStackTrace();
 							}
-							else {
-								// cancelled, return.
-							}
-							break;
+						} else {
+							// cancelled, return.
+						}
+						break;
 
-						default:
-							break;
+					default:
+						break;
 					}
 				}
 			});
@@ -201,10 +201,10 @@ public class JFIBFileWidget extends FIBFileWidgetImpl<FileSelectorPanel>implemen
 				currentDirectoryLabel.setEnabled(true);
 				currentDirectoryLabel.setText(selectedFile.getAbsolutePath());
 				currentDirectoryLabel.setToolTipText(selectedFile.getAbsolutePath());
-			}
-			else {
+			} else {
 				currentDirectoryLabel.setEnabled(false);
-				currentDirectoryLabel.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "no_file"));
+				currentDirectoryLabel.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION,
+						"no_file"));
 			}
 		}
 
@@ -225,8 +225,8 @@ public class JFIBFileWidget extends FIBFileWidgetImpl<FileSelectorPanel>implemen
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingFileWidgetRenderingAdapter extends SwingRenderingAdapter<FileSelectorPanel>
-			implements FileWidgetRenderingAdapter<FileSelectorPanel> {
+	public static class SwingFileWidgetRenderingAdapter extends SwingRenderingAdapter<FileSelectorPanel> implements
+			FileWidgetRenderingAdapter<FileSelectorPanel> {
 
 		@Override
 		public File getSelectedFile(FileSelectorPanel component) {
@@ -244,6 +244,21 @@ public class JFIBFileWidget extends FIBFileWidgetImpl<FileSelectorPanel>implemen
 
 	public JFIBFileWidget(FIBFile model, FIBController controller) {
 		super(model, controller, RENDERING_TECHNOLOGY_ADAPTER);
+	}
+
+	@Override
+	public SwingFileWidgetRenderingAdapter getRenderingAdapter() {
+		return (SwingFileWidgetRenderingAdapter) super.getRenderingAdapter();
+	}
+
+	@Override
+	public JComponent getJComponent() {
+		return getRenderingAdapter().getJComponent(getTechnologyComponent());
+	}
+
+	@Override
+	public JComponent getResultingJComponent() {
+		return getRenderingAdapter().getResultingJComponent(this);
 	}
 
 	@Override

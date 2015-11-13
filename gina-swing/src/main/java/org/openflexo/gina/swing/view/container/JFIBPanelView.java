@@ -77,6 +77,7 @@ import org.openflexo.gina.model.container.NoneLayoutConstraints;
 import org.openflexo.gina.model.container.SplitLayoutConstraints;
 import org.openflexo.gina.model.container.TwoColsLayoutConstraints;
 import org.openflexo.gina.model.container.TwoColsLayoutConstraints.TwoColsLayoutLocation;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.view.container.impl.FIBPanelViewImpl;
 import org.openflexo.gina.view.impl.FIBViewImpl;
@@ -84,35 +85,37 @@ import org.openflexo.swing.ButtonLayout;
 import org.openflexo.toolbox.StringUtils;
 
 /**
- * Swing implementation for a basic panel, as a container of some children component, with a given layout, and a border<br>
+ * Swing implementation for a basic panel, as a container of some children
+ * component, with a given layout, and a border<br>
  * Implementation is based on JPanel
  * 
  * @author sylvain
  */
-public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> {
+public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> implements JFIBView<FIBPanel, JPanel> {
 
 	private static final Logger logger = Logger.getLogger(JFIBPanelView.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingAdapter} implementation dedicated for Swing JPanel with a given layout<br>
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JPanel with
+	 * a given layout<br>
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingPanelRenderingAdapter extends SwingRenderingAdapter<JPanel>
-			implements PanelRenderingAdapter<JPanel, JComponent> {
+	public static class SwingPanelRenderingAdapter extends SwingRenderingAdapter<JPanel> implements
+			PanelRenderingAdapter<JPanel, JComponent> {
 
 		@Override
 		public void addComponent(JComponent child, JPanel parent, Object constraints) {
 			if (constraints instanceof ComponentConstraints) {
-				// ((ComponentConstraints) constraint).performConstrainedAddition(getTechnologyComponent(), c);
+				// ((ComponentConstraints)
+				// constraint).performConstrainedAddition(getTechnologyComponent(),
+				// c);
 				performContrainedAddition(parent, child, (ComponentConstraints) constraints);
-			}
-			else {
+			} else {
 				if (constraints == null) {
 					parent.add(child);
-				}
-				else {
+				} else {
 					parent.add(child, constraints);
 				}
 			}
@@ -122,8 +125,7 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> {
 			if (constraints instanceof BorderLayoutConstraints) {
 				BorderLayoutConstraints borderConstraints = (BorderLayoutConstraints) constraints;
 				container.add(contained, borderConstraints.getLocation().getConstraint());
-			}
-			else if (constraints instanceof BoxLayoutConstraints) {
+			} else if (constraints instanceof BoxLayoutConstraints) {
 				BoxLayoutConstraints boxConstraints = (BoxLayoutConstraints) constraints;
 				contained.setAlignmentX(boxConstraints.getAlignmentX());
 				contained.setAlignmentY(boxConstraints.getAlignmentY());
@@ -136,16 +138,13 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> {
 					e.printStackTrace();
 					System.out.println("hop");
 				}
-			}
-			else if (constraints instanceof ButtonLayoutConstraints) {
+			} else if (constraints instanceof ButtonLayoutConstraints) {
 				ButtonLayoutConstraints buttonConstraints = (ButtonLayoutConstraints) constraints;
 				container.add(contained);
-			}
-			else if (constraints instanceof FlowLayoutConstraints) {
+			} else if (constraints instanceof FlowLayoutConstraints) {
 				FlowLayoutConstraints flowConstraints = (FlowLayoutConstraints) constraints;
 				container.add(contained);
-			}
-			else if (constraints instanceof GridBagLayoutConstraints) {
+			} else if (constraints instanceof GridBagLayoutConstraints) {
 				GridBagLayoutConstraints gridBagConstraints = (GridBagLayoutConstraints) constraints;
 				GridBagConstraints c = new GridBagConstraints();
 				c.gridx = gridBagConstraints.getGridX();
@@ -161,22 +160,18 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> {
 				c.ipadx = gridBagConstraints.getPadX();
 				c.ipady = gridBagConstraints.getPadY();
 				container.add(contained, c);
-			}
-			else if (constraints instanceof GridLayoutConstraints) {
+			} else if (constraints instanceof GridLayoutConstraints) {
 				GridLayoutConstraints gridConstraints = (GridLayoutConstraints) constraints;
 				container.add(contained);
-			}
-			else if (constraints instanceof NoneLayoutConstraints) {
+			} else if (constraints instanceof NoneLayoutConstraints) {
 				NoneLayoutConstraints noneConstraints = (NoneLayoutConstraints) constraints;
 				contained.setLocation(noneConstraints.getX(), noneConstraints.getY());
 				contained.setSize(contained.getPreferredSize());
 				container.add(contained);
-			}
-			else if (constraints instanceof SplitLayoutConstraints) {
+			} else if (constraints instanceof SplitLayoutConstraints) {
 				SplitLayoutConstraints splitConstraints = (SplitLayoutConstraints) constraints;
 				container.add(contained);
-			}
-			else if (constraints instanceof TwoColsLayoutConstraints) {
+			} else if (constraints instanceof TwoColsLayoutConstraints) {
 				TwoColsLayoutConstraints twoColsConstraints = (TwoColsLayoutConstraints) constraints;
 				GridBagConstraints c = new GridBagConstraints();
 				// c.insets = new Insets(3, 3, 3, 3);
@@ -190,20 +185,17 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> {
 					if (twoColsConstraints.getExpandVertically()) {
 						// c.weighty = 1.0;
 						c.fill = GridBagConstraints.VERTICAL;
-					}
-					else {
+					} else {
 						// c.insets = new Insets(5, 2, 0, 2);
 					}
-				}
-				else {
+				} else {
 					if (twoColsConstraints.getExpandHorizontally()) {
 						c.fill = GridBagConstraints.BOTH;
 						c.anchor = GridBagConstraints.CENTER;
 						if (twoColsConstraints.getExpandVertically()) {
 							c.weighty = 1.0;
 						}
-					}
-					else {
+					} else {
 						c.fill = GridBagConstraints.NONE;
 						c.anchor = GridBagConstraints.WEST;
 					}
@@ -229,84 +221,97 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> {
 	}
 
 	@Override
+	public JComponent getJComponent() {
+		return getRenderingAdapter().getJComponent(getTechnologyComponent());
+	}
+
+	@Override
+	public JComponent getResultingJComponent() {
+		return getRenderingAdapter().getResultingJComponent(this);
+	}
+
+	@Override
 	public void updateBorder() {
 		switch (getComponent().getBorder()) {
-			case empty:
-				getTechnologyComponent().setBorder(
-						BorderFactory.createEmptyBorder(getComponent().getBorderTop() != null ? getComponent().getBorderTop() : 0,
-								getComponent().getBorderLeft() != null ? getComponent().getBorderLeft() : 0,
-								getComponent().getBorderBottom() != null ? getComponent().getBorderBottom() : 0,
-								getComponent().getBorderRight() != null ? getComponent().getBorderRight() : 0));
-				break;
-			case etched:
-				getTechnologyComponent().setBorder(BorderFactory.createEtchedBorder());
-				break;
-			case line:
-				getTechnologyComponent().setBorder(BorderFactory
-						.createLineBorder(getComponent().getBorderColor() != null ? getComponent().getBorderColor() : Color.black));
-				break;
-			case lowered:
-				getTechnologyComponent().setBorder(BorderFactory.createLoweredBevelBorder());
-				break;
-			case raised:
-				getTechnologyComponent().setBorder(BorderFactory.createRaisedBevelBorder());
-				break;
-			case titled:
-				getTechnologyComponent().setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
-						getLocalized(getComponent().getBorderTitle()), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION,
-						getComponent().retrieveValidFont(), getComponent().retrieveValidForegroundColor()));
-				break;
-			case rounded3d:
-				getTechnologyComponent()
-						.setBorder(new RoundedBorder(
-								StringUtils.isNotEmpty(getComponent().getBorderTitle()) ? getLocalized(getComponent().getBorderTitle())
-										: null,
-								getComponent().getBorderTop() != null ? getComponent().getBorderTop() : 0,
-								getComponent().getBorderLeft() != null ? getComponent().getBorderLeft() : 0,
-								getComponent().getBorderBottom() != null ? getComponent().getBorderBottom() : 0,
-								getComponent().getBorderRight() != null ? getComponent().getBorderRight() : 0,
-								getComponent().getTitleFont(), getComponent().retrieveValidForegroundColor(),
-								getComponent().getDarkLevel()));
-				break;
-			default:
-				break;
+		case empty:
+			getTechnologyComponent().setBorder(
+					BorderFactory.createEmptyBorder(getComponent().getBorderTop() != null ? getComponent()
+							.getBorderTop() : 0, getComponent().getBorderLeft() != null ? getComponent()
+							.getBorderLeft() : 0, getComponent().getBorderBottom() != null ? getComponent()
+							.getBorderBottom() : 0, getComponent().getBorderRight() != null ? getComponent()
+							.getBorderRight() : 0));
+			break;
+		case etched:
+			getTechnologyComponent().setBorder(BorderFactory.createEtchedBorder());
+			break;
+		case line:
+			getTechnologyComponent().setBorder(
+					BorderFactory.createLineBorder(getComponent().getBorderColor() != null ? getComponent()
+							.getBorderColor() : Color.black));
+			break;
+		case lowered:
+			getTechnologyComponent().setBorder(BorderFactory.createLoweredBevelBorder());
+			break;
+		case raised:
+			getTechnologyComponent().setBorder(BorderFactory.createRaisedBevelBorder());
+			break;
+		case titled:
+			getTechnologyComponent().setBorder(
+					BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), getLocalized(getComponent()
+							.getBorderTitle()), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, getComponent()
+							.retrieveValidFont(), getComponent().retrieveValidForegroundColor()));
+			break;
+		case rounded3d:
+			getTechnologyComponent().setBorder(
+					new RoundedBorder(
+							StringUtils.isNotEmpty(getComponent().getBorderTitle()) ? getLocalized(getComponent()
+									.getBorderTitle()) : null, getComponent().getBorderTop() != null ? getComponent()
+									.getBorderTop() : 0, getComponent().getBorderLeft() != null ? getComponent()
+									.getBorderLeft() : 0, getComponent().getBorderBottom() != null ? getComponent()
+									.getBorderBottom() : 0, getComponent().getBorderRight() != null ? getComponent()
+									.getBorderRight() : 0, getComponent().getTitleFont(), getComponent()
+									.retrieveValidForegroundColor(), getComponent().getDarkLevel()));
+			break;
+		default:
+			break;
 		}
 	}
 
 	@Override
 	protected void setPanelLayoutParameters(JPanel technologyComponent) {
 		switch (getComponent().getLayout()) {
-			case none:
-				technologyComponent.setLayout(null);
-				break;
-			case flow:
-				technologyComponent.setLayout(
-						new FlowLayout(getComponent().getFlowAlignment().getAlign(), getComponent().getHGap(), getComponent().getVGap()));
-				break;
-			case border:
-				technologyComponent.setLayout(new BorderLayout());
-				break;
-			case grid:
-				// logger.info("rows="+getComponent().getRows()+" cols="+getComponent().getCols());
-				technologyComponent.setLayout(new GridLayout(getComponent().getRows(), getComponent().getCols(), getComponent().getHGap(),
-						getComponent().getVGap()));
-				break;
-			case box:
-				technologyComponent.setLayout(new BoxLayout(technologyComponent, getComponent().getBoxLayoutAxis().getAxis()));
-				break;
-			case twocols:
-				technologyComponent.setLayout(new GridBagLayout());
-				break;
-			case gridbag:
-				technologyComponent.setLayout(new GridBagLayout());
-				break;
-			case buttons:
-				technologyComponent.setLayout(
-						new ButtonLayout(getComponent().getFlowAlignment() != null ? getComponent().getFlowAlignment().getAlign() : -1,
-								getComponent().getHGap() != null ? getComponent().getHGap() : 5));
-				break;
-			default:
-				break;
+		case none:
+			technologyComponent.setLayout(null);
+			break;
+		case flow:
+			technologyComponent.setLayout(new FlowLayout(getComponent().getFlowAlignment().getAlign(), getComponent()
+					.getHGap(), getComponent().getVGap()));
+			break;
+		case border:
+			technologyComponent.setLayout(new BorderLayout());
+			break;
+		case grid:
+			// logger.info("rows="+getComponent().getRows()+" cols="+getComponent().getCols());
+			technologyComponent.setLayout(new GridLayout(getComponent().getRows(), getComponent().getCols(),
+					getComponent().getHGap(), getComponent().getVGap()));
+			break;
+		case box:
+			technologyComponent.setLayout(new BoxLayout(technologyComponent, getComponent().getBoxLayoutAxis()
+					.getAxis()));
+			break;
+		case twocols:
+			technologyComponent.setLayout(new GridBagLayout());
+			break;
+		case gridbag:
+			technologyComponent.setLayout(new GridBagLayout());
+			break;
+		case buttons:
+			technologyComponent.setLayout(new ButtonLayout(getComponent().getFlowAlignment() != null ? getComponent()
+					.getFlowAlignment().getAlign() : -1, getComponent().getHGap() != null ? getComponent().getHGap()
+					: 5));
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -322,24 +327,24 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> {
 			@Override
 			public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
 				switch (orientation) {
-					case SwingConstants.VERTICAL:
-						return visibleRect.height / 10;
-					case SwingConstants.HORIZONTAL:
-						return visibleRect.width / 10;
-					default:
-						throw new IllegalArgumentException("Invalid orientation: " + orientation);
+				case SwingConstants.VERTICAL:
+					return visibleRect.height / 10;
+				case SwingConstants.HORIZONTAL:
+					return visibleRect.width / 10;
+				default:
+					throw new IllegalArgumentException("Invalid orientation: " + orientation);
 				}
 			}
 
 			@Override
 			public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
 				switch (orientation) {
-					case SwingConstants.VERTICAL:
-						return visibleRect.height;
-					case SwingConstants.HORIZONTAL:
-						return visibleRect.width;
-					default:
-						throw new IllegalArgumentException("Invalid orientation: " + orientation);
+				case SwingConstants.VERTICAL:
+					return visibleRect.height;
+				case SwingConstants.HORIZONTAL:
+					return visibleRect.width;
+				default:
+					throw new IllegalArgumentException("Invalid orientation: " + orientation);
 				}
 			}
 
@@ -347,9 +352,11 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> {
 			public boolean getScrollableTracksViewportWidth() {
 				Container parent = getParent();
 				try {
-					if (parent instanceof JViewport && getPreferredSize() != null && JFIBPanelView.this.getComponent() != null) {
+					if (parent instanceof JViewport && getPreferredSize() != null
+							&& JFIBPanelView.this.getComponent() != null) {
 
-						return parent.getWidth() > getPreferredSize().width && JFIBPanelView.this.getComponent().isTrackViewPortWidth();
+						return parent.getWidth() > getPreferredSize().width
+								&& JFIBPanelView.this.getComponent().isTrackViewPortWidth();
 					}
 					if (JFIBPanelView.this.getComponent() != null) {
 						return JFIBPanelView.this.getComponent().isTrackViewPortWidth();
@@ -367,8 +374,10 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> {
 			public boolean getScrollableTracksViewportHeight() {
 				Container parent = getParent();
 				try {
-					if (parent instanceof JViewport && getPreferredSize() != null && JFIBPanelView.this.getComponent() != null) {
-						return parent.getHeight() > getPreferredSize().height && JFIBPanelView.this.getComponent().isTrackViewPortHeight();
+					if (parent instanceof JViewport && getPreferredSize() != null
+							&& JFIBPanelView.this.getComponent() != null) {
+						return parent.getHeight() > getPreferredSize().height
+								&& JFIBPanelView.this.getComponent().isTrackViewPortHeight();
 					}
 					if (JFIBPanelView.this.getComponent() != null) {
 						return JFIBPanelView.this.getComponent().isTrackViewPortHeight();
@@ -407,7 +416,7 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> {
 
 	@Override
 	protected void clearContainer() {
-		getRenderingAdapter().getJComponent(getTechnologyComponent()).removeAll();
+		getJComponent().removeAll();
 	}
 
 	@Override
@@ -419,28 +428,27 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> {
 				|| getComponent().getLayout() == Layout.buttons || getComponent().getLayout() == Layout.twocols
 				|| getComponent().getLayout() == Layout.gridbag) {
 
-			/*System.out.println("Apres le retrieve: ");
-			for (FIBComponent c : allSubComponents) {
-				if (c.getConstraints() != null) {
-					if (!c.getConstraints().hasIndex()) {
-						System.out.println("> Index: ? "+c);
-					}
-					else {
-						System.out.println("> Index: "+c.getConstraints().getIndex()+" "+c);
-					}
-				}
-			}
-			
-			System.out.println("*********************************************");*/
+			/*
+			 * System.out.println("Apres le retrieve: "); for (FIBComponent c :
+			 * allSubComponents) { if (c.getConstraints() != null) { if
+			 * (!c.getConstraints().hasIndex()) {
+			 * System.out.println("> Index: ? "+c); } else {
+			 * System.out.println("> Index: "
+			 * +c.getConstraints().getIndex()+" "+c); } } }
+			 * 
+			 * System.out.println("*********************************************"
+			 * );
+			 */
 
 		}
 
 		if (getComponent().getLayout() == Layout.grid) {
 
 			for (FIBComponent subComponent : getNotHiddenSubComponents()) {
-				FIBViewImpl<?, C2> subView = (FIBViewImpl<?, C2>) getController().viewForComponent(subComponent);
+				FIBViewImpl<?, JComponent> subView = (FIBViewImpl<?, JComponent>) getController().viewForComponent(
+						subComponent);
 				if (subView == null) {
-					subView = (FIBViewImpl<?, C2>) getController().buildView(subComponent);
+					subView = (FIBViewImpl<?, JComponent>) getController().buildView(subComponent);
 				}
 				// FIBViewImpl subView = getController().buildView(c);
 				registerViewForComponent(subView, subComponent);
@@ -455,31 +463,32 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> {
 
 		else {
 			for (FIBComponent subComponent : allSubComponents) {
-				FIBViewImpl<?, C2> subView = (FIBViewImpl<?, C2>) getController().viewForComponent(subComponent);
+				FIBViewImpl<?, JComponent> subView = (FIBViewImpl<?, JComponent>) getController().viewForComponent(
+						subComponent);
 				if (subView == null) {
-					subView = (FIBViewImpl<?, C2>) getController().buildView(subComponent);
+					subView = (FIBViewImpl<?, JComponent>) getController().buildView(subComponent);
 				}
 				// FIBViewImpl subView = getController().buildView(c);
 				registerViewForComponent(subView, subComponent);
 
 				// TODO: please handle issue with getResultingJComponent()
-				registerComponentWithConstraints((C2) subView.getResultingJComponent(), subComponent.getConstraints());
+				registerComponentWithConstraints(getResultingJComponent(subComponent), subComponent.getConstraints());
 			}
 		}
 	}
 
-	/*@Override
-	public JPanel getJComponent() {
-		return (JPanel) getTechnologyComponent();
-	}*/
+	protected JComponent getResultingJComponent(FIBComponent component) {
+		JFIBView<?, JComponent> componentView = (JFIBView<?, JComponent>) getController().viewForComponent(component);
+		return componentView.getRenderingAdapter().getResultingJComponent(componentView);
+
+	}
 
 	// Special case for GridLayout
-	@Override
-	protected C2 getChildComponent(int col, int row) {
+	protected JComponent getChildComponent(int col, int row) {
 		for (FIBComponent subComponent : getComponent().getSubComponents()) {
 			GridLayoutConstraints glc = (GridLayoutConstraints) subComponent.getConstraints();
 			if (glc.getX() == col && glc.getY() == row) {
-				return (C2) getController().viewForComponent(subComponent).getResultingJComponent();
+				return getResultingJComponent(subComponent);
 			}
 		}
 		// Otherwise, it's an empty cell

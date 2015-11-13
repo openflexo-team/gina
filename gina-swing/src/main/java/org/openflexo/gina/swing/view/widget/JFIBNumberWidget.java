@@ -67,6 +67,7 @@ import org.openflexo.gina.event.description.FIBValueEventDescription;
 import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.gina.model.widget.FIBNumber;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.swing.view.widget.JFIBNumberWidget.NumberSelectorPanel;
 import org.openflexo.gina.view.widget.impl.FIBNumberWidgetImpl;
@@ -81,7 +82,8 @@ import org.openflexo.toolbox.ToolBox;
  *
  * @author sylvain
  */
-public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<NumberSelectorPanel<T>, T>implements FocusListener {
+public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<NumberSelectorPanel<T>, T> implements
+		FocusListener, JFIBView<FIBNumber, NumberSelectorPanel<T>> {
 
 	static final Logger logger = Logger.getLogger(JFIBNumberWidget.class.getPackage().getName());
 
@@ -91,8 +93,9 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingNumberWidgetRenderingAdapter<T extends Number> extends SwingRenderingAdapter<NumberSelectorPanel<T>>
-			implements NumberWidgetRenderingAdapter<NumberSelectorPanel<T>, T> {
+	public static class SwingNumberWidgetRenderingAdapter<T extends Number> extends
+			SwingRenderingAdapter<NumberSelectorPanel<T>> implements
+			NumberWidgetRenderingAdapter<NumberSelectorPanel<T>, T> {
 
 		@Override
 		public T getNumber(NumberSelectorPanel<T> component) {
@@ -169,16 +172,16 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 			SpinnerNumberModel valueModel = makeSpinnerModel();
 			valueChooser = new JSpinner(valueModel);
 			valueChooser.setEditor(new JSpinner.NumberEditor(valueChooser /*
-																			* ,
-																			* "#.##"
-																			*/));
+																		 * ,
+																		 * "#.##"
+																		 */));
 			valueChooser.setValue(widget.getDefaultValue());
 			valueChooser.addChangeListener(new ChangeListener() {
 				@Override
 				public void stateChanged(ChangeEvent e) {
 					if (e.getSource() == valueChooser && !widget.ignoreTextfieldChanges) {
-						GinaStackEvent stack = widget.GENotifier.raise(
-								FIBEventFactory.getInstance().createValueEvent(FIBValueEventDescription.CHANGED, valueChooser.getValue()));
+						GinaStackEvent stack = widget.GENotifier.raise(FIBEventFactory.getInstance().createValueEvent(
+								FIBValueEventDescription.CHANGED, valueChooser.getValue()));
 						widget.updateModelFromWidget();
 						stack.end();
 					}
@@ -195,8 +198,7 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 
 			if (widget.getWidget().getColumns() != null) {
 				getTextField().setColumns(widget.getWidget().getColumns());
-			}
-			else {
+			} else {
 				getTextField().setColumns(getDefaultColumns());
 			}
 
@@ -215,14 +217,15 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 			gbc.anchor = GridBagConstraints.LINE_START;
 			add(checkBox, gbc);
 			if (!ToolBox.isMacOSLaf()) {
-				setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
-						RIGHT_COMPENSATING_BORDER));
+				setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER,
+						BOTTOM_COMPENSATING_BORDER, RIGHT_COMPENSATING_BORDER));
 			}
 
 		}
 
 		public void updateLanguage() {
-			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
+			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION,
+					"undefined_value", checkBox));
 		}
 
 		protected abstract SpinnerNumberModel makeSpinnerModel();
@@ -253,26 +256,40 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 	}
 
 	@Override
+	public SwingNumberWidgetRenderingAdapter<T> getRenderingAdapter() {
+		return (SwingNumberWidgetRenderingAdapter<T>) super.getRenderingAdapter();
+	}
+
+	@Override
+	public JComponent getJComponent() {
+		return getRenderingAdapter().getJComponent(getTechnologyComponent());
+	}
+
+	@Override
+	public JComponent getResultingJComponent() {
+		return getRenderingAdapter().getResultingJComponent(this);
+	}
+
+	@Override
 	protected NumberSelectorPanel<T> makeTechnologyComponent() {
 		if (getWidget().getNumberType() == null) {
 			return null;
-		}
-		else {
+		} else {
 			switch (getWidget().getNumberType()) {
-				case ByteType:
-					return (NumberSelectorPanel) new ByteSelectorPanel((JFIBNumberWidget) this);
-				case ShortType:
-					return (NumberSelectorPanel) new ShortSelectorPanel((JFIBNumberWidget) this);
-				case IntegerType:
-					return (NumberSelectorPanel) new IntegerSelectorPanel((JFIBNumberWidget) this);
-				case LongType:
-					return (NumberSelectorPanel) new LongSelectorPanel((JFIBNumberWidget) this);
-				case FloatType:
-					return (NumberSelectorPanel) new FloatSelectorPanel((JFIBNumberWidget) this);
-				case DoubleType:
-					return (NumberSelectorPanel) new DoubleSelectorPanel((JFIBNumberWidget) this);
-				default:
-					return null;
+			case ByteType:
+				return (NumberSelectorPanel) new ByteSelectorPanel((JFIBNumberWidget) this);
+			case ShortType:
+				return (NumberSelectorPanel) new ShortSelectorPanel((JFIBNumberWidget) this);
+			case IntegerType:
+				return (NumberSelectorPanel) new IntegerSelectorPanel((JFIBNumberWidget) this);
+			case LongType:
+				return (NumberSelectorPanel) new LongSelectorPanel((JFIBNumberWidget) this);
+			case FloatType:
+				return (NumberSelectorPanel) new FloatSelectorPanel((JFIBNumberWidget) this);
+			case DoubleType:
+				return (NumberSelectorPanel) new DoubleSelectorPanel((JFIBNumberWidget) this);
+			default:
+				return null;
 			}
 		}
 	}

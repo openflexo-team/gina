@@ -45,14 +45,16 @@ import java.util.logging.Logger;
 
 import javax.swing.Icon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBButton;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.view.widget.FIBButtonWidget.ButtonWidgetRenderingAdapter;
 import org.openflexo.gina.view.widget.impl.FIBButtonWidgetImpl;
 
-public class JFIBButtonWidget extends FIBButtonWidgetImpl<JButton> {
+public class JFIBButtonWidget extends FIBButtonWidgetImpl<JButton> implements JFIBView<FIBButton, JButton> {
 
 	private static final Logger logger = Logger.getLogger(JFIBButtonWidget.class.getPackage().getName());
 
@@ -63,7 +65,8 @@ public class JFIBButtonWidget extends FIBButtonWidgetImpl<JButton> {
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingButtonRenderingAdapter extends SwingRenderingAdapter<JButton>implements ButtonWidgetRenderingAdapter<JButton> {
+	public static class SwingButtonRenderingAdapter extends SwingRenderingAdapter<JButton> implements
+			ButtonWidgetRenderingAdapter<JButton> {
 
 		@Override
 		public String getText(JButton component) {
@@ -91,6 +94,21 @@ public class JFIBButtonWidget extends FIBButtonWidgetImpl<JButton> {
 
 	public JFIBButtonWidget(FIBButton model, FIBController controller) {
 		super(model, controller, RENDERING_TECHNOLOGY_ADAPTER);
+	}
+
+	@Override
+	public SwingButtonRenderingAdapter getRenderingAdapter() {
+		return (SwingButtonRenderingAdapter) super.getRenderingAdapter();
+	}
+
+	@Override
+	public JComponent getJComponent() {
+		return getRenderingAdapter().getJComponent(getTechnologyComponent());
+	}
+
+	@Override
+	public JComponent getResultingJComponent() {
+		return getRenderingAdapter().getResultingJComponent(this);
 	}
 
 	@Override

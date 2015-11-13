@@ -41,21 +41,21 @@ package org.openflexo.gina.swing.editor.view.widget;
 
 import java.util.logging.Logger;
 
-import javax.swing.JComboBox;
-
 import org.openflexo.gina.model.widget.FIBDropDown;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate;
 import org.openflexo.gina.swing.view.widget.JFIBDropDownWidget;
+import org.openflexo.gina.swing.view.widget.JFIBDropDownWidget.JDropDownPanel;
 import org.openflexo.logging.FlexoLogger;
 
-public class JFIBEditableDropDownWidget<T> extends JFIBDropDownWidget<T>implements FIBSwingEditableView<FIBDropDown, JComboBox<T>> {
+public class JFIBEditableDropDownWidget<T> extends JFIBDropDownWidget<T> implements
+		FIBSwingEditableView<FIBDropDown, JDropDownPanel<T>> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableDropDownWidget.class.getPackage().getName());
 
-	private final FIBSwingEditableViewDelegate<FIBDropDown, JComboBox<T>> delegate;
+	private final FIBSwingEditableViewDelegate<FIBDropDown, JDropDownPanel<T>> delegate;
 
 	private final FIBEditorController editorController;
 
@@ -68,7 +68,7 @@ public class JFIBEditableDropDownWidget<T> extends JFIBDropDownWidget<T>implemen
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBSwingEditableViewDelegate<FIBDropDown, JComboBox<T>>(this);
+		delegate = new FIBSwingEditableViewDelegate<FIBDropDown, JDropDownPanel<T>>(this);
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class JFIBEditableDropDownWidget<T> extends JFIBDropDownWidget<T>implemen
 	}
 
 	@Override
-	public FIBSwingEditableViewDelegate<FIBDropDown, JComboBox<T>> getDelegate() {
+	public FIBSwingEditableViewDelegate<FIBDropDown, JDropDownPanel<T>> getDelegate() {
 		return delegate;
 	}
 

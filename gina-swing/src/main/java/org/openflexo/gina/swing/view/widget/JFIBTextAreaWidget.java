@@ -39,7 +39,6 @@
 
 package org.openflexo.gina.swing.view.widget;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -48,8 +47,7 @@ import java.awt.event.KeyEvent;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.JComponent;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
@@ -57,6 +55,7 @@ import javax.swing.event.DocumentListener;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBTextArea;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingTextRenderingAdapter;
 import org.openflexo.gina.view.widget.impl.FIBTextAreaWidgetImpl;
 import org.openflexo.toolbox.ToolBox;
@@ -66,7 +65,8 @@ import org.openflexo.toolbox.ToolBox;
  * 
  * @author bmangez,sguerin
  */
-public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea>implements FocusListener {
+public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea> implements FocusListener,
+		JFIBView<FIBTextArea, JTextArea> {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBTextAreaWidget.class.getPackage().getName());
 
@@ -77,8 +77,8 @@ public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea>implemen
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingTextAreaRenderingAdapter extends SwingTextRenderingAdapter<JTextArea>
-			implements TextAreaRenderingAdapter<JTextArea> {
+	public static class SwingTextAreaRenderingAdapter extends SwingTextRenderingAdapter<JTextArea> implements
+			TextAreaRenderingAdapter<JTextArea> {
 
 		@Override
 		public int getColumns(JTextArea component) {
@@ -104,24 +104,23 @@ public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea>implemen
 
 	public static SwingTextAreaRenderingAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingTextAreaRenderingAdapter();
 
-	private final JPanel panel;
-	private JScrollPane scrollPane;
-
 	public JFIBTextAreaWidget(FIBTextArea model, FIBController controller) {
 		super(model, controller, RENDERING_TECHNOLOGY_ADAPTER);
-		panel = new JPanel(new BorderLayout());
-		panel.setOpaque(false);
-		panel.add(getTechnologyComponent(), BorderLayout.CENTER);
-		Border border;
-		if (!ToolBox.isMacOSLaf()) {
-			border = BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
-					RIGHT_COMPENSATING_BORDER);
-		}
-		else {
-			border = BorderFactory.createEmptyBorder(2, 3, 2, 3);
-		}
-		border = BorderFactory.createCompoundBorder(border, BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
-		panel.setBorder(border);
+	}
+
+	@Override
+	public SwingTextAreaRenderingAdapter getRenderingAdapter() {
+		return (SwingTextAreaRenderingAdapter) super.getRenderingAdapter();
+	}
+
+	@Override
+	public JComponent getJComponent() {
+		return getRenderingAdapter().getJComponent(getTechnologyComponent());
+	}
+
+	@Override
+	public JComponent getResultingJComponent() {
+		return getRenderingAdapter().getResultingJComponent(this);
 	}
 
 	@Override
@@ -165,6 +164,16 @@ public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea>implemen
 		textArea.setWrapStyleWord(true);
 		textArea.setEnabled(true);
 
+		Border border;
+		if (!ToolBox.isMacOSLaf()) {
+			border = BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER,
+					BOTTOM_COMPENSATING_BORDER, RIGHT_COMPENSATING_BORDER);
+		} else {
+			border = BorderFactory.createEmptyBorder(2, 3, 2, 3);
+		}
+		border = BorderFactory.createCompoundBorder(border, BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+		textArea.setBorder(border);
+
 		return textArea;
 	}
 
@@ -172,11 +181,6 @@ public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea>implemen
 	public void focusGained(FocusEvent event) {
 		super.focusGained(event);
 		getTechnologyComponent().selectAll();
-	}
-
-	@Override
-	public JPanel getJComponent() {
-		return panel;
 	}
 
 }

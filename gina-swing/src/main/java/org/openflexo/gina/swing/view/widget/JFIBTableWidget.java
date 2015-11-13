@@ -73,10 +73,10 @@ import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.controller.FIBController;
-import org.openflexo.gina.controller.FIBSelectable;
 import org.openflexo.gina.event.description.FIBEventFactory;
 import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.gina.model.widget.FIBTable;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.swing.view.widget.JFIBTableWidget.JTablePanel;
 import org.openflexo.gina.view.widget.impl.FIBTableWidgetImpl;
@@ -88,8 +88,8 @@ import org.openflexo.gina.view.widget.table.impl.FIBTableModel;
  * 
  * @author sguerin
  */
-public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
-		implements TableModelListener, FIBSelectable<T>, ListSelectionListener, FocusListener {
+public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T> implements TableModelListener,
+		ListSelectionListener, FocusListener, JFIBView<FIBTable, JTablePanel<T>> {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBTableWidget.class.getPackage().getName());
 
@@ -99,8 +99,8 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingTableRenderingAdapter<T> extends SwingRenderingAdapter<JTablePanel<T>>
-			implements TableRenderingAdapter<JTablePanel<T>, T> {
+	public static class SwingTableRenderingAdapter<T> extends SwingRenderingAdapter<JTablePanel<T>> implements
+			TableRenderingAdapter<JTablePanel<T>, T> {
 
 		@Override
 		public int getVisibleRowCount(JTablePanel<T> component) {
@@ -156,6 +156,21 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 
 	}
 
+	@Override
+	public SwingTableRenderingAdapter<T> getRenderingAdapter() {
+		return (SwingTableRenderingAdapter<T>) super.getRenderingAdapter();
+	}
+
+	@Override
+	public JComponent getJComponent() {
+		return getRenderingAdapter().getJComponent(getTechnologyComponent());
+	}
+
+	@Override
+	public JComponent getResultingJComponent() {
+		return getRenderingAdapter().getResultingJComponent(this);
+	}
+
 	/**
 	 * Implements
 	 * 
@@ -169,8 +184,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine("Model has changed from " + event.getOldValues() + " to " + event.getNewValues());
 			}
-		}
-		else if (e instanceof FIBTableModel.RowMoveForObjectEvent) {
+		} else if (e instanceof FIBTableModel.RowMoveForObjectEvent) {
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine("Reselect object, and then the edited cell");
 			}
@@ -178,10 +192,10 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 			getListSelectionModel().removeListSelectionListener(this);
 			getListSelectionModel().addSelectionInterval(event.getNewRow(), event.getNewRow());
 			getListSelectionModel().addListSelectionListener(this);
-			getTechnologyComponent().getJTable()
-					.setEditingColumn(getTechnologyComponent().getJTable().convertColumnIndexToView(event.getColumn()));
-			getTechnologyComponent().getJTable()
-					.setEditingRow(getTechnologyComponent().getJTable().convertRowIndexToView(event.getNewRow()));
+			getTechnologyComponent().getJTable().setEditingColumn(
+					getTechnologyComponent().getJTable().convertColumnIndexToView(event.getColumn()));
+			getTechnologyComponent().getJTable().setEditingRow(
+					getTechnologyComponent().getJTable().convertRowIndexToView(event.getNewRow()));
 		}
 	}
 
@@ -253,15 +267,16 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 		if (!getListSelectionModel().isSelectedIndex(leadIndex)) {
 			leadIndex = getListSelectionModel().getAnchorSelectionIndex();
 		}
-		while (!getListSelectionModel().isSelectedIndex(leadIndex) && i <= getListSelectionModel().getMaxSelectionIndex()) {
+		while (!getListSelectionModel().isSelectedIndex(leadIndex)
+				&& i <= getListSelectionModel().getMaxSelectionIndex()) {
 			leadIndex = i;
 			i++;
 		}
 
 		// System.out.println("leadIndex=" + leadIndex);
 
-		GinaStackEvent stack = GENotifier.raise(FIBEventFactory.getInstance().createSelectionEvent(getListSelectionModel(), leadIndex,
-				e.getFirstIndex(), e.getLastIndex()));
+		GinaStackEvent stack = GENotifier.raise(FIBEventFactory.getInstance().createSelectionEvent(
+				getListSelectionModel(), leadIndex, e.getFirstIndex(), e.getLastIndex()));
 
 		widgetDisableUserEvent = true;
 
@@ -281,7 +296,8 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 		List<T> newSelection = new ArrayList<T>();
 		for (i = getListSelectionModel().getMinSelectionIndex(); i <= getListSelectionModel().getMaxSelectionIndex(); i++) {
 			if (getListSelectionModel().isSelectedIndex(i)) {
-				newSelection.add(getTableModel().elementAt(getTechnologyComponent().getJTable().convertRowIndexToModel(i)));
+				newSelection.add(getTableModel().elementAt(
+						getTechnologyComponent().getJTable().convertRowIndexToModel(i)));
 			}
 		}
 
@@ -331,12 +347,13 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 			int index = getTableModel().getValues().indexOf(object);
 			if (index > -1) {
 				index = getTechnologyComponent().getJTable().convertRowIndexToView(index);
-				// if (!notify) _table.getSelectionModel().removeListSelectionListener(getTableModel());
+				// if (!notify)
+				// _table.getSelectionModel().removeListSelectionListener(getTableModel());
 				getListSelectionModel().setSelectionInterval(index, index);
-				// if (!notify) _table.getSelectionModel().addListSelectionListener(getTableModel());
+				// if (!notify)
+				// _table.getSelectionModel().addListSelectionListener(getTableModel());
 			}
-		}
-		else {
+		} else {
 			clearSelection();
 		}
 	}
@@ -436,8 +453,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 				col.setPreferredWidth(widget.getTableModel().getDefaultColumnSize(i));
 				if (widget.getTableModel().getColumnResizable(i)) {
 					col.setResizable(true);
-				}
-				else {
+				} else {
 					// L'idee, c'est d'etre vraiment sur ;-) !
 					col.setWidth(widget.getTableModel().getDefaultColumnSize(i));
 					col.setMinWidth(widget.getTableModel().getDefaultColumnSize(i));
@@ -475,19 +491,22 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 					public void actionPerformed(ActionEvent e) {
 						widget.getController().performCopyAction(widget.getSelected(), widget.getSelection());
 					}
-				}, KeyStroke.getKeyStroke(KeyEvent.VK_C, META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+				}, KeyStroke.getKeyStroke(KeyEvent.VK_C, META_MASK, false),
+						JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 				jTable.registerKeyboardAction(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						widget.getController().performCutAction(widget.getSelected(), widget.getSelection());
 					}
-				}, KeyStroke.getKeyStroke(KeyEvent.VK_X, META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+				}, KeyStroke.getKeyStroke(KeyEvent.VK_X, META_MASK, false),
+						JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 				jTable.registerKeyboardAction(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						widget.getController().performPasteAction(widget.getSelected(), widget.getSelection());
 					}
-				}, KeyStroke.getKeyStroke(KeyEvent.VK_V, META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+				}, KeyStroke.getKeyStroke(KeyEvent.VK_V, META_MASK, false),
+						JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 			}
 
 			scrollPane = new JScrollPane(jTable);
@@ -507,8 +526,8 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 								while (en.hasMoreElements()) {
 									FIBTableActionListener<T> action = en.nextElement();
 									if (action.isAddAction()) {
-										action.actionPerformed(new ActionEvent(jTable, ActionEvent.ACTION_PERFORMED, null,
-												EventQueue.getMostRecentEventTime(), e.getModifiers()));
+										action.actionPerformed(new ActionEvent(jTable, ActionEvent.ACTION_PERFORMED,
+												null, EventQueue.getMostRecentEventTime(), e.getModifiers()));
 										break;
 									}
 								}

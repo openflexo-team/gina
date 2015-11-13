@@ -55,7 +55,8 @@ import org.openflexo.localization.LocalizationListener;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 /**
- * Represent the "view" associated with a {@link FIBComponent} in a given rendering engine environment (eg Swing)<br>
+ * Represent the "view" associated with a {@link FIBComponent} in a given
+ * rendering engine environment (eg Swing)<br>
  * 
  * A default implementation is provided in this library, see {@link FIBViewImpl}
  * 
@@ -66,7 +67,8 @@ import org.openflexo.toolbox.HasPropertyChangeSupport;
  * @param <C>
  *            type of technology-specific component this view manage
  */
-public interface FIBView<M extends FIBComponent, C> extends LocalizationListener, HasPropertyChangeSupport, PropertyChangeListener {
+public interface FIBView<M extends FIBComponent, C> extends LocalizationListener, HasPropertyChangeSupport,
+		PropertyChangeListener {
 
 	public static final String DATA = "data";
 	public static final String VISIBLE = "visible";
@@ -104,9 +106,11 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 	public boolean isViewVisible();
 
 	/**
-	 * Return the BindingEvaluationContext valid in the context of current widget.<br>
-	 * Note that embedded component (components used in the context of FIBReferencedComponent) should point to the BindingEvaluationContext
-	 * of their embedding component
+	 * Return the BindingEvaluationContext valid in the context of current
+	 * widget.<br>
+	 * Note that embedded component (components used in the context of
+	 * FIBReferencedComponent) should point to the BindingEvaluationContext of
+	 * their embedding component
 	 * 
 	 * @return
 	 */
@@ -121,8 +125,10 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 
 	/**
 	 * Return technology-specific component representing widget<br>
-	 * Note that, depending on the underlying technology, this technology-specific component might be embedded in an other component before
-	 * to be added in component hierarchy (for example if component need to be embedded in a scroll pane)
+	 * Note that, depending on the underlying technology, this
+	 * technology-specific component might be embedded in an other component
+	 * before to be added in component hierarchy (for example if component need
+	 * to be embedded in a scroll pane)
 	 * 
 	 * @return C
 	 */
@@ -139,7 +145,8 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 
 	/**
 	 * This method is called to update view representing a {@link FIBComponent}.<br>
-	 * Usually, this method should be called only once, when the component has been added to the whole hierarchy.
+	 * Usually, this method should be called only once, when the component has
+	 * been added to the whole hierarchy.
 	 * 
 	 * @return a flag indicating if component has been updated
 	 */
@@ -190,6 +197,10 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 		public boolean getEnable(C component);
 
 		public void setEnabled(C component, boolean enabled);
+
+		public int getWidth(C component);
+
+		public int getHeight(C component);
 
 		public Dimension getPreferredSize(C component);
 

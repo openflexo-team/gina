@@ -46,20 +46,23 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.swing.view.JFIBView;
+import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.gina.swing.view.container.JFIBTabPanelView;
 import org.openflexo.gina.utils.FIBInspector;
 import org.openflexo.gina.utils.InspectorGroup;
-import org.openflexo.gina.view.FIBView;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.rm.Resource;
@@ -78,14 +81,15 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 
 	private final InspectorGroup inspectorGroup;
 
-	private final Hashtable<FIBInspector, FIBView> inspectorViews;
+	private final Hashtable<FIBInspector, JFIBView<?, ?>> inspectorViews;
 
 	public JFIBInspectorController(JFrame frame, Resource inspectorDirectory, LocalizedDelegate localizer) {
 		inspectorGroup = new InspectorGroup(inspectorDirectory);
-		inspectorViews = new Hashtable<FIBInspector, FIBView>();
+		inspectorViews = new Hashtable<FIBInspector, JFIBView<?, ?>>();
 
 		for (FIBInspector inspector : inspectorGroup.getInspectors().values()) {
-			FIBView inspectorView = FIBController.makeView(inspector, SwingViewFactory.INSTANCE, localizer);
+			JFIBView<?, ?> inspectorView = (JFIBView<?, ?>) FIBController.makeView(inspector,
+					SwingViewFactory.INSTANCE, localizer);
 			FlexoLocalization.addToLocalizationListeners(inspectorView);
 			inspectorViews.put(inspector, inspectorView);
 			logger.info("Initialized inspector for " + inspector.getDataClass());
@@ -116,7 +120,7 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 	}
 
 	private FIBInspector currentInspector = null;
-	private FIBView currentInspectorView = null;
+	private JFIBView<?, ?> currentInspectorView = null;
 
 	private Object currentInspectedObject = null;
 
@@ -132,8 +136,7 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 		if (newInspector == null) {
 			logger.warning("No inspector for " + object);
 			switchToEmptyContent();
-		}
-		else {
+		} else {
 			if (newInspector != currentInspector) {
 				switchToInspector(newInspector);
 			}
@@ -152,33 +155,38 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 	}
 
 	private void switchToInspector(FIBInspector newInspector) {
-		/*if (newInspector.getDataClass() == FIBPanel.class) {
-			System.out.println("Hop: "+newInspector.getXMLRepresentation());
-		}*/
+		/*
+		 * if (newInspector.getDataClass() == FIBPanel.class) {
+		 * System.out.println("Hop: "+newInspector.getXMLRepresentation()); }
+		 */
+
+		JTabbedPane tabPanelViewJComponent = (JTabbedPane) ((SwingRenderingAdapter) tabPanelView.getRenderingAdapter())
+				.getJComponent(tabPanelView.getTechnologyComponent());
 
 		if (tabPanelView != null) {
-			tabPanelView.getJComponent().removeChangeListener(this);
+			tabPanelViewJComponent.removeChangeListener(this);
 			// System.out.println("removeChangeListener for "+tabPanelView.getJComponent());
 		}
 
 		// System.out.println("switchToInspector() "+newInspector);
-		FIBView view = inspectorViews.get(newInspector);
+		JFIBView<?, ?> view = inspectorViews.get(newInspector);
 		if (view != null) {
 			currentInspectorView = view;
 			rootPane.removeAll();
-			rootPane.add(currentInspectorView.getResultingJComponent(), BorderLayout.CENTER);
+			JComponent resultingJComponent = currentInspectorView.getResultingJComponent();
+			rootPane.add(resultingJComponent, BorderLayout.CENTER);
 			rootPane.revalidate();
 			rootPane.repaint();
 			currentInspector = newInspector;
 			inspectorDialog.setTitle(newInspector.getParameter("title"));
-			tabPanelView = (JFIBTabPanelView) currentInspectorView.getController().viewForComponent(currentInspector.getTabPanel());
-			if (lastInspectedTabIndex >= 0 && lastInspectedTabIndex < tabPanelView.getJComponent().getTabCount()) {
-				tabPanelView.getJComponent().setSelectedIndex(lastInspectedTabIndex);
+			tabPanelView = (JFIBTabPanelView) currentInspectorView.getController().viewForComponent(
+					currentInspector.getTabPanel());
+			if (lastInspectedTabIndex >= 0 && lastInspectedTabIndex < tabPanelViewJComponent.getTabCount()) {
+				tabPanelViewJComponent.setSelectedIndex(lastInspectedTabIndex);
 			}
-			tabPanelView.getJComponent().addChangeListener(this);
+			tabPanelViewJComponent.addChangeListener(this);
 			// System.out.println("addChangeListener for "+tabPanelView.getJComponent());
-		}
-		else {
+		} else {
 			logger.warning("No inspector view for " + newInspector);
 			switchToEmptyContent();
 		}
@@ -201,7 +209,8 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		lastInspectedTabIndex = tabPanelView.getJComponent().getSelectedIndex();
+		JTabbedPane tabPanelViewJComponent = (JTabbedPane) tabPanelView.getJComponent();
+		lastInspectedTabIndex = tabPanelViewJComponent.getSelectedIndex();
 		// System.out.println("Change for index "+lastInspectedTabIndex);
 	}
 

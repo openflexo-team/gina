@@ -58,7 +58,8 @@ import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.view.container.JFIBTabPanelView;
 import org.openflexo.logging.FlexoLogger;
 
-public class JFIBEditableTabPanelView extends JFIBTabPanelView implements FIBSwingEditableContainerView<FIBTabPanel, JTabbedPane> {
+public class JFIBEditableTabPanelView extends JFIBTabPanelView implements
+		FIBSwingEditableContainerView<FIBTabPanel, JTabbedPane> {
 
 	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableTabPanelView.class.getPackage().getName());
 
@@ -96,6 +97,11 @@ public class JFIBEditableTabPanelView extends JFIBTabPanelView implements FIBSwi
 	@Override
 	public FIBSwingEditableContainerViewDelegate<FIBTabPanel, JTabbedPane> getDelegate() {
 		return delegate;
+	}
+
+	@Override
+	public JTabbedPane getJComponent() {
+		return (JTabbedPane) super.getJComponent();
 	}
 
 	@Override

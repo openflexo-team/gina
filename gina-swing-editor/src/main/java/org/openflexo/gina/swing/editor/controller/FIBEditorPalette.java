@@ -48,15 +48,16 @@ import java.awt.dnd.DragSource;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.utils.JFIBPreferences;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.utils.FIBIconLibrary;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.rm.Resource;
@@ -73,11 +74,11 @@ public class FIBEditorPalette extends JDialog {
 	private static final Image DROP_OK_IMAGE = FIBIconLibrary.DROP_OK_CURSOR.getImage();
 	private static final Image DROP_KO_IMAGE = FIBIconLibrary.DROP_KO_CURSOR.getImage();
 
-	public static final Cursor dropOK = ToolBox.getPLATFORM() == ToolBox.MACOS
-			? Toolkit.getDefaultToolkit().createCustomCursor(DROP_OK_IMAGE, new Point(16, 16), "Drop OK") : DragSource.DefaultMoveDrop;
+	public static final Cursor dropOK = ToolBox.getPLATFORM() == ToolBox.MACOS ? Toolkit.getDefaultToolkit()
+			.createCustomCursor(DROP_OK_IMAGE, new Point(16, 16), "Drop OK") : DragSource.DefaultMoveDrop;
 
-	public static final Cursor dropKO = ToolBox.getPLATFORM() == ToolBox.MACOS
-			? Toolkit.getDefaultToolkit().createCustomCursor(DROP_KO_IMAGE, new Point(16, 16), "Drop KO") : DragSource.DefaultMoveNoDrop;
+	public static final Cursor dropKO = ToolBox.getPLATFORM() == ToolBox.MACOS ? Toolkit.getDefaultToolkit()
+			.createCustomCursor(DROP_KO_IMAGE, new Point(16, 16), "Drop KO") : DragSource.DefaultMoveNoDrop;
 
 	private final JPanel paletteContent;
 
@@ -105,8 +106,7 @@ public class FIBEditorPalette extends JDialog {
 			if (representationFIBFile != null) {
 				representationComponent = FIBLibrary.instance().retrieveFIBComponent(representationFIBFile);
 
-			}
-			else {
+			} else {
 				representationComponent = FIBLibrary.instance().retrieveFIBComponent(modelFIBFile);
 			}
 			addPaletteElement(modelComponent, representationComponent);
@@ -127,12 +127,8 @@ public class FIBEditorPalette extends JDialog {
 
 	private PaletteElement addPaletteElement(FIBComponent modelComponent, FIBComponent representationComponent) {
 		PaletteElement el = new PaletteElement(modelComponent, representationComponent, this);
-		if (el.getView().getResultingJComponent() != null) {
-			paletteContent.add(el.getView().getResultingJComponent());
-		}
-		else {
-			paletteContent.add(new JLabel("Cannot instanciate"));
-		}
+		JComponent resultingJComponent = ((JFIBView<?, ?>) el.getView()).getResultingJComponent();
+		paletteContent.add(resultingJComponent);
 		return el;
 	}
 

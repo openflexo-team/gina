@@ -146,7 +146,8 @@ import org.openflexo.toolbox.StringUtils;
 
 /**
  * A {@link GinaViewFactory} implementation dedicated for Swing<br>
- * Developers note: We want this class to be stateless: please do not reference any data inside this class
+ * Developers note: We want this class to be stateless: please do not reference
+ * any data inside this class
  * 
  * @author sylvain
  * 
@@ -163,9 +164,10 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 	}
 
 	@Override
-	public final <F extends FIBContainer> FIBContainerView<F, ? extends JComponent, ? extends JComponent> makeContainer(F fibContainer,
-			FIBController controller) {
-		FIBContainerView<F, ? extends JComponent, ? extends JComponent> returned = super.makeContainer(fibContainer, controller);
+	public final <F extends FIBContainer> FIBContainerView<F, ? extends JComponent, ? extends JComponent> makeContainer(
+			F fibContainer, FIBController controller) {
+		FIBContainerView<F, ? extends JComponent, ? extends JComponent> returned = super.makeContainer(fibContainer,
+				controller);
 		if (returned != null && fibContainer.isRootComponent()) {
 			if (returned instanceof FIBContainerView && allowsFIBEdition()) {
 				EditorLauncher editorLauncher = new EditorLauncher(controller, fibContainer);
@@ -181,12 +183,13 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <F extends FIBWidget> FIBWidgetView<F, ? extends JComponent, ?> makeWidget(final F fibWidget, FIBController controller) {
+	public <F extends FIBWidget> FIBWidgetView<F, ? extends JComponent, ?> makeWidget(final F fibWidget,
+			FIBController controller) {
 		final FIBWidgetView<F, ? extends JComponent, ?> returned = super.makeWidget(fibWidget, controller);
 
 		if (returned.getTechnologyComponent() == null) {
-			System.out.println(
-					"For fibWidget " + fibWidget + " returned=" + returned + " technologyComponent=" + returned.getTechnologyComponent());
+			System.out.println("For fibWidget " + fibWidget + " returned=" + returned + " technologyComponent="
+					+ returned.getTechnologyComponent());
 		}
 
 		else {
@@ -223,12 +226,14 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 	}
 
 	@Override
-	public FIBPanelView<? extends JComponent, ? extends JComponent> makePanelView(FIBPanel container, FIBController controller) {
+	public FIBPanelView<? extends JComponent, ? extends JComponent> makePanelView(FIBPanel container,
+			FIBController controller) {
 		return new JFIBPanelView(container, controller);
 	}
 
 	@Override
-	public FIBTabPanelView<? extends JComponent, ? extends JComponent> makeTabPanelView(FIBTabPanel container, FIBController controller) {
+	public FIBTabPanelView<? extends JComponent, ? extends JComponent> makeTabPanelView(FIBTabPanel container,
+			FIBController controller) {
 		return new JFIBTabPanelView(container, controller);
 	}
 
@@ -269,12 +274,14 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 	}
 
 	@Override
-	public FIBCheckboxListWidgetImpl<? extends JComponent, ?> makeCheckboxList(FIBCheckboxList widget, FIBController controller) {
+	public FIBCheckboxListWidgetImpl<? extends JComponent, ?> makeCheckboxList(FIBCheckboxList widget,
+			FIBController controller) {
 		return new JFIBCheckboxListWidget(widget, controller);
 	}
 
 	@Override
-	public FIBRadioButtonListWidgetImpl<? extends JComponent, ?> makeRadioButtonList(FIBRadioButtonList widget, FIBController controller) {
+	public FIBRadioButtonListWidgetImpl<? extends JComponent, ?> makeRadioButtonList(FIBRadioButtonList widget,
+			FIBController controller) {
 		return new JFIBRadioButtonListWidget(widget, controller);
 	}
 
@@ -334,8 +341,8 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 	}
 
 	@Override
-	public FIBReferencedComponentWidgetImpl<? extends JComponent> makeReferencedComponentWidget(FIBReferencedComponent widget,
-			FIBController controller) {
+	public FIBReferencedComponentWidgetImpl<? extends JComponent> makeReferencedComponentWidget(
+			FIBReferencedComponent widget, FIBController controller) {
 		return new JFIBReferencedComponentWidget(widget, controller);
 	}
 
@@ -364,8 +371,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 	}
 
 	private Window retrieveWindow(FIBController controller) {
-		Component c = SwingUtilities.getRoot(((SwingRenderingAdapter) controller.getRootView().getRenderingAdapter())
-				.getJComponent((JComponent) controller.getRootView().getTechnologyComponent()));
+		Component c = SwingUtilities.getRoot(((JFIBView<?, ?>) controller.getRootView()).getJComponent());
 		if (c instanceof Window) {
 			return (Window) c;
 		}
@@ -375,8 +381,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 	protected void recursivelyAddEditorLauncher(EditorLauncher editorLauncher,
 			FIBContainerView<? extends FIBContainer, JComponent, ?> container) {
 
-		((SwingRenderingAdapter) container.getRenderingAdapter()).getJComponent(container.getTechnologyComponent())
-				.addMouseListener(editorLauncher);
+		((JFIBView<?, ?>) container).getJComponent().addMouseListener(editorLauncher);
 
 		for (FIBComponent c : container.getComponent().getSubComponents()) {
 			FIBView<?, ?> subView = container.getController().viewForComponent(c);
@@ -445,16 +450,15 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 		public void mouseClicked(MouseEvent e) {
 			widgetView.getController().fireMouseClicked(widgetView, e.getClickCount());
 			if (e.getClickCount() == 1) {
-				if (widgetView.getWidget().hasRightClickAction() && (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3)) {
+				if (widgetView.getWidget().hasRightClickAction()
+						&& (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3)) {
 					// Detected right-click associated with action
 					widgetView.applyRightClickAction(makeMouseEvent(e));
-				}
-				else if (widgetView.getWidget().hasClickAction()) {
+				} else if (widgetView.getWidget().hasClickAction()) {
 					// Detected click associated with action
 					widgetView.applySingleClickAction(makeMouseEvent(e));
 				}
-			}
-			else if (e.getClickCount() == 2) {
+			} else if (e.getClickCount() == 2) {
 				if (widgetView.getWidget().hasDoubleClickAction()) {
 					// Detected double-click associated with action
 					widgetView.applyDoubleClickAction(makeMouseEvent(e));
@@ -505,11 +509,13 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 			try {
 				embeddedEditor = Class.forName("org.openflexo.gina.editor.FIBEmbeddedEditor");
 				c = embeddedEditor.getConstructors()[0];
-				/*File fibFile = ((FileResourceImpl) component.getResource()).getFile();
-				if (!fibFile.exists()) {
-					logger.warning("Cannot find FIB file definition for component, aborting FIB edition");
-					return;
-				}*/
+				/*
+				 * File fibFile = ((FileResourceImpl)
+				 * component.getResource()).getFile(); if (!fibFile.exists()) {
+				 * logger.warning(
+				 * "Cannot find FIB file definition for component, aborting FIB edition"
+				 * ); return; }
+				 */
 				Object[] args = new Object[2];
 				args[0] = component.getResource();
 				args[1] = controller.getDataObject();
@@ -524,7 +530,8 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				LOGGER.warning("Cannot instanciate " + embeddedEditor + " with constructor " + c + " because of unexpected exception ");
+				LOGGER.warning("Cannot instanciate " + embeddedEditor + " with constructor " + c
+						+ " because of unexpected exception ");
 				e.getTargetException().printStackTrace();
 			}
 		}

@@ -1,6 +1,6 @@
 /**
  * 
- * Copyright (c) 2013-2015, Openflexo
+ * Copyright (c) 2013-2014, Openflexo
  * Copyright (c) 2011-2012, AgileBirds
  * 
  * This file is part of Gina-core, a component of the software infrastructure 
@@ -39,48 +39,28 @@
 
 package org.openflexo.gina.swing.view;
 
-import javax.swing.text.JTextComponent;
+import javax.swing.JComponent;
 
-import org.openflexo.gina.view.FIBView.RenderingAdapter;
-import org.openflexo.gina.view.widget.FIBGenericTextWidget.GenericTextRenderingAdapter;
+import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.view.FIBView;
 
 /**
- * A {@link RenderingAdapter} implementation dedicated for Swing
+ * Represent a {@link FIBView} in Swing rendering engine
  * 
  * @author sylvain
- * 
+ *
+ * @param <M>
+ *            type of {@link FIBComponent} this view represents
+ * @param <C>
+ *            type of technology-specific component this view manage (a subclass
+ *            of JComponent)
  */
-public class SwingTextRenderingAdapter<J extends JTextComponent> extends SwingRenderingAdapter<J> implements
-		GenericTextRenderingAdapter<J> {
+public interface JFIBView<M extends FIBComponent, J extends JComponent> extends FIBView<M, J> {
 
 	@Override
-	public String getText(J component) {
-		return component.getText();
-	}
+	public SwingRenderingAdapter<J> getRenderingAdapter();
 
-	@Override
-	public void setText(J component, String aText) {
-		component.setText(aText);
-	}
+	public JComponent getJComponent();
 
-	@Override
-	public boolean isEditable(J component) {
-		return component.isEditable();
-	}
-
-	@Override
-	public void setEditable(J component, boolean editable) {
-		component.setEditable(editable);
-	}
-
-	@Override
-	public int getCaretPosition(J component) {
-		return component.getCaretPosition();
-	}
-
-	@Override
-	public void setCaretPosition(J component, int caretPosition) {
-		component.setCaretPosition(caretPosition);
-	}
-
+	public JComponent getResultingJComponent();
 }

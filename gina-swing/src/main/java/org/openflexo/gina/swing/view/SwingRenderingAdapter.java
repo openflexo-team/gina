@@ -51,8 +51,7 @@ import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import org.openflexo.gina.model.FIBComponent.HorizontalScrollBarPolicy;
-import org.openflexo.gina.model.FIBComponent.VerticalScrollBarPolicy;
+import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.FIBView.RenderingAdapter;
 
 /**
@@ -63,54 +62,85 @@ import org.openflexo.gina.view.FIBView.RenderingAdapter;
  */
 public abstract class SwingRenderingAdapter<J extends JComponent> implements RenderingAdapter<J> {
 
-	private JScrollPane scrolledComponent;
+	// private JScrollPane scrolledComponent;
+
+	/*
+	 * private final JFIBView<?, J> view;
+	 * 
+	 * public SwingRenderingAdapter(JFIBView<?, J> view) { this.view = view; }
+	 */
 
 	/**
 	 * Return the effective component to be added to swing hierarchy<br>
-	 * This component may be the same as the one returned by {@link #getJComponent()} (if useScrollBar set to false) or an encapsulation in
-	 * a JScrollPane
+	 * This component may be the same as the one returned by
+	 * {@link #getJComponent()} (if useScrollBar set to false) or an
+	 * encapsulation in a JScrollPane
 	 * 
 	 * @return JComponent
 	 */
-	public JComponent getResultingJComponent(J component, boolean useScrollBar, VerticalScrollBarPolicy vPolicy,
-			HorizontalScrollBarPolicy hPolicy) {
-		if (useScrollBar) {
-			if (scrolledComponent == null) {
-				scrolledComponent = new JScrollPane(getJComponent(component), vPolicy.getPolicy(), hPolicy.getPolicy());
+	public JComponent getResultingJComponent(FIBView<?, J> view) {
+		if (view.getComponent().getUseScrollBar()) {
+			if (view.getTechnologyComponent().getParent() instanceof JScrollPane) {
+				return (JScrollPane) view.getTechnologyComponent().getParent();
+			} else {
+				JScrollPane scrolledComponent = new JScrollPane(getJComponent(view.getTechnologyComponent()), view
+						.getComponent().getVerticalScrollbarPolicy().getPolicy(), view.getComponent()
+						.getHorizontalScrollbarPolicy().getPolicy());
 				scrolledComponent.setOpaque(false);
 				scrolledComponent.getViewport().setOpaque(false);
 				scrolledComponent.setBorder(BorderFactory.createEmptyBorder());
+				return scrolledComponent;
 			}
-			return scrolledComponent;
-		}
-		else {
-			scrolledComponent = null;
-			return getJComponent(component);
+		} else {
+			return getJComponent(view.getTechnologyComponent());
 		}
 	}
 
+	/**
+	 * Return the effective component to be added to swing hierarchy<br>
+	 * This component may be the same as the one returned by
+	 * {@link #getJComponent()} (if useScrollBar set to false) or an
+	 * encapsulation in a JScrollPane
+	 * 
+	 * @return JComponent
+	 */
+	/*
+	 * public JComponent getResultingJComponent(J component, boolean
+	 * useScrollBar, VerticalScrollBarPolicy vPolicy, HorizontalScrollBarPolicy
+	 * hPolicy) { if (useScrollBar) { if (scrolledComponent == null) {
+	 * scrolledComponent = new JScrollPane(getJComponent(component),
+	 * vPolicy.getPolicy(), hPolicy.getPolicy());
+	 * scrolledComponent.setOpaque(false);
+	 * scrolledComponent.getViewport().setOpaque(false);
+	 * scrolledComponent.setBorder(BorderFactory.createEmptyBorder()); } return
+	 * scrolledComponent; } else { scrolledComponent = null; return
+	 * getJComponent(component); } }
+	 */
+
 	// Default behaviour is to return component itself
-	public JComponent getJComponent(J component) {
-		return component;
+	public JComponent getJComponent(J technologyComponent) {
+		return technologyComponent;
 	}
 
 	@Override
 	public boolean isVisible(J component) {
-		if (scrolledComponent != null) {
-			return scrolledComponent.isVisible();
-		}
 		return getJComponent(component).isVisible();
+		/*
+		 * if (scrolledComponent != null) { return
+		 * scrolledComponent.isVisible(); } return
+		 * getJComponent(component).isVisible();
+		 */
 	}
 
 	@Override
 	public void setVisible(J component, boolean visible) {
-		if (scrolledComponent != null) {
-			scrolledComponent.setVisible(visible);
-			if (scrolledComponent.getParent() instanceof JComponent) {
-				scrolledComponent.getParent().revalidate();
-				scrolledComponent.getParent().repaint();
-			}
-		}
+		/*
+		 * if (scrolledComponent != null) {
+		 * scrolledComponent.setVisible(visible); if
+		 * (scrolledComponent.getParent() instanceof JComponent) {
+		 * scrolledComponent.getParent().revalidate();
+		 * scrolledComponent.getParent().repaint(); } }
+		 */
 		getJComponent(component).setVisible(visible);
 		getJComponent(component).getParent().revalidate();
 		getJComponent(component).getParent().repaint();
@@ -118,26 +148,24 @@ public abstract class SwingRenderingAdapter<J extends JComponent> implements Ren
 
 	@Override
 	public boolean getEnable(J component) {
-		if (scrolledComponent != null) {
-			return scrolledComponent.isEnabled();
-		}
 		return getJComponent(component).isEnabled();
+		/*
+		 * if (scrolledComponent != null) { return
+		 * scrolledComponent.isEnabled(); } return
+		 * getJComponent(component).isEnabled();
+		 */
 	}
 
 	@Override
 	public void setEnabled(J component, boolean enabled) {
-		if (scrolledComponent != null) {
-			if (enabled) {
-				enableComponent(scrolledComponent);
-			}
-			else {
-				disableComponent(scrolledComponent);
-			}
-		}
+		/*
+		 * if (scrolledComponent != null) { if (enabled) {
+		 * enableComponent(scrolledComponent); } else {
+		 * disableComponent(scrolledComponent); } }
+		 */
 		if (enabled) {
 			enableComponent(getJComponent(component));
-		}
-		else {
+		} else {
 			disableComponent(getJComponent(component));
 		}
 	}
@@ -172,6 +200,16 @@ public abstract class SwingRenderingAdapter<J extends JComponent> implements Ren
 				disableComponent(c);
 			}
 		}
+	}
+
+	@Override
+	public int getWidth(J component) {
+		return component.getWidth();
+	}
+
+	@Override
+	public int getHeight(J component) {
+		return component.getHeight();
 	}
 
 	@Override

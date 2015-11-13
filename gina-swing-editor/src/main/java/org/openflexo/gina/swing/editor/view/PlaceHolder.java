@@ -54,6 +54,7 @@ import org.openflexo.logging.FlexoLogger;
 import org.openflexo.swing.Focusable;
 import org.openflexo.swing.NoInsetsBorder;
 
+@SuppressWarnings("serial")
 public abstract class PlaceHolder extends JPanel implements Focusable {
 
 	static final Logger logger = FlexoLogger.getLogger(PlaceHolder.class.getPackage().getName());
@@ -83,8 +84,7 @@ public abstract class PlaceHolder extends JPanel implements Focusable {
 		if (aFlag) {
 			isFocused = true;
 			setBorder(focusBorder);
-		}
-		else {
+		} else {
 			isFocused = false;
 			setBorder(nonFocusBorder);
 		}
@@ -107,18 +107,21 @@ public abstract class PlaceHolder extends JPanel implements Focusable {
 	public abstract void insertComponent(FIBComponent newComponent);
 
 	public void willDelete() {
+
 		getView().getJComponent().remove(this);
 		getView().getPlaceHolders().remove(this);
 	}
 
 	public void hasDeleted() {
-		/*if (getView().getJComponent() instanceof JPanel && ((JPanel)getView().getJComponent()).getLayout() instanceof BorderLayout) {
-			System.out.println("Bon, qu'est ce qu'on a la ?");
-			BorderLayout bl = (BorderLayout)(((JPanel)getView().getJComponent()).getLayout());
-			for (Component c : getView().getJComponent().getComponents()) {
-				System.out.println("> Hop: "+c+" "+bl.getConstraints(c));
-			}
-		}*/
+		/*
+		 * if (getView().getJComponent() instanceof JPanel &&
+		 * ((JPanel)getView().getJComponent()).getLayout() instanceof
+		 * BorderLayout) { System.out.println("Bon, qu'est ce qu'on a la ?");
+		 * BorderLayout bl =
+		 * (BorderLayout)(((JPanel)getView().getJComponent()).getLayout()); for
+		 * (Component c : getView().getJComponent().getComponents()) {
+		 * System.out.println("> Hop: "+c+" "+bl.getConstraints(c)); } }
+		 */
 
 	}
 

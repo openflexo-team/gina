@@ -49,6 +49,7 @@ import java.awt.event.FocusListener;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -64,16 +65,19 @@ import org.openflexo.gina.event.description.FIBFocusEventDescription;
 import org.openflexo.gina.event.description.FIBTextEventDescription;
 import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.gina.model.widget.FIBTextField;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingTextRenderingAdapter;
 import org.openflexo.gina.view.widget.impl.FIBTextFieldWidgetImpl;
 import org.openflexo.toolbox.ToolBox;
 
 /**
- * Swing implementation for a simple widget allowing to display/edit a String in a TextField
+ * Swing implementation for a simple widget allowing to display/edit a String in
+ * a TextField
  * 
  * @author sylvain
  */
-public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>implements FocusListener {
+public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField> implements FocusListener,
+		JFIBView<FIBTextField, JTextField> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(JFIBTextFieldWidget.class.getPackage().getName());
@@ -85,8 +89,8 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>imple
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingTextFieldRenderingAdapter extends SwingTextRenderingAdapter<JTextField>
-			implements TextFieldRenderingAdapter<JTextField> {
+	public static class SwingTextFieldRenderingAdapter extends SwingTextRenderingAdapter<JTextField> implements
+			TextFieldRenderingAdapter<JTextField> {
 
 		@Override
 		public void setColumns(JTextField component, int columns) {
@@ -110,11 +114,26 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>imple
 		panel.setOpaque(false);
 		panel.add(getTechnologyComponent(), BorderLayout.CENTER);
 		if (!ToolBox.isMacOSLaf()) {
-			panel.setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
-					RIGHT_COMPENSATING_BORDER));
+			panel.setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER,
+					BOTTOM_COMPENSATING_BORDER, RIGHT_COMPENSATING_BORDER));
 		}
 
 		updateFont();
+	}
+
+	@Override
+	public SwingTextFieldRenderingAdapter getRenderingAdapter() {
+		return (SwingTextFieldRenderingAdapter) super.getRenderingAdapter();
+	}
+
+	@Override
+	public JComponent getJComponent() {
+		return getRenderingAdapter().getJComponent(getTechnologyComponent());
+	}
+
+	@Override
+	public JComponent getResultingJComponent() {
+		return getRenderingAdapter().getResultingJComponent(this);
 	}
 
 	@Override
@@ -127,8 +146,7 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>imple
 					return MINIMUM_SIZE;
 				}
 			};
-		}
-		else {
+		} else {
 			textField = new JTextField() {
 				@Override
 				public Dimension getMinimumSize() {
@@ -149,8 +167,9 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>imple
 			public void insertUpdate(DocumentEvent e) {
 				GinaStackEvent stack = null;
 				try {
-					stack = GENotifier.raise(FIBEventFactory.getInstance().createTextEvent(FIBTextEventDescription.INSERTED, e.getOffset(),
-							e.getLength(), e.getDocument().getText(e.getOffset(), e.getLength()), getTechnologyComponent().getText()));
+					stack = GENotifier.raise(FIBEventFactory.getInstance().createTextEvent(
+							FIBTextEventDescription.INSERTED, e.getOffset(), e.getLength(),
+							e.getDocument().getText(e.getOffset(), e.getLength()), getTechnologyComponent().getText()));
 				} catch (BadLocationException e2) {
 					e2.printStackTrace();
 				}
@@ -179,8 +198,8 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>imple
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				GinaStackEvent stack = GENotifier.raise(FIBEventFactory.getInstance().createTextEvent(FIBTextEventDescription.REMOVED,
-						e.getOffset(), e.getLength(), "", getValue()));
+				GinaStackEvent stack = GENotifier.raise(FIBEventFactory.getInstance().createTextEvent(
+						FIBTextEventDescription.REMOVED, e.getOffset(), e.getLength(), "", getValue()));
 				if (!validateOnReturn && !widgetUpdating) {
 					updateModelFromWidget();
 				}
@@ -216,7 +235,8 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>imple
 
 	@Override
 	public void focusGained(FocusEvent event) {
-		GinaStackEvent stack = GENotifier.raise(FIBEventFactory.getInstance().createFocusEvent(FIBFocusEventDescription.FOCUS_GAINED));
+		GinaStackEvent stack = GENotifier.raise(FIBEventFactory.getInstance().createFocusEvent(
+				FIBFocusEventDescription.FOCUS_GAINED));
 
 		super.focusGained(event);
 		getTechnologyComponent().selectAll();
@@ -226,7 +246,8 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>imple
 
 	@Override
 	public void focusLost(FocusEvent arg0) {
-		GinaStackEvent stack = GENotifier.raise(FIBEventFactory.getInstance().createFocusEvent(FIBFocusEventDescription.FOCUS_LOST));
+		GinaStackEvent stack = GENotifier.raise(FIBEventFactory.getInstance().createFocusEvent(
+				FIBFocusEventDescription.FOCUS_LOST));
 
 		super.focusLost(arg0);
 

@@ -43,6 +43,7 @@ import javax.swing.JComponent;
 
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.view.FIBView;
 
 /**
@@ -53,7 +54,7 @@ import org.openflexo.gina.view.FIBView;
  * @param <M>
  * @param <C>
  */
-public interface FIBSwingEditableView<M extends FIBComponent, J extends JComponent> extends FIBView<M, J> {
+public interface FIBSwingEditableView<M extends FIBComponent, J extends JComponent> extends JFIBView<M, J> {
 
 	public abstract FIBEditorController getEditorController();
 

@@ -48,11 +48,13 @@ import java.awt.event.FocusListener;
 import java.util.logging.Logger;
 
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.gina.model.widget.FIBColor;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.swing.view.widget.JFIBColorWidget.ColorSelectorPanel;
 import org.openflexo.gina.view.widget.impl.FIBColorWidgetImpl;
@@ -67,18 +69,20 @@ import org.openflexo.swing.ColorSelector;
  * 
  * @author sylvain
  */
-public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>implements FocusListener {
+public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel> implements FocusListener,
+		JFIBView<FIBColor, ColorSelectorPanel> {
 
 	private static final Logger logger = Logger.getLogger(JFIBColorWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingAdapter} implementation dedicated for Swing Color Widget<br>
+	 * A {@link RenderingAdapter} implementation dedicated for Swing Color
+	 * Widget<br>
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingColorWidgetRenderingAdapter extends SwingRenderingAdapter<ColorSelectorPanel>
-			implements ColorWidgetRenderingAdapter<ColorSelectorPanel> {
+	public static class SwingColorWidgetRenderingAdapter extends SwingRenderingAdapter<ColorSelectorPanel> implements
+			ColorWidgetRenderingAdapter<ColorSelectorPanel> {
 
 		@Override
 		public Color getSelectedColor(ColorSelectorPanel component) {
@@ -139,8 +143,10 @@ public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>imple
 			checkBox = new JCheckBox();
 			checkBox.setHorizontalTextPosition(JCheckBox.LEADING);
 
-			checkBox.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "transparent", checkBox));
-			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
+			checkBox.setText(FlexoLocalization
+					.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "transparent", checkBox));
+			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION,
+					"undefined_value", checkBox));
 
 			checkBox.addActionListener(new ActionListener() {
 
@@ -168,14 +174,31 @@ public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>imple
 		}
 
 		public void updateLanguage() {
-			checkBox.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "transparent", checkBox));
-			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
+			checkBox.setText(FlexoLocalization
+					.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "transparent", checkBox));
+			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION,
+					"undefined_value", checkBox));
 		}
 
 	}
 
 	public JFIBColorWidget(FIBColor model, FIBController controller) {
 		super(model, controller, RENDERING_TECHNOLOGY_ADAPTER);
+	}
+
+	@Override
+	public SwingColorWidgetRenderingAdapter getRenderingAdapter() {
+		return (SwingColorWidgetRenderingAdapter) super.getRenderingAdapter();
+	}
+
+	@Override
+	public JComponent getJComponent() {
+		return getRenderingAdapter().getJComponent(getTechnologyComponent());
+	}
+
+	@Override
+	public JComponent getResultingJComponent() {
+		return getRenderingAdapter().getResultingJComponent(this);
 	}
 
 	@Override

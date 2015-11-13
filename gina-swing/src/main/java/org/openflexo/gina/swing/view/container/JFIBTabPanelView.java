@@ -53,6 +53,7 @@ import javax.swing.event.ChangeListener;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.container.FIBTab;
 import org.openflexo.gina.model.container.FIBTabPanel;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.container.impl.FIBTabPanelViewImpl;
@@ -63,25 +64,26 @@ import org.openflexo.gina.view.container.impl.FIBTabPanelViewImpl;
  * 
  * @author sylvain
  */
-public class JFIBTabPanelView extends FIBTabPanelViewImpl<JTabbedPane, JComponent> {
+public class JFIBTabPanelView extends FIBTabPanelViewImpl<JTabbedPane, JComponent> implements
+		JFIBView<FIBTabPanel, JTabbedPane> {
 
 	private static final Logger logger = Logger.getLogger(JFIBTabPanelView.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingAdapter} implementation dedicated for Swing JPanel with a given layout<br>
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JPanel with
+	 * a given layout<br>
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingTabPanelRenderingAdapter extends SwingRenderingAdapter<JTabbedPane>
-			implements TabPanelRenderingAdapter<JTabbedPane, JComponent> {
+	public static class SwingTabPanelRenderingAdapter extends SwingRenderingAdapter<JTabbedPane> implements
+			TabPanelRenderingAdapter<JTabbedPane, JComponent> {
 
 		@Override
 		public void addComponent(JComponent child, JTabbedPane parent, Object constraints) {
 			if (constraints instanceof String) {
 				parent.add((String) constraints, child);
-			}
-			else {
+			} else {
 				logger.warning("Unexpected constraint: " + constraints);
 				parent.add(child);
 			}
@@ -100,6 +102,21 @@ public class JFIBTabPanelView extends FIBTabPanelViewImpl<JTabbedPane, JComponen
 
 	public JFIBTabPanelView(FIBTabPanel model, FIBController controller) {
 		super(model, controller, new SwingTabPanelRenderingAdapter());
+	}
+
+	@Override
+	public SwingTabPanelRenderingAdapter getRenderingAdapter() {
+		return (SwingTabPanelRenderingAdapter) super.getRenderingAdapter();
+	}
+
+	@Override
+	public JComponent getJComponent() {
+		return getRenderingAdapter().getJComponent(getTechnologyComponent());
+	}
+
+	@Override
+	public JComponent getResultingJComponent() {
+		return getRenderingAdapter().getResultingJComponent(this);
 	}
 
 	@Override
@@ -179,8 +196,7 @@ public class JFIBTabPanelView extends FIBTabPanelViewImpl<JTabbedPane, JComponen
 					getTechnologyComponent().setTitleAt(index, getLocalized(((FIBTab) v.getComponent()).getTitle()));
 					index++;
 				}
-			}
-			else {
+			} else {
 				logger.warning("Unexpected component found in TabPanel: " + v.getComponent());
 			}
 		}

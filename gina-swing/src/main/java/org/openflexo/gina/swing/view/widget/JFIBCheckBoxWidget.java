@@ -46,21 +46,25 @@ import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.event.description.FIBEventFactory;
 import org.openflexo.gina.event.description.FIBValueEventDescription;
 import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.gina.model.widget.FIBCheckBox;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.view.widget.impl.FIBCheckBoxWidgetImpl;
 
 /**
- * Swing implementation for a widget able to edit a boolean (or Boolean) object (a JCheckBox)
+ * Swing implementation for a widget able to edit a boolean (or Boolean) object
+ * (a JCheckBox)
  * 
  * @author sylvain
  */
-public class JFIBCheckBoxWidget extends FIBCheckBoxWidgetImpl<JCheckBox>implements FocusListener {
+public class JFIBCheckBoxWidget extends FIBCheckBoxWidgetImpl<JCheckBox> implements FocusListener,
+		JFIBView<FIBCheckBox, JCheckBox> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(JFIBCheckBoxWidget.class.getPackage().getName());
@@ -71,8 +75,8 @@ public class JFIBCheckBoxWidget extends FIBCheckBoxWidgetImpl<JCheckBox>implemen
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingCheckBoxRenderingAdapter extends SwingRenderingAdapter<JCheckBox>
-			implements CheckBoxRenderingAdapter<JCheckBox> {
+	public static class SwingCheckBoxRenderingAdapter extends SwingRenderingAdapter<JCheckBox> implements
+			CheckBoxRenderingAdapter<JCheckBox> {
 
 		@Override
 		public boolean getSelected(JCheckBox component) {
@@ -96,23 +100,38 @@ public class JFIBCheckBoxWidget extends FIBCheckBoxWidgetImpl<JCheckBox>implemen
 	}
 
 	@Override
+	public SwingCheckBoxRenderingAdapter getRenderingAdapter() {
+		return (SwingCheckBoxRenderingAdapter) super.getRenderingAdapter();
+	}
+
+	@Override
+	public JComponent getJComponent() {
+		return getRenderingAdapter().getJComponent(getTechnologyComponent());
+	}
+
+	@Override
+	public JComponent getResultingJComponent() {
+		return getRenderingAdapter().getResultingJComponent(this);
+	}
+
+	@Override
 	protected JCheckBox makeTechnologyComponent() {
 		JCheckBox checkbox = new JCheckBox();
-		checkbox.setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
-				RIGHT_COMPENSATING_BORDER));
+		checkbox.setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER,
+				BOTTOM_COMPENSATING_BORDER, RIGHT_COMPENSATING_BORDER));
 		checkbox.setOpaque(false);
 		checkbox.setBorderPaintedFlat(true);
 		checkbox.setSelected(getWidget().getSelected());
 		if (isReadOnly()) {
 			checkbox.setEnabled(false);
-		}
-		else {
+		} else {
 			checkbox.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					GinaStackEvent stack = JFIBCheckBoxWidget.this.GENotifier.raise(FIBEventFactory.getInstance().createValueEvent(
-							getValue() ? FIBValueEventDescription.UNCHECKED : FIBValueEventDescription.CHECKED,
-							getTechnologyComponent().isSelected()));
+					GinaStackEvent stack = JFIBCheckBoxWidget.this.GENotifier.raise(FIBEventFactory.getInstance()
+							.createValueEvent(
+									getValue() ? FIBValueEventDescription.UNCHECKED : FIBValueEventDescription.CHECKED,
+									getTechnologyComponent().isSelected()));
 
 					updateModelFromWidget();
 

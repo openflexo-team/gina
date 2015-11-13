@@ -49,18 +49,21 @@ import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBRadioButtonList;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.swing.view.widget.JFIBRadioButtonListWidget.JRadioButtonPanel;
 import org.openflexo.gina.view.impl.FIBViewImpl;
 import org.openflexo.gina.view.widget.impl.FIBRadioButtonListWidgetImpl;
 
-public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<JRadioButtonPanel<T>, T> {
+public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<JRadioButtonPanel<T>, T> implements
+		JFIBView<FIBRadioButtonList, JRadioButtonPanel<T>> {
 
 	static final Logger LOGGER = Logger.getLogger(JFIBRadioButtonListWidget.class.getPackage().getName());
 
@@ -101,6 +104,21 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 	}
 
 	@Override
+	public SwingRadioButtonRenderingAdapter<T> getRenderingAdapter() {
+		return (SwingRadioButtonRenderingAdapter<T>) super.getRenderingAdapter();
+	}
+
+	@Override
+	public JComponent getJComponent() {
+		return getRenderingAdapter().getJComponent(getTechnologyComponent());
+	}
+
+	@Override
+	public JComponent getResultingJComponent() {
+		return getRenderingAdapter().getResultingJComponent(this);
+	}
+
+	@Override
 	protected JRadioButtonPanel<T> makeTechnologyComponent() {
 		return new JRadioButtonPanel<T>(this);
 	}
@@ -121,7 +139,8 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 		private final JFIBRadioButtonListWidget<T> widget;
 
 		public JRadioButtonPanel(JFIBRadioButtonListWidget<T> widget) {
-			super(new GridLayout(0, widget.getWidget().getColumns(), widget.getWidget().getHGap(), widget.getWidget().getVGap()));
+			super(new GridLayout(0, widget.getWidget().getColumns(), widget.getWidget().getHGap(), widget.getWidget()
+					.getVGap()));
 			setOpaque(false);
 			this.widget = widget;
 			rebuildRadioButtons();
@@ -141,16 +160,18 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 			radioButtonArray = new JRadioButton[widget.getMultipleValueModel().getSize()];
 			for (int i = 0; i < widget.getMultipleValueModel().getSize(); i++) {
 				T object = widget.getMultipleValueModel().getElementAt(i);
-				JRadioButton rb = new JRadioButton(widget.getStringRepresentation(object), FIBViewImpl.equals(object, selectedValue));
+				JRadioButton rb = new JRadioButton(widget.getStringRepresentation(object), FIBViewImpl.equals(object,
+						selectedValue));
 				rb.setOpaque(false);
 				rb.addActionListener(new RadioButtonListener(rb, object, i));
 				radioButtonArray[i] = rb;
 				// Handle the case of icon should be displayed
-				if (widget.getWidget().getShowIcon() && widget.getWidget().getIcon().isSet() && widget.getWidget().getIcon().isValid()) {
+				if (widget.getWidget().getShowIcon() && widget.getWidget().getIcon().isSet()
+						&& widget.getWidget().getIcon().isValid()) {
 					rb.setHorizontalAlignment(JCheckBox.LEFT);
 					rb.setText(null);
-					final JLabel label = new JLabel(widget.getStringRepresentation(object), widget.getIconRepresentation(object),
-							JLabel.LEADING);
+					final JLabel label = new JLabel(widget.getStringRepresentation(object),
+							widget.getIconRepresentation(object), JLabel.LEADING);
 					Dimension ps = rb.getPreferredSize();
 					rb.setLayout(new BorderLayout());
 					label.setLabelFor(rb);

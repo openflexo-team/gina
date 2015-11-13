@@ -44,31 +44,36 @@ import java.awt.image.ImageObserver;
 import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBImage;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.view.widget.FIBImageWidget;
 import org.openflexo.gina.view.widget.impl.FIBImageWidgetImpl;
 
 /**
- * Swing implementation for a simple widget allowing to display an image (a JLabel)
+ * Swing implementation for a simple widget allowing to display an image (a
+ * JLabel)
  * 
  * @author sylvain
  */
-public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel>implements ImageObserver {
+public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel> implements ImageObserver, JFIBView<FIBImage, JLabel> {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBImageWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingAdapter} implementation dedicated for Swing JLabel image<br>
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JLabel
+	 * image<br>
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingImageRenderingAdapter extends SwingRenderingAdapter<JLabel>implements ImageRenderingAdapter<JLabel> {
+	public static class SwingImageRenderingAdapter extends SwingRenderingAdapter<JLabel> implements
+			ImageRenderingAdapter<JLabel> {
 
 		@Override
 		public Image getImage(JLabel component, FIBImageWidget<JLabel> widget) {
@@ -102,9 +107,26 @@ public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel>implements ImageO
 	}
 
 	@Override
+	public SwingImageRenderingAdapter getRenderingAdapter() {
+		return (SwingImageRenderingAdapter) super.getRenderingAdapter();
+	}
+
+	@Override
+	public JComponent getJComponent() {
+		return getRenderingAdapter().getJComponent(getTechnologyComponent());
+	}
+
+	@Override
+	public JComponent getResultingJComponent() {
+		return getRenderingAdapter().getResultingJComponent(this);
+	}
+
+	@Override
 	protected JLabel makeTechnologyComponent() {
 		JLabel labelWidget = new JLabel();
-		labelWidget.setFocusable(false); // There is not much point in giving focus to a label since there is no KeyBindings nor KeyListener
+		labelWidget.setFocusable(false); // There is not much point in giving
+											// focus to a label since there is
+											// no KeyBindings nor KeyListener
 											// on it.
 		if (getWidget().getData().isValid()) {
 			labelWidget.setText(" ");
@@ -119,47 +141,50 @@ public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel>implements ImageO
 		if (getWidget() == null) {
 			return null;
 		}
+		int currentWidth = getRenderingAdapter().getWidth(getTechnologyComponent());
+		int currentHeight = getRenderingAdapter().getHeight(getTechnologyComponent());
 		switch (getWidget().getSizeAdjustment()) {
-			case OriginalSize:
-				return new ImageIcon(image);
-			case FitToAvailableSize:
-				return new ImageIcon(image.getScaledInstance(getJComponent().getWidth(), getJComponent().getHeight(), Image.SCALE_SMOOTH));
-			case FitToAvailableSizeRespectRatio:
-				int imageWidth = image.getWidth(this);
-				int imageHeight = image.getHeight(this);
-				if (imageWidth <= 0 || imageHeight <= 0) {
-					synchronized (this) {
-						LOGGER.fine("Image is not ready, waiting...");
-						computeImageLater = true;
-						return null;
+		case OriginalSize:
+			return new ImageIcon(image);
+		case FitToAvailableSize:
+			return new ImageIcon(image.getScaledInstance(currentWidth, currentHeight, Image.SCALE_SMOOTH));
+		case FitToAvailableSizeRespectRatio:
+			int imageWidth = image.getWidth(this);
+			int imageHeight = image.getHeight(this);
+			if (imageWidth <= 0 || imageHeight <= 0) {
+				synchronized (this) {
+					LOGGER.fine("Image is not ready, waiting...");
+					computeImageLater = true;
+					return null;
+				}
+			}
+			// This is just looking for troubles because it makes a loop in
+			// layout
+			//
+			if (currentWidth == 0 || currentHeight == 0) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						updateImage();
 					}
-				}
-				// This is just looking for troubles because it makes a loop in layout
-				//
-				if (getJComponent().getWidth() == 0 || getJComponent().getHeight() == 0) {
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							updateImage();
-						}
-					});
-					return new ImageIcon(image);
-				}
-				double widthRatio = (double) getJComponent().getWidth() / imageWidth;
-				double heightRatio = (double) getJComponent().getHeight() / imageHeight;
-				double ratio = widthRatio < heightRatio ? widthRatio : heightRatio;
-				int newWidth = (int) (imageWidth * ratio);
-				int newHeight = (int) (imageHeight * ratio);
-				return new ImageIcon(image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH));
-			case AdjustDimensions:
-				return new ImageIcon(
-						image.getScaledInstance(getWidget().getImageWidth(), getWidget().getImageHeight(), Image.SCALE_SMOOTH));
-			case AdjustWidth:
-				return new ImageIcon(image.getScaledInstance(getWidget().getImageWidth(), -1, Image.SCALE_SMOOTH));
-			case AdjustHeight:
-				return new ImageIcon(image.getScaledInstance(-1, getWidget().getImageHeight(), Image.SCALE_SMOOTH));
-			default:
-				return null;
+				});
+				return new ImageIcon(image);
+			}
+			double widthRatio = (double) currentWidth / imageWidth;
+			double heightRatio = (double) currentHeight / imageHeight;
+			double ratio = widthRatio < heightRatio ? widthRatio : heightRatio;
+			int newWidth = (int) (imageWidth * ratio);
+			int newHeight = (int) (imageHeight * ratio);
+			return new ImageIcon(image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH));
+		case AdjustDimensions:
+			return new ImageIcon(image.getScaledInstance(getWidget().getImageWidth(), getWidget().getImageHeight(),
+					Image.SCALE_SMOOTH));
+		case AdjustWidth:
+			return new ImageIcon(image.getScaledInstance(getWidget().getImageWidth(), -1, Image.SCALE_SMOOTH));
+		case AdjustHeight:
+			return new ImageIcon(image.getScaledInstance(-1, getWidget().getImageHeight(), Image.SCALE_SMOOTH));
+		default:
+			return null;
 		}
 	}
 

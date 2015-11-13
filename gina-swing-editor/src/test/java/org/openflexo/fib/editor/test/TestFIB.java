@@ -49,8 +49,8 @@ import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.swing.editor.FIBAbstractEditor;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingViewFactory;
-import org.openflexo.gina.view.FIBView;
 import org.openflexo.logging.FlexoLoggingManager;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
@@ -65,44 +65,27 @@ public class TestFIB extends JPanel {
 
 	static final Logger logger = Logger.getLogger(TestFIB.class.getPackage().getName());
 
-	/*  private TabModelView paramsPanel;
-	private InspectableObject _inspected;
-	
-	public FIBPanel(TabModel model, InspectableObject inspected)
-	{
-		super();
-		_inspected = inspected;
-		setLayout(new BorderLayout());
-		paramsPanel = new TabModelView(model,null,FIBController.instance());
-		paramsPanel.performObserverSwitch(inspected);
-		paramsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		paramsPanel.valueChange(inspected);
-		add(paramsPanel,BorderLayout.CENTER);
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-	    		paramsPanel.requestFocusInFirstWidget();
-	    	}
-	    });
-	}
-	
-	public DenaliWidget getInspectorWidgetForParameter (ParameterDefinition parameterDefinition)
-	{
-		return paramsPanel.getInspectorWidgetFor(parameterDefinition.getName());
-	}
-	
-	public void update()
-	{
-	    paramsPanel.valueChange(_inspected);
-	    paramsPanel.performObserverSwitch(_inspected);
-	}
-	
-	public void setBackground(Color aColor)
-	{
-	    super.setBackground(aColor);
-	    if (paramsPanel != null)
-	        paramsPanel.setBackground(aColor);
-	}
-	
+	/*
+	 * private TabModelView paramsPanel; private InspectableObject _inspected;
+	 * 
+	 * public FIBPanel(TabModel model, InspectableObject inspected) { super();
+	 * _inspected = inspected; setLayout(new BorderLayout()); paramsPanel = new
+	 * TabModelView(model,null,FIBController.instance());
+	 * paramsPanel.performObserverSwitch(inspected);
+	 * paramsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+	 * paramsPanel.valueChange(inspected); add(paramsPanel,BorderLayout.CENTER);
+	 * SwingUtilities.invokeLater(new Runnable() { public void run() {
+	 * paramsPanel.requestFocusInFirstWidget(); } }); }
+	 * 
+	 * public DenaliWidget getInspectorWidgetForParameter (ParameterDefinition
+	 * parameterDefinition) { return
+	 * paramsPanel.getInspectorWidgetFor(parameterDefinition.getName()); }
+	 * 
+	 * public void update() { paramsPanel.valueChange(_inspected);
+	 * paramsPanel.performObserverSwitch(_inspected); }
+	 * 
+	 * public void setBackground(Color aColor) { super.setBackground(aColor); if
+	 * (paramsPanel != null) paramsPanel.setBackground(aColor); }
 	 */
 
 	public static void main(String[] args) {
@@ -127,25 +110,25 @@ public class TestFIB extends JPanel {
 
 		Coucou coucou = new Coucou();
 
-		FIBView testFibPanel = FIBController.makeView(fibComponent, SwingViewFactory.INSTANCE, FIBAbstractEditor.LOCALIZATION);
+		JFIBView<?, ?> testFibPanel = (JFIBView<?, ?>) FIBController.makeView(fibComponent, SwingViewFactory.INSTANCE,
+				FIBAbstractEditor.LOCALIZATION);
 		testFibPanel.getController().setDataObject(coucou);
 
 		frame.getContentPane().add(testFibPanel.getResultingJComponent());
 		frame.setVisible(true);
 
-		/*TabModel tabModel = null;
-		
-		try {
-			tabModel = FIBController.instance().importInspectorFile(fibFile);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		FIBPanel testFib = new FIBPanel(tabModel, new Coucou());
-		
-		frame.getContentPane().add(testFib);
-		frame.setVisible(true);*/
+		/*
+		 * TabModel tabModel = null;
+		 * 
+		 * try { tabModel =
+		 * FIBController.instance().importInspectorFile(fibFile); } catch
+		 * (FileNotFoundException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); }
+		 * 
+		 * FIBPanel testFib = new FIBPanel(tabModel, new Coucou());
+		 * 
+		 * frame.getContentPane().add(testFib); frame.setVisible(true);
+		 */
 	}
 
 }

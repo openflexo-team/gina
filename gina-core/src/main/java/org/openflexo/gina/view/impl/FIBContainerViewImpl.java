@@ -55,9 +55,10 @@ import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.FIBView;
 
 /**
- * Default generic (and abstract) implementation for a "view" associated with a {@link FIBContainer} in a given rendering engine environment
- * (eg Swing)<br>
- * A {@link FIBContainerView} is a container for some sub-components (a set of {@link FIBView}) with a given layout
+ * Default generic (and abstract) implementation for a "view" associated with a
+ * {@link FIBContainer} in a given rendering engine environment (eg Swing)<br>
+ * A {@link FIBContainerView} is a container for some sub-components (a set of
+ * {@link FIBView}) with a given layout
  * 
  * 
  * @author sylvain
@@ -67,9 +68,11 @@ import org.openflexo.gina.view.FIBView;
  * @param <C>
  *            type of technology-specific component
  * @param <C2>
- *            type of technology-specific component beeing contained by this view
+ *            type of technology-specific component beeing contained by this
+ *            view
  */
-public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extends FIBViewImpl<M, C>implements FIBContainerView<M, C, C2> {
+public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extends FIBViewImpl<M, C> implements
+		FIBContainerView<M, C, C2> {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBContainerViewImpl.class.getPackage().getName());
 
@@ -143,24 +146,18 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 
 		updateFont();
 
-		/*getJComponent().revalidate();
-		getJComponent().repaint();*/
+		/*
+		 * getJComponent().revalidate(); getJComponent().repaint();
+		 */
 	}
 
-	/*public JComponent getJComponentForObject(FIBComponent component) {
-		if (getComponent() == component) {
-			return getJComponent();
-		}
-		else {
-			for (FIBViewImpl v : getSubViewsMap().values()) {
-				JComponent j = v.getJComponentForObject(component);
-				if (j != null) {
-					return j;
-				}
-			}
-		}
-		return null;
-	}*/
+	/*
+	 * public JComponent getJComponentForObject(FIBComponent component) { if
+	 * (getComponent() == component) { return getJComponent(); } else { for
+	 * (FIBViewImpl v : getSubViewsMap().values()) { JComponent j =
+	 * v.getJComponentForObject(component); if (j != null) { return j; } } }
+	 * return null; }
+	 */
 
 	/**
 	 * Return technology component for supplied FIBComponent<br>
@@ -173,8 +170,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	public Object getTechnologyComponentForFIBComponent(FIBComponent component) {
 		if (getComponent() == component) {
 			return getTechnologyComponent();
-		}
-		else {
+		} else {
 			for (FIBViewImpl<?, ?> v : getSubViews()) {
 				Object j = v.getTechnologyComponentForFIBComponent(component);
 				if (j != null) {
@@ -193,16 +189,12 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		getRenderingAdapter().addComponent(c, getTechnologyComponent(), constraint);
 	}
 
-	/* {// logger.info("addJComponent constraints=" + c);
-														Object constraint = constraints.get(c);
-														LOGGER.fine(getComponent() + ": addJComponent " + c + " constraint=" + constraint);
-														if (constraint == null) {
-														getJComponent().add(c);
-														}
-														else {
-														getJComponent().add(c, constraint);
-														}
-														}*/
+	/*
+	 * {// logger.info("addJComponent constraints=" + c); Object constraint =
+	 * constraints.get(c); LOGGER.fine(getComponent() + ": addJComponent " + c +
+	 * " constraint=" + constraint); if (constraint == null) {
+	 * getJComponent().add(c); } else { getJComponent().add(c, constraint); } }
+	 */
 
 	// @Override
 	// public abstract J getJComponent();
@@ -213,26 +205,16 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		return null;
 	}
 
-	/*{
-		if (getDataObject() == null) {
-			return null;
-		}
-		if (getComponent().getData() == null || getComponent().getData().isUnset()) {
-			return null;
-		}
-		try {
-			return (T) getComponent().getData().getBindingValue(getBindingEvaluationContext());
-		} catch (TypeMismatchException e) {
-			e.printStackTrace();
-			return null;
-		} catch (NullReferenceException e) {
-			e.printStackTrace();
-			return null;
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}*/
+	/*
+	 * { if (getDataObject() == null) { return null; } if
+	 * (getComponent().getData() == null || getComponent().getData().isUnset())
+	 * { return null; } try { return (T)
+	 * getComponent().getData().getBindingValue(getBindingEvaluationContext());
+	 * } catch (TypeMismatchException e) { e.printStackTrace(); return null; }
+	 * catch (NullReferenceException e) { e.printStackTrace(); return null; }
+	 * catch (InvocationTargetException e) { e.printStackTrace(); return null; }
+	 * }
+	 */
 
 	@Override
 	public boolean update() {
@@ -243,31 +225,25 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		return true;
 	}
 
-	/*@Override
-	public void updateDataObject(final Object dataObject) {
-		update(new Vector<FIBComponent>());
-		if (isComponentVisible()) {
-			for (FIBViewImpl v : new ArrayList<FIBViewImpl>(subViews.values())) {
-				v.updateDataObject(dataObject);
-			}
-		}
-		updateDataDynamicValue();
-	}*/
+	/*
+	 * @Override public void updateDataObject(final Object dataObject) {
+	 * update(new Vector<FIBComponent>()); if (isComponentVisible()) { for
+	 * (FIBViewImpl v : new ArrayList<FIBViewImpl>(subViews.values())) {
+	 * v.updateDataObject(dataObject); } } updateDataDynamicValue(); }
+	 */
 
-	/*private void updateDataDynamicValue() {
-		setData(getValue());
-	}*/
+	/*
+	 * private void updateDataDynamicValue() { setData(getValue()); }
+	 */
 
-	/*private void updateDataDynamicValue() {
-		if (getDynamicModel() != null && getComponent().getData().isSet() && getComponent().getData().isValid()) {
-			logger.fine("Container: " + getComponent() + " value data for " + getDynamicModel() + " is " + getValue());
-			Object newDataValue = getValue();
-			if (getDynamicModel().getData() != getValue()) {
-				getDynamicModel().setData(getValue());
-				notifyDynamicModelChanged();
-			}
-		}
-	}*/
+	/*
+	 * private void updateDataDynamicValue() { if (getDynamicModel() != null &&
+	 * getComponent().getData().isSet() && getComponent().getData().isValid()) {
+	 * logger.fine("Container: " + getComponent() + " value data for " +
+	 * getDynamicModel() + " is " + getValue()); Object newDataValue =
+	 * getValue(); if (getDynamicModel().getData() != getValue()) {
+	 * getDynamicModel().setData(getValue()); notifyDynamicModelChanged(); } } }
+	 */
 
 	@Override
 	protected boolean checkValidDataPath() {
@@ -288,27 +264,29 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	@Override
 	public void updateLanguage() {
 		for (FIBView v : subViewsMap.values()) {
-			// if (!"True".equals(v.getComponent().getParameter(FIBContainer.INHERITED)))
+			// if
+			// (!"True".equals(v.getComponent().getParameter(FIBContainer.INHERITED)))
 			v.updateLanguage();
 		}
 	}
 
 	/**
 	 * This method is called to update view representing a FIBComponent.<br>
-	 * Callers are all the components that have been updated during current update loop. If the callers contains the component itself, does
-	 * nothing and return.
+	 * Callers are all the components that have been updated during current
+	 * update loop. If the callers contains the component itself, does nothing
+	 * and return.
 	 * 
 	 * @param callers
-	 *            all the components that have been previously updated during current update loop
+	 *            all the components that have been previously updated during
+	 *            current update loop
 	 * @return a flag indicating if component has been updated
 	 */
-	/*@Override
-	public boolean update(List<FIBComponent> callers) {
-		boolean returned = super.update(callers);
-		updateDataDynamicValue();
-	
-		return returned;
-	}*/
+	/*
+	 * @Override public boolean update(List<FIBComponent> callers) { boolean
+	 * returned = super.update(callers); updateDataDynamicValue();
+	 * 
+	 * return returned; }
+	 */
 
 	protected void registerViewForComponent(FIBViewImpl<?, C2> view, FIBComponent component) {
 		subViewsMap.put(component, view);
@@ -337,18 +315,17 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		registerComponentWithConstraints(component, null, -1);
 	}
 
-	/*protected void registerComponentWithConstraints(JComponent component, int index)
-	{
-		logger.fine("Register component: "+component+" index="+index);
-		subComponents.insertElementAt(component,index);
-	}
-	
-	protected void registerComponentWithConstraints(JComponent component, Object constraint, int index)
-	{
-		logger.fine("Register component: "+component+" index="+index);
-		subComponents.insertElementAt(component,index);
-		if (constraint != null) constraints.put(component,constraint);
-	}*/
+	/*
+	 * protected void registerComponentWithConstraints(JComponent component, int
+	 * index) { logger.fine("Register component: "+component+" index="+index);
+	 * subComponents.insertElementAt(component,index); }
+	 * 
+	 * protected void registerComponentWithConstraints(JComponent component,
+	 * Object constraint, int index) {
+	 * logger.fine("Register component: "+component+" index="+index);
+	 * subComponents.insertElementAt(component,index); if (constraint != null)
+	 * constraints.put(component,constraint); }
+	 */
 
 	public Map<FIBComponent, FIBViewImpl<?, C2>> getSubViewsMap() {
 		return subViewsMap;
@@ -372,18 +349,20 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	}
 
 	/**
-	 * Return all sub-components that are not declared as to be hidden in inheritance hierarchy
+	 * Return all sub-components that are not declared as to be hidden in
+	 * inheritance hierarchy
 	 * 
 	 * @return
 	 */
 	protected List<FIBComponent> getNotHiddenSubComponents() {
 		List<FIBComponent> returned = new ArrayList<FIBComponent>();
 		for (FIBComponent subComponent : getComponent().getSubComponents()) {
-			if (subComponent.getParameter("hidden") == null || subComponent.getParameter("hidden").equalsIgnoreCase("false")) {
+			if (subComponent.getParameter("hidden") == null
+					|| subComponent.getParameter("hidden").equalsIgnoreCase("false")) {
 				returned.add(subComponent);
-			} /*else {
-				System.out.println("Ignoring " + subComponent);
-				}*/
+			} /*
+			 * else { System.out.println("Ignoring " + subComponent); }
+			 */
 		}
 		return returned;
 	}

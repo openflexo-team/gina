@@ -45,6 +45,7 @@ import javax.swing.JLabel;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBReferencedComponent;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.view.widget.impl.FIBReferencedComponentWidgetImpl;
 
@@ -56,35 +57,51 @@ import org.openflexo.gina.view.widget.impl.FIBReferencedComponentWidgetImpl;
  * @author sguerin
  * 
  */
-public class JFIBReferencedComponentWidget extends FIBReferencedComponentWidgetImpl<JComponent> {
+public class JFIBReferencedComponentWidget extends FIBReferencedComponentWidgetImpl<JComponent> implements
+		JFIBView<FIBReferencedComponent, JComponent> {
 
 	private static final Logger logger = Logger.getLogger(JFIBReferencedComponentWidget.class.getPackage().getName());
 
-	private final JLabel NOT_FOUND_LABEL = new JLabel("<Not found>");;
-
 	/**
-	 * A {@link RenderingAdapter} implementation dedicated for Swing referenced component<br>
+	 * A {@link RenderingAdapter} implementation dedicated for Swing referenced
+	 * component<br>
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingReferencedComponentRenderingAdapter extends SwingRenderingAdapter<JComponent>
-			implements ReferencedComponentRenderingAdapter<JComponent> {
+	public static class SwingReferencedComponentRenderingAdapter extends SwingRenderingAdapter<JComponent> implements
+			ReferencedComponentRenderingAdapter<JComponent> {
+
+		private final JLabel NOT_FOUND_LABEL = new JLabel("<Not found>");;
+
+		@Override
+		public JComponent getJComponent(JComponent technologyComponent) {
+			if (technologyComponent == null) {
+				return NOT_FOUND_LABEL;
+			}
+			return technologyComponent;
+		}
 	}
 
 	public static SwingReferencedComponentRenderingAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingReferencedComponentRenderingAdapter();
 
 	public JFIBReferencedComponentWidget(FIBReferencedComponent model, FIBController controller) {
 		super(model, controller, RENDERING_TECHNOLOGY_ADAPTER);
-		// this.factory = factory;
 	}
 
-	// Return default label if referenced component cannot be found
-	public JComponent getJComponent(JComponent component) {
-		if (component == null) {
-			return NOT_FOUND_LABEL;
-		}
-		return component;
+	@Override
+	public SwingReferencedComponentRenderingAdapter getRenderingAdapter() {
+		return (SwingReferencedComponentRenderingAdapter) super.getRenderingAdapter();
+	}
+
+	@Override
+	public JComponent getJComponent() {
+		return getRenderingAdapter().getJComponent(getTechnologyComponent());
+	}
+
+	@Override
+	public JComponent getResultingJComponent() {
+		return getRenderingAdapter().getResultingJComponent(this);
 	}
 
 }

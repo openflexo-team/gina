@@ -44,6 +44,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
@@ -53,10 +54,12 @@ import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.model.widget.FIBList;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.view.widget.impl.FIBListWidgetImpl;
 
-public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T>implements FocusListener {
+public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T> implements FocusListener,
+		JFIBView<FIBList, JList<T>> {
 
 	static final Logger LOGGER = Logger.getLogger(JFIBListWidget.class.getPackage().getName());
 
@@ -67,7 +70,8 @@ public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T>implements 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingListRenderingAdapter<T> extends SwingRenderingAdapter<JList<T>>implements ListRenderingAdapter<JList<T>, T> {
+	public static class SwingListRenderingAdapter<T> extends SwingRenderingAdapter<JList<T>> implements
+			ListRenderingAdapter<JList<T>, T> {
 
 		@Override
 		public T getSelectedItem(JList<T> component) {
@@ -125,6 +129,21 @@ public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T>implements 
 	}
 
 	@Override
+	public SwingListRenderingAdapter<T> getRenderingAdapter() {
+		return (SwingListRenderingAdapter<T>) super.getRenderingAdapter();
+	}
+
+	@Override
+	public JComponent getJComponent() {
+		return getRenderingAdapter().getJComponent(getTechnologyComponent());
+	}
+
+	@Override
+	public JComponent getResultingJComponent() {
+		return getRenderingAdapter().getResultingJComponent(this);
+	}
+
+	@Override
 	protected JList<T> makeTechnologyComponent() {
 
 		JList<T> list = new JList<T>();
@@ -175,14 +194,12 @@ public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T>implements 
 			getTechnologyComponent().setSelectionMode(getWidget().getSelectionMode().getMode());
 			if (getWidget().getVisibleRowCount() != null) {
 				getTechnologyComponent().setVisibleRowCount(getWidget().getVisibleRowCount());
-			}
-			else {
+			} else {
 				getTechnologyComponent().setVisibleRowCount(-1);
 			}
 			if (getWidget().getRowHeight() != null) {
 				getTechnologyComponent().setFixedCellHeight(getWidget().getRowHeight());
-			}
-			else {
+			} else {
 				getTechnologyComponent().setFixedCellHeight(-1);
 			}
 			getTechnologyComponent().setModel(aListModel);
@@ -219,14 +236,12 @@ public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T>implements 
 				}
 			}
 		}
-		/*if (getWidget().getAutoSelectFirstRow() && _list.getModel().getSize() > 0) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					_list.setSelectedIndex(0);
-				}
-			});
-		}*/
+		/*
+		 * if (getWidget().getAutoSelectFirstRow() && _list.getModel().getSize()
+		 * > 0) { SwingUtilities.invokeLater(new Runnable() {
+		 * 
+		 * @Override public void run() { _list.setSelectedIndex(0); } }); }
+		 */
 	}
 
 }

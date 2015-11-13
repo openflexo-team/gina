@@ -47,6 +47,7 @@ import javax.swing.JLabel;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBCustom;
 import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.view.widget.impl.FIBCustomWidgetImpl;
 
@@ -56,12 +57,14 @@ import org.openflexo.gina.view.widget.impl.FIBCustomWidgetImpl;
  * @author sguerin
  * 
  */
-public class JFIBCustomWidget<J extends JComponent & FIBCustomComponent<T>, T> extends FIBCustomWidgetImpl<J, T> {
+public class JFIBCustomWidget<J extends JComponent & FIBCustomComponent<T>, T> extends FIBCustomWidgetImpl<J, T>
+		implements JFIBView<FIBCustom, J> {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBCustomWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingAdapter} implementation dedicated for Swing custom component<br>
+	 * A {@link RenderingAdapter} implementation dedicated for Swing custom
+	 * component<br>
 	 * 
 	 * @author sylvain
 	 * 
@@ -69,69 +72,36 @@ public class JFIBCustomWidget<J extends JComponent & FIBCustomComponent<T>, T> e
 	public static class SwingCustomComponentRenderingAdapter<J extends JComponent, T> extends SwingRenderingAdapter<J>
 			implements CustomComponentRenderingAdapter<J, T> {
 
-	}
+		private final JLabel ERROR_LABEL = new JLabel("<Cannot instanciate component>");
 
-	private final JLabel ERROR_LABEL = new JLabel("<Cannot instanciate component>");
+		// Return default label if technology component cannot be set
+		@Override
+		public JComponent getJComponent(JComponent technologyComponent) {
+			if (technologyComponent == null) {
+				return ERROR_LABEL;
+			}
+			return technologyComponent;
+		}
+
+	}
 
 	public JFIBCustomWidget(FIBCustom model, FIBController controller) {
 		super(model, controller, new SwingCustomComponentRenderingAdapter<J, T>());
 	}
 
-	/*protected class NotFoundComponent implements FIBCustomComponent {
-	
-		private JLabel label;
-	
-		public NotFoundComponent() {
-			label = new JLabel("< Custom component >");
-		}
-	
-		@Override
-		public void init(FIBCustom component, FIBController controller) {
-		}
-	
-		@Override
-		public void addApplyCancelListener(ApplyCancelListener l) {
-		}
-	
-		@Override
-		public Object getEditedObject() {
-			return null;
-		}
-	
-		@Override
-		public Class<T> getRepresentedType() {
-			return null;
-		}
-	
-		@Override
-		public T getRevertValue() {
-			return null;
-		}
-	
-		@Override
-		public void removeApplyCancelListener(ApplyCancelListener l) {
-		}
-	
-		@Override
-		public void setEditedObject(Object object) {
-		}
-	
-		@Override
-		public void setRevertValue(Object object) {
-		}
-	
-		@Override
-		public void delete() {
-			label = null;
-		}
-	}*/
+	@Override
+	public SwingCustomComponentRenderingAdapter<J, T> getRenderingAdapter() {
+		return (SwingCustomComponentRenderingAdapter<J, T>) super.getRenderingAdapter();
+	}
 
-	// Return default label if technology component cannot be set
-	public JComponent getJComponent(J component) {
-		if (component == null) {
-			return new JLabel("<Undefined>");
-		}
-		return component;
+	@Override
+	public JComponent getJComponent() {
+		return getRenderingAdapter().getJComponent(getTechnologyComponent());
+	}
+
+	@Override
+	public JComponent getResultingJComponent() {
+		return getRenderingAdapter().getResultingJComponent(this);
 	}
 
 }

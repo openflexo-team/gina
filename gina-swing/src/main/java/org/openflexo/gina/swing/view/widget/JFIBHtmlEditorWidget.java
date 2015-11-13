@@ -41,9 +41,12 @@ package org.openflexo.gina.swing.view.widget;
 
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
+
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBHtmlEditor;
 import org.openflexo.gina.model.widget.FIBHtmlEditorOption;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.view.widget.impl.FIBHtmlEditorWidgetImpl;
 
@@ -55,7 +58,8 @@ import com.metaphaseeditor.MetaphaseEditorPanel;
  * 
  * @author sylvain
  */
-public class JFIBHtmlEditorWidget extends FIBHtmlEditorWidgetImpl<MetaphaseEditorPanel> {
+public class JFIBHtmlEditorWidget extends FIBHtmlEditorWidgetImpl<MetaphaseEditorPanel> implements
+		JFIBView<FIBHtmlEditor, MetaphaseEditorPanel> {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBHtmlEditorWidget.class.getPackage().getName());
 
@@ -104,6 +108,21 @@ public class JFIBHtmlEditorWidget extends FIBHtmlEditorWidgetImpl<MetaphaseEdito
 
 	public JFIBHtmlEditorWidget(FIBHtmlEditor model, FIBController controller) {
 		super(model, controller, RENDERING_TECHNOLOGY_ADAPTER);
+	}
+
+	@Override
+	public SwingHtmlEditorWidgetRenderingAdapter getRenderingAdapter() {
+		return (SwingHtmlEditorWidgetRenderingAdapter) super.getRenderingAdapter();
+	}
+
+	@Override
+	public JComponent getJComponent() {
+		return getRenderingAdapter().getJComponent(getTechnologyComponent());
+	}
+
+	@Override
+	public JComponent getResultingJComponent() {
+		return getRenderingAdapter().getResultingJComponent(this);
 	}
 
 	@Override

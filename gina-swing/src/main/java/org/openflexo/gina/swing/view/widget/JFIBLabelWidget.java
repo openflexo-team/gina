@@ -47,15 +47,17 @@ import javax.swing.JLabel;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBLabel;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.view.widget.impl.FIBLabelWidgetImpl;
 
 /**
- * Swing implementation for a simple widget allowing to display a label (a JLabel)
+ * Swing implementation for a simple widget allowing to display a label (a
+ * JLabel)
  * 
  * @author sylvain
  */
-public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabel> {
+public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabel> implements JFIBView<FIBLabel, JLabel> {
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(JFIBLabelWidget.class.getPackage().getName());
 
@@ -66,7 +68,8 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabel> {
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingLabelRenderingAdapter extends SwingRenderingAdapter<JLabel>implements LabelRenderingAdapter<JLabel> {
+	public static class SwingLabelRenderingAdapter extends SwingRenderingAdapter<JLabel> implements
+			LabelRenderingAdapter<JLabel> {
 
 		@Override
 		public String getText(JLabel component) {
@@ -101,18 +104,34 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabel> {
 	}
 
 	@Override
+	public SwingLabelRenderingAdapter getRenderingAdapter() {
+		return (SwingLabelRenderingAdapter) super.getRenderingAdapter();
+	}
+
+	@Override
+	public JComponent getJComponent() {
+		return getRenderingAdapter().getJComponent(getTechnologyComponent());
+	}
+
+	@Override
+	public JComponent getResultingJComponent() {
+		return getRenderingAdapter().getResultingJComponent(this);
+	}
+
+	@Override
 	protected JLabel makeTechnologyComponent() {
 		JLabel returned;
-		/*if (getWidget().getData().isValid()) {
-			returned = new JLabel(" ");
-		}
-		else {*/
+		/*
+		 * if (getWidget().getData().isValid()) { returned = new JLabel(" "); }
+		 * else {
+		 */
 		returned = new JLabel();
 		// }
-		// There is not much point in giving focus to a label since there is no KeyBindings nor KeyListener on it.
+		// There is not much point in giving focus to a label since there is no
+		// KeyBindings nor KeyListener on it.
 		returned.setFocusable(false);
-		returned.setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, TOP_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
-				RIGHT_COMPENSATING_BORDER));
+		returned.setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, TOP_COMPENSATING_BORDER,
+				BOTTOM_COMPENSATING_BORDER, RIGHT_COMPENSATING_BORDER));
 		return returned;
 	}
 

@@ -58,6 +58,7 @@ import java.util.prefs.PreferenceChangeEvent;
 import java.util.prefs.PreferenceChangeListener;
 
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -89,8 +90,8 @@ import org.openflexo.gina.swing.utils.JFIBInspectorController;
 import org.openflexo.gina.swing.utils.JFIBPreferences;
 import org.openflexo.gina.swing.utils.localization.LocalizedEditor;
 import org.openflexo.gina.swing.utils.logging.FlexoLoggingViewer;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingViewFactory;
-import org.openflexo.gina.view.FIBView;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
 import org.openflexo.logging.FlexoLogger;
@@ -109,47 +110,45 @@ public class FIBEditor implements FIBGenericEditor {
 
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditor.class.getPackage().getName());
 
-	// public static Resource COMPONENT_LOCALIZATION_FIB = ResourceLocator.locateResource("Fib/ComponentLocalization.fib");
+	// public static Resource COMPONENT_LOCALIZATION_FIB =
+	// ResourceLocator.locateResource("Fib/ComponentLocalization.fib");
 
-	/*static {
-		try {
-			FlexoLoggingManager.initialize(-1, true, null, Level.WARNING, null);
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}*/
+	/*
+	 * static { try { FlexoLoggingManager.initialize(-1, true, null,
+	 * Level.WARNING, null); } catch (SecurityException e) {
+	 * e.printStackTrace(); } catch (IOException e) { e.printStackTrace(); } }
+	 */
 
-	public static void main(String[] args)
-			throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+	public static void main(String[] args) throws ClassNotFoundException, InstantiationException,
+			IllegalAccessException, UnsupportedLookAndFeelException {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 		// Needs a FileSystemResourceLocator to locate Files
-		// Not required anymore: done a little bit after in FIBEditor constructor
-		/*final FileSystemResourceLocatorImpl fsrl = new FileSystemResourceLocatorImpl();
-		fsrl.appendToDirectories(System.getProperty("user.dir"));
-		ResourceLocator.appendDelegate(fsrl);*/
+		// Not required anymore: done a little bit after in FIBEditor
+		// constructor
+		/*
+		 * final FileSystemResourceLocatorImpl fsrl = new
+		 * FileSystemResourceLocatorImpl();
+		 * fsrl.appendToDirectories(System.getProperty("user.dir"));
+		 * ResourceLocator.appendDelegate(fsrl);
+		 */
 
 		// UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-		/*DefaultExpressionParser parser = new DefaultExpressionParser();
-			try {
-				//Expression test = parser.parse("data.name.substring(0,1).toUpperCase()+data.name.substring(1,6)");
-				//Expression test = parser.parse("data.name.substring().a()+2");
-				//Expression test = parser.parse("a.b().c()+2");
-				Expression test = parser.parse("a.c()+2");
-				System.out.println("test="+test);
-			} catch (ParseException e1) {
-				e1.printStackTrace();
-			}
-			System.exit(-1);*/
+		/*
+		 * DefaultExpressionParser parser = new DefaultExpressionParser(); try {
+		 * //Expression test = parser.parse(
+		 * "data.name.substring(0,1).toUpperCase()+data.name.substring(1,6)");
+		 * //Expression test = parser.parse("data.name.substring().a()+2");
+		 * //Expression test = parser.parse("a.b().c()+2"); Expression test =
+		 * parser.parse("a.c()+2"); System.out.println("test="+test); } catch
+		 * (ParseException e1) { e1.printStackTrace(); } System.exit(-1);
+		 */
 
-		/*try {
-			Class.forName("org.openflexo.Flexo");
-		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}*/
+		/*
+		 * try { Class.forName("org.openflexo.Flexo"); } catch
+		 * (ClassNotFoundException e1) { // TODO Auto-generated catch block
+		 * e1.printStackTrace(); }
+		 */
 
 		try {
 			FlexoLoggingManager.initialize(-1, true, null, Level.INFO, null);
@@ -261,7 +260,8 @@ public class FIBEditor implements FIBGenericEditor {
 		resourceLocator.appendToDirectories(System.getProperty("user.home"));
 		ResourceLocator.appendDelegate(resourceLocator);
 
-		inspector = new JFIBInspectorController(frame, ResourceLocator.locateResource("EditorInspectors"), FIBAbstractEditor.LOCALIZATION);
+		inspector = new JFIBInspectorController(frame, ResourceLocator.locateResource("EditorInspectors"),
+				FIBAbstractEditor.LOCALIZATION);
 
 		palette = new FIBEditorPalette(frame);
 		palette.setVisible(true);
@@ -297,8 +297,9 @@ public class FIBEditor implements FIBGenericEditor {
 	public void quit() {
 
 		// TODO: Check if a component needs to be saved.
-		/*for(FIBEditor.EditedFIB c: mainPanel.editedComponents) {
-		}*/
+		/*
+		 * for(FIBEditor.EditedFIB c: mainPanel.editedComponents) { }
+		 */
 		frame.dispose();
 		System.exit(0);
 	}
@@ -373,8 +374,7 @@ public class FIBEditor implements FIBGenericEditor {
 		}
 		if (editedFIB.fibFile == null) {
 			saveFIBAs();
-		}
-		else {
+		} else {
 			editedFIB.save();
 		}
 	}
@@ -394,19 +394,21 @@ public class FIBEditor implements FIBGenericEditor {
 			mainPanel.setTitleAt(mainPanel.getSelectedIndex(), editedFIB.title);
 			updateFrameTitle();
 			editedFIB.save();
-		}
-		else {
+		} else {
 			return;
 		}
 	}
 
 	public void testFIB() {
-		FIBView view = FIBController.makeView(editedFIB.fibComponent, SwingViewFactory.INSTANCE, FIBAbstractEditor.LOCALIZATION);
+		JFIBView<?, ? extends JComponent> view = (JFIBView<?, ? extends JComponent>) FIBController.makeView(
+				editedFIB.fibComponent, SwingViewFactory.INSTANCE, FIBAbstractEditor.LOCALIZATION);
 
 		// Class testClass = null;
-		if (editedFIB.fibComponent instanceof FIBContainer && ((FIBContainer) editedFIB.fibComponent).getDataClass() != null) {
+		if (editedFIB.fibComponent instanceof FIBContainer
+				&& ((FIBContainer) editedFIB.fibComponent).getDataClass() != null) {
 			try {
-				// testClass = Class.forName(editedFIB.fibComponent.getDataClassName());
+				// testClass =
+				// Class.forName(editedFIB.fibComponent.getDataClassName());
 				FIBContainer container = (FIBContainer) editedFIB.fibComponent;
 				Object testData = container.getDataClass().newInstance();
 				view.getController().setDataObject(testData);
@@ -417,8 +419,7 @@ public class FIBEditor implements FIBGenericEditor {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		else {
+		} else {
 			view.getController().updateWithoutDataObject();
 		}
 
@@ -444,7 +445,8 @@ public class FIBEditor implements FIBGenericEditor {
 	public void validateFIB() {
 		if (editedFIB != null && editedFIB.fibComponent != null) {
 			try {
-				getValidationWindow(editedFIB.fibComponent).validateAndDisplayReportForComponent(editedFIB.fibComponent);
+				getValidationWindow(editedFIB.fibComponent)
+						.validateAndDisplayReportForComponent(editedFIB.fibComponent);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -558,7 +560,8 @@ public class FIBEditor implements FIBGenericEditor {
 				}
 			});
 
-			loadItem = new JMenuItem(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, "open_interface"));
+			loadItem = new JMenuItem(
+					FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, "open_interface"));
 			loadItem.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -569,7 +572,8 @@ public class FIBEditor implements FIBGenericEditor {
 			openRecent = new JMenu(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, "open_recent"));
 			JFIBPreferences.addPreferenceChangeListener(this);
 			updateOpenRecent();
-			saveItem = new JMenuItem(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, "save_interface"));
+			saveItem = new JMenuItem(
+					FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, "save_interface"));
 			saveItem.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -577,7 +581,8 @@ public class FIBEditor implements FIBGenericEditor {
 				}
 			});
 
-			saveAsItem = new JMenuItem(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, "save_interface_as"));
+			saveAsItem = new JMenuItem(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION,
+					"save_interface_as"));
 			saveAsItem.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -585,7 +590,8 @@ public class FIBEditor implements FIBGenericEditor {
 				}
 			});
 
-			closeItem = new JMenuItem(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, "close_interface"));
+			closeItem = new JMenuItem(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION,
+					"close_interface"));
 			closeItem.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -600,7 +606,8 @@ public class FIBEditor implements FIBGenericEditor {
 					quit();
 				}
 			});
-			testInterfaceItem = new JMenuItem(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, "test_interface"));
+			testInterfaceItem = new JMenuItem(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION,
+					"test_interface"));
 			testInterfaceItem.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -608,8 +615,8 @@ public class FIBEditor implements FIBGenericEditor {
 				}
 			});
 
-			componentLocalizationItem = new JMenuItem(
-					FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, "component_localization"));
+			componentLocalizationItem = new JMenuItem(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION,
+					"component_localization"));
 			componentLocalizationItem.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -617,7 +624,8 @@ public class FIBEditor implements FIBGenericEditor {
 				}
 			});
 
-			final JMenu lafsItem = new JMenu(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, "look_and_feel"));
+			final JMenu lafsItem = new JMenu(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION,
+					"look_and_feel"));
 			final Vector<LAFMenuItem> lafsItems = new Vector<LAFMenuItem>();
 			for (final LookAndFeelInfo laf : UIManager.getInstalledLookAndFeels()) {
 				LAFMenuItem lafItem = new LAFMenuItem(laf);
@@ -664,9 +672,11 @@ public class FIBEditor implements FIBGenericEditor {
 			fileMenu.add(componentLocalizationItem);
 
 			fileMenu.add(lafsItem);
-			languagesItem = new JMenu(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, "switch_to_language"));
+			languagesItem = new JMenu(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION,
+					"switch_to_language"));
 			for (Language lang : Language.availableValues()) {
-				JMenuItem languageItem = new JMenuItem(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, lang.getName()));
+				JMenuItem languageItem = new JMenuItem(FlexoLocalization.localizedForKey(
+						FIBAbstractEditor.LOCALIZATION, lang.getName()));
 				final Language language = lang;
 				languageItem.addActionListener(new ActionListener() {
 					@Override
@@ -689,7 +699,8 @@ public class FIBEditor implements FIBGenericEditor {
 			});
 			inspectItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I,
 					ToolBox.getPLATFORM() != ToolBox.MACOS ? InputEvent.CTRL_MASK : InputEvent.META_MASK));
-			showPaletteItem = new JMenuItem(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, "show_palette"));
+			showPaletteItem = new JMenuItem(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION,
+					"show_palette"));
 			showPaletteItem.addActionListener(new ActionListener() {
 
 				@Override
@@ -705,19 +716,21 @@ public class FIBEditor implements FIBGenericEditor {
 				}
 			});
 
-			localizedItem = new JMenuItem(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, "localized_editor"));
+			localizedItem = new JMenuItem(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION,
+					"localized_editor"));
 			localizedItem.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (localizedEditor == null) {
-						localizedEditor = new LocalizedEditor(getFrame(), "localized_editor", FIBAbstractEditor.LOCALIZATION,
-								FIBAbstractEditor.LOCALIZATION, true, false);
+						localizedEditor = new LocalizedEditor(getFrame(), "localized_editor",
+								FIBAbstractEditor.LOCALIZATION, FIBAbstractEditor.LOCALIZATION, true, false);
 					}
 					localizedEditor.setVisible(true);
 				}
 			});
 
-			displayFileItem = new JMenuItem(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, "display_file"));
+			displayFileItem = new JMenuItem(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION,
+					"display_file"));
 			displayFileItem.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -725,8 +738,8 @@ public class FIBEditor implements FIBGenericEditor {
 				}
 			});
 
-			componentValidationItem = new JMenuItem(
-					FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, "validate_component"));
+			componentValidationItem = new JMenuItem(FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION,
+					"validate_component"));
 			componentValidationItem.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -755,8 +768,7 @@ public class FIBEditor implements FIBGenericEditor {
 			if (evt.getKey().startsWith(JFIBPreferences.LAST_FILE)) {
 				if (willUpdate) {
 					return;
-				}
-				else {
+				} else {
 					willUpdate = true;
 				}
 				SwingUtilities.invokeLater(new Runnable() {

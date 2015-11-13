@@ -48,11 +48,13 @@ import java.awt.event.FocusListener;
 import java.util.logging.Logger;
 
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.gina.model.widget.FIBFont;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.swing.view.widget.JFIBFontWidget.FontSelectorPanel;
 import org.openflexo.gina.view.widget.impl.FIBFontWidgetImpl;
@@ -67,7 +69,8 @@ import org.openflexo.swing.FontSelector;
  * 
  * @author sylvain
  */
-public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel>implements FocusListener {
+public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel> implements FocusListener,
+		JFIBView<FIBFont, FontSelectorPanel> {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBFontWidget.class.getPackage().getName());
 
@@ -77,8 +80,8 @@ public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel>implemen
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingFontWidgetRenderingAdapter extends SwingRenderingAdapter<FontSelectorPanel>
-			implements FontWidgetRenderingAdapter<FontSelectorPanel> {
+	public static class SwingFontWidgetRenderingAdapter extends SwingRenderingAdapter<FontSelectorPanel> implements
+			FontWidgetRenderingAdapter<FontSelectorPanel> {
 
 		@Override
 		public Font getSelectedFont(FontSelectorPanel component) {
@@ -139,8 +142,10 @@ public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel>implemen
 			checkBox = new JCheckBox();
 			checkBox.setHorizontalTextPosition(JCheckBox.LEADING);
 
-			checkBox.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "transparent", checkBox));
-			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
+			checkBox.setText(FlexoLocalization
+					.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "transparent", checkBox));
+			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION,
+					"undefined_value", checkBox));
 
 			checkBox.addActionListener(new ActionListener() {
 
@@ -168,14 +173,31 @@ public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel>implemen
 		}
 
 		public void updateLanguage() {
-			checkBox.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
-			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
+			checkBox.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value",
+					checkBox));
+			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION,
+					"undefined_value", checkBox));
 		}
 
 	}
 
 	public JFIBFontWidget(FIBFont model, FIBController controller) {
 		super(model, controller, RENDERING_TECHNOLOGY_ADAPTER);
+	}
+
+	@Override
+	public SwingFontWidgetRenderingAdapter getRenderingAdapter() {
+		return (SwingFontWidgetRenderingAdapter) super.getRenderingAdapter();
+	}
+
+	@Override
+	public JComponent getJComponent() {
+		return getRenderingAdapter().getJComponent(getTechnologyComponent());
+	}
+
+	@Override
+	public JComponent getResultingJComponent() {
+		return getRenderingAdapter().getResultingJComponent(this);
 	}
 
 	@Override

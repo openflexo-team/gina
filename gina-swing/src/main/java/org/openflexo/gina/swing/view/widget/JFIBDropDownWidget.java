@@ -40,8 +40,6 @@
 package org.openflexo.gina.swing.view.widget;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
@@ -51,18 +49,22 @@ import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.gina.model.widget.FIBDropDown;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
+import org.openflexo.gina.swing.view.widget.JFIBDropDownWidget.JDropDownPanel;
 import org.openflexo.gina.view.widget.impl.FIBDropDownWidgetImpl;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.toolbox.ToolBox;
 
 /**
- * Swing implementation for a widget able to select an item in a list (combo box)
+ * Swing implementation for a widget able to select an item in a list (combo
+ * box)
  * 
  * @param <C>
  *            type of technology-specific component this view manage
@@ -71,7 +73,8 @@ import org.openflexo.toolbox.ToolBox;
  * 
  * @author sylvain
  */
-public class JFIBDropDownWidget<T> extends FIBDropDownWidgetImpl<JComboBox<T>, T>implements FocusListener {
+public class JFIBDropDownWidget<T> extends FIBDropDownWidgetImpl<JDropDownPanel<T>, T> implements FocusListener,
+		JFIBView<FIBDropDown, JDropDownPanel<T>> {
 
 	static final Logger logger = Logger.getLogger(JFIBDropDownWidget.class.getPackage().getName());
 
@@ -82,113 +85,103 @@ public class JFIBDropDownWidget<T> extends FIBDropDownWidgetImpl<JComboBox<T>, T
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingDropDownRenderingAdapter<T> extends SwingRenderingAdapter<JComboBox<T>>
-			implements DropDownRenderingAdapter<JComboBox<T>, T> {
+	public static class SwingDropDownRenderingAdapter<T> extends SwingRenderingAdapter<JDropDownPanel<T>> implements
+			DropDownRenderingAdapter<JDropDownPanel<T>, T> {
 
 		@Override
-		public T getSelectedItem(JComboBox<T> component) {
-			return (T) component.getSelectedItem();
+		public T getSelectedItem(JDropDownPanel<T> component) {
+			return (T) component.jComboBox.getSelectedItem();
 		}
 
 		@Override
-		public void setSelectedItem(JComboBox<T> component, T item) {
-			component.setSelectedItem(item);
+		public void setSelectedItem(JDropDownPanel<T> component, T item) {
+			component.jComboBox.setSelectedItem(item);
 		}
 
 		@Override
-		public int getSelectedIndex(JComboBox<T> component) {
-			return component.getSelectedIndex();
+		public int getSelectedIndex(JDropDownPanel<T> component) {
+			return component.jComboBox.getSelectedIndex();
 		}
 
 		@Override
-		public void setSelectedIndex(JComboBox<T> component, int index) {
-			component.setSelectedIndex(index);
+		public void setSelectedIndex(JDropDownPanel<T> component, int index) {
+			component.jComboBox.setSelectedIndex(index);
 		}
 
 	}
 
-	private final JButton resetButton;
-	private final JPanel dropdownPanel;
+	public static class JDropDownPanel<T> extends JPanel {
+		private final JButton resetButton;
+		private final JComboBox<T> jComboBox;
+
+		public JDropDownPanel(final JFIBDropDownWidget<T> widget) {
+			super(new BorderLayout());
+			resetButton = new JButton();
+			resetButton.setText(FlexoLocalization
+					.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "reset", resetButton));
+			resetButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					jComboBox.getModel().setSelectedItem(null);
+					widget.setValue(null);
+				}
+			});
+			if (!ToolBox.isMacOSLaf()) {
+				setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER,
+						BOTTOM_COMPENSATING_BORDER, RIGHT_COMPENSATING_BORDER));
+			}
+
+			setOpaque(false);
+			addFocusListener(widget);
+
+			widget.multipleValueModel = null;
+			jComboBox = new JComboBox<T>(widget.getListModel());
+			jComboBox.setFont(widget.getFont());
+			jComboBox.setRenderer(widget.getListCellRenderer());
+			jComboBox.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (logger.isLoggable(Level.FINE)) {
+						logger.fine("Action performed in " + this.getClass().getName());
+					}
+					widget.updateModelFromWidget();
+				}
+			});
+
+			add(jComboBox, BorderLayout.CENTER);
+			if (widget.getComponent().getShowReset()) {
+				add(resetButton, BorderLayout.EAST);
+			}
+
+		}
+
+		public JComboBox<T> getJComboBox() {
+			return jComboBox;
+		}
+	}
 
 	public JFIBDropDownWidget(FIBDropDown model, FIBController controller) {
 		super(model, controller, new SwingDropDownRenderingAdapter<T>());
-
-		dropdownPanel = new JPanel(new BorderLayout());
-		resetButton = new JButton();
-		resetButton.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "reset", resetButton));
-		resetButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				getTechnologyComponent().getModel().setSelectedItem(null);
-				setValue(null);
-			}
-		});
-		if (!ToolBox.isMacOSLaf()) {
-			dropdownPanel.setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER,
-					BOTTOM_COMPENSATING_BORDER, RIGHT_COMPENSATING_BORDER));
-		}
-
-		dropdownPanel.add(getTechnologyComponent(), BorderLayout.CENTER);
-		if (model.getShowReset()) {
-			dropdownPanel.add(resetButton, BorderLayout.EAST);
-		}
-		dropdownPanel.setOpaque(false);
-		dropdownPanel.addFocusListener(this);
-
-		updateFont();
-
 	}
 
 	@Override
-	protected JComboBox<T> makeTechnologyComponent() {
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("initJComboBox()");
-		}
-		JComboBox<T> jComboBox;
-		Point locTemp = null;
-		Container parentTemp = null;
-		if (getJComponent() != null && getJComponent().getParent() != null) {
-			locTemp = getJComponent().getLocation();
-			parentTemp = getJComponent().getParent();
-			parentTemp.remove(getJComponent());
-			parentTemp.remove(resetButton);
-		}
-		multipleValueModel = null;
-		jComboBox = new JComboBox<T>(getListModel());
-		/*if (getDataObject() == null) {
-			Vector<Object> defaultValue = new Vector<Object>();
-			defaultValue.add(FlexoLocalization.localizedForKey("no_selection"));
-			_jComboBox = new JComboBox(defaultValue);
-		} else {
-			// TODO: Verify that there is no reason for this comboBoxModel to be cached.
-			multipleValueModel=null;
-			_jComboBox = new JComboBox(getListModel());
-		}*/
-		jComboBox.setFont(getFont());
-		jComboBox.setRenderer(getListCellRenderer());
-		jComboBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (logger.isLoggable(Level.FINE)) {
-					logger.fine("Action performed in " + this.getClass().getName());
-				}
-				updateModelFromWidget();
-			}
-		});
-		if (parentTemp != null) {
-			// _jComboBox.setSize(dimTemp);
-			jComboBox.setLocation(locTemp);
-			((JPanel) parentTemp).add(jComboBox, BorderLayout.CENTER);
-			if (getWidget().getShowReset()) {
-				((JPanel) parentTemp).add(resetButton, BorderLayout.EAST);
-			}
-		}
-		// Important: otherwise might be desynchronized
-		jComboBox.revalidate();
+	public SwingDropDownRenderingAdapter<T> getRenderingAdapter() {
+		return (SwingDropDownRenderingAdapter<T>) super.getRenderingAdapter();
+	}
 
-		jComboBox.setEnabled(isComponentEnabled());
+	@Override
+	public JComponent getJComponent() {
+		return getRenderingAdapter().getJComponent(getTechnologyComponent());
+	}
 
-		return jComboBox;
+	@Override
+	public JComponent getResultingJComponent() {
+		return getRenderingAdapter().getResultingJComponent(this);
+	}
+
+	@Override
+	protected JDropDownPanel<T> makeTechnologyComponent() {
+		return new JDropDownPanel(this);
 	}
 
 	@Override
@@ -196,7 +189,7 @@ public class JFIBDropDownWidget<T> extends FIBDropDownWidgetImpl<JComboBox<T>, T
 		boolean returned = super.update();
 		if ((getWidget().getData() == null || !getWidget().getData().isValid()) && getWidget().getAutoSelectFirstRow()
 				&& getListModel().getSize() > 0) {
-			getTechnologyComponent().setSelectedIndex(0);
+			getTechnologyComponent().jComboBox.setSelectedIndex(0);
 		}
 		return returned;
 	}
@@ -204,17 +197,12 @@ public class JFIBDropDownWidget<T> extends FIBDropDownWidgetImpl<JComboBox<T>, T
 	@Override
 	protected void proceedToListModelUpdate() {
 		if (getTechnologyComponent() != null) {
-			getTechnologyComponent().setModel(getListModel());
+			getTechnologyComponent().jComboBox.setModel(getListModel());
 			// System.out.println("New list model = " + getListModel());
 			if (!widgetUpdating && !isDeleted() && getTechnologyComponent() != null) {
 				updateWidgetFromModel();
 			}
 		}
-	}
-
-	@Override
-	public JPanel getJComponent() {
-		return dropdownPanel;
 	}
 
 }

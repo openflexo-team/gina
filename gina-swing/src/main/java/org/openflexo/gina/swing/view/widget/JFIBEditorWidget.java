@@ -46,12 +46,14 @@ import java.awt.event.KeyEvent;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBEditor;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.view.widget.impl.FIBEditorWidgetImpl;
 import org.openflexo.jedit.JEditTextArea;
@@ -59,11 +61,13 @@ import org.openflexo.jedit.TokenMarker;
 import org.openflexo.toolbox.ToolBox;
 
 /**
- * Represents a widget able to edit a Text (more than one line) object using a syntax-colored editor (eg code editor)
+ * Represents a widget able to edit a Text (more than one line) object using a
+ * syntax-colored editor (eg code editor)
  * 
  * @author bmangez,sguerin
  */
-public class JFIBEditorWidget extends FIBEditorWidgetImpl<JEditTextArea>implements FocusListener {
+public class JFIBEditorWidget extends FIBEditorWidgetImpl<JEditTextArea> implements FocusListener,
+		JFIBView<FIBEditor, JEditTextArea> {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBEditorWidget.class.getPackage().getName());
 
@@ -74,8 +78,8 @@ public class JFIBEditorWidget extends FIBEditorWidgetImpl<JEditTextArea>implemen
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingEditorWidgetRenderingAdapter extends SwingRenderingAdapter<JEditTextArea>
-			implements EditorWidgetRenderingAdapter<JEditTextArea> {
+	public static class SwingEditorWidgetRenderingAdapter extends SwingRenderingAdapter<JEditTextArea> implements
+			EditorWidgetRenderingAdapter<JEditTextArea> {
 
 		@Override
 		public int getColumns(JEditTextArea component) {
@@ -149,26 +153,38 @@ public class JFIBEditorWidget extends FIBEditorWidgetImpl<JEditTextArea>implemen
 	}
 
 	@Override
+	public SwingEditorWidgetRenderingAdapter getRenderingAdapter() {
+		return (SwingEditorWidgetRenderingAdapter) super.getRenderingAdapter();
+	}
+
+	@Override
+	public JComponent getJComponent() {
+		return getRenderingAdapter().getJComponent(getTechnologyComponent());
+	}
+
+	@Override
+	public JComponent getResultingJComponent() {
+		return getRenderingAdapter().getResultingJComponent(this);
+	}
+
+	@Override
 	protected JEditTextArea makeTechnologyComponent() {
 		JEditTextArea textArea = new JEditTextArea();
 		if (getWidget().getColumns() != null && getWidget().getColumns() > 0) {
 			textArea.setColumns(getWidget().getColumns());
-		}
-		else {
+		} else {
 			textArea.setColumns(DEFAULT_COLUMNS);
 		}
 		if (getWidget().getRows() != null && getWidget().getRows() > 0) {
 			textArea.setRows(getWidget().getRows());
-		}
-		else {
+		} else {
 			textArea.setRows(DEFAULT_ROWS);
 		}
 		Border border;
 		if (!ToolBox.isMacOSLaf()) {
-			border = BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
-					RIGHT_COMPENSATING_BORDER);
-		}
-		else {
+			border = BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER,
+					BOTTOM_COMPENSATING_BORDER, RIGHT_COMPENSATING_BORDER);
+		} else {
 			border = BorderFactory.createEmptyBorder(2, 3, 2, 3);
 		}
 		border = BorderFactory.createCompoundBorder(border, BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
