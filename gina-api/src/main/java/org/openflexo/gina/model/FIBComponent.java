@@ -1579,7 +1579,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			if (StringUtils.isEmpty(name)) {
 				name = null;
 			}
-			performSuperSetter(NAME_KEY, name);
+			super.setName(name);
 			updateDynamicAccessBindingVariable();
 		}
 
@@ -1935,6 +1935,22 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		public boolean isHidden() {
 			return (getParameter("hidden") != null && getParameter("hidden").equalsIgnoreCase("true"));
 		}
+
+		@Override
+		public String getPresentationName() {
+			org.openflexo.model.ModelEntity<?> e = getFactory().getModelEntityForInstance(this);
+
+			if (getName() != null) {
+				return getName() + " (" + e.getImplementedInterface().getSimpleName() + ")";
+			}
+			else if (getIdentifier() != null) {
+				return getIdentifier() + " (" + e.getImplementedInterface().getSimpleName() + ")";
+			}
+			else {
+				return "<" + e.getImplementedInterface().getSimpleName() + ">";
+			}
+		}
+
 	}
 
 	@DefineValidationRule

@@ -39,7 +39,6 @@
 
 package org.openflexo.gina.swing.view.container;
 
-import java.awt.AWTError;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -130,15 +129,7 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent>implement
 				BoxLayoutConstraints boxConstraints = (BoxLayoutConstraints) constraints;
 				contained.setAlignmentX(boxConstraints.getAlignmentX());
 				contained.setAlignmentY(boxConstraints.getAlignmentY());
-				try {
-					container.add(contained);
-				} catch (AWTError e) {
-					System.out.println("prout alors");
-					System.out.println("container.lm=" + container.getLayout());
-					System.out.println("container.lm.target=" + ((BoxLayout) container.getLayout()).getTarget());
-					e.printStackTrace();
-					System.out.println("hop");
-				}
+				container.add(contained);
 			}
 			else if (constraints instanceof ButtonLayoutConstraints) {
 				ButtonLayoutConstraints buttonConstraints = (ButtonLayoutConstraints) constraints;
@@ -474,14 +465,18 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent>implement
 				registerViewForComponent(subView, subComponent);
 
 				// TODO: please handle issue with getResultingJComponent()
-				registerComponentWithConstraints(getResultingJComponent(subComponent), subComponent.getConstraints());
+				registerComponentWithConstraints(((JFIBView<?, JComponent>) subView).getResultingJComponent(),
+						subComponent.getConstraints());
 			}
 		}
 	}
 
 	protected JComponent getResultingJComponent(FIBComponent component) {
+		System.out.println("on veut ajouter " + component);
 		JFIBView<?, JComponent> componentView = (JFIBView<?, JComponent>) getController().viewForComponent(component);
-		return componentView.getRenderingAdapter().getResultingJComponent(componentView);
+		System.out.println("ce qu'on retourne comme vue, c'est " + componentView);
+		System.out.println("ce qu'on retourne comme JComponent, c'est " + componentView.getResultingJComponent());
+		return componentView.getResultingJComponent();
 
 	}
 

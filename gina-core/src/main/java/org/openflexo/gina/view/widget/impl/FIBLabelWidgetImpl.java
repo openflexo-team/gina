@@ -107,7 +107,7 @@ public abstract class FIBLabelWidgetImpl<C> extends FIBWidgetViewImpl<FIBLabel, 
 	final protected void updateLabel() {
 		String label = "";
 
-		System.out.println("update label " + this + " data=" + getWidget().getData());
+		// System.out.println("update label " + this + " data=" + getWidget().getData());
 
 		if (getWidget().getData() != null && getWidget().getData().isSet() && getWidget().getData().isValid()) {
 			label = (getWidget().getLocalize() ? getLocalized(getValue()) : getValue());

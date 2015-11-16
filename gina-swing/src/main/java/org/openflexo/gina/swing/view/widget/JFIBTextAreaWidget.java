@@ -48,6 +48,7 @@ import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
@@ -65,8 +66,7 @@ import org.openflexo.toolbox.ToolBox;
  * 
  * @author bmangez,sguerin
  */
-public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea> implements FocusListener,
-		JFIBView<FIBTextArea, JTextArea> {
+public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea>implements FocusListener, JFIBView<FIBTextArea, JTextArea> {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBTextAreaWidget.class.getPackage().getName());
 
@@ -77,8 +77,8 @@ public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea> impleme
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingTextAreaRenderingAdapter extends SwingTextRenderingAdapter<JTextArea> implements
-			TextAreaRenderingAdapter<JTextArea> {
+	public static class SwingTextAreaRenderingAdapter extends SwingTextRenderingAdapter<JTextArea>
+			implements TextAreaRenderingAdapter<JTextArea> {
 
 		@Override
 		public int getColumns(JTextArea component) {
@@ -115,17 +115,23 @@ public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea> impleme
 
 	@Override
 	public JComponent getJComponent() {
+		System.out.println("le JComponent c'est: " + getRenderingAdapter().getJComponent(getTechnologyComponent()));
 		return getRenderingAdapter().getJComponent(getTechnologyComponent());
 	}
 
 	@Override
 	public JComponent getResultingJComponent() {
+		JComponent resulting = getRenderingAdapter().getResultingJComponent(this);
+		System.out.println("le resultingJComponent c'est: " + resulting);
+		if (resulting instanceof JScrollPane) {
+			System.out.println("dedans, y'a " + ((JScrollPane) resulting).getViewport().getView());
+		}
 		return getRenderingAdapter().getResultingJComponent(this);
 	}
 
 	@Override
 	protected JTextArea makeTechnologyComponent() {
-		JTextArea textArea = new JTextArea();
+		JTextArea textArea = new JTextArea("toto", DEFAULT_ROWS, DEFAULT_COLUMNS);
 
 		textArea.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
@@ -166,9 +172,10 @@ public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea> impleme
 
 		Border border;
 		if (!ToolBox.isMacOSLaf()) {
-			border = BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER,
-					BOTTOM_COMPENSATING_BORDER, RIGHT_COMPENSATING_BORDER);
-		} else {
+			border = BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
+					RIGHT_COMPENSATING_BORDER);
+		}
+		else {
 			border = BorderFactory.createEmptyBorder(2, 3, 2, 3);
 		}
 		border = BorderFactory.createCompoundBorder(border, BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));

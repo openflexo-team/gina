@@ -155,6 +155,8 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 	public boolean isParameterDeletable(FIBParameter p);
 
+	public String getPresentationName();
+
 	public static abstract class FIBModelObjectImpl implements FIBModelObject {
 
 		private static final Logger LOGGER = Logger.getLogger(FIBModelObject.class.getPackage().getName());
@@ -461,6 +463,26 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 		@Override
 		public void clearParameters() {
 			getParameters().clear();
+		}
+
+		@Override
+		public void setName(String name) {
+			performSuperSetter(NAME_KEY, name);
+			getPropertyChangeSupport().firePropertyChange("presentationName", null, getPresentationName());
+		}
+
+		@Override
+		public String getPresentationName() {
+			if (getComponent() != null) {
+				org.openflexo.model.ModelEntity<?> e = getComponent().getFactory().getModelEntityForInstance(this);
+				if (getName() != null) {
+					return getName() + " (" + e.getImplementedInterface().getSimpleName() + ")";
+				}
+				else {
+					return "<" + e.getImplementedInterface().getSimpleName() + ">";
+				}
+			}
+			return "<" + getClass().getSimpleName() + ">";
 		}
 
 	}
