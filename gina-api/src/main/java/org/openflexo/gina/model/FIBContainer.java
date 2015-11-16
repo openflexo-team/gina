@@ -114,32 +114,25 @@ public abstract interface FIBContainer extends FIBComponent {
 	/**
 	 * Merge supplied container with this container<br>
 	 * Containers should be of same type.<br>
-	 * Merge is recursively performed. Lookup and merge strategy is based on
-	 * names given to sub-components
+	 * Merge is recursively performed. Lookup and merge strategy is based on names given to sub-components
 	 * 
-	 * Merging Policy: We append the children of the container to
-	 * this.subComponents<br>
-	 * 1. If child has no index, we insert it after all subcomponents with a
-	 * negative index<br>
-	 * 2. If child has a negative index, we insert before any subcomponent with
-	 * a null or positive index, or a negative index that is equal or greater
-	 * than the child index<br>
-	 * 3. If the child has a positive index, we insert after all subcomponents
-	 * with a negative or null index, or a positive index which is smaller or
-	 * equal to the child index
+	 * Merging Policy: We append the children of the container to this.subComponents<br>
+	 * 1. If child has no index, we insert it after all subcomponents with a negative index<br>
+	 * 2. If child has a negative index, we insert before any subcomponent with a null or positive index, or a negative index that is equal
+	 * or greater than the child index<br>
+	 * 3. If the child has a positive index, we insert after all subcomponents with a negative or null index, or a positive index which is
+	 * smaller or equal to the child index
 	 * 
-	 * Moreover, when inserting, we always verify that we are not inserting
-	 * ourselves in a consecutive series of indexed components. Finally, when we
-	 * insert the child, we also insert all the consecutive indexed components
-	 * (two components with a null index are considered to be consecutive)
+	 * Moreover, when inserting, we always verify that we are not inserting ourselves in a consecutive series of indexed components.
+	 * Finally, when we insert the child, we also insert all the consecutive indexed components (two components with a null index are
+	 * considered to be consecutive)
 	 * 
 	 * @param container
 	 */
 	public void append(FIBContainer container);
 
 	/**
-	 * Return a recursive list of all components beeing embedded in this
-	 * container
+	 * Return a recursive list of all components beeing embedded in this container
 	 * 
 	 * @return
 	 */
@@ -215,8 +208,7 @@ public abstract interface FIBContainer extends FIBComponent {
 		}
 
 		/**
-		 * Return a recursive list of all components beeing embedded in this
-		 * container
+		 * Return a recursive list of all components beeing embedded in this container
 		 * 
 		 * @return
 		 */
@@ -267,8 +259,7 @@ public abstract interface FIBContainer extends FIBComponent {
 		}
 
 		@Override
-		public void addToSubComponents(FIBComponent aComponent, ComponentConstraints someConstraints,
-				int subComponentIndex) {
+		public void addToSubComponents(FIBComponent aComponent, ComponentConstraints someConstraints, int subComponentIndex) {
 
 			// TODO: i dont't like this code, we might do it without all these
 			// hacks
@@ -315,11 +306,13 @@ public abstract interface FIBContainer extends FIBComponent {
 						if (component.getIndex() != null && component.getIndex() < 0) {
 							component.setIndex(null);
 						}
-					} else if (previous.getIndex() < 0) {
+					}
+					else if (previous.getIndex() < 0) {
 						if (component.getIndex() != null && component.getIndex() < previous.getIndex()) {
 							component.setIndex(previous.getIndex());
 						}
-					} else {
+					}
+					else {
 						if (component.getIndex() == null || component.getIndex() < previous.getIndex()) {
 							component.setIndex(previous.getIndex());
 						}
@@ -330,11 +323,13 @@ public abstract interface FIBContainer extends FIBComponent {
 						if (component.getIndex() != null && component.getIndex() >= 0) {
 							component.setIndex(null);
 						}
-					} else if (next.getIndex() < 0) {
+					}
+					else if (next.getIndex() < 0) {
 						if (component.getIndex() == null || component.getIndex() > next.getIndex()) {
 							component.setIndex(next.getIndex());
 						}
-					} else {
+					}
+					else {
 						if (component.getIndex() != null && component.getIndex() > next.getIndex()) {
 							component.setIndex(next.getIndex());
 						}
@@ -401,25 +396,18 @@ public abstract interface FIBContainer extends FIBComponent {
 		/**
 		 * Merge supplied container with this container<br>
 		 * Containers should be of same type.<br>
-		 * Merge is recursively performed. Lookup and merge strategy is based on
-		 * names given to sub-components
+		 * Merge is recursively performed. Lookup and merge strategy is based on names given to sub-components
 		 * 
-		 * Merging Policy: We append the children of the container to
-		 * this.subComponents<br>
-		 * 1. If child has no index, we insert it after all subcomponents with a
-		 * negative index<br>
-		 * 2. If child has a negative index, we insert before any subcomponent
-		 * with a null or positive index, or a negative index that is equal or
-		 * greater than the child index<br>
-		 * 3. If the child has a positive index, we insert after all
-		 * subcomponents with a negative or null index, or a positive index
-		 * which is smaller or equal to the child index
+		 * Merging Policy: We append the children of the container to this.subComponents<br>
+		 * 1. If child has no index, we insert it after all subcomponents with a negative index<br>
+		 * 2. If child has a negative index, we insert before any subcomponent with a null or positive index, or a negative index that is
+		 * equal or greater than the child index<br>
+		 * 3. If the child has a positive index, we insert after all subcomponents with a negative or null index, or a positive index which
+		 * is smaller or equal to the child index
 		 * 
-		 * Moreover, when inserting, we always verify that we are not inserting
-		 * ourselves in a consecutive series of indexed components. Finally,
-		 * when we insert the child, we also insert all the consecutive indexed
-		 * components (two components with a null index are considered to be
-		 * consecutive)
+		 * Moreover, when inserting, we always verify that we are not inserting ourselves in a consecutive series of indexed components.
+		 * Finally, when we insert the child, we also insert all the consecutive indexed components (two components with a null index are
+		 * considered to be consecutive)
 		 * 
 		 * @param container
 		 */
@@ -464,24 +452,16 @@ public abstract interface FIBContainer extends FIBComponent {
 				if (overridingComponent == null) {
 
 					/**
-					 * Merging Policy: We append the children of the container
-					 * to this.subComponents<br>
-					 * 1. If child has no index, we insert it after all
-					 * subcomponents with a negative index<br>
-					 * 2. If child has a negative index, we insert before any
-					 * subcomponent with a null or positive index, or a negative
+					 * Merging Policy: We append the children of the container to this.subComponents<br>
+					 * 1. If child has no index, we insert it after all subcomponents with a negative index<br>
+					 * 2. If child has a negative index, we insert before any subcomponent with a null or positive index, or a negative
 					 * index that is equal or greater than the child index<br>
-					 * 3. If the child has a positive index, we insert after all
-					 * subcomponents with a negative or null index, or a
-					 * positive index which is smaller or equal to the child
-					 * index
+					 * 3. If the child has a positive index, we insert after all subcomponents with a negative or null index, or a positive
+					 * index which is smaller or equal to the child index
 					 * 
-					 * Moreover, when inserting, we always verify that we are
-					 * not inserting ourselves in a consecutive series of
-					 * indexed components. Finally, when we insert the child, we
-					 * also insert all the consecutive indexed components (two
-					 * components with a null index are considered to be
-					 * consecutive)
+					 * Moreover, when inserting, we always verify that we are not inserting ourselves in a consecutive series of indexed
+					 * components. Finally, when we insert the child, we also insert all the consecutive indexed components (two components
+					 * with a null index are considered to be consecutive)
 					 */
 
 					int indexInsertion;
@@ -494,7 +474,8 @@ public abstract interface FIBContainer extends FIBComponent {
 								break;
 							}
 						}
-					} else if (child.getIndex() < 0) {
+					}
+					else if (child.getIndex() < 0) {
 						indexInsertion = 0;
 						for (int j = 0; j < getSubComponents().size(); j++) {
 							FIBComponent c = getSubComponents().get(j);
@@ -510,8 +491,7 @@ public abstract interface FIBContainer extends FIBComponent {
 									// current
 									// component one, then we need to skip all
 									// the consecutives indexed component.
-									if (previousComponent.getIndex() != null
-											&& previousComponent.getIndex() + 1 == c.getIndex()) {
+									if (previousComponent.getIndex() != null && previousComponent.getIndex() + 1 == c.getIndex()) {
 										int previous = c.getIndex();
 										j++;
 										while (j < getSubComponents().size()) {
@@ -519,7 +499,8 @@ public abstract interface FIBContainer extends FIBComponent {
 											if (c.getIndex() != null && c.getIndex() == previous + 1) {
 												previous = c.getIndex();
 												j++;
-											} else {
+											}
+											else {
 												break;
 											}
 										}
@@ -531,7 +512,8 @@ public abstract interface FIBContainer extends FIBComponent {
 							}
 						}
 
-					} else {
+					}
+					else {
 
 						indexInsertion = getSubComponents().size();
 						for (int j = 0; j < getSubComponents().size(); j++) {
@@ -547,8 +529,7 @@ public abstract interface FIBContainer extends FIBComponent {
 									// current
 									// component one, then we need to skip all
 									// the consecutives indexed component.
-									if (previousComponent.getIndex() != null
-											&& previousComponent.getIndex() + 1 == c.getIndex()) {
+									if (previousComponent.getIndex() != null && previousComponent.getIndex() + 1 == c.getIndex()) {
 										int previous = c.getIndex();
 										j++;
 										while (j < getSubComponents().size()) {
@@ -556,7 +537,8 @@ public abstract interface FIBContainer extends FIBComponent {
 											if (c.getIndex() != null && c.getIndex() == previous + 1) {
 												previous = c.getIndex();
 												j++;
-											} else {
+											}
+											else {
 												break;
 											}
 										}
@@ -581,15 +563,12 @@ public abstract interface FIBContainer extends FIBComponent {
 						if (i + 1 < container.getSubComponents().size()) {
 							Integer previousInteger = child.getIndex();
 							child = container.getSubComponents().get(i + 1);
-							insert = previousInteger == null
-									&& child.getIndex() == null
-									|| previousInteger != null
-									&& child.getIndex() != null
-									&& previousInteger + 1 == child.getIndex()
+							insert = previousInteger == null && child.getIndex() == null
+									|| previousInteger != null && child.getIndex() != null && previousInteger + 1 == child.getIndex()
 									|| child.getIndex() != null
-									&& (startIndex == null && child.getIndex() == startIndex || startIndex != null
-											&& startIndex.equals(child.getIndex()))
-									&& !mergedComponents.contains(child);
+											&& (startIndex == null && child.getIndex() == startIndex
+													|| startIndex != null && startIndex.equals(child.getIndex()))
+											&& !mergedComponents.contains(child);
 							if (insert) {
 								i++;
 								if (child.getName() != null) {
@@ -607,20 +586,22 @@ public abstract interface FIBContainer extends FIBComponent {
 									 * (overridingComponent); }
 									 */
 								}
-							} else {
+							}
+							else {
 								break;
 							}
-						} else {
+						}
+						else {
 							break;
 						}
 					}
 				} /*
-				 * else { if (overridingComponent.getParameter("hidden") != null
-				 * &&
-				 * overridingComponent.getParameter("hidden").equalsIgnoreCase
-				 * ("true")) { // Super property must be shadowed
-				 * removeFromSubComponents(overridingComponent); } }
-				 */
+					* else { if (overridingComponent.getParameter("hidden") != null
+					* &&
+					* overridingComponent.getParameter("hidden").equalsIgnoreCase
+					* ("true")) { // Super property must be shadowed
+					* removeFromSubComponents(overridingComponent); } }
+					*/
 			}
 
 			if (container.getLocalizedDictionary() != null) {
@@ -715,8 +696,8 @@ public abstract interface FIBContainer extends FIBComponent {
 
 		private void notifyComponentIndexChanged(FIBComponent component) {
 			FIBPropertyNotification<ComponentConstraints> notification = new FIBPropertyNotification<ComponentConstraints>(
-					(FIBProperty<ComponentConstraints>) FIBProperty.getFIBProperty(getClass(), CONSTRAINTS_KEY),
-					component.getConstraints(), component.getConstraints());
+					(FIBProperty<ComponentConstraints>) FIBProperty.getFIBProperty(getClass(), CONSTRAINTS_KEY), component.getConstraints(),
+					component.getConstraints());
 			component.notify(notification);
 			getPropertyChangeSupport().firePropertyChange(SUB_COMPONENTS_KEY, null, getSubComponents());
 		}
@@ -749,13 +730,16 @@ public abstract interface FIBContainer extends FIBComponent {
 						}
 						if (o2.getIndex() < 0) {
 							return 1;
-						} else {
+						}
+						else {
 							return -1;
 						}
-					} else {
+					}
+					else {
 						if (o2.getIndex() == null) {
 							return o1.getIndex();
-						} else {
+						}
+						else {
 							return o1.getIndex() - o2.getIndex();
 						}
 					}
@@ -771,7 +755,9 @@ public abstract interface FIBContainer extends FIBComponent {
 
 		@Override
 		public void notifiedBindingChanged(DataBinding<?> binding) {
-			Thread.dumpStack();
+			// Thread.dumpStack();
+			System.out.println("notifiedBindingChanged with " + binding);
+			System.out.println("analyzed type : " + binding.getAnalyzedType());
 			super.notifiedBindingChanged(binding);
 			if (binding == getData()) {
 				logger.info("notified data changed");
@@ -834,9 +820,8 @@ public abstract interface FIBContainer extends FIBComponent {
 		public boolean checkContainmentIntegrity() {
 			for (FIBComponent c : getSubComponents()) {
 				if (c.getParent() != this) {
-					System.out.println("checkContainmentIntegrity() FAILED because child " + c
-							+ " does not have for parent " + this + " (hash=" + hashCode() + ") but " + c.getParent()
-							+ " (hash=" + c.getParent().hashCode() + ")");
+					System.out.println("checkContainmentIntegrity() FAILED because child " + c + " does not have for parent " + this
+							+ " (hash=" + hashCode() + ") but " + c.getParent() + " (hash=" + c.getParent().hashCode() + ")");
 					System.out.println("root component for c = " + c.getRootComponent());
 					System.out.println("root component for this = " + getRootComponent());
 					return false;
