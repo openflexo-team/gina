@@ -123,6 +123,11 @@ public class FIBEditor implements FIBGenericEditor {
 			IllegalAccessException, UnsupportedLookAndFeelException {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
+		if (ToolBox.isMacOS()) {
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
+			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "FIBEditor");
+		}
+
 		// Needs a FileSystemResourceLocator to locate Files
 		// Not required anymore: done a little bit after in FIBEditor
 		// constructor

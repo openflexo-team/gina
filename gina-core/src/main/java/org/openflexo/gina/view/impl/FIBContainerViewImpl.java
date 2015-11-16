@@ -55,9 +55,10 @@ import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.FIBView;
 
 /**
- * Default generic (and abstract) implementation for a "view" associated with a {@link FIBContainer} in a given rendering engine environment
- * (eg Swing)<br>
- * A {@link FIBContainerView} is a container for some sub-components (a set of {@link FIBView}) with a given layout
+ * Default generic (and abstract) implementation for a "view" associated with a
+ * {@link FIBContainer} in a given rendering engine environment (eg Swing)<br>
+ * A {@link FIBContainerView} is a container for some sub-components (a set of
+ * {@link FIBView}) with a given layout
  * 
  * 
  * @author sylvain
@@ -67,9 +68,11 @@ import org.openflexo.gina.view.FIBView;
  * @param <C>
  *            type of technology-specific component
  * @param <C2>
- *            type of technology-specific component beeing contained by this view
+ *            type of technology-specific component beeing contained by this
+ *            view
  */
-public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extends FIBViewImpl<M, C>implements FIBContainerView<M, C, C2> {
+public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extends FIBViewImpl<M, C> implements
+		FIBContainerView<M, C, C2> {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBContainerViewImpl.class.getPackage().getName());
 
@@ -90,6 +93,8 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		technologyComponent = makeTechnologyComponent();
 
 		buildSubComponents();
+
+		// update();
 	}
 
 	@Override
@@ -153,8 +158,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	public Object getTechnologyComponentForFIBComponent(FIBComponent component) {
 		if (getComponent() == component) {
 			return getTechnologyComponent();
-		}
-		else {
+		} else {
 			for (FIBViewImpl<?, ?> v : getSubViews()) {
 				Object j = v.getTechnologyComponentForFIBComponent(component);
 				if (j != null) {
@@ -256,11 +260,13 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 
 	/**
 	 * This method is called to update view representing a FIBComponent.<br>
-	 * Callers are all the components that have been updated during current update loop. If the callers contains the component itself, does
-	 * nothing and return.
+	 * Callers are all the components that have been updated during current
+	 * update loop. If the callers contains the component itself, does nothing
+	 * and return.
 	 * 
 	 * @param callers
-	 *            all the components that have been previously updated during current update loop
+	 *            all the components that have been previously updated during
+	 *            current update loop
 	 * @return a flag indicating if component has been updated
 	 */
 	/*
@@ -331,18 +337,20 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	}
 
 	/**
-	 * Return all sub-components that are not declared as to be hidden in inheritance hierarchy
+	 * Return all sub-components that are not declared as to be hidden in
+	 * inheritance hierarchy
 	 * 
 	 * @return
 	 */
 	protected List<FIBComponent> getNotHiddenSubComponents() {
 		List<FIBComponent> returned = new ArrayList<FIBComponent>();
 		for (FIBComponent subComponent : getComponent().getSubComponents()) {
-			if (subComponent.getParameter("hidden") == null || subComponent.getParameter("hidden").equalsIgnoreCase("false")) {
+			if (subComponent.getParameter("hidden") == null
+					|| subComponent.getParameter("hidden").equalsIgnoreCase("false")) {
 				returned.add(subComponent);
 			} /*
-				* else { System.out.println("Ignoring " + subComponent); }
-				*/
+			 * else { System.out.println("Ignoring " + subComponent); }
+			 */
 		}
 		return returned;
 	}

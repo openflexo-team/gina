@@ -77,17 +77,17 @@ import org.openflexo.connie.DefaultBindable;
 import org.openflexo.connie.binding.BindingModelChanged;
 import org.openflexo.connie.expr.BindingValue;
 import org.openflexo.connie.expr.Constant;
-import org.openflexo.connie.expr.Expression;
 import org.openflexo.connie.expr.Constant.BooleanConstant;
 import org.openflexo.connie.expr.Constant.FloatConstant;
 import org.openflexo.connie.expr.Constant.IntegerConstant;
 import org.openflexo.connie.expr.Constant.StringConstant;
+import org.openflexo.connie.expr.Expression;
 import org.openflexo.connie.expr.parser.ExpressionParser;
 import org.openflexo.connie.expr.parser.ParseException;
 import org.openflexo.connie.java.JavaBindingFactory;
 import org.openflexo.connie.type.TypeUtils;
-import org.openflexo.gina.event.GinaEvent.KIND;
 import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.event.GinaEvent.KIND;
 import org.openflexo.gina.event.GinaEventNotifier;
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.manager.GinaStackEvent;
@@ -145,8 +145,11 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 	};
 
 	static enum EditionMode {
-		NORMAL_BINDING, COMPOUND_BINDING, STATIC_BINDING, BINDING_EXPRESSION;/*,
-																				NEW_ENTRY;*/
+		NORMAL_BINDING, COMPOUND_BINDING, STATIC_BINDING, BINDING_EXPRESSION;/*
+																			 * ,
+																			 * NEW_ENTRY
+																			 * ;
+																			 */
 
 		boolean useCommonPanel() {
 			return this != BINDING_EXPRESSION;
@@ -161,7 +164,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 	private Color defaultForeground;
 
 	private Color defaultSelectedColor;
-	
+
 	protected GinaEventNotifier GENotifier;
 
 	public BindingSelector(DataBinding<?> editedObject) {
@@ -170,7 +173,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 
 	public BindingSelector(DataBinding<?> editedObject, int cols) {
 		super(null, cols);
-		
+
 		GENotifier = new GinaEventNotifier(null, null) {
 
 			@Override
@@ -181,12 +184,14 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			@Override
 			public void setIdentity(EventDescription e, Object o) {
 				if (e instanceof EventDescription) {
-					//((FIBEvent) e).setIdentity(getWidget().getBaseName(), getWidget().getName(), getWidget().getRootComponent().getUniqueID());
+					// ((FIBEvent) e).setIdentity(getWidget().getBaseName(),
+					// getWidget().getName(),
+					// getWidget().getRootComponent().getUniqueID());
 				}
 			}
-			
+
 		};
-		
+
 		setFocusable(true);
 		getTextField().setFocusable(true);
 		getTextField().setEditable(true);
@@ -196,7 +201,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 				GinaStackEvent stackElement = GENotifier.notifyMethod();
 
 				KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(tabDispatcher);
-				
+
 				stackElement.end();
 			}
 
@@ -207,17 +212,19 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 				KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(tabDispatcher);
 				Component opposite = focusEvent.getOppositeComponent();
 				if (LOGGER.isLoggable(Level.FINER)) {
-					LOGGER.finer("focus lost for " + (opposite != null ? SwingUtils.getComponentPath(opposite) : "null"));
+					LOGGER.finer("focus lost for "
+							+ (opposite != null ? SwingUtils.getComponentPath(opposite) : "null"));
 				}
 				if (opposite == null || !SwingUtilities.isDescendingFrom(opposite, BindingSelector.this)
 						&& !SwingUtilities.isDescendingFrom(opposite, _selectorPanel)) {
-					// Little hook used to automatically apply a valid value which has generally been edited
+					// Little hook used to automatically apply a valid value
+					// which has generally been edited
 					// By typing text in text field
 					if (getEditedObject() != null && getEditedObject().isValid()) {
 						apply();
 					}
 				}
-				
+
 				stackElement.end();
 			}
 		});
@@ -243,7 +250,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 
 				}
 
-				// This code was added to allow direct typing without opening selector panel (sic !)
+				// This code was added to allow direct typing without opening
+				// selector panel (sic !)
 				// TODO:provide better implementation !!!
 				if (_selectorPanel == null) {
 					createCustomPanel(getEditedObject());
@@ -256,8 +264,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 							getEditedObject().reset();
 							fireEditedObjectChanged();
 							apply();
-						}
-						else if (StringUtils.isNotEmpty(getTextField().getText()) && textFieldNotSynchWithEditedObject()) {
+						} else if (StringUtils.isNotEmpty(getTextField().getText())
+								&& textFieldNotSynchWithEditedObject()) {
 							if (_selectorPanel instanceof BindingValueSelectorPanel) {
 								BindingValueSelectorPanel selectorPanel = (BindingValueSelectorPanel) _selectorPanel;
 								if (selectorPanel.isKeyPathFromTextASubKeyPath(getTextField().getText())
@@ -267,8 +275,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 									if (getEditedObject().isValid()) {
 										apply();
 									}
-								}
-								else {
+								} else {
 									String input = getTextField().getText();
 									if (input.indexOf(".") > -1) {
 										String pathIgnoringLastPart = input.substring(0, input.lastIndexOf("."));
@@ -287,21 +294,19 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 					else if (e.getKeyCode() == KeyEvent.VK_UP) {
 						_selectorPanel.processUpPressed();
 						e.consume();
-					}
-					else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 						_selectorPanel.processDownPressed();
 						e.consume();
-					} /*else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-						System.out.println("a gauche");
-						_selectorPanel.processLeftPressed();
-						e.consume();
-						} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-						System.out.println("a droite");
-						_selectorPanel.processRightPressed();
-						e.consume();
-						}*/
+					} /*
+					 * else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+					 * System.out.println("a gauche");
+					 * _selectorPanel.processLeftPressed(); e.consume(); } else
+					 * if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+					 * System.out.println("a droite");
+					 * _selectorPanel.processRightPressed(); e.consume(); }
+					 */
 				}
-				
+
 				stackElement.end();
 			}
 		};
@@ -351,22 +356,18 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		// setEditedObjectAndUpdateBDAndOwner(editedObject);
 		setEditedObject(editedObject);
 
-		/*(new Thread() {
-			@Override
-			public void run() {
-				while(true) {
-					Component c = (KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());
-					if (c != null)
-						System.out.println("focus owner = "+c.hashCode()+" "+c.getClass().getSimpleName()+" is "+c);
-					try {
-						sleep(3000);
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-			}
-		}).start();*/
+		/*
+		 * (new Thread() {
+		 * 
+		 * @Override public void run() { while(true) { Component c =
+		 * (KeyboardFocusManager
+		 * .getCurrentKeyboardFocusManager().getFocusOwner()); if (c != null)
+		 * System
+		 * .out.println("focus owner = "+c.hashCode()+" "+c.getClass().getSimpleName
+		 * ()+" is "+c); try { sleep(3000); } catch (InterruptedException e1) {
+		 * // TODO Auto-generated catch block e1.printStackTrace(); } } }
+		 * }).start();
+		 */
 
 	}
 
@@ -395,7 +396,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			DataBinding newEditedBinding = makeBindingFromString(textValue);
 
 			if (newEditedBinding != null) {
-				// logger.info("Decoding binding as " + newEditedBinding + " valid=" + newEditedBinding.isValid());
+				// logger.info("Decoding binding as " + newEditedBinding +
+				// " valid=" + newEditedBinding.isValid());
 				if (newEditedBinding.isValid()) {
 					if (LOGGER.isLoggable(Level.FINE)) {
 						LOGGER.fine("Decoded as VALID binding: " + newEditedBinding);
@@ -409,9 +411,9 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 						setEditedObject(newEditedBinding);
 						fireEditedObjectChanged();
 						return;
-					}
-					else {
-						// Anyway, in case of it is the same object, but with changes, we always fire fireEditedObjectChanged()
+					} else {
+						// Anyway, in case of it is the same object, but with
+						// changes, we always fire fireEditedObjectChanged()
 						checkIfDisplayModeShouldChange(newEditedBinding, true);
 						fireEditedObjectChanged();
 						if (LOGGER.isLoggable(Level.FINE)) {
@@ -419,8 +421,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 						}
 						return;
 					}
-				}
-				else {
+				} else {
 					if (LOGGER.isLoggable(Level.FINE)) {
 						LOGGER.fine("Decoded as INVALID binding: " + newEditedBinding + " trying to synchronize panel");
 					}
@@ -452,22 +453,23 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 
 	}
 
-	/*public void setEditedObjectAndUpdateBDAndOwner(AbstractBinding object)
-	{
-		setEditedObject(object);
-		if (object != null) {
-			if (object.getBindingDefinition() != null) setBindingDefinition(object.getBindingDefinition());
-			if (object.getOwner() != null) setBindable((Bindable)object.getOwner());
-		}
-	}*/
+	/*
+	 * public void setEditedObjectAndUpdateBDAndOwner(AbstractBinding object) {
+	 * setEditedObject(object); if (object != null) { if
+	 * (object.getBindingDefinition() != null)
+	 * setBindingDefinition(object.getBindingDefinition()); if
+	 * (object.getOwner() != null) setBindable((Bindable)object.getOwner()); } }
+	 */
 
 	@Override
 	public void setEditedObject(DataBinding dataBinding) {
 
-		// logger.info("setEditedObject in BindingSelector with " + dataBinding);
+		// logger.info("setEditedObject in BindingSelector with " +
+		// dataBinding);
 
 		if (dataBinding == null) {
-			// Mais des fois, c'est autorise quand meme, il faut donc tracer tous les appels pour voir ceux qui sont legaux (sylvain)
+			// Mais des fois, c'est autorise quand meme, il faut donc tracer
+			// tous les appels pour voir ceux qui sont legaux (sylvain)
 			// logger.warning("forbidden setEditedObject(null) !!!");
 			// Thread.dumpStack();
 			return;
@@ -479,9 +481,10 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		}
 
 		if (dataBinding != null) {
-			/*if (dataBinding.getBindingDefinition() != null) {
-				setBindingDefinition(dataBinding.getBindingDefinition());
-			}*/
+			/*
+			 * if (dataBinding.getBindingDefinition() != null) {
+			 * setBindingDefinition(dataBinding.getBindingDefinition()); }
+			 */
 			if (dataBinding.getOwner() != null) {
 				setBindable(dataBinding.getOwner());
 			}
@@ -489,10 +492,9 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		// SGU: I suppress this code that was the cause for huge problems
 		// in BindingSelector, making it quite unusable
 		// I don't think this code was usefull, was it ?
-		/*else {
-			setBindingDefinition(null);
-			setBindable(null);
-			}*/
+		/*
+		 * else { setBindingDefinition(null); setBindable(null); }
+		 */
 	}
 
 	public void setEditedObject(DataBinding dataBinding, boolean updateBindingSelectionMode) {
@@ -500,8 +502,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		if (updateBindingSelectionMode) {
 			if (dataBinding != null) {
 				dataBinding = checkIfDisplayModeShouldChange(dataBinding, false);
-			}
-			else {
+			} else {
 				activateNormalBindingMode();
 			}
 		}
@@ -510,8 +511,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		if (getEditedObject() != null && getEditedObject().isValid()) {
 			getTextField().setForeground(defaultForeground);
 			getTextField().setSelectedTextColor(defaultSelectedColor);
-		}
-		else {
+		} else {
 			getTextField().setForeground(Color.RED);
 			getTextField().setSelectedTextColor(Color.RED);
 		}
@@ -524,31 +524,29 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 	 * @param setValueAsNewEditedValue
 	 * @return
 	 */
-	protected DataBinding<?> checkIfDisplayModeShouldChange(DataBinding<?> newDataBinding, boolean setValueAsNewEditedValue) {
+	protected DataBinding<?> checkIfDisplayModeShouldChange(DataBinding<?> newDataBinding,
+			boolean setValueAsNewEditedValue) {
 		EditionMode oldEditionMode = editionMode;
 		EditionMode newEditionMode = editionMode;
 
 		if (newDataBinding != null && newDataBinding.isSet()) {
 			if (newDataBinding.isConstant()) {
 				newEditionMode = EditionMode.STATIC_BINDING;
-			}
-			else if (newDataBinding.isBindingValue()) {
+			} else if (newDataBinding.isBindingValue()) {
 				if (((BindingValue) newDataBinding.getExpression()).isCompoundBinding()
 						|| newDataBinding.getBindingDefinitionType() == DataBinding.BindingDefinitionType.EXECUTE) {
 					newEditionMode = EditionMode.COMPOUND_BINDING;
-				}
-				else if (oldEditionMode != EditionMode.NORMAL_BINDING && oldEditionMode != EditionMode.COMPOUND_BINDING) {
+				} else if (oldEditionMode != EditionMode.NORMAL_BINDING
+						&& oldEditionMode != EditionMode.COMPOUND_BINDING) {
 					newEditionMode = EditionMode.NORMAL_BINDING;
 				}
-			}
-			else {
+			} else {
 				newEditionMode = EditionMode.BINDING_EXPRESSION;
 			}
 			if (newDataBinding == null) {
 				newEditionMode = EditionMode.NORMAL_BINDING;
 			}
-		}
-		else {
+		} else {
 			newEditionMode = EditionMode.NORMAL_BINDING;
 		}
 
@@ -571,12 +569,10 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			if (newEditionMode.useCommonPanel()) {
 				if (newEditionMode == EditionMode.COMPOUND_BINDING) {
 					activateCompoundBindingMode();
-				}
-				else {
+				} else {
 					activateNormalBindingMode();
 				}
-			}
-			else if (newDataBinding.isExpression()) {
+			} else if (newDataBinding.isExpression()) {
 				activateBindingExpressionMode();
 			}
 		}
@@ -587,13 +583,13 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		editionMode = newEditionMode;
 
 		// Should i change edited object ???
-		/*if (returned != dataBinding && setValueAsNewEditedValue) {
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Switching edited object from " + dataBinding + " to " + returned);
-			}
-			_editedObject = returned;
-			updateCustomPanel(getEditedObject());
-		}*/
+		/*
+		 * if (returned != dataBinding && setValueAsNewEditedValue) { if
+		 * (logger.isLoggable(Level.FINE)) {
+		 * logger.fine("Switching edited object from " + dataBinding + " to " +
+		 * returned); } _editedObject = returned;
+		 * updateCustomPanel(getEditedObject()); }
+		 */
 		if (editedObjectChanged) {
 			updateCustomPanel(getEditedObject());
 		}
@@ -625,8 +621,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		Object obj = null;
 		int i = 0;
 		while (token.hasMoreTokens()) {
-			obj = ((BindingValueSelectorPanel) _selectorPanel).findElementEquals(((BindingValueSelectorPanel) _selectorPanel)
-					.listAtIndex(i).getModel(), token.nextToken());
+			obj = ((BindingValueSelectorPanel) _selectorPanel).findElementEquals(
+					((BindingValueSelectorPanel) _selectorPanel).listAtIndex(i).getModel(), token.nextToken());
 			if (obj == null) {
 				return false;
 			}
@@ -649,20 +645,20 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			if (getEditedObject() != null) {
 				getTextField().setForeground(getEditedObject().isValid() ? defaultForeground : Color.RED);
 				getTextField().setSelectedTextColor(getEditedObject().isValid() ? defaultSelectedColor : Color.RED);
-			}
-			else {
+			} else {
 				getTextField().setForeground(Color.RED);
 				getTextField().setSelectedTextColor(Color.RED);
 			}
 			_isProgrammaticalySet = false;
 		}
 		if (getEditedObject() != null && getEditedObject().getOwner() != null) {
-			getEditedObject().getOwner().notifiedBindingChanged(getEditedObject());
+			getEditedObject().notifyBindingChanged(null, getEditedObject().getExpression());
 		}
 	}
 
 	public boolean areCompoundBindingAllowed() {
-		// if (getBindingDefinition() != null && getBindingDefinition().getIsSettable()) return false;
+		// if (getBindingDefinition() != null &&
+		// getBindingDefinition().getIsSettable()) return false;
 		return _allowsCompoundBindings;
 	}
 
@@ -728,8 +724,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		GinaStackEvent stackElement = GENotifier.notifyMethod();
 
 		if (LOGGER.isLoggable(Level.FINE)) {
-			LOGGER.fine("ActivateCompoundBindingMode() getEditedObject()=" + getEditedObject() + " editionMode=" + editionMode
-					+ " popupIsShown()=" + popupIsShown() + " _selectorPanel=" + _selectorPanel);
+			LOGGER.fine("ActivateCompoundBindingMode() getEditedObject()=" + getEditedObject() + " editionMode="
+					+ editionMode + " popupIsShown()=" + popupIsShown() + " _selectorPanel=" + _selectorPanel);
 		}
 		if (_selectorPanel != null && editionMode != EditionMode.COMPOUND_BINDING) {
 			editionMode = EditionMode.COMPOUND_BINDING;
@@ -739,7 +735,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 				closePopup(false);
 			}
 			if (getEditedObject() != null && !getEditedObject().isBindingValue()) {
-				_editedObject.setExpression(makeBinding()); // I dont want to notify it !!!
+				_editedObject.setExpression(makeBinding()); // I dont want to
+															// notify it !!!
 				fireEditedObjectChanged();
 			}
 			deleteCustomPanel();
@@ -749,13 +746,13 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			}
 		}
 		editionMode = EditionMode.COMPOUND_BINDING;
-		
+
 		stackElement.end();
 	}
 
 	public void activateNormalBindingMode() {
 		GinaStackEvent stackElement = GENotifier.notifyMethod();
-		
+
 		if (LOGGER.isLoggable(Level.FINE)) {
 			LOGGER.fine("activateNormalBindingMode()");
 		}
@@ -767,10 +764,12 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 				closePopup(false);
 			}
 			// sylvain: i don't understand this code, i suppressed it
-			/*if (getEditedObject() != null && !(getEditedObject().isBindingValue())) {
-				getEditedObject().setExpression(makeBinding()); // I dont want to notify it !!!
-				fireEditedObjectChanged();
-			}*/
+			/*
+			 * if (getEditedObject() != null &&
+			 * !(getEditedObject().isBindingValue())) {
+			 * getEditedObject().setExpression(makeBinding()); // I dont want to
+			 * notify it !!! fireEditedObjectChanged(); }
+			 */
 			deleteCustomPanel();
 			if (showAgain) {
 				openPopup();
@@ -778,13 +777,13 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			}
 		}
 		editionMode = EditionMode.NORMAL_BINDING;
-		
+
 		stackElement.end();
 	}
 
-	public void activateBindingExpressionMode(/*Expression bindingExpression*/) {
+	public void activateBindingExpressionMode(/* Expression bindingExpression */) {
 		GinaStackEvent stackElement = GENotifier.notifyMethod();
-		
+
 		if (LOGGER.isLoggable(Level.FINE)) {
 			LOGGER.fine("activateBindingExpressionMode()");
 		}
@@ -795,24 +794,26 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 				showAgain = true;
 				closePopup(false);
 			}
-			/*if (bindingExpression != null) {
-				_editedObject = bindingExpression;
-			} else {
-				_editedObject = new BindingExpression(getBindingDefinition(), getBindable()); // I dont want to notify it !!!
-			}*/
+			/*
+			 * if (bindingExpression != null) { _editedObject =
+			 * bindingExpression; } else { _editedObject = new
+			 * BindingExpression(getBindingDefinition(), getBindable()); // I
+			 * dont want to notify it !!! }
+			 */
 			deleteCustomPanel();
 			if (showAgain) {
 				openPopup();
 				updateCustomPanel(getEditedObject());
 			}
 		}
-		
+
 		stackElement.end();
 	}
 
 	@Override
 	public void delete() {
-		// System.out.println("Deleting BindingSelector for " + getEditedObject());
+		// System.out.println("Deleting BindingSelector for " +
+		// getEditedObject());
 		super.delete();
 		unregisterListenerForBindable();
 		// unregisterListenerForBindingDefinition();
@@ -836,8 +837,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 	public void setRevertValue(DataBinding oldValue) {
 		if (oldValue != null) {
 			_revertBindingValue = oldValue.clone();
-		}
-		else {
+		} else {
 			_revertBindingValue = null;
 		}
 	}
@@ -853,10 +853,10 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			_selectorPanel = new BindingExpressionSelectorPanel(this);
 			_selectorPanel.init();
 		}
-		/*else if (editionMode == EditionMode.NEW_ENTRY) {
-			_selectorPanel = new BindingExpressionSelectorPanel(this);
-			_selectorPanel.init();sqddqs
-		}*/
+		/*
+		 * else if (editionMode == EditionMode.NEW_ENTRY) { _selectorPanel = new
+		 * BindingExpressionSelectorPanel(this); _selectorPanel.init();sqddqs }
+		 */
 		else {
 			// When creating use normal mode
 			if (editedObject == null || editedObject.isConstant()) {
@@ -881,7 +881,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			LOGGER.fine("updateCustomPanel() with " + editedObject);
 		}
 		if (_selectorPanel != null) {
-			// logger.info("Updating custom panel with " + editedObject.getExpression());
+			// logger.info("Updating custom panel with " +
+			// editedObject.getExpression());
 			_selectorPanel.update();
 		}
 		if (editedObject != null) {
@@ -889,39 +890,36 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 				if (editedObject.isValid()) {
 					getLabel().setVisible(true);
 					getLabel().setIcon(UtilsIconLibrary.OK_ICON);
-				}
-				else {
+				} else {
 					Bindable owner = editedObject.getOwner();
 					LOGGER.info("Binding not valid: " + editedObject + " reason=" + editedObject.invalidBindingReason());
-					/*if (editedObject.isBindingValue()) {
-						BindingValue bv = (BindingValue) (editedObject.getExpression());
-						System.out.println("BV=" + bv);
-						System.out.println("valid=" + bv.isValid());
-						System.out.println("reason=" + bv.invalidBindingReason());
-						for (BindingPathElement bpe : bv.getBindingPath()) {
-							System.out.println("> " + bpe);
-							if (bpe.getSerializationRepresentation().equals("substring(2)")) {
-								System.out.println("Valid=" + editedObject.isValid());
-								System.out.println("On s'arrete");
-								editedObject.isValid();
-							}
-						}
-					}*/
+					/*
+					 * if (editedObject.isBindingValue()) { BindingValue bv =
+					 * (BindingValue) (editedObject.getExpression());
+					 * System.out.println("BV=" + bv);
+					 * System.out.println("valid=" + bv.isValid());
+					 * System.out.println("reason=" +
+					 * bv.invalidBindingReason()); for (BindingPathElement bpe :
+					 * bv.getBindingPath()) { System.out.println("> " + bpe); if
+					 * (
+					 * bpe.getSerializationRepresentation().equals("substring(2)"
+					 * )) { System.out.println("Valid=" +
+					 * editedObject.isValid());
+					 * System.out.println("On s'arrete");
+					 * editedObject.isValid(); } } }
+					 */
 					getLabel().setVisible(true);
 					getLabel().setIcon(UtilsIconLibrary.ERROR_ICON);
 				}
-			}
-			else {
+			} else {
 				if (editedObject.isMandatory()) {
 					getLabel().setVisible(true);
 					getLabel().setIcon(UtilsIconLibrary.WARNING_ICON);
-				}
-				else {
+				} else {
 					getLabel().setVisible(false);
 				}
 			}
-		}
-		else {
+		} else {
 			getLabel().setVisible(true);
 			getLabel().setIcon(UtilsIconLibrary.ERROR_ICON);
 		}
@@ -987,7 +985,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 
 	@Override
 	public void updateTextFieldProgrammaticaly() {
-		// Don't update textfield if original event was triggered by a textfield edition
+		// Don't update textfield if original event was triggered by a textfield
+		// edition
 		if (!textIsEditing) {
 			super.updateTextFieldProgrammaticaly();
 		}
@@ -1001,20 +1000,21 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 				refreshBindingModel();
 			}
 		}
-		/*if (observable == _bindingDefinition) {
-			if (notification instanceof BindingDefinitionTypeChanged) {
-				logger.fine("Updating BindingDefinition type");
-				refreshBindingDefinitionType();
-			}
-		}*/
+		/*
+		 * if (observable == _bindingDefinition) { if (notification instanceof
+		 * BindingDefinitionTypeChanged) {
+		 * logger.fine("Updating BindingDefinition type");
+		 * refreshBindingDefinitionType(); } }
+		 */
 	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		GinaStackEvent stackElement = GENotifier.notifyMethod();
-		
+
 		if (evt.getPropertyName().equals(BindingModelChanged.BINDING_MODEL_CHANGED)) {
-			// System.out.println("!!!!!!!!!!!!!! propertyChange() " + evt.getPropertyName() + " evt=" + evt + " called in " + this);
+			// System.out.println("!!!!!!!!!!!!!! propertyChange() " +
+			// evt.getPropertyName() + " evt=" + evt + " called in " + this);
 
 			if (_selectorPanel != null && _selectorPanel instanceof BindingValueSelectorPanel) {
 				((BindingValueSelectorPanel) _selectorPanel).updateListModels();
@@ -1022,87 +1022,83 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 
 			LOGGER.fine("Refreshing Binding Model");
 			refreshBindingModel();
-		} /*else if (evt.getPropertyName().equals(BindingDefinitionTypeChanged.BINDING_DEFINITION_TYPE_CHANGED)) {
-			logger.fine("Updating BindingDefinition type");
-			refreshBindingDefinitionType();
-			}*/
+		} /*
+		 * else if (evt.getPropertyName().equals(BindingDefinitionTypeChanged.
+		 * BINDING_DEFINITION_TYPE_CHANGED)) {
+		 * logger.fine("Updating BindingDefinition type");
+		 * refreshBindingDefinitionType(); }
+		 */
 
 		stackElement.end();
 	}
 
-	/*public void setCustomBindingModel(BindingModel aBindingModel)
-	{
-		setBindingModel(aBindingModel);
-	}*/
+	/*
+	 * public void setCustomBindingModel(BindingModel aBindingModel) {
+	 * setBindingModel(aBindingModel); }
+	 */
 
-	/*private BindingDefinition _bindingDefinitionForSelector = null;
-
-	public BindingDefinition getBindingDefinition()
-	{
-		if (getCustomPanel() != null)
-			return getCustomPanel().getBindingDefinition();
-		return _bindingDefinitionForSelector;dqsdsq
-	}
-
-	public void setBindingDefinition(BindingDefinition bindingDefinition)
-	{
-		if (logger.isLoggable(Level.FINE))
-			logger.fine("setBindingDefinition with " + bindingDefinition);
-		getCustomPanel().setBindingDefinition(bindingDefinition);
-	}*/
+	/*
+	 * private BindingDefinition _bindingDefinitionForSelector = null;
+	 * 
+	 * public BindingDefinition getBindingDefinition() { if (getCustomPanel() !=
+	 * null) return getCustomPanel().getBindingDefinition(); return
+	 * _bindingDefinitionForSelector;dqsdsq }
+	 * 
+	 * public void setBindingDefinition(BindingDefinition bindingDefinition) {
+	 * if (logger.isLoggable(Level.FINE))
+	 * logger.fine("setBindingDefinition with " + bindingDefinition);
+	 * getCustomPanel().setBindingDefinition(bindingDefinition); }
+	 */
 
 	// BindingDefinition _bindingDefinition;
 
 	// BindingModel _bindingModel;
 
-	/*public BindingDefinition getBindingDefinition() {
-		return _bindingDefinition;
-	}
+	/*
+	 * public BindingDefinition getBindingDefinition() { return
+	 * _bindingDefinition; }
+	 * 
+	 * @CustomComponentParameter(name = "bindingDefinition", type =
+	 * CustomComponentParameter.Type.MANDATORY) public void
+	 * setBindingDefinition(BindingDefinition bindingDefinition) { if
+	 * (logger.isLoggable(Level.FINE)) { logger.fine(toString() +
+	 * "Setting new binding definition: " + bindingDefinition + " old: " +
+	 * _bindingDefinition); } if (bindingDefinition != _bindingDefinition) {
+	 * unregisterListenerForBindingDefinition(); _bindingDefinition =
+	 * bindingDefinition; DataBinding bindingValue = getEditedObject(); if
+	 * (bindingValue != null) {
+	 * bindingValue.setBindingDefinition(bindingDefinition); if
+	 * (logger.isLoggable(Level.FINE)) { logger.fine("set BD " +
+	 * bindingDefinition + " for BV " + bindingValue); } } if (_selectorPanel !=
+	 * null) { _selectorPanel.fireBindingDefinitionChanged(); }
+	 * registerListenerForBindingDefinition();
+	 * updateCustomPanel(getEditedObject()); } }
+	 */
 
-	@CustomComponentParameter(name = "bindingDefinition", type = CustomComponentParameter.Type.MANDATORY)
-	public void setBindingDefinition(BindingDefinition bindingDefinition) {
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine(toString() + "Setting new binding definition: " + bindingDefinition + " old: " + _bindingDefinition);
-		}
-		if (bindingDefinition != _bindingDefinition) {
-			unregisterListenerForBindingDefinition();
-			_bindingDefinition = bindingDefinition;
-			DataBinding bindingValue = getEditedObject();
-			if (bindingValue != null) {
-				bindingValue.setBindingDefinition(bindingDefinition);
-				if (logger.isLoggable(Level.FINE)) {
-					logger.fine("set BD " + bindingDefinition + " for BV " + bindingValue);
-				}
-			}
-			if (_selectorPanel != null) {
-				_selectorPanel.fireBindingDefinitionChanged();
-			}
-			registerListenerForBindingDefinition();
-			updateCustomPanel(getEditedObject());
-		}
-	}*/
+	/*
+	 * public void registerListenerForBindingDefinition() { if
+	 * (_bindingDefinition instanceof Observable) { ((Observable)
+	 * _bindingDefinition).addObserver(this); } if (_bindingDefinition
+	 * instanceof HasPropertyChangeSupport) { ((HasPropertyChangeSupport)
+	 * _bindingDefinition).getPropertyChangeSupport().addPropertyChangeListener(
+	 * BindingDefinitionTypeChanged.BINDING_DEFINITION_TYPE_CHANGED, this);
+	 * ((HasPropertyChangeSupport)
+	 * _bindingDefinition).getPropertyChangeSupport()
+	 * .addPropertyChangeListener(this); } }
+	 */
 
-	/*public void registerListenerForBindingDefinition() {
-		if (_bindingDefinition instanceof Observable) {
-			((Observable) _bindingDefinition).addObserver(this);
-		}
-		if (_bindingDefinition instanceof HasPropertyChangeSupport) {
-			((HasPropertyChangeSupport) _bindingDefinition).getPropertyChangeSupport().addPropertyChangeListener(
-					BindingDefinitionTypeChanged.BINDING_DEFINITION_TYPE_CHANGED, this);
-			((HasPropertyChangeSupport) _bindingDefinition).getPropertyChangeSupport().addPropertyChangeListener(this);
-		}
-	}*/
-
-	/*public void unregisterListenerForBindingDefinition() {
-		if (_bindingDefinition instanceof Observable) {
-			((Observable) _bindingDefinition).deleteObserver(this);
-		}
-		if (_bindingDefinition instanceof HasPropertyChangeSupport) {
-			((HasPropertyChangeSupport) _bindingDefinition).getPropertyChangeSupport().removePropertyChangeListener(
-					BindingDefinitionTypeChanged.BINDING_DEFINITION_TYPE_CHANGED, this);
-			((HasPropertyChangeSupport) _bindingDefinition).getPropertyChangeSupport().removePropertyChangeListener(this);
-		}
-	}*/
+	/*
+	 * public void unregisterListenerForBindingDefinition() { if
+	 * (_bindingDefinition instanceof Observable) { ((Observable)
+	 * _bindingDefinition).deleteObserver(this); } if (_bindingDefinition
+	 * instanceof HasPropertyChangeSupport) { ((HasPropertyChangeSupport)
+	 * _bindingDefinition
+	 * ).getPropertyChangeSupport().removePropertyChangeListener(
+	 * BindingDefinitionTypeChanged.BINDING_DEFINITION_TYPE_CHANGED, this);
+	 * ((HasPropertyChangeSupport)
+	 * _bindingDefinition).getPropertyChangeSupport()
+	 * .removePropertyChangeListener(this); } }
+	 */
 
 	public BindingModel getBindingModel() {
 		if (getBindable() != null) {
@@ -1116,10 +1112,11 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		return (AbstractBindingSelectorPanel) super.getCustomPanel();
 	}
 
-	/*protected Expression makeBindingExpression() {
-		(new Exception("Qui m'appelle la ?")).printStackTrace();
-		return new Variable("");
-	}*/
+	/*
+	 * protected Expression makeBindingExpression() { (new
+	 * Exception("Qui m'appelle la ?")).printStackTrace(); return new
+	 * Variable(""); }
+	 */
 
 	protected Expression makeBinding() {
 
@@ -1127,33 +1124,31 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		newBindingValue.setDataBinding(getEditedObject());
 		return newBindingValue;
 
-		/*Expression returned = null;
-		if (editionMode == EditionMode.BINDING_EXPRESSION) {
-			if (getBindingDefinition() != null && getBindable() != null) {
-				returned = makeBindingExpression();
-			}
-		} else if (editionMode == EditionMode.STATIC_BINDING) {
-			if (getBindingDefinition() != null && getBindable() != null) {
-				if (getBindingDefinition().getType() != null) {
-					if (TypeUtils.isBoolean(getBindingDefinition().getType())) {
-						return BooleanConstant.FALSE;
-					} else if (TypeUtils.isInteger(getBindingDefinition().getType()) || TypeUtils.isLong(getBindingDefinition().getType())
-							|| TypeUtils.isShort(getBindingDefinition().getType()) || TypeUtils.isChar(getBindingDefinition().getType())
-							|| TypeUtils.isByte(getBindingDefinition().getType())) {
-						returned = new Constant.IntegerConstant(0);
-					} else if (TypeUtils.isFloat(getBindingDefinition().getType()) || TypeUtils.isDouble(getBindingDefinition().getType())) {
-						returned = new Constant.FloatConstant(0);
-					}
-				} else if (TypeUtils.isString(getBindingDefinition().getType())) {
-					returned = new Constant.StringConstant("");
-				}
-			}
-		} else if (editionMode == EditionMode.NORMAL_BINDING || editionMode == EditionMode.COMPOUND_BINDING) { // Normal or compound binding
-			if (getBindingDefinition() != null && getBindable() != null) {
-				returned = new BindingValue();
-			}
-		}
-		return returned;*/
+		/*
+		 * Expression returned = null; if (editionMode ==
+		 * EditionMode.BINDING_EXPRESSION) { if (getBindingDefinition() != null
+		 * && getBindable() != null) { returned = makeBindingExpression(); } }
+		 * else if (editionMode == EditionMode.STATIC_BINDING) { if
+		 * (getBindingDefinition() != null && getBindable() != null) { if
+		 * (getBindingDefinition().getType() != null) { if
+		 * (TypeUtils.isBoolean(getBindingDefinition().getType())) { return
+		 * BooleanConstant.FALSE; } else if
+		 * (TypeUtils.isInteger(getBindingDefinition().getType()) ||
+		 * TypeUtils.isLong(getBindingDefinition().getType()) ||
+		 * TypeUtils.isShort(getBindingDefinition().getType()) ||
+		 * TypeUtils.isChar(getBindingDefinition().getType()) ||
+		 * TypeUtils.isByte(getBindingDefinition().getType())) { returned = new
+		 * Constant.IntegerConstant(0); } else if
+		 * (TypeUtils.isFloat(getBindingDefinition().getType()) ||
+		 * TypeUtils.isDouble(getBindingDefinition().getType())) { returned =
+		 * new Constant.FloatConstant(0); } } else if
+		 * (TypeUtils.isString(getBindingDefinition().getType())) { returned =
+		 * new Constant.StringConstant(""); } } } else if (editionMode ==
+		 * EditionMode.NORMAL_BINDING || editionMode ==
+		 * EditionMode.COMPOUND_BINDING) { // Normal or compound binding if
+		 * (getBindingDefinition() != null && getBindable() != null) { returned
+		 * = new BindingValue(); } } return returned;
+		 */
 	}
 
 	void recreateBindingValue() {
@@ -1168,9 +1163,11 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 	protected CustomJPopupMenu makePopup() {
 		CustomJPopupMenu returned = super.makePopup();
 
-		// This call is very important, because during popup creation (opening), we don't want
+		// This call is very important, because during popup creation (opening),
+		// we don't want
 		// the popup retrieve the focus
-		// FocusableWindowState will be set to true again later during textfield focus retrieving
+		// FocusableWindowState will be set to true again later during textfield
+		// focus retrieving
 		returned.setFocusableWindowState(false);
 		return returned;
 	}
@@ -1194,8 +1191,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			ButtonsControlPanel controlPanel = null;
 			if (_selectorPanel instanceof BindingValueSelectorPanel) {
 				controlPanel = ((BindingValueSelectorPanel) _selectorPanel)._controlPanel;
-			}
-			else if (_selectorPanel instanceof BindingExpressionSelectorPanel) {
+			} else if (_selectorPanel instanceof BindingExpressionSelectorPanel) {
 				controlPanel = ((BindingExpressionSelectorPanel) _selectorPanel)._controlPanel;
 			}
 			if (controlPanel != null) {
@@ -1206,12 +1202,15 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		if (requestFocus) {
 
 			// Tricky area
-			// The goal here is to retrieve the same state of textfield before opening the panel
-			// Basically we request the focus, but just before to do it, we save textfield selection parameters
+			// The goal here is to retrieve the same state of textfield before
+			// opening the panel
+			// Basically we request the focus, but just before to do it, we save
+			// textfield selection parameters
 
 			LOGGER.info("Request focus in " + getTextField());
 
-			// We should embedd all this code in an InvokeLater block, because we should do all this stuff after the
+			// We should embedd all this code in an InvokeLater block, because
+			// we should do all this stuff after the
 			// EventDispatchThread has processed the popup windiw opening
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
@@ -1222,8 +1221,10 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 					final int selectionEnd = getTextField().getSelectionEnd();
 					final int caretPosition = getTextField().getCaretPosition();
 
-					// Then we create a register a temporary FocusListener which is in charge
-					// of detecting the actual focus retrieving (because the focus requesting is also delayed for further
+					// Then we create a register a temporary FocusListener which
+					// is in charge
+					// of detecting the actual focus retrieving (because the
+					// focus requesting is also delayed for further
 					// processing by the EventDispatchThread
 					getTextField().addFocusListener(new FocusListener() {
 						@Override
@@ -1241,7 +1242,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 							getTextField().removeFocusListener(this);
 
 							// Back to focusable window state
-							// (which has been set to false during popup creation)
+							// (which has been set to false during popup
+							// creation)
 							_popup.setFocusableWindowState(true);
 
 						}
@@ -1284,14 +1286,14 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		DataBinding dataBinding = getEditedObject();
 		if (dataBinding != null) {
 			if (dataBinding.isValid()) {
-				/*if (bindingValue instanceof BindingValue) {
-					((BindingValue) bindingValue).connect();
-				}*/
+				/*
+				 * if (bindingValue instanceof BindingValue) { ((BindingValue)
+				 * bindingValue).connect(); }
+				 */
 				connect();
 				getTextField().setForeground(defaultForeground);
 				getTextField().setSelectedTextColor(defaultSelectedColor);
-			}
-			else {
+			} else {
 				getTextField().setForeground(Color.RED);
 				getTextField().setSelectedTextColor(Color.RED);
 			}
@@ -1302,7 +1304,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 			closePopup();
 		}
 		super.apply();
-		
+
 		stackElement.end();
 	}
 
@@ -1317,7 +1319,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		}
 		closePopup();
 		super.cancel();
-		
+
 		stackElement.end();
 	}
 
@@ -1350,19 +1352,19 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		}
 		if (TypeUtils.isBoolean(getEditedObject().getDeclaredType())) {
 			return b instanceof BooleanConstant;
-		}
-		else if (TypeUtils.isInteger(getEditedObject().getDeclaredType()) || TypeUtils.isLong(getEditedObject().getDeclaredType())
-				|| TypeUtils.isShort(getEditedObject().getDeclaredType()) || TypeUtils.isChar(getEditedObject().getDeclaredType())
+		} else if (TypeUtils.isInteger(getEditedObject().getDeclaredType())
+				|| TypeUtils.isLong(getEditedObject().getDeclaredType())
+				|| TypeUtils.isShort(getEditedObject().getDeclaredType())
+				|| TypeUtils.isChar(getEditedObject().getDeclaredType())
 				|| TypeUtils.isByte(getEditedObject().getDeclaredType())) {
 			return b instanceof IntegerConstant;
-		}
-		else if (TypeUtils.isFloat(getEditedObject().getDeclaredType()) || TypeUtils.isDouble(getEditedObject().getDeclaredType())) {
+		} else if (TypeUtils.isFloat(getEditedObject().getDeclaredType())
+				|| TypeUtils.isDouble(getEditedObject().getDeclaredType())) {
 			if (stringValue.endsWith(".")) {
 				return false;
 			}
 			return b instanceof IntegerConstant || b instanceof FloatConstant;
-		}
-		else if (TypeUtils.isString(getEditedObject().getDeclaredType())) {
+		} else if (TypeUtils.isString(getEditedObject().getDeclaredType())) {
 			return b instanceof StringConstant;
 		}
 		return false;
@@ -1377,8 +1379,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 				return true;
 			}
 			return false;
-		}
-		else {
+		} else {
 			return true;
 		}
 	}
@@ -1389,8 +1390,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 				return true;
 			}
 			return false;
-		}
-		else {
+		} else {
 			return true;
 		}
 	}
@@ -1408,7 +1408,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		if (TypeUtils.isObject(getEditedObject().getDeclaredType())) {
 			// In this case, any of matching is enough
 			return isAcceptableStaticBindingValue(stringValue)
-					&& !stringValue.endsWith(".") // Special case to handle float on-the-fly
+					&& !stringValue.endsWith(".") // Special case to handle
+													// float on-the-fly
 					// typing
 					|| isAcceptableAsBeginningOfBooleanStaticBindingValue(stringValue)
 					|| isAcceptableAsBeginningOfStringStaticBindingValue(stringValue);
@@ -1416,19 +1417,19 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 
 		if (TypeUtils.isBoolean(getEditedObject().getDeclaredType())) {
 			return isAcceptableAsBeginningOfBooleanStaticBindingValue(stringValue);
-		}
-		else if (TypeUtils.isInteger(getEditedObject().getDeclaredType()) || TypeUtils.isLong(getEditedObject().getDeclaredType())
-				|| TypeUtils.isShort(getEditedObject().getDeclaredType()) || TypeUtils.isChar(getEditedObject().getDeclaredType())
+		} else if (TypeUtils.isInteger(getEditedObject().getDeclaredType())
+				|| TypeUtils.isLong(getEditedObject().getDeclaredType())
+				|| TypeUtils.isShort(getEditedObject().getDeclaredType())
+				|| TypeUtils.isChar(getEditedObject().getDeclaredType())
 				|| TypeUtils.isByte(getEditedObject().getDeclaredType())) {
 			return isAcceptableStaticBindingValue(stringValue);
-		}
-		else if (TypeUtils.isFloat(getEditedObject().getDeclaredType()) || TypeUtils.isDouble(getEditedObject().getDeclaredType())) {
+		} else if (TypeUtils.isFloat(getEditedObject().getDeclaredType())
+				|| TypeUtils.isDouble(getEditedObject().getDeclaredType())) {
 			if (stringValue.endsWith(".") && stringValue.length() > 1) {
 				return isAcceptableStaticBindingValue(stringValue.substring(0, stringValue.length() - 1));
 			}
 			return isAcceptableStaticBindingValue(stringValue);
-		}
-		else if (TypeUtils.isString(getEditedObject().getDeclaredType())) {
+		} else if (TypeUtils.isString(getEditedObject().getDeclaredType())) {
 			return isAcceptableAsBeginningOfStringStaticBindingValue(stringValue);
 		}
 		return false;
@@ -1449,23 +1450,23 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 
 	DataBinding makeBindingFromString(String stringValue) {
 
-		DataBinding<?> returned = new DataBinding<Object>(stringValue, getBindable(), getEditedObject().getDeclaredType(),
-				getEditedObject().getBindingDefinitionType());
+		DataBinding<?> returned = new DataBinding<Object>(stringValue, getBindable(), getEditedObject()
+				.getDeclaredType(), getEditedObject().getBindingDefinitionType());
 		returned.decode();
 		return returned;
 
-		/*if (getEditedObject() != null) {
-			getEditedObject().setUnparsedBinding(stringValue);
-			getEditedObject().decode();
-			return getEditedObject();
-		}*/
 		/*
-				if (getBindable() != null) {
-					DataBinding<?> returned = new DataBinding<Object>(stringValue, getBindable(), getBindingDefinition().getType(),
-							getBindingDefinition().getBindingDefinitionType());
-					returned.decode();
-					return returned;
-				}*/
+		 * if (getEditedObject() != null) {
+		 * getEditedObject().setUnparsedBinding(stringValue);
+		 * getEditedObject().decode(); return getEditedObject(); }
+		 */
+		/*
+		 * if (getBindable() != null) { DataBinding<?> returned = new
+		 * DataBinding<Object>(stringValue, getBindable(),
+		 * getBindingDefinition().getType(),
+		 * getBindingDefinition().getBindingDefinitionType());
+		 * returned.decode(); return returned; }
+		 */
 		// logger.warning("Cannot build binding: null DataBinding !");
 		// return null;
 	}
@@ -1522,26 +1523,30 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding> implement
 		Resource loggingFile = ResourceLocator.locateResource("Config/logging_INFO.properties");
 		FlexoLoggingManager.initialize(-1, true, loggingFile, Level.INFO, null);
 		final JDialog dialog = new JDialog((Frame) null, false);
-		
+
 		// TODO GinaManager.getInstance().setup();
 
 		Bindable testBindable = new TestBindable();
 
 		BindingFactory factory = new JavaBindingFactory();
-		DataBinding binding = new DataBinding<String>("aString.toString", testBindable, String.class, DataBinding.BindingDefinitionType.GET);
-		// DataBinding binding = new DataBinding<String>(testBindable, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
+		DataBinding binding = new DataBinding<String>("aString.toString", testBindable, String.class,
+				DataBinding.BindingDefinitionType.GET);
+		// DataBinding binding = new DataBinding<String>(testBindable,
+		// Object.class, DataBinding.BindingDefinitionType.EXECUTE);
 
 		final BindingSelector _selector = new BindingSelector(null) {
 			@Override
 			public void apply() {
 				super.apply();
-				// System.out.println("Apply, getEditedObject()=" + getEditedObject());
+				// System.out.println("Apply, getEditedObject()=" +
+				// getEditedObject());
 			}
 
 			@Override
 			public void cancel() {
 				super.cancel();
-				// System.out.println("Cancel, getEditedObject()=" + getEditedObject());
+				// System.out.println("Cancel, getEditedObject()=" +
+				// getEditedObject());
 			}
 		};
 		_selector.setBindable(testBindable);

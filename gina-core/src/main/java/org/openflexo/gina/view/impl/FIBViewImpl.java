@@ -115,26 +115,36 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		variables = new HashMap<FIBVariable<?>, Object>();
 		variableListeners = new HashMap<FIBVariable<?>, BindingValueChangeListener<?>>();
 
+		startListeningVariableValueChange();
+		listenVisibleValueChange();
+
+	}
+
+	private void startListeningVariableValueChange() {
 		for (FIBVariable<?> variable : getComponent().getVariables()) {
 			listenVariableValueChange(variable);
 		}
+	}
 
-		listenVisibleValueChange();
-
+	private void stopListeningVariableValueChange() {
+		for (FIBVariable<?> variable : getComponent().getVariables()) {
+			stopListenVariableValueChange(variable);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	private <T> void listenVariableValueChange(final FIBVariable<T> variable) {
 
-		BindingValueChangeListener<T> dataBindingValueChangeListener = (BindingValueChangeListener<T>) variableListeners.get(variable);
+		BindingValueChangeListener<T> dataBindingValueChangeListener = (BindingValueChangeListener<T>) variableListeners
+				.get(variable);
 
 		if (dataBindingValueChangeListener != null) {
-			dataBindingValueChangeListener.stopObserving();
-			dataBindingValueChangeListener.delete();
+			stopListenVariableValueChange(variable);
 		}
 
 		if (variable.getValue() != null && variable.getValue().isValid()) {
-			dataBindingValueChangeListener = new BindingValueChangeListener<T>(variable.getValue(), getBindingEvaluationContext()) {
+			dataBindingValueChangeListener = new BindingValueChangeListener<T>(variable.getValue(),
+					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
 					// System.out.println(" bindingValueChanged() detected for data="
@@ -144,7 +154,22 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 					setVariableValue(variable, newValue);
 				}
 			};
+			variableListeners.put(variable, dataBindingValueChangeListener);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> void stopListenVariableValueChange(final FIBVariable<T> variable) {
+
+		BindingValueChangeListener<T> dataBindingValueChangeListener = (BindingValueChangeListener<T>) variableListeners
+				.get(variable);
+
+		if (dataBindingValueChangeListener != null) {
+			dataBindingValueChangeListener.stopObserving();
+			dataBindingValueChangeListener.delete();
+			variableListeners.remove(variable);
+		}
+
 	}
 
 	/**
@@ -273,9 +298,11 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	}
 
 	/**
-	 * Return the BindingEvaluationContext valid in the context of current widget.<br>
-	 * Note that embedded component (components used in the context of FIBReferencedComponent) should point to the BindingEvaluationContext
-	 * of their embedding component
+	 * Return the BindingEvaluationContext valid in the context of current
+	 * widget.<br>
+	 * Note that embedded component (components used in the context of
+	 * FIBReferencedComponent) should point to the BindingEvaluationContext of
+	 * their embedding component
 	 * 
 	 * @return
 	 */
@@ -320,8 +347,10 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	/**
 	 * Return technology-specific component representing widget<br>
-	 * Note that, depending on the underlying technology, this technology-specific component might be embedded in an other component before
-	 * to be added in component hierarchy (for example if component need to be embedded in a scroll pane)
+	 * Note that, depending on the underlying technology, this
+	 * technology-specific component might be embedded in an other component
+	 * before to be added in component hierarchy (for example if component need
+	 * to be embedded in a scroll pane)
 	 * 
 	 * @return C
 	 */
@@ -330,7 +359,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	/**
 	 * This method is called to update view representing a {@link FIBComponent}.<br>
-	 * Usually, this method should be called only once, when the component has been added to the whole hierarchy.
+	 * Usually, this method should be called only once, when the component has
+	 * been added to the whole hierarchy.
 	 * 
 	 * @return a flag indicating if component has been updated
 	 */
@@ -358,11 +388,13 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	/**
 	 * This method is called to update view representing a FIBComponent.<br>
-	 * Callers are all the components that have been updated during current update loop. If the callers contains the component itself, does
-	 * nothing and return.
+	 * Callers are all the components that have been updated during current
+	 * update loop. If the callers contains the component itself, does nothing
+	 * and return.
 	 * 
 	 * @param callers
-	 *            all the components that have been previously updated during current update loop
+	 *            all the components that have been previously updated during
+	 *            current update loop
 	 * @return a flag indicating if component has been updated
 	 */
 	/*
@@ -433,10 +465,23 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			visible = !visible;
 			getRenderingAdapter().setVisible(getTechnologyComponent(), visible);
 			if (visible) {
-				hiddenComponentBecomesVisible();
+				componentBecomesVisible();
+			} else {
+				componentBecomesInvisible();
 			}
 			setVisible(visible);
 		}
+	}
+
+	private void componentBecomesVisible() {
+		System.out.println("************ Le composant " + getComponent() + " devient VISIBLE !!!!!!");
+		startListeningVariableValueChange();
+		hiddenComponentBecomesVisible();
+	}
+
+	private void componentBecomesInvisible() {
+		System.out.println("************ Le composant " + getComponent() + " devient INVISIBLE !!!!!!");
+		stopListeningVariableValueChange();
 	}
 
 	protected void hiddenComponentBecomesVisible() {
@@ -553,8 +598,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		}
 		if (o1 == null) {
 			return o2 == null;
-		}
-		else {
+		} else {
 			return o1.equals(o2);
 		}
 	}
@@ -597,9 +641,12 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals(FIBComponent.CONSTRAINTS_KEY) || evt.getPropertyName().equals(FIBComponent.WIDTH_KEY)
-				|| evt.getPropertyName().equals(FIBComponent.HEIGHT_KEY) || evt.getPropertyName().equals(FIBComponent.MIN_WIDTH_KEY)
-				|| evt.getPropertyName().equals(FIBComponent.MIN_HEIGHT_KEY) || evt.getPropertyName().equals(FIBComponent.MAX_WIDTH_KEY)
+		if (evt.getPropertyName().equals(FIBComponent.CONSTRAINTS_KEY)
+				|| evt.getPropertyName().equals(FIBComponent.WIDTH_KEY)
+				|| evt.getPropertyName().equals(FIBComponent.HEIGHT_KEY)
+				|| evt.getPropertyName().equals(FIBComponent.MIN_WIDTH_KEY)
+				|| evt.getPropertyName().equals(FIBComponent.MIN_HEIGHT_KEY)
+				|| evt.getPropertyName().equals(FIBComponent.MAX_WIDTH_KEY)
 				|| evt.getPropertyName().equals(FIBComponent.MAX_HEIGHT_KEY)
 				|| evt.getPropertyName().equals(FIBComponent.USE_SCROLL_BAR_KEY)
 				|| evt.getPropertyName().equals(FIBComponent.HORIZONTAL_SCROLLBAR_POLICY_KEY)
@@ -607,11 +654,9 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			getParentView().updateLayout();
 			// FIBEditorController controller = getEditorController();
 			// controller.notifyFocusedAndSelectedObject();
-		}
-		else if (evt.getPropertyName().equals(FIBComponent.FONT_KEY)) {
+		} else if (evt.getPropertyName().equals(FIBComponent.FONT_KEY)) {
 			updateFont();
-		}
-		else if (evt.getPropertyName().equals(FIBComponent.BACKGROUND_COLOR_KEY)
+		} else if (evt.getPropertyName().equals(FIBComponent.BACKGROUND_COLOR_KEY)
 				|| evt.getPropertyName().equals(FIBComponent.FOREGROUND_COLOR_KEY)
 				|| evt.getPropertyName().equals(FIBComponent.OPAQUE_KEY)) {
 			updateGraphicalProperties();

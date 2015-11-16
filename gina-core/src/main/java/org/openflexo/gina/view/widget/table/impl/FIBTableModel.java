@@ -92,7 +92,8 @@ public class FIBTableModel<T> extends AbstractTableModel {
 	private final Hashtable<Object, RowObjectModificationTracker> _rowObjectModificationTrackers;
 
 	/**
-	 * Stores controls: key is the JButton and value the PropertyListActionListener
+	 * Stores controls: key is the JButton and value the
+	 * PropertyListActionListener
 	 */
 	// private Hashtable<JButton,PropertyListActionListener> _controls;
 
@@ -123,8 +124,7 @@ public class FIBTableModel<T> extends AbstractTableModel {
 					// logger.info("Widget "+getWidget()+" remove property change listener: "+o);
 					pcSupport.removePropertyChangeListener(getTracker(o));
 					deleteTracker(o);
-				}
-				else if (o instanceof Observable) {
+				} else if (o instanceof Observable) {
 					// logger.info("Widget "+getWidget()+" remove observable: "+o);
 					((Observable) o).deleteObserver(getTracker(o));
 					deleteTracker(o);
@@ -176,8 +176,7 @@ public class FIBTableModel<T> extends AbstractTableModel {
 		for (T v : newValues) {
 			if (oldValues != null && oldValues.contains(v)) {
 				removedValues.remove(v);
-			}
-			else {
+			} else {
 				addedValues.add(v);
 			}
 			_values.add(v);
@@ -189,8 +188,7 @@ public class FIBTableModel<T> extends AbstractTableModel {
 				PropertyChangeSupport pcSupport = ((HasPropertyChangeSupport) o).getPropertyChangeSupport();
 				logger.fine("Widget " + getWidget() + " remove property change listener: " + o);
 				pcSupport.addPropertyChangeListener(getTracker(o));
-			}
-			else if (o instanceof Observable) {
+			} else if (o instanceof Observable) {
 				logger.fine("Widget " + getWidget() + " remove observable: " + o);
 				((Observable) o).addObserver(getTracker(o));
 			}
@@ -203,8 +201,7 @@ public class FIBTableModel<T> extends AbstractTableModel {
 				logger.fine("Widget " + getWidget() + " remove property change listener: " + o);
 				pcSupport.removePropertyChangeListener(getTracker(o));
 				deleteTracker(o);
-			}
-			else if (o instanceof Observable) {
+			} else if (o instanceof Observable) {
 				logger.fine("Widget " + getWidget() + " remove observable: " + o);
 				((Observable) o).deleteObserver(getTracker(o));
 				deleteTracker(o);
@@ -240,8 +237,8 @@ public class FIBTableModel<T> extends AbstractTableModel {
 		public void propertyChange(PropertyChangeEvent evt) {
 			// System.out.println("Row object "+evt.getSource()+" : propertyChange "+evt);
 			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("table " + getTable().getName() + " propertyChange for " + rowObject + " source=" + evt.getSource() + " evt="
-						+ evt);
+				logger.fine("table " + getTable().getName() + " propertyChange for " + rowObject + " source="
+						+ evt.getSource() + " evt=" + evt);
 			}
 			updateRow();
 		}
@@ -265,7 +262,8 @@ public class FIBTableModel<T> extends AbstractTableModel {
 	 * @see javax.swing.JTable#tableChanged(TableModelEvent)
 	 */
 	public void fireModelObjectHasChanged(List<T> oldValues, List<T> newValues) {
-		// logger.info("fireModelObjectHasChanged in " + getTable().getName() + " from " + oldValues + " to " + newValues);
+		// logger.info("fireModelObjectHasChanged in " + getTable().getName() +
+		// " from " + oldValues + " to " + newValues);
 		fireTableChanged(new ModelObjectHasChanged(this, oldValues, newValues));
 	}
 
@@ -382,7 +380,11 @@ public class FIBTableModel<T> extends AbstractTableModel {
 		AbstractColumn<T, ?> column = columnAt(col);
 		if (column != null) {
 			T object = elementAt(row);
-			return column.getValueFor(object/*, _widget.getBindingEvaluationContext()*/);
+			return column.getValueFor(object/*
+											 * ,
+											 * _widget.getBindingEvaluationContext
+											 * ()
+											 */);
 		}
 		return null;
 
@@ -390,13 +392,13 @@ public class FIBTableModel<T> extends AbstractTableModel {
 
 	@Override
 	public void setValueAt(Object value, int row, int col) {
-		FIBTableEventDescription desc = FIBEventFactory.getInstance().createTableEvent(FIBTableEventDescription.CHANGED, value,
-				value.getClass().getName(), row, col);
+		FIBTableEventDescription desc = FIBEventFactory.getInstance().createTableEvent(
+				FIBTableEventDescription.CHANGED, value, value != null ? value.getClass().getName() : null, row, col);
 		GinaStackEvent gse = _widget.getNotifier().raise(desc);
 		AbstractColumn<T, ?> column = columnAt(col);
 		if (column != null && column instanceof EditableColumn) {
 			T object = elementAt(row);
-			((EditableColumn<T, Object>) column).setValueFor(object, value/*, _widget.getBindingEvaluationContext()*/);
+			((EditableColumn<T, Object>) column).setValueFor(object, value);
 			fireCellUpdated(object, row, col);
 		}
 		gse.end();
@@ -444,47 +446,39 @@ public class FIBTableModel<T> extends AbstractTableModel {
 		}
 	}
 
-	/*   protected class PropertyListCellRenderer extends DefaultTableCellRenderer
-	{
-	    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
-	    {
-	        Component returned = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-	        AbstractColumn col = get
-	        if (returned instanceof JComponent)
-	        	((JComponent)returned).setToolTipText(getLocalizedTooltip(getModel().elementAt(row)));
-	        return returned;
-	    }
-	}
+	/*
+	 * protected class PropertyListCellRenderer extends DefaultTableCellRenderer
+	 * { public Component getTableCellRendererComponent(JTable table, Object
+	 * value, boolean isSelected, boolean hasFocus, int row, int column) {
+	 * Component returned = super.getTableCellRendererComponent(table, value,
+	 * isSelected, hasFocus, row, column); AbstractColumn col = get if (returned
+	 * instanceof JComponent)
+	 * ((JComponent)returned).setToolTipText(getLocalizedTooltip
+	 * (getModel().elementAt(row))); return returned; } }
 	 */
-	/* protected void addToActions(PropertyListAction plAction)
-	{
-	    PropertyListActionListener plActionListener = new PropertyListActionListener(plAction, this);
-	    JButton newButton = new JButton();
-	    newButton.setText(FlexoLocalization.localizedForKey(plAction.name, newButton));
-	    if (plAction.help!=null)
-	    	newButton.setToolTipText(FlexoLocalization.localizedForKey(plAction.help, newButton));
-	    newButton.addActionListener(plActionListener);
-	    getControlPanel().add(newButton);
-	    _controls.put(newButton, plActionListener);
-	    updateControls(null);
-	}
-	
-	public Enumeration<PropertyListActionListener> getActionListeners() {
-		return _controls.elements();
-	}*/
+	/*
+	 * protected void addToActions(PropertyListAction plAction) {
+	 * PropertyListActionListener plActionListener = new
+	 * PropertyListActionListener(plAction, this); JButton newButton = new
+	 * JButton();
+	 * newButton.setText(FlexoLocalization.localizedForKey(plAction.name,
+	 * newButton)); if (plAction.help!=null)
+	 * newButton.setToolTipText(FlexoLocalization.localizedForKey(plAction.help,
+	 * newButton)); newButton.addActionListener(plActionListener);
+	 * getControlPanel().add(newButton); _controls.put(newButton,
+	 * plActionListener); updateControls(null); }
+	 * 
+	 * public Enumeration<PropertyListActionListener> getActionListeners() {
+	 * return _controls.elements(); }
+	 */
 
-	/*  if (controlPanel == null) {
-	    controlPanel = new JPanel() {
-	         @Override
-	        public void remove(int index)
-	        {
-	            super.remove(index);
-	        }
-	    };
-	    controlPanel.setLayout(new FlowLayout());
-	    controlPanel.setOpaque(false);
-	}
-	return controlPanel;*/
+	/*
+	 * if (controlPanel == null) { controlPanel = new JPanel() {
+	 * 
+	 * @Override public void remove(int index) { super.remove(index); } };
+	 * controlPanel.setLayout(new FlowLayout()); controlPanel.setOpaque(false);
+	 * } return controlPanel;
+	 */
 
 	public FIBTableColumn getPropertyListColumnWithTitle(String title) {
 		return _fibTable.getColumnWithTitle(title);
@@ -512,26 +506,19 @@ public class FIBTableModel<T> extends AbstractTableModel {
 	private AbstractColumn<T, ?> buildTableColumn(FIBTableColumn column, FIBController controller) {
 		if (column instanceof FIBLabelColumn) {
 			return new LabelColumn<T>((FIBLabelColumn) column, this, controller);
-		}
-		else if (column instanceof FIBTextFieldColumn) {
+		} else if (column instanceof FIBTextFieldColumn) {
 			return new TextFieldColumn<T>((FIBTextFieldColumn) column, this, controller);
-		}
-		else if (column instanceof FIBCheckBoxColumn) {
+		} else if (column instanceof FIBCheckBoxColumn) {
 			return new CheckBoxColumn<T>((FIBCheckBoxColumn) column, this, controller);
-		}
-		else if (column instanceof FIBDropDownColumn) {
+		} else if (column instanceof FIBDropDownColumn) {
 			return new DropDownColumn<T, Object>((FIBDropDownColumn) column, this, controller);
-		}
-		else if (column instanceof FIBIconColumn) {
+		} else if (column instanceof FIBIconColumn) {
 			return new IconColumn<T>((FIBIconColumn) column, this, controller);
-		}
-		else if (column instanceof FIBNumberColumn) {
+		} else if (column instanceof FIBNumberColumn) {
 			return new NumberColumn<T>((FIBNumberColumn) column, this, controller);
-		}
-		else if (column instanceof FIBCustomColumn) {
+		} else if (column instanceof FIBCustomColumn) {
 			return new CustomColumn<T, Object>((FIBCustomColumn) column, this, controller);
-		}
-		else if (column instanceof FIBButtonColumn) {
+		} else if (column instanceof FIBButtonColumn) {
 			return new ButtonColumn<T, Object>((FIBButtonColumn) column, this, controller);
 		}
 		return null;

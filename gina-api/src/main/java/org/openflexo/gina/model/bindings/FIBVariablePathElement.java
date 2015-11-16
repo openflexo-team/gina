@@ -49,6 +49,7 @@ import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.model.FIBVariable;
 import org.openflexo.gina.view.FIBView;
 
@@ -100,8 +101,20 @@ public class FIBVariablePathElement extends SimplePathElement implements Propert
 	@Override
 	public Object getBindingValue(Object target, BindingEvaluationContext context) throws TypeMismatchException,
 			NullReferenceException {
+		System.out.println("j'evalue " + fibVariable + " pour " + target);
 		if (target instanceof FIBView) {
-			return ((FIBView) target).getVariableValue(fibVariable);
+			Object returned = ((FIBView) target).getVariableValue(fibVariable);
+			if (returned == null || TypeUtils.isTypeAssignableFrom(getType(), returned.getClass())) {
+				return returned;
+			} else {
+				System.out.println("Ouhlala, on me demande " + getType() + " mais j'ai " + returned.getClass());
+				System.out.println("d'un autre cote, la vue est visible ? " + ((FIBView) target).isViewVisible());
+				return null;
+			}
+
+			// System.out.println("je retourne " + ((FIBView)
+			// target).getVariableValue(fibVariable));
+			// return ((FIBView) target).getVariableValue(fibVariable);
 		}
 		logger.warning("Please implement me, target=" + target + " context=" + context);
 		return null;

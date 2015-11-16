@@ -123,12 +123,15 @@ import org.openflexo.toolbox.StringUtils;
 
 /**
  * Represent a component in GINA model<br>
- * This is the base interface for any piece of graphical user interface which might be composed.<br>
+ * This is the base interface for any piece of graphical user interface which
+ * might be composed.<br>
  * 
  * They are mainly two kinds of components:
  * <ul>
- * <li>the containers, which contains other components (containers or widgets), with some layout, see {@link FIBContainer}</li>
- * <li>the widgets, that are atomic piece of GUI, and representing a particular data, see {@link FIBWidget}</li>
+ * <li>the containers, which contains other components (containers or widgets),
+ * with some layout, see {@link FIBContainer}</li>
+ * <li>the widgets, that are atomic piece of GUI, and representing a particular
+ * data, see {@link FIBWidget}</li>
  * </ul>
  * 
  * The {@link FIBComponent} interface provides:
@@ -146,10 +149,11 @@ import org.openflexo.toolbox.StringUtils;
 @ModelEntity(isAbstract = true)
 @ImplementationClass(FIBComponent.FIBComponentImpl.class)
 @Imports({ @Import(FIBPanel.class), @Import(FIBTab.class), @Import(FIBSplitPanel.class), @Import(FIBTabPanel.class),
-		@Import(FIBBrowser.class), @Import(FIBButton.class), @Import(FIBCheckBox.class), @Import(FIBColor.class), @Import(FIBCustom.class),
-		@Import(FIBFile.class), @Import(FIBFont.class), @Import(FIBHtmlEditor.class), @Import(FIBImage.class), @Import(FIBLabel.class),
-		@Import(FIBCheckboxList.class), @Import(FIBDropDown.class), @Import(FIBList.class), @Import(FIBRadioButtonList.class),
-		@Import(FIBNumber.class), @Import(FIBReferencedComponent.class), @Import(FIBTable.class), @Import(FIBEditor.class),
+		@Import(FIBBrowser.class), @Import(FIBButton.class), @Import(FIBCheckBox.class), @Import(FIBColor.class),
+		@Import(FIBCustom.class), @Import(FIBFile.class), @Import(FIBFont.class), @Import(FIBHtmlEditor.class),
+		@Import(FIBImage.class), @Import(FIBLabel.class), @Import(FIBCheckboxList.class), @Import(FIBDropDown.class),
+		@Import(FIBList.class), @Import(FIBRadioButtonList.class), @Import(FIBNumber.class),
+		@Import(FIBReferencedComponent.class), @Import(FIBTable.class), @Import(FIBEditor.class),
 		@Import(FIBTextArea.class), @Import(FIBTextField.class) })
 public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBaseIdentifier {
 
@@ -478,21 +482,23 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 	/**
 	 * Return (create when null) binding variable identified by "data"<br>
-	 * Default behavior is to generate a binding variable with the java type identified by data class
+	 * Default behavior is to generate a binding variable with the java type
+	 * identified by data class
 	 */
 	// public BindingVariable getDataBindingVariable();
 
 	/**
 	 * Return (create when null) binding variable identified by "controller"<br>
-	 * Default behavior is to generate a binding variable with the java type identified by controller class
+	 * Default behavior is to generate a binding variable with the java type
+	 * identified by controller class
 	 * 
 	 * @return
 	 */
 	public BindingVariable getControllerBindingVariable();
 
 	/**
-	 * Return (create when null) binding variable identified by component name (this is dynamic access to data beeing edited in the
-	 * component)<br>
+	 * Return (create when null) binding variable identified by component name
+	 * (this is dynamic access to data beeing edited in the component)<br>
 	 * 
 	 * @return
 	 */
@@ -512,13 +518,15 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	public void searchLocalized(LocalizationEntryRetriever retriever);
 
 	/**
-	 * Iterate on whole component to find all localization entries, based on FIBComponent model<br>
+	 * Iterate on whole component to find all localization entries, based on
+	 * FIBComponent model<br>
 	 * Missing entries are added to FIBLocalizedDictionary
 	 */
 	public void searchAndRegisterAllLocalized();
 
 	/**
-	 * Return flag indicating if this component as been marked as "hidden" (parameters scheme)
+	 * Return flag indicating if this component as been marked as "hidden"
+	 * (parameters scheme)
 	 * 
 	 * @return
 	 */
@@ -541,6 +549,14 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	@Finder(collection = VARIABLES_KEY, attribute = FIBVariable.NAME_KEY)
 	public FIBVariable<?> getVariable(String variableName);
 
+	public FIBVariable<?> createNewVariable();
+
+	public void deleteVariable(FIBVariable<?> v);
+
+	public boolean isVariableAddable();
+
+	public boolean isVariableDeletable(FIBVariable<?> v);
+
 	public FIBViewType getViewType();
 
 	public static abstract class FIBComponentImpl extends FIBModelObjectImpl implements FIBComponent {
@@ -551,8 +567,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		public static Color DISABLED_COLOR = Color.GRAY;
 
 		@Deprecated
-		public static BindingDefinition VISIBLE = new BindingDefinition("visible", Boolean.class, DataBinding.BindingDefinitionType.GET,
-				false);
+		public static BindingDefinition VISIBLE = new BindingDefinition("visible", Boolean.class,
+				DataBinding.BindingDefinitionType.GET, false);
 		// @Deprecated
 		// private BindingDefinition DATA;
 
@@ -664,6 +680,33 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			}
 		}
 
+		@Override
+		public FIBVariable<?> createNewVariable() {
+			FIBVariable returned = getFactory().newInstance(FIBVariable.class);
+			returned.setName("data" + (getVariables().size() > 0 ? "" + (getVariables().size() + 1) : ""));
+			returned.setType(Object.class);
+			addToVariables(returned);
+			return returned;
+		}
+
+		@Override
+		public void deleteVariable(FIBVariable<?> v) {
+			removeFromVariables(v);
+		}
+
+		@Override
+		public boolean isVariableAddable() {
+			return true;
+		}
+
+		@Override
+		public boolean isVariableDeletable(FIBVariable<?> v) {
+			if (isRootComponent() && v.getName().equals("data")) {
+				return false;
+			}
+			return true;
+		}
+
 		/*
 		 * @Override public FIBVariable<?> getVariable(String variableName) {
 		 * for (FIBVariable<?> v : getVariables()) { if
@@ -671,7 +714,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		 */
 
 		/**
-		 * Return a boolean indicating if hierarchy is valid (no cycle was detected in hierarchy)
+		 * Return a boolean indicating if hierarchy is valid (no cycle was
+		 * detected in hierarchy)
 		 * 
 		 * @return
 		 */
@@ -728,7 +772,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		public void setConstraints(ComponentConstraints someConstraints) {
 			// ComponentConstraints normalizedConstraints = constraints;
 			ComponentConstraints normalizedConstraints = _normalizeConstraintsWhenRequired(someConstraints);
-			FIBPropertyNotification<ComponentConstraints> notification = requireChange(CONSTRAINTS_KEY, normalizedConstraints);
+			FIBPropertyNotification<ComponentConstraints> notification = requireChange(CONSTRAINTS_KEY,
+					normalizedConstraints);
 			if (notification != null) {
 				if (normalizedConstraints != null) {
 					normalizedConstraints.setComponent(this);
@@ -741,7 +786,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		private ComponentConstraints _normalizeConstraintsWhenRequired(ComponentConstraints someConstraints) {
 			if (getParent() instanceof FIBSplitPanel) {
 				if (someConstraints == null) {
-					SplitLayoutConstraints returned = new SplitLayoutConstraints(((FIBSplitPanel) getParent()).getFirstEmptyPlaceHolder());
+					SplitLayoutConstraints returned = new SplitLayoutConstraints(
+							((FIBSplitPanel) getParent()).getFirstEmptyPlaceHolder());
 					returned.setComponent(this);
 					return returned;
 				}
@@ -750,86 +796,84 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				}
 				someConstraints.setComponent(this);
 				return someConstraints;
-			}
-			else if (getParent() instanceof FIBPanel) {
+			} else if (getParent() instanceof FIBPanel) {
 				// Init to default value when relevant but null
 				if (someConstraints == null) {
 					ComponentConstraints returned;
 					switch (((FIBPanel) getParent()).getLayout()) {
-						case none:
-							returned = new NoneLayoutConstraints();
-							break;
-						case flow:
-							returned = new FlowLayoutConstraints();
-							break;
-						case grid:
-							returned = new GridLayoutConstraints();
-							break;
-						case box:
-							returned = new BoxLayoutConstraints();
-							break;
-						case border:
-							returned = new BorderLayoutConstraints();
-							break;
-						case twocols:
-							returned = new TwoColsLayoutConstraints();
-							break;
-						case gridbag:
-							returned = new GridBagLayoutConstraints();
-							break;
-						case buttons:
-							returned = new ButtonLayoutConstraints();
-							break;
-						default:
-							returned = new NoneLayoutConstraints();
-							break;
+					case none:
+						returned = new NoneLayoutConstraints();
+						break;
+					case flow:
+						returned = new FlowLayoutConstraints();
+						break;
+					case grid:
+						returned = new GridLayoutConstraints();
+						break;
+					case box:
+						returned = new BoxLayoutConstraints();
+						break;
+					case border:
+						returned = new BorderLayoutConstraints();
+						break;
+					case twocols:
+						returned = new TwoColsLayoutConstraints();
+						break;
+					case gridbag:
+						returned = new GridBagLayoutConstraints();
+						break;
+					case buttons:
+						returned = new ButtonLayoutConstraints();
+						break;
+					default:
+						returned = new NoneLayoutConstraints();
+						break;
 					}
 					returned.setComponent(this);
 					return returned;
 				}
 				// Mutate to right type when necessary
 				switch (((FIBPanel) getParent()).getLayout()) {
-					case none:
-						if (!(someConstraints instanceof NoneLayoutConstraints)) {
-							return new NoneLayoutConstraints(someConstraints);
-						}
-						break;
-					case flow:
-						if (!(someConstraints instanceof FlowLayoutConstraints)) {
-							return new FlowLayoutConstraints(someConstraints);
-						}
-						break;
-					case grid:
-						if (!(someConstraints instanceof GridLayoutConstraints)) {
-							return new GridLayoutConstraints(someConstraints);
-						}
-						break;
-					case box:
-						if (!(someConstraints instanceof BoxLayoutConstraints)) {
-							return new BoxLayoutConstraints(someConstraints);
-						}
-						break;
-					case border:
-						if (!(someConstraints instanceof BorderLayoutConstraints)) {
-							return new BorderLayoutConstraints(someConstraints);
-						}
-						break;
-					case twocols:
-						if (!(someConstraints instanceof TwoColsLayoutConstraints)) {
-							return new TwoColsLayoutConstraints(someConstraints);
-						}
-						break;
-					case gridbag:
-						if (!(someConstraints instanceof GridBagLayoutConstraints)) {
-							return new GridBagLayoutConstraints(someConstraints);
-						}
-						break;
-					default:
+				case none:
+					if (!(someConstraints instanceof NoneLayoutConstraints)) {
+						return new NoneLayoutConstraints(someConstraints);
+					}
+					break;
+				case flow:
+					if (!(someConstraints instanceof FlowLayoutConstraints)) {
+						return new FlowLayoutConstraints(someConstraints);
+					}
+					break;
+				case grid:
+					if (!(someConstraints instanceof GridLayoutConstraints)) {
+						return new GridLayoutConstraints(someConstraints);
+					}
+					break;
+				case box:
+					if (!(someConstraints instanceof BoxLayoutConstraints)) {
+						return new BoxLayoutConstraints(someConstraints);
+					}
+					break;
+				case border:
+					if (!(someConstraints instanceof BorderLayoutConstraints)) {
+						return new BorderLayoutConstraints(someConstraints);
+					}
+					break;
+				case twocols:
+					if (!(someConstraints instanceof TwoColsLayoutConstraints)) {
+						return new TwoColsLayoutConstraints(someConstraints);
+					}
+					break;
+				case gridbag:
+					if (!(someConstraints instanceof GridBagLayoutConstraints)) {
+						return new GridBagLayoutConstraints(someConstraints);
+					}
+					break;
+				default:
 				}
 				someConstraints.setComponent(this);
 				return someConstraints;
-			}
-			else {
+			} else {
 				// No constraints for a component which container is not custom
 				// layouted
 				return someConstraints;
@@ -895,7 +939,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		}
 
 		/**
-		 * Return the root component for this component. Iterate over the top of the component hierarchy.
+		 * Return the root component for this component. Iterate over the top of
+		 * the component hierarchy.
 		 * 
 		 * @return
 		 */
@@ -915,8 +960,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 					createBindingModel();
 				}
 				return bindingModel;
-			}
-			else {
+			} else {
 				if (getRootComponent() != null && getRootComponent() != this) {
 					return getRootComponent().getBindingModel();
 				}
@@ -926,7 +970,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		/**
 		 * Return (create when null) binding variable identified by "data"<br>
-		 * Default behavior is to generate a binding variable with the java type identified by data class
+		 * Default behavior is to generate a binding variable with the java type
+		 * identified by data class
 		 */
 		/*
 		 * @Override public BindingVariable getDataBindingVariable() { if
@@ -938,7 +983,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		/**
 		 * Return (create when null) binding variable identified by "controller"<br>
-		 * Default behavior is to generate a binding variable with the java type identified by controller class
+		 * Default behavior is to generate a binding variable with the java type
+		 * identified by controller class
 		 * 
 		 * @return
 		 */
@@ -952,8 +998,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		}
 
 		/**
-		 * Return (create when null) binding variable identified by component name (this is dynamic access to data beeing edited in the
-		 * component)<br>
+		 * Return (create when null) binding variable identified by component
+		 * name (this is dynamic access to data beeing edited in the component)<br>
 		 * 
 		 * @return
 		 */
@@ -996,16 +1042,16 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 					// System.out.println("* on change le nom de la variable a "
 					// + getName());
 					getDynamicAccessBindingVariable().setVariableName(getName());
-					getBindingModel().getPropertyChangeSupport().firePropertyChange(BindingModel.BINDING_VARIABLE_NAME_CHANGED, oldName,
-							getName());
+					getBindingModel().getPropertyChangeSupport().firePropertyChange(
+							BindingModel.BINDING_VARIABLE_NAME_CHANGED, oldName, getName());
 				}
 				if (getDynamicAccessBindingVariable().getType() != getDynamicAccessType()) {
 					Type oldType = getDynamicAccessBindingVariable().getType();
 					// System.out.println("* on change le type de la variable a "
 					// + getDynamicAccessType());
 					getDynamicAccessBindingVariable().setType(getDynamicAccessType());
-					getBindingModel().getPropertyChangeSupport().firePropertyChange(BindingModel.BINDING_VARIABLE_TYPE_CHANGED, oldType,
-							getDynamicAccessType());
+					getBindingModel().getPropertyChangeSupport().firePropertyChange(
+							BindingModel.BINDING_VARIABLE_TYPE_CHANGED, oldType, getDynamicAccessType());
 				}
 				if (getBindingModel().bindingVariableNamed(getName()) != getDynamicAccessBindingVariable()) {
 					// This indicates that component hierarchy change, and that
@@ -1037,8 +1083,10 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		/**
 		 * Internally called to create component BindingModel<br>
-		 * Note that {@link BindingModel} created by this method will not necessary be the one returned by getBindingModel() method, because
-		 * all components BindingModel references the root component BindingModel<br>
+		 * Note that {@link BindingModel} created by this method will not
+		 * necessary be the one returned by getBindingModel() method, because
+		 * all components BindingModel references the root component
+		 * BindingModel<br>
 		 * 
 		 */
 		private void createBindingModel() {
@@ -1143,7 +1191,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		public void declareDependantOf(FIBComponent aComponent) /*
 																 * throws
 																 * DependancyLoopException
-																 */ {
+																 */{
 			// logger.info("Component "+this+" depends of "+aComponent);
 			if (aComponent != null) {
 				if (aComponent == this) {
@@ -1167,8 +1215,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				if (!((FIBComponentImpl) aComponent).mayAlters.contains(this)) {
 					((FIBComponentImpl) aComponent).mayAlters.add(this);
 				}
-			}
-			else {
+			} else {
 				LOGGER.warning("Trying to test dependency against a NULL Fib Component");
 			}
 		}
@@ -1248,7 +1295,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		@Override
 		public void setVisible(DataBinding<Boolean> visible) {
 			if (visible != null) {
-				visible = new DataBinding<Boolean>(visible.toString(), this, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				visible = new DataBinding<Boolean>(visible.toString(), this, Boolean.class,
+						DataBinding.BindingDefinitionType.GET);
 				visible.setBindingName("data");
 			}
 			this.visible = visible;
@@ -1345,8 +1393,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			if (font == null) {
 				if (!isRootComponent() && hasValidHierarchy()) {
 					return getParent().retrieveValidFont();
-				}
-				else {
+				} else {
 					return null; // Use system default
 				}
 			}
@@ -1359,8 +1406,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			if (foregroundColor == null) {
 				if (!isRootComponent() && hasValidHierarchy()) {
 					return getParent().retrieveValidForegroundColor();
-				}
-				else {
+				} else {
 					return null; // Use default
 				}
 			}
@@ -1373,8 +1419,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			if (backgroundColor == null) {
 				if (!isRootComponent() && hasValidHierarchy()) {
 					return getParent().retrieveValidBackgroundColor();
-				}
-				else {
+				} else {
 					return null; // Use system default
 				}
 			}
@@ -1451,8 +1496,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				if (useScrollBar) {
 					horizontalScrollbarPolicy = HorizontalScrollBarPolicy.HORIZONTAL_SCROLLBAR_AS_NEEDED;
 					verticalScrollbarPolicy = VerticalScrollBarPolicy.VERTICAL_SCROLLBAR_AS_NEEDED;
-				}
-				else {
+				} else {
 					horizontalScrollbarPolicy = null;
 					verticalScrollbarPolicy = null;
 				}
@@ -1467,8 +1511,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		@Override
 		public void setHorizontalScrollbarPolicy(HorizontalScrollBarPolicy horizontalScrollbarPolicy) {
-			FIBPropertyNotification<HorizontalScrollBarPolicy> notification = requireChange(HORIZONTAL_SCROLLBAR_POLICY_KEY,
-					horizontalScrollbarPolicy);
+			FIBPropertyNotification<HorizontalScrollBarPolicy> notification = requireChange(
+					HORIZONTAL_SCROLLBAR_POLICY_KEY, horizontalScrollbarPolicy);
 			if (notification != null) {
 				this.horizontalScrollbarPolicy = horizontalScrollbarPolicy;
 				hasChanged(notification);
@@ -1482,8 +1526,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		@Override
 		public void setVerticalScrollbarPolicy(VerticalScrollBarPolicy verticalScrollbarPolicy) {
-			FIBPropertyNotification<VerticalScrollBarPolicy> notification = requireChange(VERTICAL_SCROLLBAR_POLICY_KEY,
-					verticalScrollbarPolicy);
+			FIBPropertyNotification<VerticalScrollBarPolicy> notification = requireChange(
+					VERTICAL_SCROLLBAR_POLICY_KEY, verticalScrollbarPolicy);
 			if (notification != null) {
 				this.verticalScrollbarPolicy = verticalScrollbarPolicy;
 				hasChanged(notification);
@@ -1596,8 +1640,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 					LOGGER.warning("Could not find class " + p.getValue());
 				}
 
-			}
-			else {
+			} else {
 				performSuperAdder(PARAMETERS_KEY, p);
 			}
 		}
@@ -1621,8 +1664,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 					 */
 					setWidth(100);
 					setHeight(100);
-				}
-				else {
+				} else {
 					setWidth(null);
 					setHeight(null);
 				}
@@ -1644,8 +1686,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				setMaxWidth(1024);
 				setMaxHeight(1024);
 				// v.delete();
-			}
-			else {
+			} else {
 				setMaxWidth(null);
 				setMaxHeight(null);
 			}
@@ -1668,8 +1709,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				// v.delete();
 				setMinWidth(10);
 				setMinHeight(10);
-			}
-			else {
+			} else {
 				setMinWidth(null);
 				setMinHeight(null);
 			}
@@ -1695,7 +1735,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		}
 
 		public void setExplicitDependancies(Vector<FIBDependancy> explicitDependancies) {
-			FIBPropertyNotification<Vector<FIBDependancy>> notification = requireChange(EXPLICIT_DEPENDANCIES_KEY, explicitDependancies);
+			FIBPropertyNotification<Vector<FIBDependancy>> notification = requireChange(EXPLICIT_DEPENDANCIES_KEY,
+					explicitDependancies);
 			explicitDependancies = null;
 			if (notification != null) {
 				this.explicitDependancies = explicitDependancies;
@@ -1742,7 +1783,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		@Override
 		public FIBLocalizedDictionary retrieveFIBLocalizedDictionary() {
 			if (getLocalizedDictionary() == null) {
-				FIBLocalizedDictionary newFIBLocalizedDictionary = getFactory().newInstance(FIBLocalizedDictionary.class);
+				FIBLocalizedDictionary newFIBLocalizedDictionary = getFactory().newInstance(
+						FIBLocalizedDictionary.class);
 				setLocalizedDictionary(newFIBLocalizedDictionary);
 			}
 			return getLocalizedDictionary();
@@ -1779,8 +1821,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			for (FIBComponent c : subComponents) {
 				if (c instanceof FIBButton) {
 					buttons.add((FIBButton) c);
-				}
-				else if (c instanceof FIBContainer) {
+				} else if (c instanceof FIBContainer) {
 					buttons.addAll(getFIBButtons(((FIBContainer) c).getSubComponents()));
 				}
 			}
@@ -1788,7 +1829,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		}
 
 		/**
-		 * Return a list of all bindings declared in the context of this component
+		 * Return a list of all bindings declared in the context of this
+		 * component
 		 * 
 		 * @return
 		 */
@@ -1883,8 +1925,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 					public void remove() {
 					}
 				};
-			}
-			else {
+			} else {
 				return allSubComponents.iterator();
 			}
 		}
@@ -1916,7 +1957,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		}
 
 		/**
-		 * Iterate on whole component to find all localization entries, based on FIBComponent model<br>
+		 * Iterate on whole component to find all localization entries, based on
+		 * FIBComponent model<br>
 		 * Missing entries are added to FIBLocalizedDictionary
 		 */
 		@Override
@@ -1927,7 +1969,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		}
 
 		/**
-		 * Return flag indicating if this component as been marked as "hidden" (parameters scheme)
+		 * Return flag indicating if this component as been marked as "hidden"
+		 * (parameters scheme)
 		 * 
 		 * @return
 		 */
@@ -1942,11 +1985,9 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 			if (getName() != null) {
 				return getName() + " (" + e.getImplementedInterface().getSimpleName() + ")";
-			}
-			else if (getIdentifier() != null) {
+			} else if (getIdentifier() != null) {
 				return getIdentifier() + " (" + e.getImplementedInterface().getSimpleName() + ")";
-			}
-			else {
+			} else {
 				return "<" + e.getImplementedInterface().getSimpleName() + ">";
 			}
 		}
@@ -1954,7 +1995,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	}
 
 	@DefineValidationRule
-	public static class RootComponentShouldHaveDataClass extends ValidationRule<RootComponentShouldHaveDataClass, FIBComponent> {
+	public static class RootComponentShouldHaveDataClass extends
+			ValidationRule<RootComponentShouldHaveDataClass, FIBComponent> {
 		public RootComponentShouldHaveDataClass() {
 			super(FIBModelObject.class, "root_component_should_have_data_class");
 		}
@@ -1971,25 +2013,28 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	}
 
 	@DefineValidationRule
-	public static class NonRootComponentShouldNotHaveLocalizedDictionary
-			extends ValidationRule<NonRootComponentShouldNotHaveLocalizedDictionary, FIBComponent> {
+	public static class NonRootComponentShouldNotHaveLocalizedDictionary extends
+			ValidationRule<NonRootComponentShouldNotHaveLocalizedDictionary, FIBComponent> {
 		public NonRootComponentShouldNotHaveLocalizedDictionary() {
 			super(FIBModelObject.class, "non_root_component_should_not_have_localized_dictionary");
 		}
 
 		@Override
-		public ValidationIssue<NonRootComponentShouldNotHaveLocalizedDictionary, FIBComponent> applyValidation(FIBComponent object) {
+		public ValidationIssue<NonRootComponentShouldNotHaveLocalizedDictionary, FIBComponent> applyValidation(
+				FIBComponent object) {
 			if (!object.isRootComponent() && object.getLocalizedDictionary() != null) {
 				RemoveExtraLocalizedDictionary fixProposal = new RemoveExtraLocalizedDictionary();
-				return new ValidationWarning<NonRootComponentShouldNotHaveLocalizedDictionary, FIBComponent>(this, object,
-						"component_($validable)_has_a_localized_dictionary_but_is_not_root_component", fixProposal);
+				return new ValidationWarning<NonRootComponentShouldNotHaveLocalizedDictionary, FIBComponent>(this,
+						object, "component_($validable)_has_a_localized_dictionary_but_is_not_root_component",
+						fixProposal);
 			}
 			return null;
 		}
 
 	}
 
-	public static class RemoveExtraLocalizedDictionary extends FixProposal<NonRootComponentShouldNotHaveLocalizedDictionary, FIBComponent> {
+	public static class RemoveExtraLocalizedDictionary extends
+			FixProposal<NonRootComponentShouldNotHaveLocalizedDictionary, FIBComponent> {
 
 		public RemoveExtraLocalizedDictionary() {
 			super("remove_extra_dictionary");
@@ -2002,19 +2047,20 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 	}
 
-	public static class RootComponentShouldHaveMaximumOneDefaultButton
-			extends ValidationRule<RootComponentShouldHaveMaximumOneDefaultButton, FIBComponent> {
+	public static class RootComponentShouldHaveMaximumOneDefaultButton extends
+			ValidationRule<RootComponentShouldHaveMaximumOneDefaultButton, FIBComponent> {
 		public RootComponentShouldHaveMaximumOneDefaultButton() {
 			super(FIBModelObject.class, "root_component_should_have_maximum_one_default_button");
 		}
 
 		@Override
-		public ValidationIssue<RootComponentShouldHaveMaximumOneDefaultButton, FIBComponent> applyValidation(FIBComponent object) {
+		public ValidationIssue<RootComponentShouldHaveMaximumOneDefaultButton, FIBComponent> applyValidation(
+				FIBComponent object) {
 			if (object.isRootComponent() && object instanceof FIBContainer) {
 				List<FIBButton> defaultButtons = ((FIBContainer) object).getDefaultButtons();
 				if (defaultButtons.size() > 1) {
-					return new ValidationWarning<RootComponentShouldHaveMaximumOneDefaultButton, FIBComponent>(this, object,
-							"component_($object.toString)_has_more_than_one_default_button");
+					return new ValidationWarning<RootComponentShouldHaveMaximumOneDefaultButton, FIBComponent>(this,
+							object, "component_($object.toString)_has_more_than_one_default_button");
 				}
 			}
 			return null;

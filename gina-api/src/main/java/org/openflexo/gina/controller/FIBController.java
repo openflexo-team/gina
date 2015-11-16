@@ -83,12 +83,14 @@ import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.StringUtils;
 
 /**
- * Represent the controller of an instantiation of a FIBComponent in a particular Window Toolkit context (eg Swing)
+ * Represent the controller of an instantiation of a FIBComponent in a
+ * particular Window Toolkit context (eg Swing)
  * 
  * @author sylvain
  * 
  */
-public class FIBController implements BindingEvaluationContext, Observer, PropertyChangeListener, HasPropertyChangeSupport, Registerable {
+public class FIBController implements BindingEvaluationContext, Observer, PropertyChangeListener,
+		HasPropertyChangeSupport, Registerable {
 
 	static final Logger LOGGER = Logger.getLogger(FIBController.class.getPackage().getName());
 
@@ -100,16 +102,19 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 	public static FIBController instanciateController(FIBComponent fibComponent, GinaViewFactory<?> viewFactory,
 			LocalizedDelegate parentLocalizer, EventManager recorderManager) {
 		FIBController returned = null;
-		// System.out.println("Instanciate controller for component: " + fibComponent);
-		/*if (fibComponent != null) {
-			fibComponent.getFactory().stringRepresentation(fibComponent);
-		}*/
+		// System.out.println("Instanciate controller for component: " +
+		// fibComponent);
+		/*
+		 * if (fibComponent != null) {
+		 * fibComponent.getFactory().stringRepresentation(fibComponent); }
+		 */
 		if (fibComponent.getControllerClass() != null) {
 
 			try {
-				// System.out.println("Class=" + fibComponent.getControllerClass());
-				Constructor<? extends FIBController> c = fibComponent.getControllerClass().getConstructor(FIBComponent.class,
-						GinaViewFactory.class);
+				// System.out.println("Class=" +
+				// fibComponent.getControllerClass());
+				Constructor<? extends FIBController> c = fibComponent.getControllerClass().getConstructor(
+						FIBComponent.class, GinaViewFactory.class);
 				// System.out.println("Constructor=" + c);
 				returned = c.newInstance(fibComponent, viewFactory);
 				// System.out.println("returned=" + returned);
@@ -139,13 +144,13 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 		return returned;
 	}
 
-	public static <F extends FIBComponent, C> FIBView<F, ? extends C> makeView(F fibComponent, GinaViewFactory<C> viewFactory,
-			LocalizedDelegate parentLocalizer) {
+	public static <F extends FIBComponent, C> FIBView<F, ? extends C> makeView(F fibComponent,
+			GinaViewFactory<C> viewFactory, LocalizedDelegate parentLocalizer) {
 		return makeView(fibComponent, viewFactory, instanciateController(fibComponent, viewFactory, parentLocalizer));
 	}
 
-	public static <F extends FIBComponent, C> FIBView<F, ? extends C> makeView(F fibComponent, GinaViewFactory<C> viewFactory,
-			FIBController controller) {
+	public static <F extends FIBComponent, C> FIBView<F, ? extends C> makeView(F fibComponent,
+			GinaViewFactory<C> viewFactory, FIBController controller) {
 		return (FIBView<F, ? extends C>) controller.buildView(fibComponent);
 	}
 
@@ -196,7 +201,8 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 			if (getRootView() != null) {
 				getRootView().delete();
 			}
-			// Next for-block should not be necessary because deletion is recursive, but just to be sure
+			// Next for-block should not be necessary because deletion is
+			// recursive, but just to be sure
 			for (FIBView<?, ?> view : new ArrayList<FIBView<?, ?>>(views.values())) {
 				view.delete();
 			}
@@ -272,7 +278,8 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 
 	public void registerView(FIBView<?, ?> view) {
 		views.put(view.getComponent(), view);
-		getPropertyChangeSupport().firePropertyChange(((FIBComponent) view.getComponent()).getName(), null, view.getComponent());
+		getPropertyChangeSupport().firePropertyChange(((FIBComponent) view.getComponent()).getName(), null,
+				view.getComponent());
 	}
 
 	public void unregisterView(FIBView<?, ?> view) {
@@ -316,10 +323,12 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 				FIBReferencedComponentWidget<?> w = (FIBReferencedComponentWidget<?>) v;
 				if (w.getReferencedComponentView() != null) {
 					l.addAll(w.getReferencedComponentView().getController().getAllViews());
-				} /*else {
-					System.out.println("No view for "
-							+ FIBLibrary.instance().getFIBModelFactory().stringRepresentation(w.getReferencedComponent()));
-					}*/
+				} /*
+				 * else { System.out.println("No view for " +
+				 * FIBLibrary.instance
+				 * ().getFIBModelFactory().stringRepresentation
+				 * (w.getReferencedComponent())); }
+				 */
 			}
 		}
 		return l;
@@ -335,7 +344,7 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 		}
 		for (FIBComponent c : views.keySet()) {
 			if (variable.getVariableName().equals(c.getName())) {
-				FIBView<?, ?> returned = viewForComponent(c) /*.getDynamicModel()*/;
+				FIBView<?, ?> returned = viewForComponent(c);
 				if (returned instanceof FIBCustomWidget) {
 					return ((FIBCustomWidget<?, ?>) returned).getTechnologyComponent();
 				}
@@ -373,22 +382,22 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 			Object oldDataObject = dataObject;
 			if (oldDataObject instanceof HasPropertyChangeSupport
 					&& ((HasPropertyChangeSupport) oldDataObject).getPropertyChangeSupport() != null) {
-				((HasPropertyChangeSupport) oldDataObject).getPropertyChangeSupport().removePropertyChangeListener(this);
-			}
-			else if (oldDataObject instanceof Observable) {
+				((HasPropertyChangeSupport) oldDataObject).getPropertyChangeSupport()
+						.removePropertyChangeListener(this);
+			} else if (oldDataObject instanceof Observable) {
 				((Observable) oldDataObject).deleteObserver(this);
 			}
 			dataObject = anObject;
 
 			// Attempt to reduce time required to update component
-			// I suspect that if the 'data' notification is correctely handled, this is no more necessary
-			/*if (getRootView() != null) {
-				getRootView().update();
-			}*/
+			// I suspect that if the 'data' notification is correctely handled,
+			// this is no more necessary
+			/*
+			 * if (getRootView() != null) { getRootView().update(); }
+			 */
 			if (dataObject instanceof HasPropertyChangeSupport) {
 				((HasPropertyChangeSupport) dataObject).getPropertyChangeSupport().addPropertyChangeListener(this);
-			}
-			else if (dataObject instanceof Observable) {
+			} else if (dataObject instanceof Observable) {
 				((Observable) dataObject).addObserver(this);
 			}
 			// setChanged();
@@ -400,8 +409,7 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 	public final <M extends FIBComponent> FIBView<M, ?> buildView(M fibComponent) {
 		if (fibComponent instanceof FIBContainer) {
 			return (FIBView<M, ?>) getViewFactory().makeContainer((FIBContainer) fibComponent, this);
-		}
-		else if (fibComponent instanceof FIBWidget) {
+		} else if (fibComponent instanceof FIBWidget) {
 			return (FIBView<M, ?>) getViewFactory().makeWidget((FIBWidget) fibComponent, this);
 		}
 		return null;
@@ -499,8 +507,7 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 				returned.setParent(getParentLocalizer());
 			}
 			return returned;
-		}
-		else {
+		} else {
 			LOGGER.warning("Could not find localizer");
 			return null;
 		}
@@ -537,19 +544,19 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 		getRootView().updateLanguage();
 	}
 
-	/*public void searchNewLocalizationEntries() {
-		logger.fine("Search new localization entries");
-		Language currentLanguage = FlexoLocalization.getCurrentLanguage();
-		getRootComponent().retrieveFIBLocalizedDictionary().beginSearchNewLocalizationEntries();
-		for (Language language : Language.availableValues()) {
-			switchToLanguage(language);
-		}
-		getRootComponent().retrieveFIBLocalizedDictionary().endSearchNewLocalizationEntries();
-		getRootComponent().retrieveFIBLocalizedDictionary().refresh();
-		switchToLanguage(currentLanguage);
-		// setChanged();
-		// notifyObservers();
-	}*/
+	/*
+	 * public void searchNewLocalizationEntries() {
+	 * logger.fine("Search new localization entries"); Language currentLanguage
+	 * = FlexoLocalization.getCurrentLanguage();
+	 * getRootComponent().retrieveFIBLocalizedDictionary
+	 * ().beginSearchNewLocalizationEntries(); for (Language language :
+	 * Language.availableValues()) { switchToLanguage(language); }
+	 * getRootComponent
+	 * ().retrieveFIBLocalizedDictionary().endSearchNewLocalizationEntries();
+	 * getRootComponent().retrieveFIBLocalizedDictionary().refresh();
+	 * switchToLanguage(currentLanguage); // setChanged(); // notifyObservers();
+	 * }
+	 */
 
 	public void refreshLocalized() {
 		getRootComponent().retrieveFIBLocalizedDictionary().refresh();
@@ -637,8 +644,10 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 
 	/**
 	 * Called from the passed widget.<br>
-	 * This means that the widget has a new selection and notifies the FIBController of that.<br>
-	 * If the caller (the widget) is the selection leader, then the new selection is reflected all over the whole component.<br>
+	 * This means that the widget has a new selection and notifies the
+	 * FIBController of that.<br>
+	 * If the caller (the widget) is the selection leader, then the new
+	 * selection is reflected all over the whole component.<br>
 	 * 
 	 * @param widget
 	 * @param oldSelection
@@ -646,7 +655,8 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 	 */
 	public <T> void updateSelection(FIBSelectable<T> widget, List<T> oldSelection, List<T> newSelection) {
 
-		// LOGGER.info("updateSelection() dans FIBController with " + newSelection);
+		// LOGGER.info("updateSelection() dans FIBController with " +
+		// newSelection);
 		// LOGGER.info("widget=" + widget);
 		// LOGGER.info("selectionLeader=" + getSelectionLeader());
 
@@ -659,16 +669,19 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 		// System.out.println("widget=" + widget);
 		// System.out.println("getSelectionLeader()=" + getSelectionLeader());
 
-		// Fixed issue with selection not taken under account when component has just been initialized
+		// Fixed issue with selection not taken under account when component has
+		// just been initialized
 		if (getSelectionLeader() == null) {
 			setSelectionLeader(widget);
 		}
 
 		if (widget == getSelectionLeader()) {
 
-			// LOGGER.info("*************** I'm the SELECTION LEADER: " + getSelectionLeader());
+			// LOGGER.info("*************** I'm the SELECTION LEADER: " +
+			// getSelectionLeader());
 
-			// The caller widget is the selection leader, and should fire selection change event all over the world !
+			// The caller widget is the selection leader, and should fire
+			// selection change event all over the world !
 			fireSelectionChanged(widget);
 			List<Object> objectsToRemoveFromSelection = new Vector<Object>();
 			List<Object> objectsToAddToSelection = new Vector<Object>();
@@ -678,8 +691,7 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 			for (Object o : newSelection) {
 				if (oldSelection != null && oldSelection.contains(o)) {
 					objectsToRemoveFromSelection.remove(o);
-				}
-				else {
+				} else {
 					objectsToAddToSelection.add(o);
 				}
 			}
@@ -694,8 +706,10 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 						}
 					}
 					for (Object o : objectsToRemoveFromSelection) {
-						// Don't do this for FIBSelectable which are not SelectionLeader !!!
-						// Otherwise, if this selectable'selection is the cause of displaying of selection leader
+						// Don't do this for FIBSelectable which are not
+						// SelectionLeader !!!
+						// Otherwise, if this selectable'selection is the cause
+						// of displaying of selection leader
 						// the selection leader might disapppear
 						if (selectableComponent.mayRepresent(o) && selectableComponent == getSelectionLeader()) {
 							selectableComponent.objectRemovedFromSelection(o);
@@ -708,12 +722,14 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 
 	public void objectAddedToSelection(Object o) {
 
-		// LOGGER.info("************** objectAddedToSelection() dans FIBController with " + o);
+		// LOGGER.info("************** objectAddedToSelection() dans FIBController with "
+		// + o);
 
 		LOGGER.fine("FIBController: objectAddedToSelection(): " + o);
 
 		for (FIBView<?, ?> v : getViews()) {
-			if (v instanceof FIBWidgetView && v instanceof FIBSelectable && ((FIBSelectable) v).synchronizedWithSelection()) {
+			if (v instanceof FIBWidgetView && v instanceof FIBSelectable
+					&& ((FIBSelectable) v).synchronizedWithSelection()) {
 				FIBSelectable selectableComponent = (FIBSelectable) v;
 				if (selectableComponent.mayRepresent(o)) {
 					selectableComponent.objectAddedToSelection(o);
@@ -731,11 +747,13 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 
 	public void objectRemovedFromSelection(Object o) {
 
-		// LOGGER.info("************** objectRemovedFromSelection() dans FIBController with " + o);
+		// LOGGER.info("************** objectRemovedFromSelection() dans FIBController with "
+		// + o);
 
 		LOGGER.fine("FIBController: objectRemovedFromSelection(): " + o);
 		for (FIBView<?, ?> v : getViews()) {
-			if (v instanceof FIBWidgetView && v instanceof FIBSelectable && ((FIBSelectable) v).synchronizedWithSelection()) {
+			if (v instanceof FIBWidgetView && v instanceof FIBSelectable
+					&& ((FIBSelectable) v).synchronizedWithSelection()) {
 				FIBSelectable selectableComponent = (FIBSelectable) v;
 				if (selectableComponent.mayRepresent(o)) {
 					selectableComponent.objectRemovedFromSelection(o);
@@ -747,7 +765,8 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 	public void selectionCleared() {
 		LOGGER.fine("FIBController: selectionCleared()");
 		for (FIBView<?, ?> v : getViews()) {
-			if (v instanceof FIBWidgetView && v instanceof FIBSelectable && ((FIBSelectable) v).synchronizedWithSelection()) {
+			if (v instanceof FIBWidgetView && v instanceof FIBSelectable
+					&& ((FIBSelectable) v).synchronizedWithSelection()) {
 				FIBSelectable selectableComponent = (FIBSelectable) v;
 				selectableComponent.selectionResetted();
 			}
@@ -755,8 +774,10 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 	}
 
 	/**
-	 * Called when a selection leader (a widget managing a selection and declared as the selection leader) has a new selection.<br>
-	 * Notify the while world of this new selection (well, use the FIBSelectionListener scheme ;-) ).
+	 * Called when a selection leader (a widget managing a selection and
+	 * declared as the selection leader) has a new selection.<br>
+	 * Notify the while world of this new selection (well, use the
+	 * FIBSelectionListener scheme ;-) ).
 	 * 
 	 * @param leader
 	 */
@@ -800,8 +821,8 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 	}
 
 	/**
-	 * Called when a throwable has been raised during model code invocation. Requires to be overriden, this base implementation just log
-	 * exception
+	 * Called when a throwable has been raised during model code invocation.
+	 * Requires to be overriden, this base implementation just log exception
 	 * 
 	 * @param t
 	 * @return true is exception was correctely handled
@@ -826,11 +847,11 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 
 	public Resource getFIBPanelForObject(Object anObject) {
 
-		/*System.out
-				.println("Searching FIBPanel for "
-						+ anObject
-						+ (anObject != null ? " class=" + anObject.getClass() + " returning "
-								+ getFIBPanelForClass(anObject.getClass()) : ""));*/
+		/*
+		 * System.out .println("Searching FIBPanel for " + anObject + (anObject
+		 * != null ? " class=" + anObject.getClass() + " returning " +
+		 * getFIBPanelForClass(anObject.getClass()) : ""));
+		 */
 
 		if (anObject != null) {
 			return getFIBPanelForClass(anObject.getClass());
@@ -848,10 +869,12 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 				Class<?> aClass = (Class<?>) key;
 				// System.out.println("Searching FIBPanel for " + aClass);
 				if (aClass.getAnnotation(org.openflexo.gina.annotation.FIBPanel.class) != null) {
-					// System.out.println("Found annotation " + aClass.getAnnotation(org.openflexo.gina.annotation.FIBPanel.class));
+					// System.out.println("Found annotation " +
+					// aClass.getAnnotation(org.openflexo.gina.annotation.FIBPanel.class));
 					String fibPanelName = aClass.getAnnotation(org.openflexo.gina.annotation.FIBPanel.class).value();
 					Resource fibPanelResource = ResourceLocator.locateResource(fibPanelName);
-					// System.out.println("fibPanelResource=" + fibPanelResource);
+					// System.out.println("fibPanelResource=" +
+					// fibPanelResource);
 					if (fibPanelResource != null) {
 						// logger.info("Found " + fibPanel);
 						put(aClass, fibPanelResource);
@@ -865,10 +888,11 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 		}
 	};
 
-	/*public static void main(String[] args) {
-		FlexoFIBController newController = new FlexoFIBController(null);
-		System.out.println("Result: " + newController.getFIBPanelForClass(DeclareFlexoRole.class));
-	}*/
+	/*
+	 * public static void main(String[] args) { FlexoFIBController newController
+	 * = new FlexoFIBController(null); System.out.println("Result: " +
+	 * newController.getFIBPanelForClass(DeclareFlexoRole.class)); }
+	 */
 
 	public Resource getFIBPanelForClass(Class<?> aClass) {
 

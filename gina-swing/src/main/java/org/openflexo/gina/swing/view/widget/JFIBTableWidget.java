@@ -303,8 +303,9 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T> im
 
 		setSelected(newSelectedObject);
 		setSelection(newSelection);
-		footer.handleSelectionChanged();
-
+		if (footer != null) {
+			footer.handleSelectionChanged();
+		}
 		// System.out.println("selectedObject=" + selectedObject);
 		// System.out.println("selection=" + newSelection);
 
