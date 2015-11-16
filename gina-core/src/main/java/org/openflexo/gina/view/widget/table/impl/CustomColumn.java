@@ -63,9 +63,9 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.controller.FIBController;
-import org.openflexo.gina.model.widget.FIBCustomColumn;
 import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent;
 import org.openflexo.gina.model.widget.FIBCustom.FIBCustomImpl;
+import org.openflexo.gina.model.widget.FIBCustomColumn;
 import org.openflexo.gina.model.widget.FIBCustomColumn.FIBCustomAssignment;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 import org.openflexo.toolbox.ToolBox;
@@ -244,7 +244,12 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V>implements EditableC
 				if (returned instanceof JLabel) {
 					((JLabel) returned).setText(renderValue((T) value));
 					if (ToolBox.isMacOSLaf()) {
-						((JLabel) returned).setForeground(getColorFor(value));
+						if (isSelected) {
+							((JLabel) returned).setForeground(getSelectedTextColorFor(value));
+						}
+						else {
+							((JLabel) returned).setForeground(getNonSelectedTextColorFor(value));
+						}
 					}
 					((JLabel) returned).setFont(CustomColumn.this.getFont());
 				}
@@ -258,9 +263,12 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V>implements EditableC
 
 	}
 
-	protected Color getColorFor(Object value) {
+	protected Color getNonSelectedTextColorFor(Object value) {
 		return Color.black;
-		// return _viewCustomWidget.getColorForObject(value);
+	}
+
+	protected Color getSelectedTextColorFor(Object value) {
+		return Color.white;
 	}
 
 	protected FIBCustomComponent<V> getViewCustomWidget(T rowObject) {
