@@ -753,16 +753,13 @@ public abstract interface FIBContainer extends FIBComponent {
 			return getSubComponents();
 		}
 
-		@Override
+		/*@Override
 		public void notifiedBindingChanged(DataBinding<?> binding) {
-			// Thread.dumpStack();
-			System.out.println("notifiedBindingChanged with " + binding);
-			System.out.println("analyzed type : " + binding.getAnalyzedType());
 			super.notifiedBindingChanged(binding);
 			if (binding == getData()) {
 				logger.info("notified data changed");
 			}
-		}
+		}*/
 
 		@Deprecated
 		private FIBVariable<?> getDefaultDataVariable(boolean createWhenNonExistant) {
