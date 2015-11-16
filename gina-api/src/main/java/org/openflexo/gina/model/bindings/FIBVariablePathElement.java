@@ -99,16 +99,16 @@ public class FIBVariablePathElement extends SimplePathElement implements Propert
 	}
 
 	@Override
-	public Object getBindingValue(Object target, BindingEvaluationContext context) throws TypeMismatchException,
-			NullReferenceException {
-		System.out.println("j'evalue " + fibVariable + " pour " + target);
+	public Object getBindingValue(Object target, BindingEvaluationContext context) throws TypeMismatchException, NullReferenceException {
+		// System.out.println("j'evalue " + fibVariable + " pour " + target);
 		if (target instanceof FIBView) {
 			Object returned = ((FIBView) target).getVariableValue(fibVariable);
 			if (returned == null || TypeUtils.isTypeAssignableFrom(getType(), returned.getClass())) {
 				return returned;
-			} else {
-				System.out.println("Ouhlala, on me demande " + getType() + " mais j'ai " + returned.getClass());
-				System.out.println("d'un autre cote, la vue est visible ? " + ((FIBView) target).isViewVisible());
+			}
+			else {
+				// System.out.println("Ouhlala, on me demande " + getType() + " mais j'ai " + returned.getClass());
+				// System.out.println("d'un autre cote, la vue est visible ? " + ((FIBView) target).isViewVisible());
 				return null;
 			}
 
@@ -137,12 +137,8 @@ public class FIBVariablePathElement extends SimplePathElement implements Propert
 				// System.out.println("Notify name changing for " +
 				// getFlexoProperty() + " new=" + getVariableName());
 				getPropertyChangeSupport().firePropertyChange(NAME_PROPERTY, evt.getOldValue(), getLabel());
-				fibVariable
-						.getOwner()
-						.getBindingModel()
-						.getPropertyChangeSupport()
-						.firePropertyChange(BindingModel.BINDING_PATH_ELEMENT_NAME_CHANGED, evt.getOldValue(),
-								getLabel());
+				fibVariable.getOwner().getBindingModel().getPropertyChangeSupport()
+						.firePropertyChange(BindingModel.BINDING_PATH_ELEMENT_NAME_CHANGED, evt.getOldValue(), getLabel());
 			}
 			if (evt.getPropertyName().equals(FIBVariable.TYPE_KEY)) {
 				Type newType = getFIBVariable().getType();
@@ -159,8 +155,8 @@ public class FIBVariablePathElement extends SimplePathElement implements Propert
 				// its type change. We warn it to 'tell' the developper that
 				// such notification should be done
 				// in FlexoProperty (see IndividualProperty for example)
-				logger.warning("Detecting un-notified type changing for FIBVariable " + fibVariable + " from "
-						+ lastKnownType + " to " + getType() + ". Trying to handle case.");
+				logger.warning("Detecting un-notified type changing for FIBVariable " + fibVariable + " from " + lastKnownType + " to "
+						+ getType() + ". Trying to handle case.");
 				getPropertyChangeSupport().firePropertyChange(TYPE_PROPERTY, lastKnownType, getType());
 				fibVariable.getOwner().getBindingModel().getPropertyChangeSupport()
 						.firePropertyChange(BindingModel.BINDING_PATH_ELEMENT_TYPE_CHANGED, lastKnownType, getType());

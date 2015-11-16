@@ -114,7 +114,7 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabel>implements JFIBVi
 	@Override
 	public JComponent getResultingJComponent() {
 		JComponent returned = getRenderingAdapter().getResultingJComponent(this);
-		System.out.println("Je retourne " + returned);
+		// System.out.println("Je retourne " + returned);
 		return getRenderingAdapter().getResultingJComponent(this);
 	}
 
@@ -125,7 +125,7 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabel>implements JFIBVi
 		 * if (getWidget().getData().isValid()) { returned = new JLabel(" "); }
 		 * else {
 		 */
-		returned = new JLabel("prout");
+		returned = new JLabel("");
 		// }
 		// There is not much point in giving focus to a label since there is no
 		// KeyBindings nor KeyListener on it.
