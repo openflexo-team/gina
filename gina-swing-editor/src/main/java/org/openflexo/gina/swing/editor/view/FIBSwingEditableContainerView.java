@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.swing.editor.view;
 
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JComponent;
@@ -61,4 +62,5 @@ public interface FIBSwingEditableContainerView<M extends FIBContainer, J extends
 
 	public Vector<PlaceHolder> getPlaceHolders();
 
+	public List<PlaceHolder> makePlaceHolders();
 }

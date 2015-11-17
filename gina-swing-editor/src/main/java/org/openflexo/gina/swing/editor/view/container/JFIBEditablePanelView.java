@@ -40,9 +40,13 @@
 package org.openflexo.gina.swing.editor.view.container;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
@@ -60,7 +64,6 @@ import org.openflexo.gina.model.container.TwoColsLayoutConstraints.TwoColsLayout
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerViewDelegate;
-import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate.FIBDropTarget;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.container.JFIBPanelView;
@@ -120,23 +123,21 @@ public class JFIBEditablePanelView extends JFIBPanelView implements FIBSwingEdit
 				PlaceHolder beginPlaceHolder = new PlaceHolder(this, "<begin>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent,
-								beginPlaceHolderConstraints, 0);
+						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent, beginPlaceHolderConstraints, 0);
 					}
 				};
-				registerComponentWithConstraints(beginPlaceHolder, beginPlaceHolderConstraints, 0);
+				// registerComponentWithConstraints(beginPlaceHolder, beginPlaceHolderConstraints, 0);
 				placeholders.add(beginPlaceHolder);
 				beginPlaceHolder.setVisible(false);
 				final FlowLayoutConstraints endPlaceHolderConstraints = new FlowLayoutConstraints();
 				PlaceHolder endPlaceHolder = new PlaceHolder(this, "<end>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent,
-								endPlaceHolderConstraints,
+						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent, endPlaceHolderConstraints,
 								JFIBEditablePanelView.this.getComponent().getSubComponents().size());
 					}
 				};
-				registerComponentWithConstraints(endPlaceHolder, endPlaceHolderConstraints);
+				// registerComponentWithConstraints(endPlaceHolder, endPlaceHolderConstraints);
 				placeholders.add(endPlaceHolder);
 				endPlaceHolder.setVisible(false);
 			}
@@ -148,22 +149,20 @@ public class JFIBEditablePanelView extends JFIBPanelView implements FIBSwingEdit
 				PlaceHolder beginPlaceHolder = new PlaceHolder(this, "<begin>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent,
-								beginPlaceHolderConstraints, 0);
+						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent, beginPlaceHolderConstraints, 0);
 					}
 				};
-				registerComponentWithConstraints(beginPlaceHolder, beginPlaceHolderConstraints);
+				// registerComponentWithConstraints(beginPlaceHolder, beginPlaceHolderConstraints);
 				placeholders.add(beginPlaceHolder);
 				beginPlaceHolder.setVisible(false);
 				final BoxLayoutConstraints endPlaceHolderConstraints = new BoxLayoutConstraints();
 				PlaceHolder endPlaceHolder = new PlaceHolder(this, "<end>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent,
-								endPlaceHolderConstraints);
+						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent, endPlaceHolderConstraints);
 					}
 				};
-				registerComponentWithConstraints(endPlaceHolder);
+				// registerComponentWithConstraints(endPlaceHolder);
 				placeholders.add(endPlaceHolder);
 				endPlaceHolder.setVisible(false);
 			}
@@ -191,7 +190,7 @@ public class JFIBEditablePanelView extends JFIBPanelView implements FIBSwingEdit
 								JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent);
 							}
 						};
-						registerComponentWithConstraints(newPlaceHolder, l.getConstraint());
+						// registerComponentWithConstraints(newPlaceHolder, l.getConstraint());
 						newPlaceHolder.setVisible(false);
 						placeholders.add(newPlaceHolder);
 						logger.fine("Made placeholder for " + l.getConstraint());
@@ -207,85 +206,77 @@ public class JFIBEditablePanelView extends JFIBPanelView implements FIBSwingEdit
 				PlaceHolder beginCenterPlaceHolder = new PlaceHolder(this, "<center>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent,
-								beginCenterPlaceHolderConstraints, 0);
+						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent, beginCenterPlaceHolderConstraints, 0);
 					}
 				};
-				registerComponentWithConstraints(beginCenterPlaceHolder, beginCenterPlaceHolderConstraints, 0);
+				// registerComponentWithConstraints(beginCenterPlaceHolder, beginCenterPlaceHolderConstraints, 0);
 				placeholders.add(beginCenterPlaceHolder);
 				beginCenterPlaceHolder.setVisible(false);
 
-				final TwoColsLayoutConstraints beginLeftPlaceHolderConstraints = new TwoColsLayoutConstraints(
-						TwoColsLayoutLocation.left, true, false);
-				final TwoColsLayoutConstraints beginRightPlaceHolderConstraints = new TwoColsLayoutConstraints(
-						TwoColsLayoutLocation.right, true, false);
+				final TwoColsLayoutConstraints beginLeftPlaceHolderConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.left,
+						true, false);
+				final TwoColsLayoutConstraints beginRightPlaceHolderConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.right,
+						true, false);
 				PlaceHolder beginRightPlaceHolder = new PlaceHolder(this, "<right>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent,
-								beginRightPlaceHolderConstraints, 0);
-						JFIBEditablePanelView.this.getComponent()
-								.addToSubComponents(editorController.getFactory().newFIBLabel("<left>"),
-										beginLeftPlaceHolderConstraints, 0);
+						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent, beginRightPlaceHolderConstraints, 0);
+						JFIBEditablePanelView.this.getComponent().addToSubComponents(editorController.getFactory().newFIBLabel("<left>"),
+								beginLeftPlaceHolderConstraints, 0);
 					}
 				};
-				registerComponentWithConstraints(beginRightPlaceHolder, beginRightPlaceHolderConstraints, 0);
+				// registerComponentWithConstraints(beginRightPlaceHolder, beginRightPlaceHolderConstraints, 0);
 				placeholders.add(beginRightPlaceHolder);
 				beginRightPlaceHolder.setVisible(false);
 				PlaceHolder beginLeftPlaceHolder = new PlaceHolder(this, "<left>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditablePanelView.this.getComponent().addToSubComponents(
-								editorController.getFactory().newFIBLabel("<right>"), beginRightPlaceHolderConstraints,
-								0);
-						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent,
-								beginLeftPlaceHolderConstraints, 0);
+						JFIBEditablePanelView.this.getComponent().addToSubComponents(editorController.getFactory().newFIBLabel("<right>"),
+								beginRightPlaceHolderConstraints, 0);
+						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent, beginLeftPlaceHolderConstraints, 0);
 					}
 				};
-				registerComponentWithConstraints(beginLeftPlaceHolder, beginLeftPlaceHolderConstraints, 0);
+				// registerComponentWithConstraints(beginLeftPlaceHolder, beginLeftPlaceHolderConstraints, 0);
 				placeholders.add(beginLeftPlaceHolder);
 				beginLeftPlaceHolder.setVisible(false);
 
-				final TwoColsLayoutConstraints endCenterPlaceHolderConstraints = new TwoColsLayoutConstraints(
-						TwoColsLayoutLocation.center, true, false);
+				final TwoColsLayoutConstraints endCenterPlaceHolderConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.center,
+						true, false);
 				PlaceHolder endCenterPlaceHolder = new PlaceHolder(this, "<center>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent,
-								endCenterPlaceHolderConstraints);
+						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent, endCenterPlaceHolderConstraints);
 					}
 				};
-				registerComponentWithConstraints(endCenterPlaceHolder, endCenterPlaceHolderConstraints);
+				// registerComponentWithConstraints(endCenterPlaceHolder, endCenterPlaceHolderConstraints);
 				placeholders.add(endCenterPlaceHolder);
 				endCenterPlaceHolder.setVisible(false);
 
-				final TwoColsLayoutConstraints endLeftPlaceHolderConstraints = new TwoColsLayoutConstraints(
-						TwoColsLayoutLocation.left, true, false);
-				final TwoColsLayoutConstraints endRightPlaceHolderConstraints = new TwoColsLayoutConstraints(
-						TwoColsLayoutLocation.right, true, false);
+				final TwoColsLayoutConstraints endLeftPlaceHolderConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.left,
+						true, false);
+				final TwoColsLayoutConstraints endRightPlaceHolderConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.right,
+						true, false);
 				PlaceHolder endLeftPlaceHolder = new PlaceHolder(this, "<left>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent,
-								endLeftPlaceHolderConstraints);
-						JFIBEditablePanelView.this.getComponent().addToSubComponents(
-								editorController.getFactory().newFIBLabel("<right>"), endRightPlaceHolderConstraints);
+						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent, endLeftPlaceHolderConstraints);
+						JFIBEditablePanelView.this.getComponent().addToSubComponents(editorController.getFactory().newFIBLabel("<right>"),
+								endRightPlaceHolderConstraints);
 					}
 				};
-				registerComponentWithConstraints(endLeftPlaceHolder, endLeftPlaceHolderConstraints);
+				// registerComponentWithConstraints(endLeftPlaceHolder, endLeftPlaceHolderConstraints);
 				placeholders.add(endLeftPlaceHolder);
 				endLeftPlaceHolder.setVisible(false);
 
 				PlaceHolder endRightPlaceHolder = new PlaceHolder(this, "<right>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditablePanelView.this.getComponent().addToSubComponents(
-								editorController.getFactory().newFIBLabel("<left>"), endLeftPlaceHolderConstraints);
-						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent,
-								endRightPlaceHolderConstraints);
+						JFIBEditablePanelView.this.getComponent().addToSubComponents(editorController.getFactory().newFIBLabel("<left>"),
+								endLeftPlaceHolderConstraints);
+						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent, endRightPlaceHolderConstraints);
 					}
 				};
-				registerComponentWithConstraints(endRightPlaceHolder, endRightPlaceHolderConstraints);
+				// registerComponentWithConstraints(endRightPlaceHolder, endRightPlaceHolderConstraints);
 				placeholders.add(endRightPlaceHolder);
 				endRightPlaceHolder.setVisible(false);
 
@@ -298,22 +289,20 @@ public class JFIBEditablePanelView extends JFIBPanelView implements FIBSwingEdit
 				PlaceHolder beginPlaceHolder = new PlaceHolder(this, "<begin>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent,
-								beginPlaceHolderConstraints, 0);
+						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent, beginPlaceHolderConstraints, 0);
 					}
 				};
-				registerComponentWithConstraints(beginPlaceHolder, beginPlaceHolderConstraints, 0);
+				// registerComponentWithConstraints(beginPlaceHolder, beginPlaceHolderConstraints, 0);
 				placeholders.add(beginPlaceHolder);
 				beginPlaceHolder.setVisible(false);
 				final GridBagLayoutConstraints endPlaceHolderConstraints = new GridBagLayoutConstraints();
 				PlaceHolder endPlaceHolder = new PlaceHolder(this, "<end>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent,
-								endPlaceHolderConstraints);
+						JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent, endPlaceHolderConstraints);
 					}
 				};
-				registerComponentWithConstraints(endPlaceHolder);
+				// registerComponentWithConstraints(endPlaceHolder);
 				placeholders.add(endPlaceHolder);
 				endPlaceHolder.setVisible(false);
 			}
@@ -340,9 +329,9 @@ public class JFIBEditablePanelView extends JFIBPanelView implements FIBSwingEdit
 			// logger.info("******** Set DropTargets");
 			if (getEditorController() != null) {
 				for (PlaceHolder ph : placeholders) {
-					logger.fine("Set DropTarget for " + ph);
+					System.out.println("Set DropTarget for " + ph);
 					// Put right drop target
-					new FIBDropTarget(ph);
+					// new FIBDropTarget(ph);
 				}
 			}
 			/*
@@ -363,7 +352,7 @@ public class JFIBEditablePanelView extends JFIBPanelView implements FIBSwingEdit
 			}
 		}
 
-		if (!getComponent().getProtectContent()) {
+		/*if (!getComponent().getProtectContent()) {
 			// Otherwise, it's a PlaceHolder
 			PlaceHolder newPlaceHolder = new PlaceHolder(this, "<" + col + "," + row + ">") {
 				@Override
@@ -375,12 +364,17 @@ public class JFIBEditablePanelView extends JFIBPanelView implements FIBSwingEdit
 			};
 			newPlaceHolder.setVisible(false);
 			placeholders.add(newPlaceHolder);
-
+		
 			return newPlaceHolder;
-		} else {
+		}
+		else {
 			// Otherwise, it's an empty cell
 			return new JPanel();
-		}
+		}*/
+
+		// Otherwise, it's an empty cell
+		return new JPanel();
+
 	}
 
 	@Override
@@ -393,4 +387,29 @@ public class JFIBEditablePanelView extends JFIBPanelView implements FIBSwingEdit
 		return delegate;
 	}
 
+	@Override
+	public List<PlaceHolder> makePlaceHolders() {
+		System.out.println("Je suis sense calculer les placeholders pour la vue " + this + " size=" + getResultingJComponent().getSize());
+
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.setPreferredSize(getResultingJComponent().getSize());
+		panel.setSize(getResultingJComponent().getSize());
+		Component center;
+		Component north;
+		panel.add(center = Box.createRigidArea(new Dimension(200, 200)), BorderLayout.CENTER);
+		panel.add(north = new JPanel() {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(30, 30);
+			}
+		}, BorderLayout.NORTH);
+
+		System.out.println("center size = " + center.getSize());
+		System.out.println("north size = " + north.getSize());
+		panel.doLayout();
+		System.out.println("center size = " + center.getSize());
+		System.out.println("north size = " + north.getSize());
+
+		return null;
+	}
 }

@@ -74,15 +74,16 @@ public class DropListener implements DropTargetListener {
 
 	private final FIBSwingEditableView<?, ?> editableView;
 
-	private final PlaceHolder placeHolder;
+	// private final PlaceHolder placeHolder;
 
-	public DropListener(FIBSwingEditableView<?, ?> editableView, PlaceHolder placeHolder) {
+	public DropListener(FIBSwingEditableView<?, ?> editableView/*, PlaceHolder placeHolder*/) {
 		this.editableView = editableView;
-		this.placeHolder = placeHolder;
+		// this.placeHolder = placeHolder;
 	}
 
 	public Focusable getTargetComponent() {
-		return placeHolder != null ? placeHolder : editableView.getDelegate();
+		// return placeHolder != null ? placeHolder : editableView.getDelegate();
+		return editableView.getDelegate();
 	}
 
 	/**
@@ -178,14 +179,31 @@ public class DropListener implements DropTargetListener {
 			 * please check...
 			 * 
 			 */
-			if (placeHolder == null && editableView instanceof FIBSwingEditableContainerView
+
+			System.out.println("Hop, en entre dans la zone de dragging !!!!!");
+
+			/*if (placeHolder == null && editableView instanceof FIBSwingEditableContainerView
 					&& ((FIBSwingEditableContainerView<?, ?>) editableView).getPlaceHolders() != null) {
 				for (PlaceHolder ph2 : ((FIBSwingEditableContainerView<?, ?>) editableView).getPlaceHolders()) {
 					if (ph2.getBounds().contains(e.getLocation())) {
 						getContainerDelegate().addToPlaceHolderVisibleRequesters(ph2);
 					}
 				}
+			}*/
+
+			if (editableView instanceof FIBSwingEditableContainerView
+					&& ((FIBSwingEditableContainerView<?, ?>) editableView).getPlaceHolders() != null) {
+
+				((FIBSwingEditableContainerView<?, ?>) editableView).makePlaceHolders();
+
+				for (PlaceHolder ph2 : ((FIBSwingEditableContainerView<?, ?>) editableView).getPlaceHolders()) {
+					if (ph2.getBounds().contains(e.getLocation())) {
+						System.out.println("Hop, je rentre dans le placeholder " + ph2);
+						getContainerDelegate().addToPlaceHolderVisibleRequesters(ph2);
+					}
+				}
 			}
+
 			e.acceptDrag(e.getDropAction());
 		}
 		else {

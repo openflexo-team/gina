@@ -39,61 +39,75 @@
 
 package org.openflexo.gina.swing.editor.view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Rectangle;
 import java.util.logging.Logger;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.logging.FlexoLogger;
-import org.openflexo.swing.Focusable;
-import org.openflexo.swing.NoInsetsBorder;
 
 @SuppressWarnings("serial")
-public abstract class PlaceHolder extends JPanel implements Focusable {
+public abstract class PlaceHolder /*extends JPanel implements Focusable*/ {
 
 	static final Logger logger = FlexoLogger.getLogger(PlaceHolder.class.getPackage().getName());
 
-	private static final Border focusBorder = new NoInsetsBorder(BorderFactory.createLineBorder(Color.RED));
-	private static final Border nonFocusBorder = new NoInsetsBorder(BorderFactory.createEtchedBorder());
+	// private static final Border focusBorder = new NoInsetsBorder(BorderFactory.createLineBorder(Color.RED));
+	// private static final Border nonFocusBorder = new NoInsetsBorder(BorderFactory.createEtchedBorder());
 
-	private boolean isFocused = false;
+	private final boolean isFocused = false;
 
 	private final FIBSwingEditableContainerView<?, ?> view;
 	private final String text;
 
+	private final Rectangle bounds;
+
 	public PlaceHolder(FIBSwingEditableContainerView<?, ?> view, String text) {
-		super(new BorderLayout());
+		// super(new BorderLayout());
 		this.view = view;
 		this.text = text;
 		JLabel label = new JLabel(text);
 		label.setForeground(Color.DARK_GRAY);
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setVerticalAlignment(SwingConstants.CENTER);
-		add(label, BorderLayout.CENTER);
-		setBorder(nonFocusBorder);
+		// add(label, BorderLayout.CENTER);
+		// setBorder(nonFocusBorder);
+		System.out.println("Tiens, je calcule un bounds pour la vue de taille: " + view.getResultingJComponent().getSize());
+		bounds = new Rectangle(100, 50);
 	}
 
-	@Override
+	public Rectangle getBounds() {
+		return bounds;
+	}
+
+	private boolean visible;
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+	}
+
+	/*@Override
 	public void setFocused(boolean aFlag) {
 		if (aFlag) {
 			isFocused = true;
 			setBorder(focusBorder);
-		} else {
+		}
+		else {
 			isFocused = false;
 			setBorder(nonFocusBorder);
 		}
 	}
-
+	
 	@Override
 	public boolean isFocused() {
 		return isFocused;
-	}
+	}*/
 
 	public FIBSwingEditableContainerView<?, ?> getView() {
 		return view;
@@ -108,8 +122,8 @@ public abstract class PlaceHolder extends JPanel implements Focusable {
 
 	public void willDelete() {
 
-		getView().getJComponent().remove(this);
-		getView().getPlaceHolders().remove(this);
+		// getView().getJComponent().remove(this);
+		// getView().getPlaceHolders().remove(this);
 	}
 
 	public void hasDeleted() {

@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.swing.editor.view.container;
 
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -51,7 +52,6 @@ import org.openflexo.gina.model.container.SplitLayoutConstraints;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerViewDelegate;
-import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate.FIBDropTarget;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.view.container.JFIBSplitPanelView;
 import org.openflexo.logging.FlexoLogger;
@@ -106,7 +106,7 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 					JFIBEditableSplitPanelView.this.getComponent().addToSubComponents(newComponent, splitLayoutConstraints);
 				}
 			};
-			registerComponentWithConstraints(newPlaceHolder, n.getName());
+			// registerComponentWithConstraints(newPlaceHolder, n.getName());
 			newPlaceHolder.setVisible(false);
 			placeholders.add(newPlaceHolder);
 			// logger.info("Made placeholder for " + n.getName());
@@ -145,7 +145,7 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 			for (PlaceHolder ph : placeholders) {
 				logger.fine("Set DropTarget for " + ph);
 				// Put right drop target
-				new FIBDropTarget(ph);
+				// new FIBDropTarget(ph);
 			}
 		}
 		/*else {
@@ -167,6 +167,12 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 	@Override
 	public FIBSwingEditableContainerViewDelegate<FIBSplitPanel, JXMultiSplitPane> getDelegate() {
 		return delegate;
+	}
+
+	@Override
+	public List<PlaceHolder> makePlaceHolders() {
+		System.out.println("Je suis sense calculer les placeholders pour la vue " + this + " size=" + getResultingJComponent().getSize());
+		return null;
 	}
 
 }

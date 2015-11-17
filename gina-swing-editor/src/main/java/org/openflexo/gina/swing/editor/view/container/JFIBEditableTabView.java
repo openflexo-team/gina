@@ -40,6 +40,7 @@
 package org.openflexo.gina.swing.editor.view.container;
 
 import java.awt.BorderLayout;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -61,7 +62,6 @@ import org.openflexo.gina.model.container.TwoColsLayoutConstraints.TwoColsLayout
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerViewDelegate;
-import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate.FIBDropTarget;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.container.JFIBTabView;
@@ -117,22 +117,20 @@ public class JFIBEditableTabView extends JFIBTabView implements FIBSwingEditable
 				PlaceHolder beginPlaceHolder = new PlaceHolder(this, "<begin>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent,
-								beginPlaceHolderConstraints, 0);
+						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent, beginPlaceHolderConstraints, 0);
 					}
 				};
-				registerComponentWithConstraints(beginPlaceHolder, beginPlaceHolderConstraints, 0);
+				// registerComponentWithConstraints(beginPlaceHolder, beginPlaceHolderConstraints, 0);
 				placeholders.add(beginPlaceHolder);
 				beginPlaceHolder.setVisible(false);
 				final FlowLayoutConstraints endPlaceHolderConstraints = new FlowLayoutConstraints();
 				PlaceHolder endPlaceHolder = new PlaceHolder(this, "<end>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent,
-								endPlaceHolderConstraints);
+						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent, endPlaceHolderConstraints);
 					}
 				};
-				registerComponentWithConstraints(endPlaceHolder, endPlaceHolderConstraints);
+				// registerComponentWithConstraints(endPlaceHolder, endPlaceHolderConstraints);
 				placeholders.add(endPlaceHolder);
 				endPlaceHolder.setVisible(false);
 			}
@@ -144,22 +142,20 @@ public class JFIBEditableTabView extends JFIBTabView implements FIBSwingEditable
 				PlaceHolder beginPlaceHolder = new PlaceHolder(this, "<begin>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent,
-								beginPlaceHolderConstraints, 0);
+						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent, beginPlaceHolderConstraints, 0);
 					}
 				};
-				registerComponentWithConstraints(beginPlaceHolder, beginPlaceHolderConstraints, 0);
+				// registerComponentWithConstraints(beginPlaceHolder, beginPlaceHolderConstraints, 0);
 				placeholders.add(beginPlaceHolder);
 				beginPlaceHolder.setVisible(false);
 				final BoxLayoutConstraints endPlaceHolderConstraints = new BoxLayoutConstraints();
 				PlaceHolder endPlaceHolder = new PlaceHolder(this, "<end>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent,
-								endPlaceHolderConstraints);
+						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent, endPlaceHolderConstraints);
 					}
 				};
-				registerComponentWithConstraints(endPlaceHolder);
+				// registerComponentWithConstraints(endPlaceHolder);
 				placeholders.add(endPlaceHolder);
 				endPlaceHolder.setVisible(false);
 			}
@@ -186,7 +182,7 @@ public class JFIBEditableTabView extends JFIBTabView implements FIBSwingEditable
 								JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent);
 							}
 						};
-						registerComponentWithConstraints(newPlaceHolder, l.getConstraint());
+						// registerComponentWithConstraints(newPlaceHolder, l.getConstraint());
 						newPlaceHolder.setVisible(false);
 						placeholders.add(newPlaceHolder);
 						logger.fine("Made placeholder for " + l.getConstraint());
@@ -202,86 +198,79 @@ public class JFIBEditableTabView extends JFIBTabView implements FIBSwingEditable
 				PlaceHolder beginCenterPlaceHolder = new PlaceHolder(this, "<center>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent,
-								beginCenterPlaceHolderConstraints, 0);
+						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent, beginCenterPlaceHolderConstraints, 0);
 					}
 				};
-				registerComponentWithConstraints(beginCenterPlaceHolder, beginCenterPlaceHolderConstraints, 0);
+				// registerComponentWithConstraints(beginCenterPlaceHolder, beginCenterPlaceHolderConstraints, 0);
 				placeholders.add(beginCenterPlaceHolder);
 				beginCenterPlaceHolder.setVisible(false);
 
-				final TwoColsLayoutConstraints beginLeftPlaceHolderConstraints = new TwoColsLayoutConstraints(
-						TwoColsLayoutLocation.left, true, false);
-				final TwoColsLayoutConstraints beginRightPlaceHolderConstraints = new TwoColsLayoutConstraints(
-						TwoColsLayoutLocation.right, true, false);
+				final TwoColsLayoutConstraints beginLeftPlaceHolderConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.left,
+						true, false);
+				final TwoColsLayoutConstraints beginRightPlaceHolderConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.right,
+						true, false);
 
 				PlaceHolder beginRightPlaceHolder = new PlaceHolder(this, "<right>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent,
-								beginRightPlaceHolderConstraints);
-						JFIBEditableTabView.this.getComponent().addToSubComponents(
-								editorController.getFactory().newFIBLabel("<left>"), beginLeftPlaceHolderConstraints);
+						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent, beginRightPlaceHolderConstraints);
+						JFIBEditableTabView.this.getComponent().addToSubComponents(editorController.getFactory().newFIBLabel("<left>"),
+								beginLeftPlaceHolderConstraints);
 					}
 				};
-				registerComponentWithConstraints(beginRightPlaceHolder, beginRightPlaceHolderConstraints, 0);
+				// registerComponentWithConstraints(beginRightPlaceHolder, beginRightPlaceHolderConstraints, 0);
 				placeholders.add(beginRightPlaceHolder);
 				beginRightPlaceHolder.setVisible(false);
 
 				PlaceHolder beginLeftPlaceHolder = new PlaceHolder(this, "<left>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent,
-								beginLeftPlaceHolderConstraints, 0);
-						JFIBEditableTabView.this.getComponent().addToSubComponents(
-								editorController.getFactory().newFIBLabel("<right>"), beginRightPlaceHolderConstraints,
-								0);
+						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent, beginLeftPlaceHolderConstraints, 0);
+						JFIBEditableTabView.this.getComponent().addToSubComponents(editorController.getFactory().newFIBLabel("<right>"),
+								beginRightPlaceHolderConstraints, 0);
 					}
 				};
-				registerComponentWithConstraints(beginLeftPlaceHolder, beginLeftPlaceHolderConstraints, 0);
+				// registerComponentWithConstraints(beginLeftPlaceHolder, beginLeftPlaceHolderConstraints, 0);
 				placeholders.add(beginLeftPlaceHolder);
 				beginLeftPlaceHolder.setVisible(false);
 
-				final TwoColsLayoutConstraints endCenterPlaceHolderConstraints = new TwoColsLayoutConstraints(
-						TwoColsLayoutLocation.center, true, false);
+				final TwoColsLayoutConstraints endCenterPlaceHolderConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.center,
+						true, false);
 				PlaceHolder endCenterPlaceHolder = new PlaceHolder(this, "<center>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent,
-								endCenterPlaceHolderConstraints);
+						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent, endCenterPlaceHolderConstraints);
 					}
 				};
-				registerComponentWithConstraints(endCenterPlaceHolder, endCenterPlaceHolderConstraints);
+				// registerComponentWithConstraints(endCenterPlaceHolder, endCenterPlaceHolderConstraints);
 				placeholders.add(endCenterPlaceHolder);
 				endCenterPlaceHolder.setVisible(false);
 
-				final TwoColsLayoutConstraints endLeftPlaceHolderConstraints = new TwoColsLayoutConstraints(
-						TwoColsLayoutLocation.left, true, false);
-				final TwoColsLayoutConstraints endRightPlaceHolderConstraints = new TwoColsLayoutConstraints(
-						TwoColsLayoutLocation.right, true, false);
+				final TwoColsLayoutConstraints endLeftPlaceHolderConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.left,
+						true, false);
+				final TwoColsLayoutConstraints endRightPlaceHolderConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.right,
+						true, false);
 				PlaceHolder endLeftPlaceHolder = new PlaceHolder(this, "<left>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent,
-								endLeftPlaceHolderConstraints);
-						JFIBEditableTabView.this.getComponent().addToSubComponents(
-								editorController.getFactory().newFIBLabel("<right>"), endRightPlaceHolderConstraints);
+						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent, endLeftPlaceHolderConstraints);
+						JFIBEditableTabView.this.getComponent().addToSubComponents(editorController.getFactory().newFIBLabel("<right>"),
+								endRightPlaceHolderConstraints);
 					}
 				};
-				registerComponentWithConstraints(endLeftPlaceHolder, endLeftPlaceHolderConstraints);
+				// registerComponentWithConstraints(endLeftPlaceHolder, endLeftPlaceHolderConstraints);
 				placeholders.add(endLeftPlaceHolder);
 				endLeftPlaceHolder.setVisible(false);
 
 				PlaceHolder endRightPlaceHolder = new PlaceHolder(this, "<right>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditableTabView.this.getComponent().addToSubComponents(
-								editorController.getFactory().newFIBLabel("<left>"), endLeftPlaceHolderConstraints);
-						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent,
-								endRightPlaceHolderConstraints);
+						JFIBEditableTabView.this.getComponent().addToSubComponents(editorController.getFactory().newFIBLabel("<left>"),
+								endLeftPlaceHolderConstraints);
+						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent, endRightPlaceHolderConstraints);
 					}
 				};
-				registerComponentWithConstraints(endRightPlaceHolder, endRightPlaceHolderConstraints);
+				// registerComponentWithConstraints(endRightPlaceHolder, endRightPlaceHolderConstraints);
 				placeholders.add(endRightPlaceHolder);
 				endRightPlaceHolder.setVisible(false);
 
@@ -294,22 +283,20 @@ public class JFIBEditableTabView extends JFIBTabView implements FIBSwingEditable
 				PlaceHolder beginPlaceHolder = new PlaceHolder(this, "<begin>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent,
-								beginPlaceHolderConstraints, 0);
+						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent, beginPlaceHolderConstraints, 0);
 					}
 				};
-				registerComponentWithConstraints(beginPlaceHolder, beginPlaceHolderConstraints, 0);
+				// registerComponentWithConstraints(beginPlaceHolder, beginPlaceHolderConstraints, 0);
 				placeholders.add(beginPlaceHolder);
 				beginPlaceHolder.setVisible(false);
 				final GridBagLayoutConstraints endPlaceHolderConstraints = new GridBagLayoutConstraints();
 				PlaceHolder endPlaceHolder = new PlaceHolder(this, "<end>") {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent,
-								endPlaceHolderConstraints);
+						JFIBEditableTabView.this.getComponent().addToSubComponents(newComponent, endPlaceHolderConstraints);
 					}
 				};
-				registerComponentWithConstraints(endPlaceHolder);
+				// registerComponentWithConstraints(endPlaceHolder);
 				placeholders.add(endPlaceHolder);
 				endPlaceHolder.setVisible(false);
 			}
@@ -317,9 +304,9 @@ public class JFIBEditableTabView extends JFIBTabView implements FIBSwingEditable
 			// logger.info("******** Set DropTargets");
 			if (getEditorController() != null) {
 				for (PlaceHolder ph : placeholders) {
-					logger.fine("Set DropTarget for " + ph);
+					System.out.println("Set DropTarget for " + ph);
 					// Put right drop target
-					new FIBDropTarget(ph);
+					// new FIBDropTarget(ph);
 				}
 			}
 			/*
@@ -340,7 +327,7 @@ public class JFIBEditableTabView extends JFIBTabView implements FIBSwingEditable
 			}
 		}
 
-		if (!getComponent().getProtectContent()) {
+		/*if (!getComponent().getProtectContent()) {
 			// Otherwise, it's a PlaceHolder
 			PlaceHolder newPlaceHolder = new PlaceHolder(this, "<" + col + "," + row + ">") {
 				@Override
@@ -352,12 +339,16 @@ public class JFIBEditableTabView extends JFIBTabView implements FIBSwingEditable
 			};
 			newPlaceHolder.setVisible(false);
 			placeholders.add(newPlaceHolder);
-
+		
 			return newPlaceHolder;
 		} else {
 			// Otherwise, it's an empty cell
 			return new JPanel();
-		}
+		}*/
+
+		// Otherwise, it's an empty cell
+		return new JPanel();
+
 	}
 
 	@Override
@@ -368,6 +359,12 @@ public class JFIBEditableTabView extends JFIBTabView implements FIBSwingEditable
 	@Override
 	public FIBSwingEditableContainerViewDelegate<FIBPanel, JPanel> getDelegate() {
 		return delegate;
+	}
+
+	@Override
+	public List<PlaceHolder> makePlaceHolders() {
+		System.out.println("Je suis sense calculer les placeholders pour la vue " + this + " size=" + getResultingJComponent().getSize());
+		return null;
 	}
 
 }

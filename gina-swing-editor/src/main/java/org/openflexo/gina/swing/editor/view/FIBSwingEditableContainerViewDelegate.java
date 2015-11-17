@@ -58,12 +58,12 @@ public class FIBSwingEditableContainerViewDelegate<M extends FIBContainer, J ext
 
 		super(view);
 
-		if (view.getPlaceHolders() != null) {
+		/*if (view.getPlaceHolders() != null) {
 			for (PlaceHolder ph : view.getPlaceHolders()) {
 				// Listen to drag'n'drop events
 				new FIBDropTarget(ph);
 			}
-		}
+		}*/
 	}
 
 	@Override
@@ -99,9 +99,10 @@ public class FIBSwingEditableContainerViewDelegate<M extends FIBContainer, J ext
 				if (getView() != null) {
 					boolean visible = placeHolderVisibleRequesters.size() > 0;
 					if (getView().getPlaceHolders() != null) {
-						for (PlaceHolder ph : getView().getPlaceHolders()) {
+						/*for (PlaceHolder ph : getView().getPlaceHolders()) {
 							ph.setVisible(visible);
-						}
+						}*/
+						System.out.println("Tiens ce serait pas mal d'afficher les placeholders, la");
 					}
 					updatePlaceHoldersVisibilityRequested = false;
 				}
