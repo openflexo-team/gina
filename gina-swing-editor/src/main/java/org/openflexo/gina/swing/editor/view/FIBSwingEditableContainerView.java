@@ -55,7 +55,8 @@ import org.openflexo.gina.view.FIBView;
  * @param <M>
  * @param <C>
  */
-public interface FIBSwingEditableContainerView<M extends FIBContainer, J extends JComponent> extends FIBSwingEditableView<M, J> {
+public interface FIBSwingEditableContainerView<M extends FIBContainer, J extends JComponent> extends
+		FIBSwingEditableView<M, J> {
 
 	@Override
 	public FIBSwingEditableContainerViewDelegate<M, J> getDelegate();

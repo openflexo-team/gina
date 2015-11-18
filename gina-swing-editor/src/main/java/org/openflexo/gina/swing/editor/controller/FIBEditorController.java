@@ -39,10 +39,14 @@
 
 package org.openflexo.gina.swing.editor.controller;
 
+import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.beans.PropertyChangeSupport;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
@@ -116,20 +120,49 @@ public class FIBEditorController /* extends FIBController */extends Observable i
 			FIBSwingEditableViewDelegate<?, ?> focused = viewDelegates.get(getFocusedObject());
 			FIBSwingEditableViewDelegate<?, ?> selected = viewDelegates.get(getSelectedObject());
 			if (focused != null && focused != selected) {
-				Point origin = SwingUtilities.convertPoint(focused.getJComponent(), new Point(), this);
-				Graphics componentGraphics = g.create(origin.x, origin.y, focused.getJComponent().getWidth(),
-						focused.getJComponent().getHeight());
-				FOCUSED_BORDER.paintBorder(focused.getJComponent(), componentGraphics, 0, 0, focused.getJComponent().getWidth(),
-						focused.getJComponent().getHeight());
-				componentGraphics.dispose();
+				Point origin = SwingUtilities.convertPoint(focused.getResultingJComponent(), new Point(), this);
+				// Graphics componentGraphics = g.create(origin.x, origin.y,
+				// focused.getJComponent().getWidth(), focused
+				// .getJComponent().getHeight());
+				Rectangle bounds = new Rectangle(origin.x, origin.y, focused.getResultingJComponent().getWidth() - 1,
+						focused.getJComponent().getHeight() - 1);
+				Graphics2D g2 = (Graphics2D) g;
+
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+				g2.setColor(Color.WHITE);
+				g2.fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 15, 15);
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+				g2.setStroke(new BasicStroke(1.0f));
+				g2.setColor(Color.LIGHT_GRAY);
+				g2.drawRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 15, 15);
+
+				// FOCUSED_BORDER.paintBorder(focused.getJComponent(),
+				// componentGraphics, 0, 0, focused.getJComponent()
+				// .getWidth(), focused.getJComponent().getHeight());
+				// componentGraphics.dispose();
 			}
 			if (selected != null) {
-				Point origin = SwingUtilities.convertPoint(selected.getJComponent(), new Point(), this);
-				Graphics componentGraphics = g.create(origin.x, origin.y, selected.getJComponent().getWidth(),
-						selected.getJComponent().getHeight());
-				SELECTED_BORDER.paintBorder(selected.getJComponent(), componentGraphics, 0, 0, selected.getJComponent().getWidth(),
-						selected.getJComponent().getHeight());
-				componentGraphics.dispose();
+				Point origin = SwingUtilities.convertPoint(selected.getResultingJComponent(), new Point(), this);
+				// Graphics componentGraphics = g.create(origin.x, origin.y,
+				// selected.getJComponent().getWidth(), selected
+				// .getJComponent().getHeight());
+
+				Rectangle bounds = new Rectangle(origin.x, origin.y, selected.getResultingJComponent().getWidth() - 1,
+						selected.getJComponent().getHeight() - 1);
+				Graphics2D g2 = (Graphics2D) g;
+
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.05f));
+				g2.setColor(Color.BLUE);
+				g2.fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 15, 15);
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+				g2.setStroke(new BasicStroke(1.0f));
+				g2.setColor(Color.BLUE);
+				g2.drawRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 15, 15);
+
+				// SELECTED_BORDER.paintBorder(selected.getJComponent(),
+				// componentGraphics, 0, 0, selected.getJComponent()
+				// .getWidth(), selected.getJComponent().getHeight());
+				// componentGraphics.dispose();
 			}
 		}
 	}
@@ -140,7 +173,8 @@ public class FIBEditorController /* extends FIBController */extends Observable i
 
 		if (fibComponent instanceof FIBContainer) {
 			FIBContainer fibContainer = (FIBContainer) fibComponent;
-			boolean instantiable = fibContainer.getDataClass() != null && !Modifier.isAbstract(fibContainer.getDataClass().getModifiers());
+			boolean instantiable = fibContainer.getDataClass() != null
+					&& !Modifier.isAbstract(fibContainer.getDataClass().getModifiers());
 			if (instantiable) {
 				try {
 					instantiable = fibContainer.getDataClass().getConstructor(new Class[0]) != null;
@@ -163,23 +197,22 @@ public class FIBEditorController /* extends FIBController */extends Observable i
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}
-			else {
+			} else {
 				fibPanel.getController().updateWithoutDataObject();
 			}
-		}
-		else {
+		} else {
 			fibPanel.getController().updateWithoutDataObject();
 		}
 	}
 
-	public FIBEditorController(FIBModelFactory factory, FIBComponent fibComponent, FIBGenericEditor editor, Object dataObject) {
-		this(factory, fibComponent, editor, dataObject,
-				FIBController.instanciateController(fibComponent, SwingEditorViewFactory.INSTANCE, FIBAbstractEditor.LOCALIZATION));
+	public FIBEditorController(FIBModelFactory factory, FIBComponent fibComponent, FIBGenericEditor editor,
+			Object dataObject) {
+		this(factory, fibComponent, editor, dataObject, FIBController.instanciateController(fibComponent,
+				SwingEditorViewFactory.INSTANCE, FIBAbstractEditor.LOCALIZATION));
 	}
 
-	public FIBEditorController(FIBModelFactory factory, FIBComponent fibComponent, FIBGenericEditor editor, Object dataObject,
-			FIBController controller) {
+	public FIBEditorController(FIBModelFactory factory, FIBComponent fibComponent, FIBGenericEditor editor,
+			Object dataObject, FIBController controller) {
 
 		pcSupport = new PropertyChangeSupport(this);
 
@@ -210,15 +243,14 @@ public class FIBEditorController /* extends FIBController */extends Observable i
 
 		FIBEditorBrowser editorBrowser = new FIBEditorBrowser(fibComponent, this);
 
-		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, editorBrowser,
-				new FibWrappingPanel(fibPanel.getResultingJComponent()));
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, editorBrowser, new FibWrappingPanel(
+				fibPanel.getResultingJComponent()));
 
 		editorPanel.add(splitPane, BorderLayout.CENTER);
 
 		if (dataObject != null) {
 			fibPanel.getController().setDataObject(dataObject, true);
-		}
-		else {
+		} else {
 			fibPanel.getController().updateWithoutDataObject();
 		}
 
@@ -363,8 +395,34 @@ public class FIBEditorController /* extends FIBController */extends Observable i
 		}
 	}
 
-	public DropListener buildPaletteDropListener(FIBSwingEditableView<?, ?> editableView/*, PlaceHolder placeHolder*/) {
-		return new DropListener(editableView/*, placeHolder*/);
+	public DropListener buildPaletteDropListener(FIBSwingEditableView<?, ?> editableView) {
+		DropListener returned = new DropListener(editableView);
+		dropListeners.put(editableView, returned);
+		return returned;
+	}
+
+	private Map<FIBSwingEditableView<?, ?>, DropListener> dropListeners = new HashMap<FIBSwingEditableView<?, ?>, DropListener>();
+
+	public void dragEnter(DropListener dl) {
+		if (getSelectedObject() != null) {
+			setSelectedObject(null);
+		}
+		System.out.println("Drag ENTER in " + dl.getEditableView());
+		dropListeners.put(dl.getEditableView(), dl);
+		if (dl.getEditableView().getParentView() != null) {
+			DropListener parentDL = dropListeners.get(dl.getEditableView().getParentView());
+			System.out.println("Tiens j'ai trouve un parent, parentDL=" + parentDL);
+			dl.setParentDropListener(parentDL);
+		}
+	}
+
+	public void dragExit(DropListener dl) {
+		System.out.println("Drag EXIT in " + dl.getEditableView());
+	}
+
+	public void dragEnd(DropListener dl) {
+		System.out.println("Drag END in " + dl.getEditableView());
+		// dropListeners.clear();
 	}
 
 }

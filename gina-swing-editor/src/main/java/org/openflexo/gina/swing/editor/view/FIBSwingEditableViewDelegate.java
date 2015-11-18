@@ -41,6 +41,7 @@ package org.openflexo.gina.swing.editor.view;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Point;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
@@ -60,10 +61,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.swing.editor.controller.DraggedFIBComponent;
+import org.openflexo.gina.swing.editor.controller.DropListener;
 import org.openflexo.gina.swing.editor.controller.ExistingElementDrag;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.controller.FIBEditorPalette;
@@ -73,7 +76,8 @@ import org.openflexo.gina.view.FIBView;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.swing.Focusable;
 
-public class FIBSwingEditableViewDelegate<M extends FIBComponent, J extends JComponent> implements MouseListener, FocusListener, Focusable {
+public class FIBSwingEditableViewDelegate<M extends FIBComponent, J extends JComponent> implements MouseListener,
+		FocusListener, Focusable {
 
 	static final Logger logger = FlexoLogger.getLogger(FIBSwingEditableViewDelegate.class.getPackage().getName());
 
@@ -104,8 +108,8 @@ public class FIBSwingEditableViewDelegate<M extends FIBComponent, J extends JCom
 		dgListener = new MoveDGListener();
 
 		if (!(view instanceof JFIBEditableSplitPanelView)) {
-			DragGestureRecognizer newDGR = dragSource.createDefaultDragGestureRecognizer(view.getTechnologyComponent(), dragAction,
-					dgListener);
+			DragGestureRecognizer newDGR = dragSource.createDefaultDragGestureRecognizer(view.getTechnologyComponent(),
+					dragAction, dgListener);
 		}
 
 	}
@@ -180,6 +184,10 @@ public class FIBSwingEditableViewDelegate<M extends FIBComponent, J extends JCom
 		return view.getJComponent();
 	}
 
+	public JComponent getResultingJComponent() {
+		return view.getResultingJComponent();
+	}
+
 	@Override
 	public boolean isFocused() {
 		return getEditorController().getFocusedObject() == getFIBComponent();
@@ -231,30 +239,55 @@ public class FIBSwingEditableViewDelegate<M extends FIBComponent, J extends JCom
 
 	public static class FIBDropTarget extends DropTarget {
 		private final FIBSwingEditableView editableView;
-		private final PlaceHolder placeHolder = null;
+
+		// private final PlaceHolder placeHolder = null;
 
 		public FIBDropTarget(FIBSwingEditableView<?, ?> editableView) {
-			super(editableView.getJComponent(), DnDConstants.ACTION_COPY | DnDConstants.ACTION_MOVE,
-					editableView.getEditorController().buildPaletteDropListener(editableView), true);
+			super(editableView.getJComponent(), DnDConstants.ACTION_COPY | DnDConstants.ACTION_MOVE, editableView
+					.getEditorController().buildPaletteDropListener(editableView), true);
 			this.editableView = editableView;
 			logger.fine("Made FIBDropTarget for " + getFIBComponent());
 		}
 
-		/*public FIBDropTarget(PlaceHolder placeHolder) {
-			super(placeHolder, DnDConstants.ACTION_COPY | DnDConstants.ACTION_MOVE, placeHolder.getView()
-					.getEditorController().buildPaletteDropListener(placeHolder.getView(), placeHolder), true);
-			this.placeHolder = placeHolder;
-			this.editableView = placeHolder.getView();
-			logger.fine("Made FIBDropTarget for " + getFIBComponent());
-		}*/
+		/*
+		 * public FIBDropTarget(PlaceHolder placeHolder) { super(placeHolder,
+		 * DnDConstants.ACTION_COPY | DnDConstants.ACTION_MOVE,
+		 * placeHolder.getView()
+		 * .getEditorController().buildPaletteDropListener(
+		 * placeHolder.getView(), placeHolder), true); this.placeHolder =
+		 * placeHolder; this.editableView = placeHolder.getView();
+		 * logger.fine("Made FIBDropTarget for " + getFIBComponent()); }
+		 */
 
-		public PlaceHolder getPlaceHolder() {
-			return placeHolder;
+		public PlaceHolder getPlaceHolder(DropListener dropListener, Point p) {
+
+			PlaceHolder returned = null;
+
+			if (dropListener.getParentDropListener() != null) {
+				returned = getPlaceHolder(dropListener.getParentDropListener(), SwingUtilities.convertPoint(
+						editableView.getResultingJComponent(), p,
+						((JFIBView<?, ?>) editableView.getParentView()).getResultingJComponent()));
+				if (returned != null) {
+					System.out.println("Yes !!! j'ai trouve un placeholder pour le parent");
+					return returned;
+				}
+			}
+
+			if (editableView instanceof FIBSwingEditableContainerView) {
+				for (PlaceHolder ph : ((FIBSwingEditableContainerView<?, ?>) editableView).getDelegate()
+						.getPlaceholders()) {
+					if (ph.getBounds().contains(p)) {
+						return ph;
+					}
+				}
+			}
+
+			return null;
 		}
 
-		public boolean isPlaceHolder() {
-			return placeHolder != null;
-		}
+		/*
+		 * public boolean isPlaceHolder() { return placeHolder != null; }
+		 */
 
 		final public FIBComponent getFIBComponent() {
 			return editableView.getComponent();
@@ -267,7 +300,8 @@ public class FIBSwingEditableViewDelegate<M extends FIBComponent, J extends JCom
 	}
 
 	/**
-	 * DGListener a listener that will start the drag. has access to top level's dsListener and dragSource
+	 * DGListener a listener that will start the drag. has access to top level's
+	 * dsListener and dragSource
 	 * 
 	 * @see java.awt.dnd.DragGestureListener
 	 * @see java.awt.dnd.DragSource
@@ -275,7 +309,8 @@ public class FIBSwingEditableViewDelegate<M extends FIBComponent, J extends JCom
 	 */
 	class MoveDGListener implements DragGestureListener {
 		/**
-		 * Start the drag if the operation is ok. uses java.awt.datatransfer.StringSelection to transfer the label's data
+		 * Start the drag if the operation is ok. uses
+		 * java.awt.datatransfer.StringSelection to transfer the label's data
 		 * 
 		 * @param e
 		 *            the event object
@@ -293,7 +328,8 @@ public class FIBSwingEditableViewDelegate<M extends FIBComponent, J extends JCom
 				// DragLabel.this.getText() );
 			}
 
-			ExistingElementDrag transferable = new ExistingElementDrag(new DraggedFIBComponent(view.getComponent()), e.getDragOrigin());
+			ExistingElementDrag transferable = new ExistingElementDrag(new DraggedFIBComponent(view.getComponent()),
+					e.getDragOrigin());
 
 			try {
 				// initial cursor, transferrable, dsource listener
@@ -356,8 +392,7 @@ public class FIBSwingEditableViewDelegate<M extends FIBComponent, J extends JCom
 			int myaction = e.getDropAction();
 			if ((myaction & dragAction) != 0) {
 				context.setCursor(DragSource.DefaultCopyDrop);
-			}
-			else {
+			} else {
 				context.setCursor(DragSource.DefaultCopyNoDrop);
 			}
 		}

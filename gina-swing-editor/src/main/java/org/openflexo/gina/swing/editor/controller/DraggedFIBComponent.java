@@ -45,6 +45,7 @@ import java.util.logging.Logger;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate.FIBDropTarget;
+import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.logging.FlexoLogger;
 
 public class DraggedFIBComponent implements FIBDraggable {
@@ -69,63 +70,70 @@ public class DraggedFIBComponent implements FIBDraggable {
 
 	@Override
 	public boolean acceptDragging(FIBDropTarget target) {
-		// System.out.println("acceptDragging ? for component: " + target.getFIBComponent() + " place holder: " + target.getPlaceHolder());
+		// System.out.println("acceptDragging ? for component: " +
+		// target.getFIBComponent() + " place holder: " +
+		// target.getPlaceHolder());
 		return true;
 	}
 
 	@Override
-	public boolean elementDragged(FIBDropTarget target, Point pt) {
-		logger.info("Nous y voila: element dragged with component: " + target.getFIBComponent() + " place holder: "
-				+ target.getPlaceHolder());
+	public boolean elementDragged(FIBDropTarget target, DropListener dropListener, Point pt) {
+		PlaceHolder ph = target.getPlaceHolder(dropListener, pt);
 
-		/*if (target.getPlaceHolder() == null) {
-			boolean deleteIt = JOptionPane.showConfirmDialog(_palette.getEditorController().getEditor().getFrame(),
-					target.getFIBComponent() + ": really delete this component (undoable operation) ?", "information",
-					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION;
-			if (!deleteIt) {
-				return false;
-			}
-		}*/
+		logger.info("Nous y voila: element dragged with component: " + target.getFIBComponent() + " place holder: "
+				+ ph);
+
+		/*
+		 * if (target.getPlaceHolder() == null) { boolean deleteIt =
+		 * JOptionPane.
+		 * showConfirmDialog(_palette.getEditorController().getEditor
+		 * ().getFrame(), target.getFIBComponent() +
+		 * ": really delete this component (undoable operation) ?",
+		 * "information", JOptionPane.YES_NO_CANCEL_OPTION,
+		 * JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION; if
+		 * (!deleteIt) { return false; } }
+		 */
 
 		try {
-			if (target.getPlaceHolder() != null) {
-				target.getPlaceHolder().willDelete();
+
+			if (ph != null) {
+				ph.willDelete();
 				FIBContainer oldParent = draggedComponent.getParent();
 				draggedComponent.getParent().removeFromSubComponents(draggedComponent);
-				// WAS: draggedComponent.getParent().removeFromSubComponentsNoNotification(draggedComponent);
-				target.getPlaceHolder().insertComponent(draggedComponent);
-				target.getPlaceHolder().hasDeleted();
+				// WAS:
+				// draggedComponent.getParent().removeFromSubComponentsNoNotification(draggedComponent);
+				ph.insertComponent(draggedComponent);
+				ph.hasDeleted();
 				oldParent.notifyComponentMoved(draggedComponent);
 				return true;
 			}
 
-			/*else {
-				FIBComponent targetComponent = target.getFIBComponent();
-				FIBContainer containerComponent = targetComponent.getParent();
-
-				if (containerComponent == null)
-					return false;
-
-				if (targetComponent instanceof FIBTab && !(newComponent instanceof FIBPanel))
-					return false;
-
-				if (targetComponent.getParent() instanceof FIBTabPanel && newComponent instanceof FIBPanel) {
-					// Special case where a new tab is added to a FIBTabPanel
-					FIBTab newTabComponent = new FIBTab();
-					newTabComponent.setTitle("NewTab");
-					newTabComponent.setIndex(((FIBTabPanel) targetComponent.getParent()).getSubComponents().size());
-					((FIBTabPanel) targetComponent.getParent()).addToSubComponents(newTabComponent);
-					return true;
-				} else {
-					// Normal case, we replace targetComponent by newComponent
-					ComponentConstraints constraints = targetComponent.getConstraints();
-					containerComponent.removeFromSubComponentsNoNotification(targetComponent);
-					// No notification, we will do it later, to avoid reindexing
-					targetComponent.delete();
-					containerComponent.addToSubComponents(newComponent, constraints);
-					return true;
-				}
-			}*/
+			/*
+			 * else { FIBComponent targetComponent = target.getFIBComponent();
+			 * FIBContainer containerComponent = targetComponent.getParent();
+			 * 
+			 * if (containerComponent == null) return false;
+			 * 
+			 * if (targetComponent instanceof FIBTab && !(newComponent
+			 * instanceof FIBPanel)) return false;
+			 * 
+			 * if (targetComponent.getParent() instanceof FIBTabPanel &&
+			 * newComponent instanceof FIBPanel) { // Special case where a new
+			 * tab is added to a FIBTabPanel FIBTab newTabComponent = new
+			 * FIBTab(); newTabComponent.setTitle("NewTab");
+			 * newTabComponent.setIndex(((FIBTabPanel)
+			 * targetComponent.getParent()).getSubComponents().size());
+			 * ((FIBTabPanel)
+			 * targetComponent.getParent()).addToSubComponents(newTabComponent);
+			 * return true; } else { // Normal case, we replace targetComponent
+			 * by newComponent ComponentConstraints constraints =
+			 * targetComponent.getConstraints();
+			 * containerComponent.removeFromSubComponentsNoNotification
+			 * (targetComponent); // No notification, we will do it later, to
+			 * avoid reindexing targetComponent.delete();
+			 * containerComponent.addToSubComponents(newComponent, constraints);
+			 * return true; } }
+			 */
 
 			return false;
 		} catch (Exception e) {

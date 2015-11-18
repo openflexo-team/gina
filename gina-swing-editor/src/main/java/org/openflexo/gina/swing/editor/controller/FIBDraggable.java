@@ -51,5 +51,5 @@ public interface FIBDraggable {
 
 	public boolean acceptDragging(FIBDropTarget target);
 
-	public boolean elementDragged(FIBDropTarget target, Point pt);
+	public boolean elementDragged(FIBDropTarget target, DropListener dl, Point pt);
 }

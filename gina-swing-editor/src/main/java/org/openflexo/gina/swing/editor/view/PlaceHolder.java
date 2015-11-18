@@ -39,7 +39,11 @@
 
 package org.openflexo.gina.swing.editor.view;
 
+import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.logging.Logger;
 
@@ -50,12 +54,14 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.logging.FlexoLogger;
 
 @SuppressWarnings("serial")
-public abstract class PlaceHolder /*extends JPanel implements Focusable*/ {
+public abstract class PlaceHolder /* extends JPanel implements Focusable */{
 
 	static final Logger logger = FlexoLogger.getLogger(PlaceHolder.class.getPackage().getName());
 
-	// private static final Border focusBorder = new NoInsetsBorder(BorderFactory.createLineBorder(Color.RED));
-	// private static final Border nonFocusBorder = new NoInsetsBorder(BorderFactory.createEtchedBorder());
+	// private static final Border focusBorder = new
+	// NoInsetsBorder(BorderFactory.createLineBorder(Color.RED));
+	// private static final Border nonFocusBorder = new
+	// NoInsetsBorder(BorderFactory.createEtchedBorder());
 
 	private final boolean isFocused = false;
 
@@ -64,7 +70,7 @@ public abstract class PlaceHolder /*extends JPanel implements Focusable*/ {
 
 	private final Rectangle bounds;
 
-	public PlaceHolder(FIBSwingEditableContainerView<?, ?> view, String text) {
+	public PlaceHolder(FIBSwingEditableContainerView<?, ?> view, String text, Rectangle bounds) {
 		// super(new BorderLayout());
 		this.view = view;
 		this.text = text;
@@ -74,8 +80,14 @@ public abstract class PlaceHolder /*extends JPanel implements Focusable*/ {
 		label.setVerticalAlignment(SwingConstants.CENTER);
 		// add(label, BorderLayout.CENTER);
 		// setBorder(nonFocusBorder);
-		System.out.println("Tiens, je calcule un bounds pour la vue de taille: " + view.getResultingJComponent().getSize());
-		bounds = new Rectangle(100, 50);
+		System.out.println("Tiens, je calcule un bounds pour la vue de taille: "
+				+ view.getResultingJComponent().getSize());
+		this.bounds = bounds;
+		visible = false;
+	}
+
+	public PlaceHolder(FIBSwingEditableContainerView<?, ?> view, String text) {
+		this(view, text, new Rectangle(100, 50));
 	}
 
 	public Rectangle getBounds() {
@@ -89,25 +101,17 @@ public abstract class PlaceHolder /*extends JPanel implements Focusable*/ {
 	}
 
 	public void setVisible(boolean visible) {
+		// System.out.println("setVisible " + visible + " pour " + this);
 		this.visible = visible;
 	}
 
-	/*@Override
-	public void setFocused(boolean aFlag) {
-		if (aFlag) {
-			isFocused = true;
-			setBorder(focusBorder);
-		}
-		else {
-			isFocused = false;
-			setBorder(nonFocusBorder);
-		}
-	}
-	
-	@Override
-	public boolean isFocused() {
-		return isFocused;
-	}*/
+	/*
+	 * @Override public void setFocused(boolean aFlag) { if (aFlag) { isFocused
+	 * = true; setBorder(focusBorder); } else { isFocused = false;
+	 * setBorder(nonFocusBorder); } }
+	 * 
+	 * @Override public boolean isFocused() { return isFocused; }
+	 */
 
 	public FIBSwingEditableContainerView<?, ?> getView() {
 		return view;
@@ -136,6 +140,29 @@ public abstract class PlaceHolder /*extends JPanel implements Focusable*/ {
 		 * (Component c : getView().getJComponent().getComponents()) {
 		 * System.out.println("> Hop: "+c+" "+bl.getConstraints(c)); } }
 		 */
+
+	}
+
+	public void paint(Graphics g) {
+
+		if (isVisible()) {
+
+			// System.out.println("Painting placeholder " + this);
+
+			Graphics2D g2 = (Graphics2D) g;
+
+			float alpha = 0.1f;
+			int type = AlphaComposite.SRC_OVER;
+			AlphaComposite composite = AlphaComposite.getInstance(type, alpha);
+
+			g2.setComposite(composite);
+
+			g2.setColor(Color.YELLOW);
+			g2.fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 15, 15);
+			g2.setStroke(new BasicStroke(3.0f));
+			g2.setColor(Color.GRAY);
+			g2.drawRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 15, 15);
+		}
 
 	}
 

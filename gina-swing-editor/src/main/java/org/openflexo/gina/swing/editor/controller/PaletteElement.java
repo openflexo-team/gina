@@ -71,11 +71,12 @@ import org.openflexo.gina.model.container.FIBTab;
 import org.openflexo.gina.model.container.FIBTabPanel;
 import org.openflexo.gina.swing.editor.FIBAbstractEditor;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate.FIBDropTarget;
+import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.logging.FlexoLogger;
 
-public class PaletteElement implements FIBDraggable /*implements Transferable*/ {
+public class PaletteElement implements FIBDraggable /* implements Transferable */{
 	static final Logger logger = FlexoLogger.getLogger(PaletteElement.class.getPackage().getName());
 
 	private final FIBEditorPalette _palette;
@@ -89,7 +90,8 @@ public class PaletteElement implements FIBDraggable /*implements Transferable*/ 
 	private final int dragAction = DnDConstants.ACTION_COPY;
 	private final Hashtable<JComponent, DragGestureRecognizer> dgr;
 
-	// private static final DataFlavor DATA_FLAVOR = new DataFlavor(PaletteElement.class, "PaletteElement");
+	// private static final DataFlavor DATA_FLAVOR = new
+	// DataFlavor(PaletteElement.class, "PaletteElement");
 
 	public PaletteElement(FIBComponent modelComponent, FIBComponent representationComponent, FIBEditorPalette palette) {
 		this.modelComponent = modelComponent;
@@ -99,7 +101,8 @@ public class PaletteElement implements FIBDraggable /*implements Transferable*/ 
 		int x = Integer.parseInt(representationComponent.getParameter("x"));
 		int y = Integer.parseInt(representationComponent.getParameter("y"));
 
-		view = FIBController.makeView(representationComponent, SwingViewFactory.INSTANCE, FIBAbstractEditor.LOCALIZATION);
+		view = FIBController.makeView(representationComponent, SwingViewFactory.INSTANCE,
+				FIBAbstractEditor.LOCALIZATION);
 
 		if (view.getTechnologyComponent() != null) {
 			Dimension size = view.getTechnologyComponent().getPreferredSize();
@@ -170,30 +173,29 @@ public class PaletteElement implements FIBDraggable /*implements Transferable*/ 
 
 	@Override
 	public boolean acceptDragging(FIBDropTarget target) {
-		logger.fine("acceptDragging ? for component: " + target.getFIBComponent() + " place holder: " + target.getPlaceHolder());
+		// logger.fine("acceptDragging ? for component: " +
+		// target.getFIBComponent() + " place holder: " +
+		// target.getPlaceHolder());
 		return true;
 	}
 
-	/*@Override
-	public DataFlavor[] getTransferDataFlavors() {
-		return new DataFlavor[] { DATA_FLAVOR };
-	}
-	
-	@Override
-	public boolean isDataFlavorSupported(DataFlavor flavor) {
-		return true;
-	}
-	
-	@Override
-	public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-		return this;
-	}*/
+	/*
+	 * @Override public DataFlavor[] getTransferDataFlavors() { return new
+	 * DataFlavor[] { DATA_FLAVOR }; }
+	 * 
+	 * @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
+	 * return true; }
+	 * 
+	 * @Override public Object getTransferData(DataFlavor flavor) throws
+	 * UnsupportedFlavorException, IOException { return this; }
+	 */
 
 	@Override
-	public boolean elementDragged(FIBDropTarget target, Point pt) {
-		logger.info("Element dragged with component: " + target.getFIBComponent() + " place holder: " + target.getPlaceHolder());
+	public boolean elementDragged(FIBDropTarget target, DropListener dropListener, Point pt) {
+		PlaceHolder ph = target.getPlaceHolder(dropListener, pt);
+		logger.info("Element dragged with component: " + target.getFIBComponent() + " place holder: " + ph);
 		boolean isTabInsertion = modelComponent instanceof FIBPanel && target.getFIBComponent() instanceof FIBTabPanel;
-		if (!isTabInsertion && target.getPlaceHolder() == null) {
+		if (!isTabInsertion && ph == null) {
 			boolean deleteIt = JOptionPane.showConfirmDialog(_palette.getEditorController().getEditor().getFrame(),
 					target.getFIBComponent() + ": really delete this component (undoable operation) ?", "information",
 					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION;
@@ -207,10 +209,10 @@ public class PaletteElement implements FIBDraggable /*implements Transferable*/ 
 		newComponent.clearParameters();
 
 		try {
-			if (!isTabInsertion && target.getPlaceHolder() != null) {
-				target.getPlaceHolder().willDelete();
-				target.getPlaceHolder().insertComponent(newComponent);
-				target.getPlaceHolder().hasDeleted();
+			if (!isTabInsertion && ph != null) {
+				ph.willDelete();
+				ph.insertComponent(newComponent);
+				ph.hasDeleted();
 				return true;
 			}
 
@@ -235,13 +237,14 @@ public class PaletteElement implements FIBDraggable /*implements Transferable*/ 
 					newTabComponent.finalizeDeserialization();
 					((FIBTabPanel) targetComponent).addToSubComponents(newTabComponent);
 					return true;
-				}
-				else {
+				} else {
 					// Normal case, we replace targetComponent by newComponent
 					ComponentConstraints constraints = targetComponent.getConstraints();
 					containerComponent.removeFromSubComponents(targetComponent);
-					// WAS: containerComponent.removeFromSubComponentsNoNotification(targetComponent);
-					// WAS: No notification, we will do it later, to avoid reindexing
+					// WAS:
+					// containerComponent.removeFromSubComponentsNoNotification(targetComponent);
+					// WAS: No notification, we will do it later, to avoid
+					// reindexing
 					targetComponent.delete();
 					containerComponent.addToSubComponents(newComponent, constraints);
 					return true;
@@ -255,7 +258,8 @@ public class PaletteElement implements FIBDraggable /*implements Transferable*/ 
 	}
 
 	/**
-	 * DGListener a listener that will start the drag. has access to top level's dsListener and dragSource
+	 * DGListener a listener that will start the drag. has access to top level's
+	 * dsListener and dragSource
 	 * 
 	 * @see java.awt.dnd.DragGestureListener
 	 * @see java.awt.dnd.DragSource
@@ -263,7 +267,8 @@ public class PaletteElement implements FIBDraggable /*implements Transferable*/ 
 	 */
 	class DGListener implements DragGestureListener {
 		/**
-		 * Start the drag if the operation is ok. uses java.awt.datatransfer.StringSelection to transfer the label's data
+		 * Start the drag if the operation is ok. uses
+		 * java.awt.datatransfer.StringSelection to transfer the label's data
 		 * 
 		 * @param e
 		 *            the event object
@@ -288,7 +293,8 @@ public class PaletteElement implements FIBDraggable /*implements Transferable*/ 
 				e.startDrag(FIBEditorPalette.dropKO, transferable, dsListener);
 
 				FIBEditorPalette.logger.info("Starting drag for " + _palette);
-				// getDrawingView().captureDraggedNode(PaletteElementView.this, e);
+				// getDrawingView().captureDraggedNode(PaletteElementView.this,
+				// e);
 			} catch (Exception idoe) {
 				idoe.printStackTrace();
 				FIBEditorPalette.logger.warning("Unexpected exception " + idoe);
@@ -344,8 +350,7 @@ public class PaletteElement implements FIBDraggable /*implements Transferable*/ 
 			int myaction = e.getDropAction();
 			if ((myaction & dragAction) != 0) {
 				context.setCursor(DragSource.DefaultCopyDrop);
-			}
-			else {
+			} else {
 				context.setCursor(DragSource.DefaultCopyNoDrop);
 			}
 		}
