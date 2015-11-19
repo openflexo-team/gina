@@ -44,7 +44,7 @@ import java.awt.BorderLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import org.openflexo.gina.model.container.BorderLayoutConstraints;
+import org.openflexo.gina.model.container.layout.BorderLayoutConstraints;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.view.FIBView;

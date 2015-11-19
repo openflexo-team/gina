@@ -37,7 +37,7 @@
  * 
  */
 
-package org.openflexo.gina.model.container;
+package org.openflexo.gina.model.container.layout;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,6 +49,7 @@ import java.util.logging.Logger;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBProperty;
 import org.openflexo.gina.model.FIBPropertyNotification;
+import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 
 /**

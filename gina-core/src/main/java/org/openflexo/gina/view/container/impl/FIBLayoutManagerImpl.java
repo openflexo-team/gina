@@ -46,7 +46,7 @@ import java.util.logging.Logger;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
-import org.openflexo.gina.model.container.ComponentConstraints;
+import org.openflexo.gina.model.container.layout.ComponentConstraints;
 import org.openflexo.gina.model.container.layout.FIBLayoutManager;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.impl.FIBContainerViewImpl;

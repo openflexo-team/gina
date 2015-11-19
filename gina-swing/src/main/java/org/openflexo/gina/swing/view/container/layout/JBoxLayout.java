@@ -43,8 +43,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import org.openflexo.gina.model.container.BoxLayoutConstraints;
 import org.openflexo.gina.model.container.FIBPanel;
+import org.openflexo.gina.model.container.layout.BoxLayoutConstraints;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.view.FIBView;

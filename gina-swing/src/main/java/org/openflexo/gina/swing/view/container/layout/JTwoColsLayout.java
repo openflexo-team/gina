@@ -47,8 +47,8 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.openflexo.gina.model.container.FIBPanel;
-import org.openflexo.gina.model.container.TwoColsLayoutConstraints;
-import org.openflexo.gina.model.container.TwoColsLayoutConstraints.TwoColsLayoutLocation;
+import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
+import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.view.FIBView;

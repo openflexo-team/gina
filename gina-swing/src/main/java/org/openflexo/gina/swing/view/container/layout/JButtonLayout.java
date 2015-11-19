@@ -42,8 +42,8 @@ package org.openflexo.gina.swing.view.container.layout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import org.openflexo.gina.model.container.ButtonLayoutConstraints;
 import org.openflexo.gina.model.container.FIBPanel;
+import org.openflexo.gina.model.container.layout.ButtonLayoutConstraints;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.view.FIBView;

@@ -37,10 +37,11 @@
  * 
  */
 
-package org.openflexo.gina.model.container;
+package org.openflexo.gina.model.container.layout;
 
 import java.awt.GridBagConstraints;
 
+import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 
 public class GridBagLayoutConstraints extends ComponentConstraints {

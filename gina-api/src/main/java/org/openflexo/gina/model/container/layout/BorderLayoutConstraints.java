@@ -37,12 +37,13 @@
  * 
  */
 
-package org.openflexo.gina.model.container;
+package org.openflexo.gina.model.container.layout;
 
 import java.awt.BorderLayout;
 import java.util.logging.Logger;
 
 import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 
 public class BorderLayoutConstraints extends ComponentConstraints {

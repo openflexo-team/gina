@@ -54,10 +54,10 @@ import javax.swing.Box;
 import javax.swing.JPanel;
 
 import org.openflexo.gina.model.FIBComponent;
-import org.openflexo.gina.model.container.BorderLayoutConstraints;
-import org.openflexo.gina.model.container.BorderLayoutConstraints.BorderLayoutLocation;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
+import org.openflexo.gina.model.container.layout.BorderLayoutConstraints;
+import org.openflexo.gina.model.container.layout.BorderLayoutConstraints.BorderLayoutLocation;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerViewDelegate;

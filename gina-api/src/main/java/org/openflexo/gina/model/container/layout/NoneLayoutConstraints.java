@@ -37,11 +37,12 @@
  * 
  */
 
-package org.openflexo.gina.model.container;
+package org.openflexo.gina.model.container.layout;
 
+import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 
-public class GridLayoutConstraints extends ComponentConstraints {
+public class NoneLayoutConstraints extends ComponentConstraints {
 
 	private static final String X = "x";
 	private static final String Y = "y";
@@ -62,27 +63,21 @@ public class GridLayoutConstraints extends ComponentConstraints {
 		setIntValue(Y, y);
 	}
 
-	public GridLayoutConstraints() {
+	public NoneLayoutConstraints() {
 		super();
 	}
 
-	public GridLayoutConstraints(int x, int y) {
-		this();
-		setX(x);
-		setY(y);
-	}
-
-	public GridLayoutConstraints(String someConstraints) {
+	protected NoneLayoutConstraints(String someConstraints) {
 		super(someConstraints);
 	}
 
-	public GridLayoutConstraints(ComponentConstraints someConstraints) {
+	public NoneLayoutConstraints(ComponentConstraints someConstraints) {
 		super(someConstraints);
 	}
 
 	@Override
 	protected Layout getType() {
-		return Layout.grid;
+		return Layout.none;
 	}
 
 }

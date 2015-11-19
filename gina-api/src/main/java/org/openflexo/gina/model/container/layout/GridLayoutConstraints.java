@@ -37,27 +37,53 @@
  * 
  */
 
-package org.openflexo.gina.model.container;
+package org.openflexo.gina.model.container.layout;
 
+import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 
-public class ButtonLayoutConstraints extends ComponentConstraints {
+public class GridLayoutConstraints extends ComponentConstraints {
 
-	public ButtonLayoutConstraints() {
+	private static final String X = "x";
+	private static final String Y = "y";
+
+	public int getX() {
+		return getIntValue(X, 0);
+	}
+
+	public void setX(int x) {
+		setIntValue(X, x);
+	}
+
+	public int getY() {
+		return getIntValue(Y, 0);
+	}
+
+	public void setY(int y) {
+		setIntValue(Y, y);
+	}
+
+	public GridLayoutConstraints() {
 		super();
 	}
 
-	public ButtonLayoutConstraints(String someConstraints) {
+	public GridLayoutConstraints(int x, int y) {
+		this();
+		setX(x);
+		setY(y);
+	}
+
+	public GridLayoutConstraints(String someConstraints) {
 		super(someConstraints);
 	}
 
-	public ButtonLayoutConstraints(ComponentConstraints someConstraints) {
+	public GridLayoutConstraints(ComponentConstraints someConstraints) {
 		super(someConstraints);
 	}
 
 	@Override
 	protected Layout getType() {
-		return Layout.buttons;
+		return Layout.grid;
 	}
 
 }

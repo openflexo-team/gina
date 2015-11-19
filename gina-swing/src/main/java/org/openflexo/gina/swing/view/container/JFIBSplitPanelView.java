@@ -47,7 +47,7 @@ import javax.swing.SwingUtilities;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBSplitPanel;
-import org.openflexo.gina.model.container.SplitLayoutConstraints;
+import org.openflexo.gina.model.container.layout.SplitLayoutConstraints;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.view.container.impl.FIBSplitPanelViewImpl;

@@ -40,15 +40,15 @@ package org.openflexo.gina.model.converter;
 
 import java.util.logging.Logger;
 
-import org.openflexo.gina.model.container.BorderLayoutConstraints;
-import org.openflexo.gina.model.container.BoxLayoutConstraints;
-import org.openflexo.gina.model.container.ComponentConstraints;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
-import org.openflexo.gina.model.container.FlowLayoutConstraints;
-import org.openflexo.gina.model.container.GridBagLayoutConstraints;
-import org.openflexo.gina.model.container.GridLayoutConstraints;
-import org.openflexo.gina.model.container.SplitLayoutConstraints;
-import org.openflexo.gina.model.container.TwoColsLayoutConstraints;
+import org.openflexo.gina.model.container.layout.BorderLayoutConstraints;
+import org.openflexo.gina.model.container.layout.BoxLayoutConstraints;
+import org.openflexo.gina.model.container.layout.ComponentConstraints;
+import org.openflexo.gina.model.container.layout.FlowLayoutConstraints;
+import org.openflexo.gina.model.container.layout.GridBagLayoutConstraints;
+import org.openflexo.gina.model.container.layout.GridLayoutConstraints;
+import org.openflexo.gina.model.container.layout.SplitLayoutConstraints;
+import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
 import org.openflexo.model.StringConverterLibrary.Converter;
 import org.openflexo.model.factory.ModelFactory;
 

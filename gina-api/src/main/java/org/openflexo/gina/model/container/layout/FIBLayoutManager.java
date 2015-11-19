@@ -43,7 +43,6 @@ import java.util.Map;
 
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
-import org.openflexo.gina.model.container.ComponentConstraints;
 import org.openflexo.gina.view.FIBView;
 
 /**

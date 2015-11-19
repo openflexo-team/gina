@@ -44,7 +44,7 @@ import java.awt.GridBagLayout;
 import javax.swing.JComponent;
 
 import org.openflexo.gina.model.container.FIBPanel;
-import org.openflexo.gina.model.container.SplitLayoutConstraints;
+import org.openflexo.gina.model.container.layout.SplitLayoutConstraints;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.container.JFIBSplitPanelView;
 import org.openflexo.gina.view.FIBView;

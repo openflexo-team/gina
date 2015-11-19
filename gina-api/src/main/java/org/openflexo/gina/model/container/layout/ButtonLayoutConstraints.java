@@ -37,46 +37,28 @@
  * 
  */
 
-package org.openflexo.gina.model.container;
+package org.openflexo.gina.model.container.layout;
 
+import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 
-public class BoxLayoutConstraints extends ComponentConstraints {
+public class ButtonLayoutConstraints extends ComponentConstraints {
 
-	private static final String ALIGNMENT_X = "alignmentX";
-	private static final String ALIGNMENT_Y = "alignmentY";
-
-	public BoxLayoutConstraints() {
+	public ButtonLayoutConstraints() {
 		super();
 	}
 
-	public BoxLayoutConstraints(String someConstraints) {
+	public ButtonLayoutConstraints(String someConstraints) {
 		super(someConstraints);
 	}
 
-	public BoxLayoutConstraints(ComponentConstraints someConstraints) {
+	public ButtonLayoutConstraints(ComponentConstraints someConstraints) {
 		super(someConstraints);
 	}
 
 	@Override
 	protected Layout getType() {
-		return Layout.box;
-	}
-
-	public float getAlignmentX() {
-		return getFloatValue(ALIGNMENT_X, 0.5f);
-	}
-
-	public void setAlignmentX(float x) {
-		setFloatValue(ALIGNMENT_X, x);
-	}
-
-	public float getAlignmentY() {
-		return getFloatValue(ALIGNMENT_Y, 0.5f);
-	}
-
-	public void setAlignmentY(float y) {
-		setFloatValue(ALIGNMENT_Y, y);
+		return Layout.buttons;
 	}
 
 }
