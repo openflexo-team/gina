@@ -68,7 +68,7 @@ public class SplitLayoutConstraints extends ComponentConstraints {
 
 	@Override
 	protected Layout getType() {
-		return Layout.split;
+		return null; // Layout.split;
 	}
 
 	public String getSplitIdentifier() {

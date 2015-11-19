@@ -45,7 +45,9 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
 import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBSplitPanel;
+import org.openflexo.gina.model.container.SplitLayoutConstraints;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.view.container.impl.FIBSplitPanelViewImpl;
@@ -75,17 +77,6 @@ public class JFIBSplitPanelView extends FIBSplitPanelViewImpl<JXMultiSplitPane, 
 	 */
 	public static class SwingSplitPanelRenderingAdapter extends SwingRenderingAdapter<JXMultiSplitPane> implements
 			SplitPanelRenderingAdapter<JXMultiSplitPane, JComponent> {
-
-		@Override
-		public void addComponent(JComponent child, JXMultiSplitPane parent, Object constraints) {
-			if (constraints instanceof String) {
-				String splitIdentifier = (String) constraints;
-				parent.add(child, splitIdentifier);
-			} else {
-				logger.warning("Unexpected constraint: " + constraints);
-				parent.add(child);
-			}
-		}
 	}
 
 	private MultiSplitLayout layout;
@@ -172,6 +163,17 @@ public class JFIBSplitPanelView extends FIBSplitPanelViewImpl<JXMultiSplitPane, 
 	@Override
 	public void updateLanguage() {
 		super.updateLanguage();
+	}
+
+	@Override
+	protected void addSubComponentsAndDoLayout() {
+		for (FIBComponent c : getComponent().getSubComponents()) {
+			JFIBView<?, JComponent> subComponentView = (JFIBView<?, JComponent>) getSubViewsMap().get(c);
+			if (c.getConstraints() instanceof SplitLayoutConstraints) {
+				getTechnologyComponent().add(subComponentView.getResultingJComponent(),
+						((SplitLayoutConstraints) c.getConstraints()).getSplitIdentifier());
+			}
+		}
 	}
 
 }

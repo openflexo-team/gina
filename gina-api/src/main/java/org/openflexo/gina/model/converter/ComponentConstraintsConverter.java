@@ -43,12 +43,12 @@ import java.util.logging.Logger;
 import org.openflexo.gina.model.container.BorderLayoutConstraints;
 import org.openflexo.gina.model.container.BoxLayoutConstraints;
 import org.openflexo.gina.model.container.ComponentConstraints;
+import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.model.container.FlowLayoutConstraints;
 import org.openflexo.gina.model.container.GridBagLayoutConstraints;
 import org.openflexo.gina.model.container.GridLayoutConstraints;
 import org.openflexo.gina.model.container.SplitLayoutConstraints;
 import org.openflexo.gina.model.container.TwoColsLayoutConstraints;
-import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.model.StringConverterLibrary.Converter;
 import org.openflexo.model.factory.ModelFactory;
 
@@ -82,7 +82,7 @@ public class ComponentConstraintsConverter extends Converter<ComponentConstraint
 				return new TwoColsLayoutConstraints(someConstraints);
 			} else if (constraintType.equals(Layout.gridbag.name())) {
 				return new GridBagLayoutConstraints(someConstraints);
-			} else if (constraintType.equals(Layout.split.name())) {
+			} else if (constraintType.equals("split")) {
 				return new SplitLayoutConstraints(someConstraints);
 			}
 		} catch (StringIndexOutOfBoundsException e) {

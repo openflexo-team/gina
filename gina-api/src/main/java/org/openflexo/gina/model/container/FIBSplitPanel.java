@@ -51,7 +51,6 @@ import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBLeaf;
 import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBNode;
 import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBRowSplit;
 import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBSplit;
-import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.Import;
@@ -128,10 +127,9 @@ public interface FIBSplitPanel extends FIBContainer {
 			return splitLayoutFactory;
 		}
 
-		@Override
-		public Layout getLayout() {
-			return Layout.split;
-		}
+		/*
+		 * @Override public Layout getLayout() { return Layout.split; }
+		 */
 
 		@Override
 		public String getIdentifier() {

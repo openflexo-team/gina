@@ -76,15 +76,15 @@ public class JFIBTabView extends JFIBPanelView implements FIBTabView<JPanel, JCo
 		// JTabbedPane already plays with the "visible" flag to handle the
 		// currently selected/visible tab
 		if (getParentView() instanceof JFIBTabPanelView) {
-			// JFIBTabPanelView parent = (JFIBTabPanelView) getParentView();
-			JComponent resultingJComponent = getResultingJComponent(getComponent());
-			JTabbedPane parentResultingJComponent = (JTabbedPane) getResultingJComponent(getComponent().getParent());
+			JFIBTabPanelView parent = (JFIBTabPanelView) getParentView();
+			JComponent resultingJComponent = getResultingJComponent();
+			JTabbedPane parentResultingJComponent = parent.getTechnologyComponent();
 
 			if (isViewVisible() && resultingJComponent.getParent() == null) {
 				int newIndex = 0;
 				for (FIBView<?, ?> v : getParentView().getSubViews()) {
 					if (v instanceof JFIBTabView && v.isComponentVisible()) {
-						JComponent childResultingJComponent = getResultingJComponent(v.getComponent());
+						JComponent childResultingJComponent = ((JFIBTabView) v).getResultingJComponent();
 						FIBTab tab = ((JFIBTabView) v).getComponent();
 						if (getComponent().getParent().getIndex(getComponent()) > tab.getParent().getIndex(tab)) {
 							newIndex = parentResultingJComponent.indexOfComponent(childResultingJComponent) + 1;

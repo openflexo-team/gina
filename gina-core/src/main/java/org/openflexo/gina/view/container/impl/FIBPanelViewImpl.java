@@ -44,12 +44,15 @@ import java.util.logging.Logger;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.container.FIBPanel;
+import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.model.container.FIBTab;
+import org.openflexo.gina.model.container.layout.FIBLayoutManager;
 import org.openflexo.gina.view.container.FIBPanelView;
 import org.openflexo.gina.view.impl.FIBContainerViewImpl;
 
 /**
- * Base implementation for a basic panel, as a container of some children component, with a given layout, and a border
+ * Base implementation for a basic panel, as a container of some children
+ * component, with a given layout, and a border
  * 
  * @param <C>
  *            type of technology-specific component this view manage
@@ -58,19 +61,48 @@ import org.openflexo.gina.view.impl.FIBContainerViewImpl;
  * 
  * @author sylvain
  */
-public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPanel, C, C2>implements FIBPanelView<C, C2> {
+public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPanel, C, C2> implements
+		FIBPanelView<C, C2> {
 
 	private static final Logger logger = Logger.getLogger(FIBPanelViewImpl.class.getPackage().getName());
 
+	private FIBLayoutManager<C, C2, ?> layoutManager;
+
 	public FIBPanelViewImpl(FIBPanel model, FIBController controller, PanelRenderingAdapter<C, C2> renderingAdapter) {
 		super(model, controller, renderingAdapter);
-
+		layoutManager = makeFIBLayoutManager(model.getLayout());
+		layoutManager.setLayoutManager(getTechnologyComponent());
+		buildSubComponents();
 		updateBorder();
 	}
 
 	@Override
 	public PanelRenderingAdapter<C, C2> getRenderingAdapter() {
 		return (PanelRenderingAdapter<C, C2>) super.getRenderingAdapter();
+	}
+
+	public abstract FIBLayoutManager<C, C2, ?> makeFIBLayoutManager(Layout layoutType);
+
+	/*
+	 * @Override public void buildSubComponents() {
+	 * 
+	 * super.buildSubComponents();
+	 * 
+	 * retrieveContainedJComponentsAndConstraints();
+	 * 
+	 * for (C2 c2 : subComponents) { addChildComponent(c2, constraints.get(c2));
+	 * }
+	 * 
+	 * // update(); }
+	 */
+
+	@Override
+	protected void addSubComponentsAndDoLayout() {
+		getLayoutManager().doLayout();
+	}
+
+	public FIBLayoutManager<C, C2, ?> getLayoutManager() {
+		return layoutManager;
 	}
 
 	public abstract void updateBorder();
@@ -84,7 +116,7 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 	/**
 	 * Called to configure technology-specific component with relevant layout
 	 */
-	protected abstract void setPanelLayoutParameters(C technologyComponent);
+	// protected abstract void setPanelLayoutParameters(C technologyComponent);
 
 	@Override
 	public synchronized void updateLayout() {
@@ -94,7 +126,7 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 
 		clearContainer();
 
-		setPanelLayoutParameters(getTechnologyComponent());
+		getLayoutManager().setLayoutManager(getTechnologyComponent());
 		buildSubComponents();
 		// updateDataObject(getDataObject());
 		update();
@@ -105,10 +137,8 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 	 */
 	protected abstract void clearContainer();
 
-	@Override
-	protected abstract void retrieveContainedJComponentsAndConstraints();
-
-	protected abstract C2 makeEmptyPanel();
+	// @Override
+	// protected abstract void retrieveContainedJComponentsAndConstraints();
 
 	@Override
 	public void delete() {
@@ -117,17 +147,23 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals(FIBPanel.BORDER_KEY) || evt.getPropertyName().equals(FIBPanel.BORDER_COLOR_KEY)
-				|| evt.getPropertyName().equals(FIBPanel.BORDER_TITLE_KEY) || evt.getPropertyName().equals(FIBPanel.BORDER_TOP_KEY)
-				|| evt.getPropertyName().equals(FIBPanel.BORDER_LEFT_KEY) || evt.getPropertyName().equals(FIBPanel.BORDER_RIGHT_KEY)
-				|| evt.getPropertyName().equals(FIBPanel.BORDER_BOTTOM_KEY) || evt.getPropertyName().equals(FIBPanel.TITLE_FONT_KEY)
+		if (evt.getPropertyName().equals(FIBPanel.BORDER_KEY)
+				|| evt.getPropertyName().equals(FIBPanel.BORDER_COLOR_KEY)
+				|| evt.getPropertyName().equals(FIBPanel.BORDER_TITLE_KEY)
+				|| evt.getPropertyName().equals(FIBPanel.BORDER_TOP_KEY)
+				|| evt.getPropertyName().equals(FIBPanel.BORDER_LEFT_KEY)
+				|| evt.getPropertyName().equals(FIBPanel.BORDER_RIGHT_KEY)
+				|| evt.getPropertyName().equals(FIBPanel.BORDER_BOTTOM_KEY)
+				|| evt.getPropertyName().equals(FIBPanel.TITLE_FONT_KEY)
 				|| evt.getPropertyName().equals(FIBPanel.DARK_LEVEL_KEY)) {
 			updateBorder();
 		}
-		if (evt.getPropertyName().equals(FIBPanel.LAYOUT_KEY) || evt.getPropertyName().equals(FIBPanel.FLOW_ALIGNMENT_KEY)
-				|| evt.getPropertyName().equals(FIBPanel.BOX_LAYOUT_AXIS_KEY) || evt.getPropertyName().equals(FIBPanel.V_GAP_KEY)
-				|| evt.getPropertyName().equals(FIBPanel.H_GAP_KEY) || evt.getPropertyName().equals(FIBPanel.ROWS_KEY)
-				|| evt.getPropertyName().equals(FIBPanel.COLS_KEY) || evt.getPropertyName().equals(FIBPanel.PROTECT_CONTENT_KEY)) {
+		if (evt.getPropertyName().equals(FIBPanel.LAYOUT_KEY)
+				|| evt.getPropertyName().equals(FIBPanel.FLOW_ALIGNMENT_KEY)
+				|| evt.getPropertyName().equals(FIBPanel.BOX_LAYOUT_AXIS_KEY)
+				|| evt.getPropertyName().equals(FIBPanel.V_GAP_KEY) || evt.getPropertyName().equals(FIBPanel.H_GAP_KEY)
+				|| evt.getPropertyName().equals(FIBPanel.ROWS_KEY) || evt.getPropertyName().equals(FIBPanel.COLS_KEY)
+				|| evt.getPropertyName().equals(FIBPanel.PROTECT_CONTENT_KEY)) {
 			updateLayout();
 		}
 		if (getComponent() instanceof FIBTab && evt.getPropertyName().equals(FIBTab.TITLE_KEY)) {

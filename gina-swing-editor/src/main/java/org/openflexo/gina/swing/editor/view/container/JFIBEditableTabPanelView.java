@@ -42,7 +42,6 @@ package org.openflexo.gina.swing.editor.view.container;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
-import java.util.Vector;
 import java.util.logging.Logger;
 
 import javax.swing.DefaultSingleSelectionModel;
@@ -59,13 +58,14 @@ import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.view.container.JFIBTabPanelView;
 import org.openflexo.logging.FlexoLogger;
 
-public class JFIBEditableTabPanelView extends JFIBTabPanelView implements FIBSwingEditableContainerView<FIBTabPanel, JTabbedPane> {
+public class JFIBEditableTabPanelView extends JFIBTabPanelView implements
+		FIBSwingEditableContainerView<FIBTabPanel, JTabbedPane> {
 
 	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableTabPanelView.class.getPackage().getName());
 
 	private final FIBSwingEditableContainerViewDelegate<FIBTabPanel, JTabbedPane> delegate;
 
-	private Vector<PlaceHolder> placeholders;
+	// private Vector<PlaceHolder> placeholders;
 
 	private final FIBEditorController editorController;
 
@@ -78,21 +78,21 @@ public class JFIBEditableTabPanelView extends JFIBTabPanelView implements FIBSwi
 		super(model, editorController.getController());
 		this.editorController = editorController;
 		delegate = new FIBSwingEditableContainerViewDelegate<FIBTabPanel, JTabbedPane>(this);
-		placeholders = new Vector<PlaceHolder>();
+		// placeholders = new Vector<PlaceHolder>();
 	}
 
 	@Override
 	public void delete() {
-		placeholders.clear();
-		placeholders = null;
+		// placeholders.clear();
+		// placeholders = null;
 		delegate.delete();
 		super.delete();
 	}
 
-	@Override
-	public Vector<PlaceHolder> getPlaceHolders() {
-		return placeholders;
-	}
+	/*
+	 * @Override public Vector<PlaceHolder> getPlaceHolders() { return
+	 * placeholders; }
+	 */
 
 	@Override
 	public FIBSwingEditableContainerViewDelegate<FIBTabPanel, JTabbedPane> getDelegate() {
@@ -105,8 +105,8 @@ public class JFIBEditableTabPanelView extends JFIBTabPanelView implements FIBSwi
 	}
 
 	@Override
-	public synchronized void buildSubComponents() {
-		super.buildSubComponents();
+	protected void addSubComponentsAndDoLayout() {
+		super.addSubComponentsAndDoLayout();
 		getJComponent().addTab("+", new JPanel());
 		getJComponent().setModel(new DefaultSingleSelectionModel() {
 			@Override
@@ -134,7 +134,8 @@ public class JFIBEditableTabPanelView extends JFIBTabPanelView implements FIBSwi
 
 	@Override
 	public List<PlaceHolder> makePlaceHolders() {
-		System.out.println("Je suis sense calculer les placeholders pour la vue " + this + " size=" + getResultingJComponent().getSize());
+		System.out.println("Je suis sense calculer les placeholders pour la vue " + this + " size="
+				+ getResultingJComponent().getSize());
 		return null;
 	}
 

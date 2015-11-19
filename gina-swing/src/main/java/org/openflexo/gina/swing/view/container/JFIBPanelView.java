@@ -39,22 +39,14 @@
 
 package org.openflexo.gina.swing.view.container;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.Rectangle;
-import java.util.Vector;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JViewport;
@@ -63,25 +55,19 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
 import org.openflexo.gina.controller.FIBController;
-import org.openflexo.gina.model.FIBComponent;
-import org.openflexo.gina.model.container.BorderLayoutConstraints;
-import org.openflexo.gina.model.container.BoxLayoutConstraints;
-import org.openflexo.gina.model.container.ButtonLayoutConstraints;
-import org.openflexo.gina.model.container.ComponentConstraints;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
-import org.openflexo.gina.model.container.FlowLayoutConstraints;
-import org.openflexo.gina.model.container.GridBagLayoutConstraints;
-import org.openflexo.gina.model.container.GridLayoutConstraints;
-import org.openflexo.gina.model.container.NoneLayoutConstraints;
-import org.openflexo.gina.model.container.SplitLayoutConstraints;
-import org.openflexo.gina.model.container.TwoColsLayoutConstraints;
-import org.openflexo.gina.model.container.TwoColsLayoutConstraints.TwoColsLayoutLocation;
+import org.openflexo.gina.model.container.layout.FIBLayoutManager;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
+import org.openflexo.gina.swing.view.container.layout.JAbsolutePositionningLayout;
+import org.openflexo.gina.swing.view.container.layout.JBorderLayout;
+import org.openflexo.gina.swing.view.container.layout.JBoxLayout;
+import org.openflexo.gina.swing.view.container.layout.JButtonLayout;
+import org.openflexo.gina.swing.view.container.layout.JFlowLayout;
+import org.openflexo.gina.swing.view.container.layout.JGridBagLayout;
+import org.openflexo.gina.swing.view.container.layout.JTwoColsLayout;
 import org.openflexo.gina.view.container.impl.FIBPanelViewImpl;
-import org.openflexo.gina.view.impl.FIBViewImpl;
-import org.openflexo.swing.ButtonLayout;
 import org.openflexo.toolbox.StringUtils;
 
 /**
@@ -105,99 +91,15 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> implemen
 	public static class SwingPanelRenderingAdapter extends SwingRenderingAdapter<JPanel> implements
 			PanelRenderingAdapter<JPanel, JComponent> {
 
-		@Override
-		public void addComponent(JComponent child, JPanel parent, Object constraints) {
-			if (constraints instanceof ComponentConstraints) {
-				// ((ComponentConstraints)
-				// constraint).performConstrainedAddition(getTechnologyComponent(),
-				// c);
-				performContrainedAddition(parent, child, (ComponentConstraints) constraints);
-			} else {
-				if (constraints == null) {
-					parent.add(child);
-				} else {
-					parent.add(child, constraints);
-				}
-			}
-		}
-
-		private void performContrainedAddition(JPanel container, JComponent contained, ComponentConstraints constraints) {
-			if (constraints instanceof BorderLayoutConstraints) {
-				BorderLayoutConstraints borderConstraints = (BorderLayoutConstraints) constraints;
-				container.add(contained, borderConstraints.getLocation().getConstraint());
-			} else if (constraints instanceof BoxLayoutConstraints) {
-				BoxLayoutConstraints boxConstraints = (BoxLayoutConstraints) constraints;
-				contained.setAlignmentX(boxConstraints.getAlignmentX());
-				contained.setAlignmentY(boxConstraints.getAlignmentY());
-				container.add(contained);
-			} else if (constraints instanceof ButtonLayoutConstraints) {
-				ButtonLayoutConstraints buttonConstraints = (ButtonLayoutConstraints) constraints;
-				container.add(contained);
-			} else if (constraints instanceof FlowLayoutConstraints) {
-				FlowLayoutConstraints flowConstraints = (FlowLayoutConstraints) constraints;
-				container.add(contained);
-			} else if (constraints instanceof GridBagLayoutConstraints) {
-				GridBagLayoutConstraints gridBagConstraints = (GridBagLayoutConstraints) constraints;
-				GridBagConstraints c = new GridBagConstraints();
-				c.gridx = gridBagConstraints.getGridX();
-				c.gridy = gridBagConstraints.getGridY();
-				c.gridwidth = gridBagConstraints.getGridWidth();
-				c.gridheight = gridBagConstraints.getGridHeight();
-				c.weightx = gridBagConstraints.getWeightX();
-				c.weighty = gridBagConstraints.getWeightY();
-				c.anchor = gridBagConstraints.getAnchor().getAnchor();
-				c.fill = gridBagConstraints.getFill().getFill();
-				c.insets = new Insets(gridBagConstraints.getInsetsTop(), gridBagConstraints.getInsetsLeft(),
-						gridBagConstraints.getInsetsBottom(), gridBagConstraints.getInsetsRight());
-				c.ipadx = gridBagConstraints.getPadX();
-				c.ipady = gridBagConstraints.getPadY();
-				container.add(contained, c);
-			} else if (constraints instanceof GridLayoutConstraints) {
-				GridLayoutConstraints gridConstraints = (GridLayoutConstraints) constraints;
-				container.add(contained);
-			} else if (constraints instanceof NoneLayoutConstraints) {
-				NoneLayoutConstraints noneConstraints = (NoneLayoutConstraints) constraints;
-				contained.setLocation(noneConstraints.getX(), noneConstraints.getY());
-				contained.setSize(contained.getPreferredSize());
-				container.add(contained);
-			} else if (constraints instanceof SplitLayoutConstraints) {
-				SplitLayoutConstraints splitConstraints = (SplitLayoutConstraints) constraints;
-				container.add(contained);
-			} else if (constraints instanceof TwoColsLayoutConstraints) {
-				TwoColsLayoutConstraints twoColsConstraints = (TwoColsLayoutConstraints) constraints;
-				GridBagConstraints c = new GridBagConstraints();
-				// c.insets = new Insets(3, 3, 3, 3);
-				c.insets = new Insets(twoColsConstraints.getInsetsTop(), twoColsConstraints.getInsetsLeft(),
-						twoColsConstraints.getInsetsBottom(), twoColsConstraints.getInsetsRight());
-				if (twoColsConstraints.getLocation() == TwoColsLayoutLocation.left) {
-					c.fill = GridBagConstraints.NONE;
-					c.weightx = 0; // 1.0;
-					c.gridwidth = 1;
-					c.anchor = GridBagConstraints.NORTHEAST;
-					if (twoColsConstraints.getExpandVertically()) {
-						// c.weighty = 1.0;
-						c.fill = GridBagConstraints.VERTICAL;
-					} else {
-						// c.insets = new Insets(5, 2, 0, 2);
-					}
-				} else {
-					if (twoColsConstraints.getExpandHorizontally()) {
-						c.fill = GridBagConstraints.BOTH;
-						c.anchor = GridBagConstraints.CENTER;
-						if (twoColsConstraints.getExpandVertically()) {
-							c.weighty = 1.0;
-						}
-					} else {
-						c.fill = GridBagConstraints.NONE;
-						c.anchor = GridBagConstraints.WEST;
-					}
-					c.weightx = 1.0; // 2.0;
-					c.gridwidth = GridBagConstraints.REMAINDER;
-				}
-
-				container.add(contained, c);
-			}
-		}
+		/*
+		 * @Override public void addComponent(JComponent child, JPanel parent,
+		 * Object constraints) { if (constraints instanceof
+		 * ComponentConstraints) { // ((ComponentConstraints) //
+		 * constraint).performConstrainedAddition(getTechnologyComponent(), //
+		 * c); performContrainedAddition(parent, child, (ComponentConstraints)
+		 * constraints); } else { if (constraints == null) { parent.add(child);
+		 * } else { parent.add(child, constraints); } } }
+		 */
 
 	}
 
@@ -269,43 +171,28 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> implemen
 		}
 	}
 
-	@Override
-	protected void setPanelLayoutParameters(JPanel technologyComponent) {
-		switch (getComponent().getLayout()) {
-		case none:
-			technologyComponent.setLayout(null);
-			break;
-		case flow:
-			technologyComponent.setLayout(new FlowLayout(getComponent().getFlowAlignment().getAlign(), getComponent()
-					.getHGap(), getComponent().getVGap()));
-			break;
-		case border:
-			technologyComponent.setLayout(new BorderLayout());
-			break;
-		case grid:
-			// logger.info("rows="+getComponent().getRows()+" cols="+getComponent().getCols());
-			technologyComponent.setLayout(new GridLayout(getComponent().getRows(), getComponent().getCols(),
-					getComponent().getHGap(), getComponent().getVGap()));
-			break;
-		case box:
-			technologyComponent.setLayout(new BoxLayout(technologyComponent, getComponent().getBoxLayoutAxis()
-					.getAxis()));
-			break;
-		case twocols:
-			technologyComponent.setLayout(new GridBagLayout());
-			break;
-		case gridbag:
-			technologyComponent.setLayout(new GridBagLayout());
-			break;
-		case buttons:
-			technologyComponent.setLayout(new ButtonLayout(getComponent().getFlowAlignment() != null ? getComponent()
-					.getFlowAlignment().getAlign() : -1, getComponent().getHGap() != null ? getComponent().getHGap()
-					: 5));
-			break;
-		default:
-			break;
-		}
-	}
+	/*
+	 * @Override protected void setPanelLayoutParameters(JPanel
+	 * technologyComponent) { switch (getComponent().getLayout()) { case none:
+	 * technologyComponent.setLayout(null); break; case flow:
+	 * technologyComponent.setLayout(new
+	 * FlowLayout(getComponent().getFlowAlignment().getAlign(), getComponent()
+	 * .getHGap(), getComponent().getVGap())); break; case border:
+	 * technologyComponent.setLayout(new BorderLayout()); break; case grid: //
+	 * logger
+	 * .info("rows="+getComponent().getRows()+" cols="+getComponent().getCols
+	 * ()); technologyComponent.setLayout(new
+	 * GridLayout(getComponent().getRows(), getComponent().getCols(),
+	 * getComponent().getHGap(), getComponent().getVGap())); break; case box:
+	 * technologyComponent.setLayout(new BoxLayout(technologyComponent,
+	 * getComponent().getBoxLayoutAxis() .getAxis())); break; case twocols:
+	 * technologyComponent.setLayout(new GridBagLayout()); break; case gridbag:
+	 * technologyComponent.setLayout(new GridBagLayout()); break; case buttons:
+	 * technologyComponent.setLayout(new
+	 * ButtonLayout(getComponent().getFlowAlignment() != null ? getComponent()
+	 * .getFlowAlignment().getAlign() : -1, getComponent().getHGap() != null ?
+	 * getComponent().getHGap() : 5)); break; default: break; } }
+	 */
 
 	@Override
 	protected JPanel makeTechnologyComponent() {
@@ -395,19 +282,12 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> implemen
 		panel.setOpaque(false);
 		// updateGraphicalProperties();
 
-		setPanelLayoutParameters(panel);
+		// setPanelLayoutParameters(panel);
 
 		return panel;
 	}
 
 	protected void paintAdditionalInfo(Graphics g) {
-	}
-
-	@Override
-	protected JComponent makeEmptyPanel() {
-		JPanel returned = new JPanel();
-		returned.setOpaque(false);
-		return returned;
 	}
 
 	@Override
@@ -420,92 +300,103 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> implemen
 		getJComponent().removeAll();
 	}
 
-	@Override
-	protected void retrieveContainedJComponentsAndConstraints() {
-		Vector<FIBComponent> allSubComponents = new Vector<FIBComponent>();
-		allSubComponents.addAll(getNotHiddenSubComponents());
+	/*
+	 * @Override protected void retrieveContainedJComponentsAndConstraints() {
+	 * Vector<FIBComponent> allSubComponents = new Vector<FIBComponent>();
+	 * allSubComponents.addAll(getNotHiddenSubComponents());
+	 * 
+	 * if (getComponent().getLayout() == Layout.flow ||
+	 * getComponent().getLayout() == Layout.box || getComponent().getLayout() ==
+	 * Layout.buttons || getComponent().getLayout() == Layout.twocols ||
+	 * getComponent().getLayout() == Layout.gridbag) {
+	 * 
+	 * }
+	 * 
+	 * if (getComponent().getLayout() == Layout.grid) {
+	 * 
+	 * for (FIBComponent subComponent : getNotHiddenSubComponents()) {
+	 * FIBViewImpl<?, JComponent> subView = (FIBViewImpl<?, JComponent>)
+	 * getController().viewForComponent( subComponent); if (subView == null) {
+	 * subView = (FIBViewImpl<?, JComponent>)
+	 * getController().buildView(subComponent); } // FIBViewImpl subView =
+	 * getController().buildView(c); registerViewForComponent(subView,
+	 * subComponent); }
+	 * 
+	 * for (int i = 0; i < getComponent().getRows(); i++) { for (int j = 0; j <
+	 * getComponent().getCols(); j++) {
+	 * registerComponentWithConstraints(getChildComponent(j, i), null); } } }
+	 * 
+	 * else { for (FIBComponent subComponent : allSubComponents) {
+	 * FIBViewImpl<?, JComponent> subView = (FIBViewImpl<?, JComponent>)
+	 * getController().viewForComponent( subComponent); if (subView == null) {
+	 * subView = (FIBViewImpl<?, JComponent>)
+	 * getController().buildView(subComponent); } // FIBViewImpl subView =
+	 * getController().buildView(c); registerViewForComponent(subView,
+	 * subComponent);
+	 * 
+	 * // TODO: please handle issue with getResultingJComponent()
+	 * registerComponentWithConstraints(((JFIBView<?, JComponent>)
+	 * subView).getResultingJComponent(), subComponent.getConstraints()); } } }
+	 */
 
-		if (getComponent().getLayout() == Layout.flow || getComponent().getLayout() == Layout.box
-				|| getComponent().getLayout() == Layout.buttons || getComponent().getLayout() == Layout.twocols
-				|| getComponent().getLayout() == Layout.gridbag) {
-
-			/*
-			 * System.out.println("Apres le retrieve: "); for (FIBComponent c :
-			 * allSubComponents) { if (c.getConstraints() != null) { if
-			 * (!c.getConstraints().hasIndex()) {
-			 * System.out.println("> Index: ? "+c); } else {
-			 * System.out.println("> Index: "
-			 * +c.getConstraints().getIndex()+" "+c); } } }
-			 * 
-			 * System.out.println("*********************************************"
-			 * );
-			 */
-
-		}
-
-		if (getComponent().getLayout() == Layout.grid) {
-
-			for (FIBComponent subComponent : getNotHiddenSubComponents()) {
-				FIBViewImpl<?, JComponent> subView = (FIBViewImpl<?, JComponent>) getController().viewForComponent(
-						subComponent);
-				if (subView == null) {
-					subView = (FIBViewImpl<?, JComponent>) getController().buildView(subComponent);
-				}
-				// FIBViewImpl subView = getController().buildView(c);
-				registerViewForComponent(subView, subComponent);
-			}
-
-			for (int i = 0; i < getComponent().getRows(); i++) {
-				for (int j = 0; j < getComponent().getCols(); j++) {
-					registerComponentWithConstraints(getChildComponent(j, i), null);
-				}
-			}
-		}
-
-		else {
-			for (FIBComponent subComponent : allSubComponents) {
-				FIBViewImpl<?, JComponent> subView = (FIBViewImpl<?, JComponent>) getController().viewForComponent(
-						subComponent);
-				if (subView == null) {
-					subView = (FIBViewImpl<?, JComponent>) getController().buildView(subComponent);
-				}
-				// FIBViewImpl subView = getController().buildView(c);
-				registerViewForComponent(subView, subComponent);
-
-				// TODO: please handle issue with getResultingJComponent()
-				registerComponentWithConstraints(((JFIBView<?, JComponent>) subView).getResultingJComponent(),
-						subComponent.getConstraints());
-			}
-		}
-	}
-
-	protected JComponent getResultingJComponent(FIBComponent component) {
-		System.out.println("on veut ajouter " + component);
-		JFIBView<?, JComponent> componentView = (JFIBView<?, JComponent>) getController().viewForComponent(component);
-		System.out.println("ce qu'on retourne comme vue, c'est " + componentView);
-		System.out.println("ce qu'on retourne comme JComponent, c'est " + componentView.getResultingJComponent());
-		return componentView.getResultingJComponent();
-
-	}
+	/*
+	 * protected JComponent getResultingJComponent(FIBComponent component) {
+	 * System.out.println("on veut ajouter " + component); JFIBView<?,
+	 * JComponent> componentView = (JFIBView<?, JComponent>)
+	 * getController().viewForComponent(component);
+	 * System.out.println("ce qu'on retourne comme vue, c'est " +
+	 * componentView);
+	 * System.out.println("ce qu'on retourne comme JComponent, c'est " +
+	 * componentView.getResultingJComponent()); return
+	 * componentView.getResultingJComponent();
+	 * 
+	 * }
+	 */
 
 	// Special case for GridLayout
-	protected JComponent getChildComponent(int col, int row) {
-		for (FIBComponent subComponent : getComponent().getSubComponents()) {
-			GridLayoutConstraints glc = (GridLayoutConstraints) subComponent.getConstraints();
-			if (glc.getX() == col && glc.getY() == row) {
-				return getResultingJComponent(subComponent);
-			}
-		}
-		// Otherwise, it's an empty cell
-		return makeEmptyPanel();
+	/*
+	 * protected JComponent getChildComponent(int col, int row) { for
+	 * (FIBComponent subComponent : getComponent().getSubComponents()) {
+	 * GridLayoutConstraints glc = (GridLayoutConstraints)
+	 * subComponent.getConstraints(); if (glc.getX() == col && glc.getY() ==
+	 * row) { return getResultingJComponent(subComponent); } } // Otherwise,
+	 * it's an empty cell return makeEmptyPanel();
+	 * 
+	 * }
+	 */
 
+	@Override
+	protected void addSubComponentsAndDoLayout() {
+		super.addSubComponentsAndDoLayout();
+		getTechnologyComponent().revalidate();
+		getTechnologyComponent().repaint();
 	}
 
 	@Override
-	public void buildSubComponents() {
-		super.buildSubComponents();
-		getTechnologyComponent().revalidate();
-		getTechnologyComponent().repaint();
+	public FIBLayoutManager<JPanel, JComponent, ?> makeFIBLayoutManager(Layout layoutType) {
+		if (layoutType == null) {
+			return new JAbsolutePositionningLayout(this);
+		}
+		switch (layoutType) {
+		case none:
+			return new JAbsolutePositionningLayout(this);
+		case border:
+			return new JBorderLayout(this);
+		case box:
+			return new JBoxLayout(this);
+		case flow:
+			return new JFlowLayout(this);
+		case buttons:
+			return new JButtonLayout(this);
+		case twocols:
+			return new JTwoColsLayout(this);
+		case grid:
+			return new JGridBagLayout(this);
+		case gridbag:
+			return new JGridBagLayout(this);
+		default:
+			return new JAbsolutePositionningLayout(this);
+		}
 	}
 
 }

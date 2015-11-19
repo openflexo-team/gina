@@ -39,17 +39,14 @@
 
 package org.openflexo.gina.view.container.impl;
 
-import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.openflexo.gina.controller.FIBController;
-import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBTab;
 import org.openflexo.gina.model.container.FIBTabPanel;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.container.FIBTabPanelView;
 import org.openflexo.gina.view.impl.FIBContainerViewImpl;
-import org.openflexo.gina.view.impl.FIBViewImpl;
 
 /**
  * Base implementation for a panel presenting some children component as tabs
@@ -61,12 +58,15 @@ import org.openflexo.gina.view.impl.FIBViewImpl;
  * 
  * @author sylvain
  */
-public abstract class FIBTabPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBTabPanel, C, C2>implements FIBTabPanelView<C, C2> {
+public abstract class FIBTabPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBTabPanel, C, C2> implements
+		FIBTabPanelView<C, C2> {
 
 	private static final Logger logger = Logger.getLogger(FIBTabPanelViewImpl.class.getPackage().getName());
 
-	public FIBTabPanelViewImpl(FIBTabPanel model, FIBController controller, TabPanelRenderingAdapter<C, C2> renderingAdapter) {
+	public FIBTabPanelViewImpl(FIBTabPanel model, FIBController controller,
+			TabPanelRenderingAdapter<C, C2> renderingAdapter) {
 		super(model, controller, renderingAdapter);
+		buildSubComponents();
 	}
 
 	@Override
@@ -80,33 +80,12 @@ public abstract class FIBTabPanelViewImpl<C, C2> extends FIBContainerViewImpl<FI
 	}
 
 	@Override
-	protected void retrieveContainedJComponentsAndConstraints() {
-		Vector<FIBTab> allTabs = new Vector<FIBTab>();
-		for (FIBComponent subComponent : getNotHiddenSubComponents()) {
-			if (subComponent instanceof FIBTab) {
-				allTabs.add((FIBTab) subComponent);
-			}
-		}
-
-		for (FIBTab tab : allTabs) {
-			// logger.info("!!!!!!!!!!!!!!!!!!!! Build view for tab " + tab);
-			FIBViewImpl<?, C2> subView = (FIBViewImpl<?, C2>) getController().buildView(tab);
-			if (subView != null) {
-				registerViewForComponent(subView, tab);
-				registerComponentWithConstraints(subView.getTechnologyComponent(), getLocalized(tab.getTitle()));
-			}
-		}
-
-	}
-
-	@Override
 	public void updateLanguage() {
 		super.updateLanguage();
 		for (FIBView<?, ?> v : getSubViews()) {
 			if (v.getComponent() instanceof FIBTab) {
 				getLocalized(((FIBTab) v.getComponent()).getTitle());
-			}
-			else {
+			} else {
 				logger.warning("Unexpected component found in TabPanel: " + v.getComponent());
 			}
 		}

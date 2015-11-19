@@ -40,7 +40,6 @@
 package org.openflexo.gina.swing.editor.view.container;
 
 import java.util.List;
-import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.openflexo.gina.model.FIBComponent;
@@ -58,14 +57,14 @@ import org.openflexo.logging.FlexoLogger;
 import org.openflexo.swing.layout.JXMultiSplitPane;
 import org.openflexo.swing.layout.MultiSplitLayout.Node;
 
-public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
-		implements FIBSwingEditableContainerView<FIBSplitPanel, JXMultiSplitPane> {
+public class JFIBEditableSplitPanelView extends JFIBSplitPanelView implements
+		FIBSwingEditableContainerView<FIBSplitPanel, JXMultiSplitPane> {
 
 	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableSplitPanelView.class.getPackage().getName());
 
 	private final FIBSwingEditableContainerViewDelegate<FIBSplitPanel, JXMultiSplitPane> delegate;
 
-	private Vector<PlaceHolder> placeholders;
+	// private Vector<PlaceHolder> placeholders;
 
 	private final FIBEditorController editorController;
 
@@ -83,8 +82,9 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 
 	@Override
 	public void delete() {
-		placeholders.clear();
-		placeholders = null;
+		/*
+		 * placeholders.clear(); placeholders = null;
+		 */
 		delegate.delete();
 		super.delete();
 	}
@@ -98,17 +98,19 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 		}
 		if (!found) {
 
-			final SplitLayoutConstraints splitLayoutConstraints = SplitLayoutConstraints.makeSplitLayoutConstraints(n.getName());
+			final SplitLayoutConstraints splitLayoutConstraints = SplitLayoutConstraints.makeSplitLayoutConstraints(n
+					.getName());
 			PlaceHolder newPlaceHolder = new PlaceHolder(this, "<" + n.getName() + ">") {
 				@Override
 				public void insertComponent(FIBComponent newComponent) {
 					System.out.println("getComponent=" + JFIBEditableSplitPanelView.this.getComponent());
-					JFIBEditableSplitPanelView.this.getComponent().addToSubComponents(newComponent, splitLayoutConstraints);
+					JFIBEditableSplitPanelView.this.getComponent().addToSubComponents(newComponent,
+							splitLayoutConstraints);
 				}
 			};
 			// registerComponentWithConstraints(newPlaceHolder, n.getName());
 			newPlaceHolder.setVisible(false);
-			placeholders.add(newPlaceHolder);
+			// placeholders.add(newPlaceHolder);
 			// logger.info("Made placeholder for " + n.getName());
 		}
 
@@ -123,46 +125,30 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 	private void appendPlaceHolders(Node n) {
 		if (n instanceof FIBSplit) {
 			appendPlaceHolders((FIBSplit) n);
-		}
-		else if (n instanceof FIBLeaf) {
+		} else if (n instanceof FIBLeaf) {
 			appendPlaceHolder((FIBLeaf) n);
 		}
 	}
 
-	@Override
-	protected void retrieveContainedJComponentsAndConstraints() {
-		if (placeholders == null) {
-			placeholders = new Vector<PlaceHolder>();
-		}
-		placeholders.removeAllElements();
+	/*
+	 * @Override protected void retrieveContainedJComponentsAndConstraints() {
+	 * if (placeholders == null) { placeholders = new Vector<PlaceHolder>(); }
+	 * placeholders.removeAllElements();
+	 * 
+	 * super.retrieveContainedJComponentsAndConstraints();
+	 * 
+	 * appendPlaceHolders(getLayout().getModel());
+	 * 
+	 * // logger.info("******** Set DropTargets"); if (getEditorController() !=
+	 * null) { for (PlaceHolder ph : placeholders) {
+	 * logger.fine("Set DropTarget for " + ph); // Put right drop target // new
+	 * FIBDropTarget(ph); } } }
+	 */
 
-		super.retrieveContainedJComponentsAndConstraints();
-
-		appendPlaceHolders(getLayout().getModel());
-
-		// logger.info("******** Set DropTargets");
-		if (getEditorController() != null) {
-			for (PlaceHolder ph : placeholders) {
-				logger.fine("Set DropTarget for " + ph);
-				// Put right drop target
-				// new FIBDropTarget(ph);
-			}
-		}
-		/*else {
-				SwingUtilities.invokeLater(new Runnable() {
-		
-					@Override
-					public void run() {
-						updateLayout();
-					}
-				});
-			}*/
-	}
-
-	@Override
-	public Vector<PlaceHolder> getPlaceHolders() {
-		return placeholders;
-	}
+	/*
+	 * @Override public Vector<PlaceHolder> getPlaceHolders() { return
+	 * placeholders; }
+	 */
 
 	@Override
 	public FIBSwingEditableContainerViewDelegate<FIBSplitPanel, JXMultiSplitPane> getDelegate() {
@@ -171,7 +157,8 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 
 	@Override
 	public List<PlaceHolder> makePlaceHolders() {
-		System.out.println("Je suis sense calculer les placeholders pour la vue " + this + " size=" + getResultingJComponent().getSize());
+		System.out.println("Je suis sense calculer les placeholders pour la vue " + this + " size="
+				+ getResultingJComponent().getSize());
 		return null;
 	}
 

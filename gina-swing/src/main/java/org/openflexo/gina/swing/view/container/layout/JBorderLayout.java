@@ -1,6 +1,6 @@
 /**
  * 
- * Copyright (c) 2013-2014, Openflexo
+ * Copyright (c) 2013-2015, Openflexo
  * Copyright (c) 2011-2012, AgileBirds
  * 
  * This file is part of Gina-core, a component of the software infrastructure 
@@ -37,51 +37,51 @@
  * 
  */
 
-package org.openflexo.gina.view;
+package org.openflexo.gina.swing.view.container.layout;
 
-import java.util.Collection;
+import java.awt.BorderLayout;
 
-import org.openflexo.gina.model.FIBComponent;
-import org.openflexo.gina.model.FIBContainer;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+
+import org.openflexo.gina.model.container.BorderLayoutConstraints;
+import org.openflexo.gina.swing.view.JFIBView;
+import org.openflexo.gina.swing.view.container.JFIBPanelView;
+import org.openflexo.gina.view.FIBView;
+import org.openflexo.gina.view.container.impl.FIBLayoutManagerImpl;
 
 /**
- * Represent the "view" associated with a {@link FIBContainer} in a given
- * rendering engine environment (eg Swing)<br>
- * A {@link FIBContainerView} is a container for some sub-components (a set of
- * {@link FIBView}) with a given layout
- * 
- * A default implementation is provided in this library, see
- * {@link FIBContainerViewImpl}
+ * Swing implementation for border layout
  * 
  * @author sylvain
- *
- * @param <M>
- *            type of {@link FIBComponent} this view represents
- * @param <C>
- *            type of technology-specific component
- * @param <C2>
- *            type of technology-specific component beeing contained by this
- *            view
  */
-public interface FIBContainerView<M extends FIBContainer, C, C2> extends FIBView<M, C> {
+public class JBorderLayout extends FIBLayoutManagerImpl<JPanel, JComponent, BorderLayoutConstraints> {
 
-	public Collection<? extends FIBView<?, C2>> getSubViews();
-
-	public void updateLayout();
-
-	@Override
-	public ContainerRenderingAdapter<C, C2> getRenderingAdapter();
-
-	/**
-	 * Specification of an adapter for a given rendering technology (eg Swing)
-	 * 
-	 * @author sylvain
-	 *
-	 * @param <C>
-	 */
-	public static interface ContainerRenderingAdapter<C, C2> extends RenderingAdapter<C> {
-
-		// public void addComponent(C2 child, C parent, Object constraints);
+	public JBorderLayout(JFIBPanelView panelView) {
+		super(panelView);
 	}
 
+	@Override
+	public void setLayoutManager(JPanel container) {
+		container.setLayout(new BorderLayout());
+	}
+
+	@Override
+	public void doLayout() {
+		// TODO Auto-generated method stub
+		super.doLayout();
+		getContainerView().getTechnologyComponent().revalidate();
+		getContainerView().getTechnologyComponent().repaint();
+	}
+
+	@Override
+	protected void performAddChild(FIBView<?, JComponent> childView, BorderLayoutConstraints constraints) {
+
+		System.out.println("**************** On ajoute au composant: " + getContainerView().getTechnologyComponent());
+		System.out.println("Le composant: " + ((JFIBView<?, ?>) childView).getResultingJComponent());
+		System.out.println("contraintes: " + constraints.getLocation().getConstraint());
+
+		getContainerView().getTechnologyComponent().add(((JFIBView<?, ?>) childView).getResultingJComponent(),
+				constraints.getLocation().getConstraint());
+	}
 }

@@ -1,6 +1,6 @@
 /**
  * 
- * Copyright (c) 2013-2014, Openflexo
+ * Copyright (c) 2013-2015, Openflexo
  * Copyright (c) 2011-2012, AgileBirds
  * 
  * This file is part of Gina-core, a component of the software infrastructure 
@@ -37,51 +37,39 @@
  * 
  */
 
-package org.openflexo.gina.view;
+package org.openflexo.gina.model.container.layout;
 
-import java.util.Collection;
+import java.util.Map;
 
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
+import org.openflexo.gina.model.container.ComponentConstraints;
+import org.openflexo.gina.view.FIBView;
 
 /**
- * Represent the "view" associated with a {@link FIBContainer} in a given
- * rendering engine environment (eg Swing)<br>
- * A {@link FIBContainerView} is a container for some sub-components (a set of
- * {@link FIBView}) with a given layout
+ * Represents a layout manager working in a {@link FIBContainer}
  * 
- * A default implementation is provided in this library, see
- * {@link FIBContainerViewImpl}
- * 
- * @author sylvain
- *
- * @param <M>
- *            type of {@link FIBComponent} this view represents
  * @param <C>
- *            type of technology-specific component
+ *            type of technology-specific container this layout manager is
+ *            managing
  * @param <C2>
- *            type of technology-specific component beeing contained by this
- *            view
+ *            type of technology-specific contents this layout manager is
+ *            layouting
+ * @param <CC>
+ *            type of component constraints
+ *
+ * @author sylvain
  */
-public interface FIBContainerView<M extends FIBContainer, C, C2> extends FIBView<M, C> {
+public interface FIBLayoutManager<C, C2, CC extends ComponentConstraints> {
 
-	public Collection<? extends FIBView<?, C2>> getSubViews();
+	public void setLayoutManager(C container);
 
-	public void updateLayout();
+	public void doLayout();
 
-	@Override
-	public ContainerRenderingAdapter<C, C2> getRenderingAdapter();
+	public Map<FIBView<?, C2>, CC> getConstraints();
 
-	/**
-	 * Specification of an adapter for a given rendering technology (eg Swing)
-	 * 
-	 * @author sylvain
-	 *
-	 * @param <C>
-	 */
-	public static interface ContainerRenderingAdapter<C, C2> extends RenderingAdapter<C> {
+	public FIBView<?, C2> getSubComponentView(FIBComponent component);
 
-		// public void addComponent(C2 child, C parent, Object constraints);
-	}
+	public void delete();
 
 }

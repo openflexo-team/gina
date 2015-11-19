@@ -46,10 +46,8 @@ import java.util.logging.Logger;
 
 import javax.swing.BoxLayout;
 
-import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.FIBPropertyNotification;
-import org.openflexo.gina.model.FIBComponent.LocalizationEntryRetriever;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -59,7 +57,8 @@ import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 
 /**
- * Represents a basic panel, as a container of some children component, with a given layout, and a border
+ * Represents a basic panel, as a container of some children component, with a
+ * given layout, and a border
  *
  * @author sylvain
  *
@@ -70,7 +69,7 @@ import org.openflexo.model.annotations.XMLElement;
 public interface FIBPanel extends FIBContainer {
 
 	public static enum Layout {
-		none, flow, border, grid, box, twocols, gridbag, split, buttons;
+		none, flow, border, grid, box, twocols, gridbag, buttons;
 	}
 
 	public static enum FlowLayoutAlignment {
@@ -354,55 +353,55 @@ public interface FIBPanel extends FIBContainer {
 			if (notification != null) {
 				this.layout = layout;
 				switch (layout) {
-					case none:
-						break;
-					case flow:
-						if (flowAlignment == null) {
-							flowAlignment = FlowLayoutAlignment.LEADING;
-						}
-						if (hGap == null) {
-							hGap = 5;
-						}
-						if (vGap == null) {
-							vGap = 5;
-						}
-						break;
-					case grid:
-						if (hGap == null) {
-							hGap = 5;
-						}
-						if (vGap == null) {
-							vGap = 5;
-						}
-						if (rows == null) {
-							rows = 2;
-						}
-						if (cols == null) {
-							cols = 2;
-						}
-						break;
-					case buttons:
-						if (hGap == null) {
-							hGap = 5;
-						}
-						if (vGap == null) {
-							vGap = 5;
-						}
-						break;
-					case box:
-						if (boxLayoutAxis == null) {
-							boxLayoutAxis = BoxLayoutAxis.X_AXIS;
-						}
-						break;
-					case border:
-						break;
-					case twocols:
-						break;
-					case gridbag:
-						break;
+				case none:
+					break;
+				case flow:
+					if (flowAlignment == null) {
+						flowAlignment = FlowLayoutAlignment.LEADING;
+					}
+					if (hGap == null) {
+						hGap = 5;
+					}
+					if (vGap == null) {
+						vGap = 5;
+					}
+					break;
+				case grid:
+					if (hGap == null) {
+						hGap = 5;
+					}
+					if (vGap == null) {
+						vGap = 5;
+					}
+					if (rows == null) {
+						rows = 2;
+					}
+					if (cols == null) {
+						cols = 2;
+					}
+					break;
+				case buttons:
+					if (hGap == null) {
+						hGap = 5;
+					}
+					if (vGap == null) {
+						vGap = 5;
+					}
+					break;
+				case box:
+					if (boxLayoutAxis == null) {
+						boxLayoutAxis = BoxLayoutAxis.X_AXIS;
+					}
+					break;
+				case border:
+					break;
+				case twocols:
+					break;
+				case gridbag:
+					break;
 
-					default:
-						break;
+				default:
+					break;
 				}
 
 				hasChanged(notification);
@@ -420,33 +419,33 @@ public interface FIBPanel extends FIBContainer {
 			if (notification != null) {
 				this.border = border;
 				switch (border) {
-					case line:
-						if (borderColor == null) {
-							borderColor = Color.BLACK;
-						}
-						break;
-					case titled:
-						if (borderTitle == null) {
-							borderTitle = "Panel";
-						}
-						break;
-					case rounded3d:
-						if (borderTop == null) {
-							borderTop = 2;
-						}
-						if (borderBottom == null) {
-							borderBottom = 2;
-						}
-						if (borderLeft == null) {
-							borderRight = 2;
-						}
-						if (borderRight == null) {
-							borderRight = 2;
-						}
-						break;
+				case line:
+					if (borderColor == null) {
+						borderColor = Color.BLACK;
+					}
+					break;
+				case titled:
+					if (borderTitle == null) {
+						borderTitle = "Panel";
+					}
+					break;
+				case rounded3d:
+					if (borderTop == null) {
+						borderTop = 2;
+					}
+					if (borderBottom == null) {
+						borderBottom = 2;
+					}
+					if (borderLeft == null) {
+						borderRight = 2;
+					}
+					if (borderRight == null) {
+						borderRight = 2;
+					}
+					break;
 
-					default:
-						break;
+				default:
+					break;
 				}
 				hasChanged(notification);
 			}
@@ -689,7 +688,8 @@ public interface FIBPanel extends FIBContainer {
 
 		@Override
 		public void setTrackViewPortHeight(boolean trackViewPortHeight) {
-			FIBPropertyNotification<Boolean> notification = requireChange(TRACK_VIEW_PORT_HEIGHT_KEY, trackViewPortHeight);
+			FIBPropertyNotification<Boolean> notification = requireChange(TRACK_VIEW_PORT_HEIGHT_KEY,
+					trackViewPortHeight);
 			if (notification != null) {
 				this.trackViewPortHeight = trackViewPortHeight;
 				hasChanged(notification);

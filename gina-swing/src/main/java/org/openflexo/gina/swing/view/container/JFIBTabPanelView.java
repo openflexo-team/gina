@@ -51,6 +51,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBTab;
 import org.openflexo.gina.model.container.FIBTabPanel;
 import org.openflexo.gina.swing.view.JFIBView;
@@ -64,29 +65,20 @@ import org.openflexo.gina.view.container.impl.FIBTabPanelViewImpl;
  * 
  * @author sylvain
  */
-public class JFIBTabPanelView extends FIBTabPanelViewImpl<JTabbedPane, JComponent>implements JFIBView<FIBTabPanel, JTabbedPane> {
+public class JFIBTabPanelView extends FIBTabPanelViewImpl<JTabbedPane, JComponent> implements
+		JFIBView<FIBTabPanel, JTabbedPane> {
 
 	private static final Logger logger = Logger.getLogger(JFIBTabPanelView.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingAdapter} implementation dedicated for Swing JPanel with a given layout<br>
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JPanel with
+	 * a given layout<br>
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingTabPanelRenderingAdapter extends SwingRenderingAdapter<JTabbedPane>
-			implements TabPanelRenderingAdapter<JTabbedPane, JComponent> {
-
-		@Override
-		public void addComponent(JComponent child, JTabbedPane parent, Object constraints) {
-			if (constraints instanceof String) {
-				parent.add((String) constraints, child);
-			}
-			else {
-				logger.warning("Unexpected constraint: " + constraints);
-				parent.add(child);
-			}
-		}
+	public static class SwingTabPanelRenderingAdapter extends SwingRenderingAdapter<JTabbedPane> implements
+			TabPanelRenderingAdapter<JTabbedPane, JComponent> {
 
 		@Override
 		public int getSelectedIndex(JTabbedPane component) {
@@ -195,9 +187,18 @@ public class JFIBTabPanelView extends FIBTabPanelViewImpl<JTabbedPane, JComponen
 					getTechnologyComponent().setTitleAt(index, getLocalized(((FIBTab) v.getComponent()).getTitle()));
 					index++;
 				}
-			}
-			else {
+			} else {
 				logger.warning("Unexpected component found in TabPanel: " + v.getComponent());
+			}
+		}
+	}
+
+	@Override
+	protected void addSubComponentsAndDoLayout() {
+		for (FIBComponent c : getComponent().getSubComponents()) {
+			JFIBView<?, JComponent> subComponentView = (JFIBView<?, JComponent>) getSubViewsMap().get(c);
+			if (c instanceof FIBTab) {
+				getTechnologyComponent().add(((FIBTab) c).getTitle(), subComponentView.getResultingJComponent());
 			}
 		}
 	}

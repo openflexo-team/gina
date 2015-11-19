@@ -43,12 +43,9 @@ import java.beans.PropertyChangeEvent;
 import java.util.logging.Logger;
 
 import org.openflexo.gina.controller.FIBController;
-import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBSplitPanel;
-import org.openflexo.gina.model.container.SplitLayoutConstraints;
 import org.openflexo.gina.view.container.FIBSplitPanelView;
 import org.openflexo.gina.view.impl.FIBContainerViewImpl;
-import org.openflexo.gina.view.impl.FIBViewImpl;
 
 /**
  * Base implementation of a panel split into a given policy, with adjustable
@@ -69,6 +66,7 @@ public abstract class FIBSplitPanelViewImpl<C, C2> extends FIBContainerViewImpl<
 	public FIBSplitPanelViewImpl(FIBSplitPanel model, FIBController controller,
 			SplitPanelRenderingAdapter<C, C2> renderingAdapter) {
 		super(model, controller, renderingAdapter);
+		buildSubComponents();
 	}
 
 	@Override
@@ -86,22 +84,19 @@ public abstract class FIBSplitPanelViewImpl<C, C2> extends FIBContainerViewImpl<
 	 */
 	protected abstract void clearContainer();
 
-	@Override
-	protected void retrieveContainedJComponentsAndConstraints() {
-
-		for (FIBComponent subComponent : getNotHiddenSubComponents()) {
-			FIBViewImpl<?, C2> subView = (FIBViewImpl<?, C2>) getController().viewForComponent(subComponent);
-			if (subView == null) {
-				subView = (FIBViewImpl<?, C2>) getController().buildView(subComponent);
-			}
-			// FIBViewImpl subView = getController().buildView(subComponent);
-			// if (subView != null) {
-			registerViewForComponent(subView, subComponent);
-			registerComponentWithConstraints(subView.getTechnologyComponent(),
-					((SplitLayoutConstraints) subComponent.getConstraints()).getSplitIdentifier());
-			// }
-		}
-	}
+	/*
+	 * @Override protected void retrieveContainedJComponentsAndConstraints() {
+	 * 
+	 * for (FIBComponent subComponent : getNotHiddenSubComponents()) {
+	 * FIBViewImpl<?, C2> subView = (FIBViewImpl<?, C2>)
+	 * getController().viewForComponent(subComponent); if (subView == null) {
+	 * subView = (FIBViewImpl<?, C2>) getController().buildView(subComponent); }
+	 * // FIBViewImpl subView = getController().buildView(subComponent); // if
+	 * (subView != null) { registerViewForComponent(subView, subComponent);
+	 * registerComponentWithConstraints(subView.getTechnologyComponent(),
+	 * ((SplitLayoutConstraints)
+	 * subComponent.getConstraints()).getSplitIdentifier()); // } } }
+	 */
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
