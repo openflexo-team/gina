@@ -39,31 +39,30 @@
 
 package org.openflexo.gina.swing.editor.view.container;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
-import javax.swing.Box;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
-import org.openflexo.gina.model.container.layout.BorderLayoutConstraints;
-import org.openflexo.gina.model.container.layout.BorderLayoutConstraints.BorderLayoutLocation;
+import org.openflexo.gina.model.container.layout.FIBLayoutManager;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerViewDelegate;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
-import org.openflexo.gina.swing.view.JFIBView;
+import org.openflexo.gina.swing.editor.view.container.layout.JEditableBorderLayout;
+import org.openflexo.gina.swing.editor.view.container.layout.JFIBEditableLayoutManager;
 import org.openflexo.gina.swing.view.container.JFIBPanelView;
+import org.openflexo.gina.swing.view.container.layout.JAbsolutePositionningLayout;
+import org.openflexo.gina.swing.view.container.layout.JBoxLayout;
+import org.openflexo.gina.swing.view.container.layout.JButtonLayout;
+import org.openflexo.gina.swing.view.container.layout.JFlowLayout;
+import org.openflexo.gina.swing.view.container.layout.JGridBagLayout;
+import org.openflexo.gina.swing.view.container.layout.JTwoColsLayout;
 import org.openflexo.logging.FlexoLogger;
 
 public class JFIBEditablePanelView extends JFIBPanelView implements FIBSwingEditableContainerView<FIBPanel, JPanel> {
@@ -323,107 +322,98 @@ public class JFIBEditablePanelView extends JFIBPanelView implements FIBSwingEdit
 	}
 
 	@Override
-	public List<PlaceHolder> makePlaceHolders() {
-
-		List<PlaceHolder> returned = new ArrayList<PlaceHolder>();
-
-		if (!getComponent().getProtectContent()) {
-
-			// BorderLayout
-			if (getComponent().getLayout() == Layout.border) {
-
-				// BorderLayout bl = (BorderLayout) getJComponent().getLayout();
-				BorderLayoutLocation[] placeholderLocations = { BorderLayoutLocation.north, BorderLayoutLocation.south,
-						BorderLayoutLocation.center, BorderLayoutLocation.east, BorderLayoutLocation.west };
-				Map<BorderLayoutLocation, FIBComponent> existingComponents = new HashMap<BorderLayoutLocation, FIBComponent>();
-				Map<BorderLayoutLocation, Component> phComponents = new HashMap<BorderLayoutLocation, Component>();
-
-				JPanel panel = new JPanel(new BorderLayout());
-				panel.setPreferredSize(getResultingJComponent().getSize());
-				panel.setSize(getResultingJComponent().getSize());
-
-				for (final BorderLayoutLocation l : placeholderLocations) {
-					FIBComponent foundComponent = null;
-					for (FIBComponent subComponent : getComponent().getSubComponents()) {
-						BorderLayoutConstraints blc = (BorderLayoutConstraints) subComponent.getConstraints();
-						if (blc.getLocation() == l) {
-							foundComponent = subComponent;
-							break;
-						}
-					}
-					Component phComponent;
-					if (foundComponent != null) {
-						existingComponents.put(l, foundComponent);
-						JFIBView<?, ?> childView = (JFIBView<?, ?>) getSubViewsMap().get(foundComponent);
-						phComponent = Box.createRigidArea(childView.getResultingJComponent().getSize());
-					} else {
-						phComponent = new JPanel() {
-							@Override
-							public Dimension getPreferredSize() {
-								return new Dimension(20, 20);
-							}
-						};
-					}
-					phComponents.put(l, phComponent);
-					panel.add(phComponent, l.getConstraint());
-				}
-				panel.doLayout();
-
-				for (final BorderLayoutLocation l : placeholderLocations) {
-					FIBComponent existingComponent = existingComponents.get(l);
-					Rectangle bounds = phComponents.get(l).getBounds();
-
-					System.out.println("Pour " + l.getConstraint() + " existing=" + existingComponent + " bounds="
-							+ bounds);
-
-					if (existingComponent == null) {
-						PlaceHolder newPlaceHolder = new PlaceHolder(this, "<" + l.getConstraint() + ">", bounds) {
-							@Override
-							public void insertComponent(FIBComponent newComponent) {
-								BorderLayoutConstraints blConstraints = new BorderLayoutConstraints(l);
-								newComponent.setConstraints(blConstraints);
-								JFIBEditablePanelView.this.getComponent().addToSubComponents(newComponent);
-							}
-						};
-						logger.fine("Made placeholder for " + l.getConstraint());
-						newPlaceHolder.setVisible(false);
-						returned.add(newPlaceHolder);
-					}
-				}
-			}
-
-			/*
-			 * System.out.println(
-			 * "Je suis sense calculer les placeholders pour la vue " + this +
-			 * " size=" + getResultingJComponent().getSize());
-			 * 
-			 * JPanel panel = new JPanel(new BorderLayout());
-			 * panel.setPreferredSize(getResultingJComponent().getSize());
-			 * panel.setSize(getResultingJComponent().getSize()); Component
-			 * center; Component north; panel.add(center =
-			 * Box.createRigidArea(new Dimension(200, 200)),
-			 * BorderLayout.CENTER); panel.add(north = new JPanel() {
-			 * 
-			 * @Override public Dimension getPreferredSize() { return new
-			 * Dimension(20, 20); } }, BorderLayout.NORTH);
-			 * 
-			 * System.out.println("center size = " + center.getSize());
-			 * System.out.println("north size = " + north.getSize());
-			 * panel.doLayout(); System.out.println("center size = " +
-			 * center.getSize()); System.out.println("north size = " +
-			 * north.getSize());
-			 * 
-			 * returned.add(new PlaceHolder(this, "<North>") {
-			 * 
-			 * @Override public void insertComponent(FIBComponent newComponent)
-			 * { BorderLayoutConstraints blConstraints = new
-			 * BorderLayoutConstraints(BorderLayoutLocation.north);
-			 * newComponent.setConstraints(blConstraints);
-			 * JFIBEditablePanelView.
-			 * this.getComponent().addToSubComponents(newComponent); } });
-			 */
+	public FIBLayoutManager<JPanel, JComponent, ?> makeFIBLayoutManager(Layout layoutType) {
+		if (layoutType == null) {
+			return super.makeFIBLayoutManager(layoutType);
+		}
+		switch (layoutType) {
+		case none:
+			return new JAbsolutePositionningLayout(this);
+		case border:
+			return new JEditableBorderLayout(this);
+		case box:
+			return new JBoxLayout(this);
+		case flow:
+			return new JFlowLayout(this);
+		case buttons:
+			return new JButtonLayout(this);
+		case twocols:
+			return new JTwoColsLayout(this);
+		case grid:
+			return new JGridBagLayout(this);
+		case gridbag:
+			return new JGridBagLayout(this);
+		default:
+			return super.makeFIBLayoutManager(layoutType);
 		}
 
-		return returned;
+	}
+
+	@Override
+	public List<PlaceHolder> makePlaceHolders() {
+
+		if (getLayoutManager() instanceof JFIBEditableLayoutManager) {
+			return ((JFIBEditableLayoutManager<JPanel, JComponent, ?>) getLayoutManager()).makePlaceHolders();
+		}
+
+		return Collections.emptyList();
+
+		/*
+		 * List<PlaceHolder> returned = new ArrayList<PlaceHolder>();
+		 * 
+		 * if (!getComponent().getProtectContent()) {
+		 * 
+		 * // BorderLayout if (getComponent().getLayout() == Layout.border) {
+		 * 
+		 * // BorderLayout bl = (BorderLayout) getJComponent().getLayout();
+		 * BorderLayoutLocation[] placeholderLocations = {
+		 * BorderLayoutLocation.north, BorderLayoutLocation.south,
+		 * BorderLayoutLocation.center, BorderLayoutLocation.east,
+		 * BorderLayoutLocation.west }; Map<BorderLayoutLocation, FIBComponent>
+		 * existingComponents = new HashMap<BorderLayoutLocation,
+		 * FIBComponent>(); Map<BorderLayoutLocation, Component> phComponents =
+		 * new HashMap<BorderLayoutLocation, Component>();
+		 * 
+		 * JPanel panel = new JPanel(new BorderLayout());
+		 * panel.setPreferredSize(getResultingJComponent().getSize());
+		 * panel.setSize(getResultingJComponent().getSize());
+		 * 
+		 * for (final BorderLayoutLocation l : placeholderLocations) {
+		 * FIBComponent foundComponent = null; for (FIBComponent subComponent :
+		 * getComponent().getSubComponents()) { BorderLayoutConstraints blc =
+		 * (BorderLayoutConstraints) subComponent.getConstraints(); if
+		 * (blc.getLocation() == l) { foundComponent = subComponent; break; } }
+		 * Component phComponent; if (foundComponent != null) {
+		 * existingComponents.put(l, foundComponent); JFIBView<?, ?> childView =
+		 * (JFIBView<?, ?>) getSubViewsMap().get(foundComponent); phComponent =
+		 * Box.createRigidArea(childView.getResultingJComponent().getSize()); }
+		 * else { phComponent = new JPanel() {
+		 * 
+		 * @Override public Dimension getPreferredSize() { return new
+		 * Dimension(20, 20); } }; } phComponents.put(l, phComponent);
+		 * panel.add(phComponent, l.getConstraint()); } panel.doLayout();
+		 * 
+		 * for (final BorderLayoutLocation l : placeholderLocations) {
+		 * FIBComponent existingComponent = existingComponents.get(l); Rectangle
+		 * bounds = phComponents.get(l).getBounds();
+		 * 
+		 * System.out.println("Pour " + l.getConstraint() + " existing=" +
+		 * existingComponent + " bounds=" + bounds);
+		 * 
+		 * if (existingComponent == null) { PlaceHolder newPlaceHolder = new
+		 * PlaceHolder(this, "<" + l.getConstraint() + ">", bounds) {
+		 * 
+		 * @Override public void insertComponent(FIBComponent newComponent) {
+		 * BorderLayoutConstraints blConstraints = new
+		 * BorderLayoutConstraints(l);
+		 * newComponent.setConstraints(blConstraints);
+		 * JFIBEditablePanelView.this
+		 * .getComponent().addToSubComponents(newComponent); } };
+		 * logger.fine("Made placeholder for " + l.getConstraint());
+		 * newPlaceHolder.setVisible(false); returned.add(newPlaceHolder); } } }
+		 * 
+		 * }
+		 */
+
 	}
 }

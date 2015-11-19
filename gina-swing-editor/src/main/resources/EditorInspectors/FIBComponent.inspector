@@ -79,14 +79,14 @@
 			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="LayoutTab">
 			<Panel layout="twocols" border="titled" borderTitle="free_location_constraints"
 				titleFont="SansSerif,0,11" darkLevel="0"
-				data="($org.openflexo.gina.model.container.NoneLayoutConstraints)data.constraints"
+				data="($org.openflexo.gina.model.container.layout.NoneLayoutConstraints)data.constraints"
 				dataClassName="org.openflexo.gina.model.container.layout.NoneLayoutConstraints"
 				constraints="twocols(expandHorizontally=true;location=center)"
 				visible="((data.parent != null) &amp; (data.parent.layout = &quot;none&quot;))"
 				opaque="false" name="NoneConstraints" />
 			<Panel layout="twocols" border="titled" borderTitle="flow_layout_constraints"
 				titleFont="SansSerif,0,11" darkLevel="0"
-				data="($org.openflexo.gina.model.container.FlowLayoutConstraints)data.constraints"
+				data="($org.openflexo.gina.model.container.layout.FlowLayoutConstraints)data.constraints"
 				dataClassName="org.openflexo.gina.model.container.layout.FlowLayoutConstraints"
 				constraints="twocols(expandHorizontally=true;location=center)"
 				visible="((data.parent != null) &amp; (data.parent.layout = &quot;flow&quot;))"
@@ -99,7 +99,7 @@
 			</Panel>
 			<Panel layout="twocols" border="titled" borderTitle="border_layout_constraints"
 				titleFont="SansSerif,0,11" darkLevel="0"
-				data="($org.openflexo.gina.model.container.BorderLayoutConstraints)data.constraints"
+				data="($org.openflexo.gina.model.container.layout.BorderLayoutConstraints)data.constraints"
 				dataClassName="org.openflexo.gina.model.container.layout.BorderLayoutConstraints"
 				constraints="twocols(expandHorizontally=true;location=center)"
 				visible="((data.parent != null) &amp; (data.parent.layout = &quot;border&quot;))"
@@ -112,7 +112,7 @@
 			</Panel>
 			<Panel layout="twocols" border="titled" borderTitle="grid_layout_constraints"
 				titleFont="SansSerif,0,11" darkLevel="0"
-				data="($org.openflexo.gina.model.container.GridLayoutConstraints)data.constraints"
+				data="($org.openflexo.gina.model.container.layout.GridLayoutConstraints)data.constraints"
 				dataClassName="org.openflexo.gina.model.container.layout.GridLayoutConstraints"
 				constraints="twocols(expandHorizontally=true;location=center)"
 				visible="((data.parent != null) &amp; (data.parent.layout = &quot;grid&quot;))"
@@ -132,13 +132,13 @@
 			</Panel>
 			<Panel layout="twocols" border="titled" borderTitle="button_layout_constraints"
 				titleFont="SansSerif,0,11" darkLevel="0"
-				data="($org.openflexo.gina.model.container.ButtonLayoutConstraints)data.constraints"
+				data="($org.openflexo.gina.model.container.layout.ButtonLayoutConstraints)data.constraints"
 				dataClassName="org.openflexo.gina.model.container.layout.ButtonLayoutConstraints"
 				constraints="twocols(expandHorizontally=true;location=center)"
 				visible="(data.parent.layout = &quot;buttons&quot;)" name="ButtonConstraints" />
 			<Panel layout="twocols" border="titled" borderTitle="box_layout_constraints"
 				titleFont="SansSerif,0,11" darkLevel="0"
-				data="($org.openflexo.gina.model.container.BoxLayoutConstraints)data.constraints"
+				data="($org.openflexo.gina.model.container.layout.BoxLayoutConstraints)data.constraints"
 				dataClassName="org.openflexo.gina.model.container.layout.BoxLayoutConstraints"
 				constraints="twocols(expandHorizontally=true;location=center)"
 				visible="((data.parent != null) &amp; (data.parent.layout = &quot;box&quot;))"
@@ -163,7 +163,7 @@
 			</Panel>
 			<Panel layout="twocols" border="titled" borderTitle="two_cols_layout_constraints"
 				titleFont="SansSerif,0,11" darkLevel="0" index="100"
-				data="($org.openflexo.gina.model.container.TwoColsLayoutConstraints)data.constraints"
+				data="($org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints)data.constraints"
 				dataClassName="org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints"
 				constraints="twocols(expandHorizontally=true;index=100;location=center)"
 				visible="((data.parent != null) &amp; (data.parent.layout = &quot;twocols&quot;))"
@@ -214,7 +214,7 @@
 			</Panel>
 			<Panel layout="twocols" border="titled" borderTitle="grid_bag_layout_constraints"
 				titleFont="SansSerif,0,11" darkLevel="0"
-				data="($org.openflexo.gina.model.container.GridBagLayoutConstraints)data.constraints"
+				data="($org.openflexo.gina.model.container.layout.GridBagLayoutConstraints)data.constraints"
 				dataClassName="org.openflexo.gina.model.container.layout.GridBagLayoutConstraints"
 				constraints="twocols(expandHorizontally=true;location=center)"
 				visible="((data.parent != null) &amp; (data.parent.layout = &quot;gridbag&quot;))"
@@ -428,7 +428,7 @@
 			</Panel>
 			<Panel layout="twocols" border="titled" borderTitle="split_layout_constraints"
 				titleFont="SansSerif,0,11" darkLevel="0"
-				data="($org.openflexo.gina.model.container.SplitLayoutConstraints)data.constraints"
+				data="($org.openflexo.gina.model.container.layout.SplitLayoutConstraints)data.constraints"
 				dataClassName="org.openflexo.gina.model.container.layout.SplitLayoutConstraints"
 				constraints="twocols(expandHorizontally=true;location=center)"
 				visible="((data.parent != null) &amp; (data.parent.layout = &quot;split&quot;))"
