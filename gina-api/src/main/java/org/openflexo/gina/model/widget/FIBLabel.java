@@ -43,11 +43,8 @@ import java.lang.reflect.Type;
 
 import javax.swing.SwingConstants;
 
-import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.gina.model.FIBWidget;
-import org.openflexo.gina.model.FIBComponent.LocalizationEntryRetriever;
-import org.openflexo.gina.model.FIBWidget.FIBWidgetImpl;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -55,6 +52,8 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.toolbox.JavaUtils;
+import org.openflexo.toolbox.StringUtils;
 
 @ModelEntity
 @ImplementationClass(FIBLabel.FIBLabelImpl.class)
@@ -118,13 +117,16 @@ public interface FIBLabel extends FIBWidget {
 
 		@Override
 		public String getBaseName() {
+			if (StringUtils.isNotEmpty(getLabel())) {
+				return JavaUtils.getClassName(getLabel()) + (JavaUtils.getClassName(getLabel()).contains("Label") ? "" : "Label");
+			}
 			return "Label";
 		}
 
-		@Override
+		/*@Override
 		public String getIdentifier() {
 			return getLabel();
-		}
+		}*/
 
 		@Override
 		public Type getDefaultDataType() {

@@ -124,7 +124,7 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 			logger.fine("Data: " + getController().getDataObject());
 		}
 
-		setData(getComponent().getIdentifier());
+		setData(getComponent().getName());
 		DataBinding<?> action = getWidget().getAction();
 		if (action.isValid()) {
 			try {

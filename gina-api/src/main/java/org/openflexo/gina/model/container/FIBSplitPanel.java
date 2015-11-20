@@ -131,10 +131,10 @@ public interface FIBSplitPanel extends FIBContainer {
 		 * @Override public Layout getLayout() { return Layout.split; }
 		 */
 
-		@Override
+		/*@Override
 		public String getIdentifier() {
 			return null;
-		}
+		}*/
 
 		@Override
 		public String getFirstEmptyPlaceHolder() {
@@ -261,7 +261,8 @@ public interface FIBSplitPanel extends FIBContainer {
 		private void appendToLeaves(Node n, List<Leaf> returned) {
 			if (n instanceof Leaf) {
 				returned.add((Leaf) n);
-			} else if (n instanceof FIBSplit) {
+			}
+			else if (n instanceof FIBSplit) {
 				for (FIBNode n2 : ((FIBSplit<?>) n).getChildren()) {
 					appendToLeaves(n2, returned);
 				}

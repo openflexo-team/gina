@@ -73,10 +73,10 @@ public interface FIBTabPanel extends FIBContainer {
 		public FIBTabPanelImpl() {
 		}
 
-		@Override
+		/*@Override
 		public String getIdentifier() {
 			return null;
-		}
+		}*/
 
 		public Vector<FIBTab> getTabs() {
 			Vector<FIBTab> returned = new Vector<FIBTab>();

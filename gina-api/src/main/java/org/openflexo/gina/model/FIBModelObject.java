@@ -359,8 +359,8 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 				LOGGER.fine("Change attribute " + notification.getAttributeName() + " for object " + this + " was: "
 						+ notification.oldValue() + " is now: " + notification.newValue());
 			}
-			getPropertyChangeSupport().firePropertyChange(notification.getAttributeName(), notification.oldValue(),
-					notification.newValue());
+			getPropertyChangeSupport()
+					.firePropertyChange(notification.getAttributeName(), notification.oldValue(), notification.newValue());
 		}
 
 		/**
@@ -407,6 +407,12 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 		public Class<?> getImplementedInterface() {
 			return getFactory().getModelEntityForInstance(this).getImplementedInterface();
+		}
+
+		@Override
+		public void setName(String name) {
+			performSuperSetter(NAME_KEY, name);
+			getPropertyChangeSupport().firePropertyChange("presentationName", null, getPresentationName());
 		}
 
 		@Override
@@ -463,12 +469,6 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 		@Override
 		public void clearParameters() {
 			getParameters().clear();
-		}
-
-		@Override
-		public void setName(String name) {
-			performSuperSetter(NAME_KEY, name);
-			getPropertyChangeSupport().firePropertyChange("presentationName", null, getPresentationName());
 		}
 
 		@Override

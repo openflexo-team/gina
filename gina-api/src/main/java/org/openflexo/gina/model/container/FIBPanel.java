@@ -337,10 +337,10 @@ public interface FIBPanel extends FIBContainer {
 			layout = Layout.none;
 		}
 
-		@Override
+		/*@Override
 		public String getIdentifier() {
 			return null;
-		}
+		}*/
 
 		@Override
 		public Layout getLayout() {

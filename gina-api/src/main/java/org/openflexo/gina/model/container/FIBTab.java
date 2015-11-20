@@ -39,9 +39,7 @@
 
 package org.openflexo.gina.model.container;
 
-import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBPropertyNotification;
-import org.openflexo.gina.model.FIBComponent.LocalizationEntryRetriever;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -70,10 +68,10 @@ public interface FIBTab extends FIBPanel {
 
 		private String title;
 
-		@Override
+		/*@Override
 		public String getIdentifier() {
 			return getTitle();
-		}
+		}*/
 
 		@Override
 		public String getTitle() {

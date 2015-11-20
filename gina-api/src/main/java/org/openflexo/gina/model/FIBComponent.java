@@ -464,7 +464,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 	public Iterator<FIBComponent> getMayAltersIterator();
 
-	public abstract String getIdentifier();
+	// public abstract String getIdentifier();
 
 	@Deprecated
 	public List<DataBinding<?>> getDeclaredBindings();
@@ -1306,8 +1306,9 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		@Override
 		public String toString() {
-			return getImplementedInterface().getSimpleName() + " ("
-					+ (getName() != null ? getName() : getIdentifier() != null ? getIdentifier() : "unnamed") + ")";
+			// return getImplementedInterface().getSimpleName() + " ("
+			// + (getName() != null ? getName() : getIdentifier() != null ? getIdentifier() : "unnamed") + ")";
+			return getImplementedInterface().getSimpleName() + " (" + getName() + ")";
 		}
 
 		/**
@@ -2023,15 +2024,15 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		@Override
 		public String getPresentationName() {
-			org.openflexo.model.ModelEntity<?> e = getFactory().getModelEntityForInstance(this);
 
-			if (getName() != null) {
-				return getName() + " (" + e.getImplementedInterface().getSimpleName() + ")";
+			if (StringUtils.isNotEmpty(getName())) {
+				return getName();
 			}
-			else if (getIdentifier() != null) {
+			/*else if (getIdentifier() != null) {
 				return getIdentifier() + " (" + e.getImplementedInterface().getSimpleName() + ")";
-			}
+			}*/
 			else {
+				org.openflexo.model.ModelEntity<?> e = getFactory().getModelEntityForInstance(this);
 				return "<" + e.getImplementedInterface().getSimpleName() + ">";
 			}
 		}

@@ -66,6 +66,7 @@ import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.gina.view.GinaViewFactory;
 import org.openflexo.model.ModelEntity;
+import org.openflexo.toolbox.StringUtils;
 
 public class FIBBrowserController extends FIBController implements Observer {
 
@@ -121,33 +122,47 @@ public class FIBBrowserController extends FIBController implements Observer {
 		}
 		if (component.isRootComponent()) {
 			return FIBEditorIconLibrary.ROOT_COMPONENT_ICON;
-		} else if (component instanceof FIBTabPanel) {
+		}
+		else if (component instanceof FIBTabPanel) {
 			return FIBEditorIconLibrary.TABS_ICON;
-		} else if (component instanceof FIBPanel) {
+		}
+		else if (component instanceof FIBPanel) {
 			return FIBEditorIconLibrary.PANEL_ICON;
-		} else if (component instanceof FIBSplitPanel) {
+		}
+		else if (component instanceof FIBSplitPanel) {
 			return FIBEditorIconLibrary.SPLIT_PANEL_ICON;
-		} else if (component instanceof FIBCheckBox) {
+		}
+		else if (component instanceof FIBCheckBox) {
 			return FIBEditorIconLibrary.CHECKBOX_ICON;
-		} else if (component instanceof FIBLabel) {
+		}
+		else if (component instanceof FIBLabel) {
 			return FIBEditorIconLibrary.LABEL_ICON;
-		} else if (component instanceof FIBTable) {
+		}
+		else if (component instanceof FIBTable) {
 			return FIBEditorIconLibrary.TABLE_ICON;
-		} else if (component instanceof FIBBrowser) {
+		}
+		else if (component instanceof FIBBrowser) {
 			return FIBEditorIconLibrary.TREE_ICON;
-		} else if (component instanceof FIBTextArea) {
+		}
+		else if (component instanceof FIBTextArea) {
 			return FIBEditorIconLibrary.TEXTAREA_ICON;
-		} else if (component instanceof FIBTextField) {
+		}
+		else if (component instanceof FIBTextField) {
 			return FIBEditorIconLibrary.TEXTFIELD_ICON;
-		} else if (component instanceof FIBNumber) {
+		}
+		else if (component instanceof FIBNumber) {
 			return FIBEditorIconLibrary.NUMBER_ICON;
-		} else if (component instanceof FIBDropDown) {
+		}
+		else if (component instanceof FIBDropDown) {
 			return FIBEditorIconLibrary.DROPDOWN_ICON;
-		} else if (component instanceof FIBRadioButtonList) {
+		}
+		else if (component instanceof FIBRadioButtonList) {
 			return FIBEditorIconLibrary.RADIOBUTTON_ICON;
-		} else if (component instanceof FIBButton) {
+		}
+		else if (component instanceof FIBButton) {
 			return FIBEditorIconLibrary.BUTTON_ICON;
-		} else if (component instanceof FIBReferencedComponent) {
+		}
+		else if (component instanceof FIBReferencedComponent) {
 			return FIBEditorIconLibrary.REFERENCE_COMPONENT_ICON;
 		}
 		return null;
@@ -161,18 +176,16 @@ public class FIBBrowserController extends FIBController implements Observer {
 
 		ModelEntity<?> e = component.getFactory().getModelEntityForInstance(component);
 
-		if (component.getName() != null) {
-			return component.getName() + " (" + e.getImplementedInterface().getSimpleName() + ")";
-		} else if (component.getIdentifier() != null) {
-			return component.getIdentifier() + " (" + e.getImplementedInterface().getSimpleName() + ")";
-		} else {
+		if (StringUtils.isNotEmpty(component.getName())) {
+			return component.getName();
+		}
+		else {
 			return "<" + e.getImplementedInterface().getSimpleName() + ">";
 		}
 	}
 
 	public void rightClick(FIBComponent component, MouseEvent event) {
-		editorController.getContextualMenu().displayPopupMenu(component,
-				((JFIBView<?, ?>) getRootView()).getJComponent(), event);
+		editorController.getContextualMenu().displayPopupMenu(component, ((JFIBView<?, ?>) getRootView()).getJComponent(), event);
 	}
 
 	public String getSearchedLabel() {

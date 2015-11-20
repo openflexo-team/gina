@@ -45,13 +45,8 @@ import javax.swing.Icon;
 
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingDefinition;
-import org.openflexo.gina.model.FIBComponent;
-import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.gina.model.FIBWidget;
-import org.openflexo.gina.model.FIBComponent.LocalizationEntryRetriever;
-import org.openflexo.gina.model.FIBModelObject.BindingMustBeValid;
-import org.openflexo.gina.model.FIBWidget.FIBWidgetImpl;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -139,10 +134,10 @@ public interface FIBButton extends FIBWidget {
 			return "Button";
 		}
 
-		@Override
+		/*@Override
 		public String getIdentifier() {
 			return getLabel();
-		}
+		}*/
 
 		@Override
 		public Type getDefaultDataType() {
