@@ -58,7 +58,7 @@ import org.openflexo.gina.view.widget.FIBNumberWidget;
  *
  * @author sylvain
  */
-public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidgetViewImpl<FIBNumber, C, T>implements FIBNumberWidget<C, T> {
+public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidgetViewImpl<FIBNumber, C, T> implements FIBNumberWidget<C, T> {
 
 	static final Logger logger = Logger.getLogger(FIBNumberWidgetImpl.class.getPackage().getName());
 
@@ -75,13 +75,13 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 
 	@Override
 	public boolean update() {
-		System.out.println("Update in FIBNumberWidget, getValue()=" + getValue());
-		System.out.println("getData()=" + getData());
+		// System.out.println("Update in FIBNumberWidget, getValue()=" + getValue());
+		// System.out.println("getData()=" + getData());
 		boolean returned = super.update();
-		System.out.println("getData()=" + getData());
+		// System.out.println("getData()=" + getData());
 		updateCheckboxVisibility();
 		updateColumns();
-		System.out.println("getData()=" + getData());
+		// System.out.println("getData()=" + getData());
 		return returned;
 	}
 

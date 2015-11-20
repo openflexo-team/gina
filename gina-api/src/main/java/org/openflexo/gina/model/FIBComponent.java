@@ -322,6 +322,14 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	@Setter(HEIGHT_KEY)
 	public void setHeight(Integer height);
 
+	public boolean hasTemporarySize();
+
+	public void setTemporarySize(Integer width, Integer height);
+
+	public Integer getTemporaryWidth();
+
+	public Integer getTemporaryHeight();
+
 	@Getter(value = MIN_WIDTH_KEY)
 	@XMLAttribute
 	public Integer getMinWidth();
@@ -1185,7 +1193,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		public void declareDependantOf(FIBComponent aComponent) /*
 																 * throws
 																 * DependancyLoopException
-																 */ {
+																 */{
 			// logger.info("Component "+this+" depends of "+aComponent);
 			if (aComponent != null) {
 				if (aComponent == this) {
@@ -1532,6 +1540,41 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			}
 		}
 
+		private boolean temporarySize = false;
+		private Integer temporaryWidth = null;
+		private Integer temporaryHeight = null;
+
+		@Override
+		public void setTemporarySize(Integer width, Integer height) {
+			temporarySize = true;
+			temporaryWidth = width;
+			temporaryHeight = height;
+		}
+
+		@Override
+		public Integer getTemporaryWidth() {
+			return temporaryWidth;
+		}
+
+		@Override
+		public Integer getTemporaryHeight() {
+			return temporaryHeight;
+		}
+
+		@Override
+		public boolean hasTemporarySize() {
+			return temporarySize;
+		}
+
+		protected void clearTemporarySize() {
+			System.out.println("Clear temporary size !!!");
+			temporarySize = false;
+			temporaryWidth = null;
+			temporaryHeight = null;
+			getPropertyChangeSupport().firePropertyChange(WIDTH_KEY, false, true);
+			getPropertyChangeSupport().firePropertyChange(HEIGHT_KEY, false, true);
+		}
+
 		@Override
 		public Integer getWidth() {
 			return width;
@@ -1567,7 +1610,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		@Override
 		public void setMinWidth(Integer minWidth) {
-			FIBPropertyNotification<Integer> notification = requireChange(MIN_HEIGHT_KEY, minWidth);
+			FIBPropertyNotification<Integer> notification = requireChange(MIN_WIDTH_KEY, minWidth);
 			if (notification != null) {
 				this.minWidth = minWidth;
 				hasChanged(notification);
@@ -2013,8 +2056,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	}
 
 	@DefineValidationRule
-	public static class NonRootComponentShouldNotHaveLocalizedDictionary
-			extends ValidationRule<NonRootComponentShouldNotHaveLocalizedDictionary, FIBComponent> {
+	public static class NonRootComponentShouldNotHaveLocalizedDictionary extends
+			ValidationRule<NonRootComponentShouldNotHaveLocalizedDictionary, FIBComponent> {
 		public NonRootComponentShouldNotHaveLocalizedDictionary() {
 			super(FIBModelObject.class, "non_root_component_should_not_have_localized_dictionary");
 		}
@@ -2044,8 +2087,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 	}
 
-	public static class RootComponentShouldHaveMaximumOneDefaultButton
-			extends ValidationRule<RootComponentShouldHaveMaximumOneDefaultButton, FIBComponent> {
+	public static class RootComponentShouldHaveMaximumOneDefaultButton extends
+			ValidationRule<RootComponentShouldHaveMaximumOneDefaultButton, FIBComponent> {
 		public RootComponentShouldHaveMaximumOneDefaultButton() {
 			super(FIBModelObject.class, "root_component_should_have_maximum_one_default_button");
 		}

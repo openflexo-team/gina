@@ -75,8 +75,8 @@ import org.openflexo.gina.view.widget.browser.impl.FIBBrowserModel.BrowserCell;
  * 
  * @author sylvain
  */
-public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBrowser, C, T>
-		implements FIBBrowserWidget<C, T>, TreeSelectionListener {
+public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBrowser, C, T> implements
+		FIBBrowserWidget<C, T>, TreeSelectionListener {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBBrowserWidgetImpl.class.getPackage().getName());
 
@@ -93,7 +93,8 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 	private BindingValueListChangeListener<T, List<T>> selectionBindingValueChangeListener;
 	private BindingValueChangeListener<Object> rootBindingValueChangeListener;
 
-	public FIBBrowserWidgetImpl(FIBBrowser fibBrowser, FIBController controller, BrowserRenderingAdapter<C, T> RenderingAdapter) {
+	public FIBBrowserWidgetImpl(FIBBrowser fibBrowser, FIBController controller,
+			BrowserRenderingAdapter<C, T> RenderingAdapter) {
 		super(fibBrowser, controller, RenderingAdapter);
 
 		_footer = makeFooter();
@@ -120,12 +121,13 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 			selectedBindingValueChangeListener.delete();
 		}
 		if (getComponent().getSelected() != null && getComponent().getSelected().isValid()) {
-			selectedBindingValueChangeListener = new BindingValueChangeListener<T>((DataBinding<T>) getComponent().getSelected(),
-					getBindingEvaluationContext()) {
+			selectedBindingValueChangeListener = new BindingValueChangeListener<T>((DataBinding<T>) getComponent()
+					.getSelected(), getBindingEvaluationContext()) {
 
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
-					// System.out.println(" bindingValueChanged() detected for selected=" + getComponent().getSelected() + " with newValue="
+					// System.out.println(" bindingValueChanged() detected for selected="
+					// + getComponent().getSelected() + " with newValue="
 					// + newValue + " source=" + source);
 					performSelect(newValue, false);
 				}
@@ -145,7 +147,8 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 					((DataBinding) getComponent().getSelection()), getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, List<T> newValue) {
-					// System.out.println(" bindingValueChanged() detected for selection=" + getComponent().getSelection() +
+					// System.out.println(" bindingValueChanged() detected for selection="
+					// + getComponent().getSelection() +
 					// " with newValue="
 					// + newValue + " source=" + source);
 					performSelect(newValue, false);
@@ -167,7 +170,8 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 
 				@Override
 				public void bindingValueChanged(Object source, Object newValue) {
-					// System.out.println(" bindingValueChanged() detected for root=" + getComponent().getRoot() + " with newValue="
+					// System.out.println(" bindingValueChanged() detected for root="
+					// + getComponent().getRoot() + " with newValue="
 					// + newValue + " source=" + source);
 					processRootChanged();
 				}
@@ -220,7 +224,8 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 
 	public boolean processRootChanged() {
 		boolean returned = getBrowserModel().updateRootObject(getRootValue());
-		// If root object has changed, this might be very usefull to update selected, too !!!
+		// If root object has changed, this might be very usefull to update
+		// selected, too !!!
 		updateSelected(true);
 		updateSelection(true);
 		return returned;
@@ -232,9 +237,11 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		Object wasSelected = getSelected();
 
 		// boolean debug = false;
-		// if (getWidget().getName() != null && getWidget().getName().equals("PatternRoleTable")) debug=true;
+		// if (getWidget().getName() != null &&
+		// getWidget().getName().equals("PatternRoleTable")) debug=true;
 
-		// if (debug) System.out.println("valuesBeforeUpdating: "+valuesBeforeUpdating);
+		// if (debug)
+		// System.out.println("valuesBeforeUpdating: "+valuesBeforeUpdating);
 		// if (debug) System.out.println("wasSelected: "+wasSelected);
 
 		if (getRenderingAdapter().isEditing(getTechnologyComponent())) {
@@ -242,42 +249,42 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 				LOGGER.fine(getComponent().getName() + "  - Tree is currently editing");
 			}
 			getRenderingAdapter().cancelCellEditing(getTechnologyComponent());
-		}
-		else {
+		} else {
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine(getComponent().getName() + " - Tree is NOT currently edited ");
 			}
 		}
 
 		if (LOGGER.isLoggable(Level.FINE)) {
-			LOGGER.fine(getComponent().getName() + " updateWidgetFromModel() with " + getValue() + " dataObject=" + getDataObject());
+			LOGGER.fine(getComponent().getName() + " updateWidgetFromModel() with " + getValue() + " dataObject="
+					+ getDataObject());
 		}
 
 		boolean returned = processRootChanged();
 
-		/*if (!getBrowser().getRootVisible() && ((BrowserCell) getBrowserModel().getRoot()).getChildCount() == 1) {
-			// Only one cell and roots are hidden, expand this first cell
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					if (((BrowserCell) getBrowserModel().getRoot()).getChildCount() > 0) {
-						getJTree().expandPath(
-								new TreePath(new Object[] { (BrowserCell) getBrowserModel().getRoot(),
-										((BrowserCell) getBrowserModel().getRoot()).getChildAt(0) }));
-					}
-				}
-			});
-		}*/
+		/*
+		 * if (!getBrowser().getRootVisible() && ((BrowserCell)
+		 * getBrowserModel().getRoot()).getChildCount() == 1) { // Only one cell
+		 * and roots are hidden, expand this first cell
+		 * SwingUtilities.invokeLater(new Runnable() {
+		 * 
+		 * @Override public void run() { if (((BrowserCell)
+		 * getBrowserModel().getRoot()).getChildCount() > 0) {
+		 * getJTree().expandPath( new TreePath(new Object[] { (BrowserCell)
+		 * getBrowserModel().getRoot(), ((BrowserCell)
+		 * getBrowserModel().getRoot()).getChildAt(0) })); } } }); }
+		 */
 		// getBrowserModel().setModel(getDataObject());
 
 		// We restore value if and only if we represent same browser
-		/*if (getBrowserModel().getValues() == valuesBeforeUpdating && wasSelected != null) {
-			setSelectedObject(wasSelected);
-		}
-		else {*/
+		/*
+		 * if (getBrowserModel().getValues() == valuesBeforeUpdating &&
+		 * wasSelected != null) { setSelectedObject(wasSelected); } else {
+		 */
 
 		// logger.info("Bon, je remets a jour la selection du browser,
-		// value="+getComponent().getSelected().getBindingValue(getController())+" was: "+getSelectedObject());
+		// value="+getComponent().getSelected().getBindingValue(getController())+"
+		// was: "+getSelectedObject());
 		// System.out.println("getComponent().getSelected()="+getComponent().getSelected());
 		// System.out.println("getComponent().getSelected().isValid()="+getComponent().getSelected().isValid());
 		// System.out.println("value="+getComponent().getSelected().getBindingValue(getController()));
@@ -316,9 +323,10 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		super.updateLanguage();
 		updateBrowser();
 		// TODO: do not forget to localize actions here
-		/*for (FIBTableAction a : getWidget().getActions()) {
-			if (getWidget().getLocalize()) getLocalized(a.getName());
-		}*/
+		/*
+		 * for (FIBTableAction a : getWidget().getActions()) { if
+		 * (getWidget().getLocalize()) getLocalized(a.getName()); }
+		 */
 	}
 
 	@Override
@@ -378,7 +386,8 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		updateSelected(false);
 		updateSelection(false);
 		// TODO: this should be not necessary
-		// Vincent : It causes many notifications and for big browsers such as archimate emf metamodel one
+		// Vincent : It causes many notifications and for big browsers such as
+		// archimate emf metamodel one
 		// it is tool long to produce the browser (35 seconds for this one).
 		// Thus according to the TODO above, I commented it
 		// getBrowserModel().fireTreeRestructured();
@@ -396,7 +405,8 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 			try {
 				if (getComponent().getSelected().isValid()
 						&& getComponent().getSelected().getBindingValue(getBindingEvaluationContext()) != null) {
-					T newSelectedObject = (T) getComponent().getSelected().getBindingValue(getBindingEvaluationContext());
+					T newSelectedObject = (T) getComponent().getSelected().getBindingValue(
+							getBindingEvaluationContext());
 					if (notEquals(newSelectedObject, getSelected()) || force) {
 						performSelect(newSelectedObject, force);
 					}
@@ -413,10 +423,13 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 
 	private final void updateSelection(boolean force) {
 
-		/*if (getComponent() != null && getComponent().getSelection() != null) {
-			System.out.println("************** updateSelection with " + getComponent().getSelection() + " valid="
-					+ getComponent().getSelection().isValid() + " reason=" + getComponent().getSelection().invalidBindingReason());
-		}*/
+		/*
+		 * if (getComponent() != null && getComponent().getSelection() != null)
+		 * { System.out.println("************** updateSelection with " +
+		 * getComponent().getSelection() + " valid=" +
+		 * getComponent().getSelection().isValid() + " reason=" +
+		 * getComponent().getSelection().invalidBindingReason()); }
+		 */
 
 		if (getComponent() != null && getComponent().getSelection() != null && getComponent().getSelection().isValid()) {
 			try {
@@ -433,23 +446,17 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 
 	}
 
-	/*@Override
-	public void updateDataObject(final Object dataObject) {
-		if (!SwingUtilities.isEventDispatchThread()) {
-			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Update data object invoked outside the EDT!!! please investigate and make sure this is no longer the case. \n\tThis is a very SERIOUS problem! Do not let this pass.");
-			}
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					updateDataObject(dataObject);
-				}
-			});
-			return;
-		}
-		super.updateDataObject(dataObject);
-		getBrowserModel().fireTreeRestructured();
-	}*/
+	/*
+	 * @Override public void updateDataObject(final Object dataObject) { if
+	 * (!SwingUtilities.isEventDispatchThread()) { if
+	 * (logger.isLoggable(Level.WARNING)) { logger.warning(
+	 * "Update data object invoked outside the EDT!!! please investigate and make sure this is no longer the case. \n\tThis is a very SERIOUS problem! Do not let this pass."
+	 * ); } SwingUtilities.invokeLater(new Runnable() {
+	 * 
+	 * @Override public void run() { updateDataObject(dataObject); } }); return;
+	 * } super.updateDataObject(dataObject);
+	 * getBrowserModel().fireTreeRestructured(); }
+	 */
 
 	@Override
 	public T getSelected() {
@@ -461,7 +468,7 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		if (getRootValue() == null) {
 			return;
 		}
-		if (object == getSelected() /*&& !force*/) {
+		if (object == getSelected() /* && !force */) {
 			LOGGER.fine("Ignore set selected object");
 			return;
 		}
@@ -512,7 +519,8 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 	public void addToSelection(Object o) {
 
 		if (getBrowserModel().getPaths(o).length == 0 && getBrowser().getDeepExploration()) {
-			// No matches yet, but we may recursively and exhaustively explore the whole model to retrieve all contents
+			// No matches yet, but we may recursively and exhaustively explore
+			// the whole model to retrieve all contents
 			getBrowserModel().recursivelyExploreModelToRetrieveContents();
 		}
 
@@ -538,19 +546,19 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		if (e.getNewLeadSelectionPath() != null && e.getNewLeadSelectionPath().getLastPathComponent() != null
 				&& e.getNewLeadSelectionPath().getLastPathComponent() instanceof BrowserCell) {
 			for (TreePath tp : e.getPaths()) {
-				System.out.println("PATH : " + tp.getPath());
-				/*if (tp.getLastPathComponent() instanceof BrowserCell) {
-					BrowserCell cell = (BrowserCell) tp.getLastPathComponent();
-					system.out.println(cell.);
-				}*/
+				// System.out.println("PATH : " + tp.getPath());
+				/*
+				 * if (tp.getLastPathComponent() instanceof BrowserCell) {
+				 * BrowserCell cell = (BrowserCell) tp.getLastPathComponent();
+				 * system.out.println(cell.); }
+				 */
 
-				/*for (Object to : tp.getPath()) {
-					if (to instanceof BrowserCell) {
-						BrowserCell cell = (BrowserCell) to;
-						
-						System.out.println();
-					}
-				}*/
+				/*
+				 * for (Object to : tp.getPath()) { if (to instanceof
+				 * BrowserCell) { BrowserCell cell = (BrowserCell) to;
+				 * 
+				 * System.out.println(); } }
+				 */
 			}
 		}
 
@@ -566,53 +574,56 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 
 		if (e.getNewLeadSelectionPath() == null || e.getNewLeadSelectionPath().getLastPathComponent() == null) {
 			newSelectedObject = null;
-		}
-		else if (e.getNewLeadSelectionPath().getLastPathComponent() instanceof BrowserCell) {
-			newSelectedObject = (T) ((BrowserCell) e.getNewLeadSelectionPath().getLastPathComponent()).getRepresentedObject();
+		} else if (e.getNewLeadSelectionPath().getLastPathComponent() instanceof BrowserCell) {
+			newSelectedObject = (T) ((BrowserCell) e.getNewLeadSelectionPath().getLastPathComponent())
+					.getRepresentedObject();
 			for (TreePath tp : e.getPaths()) {
 				if (tp.getLastPathComponent() instanceof BrowserCell) {
 					T obj = (T) ((BrowserCell) tp.getLastPathComponent()).getRepresentedObject();
-					if (obj != null && (getBrowser().getIteratorClass() == null
-							|| getBrowser().getIteratorClass().isAssignableFrom(obj.getClass()))) {
+					if (obj != null
+							&& (getBrowser().getIteratorClass() == null || getBrowser().getIteratorClass()
+									.isAssignableFrom(obj.getClass()))) {
 						if (e.isAddedPath(tp)) {
 							if (!newSelection.contains(obj)) {
 								newSelection.add(obj);
 							}
-						}
-						else {
+						} else {
 							newSelection.remove(obj);
 						}
 					}
 				}
 			}
-		}
-		else {
+		} else {
 			newSelectedObject = null;
 		}
 
 		// logger.info("BrowserModel, selected object is now "+selectedObject);
 
 		// System.out.println("selectedObject = " + selectedObject);
-		System.out.println("selection = " + newSelection);
+		// System.out.println("selection = " + newSelection);
 
 		if (newSelectedObject == null) {
 			setSelected(null);
-		}
-		else if (getBrowser().getIteratorClass() == null
+		} else if (getBrowser().getIteratorClass() == null
 				|| getBrowser().getIteratorClass().isAssignableFrom(newSelectedObject.getClass())) {
 			setSelected(newSelectedObject);
-		}
-		else {
-			// If selected element is not of expected class, set selected to be null
-			// (we want to be sure that selected is an instance of IteratorClass)
+		} else {
+			// If selected element is not of expected class, set selected to be
+			// null
+			// (we want to be sure that selected is an instance of
+			// IteratorClass)
 			setSelected(null);
 		}
 		setSelection(newSelection);
 
-		/*System.out.println("selectedObject=" + selectedObject);
-		System.out.println("getComponent().getSelected()=" + getComponent().getSelected() + " of "
-				+ getComponent().getSelected().getClass());
-		System.out.println("getComponent().getSelected().isValid()=" + getComponent().getSelected().isValid());*/
+		/*
+		 * System.out.println("selectedObject=" + selectedObject);
+		 * System.out.println("getComponent().getSelected()=" +
+		 * getComponent().getSelected() + " of " +
+		 * getComponent().getSelected().getClass());
+		 * System.out.println("getComponent().getSelected().isValid()=" +
+		 * getComponent().getSelected().isValid());
+		 */
 		if (getComponent() != null) {
 			if (getComponent().getSelected().isValid()) {
 				LOGGER.fine("Sets SELECTED binding with " + getSelected());
@@ -638,9 +649,9 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 			FIBController ctrl = this.getController();
 			if (ctrl != null) {
 				ctrl.updateSelection(this, oldSelection, selection);
-			}
-			else {
-				LOGGER.warning("INVESTIGATE: trying to update selection on a widget without controlller! " + this.toString());
+			} else {
+				LOGGER.warning("INVESTIGATE: trying to update selection on a widget without controlller! "
+						+ this.toString());
 			}
 		}
 
@@ -653,7 +664,8 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 	public void performExpand(T o) {
 
 		if (getBrowserModel().getPaths(o).length == 0 && getBrowser().getDeepExploration()) {
-			// No matches yet, but we may recursively and exhaustively explore the whole model to retrieve all contents
+			// No matches yet, but we may recursively and exhaustively explore
+			// the whole model to retrieve all contents
 			getBrowserModel().recursivelyExploreModelToRetrieveContents();
 		}
 

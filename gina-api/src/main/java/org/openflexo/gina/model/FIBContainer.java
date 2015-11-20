@@ -254,18 +254,21 @@ public abstract interface FIBContainer extends FIBComponent {
 		}
 
 		@Override
+		public void addToSubComponents(FIBComponent aSubComponent) {
+			addToSubComponents(aSubComponent, null);
+		}
+
+		@Override
 		public void addToSubComponents(FIBComponent aComponent, ComponentConstraints someConstraints) {
 			addToSubComponents(aComponent, someConstraints, getSubComponents().size());
 		}
 
 		@Override
-		public void addToSubComponents(FIBComponent aComponent, ComponentConstraints someConstraints,
+		public final void addToSubComponents(FIBComponent aComponent, ComponentConstraints someConstraints,
 				int subComponentIndex) {
 
 			// TODO: i dont't like this code, we might do it without all these
 			// hacks
-			// aComponent.setParent(this);
-
 			if (someConstraints != null) {
 				aComponent.getConstraints().ignoreNotif = true;
 				aComponent.getConstraints().putAll(someConstraints);
@@ -289,7 +292,14 @@ public abstract interface FIBContainer extends FIBComponent {
 			 * aComponent).getManageDynamicModel()) { if
 			 * (deserializationPerformed) { updateBindingModel(); } }
 			 */
+
+			if (hasTemporarySize()) {
+				// No more need for temporary size
+				clearTemporarySize();
+			}
+
 			getPropertyChangeSupport().firePropertyChange(SUB_COMPONENTS_KEY, null, getSubComponents());
+
 		}
 
 		private void updateComponentIndexForInsertionIndex(FIBComponent component, int insertionIndex) {

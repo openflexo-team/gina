@@ -367,10 +367,12 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	@Override
 	public boolean update() {
 
-		System.out.println("update of " + this);
+		// System.out.println("update of " + this);
 
 		updateVisibility();
-		updatePreferredSize();
+
+		updateGraphicalProperties();
+
 		updateFont();
 
 		// IMPORTANT (Sylvain):
@@ -553,6 +555,17 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 				preferredSize.height = getComponent().getHeight();
 			}
 			getRenderingAdapter().setPreferredSize(getTechnologyComponent(), preferredSize);
+		} else {
+			if (getComponent().hasTemporarySize()) {
+				getRenderingAdapter().setPreferredSize(getTechnologyComponent(),
+						new Dimension(getComponent().getTemporaryWidth(), getComponent().getTemporaryHeight()));
+			} else {
+				// System.out.println("Clear de la prefered size pour " +
+				// getComponent());
+				if (getTechnologyComponent() != null) {
+					getRenderingAdapter().setPreferredSize(getTechnologyComponent(), null);
+				}
+			}
 		}
 	}
 

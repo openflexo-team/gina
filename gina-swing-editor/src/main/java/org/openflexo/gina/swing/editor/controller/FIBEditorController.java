@@ -133,11 +133,11 @@ public class FIBEditorController /* extends FIBController */extends Observable i
 
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
 				g2.setColor(Color.WHITE);
-				g2.fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 15, 15);
+				g2.fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 10, 10);
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
 				g2.setStroke(new BasicStroke(0.5f));
 				g2.setColor(Color.LIGHT_GRAY);
-				g2.drawRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 15, 15);
+				g2.drawRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 10, 10);
 
 				// FOCUSED_BORDER.paintBorder(focused.getJComponent(),
 				// componentGraphics, 0, 0, focused.getJComponent()
@@ -158,11 +158,11 @@ public class FIBEditorController /* extends FIBController */extends Observable i
 
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.05f));
 				g2.setColor(Color.BLUE);
-				g2.fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 15, 15);
+				g2.fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 10, 10);
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
 				g2.setStroke(new BasicStroke(0.5f));
 				g2.setColor(Color.BLUE.brighter());
-				g2.drawRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 15, 15);
+				g2.drawRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 10, 10);
 
 				// SELECTED_BORDER.paintBorder(selected.getJComponent(),
 				// componentGraphics, 0, 0, selected.getJComponent()
@@ -333,7 +333,7 @@ public class FIBEditorController /* extends FIBController */extends Observable i
 
 	public void setSelectedObject(FIBComponent aComponent) {
 		if (aComponent != selectedObject) {
-			logger.info("Switch from " + selectedObject + " to " + aComponent);
+			logger.fine("Switch from " + selectedObject + " to " + aComponent);
 			FIBComponent oldValue = selectedObject;
 			SelectedObjectChange change = new SelectedObjectChange(oldValue, aComponent);
 			selectedObject = aComponent;

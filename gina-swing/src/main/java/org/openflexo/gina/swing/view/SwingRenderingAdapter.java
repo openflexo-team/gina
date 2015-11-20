@@ -80,16 +80,18 @@ public abstract class SwingRenderingAdapter<J extends JComponent> implements Ren
 	 */
 	public JComponent getResultingJComponent(FIBView<?, J> view) {
 		if (view.getComponent().getUseScrollBar()) {
-			System.out.println("parent=" + view.getTechnologyComponent().getParent());
+			// System.out.println("parent=" +
+			// view.getTechnologyComponent().getParent());
 			if (view.getTechnologyComponent().getParent() instanceof JViewport) {
-				System.out.println("on retourne la scrollpane deja faite pour " + view);
+				// System.out.println("on retourne la scrollpane deja faite pour "
+				// + view);
 				return (JScrollPane) ((JViewport) view.getTechnologyComponent().getParent()).getParent();
 			}
 			else {
-				System.out.println("on se refait une scrollpane pour " + view);
-				JScrollPane scrolledComponent = new JScrollPane(getJComponent(view.getTechnologyComponent()),
-						view.getComponent().getVerticalScrollbarPolicy().getPolicy(),
-						view.getComponent().getHorizontalScrollbarPolicy().getPolicy());
+				// System.out.println("on se refait une scrollpane pour " +
+				// view);
+				JScrollPane scrolledComponent = new JScrollPane(getJComponent(view.getTechnologyComponent()), view.getComponent()
+						.getVerticalScrollbarPolicy().getPolicy(), view.getComponent().getHorizontalScrollbarPolicy().getPolicy());
 				scrolledComponent.setOpaque(false);
 				scrolledComponent.getViewport().setOpaque(false);
 				scrolledComponent.setBorder(BorderFactory.createEmptyBorder());

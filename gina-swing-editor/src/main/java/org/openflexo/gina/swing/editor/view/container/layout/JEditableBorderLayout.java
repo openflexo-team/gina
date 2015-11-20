@@ -67,7 +67,8 @@ import org.openflexo.logging.FlexoLogger;
  * 
  * @author sylvain
  */
-public class JEditableBorderLayout extends JBorderLayout implements JFIBEditableLayoutManager<JPanel, JComponent, BorderLayoutConstraints> {
+public class JEditableBorderLayout extends JBorderLayout implements
+		JFIBEditableLayoutManager<JPanel, JComponent, BorderLayoutConstraints> {
 
 	private static final Logger logger = FlexoLogger.getLogger(JFIBEditablePanelView.class.getPackage().getName());
 
@@ -110,8 +111,7 @@ public class JEditableBorderLayout extends JBorderLayout implements JFIBEditable
 					existingComponents.put(l, foundComponent);
 					JFIBView<?, ?> childView = (JFIBView<?, ?>) getContainerView().getSubViewsMap().get(foundComponent);
 					phComponent = Box.createRigidArea(childView.getResultingJComponent().getSize());
-				}
-				else {
+				} else {
 					phComponent = new JPanel() {
 						@Override
 						public Dimension getPreferredSize() {
@@ -128,12 +128,18 @@ public class JEditableBorderLayout extends JBorderLayout implements JFIBEditable
 				FIBComponent existingComponent = existingComponents.get(l);
 				Rectangle bounds = phComponents.get(l).getBounds();
 
-				// System.out.println("Pour " + l.getConstraint() + " existing=" + existingComponent + " bounds=" + bounds);
+				// System.out.println("Pour " + l.getConstraint() + " existing="
+				// + existingComponent + " bounds=" + bounds);
 
 				if (existingComponent == null) {
-					PlaceHolder newPlaceHolder = new PlaceHolder(getContainerView(), "<" + l.getConstraint() + ">", bounds) {
+					PlaceHolder newPlaceHolder = new PlaceHolder(getContainerView(), "<" + l.getConstraint() + ">",
+							bounds) {
 						@Override
 						public void insertComponent(FIBComponent newComponent) {
+
+							System.out.println("He he on ajoute un composant " + newComponent + " a "
+									+ getContainerView().getComponent());
+
 							BorderLayoutConstraints blConstraints = new BorderLayoutConstraints(l);
 							newComponent.setConstraints(blConstraints);
 							getComponent().addToSubComponents(newComponent);

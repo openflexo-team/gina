@@ -285,19 +285,22 @@ public class DropListener implements DropTargetListener {
 		return focusedPH;
 	}
 
-	private void fireDragEnter(Point locationInView) {
-
-		if (getParentDropListener() != null) {
-			getParentDropListener().fireDragEnter(
-					SwingUtilities.convertPoint(editableView.getResultingJComponent(), locationInView,
-							((JFIBView<?, ?>) editableView.getParentView()).getResultingJComponent()));
-		}
-
-		showFocusedPlaceHolderIfAny(locationInView);
+	private PlaceHolder fireDragEnter(Point locationInView) {
 
 		if (getContainerDelegate() != null) {
 			getContainerDelegate().getEditorController().dragEnter(this);
 		}
+
+		if (getParentDropListener() != null) {
+			PlaceHolder returned = getParentDropListener().fireDragEnter(
+					SwingUtilities.convertPoint(editableView.getResultingJComponent(), locationInView,
+							((JFIBView<?, ?>) editableView.getParentView()).getResultingJComponent()));
+			if (returned != null) {
+				return returned;
+			}
+		}
+
+		return showFocusedPlaceHolderIfAny(locationInView);
 
 	}
 
@@ -322,19 +325,18 @@ public class DropListener implements DropTargetListener {
 
 	}
 
-	private void fireDragOver(Point locationInView) {
-
-		// System.out.println("fireDragOver() with " + locationInView + " in " +
-		// editableView + " parentDS="
-		// + getParentDropListener());
+	private PlaceHolder fireDragOver(Point locationInView) {
 
 		if (getParentDropListener() != null) {
-			getParentDropListener().fireDragOver(
+			PlaceHolder returned = getParentDropListener().fireDragOver(
 					SwingUtilities.convertPoint(editableView.getResultingJComponent(), locationInView,
 							((JFIBView<?, ?>) editableView.getParentView()).getResultingJComponent()));
+			if (returned != null) {
+				return returned;
+			}
 		}
 
-		showFocusedPlaceHolderIfAny(locationInView);
+		return showFocusedPlaceHolderIfAny(locationInView);
 
 	}
 

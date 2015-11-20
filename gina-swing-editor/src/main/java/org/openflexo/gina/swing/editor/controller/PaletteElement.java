@@ -210,6 +210,10 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 
 		FIBComponent newComponent = (FIBComponent) modelComponent.cloneObject();
 
+		if (newComponent instanceof FIBPanel) {
+			newComponent.setTemporarySize(representationComponent.getWidth(), representationComponent.getHeight());
+		}
+
 		newComponent.setLocalizedDictionary(null);
 		newComponent.clearParameters();
 

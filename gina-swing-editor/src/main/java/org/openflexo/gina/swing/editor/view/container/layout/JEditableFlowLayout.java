@@ -64,8 +64,7 @@ import org.openflexo.logging.FlexoLogger;
  * 
  * @author sylvain
  */
-public class JEditableFlowLayout extends JFlowLayout implements
-		JFIBEditableLayoutManager<JPanel, JComponent, FlowLayoutConstraints> {
+public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayoutManager<JPanel, JComponent, FlowLayoutConstraints> {
 
 	private static final Logger logger = FlexoLogger.getLogger(JFIBEditablePanelView.class.getPackage().getName());
 
@@ -96,11 +95,13 @@ public class JEditableFlowLayout extends JFlowLayout implements
 			if (getComponent().getFlowAlignment() == FlowLayoutAlignment.CENTER) {
 				deltaX = 0;
 				deltaY = 0;
-			} else if (getComponent().getFlowAlignment() == FlowLayoutAlignment.LEADING
+			}
+			else if (getComponent().getFlowAlignment() == FlowLayoutAlignment.LEADING
 					|| getComponent().getFlowAlignment() == FlowLayoutAlignment.LEFT) {
 				deltaX = -15 - getComponent().getHGap() / 2;
 				deltaY = 0;
-			} else if (getComponent().getFlowAlignment() == FlowLayoutAlignment.TRAILING
+			}
+			else if (getComponent().getFlowAlignment() == FlowLayoutAlignment.TRAILING
 					|| getComponent().getFlowAlignment() == FlowLayoutAlignment.RIGHT) {
 				deltaX = 15 + getComponent().getHGap() / 2;
 				deltaY = 0;
@@ -137,12 +138,16 @@ public class JEditableFlowLayout extends JFlowLayout implements
 				// System.out.println("OK placeholder i=" + i + ", bounds=" +
 				// phComponent.getBounds());
 				final int insertionIndex = i;
-				Rectangle placeHolderBounds = new Rectangle(phComponent.getBounds().x + deltaX,
-						phComponent.getBounds().y + deltaY, phComponent.getWidth(), phComponent.getHeight());
-				if (placeHolderBounds.x < 0) {
-					placeHolderBounds.width = placeHolderBounds.width + placeHolderBounds.x;
-					placeHolderBounds.x = 0;
-				}
+
+				Rectangle placeHolderBounds = makePlaceHolderBounds(phComponent, deltaX, deltaY);
+				/*
+				 * Rectangle placeHolderBounds = new
+				 * Rectangle(phComponent.getBounds().x + deltaX,
+				 * phComponent.getBounds().y + deltaY, phComponent.getWidth(),
+				 * phComponent.getHeight()); if (placeHolderBounds.x < 0) {
+				 * placeHolderBounds.width = placeHolderBounds.width +
+				 * placeHolderBounds.x; placeHolderBounds.x = 0; }
+				 */
 				PlaceHolder newPlaceHolder = new PlaceHolder(getContainerView(), "< flow item >", placeHolderBounds) {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
@@ -171,8 +176,11 @@ public class JEditableFlowLayout extends JFlowLayout implements
 
 			// System.out.println("OK last placeholder bounds=" +
 			// phComponent.getBounds());
-			Rectangle placeHolderBounds = new Rectangle(phComponent.getBounds().x + deltaX, phComponent.getBounds().y
-					+ deltaY, phComponent.getWidth(), phComponent.getHeight());
+			Rectangle placeHolderBounds = makePlaceHolderBounds(phComponent, deltaX, deltaY);
+			// Rectangle placeHolderBounds = new
+			// Rectangle(phComponent.getBounds().x + deltaX,
+			// phComponent.getBounds().y
+			// + deltaY, phComponent.getWidth(), phComponent.getHeight());
 			PlaceHolder newPlaceHolder = new PlaceHolder(getContainerView(), "< flow item >", placeHolderBounds) {
 				@Override
 				public void insertComponent(FIBComponent newComponent) {
@@ -186,12 +194,33 @@ public class JEditableFlowLayout extends JFlowLayout implements
 		return returned;
 	}
 
+	private Rectangle makePlaceHolderBounds(Component component, int deltaX, int deltaY) {
+		Rectangle placeHolderBounds = new Rectangle(component.getBounds().x + deltaX, component.getBounds().y + deltaY,
+				component.getWidth(), component.getHeight());
+		if (placeHolderBounds.x < 0) {
+			placeHolderBounds.width = placeHolderBounds.width + placeHolderBounds.x;
+			placeHolderBounds.x = 0;
+		}
+		if (placeHolderBounds.y < 0) {
+			placeHolderBounds.height = placeHolderBounds.height + placeHolderBounds.y;
+			placeHolderBounds.y = 0;
+		}
+		if (placeHolderBounds.x + placeHolderBounds.width > getContainerView().getResultingJComponent().getWidth()) {
+			placeHolderBounds.width = getContainerView().getResultingJComponent().getWidth() - placeHolderBounds.x;
+		}
+		if (placeHolderBounds.y + placeHolderBounds.height > getContainerView().getResultingJComponent().getHeight()) {
+			placeHolderBounds.height = getContainerView().getResultingJComponent().getHeight() - placeHolderBounds.y;
+		}
+		return placeHolderBounds;
+	}
+
 	protected void putSubComponentsAtIndex(FIBComponent subComponent, int index) {
 		if (getComponent().getSubComponents().contains(subComponent)) {
 			// This is a simple move
 			System.out.println("Moving component at index " + index);
 			getComponent().moveToSubComponentsAtIndex(subComponent, index);
-		} else {
+		}
+		else {
 			System.out.println("Inserting component at index " + index);
 			getComponent().insertToSubComponentsAtIndex(subComponent, index);
 		}
