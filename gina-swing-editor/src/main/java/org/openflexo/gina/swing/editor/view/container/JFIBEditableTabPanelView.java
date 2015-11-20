@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.swing.editor.view.container;
 
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -58,8 +59,7 @@ import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.view.container.JFIBTabPanelView;
 import org.openflexo.logging.FlexoLogger;
 
-public class JFIBEditableTabPanelView extends JFIBTabPanelView implements
-		FIBSwingEditableContainerView<FIBTabPanel, JTabbedPane> {
+public class JFIBEditableTabPanelView extends JFIBTabPanelView implements FIBSwingEditableContainerView<FIBTabPanel, JTabbedPane> {
 
 	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableTabPanelView.class.getPackage().getName());
 
@@ -133,9 +133,8 @@ public class JFIBEditableTabPanelView extends JFIBTabPanelView implements
 	}
 
 	@Override
-	public List<PlaceHolder> makePlaceHolders() {
-		System.out.println("Je suis sense calculer les placeholders pour la vue " + this + " size="
-				+ getResultingJComponent().getSize());
+	public List<PlaceHolder> makePlaceHolders(Dimension preferredSize) {
+		System.out.println("Je suis sense calculer les placeholders pour la vue " + this + " size=" + getResultingJComponent().getSize());
 		return null;
 	}
 

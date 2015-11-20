@@ -132,7 +132,7 @@ public class FIBEditorController /* extends FIBController */extends Observable i
 				g2.setColor(Color.WHITE);
 				g2.fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 15, 15);
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-				g2.setStroke(new BasicStroke(1.0f));
+				g2.setStroke(new BasicStroke(0.5f));
 				g2.setColor(Color.LIGHT_GRAY);
 				g2.drawRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 15, 15);
 
@@ -155,8 +155,8 @@ public class FIBEditorController /* extends FIBController */extends Observable i
 				g2.setColor(Color.BLUE);
 				g2.fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 15, 15);
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-				g2.setStroke(new BasicStroke(1.0f));
-				g2.setColor(Color.BLUE);
+				g2.setStroke(new BasicStroke(0.5f));
+				g2.setColor(Color.BLUE.brighter());
 				g2.drawRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 15, 15);
 
 				// SELECTED_BORDER.paintBorder(selected.getJComponent(),
@@ -173,8 +173,7 @@ public class FIBEditorController /* extends FIBController */extends Observable i
 
 		if (fibComponent instanceof FIBContainer) {
 			FIBContainer fibContainer = (FIBContainer) fibComponent;
-			boolean instantiable = fibContainer.getDataClass() != null
-					&& !Modifier.isAbstract(fibContainer.getDataClass().getModifiers());
+			boolean instantiable = fibContainer.getDataClass() != null && !Modifier.isAbstract(fibContainer.getDataClass().getModifiers());
 			if (instantiable) {
 				try {
 					instantiable = fibContainer.getDataClass().getConstructor(new Class[0]) != null;
@@ -197,22 +196,23 @@ public class FIBEditorController /* extends FIBController */extends Observable i
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			} else {
+			}
+			else {
 				fibPanel.getController().updateWithoutDataObject();
 			}
-		} else {
+		}
+		else {
 			fibPanel.getController().updateWithoutDataObject();
 		}
 	}
 
-	public FIBEditorController(FIBModelFactory factory, FIBComponent fibComponent, FIBGenericEditor editor,
-			Object dataObject) {
-		this(factory, fibComponent, editor, dataObject, FIBController.instanciateController(fibComponent,
-				SwingEditorViewFactory.INSTANCE, FIBAbstractEditor.LOCALIZATION));
+	public FIBEditorController(FIBModelFactory factory, FIBComponent fibComponent, FIBGenericEditor editor, Object dataObject) {
+		this(factory, fibComponent, editor, dataObject,
+				FIBController.instanciateController(fibComponent, SwingEditorViewFactory.INSTANCE, FIBAbstractEditor.LOCALIZATION));
 	}
 
-	public FIBEditorController(FIBModelFactory factory, FIBComponent fibComponent, FIBGenericEditor editor,
-			Object dataObject, FIBController controller) {
+	public FIBEditorController(FIBModelFactory factory, FIBComponent fibComponent, FIBGenericEditor editor, Object dataObject,
+			FIBController controller) {
 
 		pcSupport = new PropertyChangeSupport(this);
 
@@ -243,14 +243,15 @@ public class FIBEditorController /* extends FIBController */extends Observable i
 
 		FIBEditorBrowser editorBrowser = new FIBEditorBrowser(fibComponent, this);
 
-		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, editorBrowser, new FibWrappingPanel(
-				fibPanel.getResultingJComponent()));
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, editorBrowser,
+				new FibWrappingPanel(fibPanel.getResultingJComponent()));
 
 		editorPanel.add(splitPane, BorderLayout.CENTER);
 
 		if (dataObject != null) {
 			fibPanel.getController().setDataObject(dataObject, true);
-		} else {
+		}
+		else {
 			fibPanel.getController().updateWithoutDataObject();
 		}
 
@@ -311,6 +312,7 @@ public class FIBEditorController /* extends FIBController */extends Observable i
 	}
 
 	public void setFocusedObject(FIBComponent aComponent) {
+
 		if (aComponent != focusedObject) {
 			// System.out.println("setFocusedObject with "+aComponent);
 			FocusedObjectChange change = new FocusedObjectChange(focusedObject, aComponent);
@@ -401,9 +403,18 @@ public class FIBEditorController /* extends FIBController */extends Observable i
 		return returned;
 	}
 
-	private Map<FIBSwingEditableView<?, ?>, DropListener> dropListeners = new HashMap<FIBSwingEditableView<?, ?>, DropListener>();
+	private final Map<FIBSwingEditableView<?, ?>, DropListener> dropListeners = new HashMap<FIBSwingEditableView<?, ?>, DropListener>();
+
+	private boolean isDragging = false;
+
+	public boolean isDragging() {
+		return isDragging;
+	}
 
 	public void dragEnter(DropListener dl) {
+
+		isDragging = true;
+
 		if (getSelectedObject() != null) {
 			setSelectedObject(null);
 		}
@@ -411,16 +422,19 @@ public class FIBEditorController /* extends FIBController */extends Observable i
 		dropListeners.put(dl.getEditableView(), dl);
 		if (dl.getEditableView().getParentView() != null) {
 			DropListener parentDL = dropListeners.get(dl.getEditableView().getParentView());
-			System.out.println("Tiens j'ai trouve un parent, parentDL=" + parentDL);
 			dl.setParentDropListener(parentDL);
 		}
 	}
 
 	public void dragExit(DropListener dl) {
 		System.out.println("Drag EXIT in " + dl.getEditableView());
+		isDragging = false;
 	}
 
 	public void dragEnd(DropListener dl) {
+
+		isDragging = false;
+
 		System.out.println("Drag END in " + dl.getEditableView());
 		// dropListeners.clear();
 	}

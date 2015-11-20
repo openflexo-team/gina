@@ -56,27 +56,25 @@ import org.openflexo.swing.layout.KnobDividerPainter;
 import org.openflexo.swing.layout.MultiSplitLayout;
 
 /**
- * Swing implementation of a panel split into a given policy, with adjustable
- * sliders<br>
+ * Swing implementation of a panel split into a given policy, with adjustable sliders<br>
  * Implementation is based on JXMultiSplitPane
  * 
  * 
  * @author sylvain
  */
-public class JFIBSplitPanelView extends FIBSplitPanelViewImpl<JXMultiSplitPane, JComponent> implements
-		JFIBView<FIBSplitPanel, JXMultiSplitPane> {
+public class JFIBSplitPanelView extends FIBSplitPanelViewImpl<JXMultiSplitPane, JComponent>
+		implements JFIBView<FIBSplitPanel, JXMultiSplitPane> {
 
 	private static final Logger logger = Logger.getLogger(JFIBSplitPanelView.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingAdapter} implementation dedicated for Swing JPanel with
-	 * a given layout<br>
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JPanel with a given layout<br>
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingSplitPanelRenderingAdapter extends SwingRenderingAdapter<JXMultiSplitPane> implements
-			SplitPanelRenderingAdapter<JXMultiSplitPane, JComponent> {
+	public static class SwingSplitPanelRenderingAdapter extends SwingRenderingAdapter<JXMultiSplitPane>
+			implements SplitPanelRenderingAdapter<JXMultiSplitPane, JComponent> {
 	}
 
 	private MultiSplitLayout layout;
@@ -128,6 +126,12 @@ public class JFIBSplitPanelView extends FIBSplitPanelViewImpl<JXMultiSplitPane, 
 	@Override
 	protected void clearContainer() {
 		getJComponent().removeAll();
+	}
+
+	@Override
+	public void changeLayout() {
+		// TODO is it enough ???
+		updateLayout();
 	}
 
 	@Override

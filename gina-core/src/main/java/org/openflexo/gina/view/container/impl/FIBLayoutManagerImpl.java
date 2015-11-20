@@ -55,16 +55,13 @@ import org.openflexo.gina.view.impl.FIBContainerViewImpl;
  * Represents a layout manager working in a {@link FIBContainer}
  *
  * @param <C>
- *            type of technology-specific container this layout manager is
- *            managing
+ *            type of technology-specific container this layout manager is managing
  * @param <C2>
- *            type of technology-specific contents this layout manager is
- *            layouting
+ *            type of technology-specific contents this layout manager is layouting
  *
  * @author sylvain
  */
-public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraints> implements
-		FIBLayoutManager<C, C2, CC> {
+public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraints> implements FIBLayoutManager<C, C2, CC> {
 
 	private static final Logger logger = Logger.getLogger(FIBLayoutManagerImpl.class.getPackage().getName());
 
@@ -116,6 +113,8 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 
 		System.out.println("!!!!!!!!!!!!!!!!! Hop, on se refait le layout");
 
+		// TODO: we should check that type of constraints matches new layout if this results from a layout type change
+
 		// We perform here a first pass to set constraints for each sub
 		// component view
 		for (FIBView<?, C2> subComponentView : getContainerView().getSubViews()) {
@@ -136,10 +135,10 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 	 */
 
 	protected void registerComponentWithConstraints(FIBView<?, C2> subComponentView, CC constraint/*
-																								 * ,
-																								 * int
-																								 * index
-																								 */) {
+																									* ,
+																									* int
+																									* index
+																									*/) {
 		logger.fine("Register component: " + subComponentView.getComponent() + " constraint=" + constraint);
 		/*
 		 * if (index < 0 || index > subComponents.size()) { index =

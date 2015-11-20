@@ -74,11 +74,11 @@ public class FIBEditorPalette extends JDialog {
 	private static final Image DROP_OK_IMAGE = FIBIconLibrary.DROP_OK_CURSOR.getImage();
 	private static final Image DROP_KO_IMAGE = FIBIconLibrary.DROP_KO_CURSOR.getImage();
 
-	public static final Cursor dropOK = ToolBox.getPLATFORM() == ToolBox.MACOS ? Toolkit.getDefaultToolkit()
-			.createCustomCursor(DROP_OK_IMAGE, new Point(16, 16), "Drop OK") : DragSource.DefaultMoveDrop;
+	public static final Cursor dropOK = ToolBox.getPLATFORM() == ToolBox.MACOS
+			? Toolkit.getDefaultToolkit().createCustomCursor(DROP_OK_IMAGE, new Point(16, 16), "Drop OK") : DragSource.DefaultMoveDrop;
 
-	public static final Cursor dropKO = ToolBox.getPLATFORM() == ToolBox.MACOS ? Toolkit.getDefaultToolkit()
-			.createCustomCursor(DROP_KO_IMAGE, new Point(16, 16), "Drop KO") : DragSource.DefaultMoveNoDrop;
+	public static final Cursor dropKO = ToolBox.getPLATFORM() == ToolBox.MACOS
+			? Toolkit.getDefaultToolkit().createCustomCursor(DROP_KO_IMAGE, new Point(16, 16), "Drop KO") : DragSource.DefaultMoveNoDrop;
 
 	private final JPanel paletteContent;
 
@@ -106,11 +106,16 @@ public class FIBEditorPalette extends JDialog {
 			if (representationFIBFile != null) {
 				representationComponent = FIBLibrary.instance().retrieveFIBComponent(representationFIBFile);
 
-			} else {
+			}
+			else {
 				representationComponent = FIBLibrary.instance().retrieveFIBComponent(modelFIBFile);
 			}
 			addPaletteElement(modelComponent, representationComponent);
 
+			/*System.out.println("********* FOUND palette element");
+			System.out.println("modelFIBFile=" + modelFIBFile);
+			System.out.println("representationFIBFile=" + representationFIBFile);
+			System.out.println(modelComponent.getFactory().stringRepresentation(modelComponent));*/
 		}
 
 		getContentPane().add(paletteContent);

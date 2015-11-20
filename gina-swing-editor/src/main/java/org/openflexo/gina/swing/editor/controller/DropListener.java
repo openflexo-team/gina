@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.swing.editor.controller;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -61,7 +62,6 @@ import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate.FIBDropTarget;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.view.JFIBView;
-import org.openflexo.gina.view.FIBWidgetView;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.swing.Focusable;
 
@@ -177,8 +177,7 @@ public class DropListener implements DropTargetListener {
 	}
 
 	/**
-	 * start "drag under" feedback on component invoke acceptDrag or rejectDrag
-	 * based on isDragOk
+	 * start "drag under" feedback on component invoke acceptDrag or rejectDrag based on isDragOk
 	 * 
 	 * @param e
 	 */
@@ -188,16 +187,27 @@ public class DropListener implements DropTargetListener {
 
 			if (editableView instanceof FIBSwingEditableContainerView) {
 
-				List<PlaceHolder> placeHolders = ((FIBSwingEditableContainerView<?, ?>) editableView)
-						.makePlaceHolders();
+				Dimension preferredSize = new Dimension(25, 25); // Default size
+
+				System.out.println("source=" + e.getSource());
+				try {
+					Object transferable = e.getTransferable().getTransferData(ElementDrag.DEFAULT_FLAVOR);
+					if (transferable instanceof PaletteElement) {
+						preferredSize = ((JFIBView<?, ?>) ((PaletteElement) transferable).getView()).getResultingJComponent().getSize();
+					}
+				} catch (UnsupportedFlavorException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+				System.out.println("preferredSize=" + preferredSize);
+
+				List<PlaceHolder> placeHolders = ((FIBSwingEditableContainerView<?, ?>) editableView).makePlaceHolders(preferredSize);
 				getContainerDelegate().handlePlaceHolders(placeHolders);
 
-			}
-
-			else if (editableView instanceof FIBWidgetView) {
-				if (editableView.getParentView() instanceof FIBSwingEditableContainerView) {
-					System.out.println("--------------> tiens mon parent a aussi des placeholders...");
-				}
 			}
 
 			fireDragEnter();
@@ -205,15 +215,15 @@ public class DropListener implements DropTargetListener {
 			getTargetComponent().setFocused(true);
 
 			e.acceptDrag(e.getDropAction());
-		} else {
+		}
+		else {
 			e.rejectDrag();
 			return;
 		}
 	}
 
 	/**
-	 * continue "drag under" feedback on component invoke acceptDrag or
-	 * rejectDrag based on isDragOk
+	 * continue "drag under" feedback on component invoke acceptDrag or rejectDrag based on isDragOk
 	 * 
 	 * @param e
 	 */
@@ -223,7 +233,8 @@ public class DropListener implements DropTargetListener {
 		fireDragOver(e.getLocation());
 		if (isDragOk(e)) {
 			e.acceptDrag(e.getDropAction());
-		} else {
+		}
+		else {
 			e.rejectDrag();
 		}
 	}
@@ -232,7 +243,8 @@ public class DropListener implements DropTargetListener {
 	public void dropActionChanged(DropTargetDragEvent e) {
 		if (isDragOk(e)) {
 			e.acceptDrag(e.getDropAction());
-		} else {
+		}
+		else {
 			e.rejectDrag();
 		}
 	}
@@ -276,7 +288,7 @@ public class DropListener implements DropTargetListener {
 		}
 
 		if (getContainerDelegate() != null) {
-			getContainerDelegate().dismissPlaceHolders();
+			getContainerDelegate().deletePlaceHolders();
 			getContainerDelegate().getEditorController().dragEnd(this);
 		}
 
@@ -289,22 +301,35 @@ public class DropListener implements DropTargetListener {
 		// + getParentDropListener());
 
 		if (getParentDropListener() != null) {
-			getParentDropListener().fireDragOver(
-					SwingUtilities.convertPoint(editableView.getResultingJComponent(), locationInView,
-							((JFIBView<?, ?>) editableView.getParentView()).getResultingJComponent()));
+			getParentDropListener().fireDragOver(SwingUtilities.convertPoint(editableView.getResultingJComponent(), locationInView,
+					((JFIBView<?, ?>) editableView.getParentView()).getResultingJComponent()));
 		}
 
 		PlaceHolder focusedPH = null;
-		for (PlaceHolder ph : getContainerDelegate().getPlaceholders()) {
-			if (ph.getBounds().contains(locationInView) && focusedPH == null) {
-				// placeholder becomes visible
-				// System.out.println("Un placeholder qui devient visible");
-				ph.setVisible(true);
-				focusedPH = ph;
-			} else {
-				ph.setVisible(false);
+		if (getContainerDelegate().getPlaceholders() != null) {
+			for (PlaceHolder ph : getContainerDelegate().getPlaceholders()) {
+				if (ph.getBounds().contains(locationInView) && focusedPH == null) {
+					// placeholder becomes visible
+					// System.out.println("Un placeholder qui devient visible");
+					ph.setVisible(true);
+					focusedPH = ph;
+				}
+				else {
+					ph.setVisible(false);
+				}
 			}
 		}
+		if (focusedPH != null) {
+			// If a placeholder is focused, unfocus container
+
+			System.out.println("On vire le focus du parent, pisqu'on est dans un placeholder");
+			getTargetComponent().setFocused(false);
+		}
+		else {
+			// If no placeholder is focused, focus container
+			getTargetComponent().setFocused(true);
+		}
+
 		editableView.getResultingJComponent().repaint();
 	}
 
@@ -315,11 +340,9 @@ public class DropListener implements DropTargetListener {
 	}
 
 	/**
-	 * perform action from getSourceActions on the transferrable invoke
-	 * acceptDrop or rejectDrop invoke dropComplete if its a local (same JVM)
-	 * transfer, use StringTransferable.localStringFlavor find a match for the
-	 * flavor check the operation get the transferable according to the chosen
-	 * flavor do the transfer
+	 * perform action from getSourceActions on the transferrable invoke acceptDrop or rejectDrop invoke dropComplete if its a local (same
+	 * JVM) transfer, use StringTransferable.localStringFlavor find a match for the flavor check the operation get the transferable
+	 * according to the chosen flavor do the transfer
 	 * 
 	 * @param e
 	 */

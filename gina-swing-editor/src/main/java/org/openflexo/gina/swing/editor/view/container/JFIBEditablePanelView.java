@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.swing.editor.view.container;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.Collections;
 import java.util.List;
@@ -55,12 +56,12 @@ import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerViewDelegate;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.editor.view.container.layout.JEditableBorderLayout;
+import org.openflexo.gina.swing.editor.view.container.layout.JEditableFlowLayout;
 import org.openflexo.gina.swing.editor.view.container.layout.JFIBEditableLayoutManager;
 import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.swing.view.container.layout.JAbsolutePositionningLayout;
 import org.openflexo.gina.swing.view.container.layout.JBoxLayout;
 import org.openflexo.gina.swing.view.container.layout.JButtonLayout;
-import org.openflexo.gina.swing.view.container.layout.JFlowLayout;
 import org.openflexo.gina.swing.view.container.layout.JGridBagLayout;
 import org.openflexo.gina.swing.view.container.layout.JTwoColsLayout;
 import org.openflexo.logging.FlexoLogger;
@@ -327,33 +328,33 @@ public class JFIBEditablePanelView extends JFIBPanelView implements FIBSwingEdit
 			return super.makeFIBLayoutManager(layoutType);
 		}
 		switch (layoutType) {
-		case none:
-			return new JAbsolutePositionningLayout(this);
-		case border:
-			return new JEditableBorderLayout(this);
-		case box:
-			return new JBoxLayout(this);
-		case flow:
-			return new JFlowLayout(this);
-		case buttons:
-			return new JButtonLayout(this);
-		case twocols:
-			return new JTwoColsLayout(this);
-		case grid:
-			return new JGridBagLayout(this);
-		case gridbag:
-			return new JGridBagLayout(this);
-		default:
-			return super.makeFIBLayoutManager(layoutType);
+			case none:
+				return new JAbsolutePositionningLayout(this);
+			case border:
+				return new JEditableBorderLayout(this);
+			case box:
+				return new JBoxLayout(this);
+			case flow:
+				return new JEditableFlowLayout(this);
+			case buttons:
+				return new JButtonLayout(this);
+			case twocols:
+				return new JTwoColsLayout(this);
+			case grid:
+				return new JGridBagLayout(this);
+			case gridbag:
+				return new JGridBagLayout(this);
+			default:
+				return super.makeFIBLayoutManager(layoutType);
 		}
 
 	}
 
 	@Override
-	public List<PlaceHolder> makePlaceHolders() {
+	public List<PlaceHolder> makePlaceHolders(Dimension preferredSize) {
 
 		if (getLayoutManager() instanceof JFIBEditableLayoutManager) {
-			return ((JFIBEditableLayoutManager<JPanel, JComponent, ?>) getLayoutManager()).makePlaceHolders();
+			return ((JFIBEditableLayoutManager<JPanel, JComponent, ?>) getLayoutManager()).makePlaceHolders(preferredSize);
 		}
 
 		return Collections.emptyList();

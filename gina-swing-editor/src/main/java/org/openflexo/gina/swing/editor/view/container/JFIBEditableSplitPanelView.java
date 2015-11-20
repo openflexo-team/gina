@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.swing.editor.view.container;
 
+import java.awt.Dimension;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -46,8 +47,8 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBLeaf;
 import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBNode;
 import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBSplit;
-import org.openflexo.gina.model.container.layout.SplitLayoutConstraints;
 import org.openflexo.gina.model.container.FIBSplitPanel;
+import org.openflexo.gina.model.container.layout.SplitLayoutConstraints;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerViewDelegate;
@@ -57,8 +58,8 @@ import org.openflexo.logging.FlexoLogger;
 import org.openflexo.swing.layout.JXMultiSplitPane;
 import org.openflexo.swing.layout.MultiSplitLayout.Node;
 
-public class JFIBEditableSplitPanelView extends JFIBSplitPanelView implements
-		FIBSwingEditableContainerView<FIBSplitPanel, JXMultiSplitPane> {
+public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
+		implements FIBSwingEditableContainerView<FIBSplitPanel, JXMultiSplitPane> {
 
 	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableSplitPanelView.class.getPackage().getName());
 
@@ -98,14 +99,12 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView implements
 		}
 		if (!found) {
 
-			final SplitLayoutConstraints splitLayoutConstraints = SplitLayoutConstraints.makeSplitLayoutConstraints(n
-					.getName());
+			final SplitLayoutConstraints splitLayoutConstraints = SplitLayoutConstraints.makeSplitLayoutConstraints(n.getName());
 			PlaceHolder newPlaceHolder = new PlaceHolder(this, "<" + n.getName() + ">") {
 				@Override
 				public void insertComponent(FIBComponent newComponent) {
 					System.out.println("getComponent=" + JFIBEditableSplitPanelView.this.getComponent());
-					JFIBEditableSplitPanelView.this.getComponent().addToSubComponents(newComponent,
-							splitLayoutConstraints);
+					JFIBEditableSplitPanelView.this.getComponent().addToSubComponents(newComponent, splitLayoutConstraints);
 				}
 			};
 			// registerComponentWithConstraints(newPlaceHolder, n.getName());
@@ -125,7 +124,8 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView implements
 	private void appendPlaceHolders(Node n) {
 		if (n instanceof FIBSplit) {
 			appendPlaceHolders((FIBSplit) n);
-		} else if (n instanceof FIBLeaf) {
+		}
+		else if (n instanceof FIBLeaf) {
 			appendPlaceHolder((FIBLeaf) n);
 		}
 	}
@@ -156,9 +156,8 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView implements
 	}
 
 	@Override
-	public List<PlaceHolder> makePlaceHolders() {
-		System.out.println("Je suis sense calculer les placeholders pour la vue " + this + " size="
-				+ getResultingJComponent().getSize());
+	public List<PlaceHolder> makePlaceHolders(Dimension preferredSize) {
+		System.out.println("Je suis sense calculer les placeholders pour la vue " + this + " size=" + getResultingJComponent().getSize());
 		return null;
 	}
 

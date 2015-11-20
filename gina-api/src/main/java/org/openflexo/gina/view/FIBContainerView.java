@@ -45,13 +45,10 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
 
 /**
- * Represent the "view" associated with a {@link FIBContainer} in a given
- * rendering engine environment (eg Swing)<br>
- * A {@link FIBContainerView} is a container for some sub-components (a set of
- * {@link FIBView}) with a given layout
+ * Represent the "view" associated with a {@link FIBContainer} in a given rendering engine environment (eg Swing)<br>
+ * A {@link FIBContainerView} is a container for some sub-components (a set of {@link FIBView}) with a given layout
  * 
- * A default implementation is provided in this library, see
- * {@link FIBContainerViewImpl}
+ * A default implementation is provided in this library, see {@link FIBContainerViewImpl}
  * 
  * @author sylvain
  *
@@ -60,12 +57,13 @@ import org.openflexo.gina.model.FIBContainer;
  * @param <C>
  *            type of technology-specific component
  * @param <C2>
- *            type of technology-specific component beeing contained by this
- *            view
+ *            type of technology-specific component beeing contained by this view
  */
 public interface FIBContainerView<M extends FIBContainer, C, C2> extends FIBView<M, C> {
 
 	public Collection<? extends FIBView<?, C2>> getSubViews();
+
+	public void changeLayout();
 
 	public void updateLayout();
 

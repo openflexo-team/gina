@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.swing.editor.view.container.layout;
 
+import java.awt.Dimension;
 import java.util.List;
 
 import org.openflexo.gina.model.FIBContainer;
@@ -47,16 +48,13 @@ import org.openflexo.gina.model.container.layout.FIBLayoutManager;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 
 /**
- * A layout manager working in a {@link FIBContainer} providing some editing
- * facilities<br>
+ * A layout manager working in a {@link FIBContainer} providing some editing facilities<br>
  * Provides edition placeholders
  * 
  * @param <C>
- *            type of technology-specific container this layout manager is
- *            managing
+ *            type of technology-specific container this layout manager is managing
  * @param <C2>
- *            type of technology-specific contents this layout manager is
- *            layouting
+ *            type of technology-specific contents this layout manager is layouting
  * @param <CC>
  *            type of component constraints
  *
@@ -64,6 +62,6 @@ import org.openflexo.gina.swing.editor.view.PlaceHolder;
  */
 public interface JFIBEditableLayoutManager<C, C2, CC extends ComponentConstraints> extends FIBLayoutManager<C, C2, CC> {
 
-	public List<PlaceHolder> makePlaceHolders();
+	public List<PlaceHolder> makePlaceHolders(Dimension preferredSize);
 
 }

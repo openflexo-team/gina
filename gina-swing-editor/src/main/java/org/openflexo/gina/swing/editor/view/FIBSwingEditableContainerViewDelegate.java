@@ -47,11 +47,10 @@ import javax.swing.JComponent;
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.logging.FlexoLogger;
 
-public class FIBSwingEditableContainerViewDelegate<M extends FIBContainer, J extends JComponent> extends
-		FIBSwingEditableViewDelegate<M, J> {
+public class FIBSwingEditableContainerViewDelegate<M extends FIBContainer, J extends JComponent>
+		extends FIBSwingEditableViewDelegate<M, J> {
 
-	static final Logger logger = FlexoLogger.getLogger(FIBSwingEditableContainerViewDelegate.class.getPackage()
-			.getName());
+	static final Logger logger = FlexoLogger.getLogger(FIBSwingEditableContainerViewDelegate.class.getPackage().getName());
 
 	private List<PlaceHolder> placeholders;
 
@@ -88,6 +87,10 @@ public class FIBSwingEditableContainerViewDelegate<M extends FIBContainer, J ext
 			}
 		}
 		getView().getResultingJComponent().repaint();
+	}
+
+	public void deletePlaceHolders() {
+		this.placeholders = null;
 	}
 
 	/*

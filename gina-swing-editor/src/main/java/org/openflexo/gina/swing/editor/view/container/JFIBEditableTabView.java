@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.swing.editor.view.container;
 
+import java.awt.Dimension;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -302,9 +303,8 @@ public class JFIBEditableTabView extends JFIBTabView implements FIBSwingEditable
 	}
 
 	@Override
-	public List<PlaceHolder> makePlaceHolders() {
-		System.out.println("Je suis sense calculer les placeholders pour la vue " + this + " size="
-				+ getResultingJComponent().getSize());
+	public List<PlaceHolder> makePlaceHolders(Dimension preferredSize) {
+		System.out.println("Je suis sense calculer les placeholders pour la vue " + this + " size=" + getResultingJComponent().getSize());
 		return null;
 	}
 

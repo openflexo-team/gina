@@ -80,8 +80,7 @@ public class DraggedFIBComponent implements FIBDraggable {
 	public boolean elementDragged(FIBDropTarget target, DropListener dropListener, Point pt) {
 		PlaceHolder ph = target.getPlaceHolder(dropListener, pt);
 
-		logger.info("Nous y voila: element dragged with component: " + target.getFIBComponent() + " place holder: "
-				+ ph);
+		logger.info("Nous y voila: element dragged with component: " + target.getFIBComponent() + " place holder: " + ph);
 
 		/*
 		 * if (target.getPlaceHolder() == null) { boolean deleteIt =
@@ -99,7 +98,9 @@ public class DraggedFIBComponent implements FIBDraggable {
 			if (ph != null) {
 				ph.willDelete();
 				FIBContainer oldParent = draggedComponent.getParent();
-				draggedComponent.getParent().removeFromSubComponents(draggedComponent);
+				if (draggedComponent.getParent() != null) {
+					draggedComponent.getParent().removeFromSubComponents(draggedComponent);
+				}
 				// WAS:
 				// draggedComponent.getParent().removeFromSubComponentsNoNotification(draggedComponent);
 				ph.insertComponent(draggedComponent);

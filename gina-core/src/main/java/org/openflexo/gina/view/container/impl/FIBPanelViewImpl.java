@@ -51,8 +51,7 @@ import org.openflexo.gina.view.container.FIBPanelView;
 import org.openflexo.gina.view.impl.FIBContainerViewImpl;
 
 /**
- * Base implementation for a basic panel, as a container of some children
- * component, with a given layout, and a border
+ * Base implementation for a basic panel, as a container of some children component, with a given layout, and a border
  * 
  * @param <C>
  *            type of technology-specific component this view manage
@@ -61,8 +60,7 @@ import org.openflexo.gina.view.impl.FIBContainerViewImpl;
  * 
  * @author sylvain
  */
-public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPanel, C, C2> implements
-		FIBPanelView<C, C2> {
+public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPanel, C, C2>implements FIBPanelView<C, C2> {
 
 	private static final Logger logger = Logger.getLogger(FIBPanelViewImpl.class.getPackage().getName());
 
@@ -113,13 +111,29 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 		updateBorder();
 	}
 
-	/**
-	 * Called to configure technology-specific component with relevant layout
-	 */
-	// protected abstract void setPanelLayoutParameters(C technologyComponent);
+	@Override
+	public void changeLayout() {
+		logger.info("relayout panel " + getComponent());
+
+		// TODO: please reimplement this and make it more efficient !!!!
+
+		clearContainer();
+
+		if (layoutManager != null) {
+			layoutManager.delete();
+		}
+		layoutManager = null;
+
+		layoutManager = makeFIBLayoutManager(getComponent().getLayout());
+		getLayoutManager().setLayoutManager(getTechnologyComponent());
+
+		buildSubComponents();
+		// updateDataObject(getDataObject());
+		update();
+	}
 
 	@Override
-	public synchronized void updateLayout() {
+	public void updateLayout() {
 		logger.info("relayout panel " + getComponent());
 
 		// TODO: please reimplement this and make it more efficient !!!!
@@ -147,20 +161,17 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals(FIBPanel.BORDER_KEY)
-				|| evt.getPropertyName().equals(FIBPanel.BORDER_COLOR_KEY)
-				|| evt.getPropertyName().equals(FIBPanel.BORDER_TITLE_KEY)
-				|| evt.getPropertyName().equals(FIBPanel.BORDER_TOP_KEY)
-				|| evt.getPropertyName().equals(FIBPanel.BORDER_LEFT_KEY)
-				|| evt.getPropertyName().equals(FIBPanel.BORDER_RIGHT_KEY)
-				|| evt.getPropertyName().equals(FIBPanel.BORDER_BOTTOM_KEY)
-				|| evt.getPropertyName().equals(FIBPanel.TITLE_FONT_KEY)
+		if (evt.getPropertyName().equals(FIBPanel.BORDER_KEY) || evt.getPropertyName().equals(FIBPanel.BORDER_COLOR_KEY)
+				|| evt.getPropertyName().equals(FIBPanel.BORDER_TITLE_KEY) || evt.getPropertyName().equals(FIBPanel.BORDER_TOP_KEY)
+				|| evt.getPropertyName().equals(FIBPanel.BORDER_LEFT_KEY) || evt.getPropertyName().equals(FIBPanel.BORDER_RIGHT_KEY)
+				|| evt.getPropertyName().equals(FIBPanel.BORDER_BOTTOM_KEY) || evt.getPropertyName().equals(FIBPanel.TITLE_FONT_KEY)
 				|| evt.getPropertyName().equals(FIBPanel.DARK_LEVEL_KEY)) {
 			updateBorder();
 		}
-		if (evt.getPropertyName().equals(FIBPanel.LAYOUT_KEY)
-				|| evt.getPropertyName().equals(FIBPanel.FLOW_ALIGNMENT_KEY)
-				|| evt.getPropertyName().equals(FIBPanel.BOX_LAYOUT_AXIS_KEY)
+		if (evt.getPropertyName().equals(FIBPanel.LAYOUT_KEY)) {
+			changeLayout();
+		}
+		if (evt.getPropertyName().equals(FIBPanel.FLOW_ALIGNMENT_KEY) || evt.getPropertyName().equals(FIBPanel.BOX_LAYOUT_AXIS_KEY)
 				|| evt.getPropertyName().equals(FIBPanel.V_GAP_KEY) || evt.getPropertyName().equals(FIBPanel.H_GAP_KEY)
 				|| evt.getPropertyName().equals(FIBPanel.ROWS_KEY) || evt.getPropertyName().equals(FIBPanel.COLS_KEY)
 				|| evt.getPropertyName().equals(FIBPanel.PROTECT_CONTENT_KEY)) {
