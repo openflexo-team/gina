@@ -5,68 +5,73 @@
 		<Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11"
 			darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
-			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
-			<Panel layout="twocols" border="titled" borderTitle="Layout"
-				titleFont="SansSerif,0,11" darkLevel="0"
-				constraints="twocols(expandHorizontally=true;location=center)" name="LayoutPanel">
-				<Label label="layout" constraints="twocols(location=left)"
-					localize="true" />
-				<DropDown data="data.layout" constraints="twocols(location=right)"
-					localize="true" iteratorClassName="java.lang.Object"
-					autoSelectFirstRow="false" name="LayoutDD"/>
-				<Label label="alignment" constraints="twocols(location=left)"
-					visible="(data.layout = &quot;flow&quot;) | (data.layout = &quot;buttons&quot;)"
-					localize="true" />
-				<DropDown showReset="true" data="data.flowAlignment"
-					constraints="twocols(location=right)"
-					visible="(data.layout = &quot;flow&quot;) | (data.layout = &quot;buttons&quot;)"
-					localize="true" iteratorClassName="java.lang.Object"
-					autoSelectFirstRow="false" name="FlowAlignmentDD"/>
-				<Label label="axis" constraints="twocols(location=left)"
-					visible="(data.layout = &quot;box&quot;)" localize="true" />
-				<DropDown data="data.boxLayoutAxis" constraints="twocols(location=right)"
-					visible="(data.layout = &quot;box&quot;)" localize="true"
-					iteratorClassName="java.lang.Object" autoSelectFirstRow="false" name="BoxLayoutAxisDD" />
-				<Panel layout="flow" hGap="0" vGap="0" flowAlignment="LEADING"
-					titleFont="SansSerif,0,11" darkLevel="0"
-					constraints="twocols(expandHorizontally=true;location=center)"
-					visible="((data.layout = &quot;flow&quot;) | (data.layout = &quot;grid&quot;))">
-					<Label label="hGap" constraints="flow()" localize="true" />
-					<Number numberType="IntegerType" columns="3" data="data.hGap"
-						constraints="flow()" localize="true" />
-					<Label label="vGap" constraints="flow()" localize="true" />
-					<Number numberType="IntegerType" columns="3" data="data.vGap"
-						constraints="flow()" localize="true" />
-				</Panel>
-				<Panel layout="flow" hGap="0" vGap="0" flowAlignment="LEADING"
-					titleFont="SansSerif,0,11" darkLevel="0"
-					constraints="twocols(expandHorizontally=true;location=center)"
-					visible="(data.layout = &quot;grid&quot;)">
-					<Label label="columns" constraints="flow()" localize="true" />
-					<Number numberType="IntegerType" columns="3" data="data.cols"
-						constraints="flow()" localize="true" />
-					<Label label="rows" constraints="flow()" localize="true" />
-					<Number numberType="IntegerType" columns="3" data="data.rows"
-						constraints="flow()" localize="true" />
-				</Panel>
-			</Panel>
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab" 
+			trackViewPortWidth="true" trackViewPortHeight="true">
 		</Tab>
-		<Tab title="Components" layout="twocols" titleFont="SansSerif,0,11"
+		<Tab title="Container" layout="twocols" titleFont="SansSerif,0,11"
 			darkLevel="0" index="1" font="SansSerif,0,11" useScrollBar="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
-			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab">
-			<CheckBox selected="false" data="data.protectContent"
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab" 
+			trackViewPortWidth="true" trackViewPortHeight="true">
+
+			<Label label="layout" constraints="twocols(location=left)"
+				localize="true" index="0" />
+			<DropDown data="data.layout" constraints="twocols(location=right)"
+				localize="true" iteratorClassName="java.lang.Object"
+				autoSelectFirstRow="false" name="LayoutDD" index="1" />
+
+			<Label label="alignment" index="2" constraints="twocols(location=left)"
+				visible="(data.layout = &quot;flow&quot;) | (data.layout = &quot;buttons&quot;)"
+				localize="true" />
+			<DropDown showReset="false" index="3" data="data.flowAlignment"
+				constraints="twocols(location=right)"
+				visible="(data.layout = &quot;flow&quot;) | (data.layout = &quot;buttons&quot;)"
+				localize="true" iteratorClassName="java.lang.Object"
+				autoSelectFirstRow="false" name="FlowAlignmentDD" />
+			<Label label="axis" index="4" constraints="twocols(location=left)"
+				visible="(data.layout = &quot;box&quot;)" localize="true" />
+			<DropDown data="data.boxLayoutAxis" index="5"
+				constraints="twocols(location=right)" visible="(data.layout = &quot;box&quot;)"
+				localize="true" iteratorClassName="java.lang.Object"
+				autoSelectFirstRow="false" name="BoxLayoutAxisDD" />
+
+			<Label label="hGap" index="6" constraints="twocols(location=left)"
+				localize="true"
+				visible="((data.layout = &quot;flow&quot;) | (data.layout = &quot;grid&quot;))" />
+			<Number index="7" numberType="IntegerType" columns="3" data="data.hGap"
+				constraints="twocols(location=right)" localize="true"
+				visible="((data.layout = &quot;flow&quot;) | (data.layout = &quot;grid&quot;))" />
+			<Label index="8" label="vGap" constraints="twocols(location=left)"
+				localize="true"
+				visible="((data.layout = &quot;flow&quot;) | (data.layout = &quot;grid&quot;))" />
+			<Number index="9" numberType="IntegerType" columns="3" data="data.vGap"
+				constraints="twocols(location=right)" localize="true"
+				visible="((data.layout = &quot;flow&quot;) | (data.layout = &quot;grid&quot;))" />
+
+			<Label index="10" label="columns" constraints="twocols(location=left)"
+				localize="true" visible="(data.layout = &quot;grid&quot;)" />
+			<Number index="11" numberType="IntegerType" columns="3"
+				data="data.cols" constraints="twocols(location=right)" localize="true"
+				visible="(data.layout = &quot;grid&quot;)" />
+			<Label index="12" label="rows" constraints="twocols(location=left)"
+				localize="true" visible="(data.layout = &quot;grid&quot;)" />
+			<Number index="13" numberType="IntegerType" columns="3"
+				data="data.rows" constraints="twocols(location=right)" localize="true"
+				visible="(data.layout = &quot;grid&quot;)" />
+
+
+			<CheckBox selected="false" data="data.protectContent" index="100"
 				constraints="twocols(location=left)" localize="true" />
-			<Label label="protect_content_against_modifications"
+			<Label label="protect_content_against_modifications" index="101"
 				constraints="twocols(location=right)" localize="true" />
 			<CheckBox selected="false" data="data.trackViewPortWidth"
-				constraints="twocols(location=left)" localize="true" />
+				index="102" constraints="twocols(location=left)" localize="true" />
 			<Label label="track_view_port_width" constraints="twocols(location=right)"
-				localize="true" />
+				index="103" localize="true" />
 			<CheckBox selected="false" data="data.trackViewPortHeight"
-				constraints="twocols(location=left)" localize="true" />
+				index="104" constraints="twocols(location=left)" localize="true" />
 			<Label label="track_view_port_height" constraints="twocols(location=right)"
-				localize="true" />
+				index="105" localize="true" />
 		</Tab>
 		<Tab title="Graphics" layout="twocols" titleFont="SansSerif,0,11"
 			darkLevel="0" index="4" font="SansSerif,0,11" useScrollBar="true"
@@ -81,8 +86,7 @@
 				<Panel layout="flow" hGap="0" vGap="0" flowAlignment="LEADING"
 					titleFont="SansSerif,0,11" darkLevel="0" constraints="twocols(location=right)">
 					<DropDown data="data.border" constraints="flow()"
-						localize="true" 
-						autoSelectFirstRow="false" name="BorderDD"/>
+						localize="true" autoSelectFirstRow="false" name="BorderDD" />
 					<Color data="data.borderColor" constraints="flow()"
 						visible="(data.border = &quot;line&quot;)" localize="true" />
 					<TextField data="data.borderTitle" constraints="flow()"

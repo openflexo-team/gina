@@ -41,6 +41,7 @@ package org.openflexo.gina.swing.editor.view.container.layout;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -50,6 +51,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.container.FIBPanel.FlowLayoutAlignment;
 import org.openflexo.gina.model.container.layout.FlowLayoutConstraints;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.editor.view.container.JFIBEditablePanelView;
@@ -62,7 +64,8 @@ import org.openflexo.logging.FlexoLogger;
  * 
  * @author sylvain
  */
-public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayoutManager<JPanel, JComponent, FlowLayoutConstraints> {
+public class JEditableFlowLayout extends JFlowLayout implements
+		JFIBEditableLayoutManager<JPanel, JComponent, FlowLayoutConstraints> {
 
 	private static final Logger logger = FlexoLogger.getLogger(JFIBEditablePanelView.class.getPackage().getName());
 
@@ -86,7 +89,31 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 			panel.setPreferredSize(getContainerView().getResultingJComponent().getSize());
 			panel.setSize(getContainerView().getResultingJComponent().getSize());
 
-			// Before each component, we will add an empty panel to compute placeholder location
+			final Dimension placeHolderSize = new Dimension(30, 20);
+			int deltaX = 0;
+			int deltaY = 0;
+
+			if (getComponent().getFlowAlignment() == FlowLayoutAlignment.CENTER) {
+				deltaX = 0;
+				deltaY = 0;
+			} else if (getComponent().getFlowAlignment() == FlowLayoutAlignment.LEADING
+					|| getComponent().getFlowAlignment() == FlowLayoutAlignment.LEFT) {
+				deltaX = -15 - getComponent().getHGap() / 2;
+				deltaY = 0;
+			} else if (getComponent().getFlowAlignment() == FlowLayoutAlignment.TRAILING
+					|| getComponent().getFlowAlignment() == FlowLayoutAlignment.RIGHT) {
+				deltaX = 15 + getComponent().getHGap() / 2;
+				deltaY = 0;
+			}
+
+			if (getComponent().getSubComponents().size() == 0) {
+				// Special case: do not delta placeholders for empty container
+				deltaX = 0;
+				deltaY = 0;
+			}
+
+			// Before each component, we will add an empty panel to compute
+			// placeholder location
 			for (int i = 0; i < getComponent().getSubComponents().size(); i++) {
 				panel.removeAll();
 				for (int j = 0; j < i; j++) {
@@ -97,7 +124,7 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 				Component phComponent = new JPanel() {
 					@Override
 					public Dimension getPreferredSize() {
-						return preferredSize;
+						return placeHolderSize;
 					}
 				};
 				panel.add(phComponent);
@@ -107,13 +134,19 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 					panel.add(Box.createRigidArea(childView.getResultingJComponent().getSize()));
 				}
 				panel.doLayout();
-				System.out.println("OK placeholder i=" + i + ", bounds=" + phComponent.getBounds());
-				PlaceHolder newPlaceHolder = new PlaceHolder(getContainerView(), "< flow item >", phComponent.getBounds()) {
+				// System.out.println("OK placeholder i=" + i + ", bounds=" +
+				// phComponent.getBounds());
+				final int insertionIndex = i;
+				Rectangle placeHolderBounds = new Rectangle(phComponent.getBounds().x + deltaX,
+						phComponent.getBounds().y + deltaY, phComponent.getWidth(), phComponent.getHeight());
+				if (placeHolderBounds.x < 0) {
+					placeHolderBounds.width = placeHolderBounds.width + placeHolderBounds.x;
+					placeHolderBounds.x = 0;
+				}
+				PlaceHolder newPlaceHolder = new PlaceHolder(getContainerView(), "< flow item >", placeHolderBounds) {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
-						// BorderLayoutConstraints blConstraints = new BorderLayoutConstraints(l);
-						// newComponent.setConstraints(blConstraints);
-						getComponent().addToSubComponents(newComponent);
+						putSubComponentsAtIndex(newComponent, insertionIndex);
 					}
 				};
 				newPlaceHolder.setVisible(false);
@@ -130,19 +163,20 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 			Component phComponent = new JPanel() {
 				@Override
 				public Dimension getPreferredSize() {
-					return preferredSize;
+					return placeHolderSize;
 				}
 			};
 			panel.add(phComponent);
 			panel.doLayout();
 
-			System.out.println("OK last placeholder bounds=" + phComponent.getBounds());
-			PlaceHolder newPlaceHolder = new PlaceHolder(getContainerView(), "< flow item >", phComponent.getBounds()) {
+			// System.out.println("OK last placeholder bounds=" +
+			// phComponent.getBounds());
+			Rectangle placeHolderBounds = new Rectangle(phComponent.getBounds().x + deltaX, phComponent.getBounds().y
+					+ deltaY, phComponent.getWidth(), phComponent.getHeight());
+			PlaceHolder newPlaceHolder = new PlaceHolder(getContainerView(), "< flow item >", placeHolderBounds) {
 				@Override
 				public void insertComponent(FIBComponent newComponent) {
-					// BorderLayoutConstraints blConstraints = new BorderLayoutConstraints(l);
-					// newComponent.setConstraints(blConstraints);
-					getComponent().addToSubComponents(newComponent);
+					putSubComponentsAtIndex(newComponent, getComponent().getSubComponents().size());
 				}
 			};
 			newPlaceHolder.setVisible(false);
@@ -150,6 +184,18 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 		}
 
 		return returned;
+	}
+
+	protected void putSubComponentsAtIndex(FIBComponent subComponent, int index) {
+		if (getComponent().getSubComponents().contains(subComponent)) {
+			// This is a simple move
+			System.out.println("Moving component at index " + index);
+			getComponent().moveToSubComponentsAtIndex(subComponent, index);
+		} else {
+			System.out.println("Inserting component at index " + index);
+			getComponent().insertToSubComponentsAtIndex(subComponent, index);
+		}
+
 	}
 
 }

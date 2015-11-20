@@ -5,19 +5,16 @@
 		<Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11"
 			darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
-			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
-			<!--  <Label label="data" constraints="twocols(location=left)" name="dataLabel"
-				localize="true" />
-			<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
-				localize="true" manageDynamicModel="true" name="dataValue" data="data.data"
-				constraints="twocols(expandHorizontally=true;location=right)">
-				<Assignment variable="component.bindable" value="data" />
-			</Custom>
-			<Label label="data_class" constraints="twocols(location=left)"
-				localize="true" />
-			<Custom componentClassName="org.openflexo.gina.swing.utils.ClassSelector"
-				localize="true" manageDynamicModel="true" data="data.dataClass"
-				constraints="twocols(expandHorizontally=true;location=right)" />-->
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab" 
+			trackViewPortWidth="true" trackViewPortHeight="true">
+			<!-- <Label label="data" constraints="twocols(location=left)" name="dataLabel" 
+				localize="true" /> <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" 
+				localize="true" manageDynamicModel="true" name="dataValue" data="data.data" 
+				constraints="twocols(expandHorizontally=true;location=right)"> <Assignment 
+				variable="component.bindable" value="data" /> </Custom> <Label label="data_class" 
+				constraints="twocols(location=left)" localize="true" /> <Custom componentClassName="org.openflexo.gina.swing.utils.ClassSelector" 
+				localize="true" manageDynamicModel="true" data="data.dataClass" constraints="twocols(expandHorizontally=true;location=right)" 
+				/> -->
 			<Label label="controller_class" constraints="twocols(location=left)"
 				visible="data.isRootComponent" localize="true" />
 			<Custom componentClassName="org.openflexo.gina.swing.utils.ClassSelector"
@@ -41,17 +38,19 @@
 				showFooter="true" selectionMode="MultipleIntervalSelection"
 				localize="true" manageDynamicModel="true" name="VariablesTable"
 				data="data.variables"
-				constraints="twocols(expandHorizontally=true;location=center;expandVertically=true)">
+				constraints="twocols(expandHorizontally=true;location=center;expandVertically=true)"
+				useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+				verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED">
 				<TextFieldColumn data="iterator.name" title="name"
-					columnWidth="100" resizable="true" displayTitle="true" name="name" />
+					columnWidth="50" resizable="true" displayTitle="true" name="name" />
 				<CustomColumn componentClassName="org.openflexo.gina.swing.utils.ClassSelector"
 					customRendering="false" disableTerminateEditOnFocusLost="false"
-					data="iterator.typeClass" title="Type" columnWidth="200" resizable="true"
+					data="iterator.typeClass" title="Type" columnWidth="100" resizable="true"
 					displayTitle="true" name="typeClass">
 				</CustomColumn>
 				<CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 					customRendering="false" disableTerminateEditOnFocusLost="false"
-					data="iterator.value" title="Value" columnWidth="300" resizable="true"
+					data="iterator.value" title="Value" columnWidth="150" resizable="true"
 					displayTitle="true" name="value">
 					<ColumnAssignment variable="component.bindable"
 						value="iterator" />
@@ -67,11 +66,11 @@
 		<Tab title="Advanced" layout="twocols" titleFont="SansSerif,0,11"
 			darkLevel="0" index="1" font="SansSerif,0,11" useScrollBar="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
-			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab">
-			<Label label="index" constraints="twocols(location=left)"
-				localize="true" />
-			<Number numberType="IntegerType" data="data.index"
-				constraints="twocols(location=right)" name="index" localize="true" />
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab" 
+			trackViewPortWidth="true" trackViewPortHeight="true">
+			<!-- <Label label="index" constraints="twocols(location=left)" localize="true" 
+				/> <Number numberType="IntegerType" data="data.index" constraints="twocols(location=right)" 
+				name="index" localize="true" /> -->
 		</Tab>
 		<Tab title="Layout" layout="twocols" titleFont="SansSerif,0,11"
 			darkLevel="0" index="3" font="SansSerif,0,11" opaque="false"

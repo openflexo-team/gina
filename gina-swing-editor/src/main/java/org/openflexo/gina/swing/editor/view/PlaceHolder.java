@@ -45,6 +45,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.util.logging.Logger;
 
 import javax.swing.JLabel;
@@ -121,14 +122,13 @@ public abstract class PlaceHolder {
 			float alpha = 0.2f;
 			int type = AlphaComposite.SRC_OVER;
 			AlphaComposite composite = AlphaComposite.getInstance(type, alpha);
-
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g2.setComposite(composite);
-
 			g2.setColor(Color.YELLOW);
-			g2.fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 15, 15);
+			g2.fillRoundRect(bounds.x + 1, bounds.y + 1, bounds.width - 2, bounds.height - 2, 15, 15);
 			g2.setStroke(new BasicStroke(2.0f));
 			g2.setColor(Color.GRAY);
-			g2.drawRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 15, 15);
+			g2.drawRoundRect(bounds.x + 1, bounds.y + 1, bounds.width - 2, bounds.height - 2, 15, 15);
 		}
 
 	}
