@@ -54,6 +54,8 @@ import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.connie.type.WilcardTypeImpl;
 import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.gina.model.FIBWidget;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -97,6 +99,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 
 	@Getter(value = LIST_KEY)
 	@XMLAttribute
+	@CloningStrategy(value = StrategyType.REFERENCE, cloneAfterProperty = ITERATOR_CLASS_KEY)
 	public DataBinding<List<?>> getList();
 
 	@Setter(LIST_KEY)
@@ -104,6 +107,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 
 	@Getter(value = ARRAY_KEY)
 	@XMLAttribute
+	@CloningStrategy(value = StrategyType.REFERENCE, cloneAfterProperty = ITERATOR_CLASS_KEY)
 	public DataBinding<Object[]> getArray();
 
 	@Setter(ARRAY_KEY)
@@ -293,8 +297,9 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 				return String.class;
 			}
 			if (iteratorClass == null) {
-				if (getRootComponent() != null && !getRootComponent().isDeserializing() && getData() != null && getData().isSet()
-						&& getData().isValid()) {
+				boolean isBeingCloned = isCreatedByCloning();
+				if (!isCreatedByCloning() && getRootComponent() != null && !getRootComponent().isCreatedByCloning()
+						&& !getRootComponent().isDeserializing() && getData() != null && getData().isSet() && getData().isValid()) {
 					if (getData().getAnalyzedType() instanceof Class && ((Class) getData().getAnalyzedType()).isEnum()) {
 						// System.out.println("For " + this + " iteratorClass=" + getData().getAnalyzedType());
 						return (Class) getData().getAnalyzedType();

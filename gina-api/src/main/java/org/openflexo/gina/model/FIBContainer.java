@@ -161,6 +161,8 @@ public abstract interface FIBContainer extends FIBComponent {
 
 	@Getter(value = DATA_KEY)
 	@XMLAttribute
+	// We ignore cloning since this will be performed in underlying FIBVariable
+	@CloningStrategy(StrategyType.IGNORE)
 	@Deprecated
 	public DataBinding<?> getData();
 
@@ -170,6 +172,8 @@ public abstract interface FIBContainer extends FIBComponent {
 
 	@Getter(value = DATA_CLASS_KEY)
 	@XMLAttribute(xmlTag = "dataClassName")
+	// We ignore cloning since this will be performed in underlying FIBVariable
+	@CloningStrategy(StrategyType.IGNORE)
 	@Deprecated
 	public Class<?> getDataClass();
 
@@ -292,10 +296,10 @@ public abstract interface FIBContainer extends FIBComponent {
 
 			// generate a default unique name
 			if (StringUtils.isEmpty(aComponent.getName())) {
-				System.out.println("Pour:");
-				System.out.println(aComponent.getFactory().stringRepresentation(aComponent));
+				// System.out.println("generate unique name for :");
+				// System.out.println(aComponent.getFactory().stringRepresentation(aComponent));
 				aComponent.setName(aComponent.generateUniqueName(aComponent.getBaseName()));
-				System.out.println(">>>>>>>>>>>>> Je cree un nouveau nom: " + aComponent.getName());
+				// System.out.println("New name: " + aComponent.getName());
 			}
 
 			getPropertyChangeSupport().firePropertyChange(SUB_COMPONENTS_KEY, null, getSubComponents());
@@ -575,14 +579,12 @@ public abstract interface FIBContainer extends FIBComponent {
 						if (i + 1 < container.getSubComponents().size()) {
 							Integer previousInteger = child.getIndex();
 							child = container.getSubComponents().get(i + 1);
-							insert = previousInteger == null
-									&& child.getIndex() == null
-									|| previousInteger != null
-									&& child.getIndex() != null
-									&& previousInteger + 1 == child.getIndex()
+							insert = previousInteger == null && child.getIndex() == null
+									|| previousInteger != null && child.getIndex() != null && previousInteger + 1 == child.getIndex()
 									|| child.getIndex() != null
-									&& (startIndex == null && child.getIndex() == startIndex || startIndex != null
-											&& startIndex.equals(child.getIndex())) && !mergedComponents.contains(child);
+											&& (startIndex == null && child.getIndex() == startIndex
+													|| startIndex != null && startIndex.equals(child.getIndex()))
+											&& !mergedComponents.contains(child);
 							if (insert) {
 								i++;
 								if (child.getName() != null) {
@@ -710,8 +712,8 @@ public abstract interface FIBContainer extends FIBComponent {
 
 		private void notifyComponentIndexChanged(FIBComponent component) {
 			FIBPropertyNotification<ComponentConstraints> notification = new FIBPropertyNotification<ComponentConstraints>(
-					(FIBProperty<ComponentConstraints>) FIBProperty.getFIBProperty(getClass(), CONSTRAINTS_KEY),
-					component.getConstraints(), component.getConstraints());
+					(FIBProperty<ComponentConstraints>) FIBProperty.getFIBProperty(getClass(), CONSTRAINTS_KEY), component.getConstraints(),
+					component.getConstraints());
 			component.notify(notification);
 			getPropertyChangeSupport().firePropertyChange(SUB_COMPONENTS_KEY, null, getSubComponents());
 		}
@@ -805,16 +807,23 @@ public abstract interface FIBContainer extends FIBComponent {
 		@Override
 		@Deprecated
 		public Class<?> getDataClass() {
+			if (isSettingDataClass) {
+				return null;
+			}
 			if (getDefaultDataVariable() != null) {
 				return TypeUtils.getBaseClass(getDefaultDataVariable().getType());
 			}
 			return null;
 		}
 
+		private boolean isSettingDataClass = false;
+
 		@Override
 		@Deprecated
 		public void setDataClass(Class<?> dataClass) {
+			isSettingDataClass = true;
 			getDefaultDataVariable(true).setType(dataClass);
+			isSettingDataClass = false;
 		}
 
 		@Override

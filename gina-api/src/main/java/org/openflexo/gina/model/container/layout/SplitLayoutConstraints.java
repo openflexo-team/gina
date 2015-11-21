@@ -41,9 +41,8 @@ package org.openflexo.gina.model.container.layout;
 
 import java.util.List;
 
-import org.openflexo.gina.model.container.FIBPanel;
-import org.openflexo.gina.model.container.FIBSplitPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
+import org.openflexo.gina.model.container.FIBSplitPanel;
 import org.openflexo.swing.layout.MultiSplitLayout.Leaf;
 
 public class SplitLayoutConstraints extends ComponentConstraints {
@@ -70,7 +69,7 @@ public class SplitLayoutConstraints extends ComponentConstraints {
 
 	@Override
 	protected Layout getType() {
-		return null; // Layout.split;
+		return Layout.split;
 	}
 
 	public String getSplitIdentifier() {

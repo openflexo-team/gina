@@ -39,21 +39,51 @@
 
 package org.openflexo.gina.utils;
 
-import org.openflexo.gina.model.FIBModelFactory;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBTabPanel;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 
+/**
+ * Extends {@link FIBPanel} by providing composition facilities using a multiple inheritance scheme based on inspected object type, for
+ * inspectors contained in a {@link InspectorGroup}<br>
+ * 
+ * Super inspectors are automatically merged according to inspector layout.<br>
+ * Merge is based on component names (package-merge scheme)
+ * 
+ * 
+ * @author sylvain
+ *
+ */
 @ModelEntity
 @ImplementationClass(FIBInspector.FIBInspectorImpl.class)
 @XMLElement(xmlTag = "Inspector")
 public interface FIBInspector extends FIBPanel {
 
-	public void appendSuperInspectors(InspectorGroup inspectorGroup);
+	public String getInspectorTitle();
 
-	public void appendSuperInspector(FIBInspector superInspector, FIBModelFactory factory);
+	public void setInspectorTitle(String inspectorTitle);
+
+	public Class<?> getInspectedClass();
+
+	public void setInspectedClass(Class<?> inspectedClass);
+
+	public void identifySuperInspectors(InspectorGroup inspectorGroup);
+
+	public FIBInspector getUnmergedComponent();
+
+	public List<FIBInspector> getSuperInspectors();
+
+	public void mergeWithParentInspectors();
+
+	public boolean isMerged();
+
+	// public void appendSuperInspector(FIBInspector superInspector, FIBModelFactory factory);
 
 	public FIBTabPanel getTabPanel();
 
@@ -61,21 +91,114 @@ public interface FIBInspector extends FIBPanel {
 
 	public static abstract class FIBInspectorImpl extends FIBPanelImpl implements FIBInspector {
 
+		private static final String TITLE_KEY = "title";
+
 		// private final Map<InspectorGroup, Boolean> superInspectorWereAppended = new HashMap<InspectorGroup, Boolean>();
-		private boolean superInspectorWereAppened = false;
+		private boolean isMerged = false;
+
+		private FIBInspector unmergedComponent;
+		private final List<FIBInspector> superInspectors = new ArrayList<>();
 
 		@Override
-		public void appendSuperInspectors(InspectorGroup inspectorGroup) {
+		public String getInspectorTitle() {
+			return getParameter(TITLE_KEY);
+		}
 
-			/*Boolean alreadyDone = superInspectorWereAppended.get(inspectorGroup);
-			if (alreadyDone == null) {
-				alreadyDone = false;
+		@Override
+		public void setInspectorTitle(String inspectorTitle) {
+			setParameter(TITLE_KEY, inspectorTitle);
+		}
+
+		@Override
+		public Class<?> getInspectedClass() {
+			return getDataClass();
+		}
+
+		@Override
+		public void setInspectedClass(Class<?> inspectedClass) {
+			setDataClass(inspectedClass);
+		}
+
+		@Override
+		public void identifySuperInspectors(InspectorGroup inspectorGroup) {
+
+			superInspectors.clear();
+
+			List<Class<?>> parentClasses = new ArrayList<Class<?>>();
+
+			for (FIBInspector inspector : inspectorGroup.getAllAccessiblesInspectors()) {
+				if (!inspector.getInspectedClass().equals(getInspectedClass())
+						&& inspector.getInspectedClass().isAssignableFrom(getInspectedClass())) {
+					parentClasses.add(inspector.getInspectedClass());
+				}
 			}
-			
-			if (!alreadyDone) {*/
 
-			if (!superInspectorWereAppened) {
+			TypeUtils.reduceToMostSpecializedClasses(parentClasses);
 
+			// System.out.println("OK, donc pour " + getInspectedClass() + " j'ai comme parent " + parentClasses);
+
+			for (Class<?> inspectorClass : parentClasses) {
+				superInspectors.add(inspectorGroup.inspectorForClass(inspectorClass));
+				// System.out.println("inspector " + inspectorGroup.inspectorForClass(inspectorClass).getInspectedClass());
+			}
+
+			// TODO: reinit current with container found in unmergedComponent
+			// reset merge
+			// isMerged = false;
+		}
+
+		@Override
+		public FIBInspector getUnmergedComponent() {
+			if (unmergedComponent == null) {
+				return this;
+			}
+			return unmergedComponent;
+		}
+
+		@Override
+		public List<FIBInspector> getSuperInspectors() {
+			return superInspectors;
+		}
+
+		@Override
+		public void mergeWithParentInspectors() {
+
+			if (isMerged()) {
+				return;
+			}
+
+			// unmergedComponent = (FIBInspector) cloneObject();
+
+			for (FIBInspector superInspector : superInspectors) {
+				superInspector.mergeWithParentInspectors();
+				appendSuperInspector(superInspector);
+			}
+
+			isMerged = true;
+
+		}
+
+		private void appendSuperInspector(FIBInspector superInspector) {
+			// TODO: i dont't know if this clone is still required (check this)
+			FIBInspector clonedSuperInspector = (FIBInspector) superInspector.cloneObject();
+			// FIBInspector clonedSuperInspector = superInspector;
+
+			System.out.println(">>>>> On append " + clonedSuperInspector.getInspectedClass() + " a " + getInspectedClass());
+
+			append(clonedSuperInspector);
+
+		}
+
+		@Override
+		public boolean isMerged() {
+			return isMerged;
+		}
+
+		// @Override
+		/*public void appendSuperInspectors(InspectorGroup inspectorGroup) {
+		
+			if (!isMerged) {
+		
 				if (getDataClass() == null) {
 					return;
 				}
@@ -93,25 +216,14 @@ public interface FIBInspector extends FIBPanel {
 						}
 					}
 				}
-				// superInspectorWereAppended.put(inspectorGroup, true);
-				superInspectorWereAppened = true;
+				isMerged = true;
 			}
-
-		}
+		
+		}*/
 
 		@Override
 		public String toString() {
 			return "Inspector[" + getDataClass() + "]";
-		}
-
-		@Override
-		public void appendSuperInspector(FIBInspector superInspector, FIBModelFactory factory) {
-			// TODO: i dont't know if this clone is still required (check this)
-			FIBInspector clonedSuperInspector = (FIBInspector) superInspector.cloneObject();
-			// FIBInspector clonedSuperInspector = superInspector;
-
-			append(clonedSuperInspector);
-
 		}
 
 		@Override

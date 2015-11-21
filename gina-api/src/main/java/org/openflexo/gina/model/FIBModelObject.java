@@ -119,8 +119,9 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 	@Remover(PARAMETERS_KEY)
 	public void removeFromParameters(FIBParameter aParameter);
 
-	// @Finder(collection = PARAMETERS_KEY, attribute = FIBParameter.NAME_KEY)
 	public String getParameter(String parameterName);
+
+	public void setParameter(String parameterName, String value);
 
 	public void clearParameters();
 
@@ -249,6 +250,16 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 		}
 
 		@Override
+		public void setParameter(String parameterName, String value) {
+			for (FIBParameter p : getParameters()) {
+				if (parameterName.equals(p.getName())) {
+					p.setValue(value);
+					return;
+				}
+			}
+		}
+
+		@Override
 		public FIBParameter createNewParameter() {
 			FIBParameter returned = getFactory().newInstance(FIBParameter.class);
 			returned.setName("param");
@@ -359,8 +370,8 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 				LOGGER.fine("Change attribute " + notification.getAttributeName() + " for object " + this + " was: "
 						+ notification.oldValue() + " is now: " + notification.newValue());
 			}
-			getPropertyChangeSupport()
-					.firePropertyChange(notification.getAttributeName(), notification.oldValue(), notification.newValue());
+			getPropertyChangeSupport().firePropertyChange(notification.getAttributeName(), notification.oldValue(),
+					notification.newValue());
 		}
 
 		/**

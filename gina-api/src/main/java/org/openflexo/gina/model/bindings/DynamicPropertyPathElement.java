@@ -118,7 +118,7 @@ public class DynamicPropertyPathElement<W extends FIBWidget> extends SimplePathE
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getSource() == getWidget()) {
-			if (lastKnownType != getType()) {
+			if (lastKnownType != null && !lastKnownType.equals(getType())) {
 				// We might arrive here only in the case notification was not properly triggered.
 				// We warn it to 'tell' the developper that such notification should be done
 				logger.warning("Detecting un-notified type changing for FIBWidget " + widget + " from " + lastKnownType + " to " + getType()

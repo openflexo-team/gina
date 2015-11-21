@@ -69,7 +69,7 @@ import org.openflexo.model.annotations.XMLElement;
 public interface FIBPanel extends FIBContainer {
 
 	public static enum Layout {
-		none, flow, border, grid, box, twocols, gridbag, buttons;
+		none, flow, border, grid, box, twocols, gridbag, buttons, split;
 	}
 
 	public static enum FlowLayoutAlignment {

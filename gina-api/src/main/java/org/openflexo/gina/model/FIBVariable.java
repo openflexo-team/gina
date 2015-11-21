@@ -136,7 +136,9 @@ public interface FIBVariable<T> extends FIBModelObject {
 
 		@Override
 		public Type getType() {
-			if (getOwner() != null && getOwner().getRootComponent() != null && !getOwner().getRootComponent().isDeserializing()
+			// System.out.println("On me demande mon type " + getName() + " value=" + getValue());
+			if (!isCreatedByCloning() && getOwner() != null && getOwner().getRootComponent() != null
+					&& !getOwner().getRootComponent().isDeserializing() && !getOwner().getRootComponent().isCreatedByCloning()
 					&& getValue() != null && getValue().isSet() && getValue().isValid()) {
 				return getValue().getAnalyzedType();
 			}
@@ -151,7 +153,7 @@ public interface FIBVariable<T> extends FIBModelObject {
 		public void setType(Type type) {
 			Class<T> oldTypeClass = getTypeClass();
 			performSuperSetter(TYPE_KEY, type);
-			getBindingVariable().setType(getType());
+			getBindingVariable().setType(type);
 			getPropertyChangeSupport().firePropertyChange("typeClass", oldTypeClass, getTypeClass());
 		}
 
@@ -188,7 +190,20 @@ public interface FIBVariable<T> extends FIBModelObject {
 			else {
 				this.value = null;
 			}
-			getBindingVariable().setType(getType());
+
+			/*(Type) performSuperGetter(TYPE_KEY);
+			if (returned != null) {
+				return returned;
+			}
+			return Object.class*/
+
+			/*System.out.println("On me dit de faire un setType() suite a un setValue() with " + value);
+			System.out.println("isBeingCloned=" + isBeingCloned());
+			System.out.println("isCreatedByCloning=" + isCreatedByCloning());*/
+
+			if (!isCreatedByCloning()) {
+				getBindingVariable().setType(getType());
+			}
 		}
 
 		private BindingVariable bindingVariable;

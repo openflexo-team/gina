@@ -76,7 +76,7 @@ import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.logging.FlexoLogger;
 
-public class PaletteElement implements FIBDraggable /* implements Transferable */{
+public class PaletteElement implements FIBDraggable /* implements Transferable */ {
 	static final Logger logger = FlexoLogger.getLogger(PaletteElement.class.getPackage().getName());
 
 	private final FIBEditorPalette _palette;
@@ -101,8 +101,7 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 		int x = Integer.parseInt(representationComponent.getParameter("x"));
 		int y = Integer.parseInt(representationComponent.getParameter("y"));
 
-		view = FIBController.makeView(representationComponent, SwingViewFactory.INSTANCE,
-				FIBAbstractEditor.LOCALIZATION);
+		view = FIBController.makeView(representationComponent, SwingViewFactory.INSTANCE, FIBAbstractEditor.LOCALIZATION);
 
 		if (view.getTechnologyComponent() != null) {
 			Dimension size = view.getTechnologyComponent().getPreferredSize();
@@ -223,59 +222,62 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 		 * System.out.println(newComponent.getFactory().
 		 * stringRepresentation(newComponent)); Thread.dumpStack();
 		 */
-
 		try {
-			if (!isTabInsertion && ph != null) {
-				ph.willDelete();
-				ph.insertComponent(newComponent);
-				ph.hasDeleted();
-				return true;
-			}
-
-			else {
-				FIBComponent targetComponent = target.getFIBComponent();
-				FIBContainer containerComponent = targetComponent.getParent();
-
-				if (containerComponent == null) {
-					return false;
-				}
-
-				if (targetComponent instanceof FIBTab && !(newComponent instanceof FIBPanel)) {
-					return false;
-				}
-
-				if (isTabInsertion) {
-					// Special case where a new tab is added to a FIBTabPanel
-
-					FIBTab newTabComponent = containerComponent.getFactory().newFIBTab();
-					newTabComponent.setLayout(Layout.border);
-					newTabComponent.setTitle("NewTab");
-					newTabComponent.finalizeDeserialization();
-					((FIBTabPanel) targetComponent).addToSubComponents(newTabComponent);
-					return true;
-				} else {
-					// Normal case, we replace targetComponent by newComponent
-					ComponentConstraints constraints = targetComponent.getConstraints();
-					containerComponent.removeFromSubComponents(targetComponent);
-					// WAS:
-					// containerComponent.removeFromSubComponentsNoNotification(targetComponent);
-					// WAS: No notification, we will do it later, to avoid
-					// reindexing
-					targetComponent.delete();
-					containerComponent.addToSubComponents(newComponent, constraints);
+			try {
+				if (!isTabInsertion && ph != null) {
+					ph.willDelete();
+					ph.insertComponent(newComponent);
+					ph.hasDeleted();
 					return true;
 				}
+
+				else {
+					FIBComponent targetComponent = target.getFIBComponent();
+					FIBContainer containerComponent = targetComponent.getParent();
+
+					if (containerComponent == null) {
+						return false;
+					}
+
+					if (targetComponent instanceof FIBTab && !(newComponent instanceof FIBPanel)) {
+						return false;
+					}
+
+					if (isTabInsertion) {
+						// Special case where a new tab is added to a FIBTabPanel
+
+						FIBTab newTabComponent = containerComponent.getFactory().newFIBTab();
+						newTabComponent.setLayout(Layout.border);
+						newTabComponent.setTitle("NewTab");
+						newTabComponent.finalizeDeserialization();
+						((FIBTabPanel) targetComponent).addToSubComponents(newTabComponent);
+						return true;
+					}
+					else {
+						// Normal case, we replace targetComponent by newComponent
+						ComponentConstraints constraints = targetComponent.getConstraints();
+						containerComponent.removeFromSubComponents(targetComponent);
+						// WAS:
+						// containerComponent.removeFromSubComponentsNoNotification(targetComponent);
+						// WAS: No notification, we will do it later, to avoid
+						// reindexing
+						targetComponent.delete();
+						containerComponent.addToSubComponents(newComponent, constraints);
+						return true;
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.warning("Unexpected exception: " + e);
+				return false;
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.warning("Unexpected exception: " + e);
-			return false;
+		} finally {
+			dropListener.getEditableView().getEditorController().setSelectedObject(newComponent);
 		}
 	}
 
 	/**
-	 * DGListener a listener that will start the drag. has access to top level's
-	 * dsListener and dragSource
+	 * DGListener a listener that will start the drag. has access to top level's dsListener and dragSource
 	 * 
 	 * @see java.awt.dnd.DragGestureListener
 	 * @see java.awt.dnd.DragSource
@@ -283,8 +285,7 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 	 */
 	class DGListener implements DragGestureListener {
 		/**
-		 * Start the drag if the operation is ok. uses
-		 * java.awt.datatransfer.StringSelection to transfer the label's data
+		 * Start the drag if the operation is ok. uses java.awt.datatransfer.StringSelection to transfer the label's data
 		 * 
 		 * @param e
 		 *            the event object
@@ -366,7 +367,8 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 			int myaction = e.getDropAction();
 			if ((myaction & dragAction) != 0) {
 				context.setCursor(DragSource.DefaultCopyDrop);
-			} else {
+			}
+			else {
 				context.setCursor(DragSource.DefaultCopyNoDrop);
 			}
 		}

@@ -60,9 +60,9 @@ import org.openflexo.connie.DefaultBindable;
 import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.FIBComponent.LocalizationEntryRetriever;
 import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.model.FIBPropertyNotification;
-import org.openflexo.gina.model.FIBComponent.LocalizationEntryRetriever;
 import org.openflexo.gina.model.widget.FIBBrowserAction.FIBAddAction;
 import org.openflexo.gina.model.widget.FIBBrowserAction.FIBCustomAction;
 import org.openflexo.gina.model.widget.FIBBrowserAction.FIBRemoveAction;
@@ -723,6 +723,9 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 			@Override
 			public BindingFactory getBindingFactory() {
+				if (getComponent() == null) {
+					return null;
+				}
 				return getComponent().getBindingFactory();
 			}
 

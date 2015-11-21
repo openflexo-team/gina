@@ -40,10 +40,8 @@
 package org.openflexo.gina.utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
@@ -71,7 +69,9 @@ public class InspectorGroup {
 
 	private FIBModelFactory fibModelFactory;
 
-	public InspectorGroup(Resource inspectorDirectory, InspectorGroup... parentInspectorGroups) {
+	private final List<InspectorGroup> parentInspectorGroups;
+
+	public InspectorGroup(Resource inspectorDirectory, InspectorGroup... someInspectorGroups) {
 		inspectors = new Hashtable<Class<?>, FIBInspector>();
 
 		try {
@@ -81,9 +81,14 @@ public class InspectorGroup {
 			e.printStackTrace();
 		}
 
+		parentInspectorGroups = new ArrayList<>();
+		for (InspectorGroup inspectorGroup : someInspectorGroups) {
+			parentInspectorGroups.add(inspectorGroup);
+		}
+
 		for (Resource f : inspectorDirectory.getContents(Pattern.compile(".*[.]inspector"))) {
 			// System.out.println("Read "+f.getAbsolutePath());
-			logger.fine("Loading " + f.getURI());
+			logger.info("Loading " + f.getURI());
 			FIBComponent component = FIBLibrary.instance().retrieveFIBComponent(f, false, fibModelFactory);
 			if (component instanceof FIBInspector) {
 				FIBInspector inspector = (FIBInspector) component;
@@ -103,15 +108,21 @@ public class InspectorGroup {
 			}
 		}
 
+		// We first identify all parents
+		for (FIBInspector inspector : new ArrayList<FIBInspector>(inspectors.values())) {
+			System.out.println("identifySuperInspectors " + inspector.getInspectedClass());
+			inspector.identifySuperInspectors(this);
+		}
+
 		// We first merge all inspectors inside the group
 		for (FIBInspector inspector : new ArrayList<FIBInspector>(inspectors.values())) {
-			// System.out.println("Merging " + inspector.getDataClass());
-			inspector.appendSuperInspectors(this);
+			System.out.println("Merging " + inspector.getInspectedClass());
+			inspector.mergeWithParentInspectors();
 		}
 
 		// Then, for each parent inspector group, we compute the resulting inspector from superclasses.
 		// Then we choose the most specialized one to merge with the new inspector
-		for (FIBInspector inspector : new ArrayList<FIBInspector>(inspectors.values())) {
+		/*for (FIBInspector inspector : new ArrayList<FIBInspector>(inspectors.values())) {
 			Map<Class<?>, FIBInspector> parentGroupInspectors = new HashMap<Class<?>, FIBInspector>();
 			for (InspectorGroup parentGroup : parentInspectorGroups) {
 				FIBInspector parentInspector = parentGroup.inspectorForClass(inspector.getDataClass());
@@ -126,14 +137,8 @@ public class InspectorGroup {
 				for (FIBInspector inspectorToAppend : parentGroupInspectors.values()) {
 					inspector.appendSuperInspector(inspectorToAppend, fibModelFactory);
 				}
-
-				/*Class<?> mostSpecializedClass = TypeUtils.getMostSpecializedClass(parentGroupInspectors.keySet());
-				if (mostSpecializedClass != null) {
-					FIBInspector inspectorToAppend = parentGroupInspectors.get(mostSpecializedClass);
-					inspector.appendSuperInspector(inspectorToAppend, fibModelFactory);
-				}*/
 			}
-		}
+		}*/
 
 	}
 
@@ -177,6 +182,19 @@ public class InspectorGroup {
 			}
 		}
 		return returned;
+	}
+
+	public List<FIBInspector> getAllAccessiblesInspectors() {
+		List<FIBInspector> returned = new ArrayList<>();
+		visitSuperInspectors(this, returned);
+		return returned;
+	}
+
+	private void visitSuperInspectors(InspectorGroup inspectorGroup, List<FIBInspector> inspectorList) {
+		inspectorList.addAll(inspectorGroup.getInspectors().values());
+		for (InspectorGroup parentInspectorGroup : parentInspectorGroups) {
+			visitSuperInspectors(parentInspectorGroup, inspectorList);
+		}
 	}
 
 	public Hashtable<Class<?>, FIBInspector> getInspectors() {
