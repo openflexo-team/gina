@@ -170,7 +170,9 @@ public class FIBDropDownWidget<T> extends FIBMultipleValueWidget<FIBDropDown, JC
 
 			if (getValue() == null && getWidget().getAutoSelectFirstRow() && getListModel().getSize() > 0) {
 				updateMultipleValues();
-				jComboBox.setSelectedIndex(0);
+				if (jComboBox.getModel().getSize() > 0) {
+					jComboBox.setSelectedIndex(0);
+				}
 			}
 
 			return true;
