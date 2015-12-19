@@ -80,7 +80,7 @@ import org.openflexo.toolbox.ToolBox;
  * 
  * @author sylvain
  */
-public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBViewImpl<M, C>implements FIBWidgetView<M, C, T> {
+public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBViewImpl<M, C> implements FIBWidgetView<M, C, T> {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBWidgetViewImpl.class.getPackage().getName());
 
@@ -244,8 +244,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 		if (notEquals(oldData, data)) {
 
-			if (data == null || (getComponent().getDataClass() == null)
-					|| getComponent().getDataClass().isAssignableFrom(data.getClass())) {
+			if (data == null || (getComponent().getDataClass() == null) || getComponent().getDataClass().isAssignableFrom(data.getClass())) {
 				this.data = data;
 				getPropertyChangeSupport().firePropertyChange(DATA, oldData, data);
 			}
@@ -461,9 +460,11 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			return getData();
 		}
 
-		if (getDataObject() == null) {
+		// SGU: Why this ????
+		// I removed this statement because i don't remember why this was used
+		/*if (getDataObject() == null) {
 			return null;
-		}
+		}*/
 
 		Object value = null;
 
@@ -593,8 +594,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				LOGGER.warning("Unexpected " + e + " cannot setValue() with " + getWidget().getData() + " and value " + aValue + " message="
-						+ e.getMessage());
+				LOGGER.warning("Unexpected " + e + " cannot setValue() with " + getWidget().getData() + " and value " + aValue
+						+ " message=" + e.getMessage());
 				// e.printStackTrace();
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
