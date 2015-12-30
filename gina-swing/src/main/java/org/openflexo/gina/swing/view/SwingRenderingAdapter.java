@@ -90,8 +90,9 @@ public abstract class SwingRenderingAdapter<J extends JComponent> implements Ren
 			else {
 				// System.out.println("on se refait une scrollpane pour " +
 				// view);
-				JScrollPane scrolledComponent = new JScrollPane(getJComponent(view.getTechnologyComponent()), view.getComponent()
-						.getVerticalScrollbarPolicy().getPolicy(), view.getComponent().getHorizontalScrollbarPolicy().getPolicy());
+				JScrollPane scrolledComponent = new JScrollPane(getJComponent(view.getTechnologyComponent()),
+						view.getComponent().getVerticalScrollbarPolicy().getPolicy(),
+						view.getComponent().getHorizontalScrollbarPolicy().getPolicy());
 				scrolledComponent.setOpaque(false);
 				scrolledComponent.getViewport().setOpaque(false);
 				scrolledComponent.setBorder(BorderFactory.createEmptyBorder());
@@ -148,12 +149,25 @@ public abstract class SwingRenderingAdapter<J extends JComponent> implements Ren
 		 * scrolledComponent.getParent().revalidate();
 		 * scrolledComponent.getParent().repaint(); } }
 		 */
-		getJComponent(component).setVisible(visible);
 
-		if (getJComponent(component).getParent() != null) {
-			getJComponent(component).getParent().revalidate();
-			getJComponent(component).getParent().repaint();
+		JComponent jComponent = getJComponent(component);
+		if (jComponent.getParent() instanceof JViewport) {
+			JScrollPane jScrollPane = (JScrollPane) jComponent.getParent().getParent();
+			jScrollPane.setVisible(visible);
+			if (jScrollPane.getParent() != null) {
+				jScrollPane.getParent().revalidate();
+				jScrollPane.getParent().repaint();
+			}
 		}
+		else {
+			jComponent.setVisible(visible);
+			if (jComponent.getParent() != null) {
+				jComponent.getParent().revalidate();
+				jComponent.getParent().repaint();
+			}
+		}
+		// getResultingJComponent(component).setVisible(visible);
+
 	}
 
 	@Override
