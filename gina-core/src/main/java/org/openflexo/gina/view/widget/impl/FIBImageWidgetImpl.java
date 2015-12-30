@@ -43,6 +43,8 @@ import java.awt.Image;
 import java.beans.PropertyChangeEvent;
 import java.util.logging.Logger;
 
+import javax.swing.SwingUtilities;
+
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBImage;
 import org.openflexo.gina.view.FIBContainerView;
@@ -75,13 +77,22 @@ public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, 
 	}
 
 	@Override
-	public synchronized boolean updateWidgetFromModel() {
+	public boolean updateWidgetFromModel() {
 		if (modelUpdating) {
 			return false;
 		}
-		widgetUpdating = true;
-		updateImage();
-		widgetUpdating = false;
+		// TODO: Check this
+		// This is a quick and dirty fixed caused by a deadlock
+		// during java.awt.MediaTracker.waitForID(MediaTracker.java:651)
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				updateVisibility();
+				widgetUpdating = true;
+				updateImage();
+				widgetUpdating = false;
+			}
+		});
 		return false;
 	}
 
@@ -89,7 +100,7 @@ public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, 
 	 * Update the model given the actual state of the widget
 	 */
 	@Override
-	public synchronized boolean updateModelFromWidget() {
+	public boolean updateModelFromWidget() {
 		// Read only component
 		return false;
 	}
