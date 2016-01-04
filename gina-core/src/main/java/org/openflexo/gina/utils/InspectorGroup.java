@@ -110,13 +110,13 @@ public class InspectorGroup {
 
 		// We first identify all parents
 		for (FIBInspector inspector : new ArrayList<FIBInspector>(inspectors.values())) {
-			System.out.println("identifySuperInspectors " + inspector.getInspectedClass());
+			//System.out.println("identifySuperInspectors " + inspector.getInspectedClass());
 			inspector.identifySuperInspectors(this);
 		}
 
 		// We first merge all inspectors inside the group
 		for (FIBInspector inspector : new ArrayList<FIBInspector>(inspectors.values())) {
-			System.out.println("Merging " + inspector.getInspectedClass());
+			//System.out.println("Merging " + inspector.getInspectedClass());
 			inspector.mergeWithParentInspectors();
 		}
 
