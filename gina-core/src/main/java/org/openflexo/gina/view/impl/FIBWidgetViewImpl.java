@@ -586,9 +586,11 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		if (getWidget().getData() == null || getWidget().getData().isUnset()) {
 		}
 		else {
-			if (getDataObject() == null) {
+			// SGU: Why this ????
+			// I removed this statement because i don't remember why this was used
+			/*if (getDataObject() == null) {
 				return;
-			}
+			}*/
 			try {
 				getWidget().getData().setBindingValue(aValue, getBindingEvaluationContext());
 			} catch (TypeMismatchException e) {
