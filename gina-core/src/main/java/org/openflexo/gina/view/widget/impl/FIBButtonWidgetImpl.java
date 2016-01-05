@@ -144,10 +144,10 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 	}
 
 	protected void updateLabel() {
-		// logger.info("Button update label with key="+getWidget().getLabel());
+		//logger.info("Button update label with key=" + getWidget().getLabel());
 		if (getWidget().getLabel() != null) {
 			String text;
-			if (getValue() != null) {
+			/*if (getValue() != null) {
 				if (getWidget().getLocalize()) {
 					text = getLocalized(getValue());
 				}
@@ -155,14 +155,14 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 					text = getValue();
 				}
 			}
-			else {
-				if (getWidget().getLocalize()) {
-					text = getLocalized(getWidget().getLabel());
-				}
-				else {
-					text = getWidget().getLabel();
-				}
+			else {*/
+			if (getWidget().getLocalize()) {
+				text = getLocalized(getWidget().getLabel());
 			}
+			else {
+				text = getWidget().getLabel();
+			}
+			// }
 			getRenderingAdapter().setText(getTechnologyComponent(), text);
 		}
 	}
