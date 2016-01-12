@@ -531,7 +531,7 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 	public abstract void updateFont();
 
 	public String getLocalized(String key) {
-		if (getController().getLocalizerForComponent(getComponent()) != null) {
+		if (getController() != null && getController().getLocalizerForComponent(getComponent()) != null) {
 			return FlexoLocalization.localizedForKey(getController().getLocalizerForComponent(getComponent()), key);
 		}
 		return key;
