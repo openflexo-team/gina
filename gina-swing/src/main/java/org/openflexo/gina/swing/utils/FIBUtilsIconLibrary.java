@@ -62,5 +62,7 @@ public class FIBUtilsIconLibrary {
 			ResourceLocator.locateResource("Icons/Validation/FixableWarning.gif"));
 	public static final ImageIconResource UNFIXABLE_WARNING_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/Validation/UnfixableWarning.gif"));
+	public static final ImageIconResource VALIDATED_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/Validation/Validated.gif"));
 
 }
