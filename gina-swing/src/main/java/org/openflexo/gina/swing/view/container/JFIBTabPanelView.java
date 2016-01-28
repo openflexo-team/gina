@@ -99,8 +99,8 @@ public class JFIBTabPanelView extends FIBTabPanelViewImpl<JTabbedPane, JComponen
 	}
 
 	@Override
-	public JComponent getJComponent() {
-		return getRenderingAdapter().getJComponent(getTechnologyComponent());
+	public JTabbedPane getJComponent() {
+		return (JTabbedPane) getRenderingAdapter().getJComponent(getTechnologyComponent());
 	}
 
 	@Override
