@@ -344,6 +344,7 @@ public class TestBindingModel extends FIBTestCase {
 		assertSame(panel2.getDynamicAccessBindingVariable(), panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
 
 		textfield2.setManageDynamicModel(true);
+
 		assertEquals(4, panel2.getBindingModel().getBindingVariablesCount());
 		assertNotNull(panel2.getBindingModel().bindingVariableNamed("data"));
 		assertNotNull(panel2.getBindingModel().bindingVariableNamed("controller"));
@@ -352,10 +353,9 @@ public class TestBindingModel extends FIBTestCase {
 		assertNotNull(panel2.getBindingModel().bindingVariableNamed(textfield2.getName()));
 		assertSame(textfield2.getDynamicAccessBindingVariable(), textfield2.getBindingModel().bindingVariableNamed(textfield2.getName()));
 
-		checkbox.setManageDynamicModel(true);
-		assertEquals(4, panel2.getBindingModel().getBindingVariablesCount());
-
 		checkbox.setName("CheckBox");
+		checkbox.setManageDynamicModel(true);
+
 		assertEquals(5, panel2.getBindingModel().getBindingVariablesCount());
 		assertSame(panel2.getDynamicAccessBindingVariable(), panel2.getBindingModel().bindingVariableNamed(panel2.getName()));
 		assertNotNull(panel2.getBindingModel().bindingVariableNamed(checkbox.getName()));
@@ -415,13 +415,11 @@ public class TestBindingModel extends FIBTestCase {
 		panel2.setData(new DataBinding<Person>("data.father"));
 
 		assertTrue(panel2.getData().isValid());
+
+		// We try here to "force" data type to be something else, but because binding is valid, analyzed type of binding is used instead
 		panel2.setDataClass(Family.class);
+		assertEquals(Person.class, panel2.getDataClass());
 
-		assertFalse(textfield2.getData().isValid());
-		assertFalse(checkbox.getData().isValid());
-		assertFalse(number.getData().isValid());
-
-		panel2.setDataClass(Person.class);
 		assertTrue(textfield2.getData().isValid());
 		assertTrue(checkbox.getData().isValid());
 		assertTrue(number.getData().isValid());
