@@ -66,30 +66,29 @@ import org.openflexo.gina.swing.view.container.layout.JBoxLayout;
 import org.openflexo.gina.swing.view.container.layout.JButtonLayout;
 import org.openflexo.gina.swing.view.container.layout.JFlowLayout;
 import org.openflexo.gina.swing.view.container.layout.JGridBagLayout;
+import org.openflexo.gina.swing.view.container.layout.JGridLayout;
 import org.openflexo.gina.swing.view.container.layout.JTwoColsLayout;
 import org.openflexo.gina.view.container.impl.FIBPanelViewImpl;
 import org.openflexo.toolbox.StringUtils;
 
 /**
- * Swing implementation for a basic panel, as a container of some children
- * component, with a given layout, and a border<br>
+ * Swing implementation for a basic panel, as a container of some children component, with a given layout, and a border<br>
  * Implementation is based on JPanel
  * 
  * @author sylvain
  */
-public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> implements JFIBView<FIBPanel, JPanel> {
+public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent>implements JFIBView<FIBPanel, JPanel> {
 
 	private static final Logger logger = Logger.getLogger(JFIBPanelView.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingAdapter} implementation dedicated for Swing JPanel with
-	 * a given layout<br>
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JPanel with a given layout<br>
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingPanelRenderingAdapter extends SwingRenderingAdapter<JPanel> implements
-			PanelRenderingAdapter<JPanel, JComponent> {
+	public static class SwingPanelRenderingAdapter extends SwingRenderingAdapter<JPanel>
+			implements PanelRenderingAdapter<JPanel, JComponent> {
 
 		/*
 		 * @Override public void addComponent(JComponent child, JPanel parent,
@@ -127,47 +126,45 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> implemen
 	@Override
 	public void updateBorder() {
 		switch (getComponent().getBorder()) {
-		case empty:
-			getTechnologyComponent().setBorder(
-					BorderFactory.createEmptyBorder(getComponent().getBorderTop() != null ? getComponent()
-							.getBorderTop() : 0, getComponent().getBorderLeft() != null ? getComponent()
-							.getBorderLeft() : 0, getComponent().getBorderBottom() != null ? getComponent()
-							.getBorderBottom() : 0, getComponent().getBorderRight() != null ? getComponent()
-							.getBorderRight() : 0));
-			break;
-		case etched:
-			getTechnologyComponent().setBorder(BorderFactory.createEtchedBorder());
-			break;
-		case line:
-			getTechnologyComponent().setBorder(
-					BorderFactory.createLineBorder(getComponent().getBorderColor() != null ? getComponent()
-							.getBorderColor() : Color.black));
-			break;
-		case lowered:
-			getTechnologyComponent().setBorder(BorderFactory.createLoweredBevelBorder());
-			break;
-		case raised:
-			getTechnologyComponent().setBorder(BorderFactory.createRaisedBevelBorder());
-			break;
-		case titled:
-			getTechnologyComponent().setBorder(
-					BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), getLocalized(getComponent()
-							.getBorderTitle()), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, getComponent()
-							.retrieveValidFont(), getComponent().retrieveValidForegroundColor()));
-			break;
-		case rounded3d:
-			getTechnologyComponent().setBorder(
-					new RoundedBorder(
-							StringUtils.isNotEmpty(getComponent().getBorderTitle()) ? getLocalized(getComponent()
-									.getBorderTitle()) : null, getComponent().getBorderTop() != null ? getComponent()
-									.getBorderTop() : 0, getComponent().getBorderLeft() != null ? getComponent()
-									.getBorderLeft() : 0, getComponent().getBorderBottom() != null ? getComponent()
-									.getBorderBottom() : 0, getComponent().getBorderRight() != null ? getComponent()
-									.getBorderRight() : 0, getComponent().getTitleFont(), getComponent()
-									.retrieveValidForegroundColor(), getComponent().getDarkLevel()));
-			break;
-		default:
-			break;
+			case empty:
+				getTechnologyComponent().setBorder(
+						BorderFactory.createEmptyBorder(getComponent().getBorderTop() != null ? getComponent().getBorderTop() : 0,
+								getComponent().getBorderLeft() != null ? getComponent().getBorderLeft() : 0,
+								getComponent().getBorderBottom() != null ? getComponent().getBorderBottom() : 0,
+								getComponent().getBorderRight() != null ? getComponent().getBorderRight() : 0));
+				break;
+			case etched:
+				getTechnologyComponent().setBorder(BorderFactory.createEtchedBorder());
+				break;
+			case line:
+				getTechnologyComponent().setBorder(BorderFactory
+						.createLineBorder(getComponent().getBorderColor() != null ? getComponent().getBorderColor() : Color.black));
+				break;
+			case lowered:
+				getTechnologyComponent().setBorder(BorderFactory.createLoweredBevelBorder());
+				break;
+			case raised:
+				getTechnologyComponent().setBorder(BorderFactory.createRaisedBevelBorder());
+				break;
+			case titled:
+				getTechnologyComponent().setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+						getLocalized(getComponent().getBorderTitle()), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION,
+						getComponent().retrieveValidFont(), getComponent().retrieveValidForegroundColor()));
+				break;
+			case rounded3d:
+				getTechnologyComponent()
+						.setBorder(new RoundedBorder(
+								StringUtils.isNotEmpty(getComponent().getBorderTitle()) ? getLocalized(getComponent().getBorderTitle())
+										: null,
+								getComponent().getBorderTop() != null ? getComponent().getBorderTop() : 0,
+								getComponent().getBorderLeft() != null ? getComponent().getBorderLeft() : 0,
+								getComponent().getBorderBottom() != null ? getComponent().getBorderBottom() : 0,
+								getComponent().getBorderRight() != null ? getComponent().getBorderRight() : 0,
+								getComponent().getTitleFont(), getComponent().retrieveValidForegroundColor(),
+								getComponent().getDarkLevel()));
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -206,24 +203,24 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> implemen
 			@Override
 			public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
 				switch (orientation) {
-				case SwingConstants.VERTICAL:
-					return visibleRect.height / 10;
-				case SwingConstants.HORIZONTAL:
-					return visibleRect.width / 10;
-				default:
-					throw new IllegalArgumentException("Invalid orientation: " + orientation);
+					case SwingConstants.VERTICAL:
+						return visibleRect.height / 10;
+					case SwingConstants.HORIZONTAL:
+						return visibleRect.width / 10;
+					default:
+						throw new IllegalArgumentException("Invalid orientation: " + orientation);
 				}
 			}
 
 			@Override
 			public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
 				switch (orientation) {
-				case SwingConstants.VERTICAL:
-					return visibleRect.height;
-				case SwingConstants.HORIZONTAL:
-					return visibleRect.width;
-				default:
-					throw new IllegalArgumentException("Invalid orientation: " + orientation);
+					case SwingConstants.VERTICAL:
+						return visibleRect.height;
+					case SwingConstants.HORIZONTAL:
+						return visibleRect.width;
+					default:
+						throw new IllegalArgumentException("Invalid orientation: " + orientation);
 				}
 			}
 
@@ -231,11 +228,9 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> implemen
 			public boolean getScrollableTracksViewportWidth() {
 				Container parent = getParent();
 				try {
-					if (parent instanceof JViewport && getPreferredSize() != null
-							&& JFIBPanelView.this.getComponent() != null) {
+					if (parent instanceof JViewport && getPreferredSize() != null && JFIBPanelView.this.getComponent() != null) {
 
-						return parent.getWidth() > getPreferredSize().width
-								&& JFIBPanelView.this.getComponent().isTrackViewPortWidth();
+						return parent.getWidth() > getPreferredSize().width && JFIBPanelView.this.getComponent().isTrackViewPortWidth();
 					}
 					if (JFIBPanelView.this.getComponent() != null) {
 						return JFIBPanelView.this.getComponent().isTrackViewPortWidth();
@@ -253,10 +248,8 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> implemen
 			public boolean getScrollableTracksViewportHeight() {
 				Container parent = getParent();
 				try {
-					if (parent instanceof JViewport && getPreferredSize() != null
-							&& JFIBPanelView.this.getComponent() != null) {
-						return parent.getHeight() > getPreferredSize().height
-								&& JFIBPanelView.this.getComponent().isTrackViewPortHeight();
+					if (parent instanceof JViewport && getPreferredSize() != null && JFIBPanelView.this.getComponent() != null) {
+						return parent.getHeight() > getPreferredSize().height && JFIBPanelView.this.getComponent().isTrackViewPortHeight();
 					}
 					if (JFIBPanelView.this.getComponent() != null) {
 						return JFIBPanelView.this.getComponent().isTrackViewPortHeight();
@@ -378,24 +371,24 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> implemen
 			return new JAbsolutePositionningLayout(this);
 		}
 		switch (layoutType) {
-		case none:
-			return new JAbsolutePositionningLayout(this);
-		case border:
-			return new JBorderLayout(this);
-		case box:
-			return new JBoxLayout(this);
-		case flow:
-			return new JFlowLayout(this);
-		case buttons:
-			return new JButtonLayout(this);
-		case twocols:
-			return new JTwoColsLayout(this);
-		case grid:
-			return new JGridBagLayout(this);
-		case gridbag:
-			return new JGridBagLayout(this);
-		default:
-			return new JAbsolutePositionningLayout(this);
+			case none:
+				return new JAbsolutePositionningLayout(this);
+			case border:
+				return new JBorderLayout(this);
+			case box:
+				return new JBoxLayout(this);
+			case flow:
+				return new JFlowLayout(this);
+			case buttons:
+				return new JButtonLayout(this);
+			case twocols:
+				return new JTwoColsLayout(this);
+			case grid:
+				return new JGridLayout(this);
+			case gridbag:
+				return new JGridBagLayout(this);
+			default:
+				return new JAbsolutePositionningLayout(this);
 		}
 	}
 
