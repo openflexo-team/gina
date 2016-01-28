@@ -231,8 +231,9 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		@Override
 		public DataBinding<Object[]> getArray() {
 			if (array == null) {
-				array = new DataBinding<Object[]>(this, new TypeToken<Object[]>() {
-				}.getType(), DataBinding.BindingDefinitionType.GET);
+				array = new DataBinding<Object[]>(this, new GenericArrayTypeImpl(new WilcardTypeImpl(Object.class)) /* TypeToken<Object[]>() {
+																													}.getType()*/,
+						DataBinding.BindingDefinitionType.GET);
 			}
 			return array;
 		}
@@ -241,8 +242,8 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		public void setArray(DataBinding<Object[]> array) {
 			if (array != null) {
 				array.setOwner(this);
-				array.setDeclaredType(new TypeToken<Object[]>() {
-				}.getType());
+				array.setDeclaredType(new GenericArrayTypeImpl(new WilcardTypeImpl(Object.class)) /* TypeToken<Object[]>() {
+																									}.getType()*/);
 				array.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 			}
 			this.array = array;
