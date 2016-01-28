@@ -265,7 +265,7 @@ public abstract interface FIBContainer extends FIBComponent {
 
 			// TODO: i dont't like this code, we might do it without all these
 			// hacks
-			if (someConstraints != null) {
+			if (someConstraints != null && aComponent.getConstraints() != null) {
 				aComponent.getConstraints().ignoreNotif = true;
 				aComponent.getConstraints().putAll(someConstraints);
 				aComponent.getConstraints().ignoreNotif = false;
