@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.view.widget.browser.impl;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -516,6 +517,40 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			return getBrowserElement().retrieveValidFont();
 		}
 
+		return null;
+	}
+
+	public Color getSelectedColor(final Object object) {
+		if (browserElementDefinition.getSelectedDynamicColor().isSet()) {
+			setIteratorObject(object);
+			try {
+				return browserElementDefinition.getSelectedDynamicColor().getBindingValue(this);
+			} catch (TypeMismatchException e) {
+				e.printStackTrace();
+			} catch (NullReferenceException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+		return null;
+	}
+
+	public Color getNonSelectedColor(final Object object) {
+		if (browserElementDefinition.getNonSelectedDynamicColor().isSet()) {
+			setIteratorObject(object);
+			try {
+				return browserElementDefinition.getNonSelectedDynamicColor().getBindingValue(this);
+			} catch (TypeMismatchException e) {
+				e.printStackTrace();
+			} catch (NullReferenceException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
 		return null;
 	}
 

@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.model.widget;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
 import java.lang.reflect.ParameterizedType;
@@ -111,6 +112,10 @@ public interface FIBBrowserElement extends FIBModelObject {
 	public static final String FONT_KEY = "font";
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String DYNAMIC_FONT_KEY = "dynamicFont";
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String SELECTED_DYNAMIC_COLOR_KEY = "selectedDynamicColor";
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String NON_SELECTED_DYNAMIC_COLOR_KEY = "nonSelectedDynamicColor";
 	@PropertyIdentifier(type = boolean.class)
 	public static final String FILTERED_KEY = "filtered";
 	@PropertyIdentifier(type = boolean.class)
@@ -200,6 +205,20 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 	@Setter(DYNAMIC_FONT_KEY)
 	public void setDynamicFont(DataBinding<Font> dynamicFont);
+
+	@Getter(SELECTED_DYNAMIC_COLOR_KEY)
+	@XMLAttribute
+	public DataBinding<Color> getSelectedDynamicColor();
+
+	@Setter(SELECTED_DYNAMIC_COLOR_KEY)
+	public void setSelectedDynamicColor(DataBinding<Color> dynamicColor);
+
+	@Getter(NON_SELECTED_DYNAMIC_COLOR_KEY)
+	@XMLAttribute
+	public DataBinding<Color> getNonSelectedDynamicColor();
+
+	@Setter(NON_SELECTED_DYNAMIC_COLOR_KEY)
+	public void setNonSelectedDynamicColor(DataBinding<Color> dynamicColor);
 
 	@Getter(value = FILTERED_KEY, defaultValue = "false")
 	@XMLAttribute
@@ -322,6 +341,8 @@ public interface FIBBrowserElement extends FIBModelObject {
 		private boolean isEditable = false;
 		private DataBinding<String> editableLabel;
 		private DataBinding<Font> dynamicFont;
+		private DataBinding<Color> selectedDynamicColor;
+		private DataBinding<Color> nonSelectedDynamicColor;
 
 		private boolean filtered = false;
 		private boolean defaultVisible = true;
@@ -657,6 +678,42 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}
 
 		@Override
+		public DataBinding<Color> getSelectedDynamicColor() {
+			if (selectedDynamicColor == null) {
+				selectedDynamicColor = new DataBinding<Color>(iterator, Color.class, DataBinding.BindingDefinitionType.GET);
+			}
+			return selectedDynamicColor;
+		}
+
+		@Override
+		public void setSelectedDynamicColor(DataBinding<Color> selectedDynamicColor) {
+			if (selectedDynamicColor != null) {
+				selectedDynamicColor.setOwner(iterator);
+				selectedDynamicColor.setDeclaredType(Color.class);
+				selectedDynamicColor.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+			}
+			this.selectedDynamicColor = selectedDynamicColor;
+		}
+
+		@Override
+		public DataBinding<Color> getNonSelectedDynamicColor() {
+			if (nonSelectedDynamicColor == null) {
+				nonSelectedDynamicColor = new DataBinding<Color>(iterator, Color.class, DataBinding.BindingDefinitionType.GET);
+			}
+			return nonSelectedDynamicColor;
+		}
+
+		@Override
+		public void setNonSelectedDynamicColor(DataBinding<Color> nonSelectedDynamicColor) {
+			if (nonSelectedDynamicColor != null) {
+				nonSelectedDynamicColor.setOwner(iterator);
+				nonSelectedDynamicColor.setDeclaredType(Color.class);
+				nonSelectedDynamicColor.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+			}
+			this.nonSelectedDynamicColor = nonSelectedDynamicColor;
+		}
+
+		@Override
 		public File getImageIconFile() {
 			return imageIconFile;
 		}
@@ -980,14 +1037,12 @@ public interface FIBBrowserElement extends FIBModelObject {
 			private FIBChildBindable childBindable;
 
 			@Deprecated
-			public static BindingDefinition DATA = new BindingDefinition("data", Object.class, DataBinding.BindingDefinitionType.GET,
-					false);
+			public static BindingDefinition DATA = new BindingDefinition("data", Object.class, DataBinding.BindingDefinitionType.GET, false);
 			@Deprecated
-			public static BindingDefinition VISIBLE = new BindingDefinition("visible", Boolean.class, DataBinding.BindingDefinitionType.GET,
-					false);
+			public static BindingDefinition VISIBLE = new BindingDefinition("visible", Boolean.class,
+					DataBinding.BindingDefinitionType.GET, false);
 			@Deprecated
-			public static BindingDefinition CAST = new BindingDefinition("cast", Object.class, DataBinding.BindingDefinitionType.GET,
-					false);
+			public static BindingDefinition CAST = new BindingDefinition("cast", Object.class, DataBinding.BindingDefinitionType.GET, false);
 
 			protected void bindingModelMightChange(BindingModel oldBindingModel) {
 				if (childBindable != null) {
@@ -1318,6 +1373,30 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<?> getBinding(FIBBrowserElement object) {
 			return object.getDynamicFont();
+		}
+	}
+
+	@DefineValidationRule
+	public static class DynamicSelectedColorBindingMustBeValid extends BindingMustBeValid<FIBBrowserElement> {
+		public DynamicSelectedColorBindingMustBeValid() {
+			super("'selected_color'_binding_is_not_valid", FIBBrowserElement.class);
+		}
+
+		@Override
+		public DataBinding<?> getBinding(FIBBrowserElement object) {
+			return object.getSelectedDynamicColor();
+		}
+	}
+
+	@DefineValidationRule
+	public static class DynamicNonSelectedColorBindingMustBeValid extends BindingMustBeValid<FIBBrowserElement> {
+		public DynamicNonSelectedColorBindingMustBeValid() {
+			super("'non_selected_color'_binding_is_not_valid", FIBBrowserElement.class);
+		}
+
+		@Override
+		public DataBinding<?> getBinding(FIBBrowserElement object) {
+			return object.getNonSelectedDynamicColor();
 		}
 	}
 

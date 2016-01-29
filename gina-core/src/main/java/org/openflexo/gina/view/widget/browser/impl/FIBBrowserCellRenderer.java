@@ -42,6 +42,7 @@
 
 package org.openflexo.gina.view.widget.browser.impl;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 
@@ -138,8 +139,22 @@ public class FIBBrowserCellRenderer<T> extends DefaultTreeCellRenderer {
 
 			Font font = getFont(representedObject);
 			if (font != null) {
+				// System.out.println("on met la fonte a " + font);
 				returned.setFont(font);
 			}
+			if (sel) {
+				Color color = getSelectedColor(representedObject);
+				if (color != null) {
+					returned.setForeground(color);
+				}
+			}
+			else {
+				Color color = getNonSelectedColor(representedObject);
+				if (color != null) {
+					returned.setForeground(color);
+				}
+			}
+
 			returned.setText(getLabel(representedObject));
 			returned.setIcon(getIcon(representedObject));
 			returned.setToolTipText(getTooltip(representedObject));
@@ -221,6 +236,28 @@ public class FIBBrowserCellRenderer<T> extends DefaultTreeCellRenderer {
 			return elementType.getFont(object);
 		}
 		return widget.getFont();
+	}
+
+	protected Color getSelectedColor(Object object) {
+		if (object == null) {
+			return null;
+		}
+		FIBBrowserElementType elementType = getElementType(object);
+		if (elementType != null) {
+			return elementType.getSelectedColor(object);
+		}
+		return null;
+	}
+
+	protected Color getNonSelectedColor(Object object) {
+		if (object == null) {
+			return null;
+		}
+		FIBBrowserElementType elementType = getElementType(object);
+		if (elementType != null) {
+			return elementType.getNonSelectedColor(object);
+		}
+		return null;
 	}
 
 	/**
