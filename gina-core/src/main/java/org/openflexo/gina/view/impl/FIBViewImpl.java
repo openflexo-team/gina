@@ -526,6 +526,9 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	@Override
 	public void updateGraphicalProperties() {
+		if (getTechnologyComponent() == null) {
+			return;
+		}
 		updatePreferredSize();
 		updateMaximumSize();
 		updateMinimumSize();
@@ -671,8 +674,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			updateFont();
 		}
 		else if (evt.getPropertyName().equals(FIBComponent.BACKGROUND_COLOR_KEY)
-				|| evt.getPropertyName().equals(FIBComponent.FOREGROUND_COLOR_KEY)
-				|| evt.getPropertyName().equals(FIBComponent.OPAQUE_KEY)) {
+				|| evt.getPropertyName().equals(FIBComponent.FOREGROUND_COLOR_KEY) || evt.getPropertyName().equals(FIBComponent.OPAQUE_KEY)) {
 			updateGraphicalProperties();
 			// getTechnologyComponent().revalidate();
 			// getTechnologyComponent().repaint();
