@@ -60,7 +60,6 @@ import org.openflexo.gina.model.widget.FIBCustom.FIBCustomAssignment;
 import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent;
 import org.openflexo.gina.view.impl.FIBWidgetViewImpl;
 import org.openflexo.gina.view.widget.FIBCustomWidget;
-import org.openflexo.gina.view.widget.FIBColorWidget.ColorWidgetRenderingAdapter;
 import org.openflexo.kvc.InvalidKeyValuePropertyException;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 
@@ -76,17 +75,18 @@ import org.openflexo.swing.CustomPopup.ApplyCancelListener;
  * @author sylvain
  * 
  */
-public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> extends FIBWidgetViewImpl<FIBCustom, C, T>implements FIBCustomWidget<C, T>, ApplyCancelListener, BindingEvaluationContext {
+public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> extends FIBWidgetViewImpl<FIBCustom, C, T>
+		implements FIBCustomWidget<C, T>, ApplyCancelListener, BindingEvaluationContext {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBCustomWidgetImpl.class.getPackage().getName());
 
 	public static final String COMPONENT = "component";
 
-	//private FIBCustomComponent<T, C> customComponent;
+	// private FIBCustomComponent<T, C> customComponent;
 
-	//private final JLabel ERROR_LABEL = new JLabel("<Cannot instanciate component>");
+	// private final JLabel ERROR_LABEL = new JLabel("<Cannot instanciate component>");
 
-	public FIBCustomWidgetImpl(FIBCustom model, FIBController controller, CustomComponentRenderingAdapter<C,T> RenderingAdapter) {
+	public FIBCustomWidgetImpl(FIBCustom model, FIBController controller, CustomComponentRenderingAdapter<C, T> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
 
 		// We need here to "listen" all assignment values that may change
@@ -96,18 +96,18 @@ public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> ex
 	}
 
 	@Override
-	public CustomComponentRenderingAdapter<C,T> getRenderingAdapter() {
-		return (CustomComponentRenderingAdapter<C,T>) super.getRenderingAdapter();
+	public CustomComponentRenderingAdapter<C, T> getRenderingAdapter() {
+		return (CustomComponentRenderingAdapter<C, T>) super.getRenderingAdapter();
 	}
 
 	@Override
 	protected C makeTechnologyComponent() {
-		C customComponent = makeCustomComponent((Class)getWidget().getComponentClass(),(Class<T>) TypeUtils.getBaseClass(getWidget().getDataType()),getController());
+		C customComponent = makeCustomComponent((Class) getWidget().getComponentClass(),
+				(Class<T>) TypeUtils.getBaseClass(getWidget().getDataType()), getController());
 		return customComponent;
 	}
-	
-	private C makeCustomComponent(Class<C> customComponentClass, Class<T> dataClass,
-			FIBController controller) {
+
+	private C makeCustomComponent(Class<C> customComponentClass, Class<T> dataClass, FIBController controller) {
 		if (customComponentClass == null) {
 			LOGGER.warning("Could not instanciate custom component : no component class found");
 			return null;
@@ -142,6 +142,7 @@ public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> ex
 			args[0] = null;
 			C returned = constructor.newInstance(args);
 			returned.init(getComponent(), controller);
+			returned.addApplyCancelListener(this);
 			return returned;
 		} catch (SecurityException e) {
 			e.printStackTrace();
@@ -155,6 +156,14 @@ public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> ex
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public synchronized void delete() {
+		if (getTechnologyComponent() != null) {
+			getTechnologyComponent().removeApplyCancelListener(this);
+		}
+		super.delete();
 	}
 
 	/**
@@ -360,53 +369,53 @@ public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> ex
 	}
 
 	/*protected class NotFoundComponent implements FIBCustomComponent {
-
+	
 		private JLabel label;
-
+	
 		public NotFoundComponent() {
 			label = new JLabel("< Custom component >");
 		}
-
+	
 		@Override
 		public void init(FIBCustom component, FIBController controller) {
 		}
-
+	
 		@Override
 		public void addApplyCancelListener(ApplyCancelListener l) {
 		}
-
+	
 		@Override
 		public Object getEditedObject() {
 			return null;
 		}
-
+	
 		@Override
 		public JComponent getTechnologyComponent() {
 			return label;
 		}
-
+	
 		@Override
 		public Class<T> getRepresentedType() {
 			return null;
 		}
-
+	
 		@Override
 		public T getRevertValue() {
 			return null;
 		}
-
+	
 		@Override
 		public void removeApplyCancelListener(ApplyCancelListener l) {
 		}
-
+	
 		@Override
 		public void setEditedObject(Object object) {
 		}
-
+	
 		@Override
 		public void setRevertValue(Object object) {
 		}
-
+	
 		@Override
 		public void delete() {
 			label = null;
