@@ -39,9 +39,6 @@
 
 package org.openflexo.gina.model.widget;
 
-import java.util.logging.Logger;
-
-import org.openflexo.gina.model.widget.FIBMultipleValues.FIBMultipleValuesImpl;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -67,11 +64,13 @@ public interface FIBDropDown extends FIBMultipleValues {
 
 	public static abstract class FIBDropDownImpl extends FIBMultipleValuesImpl implements FIBDropDown {
 
-		public boolean showReset = false;
+		// public boolean showReset = false;
 
-		private static final Logger logger = Logger.getLogger(FIBDropDown.class.getPackage().getName());
+		// private static final Logger logger = Logger.getLogger(FIBDropDownImpl.class.getPackage().getName());
 
-		public FIBDropDownImpl() {
+		@Override
+		protected FIBDropDownType makeViewType() {
+			return new FIBDropDownType(this);
 		}
 
 		@Override
