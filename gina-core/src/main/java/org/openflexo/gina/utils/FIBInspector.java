@@ -170,8 +170,10 @@ public interface FIBInspector extends FIBPanel {
 			// unmergedComponent = (FIBInspector) cloneObject();
 
 			for (FIBInspector superInspector : superInspectors) {
-				superInspector.mergeWithParentInspectors();
-				appendSuperInspector(superInspector);
+				if (superInspector != null) {
+					superInspector.mergeWithParentInspectors();
+					appendSuperInspector(superInspector);
+				}
 			}
 
 			isMerged = true;
@@ -183,7 +185,7 @@ public interface FIBInspector extends FIBPanel {
 			FIBInspector clonedSuperInspector = (FIBInspector) superInspector.cloneObject();
 			// FIBInspector clonedSuperInspector = superInspector;
 
-			//System.out.println(">>>>> On append " + clonedSuperInspector.getInspectedClass() + " a " + getInspectedClass());
+			// System.out.println(">>>>> On append " + clonedSuperInspector.getInspectedClass() + " a " + getInspectedClass());
 
 			append(clonedSuperInspector);
 

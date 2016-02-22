@@ -110,13 +110,13 @@ public class InspectorGroup {
 
 		// We first identify all parents
 		for (FIBInspector inspector : new ArrayList<FIBInspector>(inspectors.values())) {
-			//System.out.println("identifySuperInspectors " + inspector.getInspectedClass());
+			// System.out.println("identifySuperInspectors " + inspector.getInspectedClass());
 			inspector.identifySuperInspectors(this);
 		}
 
 		// We first merge all inspectors inside the group
 		for (FIBInspector inspector : new ArrayList<FIBInspector>(inspectors.values())) {
-			//System.out.println("Merging " + inspector.getInspectedClass());
+			// System.out.println("Merging " + inspector.getInspectedClass());
 			inspector.mergeWithParentInspectors();
 		}
 
@@ -192,8 +192,12 @@ public class InspectorGroup {
 
 	private void visitSuperInspectors(InspectorGroup inspectorGroup, List<FIBInspector> inspectorList) {
 		inspectorList.addAll(inspectorGroup.getInspectors().values());
-		for (InspectorGroup parentInspectorGroup : parentInspectorGroups) {
-			visitSuperInspectors(parentInspectorGroup, inspectorList);
+		// System.out.println("visitSuperInspectors in " + this + " inspectorGroup=" + inspectorGroup + " parent=" +
+		// inspectorGroup.parentInspectorGroups);
+		for (InspectorGroup parentInspectorGroup : inspectorGroup.parentInspectorGroups) {
+			if (parentInspectorGroup != this) {
+				visitSuperInspectors(parentInspectorGroup, inspectorList);
+			}
 		}
 	}
 
