@@ -63,8 +63,7 @@ public class JFIBReferencedComponentWidget extends FIBReferencedComponentWidgetI
 	private static final Logger logger = Logger.getLogger(JFIBReferencedComponentWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingAdapter} implementation dedicated for Swing referenced
-	 * component<br>
+	 * A {@link RenderingAdapter} implementation dedicated for Swing referenced component<br>
 	 * 
 	 * @author sylvain
 	 * 

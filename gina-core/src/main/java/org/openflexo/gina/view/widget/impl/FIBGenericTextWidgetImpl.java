@@ -55,8 +55,8 @@ import org.openflexo.gina.view.widget.FIBGenericTextWidget;
  * 
  * @author sylvain
  */
-public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> extends FIBWidgetViewImpl<F, C, String>
-		implements FIBGenericTextWidget<F, C> {
+public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> extends FIBWidgetViewImpl<F, C, String> implements
+		FIBGenericTextWidget<F, C> {
 
 	private static final Logger logger = Logger.getLogger(FIBGenericTextWidgetImpl.class.getPackage().getName());
 
@@ -80,9 +80,14 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 		getRenderingAdapter().setEditable(getTechnologyComponent(), !isReadOnly());
 	}
 
-	public void updateText() {
-		if (getWidget().getText() != null) {
-			getRenderingAdapter().setText(getTechnologyComponent(), getWidget().getText());
+	private void updateText() {
+		widgetUpdating = true;
+		try {
+			if (getWidget().getText() != null) {
+				getRenderingAdapter().setText(getTechnologyComponent(), getWidget().getText());
+			}
+		} finally {
+			widgetUpdating = false;
 		}
 	}
 

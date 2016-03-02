@@ -77,8 +77,8 @@ import org.openflexo.rm.Resource;
  * @author sylvain
  * 
  */
-public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewImpl<FIBReferencedComponent, C, Object>
-		implements FIBReferencedComponentWidget<C> {
+public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewImpl<FIBReferencedComponent, C, Object> implements
+		FIBReferencedComponentWidget<C> {
 
 	private static final Logger logger = Logger.getLogger(FIBReferencedComponentWidgetImpl.class.getPackage().getName());
 
@@ -110,13 +110,13 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 			dynamicComponentFileBindingValueChangeListener.delete();
 		}
 		if (getComponent().getDynamicComponentFile() != null && getComponent().getDynamicComponentFile().isValid()) {
-			dynamicComponentFileBindingValueChangeListener = new BindingValueChangeListener<Resource>(
-					getComponent().getDynamicComponentFile(), getBindingEvaluationContext()) {
+			dynamicComponentFileBindingValueChangeListener = new BindingValueChangeListener<Resource>(getComponent()
+					.getDynamicComponentFile(), getBindingEvaluationContext()) {
 
 				@Override
 				public void bindingValueChanged(Object source, Resource newValue) {
-					// System.out.println(" bindingValueChanged() detected for dynamicComponentFile="
-					// + getComponent().getDynamicComponentFile() + " with newValue=" + newValue + " source=" + source);
+					System.out.println(" bindingValueChanged() detected for dynamicComponentFile="
+							+ getComponent().getDynamicComponentFile() + " with newValue=" + newValue + " source=" + source);
 					updateReferencedComponentView();
 				}
 			};
@@ -233,19 +233,28 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 	 * Called whenever the referenced component may have changed
 	 */
 	private boolean updateDynamicallyReferencedComponentWhenRequired() {
+		FIBComponent newReferencedComponent = retrieveReferencedComponent();
 		// We now check that the referenced component is still valid
-		if (referencedComponent != retrieveReferencedComponent()) {
+		if (referencedComponent != newReferencedComponent) {
 			// We have detected that referenced component has changed
 			// We reset internal values and call updateLayout on the container
-			referencedComponent = retrieveReferencedComponent();
+			referencedComponent = newReferencedComponent;
 			if (referencedComponentView != null) {
 				referencedComponentView.delete();
 				referencedComponentView = null;
 			}
+
+			// Rebuild the technology component
+			technologyComponent = makeTechnologyComponent();
+
 			// Call the parent view for a complete layout: the referencedComponentView will be computed during this loop
 			if (getParentView() != null) {
+				//System.out.println(">>>>>>>>> DEBUT updateLayout !!!!");
+				//System.out.println("referencedComponent=" + referencedComponent);
 				getParentView().updateLayout();
+				//System.out.println("<<<<<<<<< FIN updateLayout !!!!");
 			}
+
 			return true;
 		}
 		// Otherwise referenced component has not changed
@@ -254,6 +263,8 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 
 	@Override
 	protected C makeTechnologyComponent() {
+
+		System.out.println("Hop, on se construit le TechnologyComponent pour FIBReferencedComponentWidgetImpl");
 
 		updateDynamicallyReferencedComponentWhenRequired();
 
@@ -269,8 +280,8 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 
 			// Now, we instantiate a new embedded FIBController
 
-			embeddedFIBController = FIBController.instanciateController(loaded, getController().getViewFactory(),
-					getController().getLocalizer());
+			embeddedFIBController = FIBController.instanciateController(loaded, getController().getViewFactory(), getController()
+					.getLocalizer());
 
 			embeddedFIBController.setDataObject(getValue());
 
@@ -348,14 +359,20 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 		if (getReferencedComponentView() != null && embeddedFIBController.getRootComponent() instanceof FIBContainer) {
 
 			if ((getValue() == null)
-					|| (TypeUtils.isTypeAssignableFrom(((FIBContainer) embeddedFIBController.getRootComponent()).getDataType(),
-							getValue().getClass()))) {
+					|| (TypeUtils.isTypeAssignableFrom(((FIBContainer) embeddedFIBController.getRootComponent()).getDataType(), getValue()
+							.getClass()))) {
 
 				performAssignments();
 
 				embeddedFIBController.setDataObject(getValue(), /*true*/false);
 
 				referencedComponentView.update();
+
+				// Call the parent view for a complete layout: the referencedComponentView will be computed during this loop
+				/*if (getParentView() != null) {
+					getParentView().updateLayout();
+				}*/
+
 			}
 			else {
 				logger.warning("Inconsistant data: " + getValue() + " is not a "
