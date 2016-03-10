@@ -274,11 +274,9 @@ public abstract interface FIBContainer extends FIBComponent {
 				updateComponentIndexForInsertionIndex(aComponent, subComponentIndex);
 			}
 
+			// System.out.println("Hop, on ajoute " + aComponent + " a " + SUB_COMPONENTS_KEY);
+
 			performSuperAdder(SUB_COMPONENTS_KEY, aComponent, subComponentIndex);
-			// Hack to put at right index
-			// TODO: manage a performSuperAdder(index)
-			// getSubComponents().remove(aComponent);
-			// getSubComponents().add(subComponentIndex, aComponent);
 
 			if (deserializationPerformed) {
 				reorderComponents();
@@ -302,7 +300,9 @@ public abstract interface FIBContainer extends FIBComponent {
 				// System.out.println("New name: " + aComponent.getName());
 			}
 
-			getPropertyChangeSupport().firePropertyChange(SUB_COMPONENTS_KEY, null, getSubComponents());
+			// System.out.println("Et on notifie avec " + aComponent);
+			getPropertyChangeSupport().firePropertyChange(SUB_COMPONENTS_KEY, null, aComponent);
+			// System.out.println("Maintenant: getSubComponents()=" + getSubComponents());
 
 		}
 

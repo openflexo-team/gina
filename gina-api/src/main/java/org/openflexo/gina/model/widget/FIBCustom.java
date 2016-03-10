@@ -234,8 +234,7 @@ public interface FIBCustom extends FIBWidget {
 								newAssigment.setOwner(this);
 								newAssigment.setVariable(new DataBinding<Object>(variableName));
 								newAssigment.setValue(null);
-								newAssigment
-										.setMandatory(annotation.type() == FIBCustomComponent.CustomComponentParameter.Type.MANDATORY);
+								newAssigment.setMandatory(annotation.type() == FIBCustomComponent.CustomComponentParameter.Type.MANDATORY);
 								addToAssignments(newAssigment);
 							}
 						}
@@ -435,7 +434,7 @@ public interface FIBCustom extends FIBWidget {
 		@PropertyIdentifier(type = Boolean.class)
 		public static final String MANDATORY_KEY = "mandatory";
 
-		@Getter(value = OWNER_KEY, inverse = FIBCustom.ASSIGNMENTS_KEY)
+		@Getter(value = OWNER_KEY)
 		@CloningStrategy(StrategyType.IGNORE)
 		public FIBCustom getOwner();
 
@@ -471,8 +470,7 @@ public interface FIBCustom extends FIBWidget {
 			public static BindingDefinition VARIABLE = new BindingDefinition("variable", Object.class,
 					DataBinding.BindingDefinitionType.GET_SET, true);
 			@Deprecated
-			public BindingDefinition VALUE = new BindingDefinition("value", Object.class,
-					DataBinding.BindingDefinitionType.GET, true);
+			public BindingDefinition VALUE = new BindingDefinition("value", Object.class, DataBinding.BindingDefinitionType.GET, true);
 
 			private DataBinding<?> variable;
 			private DataBinding<?> value;
@@ -557,7 +555,8 @@ public interface FIBCustom extends FIBWidget {
 					value.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 					value.setBindingName("value");
 					this.value = value;
-				} else {
+				}
+				else {
 					getValue();
 				}
 			}

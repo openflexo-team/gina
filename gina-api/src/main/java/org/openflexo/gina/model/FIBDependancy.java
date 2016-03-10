@@ -68,7 +68,7 @@ public interface FIBDependancy extends FIBModelObject {
 	@PropertyIdentifier(type = String.class)
 	public static final String MASTER_COMPONENT_NAME_KEY = "masterComponentName";
 
-	@Getter(value = OWNER_KEY, inverse = FIBComponent.EXPLICIT_DEPENDANCIES_KEY)
+	@Getter(value = OWNER_KEY /*, inverse = FIBComponent.EXPLICIT_DEPENDANCIES_KEY*/)
 	@CloningStrategy(StrategyType.IGNORE)
 	public FIBComponent getOwner();
 
@@ -176,8 +176,8 @@ public interface FIBDependancy extends FIBModelObject {
 			protected void fixAction() {
 				FIBComponent component = dependancy.getOwner();
 				if (component != null) {
-					while (component.getExplicitDependancies().indexOf(dependancy) != component.getExplicitDependancies().lastIndexOf(
-							dependancy)) {
+					while (component.getExplicitDependancies().indexOf(dependancy) != component.getExplicitDependancies()
+							.lastIndexOf(dependancy)) {
 						component.removeFromExplicitDependancies(dependancy);
 					}
 				}

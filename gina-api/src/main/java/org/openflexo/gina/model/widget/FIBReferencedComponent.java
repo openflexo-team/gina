@@ -52,9 +52,6 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.gina.model.FIBWidget;
-import org.openflexo.gina.model.FIBModelObject.BindingMustBeValid;
-import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
-import org.openflexo.gina.model.FIBWidget.FIBWidgetImpl;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -179,7 +176,8 @@ public interface FIBReferencedComponent extends FIBWidget {
 		public File getComponentActualFile() {
 			if (componentFile instanceof FileResourceImpl) {
 				return ((FileResourceImpl) componentFile).getFile();
-			} else
+			}
+			else
 				return null;
 		}
 
@@ -282,11 +280,11 @@ public interface FIBReferencedComponent extends FIBWidget {
 		public Vector<FIBReferenceAssignment> getAssignments() {
 			return assignments;
 		}
-
+		
 		public void setAssignments(Vector<FIBReferenceAssignment> assignments) {
 			this.assignments = assignments;
 		}
-
+		
 		@Override
 		public void addToAssignments(FIBReferenceAssignment a) {
 			if (getAssignment(a.getVariable().toString()) != null) {
@@ -296,7 +294,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 			assignments.add(a);
 			getPropertyChangeSupport().firePropertyChange(ASSIGNMENTS_KEY, null, assignments);
 		}
-
+		
 		@Override
 		public void removeFromAssignments(FIBReferenceAssignment a) {
 			// a.setOwner(null);
@@ -361,7 +359,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 		@PropertyIdentifier(type = Boolean.class)
 		public static final String MANDATORY_KEY = "mandatory";
 
-		@Getter(value = OWNER_KEY, inverse = FIBReferencedComponent.ASSIGNMENTS_KEY)
+		@Getter(value = OWNER_KEY /*, inverse = FIBReferencedComponent.ASSIGNMENTS_KEY*/)
 		@CloningStrategy(StrategyType.IGNORE)
 		public FIBReferencedComponent getOwner();
 
@@ -468,7 +466,8 @@ public interface FIBReferencedComponent extends FIBWidget {
 					value.setDeclaredType(Object.class);
 					value.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 					this.value = value;
-				} else {
+				}
+				else {
 					getValue();
 				}
 			}

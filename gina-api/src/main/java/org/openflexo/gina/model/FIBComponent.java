@@ -1078,11 +1078,12 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			if (oldBindingModel != getBindingModel()) {
 				// System.out.println("fire");
 				getPropertyChangeSupport().firePropertyChange(BINDING_MODEL_PROPERTY, null, getBindingModel());
+
+				// Following is deprecated ???
+				// getData().markedAsToBeReanalized();
+				updateDynamicAccessBindingVariable();
 			}
 
-			// Following is deprecated ???
-			// getData().markedAsToBeReanalized();
-			updateDynamicAccessBindingVariable();
 		}
 
 		/**
@@ -1193,7 +1194,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		public void declareDependantOf(FIBComponent aComponent) /*
 																 * throws
 																 * DependancyLoopException
-																 */{
+																 */ {
 			// logger.info("Component "+this+" depends of "+aComponent);
 			if (aComponent != null) {
 				if (aComponent == this) {
@@ -2057,8 +2058,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	}
 
 	@DefineValidationRule
-	public static class NonRootComponentShouldNotHaveLocalizedDictionary extends
-			ValidationRule<NonRootComponentShouldNotHaveLocalizedDictionary, FIBComponent> {
+	public static class NonRootComponentShouldNotHaveLocalizedDictionary
+			extends ValidationRule<NonRootComponentShouldNotHaveLocalizedDictionary, FIBComponent> {
 		public NonRootComponentShouldNotHaveLocalizedDictionary() {
 			super(FIBModelObject.class, "non_root_component_should_not_have_localized_dictionary");
 		}
@@ -2088,8 +2089,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 	}
 
-	public static class RootComponentShouldHaveMaximumOneDefaultButton extends
-			ValidationRule<RootComponentShouldHaveMaximumOneDefaultButton, FIBComponent> {
+	public static class RootComponentShouldHaveMaximumOneDefaultButton
+			extends ValidationRule<RootComponentShouldHaveMaximumOneDefaultButton, FIBComponent> {
 		public RootComponentShouldHaveMaximumOneDefaultButton() {
 			super(FIBModelObject.class, "root_component_should_have_maximum_one_default_button");
 		}

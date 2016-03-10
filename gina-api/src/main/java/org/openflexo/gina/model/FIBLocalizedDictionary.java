@@ -91,7 +91,7 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 	@Setter(OWNER_KEY)
 	public void setOwner(FIBComponent owner);
 
-	@Getter(value = LOCALIZED_ENTRIES_KEY, cardinality = Cardinality.LIST, inverse = FIBLocalizedEntry.DICTIONARY_KEY)
+	@Getter(value = LOCALIZED_ENTRIES_KEY, cardinality = Cardinality.LIST/*, inverse = FIBLocalizedEntry.DICTIONARY_KEY*/)
 	@CloningStrategy(StrategyType.CLONE)
 	@XMLElement
 	@Embedded
@@ -141,7 +141,7 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 		public List<FIBLocalizedEntry> getLocalizedEntries() {
 			return entries;
 		}
-
+		
 		public void setLocalizedEntries(Vector<FIBLocalizedEntry> someEntries) {
 			entries = someEntries;
 		}*/
@@ -259,7 +259,8 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 				newEntry.setLanguage(language.getName());
 				newEntry.setValue(value);
 				addToLocalizedEntries(newEntry);
-			} else {
+			}
+			else {
 				entry.setValue(value);
 			}
 		}
@@ -384,7 +385,8 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 					setEnglish(addHTMLSupport(getEnglish()));
 					setFrench(addHTMLSupport(getFrench()));
 					setDutch(addHTMLSupport(getDutch()));
-				} else {
+				}
+				else {
 					setEnglish(removeHTMLSupport(getEnglish()));
 					setFrench(removeHTMLSupport(getFrench()));
 					setDutch(removeHTMLSupport(getDutch()));
@@ -525,7 +527,7 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 		public void beginSearchNewLocalizationEntries() {
 			isSearchingNewEntries = true;
 		}
-
+		
 		@Override
 		public void endSearchNewLocalizationEntries() {
 			isSearchingNewEntries = false;
@@ -586,13 +588,14 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 					dutchTranslation = automaticDutchTranslation(entry.getKey());
 				}
 				entry.setDutch(dutchTranslation);
-				String frenchTranslation = FlexoLocalization
-						.localizedForKeyAndLanguage(getParent(), entry.getKey(), Language.FRENCH, false);
+				String frenchTranslation = FlexoLocalization.localizedForKeyAndLanguage(getParent(), entry.getKey(), Language.FRENCH,
+						false);
 				if (entry.getKey().equals(frenchTranslation)) {
 					frenchTranslation = automaticFrenchTranslation(entry.getKey());
 				}
 				entry.setFrench(frenchTranslation);
-			} else {
+			}
+			else {
 				String englishTranslation = entry.getKey().toString();
 				englishTranslation = englishTranslation.replace("_", " ");
 				englishTranslation = englishTranslation.substring(0, 1).toUpperCase() + englishTranslation.substring(1);
@@ -640,7 +643,8 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 					entry = new DynamicEntry(key);
 					dynamicEntries.add(entry);
 					searchTranslation(entry);
-				} else {
+				}
+				else {
 					// System.out.println("Found key: " + key);
 				}
 			}

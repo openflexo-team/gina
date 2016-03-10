@@ -53,12 +53,8 @@ import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.model.FIBPropertyNotification;
-import org.openflexo.gina.model.FIBModelObject.BindingMustBeValid;
-import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
-import org.openflexo.gina.model.widget.FIBCustom.FIBCustomImpl;
 import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent.CustomComponentParameter;
-import org.openflexo.gina.model.widget.FIBTableColumn.ColumnType;
-import org.openflexo.gina.model.widget.FIBTableColumn.FIBTableColumnImpl;
+import org.openflexo.gina.model.widget.FIBCustom.FIBCustomImpl;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -286,7 +282,7 @@ public interface FIBCustomColumn extends FIBTableColumn {
 		@PropertyIdentifier(type = Boolean.class)
 		public static final String MANDATORY_KEY = "mandatory";
 
-		@Getter(value = OWNER_KEY, inverse = FIBCustomColumn.ASSIGNMENTS_KEY)
+		@Getter(value = OWNER_KEY /*, inverse = FIBCustomColumn.ASSIGNMENTS_KEY*/)
 		@CloningStrategy(StrategyType.IGNORE)
 		public FIBCustomColumn getOwner();
 
@@ -403,7 +399,8 @@ public interface FIBCustomColumn extends FIBTableColumn {
 					value.setDeclaredType(Object.class);
 					value.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 					this.value = value;
-				} else {
+				}
+				else {
 					getValue();
 				}
 			}

@@ -51,15 +51,13 @@ import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.DefaultBindable;
 import org.openflexo.connie.DataBinding.CachingStrategy;
+import org.openflexo.connie.DefaultBindable;
 import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.FIBComponent.LocalizationEntryRetriever;
 import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.model.FIBPropertyNotification;
-import org.openflexo.gina.model.FIBComponent.LocalizationEntryRetriever;
-import org.openflexo.gina.model.FIBModelObject.BindingMustBeValid;
-import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.DefineValidationRule;
@@ -114,7 +112,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String VALUE_CHANGED_ACTION_KEY = "valueChangedAction";
 
-	@Getter(value = OWNER_KEY, inverse = FIBTable.COLUMNS_KEY)
+	@Getter(value = OWNER_KEY/*, inverse = FIBTable.COLUMNS_KEY*/)
 	@CloningStrategy(StrategyType.IGNORE)
 	public FIBTable getOwner();
 
@@ -446,7 +444,8 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		public void setHasSpecificFont(boolean aFlag) {
 			if (aFlag) {
 				setFont(retrieveValidFont());
-			} else {
+			}
+			else {
 				setFont(null);
 			}
 		}

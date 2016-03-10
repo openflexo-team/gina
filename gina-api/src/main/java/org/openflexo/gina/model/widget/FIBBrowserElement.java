@@ -125,7 +125,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 	@PropertyIdentifier(type = List.class)
 	public static final String ACTIONS_KEY = "actions";
 
-	@Getter(value = OWNER_KEY, inverse = FIBBrowser.ELEMENTS_KEY)
+	@Getter(value = OWNER_KEY /*, inverse = FIBBrowser.ELEMENTS_KEY*/)
 	@CloningStrategy(StrategyType.IGNORE)
 	public FIBBrowser getOwner();
 
@@ -987,7 +987,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@PropertyIdentifier(type = DataBinding.class)
 		public static final String CAST_KEY = "cast";
 
-		@Getter(value = OWNER_KEY, inverse = FIBBrowserElement.CHILDREN_KEY)
+		@Getter(value = OWNER_KEY /*, inverse = FIBBrowserElement.CHILDREN_KEY*/)
 		public FIBBrowserElement getOwner();
 
 		@Setter(OWNER_KEY)
@@ -1037,12 +1037,14 @@ public interface FIBBrowserElement extends FIBModelObject {
 			private FIBChildBindable childBindable;
 
 			@Deprecated
-			public static BindingDefinition DATA = new BindingDefinition("data", Object.class, DataBinding.BindingDefinitionType.GET, false);
+			public static BindingDefinition DATA = new BindingDefinition("data", Object.class, DataBinding.BindingDefinitionType.GET,
+					false);
 			@Deprecated
-			public static BindingDefinition VISIBLE = new BindingDefinition("visible", Boolean.class,
-					DataBinding.BindingDefinitionType.GET, false);
+			public static BindingDefinition VISIBLE = new BindingDefinition("visible", Boolean.class, DataBinding.BindingDefinitionType.GET,
+					false);
 			@Deprecated
-			public static BindingDefinition CAST = new BindingDefinition("cast", Object.class, DataBinding.BindingDefinitionType.GET, false);
+			public static BindingDefinition CAST = new BindingDefinition("cast", Object.class, DataBinding.BindingDefinitionType.GET,
+					false);
 
 			protected void bindingModelMightChange(BindingModel oldBindingModel) {
 				if (childBindable != null) {

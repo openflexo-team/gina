@@ -53,8 +53,8 @@ import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.model.FIBComponent;
-import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.model.FIBComponent.LocalizationEntryRetriever;
+import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.DefineValidationRule;
@@ -87,7 +87,7 @@ public abstract interface FIBBrowserAction extends FIBModelObject {
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String IS_AVAILABLE_KEY = "isAvailable";
 
-	@Getter(value = OWNER_KEY, inverse = FIBBrowserElement.ACTIONS_KEY)
+	@Getter(value = OWNER_KEY /*, inverse = FIBBrowserElement.ACTIONS_KEY*/)
 	@CloningStrategy(StrategyType.IGNORE)
 	public FIBBrowserElement getOwner();
 
