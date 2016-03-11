@@ -51,24 +51,25 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.openflexo.gina.model.FIBComponent;
-import org.openflexo.gina.model.container.FIBPanel.FlowLayoutAlignment;
-import org.openflexo.gina.model.container.layout.FlowLayoutConstraints;
+import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
+import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.editor.view.container.JFIBEditablePanelView;
 import org.openflexo.gina.swing.view.JFIBView;
-import org.openflexo.gina.swing.view.container.layout.JFlowLayout;
+import org.openflexo.gina.swing.view.container.layout.JTwoColsLayout;
 import org.openflexo.logging.FlexoLogger;
 
 /**
- * Swing implementation for edition of a flow layout
+ * Swing implementation for edition of a TwoCols layout
  * 
  * @author sylvain
  */
-public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayoutManager<JPanel, JComponent, FlowLayoutConstraints> {
+public class JEditableTwoColsLayout extends JTwoColsLayout
+		implements JFIBEditableLayoutManager<JPanel, JComponent, TwoColsLayoutConstraints> {
 
 	private static final Logger logger = FlexoLogger.getLogger(JFIBEditablePanelView.class.getPackage().getName());
 
-	public JEditableFlowLayout(JFIBEditablePanelView panelView) {
+	public JEditableTwoColsLayout(JFIBEditablePanelView panelView) {
 		super(panelView);
 	}
 
@@ -84,38 +85,39 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 
 		if (!getComponent().getProtectContent()) {
 
-			JPanel panel = new JPanel(makeFlowLayout());
+			JPanel panel = new JPanel(makeTwoColsLayout());
 			panel.setPreferredSize(getContainerView().getResultingJComponent().getSize());
 			panel.setSize(getContainerView().getResultingJComponent().getSize());
 
-			final Dimension placeHolderSize = new Dimension(30, 20);
+			// final Dimension placeHolderSize = new Dimension(50, 20);
 			int deltaX = 0;
 			int deltaY = 0;
 
-			if (getComponent().getFlowAlignment() == FlowLayoutAlignment.CENTER) {
-				deltaX = 0;
-				deltaY = 0;
-			}
-			else if (getComponent().getFlowAlignment() == FlowLayoutAlignment.LEADING
-					|| getComponent().getFlowAlignment() == FlowLayoutAlignment.LEFT) {
-				deltaX = -15 - getComponent().getHGap() / 2;
-				deltaY = 0;
-			}
-			else if (getComponent().getFlowAlignment() == FlowLayoutAlignment.TRAILING
-					|| getComponent().getFlowAlignment() == FlowLayoutAlignment.RIGHT) {
-				deltaX = 15 + getComponent().getHGap() / 2;
-				deltaY = 0;
+			List<List<FIBComponent>> rows = new ArrayList<>();
+			List<FIBComponent> currentRow = null;
+			for (int i = 0; i < getComponent().getSubComponents().size(); i++) {
+				FIBComponent c = getComponent().getSubComponents().get(i);
+				if (currentRow == null) {
+					currentRow = new ArrayList<>();
+				}
+				currentRow.add(c);
+				if (c.getConstraints() instanceof TwoColsLayoutConstraints) {
+					TwoColsLayoutConstraints contraints = (TwoColsLayoutConstraints) c.getConstraints();
+					if (contraints.getLocation() == TwoColsLayoutLocation.center
+							|| contraints.getLocation() == TwoColsLayoutLocation.right) {
+						rows.add(currentRow);
+					}
+				}
 			}
 
-			if (getComponent().getSubComponents().size() == 0) {
-				// Special case: do not delta placeholders for empty container
-				deltaX = 0;
-				deltaY = 0;
+			// Before each row, we are placeholders for a previous line
+			for (int r = 0; r < rows.size(); r++) {
+
 			}
 
 			// Before each component, we will add an empty panel to compute
 			// placeholder location
-			for (int i = 0; i < getComponent().getSubComponents().size(); i++) {
+			/*for (int i = 0; i < getComponent().getSubComponents().size(); i++) {
 				panel.removeAll();
 				for (int j = 0; j < i; j++) {
 					FIBComponent c = getComponent().getSubComponents().get(j);
@@ -138,16 +140,8 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 				// System.out.println("OK placeholder i=" + i + ", bounds=" +
 				// phComponent.getBounds());
 				final int insertionIndex = i;
-
+			
 				Rectangle placeHolderBounds = makePlaceHolderBounds(phComponent, deltaX, deltaY);
-				/*
-				 * Rectangle placeHolderBounds = new
-				 * Rectangle(phComponent.getBounds().x + deltaX,
-				 * phComponent.getBounds().y + deltaY, phComponent.getWidth(),
-				 * phComponent.getHeight()); if (placeHolderBounds.x < 0) {
-				 * placeHolderBounds.width = placeHolderBounds.width +
-				 * placeHolderBounds.x; placeHolderBounds.x = 0; }
-				 */
 				PlaceHolder newPlaceHolder = new PlaceHolder(getContainerView(), "< flow item >", placeHolderBounds) {
 					@Override
 					public void insertComponent(FIBComponent newComponent) {
@@ -156,39 +150,64 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 				};
 				newPlaceHolder.setVisible(false);
 				returned.add(newPlaceHolder);
-			}
+			}*/
 
 			// Then add a placeholder at the end
 			panel.removeAll();
 			for (int i = 0; i < getComponent().getSubComponents().size(); i++) {
 				FIBComponent c = getComponent().getSubComponents().get(i);
 				JFIBView<?, ?> childView = (JFIBView<?, ?>) getContainerView().getSubViewsMap().get(c);
-				panel.add(Box.createRigidArea(childView.getResultingJComponent().getSize()));
+				// panel.add(Box.createRigidArea(childView.getResultingJComponent().getSize()));
+
+				if (c.getConstraints() instanceof TwoColsLayoutConstraints) {
+					TwoColsLayoutConstraints contraints = (TwoColsLayoutConstraints) c.getConstraints();
+					_addChildToContainerWithConstraints(Box.createRigidArea(childView.getResultingJComponent().getSize()), panel,
+							contraints);
+				}
+
 			}
-			Component phComponent = new JPanel() {
+
+			final TwoColsLayoutConstraints leftConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, true, false);
+			Component leftPHComponent = new JPanel() {
 				@Override
 				public Dimension getPreferredSize() {
-					return placeHolderSize;
+					return preferredSize; // placeHolderSize;
 				}
 			};
-			panel.add(phComponent);
+			_addChildToContainerWithConstraints(leftPHComponent, panel, leftConstraints);
+
+			final TwoColsLayoutConstraints rightConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false);
+			Component rightPHComponent = new JPanel() {
+				@Override
+				public Dimension getPreferredSize() {
+					return preferredSize; // placeHolderSize;
+				}
+			};
+			_addChildToContainerWithConstraints(rightPHComponent, panel, rightConstraints);
+			// panel.add(rightPHComponent);
+
 			panel.doLayout();
 
-			// System.out.println("OK last placeholder bounds=" +
-			// phComponent.getBounds());
-			Rectangle placeHolderBounds = makePlaceHolderBounds(phComponent, deltaX, deltaY);
-			// Rectangle placeHolderBounds = new
-			// Rectangle(phComponent.getBounds().x + deltaX,
-			// phComponent.getBounds().y
-			// + deltaY, phComponent.getWidth(), phComponent.getHeight());
-			PlaceHolder newPlaceHolder = new PlaceHolder(getContainerView(), "< flow item >", placeHolderBounds) {
+			Rectangle leftPlaceHolderBounds = makePlaceHolderBounds(leftPHComponent, deltaX, deltaY);
+			PlaceHolder newLeftPlaceHolder = new PlaceHolder(getContainerView(), "< left >", leftPlaceHolderBounds) {
 				@Override
 				public void insertComponent(FIBComponent newComponent) {
-					putSubComponentsAtIndex(newComponent, getComponent().getSubComponents().size());
+					putSubComponentsAtIndexWithConstraints(newComponent, getComponent().getSubComponents().size(), leftConstraints);
 				}
 			};
-			newPlaceHolder.setVisible(false);
-			returned.add(newPlaceHolder);
+			newLeftPlaceHolder.setVisible(false);
+			returned.add(newLeftPlaceHolder);
+
+			Rectangle rightPlaceHolderBounds = makePlaceHolderBounds(rightPHComponent, deltaX, deltaY);
+			PlaceHolder newRightPlaceHolder = new PlaceHolder(getContainerView(), "< right >", rightPlaceHolderBounds) {
+				@Override
+				public void insertComponent(FIBComponent newComponent) {
+					putSubComponentsAtIndexWithConstraints(newComponent, getComponent().getSubComponents().size(), rightConstraints);
+				}
+			};
+			newRightPlaceHolder.setVisible(false);
+			returned.add(newRightPlaceHolder);
+
 		}
 
 		return returned;
@@ -214,7 +233,7 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 		return placeHolderBounds;
 	}
 
-	protected void putSubComponentsAtIndex(FIBComponent subComponent, int index) {
+	protected void putSubComponentsAtIndexWithConstraints(FIBComponent subComponent, int index, TwoColsLayoutConstraints constraints) {
 		if (getComponent().getSubComponents().contains(subComponent)) {
 			// This is a simple move
 			System.out.println("Moving component at index " + index);
@@ -222,7 +241,8 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 		}
 		else {
 			System.out.println("Inserting component at index " + index);
-			getComponent().insertToSubComponentsAtIndex(subComponent, index);
+
+			getComponent().insertToSubComponentsAtIndex(subComponent, constraints, index);
 		}
 
 	}

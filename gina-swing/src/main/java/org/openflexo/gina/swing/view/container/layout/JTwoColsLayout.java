@@ -39,6 +39,8 @@
 
 package org.openflexo.gina.swing.view.container.layout;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -72,18 +74,18 @@ public class JTwoColsLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Two
 
 	@Override
 	public void setLayoutManager(JPanel container) {
-		container.setLayout(new GridBagLayout());
+		container.setLayout(makeTwoColsLayout());
 	}
 
-	@Override
-	protected void performAddChild(FIBView<?, JComponent> childView, TwoColsLayoutConstraints twoColsConstraints) {
+	protected GridBagLayout makeTwoColsLayout() {
+		return new GridBagLayout();
+	}
 
-		JComponent addedJComponent = ((JFIBView<?, ?>) childView).getResultingJComponent();
-
+	protected void _addChildToContainerWithConstraints(Component child, Container container, TwoColsLayoutConstraints twoColsConstraints) {
 		GridBagConstraints c = new GridBagConstraints();
 		// c.insets = new Insets(3, 3, 3, 3);
-		c.insets = new Insets(twoColsConstraints.getInsetsTop(), twoColsConstraints.getInsetsLeft(),
-				twoColsConstraints.getInsetsBottom(), twoColsConstraints.getInsetsRight());
+		c.insets = new Insets(twoColsConstraints.getInsetsTop(), twoColsConstraints.getInsetsLeft(), twoColsConstraints.getInsetsBottom(),
+				twoColsConstraints.getInsetsRight());
 		if (twoColsConstraints.getLocation() == TwoColsLayoutLocation.left) {
 			c.fill = GridBagConstraints.NONE;
 			c.weightx = 0; // 1.0;
@@ -92,17 +94,20 @@ public class JTwoColsLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Two
 			if (twoColsConstraints.getExpandVertically()) {
 				// c.weighty = 1.0;
 				c.fill = GridBagConstraints.VERTICAL;
-			} else {
+			}
+			else {
 				// c.insets = new Insets(5, 2, 0, 2);
 			}
-		} else {
+		}
+		else {
 			if (twoColsConstraints.getExpandHorizontally()) {
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.CENTER;
 				if (twoColsConstraints.getExpandVertically()) {
 					c.weighty = 1.0;
 				}
-			} else {
+			}
+			else {
 				c.fill = GridBagConstraints.NONE;
 				c.anchor = GridBagConstraints.WEST;
 			}
@@ -110,7 +115,51 @@ public class JTwoColsLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Two
 			c.gridwidth = GridBagConstraints.REMAINDER;
 		}
 
-		getContainerView().getTechnologyComponent().add(addedJComponent, c);
+		container.add(child, c);
+
+	}
+
+	@Override
+	protected void performAddChild(FIBView<?, JComponent> childView, TwoColsLayoutConstraints twoColsConstraints) {
+
+		JComponent addedJComponent = ((JFIBView<?, ?>) childView).getResultingJComponent();
+
+		_addChildToContainerWithConstraints(addedJComponent, getContainerView().getTechnologyComponent(), twoColsConstraints);
+
+		/*GridBagConstraints c = new GridBagConstraints();
+		// c.insets = new Insets(3, 3, 3, 3);
+		c.insets = new Insets(twoColsConstraints.getInsetsTop(), twoColsConstraints.getInsetsLeft(), twoColsConstraints.getInsetsBottom(),
+				twoColsConstraints.getInsetsRight());
+		if (twoColsConstraints.getLocation() == TwoColsLayoutLocation.left) {
+			c.fill = GridBagConstraints.NONE;
+			c.weightx = 0; // 1.0;
+			c.gridwidth = 1;
+			c.anchor = GridBagConstraints.NORTHEAST;
+			if (twoColsConstraints.getExpandVertically()) {
+				// c.weighty = 1.0;
+				c.fill = GridBagConstraints.VERTICAL;
+			}
+			else {
+				// c.insets = new Insets(5, 2, 0, 2);
+			}
+		}
+		else {
+			if (twoColsConstraints.getExpandHorizontally()) {
+				c.fill = GridBagConstraints.BOTH;
+				c.anchor = GridBagConstraints.CENTER;
+				if (twoColsConstraints.getExpandVertically()) {
+					c.weighty = 1.0;
+				}
+			}
+			else {
+				c.fill = GridBagConstraints.NONE;
+				c.anchor = GridBagConstraints.WEST;
+			}
+			c.weightx = 1.0; // 2.0;
+			c.gridwidth = GridBagConstraints.REMAINDER;
+		}
+		
+		getContainerView().getTechnologyComponent().add(addedJComponent, c);*/
 
 	}
 }

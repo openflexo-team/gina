@@ -101,6 +101,8 @@ public abstract interface FIBContainer extends FIBComponent {
 
 	public void insertToSubComponentsAtIndex(FIBComponent aSubComponent, int index);
 
+	public void insertToSubComponentsAtIndex(FIBComponent aSubComponent, ComponentConstraints someConstraints, int index);
+
 	public void moveToSubComponentsAtIndex(FIBComponent aSubComponent, int index);
 
 	public void addToSubComponents(FIBComponent aComponent, ComponentConstraints someConstraints);
@@ -240,6 +242,11 @@ public abstract interface FIBContainer extends FIBComponent {
 		@Override
 		public void insertToSubComponentsAtIndex(FIBComponent aSubComponent, int index) {
 			addToSubComponents(aSubComponent, null, index);
+		}
+
+		@Override
+		public void insertToSubComponentsAtIndex(FIBComponent aSubComponent, ComponentConstraints constraints, int index) {
+			addToSubComponents(aSubComponent, constraints, index);
 		}
 
 		@Override
