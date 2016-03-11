@@ -63,6 +63,7 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.openflexo.connie.BindingEvaluationContext;
+import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingValueChangeListener;
 import org.openflexo.connie.binding.BindingValueListChangeListener;
@@ -323,6 +324,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 		private FIBBrowserElementType browserElementType;
 		private boolean isDeleted = false;
 		private boolean isVisible = true;
+		private DynamicBindingEvaluationContextForBrowserCell dynamicBindingEvaluationContext;
 
 		public BrowserCell(Object representedObject, BrowserCell father) {
 
@@ -330,6 +332,8 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			setAllowsChildren(true);
 			setUserObject(representedObject);
 			browserElementType = elementTypeForClass(representedObject.getClass());
+
+			dynamicBindingEvaluationContext = new DynamicBindingEvaluationContextForBrowserCell();
 
 			if (browserElementType != null) {
 
@@ -377,7 +381,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 		private Map<FIBBrowserElementChildren, BindingValueChangeListener<?>> childrenCastBindingValueChangeListeners;
 		private Map<FIBBrowserElementChildren, BindingValueChangeListener<Boolean>> childrenVisibleBindingValueChangeListeners;
 
-		private void listenChildrenDataBindingValueChange(Object representedObject) {
+		private void listenChildrenDataBindingValueChange(final Object representedObject) {
 			if (childrenDataBindingValueChangeListeners != null) {
 				for (BindingValueChangeListener<?> l : childrenDataBindingValueChangeListeners.values()) {
 					l.stopObserving();
@@ -397,12 +401,19 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 						BindingValueChangeListener<?> l;
 						if (children.isMultipleAccess()) {
 							l = new BindingValueListChangeListener<Object, List<Object>>((DataBinding) children.getData(),
-									browserElementType) {
+									/* browserElementType */
+									// Instead of using browserElementType and to avoid to share it between multiple
+									// BindingValueListChangeListener
+									// using the same BindingEvaluationContext, we have to use here a proper instance of a
+									// BindingEvaluationContext
+									// dedicated to current BrowserCell
+									dynamicBindingEvaluationContext) {
 								@Override
 								public void bindingValueChanged(Object source, List<Object> newValue) {
-									/*System.out.println(" bindingValueChanged() detected for data (as list) of children "
-											+ children.getName() + " of " + browserElementType + " " + children.getData()
-											+ " with newValue=" + newValue + " source=" + source);*/
+									/*System.out.println("For cell representing " + representedObject
+											+ " bindingValueChanged() detected for data (as list) of children " + children.getName()
+											+ " of " + browserElementType + " " + children.getData() + " with newValue=" + newValue
+											+ " source=" + source);*/
 									if (source == browserElementType) {
 										// Ignore setIteratorObject() notification
 										return;
@@ -440,7 +451,13 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 				for (final FIBBrowserElementChildren children : browserElementType.getBrowserElement().getChildren()) {
 					if (children.getCast().isValid()) {
 						BindingValueChangeListener<?> l = new BrowserCellBindingValueChangeListener<Object>(children.getCast(),
-								browserElementType);
+								/* browserElementType */
+								// Instead of using browserElementType and to avoid to share it between multiple
+								// BindingValueListChangeListener
+								// using the same BindingEvaluationContext, we have to use here a proper instance of a
+								// BindingEvaluationContext
+								// dedicated to current BrowserCell
+								dynamicBindingEvaluationContext);
 						childrenCastBindingValueChangeListeners.put(children, l);
 					}
 				}
@@ -467,7 +484,13 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 				for (final FIBBrowserElementChildren children : browserElementType.getBrowserElement().getChildren()) {
 					if (children.getVisible().isValid()) {
 						BindingValueChangeListener<Boolean> l = new BrowserCellBindingValueChangeListener<Boolean>(children.getVisible(),
-								browserElementType);
+								/* browserElementType */
+								// Instead of using browserElementType and to avoid to share it between multiple
+								// BindingValueListChangeListener
+								// using the same BindingEvaluationContext, we have to use here a proper instance of a
+								// BindingEvaluationContext
+								// dedicated to current BrowserCell
+								dynamicBindingEvaluationContext);
 						childrenVisibleBindingValueChangeListeners.put(children, l);
 					}
 				}
@@ -487,7 +510,13 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getLabel().isValid()) {
 
 				labelBindingValueChangeListener = new BrowserCellBindingValueChangeListener<String>(
-						browserElementType.getBrowserElement().getLabel(), browserElementType);
+						browserElementType.getBrowserElement().getLabel(), /* browserElementType */
+						// Instead of using browserElementType and to avoid to share it between multiple
+						// BindingValueListChangeListener
+						// using the same BindingEvaluationContext, we have to use here a proper instance of a
+						// BindingEvaluationContext
+						// dedicated to current BrowserCell
+						dynamicBindingEvaluationContext);
 
 			}
 		}
@@ -502,7 +531,13 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			browserElementType.getIconFor(representedObject);
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getIcon().isValid()) {
 				iconBindingValueChangeListener = new BrowserCellBindingValueChangeListener<Icon>(
-						browserElementType.getBrowserElement().getIcon(), browserElementType);
+						browserElementType.getBrowserElement().getIcon(), /* browserElementType */
+						// Instead of using browserElementType and to avoid to share it between multiple
+						// BindingValueListChangeListener
+						// using the same BindingEvaluationContext, we have to use here a proper instance of a
+						// BindingEvaluationContext
+						// dedicated to current BrowserCell
+						dynamicBindingEvaluationContext);
 			}
 		}
 
@@ -516,7 +551,13 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			browserElementType.getTooltipFor(representedObject);
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getTooltip().isValid()) {
 				tooltipBindingValueChangeListener = new BrowserCellBindingValueChangeListener<String>(
-						browserElementType.getBrowserElement().getTooltip(), browserElementType);
+						browserElementType.getBrowserElement().getTooltip(), /* browserElementType */
+						// Instead of using browserElementType and to avoid to share it between multiple
+						// BindingValueListChangeListener
+						// using the same BindingEvaluationContext, we have to use here a proper instance of a
+						// BindingEvaluationContext
+						// dedicated to current BrowserCell
+						dynamicBindingEvaluationContext);
 			}
 		}
 
@@ -530,7 +571,13 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			browserElementType.isEnabled(representedObject);
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getEnabled().isValid()) {
 				enabledBindingValueChangeListener = new BrowserCellBindingValueChangeListener<Boolean>(
-						browserElementType.getBrowserElement().getEnabled(), browserElementType);
+						browserElementType.getBrowserElement().getEnabled(), /* browserElementType */
+						// Instead of using browserElementType and to avoid to share it between multiple
+						// BindingValueListChangeListener
+						// using the same BindingEvaluationContext, we have to use here a proper instance of a
+						// BindingEvaluationContext
+						// dedicated to current BrowserCell
+						dynamicBindingEvaluationContext);
 			}
 		}
 
@@ -544,7 +591,41 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			browserElementType.isVisible(representedObject);
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getVisible().isValid()) {
 				visibleBindingValueChangeListener = new BrowserCellBindingValueChangeListener<Boolean>(
-						browserElementType.getBrowserElement().getVisible(), browserElementType);
+						browserElementType.getBrowserElement().getVisible(), /* browserElementType */
+						// Instead of using browserElementType and to avoid to share it between multiple
+						// BindingValueListChangeListener
+						// using the same BindingEvaluationContext, we have to use here a proper instance of a
+						// BindingEvaluationContext
+						// dedicated to current BrowserCell
+						dynamicBindingEvaluationContext);
+			}
+		}
+
+		/**
+		 * A {@link BindingEvaluationContext} dedicated to compute binding in the context of this {@link BrowserCell} (access to represented
+		 * object aka user object)
+		 * 
+		 * @author sylvain
+		 *
+		 */
+		private final class DynamicBindingEvaluationContextForBrowserCell implements BindingEvaluationContext {
+			// private final Object representedObject;
+
+			private DynamicBindingEvaluationContextForBrowserCell(/*Object representedObject*/) {
+				// this.representedObject = representedObject;
+			}
+
+			@Override
+			public Object getValue(BindingVariable variable) {
+				if (variable.getVariableName().equals(getBrowserElement().getName())) {
+					return getUserObject(); // representedObject;
+				}
+				else if (variable.getVariableName().equals("object")) {
+					return getUserObject(); // representedObject;
+				}
+				else {
+					return widget.getController().getValue(variable);
+				}
 			}
 		}
 
