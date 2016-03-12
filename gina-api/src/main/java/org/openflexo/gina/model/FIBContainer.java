@@ -277,6 +277,10 @@ public abstract interface FIBContainer extends FIBComponent {
 				aComponent.getConstraints().putAll(someConstraints);
 				aComponent.getConstraints().ignoreNotif = false;
 			}
+			if (aComponent.getConstraints() == null) {
+				aComponent.setConstraints(someConstraints);
+			}
+
 			if (deserializationPerformed) {
 				updateComponentIndexForInsertionIndex(aComponent, subComponentIndex);
 			}

@@ -45,9 +45,11 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoColsLayoutLocation;
@@ -84,6 +86,7 @@ public class JTwoColsLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Two
 	protected void _addChildToContainerWithConstraints(Component child, Container container, TwoColsLayoutConstraints twoColsConstraints) {
 		GridBagConstraints c = new GridBagConstraints();
 		// c.insets = new Insets(3, 3, 3, 3);
+		// System.out.println("twoColsConstraints=" + twoColsConstraints);
 		c.insets = new Insets(twoColsConstraints.getInsetsTop(), twoColsConstraints.getInsetsLeft(), twoColsConstraints.getInsetsBottom(),
 				twoColsConstraints.getInsetsRight());
 		if (twoColsConstraints.getLocation() == TwoColsLayoutLocation.left) {
@@ -119,47 +122,59 @@ public class JTwoColsLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Two
 
 	}
 
+	private FIBComponent lastAddedChild = null;
+
 	@Override
 	protected void performAddChild(FIBView<?, JComponent> childView, TwoColsLayoutConstraints twoColsConstraints) {
 
-		JComponent addedJComponent = ((JFIBView<?, ?>) childView).getResultingJComponent();
+		if (lastAddedChild != null && lastAddedChild.getConstraints() instanceof TwoColsLayoutConstraints
+				&& ((TwoColsLayoutConstraints) lastAddedChild.getConstraints()).getLocation() == TwoColsLayoutLocation.left
+				&& (twoColsConstraints.getLocation() == TwoColsLayoutLocation.left
+						|| twoColsConstraints.getLocation() == TwoColsLayoutLocation.center)) {
+			// A second LEFT or CENTER component after a previous LEFT one, add glue
+			// We have to add an extra glue at the end of last component if this one was declared as in LEFT position
+			Component glue = Box.createHorizontalGlue();
+			_addChildToContainerWithConstraints(glue, getContainerView().getTechnologyComponent(),
+					new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false));
+		}
 
+		if (twoColsConstraints.getLocation() == TwoColsLayoutLocation.right && ((lastAddedChild == null)
+				|| (lastAddedChild != null && lastAddedChild.getConstraints() instanceof TwoColsLayoutConstraints
+						&& ((TwoColsLayoutConstraints) lastAddedChild.getConstraints()).getLocation() == TwoColsLayoutLocation.right))) {
+			Component glue = Box.createHorizontalGlue();
+			_addChildToContainerWithConstraints(glue, getContainerView().getTechnologyComponent(),
+					new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, true, false));
+		}
+
+		JComponent addedJComponent = ((JFIBView<?, ?>) childView).getResultingJComponent();
 		_addChildToContainerWithConstraints(addedJComponent, getContainerView().getTechnologyComponent(), twoColsConstraints);
 
-		/*GridBagConstraints c = new GridBagConstraints();
-		// c.insets = new Insets(3, 3, 3, 3);
-		c.insets = new Insets(twoColsConstraints.getInsetsTop(), twoColsConstraints.getInsetsLeft(), twoColsConstraints.getInsetsBottom(),
-				twoColsConstraints.getInsetsRight());
-		if (twoColsConstraints.getLocation() == TwoColsLayoutLocation.left) {
-			c.fill = GridBagConstraints.NONE;
-			c.weightx = 0; // 1.0;
-			c.gridwidth = 1;
-			c.anchor = GridBagConstraints.NORTHEAST;
-			if (twoColsConstraints.getExpandVertically()) {
-				// c.weighty = 1.0;
-				c.fill = GridBagConstraints.VERTICAL;
-			}
-			else {
-				// c.insets = new Insets(5, 2, 0, 2);
-			}
-		}
-		else {
-			if (twoColsConstraints.getExpandHorizontally()) {
-				c.fill = GridBagConstraints.BOTH;
-				c.anchor = GridBagConstraints.CENTER;
-				if (twoColsConstraints.getExpandVertically()) {
-					c.weighty = 1.0;
+		lastAddedChild = childView.getComponent();
+
+	}
+
+	@Override
+	public void doLayout() {
+		lastAddedChild = null;
+		super.doLayout();
+		if (getContainerView().getComponent().getSubComponents().size() > 0) {
+			FIBComponent lastComponent = getContainerView().getComponent().getSubComponents()
+					.get(getContainerView().getComponent().getSubComponents().size() - 1);
+			if (lastComponent.getConstraints() instanceof TwoColsLayoutConstraints) {
+				TwoColsLayoutConstraints contraints = (TwoColsLayoutConstraints) lastComponent.getConstraints();
+				if (contraints.getLocation() == TwoColsLayoutLocation.left) {
+					System.out.println("On doit rajouter de la glue");
+					// We have to add an extra glue at the end of last component if this one was declared as in LEFT position
+					Component glue = Box.createHorizontalGlue();
+					_addChildToContainerWithConstraints(glue, getContainerView().getTechnologyComponent(),
+							new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false));
 				}
 			}
-			else {
-				c.fill = GridBagConstraints.NONE;
-				c.anchor = GridBagConstraints.WEST;
-			}
-			c.weightx = 1.0; // 2.0;
-			c.gridwidth = GridBagConstraints.REMAINDER;
 		}
-		
-		getContainerView().getTechnologyComponent().add(addedJComponent, c);*/
+
+		/*Component glue = Box.createHorizontalGlue();
+		_addChildToContainerWithConstraints(glue, getContainerView().getTechnologyComponent(),
+				new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false));*/
 
 	}
 }
