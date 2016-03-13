@@ -79,7 +79,7 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 		return (JFIBEditablePanelView) super.getContainerView();
 	}
 
-	private void fillInContainerWithSubComponents(Container panel, int fromIndex, int toIndex) {
+	private void fillInContainerWithSubComponents(Container panel, int fromIndex, int toIndex, boolean addGlueWhenRequiredAtTheEnd) {
 		FIBComponent lastAddedChild = null;
 		for (int j = fromIndex; j < toIndex; j++) {
 			FIBComponent c = getComponent().getSubComponents().get(j);
@@ -106,6 +106,11 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 
 				_addChildToContainerWithConstraints(Box.createRigidArea(childView.getResultingJComponent().getSize()), panel, contraints);
 
+				if (addGlueWhenRequiredAtTheEnd && j == toIndex - 1 && contraints.getLocation() == TwoColsLayoutLocation.left) {
+					Component glue = Box.createHorizontalGlue();
+					_addChildToContainerWithConstraints(glue, panel,
+							new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false));
+				}
 			}
 			lastAddedChild = c;
 		}
@@ -127,12 +132,24 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 			List<FIBComponent> currentRow = null;
 			for (int i = 0; i < getComponent().getSubComponents().size(); i++) {
 				FIBComponent c = getComponent().getSubComponents().get(i);
-				if (currentRow == null) {
-					currentRow = new ArrayList<>();
-				}
-				currentRow.add(c);
 				if (c.getConstraints() instanceof TwoColsLayoutConstraints) {
 					TwoColsLayoutConstraints contraints = (TwoColsLayoutConstraints) c.getConstraints();
+
+					if (currentRow == null) {
+						currentRow = new ArrayList<>();
+					}
+
+					if (contraints.getLocation() == TwoColsLayoutLocation.left && currentRow.size() > 0) {
+						FIBComponent previousComponent = currentRow.get(currentRow.size() - 1);
+						if (previousComponent.getConstraints() instanceof TwoColsLayoutConstraints
+								&& ((TwoColsLayoutConstraints) previousComponent.getConstraints())
+										.getLocation() == TwoColsLayoutLocation.left)
+							rows.add(currentRow);
+						currentRow = new ArrayList<>(); // New row
+					}
+
+					currentRow.add(c);
+
 					if (contraints.getLocation() == TwoColsLayoutLocation.center
 							|| contraints.getLocation() == TwoColsLayoutLocation.right) {
 						rows.add(currentRow);
@@ -142,6 +159,11 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 			}
 			if (currentRow != null) {
 				rows.add(currentRow);
+			}
+
+			System.out.println("On fabrique les placeholders pour " + rows.size() + " rows");
+			for (int r = 0; r < rows.size(); r++) {
+				System.out.println("Row " + r + " with " + rows.get(r));
 			}
 
 			// Before each row, we are placeholders for a previous line
@@ -157,7 +179,7 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 						List<FIBComponent> previousRow = rows.get(r - 1);
 						FIBComponent lastElementInRow = previousRow.get(previousRow.size() - 1);
 						lastInsertedElementIndex = getComponent().getSubComponents().indexOf(lastElementInRow) + 1;
-						fillInContainerWithSubComponents(panel, 0, lastInsertedElementIndex);
+						fillInContainerWithSubComponents(panel, 0, lastInsertedElementIndex, true);
 					}
 
 					final TwoColsLayoutConstraints centerConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.center, true,
@@ -177,7 +199,7 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 					Component rightPHComponent = Box.createRigidArea(preferredSize);
 					_addChildToContainerWithConstraints(rightPHComponent, panel, rightConstraints);
 
-					fillInContainerWithSubComponents(panel, lastInsertedElementIndex, getComponent().getSubComponents().size());
+					fillInContainerWithSubComponents(panel, lastInsertedElementIndex, getComponent().getSubComponents().size(), true);
 
 					panel.doLayout();
 
@@ -204,7 +226,10 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 						List<FIBComponent> previousRow = rows.get(r - 1);
 						FIBComponent lastElementInRow = previousRow.get(previousRow.size() - 1);
 						lastInsertedElementIndex = getComponent().getSubComponents().indexOf(lastElementInRow) + 1;
-						fillInContainerWithSubComponents(panel, 0, lastInsertedElementIndex);
+						System.out.println(
+								"comme c'est pas la premiere row, on va deja inserer des elements jusqu'a lastInsertedElementIndex="
+										+ lastInsertedElementIndex);
+						fillInContainerWithSubComponents(panel, 0, lastInsertedElementIndex, true);
 					}
 
 					/*final TwoColsLayoutConstraints centerConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.center, true,
@@ -238,7 +263,7 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 						_addChildToContainerWithConstraints(rightPHComponent, panel, rightConstraints);
 
 						// Put other components
-						fillInContainerWithSubComponents(panel, lastInsertedElementIndex, getComponent().getSubComponents().size());
+						fillInContainerWithSubComponents(panel, lastInsertedElementIndex, getComponent().getSubComponents().size(), false);
 
 						panel.doLayout();
 
@@ -264,7 +289,8 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 								presentConstraint);
 
 						// Put other components
-						fillInContainerWithSubComponents(panel, lastInsertedElementIndex + 1, getComponent().getSubComponents().size());
+						fillInContainerWithSubComponents(panel, lastInsertedElementIndex + 1, getComponent().getSubComponents().size(),
+								false);
 
 						panel.doLayout();
 
@@ -276,42 +302,9 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 				}
 			}
 
-			// Before each component, we will add an empty panel to compute
-			// placeholder location
-			/*for (int i = 0; i < getComponent().getSubComponents().size(); i++) {
-				panel.removeAll();
-				for (int j = 0; j < i; j++) {
-					FIBComponent c = getComponent().getSubComponents().get(j);
-					JFIBView<?, ?> childView = (JFIBView<?, ?>) getContainerView().getSubViewsMap().get(c);
-					panel.add(Box.createRigidArea(childView.getResultingJComponent().getSize()));
-				}
-				Component phComponent = new JPanel() {
-					@Override
-					public Dimension getPreferredSize() {
-						return placeHolderSize;
-					}
-				};
-				panel.add(phComponent);
-				for (int j = i; j < getComponent().getSubComponents().size(); j++) {
-					FIBComponent c = getComponent().getSubComponents().get(j);
-					JFIBView<?, ?> childView = (JFIBView<?, ?>) getContainerView().getSubViewsMap().get(c);
-					panel.add(Box.createRigidArea(childView.getResultingJComponent().getSize()));
-				}
-				panel.doLayout();
-				// System.out.println("OK placeholder i=" + i + ", bounds=" +
-				// phComponent.getBounds());
-				final int insertionIndex = i;
-			
-				Rectangle placeHolderBounds = makePlaceHolderBounds(phComponent, deltaX, deltaY);
-				PlaceHolder newPlaceHolder = new PlaceHolder(getContainerView(), "< flow item >", placeHolderBounds) {
-					@Override
-					public void insertComponent(FIBComponent newComponent) {
-						putSubComponentsAtIndex(newComponent, insertionIndex);
-					}
-				};
-				newPlaceHolder.setVisible(false);
-				returned.add(newPlaceHolder);
-			}*/
+			// Then add placeholders at the end of the component
+			panel.removeAll();
+			fillInContainerWithSubComponents(panel, 0, getComponent().getSubComponents().size(), true);
 
 			// Same code as in doLayout(), where we add an extra glue at the end of last component if this one was declared as in LEFT
 			// position
@@ -328,62 +321,6 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 					}
 				}
 			}*/
-
-			// Then add placeholders at the end of the component
-			panel.removeAll();
-
-			/*for (int j = fromIndex; j < toIndex; j++) {
-				FIBComponent c = getComponent().getSubComponents().get(j);
-				JFIBView<?, ?> childView = (JFIBView<?, ?>) getContainerView().getSubViewsMap().get(c);
-				panel.add(Box.createRigidArea(childView.getResultingJComponent().getSize()));
-			}*/
-
-			fillInContainerWithSubComponents(panel, 0, getComponent().getSubComponents().size());
-
-			/*FIBComponent lastAddedChild = null;
-			for (int i = 0; i < getComponent().getSubComponents().size(); i++) {
-				FIBComponent c = getComponent().getSubComponents().get(i);
-				JFIBView<?, ?> childView = (JFIBView<?, ?>) getContainerView().getSubViewsMap().get(c);
-				// panel.add(Box.createRigidArea(childView.getResultingJComponent().getSize()));
-			
-				if (c.getConstraints() instanceof TwoColsLayoutConstraints) {
-					TwoColsLayoutConstraints contraints = (TwoColsLayoutConstraints) c.getConstraints();
-					if (lastAddedChild != null && lastAddedChild.getConstraints() instanceof TwoColsLayoutConstraints
-							&& ((TwoColsLayoutConstraints) lastAddedChild.getConstraints()).getLocation() == TwoColsLayoutLocation.left
-							&& (contraints.getLocation() == TwoColsLayoutLocation.left
-									|| contraints.getLocation() == TwoColsLayoutLocation.center)) {
-						// A second LEFT or CENTER component after a previous LEFT one, add glue
-						// We have to add an extra glue at the end of last component if this one was declared as in LEFT position
-						Component glue = Box.createHorizontalGlue();
-						_addChildToContainerWithConstraints(glue, panel,
-								new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false));
-					}
-					_addChildToContainerWithConstraints(Box.createRigidArea(childView.getResultingJComponent().getSize()), panel,
-							contraints);
-			
-				}
-				else {
-					System.out.println("tiens c'est quoi alors les constraints: " + c.getConstraints());
-				}
-			
-				lastAddedChild = c;
-			}*/
-
-			// Same code as in doLayout(), where we add an extra glue at the end of last component if this one was declared as in LEFT
-			// position
-			if (getContainerView().getComponent().getSubComponents().size() > 0) {
-				FIBComponent lastComponent = getContainerView().getComponent().getSubComponents()
-						.get(getContainerView().getComponent().getSubComponents().size() - 1);
-				if (lastComponent.getConstraints() instanceof TwoColsLayoutConstraints) {
-					TwoColsLayoutConstraints contraints = (TwoColsLayoutConstraints) lastComponent.getConstraints();
-					if (contraints.getLocation() == TwoColsLayoutLocation.left) {
-						// We have to add glue
-						Component glue = Box.createHorizontalGlue();
-						_addChildToContainerWithConstraints(glue, panel,
-								new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false));
-					}
-				}
-			}
 
 			final TwoColsLayoutConstraints leftConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, true, false);
 			Component leftPHComponent = Box.createRigidArea(preferredSize);
