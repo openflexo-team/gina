@@ -281,12 +281,13 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		return subViewsMap.values();
 	}
 
-	@Override
+	/*@Override
 	protected void hiddenComponentBecomesVisible() {
+		super.hiddenComponentBecomesVisible();
 		for (FIBViewImpl<?, C2> view : subViewsMap.values()) {
 			view.updateVisibility();
 		}
-	}
+	}*/
 
 	/**
 	 * Return all sub-components that are not declared as to be hidden in inheritance hierarchy

@@ -484,6 +484,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	}
 
 	protected void hiddenComponentBecomesVisible() {
+		update();
 	}
 
 	public Object getDefaultData() {
@@ -674,7 +675,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			updateFont();
 		}
 		else if (evt.getPropertyName().equals(FIBComponent.BACKGROUND_COLOR_KEY)
-				|| evt.getPropertyName().equals(FIBComponent.FOREGROUND_COLOR_KEY) || evt.getPropertyName().equals(FIBComponent.OPAQUE_KEY)) {
+				|| evt.getPropertyName().equals(FIBComponent.FOREGROUND_COLOR_KEY)
+				|| evt.getPropertyName().equals(FIBComponent.OPAQUE_KEY)) {
 			updateGraphicalProperties();
 			// getTechnologyComponent().revalidate();
 			// getTechnologyComponent().repaint();
