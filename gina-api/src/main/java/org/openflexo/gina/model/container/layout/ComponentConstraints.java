@@ -49,7 +49,6 @@ import java.util.logging.Logger;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBProperty;
 import org.openflexo.gina.model.FIBPropertyNotification;
-import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 
 /**
@@ -244,7 +243,7 @@ public abstract class ComponentConstraints extends Hashtable<String, String> {
 		if (hasIndex()) {
 			return getIntValue(INDEX, 0);
 		}
-		return 0;
+		return -1;
 	}
 
 	public final void setIndex(int x) {

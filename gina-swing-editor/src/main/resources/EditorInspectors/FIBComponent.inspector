@@ -5,7 +5,7 @@
 		<Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11"
 			darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
-			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab" 
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab"
 			trackViewPortWidth="true" trackViewPortHeight="true">
 			<!-- <Label label="data" constraints="twocols(location=left)" name="dataLabel" 
 				localize="true" /> <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" 
@@ -15,58 +15,28 @@
 				constraints="twocols(location=left)" localize="true" /> <Custom componentClassName="org.openflexo.gina.swing.utils.ClassSelector" 
 				localize="true" manageDynamicModel="true" data="data.dataClass" constraints="twocols(expandHorizontally=true;location=right)" 
 				/> -->
-			<Label label="controller_class" constraints="twocols(location=left)"
+			<Label index="8" label="controller_class" constraints="twocols(location=left)"
 				visible="data.isRootComponent" localize="true" />
-			<Custom componentClassName="org.openflexo.gina.swing.utils.ClassSelector"
+			<Custom index="9" componentClassName="org.openflexo.gina.swing.utils.ClassSelector"
 				localize="true" manageDynamicModel="true" data="data.controllerClass"
 				constraints="twocols(expandHorizontally=true;location=right)"
 				visible="data.isRootComponent" />
-			<Label label="visible" constraints="twocols(location=left)"
+			<Label index="10" label="visible" constraints="twocols(location=left)"
 				name="visibleLabel" localize="true" />
-			<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+			<Custom index="11" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 				localize="true" manageDynamicModel="true" name="visibleValue" data="data.visible"
 				constraints="twocols(expandHorizontally=true;location=right)">
 				<Assignment variable="component.bindable" value="data" />
 			</Custom>
 
 
-			<Label label="variables" constraints="twocols(location=left)"
-				name="variablesLabel" localize="true" />
-			<Table iteratorClassName="org.openflexo.gina.model.FIBVariable"
-				visibleRowCount="5" rowHeight="20" autoSelectFirstRow="true"
-				createNewRowOnClick="false" boundToSelectionManager="false"
-				showFooter="true" selectionMode="MultipleIntervalSelection"
-				localize="true" manageDynamicModel="true" name="VariablesTable"
-				data="data.variables"
-				constraints="twocols(expandHorizontally=true;location=center;expandVertically=true)"
-				useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
-				verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED">
-				<TextFieldColumn data="iterator.name" title="name"
-					columnWidth="50" resizable="true" displayTitle="true" name="name" />
-				<CustomColumn componentClassName="org.openflexo.gina.swing.utils.ClassSelector"
-					customRendering="false" disableTerminateEditOnFocusLost="false"
-					data="iterator.typeClass" title="Type" columnWidth="100" resizable="true"
-					displayTitle="true" name="typeClass">
-				</CustomColumn>
-				<CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
-					customRendering="false" disableTerminateEditOnFocusLost="false"
-					data="iterator.value" title="Value" columnWidth="150" resizable="true"
-					displayTitle="true" name="value">
-					<ColumnAssignment variable="component.bindable"
-						value="iterator" />
-				</CustomColumn>
-				<AddAction method="data.createNewVariable()" isAvailable="data.isVariableAddable()"
-					name="make_new_variable" />
-				<RemoveAction method="data.deleteVariable(selected)"
-					isAvailable="data.isVariableDeletable(selected)" name="delete_variable" />
-			</Table>
 
 
 		</Tab>
 		<Tab title="Advanced" layout="twocols" titleFont="SansSerif,0,11"
 			darkLevel="0" index="1" font="SansSerif,0,11" useScrollBar="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
-			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab" 
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab"
 			trackViewPortWidth="true" trackViewPortHeight="true">
 			<!-- <Label label="index" constraints="twocols(location=left)" localize="true" 
 				/> <Number numberType="IntegerType" data="data.index" constraints="twocols(location=right)" 
@@ -353,8 +323,9 @@
 						name="gridBagConstraintsInsetsRight" localize="true" />
 				</Panel>
 			</Panel>
-			<Panel layout="twocols" border="titled" borderTitle="component_size_management"
-				titleFont="SansSerif,0,11" darkLevel="0" index="1"
+			<Panel name="DimensionPanel" layout="twocols" border="titled"
+				borderTitle="component_size_management" titleFont="SansSerif,0,11"
+				darkLevel="0" index="1"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;location=center)"
 				opaque="false">
 				<CheckBox selected="false" index="0"
@@ -363,7 +334,7 @@
 					name="DefinePreferredSize" localize="true" />
 				<Panel layout="flow" hGap="5" vGap="0" flowAlignment="LEADING"
 					titleFont="SansSerif,0,11" darkLevel="0" index="1"
-					constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;location=center)"
+					constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;location=right)"
 					opaque="false">
 					<Label label="define_preferred_dimensions" index="0"
 						constraints="flow(index=0)" localize="true" />
@@ -385,7 +356,7 @@
 					name="DefineMinSize" localize="true" />
 				<Panel layout="flow" hGap="5" vGap="0" flowAlignment="LEADING"
 					titleFont="SansSerif,0,11" darkLevel="0" index="3"
-					constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;location=center)"
+					constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;location=right)"
 					opaque="false">
 					<Label label="define_minimum_dimensions" index="0"
 						constraints="flow(index=0)" localize="true" />
@@ -407,7 +378,7 @@
 					name="DefineMaxSize" localize="true" />
 				<Panel layout="flow" hGap="5" vGap="0" flowAlignment="LEADING"
 					titleFont="SansSerif,0,11" darkLevel="0" index="5"
-					constraints="twocols(expandHorizontally=true;expandVertically=false;index=5;location=center)"
+					constraints="twocols(expandHorizontally=true;expandVertically=false;index=5;location=right)"
 					opaque="false">
 					<Label label="define_maximum_dimensions" index="0"
 						constraints="flow(index=0)" localize="true" />
@@ -508,45 +479,39 @@
 				</Panel>
 			</Panel>
 		</Tab>
-		<Tab title="Depends" layout="twocols" titleFont="SansSerif,0,11"
+		<Tab title="Advanced" layout="twocols" titleFont="SansSerif,0,11"
 			darkLevel="0" index="5" font="SansSerif,0,11" useScrollBar="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
-			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="DependenciesTab">
-			<Panel layout="border" border="titled" borderTitle="Dynamic dependencies"
-				titleFont="SansSerif,0,11" darkLevel="0"
-				constraints="twocols(expandHorizontally=true;expandVertically=true;location=center)">
-				<Table iteratorClassName="org.openflexo.gina.model.FIBComponent"
-					visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false"
-					createNewRowOnClick="false" boundToSelectionManager="false"
-					showFooter="true" selectionMode="MultipleIntervalSelection"
-					localize="true" manageDynamicModel="true" name="AllDependenciesTable"
-					data="data.mayDepends" constraints="border(location=center)">
-					<LabelColumn data="data.toString" title="owner"
-						columnWidth="200" resizable="true" displayTitle="true" />
-					<LabelColumn data="iterator.toString" title="dependency"
-						columnWidth="200" resizable="true" displayTitle="true" />
-				</Table>
-			</Panel>
-			<Panel layout="border" border="titled" borderTitle="Explicit dependencies"
-				titleFont="SansSerif,0,11" darkLevel="0"
-				constraints="twocols(expandHorizontally=true;expandVertically=true;location=center)">
-				<Table iteratorClassName="org.openflexo.gina.model.FIBDependancy"
-					visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false"
-					createNewRowOnClick="false" boundToSelectionManager="false"
-					showFooter="true" selectionMode="MultipleIntervalSelection"
-					localize="true" manageDynamicModel="true" name="ExplicitDependenciesTable"
-					data="data.explicitDependancies" constraints="border(location=center)">
-					<LabelColumn data="iterator.owner.toString" title="owner"
-						columnWidth="200" resizable="true" displayTitle="true" />
-					<DropDownColumn list="iterator.component.rootComponent.namedComponents"
-						data="iterator.masterComponent" title="dependency" columnWidth="200"
-						resizable="true" displayTitle="true" />
-					<AddAction method="data.createNewExplicitDependancy()"
-						name="make_new_dependency" />
-					<RemoveAction method="data.deleteExplicitDependancy(selected)"
-						name="delete_dependency" />
-				</Table>
-			</Panel>
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab2">
+			<!-- <Panel layout="border" border="titled" borderTitle="Dynamic dependencies" 
+				titleFont="SansSerif,0,11" darkLevel="0" constraints="twocols(expandHorizontally=true;expandVertically=true;location=center)"> 
+				<Table iteratorClassName="org.openflexo.gina.model.FIBComponent" visibleRowCount="5" 
+				rowHeight="20" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" 
+				showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" 
+				manageDynamicModel="true" name="AllDependenciesTable" data="data.mayDepends" 
+				constraints="border(location=center)"> <LabelColumn data="data.toString" 
+				title="owner" columnWidth="200" resizable="true" displayTitle="true" /> <LabelColumn 
+				data="iterator.toString" title="dependency" columnWidth="200" resizable="true" 
+				displayTitle="true" /> </Table> </Panel> -->
+			<Label label="dependancies" index="100" constraints="twocols(location=left)"
+				localize="true" />
+			<Table iteratorClassName="org.openflexo.gina.model.FIBDependancy"
+				visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false"
+				createNewRowOnClick="false" boundToSelectionManager="false"
+				showFooter="true" selectionMode="MultipleIntervalSelection"
+				localize="true" manageDynamicModel="true" name="ExplicitDependenciesTable"
+				data="data.explicitDependancies"
+				constraints="twocols(expandHorizontally=true;expandVertically=true;location=right)">
+				<LabelColumn data="iterator.owner.toString" title="owner"
+					columnWidth="200" resizable="true" displayTitle="true" />
+				<DropDownColumn list="iterator.component.rootComponent.namedComponents"
+					data="iterator.masterComponent" title="dependency" columnWidth="200"
+					resizable="true" displayTitle="true" />
+				<AddAction method="data.createNewExplicitDependancy()"
+					name="make_new_dependency" />
+				<RemoveAction method="data.deleteExplicitDependancy(selected)"
+					name="delete_dependency" />
+			</Table>
 		</Tab>
 	</TabPanel>
 	<LocalizedDictionary>

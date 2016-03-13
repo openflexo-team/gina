@@ -39,13 +39,17 @@
 
 package org.openflexo.gina.model.container.layout;
 
-import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 
 public class FlowLayoutConstraints extends ComponentConstraints {
 
 	public FlowLayoutConstraints() {
 		super();
+	}
+
+	public FlowLayoutConstraints(int index) {
+		super();
+		setIndex(index);
 	}
 
 	public FlowLayoutConstraints(String someConstraints) {

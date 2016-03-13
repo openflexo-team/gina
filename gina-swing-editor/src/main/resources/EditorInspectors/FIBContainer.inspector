@@ -5,15 +5,47 @@
 		<Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11"
 			darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
-			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab" 
-			trackViewPortWidth="true" trackViewPortHeight="true"/>
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab"
+			trackViewPortWidth="true" trackViewPortHeight="true">
+			<Label index="50" label="variables" constraints="twocols(location=left)"
+				name="variablesLabel" localize="true" />
+			<Table index="51" iteratorClassName="org.openflexo.gina.model.FIBVariable"
+				visibleRowCount="3" rowHeight="20" autoSelectFirstRow="true"
+				createNewRowOnClick="false" boundToSelectionManager="false"
+				showFooter="true" selectionMode="MultipleIntervalSelection"
+				localize="true" manageDynamicModel="true" name="VariablesTable"
+				data="data.variables"
+				constraints="twocols(expandHorizontally=true;location=right;expandVertically=true)"
+				useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+				verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED">
+				<TextFieldColumn data="iterator.name" title="name"
+					columnWidth="50" resizable="true" displayTitle="true" name="name" />
+				<CustomColumn componentClassName="org.openflexo.gina.swing.utils.ClassSelector"
+					customRendering="false" disableTerminateEditOnFocusLost="false"
+					data="iterator.typeClass" title="Type" columnWidth="100" resizable="true"
+					displayTitle="true" name="typeClass">
+				</CustomColumn>
+				<CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+					customRendering="false" disableTerminateEditOnFocusLost="false"
+					data="iterator.value" title="Value" columnWidth="150" resizable="true"
+					displayTitle="true" name="value">
+					<ColumnAssignment variable="component.bindable"
+						value="iterator" />
+				</CustomColumn>
+				<AddAction method="data.createNewVariable()" isAvailable="data.isVariableAddable()"
+					name="make_new_variable" />
+				<RemoveAction method="data.deleteVariable(selected)"
+					isAvailable="data.isVariableDeletable(selected)" name="delete_variable" />
+			</Table>
+
+		</Tab>
 		<Tab title="Container" layout="twocols" titleFont="SansSerif,0,11"
 			darkLevel="0" index="1" font="SansSerif,0,11" useScrollBar="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
-			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab" 
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab"
 			trackViewPortWidth="true" trackViewPortHeight="true">
 			<Label label="contents" constraints="twocols(location=left)"
-				localize="true" index="20"/>
+				localize="true" index="20" />
 			<Panel layout="border" borderTitle="Components" titleFont="SansSerif,0,11"
 				darkLevel="0" index="21"
 				constraints="twocols(expandHorizontally=true;expandVertically=true;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
@@ -24,7 +56,9 @@
 					showFooter="true" selectionMode="MultipleIntervalSelection"
 					localize="true" manageDynamicModel="true" name="ComponentsTable"
 					data="data.subComponents" constraints="border(location=center)"
-					font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED">
+					font="SansSerif,0,11" useScrollBar="true"
+					horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+					verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED">
 					<NumberColumn numberType="IntegerType" data="iterator.index"
 						title="index" columnWidth="40" resizable="false" displayTitle="true" />
 					<LabelColumn data="iterator.toString" title="Component"

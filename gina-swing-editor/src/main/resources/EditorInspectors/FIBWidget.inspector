@@ -1,83 +1,148 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Inspector layout="border" darkLevel="0" dataClassName="org.openflexo.gina.model.FIBWidget" name="Inspector">
-  <TabPanel name="Tab" constraints="border(location=center)">
-    <Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
-      <Label label="enable" constraints="twocols(location=left)" localize="true" />
-      <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.enable" constraints="twocols(expandHorizontally=true;location=right)">
-        <Assignment variable="component.bindable" value="data" />
-      </Custom>
-      <Label label="format" constraints="twocols(location=left)" localize="true" />
-      <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.format" constraints="twocols(expandHorizontally=true;location=right)">
-        <Assignment variable="component.bindable" value="data.formatter" />
-      </Custom>
-      <CheckBox selected="false" data="data.localize" constraints="twocols(location=left)" localize="true" />
-      <Label label="localize_component" constraints="twocols(expandHorizontally=true;location=right)" localize="true" />
-      <CheckBox selected="false" data="data.readOnly" constraints="twocols(location=left)" localize="true" />
-      <Label label="read_only_component" constraints="twocols(expandHorizontally=true;location=right)" localize="true" />
-    </Tab>
-    <Tab title="Advanced" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="1" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab">
-      <Label label="value_transform" constraints="twocols(location=left)" localize="true" />
-      <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.valueTransform" constraints="twocols(expandHorizontally=true;location=right)">
-        <Assignment variable="component.bindable" value="data.valueBindable" />
-      </Custom>
-      <Label label="value_validator" constraints="twocols(location=left)" localize="true" />
-      <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.valueValidator" constraints="twocols(expandHorizontally=true;location=right)">
-        <Assignment variable="component.bindable" value="data.valueBindable" />
-      </Custom>
-    </Tab>
-    <Tab title="Controls" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="2" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="ControlsTab">
-      <Label label="click_action" constraints="twocols(location=left)" localize="true" />
-      <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.clickAction" constraints="twocols(expandHorizontally=true;location=right)">
-        <Assignment variable="component.bindable" value="data.eventListener" />
-      </Custom>
-      <Label label="double_click_action" constraints="twocols(location=left)" localize="true" />
-      <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.doubleClickAction" constraints="twocols(expandHorizontally=true;location=right)">
-        <Assignment variable="component.bindable" value="data.eventListener" />
-      </Custom>
-      <Label label="right_click_action" constraints="twocols(location=left)" localize="true" />
-      <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.rightClickAction" constraints="twocols(expandHorizontally=true;location=right)">
-        <Assignment variable="component.bindable" value="data.eventListener" />
-      </Custom>
-      <Label label="enter_pressed_action" constraints="twocols(location=left)" localize="true" />
-      <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.enterPressedAction" constraints="twocols(expandHorizontally=true;location=right)">
-        <Assignment variable="component.bindable" value="data" />
-      </Custom>
-      <Label label="value_changed" constraints="twocols(location=left)" localize="true" />
-      <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.valueChangedAction" constraints="twocols(expandHorizontally=true;location=right)">
-        <Assignment variable="component.bindable" value="data" />
-      </Custom>
-      <CheckBox selected="false" data="data.manageDynamicModel" constraints="twocols(location=left)" localize="true" />
-      <Label label="dynamic_model" constraints="twocols(expandHorizontally=true;location=right)" localize="true" />
-    </Tab>
-    <Tab title="Doc" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="6" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="DocumentationTab">
-      <Label label="tooltip" constraints="twocols(location=left)" localize="true" />
-      <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.tooltip" constraints="twocols(expandHorizontally=true;location=right)">
-        <Assignment variable="component.bindable" value="data" />
-      </Custom>
-      <Label label="tooltip_text" constraints="twocols(location=left)" localize="true" />
-      <TextField data="data.tooltipText" constraints="twocols(expandHorizontally=true;location=right)" localize="true" columns="15" />
-    </Tab>
-  </TabPanel>
-  <LocalizedDictionary>
-    <Localized key="enable" lang="English" value="Enable" />
-    <Localized key="format" lang="English" value="Format" />
-    <Localized key="enable" lang="French" value="Activer" />
-    <Localized key="format" lang="French" value="Format" />
-    <Localized key="Basic" lang="French" value="Basique" />
-    <Localized key="enable" lang="Dutch" value="Enable" />
-    <Localized key="format" lang="Dutch" value="Format" />
-    <Localized key="dynamic_model" lang="French" value="Modèle dynamique" />
-    <Localized key="localize_component" lang="French" value="Localiser le composant" />
-    <Localized key="read_only_component" lang="French" value="Composant en lecture seule" />
-    <Localized key="value_changed" lang="French" value="Valeur changée" />
-    <Localized key="value_changed" lang="English" value="Value changed" />
-    <Localized key="dynamic_model" lang="English" value="Dynamic model" />
-    <Localized key="localize_component" lang="English" value="Localize component" />
-    <Localized key="read_only_component" lang="English" value="Read-only component" />
-    <Localized key="value_changed" lang="Dutch" value="Value changed" />
-    <Localized key="read_only_component" lang="Dutch" value="Read-only component" />
-    <Localized key="localize_component" lang="Dutch" value="Localize component" />
-    <Localized key="dynamic_model" lang="Dutch" value="Dynamic model" />
-  </LocalizedDictionary>
-  <Parameter name="title" value="Widget" />
+<Inspector layout="border" darkLevel="0"
+	dataClassName="org.openflexo.gina.model.FIBWidget" name="Inspector">
+	<TabPanel name="Tab" constraints="border(location=center)">
+		<Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11"
+			darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true"
+			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
+			<Label label="enable" index="12" constraints="twocols(location=left)"
+				localize="true" />
+			<Custom index="13" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				localize="true" manageDynamicModel="true" data="data.enable"
+				constraints="twocols(expandHorizontally=true;location=right)">
+				<Assignment variable="component.bindable" value="data" />
+			</Custom>
+			<Label index="14" label="format" constraints="twocols(location=left)"
+				localize="true" />
+			<Custom index="15" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				localize="true" manageDynamicModel="true" data="data.format"
+				constraints="twocols(expandHorizontally=true;location=right)">
+				<Assignment variable="component.bindable" value="data.formatter" />
+			</Custom>
+			<CheckBox index="16" selected="false" data="data.readOnly"
+				constraints="twocols(location=left)" localize="true" />
+			<Label index="17" label="read_only_component"
+				constraints="twocols(expandHorizontally=true;location=right)"
+				localize="true" />
+			<CheckBox index="18" selected="false" data="data.localize"
+				constraints="twocols(location=left)" localize="true" />
+			<Label index="19" label="localize_component"
+				constraints="twocols(expandHorizontally=true;location=right)"
+				localize="true" />
+			<Label index="20" label="tooltip" constraints="twocols(location=left)"
+				localize="true" />
+			<Custom index="21" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				localize="true" manageDynamicModel="true" data="data.tooltip"
+				constraints="twocols(expandHorizontally=true;location=right)">
+				<Assignment variable="component.bindable" value="data" />
+			</Custom>
+			<Label index="22" label="tooltip_text" constraints="twocols(location=left)"
+				localize="true" />
+			<TextField index="23" data="data.tooltipText"
+				constraints="twocols(expandHorizontally=true;location=right)"
+				localize="true" columns="15" />
+		</Tab>
+		<Tab title="Advanced" layout="twocols" titleFont="SansSerif,0,11"
+			darkLevel="0" index="1" font="SansSerif,0,11" useScrollBar="true"
+			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab">
+			<Label label="value_transform" constraints="twocols(location=left)"
+				localize="true" />
+			<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				localize="true" manageDynamicModel="true" data="data.valueTransform"
+				constraints="twocols(expandHorizontally=true;location=right)">
+				<Assignment variable="component.bindable" value="data.valueBindable" />
+			</Custom>
+			<Label label="value_validator" constraints="twocols(location=left)"
+				localize="true" />
+			<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				localize="true" manageDynamicModel="true" data="data.valueValidator"
+				constraints="twocols(expandHorizontally=true;location=right)">
+				<Assignment variable="component.bindable" value="data.valueBindable" />
+			</Custom>
+		</Tab>
+		<Tab title="Controls" layout="twocols" titleFont="SansSerif,0,11"
+			darkLevel="0" index="2" font="SansSerif,0,11" useScrollBar="true"
+			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="ControlsTab">
+			<Label label="click_action" constraints="twocols(location=left)"
+				localize="true" />
+			<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				localize="true" manageDynamicModel="true" data="data.clickAction"
+				constraints="twocols(expandHorizontally=true;location=right)">
+				<Assignment variable="component.bindable" value="data.eventListener" />
+			</Custom>
+			<Label label="double_click_action" constraints="twocols(location=left)"
+				localize="true" />
+			<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				localize="true" manageDynamicModel="true" data="data.doubleClickAction"
+				constraints="twocols(expandHorizontally=true;location=right)">
+				<Assignment variable="component.bindable" value="data.eventListener" />
+			</Custom>
+			<Label label="right_click_action" constraints="twocols(location=left)"
+				localize="true" />
+			<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				localize="true" manageDynamicModel="true" data="data.rightClickAction"
+				constraints="twocols(expandHorizontally=true;location=right)">
+				<Assignment variable="component.bindable" value="data.eventListener" />
+			</Custom>
+			<Label label="enter_pressed_action" constraints="twocols(location=left)"
+				localize="true" />
+			<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				localize="true" manageDynamicModel="true" data="data.enterPressedAction"
+				constraints="twocols(expandHorizontally=true;location=right)">
+				<Assignment variable="component.bindable" value="data" />
+			</Custom>
+			<Label label="value_changed" constraints="twocols(location=left)"
+				localize="true" />
+			<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				localize="true" manageDynamicModel="true" data="data.valueChangedAction"
+				constraints="twocols(expandHorizontally=true;location=right)">
+				<Assignment variable="component.bindable" value="data" />
+			</Custom>
+			<CheckBox selected="false" data="data.manageDynamicModel"
+				constraints="twocols(location=left)" localize="true" />
+			<Label label="dynamic_model" constraints="twocols(expandHorizontally=true;location=right)"
+				localize="true" />
+		</Tab>
+		<!-- <Tab title="Doc" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" 
+			index="6" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" 
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="DocumentationTab"> 
+			<Label label="tooltip" constraints="twocols(location=left)" localize="true" 
+			/> <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" 
+			localize="true" manageDynamicModel="true" data="data.tooltip" constraints="twocols(expandHorizontally=true;location=right)"> 
+			<Assignment variable="component.bindable" value="data" /> </Custom> <Label 
+			label="tooltip_text" constraints="twocols(location=left)" localize="true" 
+			/> <TextField data="data.tooltipText" constraints="twocols(expandHorizontally=true;location=right)" 
+			localize="true" columns="15" /> </Tab> -->
+	</TabPanel>
+	<LocalizedDictionary>
+		<Localized key="enable" lang="English" value="Enable" />
+		<Localized key="format" lang="English" value="Format" />
+		<Localized key="enable" lang="French" value="Activer" />
+		<Localized key="format" lang="French" value="Format" />
+		<Localized key="Basic" lang="French" value="Basique" />
+		<Localized key="enable" lang="Dutch" value="Enable" />
+		<Localized key="format" lang="Dutch" value="Format" />
+		<Localized key="dynamic_model" lang="French" value="Modèle dynamique" />
+		<Localized key="localize_component" lang="French"
+			value="Localiser le composant" />
+		<Localized key="read_only_component" lang="French"
+			value="Composant en lecture seule" />
+		<Localized key="value_changed" lang="French" value="Valeur changée" />
+		<Localized key="value_changed" lang="English" value="Value changed" />
+		<Localized key="dynamic_model" lang="English" value="Dynamic model" />
+		<Localized key="localize_component" lang="English"
+			value="Localize component" />
+		<Localized key="read_only_component" lang="English"
+			value="Read-only component" />
+		<Localized key="value_changed" lang="Dutch" value="Value changed" />
+		<Localized key="read_only_component" lang="Dutch"
+			value="Read-only component" />
+		<Localized key="localize_component" lang="Dutch"
+			value="Localize component" />
+		<Localized key="dynamic_model" lang="Dutch" value="Dynamic model" />
+	</LocalizedDictionary>
+	<Parameter name="title" value="Widget" />
 </Inspector>
