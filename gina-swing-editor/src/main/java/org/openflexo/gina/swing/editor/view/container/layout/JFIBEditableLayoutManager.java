@@ -62,6 +62,10 @@ import org.openflexo.gina.swing.editor.view.PlaceHolder;
  */
 public interface JFIBEditableLayoutManager<C, C2, CC extends ComponentConstraints> extends FIBLayoutManager<C, C2, CC> {
 
+	/**
+	 * Make placeholders for component implementing this layout<br>
+	 * This method is called during a drag-and-drop scheme initiated from the palette
+	 */
 	public List<PlaceHolder> makePlaceHolders(Dimension preferredSize);
 
 }

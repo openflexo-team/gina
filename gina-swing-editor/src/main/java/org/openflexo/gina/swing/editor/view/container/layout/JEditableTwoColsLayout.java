@@ -117,6 +117,10 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 
 	}
 
+	/**
+	 * Make placeholders for component implementing this layout<br>
+	 * This method is called during a drag-and-drop scheme initiated from the palette
+	 */
 	@Override
 	public List<PlaceHolder> makePlaceHolders(final Dimension preferredSize) {
 
@@ -161,94 +165,108 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 				rows.add(currentRow);
 			}
 
-			System.out.println("On fabrique les placeholders pour " + rows.size() + " rows");
-			for (int r = 0; r < rows.size(); r++) {
-				System.out.println("Row " + r + " with " + rows.get(r));
-			}
+			// System.out.println("Building placeholders for " + rows.size() + " rows");
+			// for (int r = 0; r < rows.size(); r++) {
+			// System.out.println("Row " + r + " with " + rows.get(r));
+			// }
 
-			// Before each row, we are placeholders for a previous line
+			// In this first step, we will add placeholders for a previous lineb before each row
+
 			for (int r = 0; r < rows.size(); r++) {
+
 				List<FIBComponent> row = rows.get(r);
-				System.out.println("On s'occupe de la row " + r + " avec " + row);
+				// System.out.println("Row " + r + " with " + row);
+
+				// Reinitialize the panel used for layout computation
 				panel.removeAll();
-				if (row.size() == 2) {
-					// OK the row is full, put two placeholders
-					// First rebuild the previous rows when required
-					int lastInsertedElementIndex = 0;
-					if (r > 0) {
-						List<FIBComponent> previousRow = rows.get(r - 1);
-						FIBComponent lastElementInRow = previousRow.get(previousRow.size() - 1);
-						lastInsertedElementIndex = getComponent().getSubComponents().indexOf(lastElementInRow) + 1;
-						fillInContainerWithSubComponents(panel, 0, lastInsertedElementIndex, true);
-					}
 
-					final TwoColsLayoutConstraints centerConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.center, true,
-							false);
-					Component centerPHComponent = null;
-					if (r == 0) {
-						centerPHComponent = Box.createRigidArea(preferredSize);
-						_addChildToContainerWithConstraints(centerPHComponent, panel, centerConstraints);
-					}
+				int lastInsertedElementIndex = 0;
 
-					final TwoColsLayoutConstraints leftConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, true, false);
-					Component leftPHComponent = Box.createRigidArea(preferredSize);
-					_addChildToContainerWithConstraints(leftPHComponent, panel, leftConstraints);
+				// First put components already beeing inside the container, until last inserted index matching this row
+				if (r > 0) {
+					List<FIBComponent> previousRow = rows.get(r - 1);
+					FIBComponent lastElementInRow = previousRow.get(previousRow.size() - 1);
+					lastInsertedElementIndex = getComponent().getSubComponents().indexOf(lastElementInRow) + 1;
+					fillInContainerWithSubComponents(panel, 0, lastInsertedElementIndex, true);
+				}
 
-					final TwoColsLayoutConstraints rightConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true,
-							false);
-					Component rightPHComponent = Box.createRigidArea(preferredSize);
-					_addChildToContainerWithConstraints(rightPHComponent, panel, rightConstraints);
+				// Build center placeholder (will be added for the first row only)
+				final TwoColsLayoutConstraints centerConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.center, true, false);
+				Component centerPHComponent = null;
+				if (r == 0) {
+					centerPHComponent = Box.createRigidArea(preferredSize);
+					_addChildToContainerWithConstraints(centerPHComponent, panel, centerConstraints);
+				}
 
-					fillInContainerWithSubComponents(panel, lastInsertedElementIndex, getComponent().getSubComponents().size(), true);
+				// Build placeholder for a previous line at left location
+				final TwoColsLayoutConstraints leftConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, true, false);
+				Component leftPHComponent = Box.createRigidArea(preferredSize);
+				_addChildToContainerWithConstraints(leftPHComponent, panel, leftConstraints);
 
-					panel.doLayout();
+				// Build placeholder for a previous line at right location
+				final TwoColsLayoutConstraints rightConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false);
+				Component rightPHComponent = Box.createRigidArea(preferredSize);
+				_addChildToContainerWithConstraints(rightPHComponent, panel, rightConstraints);
 
-					if (r == 0) {
-						returned.add(makePlaceHolder("<center>", centerConstraints, lastInsertedElementIndex, centerPHComponent, 0,
-								-preferredSize.height));
-						returned.add(makePlaceHolder("<left>", leftConstraints, lastInsertedElementIndex, leftPHComponent, 0,
-								-preferredSize.height));
-						returned.add(makePlaceHolder("<right>", rightConstraints, lastInsertedElementIndex, rightPHComponent, 0,
-								-preferredSize.height));
+				// And add all remaining existing component
+				fillInContainerWithSubComponents(panel, lastInsertedElementIndex, getComponent().getSubComponents().size(), true);
+
+				panel.doLayout();
+
+				// For the first row only, add the 3 placeholders and shit them at required height
+				if (r == 0) {
+					returned.add(makePlaceHolder("<center>", centerConstraints, lastInsertedElementIndex, centerPHComponent, 0,
+							-preferredSize.height));
+					returned.add(makePlaceHolder("<left>", leftConstraints, lastInsertedElementIndex, leftPHComponent, 0,
+							-preferredSize.height));
+					returned.add(makePlaceHolder("<right>", rightConstraints, lastInsertedElementIndex, rightPHComponent, 0,
+							-preferredSize.height));
+				}
+				else {
+
+					if (row.size() == 1 && row.get(0).getConstraints() instanceof TwoColsLayoutConstraints) {
+						TwoColsLayoutConstraints existingConstraint = (TwoColsLayoutConstraints) row.get(0).getConstraints();
+						if (existingConstraint.getLocation() == TwoColsLayoutLocation.left) {
+							// Right component is missing, do not shadow placeholder for this hole, just add the "left" one
+							returned.add(makePlaceHolder("<left>", leftConstraints, lastInsertedElementIndex, leftPHComponent, 0, 0));
+						}
+						else if (existingConstraint.getLocation() == TwoColsLayoutLocation.right) {
+							// Left component is missing, do not shadow placeholder for this hole, just add the "right" one
+							returned.add(makePlaceHolder("<right>", rightConstraints, lastInsertedElementIndex, rightPHComponent, 0, 0));
+						}
+						else if (existingConstraint.getLocation() == TwoColsLayoutLocation.center) {
+							// put the two placeholders
+							returned.add(makePlaceHolder("<left>", leftConstraints, lastInsertedElementIndex, leftPHComponent, 0, 0));
+							returned.add(makePlaceHolder("<right>", rightConstraints, lastInsertedElementIndex, rightPHComponent, 0, 0));
+						}
 					}
 					else {
+						// Otherwise add the two left/right placeholders
 						returned.add(makePlaceHolder("<left>", leftConstraints, lastInsertedElementIndex, leftPHComponent, 0, 0));
 						returned.add(makePlaceHolder("<right>", rightConstraints, lastInsertedElementIndex, rightPHComponent, 0, 0));
 					}
 				}
 
-				else if (row.size() == 1 && row.get(0).getConstraints() instanceof TwoColsLayoutConstraints) {
+				// If row is not complete add placeholder matching missing component
+				if (row.size() == 1 && row.get(0).getConstraints() instanceof TwoColsLayoutConstraints) {
 
-					System.out.println("Hop, on trouve une row avec une seule valeur");
+					panel.removeAll();
 
-					int lastInsertedElementIndex = 0;
+					lastInsertedElementIndex = 0;
 					if (r > 0) {
 						List<FIBComponent> previousRow = rows.get(r - 1);
 						FIBComponent lastElementInRow = previousRow.get(previousRow.size() - 1);
 						lastInsertedElementIndex = getComponent().getSubComponents().indexOf(lastElementInRow) + 1;
-						System.out.println(
-								"comme c'est pas la premiere row, on va deja inserer des elements jusqu'a lastInsertedElementIndex="
-										+ lastInsertedElementIndex);
 						fillInContainerWithSubComponents(panel, 0, lastInsertedElementIndex, true);
 					}
-
-					/*final TwoColsLayoutConstraints centerConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.center, true,
-							false);
-					Component centerPHComponent = null;
-					if (r == 0) {
-						centerPHComponent = Box.createRigidArea(preferredSize);
-						_addChildToContainerWithConstraints(centerPHComponent, panel, centerConstraints);
-					}*/
 
 					FIBComponent existingComponent = row.get(0);
 
 					TwoColsLayoutConstraints presentConstraint = (TwoColsLayoutConstraints) existingComponent.getConstraints();
 
-					System.out.println("Tiens ce qui existe c'est " + presentConstraint + " for " + existingComponent);
-
 					if (presentConstraint.getLocation() == TwoColsLayoutLocation.left) {
 
-						System.out.println("Et comme c'est a gauche, je dois rajouter a droite");
+						System.out.println("Right component is missing");
 
 						JFIBView<?, ?> childView = (JFIBView<?, ?>) getContainerView().getSubViewsMap().get(existingComponent);
 						_addChildToContainerWithConstraints(Box.createRigidArea(childView.getResultingJComponent().getSize()), panel,
@@ -257,9 +275,7 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 						lastInsertedElementIndex++;
 
 						// Put a placeholder right to existing
-						final TwoColsLayoutConstraints rightConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true,
-								false);
-						Component rightPHComponent = Box.createRigidArea(preferredSize);
+						rightPHComponent = Box.createRigidArea(preferredSize);
 						_addChildToContainerWithConstraints(rightPHComponent, panel, rightConstraints);
 
 						// Put other components
@@ -267,21 +283,15 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 
 						panel.doLayout();
 
-						/*if (r == 0) {
-							returned.add(makePlaceHolder("<center>", centerConstraints, lastInsertedElementIndex, centerPHComponent, 0,
-									-preferredSize.height));
-						}*/
 						returned.add(makePlaceHolder("<right>", rightConstraints, lastInsertedElementIndex, rightPHComponent, 0, 0));
 					}
 
 					else if (presentConstraint.getLocation() == TwoColsLayoutLocation.right) {
 
-						System.out.println("Et comme c'est a droite, je dois rajouter a gauche");
+						System.out.println("Left component is missing");
 
 						// Put a placeholder left to existing
-						final TwoColsLayoutConstraints leftConstraints = new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, true,
-								false);
-						Component leftPHComponent = Box.createRigidArea(preferredSize);
+						leftPHComponent = Box.createRigidArea(preferredSize);
 						_addChildToContainerWithConstraints(leftPHComponent, panel, leftConstraints);
 
 						JFIBView<?, ?> childView = (JFIBView<?, ?>) getContainerView().getSubViewsMap().get(existingComponent);
@@ -294,9 +304,6 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 
 						panel.doLayout();
 
-						/*if (r == 0) {
-							returned.add(makePlaceHolder("<center>", centerConstraints, 0, centerPHComponent, 0, -preferredSize.height));
-						}*/
 						returned.add(makePlaceHolder("<left>", leftConstraints, lastInsertedElementIndex, leftPHComponent, 0, 0));
 					}
 				}
