@@ -111,7 +111,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 			return;
 		}
 		if (subViewsMap != null) {
-			for (FIBViewImpl<?, C2> v : subViewsMap.values()) {
+			for (FIBViewImpl<?, C2> v : new ArrayList<FIBViewImpl<?, C2>>(subViewsMap.values())) {
 				v.delete();
 			}
 			subViewsMap.clear();
@@ -228,8 +228,12 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	@Override
 	protected void performUpdate() {
 		super.performUpdate();
-		for (FIBView v : new ArrayList<FIBView>(subViewsMap.values())) {
-			v.update();
+		if (subViewsMap != null) {
+			for (FIBView v : new ArrayList<FIBView>(subViewsMap.values())) {
+				if (!v.isDeleted() && v.isViewVisible()) {
+					v.update();
+				}
+			}
 		}
 	}
 
@@ -337,8 +341,10 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		if (getFont() != null) {
 			getRenderingAdapter().setFont(getTechnologyComponent(), getFont());
 		}
-		for (FIBView<?, C2> v : subViewsMap.values()) {
-			v.updateFont();
+		if (subViewsMap != null) {
+			for (FIBView<?, C2> v : subViewsMap.values()) {
+				v.updateFont();
+			}
 		}
 		getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
 	}

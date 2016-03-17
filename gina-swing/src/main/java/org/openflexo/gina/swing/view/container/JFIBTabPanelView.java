@@ -167,9 +167,10 @@ public class JFIBTabPanelView extends FIBTabPanelViewImpl<JTabbedPane, JComponen
 	@Override
 	public synchronized void updateLayout() {
 		int index = getTechnologyComponent().getSelectedIndex();
-		for (FIBView<?, JComponent> v : getSubViews()) {
+		// No need to delete all the components here !!!
+		/*for (FIBView<?, JComponent> v : getSubViews()) {
 			v.delete();
-		}
+		}*/
 		getTechnologyComponent().removeAll();
 		buildSubComponents();
 

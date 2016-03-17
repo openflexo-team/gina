@@ -131,6 +131,10 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent>implement
 
 	@Override
 	public void updateBorder() {
+		if (getComponent() == null) {
+			System.out.println("QUI fait un updateBorder() sans composant ????  deleted=" + isDeleted());
+			return;
+		}
 		switch (getComponent().getBorder()) {
 			case empty:
 				getTechnologyComponent().setBorder(

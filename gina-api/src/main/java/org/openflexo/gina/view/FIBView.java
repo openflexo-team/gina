@@ -174,6 +174,8 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 
 	public RenderingAdapter<C> getRenderingAdapter();
 
+	public boolean isDeleted();
+
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
 	 * 

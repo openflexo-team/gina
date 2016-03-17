@@ -123,7 +123,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	@Override
 	public void delete() {
 
-		LOGGER.fine("@@@@@@@@@ Delete view for component " + getComponent());
+		System.out.println("@@@@@@@@@ Delete view for component " + getComponent());
+		Thread.dumpStack();
 
 		if (isDeleted) {
 			return;
@@ -136,6 +137,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			visibleBindingValueChangeListener.delete();
 		}*/
 		componentBecomesInvisible();
+
+		stopListenVisibleValueChange();
 
 		LOGGER.fine("Delete view for component " + getComponent());
 
@@ -155,10 +158,6 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 		// System.out.println("************ Component " + getComponent() + " becomes VISIBLE !!!!!!");
 
-		if (getParentView() != null) {
-			getParentView().updateLayout();
-		}
-
 		// Restart listen component variables
 		startListeningVariablesValueChange();
 
@@ -172,10 +171,6 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	protected void componentBecomesInvisible() {
 
 		// System.out.println("************ Component " + getComponent() + " becomes INVISIBLE !!!!!!");
-
-		if (getParentView() != null) {
-			getParentView().updateLayout();
-		}
 
 		// Don't listen anymore to component variables
 		stopListeningVariablesValueChange();
@@ -285,7 +280,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 					System.out.println("In component " + getComponent() + " bindingValueChanged() detected for visible="
 							+ getComponent().getVisible() + " with newValue=" + newValue + " source=" + source);
 					updateVisibility();
-					refreshObserving();
+					// refreshObserving();
 				}
 
 				@Override
@@ -334,6 +329,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		}
 	}
 
+	@Override
 	public boolean isDeleted() {
 		return isDeleted;
 	}
@@ -421,6 +417,11 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	public final boolean update() {
 
 		if (getTechnologyComponent() == null) {
+			return false;
+		}
+
+		if (isDeleted()) {
+			System.out.println("Attention quelqu'un appelle update() pour un composant delete !!!");
 			return false;
 		}
 
@@ -561,6 +562,13 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 				componentBecomesInvisible();
 			}
 			setVisible(visible);
+
+			if (getParentView() != null) {
+				System.out.println("Relayout de " + getParentView().getComponent() + " a cause de " + getComponent()
+						+ " qui devient visible=" + visible);
+				getParentView().updateLayout();
+			}
+
 		}
 	}
 
@@ -616,12 +624,18 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	}*/
 
 	protected void updateOpacity() {
+		if (getComponent() == null) {
+			return;
+		}
 		if (getComponent().getOpaque() != null) {
 			renderingAdapter.setOpaque(getTechnologyComponent(), getComponent().getOpaque());
 		}
 	}
 
 	protected void updatePreferredSize() {
+		if (getComponent() == null) {
+			return;
+		}
 		if (getComponent().definePreferredDimensions()) {
 			Dimension preferredSize = getRenderingAdapter().getPreferredSize(getTechnologyComponent());
 			if (getComponent().getWidth() != null) {
@@ -648,6 +662,9 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	}
 
 	protected void updateMinimumSize() {
+		if (getComponent() == null) {
+			return;
+		}
 		if (getComponent().defineMinDimensions()) {
 			Dimension minSize = getRenderingAdapter().getMinimumSize(getTechnologyComponent());
 			if (getComponent().getMinWidth() != null) {
@@ -661,6 +678,9 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	}
 
 	protected void updateMaximumSize() {
+		if (getComponent() == null) {
+			return;
+		}
 		if (getComponent().defineMaxDimensions()) {
 			Dimension maxSize = getRenderingAdapter().getMaximumSize(getTechnologyComponent());
 			if (getComponent().getMaxWidth() != null) {
@@ -674,12 +694,18 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	}
 
 	protected void updateBackgroundColor() {
+		if (getComponent() == null) {
+			return;
+		}
 		if (getComponent().getBackgroundColor() != null) {
 			getRenderingAdapter().setBackgroundColor(getTechnologyComponent(), getComponent().getBackgroundColor());
 		}
 	}
 
 	protected void updateForegroundColor() {
+		if (getComponent() == null) {
+			return;
+		}
 		if (getComponent().getForegroundColor() != null) {
 			getRenderingAdapter().setForegroundColor(getTechnologyComponent(), getComponent().getForegroundColor());
 		}
