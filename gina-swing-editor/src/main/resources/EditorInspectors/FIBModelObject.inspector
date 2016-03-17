@@ -7,11 +7,11 @@
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
 			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab"
 			trackViewPortWidth="true" trackViewPortHeight="true">
-			<Label name="NameLabel" index="0" label="name" constraints="twocols(location=left)"
+			<!--  <Label name="NameLabel" index="0" label="name" constraints="twocols(location=left)"
 				localize="true" />
 			<TextField name="NameTF" index="1" data="data.name"
 				constraints="twocols(expandHorizontally=true;location=right)"
-				localize="true" columns="15" />
+				localize="true" columns="15" />-->
 			<Label label="description" index="100" constraints="twocols(location=left)"
 				localize="true" />
 			<TextArea index="101" data="data.description"

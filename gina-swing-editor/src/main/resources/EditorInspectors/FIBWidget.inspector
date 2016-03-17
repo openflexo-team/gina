@@ -6,6 +6,13 @@
 			darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
 			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
+			<Label name="ValueLabel" label="value" index="0" constraints="twocols(location=left)"
+				localize="true" />
+			<Custom name="ValueBinding" index="1" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				localize="true" manageDynamicModel="true" data="data.data"
+				constraints="twocols(expandHorizontally=true;location=right)">
+				<Assignment variable="component.bindable" value="data" />
+			</Custom>
 			<Label label="enable" index="12" constraints="twocols(location=left)"
 				localize="true" />
 			<Custom index="13" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
