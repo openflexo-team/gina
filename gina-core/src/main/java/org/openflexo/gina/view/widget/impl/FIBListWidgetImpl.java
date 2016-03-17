@@ -78,10 +78,20 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 	public FIBListWidgetImpl(FIBList model, FIBController controller, ListRenderingAdapter<C, T> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
 
+		/*updateMultipleValues();
+		updateVisibleRowCount();
+		updateRowHeight();
+		updateFont();*/
+	}
+
+	@Override
+	protected void performUpdate() {
+		// TODO Auto-generated method stub
+		super.performUpdate();
 		updateMultipleValues();
 		updateVisibleRowCount();
 		updateRowHeight();
-		updateFont();
+		// updateFont();
 	}
 
 	@Override
@@ -108,44 +118,51 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 
 	public void setSelection(List<T> selection) {
 		List<T> oldSelection = this.selection;
+		// System.out.println("Hop la selection passe de " + oldSelection + " a " + selection);
 		this.selection = selection;
 		getPropertyChangeSupport().firePropertyChange(SELECTION, oldSelection, selection);
 	}
 
 	@Override
-	public synchronized boolean updateWidgetFromModel() {
+	public T updateData() {
+
+		T newValue = super.updateData();
+
 		// updateListModelWhenRequired();
-		if (getWidget().getData() != null && notEquals(getValue(), getRenderingAdapter().getSelectedItem(getTechnologyComponent()))) {
+		if (notEquals(newValue, getRenderingAdapter().getSelectedItem(getTechnologyComponent()))) {
 
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine("updateWidgetFromModel()");
 			}
-			widgetUpdating = true;
-			getRenderingAdapter().setSelectedItem(getTechnologyComponent(), getValue());
-			widgetUpdating = false;
-			return true;
+			// widgetUpdating = true;
+			getRenderingAdapter().setSelectedItem(getTechnologyComponent(), newValue);
+			// widgetUpdating = false;
+			// return true;
 		}
-		return false;
+		// return false;
+
+		return newValue;
 	}
+
+	private boolean modelUpdating = false;
 
 	/**
 	 * Update the model given the actual state of the widget
 	 */
-	@Override
-	public synchronized boolean updateModelFromWidget() {
+	protected void selectionChanged() {
 		T newValue = getRenderingAdapter().getSelectedItem(getTechnologyComponent());
 		if (notEquals(getValue(), newValue)) {
 			modelUpdating = true;
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine("updateModelFromWidget with " + newValue);
 			}
-			if (newValue != null && !widgetUpdating) {
+			if (newValue != null && !isUpdating()) {
 				setValue(newValue);
 			}
 			modelUpdating = false;
-			return true;
+			// return true;
 		}
-		return false;
+		// return false;
 	}
 
 	public FIBListModel getListModel() {
@@ -223,7 +240,7 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 			GinaStackEvent stack = GENotifier.raise(FIBEventFactory.getInstance().createSelectionEvent(getListSelectionModel(),
 					getListSelectionModel().getLeadSelectionIndex(), e.getFirstIndex(), e.getLastIndex()));
 
-			if (widgetUpdating) {
+			if (isUpdating()) {
 				stack.end();
 				return;
 			}
@@ -232,7 +249,7 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 				LOGGER.fine("valueChanged() selected index=" + getListSelectionModel().getMinSelectionIndex());
 			}
 
-			updateModelFromWidget();
+			selectionChanged();
 
 			int i = getListSelectionModel().getMinSelectionIndex();
 			int leadIndex = getListSelectionModel().getLeadSelectionIndex();
@@ -273,7 +290,7 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 				}
 			}
 
-			updateFont();
+			// updateFont();
 
 			if (!ignoreNotifications) {
 				getController().updateSelection(FIBListWidgetImpl.this, oldSelection, selection);

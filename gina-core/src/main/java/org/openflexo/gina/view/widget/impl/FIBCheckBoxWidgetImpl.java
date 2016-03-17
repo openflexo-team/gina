@@ -66,8 +66,7 @@ public abstract class FIBCheckBoxWidgetImpl<C> extends FIBWidgetViewImpl<FIBChec
 	/**
 	 * @param model
 	 */
-	public FIBCheckBoxWidgetImpl(FIBCheckBox model, FIBController controller,
-			CheckBoxRenderingAdapter<C> RenderingAdapter) {
+	public FIBCheckBoxWidgetImpl(FIBCheckBox model, FIBController controller, CheckBoxRenderingAdapter<C> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
 		isNegate = model.getNegate();
 	}
@@ -100,28 +99,27 @@ public abstract class FIBCheckBoxWidgetImpl<C> extends FIBWidgetViewImpl<FIBChec
 	}
 
 	@Override
-	public synchronized boolean updateWidgetFromModel() {
-		Boolean value = getValue();
-		if (notEquals(isNegate ? value == null || !value : value != null && value,
+	public Boolean updateData() {
+		Boolean newValue = super.updateData();
+		if (notEquals(isNegate ? newValue == null || !newValue : newValue != null && newValue,
 				getRenderingAdapter().getSelected(getTechnologyComponent()))) {
-			widgetUpdating = true;
-			if (value != null) {
+			// widgetUpdating = true;
+			if (newValue != null) {
 				if (isNegate) {
-					value = !value;
+					newValue = !newValue;
 				}
-				getRenderingAdapter().setSelected(getTechnologyComponent(), value);
+				getRenderingAdapter().setSelected(getTechnologyComponent(), newValue);
 			}
-			widgetUpdating = false;
-			return true;
+			// widgetUpdating = false;
+			// return newValue;
 		}
-		return false;
+		return newValue;
 	}
 
 	/**
 	 * Update the model given the actual state of the widget
 	 */
-	@Override
-	public synchronized boolean updateModelFromWidget() {
+	protected boolean checkboxValueChanged() {
 		if (isReadOnly()) {
 			return false;
 		}

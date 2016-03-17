@@ -70,14 +70,21 @@ public abstract class FIBLabelWidgetImpl<C> extends FIBWidgetViewImpl<FIBLabel, 
 	}
 
 	@Override
+	protected void performUpdate() {
+		super.performUpdate();
+		updateAlign();
+		updateLabel();
+	}
+
+	/*@Override
 	public boolean update() {
 		boolean returned = super.update();
 		updateAlign();
 		updateLabel();
 		return returned;
-	}
+	}*/
 
-	@Override
+	/*@Override
 	public synchronized boolean updateWidgetFromModel() {
 		if (modelUpdating) {
 			return false;
@@ -86,16 +93,16 @@ public abstract class FIBLabelWidgetImpl<C> extends FIBWidgetViewImpl<FIBLabel, 
 		updateLabel();
 		widgetUpdating = false;
 		return false;
-	}
+	}*/
 
 	/**
 	 * Update the model given the actual state of the widget
 	 */
-	@Override
+	/*@Override
 	public synchronized boolean updateModelFromWidget() {
 		// Read only component
 		return false;
-	}
+	}*/
 
 	final protected void updateAlign() {
 		if (getWidget().getAlign() == null) {
@@ -104,19 +111,31 @@ public abstract class FIBLabelWidgetImpl<C> extends FIBWidgetViewImpl<FIBLabel, 
 		getRenderingAdapter().setHorizontalAlignment(getTechnologyComponent(), getWidget().getAlign().getAlign());
 	}
 
-	final protected void updateLabel() {
-		String label = "";
-
-		// System.out.println("update label " + this + " data=" + getWidget().getData());
+	protected void updateLabel() {
 
 		if (getWidget().getData() != null && getWidget().getData().isSet() && getWidget().getData().isValid()) {
-			label = (getWidget().getLocalize() ? getLocalized(getValue()) : getValue());
+			// dynamic label: does nothing
+			return;
 		}
 		else if (StringUtils.isNotEmpty(getWidget().getLabel())) {
-			label = (getWidget().getLocalize() ? getLocalized(getWidget().getLabel()) : getWidget().getLabel());
+			String label = (getWidget().getLocalize() ? getLocalized(getWidget().getLabel()) : getWidget().getLabel());
+			getRenderingAdapter().setText(getTechnologyComponent(), label);
+			getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
 		}
-		getRenderingAdapter().setText(getTechnologyComponent(), label);
-		getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
+	}
+
+	@Override
+	public String updateData() {
+
+		if (getWidget().getData() != null && getWidget().getData().isSet() && getWidget().getData().isValid()) {
+			// Ok this is a dynamic label
+			String newLabel = super.updateData();
+			newLabel = (getWidget().getLocalize() ? getLocalized(newLabel) : newLabel);
+			getRenderingAdapter().setText(getTechnologyComponent(), newLabel);
+			getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
+			return newLabel;
+		}
+		return null;
 	}
 
 	final protected void relayoutParentBecauseLabelChanged() {
@@ -133,7 +152,7 @@ public abstract class FIBLabelWidgetImpl<C> extends FIBWidgetViewImpl<FIBLabel, 
 	@Override
 	public void updateLanguage() {
 		super.updateLanguage();
-		updateLabel();
+		updateData();
 	}
 
 	@Override

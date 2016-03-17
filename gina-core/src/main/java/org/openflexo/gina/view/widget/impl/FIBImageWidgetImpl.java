@@ -43,8 +43,6 @@ import java.awt.Image;
 import java.beans.PropertyChangeEvent;
 import java.util.logging.Logger;
 
-import javax.swing.SwingUtilities;
-
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBImage;
 import org.openflexo.gina.view.FIBContainerView;
@@ -67,8 +65,28 @@ public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, 
 
 	public FIBImageWidgetImpl(FIBImage model, FIBController controller, ImageRenderingAdapter<C> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
+		// updateAlign();
+		// updateImage();
+	}
+
+	@Override
+	protected void performUpdate() {
+		super.performUpdate();
 		updateAlign();
-		updateImage();
+		updateImageFile();
+		// updateImage();
+		// TODO: Check this
+		// This is a quick and dirty fixed caused by a deadlock
+		// during java.awt.MediaTracker.waitForID(MediaTracker.java:651)
+		/*SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				// updateVisibility();
+				// isUpdating() = true;
+				updateData();
+				// widgetUpdating = false;
+			}
+		});*/
 	}
 
 	@Override
@@ -76,7 +94,7 @@ public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, 
 		return (ImageRenderingAdapter) super.getRenderingAdapter();
 	}
 
-	@Override
+	/*@Override
 	public boolean updateWidgetFromModel() {
 		if (modelUpdating) {
 			return false;
@@ -94,16 +112,16 @@ public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, 
 			}
 		});
 		return false;
-	}
+	}*/
 
 	/**
 	 * Update the model given the actual state of the widget
 	 */
-	@Override
+	/*@Override
 	public boolean updateModelFromWidget() {
 		// Read only component
 		return false;
-	}
+	}*/
 
 	final protected void updateAlign() {
 		if (getWidget().getAlign() == null) {
@@ -112,13 +130,25 @@ public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, 
 		getRenderingAdapter().setHorizontalAlignment(getTechnologyComponent(), getWidget().getAlign().getAlign());
 	}
 
-	final protected void updateImage() {
+	@Override
+	public Image updateData() {
+		Image newImage = super.updateData();
 		if (getWidget().getData().isValid()) {
-			Image image = getValue();
-			updateImageDefaultSize(image);
-			getRenderingAdapter().setImage(getTechnologyComponent(), image, this);
+			updateImageDefaultSize(newImage);
+			getRenderingAdapter().setImage(getTechnologyComponent(), newImage, this);
 		}
-		else if (getWidget().getImageFile() != null) {
+		/*else if (getWidget().getImageFile() != null) {
+			if (getWidget().getImageFile().exists()) {
+				Image image = ImageUtils.loadImageFromFile(getWidget().getImageFile());
+				updateImageDefaultSize(image);
+				getRenderingAdapter().setImage(getTechnologyComponent(), image, this);
+			}
+		}*/
+		return newImage;
+	}
+
+	protected void updateImageFile() {
+		if (getWidget().getImageFile() != null) {
 			if (getWidget().getImageFile().exists()) {
 				Image image = ImageUtils.loadImageFromFile(getWidget().getImageFile());
 				updateImageDefaultSize(image);

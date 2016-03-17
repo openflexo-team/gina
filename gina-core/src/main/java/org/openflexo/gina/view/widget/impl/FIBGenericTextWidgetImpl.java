@@ -49,14 +49,15 @@ import org.openflexo.gina.event.description.FIBTextEventDescription;
 import org.openflexo.gina.model.widget.FIBTextWidget;
 import org.openflexo.gina.view.impl.FIBWidgetViewImpl;
 import org.openflexo.gina.view.widget.FIBGenericTextWidget;
+import org.openflexo.toolbox.StringUtils;
 
 /**
  * Default base implementation for a simple widget allowing to display/edit a String in a TextField
  * 
  * @author sylvain
  */
-public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> extends FIBWidgetViewImpl<F, C, String> implements
-		FIBGenericTextWidget<F, C> {
+public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> extends FIBWidgetViewImpl<F, C, String>
+		implements FIBGenericTextWidget<F, C> {
 
 	private static final Logger logger = Logger.getLogger(FIBGenericTextWidgetImpl.class.getPackage().getName());
 
@@ -67,8 +68,8 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 
 		validateOnReturn = model.isValidateOnReturn();
 
-		updateEditable();
-		updateText();
+		// updateEditable();
+		// updateText();
 	}
 
 	@Override
@@ -80,15 +81,74 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 		getRenderingAdapter().setEditable(getTechnologyComponent(), !isReadOnly());
 	}
 
-	private void updateText() {
-		widgetUpdating = true;
-		try {
-			if (getWidget().getText() != null) {
-				getRenderingAdapter().setText(getTechnologyComponent(), getWidget().getText());
+	@Override
+	protected void performUpdate() {
+		super.performUpdate();
+		updateStaticText();
+	}
+
+	/**
+	 * Update value represented in text component from the value obtained from the model
+	 * 
+	 * @return
+	 */
+	@Override
+	public String updateData() {
+
+		String newText = super.updateData();
+
+		String currentWidgetValue = getRenderingAdapter().getText(getTechnologyComponent());
+		if (notEquals(newText, currentWidgetValue)) {
+			if (modelUpdating) {
+				return newText;
 			}
-		} finally {
-			widgetUpdating = false;
+			if (newText != null && (newText + "\n").equals(currentWidgetValue)) {
+				return newText;
+			}
+			// widgetUpdating = true;
+			// try {
+			int caret = getRenderingAdapter().getCaretPosition(getTechnologyComponent());
+			getRenderingAdapter().setText(getTechnologyComponent(), newText);
+			if (caret > -1 && newText != null && caret < newText.length()) {
+				getRenderingAdapter().setCaretPosition(getTechnologyComponent(), caret);
+			}
+			// } finally {
+			// widgetUpdating = false;
+			// }
 		}
+		return newText;
+	}
+
+	/**
+	 * Update static value represented in text component
+	 */
+	private void updateStaticText() {
+		// widgetUpdating = true;
+		// try {
+		if (StringUtils.isNotEmpty(getWidget().getText())) {
+			getRenderingAdapter().setText(getTechnologyComponent(), getWidget().getText());
+		}
+		/*} finally {
+			widgetUpdating = false;
+		}*/
+	}
+
+	private boolean modelUpdating = false;
+
+	protected boolean textChanged() {
+		if (notEquals(getValue(), getRenderingAdapter().getText(getTechnologyComponent()))) {
+			if (logger.isLoggable(Level.FINE)) {
+				logger.fine("updateModelFromWidget() in " + this);
+			}
+			modelUpdating = true;
+			try {
+				setValue(getRenderingAdapter().getText(getTechnologyComponent()));
+			} finally {
+				modelUpdating = false;
+			}
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -123,52 +183,6 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 		}
 
 		widgetExecuting = false;
-	}
-
-	@Override
-	public synchronized boolean updateWidgetFromModel() {
-
-		String currentWidgetValue = getRenderingAdapter().getText(getTechnologyComponent());
-		if (notEquals(getValue(), currentWidgetValue)) {
-			if (modelUpdating) {
-				return false;
-			}
-			if (getValue() != null && (getValue() + "\n").equals(currentWidgetValue)) {
-				return false;
-			}
-			widgetUpdating = true;
-			try {
-				int caret = getRenderingAdapter().getCaretPosition(getTechnologyComponent());
-				getRenderingAdapter().setText(getTechnologyComponent(), getValue());
-				if (caret > -1 && getValue() != null && caret < getValue().length()) {
-					getRenderingAdapter().setCaretPosition(getTechnologyComponent(), caret);
-				}
-			} finally {
-				widgetUpdating = false;
-			}
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Update the model given the actual state of the widget
-	 */
-	@Override
-	public synchronized boolean updateModelFromWidget() {
-		if (notEquals(getValue(), getRenderingAdapter().getText(getTechnologyComponent()))) {
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("updateModelFromWidget() in " + this);
-			}
-			modelUpdating = true;
-			try {
-				setValue(getRenderingAdapter().getText(getTechnologyComponent()));
-			} finally {
-				modelUpdating = false;
-			}
-			return true;
-		}
-		return false;
 	}
 
 }

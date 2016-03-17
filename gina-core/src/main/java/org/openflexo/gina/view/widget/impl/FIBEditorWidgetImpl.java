@@ -40,7 +40,6 @@
 package org.openflexo.gina.view.widget.impl;
 
 import java.beans.PropertyChangeEvent;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.gina.controller.FIBController;
@@ -87,7 +86,13 @@ public abstract class FIBEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBEditor
 	public FIBEditorWidgetImpl(FIBEditor model, FIBController controller, EditorWidgetRenderingAdapter<C> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
 		validateOnReturn = model.isValidateOnReturn();
-		updateFont();
+		// updateFont();
+		// updateTokenMarkerStyle();
+	}
+
+	@Override
+	protected void performUpdate() {
+		super.performUpdate();
 		updateTokenMarkerStyle();
 	}
 
@@ -96,11 +101,11 @@ public abstract class FIBEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBEditor
 		return (EditorWidgetRenderingAdapter<C>) super.getRenderingAdapter();
 	}
 
-	@Override
+	/*@Override
 	public synchronized boolean updateWidgetFromModel() {
-
+	
 		String editedText = getRenderingAdapter().getText(getTechnologyComponent());
-
+	
 		if (notEquals(getValue(), editedText)) {
 			if (modelUpdating) {
 				return false;
@@ -122,20 +127,42 @@ public abstract class FIBEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBEditor
 			return true;
 		}
 		return false;
+	}*/
+
+	@Override
+	public String updateData() {
+
+		String newText = super.updateData();
+
+		String currentWidgetValue = getRenderingAdapter().getText(getTechnologyComponent());
+		if (notEquals(newText, currentWidgetValue)) {
+			if (modelUpdating) {
+				return newText;
+			}
+			if (newText != null && (newText + "\n").equals(currentWidgetValue)) {
+				return newText;
+			}
+			// widgetUpdating = true;
+			// try {
+			int caretPosition = getRenderingAdapter().getCaretPosition(getTechnologyComponent());
+			getRenderingAdapter().setText(getTechnologyComponent(), newText);
+			if (caretPosition > -1 && newText != null) {
+				getRenderingAdapter().setCaretPosition(getTechnologyComponent(),
+						caretPosition < getValue().length() ? caretPosition : getValue().length());
+			}
+			// } finally {
+			// widgetUpdating = false;
+			// }
+		}
+		return newText;
 	}
 
-	/**
-	 * Update the model given the actual state of the widget
-	 */
-	@Override
-	public synchronized boolean updateModelFromWidget() {
+	private boolean modelUpdating = false;
 
+	protected boolean textChanged() {
 		String editedText = getRenderingAdapter().getText(getTechnologyComponent());
 
 		if (notEquals(getValue(), editedText)) {
-			if (LOGGER.isLoggable(Level.FINE)) {
-				LOGGER.fine("updateModelFromWidget() in TextAreaWidget");
-			}
 			modelUpdating = true;
 			try {
 				setValue(editedText);

@@ -58,8 +58,8 @@ import com.metaphaseeditor.MetaphaseEditorPanel;
  * 
  * @author sylvain
  */
-public class JFIBHtmlEditorWidget extends FIBHtmlEditorWidgetImpl<MetaphaseEditorPanel> implements
-		JFIBView<FIBHtmlEditor, MetaphaseEditorPanel> {
+public class JFIBHtmlEditorWidget extends FIBHtmlEditorWidgetImpl<MetaphaseEditorPanel>
+		implements JFIBView<FIBHtmlEditor, MetaphaseEditorPanel> {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBHtmlEditorWidget.class.getPackage().getName());
 
@@ -131,7 +131,8 @@ public class JFIBHtmlEditorWidget extends FIBHtmlEditorWidgetImpl<MetaphaseEdito
 			@Override
 			public void documentWasEdited() {
 				super.documentWasEdited();
-				updateModelFromWidget();
+				// updateModelFromWidget();
+				textChanged();
 			}
 		};
 

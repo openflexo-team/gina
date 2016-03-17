@@ -73,18 +73,18 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 		return (RadioButtonRenderingAdapter<C, T>) super.getRenderingAdapter();
 	}
 
-	@Override
-	public boolean update() {
-		boolean returned = super.update();
-		selectFirstRowIfRequired();
-		return returned;
-	}
+	/*	@Override
+		public boolean update() {
+			boolean returned = super.update();
+			selectFirstRowIfRequired();
+			return returned;
+		}*/
 
-	private void selectFirstRowIfRequired() {
+	/*private void selectFirstRowIfRequired() {
 		if (getSelectedValue() == null && getWidget().getAutoSelectFirstRow() && getMultipleValueModel().getSize() > 0) {
 			setSelectedValue(getMultipleValueModel().getElementAt(0));
 		}
-	}
+	}*/
 
 	@Override
 	protected FIBMultipleValueModel<T> createMultipleValueModel() {
@@ -92,35 +92,50 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 	}
 
 	@Override
-	public synchronized boolean updateWidgetFromModel() {
-		T value = getValue();
-		if (notEquals(value, getSelectedValue()) /*|| listModelRequireChange()*/ || multipleValueModel == null) {
+	public T updateData() {
+		T newValue = super.updateData();
+
+		if (newValue == null && getWidget().getAutoSelectFirstRow() && getMultipleValueModel().getSize() > 0) {
+
+			System.out.println("Selecting first value of" + getWidget().getName() + " : " + getMultipleValueModel().getElementAt(0));
+
+			newValue = getMultipleValueModel().getElementAt(0);
+			setValue(newValue);
+		}
+
+		if (notEquals(newValue, getSelectedValue()) /*|| listModelRequireChange()*/ || multipleValueModel == null) {
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine("updateWidgetFromModel()");
 			}
 
-			widgetUpdating = true;
-			setSelectedValue(value);
-			setSelected(value);
-			setSelectedIndex(getMultipleValueModel().indexOf(value));
+			// widgetUpdating = true;
+			setSelectedValue(newValue);
+			setSelected(newValue);
+			setSelectedIndex(getMultipleValueModel().indexOf(newValue));
 
-			widgetUpdating = false;
-			return true;
+			// widgetUpdating = false;
+			// return true;
 		}
-		return false;
+		// return false;
+
+		// selectFirstRowIfRequired();
+
+		return newValue;
 	}
+
+	private boolean modelUpdating = false;
 
 	/**
 	 * Update the model given the actual state of the widget
 	 */
-	@Override
-	public synchronized boolean updateModelFromWidget() {
+	// @Override
+	protected boolean selectionChanged() {
 		if (notEquals(getValue(), getSelectedValue())) {
 			modelUpdating = true;
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine("updateModelFromWidget with " + getSelectedValue());
 			}
-			if (getSelectedValue() != null && !widgetUpdating) {
+			if (getSelectedValue() != null && !isUpdating()) {
 				setValue(getSelectedValue());
 			}
 			modelUpdating = false;

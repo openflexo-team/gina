@@ -69,8 +69,7 @@ import org.openflexo.swing.FontSelector;
  * 
  * @author sylvain
  */
-public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel> implements FocusListener,
-		JFIBView<FIBFont, FontSelectorPanel> {
+public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel>implements FocusListener, JFIBView<FIBFont, FontSelectorPanel> {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBFontWidget.class.getPackage().getName());
 
@@ -80,8 +79,8 @@ public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel> impleme
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingFontWidgetRenderingAdapter extends SwingRenderingAdapter<FontSelectorPanel> implements
-			FontWidgetRenderingAdapter<FontSelectorPanel> {
+	public static class SwingFontWidgetRenderingAdapter extends SwingRenderingAdapter<FontSelectorPanel>
+			implements FontWidgetRenderingAdapter<FontSelectorPanel> {
 
 		@Override
 		public Font getSelectedFont(FontSelectorPanel component) {
@@ -142,17 +141,15 @@ public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel> impleme
 			checkBox = new JCheckBox();
 			checkBox.setHorizontalTextPosition(JCheckBox.LEADING);
 
-			checkBox.setText(FlexoLocalization
-					.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "transparent", checkBox));
-			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION,
-					"undefined_value", checkBox));
+			checkBox.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "transparent", checkBox));
+			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
 
 			checkBox.addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					selector.setEnabled(checkBox.isSelected());
-					FontSelectorPanel.this.widget.updateModelFromWidget();
+					FontSelectorPanel.this.widget.fontChanged(); // updateModelFromWidget();
 				}
 			});
 			setOpaque(false);
@@ -173,10 +170,8 @@ public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel> impleme
 		}
 
 		public void updateLanguage() {
-			checkBox.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value",
-					checkBox));
-			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION,
-					"undefined_value", checkBox));
+			checkBox.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
+			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
 		}
 
 	}

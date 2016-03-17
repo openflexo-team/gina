@@ -69,16 +69,14 @@ import org.openflexo.gina.view.widget.FIBTableWidget;
 import org.openflexo.gina.view.widget.table.impl.FIBTableModel;
 
 /**
- * Default base implementation for a table widget (a table display a list of
- * rows, with some data presented as columns)
+ * Default base implementation for a table widget (a table display a list of rows, with some data presented as columns)
  * 
  * @param <C>
  *            type of technology-specific component this view manage
  * 
  * @author sylvain
  */
-public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTable, C, Collection<T>> implements
-		FIBTableWidget<C, T> {
+public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTable, C, Collection<T>>implements FIBTableWidget<C, T> {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBTableWidgetImpl.class.getPackage().getName());
 
@@ -99,8 +97,20 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 	public FIBTableWidgetImpl(FIBTable fibTable, FIBController controller, TableRenderingAdapter<C, T> RenderingAdapter) {
 		super(fibTable, controller, RenderingAdapter);
 		footer = makeFooter();
+	}
+
+	@Override
+	protected void componentBecomesVisible() {
+		super.componentBecomesVisible();
 		listenDataAsListValueChange();
 		listenSelectedValueChange();
+	}
+
+	@Override
+	protected void componentBecomesInvisible() {
+		super.componentBecomesInvisible();
+		stopListenDataAsListValueChange();
+		stopListenSelectedValueChange();
 	}
 
 	public abstract FIBTableWidgetFooter<?, T> makeFooter();
@@ -116,8 +126,8 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 			listenerToDataAsListValue.delete();
 		}
 		if (getComponent().getData() != null && getComponent().getData().isValid()) {
-			listenerToDataAsListValue = new BindingValueListChangeListener<T, List<T>>(((DataBinding) getComponent()
-					.getData()), getBindingEvaluationContext()) {
+			listenerToDataAsListValue = new BindingValueListChangeListener<T, List<T>>(((DataBinding) getComponent().getData()),
+					getBindingEvaluationContext()) {
 
 				@Override
 				public void bindingValueChanged(Object source, List<T> newValue) {
@@ -130,14 +140,22 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 		}
 	}
 
+	private void stopListenDataAsListValueChange() {
+		if (listenerToDataAsListValue != null) {
+			listenerToDataAsListValue.stopObserving();
+			listenerToDataAsListValue.delete();
+			listenerToDataAsListValue = null;
+		}
+	}
+
 	private void listenSelectedValueChange() {
 		if (selectedBindingValueChangeListener != null) {
 			selectedBindingValueChangeListener.stopObserving();
 			selectedBindingValueChangeListener.delete();
 		}
 		if (getComponent().getSelected() != null && getComponent().getSelected().isValid()) {
-			selectedBindingValueChangeListener = new BindingValueChangeListener<T>((DataBinding<T>) getComponent()
-					.getSelected(), getBindingEvaluationContext()) {
+			selectedBindingValueChangeListener = new BindingValueChangeListener<T>((DataBinding<T>) getComponent().getSelected(),
+					getBindingEvaluationContext()) {
 
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
@@ -147,6 +165,14 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 					performSelect(newValue);
 				}
 			};
+		}
+	}
+
+	private void stopListenSelectedValueChange() {
+		if (selectedBindingValueChangeListener != null) {
+			selectedBindingValueChangeListener.stopObserving();
+			selectedBindingValueChangeListener.delete();
+			selectedBindingValueChangeListener = null;
 		}
 	}
 
@@ -170,39 +196,39 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 		widgetExecuting = true;
 
 		switch (e.getAction()) {
-		case FIBSelectionEventDescription.SELECTED: {
-			FIBSelectionEventDescription se = (FIBSelectionEventDescription) e;
-			for (DescriptionItem item : se.getValues()) {
-				if (item instanceof DescriptionIntegerItem) {
-					DescriptionIntegerItem intItem = (DescriptionIntegerItem) item;
-					if (item.getAction().equals(FIBSelectionEventDescription.SELECTED))
-						getListSelectionModel().addSelectionInterval(intItem.getValue(), intItem.getValue());
-					;
-					if (item.getAction().equals(FIBSelectionEventDescription.DESELECTED))
-						getListSelectionModel().removeSelectionInterval(intItem.getValue(), intItem.getValue());
-					;
+			case FIBSelectionEventDescription.SELECTED: {
+				FIBSelectionEventDescription se = (FIBSelectionEventDescription) e;
+				for (DescriptionItem item : se.getValues()) {
+					if (item instanceof DescriptionIntegerItem) {
+						DescriptionIntegerItem intItem = (DescriptionIntegerItem) item;
+						if (item.getAction().equals(FIBSelectionEventDescription.SELECTED))
+							getListSelectionModel().addSelectionInterval(intItem.getValue(), intItem.getValue());
+						;
+						if (item.getAction().equals(FIBSelectionEventDescription.DESELECTED))
+							getListSelectionModel().removeSelectionInterval(intItem.getValue(), intItem.getValue());
+						;
+					}
 				}
+				getListSelectionModel().setLeadSelectionIndex(se.getLead());
+				break;
 			}
-			getListSelectionModel().setLeadSelectionIndex(se.getLead());
-			break;
-		}
-		case FIBTableEventDescription.CHANGED: {
-			FIBTableEventDescription te = (FIBTableEventDescription) e;
-			getTableModel().setValueAt(te.getObjectValue(), te.getRow(), te.getCol());
-			break;
-		}
+			case FIBTableEventDescription.CHANGED: {
+				FIBTableEventDescription te = (FIBTableEventDescription) e;
+				getTableModel().setValueAt(te.getObjectValue(), te.getRow(), te.getCol());
+				break;
+			}
 		}
 
 		widgetExecuting = false;
 	}
 
 	@Override
-	public synchronized boolean updateWidgetFromModel() {
+	public Collection<T> updateData() {
 
 		List<?> valuesBeforeUpdating = getTableModel().getValues();
 		T wasSelected = getSelected();
 
-		boolean returned = false;
+		// boolean returned = false;
 
 		// logger.info("----------> updateWidgetFromModel() for " +
 		// getTable().getName());
@@ -216,9 +242,12 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 		 * (InvocationTargetException e) { e.printStackTrace(); }
 		 * _table.setEnabled(enabledValue != null && enabledValue); }
 		 */
-		if (notEquals(getValue(), getTableModel().getValues())) {
 
-			returned = true;
+		Collection<T> newValues = super.updateData();
+
+		if (notEquals(newValues, getTableModel().getValues())) {
+
+			// returned = true;
 
 			// boolean debug = false;
 			// if (getWidget().getName() != null &&
@@ -235,22 +264,22 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 							+ getRenderingAdapter().getEditingRow(getTechnologyComponent()));
 				}
 				getRenderingAdapter().cancelCellEditing(getTechnologyComponent());
-			} else {
+			}
+			else {
 				if (LOGGER.isLoggable(Level.FINE)) {
 					LOGGER.fine(getComponent().getName() + " - Table is NOT currently edited ");
 				}
 			}
 
 			if (LOGGER.isLoggable(Level.FINE)) {
-				LOGGER.fine(getComponent().getName() + " updateWidgetFromModel() with " + getValue() + " dataObject="
-						+ getDataObject());
+				LOGGER.fine(getComponent().getName() + " updateWidgetFromModel() with " + getValue() + " dataObject=" + getDataObject());
 			}
 
-			if (getValue() == null) {
+			if (newValues == null) {
 				getTableModel().setValues((List<T>) Collections.emptyList());
 			}
-			if (getValue() instanceof Collection && !getValue().equals(valuesBeforeUpdating)) {
-				getTableModel().setValues(getValue());
+			if (newValues instanceof Collection && !newValues.equals(valuesBeforeUpdating)) {
+				getTableModel().setValues(newValues);
 			}
 			if (footer != null) {
 				footer.setModel(getDataObject());
@@ -268,27 +297,28 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 
 		// We restore value if and only if we represent same table
 		if (equals(getTableModel().getValues(), valuesBeforeUpdating) && wasSelected != null) {
-			returned = true;
+			// returned = true;
 			setSelected(wasSelected);
-		} else if (areSameValuesOrderIndifferent(getTableModel().getValues(), valuesBeforeUpdating)) {
+		}
+		else if (areSameValuesOrderIndifferent(getTableModel().getValues(), valuesBeforeUpdating)) {
 			// Same values, only order differs, in this case, still select right
 			// object
-			returned = true;
+			// returned = true;
 			setSelected(wasSelected);
-		} else {
+		}
+		else {
 			try {
 				if (getComponent().getSelected().isValid()
 						&& getComponent().getSelected().getBindingValue(getBindingEvaluationContext()) != null) {
-					T newSelectedObject = (T) getComponent().getSelected().getBindingValue(
-							getBindingEvaluationContext());
-					if (returned = notEquals(newSelectedObject, getSelected())) {
+					T newSelectedObject = (T) getComponent().getSelected().getBindingValue(getBindingEvaluationContext());
+					if (notEquals(newSelectedObject, getSelected())) {
 						setSelected(newSelectedObject);
 					}
 				}
 
 				else if (getComponent().getAutoSelectFirstRow()) {
 					if (getTableModel().getValues() != null && getTableModel().getValues().size() > 0) {
-						returned = true;
+						// returned = true;
 						// Take care to this option as it may cause many issues
 						// A better solution is to remove this option and let
 						// the newSelection manager manage such feature
@@ -337,7 +367,8 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 						 */
 						// addToSelection(getTableModel().getValues().get(0));
 					}
-				} else {
+				}
+				else {
 					// System.out.println("clear selection");
 					// getListSelectionModel().clearSelection();
 					// setSelected(null);
@@ -351,17 +382,17 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 			}
 		}
 
-		return returned;
+		return newValues;
 	}
 
 	public ListSelectionModel getListSelectionModel() {
 		return getRenderingAdapter().getListSelectionModel(getTechnologyComponent());
 	}
 
-	@Override
+	/*@Override
 	public synchronized boolean updateModelFromWidget() {
 		return false;
-	}
+	}*/
 
 	@Override
 	public void updateLanguage() {
@@ -375,6 +406,12 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 	}
 
 	@Override
+	protected void performUpdate() {
+		super.performUpdate();
+		updateSelected();
+	}
+
+	/*@Override
 	public boolean update() {
 		super.update();
 		updateSelected();
@@ -385,7 +422,7 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 			listenerToDataAsListValue.refreshObserving();
 		}
 		return true;
-	}
+	}*/
 
 	private final void updateSelected() {
 
@@ -407,8 +444,7 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 	}
 
 	/**
-	 * This method is a little bit brutal, we destroy here all the table and
-	 * rebuild it
+	 * This method is a little bit brutal, we destroy here all the table and rebuild it
 	 */
 	@Override
 	public void updateTable() {
@@ -528,8 +564,7 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 	public void propertyChange(PropertyChangeEvent evt) {
 
 		if ((evt.getPropertyName().equals(FIBTable.CREATE_NEW_ROW_ON_CLICK_KEY))
-				|| (evt.getPropertyName().equals(FIBTable.ITERATOR_CLASS_KEY))
-				|| (evt.getPropertyName().equals(FIBTable.ROW_HEIGHT_KEY))
+				|| (evt.getPropertyName().equals(FIBTable.ITERATOR_CLASS_KEY)) || (evt.getPropertyName().equals(FIBTable.ROW_HEIGHT_KEY))
 				|| (evt.getPropertyName().equals(FIBTable.VISIBLE_ROW_COUNT_KEY))
 				|| (evt.getPropertyName().equals(FIBTable.SHOW_FOOTER_KEY))) {
 			updateTable();

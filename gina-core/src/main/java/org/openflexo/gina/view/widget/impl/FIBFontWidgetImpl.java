@@ -68,7 +68,14 @@ public abstract class FIBFontWidgetImpl<C> extends FIBWidgetViewImpl<FIBFont, C,
 
 	public FIBFontWidgetImpl(FIBFont model, FIBController controller, FontWidgetRenderingAdapter<C> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
+		// updateCheckboxVisibility();
+	}
+
+	@Override
+	protected void performUpdate() {
+		super.performUpdate();
 		updateCheckboxVisibility();
+		// updateWidgetFromModel();
 	}
 
 	@Override
@@ -76,36 +83,34 @@ public abstract class FIBFontWidgetImpl<C> extends FIBWidgetViewImpl<FIBFont, C,
 		return (FontWidgetRenderingAdapter) super.getRenderingAdapter();
 	}
 
-	public final void updateCheckboxVisibility() {
+	protected final void updateCheckboxVisibility() {
 		getRenderingAdapter().setCheckboxVisible(getTechnologyComponent(), getWidget().getAllowsNull());
 	}
 
 	@Override
-	public synchronized boolean updateWidgetFromModel() {
+	public Font updateData() {
+		Font newFont = super.updateData();
 		Font editedObject = getSelectedFont();
 		if (!getRenderingAdapter().isCheckboxSelected(getTechnologyComponent())) {
 			editedObject = null;
 		}
-		if (notEquals(getValue(), editedObject)) {
-			widgetUpdating = true;
-			try {
-				getRenderingAdapter().setCheckboxSelected(getTechnologyComponent(), getValue() != null);
-				getRenderingAdapter().setCheckboxEnabled(getTechnologyComponent(),
-						(getValue() != null || !getWidget().getAllowsNull()) && isEnabled());
-				setSelectedFont(getValue());
-			} finally {
-				widgetUpdating = false;
-			}
-			return true;
+		if (notEquals(newFont, editedObject)) {
+			// widgetUpdating = true;
+			// try {
+			getRenderingAdapter().setCheckboxSelected(getTechnologyComponent(), newFont != null);
+			getRenderingAdapter().setCheckboxEnabled(getTechnologyComponent(),
+					(newFont != null || !getWidget().getAllowsNull()) && isEnabled());
+			setSelectedFont(newFont);
+			// } finally {
+			// widgetUpdating = false;
+			// }
+			// return true;
 		}
-		return false;
+		// return false;
+		return newFont;
 	}
 
-	/**
-	 * Update the model given the actual state of the widget
-	 */
-	@Override
-	public synchronized boolean updateModelFromWidget() {
+	protected boolean fontChanged() {
 		Font editedObject = null;
 		if (getRenderingAdapter().isCheckboxSelected(getTechnologyComponent())) {
 			editedObject = getSelectedFont();
@@ -114,12 +119,12 @@ public abstract class FIBFontWidgetImpl<C> extends FIBWidgetViewImpl<FIBFont, C,
 			if (isReadOnly()) {
 				return false;
 			}
-			modelUpdating = true;
-			try {
-				setValue(editedObject);
-			} finally {
-				modelUpdating = false;
-			}
+			// modelUpdating = true;
+			// try {
+			setValue(editedObject);
+			// } finally {
+			// modelUpdating = false;
+			// }
 			return true;
 		}
 		return false;
@@ -138,7 +143,8 @@ public abstract class FIBFontWidgetImpl<C> extends FIBWidgetViewImpl<FIBFont, C,
 		GinaStackEvent stack = GENotifier
 				.raise(FIBEventFactory.getInstance().createValueEvent(FIBValueEventDescription.CHANGED, getValue().getFontName()));
 
-		updateModelFromWidget();
+		fontChanged();
+		// updateModelFromWidget();
 
 		stack.end();
 	}

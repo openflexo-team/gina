@@ -162,7 +162,8 @@ public class FIBTableActionListener<T> implements ActionListener, BindingEvaluat
 				e.printStackTrace();
 			}
 			if (tableWidget != null) {
-				tableWidget.updateWidgetFromModel();
+				// tableWidget.updateWidgetFromModel();
+				tableWidget.update();
 				tableWidget.performSelect(newObject);
 			}
 

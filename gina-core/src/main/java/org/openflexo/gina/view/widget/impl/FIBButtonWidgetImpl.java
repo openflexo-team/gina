@@ -72,8 +72,8 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 
 	public FIBButtonWidgetImpl(FIBButton model, FIBController controller, ButtonWidgetRenderingAdapter<C> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
-		updateLabel();
-		updateIcon();
+		// updateLabel();
+		// updateIcon();
 	}
 
 	@Override
@@ -82,6 +82,13 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 	}
 
 	@Override
+	protected void performUpdate() {
+		super.performUpdate();
+		updateLabel();
+		updateIcon();
+	}
+
+	/*@Override
 	public synchronized boolean updateWidgetFromModel() {
 		if (modelUpdating) {
 			return false;
@@ -91,16 +98,16 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 		updateIcon();
 		widgetUpdating = false;
 		return false;
-	}
+	}*/
 
 	/**
 	 * Update the model given the actual state of the widget
 	 */
-	@Override
+	/*@Override
 	public synchronized boolean updateModelFromWidget() {
 		// not relevant
 		return false;
-	}
+	}*/
 
 	@Override
 	public void executeEvent(EventDescription e) {
@@ -137,14 +144,18 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 				e.printStackTrace();
 			}
 		}
-		updateComponentsExplicitelyDeclaredAsDependant();
-		updateWidgetFromModel();
+
+		update();
+
+		// updateComponentsExplicitelyDeclaredAsDependant();
+
+		// updateWidgetFromModel();
 
 		stackElement.end();
 	}
 
 	protected void updateLabel() {
-		//logger.info("Button update label with key=" + getWidget().getLabel());
+		// logger.info("Button update label with key=" + getWidget().getLabel());
 		if (getWidget().getLabel() != null) {
 			String text;
 			/*if (getValue() != null) {

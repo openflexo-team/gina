@@ -78,7 +78,8 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 	public <F extends FIBContainer> FIBContainerView<F, ? extends C, ? extends C> makeContainer(F fibContainer, FIBController controller) {
 		FIBContainerView<F, ? extends C, ? extends C> returned = buildContainer(fibContainer, controller);
 		if (returned != null) {
-			returned.updateGraphicalProperties();
+			// returned.updateGraphicalProperties();
+			returned.update();
 		}
 		return returned;
 	}
@@ -106,7 +107,8 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 	@Override
 	public <F extends FIBWidget> FIBWidgetView<F, ? extends C, ?> makeWidget(F fibWidget, FIBController controller) {
 		final FIBWidgetView<F, ? extends C, ?> returned = buildWidget(fibWidget, controller);
-		returned.updateGraphicalProperties();
+		// returned.updateGraphicalProperties();
+		returned.update();
 		return returned;
 	}
 

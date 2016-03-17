@@ -85,7 +85,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	private M component;
 	private FIBController controller;
 
-	private boolean visible = true;
+	private boolean visible = false;
 	private boolean isDeleted = false;
 
 	private FIBReferencedComponentWidget<C> embeddingComponent;
@@ -115,18 +115,68 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		variables = new HashMap<FIBVariable<?>, Object>();
 		variableListeners = new HashMap<FIBVariable<?>, BindingValueChangeListener<?>>();
 
-		startListeningVariableValueChange();
-		listenVisibleValueChange();
+		// startListeningVariableValueChange();
+		// listenVisibleValueChange();
 
 	}
 
-	private void startListeningVariableValueChange() {
+	@Override
+	public void delete() {
+
+		LOGGER.fine("@@@@@@@@@ Delete view for component " + getComponent());
+
+		if (isDeleted) {
+			return;
+		}
+
+		getComponent().getPropertyChangeSupport().removePropertyChangeListener(this);
+
+		/*if (visibleBindingValueChangeListener != null) {
+			visibleBindingValueChangeListener.stopObserving();
+			visibleBindingValueChangeListener.delete();
+		}*/
+		componentBecomesInvisible();
+
+		LOGGER.fine("Delete view for component " + getComponent());
+
+		if (controller != null) {
+			controller.unregisterView(this);
+		}
+
+		isDeleted = true;
+		component = null;
+		controller = null;
+	}
+
+	/**
+	 * Called when the component view explicitely change its visibility state from INVISIBLE to VISIBLE
+	 */
+	protected void componentBecomesVisible() {
+		// System.out.println("************ Component " + getComponent() + " becomes VISIBLE !!!!!!");
+		startListeningVariablesValueChange();
+		listenVisibleValueChange();
+	}
+
+	/**
+	 * Called when the component view explicitely change its visibility state from VISIBLE to INVISIBLE
+	 */
+	protected void componentBecomesInvisible() {
+		// System.out.println("************ Component " + getComponent() + " becomes INVISIBLE !!!!!!");
+		stopListeningVariablesValueChange();
+		stopListenVisibleValueChange();
+	}
+
+	/*protected void hiddenComponentBecomesVisible() {
+		update();
+	}*/
+
+	private void startListeningVariablesValueChange() {
 		for (FIBVariable<?> variable : getComponent().getVariables()) {
 			listenVariableValueChange(variable);
 		}
 	}
 
-	private void stopListeningVariableValueChange() {
+	private void stopListeningVariablesValueChange() {
 		for (FIBVariable<?> variable : getComponent().getVariables()) {
 			stopListenVariableValueChange(variable);
 		}
@@ -214,9 +264,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, Boolean newValue) {
-					// System.out.println(" bindingValueChanged() detected for visible="
-					// + getComponent().getVisible() + " with newValue="
-					// + newValue + " source=" + source);
+					System.out.println(" bindingValueChanged() detected for visible=" + getComponent().getVisible() + " with newValue="
+							+ newValue + " source=" + source);
 					updateVisibility();
 				}
 
@@ -236,6 +285,14 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		}
 	}
 
+	private void stopListenVisibleValueChange() {
+		if (visibleBindingValueChangeListener != null) {
+			visibleBindingValueChangeListener.stopObserving();
+			visibleBindingValueChangeListener.delete();
+			visibleBindingValueChangeListener = null;
+		}
+	}
+
 	@Override
 	public PropertyChangeSupport getPropertyChangeSupport() {
 		return pcSupport;
@@ -244,33 +301,6 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	@Override
 	public String getDeletedProperty() {
 		return DELETED_PROPERTY;
-	}
-
-	@Override
-	public void delete() {
-
-		LOGGER.fine("@@@@@@@@@ Delete view for component " + getComponent());
-
-		if (isDeleted) {
-			return;
-		}
-
-		getComponent().getPropertyChangeSupport().removePropertyChangeListener(this);
-
-		if (visibleBindingValueChangeListener != null) {
-			visibleBindingValueChangeListener.stopObserving();
-			visibleBindingValueChangeListener.delete();
-		}
-
-		LOGGER.fine("Delete view for component " + getComponent());
-
-		if (controller != null) {
-			controller.unregisterView(this);
-		}
-
-		isDeleted = true;
-		component = null;
-		controller = null;
 	}
 
 	@Override
@@ -351,13 +381,25 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	public abstract C getTechnologyComponent();
 
 	/**
-	 * This method is called to update view representing a {@link FIBComponent}.<br>
+	 * This method is called to update view representing a {@link FIBComponent}.
+	 * 
+	 * This is the major entry point for component updating.<br>
+	 * <ul>
+	 * <li>First visibility is updated</li>
+	 * <li>If component is visible, then update all other properties, and then recursively call {@link #update()} on all components
+	 * contained in this component</li>
+	 * </ul>
+	 * 
+	 * This method should not be called to update a given property, as relevant property should listen itself to relevant notifications.
+	 * 
+	 * This method should be called with caution, as it might raise performance issues
+	 * 
 	 * Usually, this method should be called only once, when the component has been added to the whole hierarchy.
 	 * 
 	 * @return a flag indicating if component has been updated
 	 */
 	@Override
-	public boolean update() {
+	public final boolean update() {
 
 		if (getTechnologyComponent() == null) {
 			return false;
@@ -365,10 +407,44 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 		// System.out.println("update of " + this);
 
+		isUpdating = true;
+
 		updateVisibility();
 
-		updateGraphicalProperties();
+		if (!isViewVisible()) {
+			isUpdating = false;
+			return true;
+		}
 
+		performUpdate();
+		isUpdating = false;
+
+		return true;
+	}
+
+	private boolean isUpdating = false;
+
+	/**
+	 * Return flag indicating if this view is beeing updating
+	 * 
+	 * @return
+	 */
+	public boolean isUpdating() {
+		return isUpdating;
+	}
+
+	/**
+	 * Internally called to update the view
+	 * 
+	 */
+	protected void performUpdate() {
+
+		updatePreferredSize();
+		updateMaximumSize();
+		updateMinimumSize();
+		updateOpacity();
+		updateBackgroundColor();
+		updateForegroundColor();
 		updateFont();
 
 		// IMPORTANT (Sylvain):
@@ -381,7 +457,6 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		 * visibleBindingValueChangeListener.refreshObserving(); }
 		 */
 
-		return true;
 	}
 
 	/**
@@ -470,23 +545,6 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		}
 	}
 
-	private void componentBecomesVisible() {
-		// System.out.println("************ Component " + getComponent() +
-		// " becomes VISIBLE !!!!!!");
-		startListeningVariableValueChange();
-		hiddenComponentBecomesVisible();
-	}
-
-	private void componentBecomesInvisible() {
-		// System.out.println("************ Component " + getComponent() +
-		// " becomes INVISIBLE !!!!!!");
-		stopListeningVariableValueChange();
-	}
-
-	protected void hiddenComponentBecomesVisible() {
-		update();
-	}
-
 	public Object getDefaultData() {
 		return null;
 	}
@@ -525,7 +583,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		updateLanguage();
 	}
 
-	@Override
+	/*@Override
 	public void updateGraphicalProperties() {
 		if (getTechnologyComponent() == null) {
 			return;
@@ -536,7 +594,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		updateOpacity();
 		updateBackgroundColor();
 		updateForegroundColor();
-	}
+	}*/
 
 	protected void updateOpacity() {
 		if (getComponent().getOpaque() != null) {
@@ -674,12 +732,14 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		else if (evt.getPropertyName().equals(FIBComponent.FONT_KEY)) {
 			updateFont();
 		}
-		else if (evt.getPropertyName().equals(FIBComponent.BACKGROUND_COLOR_KEY)
-				|| evt.getPropertyName().equals(FIBComponent.FOREGROUND_COLOR_KEY)
-				|| evt.getPropertyName().equals(FIBComponent.OPAQUE_KEY)) {
-			updateGraphicalProperties();
-			// getTechnologyComponent().revalidate();
-			// getTechnologyComponent().repaint();
+		else if (evt.getPropertyName().equals(FIBComponent.BACKGROUND_COLOR_KEY)) {
+			updateBackgroundColor();
+		}
+		else if (evt.getPropertyName().equals(FIBComponent.FOREGROUND_COLOR_KEY)) {
+			updateForegroundColor();
+		}
+		else if (evt.getPropertyName().equals(FIBComponent.OPAQUE_KEY)) {
+			updateOpacity();
 		}
 
 	}

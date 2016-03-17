@@ -73,6 +73,10 @@
 			darkLevel="0" index="2" font="SansSerif,0,11" useScrollBar="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
 			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="ControlsTab">
+			<CheckBox name="DynamicModelCB" selected="false" data="data.manageDynamicModel"
+				constraints="twocols(location=left)" localize="true" />
+			<Label name="DynamicModelLabel" label="dynamic_model" constraints="twocols(expandHorizontally=true;location=right)"
+				localize="true" />
 			<Label label="click_action" constraints="twocols(location=left)"
 				localize="true" />
 			<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
@@ -108,10 +112,6 @@
 				constraints="twocols(expandHorizontally=true;location=right)">
 				<Assignment variable="component.bindable" value="data" />
 			</Custom>
-			<CheckBox selected="false" data="data.manageDynamicModel"
-				constraints="twocols(location=left)" localize="true" />
-			<Label label="dynamic_model" constraints="twocols(expandHorizontally=true;location=right)"
-				localize="true" />
 		</Tab>
 		<!-- <Tab title="Doc" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" 
 			index="6" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" 

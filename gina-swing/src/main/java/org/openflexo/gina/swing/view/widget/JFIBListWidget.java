@@ -58,8 +58,7 @@ import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.view.widget.impl.FIBListWidgetImpl;
 
-public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T> implements FocusListener,
-		JFIBView<FIBList, JList<T>> {
+public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T>implements FocusListener, JFIBView<FIBList, JList<T>> {
 
 	static final Logger LOGGER = Logger.getLogger(JFIBListWidget.class.getPackage().getName());
 
@@ -70,8 +69,7 @@ public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T> implements
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingListRenderingAdapter<T> extends SwingRenderingAdapter<JList<T>> implements
-			ListRenderingAdapter<JList<T>, T> {
+	public static class SwingListRenderingAdapter<T> extends SwingRenderingAdapter<JList<T>>implements ListRenderingAdapter<JList<T>, T> {
 
 		@Override
 		public T getSelectedItem(JList<T> component) {
@@ -185,7 +183,7 @@ public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T> implements
 	protected void proceedToListModelUpdate(FIBListModel aListModel) {
 		// logger.info("************* Updating GUI with " + aListModel);
 		if (getTechnologyComponent() != null) {
-			widgetUpdating = true;
+			// widgetUpdating = true;
 			if (oldListModel != null) {
 				getTechnologyComponent().getSelectionModel().removeListSelectionListener(oldListModel);
 			}
@@ -194,19 +192,21 @@ public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T> implements
 			getTechnologyComponent().setSelectionMode(getWidget().getSelectionMode().getMode());
 			if (getWidget().getVisibleRowCount() != null) {
 				getTechnologyComponent().setVisibleRowCount(getWidget().getVisibleRowCount());
-			} else {
+			}
+			else {
 				getTechnologyComponent().setVisibleRowCount(-1);
 			}
 			if (getWidget().getRowHeight() != null) {
 				getTechnologyComponent().setFixedCellHeight(getWidget().getRowHeight());
-			} else {
+			}
+			else {
 				getTechnologyComponent().setFixedCellHeight(-1);
 			}
 			getTechnologyComponent().setModel(aListModel);
 			getTechnologyComponent().revalidate();
 			getTechnologyComponent().repaint();
 			getTechnologyComponent().getSelectionModel().addListSelectionListener(aListModel);
-			widgetUpdating = false;
+			// widgetUpdating = false;
 			Object objectToSelect = null;
 			if (getComponent().getSelected().isValid()) {
 				try {

@@ -73,35 +73,43 @@ public abstract class FIBDropDownWidgetImpl<C, T> extends FIBMultipleValueWidget
 	}
 
 	@Override
-	public synchronized boolean updateWidgetFromModel() {
+	public T updateData() {
 
-		if (notEquals(getValue(), getRenderingAdapter().getSelectedItem(getTechnologyComponent())) /*|| listModelRequireChange()*/) {
+		T newValue = super.updateData();
+
+		if (newValue == null && getWidget().getAutoSelectFirstRow() && getListModel().getSize() > 0) {
+
+			System.out.println("Selecting first value of" + getWidget().getName() + " : " + getListModel().getElementAt(0));
+
+			newValue = getListModel().getElementAt(0);
+			setValue(newValue);
+		}
+
+		if (notEquals(newValue, getRenderingAdapter().getSelectedItem(getTechnologyComponent())) /*|| listModelRequireChange()*/) {
 
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("updateWidgetFromModel()");
 			}
-			widgetUpdating = true;
-			getRenderingAdapter().setSelectedItem(getTechnologyComponent(), getValue());
+			// widgetUpdating = true;
+			getRenderingAdapter().setSelectedItem(getTechnologyComponent(), newValue);
 
-			widgetUpdating = false;
+			// widgetUpdating = false;
 
-			if (getValue() == null && getWidget().getAutoSelectFirstRow() && getListModel().getSize() > 0) {
-				getRenderingAdapter().setSelectedIndex(getTechnologyComponent(), 0);
-			}
-
-			return true;
+			// return true;
 		}
 
-		return false;
+		// return false;
+		return newValue;
 	}
+
+	private boolean modelUpdating = false;
 
 	/**
 	 * Update the model given the actual state of the widget
 	 */
-	@Override
-	public synchronized boolean updateModelFromWidget() {
-		if (widgetUpdating || modelUpdating) {
-			return false;
+	protected void selectionChanged() {
+		if (isUpdating() || modelUpdating) {
+			return;
 		}
 		if (notEquals(getValue(), getRenderingAdapter().getSelectedItem(getTechnologyComponent()))) {
 			modelUpdating = true;
@@ -109,13 +117,13 @@ public abstract class FIBDropDownWidgetImpl<C, T> extends FIBMultipleValueWidget
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("updateModelFromWidget with " + newValue);
 			}
-			if (newValue != null && !widgetUpdating) {
+			if (newValue != null && !isUpdating()) {
 				setValue(newValue);
 			}
 			modelUpdating = false;
-			return true;
+			// return true;
 		}
-		return false;
+		// return false;
 	}
 
 	public MyComboBoxModel getListModel() {
@@ -138,7 +146,7 @@ public abstract class FIBDropDownWidgetImpl<C, T> extends FIBMultipleValueWidget
 		@Override
 		public void setSelectedItem(Object anItem) {
 			if (selectedItem != anItem) {
-				widgetUpdating = true;
+				// widgetUpdating = true;
 				selectedItem = anItem;
 				// logger.info("setSelectedItem() with " + anItem + " widgetUpdating=" + widgetUpdating + " modelUpdating=" +
 				// modelUpdating);
@@ -147,7 +155,7 @@ public abstract class FIBDropDownWidgetImpl<C, T> extends FIBMultipleValueWidget
 				/*if (!widgetUpdating && !modelUpdating) {
 					notifyDynamicModelChanged();
 				}*/
-				widgetUpdating = false;
+				// widgetUpdating = false;
 			}
 		}
 

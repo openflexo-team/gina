@@ -69,20 +69,19 @@ import org.openflexo.swing.ColorSelector;
  * 
  * @author sylvain
  */
-public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel> implements FocusListener,
-		JFIBView<FIBColor, ColorSelectorPanel> {
+public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>
+		implements FocusListener, JFIBView<FIBColor, ColorSelectorPanel> {
 
 	private static final Logger logger = Logger.getLogger(JFIBColorWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingAdapter} implementation dedicated for Swing Color
-	 * Widget<br>
+	 * A {@link RenderingAdapter} implementation dedicated for Swing Color Widget<br>
 	 * 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingColorWidgetRenderingAdapter extends SwingRenderingAdapter<ColorSelectorPanel> implements
-			ColorWidgetRenderingAdapter<ColorSelectorPanel> {
+	public static class SwingColorWidgetRenderingAdapter extends SwingRenderingAdapter<ColorSelectorPanel>
+			implements ColorWidgetRenderingAdapter<ColorSelectorPanel> {
 
 		@Override
 		public Color getSelectedColor(ColorSelectorPanel component) {
@@ -143,17 +142,15 @@ public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel> impl
 			checkBox = new JCheckBox();
 			checkBox.setHorizontalTextPosition(JCheckBox.LEADING);
 
-			checkBox.setText(FlexoLocalization
-					.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "transparent", checkBox));
-			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION,
-					"undefined_value", checkBox));
+			checkBox.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "transparent", checkBox));
+			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
 
 			checkBox.addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					selector.setEnabled(checkBox.isSelected());
-					ColorSelectorPanel.this.widget.updateModelFromWidget();
+					ColorSelectorPanel.this.widget.colorChanged(); // updateModelFromWidget();
 				}
 			});
 			setOpaque(false);
@@ -174,10 +171,8 @@ public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel> impl
 		}
 
 		public void updateLanguage() {
-			checkBox.setText(FlexoLocalization
-					.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "transparent", checkBox));
-			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION,
-					"undefined_value", checkBox));
+			checkBox.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "transparent", checkBox));
+			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
 		}
 
 	}

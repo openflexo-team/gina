@@ -44,7 +44,6 @@ import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.logging.Logger;
 
@@ -61,7 +60,6 @@ import javax.swing.text.BadLocationException;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.event.description.FIBEventFactory;
-import org.openflexo.gina.event.description.FIBFocusEventDescription;
 import org.openflexo.gina.event.description.FIBTextEventDescription;
 import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.gina.model.widget.FIBTextField;
@@ -71,13 +69,11 @@ import org.openflexo.gina.view.widget.impl.FIBTextFieldWidgetImpl;
 import org.openflexo.toolbox.ToolBox;
 
 /**
- * Swing implementation for a simple widget allowing to display/edit a String in
- * a TextField
+ * Swing implementation for a simple widget allowing to display/edit a String in a TextField
  * 
  * @author sylvain
  */
-public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField> implements FocusListener,
-		JFIBView<FIBTextField, JTextField> {
+public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>implements FocusListener, JFIBView<FIBTextField, JTextField> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(JFIBTextFieldWidget.class.getPackage().getName());
@@ -89,8 +85,8 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField> impl
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingTextFieldRenderingAdapter extends SwingTextRenderingAdapter<JTextField> implements
-			TextFieldRenderingAdapter<JTextField> {
+	public static class SwingTextFieldRenderingAdapter extends SwingTextRenderingAdapter<JTextField>
+			implements TextFieldRenderingAdapter<JTextField> {
 
 		@Override
 		public void setColumns(JTextField component, int columns) {
@@ -113,12 +109,21 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField> impl
 		panel = new JPanel(new BorderLayout());
 		panel.setOpaque(false);
 		panel.add(getTechnologyComponent(), BorderLayout.CENTER);
-		if (!ToolBox.isMacOSLaf()) {
+		/*if (!ToolBox.isMacOSLaf()) {
 			panel.setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER,
 					BOTTOM_COMPENSATING_BORDER, RIGHT_COMPENSATING_BORDER));
-		}
+		}*/
 
-		updateFont();
+		// updateFont();
+	}
+
+	@Override
+	protected void performUpdate() {
+		super.performUpdate();
+		if (!ToolBox.isMacOSLaf()) {
+			panel.setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
+					RIGHT_COMPENSATING_BORDER));
+		}
 	}
 
 	@Override
@@ -146,7 +151,8 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField> impl
 					return MINIMUM_SIZE;
 				}
 			};
-		} else {
+		}
+		else {
 			textField = new JTextField() {
 				@Override
 				public Dimension getMinimumSize() {
@@ -158,8 +164,9 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField> impl
 		textField.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				if (!validateOnReturn && !widgetUpdating) {
-					updateModelFromWidget();
+				if (!validateOnReturn && !isUpdating()) {
+					textChanged();
+					// updateModelFromWidget();
 				}
 			}
 
@@ -167,14 +174,13 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField> impl
 			public void insertUpdate(DocumentEvent e) {
 				GinaStackEvent stack = null;
 				try {
-					stack = GENotifier.raise(FIBEventFactory.getInstance().createTextEvent(
-							FIBTextEventDescription.INSERTED, e.getOffset(), e.getLength(),
-							e.getDocument().getText(e.getOffset(), e.getLength()), getTechnologyComponent().getText()));
+					stack = GENotifier.raise(FIBEventFactory.getInstance().createTextEvent(FIBTextEventDescription.INSERTED, e.getOffset(),
+							e.getLength(), e.getDocument().getText(e.getOffset(), e.getLength()), getTechnologyComponent().getText()));
 				} catch (BadLocationException e2) {
 					e2.printStackTrace();
 				}
 
-				if (!validateOnReturn && !widgetUpdating) {
+				if (!validateOnReturn && !isUpdating()) {
 					try {
 						if (ToolBox.getPLATFORM() == ToolBox.MACOS) {
 							if (e.getLength() == 1) {
@@ -189,7 +195,8 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField> impl
 					} catch (RuntimeException e1) {
 						e1.printStackTrace();
 					}
-					updateModelFromWidget();
+					textChanged();
+					// updateModelFromWidget();
 				}
 
 				if (stack != null)
@@ -198,10 +205,11 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField> impl
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				GinaStackEvent stack = GENotifier.raise(FIBEventFactory.getInstance().createTextEvent(
-						FIBTextEventDescription.REMOVED, e.getOffset(), e.getLength(), "", getValue()));
-				if (!validateOnReturn && !widgetUpdating) {
-					updateModelFromWidget();
+				GinaStackEvent stack = GENotifier.raise(FIBEventFactory.getInstance().createTextEvent(FIBTextEventDescription.REMOVED,
+						e.getOffset(), e.getLength(), "", getValue()));
+				if (!validateOnReturn && !isUpdating()) {
+					textChanged();
+					// updateModelFromWidget();
 				}
 				stack.end();
 			}
@@ -210,7 +218,8 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField> impl
 		textField.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				updateModelFromWidget();
+				textChanged();
+				// updateModelFromWidget();
 				final Window w = SwingUtilities.windowForComponent(getTechnologyComponent());
 				if (w instanceof JDialog) {
 					if (((JDialog) w).getRootPane().getDefaultButton() != null) {
@@ -234,24 +243,9 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField> impl
 	}
 
 	@Override
-	public void focusGained(FocusEvent event) {
-		GinaStackEvent stack = GENotifier.raise(FIBEventFactory.getInstance().createFocusEvent(
-				FIBFocusEventDescription.FOCUS_GAINED));
-
-		super.focusGained(event);
+	protected void componentGainsFocus() {
+		super.componentGainsFocus();
 		getTechnologyComponent().selectAll();
-
-		stack.end();
-	}
-
-	@Override
-	public void focusLost(FocusEvent arg0) {
-		GinaStackEvent stack = GENotifier.raise(FIBEventFactory.getInstance().createFocusEvent(
-				FIBFocusEventDescription.FOCUS_LOST));
-
-		super.focusLost(arg0);
-
-		stack.end();
 	}
 
 }

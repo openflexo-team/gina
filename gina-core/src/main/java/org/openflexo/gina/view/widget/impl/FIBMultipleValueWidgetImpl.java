@@ -98,10 +98,22 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 
 	public FIBMultipleValueWidgetImpl(M model, FIBController controller, MultipleValueRenderingAdapter<C, I> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
+		// ((FIBMultipleValueModelImpl) getMultipleValueModel()).update();
+		// proceedToListModelUpdate();
+	}
+
+	@Override
+	protected void componentBecomesVisible() {
+		super.componentBecomesVisible();
 		listenListValueChange();
 		listenArrayValueChange();
-		((FIBMultipleValueModelImpl) getMultipleValueModel()).update();
-		proceedToListModelUpdate();
+	}
+
+	@Override
+	protected void componentBecomesInvisible() {
+		super.componentBecomesInvisible();
+		stopListenListValueChange();
+		stopListenArrayValueChange();
 	}
 
 	@Override
@@ -129,6 +141,14 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 		}
 	}
 
+	private void stopListenListValueChange() {
+		if (listBindingValueChangeListener != null) {
+			listBindingValueChangeListener.stopObserving();
+			listBindingValueChangeListener.delete();
+			listBindingValueChangeListener = null;
+		}
+	}
+
 	private void listenArrayValueChange() {
 		if (arrayBindingValueChangeListener != null) {
 			arrayBindingValueChangeListener.stopObserving();
@@ -148,19 +168,24 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 		}
 	}
 
-	@Override
-	public void updateData() {
-		if (isDeleted()) {
-			return;
+	private void stopListenArrayValueChange() {
+		if (arrayBindingValueChangeListener != null) {
+			arrayBindingValueChangeListener.stopObserving();
+			arrayBindingValueChangeListener.delete();
+			arrayBindingValueChangeListener = null;
 		}
-		super.updateData();
+	}
+
+	@Override
+	public T updateData() {
+		T newValue = super.updateData();
 		if (getWidget().getData() != null && getWidget().getData().isSet() && getWidget().getData().isValid()) {
 			Type type = getWidget().getData().getAnalyzedType();
 			if (type instanceof Class && ((Class) type).isEnum()) {
 				updateMultipleValues();
 			}
 		}
-
+		return newValue;
 	}
 
 	@Override
@@ -534,14 +559,17 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 	 * } updateListModelWhenRequired(); super.updateDataObject(dataObject); }
 	 */
 
-	public void updateMultipleValues() {
+	protected void updateMultipleValues() {
 		((FIBMultipleValueModelImpl) getMultipleValueModel()).update();
 		proceedToListModelUpdate();
 	}
 
-	@Override
+	/*@Override
 	public boolean update() {
-
+	
+		((FIBMultipleValueModelImpl) getMultipleValueModel()).update();
+		proceedToListModelUpdate();
+	
 		super.update();
 		updateMultipleValues();
 		if (listBindingValueChangeListener != null) {
@@ -550,8 +578,14 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 		if (arrayBindingValueChangeListener != null) {
 			arrayBindingValueChangeListener.refreshObserving();
 		}
-
+	
 		return true;
+	}*/
+
+	@Override
+	protected void performUpdate() {
+		updateMultipleValues();
+		super.performUpdate();
 	}
 
 	@Override

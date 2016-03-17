@@ -275,6 +275,8 @@ public class FIBListWidgetTest extends FIBTestCase {
 		JFIBListWidget<?> w7 = (JFIBListWidget<?>) controller.viewForComponent(list7);
 		assertEquals(6, w7.getTechnologyComponent().getModel().getSize());
 
+		System.out.println("w7.getSelection()=" + w7.getSelection());
+
 		assertEquals(Collections.singletonList(family.getChildren().get(0)), w7.getSelection());
 
 		// int[] indices = new int[3];

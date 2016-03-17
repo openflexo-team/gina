@@ -62,6 +62,12 @@ public abstract class FIBHtmlEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBHt
 
 	public FIBHtmlEditorWidgetImpl(FIBHtmlEditor model, FIBController controller, HtmlEditorWidgetRenderingAdapter<C> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
+		// updateHtmlEditorConfiguration();
+	}
+
+	@Override
+	protected void performUpdate() {
+		super.performUpdate();
 		updateHtmlEditorConfiguration();
 	}
 
@@ -73,35 +79,34 @@ public abstract class FIBHtmlEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBHt
 	protected abstract void updateHtmlEditorConfiguration();
 
 	@Override
-	public synchronized boolean updateWidgetFromModel() {
+	public String updateData() {
+		String newText = super.updateData();
 
 		String editedText = getRenderingAdapter().getText(getTechnologyComponent());
 
-		if (notEquals(getValue(), editedText)) {
+		if (notEquals(newText, editedText)) {
 			if (modelUpdating) {
-				return false;
+				return newText;
 			}
-			if (getValue() != null && (getValue() + "\n").equals(editedText)) {
-				return false;
+			if (newText != null && (newText + "\n").equals(editedText)) {
+				return newText;
 			}
-			widgetUpdating = true;
-			if (getValue() != null) {
-				getRenderingAdapter().setText(getTechnologyComponent(), getValue());
+			// widgetUpdating = true;
+			if (newText != null) {
+				getRenderingAdapter().setText(getTechnologyComponent(), newText);
 			}
 			else {
 				getRenderingAdapter().setText(getTechnologyComponent(), "");
 			}
-			widgetUpdating = false;
-			return true;
+			// widgetUpdating = false;
+			// return true;
 		}
-		return false;
+		return newText;
 	}
 
-	/**
-	 * Update the model given the actual state of the widget
-	 */
-	@Override
-	public synchronized boolean updateModelFromWidget() {
+	private boolean modelUpdating = false;
+
+	protected boolean textChanged() {
 
 		String editedText = getRenderingAdapter().getText(getTechnologyComponent());
 

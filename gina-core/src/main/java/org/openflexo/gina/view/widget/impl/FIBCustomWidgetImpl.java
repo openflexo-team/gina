@@ -91,8 +91,26 @@ public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> ex
 
 		// We need here to "listen" all assignment values that may change
 		assignmentValueBindingValueChangeListeners = new ArrayList<BindingValueChangeListener<?>>();
-		listenAssignmentValuesChange();
+		// listenAssignmentValuesChange();
 
+	}
+
+	/**
+	 * Called when the component view explicitely change its visibility state from INVISIBLE to VISIBLE
+	 */
+	@Override
+	protected void componentBecomesVisible() {
+		super.componentBecomesVisible();
+		listenAssignmentValuesChange();
+	}
+
+	/**
+	 * Called when the component view explicitely change its visibility state from VISIBLE to INVISIBLE
+	 */
+	@Override
+	protected void componentBecomesInvisible() {
+		super.componentBecomesInvisible();
+		stopListenAssignmentValuesChange();
 	}
 
 	@Override
@@ -185,12 +203,12 @@ public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> ex
 	/**
 	 * Update the model given the actual state of the widget
 	 */
-	@Override
+	/*@Override
 	public synchronized boolean updateModelFromWidget() {
 		return updateModelFromWidget(false);
-	}
+	}*/
 
-	public synchronized boolean updateModelFromWidget(boolean forceUpdate) {
+	protected void dataChanged(boolean forceUpdate) {
 		if (forceUpdate || notEquals(getValue(), getTechnologyComponent().getEditedObject())) {
 			setValue(getTechnologyComponent().getEditedObject());
 			FIBCustom widget = getWidget();
@@ -207,11 +225,11 @@ public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> ex
 					} catch (InvocationTargetException e) {
 						e.printStackTrace();
 					}
-					return true;
+					// return true;
 				}
 			}
 		}
-		return false;
+		// return false;
 	}
 
 	private void performAssignments() {
@@ -288,13 +306,7 @@ public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> ex
 	 * Internally called to listen all data changes of assignment values
 	 */
 	private void listenAssignmentValuesChange() {
-		for (BindingValueChangeListener<?> l : assignmentValueBindingValueChangeListeners) {
-			if (l != null) {
-				l.stopObserving();
-				l.delete();
-			}
-		}
-		assignmentValueBindingValueChangeListeners.clear();
+		stopListenAssignmentValuesChange();
 
 		for (FIBCustomAssignment assign : getWidget().getAssignments()) {
 			DataBinding<?> variableDB = assign.getVariable();
@@ -306,21 +318,36 @@ public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> ex
 		}
 	}
 
-	@Override
-	public boolean updateWidgetFromModel() {
-
-		if (!isComponentVisible()) {
-			return false;
+	/**
+	 * Internally called to stop listening all data changes of assignment values
+	 */
+	private void stopListenAssignmentValuesChange() {
+		for (BindingValueChangeListener<?> l : assignmentValueBindingValueChangeListeners) {
+			if (l != null) {
+				l.stopObserving();
+				l.delete();
+			}
 		}
+		assignmentValueBindingValueChangeListeners.clear();
+	}
+
+	@Override
+	public T updateData() {
+
+		/*if (!isComponentVisible()) {
+			return false;
+		}*/
 
 		if (getTechnologyComponent() != null) {
 
 			// performAssignments();
 
+			T newValue = null;
+
 			try {
-				T val = getValue();
+				newValue = super.updateData();
 				// if (val != null) {
-				getTechnologyComponent().setEditedObject(getValue());
+				getTechnologyComponent().setEditedObject(newValue);
 				// }
 			} catch (ClassCastException e) {
 				getTechnologyComponent().setEditedObject(null);
@@ -334,15 +361,17 @@ public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> ex
 			performAssignments();
 
 			try {
-				getTechnologyComponent().setRevertValue(getValue());
+				getTechnologyComponent().setRevertValue(newValue);
 			} catch (ClassCastException e) {
 				getTechnologyComponent().setRevertValue(null);
 				LOGGER.warning("Unexpected ClassCastException in " + getTechnologyComponent() + ": " + e.getMessage());
 				// e.printStackTrace();
 			}
 
+			return newValue;
+
 		}
-		return true;
+		return null;
 		// }
 		// return false;
 	}
@@ -353,7 +382,8 @@ public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> ex
 			LOGGER.fine("fireApplyPerformed() in FIBCustomWidget, value=" + getTechnologyComponent().getEditedObject());
 		}
 		// In this case, we force model updating
-		updateModelFromWidget(true);
+		// updateModelFromWidget(true);
+		dataChanged(true);
 	}
 
 	@Override

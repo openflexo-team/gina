@@ -51,7 +51,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.Icon;
-import javax.swing.SwingUtilities;
 
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingVariable;
@@ -67,6 +66,9 @@ import org.openflexo.gina.event.GinaEventNotifier;
 import org.openflexo.gina.event.MissingIdentityParameterException;
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.event.description.FIBEventDescription;
+import org.openflexo.gina.event.description.FIBEventFactory;
+import org.openflexo.gina.event.description.FIBFocusEventDescription;
+import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBMouseEvent;
 import org.openflexo.gina.model.FIBWidget;
@@ -79,8 +81,16 @@ import org.openflexo.toolbox.ToolBox;
  * Abstract class representing a widget view
  * 
  * @author sylvain
+ * 
+ * @param <M>
+ *            type of {@link FIBWidget} this view represents
+ * @param <C>
+ *            type of technology-specific component this view manage
+ * @param <T>
+ *            type of data beeing represented by this view
+ * 
  */
-public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBViewImpl<M, C> implements FIBWidgetView<M, C, T> {
+public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBViewImpl<M, C>implements FIBWidgetView<M, C, T> {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBWidgetViewImpl.class.getPackage().getName());
 
@@ -95,8 +105,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 	private T data;
 
-	protected boolean modelUpdating = false;
-	protected boolean widgetUpdating = false;
+	// protected boolean modelUpdating = false;
+	// protected boolean widgetUpdating = false;
 
 	private boolean enabled = true;
 
@@ -133,7 +143,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 			@Override
 			public KIND computeClass(FIBEventDescription e) {
-				if (!widgetUpdating && !widgetExecuting && !widgetDisableUserEvent)
+				if (!isUpdating() && !widgetExecuting && !widgetDisableUserEvent)
 					return KIND.USER_INTERACTION;
 				else
 					return KIND.SYSTEM_EVENT;
@@ -147,10 +157,24 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		};
 
 		// addBindingValueChangeListeners();
+		// listenDataValueChange();
+		// listenEnableValueChange();
+
+		// update();
+	}
+
+	@Override
+	protected void componentBecomesVisible() {
+		super.componentBecomesVisible();
 		listenDataValueChange();
 		listenEnableValueChange();
+	}
 
-		update();
+	@Override
+	protected void componentBecomesInvisible() {
+		super.componentBecomesInvisible();
+		stopListenDataValueChange();
+		stopListenEnableValueChange();
 	}
 
 	/**
@@ -208,6 +232,14 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		}
 	}
 
+	private void stopListenDataValueChange() {
+		if (dataBindingValueChangeListener != null) {
+			dataBindingValueChangeListener.stopObserving();
+			dataBindingValueChangeListener.delete();
+			dataBindingValueChangeListener = null;
+		}
+	}
+
 	private void listenEnableValueChange() {
 		if (enableBindingValueChangeListener != null) {
 			enableBindingValueChangeListener.stopObserving();
@@ -232,6 +264,14 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		}
 	}
 
+	private void stopListenEnableValueChange() {
+		if (enableBindingValueChangeListener != null) {
+			enableBindingValueChangeListener.stopObserving();
+			enableBindingValueChangeListener.delete();
+			enableBindingValueChangeListener = null;
+		}
+	}
+
 	@Override
 	public T getData() {
 		return data;
@@ -244,7 +284,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 		if (notEquals(oldData, data)) {
 
-			if (data == null || (getComponent().getDataClass() == null) || getComponent().getDataClass().isAssignableFrom(data.getClass())) {
+			if (data == null || (getComponent().getDataClass() == null)
+					|| getComponent().getDataClass().isAssignableFrom(data.getClass())) {
 				this.data = data;
 				getPropertyChangeSupport().firePropertyChange(DATA, oldData, data);
 			}
@@ -363,12 +404,27 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		return getComponent();
 	}
 
+	/**
+	 * This method is called whenever a notification has been raised, changing the value expressed by data binding (the value beeing
+	 * represented by this widget)<br>
+	 * This method first compute the value, set the dynamic value stored in this widget with this new value, and then update the widget with
+	 * the new computed value.<br>
+	 * 
+	 * This method should be overriden in sub-classes
+	 * 
+	 * @return the value as it has been computed from the model
+	 */
 	@Override
-	public void updateData() {
-		setData(getValue());
-		if (!widgetUpdating && !isDeleted() && getTechnologyComponent() != null && isComponentVisible()) {
-			updateWidgetFromModel();
+	public T updateData() {
+		if (isDeleted()) {
+			return null;
 		}
+		T newValue = getValue();
+		setData(newValue);
+		return newValue;
+		/*if (!isUpdating() && !isDeleted() && getTechnologyComponent() != null && isComponentVisible()) {
+			updateWidgetFromModel();
+		}*/
 	}
 
 	/**
@@ -376,16 +432,16 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	 * 
 	 * @return boolean indicating if changes were required or not
 	 */
-	@Override
-	public abstract boolean updateWidgetFromModel();
+	// @Override
+	// public abstract boolean updateWidgetFromModel();
 
 	/**
 	 * Update the model given the actual state of the widget
 	 * 
 	 * @return boolean indicating if changes were required or not
 	 */
-	@Override
-	public abstract boolean updateModelFromWidget();
+	// @Override
+	// public abstract boolean updateModelFromWidget();
 
 	/*
 	 * @Override public List<TargetObject> getChainedBindings(DataBinding<?>
@@ -396,16 +452,18 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	 * getWidget().getDependencyBindings(); }
 	 */
 
-	// TODO: refactor this: should be implemented in Swing
-	public void focusGained(FocusEvent event) {
+	// TODO: refactor this: should be implemented in Swing only
+	public final void focusGained(FocusEvent event) {
 		if (LOGGER.isLoggable(Level.FINE)) {
 			LOGGER.fine("focusGained()");
 		}
+		GinaStackEvent stack = GENotifier.raise(FIBEventFactory.getInstance().createFocusEvent(FIBFocusEventDescription.FOCUS_GAINED));
 		gainFocus();
+		stack.end();
 	}
 
-	// TODO: refactor this: should be implemented in Swing
-	public void focusLost(FocusEvent event) {
+	// TODO: refactor this: should be implemented in Swing only
+	public final void focusLost(FocusEvent event) {
 		if (LOGGER.isLoggable(Level.FINE)) {
 			LOGGER.fine("focusLost()");
 		}
@@ -414,13 +472,15 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			// Not relevant in this case
 		}
 		else {
+			GinaStackEvent stack = GENotifier.raise(FIBEventFactory.getInstance().createFocusEvent(FIBFocusEventDescription.FOCUS_LOST));
 			looseFocus();
+			stack.end();
 		}
 	}
 
 	protected boolean _hasFocus;
 
-	public void gainFocus() {
+	protected final void gainFocus() {
 		if (getController() != null) {
 			if (getController().getFocusedWidget() instanceof FIBWidgetViewImpl
 					&& ((FIBWidgetViewImpl<?, ?, ?>) getController().getFocusedWidget())._hasFocus == true) {
@@ -429,15 +489,30 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			LOGGER.fine("Getting focus: " + getWidget());
 			_hasFocus = true;
 			getController().setFocusedWidget(this);
+			componentGainsFocus();
 		}
 	}
 
-	public void looseFocus() {
+	protected final void looseFocus() {
 		LOGGER.fine("Loosing focus: " + getWidget());
-		if (!modelUpdating && !isDeleted()) {
-			updateModelFromWidget();
+		if (/*!modelUpdating &&*/ !isDeleted()) {
+			componentLoosesFocus();
 		}
 		_hasFocus = false;
+	}
+
+	/**
+	 * Called when the component view explicitely changes its focus state from UNFOCUSED to FOCUSED
+	 */
+	protected void componentGainsFocus() {
+
+	}
+
+	/**
+	 * Called when the component view explicitely changes its focus state from FOCUSED to UNFOCUSED
+	 */
+	protected void componentLoosesFocus() {
+
 	}
 
 	public boolean isFocused() {
@@ -539,14 +614,14 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 				LOGGER.warning("Unexpected InvocationTargetException while evaluating " + getWidget().getValueTransform() + e.getMessage());
 				e.printStackTrace();
 			}
-			if (!equals(old, aValue)) {
+			/*if (!equals(old, aValue)) {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
 						updateWidgetFromModel();
 					}
 				});
-			}
+			}*/
 		}
 
 		boolean isValid = true;
@@ -572,12 +647,12 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			}
 		}
 		if (!isValid) {
-			SwingUtilities.invokeLater(new Runnable() {
+			/*SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
 					updateWidgetFromModel();
 				}
-			});
+			});*/
 			return;
 		}
 
@@ -596,8 +671,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				LOGGER.warning("Unexpected " + e + " cannot setValue() with " + getWidget().getData() + " and value " + aValue
-						+ " message=" + e.getMessage());
+				LOGGER.warning("Unexpected " + e + " cannot setValue() with " + getWidget().getData() + " and value " + aValue + " message="
+						+ e.getMessage());
 				// e.printStackTrace();
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
@@ -607,7 +682,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 		}
 
-		updateComponentsExplicitelyDeclaredAsDependant();
+		// updateComponentsExplicitelyDeclaredAsDependant();
+
 		/*
 		 * Iterator<FIBComponent> it = getWidget().getMayAltersIterator();
 		 * while(it.hasNext()) { FIBComponent c = it.next();
@@ -672,32 +748,40 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	 * 
 	 * @return a flag indicating if component has been updated
 	 */
-	@Override
+	/*@Override
 	public boolean update() {
 		super.update();
-
+	
 		updateData();
-
+	
 		updateEnability();
 		// if (isComponentVisible()) {
 		updateDynamicTooltip();
 		updateDependingObjects();
-
+	
 		if (updateWidgetFromModel()) {
 			updateComponentsExplicitelyDeclaredAsDependant();
 		}
-		/* } *//*
-				* else if (checkValidDataPath()) { // Even if the component is
-				* not visible, its visibility may depend // it self from some
-				* depending component (which in that situation, // are very
-				* important to know, aren'they ?) updateDependingObjects(); }
-				*/
-
+	
 		if (enableBindingValueChangeListener != null) {
 			enableBindingValueChangeListener.refreshObserving();
 		}
-
+	
 		return true;
+	}*/
+
+	@Override
+	protected void performUpdate() {
+		super.performUpdate();
+
+		updateData();
+
+		updateEnability();
+		updateDynamicTooltip();
+		// updateDependingObjects();
+
+		updateComponentsExplicitelyDeclaredAsDependant();
+
 	}
 
 	/**
@@ -990,11 +1074,11 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	 * Called when a widget becomes visible<br>
 	 * There is no guarantee that widget is in sync with the model, so, we need to call updateWidgetFromModel again
 	 */
-	@Override
+	/*@Override
 	protected void hiddenComponentBecomesVisible() {
 		super.hiddenComponentBecomesVisible();
 		updateWidgetFromModel();
-	}
+	}*/
 
 	public final void updateEnability() {
 		if (isComponentEnabled()) {

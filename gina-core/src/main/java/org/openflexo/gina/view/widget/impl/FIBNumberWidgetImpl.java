@@ -58,7 +58,7 @@ import org.openflexo.gina.view.widget.FIBNumberWidget;
  *
  * @author sylvain
  */
-public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidgetViewImpl<FIBNumber, C, T> implements FIBNumberWidget<C, T> {
+public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidgetViewImpl<FIBNumber, C, T>implements FIBNumberWidget<C, T> {
 
 	static final Logger logger = Logger.getLogger(FIBNumberWidgetImpl.class.getPackage().getName());
 
@@ -74,6 +74,13 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 	}
 
 	@Override
+	protected void performUpdate() {
+		super.performUpdate();
+		updateCheckboxVisibility();
+		updateColumns();
+	}
+
+	/*@Override
 	public boolean update() {
 		// System.out.println("Update in FIBNumberWidget, getValue()=" + getValue());
 		// System.out.println("getData()=" + getData());
@@ -83,7 +90,7 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 		updateColumns();
 		// System.out.println("getData()=" + getData());
 		return returned;
-	}
+	}*/
 
 	@Override
 	public NumberWidgetRenderingAdapter<C, T> getRenderingAdapter() {
@@ -158,30 +165,32 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 	}
 
 	@Override
-	public synchronized boolean updateWidgetFromModel() {
+	public T updateData() {
+
+		T newValue = super.updateData();
+
 		// logger.info("updateWidgetFromModel() with "+getValue());
 		T editedValue = null;
 		if (!getRenderingAdapter().isCheckboxSelected(getTechnologyComponent())) {
 			editedValue = getEditedValue();
 		}
-		if (notEquals(getValue(), editedValue)) {
+		if (notEquals(newValue, editedValue)) {
 
-			widgetUpdating = true;
 			getRenderingAdapter().setWidgetEnabled(getTechnologyComponent(),
-					(getValue() != null || !getWidget().getAllowsNull()) && isEnabled());
-			getRenderingAdapter().setCheckboxSelected(getTechnologyComponent(), getValue() == null);
+					(newValue != null || !getWidget().getAllowsNull()) && isEnabled());
+			getRenderingAdapter().setCheckboxSelected(getTechnologyComponent(), newValue == null);
 			T currentValue = null;
 
-			if (getValue() == null) {
+			if (newValue == null) {
 				// setValue(getDefaultValue());
 				currentValue = getDefaultValue();
 			}
 			else {
 				try {
-					currentValue = getValue();
+					currentValue = newValue;
 				} catch (ClassCastException e) {
 					logger.warning("ClassCastException: " + e.getMessage());
-					logger.warning("Data: " + getWidget().getData() + " returned " + getValue());
+					logger.warning("Data: " + getWidget().getData() + " returned " + newValue);
 				}
 			}
 
@@ -193,11 +202,10 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 			}
 
 			ignoreTextfieldChanges = false;
-			widgetUpdating = false;
 
-			return true;
+			return currentValue;
 		}
-		return false;
+		return newValue;
 	}
 
 	public T getEditedValue() {
@@ -208,11 +216,7 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 		getRenderingAdapter().setNumber(getTechnologyComponent(), aValue);
 	}
 
-	/**
-	 * Update the model given the actual state of the widget
-	 */
-	@Override
-	public synchronized boolean updateModelFromWidget() {
+	protected boolean valueChanged() {
 		T editedValue = null;
 		if (!getRenderingAdapter().isCheckboxSelected(getTechnologyComponent())) {
 			editedValue = getEditedValue();
@@ -221,9 +225,9 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 			if (isReadOnly()) {
 				return false;
 			}
-			modelUpdating = true;
+			// modelUpdating = true;
 			setValue(editedValue);
-			modelUpdating = false;
+			// modelUpdating = false;
 			return true;
 		}
 		return false;

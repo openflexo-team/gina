@@ -77,36 +77,41 @@ public abstract class FIBFileWidgetImpl<C> extends FIBWidgetViewImpl<FIBFile, C,
 
 	}
 
+	/*@Override
+	protected void performUpdate() {
+		super.performUpdate();
+		updateWidgetFromModel();
+	}*/
+
 	@Override
 	public FileWidgetRenderingAdapter<C> getRenderingAdapter() {
 		return (FileWidgetRenderingAdapter) super.getRenderingAdapter();
 	}
 
 	@Override
-	public synchronized boolean updateWidgetFromModel() {
-		if (notEquals(getValue(), getSelectedFile())) {
-			widgetUpdating = true;
-			if (getValue() instanceof File) {
+	public File updateData() {
+		File newFile = super.updateData();
+		if (notEquals(newFile, getSelectedFile())) {
+			setSelectedFile(newFile);
+			// widgetUpdating = true;
+			/*if (getValue() instanceof File) {
 				setSelectedFile(getValue());
 			}
 			else if (getValue() == null) {
 				setSelectedFile(null);
-			}
-			widgetUpdating = false;
-			return true;
+			}*/
+			// widgetUpdating = false;
+			// return true;
 		}
-		return false;
+		// return false;
+		return newFile;
 	}
 
-	/**
-	 * Update the model given the actual state of the widget
-	 */
-	@Override
-	public synchronized boolean updateModelFromWidget() {
+	protected boolean fileChanged() {
 		if (notEquals(getValue(), getSelectedFile())) {
-			modelUpdating = true;
+			// modelUpdating = true;
 			setValue(getSelectedFile());
-			modelUpdating = false;
+			// modelUpdating = false;
 			return true;
 		}
 		return false;

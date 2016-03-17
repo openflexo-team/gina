@@ -75,8 +75,8 @@ import org.openflexo.gina.view.widget.browser.impl.FIBBrowserModel.BrowserCell;
  * 
  * @author sylvain
  */
-public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBrowser, C, T> implements
-		FIBBrowserWidget<C, T>, TreeSelectionListener {
+public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBrowser, C, T>
+		implements FIBBrowserWidget<C, T>, TreeSelectionListener {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBBrowserWidgetImpl.class.getPackage().getName());
 
@@ -93,8 +93,7 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 	private BindingValueListChangeListener<T, List<T>> selectionBindingValueChangeListener;
 	private BindingValueChangeListener<Object> rootBindingValueChangeListener;
 
-	public FIBBrowserWidgetImpl(FIBBrowser fibBrowser, FIBController controller,
-			BrowserRenderingAdapter<C, T> RenderingAdapter) {
+	public FIBBrowserWidgetImpl(FIBBrowser fibBrowser, FIBController controller, BrowserRenderingAdapter<C, T> RenderingAdapter) {
 		super(fibBrowser, controller, RenderingAdapter);
 
 		_footer = makeFooter();
@@ -103,9 +102,25 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 
 		// buildBrowser();
 
+		// listenSelectedValueChange();
+		// listenSelectionValueChange();
+		// listenRootValueChange();
+	}
+
+	@Override
+	protected void componentBecomesVisible() {
+		super.componentBecomesVisible();
 		listenSelectedValueChange();
 		listenSelectionValueChange();
 		listenRootValueChange();
+	}
+
+	@Override
+	protected void componentBecomesInvisible() {
+		super.componentBecomesInvisible();
+		stopListenSelectedValueChange();
+		stopListenSelectionValueChange();
+		stopListenRootValueChange();
 	}
 
 	public abstract FIBBrowserWidgetFooter<?, T> makeFooter();
@@ -121,8 +136,8 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 			selectedBindingValueChangeListener.delete();
 		}
 		if (getComponent().getSelected() != null && getComponent().getSelected().isValid()) {
-			selectedBindingValueChangeListener = new BindingValueChangeListener<T>((DataBinding<T>) getComponent()
-					.getSelected(), getBindingEvaluationContext()) {
+			selectedBindingValueChangeListener = new BindingValueChangeListener<T>((DataBinding<T>) getComponent().getSelected(),
+					getBindingEvaluationContext()) {
 
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
@@ -133,6 +148,14 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 				}
 
 			};
+		}
+	}
+
+	private void stopListenSelectedValueChange() {
+		if (selectedBindingValueChangeListener != null) {
+			selectedBindingValueChangeListener.stopObserving();
+			selectedBindingValueChangeListener.delete();
+			selectedBindingValueChangeListener = null;
 		}
 	}
 
@@ -157,6 +180,14 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		}
 	}
 
+	private void stopListenSelectionValueChange() {
+		if (selectionBindingValueChangeListener != null) {
+			selectionBindingValueChangeListener.stopObserving();
+			selectionBindingValueChangeListener.delete();
+			selectionBindingValueChangeListener = null;
+		}
+	}
+
 	private void listenRootValueChange() {
 		if (rootBindingValueChangeListener != null) {
 			rootBindingValueChangeListener.stopObserving();
@@ -177,6 +208,14 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 				}
 			};
 
+		}
+	}
+
+	private void stopListenRootValueChange() {
+		if (rootBindingValueChangeListener != null) {
+			rootBindingValueChangeListener.stopObserving();
+			rootBindingValueChangeListener.delete();
+			rootBindingValueChangeListener = null;
 		}
 	}
 
@@ -232,9 +271,11 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 	}
 
 	@Override
-	public synchronized boolean updateWidgetFromModel() {
-		// List valuesBeforeUpdating = getBrowserModel().getValues();
+	protected void performUpdate() {
+
 		Object wasSelected = getSelected();
+
+		super.performUpdate();
 
 		// boolean debug = false;
 		// if (getWidget().getName() != null &&
@@ -249,18 +290,18 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 				LOGGER.fine(getComponent().getName() + "  - Tree is currently editing");
 			}
 			getRenderingAdapter().cancelCellEditing(getTechnologyComponent());
-		} else {
+		}
+		else {
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine(getComponent().getName() + " - Tree is NOT currently edited ");
 			}
 		}
 
 		if (LOGGER.isLoggable(Level.FINE)) {
-			LOGGER.fine(getComponent().getName() + " updateWidgetFromModel() with " + getValue() + " dataObject="
-					+ getDataObject());
+			LOGGER.fine(getComponent().getName() + " updateWidgetFromModel() with " + getValue() + " dataObject=" + getDataObject());
 		}
 
-		boolean returned = processRootChanged();
+		processRootChanged();
 
 		/*
 		 * if (!getBrowser().getRootVisible() && ((BrowserCell)
@@ -292,7 +333,7 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		try {
 			T newSelectedObject = (T) getComponent().getSelected().getBindingValue(getBindingEvaluationContext());
 			if (newSelectedObject != null) {
-				if (returned = notEquals(newSelectedObject, getSelected())) {
+				if (notEquals(newSelectedObject, getSelected())) {
 					setSelected(newSelectedObject);
 				}
 			}
@@ -306,17 +347,22 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 
 		// }
 
-		return returned;
+		// return returned;
+
+		updateSelectionMode();
+		updateSelected(false);
+		updateSelection(false);
+
 	}
 
 	public TreeSelectionModel getTreeSelectionModel() {
 		return getRenderingAdapter().getTreeSelectionModel(getTechnologyComponent());
 	}
 
-	@Override
+	/*@Override
 	public synchronized boolean updateModelFromWidget() {
 		return false;
-	}
+	}*/
 
 	@Override
 	public void updateLanguage() {
@@ -379,7 +425,7 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		resetSelectionNoNotification();
 	}
 
-	@Override
+	/*@Override
 	public boolean update() {
 		super.update();
 		updateSelectionMode();
@@ -395,7 +441,7 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 			selectedBindingValueChangeListener.refreshObserving();
 		}
 		return true;
-	}
+	}*/
 
 	protected abstract void updateSelectionMode();
 
@@ -405,8 +451,7 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 			try {
 				if (getComponent().getSelected().isValid()
 						&& getComponent().getSelected().getBindingValue(getBindingEvaluationContext()) != null) {
-					T newSelectedObject = (T) getComponent().getSelected().getBindingValue(
-							getBindingEvaluationContext());
+					T newSelectedObject = (T) getComponent().getSelected().getBindingValue(getBindingEvaluationContext());
 					if (notEquals(newSelectedObject, getSelected()) || force) {
 						performSelect(newSelectedObject, force);
 					}
@@ -574,26 +619,27 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 
 		if (e.getNewLeadSelectionPath() == null || e.getNewLeadSelectionPath().getLastPathComponent() == null) {
 			newSelectedObject = null;
-		} else if (e.getNewLeadSelectionPath().getLastPathComponent() instanceof BrowserCell) {
-			newSelectedObject = (T) ((BrowserCell) e.getNewLeadSelectionPath().getLastPathComponent())
-					.getRepresentedObject();
+		}
+		else if (e.getNewLeadSelectionPath().getLastPathComponent() instanceof BrowserCell) {
+			newSelectedObject = (T) ((BrowserCell) e.getNewLeadSelectionPath().getLastPathComponent()).getRepresentedObject();
 			for (TreePath tp : e.getPaths()) {
 				if (tp.getLastPathComponent() instanceof BrowserCell) {
 					T obj = (T) ((BrowserCell) tp.getLastPathComponent()).getRepresentedObject();
-					if (obj != null
-							&& (getBrowser().getIteratorClass() == null || getBrowser().getIteratorClass()
-									.isAssignableFrom(obj.getClass()))) {
+					if (obj != null && (getBrowser().getIteratorClass() == null
+							|| getBrowser().getIteratorClass().isAssignableFrom(obj.getClass()))) {
 						if (e.isAddedPath(tp)) {
 							if (!newSelection.contains(obj)) {
 								newSelection.add(obj);
 							}
-						} else {
+						}
+						else {
 							newSelection.remove(obj);
 						}
 					}
 				}
 			}
-		} else {
+		}
+		else {
 			newSelectedObject = null;
 		}
 
@@ -604,10 +650,12 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 
 		if (newSelectedObject == null) {
 			setSelected(null);
-		} else if (getBrowser().getIteratorClass() == null
+		}
+		else if (getBrowser().getIteratorClass() == null
 				|| getBrowser().getIteratorClass().isAssignableFrom(newSelectedObject.getClass())) {
 			setSelected(newSelectedObject);
-		} else {
+		}
+		else {
 			// If selected element is not of expected class, set selected to be
 			// null
 			// (we want to be sure that selected is an instance of
@@ -649,9 +697,9 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 			FIBController ctrl = this.getController();
 			if (ctrl != null) {
 				ctrl.updateSelection(this, oldSelection, selection);
-			} else {
-				LOGGER.warning("INVESTIGATE: trying to update selection on a widget without controlller! "
-						+ this.toString());
+			}
+			else {
+				LOGGER.warning("INVESTIGATE: trying to update selection on a widget without controlller! " + this.toString());
 			}
 		}
 

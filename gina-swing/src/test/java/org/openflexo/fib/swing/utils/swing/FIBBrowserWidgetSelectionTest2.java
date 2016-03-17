@@ -57,17 +57,18 @@ import org.openflexo.fib.sampleData.Person;
 import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.container.FIBPanel;
+import org.openflexo.gina.model.container.FIBPanel.Border;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.model.container.layout.BorderLayoutConstraints;
+import org.openflexo.gina.model.container.layout.BorderLayoutConstraints.BorderLayoutLocation;
 import org.openflexo.gina.model.container.layout.GridBagLayoutConstraints;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
-import org.openflexo.gina.model.container.layout.BorderLayoutConstraints.BorderLayoutLocation;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBBrowserElement;
+import org.openflexo.gina.model.widget.FIBBrowserElement.FIBBrowserElementChildren;
 import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.gina.model.widget.FIBTextField;
-import org.openflexo.gina.model.widget.FIBBrowserElement.FIBBrowserElementChildren;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.gina.view.container.FIBPanelView;
 import org.openflexo.gina.view.widget.FIBBrowserWidget;
@@ -155,6 +156,8 @@ public class FIBBrowserWidgetSelectionTest2 extends FIBTestCase {
 
 		detailsPanel1 = newFIBPanel();
 		detailsPanel1.setLayout(Layout.twocols);
+		detailsPanel1.setBorder(Border.titled);
+		detailsPanel1.setBorderTitle("Detail Panel 1");
 
 		label1 = newFIBLabel("This detail panel represents a Jacky");
 		detailsPanel1.addToSubComponents(label1, new TwoColsLayoutConstraints(TwoColsLayoutLocation.center, false, false));
@@ -180,6 +183,8 @@ public class FIBBrowserWidgetSelectionTest2 extends FIBTestCase {
 
 		detailsPanel2 = newFIBPanel();
 		detailsPanel2.setLayout(Layout.twocols);
+		detailsPanel2.setBorder(Border.titled);
+		detailsPanel2.setBorderTitle("Detail Panel 2");
 
 		label2 = newFIBLabel("This detail panel represents a normal child");
 		detailsPanel2.addToSubComponents(label2, new TwoColsLayoutConstraints(TwoColsLayoutLocation.center, false, false));

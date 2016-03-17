@@ -198,13 +198,21 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	 * }
 	 */
 
-	@Override
+	/*@Override
 	public boolean update() {
 		super.update();
 		for (FIBView v : new ArrayList<FIBView>(subViewsMap.values())) {
 			v.update();
 		}
 		return true;
+	}*/
+
+	@Override
+	protected void performUpdate() {
+		super.performUpdate();
+		for (FIBView v : new ArrayList<FIBView>(subViewsMap.values())) {
+			v.update();
+		}
 	}
 
 	/*

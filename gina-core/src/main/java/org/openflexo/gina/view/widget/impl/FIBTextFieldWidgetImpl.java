@@ -52,13 +52,18 @@ import org.openflexo.gina.view.widget.FIBTextFieldWidget;
  */
 public abstract class FIBTextFieldWidgetImpl<C> extends FIBGenericTextWidgetImpl<FIBTextField, C>implements FIBTextFieldWidget<C> {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(FIBTextFieldWidgetImpl.class.getPackage().getName());
 
 	protected static final int DEFAULT_COLUMNS = 10;
 
-	public FIBTextFieldWidgetImpl(FIBTextField model, FIBController controller,
-			TextFieldRenderingAdapter<C> RenderingAdapter) {
+	public FIBTextFieldWidgetImpl(FIBTextField model, FIBController controller, TextFieldRenderingAdapter<C> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
+	}
+
+	@Override
+	protected void performUpdate() {
+		super.performUpdate();
 		updateColumns();
 	}
 

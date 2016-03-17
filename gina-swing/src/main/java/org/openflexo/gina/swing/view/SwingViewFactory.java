@@ -174,7 +174,8 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 			return returned;
 		}
 		if (returned != null) {
-			returned.updateGraphicalProperties();
+			// returned.updateGraphicalProperties();
+			returned.update();
 		}
 		// ((JFIBView) returned).getJComponent().revalidate();
 		return returned;
@@ -214,7 +215,8 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 				returned.getTechnologyComponent().setToolTipText(fibWidget.getTooltipText());
 			}
 		}
-		returned.updateGraphicalProperties();
+		// returned.updateGraphicalProperties();
+		returned.update();
 		return returned;
 	}
 

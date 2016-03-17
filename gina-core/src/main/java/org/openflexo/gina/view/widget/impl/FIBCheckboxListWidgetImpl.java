@@ -61,7 +61,19 @@ public abstract class FIBCheckboxListWidgetImpl<C, T> extends FIBMultipleValueWi
 
 	public FIBCheckboxListWidgetImpl(FIBCheckboxList model, FIBController controller, CheckboxListRenderingAdapter<C, T> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
+		// listenDataAsListValueChange();
+	}
+
+	@Override
+	protected void componentBecomesVisible() {
+		super.componentBecomesVisible();
 		listenDataAsListValueChange();
+	}
+
+	@Override
+	protected void componentBecomesInvisible() {
+		super.componentBecomesInvisible();
+		stopListenDataAsListValueChange();
 	}
 
 	@Override
@@ -91,14 +103,22 @@ public abstract class FIBCheckboxListWidgetImpl<C, T> extends FIBMultipleValueWi
 		}
 	}
 
-	@Override
+	private void stopListenDataAsListValueChange() {
+		if (listenerToDataAsListValue != null) {
+			listenerToDataAsListValue.stopObserving();
+			listenerToDataAsListValue.delete();
+			listenerToDataAsListValue = null;
+		}
+	}
+
+	/*@Override
 	public boolean update() {
 		super.update();
 		if (listenerToDataAsListValue != null) {
 			listenerToDataAsListValue.refreshObserving();
 		}
 		return true;
-	}
+	}*/
 
 	@Override
 	protected FIBMultipleValueModel<T> createMultipleValueModel() {
@@ -109,32 +129,34 @@ public abstract class FIBCheckboxListWidgetImpl<C, T> extends FIBMultipleValueWi
 	protected abstract void proceedToListModelUpdate();
 
 	@Override
-	public synchronized boolean updateWidgetFromModel() {
-		List<T> value = getValue();
-		if (notEquals(value, getSelectedValues()) /*|| listModelRequireChange()*/ || multipleValueModel == null) {
+	public List<T> updateData() {
+		List<T> newValue = super.updateData();
+		if (notEquals(newValue, getSelectedValues()) /*|| listModelRequireChange()*/ || multipleValueModel == null) {
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("updateWidgetFromModel()");
 			}
 
-			widgetUpdating = true;
-			setSelectedValues(value);
-			widgetUpdating = false;
-			return true;
+			// widgetUpdating = true;
+			setSelectedValues(newValue);
+			// widgetUpdating = false;
+			// return true;
 		}
-		return false;
+		// return false;
+		return newValue;
 	}
+
+	private boolean modelUpdating = false;
 
 	/**
 	 * Update the model given the actual state of the widget
 	 */
-	@Override
-	public synchronized boolean updateModelFromWidget() {
+	protected boolean selectionChanged() {
 		if (notEquals(getValue(), getSelectedValues())) {
 			modelUpdating = true;
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("updateModelFromWidget with " + getSelectedValues());
 			}
-			if (!widgetUpdating) {
+			if (!isUpdating()) {
 				setValue(getSelectedValues());
 			}
 			modelUpdating = false;

@@ -40,7 +40,6 @@
 package org.openflexo.gina.swing.view.widget;
 
 import java.awt.Color;
-import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -65,7 +64,7 @@ import org.openflexo.toolbox.ToolBox;
  * 
  * @author bmangez,sguerin
  */
-public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea> implements FocusListener, JFIBView<FIBTextArea, JTextArea> {
+public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea>implements FocusListener, JFIBView<FIBTextArea, JTextArea> {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBTextAreaWidget.class.getPackage().getName());
 
@@ -76,8 +75,8 @@ public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea> impleme
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingTextAreaRenderingAdapter extends SwingTextRenderingAdapter<JTextArea> implements
-			TextAreaRenderingAdapter<JTextArea> {
+	public static class SwingTextAreaRenderingAdapter extends SwingTextRenderingAdapter<JTextArea>
+			implements TextAreaRenderingAdapter<JTextArea> {
 
 		@Override
 		public int getColumns(JTextArea component) {
@@ -129,22 +128,25 @@ public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea> impleme
 		textArea.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				if (!validateOnReturn && !widgetUpdating) {
-					updateModelFromWidget();
+				if (!validateOnReturn && !isUpdating()) {
+					textChanged();
+					// updateModelFromWidget();
 				}
 			}
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				if (!validateOnReturn && !widgetUpdating) {
-					updateModelFromWidget();
+				if (!validateOnReturn && !isUpdating()) {
+					textChanged();
+					// updateModelFromWidget();
 				}
 			}
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				if (!validateOnReturn && !widgetUpdating) {
-					updateModelFromWidget();
+				if (!validateOnReturn && !isUpdating()) {
+					textChanged();
+					// updateModelFromWidget();
 				}
 			}
 		});
@@ -152,7 +154,8 @@ public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea> impleme
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					updateModelFromWidget();
+					textChanged();
+					// updateModelFromWidget();
 				}
 			}
 		});
@@ -177,9 +180,15 @@ public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea> impleme
 		return textArea;
 	}
 
-	@Override
+	/*@Override
 	public void focusGained(FocusEvent event) {
 		super.focusGained(event);
+		getTechnologyComponent().selectAll();
+	}*/
+
+	@Override
+	protected void componentGainsFocus() {
+		super.componentGainsFocus();
 		getTechnologyComponent().selectAll();
 	}
 

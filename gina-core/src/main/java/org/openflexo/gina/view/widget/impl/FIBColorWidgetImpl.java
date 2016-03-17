@@ -66,6 +66,12 @@ public abstract class FIBColorWidgetImpl<C> extends FIBWidgetViewImpl<FIBColor, 
 
 	public FIBColorWidgetImpl(FIBColor model, FIBController controller, ColorWidgetRenderingAdapter<C> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
+		// updateCheckboxVisibility();
+	}
+
+	@Override
+	protected void performUpdate() {
+		super.performUpdate();
 		updateCheckboxVisibility();
 	}
 
@@ -74,7 +80,7 @@ public abstract class FIBColorWidgetImpl<C> extends FIBWidgetViewImpl<FIBColor, 
 		return (ColorWidgetRenderingAdapter) super.getRenderingAdapter();
 	}
 
-	public final void updateCheckboxVisibility() {
+	protected final void updateCheckboxVisibility() {
 		getRenderingAdapter().setCheckboxVisible(getTechnologyComponent(), getWidget().getAllowsNull());
 	}
 
@@ -83,7 +89,8 @@ public abstract class FIBColorWidgetImpl<C> extends FIBWidgetViewImpl<FIBColor, 
 		GinaStackEvent stack = GENotifier
 				.raise(FIBEventFactory.getInstance().createValueEvent(FIBValueEventDescription.CHANGED, getValue().getRGB()));
 
-		updateModelFromWidget();
+		// updateModelFromWidget();
+		colorChanged();
 
 		stack.end();
 	}
@@ -94,31 +101,29 @@ public abstract class FIBColorWidgetImpl<C> extends FIBWidgetViewImpl<FIBColor, 
 	}
 
 	@Override
-	public synchronized boolean updateWidgetFromModel() {
+	public Color updateData() {
+		Color newColor = super.updateData();
 		Color editedObject = getSelectedColor();
 		if (!getRenderingAdapter().isCheckboxSelected(getTechnologyComponent())) {
 			editedObject = null;
 		}
-		if (notEquals(getValue(), editedObject)) {
-			widgetUpdating = true;
-			try {
-				getRenderingAdapter().setCheckboxSelected(getTechnologyComponent(), getValue() != null);
-				getRenderingAdapter().setCheckboxEnabled(getTechnologyComponent(),
-						(getValue() != null || !getWidget().getAllowsNull()) && isEnabled());
-				setSelectedColor(getValue());
-			} finally {
+		if (notEquals(newColor, editedObject)) {
+			// widgetUpdating = true;
+			// try {
+			getRenderingAdapter().setCheckboxSelected(getTechnologyComponent(), newColor != null);
+			getRenderingAdapter().setCheckboxEnabled(getTechnologyComponent(),
+					(newColor != null || !getWidget().getAllowsNull()) && isEnabled());
+			setSelectedColor(newColor);
+			/*} finally {
 				widgetUpdating = false;
-			}
-			return true;
+			}*/
+			// return true;
 		}
-		return false;
+		// return false;
+		return newColor;
 	}
 
-	/**
-	 * Update the model given the actual state of the widget
-	 */
-	@Override
-	public synchronized boolean updateModelFromWidget() {
+	protected boolean colorChanged() {
 		Color editedObject = null;
 		if (getRenderingAdapter().isCheckboxSelected(getTechnologyComponent())) {
 			editedObject = getSelectedColor();
@@ -127,12 +132,12 @@ public abstract class FIBColorWidgetImpl<C> extends FIBWidgetViewImpl<FIBColor, 
 			if (isReadOnly()) {
 				return false;
 			}
-			modelUpdating = true;
-			try {
-				setValue(editedObject);
-			} finally {
-				modelUpdating = false;
-			}
+			// modelUpdating = true;
+			// try {
+			setValue(editedObject);
+			// } finally {
+			// modelUpdating = false;
+			// }
 			return true;
 		}
 		return false;

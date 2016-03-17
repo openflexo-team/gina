@@ -62,12 +62,19 @@ public abstract class FIBTextAreaWidgetImpl<C> extends FIBGenericTextWidgetImpl<
 	}
 
 	@Override
+	protected void performUpdate() {
+		super.performUpdate();
+		updateColumns();
+		updateRows();
+	}
+
+	/*@Override
 	public boolean update() {
 		boolean returned = super.update();
 		updateColumns();
 		updateRows();
 		return returned;
-	}
+	}*/
 
 	@Override
 	public TextAreaRenderingAdapter<C> getRenderingAdapter() {

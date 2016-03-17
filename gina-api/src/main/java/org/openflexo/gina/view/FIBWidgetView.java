@@ -57,7 +57,7 @@ import org.openflexo.gina.model.FIBWidget;
  * A {@link FIBWidgetView} is a widget representing a particular data of type T<br>
  * Note that this view does not contains any sub-view
  * 
- * A default implementation is provided in this library, see {@link FIBContainerViewImpl}
+ * A default implementation is provided in this library, see {@link FIBWidgetViewImpl}
  * 
  * @author sylvain
  *
@@ -81,7 +81,17 @@ public interface FIBWidgetView<M extends FIBWidget, C, T>
 
 	public boolean hasValue();
 
-	public void updateData();
+	/**
+	 * This method is called whenever a notification has been raised, changing the value expressed by data binding (the value beeing
+	 * represented by this widget)<br>
+	 * This method first compute the value, set the dynamic value stored in this widget with this new value, and then update the widget with
+	 * the new computed value.<br>
+	 * 
+	 * This method should be overriden in sub-classes
+	 * 
+	 * @return the value as it has been computed from the model
+	 */
+	public T updateData();
 
 	public boolean isComponentEnabled();
 
@@ -104,14 +114,14 @@ public interface FIBWidgetView<M extends FIBWidget, C, T>
 	 * 
 	 * @return boolean indicating if changes were required or not
 	 */
-	public boolean updateWidgetFromModel();
+	// public boolean updateWidgetFromModel();
 
 	/**
 	 * Update the model given the actual state of the widget
 	 * 
 	 * @return boolean indicating if changes were required or not
 	 */
-	public boolean updateModelFromWidget();
+	// public boolean updateModelFromWidget();
 
 	public boolean isReadOnly();
 
