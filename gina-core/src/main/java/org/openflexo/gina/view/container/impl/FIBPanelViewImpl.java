@@ -71,7 +71,24 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 		layoutManager = makeFIBLayoutManager(model.getLayout());
 		layoutManager.setLayoutManager(getTechnologyComponent());
 		buildSubComponents();
+	}
+
+	@Override
+	protected void performUpdate() {
+		super.performUpdate();
 		updateBorder();
+	}
+
+	@Override
+	protected void componentBecomesVisible() {
+		System.out.println("************ Component " + getComponent() + " becomes VISIBLE !!!!!!");
+		super.componentBecomesVisible();
+	}
+
+	@Override
+	protected void componentBecomesInvisible() {
+		System.out.println("************ Component " + getComponent() + " becomes INVISIBLE !!!!!!");
+		super.componentBecomesInvisible();
 	}
 
 	@Override
@@ -108,7 +125,7 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 	@Override
 	public void updateLanguage() {
 		super.updateLanguage();
-		updateBorder();
+		update();
 	}
 
 	@Override

@@ -62,18 +62,18 @@ import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.model.container.layout.BorderLayoutConstraints;
+import org.openflexo.gina.model.container.layout.BorderLayoutConstraints.BorderLayoutLocation;
 import org.openflexo.gina.model.container.layout.GridBagLayoutConstraints;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
-import org.openflexo.gina.model.container.layout.BorderLayoutConstraints.BorderLayoutLocation;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.gina.model.widget.FIBDropDownColumn;
 import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.gina.model.widget.FIBLabelColumn;
+import org.openflexo.gina.model.widget.FIBNumber.NumberType;
 import org.openflexo.gina.model.widget.FIBNumberColumn;
 import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTextField;
 import org.openflexo.gina.model.widget.FIBTextFieldColumn;
-import org.openflexo.gina.model.widget.FIBNumber.NumberType;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.gina.swing.view.widget.JFIBTableWidget;
 import org.openflexo.gina.view.container.FIBPanelView;
@@ -267,18 +267,18 @@ public class FIBTableWidgetSelectionTest2 extends FIBTestCase {
 
 		assertFalse(details1.isViewVisible());
 		assertTrue(details2.isViewVisible());
-		assertEquals("Suzy", controller.viewForWidget(firstNameTF1).getData());
-		assertEquals("Smith", controller.viewForWidget(lastNameTF1).getData());
-		assertEquals("Suzy Smith", controller.viewForWidget(fullNameTF1).getData());
+		assertEquals("Suzy", controller.viewForWidget(firstNameTF2).getData());
+		assertEquals("Smith", controller.viewForWidget(lastNameTF2).getData());
+		assertEquals("Suzy Smith", controller.viewForWidget(fullNameTF2).getData());
 
 		w.getTechnologyComponent().getJTable().getSelectionModel().clearSelection();
 		w.getTechnologyComponent().getJTable().getSelectionModel().addSelectionInterval(2, 2);
 
 		assertTrue(details1.isViewVisible());
 		assertFalse(details2.isViewVisible());
-		assertEquals("Jacky1", controller.viewForWidget(firstNameTF2).getData());
-		assertEquals("Smith", controller.viewForWidget(lastNameTF2).getData());
-		assertEquals("Jacky1 Smith", controller.viewForWidget(fullNameTF2).getData());
+		assertEquals("Jacky1", controller.viewForWidget(firstNameTF1).getData());
+		assertEquals("Smith", controller.viewForWidget(lastNameTF1).getData());
+		assertEquals("Jacky1 Smith", controller.viewForWidget(fullNameTF1).getData());
 
 	}
 

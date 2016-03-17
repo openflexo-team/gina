@@ -120,6 +120,24 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		super.delete();
 	}
 
+	/**
+	 * Called when the component view explicitely change its visibility state from INVISIBLE to VISIBLE
+	 */
+	@Override
+	protected void componentBecomesVisible() {
+		// System.out.println("************ Component " + getComponent() + " becomes VISIBLE !!!!!!");
+		super.componentBecomesVisible();
+	}
+
+	/**
+	 * Called when the component view explicitely change its visibility state from VISIBLE to INVISIBLE
+	 */
+	@Override
+	protected void componentBecomesInvisible() {
+		System.out.println("************ Component " + getComponent() + " becomes INVISIBLE !!!!!!");
+		super.componentBecomesInvisible();
+	}
+
 	protected final void buildSubComponents() {
 		subViewsMap.clear();
 		internallyBuildChildComponents();

@@ -121,6 +121,7 @@ public class FIBBrowserWidgetSelectionTest2 extends FIBTestCase {
 	public void test1CreateComponent() {
 
 		component = newFIBPanel();
+		component.setName("Main");
 		component.setLayout(Layout.border);
 		component.setDataClass(Family.class);
 
@@ -155,6 +156,7 @@ public class FIBBrowserWidgetSelectionTest2 extends FIBTestCase {
 		browser.addToElements(personElement);
 
 		detailsPanel1 = newFIBPanel();
+		detailsPanel1.setName("DetailsPanel1");
 		detailsPanel1.setLayout(Layout.twocols);
 		detailsPanel1.setBorder(Border.titled);
 		detailsPanel1.setBorderTitle("Detail Panel 1");
@@ -179,9 +181,11 @@ public class FIBBrowserWidgetSelectionTest2 extends FIBTestCase {
 		fullNameTF1 = newFIBTextField();
 		fullNameTF1.setData(new DataBinding<String>("browser.selected.firstName + ' ' + browser.selected.lastName", fullNameTF1,
 				String.class, BindingDefinitionType.GET));
+		fullNameTF1.setReadOnly(true);
 		detailsPanel1.addToSubComponents(fullNameTF1, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
 
 		detailsPanel2 = newFIBPanel();
+		detailsPanel2.setName("DetailsPanel2");
 		detailsPanel2.setLayout(Layout.twocols);
 		detailsPanel2.setBorder(Border.titled);
 		detailsPanel2.setBorderTitle("Detail Panel 2");
@@ -206,6 +210,7 @@ public class FIBBrowserWidgetSelectionTest2 extends FIBTestCase {
 		fullNameTF2 = newFIBTextField();
 		fullNameTF2.setData(new DataBinding<String>("browser.selected.firstName + ' ' + browser.selected.lastName", fullNameTF2,
 				String.class, BindingDefinitionType.GET));
+		fullNameTF2.setReadOnly(true);
 		detailsPanel2.addToSubComponents(fullNameTF2, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
 
 		detailsPanel1.setVisible(new DataBinding<Boolean>("data.jackies.contains(browser.selected)", detailsPanel1, Boolean.class,
@@ -214,6 +219,7 @@ public class FIBBrowserWidgetSelectionTest2 extends FIBTestCase {
 				BindingDefinitionType.GET));
 
 		detailsContainerPanel = newFIBPanel();
+		detailsContainerPanel.setName("DetailsContainerPanel");
 		detailsContainerPanel.setLayout(Layout.gridbag);
 		detailsContainerPanel.addToSubComponents(detailsPanel1, new GridBagLayoutConstraints());
 		detailsContainerPanel.addToSubComponents(detailsPanel2, new GridBagLayoutConstraints());
@@ -230,6 +236,8 @@ public class FIBBrowserWidgetSelectionTest2 extends FIBTestCase {
 		assertTrue(lastNameTF2.getData().isValid());
 		assertTrue(fullNameTF2.getData().isValid());
 		assertTrue(detailsPanel2.getVisible().isValid());
+
+		// System.out.println("Component:" + component.getFactory().stringRepresentation(component));
 
 	}
 
@@ -271,18 +279,18 @@ public class FIBBrowserWidgetSelectionTest2 extends FIBTestCase {
 
 		assertFalse(details1.isViewVisible());
 		assertTrue(details2.isViewVisible());
-		assertEquals("Suzy", controller.viewForWidget(firstNameTF1).getData());
-		assertEquals("Smith", controller.viewForWidget(lastNameTF1).getData());
-		assertEquals("Suzy Smith", controller.viewForWidget(fullNameTF1).getData());
+		assertEquals("Suzy", controller.viewForWidget(firstNameTF2).getData());
+		assertEquals("Smith", controller.viewForWidget(lastNameTF2).getData());
+		assertEquals("Suzy Smith", controller.viewForWidget(fullNameTF2).getData());
 
 		w.resetSelection();
 		w.addToSelection(family.getChildren().get(2));
 
 		assertTrue(details1.isViewVisible());
 		assertFalse(details2.isViewVisible());
-		assertEquals("Jacky1", controller.viewForWidget(firstNameTF2).getData());
-		assertEquals("Smith", controller.viewForWidget(lastNameTF2).getData());
-		assertEquals("Jacky1 Smith", controller.viewForWidget(fullNameTF2).getData());
+		assertEquals("Jacky1", controller.viewForWidget(firstNameTF1).getData());
+		assertEquals("Smith", controller.viewForWidget(lastNameTF1).getData());
+		assertEquals("Jacky1 Smith", controller.viewForWidget(fullNameTF1).getData());
 
 	}
 

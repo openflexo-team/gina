@@ -105,7 +105,13 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent>implement
 	public JFIBPanelView(FIBPanel model, FIBController controller) {
 		super(model, controller, new SwingPanelRenderingAdapter());
 
-		updateBorder();
+		// updateBorder();
+	}
+
+	@Override
+	protected void performUpdate() {
+		// TODO Auto-generated method stub
+		super.performUpdate();
 	}
 
 	@Override

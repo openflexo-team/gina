@@ -195,11 +195,13 @@ public class SwingGraphicalContextDelegate implements ChangeListener {
 			try {
 				super.dispatchEvent(e);
 			} catch (Exception exception) {
-				for (StackTraceElement el : exception.getStackTrace()) {
-					System.out.println(el.toString());
-					System.err.println(el.toString());
+				logger.info("Unexpected exception " + exception);
+				exception.printStackTrace();
+				/*for (StackTraceElement el : exception.getStackTrace()) {
+					// System.out.println(el.toString());
+					// System.err.println(el.toString());
 					logger.info(el.toString());
-				}
+				}*/
 				// exception.printStackTrace();
 				if (handleException(exception)) {
 					this.exception = exception;

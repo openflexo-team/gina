@@ -115,9 +115,9 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		variables = new HashMap<FIBVariable<?>, Object>();
 		variableListeners = new HashMap<FIBVariable<?>, BindingValueChangeListener<?>>();
 
-		// startListeningVariableValueChange();
-		// listenVisibleValueChange();
-
+		// VERY IMPORTANT: we do it now and not later during update scheme because otherwise, we do not have any
+		// chance to be notified of a visibility change !!!
+		listenVisibleValueChange();
 	}
 
 	@Override
@@ -152,18 +152,36 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	 * Called when the component view explicitely change its visibility state from INVISIBLE to VISIBLE
 	 */
 	protected void componentBecomesVisible() {
+
 		// System.out.println("************ Component " + getComponent() + " becomes VISIBLE !!!!!!");
+
+		if (getParentView() != null) {
+			getParentView().updateLayout();
+		}
+
+		// Restart listen component variables
 		startListeningVariablesValueChange();
-		listenVisibleValueChange();
+
+		// VERY IMPORTANT: this was done in the constructor !
+		// listenVisibleValueChange();
 	}
 
 	/**
 	 * Called when the component view explicitely change its visibility state from VISIBLE to INVISIBLE
 	 */
 	protected void componentBecomesInvisible() {
+
 		// System.out.println("************ Component " + getComponent() + " becomes INVISIBLE !!!!!!");
+
+		if (getParentView() != null) {
+			getParentView().updateLayout();
+		}
+
+		// Don't listen anymore to component variables
 		stopListeningVariablesValueChange();
-		stopListenVisibleValueChange();
+
+		// BIG TRICK: don't do it, otherwise you have no chance to be notified of a visibility change
+		// DONT DO THAT: stopListenVisibleValueChange();
 	}
 
 	/*protected void hiddenComponentBecomesVisible() {
@@ -264,9 +282,10 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, Boolean newValue) {
-					System.out.println(" bindingValueChanged() detected for visible=" + getComponent().getVisible() + " with newValue="
-							+ newValue + " source=" + source);
+					System.out.println("In component " + getComponent() + " bindingValueChanged() detected for visible="
+							+ getComponent().getVisible() + " with newValue=" + newValue + " source=" + source);
 					updateVisibility();
+					refreshObserving();
 				}
 
 				@Override
