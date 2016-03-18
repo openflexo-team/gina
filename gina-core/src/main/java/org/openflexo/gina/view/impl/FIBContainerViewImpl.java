@@ -70,7 +70,7 @@ import org.openflexo.gina.view.FIBView;
  * @param <C2>
  *            type of technology-specific component beeing contained by this view
  */
-public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extends FIBViewImpl<M, C>implements FIBContainerView<M, C, C2> {
+public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extends FIBViewImpl<M, C> implements FIBContainerView<M, C, C2> {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBContainerViewImpl.class.getPackage().getName());
 
@@ -125,8 +125,27 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	 */
 	@Override
 	protected void componentBecomesVisible() {
-		// System.out.println("************ Component " + getComponent() + " becomes VISIBLE !!!!!!");
+
+		// When a container becomes visible, we have to update all contained components, because they
+		// were disactivated
+
+		// System.out.println("************ BEGIN Component " + getComponent() + " becomes VISIBLE !!!!!!");
 		super.componentBecomesVisible();
+
+		// Update properties of current container
+		// (do not call update() otherwise a new verification of visibility will be done)
+		performUpdate();
+
+		// Then iterate on all children, and update them
+		if (subViewsMap != null) {
+			for (FIBView v : new ArrayList<FIBView>(subViewsMap.values())) {
+				if (!v.isDeleted()) {
+					// System.out.println("Updating " + v.getComponent());
+					v.update();
+				}
+			}
+		}
+		// System.out.println("************ END Component " + getComponent() + " becomes VISIBLE !!!!!!");
 	}
 
 	/**
@@ -134,7 +153,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	 */
 	@Override
 	protected void componentBecomesInvisible() {
-		System.out.println("************ Component " + getComponent() + " becomes INVISIBLE !!!!!!");
+		// System.out.println("************ Component " + getComponent() + " becomes INVISIBLE !!!!!!");
 		super.componentBecomesInvisible();
 	}
 

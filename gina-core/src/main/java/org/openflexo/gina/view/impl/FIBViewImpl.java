@@ -277,8 +277,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, Boolean newValue) {
-					System.out.println("In component " + getComponent() + " bindingValueChanged() detected for visible="
-							+ getComponent().getVisible() + " with newValue=" + newValue + " source=" + source);
+					// System.out.println("In component " + getComponent() + " bindingValueChanged() detected for visible="
+					// + getComponent().getVisible() + " with newValue=" + newValue + " source=" + source);
 					updateVisibility();
 					// refreshObserving();
 				}
@@ -555,18 +555,17 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		if (isComponentVisible() != visible) {
 			visible = !visible;
 			getRenderingAdapter().setVisible(getTechnologyComponent(), visible);
+			setVisible(visible);
 			if (visible) {
 				componentBecomesVisible();
 			}
 			else {
 				componentBecomesInvisible();
 			}
-			setVisible(visible);
 
 			if (getParentView() != null) {
-				System.out.println("Relayout de " + getParentView().getComponent() + " a cause de " + getComponent()
-						+ " qui devient visible=" + visible);
 				getParentView().invalidateAndUpdateLayoutLater();
+
 			}
 
 		}

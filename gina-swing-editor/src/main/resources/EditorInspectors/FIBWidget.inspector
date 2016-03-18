@@ -6,9 +6,10 @@
 			darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
 			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
-			<Label name="ValueLabel" label="value" index="0" constraints="twocols(location=left)"
-				localize="true" />
-			<Custom name="ValueBinding" index="1" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+			<Label name="ValueLabel" label="value" index="0"
+				constraints="twocols(location=left)" localize="true" />
+			<Custom name="ValueBinding" index="1"
+				componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 				localize="true" manageDynamicModel="true" data="data.data"
 				constraints="twocols(expandHorizontally=true;location=right)">
 				<Assignment variable="component.bindable" value="data" />
@@ -20,6 +21,16 @@
 				constraints="twocols(expandHorizontally=true;location=right)">
 				<Assignment variable="component.bindable" value="data" />
 			</Custom>
+			<CheckBox index="16" selected="false" data="data.readOnly"
+				constraints="twocols(location=left)" localize="true" />
+			<Label index="17" label="read_only_component"
+				constraints="twocols(expandHorizontally=true;location=right)"
+				localize="true" />
+		</Tab>
+		<Tab title="Widget" layout="twocols" titleFont="SansSerif,0,11"
+			darkLevel="0" index="1" font="SansSerif,0,11" useScrollBar="true"
+			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab">
 			<Label index="14" label="format" constraints="twocols(location=left)"
 				localize="true" />
 			<Custom index="15" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
@@ -27,11 +38,6 @@
 				constraints="twocols(expandHorizontally=true;location=right)">
 				<Assignment variable="component.bindable" value="data.formatter" />
 			</Custom>
-			<CheckBox index="16" selected="false" data="data.readOnly"
-				constraints="twocols(location=left)" localize="true" />
-			<Label index="17" label="read_only_component"
-				constraints="twocols(expandHorizontally=true;location=right)"
-				localize="true" />
 			<CheckBox index="18" selected="false" data="data.localize"
 				constraints="twocols(location=left)" localize="true" />
 			<Label index="19" label="localize_component"
@@ -49,21 +55,16 @@
 			<TextField index="23" data="data.tooltipText"
 				constraints="twocols(expandHorizontally=true;location=right)"
 				localize="true" columns="15" />
-		</Tab>
-		<Tab title="Advanced" layout="twocols" titleFont="SansSerif,0,11"
-			darkLevel="0" index="1" font="SansSerif,0,11" useScrollBar="true"
-			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
-			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab">
-			<Label label="value_transform" constraints="twocols(location=left)"
+			<Label index="30" label="value_transform" constraints="twocols(location=left)"
 				localize="true" />
-			<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+			<Custom index="31" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 				localize="true" manageDynamicModel="true" data="data.valueTransform"
 				constraints="twocols(expandHorizontally=true;location=right)">
 				<Assignment variable="component.bindable" value="data.valueBindable" />
 			</Custom>
-			<Label label="value_validator" constraints="twocols(location=left)"
+			<Label index="32" label="value_validator" constraints="twocols(location=left)"
 				localize="true" />
-			<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+			<Custom index="33" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 				localize="true" manageDynamicModel="true" data="data.valueValidator"
 				constraints="twocols(expandHorizontally=true;location=right)">
 				<Assignment variable="component.bindable" value="data.valueBindable" />
@@ -73,9 +74,11 @@
 			darkLevel="0" index="2" font="SansSerif,0,11" useScrollBar="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
 			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="ControlsTab">
-			<CheckBox name="DynamicModelCB" selected="false" data="data.manageDynamicModel"
-				constraints="twocols(location=left)" localize="true" />
-			<Label name="DynamicModelLabel" label="dynamic_model" constraints="twocols(expandHorizontally=true;location=right)"
+			<CheckBox name="DynamicModelCB" selected="false"
+				data="data.manageDynamicModel" constraints="twocols(location=left)"
+				localize="true" />
+			<Label name="DynamicModelLabel" label="dynamic_model"
+				constraints="twocols(expandHorizontally=true;location=right)"
 				localize="true" />
 			<Label label="click_action" constraints="twocols(location=left)"
 				localize="true" />
@@ -112,6 +115,11 @@
 				constraints="twocols(expandHorizontally=true;location=right)">
 				<Assignment variable="component.bindable" value="data" />
 			</Custom>
+		</Tab>
+		<Tab title="Advanced" layout="twocols" titleFont="SansSerif,0,11"
+			darkLevel="0" index="5" font="SansSerif,0,11" useScrollBar="true"
+			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab2">
 		</Tab>
 		<!-- <Tab title="Doc" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" 
 			index="6" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" 

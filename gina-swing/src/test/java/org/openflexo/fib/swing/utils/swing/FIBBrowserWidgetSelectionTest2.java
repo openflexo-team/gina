@@ -223,6 +223,9 @@ public class FIBBrowserWidgetSelectionTest2 extends FIBTestCase {
 		detailsContainerPanel.setLayout(Layout.gridbag);
 		detailsContainerPanel.addToSubComponents(detailsPanel1, new GridBagLayoutConstraints());
 		detailsContainerPanel.addToSubComponents(detailsPanel2, new GridBagLayoutConstraints());
+		/*detailsContainerPanel.setLayout(Layout.twocols);
+		detailsContainerPanel.addToSubComponents(detailsPanel1, new TwoColsLayoutConstraints(TwoColsLayoutLocation.center, true, true));
+		detailsContainerPanel.addToSubComponents(detailsPanel2, new TwoColsLayoutConstraints(TwoColsLayoutLocation.center, true, true));*/
 
 		component.addToSubComponents(browser, new BorderLayoutConstraints(BorderLayoutLocation.west));
 		component.addToSubComponents(detailsContainerPanel, new BorderLayoutConstraints(BorderLayoutLocation.center));

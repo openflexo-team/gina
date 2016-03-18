@@ -129,6 +129,8 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 			subComponentView.getRenderingAdapter().setVisible(subComponentView.getTechnologyComponent(), subComponentView.isViewVisible());
 			// }
 		}
+
+		getContainerView().getRenderingAdapter().revalidateAndRepaint(getContainerView().getTechnologyComponent());
 	}
 
 	protected abstract void performAddChild(FIBView<?, C2> childView, CC constraints);
