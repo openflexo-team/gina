@@ -241,6 +241,9 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	public static final String VARIABLES_KEY = "variables";
 
 	public static final String DEFAULT_DATA_VARIABLE = "data";
+	public static final String DEFINE_PREFERRED_DIMENSIONS = "definePreferredDimensions";
+	public static final String DEFINE_MAX_DIMENSIONS = "defineMaxDimensions";
+	public static final String DEFINE_MIN_DIMENSIONS = "defineMinDimensions";
 
 	@Override
 	@Getter(value = PARENT_KEY/* , inverse = FIBContainer.SUB_COMPONENTS_KEY */)
@@ -1710,6 +1713,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 					setHeight(100);
 				}
 				else {
+					clearTemporarySize();
 					setWidth(null);
 					setHeight(null);
 				}
@@ -1736,6 +1740,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				setMaxWidth(null);
 				setMaxHeight(null);
 			}
+			notifyChange("defineMaxDimensions", !defineMaxDimensions(), defineMaxDimensions());
 		}
 
 		@Override
@@ -1760,6 +1765,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				setMinWidth(null);
 				setMinHeight(null);
 			}
+			notifyChange("defineMinDimensions", !defineMinDimensions(), defineMinDimensions());
 		}
 
 		private Vector<FIBDependancy> explicitDependancies;

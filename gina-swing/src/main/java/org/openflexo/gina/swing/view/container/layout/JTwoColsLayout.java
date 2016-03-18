@@ -138,8 +138,9 @@ public class JTwoColsLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Two
 					new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false));
 		}
 
-		if (twoColsConstraints.getLocation() == TwoColsLayoutLocation.right && ((lastAddedChild == null)
-				|| (lastAddedChild != null && lastAddedChild.getConstraints() instanceof TwoColsLayoutConstraints
+		if (childView.isViewVisible() && twoColsConstraints.getLocation() == TwoColsLayoutLocation.right
+				&& ((lastAddedChild == null) || (lastAddedChild != null
+						&& lastAddedChild.getConstraints() instanceof TwoColsLayoutConstraints
 						&& ((TwoColsLayoutConstraints) lastAddedChild.getConstraints()).getLocation() == TwoColsLayoutLocation.right))) {
 			Component glue = Box.createHorizontalGlue();
 			_addChildToContainerWithConstraints(glue, getContainerView().getTechnologyComponent(),
@@ -163,7 +164,6 @@ public class JTwoColsLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Two
 			if (lastComponent.getConstraints() instanceof TwoColsLayoutConstraints) {
 				TwoColsLayoutConstraints contraints = (TwoColsLayoutConstraints) lastComponent.getConstraints();
 				if (contraints.getLocation() == TwoColsLayoutLocation.left) {
-					System.out.println("On doit rajouter de la glue");
 					// We have to add an extra glue at the end of last component if this one was declared as in LEFT position
 					Component glue = Box.createHorizontalGlue();
 					_addChildToContainerWithConstraints(glue, getContainerView().getTechnologyComponent(),

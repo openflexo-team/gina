@@ -43,7 +43,9 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Insets;
+import java.awt.RenderingHints;
 
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -105,24 +107,27 @@ public class RoundedBorder implements Border {
 		if (titled) {
 			if (textFont != null) {
 				g.setFont(textFont);
-			} else {
+			}
+			else {
 				g.setFont(UIManager.getFont("TitledBorder.font"));
 			}
 			if (textColor != null) {
 				g.setColor(textColor);
 			}
+			RenderingHints rh = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			((Graphics2D) g).setRenderingHints(rh);
 			g.drawString(title, LEFT + 5, TOP - 3);
 		}
 		g.drawImage(FIBIconLibrary.ROUND_PANEL_BORDER_TOP_LEFT.getImage(), LEFT, TOP, null);
 		g.drawImage(FIBIconLibrary.ROUND_PANEL_BORDER_TOP.getImage(), 2 + LEFT, TOP, c.getWidth() - 4 - LEFT - RIGHT, 4, null);
 		g.drawImage(FIBIconLibrary.ROUND_PANEL_BORDER_TOP_RIGHT.getImage(), c.getWidth() - 3 - RIGHT, TOP, null);
 		g.drawImage(FIBIconLibrary.ROUND_PANEL_BORDER_BOTTOM_LEFT.getImage(), LEFT, c.getHeight() - 2 - BOTTOM, null);
-		g.drawImage(FIBIconLibrary.ROUND_PANEL_BORDER_BOTTOM.getImage(), 2 + LEFT, c.getHeight() - 2 - BOTTOM, c.getWidth() - 3 - LEFT
-				- RIGHT, 2, null);
+		g.drawImage(FIBIconLibrary.ROUND_PANEL_BORDER_BOTTOM.getImage(), 2 + LEFT, c.getHeight() - 2 - BOTTOM,
+				c.getWidth() - 3 - LEFT - RIGHT, 2, null);
 		g.drawImage(FIBIconLibrary.ROUND_PANEL_BORDER_BOTTOM_RIGHT.getImage(), c.getWidth() - 2 - RIGHT, c.getHeight() - 2 - BOTTOM, null);
 		g.drawImage(FIBIconLibrary.ROUND_PANEL_BORDER_LEFT.getImage(), LEFT, 4 + TOP, 2, c.getHeight() - 6 - TOP - BOTTOM, null);
-		g.drawImage(FIBIconLibrary.ROUND_PANEL_BORDER_RIGHT.getImage(), c.getWidth() - 2 - RIGHT, 4 + TOP, 2, c.getHeight() - 6 - TOP
-				- BOTTOM, null);
+		g.drawImage(FIBIconLibrary.ROUND_PANEL_BORDER_RIGHT.getImage(), c.getWidth() - 2 - RIGHT, 4 + TOP, 2,
+				c.getHeight() - 6 - TOP - BOTTOM, null);
 		g.setColor(new Color(229 - darkLevel * 5, 229 - darkLevel * 5, 229 - darkLevel * 5));
 		// g.setColor(Color.RED);
 		g.fillRect(2 + LEFT, 5 + TOP, c.getWidth() - 4 - LEFT - RIGHT, c.getHeight() - 7 - TOP - BOTTOM);

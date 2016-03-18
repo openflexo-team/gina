@@ -163,6 +163,11 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 		// VERY IMPORTANT: this was done in the constructor !
 		// listenVisibleValueChange();
+
+		// Update properties of current component
+		// (do not call update() otherwise a new verification of visibility will be done)
+		performUpdate();
+
 	}
 
 	/**
@@ -204,23 +209,46 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			stopListenVariableValueChange(variable);
 		}
 
+		if (getComponent().getName() != null && getComponent().getName().equals("BorderConstraints")) {
+			System.out.println("On se met a ecouter la variable " + variable.getName() + " qui vaut " + variable.getValue());
+		}
+
 		if (variable.getValue() != null && variable.getValue().isValid()) {
 			dataBindingValueChangeListener = new BindingValueChangeListener<T>(variable.getValue(), getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
-					// System.out.println(" bindingValueChanged() detected for data="
-					// + getComponent().getData() + " with newValue="
-					// + newValue + " source=" + source);
-
+					// System.out.println(" bindingValueChanged() detected for data=" + variable.getValue() + " with newValue=" + newValue
+					// + " source=" + source);
 					setVariableValue(variable, newValue);
 				}
 			};
 			variableListeners.put(variable, dataBindingValueChangeListener);
+
+			// We force a first computing and notification of the value of variable
+			try {
+				T newValue = variable.getValue().getBindingValue(getBindingEvaluationContext());
+				setVariableValue(variable, newValue);
+			} catch (TypeMismatchException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NullReferenceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		}
+
 	}
 
 	@SuppressWarnings("unchecked")
 	private <T> void stopListenVariableValueChange(final FIBVariable<T> variable) {
+
+		if (getComponent().getName() != null && getComponent().getName().equals("BorderConstraints")) {
+			System.out.println("On n'ecoute plus la variable " + variable.getName() + " qui vaut " + variable.getValue());
+		}
 
 		BindingValueChangeListener<T> dataBindingValueChangeListener = (BindingValueChangeListener<T>) variableListeners.get(variable);
 
@@ -760,11 +788,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals(FIBComponent.CONSTRAINTS_KEY) || evt.getPropertyName().equals(FIBComponent.WIDTH_KEY)
-				|| evt.getPropertyName().equals(FIBComponent.HEIGHT_KEY) || evt.getPropertyName().equals(FIBComponent.MIN_WIDTH_KEY)
-				|| evt.getPropertyName().equals(FIBComponent.MIN_HEIGHT_KEY) || evt.getPropertyName().equals(FIBComponent.MAX_WIDTH_KEY)
-				|| evt.getPropertyName().equals(FIBComponent.MAX_HEIGHT_KEY)
-				|| evt.getPropertyName().equals(FIBComponent.USE_SCROLL_BAR_KEY)
+		if (evt.getPropertyName().equals(FIBComponent.CONSTRAINTS_KEY) || evt.getPropertyName().equals(FIBComponent.USE_SCROLL_BAR_KEY)
 				|| evt.getPropertyName().equals(FIBComponent.HORIZONTAL_SCROLLBAR_POLICY_KEY)
 				|| evt.getPropertyName().equals(FIBComponent.VERTICAL_SCROLLBAR_POLICY_KEY)) {
 			if (getParentView() != null) {
@@ -772,6 +796,27 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			}
 			// FIBEditorController controller = getEditorController();
 			// controller.notifyFocusedAndSelectedObject();
+		}
+		else if (evt.getPropertyName().equals(FIBComponent.MIN_WIDTH_KEY) || evt.getPropertyName().equals(FIBComponent.MIN_HEIGHT_KEY)
+				|| evt.getPropertyName().equals(FIBComponent.DEFINE_MIN_DIMENSIONS)) {
+			updateMinimumSize();
+			if (getParentView() != null) {
+				getParentView().updateLayout();
+			}
+		}
+		else if (evt.getPropertyName().equals(FIBComponent.WIDTH_KEY) || evt.getPropertyName().equals(FIBComponent.HEIGHT_KEY)
+				|| evt.getPropertyName().equals(FIBComponent.DEFINE_PREFERRED_DIMENSIONS)) {
+			updatePreferredSize();
+			if (getParentView() != null) {
+				getParentView().updateLayout();
+			}
+		}
+		else if (evt.getPropertyName().equals(FIBComponent.MAX_WIDTH_KEY) || evt.getPropertyName().equals(FIBComponent.MAX_HEIGHT_KEY)
+				|| evt.getPropertyName().equals(FIBComponent.DEFINE_MAX_DIMENSIONS)) {
+			updateMaximumSize();
+			if (getParentView() != null) {
+				getParentView().updateLayout();
+			}
 		}
 		else if (evt.getPropertyName().equals(FIBComponent.FONT_KEY)) {
 			updateFont();

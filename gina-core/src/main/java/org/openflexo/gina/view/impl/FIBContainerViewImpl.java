@@ -132,10 +132,6 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		// System.out.println("************ BEGIN Component " + getComponent() + " becomes VISIBLE !!!!!!");
 		super.componentBecomesVisible();
 
-		// Update properties of current container
-		// (do not call update() otherwise a new verification of visibility will be done)
-		performUpdate();
-
 		// Then iterate on all children, and update them
 		if (subViewsMap != null) {
 			for (FIBView v : new ArrayList<FIBView>(subViewsMap.values())) {
