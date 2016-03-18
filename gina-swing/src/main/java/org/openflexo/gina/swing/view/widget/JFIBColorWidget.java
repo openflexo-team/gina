@@ -40,6 +40,7 @@
 package org.openflexo.gina.swing.view.widget;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -142,7 +143,8 @@ public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>
 			checkBox = new JCheckBox();
 			checkBox.setHorizontalTextPosition(JCheckBox.LEADING);
 
-			checkBox.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "transparent", checkBox));
+			checkBox.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, widget.getComponent().getAllowsNullText(),
+					checkBox));
 			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
 
 			checkBox.addActionListener(new ActionListener() {
@@ -175,6 +177,10 @@ public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>
 			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
 		}
 
+		public void updateFont(Font font) {
+			checkBox.setFont(font);
+		}
+
 	}
 
 	public JFIBColorWidget(FIBColor model, FIBController controller) {
@@ -205,6 +211,12 @@ public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>
 	public void updateLanguage() {
 		super.updateLanguage();
 		getTechnologyComponent().updateLanguage();
+	}
+
+	@Override
+	public void updateFont() {
+		super.updateFont();
+		getTechnologyComponent().updateFont(getFont());
 	}
 
 }

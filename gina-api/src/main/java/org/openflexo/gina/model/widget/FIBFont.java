@@ -42,9 +42,7 @@ package org.openflexo.gina.model.widget;
 import java.awt.Font;
 import java.lang.reflect.Type;
 
-import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.gina.model.FIBWidget;
-import org.openflexo.gina.model.FIBWidget.FIBWidgetImpl;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -62,6 +60,8 @@ public interface FIBFont extends FIBWidget {
 	public static final String SAMPLE_TEXT_KEY = "sampleText";
 	@PropertyIdentifier(type = boolean.class)
 	public static final String ALLOWS_NULL_KEY = "allowsNull";
+	@PropertyIdentifier(type = String.class)
+	public static final String ALLOWS_NULL_TEXT_KEY = "allowsNullText";
 
 	@Getter(value = SAMPLE_TEXT_KEY)
 	@XMLAttribute
@@ -77,14 +77,14 @@ public interface FIBFont extends FIBWidget {
 	@Setter(ALLOWS_NULL_KEY)
 	public void setAllowsNull(boolean allowsNull);
 
+	@Getter(value = ALLOWS_NULL_TEXT_KEY)
+	@XMLAttribute
+	public String getAllowsNullText();
+
+	@Setter(ALLOWS_NULL_TEXT_KEY)
+	public void setAllowsNullText(String allowsNullText);
+
 	public static abstract class FIBFontImpl extends FIBWidgetImpl implements FIBFont {
-
-		private String sampleText = "Sample for this font";
-
-		private boolean allowsNull = false;
-
-		public FIBFontImpl() {
-		}
 
 		@Override
 		public String getBaseName() {
@@ -97,17 +97,12 @@ public interface FIBFont extends FIBWidget {
 		}
 
 		@Override
-		public boolean getAllowsNull() {
-			return allowsNull;
-		}
-
-		@Override
-		public void setAllowsNull(boolean allowsNull) {
-			FIBPropertyNotification<Boolean> notification = requireChange(ALLOWS_NULL_KEY, allowsNull);
-			if (notification != null) {
-				this.allowsNull = allowsNull;
-				hasChanged(notification);
+		public String getAllowsNullText() {
+			String returned = (String) performSuperGetter(ALLOWS_NULL_TEXT_KEY);
+			if (returned == null) {
+				return "define_color";
 			}
+			return returned;
 		}
 
 		/**
@@ -115,16 +110,12 @@ public interface FIBFont extends FIBWidget {
 		 */
 		@Override
 		public String getSampleText() {
-			return sampleText;
+			String returned = (String) performSuperGetter(SAMPLE_TEXT_KEY);
+			if (returned == null) {
+				return "sample_for_this_font";
+			}
+			return returned;
 		}
 
-		/**
-		 * @param sampleText
-		 *            the sampleText to set
-		 */
-		@Override
-		public void setSampleText(String sampleText) {
-			this.sampleText = sampleText;
-		}
 	}
 }

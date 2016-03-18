@@ -77,9 +77,11 @@
 			darkLevel="0" index="4" font="SansSerif,0,11" useScrollBar="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
 			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="GraphicsTab">
-			<Panel layout="twocols" border="rounded3d" borderTitle="Border"
+			<Label name="BorderLabel" label="border" constraints="twocols(location=left;insetsTop=15)"
+				localize="true" />
+			<Panel layout="twocols" border="rounded3d"
 				borderTop="2" borderBottom="2" borderRight="2" titleFont="SansSerif,0,11"
-				darkLevel="1" constraints="twocols(expandHorizontally=true;location=center)"
+				darkLevel="1" constraints="twocols(expandHorizontally=true;location=right;insetsTop=10;insetsRight=10)"
 				name="BorderPanel">
 				<Label label="border" constraints="twocols(location=left)"
 					localize="true" />
@@ -104,7 +106,7 @@
 				<Number numberType="IntegerType" columns="3" data="data.darkLevel"
 					constraints="twocols(location=right)" visible="(data.border = &quot;rounded3d&quot;)"
 					localize="true" />
-				<Panel layout="flow" hGap="5" vGap="0" flowAlignment="LEADING"
+				<Panel layout="flow" hGap="0" vGap="0" flowAlignment="LEADING"
 					titleFont="SansSerif,0,11" darkLevel="0"
 					constraints="twocols(expandHorizontally=true;location=center)"
 					visible="((data.border = &quot;empty&quot;) | (data.border = &quot;rounded3d&quot;))">

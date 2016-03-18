@@ -42,9 +42,7 @@ package org.openflexo.gina.model.widget;
 import java.awt.Color;
 import java.lang.reflect.Type;
 
-import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.gina.model.FIBWidget;
-import org.openflexo.gina.model.FIBWidget.FIBWidgetImpl;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -60,6 +58,8 @@ public interface FIBColor extends FIBWidget {
 
 	@PropertyIdentifier(type = boolean.class)
 	public static final String ALLOWS_NULL_KEY = "allowsNull";
+	@PropertyIdentifier(type = String.class)
+	public static final String ALLOWS_NULL_TEXT_KEY = "allowsNullText";
 
 	@Getter(value = ALLOWS_NULL_KEY, defaultValue = "false")
 	@XMLAttribute
@@ -68,9 +68,16 @@ public interface FIBColor extends FIBWidget {
 	@Setter(ALLOWS_NULL_KEY)
 	public void setAllowsNull(boolean allowsNull);
 
+	@Getter(value = ALLOWS_NULL_TEXT_KEY)
+	@XMLAttribute
+	public String getAllowsNullText();
+
+	@Setter(ALLOWS_NULL_TEXT_KEY)
+	public void setAllowsNullText(String allowsNullText);
+
 	public static abstract class FIBColorImpl extends FIBWidgetImpl implements FIBColor {
 
-		private boolean allowsNull = false;
+		// private boolean allowsNull = false;
 
 		public FIBColorImpl() {
 		}
@@ -85,11 +92,11 @@ public interface FIBColor extends FIBWidget {
 			return Color.class;
 		}
 
-		@Override
+		/*@Override
 		public boolean getAllowsNull() {
 			return allowsNull;
 		}
-
+		
 		@Override
 		public void setAllowsNull(boolean allowsNull) {
 			FIBPropertyNotification<Boolean> notification = requireChange(ALLOWS_NULL_KEY, allowsNull);
@@ -97,6 +104,15 @@ public interface FIBColor extends FIBWidget {
 				this.allowsNull = allowsNull;
 				hasChanged(notification);
 			}
+		}*/
+
+		@Override
+		public String getAllowsNullText() {
+			String returned = (String) performSuperGetter(ALLOWS_NULL_TEXT_KEY);
+			if (returned == null) {
+				return "define_color";
+			}
+			return returned;
 		}
 
 	}

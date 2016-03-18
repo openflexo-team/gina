@@ -656,6 +656,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		}
 		if (getComponent().getOpaque() != null) {
 			renderingAdapter.setOpaque(getTechnologyComponent(), getComponent().getOpaque());
+			getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
 		}
 	}
 
@@ -724,18 +725,16 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		if (getComponent() == null) {
 			return;
 		}
-		if (getComponent().getBackgroundColor() != null) {
-			getRenderingAdapter().setBackgroundColor(getTechnologyComponent(), getComponent().getBackgroundColor());
-		}
+		getRenderingAdapter().setBackgroundColor(getTechnologyComponent(), getComponent().getBackgroundColor());
+		getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
 	}
 
 	protected void updateForegroundColor() {
 		if (getComponent() == null) {
 			return;
 		}
-		if (getComponent().getForegroundColor() != null) {
-			getRenderingAdapter().setForegroundColor(getTechnologyComponent(), getComponent().getForegroundColor());
-		}
+		getRenderingAdapter().setForegroundColor(getTechnologyComponent(), getComponent().getForegroundColor());
+		getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
 	}
 
 	public static boolean equals(Object o1, Object o2) {
@@ -822,6 +821,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			updateFont();
 		}
 		else if (evt.getPropertyName().equals(FIBComponent.BACKGROUND_COLOR_KEY)) {
+			System.out.println("Hop, on update le background avec " + getComponent().getBackgroundColor());
 			updateBackgroundColor();
 		}
 		else if (evt.getPropertyName().equals(FIBComponent.FOREGROUND_COLOR_KEY)) {

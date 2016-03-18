@@ -69,7 +69,7 @@ import org.openflexo.swing.FontSelector;
  * 
  * @author sylvain
  */
-public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel>implements FocusListener, JFIBView<FIBFont, FontSelectorPanel> {
+public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel> implements FocusListener, JFIBView<FIBFont, FontSelectorPanel> {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBFontWidget.class.getPackage().getName());
 
@@ -141,7 +141,8 @@ public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel>implemen
 			checkBox = new JCheckBox();
 			checkBox.setHorizontalTextPosition(JCheckBox.LEADING);
 
-			checkBox.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "transparent", checkBox));
+			checkBox.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, widget.getComponent().getAllowsNullText(),
+					checkBox));
 			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
 
 			checkBox.addActionListener(new ActionListener() {

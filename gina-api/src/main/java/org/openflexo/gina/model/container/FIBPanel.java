@@ -319,10 +319,10 @@ public interface FIBPanel extends FIBContainer {
 		private Border border = Border.empty;
 		private Color borderColor = null;
 		private String borderTitle = null;
-		private Integer borderTop = null;
-		private Integer borderBottom = null;
-		private Integer borderLeft = null;
-		private Integer borderRight = null;
+		private Integer borderTop = 0;
+		private Integer borderBottom = 0;
+		private Integer borderLeft = 0;
+		private Integer borderRight = 0;
 
 		private Font titleFont = null;
 		private int darkLevel = 0;
