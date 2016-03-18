@@ -235,6 +235,10 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 				}
 			}
 		}
+		if (layoutIsInvalid) {
+			updateLayout();
+			layoutIsInvalid = false;
+		}
 	}
 
 	/*
@@ -351,6 +355,23 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 
 	@Override
 	public abstract void updateLayout();
+
+	private boolean layoutIsInvalid = false;
+
+	@Override
+	public void invalidateAndUpdateLayoutLater() {
+		layoutIsInvalid = true;
+		// TODO: avoid when possible
+		/*SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				if (layoutIsInvalid) {
+					updateLayout();
+					layoutIsInvalid = false;
+				}
+			}
+		});*/
+	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {

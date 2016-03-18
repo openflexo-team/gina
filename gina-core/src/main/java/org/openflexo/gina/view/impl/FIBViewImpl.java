@@ -566,7 +566,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			if (getParentView() != null) {
 				System.out.println("Relayout de " + getParentView().getComponent() + " a cause de " + getComponent()
 						+ " qui devient visible=" + visible);
-				getParentView().updateLayout();
+				getParentView().invalidateAndUpdateLayoutLater();
 			}
 
 		}

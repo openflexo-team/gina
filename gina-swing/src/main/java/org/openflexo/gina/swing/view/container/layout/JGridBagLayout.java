@@ -88,12 +88,19 @@ public class JGridBagLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Gri
 		c.weighty = gridBagConstraints.getWeightY();
 		c.anchor = gridBagConstraints.getAnchor().getAnchor();
 		c.fill = gridBagConstraints.getFill().getFill();
-		c.insets = new Insets(gridBagConstraints.getInsetsTop(), gridBagConstraints.getInsetsLeft(),
-				gridBagConstraints.getInsetsBottom(), gridBagConstraints.getInsetsRight());
+		c.insets = new Insets(gridBagConstraints.getInsetsTop(), gridBagConstraints.getInsetsLeft(), gridBagConstraints.getInsetsBottom(),
+				gridBagConstraints.getInsetsRight());
 		c.ipadx = gridBagConstraints.getPadX();
 		c.ipady = gridBagConstraints.getPadY();
 
 		getContainerView().getTechnologyComponent().add(addedJComponent, c);
 
 	}
+
+	@Override
+	public void doLayout() {
+		super.doLayout();
+		getContainerView().getRenderingAdapter().revalidateAndRepaint(getContainerView().getTechnologyComponent());
+	}
+
 }

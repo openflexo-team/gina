@@ -174,7 +174,7 @@ public class JFIBTabPanelView extends FIBTabPanelViewImpl<JTabbedPane, JComponen
 		getTechnologyComponent().removeAll();
 		buildSubComponents();
 
-		update();
+		// update();
 
 		index = Math.min(index, getTechnologyComponent().getTabCount() - 1);
 		if (index > -1) {

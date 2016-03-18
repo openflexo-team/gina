@@ -152,7 +152,7 @@ public class JFIBSplitPanelView extends FIBSplitPanelViewImpl<JXMultiSplitPane, 
 		buildSubComponents();
 		// updateDataObject(getDataObject());
 
-		update();
+		// update();
 
 		getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
 
