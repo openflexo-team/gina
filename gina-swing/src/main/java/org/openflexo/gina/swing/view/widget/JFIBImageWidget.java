@@ -40,8 +40,12 @@
 package org.openflexo.gina.swing.view.widget;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.image.ImageObserver;
 import java.util.logging.Logger;
 
@@ -63,7 +67,7 @@ import org.openflexo.gina.view.widget.impl.FIBImageWidgetImpl;
  * 
  * @author sylvain
  */
-public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel> implements ImageObserver, JFIBView<FIBImage, JLabel> {
+public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel>implements ImageObserver, JFIBView<FIBImage, JLabel> {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBImageWidget.class.getPackage().getName());
 
@@ -73,7 +77,7 @@ public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel> implements Image
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingImageRenderingAdapter extends SwingRenderingAdapter<JLabel> implements ImageRenderingAdapter<JLabel> {
+	public static class SwingImageRenderingAdapter extends SwingRenderingAdapter<JLabel>implements ImageRenderingAdapter<JLabel> {
 
 		@Override
 		public Image getImage(JLabel component, FIBImageWidget<JLabel> widget) {
@@ -131,16 +135,66 @@ public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel> implements Image
 		return getRenderingAdapter().getResultingJComponent(this);
 	}
 
+	// private Dimension size;
+
+	// private boolean imageResizeRequested = false;
+
 	@Override
 	protected JLabel makeTechnologyComponent() {
-		JLabel labelWidget = new JLabel() {
+
+		// We implement here a special scheme to listen to resize events that request for a given size
+		// We do that for image size adaptation schemes
+		final JLabel labelWidget = new JLabel() {
 			@Override
-			public void setSize(Dimension d) {
-				System.out.println("Called setSize() in image");
-				Thread.dumpStack();
-				super.setSize(d);
+			public Dimension getPreferredSize() {
+				// System.out.println("Preferred size for " + getSize() + " return " + super.getPreferredSize());
+				/*if (size != null) {
+					return size;
+				}*/
+				return super.getPreferredSize();
 			}
 		};
+
+		labelWidget.addComponentListener(new ComponentListener() {
+
+			@Override
+			public void componentShown(ComponentEvent e) {
+			}
+
+			@Override
+			public void componentResized(ComponentEvent e) {
+				Rectangle b = (e.getSource() != null ? ((Component) e.getSource()).getBounds() : null);
+				// size = b.getSize();
+				updateImageSizeAdjustment();
+
+				/*System.out.println("Resize called");
+				
+				if (!imageResizeRequested) {
+					System.out.println("OK je demande de mettre a jour");
+					imageResizeRequested = true;
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							if (imageResizeRequested) {
+								System.out.println("On met a jour pour de vrai");
+								updateImageSizeAdjustment();
+								imageResizeRequested = false;
+							}
+						}
+					});
+				}*/
+
+			}
+
+			@Override
+			public void componentMoved(ComponentEvent e) {
+			}
+
+			@Override
+			public void componentHidden(ComponentEvent e) {
+			}
+		});
+
 		labelWidget.setFocusable(false); // There is not much point in giving
 											// focus to a label since there is
 											// no KeyBindings nor KeyListener
@@ -193,6 +247,12 @@ public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel> implements Image
 				double ratio = widthRatio < heightRatio ? widthRatio : heightRatio;
 				int newWidth = (int) (imageWidth * ratio);
 				int newHeight = (int) (imageHeight * ratio);
+				if (newWidth <= 0) {
+					newWidth = 1;
+				}
+				if (newHeight <= 0) {
+					newHeight = 1;
+				}
 				return new ImageIcon(image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH));
 			case AdjustDimensions:
 				return new ImageIcon(
