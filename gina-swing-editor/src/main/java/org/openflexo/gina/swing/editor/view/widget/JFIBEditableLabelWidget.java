@@ -138,6 +138,11 @@ public class JFIBEditableLabelWidget extends JFIBLabelWidget implements FIBSwing
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
+		// System.out.println("Received event " + evt);
+		/*if (evt.getPropertyName().equals(FIBLabel.LABEL_KEY)) {
+			updateLabel();
+			relayoutParentBecauseLabelChanged();
+		}*/
 		if (((EditableJLabelPanel) getTechnologyComponent()).isEditing()) {
 			return;
 		}
