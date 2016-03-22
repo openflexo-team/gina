@@ -40,6 +40,7 @@
 package org.openflexo.gina.swing.view.widget;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.image.ImageObserver;
 import java.util.logging.Logger;
@@ -132,7 +133,14 @@ public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel> implements Image
 
 	@Override
 	protected JLabel makeTechnologyComponent() {
-		JLabel labelWidget = new JLabel();
+		JLabel labelWidget = new JLabel() {
+			@Override
+			public void setSize(Dimension d) {
+				System.out.println("Called setSize() in image");
+				Thread.dumpStack();
+				super.setSize(d);
+			}
+		};
 		labelWidget.setFocusable(false); // There is not much point in giving
 											// focus to a label since there is
 											// no KeyBindings nor KeyListener

@@ -74,6 +74,7 @@ public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, 
 		super.performUpdate();
 		updateAlign();
 		updateImageFile();
+		updateImageSizeAdjustment();
 		// updateImage();
 		// TODO: Check this
 		// This is a quick and dirty fixed caused by a deadlock
