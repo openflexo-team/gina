@@ -62,7 +62,7 @@ import org.openflexo.gina.view.widget.impl.FIBLabelWidgetImpl;
  * 
  * @author sylvain
  */
-public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel> implements JFIBView<FIBLabel, JLabelPanel> {
+public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel>implements JFIBView<FIBLabel, JLabelPanel> {
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(JFIBLabelWidget.class.getPackage().getName());
 
@@ -73,8 +73,7 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel> implements 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingLabelRenderingAdapter extends SwingRenderingAdapter<JLabelPanel>
-			implements LabelRenderingAdapter<JLabelPanel> {
+	public static class SwingLabelRenderingAdapter extends SwingRenderingAdapter<JLabelPanel>implements LabelRenderingAdapter<JLabelPanel> {
 
 		@Override
 		public String getText(JLabelPanel component) {
@@ -163,7 +162,7 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel> implements 
 			this.widget = widget;
 			setOpaque(false);
 			label = new JLabel("");
-			// label.setFocusable(false);
+			label.setFocusable(false);
 			setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, TOP_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
 					RIGHT_COMPENSATING_BORDER));
 			add(label, BorderLayout.CENTER);

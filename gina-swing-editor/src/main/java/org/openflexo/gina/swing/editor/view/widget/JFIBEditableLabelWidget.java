@@ -69,6 +69,30 @@ public class JFIBEditableLabelWidget extends JFIBLabelWidget implements FIBSwing
 
 	private final FIBSwingEditableViewDelegate<FIBLabel, JLabelPanel> delegate;
 
+	/**
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JLabel in edition mode<br>
+	 * (based on generic SwingTextRenderingAdapter)
+	 * 
+	 * @author sylvain
+	 * 
+	 */
+	public static class EditableSwingLabelRenderingAdapter extends SwingLabelRenderingAdapter
+			implements LabelRenderingAdapter<JLabelPanel> {
+
+		@Override
+		public String getText(JLabelPanel component) {
+			return component.getLabel().getText();
+		}
+
+		@Override
+		public void setText(JLabelPanel component, String aText) {
+			System.out.println("??????? quelqu'un fait un set avec " + aText);
+			super.setText(component, aText);
+			((EditableJLabelPanel) component).getTextField().setText(aText);
+		}
+
+	}
+
 	private final FIBEditorController editorController;
 
 	@Override
@@ -184,21 +208,25 @@ public class JFIBEditableLabelWidget extends JFIBLabelWidget implements FIBSwing
 			return isEditing;
 		}
 
+		public JTextField getTextField() {
+			return textField;
+		}
+
 		protected void startEdition() {
-			System.out.println("Hop, on edite le truc");
+			// System.out.println("Start edition for" + getWidget().getComponent().getLabel());
 			remove(getLabel());
-			textField.setText(getLabel().getText());
+			textField.setText(getWidget().getComponent().getLabel());
 			textField.setFont(getLabel().getFont());
 			add(textField, BorderLayout.CENTER);
-			textField.selectAll();
+			// textField.selectAll();
 			getWidget().getRenderingAdapter().revalidateAndRepaint(this);
 			isEditing = true;
 		}
 
 		protected void endEdition() {
-			System.out.println("Fin d'edition du truc");
+			// System.out.println("End edition du truc for " + getWidget().getComponent().getLabel());
 			remove(textField);
-			getLabel().setText(textField.getText());
+			getLabel().setText(getWidget().getComponent().getLabel());
 			getLabel().setFont(textField.getFont());
 			add(getLabel(), BorderLayout.CENTER);
 			getWidget().getRenderingAdapter().revalidateAndRepaint(this);
@@ -206,7 +234,7 @@ public class JFIBEditableLabelWidget extends JFIBLabelWidget implements FIBSwing
 		}
 
 		protected void labelChanged() {
-			// System.out.println("New label: " + textField.getText());
+			// System.out.println("labelChanged() called");
 			getWidget().getComponent().setLabel(textField.getText());
 			getParent().revalidate();
 			getParent().repaint();
