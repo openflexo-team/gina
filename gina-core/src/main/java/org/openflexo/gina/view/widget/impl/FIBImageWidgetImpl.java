@@ -59,7 +59,7 @@ import org.openflexo.swing.ImageUtils;
  * 
  * @author sylvain
  */
-public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, C, Image>implements FIBImageWidget<C> {
+public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, C, Image> implements FIBImageWidget<C> {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBImageWidgetImpl.class.getPackage().getName());
 
@@ -132,10 +132,11 @@ public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, 
 
 	@Override
 	public Image updateData() {
-		Image newImage = super.updateData();
+		Image dataImage = super.updateData();
 		if (getWidget().getData().isValid()) {
-			updateImageDefaultSize(newImage);
-			getRenderingAdapter().setImage(getTechnologyComponent(), newImage, this);
+			originalImage = dataImage;
+			updateImageDefaultSize(originalImage);
+			getRenderingAdapter().setImage(getTechnologyComponent(), originalImage, this);
 		}
 		/*else if (getWidget().getImageFile() != null) {
 			if (getWidget().getImageFile().exists()) {
@@ -144,15 +145,27 @@ public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, 
 				getRenderingAdapter().setImage(getTechnologyComponent(), image, this);
 			}
 		}*/
-		return newImage;
+		return originalImage;
+	}
+
+	private Image originalImage;
+
+	protected void updateImageSizeAdjustment() {
+		// System.out.println("originalImage = " + originalImage);
+		if (originalImage != null) {
+			updateImageDefaultSize(originalImage);
+			getRenderingAdapter().setImage(getTechnologyComponent(), originalImage, this);
+		}
 	}
 
 	protected void updateImageFile() {
 		if (getWidget().getImageFile() != null) {
+			// System.out.println("imageFile=" + getWidget().getImageFile() + " exists=" + getWidget().getImageFile().exists());
 			if (getWidget().getImageFile().exists()) {
-				Image image = ImageUtils.loadImageFromFile(getWidget().getImageFile());
-				updateImageDefaultSize(image);
-				getRenderingAdapter().setImage(getTechnologyComponent(), image, this);
+				originalImage = ImageUtils.loadImageFromFile(getWidget().getImageFile());
+				// System.out.println("set image: " + originalImage);
+				updateImageDefaultSize(originalImage);
+				getRenderingAdapter().setImage(getTechnologyComponent(), originalImage, this);
 			}
 		}
 	}
@@ -165,8 +178,13 @@ public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, 
 		if ((evt.getPropertyName().equals(FIBImage.ALIGN_KEY))) {
 			updateAlign();
 		}
-		else if ((evt.getPropertyName().equals(FIBImage.IMAGE_FILE_KEY)) || (evt.getPropertyName().equals(FIBImage.SIZE_ADJUSTMENT_KEY))
-				|| (evt.getPropertyName().equals(FIBImage.IMAGE_HEIGHT_KEY)) || (evt.getPropertyName().equals(FIBImage.IMAGE_WIDTH_KEY))) {
+		else if (evt.getPropertyName().equals(FIBImage.IMAGE_FILE_KEY)) {
+			updateImageFile();
+			relayoutParentBecauseImageChanged();
+		}
+		else if ((evt.getPropertyName().equals(FIBImage.SIZE_ADJUSTMENT_KEY)) || (evt.getPropertyName().equals(FIBImage.IMAGE_HEIGHT_KEY))
+				|| (evt.getPropertyName().equals(FIBImage.IMAGE_WIDTH_KEY))) {
+			updateImageSizeAdjustment();
 			relayoutParentBecauseImageChanged();
 		}
 		super.propertyChange(evt);
@@ -174,7 +192,9 @@ public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, 
 
 	protected void relayoutParentBecauseImageChanged() {
 		FIBContainerView<?, ?, ?> parentView = getParentView();
-		parentView.updateLayout();
+		if (parentView != null) {
+			parentView.updateLayout();
+		}
 		// FIBEditorController controller = getEditorController();
 		// controller.notifyFocusedAndSelectedObject();
 	}

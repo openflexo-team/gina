@@ -59,6 +59,7 @@ import org.openflexo.gina.model.FIBModelFactory;
 import org.openflexo.gina.model.bindings.FIBBindingFactory;
 import org.openflexo.model.exceptions.InvalidDataException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;
 
 final public class FIBLibrary {
@@ -92,7 +93,7 @@ final public class FIBLibrary {
 	public static FIBLibrary instance() {
 		if (_current == null) {
 			createInstance();
-			
+
 			// TODO GinaManager.getInstance().setup();
 		}
 		return _current;
@@ -122,7 +123,7 @@ final public class FIBLibrary {
 			return null;
 		}
 	}
-
+	
 	public FIBComponent retrieveFIBComponent(File fibFile, boolean useCache, FIBModelFactory factory) {
 		if (!fibFile.exists()) {
 			logger.warning("FIB file does not exists: " + fibFile);
@@ -209,7 +210,13 @@ final public class FIBLibrary {
 		if (!useCache || _fibDefinitions.get(fibIdentifier) == null) {
 
 			try {
-				FIBModelFactory factory = new FIBModelFactory();
+				FIBModelFactory factory;
+				if (fibIdentifier instanceof FileResourceImpl) {
+					factory = new FIBModelFactory(((FileResourceImpl) fibIdentifier).getFile().getParentFile());
+				}
+				else {
+					factory = new FIBModelFactory();
+				}
 
 				FIBComponent component = (FIBComponent) factory.deserialize(inputStream);
 				component.setLastModified(new Date());
