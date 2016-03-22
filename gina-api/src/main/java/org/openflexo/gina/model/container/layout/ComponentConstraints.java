@@ -120,11 +120,12 @@ public abstract class ComponentConstraints extends Hashtable<String, String> {
 
 	@Override
 	public synchronized String put(String key, String value) {
+		// String oldValue = get(key);
 		String returned = super.put(key, value);
 
 		if (component != null && !ignoreNotif) {
 			FIBPropertyNotification<ComponentConstraints> notification = new FIBPropertyNotification<ComponentConstraints>(
-					(FIBProperty<ComponentConstraints>) FIBProperty.getFIBProperty(FIBComponent.class, FIBComponent.CONSTRAINTS_KEY), this,
+					(FIBProperty<ComponentConstraints>) FIBProperty.getFIBProperty(FIBComponent.class, FIBComponent.CONSTRAINTS_KEY), null,
 					this);
 			component.notify(notification);
 		}
@@ -137,7 +138,7 @@ public abstract class ComponentConstraints extends Hashtable<String, String> {
 	public String getStringValue(String key, String defaultValue) {
 		String stringValue = get(key);
 		if (stringValue == null) {
-			LOGGER.info("Ben je trouve pas....... pourtant=" + this);
+			// LOGGER.info("Ben je trouve pas....... pourtant=" + this);
 			ignoreNotif = true;
 			setStringValue(key, defaultValue);
 			ignoreNotif = false;

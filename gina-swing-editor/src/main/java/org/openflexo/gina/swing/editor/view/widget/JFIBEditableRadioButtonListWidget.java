@@ -41,6 +41,8 @@ package org.openflexo.gina.swing.editor.view.widget;
 
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
+
 import org.openflexo.gina.model.widget.FIBRadioButtonList;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
@@ -58,6 +60,11 @@ public class JFIBEditableRadioButtonListWidget<T> extends JFIBRadioButtonListWid
 	private final FIBSwingEditableViewDelegate<FIBRadioButtonList, JRadioButtonPanel<T>> delegate;
 
 	private final FIBEditorController editorController;
+
+	@Override
+	public JComponent getDraggableComponent() {
+		return getTechnologyComponent();
+	}
 
 	@Override
 	public FIBEditorController getEditorController() {

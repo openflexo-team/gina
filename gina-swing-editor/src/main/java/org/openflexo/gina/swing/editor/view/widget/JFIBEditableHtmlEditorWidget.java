@@ -41,6 +41,8 @@ package org.openflexo.gina.swing.editor.view.widget;
 
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
+
 import org.openflexo.gina.model.widget.FIBHtmlEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
@@ -50,7 +52,8 @@ import org.openflexo.logging.FlexoLogger;
 
 import com.metaphaseeditor.MetaphaseEditorPanel;
 
-public class JFIBEditableHtmlEditorWidget extends JFIBHtmlEditorWidget implements FIBSwingEditableView<FIBHtmlEditor, MetaphaseEditorPanel> {
+public class JFIBEditableHtmlEditorWidget extends JFIBHtmlEditorWidget
+		implements FIBSwingEditableView<FIBHtmlEditor, MetaphaseEditorPanel> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableHtmlEditorWidget.class.getPackage().getName());
@@ -58,6 +61,11 @@ public class JFIBEditableHtmlEditorWidget extends JFIBHtmlEditorWidget implement
 	private final FIBSwingEditableViewDelegate<FIBHtmlEditor, MetaphaseEditorPanel> delegate;
 
 	private final FIBEditorController editorController;
+
+	@Override
+	public JComponent getDraggableComponent() {
+		return getTechnologyComponent();
+	}
 
 	@Override
 	public FIBEditorController getEditorController() {

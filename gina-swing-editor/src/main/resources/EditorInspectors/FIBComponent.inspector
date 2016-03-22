@@ -143,11 +143,11 @@
 				constraints="twocols(expandHorizontally=true;location=right;insetsTop=0;insetsRight=10)"
 				visible="((data.parent != null) &amp; (data.parent.layout = &quot;twocols&quot;))"
 				opaque="false" name="TwoColsConstraints">
-				<Label label="index" constraints="twocols(location=left)"
+				<!--  <Label label="index" constraints="twocols(location=left)"
 					localize="true" />
 				<Number numberType="IntegerType" data="TwoColsConstraints.data.index"
 					constraints="twocols(location=right)" name="twoColsConstraintsIndex"
-					localize="true" />
+					localize="true" /> -->
 				<Label label="location" constraints="twocols(location=left)"
 					localize="true" />
 				<DropDown data="TwoColsConstraints.data.location"

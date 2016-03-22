@@ -77,6 +77,11 @@ public class JFIBEditablePanelView extends JFIBPanelView implements FIBSwingEdit
 	private final FIBEditorController editorController;
 
 	@Override
+	public JComponent getDraggableComponent() {
+		return getTechnologyComponent();
+	}
+
+	@Override
 	public FIBEditorController getEditorController() {
 		return editorController;
 	}

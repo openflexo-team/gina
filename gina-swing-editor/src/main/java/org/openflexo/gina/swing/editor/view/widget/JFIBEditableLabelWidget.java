@@ -49,6 +49,7 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -80,6 +81,11 @@ public class JFIBEditableLabelWidget extends JFIBLabelWidget implements FIBSwing
 		this.editorController = editorController;
 
 		delegate = new FIBSwingEditableViewDelegate<FIBLabel, JLabelPanel>(this);
+	}
+
+	@Override
+	public JComponent getDraggableComponent() {
+		return getTechnologyComponent().getLabel();
 	}
 
 	@Override

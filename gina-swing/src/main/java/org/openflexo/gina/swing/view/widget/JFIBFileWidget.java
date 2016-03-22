@@ -222,6 +222,10 @@ public class JFIBFileWidget extends FIBFileWidgetImpl<FileSelectorPanel> impleme
 			}
 		}
 
+		public JTextField getCurrentDirectoryLabel() {
+			return currentDirectoryLabel;
+		}
+
 	}
 
 	/**

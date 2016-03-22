@@ -103,7 +103,14 @@ public abstract class PlaceHolder {
 		return "PlaceHolder:[" + text + "]";
 	}
 
-	public abstract void insertComponent(FIBComponent newComponent);
+	/**
+	 * Insert supplied component in placeholder<br>
+	 * If this is a move, originalIndex stores the index of component when move was initialized
+	 * 
+	 * @param newComponent
+	 * @param originalIndex
+	 */
+	public abstract void insertComponent(FIBComponent newComponent, int originalIndex);
 
 	public void willDelete() {
 	}

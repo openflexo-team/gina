@@ -226,7 +226,7 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 			try {
 				if (!isTabInsertion && ph != null) {
 					ph.willDelete();
-					ph.insertComponent(newComponent);
+					ph.insertComponent(newComponent, -1);
 					ph.hasDeleted();
 					return true;
 				}

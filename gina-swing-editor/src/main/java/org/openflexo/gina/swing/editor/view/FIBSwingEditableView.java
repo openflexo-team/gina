@@ -62,4 +62,10 @@ public interface FIBSwingEditableView<M extends FIBComponent, J extends JCompone
 
 	public FIBSwingEditableViewDelegate<M, J> getDelegate();
 
+	/**
+	 * Return JComponent on which drag and drop is to be applied
+	 * 
+	 * @return
+	 */
+	public JComponent getDraggableComponent();
 }

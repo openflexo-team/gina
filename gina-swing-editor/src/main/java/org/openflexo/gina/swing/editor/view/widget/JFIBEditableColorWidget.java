@@ -41,6 +41,8 @@ package org.openflexo.gina.swing.editor.view.widget;
 
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
+
 import org.openflexo.gina.model.widget.FIBColor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
@@ -57,6 +59,11 @@ public class JFIBEditableColorWidget extends JFIBColorWidget implements FIBSwing
 	private final FIBSwingEditableViewDelegate<FIBColor, ColorSelectorPanel> delegate;
 
 	private final FIBEditorController editorController;
+
+	@Override
+	public JComponent getDraggableComponent() {
+		return getTechnologyComponent();
+	}
 
 	@Override
 	public FIBEditorController getEditorController() {

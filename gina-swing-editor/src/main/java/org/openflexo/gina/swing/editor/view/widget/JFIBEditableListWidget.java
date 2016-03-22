@@ -41,6 +41,7 @@ package org.openflexo.gina.swing.editor.view.widget;
 
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
 import javax.swing.JList;
 
 import org.openflexo.gina.model.widget.FIBList;
@@ -50,7 +51,7 @@ import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate;
 import org.openflexo.gina.swing.view.widget.JFIBListWidget;
 import org.openflexo.logging.FlexoLogger;
 
-public class JFIBEditableListWidget<T> extends JFIBListWidget<T>implements FIBSwingEditableView<FIBList, JList<T>> {
+public class JFIBEditableListWidget<T> extends JFIBListWidget<T> implements FIBSwingEditableView<FIBList, JList<T>> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableListWidget.class.getPackage().getName());
@@ -58,6 +59,11 @@ public class JFIBEditableListWidget<T> extends JFIBListWidget<T>implements FIBSw
 	private final FIBSwingEditableViewDelegate<FIBList, JList<T>> delegate;
 
 	private final FIBEditorController editorController;
+
+	@Override
+	public JComponent getDraggableComponent() {
+		return getTechnologyComponent();
+	}
 
 	@Override
 	public FIBEditorController getEditorController() {

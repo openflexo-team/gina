@@ -42,6 +42,7 @@ package org.openflexo.gina.swing.editor.view.widget;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 
 import org.openflexo.gina.model.widget.FIBButton;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
@@ -57,6 +58,11 @@ public class JFIBEditableButtonWidget extends JFIBButtonWidget implements FIBSwi
 	private final FIBSwingEditableViewDelegate<FIBButton, JButton> delegate;
 
 	private final FIBEditorController editorController;
+
+	@Override
+	public JComponent getDraggableComponent() {
+		return getTechnologyComponent();
+	}
 
 	@Override
 	public FIBEditorController getEditorController() {

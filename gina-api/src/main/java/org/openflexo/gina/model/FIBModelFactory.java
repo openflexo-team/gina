@@ -73,6 +73,7 @@ import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.converter.DataBindingConverter;
 import org.openflexo.model.converter.RelativePathFileConverter;
 import org.openflexo.model.converter.ResourceLocationConverter;
+import org.openflexo.model.converter.TypeConverter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 
@@ -91,6 +92,7 @@ public class FIBModelFactory extends ModelFactory {
 		super(ModelContextLibrary.getModelContext(FIBComponent.class));
 		addConverter(new DataBindingConverter());
 		addConverter(new ComponentConstraintsConverter());
+		addConverter(new TypeConverter(null));
 		addConverter(new ResourceLocationConverter());
 		validationModel = new FIBValidationModel(this);
 	}
@@ -99,6 +101,7 @@ public class FIBModelFactory extends ModelFactory {
 		super(ModelContextLibrary.getCompoundModelContext(FIBComponent.class, additionalClasses));
 		addConverter(new DataBindingConverter());
 		addConverter(new ComponentConstraintsConverter());
+		addConverter(new TypeConverter(null));
 		validationModel = new FIBValidationModel(this);
 	}
 

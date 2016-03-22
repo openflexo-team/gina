@@ -134,7 +134,7 @@ public class JEditableBorderLayout extends JBorderLayout implements JFIBEditable
 				if (existingComponent == null) {
 					PlaceHolder newPlaceHolder = new PlaceHolder(getContainerView(), "<" + l.getConstraint() + ">", bounds) {
 						@Override
-						public void insertComponent(FIBComponent newComponent) {
+						public void insertComponent(FIBComponent newComponent, int oldIndex) {
 
 							System.out.println("He he on ajoute un composant " + newComponent + " a " + getContainerView().getComponent());
 							System.out.println("Location=" + l);

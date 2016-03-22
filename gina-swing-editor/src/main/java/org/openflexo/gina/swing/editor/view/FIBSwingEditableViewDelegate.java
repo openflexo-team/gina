@@ -107,7 +107,7 @@ public class FIBSwingEditableViewDelegate<M extends FIBComponent, J extends JCom
 		dgListener = new MoveDGListener();
 
 		if (!(view instanceof JFIBEditableSplitPanelView)) {
-			DragGestureRecognizer newDGR = dragSource.createDefaultDragGestureRecognizer(view.getTechnologyComponent(), dragAction,
+			DragGestureRecognizer newDGR = dragSource.createDefaultDragGestureRecognizer(view.getDraggableComponent(), dragAction,
 					dgListener);
 		}
 
@@ -244,8 +244,8 @@ public class FIBSwingEditableViewDelegate<M extends FIBComponent, J extends JCom
 		// private final PlaceHolder placeHolder = null;
 
 		public FIBDropTarget(FIBSwingEditableView<?, ?> editableView) {
-			super(editableView.getJComponent(), DnDConstants.ACTION_COPY | DnDConstants.ACTION_MOVE, editableView.getEditorController()
-					.buildPaletteDropListener(editableView), true);
+			super(editableView.getJComponent(), DnDConstants.ACTION_COPY | DnDConstants.ACTION_MOVE,
+					editableView.getEditorController().buildPaletteDropListener(editableView), true);
 			this.editableView = editableView;
 			logger.fine("Made FIBDropTarget for " + getFIBComponent());
 		}
@@ -269,8 +269,7 @@ public class FIBSwingEditableViewDelegate<M extends FIBComponent, J extends JCom
 			PlaceHolder returned = null;
 
 			if (dropListener.getParentDropListener() != null) {
-				returned = getPlaceHolder(
-						dropListener.getParentDropListener(),
+				returned = getPlaceHolder(dropListener.getParentDropListener(),
 						SwingUtilities.convertPoint(editableView.getResultingJComponent(), p,
 								((JFIBView<?, ?>) editableView.getParentView()).getResultingJComponent()));
 				if (returned != null) {

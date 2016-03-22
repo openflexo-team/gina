@@ -156,7 +156,7 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel> implements 
 			this.widget = widget;
 			setOpaque(false);
 			label = new JLabel("");
-			label.setFocusable(false);
+			// label.setFocusable(false);
 			setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, TOP_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
 					RIGHT_COMPENSATING_BORDER));
 			add(label, BorderLayout.CENTER);

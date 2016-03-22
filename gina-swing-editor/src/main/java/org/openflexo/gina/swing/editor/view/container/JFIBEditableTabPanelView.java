@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.DefaultSingleSelectionModel;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
@@ -68,6 +69,11 @@ public class JFIBEditableTabPanelView extends JFIBTabPanelView implements FIBSwi
 	// private Vector<PlaceHolder> placeholders;
 
 	private final FIBEditorController editorController;
+
+	@Override
+	public JComponent getDraggableComponent() {
+		return getTechnologyComponent();
+	}
 
 	@Override
 	public FIBEditorController getEditorController() {
@@ -101,7 +107,7 @@ public class JFIBEditableTabPanelView extends JFIBTabPanelView implements FIBSwi
 
 	@Override
 	public JTabbedPane getJComponent() {
-		return (JTabbedPane) super.getJComponent();
+		return super.getJComponent();
 	}
 
 	@Override

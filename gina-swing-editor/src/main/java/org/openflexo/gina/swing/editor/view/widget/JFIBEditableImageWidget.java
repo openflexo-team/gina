@@ -41,6 +41,7 @@ package org.openflexo.gina.swing.editor.view.widget;
 
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.openflexo.gina.model.widget.FIBImage;
@@ -58,6 +59,11 @@ public class JFIBEditableImageWidget extends JFIBImageWidget implements FIBSwing
 	private final FIBSwingEditableViewDelegate<FIBImage, JLabel> delegate;
 
 	private final FIBEditorController editorController;
+
+	@Override
+	public JComponent getDraggableComponent() {
+		return getTechnologyComponent();
+	}
 
 	@Override
 	public FIBEditorController getEditorController() {

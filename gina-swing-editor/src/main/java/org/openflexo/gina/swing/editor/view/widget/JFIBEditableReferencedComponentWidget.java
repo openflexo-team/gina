@@ -61,6 +61,11 @@ public class JFIBEditableReferencedComponentWidget extends JFIBReferencedCompone
 	private final FIBEditorController editorController;
 
 	@Override
+	public JComponent getDraggableComponent() {
+		return getTechnologyComponent();
+	}
+
+	@Override
 	public FIBEditorController getEditorController() {
 		return editorController;
 	}

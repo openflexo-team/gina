@@ -62,6 +62,11 @@ public class JFIBEditableCustomWidget<J extends JComponent & FIBCustomComponent<
 	private final FIBEditorController editorController;
 
 	@Override
+	public JComponent getDraggableComponent() {
+		return getTechnologyComponent();
+	}
+
+	@Override
 	public FIBEditorController getEditorController() {
 		return editorController;
 	}

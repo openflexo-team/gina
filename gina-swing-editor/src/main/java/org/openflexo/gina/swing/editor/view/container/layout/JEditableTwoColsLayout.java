@@ -361,8 +361,14 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 		Rectangle placeHolderBounds = makePlaceHolderBounds(component, deltaX, deltaY);
 		PlaceHolder returned = new PlaceHolder(getContainerView(), text, placeHolderBounds) {
 			@Override
-			public void insertComponent(FIBComponent newComponent) {
-				putSubComponentsAtIndexWithConstraints(newComponent, index, leftConstraints);
+			public void insertComponent(FIBComponent newComponent, int oldIndex) {
+				if (oldIndex > -1 && oldIndex < index) {
+					System.out.println("Hop, c'est un move en fait, d'un index avant l'index recherche, on fait donc -1");
+					putSubComponentsAtIndexWithConstraints(newComponent, index - 1, leftConstraints);
+				}
+				else {
+					putSubComponentsAtIndexWithConstraints(newComponent, index, leftConstraints);
+				}
 			}
 		};
 		returned.setVisible(false);

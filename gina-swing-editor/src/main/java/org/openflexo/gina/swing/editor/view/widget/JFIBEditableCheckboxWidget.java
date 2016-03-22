@@ -42,6 +42,7 @@ package org.openflexo.gina.swing.editor.view.widget;
 import java.util.logging.Logger;
 
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 
 import org.openflexo.gina.model.widget.FIBCheckBox;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
@@ -58,6 +59,11 @@ public class JFIBEditableCheckboxWidget extends JFIBCheckBoxWidget implements FI
 	private final FIBSwingEditableViewDelegate<FIBCheckBox, JCheckBox> delegate;
 
 	private final FIBEditorController editorController;
+
+	@Override
+	public JComponent getDraggableComponent() {
+		return getTechnologyComponent();
+	}
 
 	@Override
 	public FIBEditorController getEditorController() {

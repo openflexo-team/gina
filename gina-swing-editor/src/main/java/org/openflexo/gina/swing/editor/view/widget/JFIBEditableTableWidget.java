@@ -41,6 +41,8 @@ package org.openflexo.gina.swing.editor.view.widget;
 
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
+
 import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
@@ -49,7 +51,7 @@ import org.openflexo.gina.swing.view.widget.JFIBTableWidget;
 import org.openflexo.gina.swing.view.widget.JFIBTableWidget.JTablePanel;
 import org.openflexo.logging.FlexoLogger;
 
-public class JFIBEditableTableWidget<T> extends JFIBTableWidget<T>implements FIBSwingEditableView<FIBTable, JTablePanel<T>> {
+public class JFIBEditableTableWidget<T> extends JFIBTableWidget<T> implements FIBSwingEditableView<FIBTable, JTablePanel<T>> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableTableWidget.class.getPackage().getName());
@@ -57,6 +59,11 @@ public class JFIBEditableTableWidget<T> extends JFIBTableWidget<T>implements FIB
 	private final FIBSwingEditableViewDelegate<FIBTable, JTablePanel<T>> delegate;
 
 	private final FIBEditorController editorController;
+
+	@Override
+	public JComponent getDraggableComponent() {
+		return getTechnologyComponent();
+	}
 
 	@Override
 	public FIBEditorController getEditorController() {

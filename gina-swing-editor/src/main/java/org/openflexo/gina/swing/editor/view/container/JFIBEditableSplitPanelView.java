@@ -43,6 +43,8 @@ import java.awt.Dimension;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
+
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBLeaf;
 import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBNode;
@@ -68,6 +70,11 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 	// private Vector<PlaceHolder> placeholders;
 
 	private final FIBEditorController editorController;
+
+	@Override
+	public JComponent getDraggableComponent() {
+		return getTechnologyComponent();
+	}
 
 	@Override
 	public FIBEditorController getEditorController() {
@@ -102,7 +109,7 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 			final SplitLayoutConstraints splitLayoutConstraints = SplitLayoutConstraints.makeSplitLayoutConstraints(n.getName());
 			PlaceHolder newPlaceHolder = new PlaceHolder(this, "<" + n.getName() + ">") {
 				@Override
-				public void insertComponent(FIBComponent newComponent) {
+				public void insertComponent(FIBComponent newComponent, int oldIndex) {
 					System.out.println("getComponent=" + JFIBEditableSplitPanelView.this.getComponent());
 					JFIBEditableSplitPanelView.this.getComponent().addToSubComponents(newComponent, splitLayoutConstraints);
 				}

@@ -41,6 +41,7 @@ package org.openflexo.gina.swing.editor.view.widget;
 
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
 import javax.swing.JTextField;
 
 import org.openflexo.gina.model.widget.FIBTextField;
@@ -58,6 +59,11 @@ public class JFIBEditableTextFieldWidget extends JFIBTextFieldWidget implements 
 	private final FIBSwingEditableViewDelegate<FIBTextField, JTextField> delegate;
 
 	private final FIBEditorController editorController;
+
+	@Override
+	public JComponent getDraggableComponent() {
+		return getTechnologyComponent();
+	}
 
 	@Override
 	public FIBEditorController getEditorController() {

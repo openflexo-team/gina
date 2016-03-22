@@ -41,6 +41,8 @@ package org.openflexo.gina.swing.editor.view.widget;
 
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
+
 import org.openflexo.gina.model.widget.FIBFile;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
@@ -57,6 +59,11 @@ public class JFIBEditableFileWidget extends JFIBFileWidget implements FIBSwingEd
 	private final FIBSwingEditableViewDelegate<FIBFile, FileSelectorPanel> delegate;
 
 	private final FIBEditorController editorController;
+
+	@Override
+	public JComponent getDraggableComponent() {
+		return getTechnologyComponent().getCurrentDirectoryLabel();
+	}
 
 	@Override
 	public FIBEditorController getEditorController() {

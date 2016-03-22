@@ -150,7 +150,7 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 				 */
 				PlaceHolder newPlaceHolder = new PlaceHolder(getContainerView(), "< flow item >", placeHolderBounds) {
 					@Override
-					public void insertComponent(FIBComponent newComponent) {
+					public void insertComponent(FIBComponent newComponent, int oldIndex) {
 						putSubComponentsAtIndex(newComponent, insertionIndex);
 					}
 				};
@@ -183,7 +183,7 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 			// + deltaY, phComponent.getWidth(), phComponent.getHeight());
 			PlaceHolder newPlaceHolder = new PlaceHolder(getContainerView(), "< flow item >", placeHolderBounds) {
 				@Override
-				public void insertComponent(FIBComponent newComponent) {
+				public void insertComponent(FIBComponent newComponent, int oldIndex) {
 					FlowLayoutConstraints flowConstraints = new FlowLayoutConstraints();
 					newComponent.setConstraints(flowConstraints);
 
