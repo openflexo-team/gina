@@ -188,6 +188,7 @@ public class JFIBEditableLabelWidget extends JFIBLabelWidget implements FIBSwing
 			System.out.println("Hop, on edite le truc");
 			remove(getLabel());
 			textField.setText(getLabel().getText());
+			textField.setFont(getLabel().getFont());
 			add(textField, BorderLayout.CENTER);
 			textField.selectAll();
 			getWidget().getRenderingAdapter().revalidateAndRepaint(this);
@@ -198,6 +199,7 @@ public class JFIBEditableLabelWidget extends JFIBLabelWidget implements FIBSwing
 			System.out.println("Fin d'edition du truc");
 			remove(textField);
 			getLabel().setText(textField.getText());
+			getLabel().setFont(textField.getFont());
 			add(getLabel(), BorderLayout.CENTER);
 			getWidget().getRenderingAdapter().revalidateAndRepaint(this);
 			isEditing = false;

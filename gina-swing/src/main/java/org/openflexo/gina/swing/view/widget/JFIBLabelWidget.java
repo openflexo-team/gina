@@ -41,6 +41,7 @@ package org.openflexo.gina.swing.view.widget;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
@@ -108,6 +109,12 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel> implements 
 		@Override
 		public Color getDefaultBackgroundColor(JLabelPanel component) {
 			return UIManager.getColor("Label.background");
+		}
+
+		@Override
+		public void setFont(JLabelPanel component, Font aFont) {
+			super.setFont(component, aFont);
+			component.getLabel().setFont(aFont);
 		}
 
 	}
