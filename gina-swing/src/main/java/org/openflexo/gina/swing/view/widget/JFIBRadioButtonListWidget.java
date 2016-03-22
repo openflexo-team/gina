@@ -40,6 +40,7 @@
 package org.openflexo.gina.swing.view.widget;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -53,6 +54,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBRadioButtonList;
@@ -95,6 +97,16 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 		@Override
 		public void setSelectedIndex(JRadioButtonPanel<T> component, int index) {
 			component.setSelectedIndex(index);
+		}
+
+		@Override
+		public Color getDefaultForegroundColor(JRadioButtonPanel<T> component) {
+			return UIManager.getColor("RadioButton.foreground");
+		}
+
+		@Override
+		public Color getDefaultBackgroundColor(JRadioButtonPanel<T> component) {
+			return UIManager.getColor("RadioButton.background");
 		}
 
 	}

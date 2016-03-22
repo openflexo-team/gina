@@ -203,6 +203,7 @@ public abstract class SwingRenderingAdapter<J extends JComponent> implements Ren
 			}
 		}
 		component.setEnabled(true);
+		// System.out.println("Enable component " + component);
 		if (component instanceof Container) {
 			for (Component c : ((Container) component).getComponents()) {
 				enableComponent(c);
@@ -219,6 +220,7 @@ public abstract class SwingRenderingAdapter<J extends JComponent> implements Ren
 		}
 		if (component != null) {
 			component.setEnabled(false);
+			// System.out.println("Disable component " + component);
 		}
 		if (component instanceof Container) {
 			for (Component c : ((Container) component).getComponents()) {

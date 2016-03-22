@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.swing.view.container;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ContainerEvent;
@@ -47,6 +48,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -65,12 +67,12 @@ import org.openflexo.gina.view.container.impl.FIBTabPanelViewImpl;
  * 
  * @author sylvain
  */
-public class JFIBTabPanelView extends FIBTabPanelViewImpl<JTabbedPane, JComponent>implements JFIBView<FIBTabPanel, JTabbedPane> {
+public class JFIBTabPanelView extends FIBTabPanelViewImpl<JTabbedPane, JComponent> implements JFIBView<FIBTabPanel, JTabbedPane> {
 
 	private static final Logger logger = Logger.getLogger(JFIBTabPanelView.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingAdapter} implementation dedicated for Swing JPanel with a given layout<br>
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JTabbedPane<br>
 	 * 
 	 * @author sylvain
 	 * 
@@ -86,6 +88,16 @@ public class JFIBTabPanelView extends FIBTabPanelViewImpl<JTabbedPane, JComponen
 		@Override
 		public void setSelectedIndex(JTabbedPane component, int selectedIndex) {
 			component.setSelectedIndex(selectedIndex);
+		}
+
+		@Override
+		public Color getDefaultForegroundColor(JTabbedPane component) {
+			return UIManager.getColor("Panel.foreground");
+		}
+
+		@Override
+		public Color getDefaultBackgroundColor(JTabbedPane component) {
+			return UIManager.getColor("TabbedPane.background");
 		}
 	}
 

@@ -40,6 +40,7 @@
 package org.openflexo.gina.swing.view.widget;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
@@ -51,6 +52,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
@@ -105,6 +107,16 @@ public class JFIBDropDownWidget<T> extends FIBDropDownWidgetImpl<JDropDownPanel<
 		@Override
 		public void setSelectedIndex(JDropDownPanel<T> component, int index) {
 			component.jComboBox.setSelectedIndex(index);
+		}
+
+		@Override
+		public Color getDefaultForegroundColor(JDropDownPanel<T> component) {
+			return UIManager.getColor("ComboBox.foreground");
+		}
+
+		@Override
+		public Color getDefaultBackgroundColor(JDropDownPanel<T> component) {
+			return UIManager.getColor("ComboBox.background");
 		}
 
 	}

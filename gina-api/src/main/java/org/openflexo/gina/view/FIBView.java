@@ -240,6 +240,10 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 		public void revalidateAndRepaint(C component);
 
 		public boolean newFocusedComponentIsDescendingFrom(C technologyComponent, FocusEvent event);
+
+		public Color getDefaultBackgroundColor(C component);
+
+		public Color getDefaultForegroundColor(C component);
 	}
 
 }

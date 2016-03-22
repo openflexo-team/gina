@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.swing.view.widget;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Logger;
@@ -46,6 +47,7 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBButton;
@@ -65,8 +67,8 @@ public class JFIBButtonWidget extends FIBButtonWidgetImpl<JButton> implements JF
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingButtonRenderingAdapter extends SwingRenderingAdapter<JButton> implements
-			ButtonWidgetRenderingAdapter<JButton> {
+	public static class SwingButtonRenderingAdapter extends SwingRenderingAdapter<JButton>
+			implements ButtonWidgetRenderingAdapter<JButton> {
 
 		@Override
 		public String getText(JButton component) {
@@ -86,6 +88,16 @@ public class JFIBButtonWidget extends FIBButtonWidgetImpl<JButton> implements JF
 		@Override
 		public void setIcon(JButton component, Icon anIcon) {
 			component.setIcon(anIcon);
+		}
+
+		@Override
+		public Color getDefaultForegroundColor(JButton component) {
+			return UIManager.getColor("Button.foreground");
+		}
+
+		@Override
+		public Color getDefaultBackgroundColor(JButton component) {
+			return UIManager.getColor("Button.background");
 		}
 
 	}

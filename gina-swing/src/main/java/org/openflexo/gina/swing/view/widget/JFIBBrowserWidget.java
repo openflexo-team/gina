@@ -40,6 +40,7 @@
 package org.openflexo.gina.swing.view.widget;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,6 +58,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.ToolTipManager;
+import javax.swing.UIManager;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
@@ -86,8 +88,8 @@ import org.openflexo.toolbox.ToolBox;
  * 
  * @author sylvain
  */
-public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T> implements FocusListener,
-		JFIBView<FIBBrowser, JTreePanel<T>> {
+public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
+		implements FocusListener, JFIBView<FIBBrowser, JTreePanel<T>> {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBBrowserWidget.class.getPackage().getName());
 
@@ -97,8 +99,8 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingBrowserRenderingAdapter<T> extends SwingRenderingAdapter<JTreePanel<T>> implements
-			BrowserRenderingAdapter<JTreePanel<T>, T> {
+	public static class SwingBrowserRenderingAdapter<T> extends SwingRenderingAdapter<JTreePanel<T>>
+			implements BrowserRenderingAdapter<JTreePanel<T>, T> {
 
 		@Override
 		public int getVisibleRowCount(JTreePanel<T> component) {
@@ -140,6 +142,16 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 			return component.getJTree().isExpanded(treePath);
 		}
 
+		@Override
+		public Color getDefaultForegroundColor(JTreePanel<T> component) {
+			return UIManager.getColor("Tree.foreground");
+		}
+
+		@Override
+		public Color getDefaultBackgroundColor(JTreePanel<T> component) {
+			return UIManager.getColor("Tree.background");
+		}
+
 	}
 
 	public JFIBBrowserWidget(FIBBrowser fibBrowser, FIBController controller) {
@@ -179,8 +191,8 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 		if (returned) {
 			LOGGER.fine("RootValue changed for FIBBrowserWidget " + getRootValue());
 			try {
-				getTechnologyComponent().getJTree().fireTreeWillExpand(
-						new TreePath(getTechnologyComponent().getJTree().getModel().getRoot()));
+				getTechnologyComponent().getJTree()
+						.fireTreeWillExpand(new TreePath(getTechnologyComponent().getJTree().getModel().getRoot()));
 			} catch (ExpandVetoException e1) {
 				e1.printStackTrace();
 			}
@@ -244,7 +256,8 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 					getTechnologyComponent().getJTree().scrollPathToVisible(scrollTo);
 				}
 			}
-		} else {
+		}
+		else {
 			clearSelection();
 		}
 	}
@@ -293,7 +306,8 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 				getTechnologyComponent().getJTree().scrollPathToVisible(scrollTo);
 			}
 
-		} else {
+		}
+		else {
 			clearSelection();
 		}
 	}
@@ -424,7 +438,8 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 
 			if (widget.getWidget().getRowHeight() != null) {
 				jTree.setRowHeight(widget.getWidget().getRowHeight());
-			} else {
+			}
+			else {
 				jTree.setRowHeight(0);
 			}
 			if (widget.getWidget().getVisibleRowCount() != null) {
@@ -483,8 +498,7 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 				}
 
 				private void ensureRootExpanded() {
-					if (!widget.getBrowser().getRootVisible()
-							&& (BrowserCell) widget.getBrowserModel().getRoot() != null
+					if (!widget.getBrowser().getRootVisible() && (BrowserCell) widget.getBrowserModel().getRoot() != null
 							&& ((BrowserCell) widget.getBrowserModel().getRoot()).getChildCount() == 1) {
 						// Only one cell and roots are hidden, expand this first
 						// cell
@@ -494,11 +508,9 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 							public void run() {
 								// See issue OPENFLEXO-516. Sometimes, the
 								// condition may have become false.
-								if (!widget.getBrowser().getRootVisible()
-										&& (BrowserCell) widget.getBrowserModel().getRoot() != null
+								if (!widget.getBrowser().getRootVisible() && (BrowserCell) widget.getBrowserModel().getRoot() != null
 										&& ((BrowserCell) widget.getBrowserModel().getRoot()).getChildCount() == 1) {
-									jTree.expandPath(new TreePath(new Object[] {
-											(BrowserCell) widget.getBrowserModel().getRoot(),
+									jTree.expandPath(new TreePath(new Object[] { (BrowserCell) widget.getBrowserModel().getRoot(),
 											((BrowserCell) widget.getBrowserModel().getRoot()).getChildAt(0) }));
 								}
 							}

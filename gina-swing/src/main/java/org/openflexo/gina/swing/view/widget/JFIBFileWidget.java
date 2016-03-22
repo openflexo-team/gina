@@ -40,6 +40,7 @@
 package org.openflexo.gina.swing.view.widget;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -55,6 +56,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
@@ -76,7 +78,7 @@ import org.openflexo.toolbox.ToolBox;
  *
  * @author sylvain
  */
-public class JFIBFileWidget extends FIBFileWidgetImpl<FileSelectorPanel>implements FocusListener, JFIBView<FIBFile, FileSelectorPanel> {
+public class JFIBFileWidget extends FIBFileWidgetImpl<FileSelectorPanel> implements FocusListener, JFIBView<FIBFile, FileSelectorPanel> {
 
 	static final Logger LOGGER = Logger.getLogger(JFIBFileWidget.class.getPackage().getName());
 
@@ -240,6 +242,16 @@ public class JFIBFileWidget extends FIBFileWidgetImpl<FileSelectorPanel>implemen
 		@Override
 		public void setSelectedFile(FileSelectorPanel component, File aFile) {
 			component.setSelectedFile(aFile);
+		}
+
+		@Override
+		public Color getDefaultForegroundColor(FileSelectorPanel component) {
+			return UIManager.getColor("Panel.foreground");
+		}
+
+		@Override
+		public Color getDefaultBackgroundColor(FileSelectorPanel component) {
+			return UIManager.getColor("Panel.background");
 		}
 
 	}

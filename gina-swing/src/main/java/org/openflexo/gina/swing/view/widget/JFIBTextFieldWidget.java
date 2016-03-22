@@ -40,6 +40,7 @@
 package org.openflexo.gina.swing.view.widget;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -54,6 +55,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
@@ -73,7 +75,7 @@ import org.openflexo.toolbox.ToolBox;
  * 
  * @author sylvain
  */
-public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>implements FocusListener, JFIBView<FIBTextField, JTextField> {
+public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField> implements FocusListener, JFIBView<FIBTextField, JTextField> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(JFIBTextFieldWidget.class.getPackage().getName());
@@ -96,6 +98,16 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>imple
 		@Override
 		public int getColumns(JTextField component) {
 			return component.getColumns();
+		}
+
+		@Override
+		public Color getDefaultForegroundColor(JTextField component) {
+			return UIManager.getColor("TextField.foreground");
+		}
+
+		@Override
+		public Color getDefaultBackgroundColor(JTextField component) {
+			return UIManager.getColor("TextField.background");
 		}
 
 	}
@@ -238,6 +250,8 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>imple
 		});
 
 		textField.addFocusListener(this);
+
+		textField.setEnabled(true);
 
 		return textField;
 	}

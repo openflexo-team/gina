@@ -90,7 +90,7 @@ import org.openflexo.toolbox.ToolBox;
  *            type of data beeing represented by this view
  * 
  */
-public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBViewImpl<M, C>implements FIBWidgetView<M, C, T> {
+public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBViewImpl<M, C> implements FIBWidgetView<M, C, T> {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBWidgetViewImpl.class.getPackage().getName());
 
@@ -1066,7 +1066,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	public void setEnabled(boolean enabled) {
 		if (this.enabled != enabled) {
 			this.enabled = enabled;
-			getPropertyChangeSupport().firePropertyChange(VISIBLE, !enabled, enabled);
+			getPropertyChangeSupport().firePropertyChange(ENABLED, !enabled, enabled);
 		}
 	}
 
@@ -1084,7 +1084,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		if (isComponentEnabled()) {
 			if (!enabled) {
 				// Becomes enabled
-				LOGGER.fine("Component becomes enabled");
+				// System.out.println("Component becomes enabled");
 				getRenderingAdapter().setEnabled(getTechnologyComponent(), true);
 				setEnabled(true);
 			}
@@ -1092,10 +1092,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		else {
 			if (enabled) {
 				// Becomes disabled
-				LOGGER.fine("Component becomes disabled");
 				// System.out.println("Component becomes disabled "+getJComponent());
 				getRenderingAdapter().setEnabled(getTechnologyComponent(), false);
-				setEnabled(false);
 				setEnabled(false);
 			}
 		}

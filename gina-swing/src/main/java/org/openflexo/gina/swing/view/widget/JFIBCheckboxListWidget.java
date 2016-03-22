@@ -40,6 +40,7 @@
 package org.openflexo.gina.swing.view.widget;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -55,6 +56,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBCheckboxList;
@@ -86,6 +88,16 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 		@Override
 		public void setSelectedItems(JCheckBoxListPanel<T> component, List<T> items) {
 			component.setSelectedValues(items);
+		}
+
+		@Override
+		public Color getDefaultForegroundColor(JCheckBoxListPanel<T> component) {
+			return UIManager.getColor("CheckBox.foreground");
+		}
+
+		@Override
+		public Color getDefaultBackgroundColor(JCheckBoxListPanel<T> component) {
+			return UIManager.getColor("CheckBox.background");
 		}
 
 	}

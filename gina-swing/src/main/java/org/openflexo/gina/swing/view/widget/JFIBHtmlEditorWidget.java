@@ -39,9 +39,11 @@
 
 package org.openflexo.gina.swing.view.widget;
 
+import java.awt.Color;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
+import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBHtmlEditor;
@@ -100,6 +102,16 @@ public class JFIBHtmlEditorWidget extends FIBHtmlEditorWidgetImpl<MetaphaseEdito
 		@Override
 		public void setCaretPosition(MetaphaseEditorPanel component, int caretPosition) {
 			component.getHtmlTextPane().setCaretPosition(caretPosition);
+		}
+
+		@Override
+		public Color getDefaultForegroundColor(MetaphaseEditorPanel component) {
+			return UIManager.getColor("Panel.foreground");
+		}
+
+		@Override
+		public Color getDefaultBackgroundColor(MetaphaseEditorPanel component) {
+			return UIManager.getColor("Panel.background");
 		}
 
 	}

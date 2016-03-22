@@ -39,10 +39,12 @@
 
 package org.openflexo.gina.swing.view.widget;
 
+import java.awt.Color;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBCustom;
@@ -63,8 +65,7 @@ public class JFIBCustomWidget<J extends JComponent & FIBCustomComponent<T>, T> e
 	private static final Logger LOGGER = Logger.getLogger(JFIBCustomWidget.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingAdapter} implementation dedicated for Swing custom
-	 * component<br>
+	 * A {@link RenderingAdapter} implementation dedicated for Swing custom component<br>
 	 * 
 	 * @author sylvain
 	 * 
@@ -81,6 +82,16 @@ public class JFIBCustomWidget<J extends JComponent & FIBCustomComponent<T>, T> e
 				return ERROR_LABEL;
 			}
 			return technologyComponent;
+		}
+
+		@Override
+		public Color getDefaultForegroundColor(JComponent component) {
+			return UIManager.getColor("Panel.foreground");
+		}
+
+		@Override
+		public Color getDefaultBackgroundColor(JComponent component) {
+			return UIManager.getColor("Panel.background");
 		}
 
 	}

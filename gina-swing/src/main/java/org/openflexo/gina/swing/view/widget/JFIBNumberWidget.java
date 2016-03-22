@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.swing.view.widget;
 
+import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -56,6 +57,7 @@ import javax.swing.JSpinner;
 import javax.swing.JSpinner.DefaultEditor;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -142,6 +144,16 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 		@Override
 		public void setWidgetEnabled(NumberSelectorPanel<T> component, boolean enabled) {
 			component.checkBox.setEnabled(enabled);
+		}
+
+		@Override
+		public Color getDefaultForegroundColor(NumberSelectorPanel<T> component) {
+			return UIManager.getColor("FormattedTextField.foreground");
+		}
+
+		@Override
+		public Color getDefaultBackgroundColor(NumberSelectorPanel<T> component) {
+			return UIManager.getColor("FormattedTextField.background");
 		}
 
 	}

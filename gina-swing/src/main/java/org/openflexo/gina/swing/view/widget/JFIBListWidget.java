@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.swing.view.widget;
 
+import java.awt.Color;
 import java.awt.event.FocusListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
@@ -48,6 +49,7 @@ import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -58,7 +60,7 @@ import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.view.widget.impl.FIBListWidgetImpl;
 
-public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T>implements FocusListener, JFIBView<FIBList, JList<T>> {
+public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T> implements FocusListener, JFIBView<FIBList, JList<T>> {
 
 	static final Logger LOGGER = Logger.getLogger(JFIBListWidget.class.getPackage().getName());
 
@@ -69,7 +71,7 @@ public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T>implements 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingListRenderingAdapter<T> extends SwingRenderingAdapter<JList<T>>implements ListRenderingAdapter<JList<T>, T> {
+	public static class SwingListRenderingAdapter<T> extends SwingRenderingAdapter<JList<T>> implements ListRenderingAdapter<JList<T>, T> {
 
 		@Override
 		public T getSelectedItem(JList<T> component) {
@@ -114,6 +116,16 @@ public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T>implements 
 		@Override
 		public ListSelectionModel getListSelectionModel(JList<T> component) {
 			return component.getSelectionModel();
+		}
+
+		@Override
+		public Color getDefaultForegroundColor(JList<T> component) {
+			return UIManager.getColor("List.foreground");
+		}
+
+		@Override
+		public Color getDefaultBackgroundColor(JList<T> component) {
+			return UIManager.getColor("List.background");
 		}
 
 	}

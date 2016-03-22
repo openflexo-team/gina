@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.swing.view.widget;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -50,6 +51,7 @@ import java.util.logging.Logger;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
@@ -120,6 +122,16 @@ public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel> impleme
 		@Override
 		public void setCheckboxEnabled(FontSelectorPanel component, boolean enabled) {
 			component.checkBox.setEnabled(enabled);
+		}
+
+		@Override
+		public Color getDefaultForegroundColor(FontSelectorPanel component) {
+			return UIManager.getColor("Panel.foreground");
+		}
+
+		@Override
+		public Color getDefaultBackgroundColor(FontSelectorPanel component) {
+			return UIManager.getColor("Panel.background");
 		}
 
 	}

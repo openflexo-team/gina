@@ -39,10 +39,12 @@
 
 package org.openflexo.gina.swing.view.container;
 
+import java.awt.Color;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
@@ -68,13 +70,24 @@ public class JFIBSplitPanelView extends FIBSplitPanelViewImpl<JXMultiSplitPane, 
 	private static final Logger logger = Logger.getLogger(JFIBSplitPanelView.class.getPackage().getName());
 
 	/**
-	 * A {@link RenderingAdapter} implementation dedicated for Swing JPanel with a given layout<br>
+	 * A {@link RenderingAdapter} implementation dedicated for Swing JXMultiSplitPane<br>
 	 * 
 	 * @author sylvain
 	 * 
 	 */
 	public static class SwingSplitPanelRenderingAdapter extends SwingRenderingAdapter<JXMultiSplitPane>
 			implements SplitPanelRenderingAdapter<JXMultiSplitPane, JComponent> {
+
+		@Override
+		public Color getDefaultForegroundColor(JXMultiSplitPane component) {
+			return UIManager.getColor("Panel.foreground");
+		}
+
+		@Override
+		public Color getDefaultBackgroundColor(JXMultiSplitPane component) {
+			return UIManager.getColor("SplitPane.background");
+		}
+
 	}
 
 	private MultiSplitLayout layout;

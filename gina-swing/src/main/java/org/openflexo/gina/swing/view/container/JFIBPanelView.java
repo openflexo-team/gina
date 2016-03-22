@@ -52,6 +52,7 @@ import javax.swing.JPanel;
 import javax.swing.JViewport;
 import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import org.openflexo.gina.controller.FIBController;
@@ -77,7 +78,7 @@ import org.openflexo.toolbox.StringUtils;
  * 
  * @author sylvain
  */
-public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent>implements JFIBView<FIBPanel, JPanel> {
+public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> implements JFIBView<FIBPanel, JPanel> {
 
 	private static final Logger logger = Logger.getLogger(JFIBPanelView.class.getPackage().getName());
 
@@ -99,6 +100,16 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent>implement
 		 * constraints); } else { if (constraints == null) { parent.add(child);
 		 * } else { parent.add(child, constraints); } } }
 		 */
+
+		@Override
+		public Color getDefaultForegroundColor(JPanel component) {
+			return UIManager.getColor("Panel.foreground");
+		}
+
+		@Override
+		public Color getDefaultBackgroundColor(JPanel component) {
+			return UIManager.getColor("Panel.background");
+		}
 
 	}
 
@@ -162,16 +173,13 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent>implement
 						getComponent().retrieveValidFont(), getComponent().retrieveValidForegroundColor()));
 				break;
 			case rounded3d:
-				getTechnologyComponent()
-						.setBorder(new RoundedBorder(
-								StringUtils.isNotEmpty(getComponent().getBorderTitle()) ? getLocalized(getComponent().getBorderTitle())
-										: null,
-								getComponent().getBorderTop() != null ? getComponent().getBorderTop() : 0,
-								getComponent().getBorderLeft() != null ? getComponent().getBorderLeft() : 0,
-								getComponent().getBorderBottom() != null ? getComponent().getBorderBottom() : 0,
-								getComponent().getBorderRight() != null ? getComponent().getBorderRight() : 0,
-								getComponent().getTitleFont(), getComponent().retrieveValidForegroundColor(),
-								getComponent().getDarkLevel()));
+				getTechnologyComponent().setBorder(new RoundedBorder(
+						StringUtils.isNotEmpty(getComponent().getBorderTitle()) ? getLocalized(getComponent().getBorderTitle()) : null,
+						getComponent().getBorderTop() != null ? getComponent().getBorderTop() : 0,
+						getComponent().getBorderLeft() != null ? getComponent().getBorderLeft() : 0,
+						getComponent().getBorderBottom() != null ? getComponent().getBorderBottom() : 0,
+						getComponent().getBorderRight() != null ? getComponent().getBorderRight() : 0, getComponent().getTitleFont(),
+						getComponent().retrieveValidForegroundColor(), getComponent().getDarkLevel()));
 				break;
 			default:
 				break;

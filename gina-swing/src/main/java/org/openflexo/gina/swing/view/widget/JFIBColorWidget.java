@@ -51,6 +51,7 @@ import java.util.logging.Logger;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
@@ -122,6 +123,16 @@ public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>
 		@Override
 		public void setCheckboxEnabled(ColorSelectorPanel component, boolean enabled) {
 			component.checkBox.setEnabled(enabled);
+		}
+
+		@Override
+		public Color getDefaultForegroundColor(ColorSelectorPanel component) {
+			return UIManager.getColor("Panel.foreground");
+		}
+
+		@Override
+		public Color getDefaultBackgroundColor(ColorSelectorPanel component) {
+			return UIManager.getColor("Panel.background");
 		}
 
 	}

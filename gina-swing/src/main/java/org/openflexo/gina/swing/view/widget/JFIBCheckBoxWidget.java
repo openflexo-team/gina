@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.swing.view.widget;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
@@ -47,6 +48,7 @@ import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.event.description.FIBEventFactory;
@@ -62,7 +64,7 @@ import org.openflexo.gina.view.widget.impl.FIBCheckBoxWidgetImpl;
  * 
  * @author sylvain
  */
-public class JFIBCheckBoxWidget extends FIBCheckBoxWidgetImpl<JCheckBox>implements FocusListener, JFIBView<FIBCheckBox, JCheckBox> {
+public class JFIBCheckBoxWidget extends FIBCheckBoxWidgetImpl<JCheckBox> implements FocusListener, JFIBView<FIBCheckBox, JCheckBox> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(JFIBCheckBoxWidget.class.getPackage().getName());
@@ -84,6 +86,16 @@ public class JFIBCheckBoxWidget extends FIBCheckBoxWidgetImpl<JCheckBox>implemen
 		@Override
 		public void setSelected(JCheckBox component, boolean selected) {
 			component.setSelected(selected);
+		}
+
+		@Override
+		public Color getDefaultForegroundColor(JCheckBox component) {
+			return UIManager.getColor("CheckBox.foreground");
+		}
+
+		@Override
+		public Color getDefaultBackgroundColor(JCheckBox component) {
+			return UIManager.getColor("CheckBox.background");
 		}
 
 	}

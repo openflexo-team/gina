@@ -47,6 +47,7 @@ import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -65,7 +66,7 @@ import org.openflexo.toolbox.ToolBox;
  * 
  * @author bmangez,sguerin
  */
-public class JFIBEditorWidget extends FIBEditorWidgetImpl<JEditTextArea>implements FocusListener, JFIBView<FIBEditor, JEditTextArea> {
+public class JFIBEditorWidget extends FIBEditorWidgetImpl<JEditTextArea> implements FocusListener, JFIBView<FIBEditor, JEditTextArea> {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBEditorWidget.class.getPackage().getName());
 
@@ -137,6 +138,16 @@ public class JFIBEditorWidget extends FIBEditorWidgetImpl<JEditTextArea>implemen
 		@Override
 		public void setTokenMarker(JEditTextArea component, TokenMarker tokenMarker) {
 			component.setTokenMarker(tokenMarker);
+		}
+
+		@Override
+		public Color getDefaultForegroundColor(JEditTextArea component) {
+			return UIManager.getColor("Panel.foreground");
+		}
+
+		@Override
+		public Color getDefaultBackgroundColor(JEditTextArea component) {
+			return UIManager.getColor("Panel.background");
 		}
 
 	}

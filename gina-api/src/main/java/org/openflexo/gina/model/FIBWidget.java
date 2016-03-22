@@ -742,9 +742,8 @@ public abstract interface FIBWidget extends FIBComponent {
 			@Override
 			public String toString() {
 				if (FIBWidgetImpl.this instanceof FIBDropDown) {
-					return "FIBFormatter[" + FIBWidgetImpl.this + "] iteratorClass="
-							+ ((FIBDropDown) FIBWidgetImpl.this).getIteratorClass() + " dataType="
-							+ ((FIBDropDown) FIBWidgetImpl.this).getDataType() + " obtained from "
+					return "FIBFormatter[" + FIBWidgetImpl.this + "] iteratorClass=" + ((FIBDropDown) FIBWidgetImpl.this).getIteratorClass()
+							+ " dataType=" + ((FIBDropDown) FIBWidgetImpl.this).getDataType() + " obtained from "
 							+ ((FIBDropDown) FIBWidgetImpl.this).getDescription();
 				}
 				return "FIBFormatter[" + FIBWidgetImpl.this + "]" + " dataType=" + FIBWidgetImpl.this.getDataType();
@@ -1070,8 +1069,8 @@ public abstract interface FIBWidget extends FIBComponent {
 	}
 
 	@DefineValidationRule
-	public static class FIBWidgetDeclaredAsDynamicShouldHaveAName extends
-			ValidationRule<FIBWidgetDeclaredAsDynamicShouldHaveAName, FIBWidget> {
+	public static class FIBWidgetDeclaredAsDynamicShouldHaveAName
+			extends ValidationRule<FIBWidgetDeclaredAsDynamicShouldHaveAName, FIBWidget> {
 		public FIBWidgetDeclaredAsDynamicShouldHaveAName() {
 			super(FIBWidget.class, "widgets_declaring_managing_dynamic_model_should_have_a_name");
 		}
@@ -1082,7 +1081,8 @@ public abstract interface FIBWidget extends FIBComponent {
 				GenerateDefaultName fixProposal1 = new GenerateDefaultName();
 				DisableDynamicModelManagement fixProposal2 = new DisableDynamicModelManagement();
 				return new ValidationWarning<FIBWidgetDeclaredAsDynamicShouldHaveAName, FIBWidget>(this, object,
-						"widget_($validable.toString)_declares_managing_dynamic_model_but_does_not_have_a_name", fixProposal1, fixProposal2);
+						"widget_($validable.toString)_declares_managing_dynamic_model_but_does_not_have_a_name", fixProposal1,
+						fixProposal2);
 			}
 			return null;
 		}

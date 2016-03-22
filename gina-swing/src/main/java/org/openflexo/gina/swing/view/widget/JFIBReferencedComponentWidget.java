@@ -38,10 +38,12 @@
 
 package org.openflexo.gina.swing.view.widget;
 
+import java.awt.Color;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBReferencedComponent;
@@ -57,8 +59,8 @@ import org.openflexo.gina.view.widget.impl.FIBReferencedComponentWidgetImpl;
  * @author sguerin
  * 
  */
-public class JFIBReferencedComponentWidget extends FIBReferencedComponentWidgetImpl<JComponent> implements
-		JFIBView<FIBReferencedComponent, JComponent> {
+public class JFIBReferencedComponentWidget extends FIBReferencedComponentWidgetImpl<JComponent>
+		implements JFIBView<FIBReferencedComponent, JComponent> {
 
 	private static final Logger logger = Logger.getLogger(JFIBReferencedComponentWidget.class.getPackage().getName());
 
@@ -68,8 +70,8 @@ public class JFIBReferencedComponentWidget extends FIBReferencedComponentWidgetI
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingReferencedComponentRenderingAdapter extends SwingRenderingAdapter<JComponent> implements
-			ReferencedComponentRenderingAdapter<JComponent> {
+	public static class SwingReferencedComponentRenderingAdapter extends SwingRenderingAdapter<JComponent>
+			implements ReferencedComponentRenderingAdapter<JComponent> {
 
 		private final JLabel NOT_FOUND_LABEL = new JLabel("<Not found>");;
 
@@ -80,6 +82,17 @@ public class JFIBReferencedComponentWidget extends FIBReferencedComponentWidgetI
 			}
 			return technologyComponent;
 		}
+
+		@Override
+		public Color getDefaultForegroundColor(JComponent component) {
+			return UIManager.getColor("Panel.foreground");
+		}
+
+		@Override
+		public Color getDefaultBackgroundColor(JComponent component) {
+			return UIManager.getColor("Panel.background");
+		}
+
 	}
 
 	public static SwingReferencedComponentRenderingAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingReferencedComponentRenderingAdapter();

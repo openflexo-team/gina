@@ -48,6 +48,7 @@ import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JTextArea;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -64,7 +65,7 @@ import org.openflexo.toolbox.ToolBox;
  * 
  * @author bmangez,sguerin
  */
-public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea>implements FocusListener, JFIBView<FIBTextArea, JTextArea> {
+public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea> implements FocusListener, JFIBView<FIBTextArea, JTextArea> {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBTextAreaWidget.class.getPackage().getName());
 
@@ -96,6 +97,16 @@ public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea>implemen
 		@Override
 		public void setRows(JTextArea component, int rows) {
 			component.setRows(rows);
+		}
+
+		@Override
+		public Color getDefaultForegroundColor(JTextArea component) {
+			return UIManager.getColor("TextArea.foreground");
+		}
+
+		@Override
+		public Color getDefaultBackgroundColor(JTextArea component) {
+			return UIManager.getColor("TextArea.background");
 		}
 
 	}

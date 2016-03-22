@@ -39,11 +39,13 @@
 
 package org.openflexo.gina.swing.view.widget;
 
+import java.awt.Color;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBLabel;
@@ -56,7 +58,7 @@ import org.openflexo.gina.view.widget.impl.FIBLabelWidgetImpl;
  * 
  * @author sylvain
  */
-public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabel>implements JFIBView<FIBLabel, JLabel> {
+public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabel> implements JFIBView<FIBLabel, JLabel> {
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(JFIBLabelWidget.class.getPackage().getName());
 
@@ -67,7 +69,7 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabel>implements JFIBVi
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingLabelRenderingAdapter extends SwingRenderingAdapter<JLabel>implements LabelRenderingAdapter<JLabel> {
+	public static class SwingLabelRenderingAdapter extends SwingRenderingAdapter<JLabel> implements LabelRenderingAdapter<JLabel> {
 
 		@Override
 		public String getText(JLabel component) {
@@ -93,6 +95,17 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabel>implements JFIBVi
 		public JComponent getJComponent(JLabel component) {
 			return component;
 		}
+
+		@Override
+		public Color getDefaultForegroundColor(JLabel component) {
+			return UIManager.getColor("Label.foreground");
+		}
+
+		@Override
+		public Color getDefaultBackgroundColor(JLabel component) {
+			return UIManager.getColor("Label.background");
+		}
+
 	}
 
 	public static SwingLabelRenderingAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingLabelRenderingAdapter();
