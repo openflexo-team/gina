@@ -363,7 +363,7 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 			@Override
 			public void insertComponent(FIBComponent newComponent, int oldIndex) {
 				if (oldIndex > -1 && oldIndex < index) {
-					System.out.println("Hop, c'est un move en fait, d'un index avant l'index recherche, on fait donc -1");
+					// It's a move (oldIndex != -1), and the old index is before searched index
 					putSubComponentsAtIndexWithConstraints(newComponent, index - 1, leftConstraints);
 				}
 				else {
@@ -398,11 +398,11 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 	protected void putSubComponentsAtIndexWithConstraints(FIBComponent subComponent, int index, TwoColsLayoutConstraints constraints) {
 		if (getComponent().getSubComponents().contains(subComponent)) {
 			// This is a simple move
-			System.out.println("Moving component at index " + index);
+			// System.out.println("Moving component at index " + index);
 			getComponent().moveToSubComponentsAtIndex(subComponent, index);
 		}
 		else {
-			System.out.println("Inserting component at index " + index);
+			// System.out.println("Inserting component at index " + index);
 			// getComponent().setConstraints(constraints);
 			getComponent().insertToSubComponentsAtIndex(subComponent, constraints, index);
 		}

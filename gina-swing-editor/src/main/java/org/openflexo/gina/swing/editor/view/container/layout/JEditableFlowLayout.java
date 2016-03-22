@@ -220,11 +220,11 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 	protected void putSubComponentsAtIndex(FIBComponent subComponent, int index) {
 		if (getComponent().getSubComponents().contains(subComponent)) {
 			// This is a simple move
-			System.out.println("Moving component at index " + index);
+			// System.out.println("Moving component at index " + index);
 			getComponent().moveToSubComponentsAtIndex(subComponent, index);
 		}
 		else {
-			System.out.println("Inserting component at index " + index);
+			// System.out.println("Inserting component at index " + index);
 			getComponent().insertToSubComponentsAtIndex(subComponent, index);
 		}
 

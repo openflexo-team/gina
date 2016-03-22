@@ -101,7 +101,7 @@ public class DraggedFIBComponent implements FIBDraggable {
 				int oldIndex = -1;
 				if (draggedComponent.getParent() != null) {
 					oldIndex = draggedComponent.getParent().getSubComponents().indexOf(draggedComponent);
-					System.out.println("OldIndex was: " + oldIndex);
+					// System.out.println("OldIndex was: " + oldIndex);
 					draggedComponent.getParent().removeFromSubComponents(draggedComponent);
 				}
 				// WAS:
