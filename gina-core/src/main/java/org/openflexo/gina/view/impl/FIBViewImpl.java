@@ -209,9 +209,9 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			stopListenVariableValueChange(variable);
 		}
 
-		if (getComponent().getName() != null && getComponent().getName().equals("BorderConstraints")) {
+		/*if (getComponent().getName() != null && getComponent().getName().equals("BorderConstraints")) {
 			System.out.println("On se met a ecouter la variable " + variable.getName() + " qui vaut " + variable.getValue());
-		}
+		}*/
 
 		if (variable.getValue() != null && variable.getValue().isValid()) {
 			dataBindingValueChangeListener = new BindingValueChangeListener<T>(variable.getValue(), getBindingEvaluationContext()) {
@@ -246,9 +246,9 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	@SuppressWarnings("unchecked")
 	private <T> void stopListenVariableValueChange(final FIBVariable<T> variable) {
 
-		if (getComponent().getName() != null && getComponent().getName().equals("BorderConstraints")) {
+		/*if (getComponent().getName() != null && getComponent().getName().equals("BorderConstraints")) {
 			System.out.println("On n'ecoute plus la variable " + variable.getName() + " qui vaut " + variable.getValue());
-		}
+		}*/
 
 		BindingValueChangeListener<T> dataBindingValueChangeListener = (BindingValueChangeListener<T>) variableListeners.get(variable);
 

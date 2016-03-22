@@ -39,18 +39,21 @@
 
 package org.openflexo.gina.swing.view.widget;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
+import org.openflexo.gina.swing.view.widget.JFIBLabelWidget.JLabelPanel;
 import org.openflexo.gina.view.widget.impl.FIBLabelWidgetImpl;
 
 /**
@@ -58,7 +61,7 @@ import org.openflexo.gina.view.widget.impl.FIBLabelWidgetImpl;
  * 
  * @author sylvain
  */
-public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabel> implements JFIBView<FIBLabel, JLabel> {
+public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel> implements JFIBView<FIBLabel, JLabelPanel> {
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(JFIBLabelWidget.class.getPackage().getName());
 
@@ -69,40 +72,41 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabel> implements JFIBV
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingLabelRenderingAdapter extends SwingRenderingAdapter<JLabel> implements LabelRenderingAdapter<JLabel> {
+	public static class SwingLabelRenderingAdapter extends SwingRenderingAdapter<JLabelPanel>
+			implements LabelRenderingAdapter<JLabelPanel> {
 
 		@Override
-		public String getText(JLabel component) {
-			return component.getText();
+		public String getText(JLabelPanel component) {
+			return component.getLabel().getText();
 		}
 
 		@Override
-		public void setText(JLabel component, String aText) {
-			component.setText(aText);
+		public void setText(JLabelPanel component, String aText) {
+			component.getLabel().setText(aText);
 		}
 
 		@Override
-		public int getHorizontalAlignment(JLabel component) {
-			return component.getHorizontalAlignment();
+		public int getHorizontalAlignment(JLabelPanel component) {
+			return component.getLabel().getHorizontalAlignment();
 		}
 
 		@Override
-		public void setHorizontalAlignment(JLabel component, int align) {
-			component.setHorizontalAlignment(align);
+		public void setHorizontalAlignment(JLabelPanel component, int align) {
+			component.getLabel().setHorizontalAlignment(align);
 		}
 
 		@Override
-		public JComponent getJComponent(JLabel component) {
+		public JComponent getJComponent(JLabelPanel component) {
 			return component;
 		}
 
 		@Override
-		public Color getDefaultForegroundColor(JLabel component) {
+		public Color getDefaultForegroundColor(JLabelPanel component) {
 			return UIManager.getColor("Label.foreground");
 		}
 
 		@Override
-		public Color getDefaultBackgroundColor(JLabel component) {
+		public Color getDefaultBackgroundColor(JLabelPanel component) {
 			return UIManager.getColor("Label.background");
 		}
 
@@ -132,20 +136,39 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabel> implements JFIBV
 	}
 
 	@Override
-	protected JLabel makeTechnologyComponent() {
-		JLabel returned;
-		/*
-		 * if (getWidget().getData().isValid()) { returned = new JLabel(" "); }
-		 * else {
-		 */
+	protected JLabelPanel makeTechnologyComponent() {
+		/*JLabel returned;
 		returned = new JLabel("");
-		// }
-		// There is not much point in giving focus to a label since there is no
-		// KeyBindings nor KeyListener on it.
 		returned.setFocusable(false);
 		returned.setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, TOP_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
 				RIGHT_COMPENSATING_BORDER));
-		return returned;
+		return returned;*/
+		return new JLabelPanel(this);
+	}
+
+	@SuppressWarnings("serial")
+	public static class JLabelPanel extends JPanel {
+		private JLabel label;
+		private JFIBLabelWidget widget;
+
+		public JLabelPanel(JFIBLabelWidget widget) {
+			super(new BorderLayout());
+			this.widget = widget;
+			setOpaque(false);
+			label = new JLabel("");
+			label.setFocusable(false);
+			setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, TOP_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
+					RIGHT_COMPENSATING_BORDER));
+			add(label, BorderLayout.CENTER);
+		}
+
+		public JFIBLabelWidget getWidget() {
+			return widget;
+		}
+
+		public JLabel getLabel() {
+			return label;
+		}
 	}
 
 }

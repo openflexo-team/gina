@@ -57,7 +57,7 @@ import org.openflexo.gina.view.widget.FIBLabelWidget;
  * 
  * @author sylvain
  */
-public abstract class FIBLabelWidgetImpl<C> extends FIBWidgetViewImpl<FIBLabel, C, String>implements FIBLabelWidget<C> {
+public abstract class FIBLabelWidgetImpl<C> extends FIBWidgetViewImpl<FIBLabel, C, String> implements FIBLabelWidget<C> {
 	private static final Logger LOGGER = Logger.getLogger(FIBLabelWidgetImpl.class.getPackage().getName());
 
 	public FIBLabelWidgetImpl(FIBLabel model, FIBController controller, LabelRenderingAdapter<C> RenderingAdapter) {
@@ -138,7 +138,7 @@ public abstract class FIBLabelWidgetImpl<C> extends FIBWidgetViewImpl<FIBLabel, 
 		return null;
 	}
 
-	final protected void relayoutParentBecauseLabelChanged() {
+	public final void relayoutParentBecauseLabelChanged() {
 		FIBContainerView<?, ?, ?> parentView = getParentView();
 		if (parentView != null) {
 			parentView.updateLayout();
@@ -162,6 +162,7 @@ public abstract class FIBLabelWidgetImpl<C> extends FIBWidgetViewImpl<FIBLabel, 
 			updateAlign();
 		}
 		if (evt.getPropertyName().equals(FIBLabel.LABEL_KEY)) {
+			updateLabel();
 			relayoutParentBecauseLabelChanged();
 		}
 

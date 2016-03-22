@@ -39,23 +39,34 @@
 
 package org.openflexo.gina.swing.editor.view.widget;
 
+import java.awt.BorderLayout;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
 import java.util.logging.Logger;
 
-import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate;
 import org.openflexo.gina.swing.view.widget.JFIBLabelWidget;
+import org.openflexo.gina.swing.view.widget.JFIBLabelWidget.JLabelPanel;
 import org.openflexo.logging.FlexoLogger;
 
-public class JFIBEditableLabelWidget extends JFIBLabelWidget implements FIBSwingEditableView<FIBLabel, JLabel> {
+public class JFIBEditableLabelWidget extends JFIBLabelWidget implements FIBSwingEditableView<FIBLabel, JLabelPanel> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableLabelWidget.class.getPackage().getName());
 
-	private final FIBSwingEditableViewDelegate<FIBLabel, JLabel> delegate;
+	private final FIBSwingEditableViewDelegate<FIBLabel, JLabelPanel> delegate;
 
 	private final FIBEditorController editorController;
 
@@ -68,7 +79,7 @@ public class JFIBEditableLabelWidget extends JFIBLabelWidget implements FIBSwing
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBSwingEditableViewDelegate<FIBLabel, JLabel>(this);
+		delegate = new FIBSwingEditableViewDelegate<FIBLabel, JLabelPanel>(this);
 	}
 
 	@Override
@@ -78,7 +89,121 @@ public class JFIBEditableLabelWidget extends JFIBLabelWidget implements FIBSwing
 	}
 
 	@Override
-	public FIBSwingEditableViewDelegate<FIBLabel, JLabel> getDelegate() {
+	public FIBSwingEditableViewDelegate<FIBLabel, JLabelPanel> getDelegate() {
 		return delegate;
 	}
+
+	@Override
+	protected EditableJLabelPanel makeTechnologyComponent() {
+		return new EditableJLabelPanel(this);
+	}
+
+	@Override
+	protected void updateLabel() {
+		if (((EditableJLabelPanel) getTechnologyComponent()).isEditing()) {
+			return;
+		}
+		super.updateLabel();
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (((EditableJLabelPanel) getTechnologyComponent()).isEditing()) {
+			return;
+		}
+		super.propertyChange(evt);
+	}
+
+	@SuppressWarnings("serial")
+	public static class EditableJLabelPanel extends JLabelPanel {
+
+		private boolean isEditing = false;
+		private JTextField textField;
+
+		public EditableJLabelPanel(JFIBEditableLabelWidget widget) {
+			super(widget);
+
+			textField = new JTextField();
+			textField.setBorder(null);
+			textField.setBackground(null);
+			textField.getDocument().addDocumentListener(new DocumentListener() {
+				@Override
+				public void changedUpdate(DocumentEvent e) {
+					labelChanged();
+				}
+
+				@Override
+				public void insertUpdate(DocumentEvent e) {
+					labelChanged();
+				}
+
+				@Override
+				public void removeUpdate(DocumentEvent e) {
+					labelChanged();
+				}
+			});
+			textField.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyPressed(KeyEvent e) {
+					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+						endEdition();
+					}
+				}
+			});
+			textField.addFocusListener(new FocusListener() {
+
+				@Override
+				public void focusLost(FocusEvent e) {
+					labelChanged();
+					endEdition();
+				}
+
+				@Override
+				public void focusGained(FocusEvent e) {
+				}
+			});
+
+			getLabel().addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					super.mouseClicked(e);
+					if (e.getClickCount() == 2 && !isEditing) {
+						startEdition();
+					}
+				}
+			});
+		}
+
+		public boolean isEditing() {
+			return isEditing;
+		}
+
+		protected void startEdition() {
+			System.out.println("Hop, on edite le truc");
+			remove(getLabel());
+			textField.setText(getLabel().getText());
+			add(textField, BorderLayout.CENTER);
+			textField.selectAll();
+			getWidget().getRenderingAdapter().revalidateAndRepaint(this);
+			isEditing = true;
+		}
+
+		protected void endEdition() {
+			System.out.println("Fin d'edition du truc");
+			remove(textField);
+			getLabel().setText(textField.getText());
+			add(getLabel(), BorderLayout.CENTER);
+			getWidget().getRenderingAdapter().revalidateAndRepaint(this);
+			isEditing = false;
+		}
+
+		protected void labelChanged() {
+			// System.out.println("New label: " + textField.getText());
+			getWidget().getComponent().setLabel(textField.getText());
+			getParent().revalidate();
+			getParent().repaint();
+		}
+
+	}
+
 }
