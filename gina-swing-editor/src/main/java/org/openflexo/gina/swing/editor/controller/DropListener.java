@@ -62,6 +62,7 @@ import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate.FIBDropTarget;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.view.JFIBView;
+import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.swing.Focusable;
 
@@ -185,27 +186,38 @@ public class DropListener implements DropTargetListener {
 	public void dragEnter(DropTargetDragEvent e) {
 		if (isDragOk(e)) {
 
+			Dimension preferredSize = new Dimension(25, 25); // Default size
+
+			// System.out.println("source=" + e.getSource());
+			try {
+				Object transferable = e.getTransferable().getTransferData(ElementDrag.DEFAULT_FLAVOR);
+				if (transferable instanceof PaletteElement) {
+					preferredSize = ((JFIBView<?, ?>) ((PaletteElement) transferable).getView()).getResultingJComponent().getSize();
+				}
+			} catch (UnsupportedFlavorException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			// System.out.println("preferredSize=" + preferredSize);
+
 			if (editableView instanceof FIBSwingEditableContainerView) {
 
-				Dimension preferredSize = new Dimension(25, 25); // Default size
-
-				// System.out.println("source=" + e.getSource());
-				try {
-					Object transferable = e.getTransferable().getTransferData(ElementDrag.DEFAULT_FLAVOR);
-					if (transferable instanceof PaletteElement) {
-						preferredSize = ((JFIBView<?, ?>) ((PaletteElement) transferable).getView()).getResultingJComponent().getSize();
-					}
-				} catch (UnsupportedFlavorException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
-				// System.out.println("preferredSize=" + preferredSize);
-
 				List<PlaceHolder> placeHolders = ((FIBSwingEditableContainerView<?, ?>) editableView).makePlaceHolders(preferredSize);
+				getContainerDelegate().handlePlaceHolders(placeHolders);
+
+			}
+
+			// Otherwise, it's a widget, so dot it for the parent
+			// I'm not totally confident with this code, especially in the conditions in which this should be applied
+			// It is particulary usefull if you have a panel with border layout and a widget in center location, or a panel with box layout
+			// Please remove this code if big issues are raised
+			else if (editableView.getParentView() instanceof JFIBPanelView) {
+				List<PlaceHolder> placeHolders = ((FIBSwingEditableContainerView<?, ?>) editableView.getParentView())
+						.makePlaceHolders(preferredSize);
 				getContainerDelegate().handlePlaceHolders(placeHolders);
 
 			}
@@ -450,8 +462,8 @@ public class DropListener implements DropTargetListener {
 		if (editableView instanceof FIBSwingEditableContainerView) {
 			return ((FIBSwingEditableContainerView<?, ?>) editableView).getDelegate();
 		}
-		System.out.println("editableView=" + editableView);
-		System.out.println("editableView.getParentView()=" + editableView.getParentView());
+		// System.out.println("editableView=" + editableView);
+		// System.out.println("editableView.getParentView()=" + editableView.getParentView());
 		return null;
 	}
 
