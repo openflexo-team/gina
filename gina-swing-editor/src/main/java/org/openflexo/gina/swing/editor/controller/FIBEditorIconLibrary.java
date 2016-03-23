@@ -58,7 +58,8 @@ public class FIBEditorIconLibrary {
 	public static final ImageIcon REFRESH_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Actions/Refresh.gif"));
 
 	public static final ImageIcon ROLE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/SmallRole.gif"));
-	public static final ImageIcon ROOT_COMPONENT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/RootComponentIcon.png"));
+	public static final ImageIcon ROOT_COMPONENT_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/RootComponentIcon.png"));
 	public static final ImageIcon PANEL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/PanelIcon.png"));
 	public static final ImageIcon REFERENCE_COMPONENT_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/InternalFrameIcon.png"));
@@ -74,5 +75,6 @@ public class FIBEditorIconLibrary {
 	public static final ImageIcon TABLE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/TableIcon.png"));
 	public static final ImageIcon TREE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/TreeIcon.png"));
 	public static final ImageIcon NUMBER_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/SpinnerIcon.png"));
+	public static final ImageIcon IMAGE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ImageIcon.png"));
 
 }

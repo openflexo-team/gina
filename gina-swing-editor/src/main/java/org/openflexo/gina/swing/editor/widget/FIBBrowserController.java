@@ -53,6 +53,7 @@ import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBButton;
 import org.openflexo.gina.model.widget.FIBCheckBox;
 import org.openflexo.gina.model.widget.FIBDropDown;
+import org.openflexo.gina.model.widget.FIBImage;
 import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.gina.model.widget.FIBNumber;
 import org.openflexo.gina.model.widget.FIBRadioButtonList;
@@ -149,6 +150,9 @@ public class FIBBrowserController extends FIBController implements Observer {
 		}
 		else if (component instanceof FIBTextField) {
 			return FIBEditorIconLibrary.TEXTFIELD_ICON;
+		}
+		else if (component instanceof FIBImage) {
+			return FIBEditorIconLibrary.IMAGE_ICON;
 		}
 		else if (component instanceof FIBNumber) {
 			return FIBEditorIconLibrary.NUMBER_ICON;
