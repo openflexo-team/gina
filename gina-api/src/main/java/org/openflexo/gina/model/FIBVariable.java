@@ -211,7 +211,7 @@ public interface FIBVariable<T> extends FIBModelObject {
 		@Override
 		public BindingVariable getBindingVariable() {
 			if (bindingVariable == null) {
-				bindingVariable = new BindingVariable(getName(), getType());
+				bindingVariable = new BindingVariable(getName(), getType(), true);
 			}
 			return bindingVariable;
 		}

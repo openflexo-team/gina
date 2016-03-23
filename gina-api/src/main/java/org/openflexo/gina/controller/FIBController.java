@@ -40,8 +40,6 @@
 package org.openflexo.gina.controller;
 
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -51,13 +49,11 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingVariable;
+import org.openflexo.connie.binding.SettableBindingEvaluationContext;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.manager.EventManager;
 import org.openflexo.gina.manager.Registerable;
@@ -88,7 +84,8 @@ import org.openflexo.toolbox.StringUtils;
  * @author sylvain
  * 
  */
-public class FIBController implements BindingEvaluationContext, Observer, PropertyChangeListener, HasPropertyChangeSupport, Registerable {
+public class FIBController
+		implements SettableBindingEvaluationContext, /*Observer,*/ /*PropertyChangeListener,*/ HasPropertyChangeSupport, Registerable {
 
 	static final Logger LOGGER = Logger.getLogger(FIBController.class.getPackage().getName());
 
@@ -152,7 +149,10 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 		return (FIBView<F, ? extends C>) controller.buildView(fibComponent);
 	}
 
-	private Object dataObject;
+	// private Object dataObject;
+
+	private final Map<String, Object> variableValues = new HashMap<>();
+
 	private final FIBComponent rootComponent;
 	private final Hashtable<FIBComponent, FIBView<?, ?>> views;
 	private FIBSelectable<?> selectionLeader;
@@ -204,10 +204,11 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 			for (FIBView<?, ?> view : new ArrayList<FIBView<?, ?>>(views.values())) {
 				view.delete();
 			}
-			if (dataObject instanceof Observable) {
+			/*if (dataObject instanceof Observable) {
 				((Observable) dataObject).deleteObserver(this);
-			}
-			dataObject = null;
+			}*/
+			variableValues.clear();
+			// dataObject = null;
 			deleted = true;
 			getPropertyChangeSupport().firePropertyChange(DELETED, false, true);
 		}
@@ -336,9 +337,12 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 		if (variable.getVariableName() == null) {
 			return null;
 		}
-		if (variable.getVariableName().equals("data")) {
+		/*if (variable.getVariableName().equals("data")) {
 			return dataObject;
-		}
+		}*/
+		/*if (variableValues.get(variable.getVariableName()) != null) {
+			return getVariableValue(variable.getVariableName());
+		}*/
 		for (FIBComponent c : new ArrayList<FIBComponent>(views.keySet())) {
 			if (variable.getVariableName().equals(c.getName())) {
 				FIBView<?, ?> returned = viewForComponent(c);
@@ -351,7 +355,14 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 		if (variable.getVariableName().equals("controller")) {
 			return this;
 		}
-		return null;
+
+		return getVariableValue(variable.getVariableName());
+	}
+
+	@Override
+	public void setValue(Object value, BindingVariable variable) {
+		// System.out.println("Sets variable " + variable + " with " + value);
+		setVariableValue(variable.getVariableName(), value);
 	}
 
 	public FIBComponent getRootComponent() {
@@ -362,20 +373,63 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 		return viewForComponent(getRootComponent());
 	}
 
+	public Object getVariableValue(String variableName) {
+		return variableValues.get(variableName);
+	}
+
+	public void setVariableValue(String variableName, Object aValue/*, boolean forceUpdate*/) {
+		Object oldValue = getVariableValue(variableName);
+		// if (forceUpdate || aValue != oldValue) {
+		if (aValue != oldValue) {
+			/*if (oldValue instanceof HasPropertyChangeSupport && ((HasPropertyChangeSupport) oldValue).getPropertyChangeSupport() != null) {
+				((HasPropertyChangeSupport) oldValue).getPropertyChangeSupport().removePropertyChangeListener(this);
+			}
+			else if (oldValue instanceof Observable) {
+				((Observable) oldValue).deleteObserver(this);
+			}*/
+			// dataObject = aValue;
+
+			variableValues.put(variableName, aValue);
+
+			// Attempt to reduce time required to update component
+			// I suspect that if the 'data' notification is correctely handled,
+			// this is no more necessary
+			/*
+			 * if (getRootView() != null) { getRootView().update(); }
+			 */
+			/*if (dataObject instanceof HasPropertyChangeSupport) {
+				((HasPropertyChangeSupport) dataObject).getPropertyChangeSupport().addPropertyChangeListener(this);
+			}
+			else if (dataObject instanceof Observable) {
+				((Observable) dataObject).addObserver(this);
+			}*/
+			// setChanged();
+			// notifyObservers();
+			getPropertyChangeSupport().firePropertyChange(variableName, oldValue, aValue);
+		}
+	}
+
+	@Deprecated
 	public Object getDataObject() {
-		return dataObject;
+		// return dataObject;
+		return getVariableValue(FIBComponent.DEFAULT_DATA_VARIABLE);
 	}
 
+	@Deprecated
 	public void setDataObject(Object anObject) {
-		setDataObject(anObject, false);
+		// setDataObject(anObject, false);
+		setVariableValue(FIBComponent.DEFAULT_DATA_VARIABLE, anObject);
 	}
 
+	@Deprecated
 	public void updateWithoutDataObject() {
 		setDataObject(null, true);
 	}
 
+	@Deprecated
 	public void setDataObject(Object anObject, boolean forceUpdate) {
-		if (forceUpdate || anObject != dataObject) {
+		setDataObject(anObject);
+		/*if (forceUpdate || anObject != dataObject) {
 			Object oldDataObject = dataObject;
 			if (oldDataObject instanceof HasPropertyChangeSupport
 					&& ((HasPropertyChangeSupport) oldDataObject).getPropertyChangeSupport() != null) {
@@ -385,13 +439,10 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 				((Observable) oldDataObject).deleteObserver(this);
 			}
 			dataObject = anObject;
-
+		
 			// Attempt to reduce time required to update component
 			// I suspect that if the 'data' notification is correctely handled,
 			// this is no more necessary
-			/*
-			 * if (getRootView() != null) { getRootView().update(); }
-			 */
 			if (dataObject instanceof HasPropertyChangeSupport) {
 				((HasPropertyChangeSupport) dataObject).getPropertyChangeSupport().addPropertyChangeListener(this);
 			}
@@ -401,7 +452,7 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 			// setChanged();
 			// notifyObservers();
 			getPropertyChangeSupport().firePropertyChange("data", oldDataObject, anObject);
-		}
+		}*/
 	}
 
 	public final <M extends FIBComponent> FIBView<M, ?> buildView(M fibComponent) {
@@ -414,25 +465,10 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 		return null;
 	}
 
-	/**
-	 * Build FIBWidgetView given supplied {@link FIBWidget}
-	 * 
-	 * Also add MouseListenener and KeyListener
-	 * 
-	 * @param fibWidget
-	 * @return
-	 */
-	@Override
-	public void update(Observable o, Object arg) {
-		// System.out.println("Received "+arg);
-		// getRootView().updateDataObject(dataObject);
-		// getRootView().update();
-	}
-
-	@Override
+	/*@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		// getRootView().update();
-	}
+	}*/
 
 	public void show() {
 		getViewFactory().show(this);

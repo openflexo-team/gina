@@ -785,7 +785,7 @@ public abstract interface FIBContainer extends FIBComponent {
 		@Deprecated
 		private FIBVariable<?> getDefaultDataVariable(boolean createWhenNonExistant) {
 			FIBVariable<?> returned = getVariable(DEFAULT_DATA_VARIABLE);
-			if (returned == null) {
+			if (returned == null && createWhenNonExistant) {
 				returned = getFactory().newFIBVariable(this, DEFAULT_DATA_VARIABLE);
 			}
 			return returned;

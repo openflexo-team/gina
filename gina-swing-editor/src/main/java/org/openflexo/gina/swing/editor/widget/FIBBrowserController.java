@@ -39,7 +39,6 @@
 package org.openflexo.gina.swing.editor.widget;
 
 import java.awt.event.MouseEvent;
-import java.util.Observer;
 import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
@@ -70,7 +69,7 @@ import org.openflexo.gina.view.GinaViewFactory;
 import org.openflexo.model.ModelEntity;
 import org.openflexo.toolbox.StringUtils;
 
-public class FIBBrowserController extends FIBController implements Observer {
+public class FIBBrowserController extends FIBController /*implements Observer*/ {
 
 	private static final Logger logger = Logger.getLogger(FIBBrowserController.class.getPackage().getName());
 
@@ -89,9 +88,9 @@ public class FIBBrowserController extends FIBController implements Observer {
 
 	public void setEditorController(FIBEditorController editorController) {
 		this.editorController = editorController;
-		if (editorController != null) {
+		/*if (editorController != null) {
 			editorController.addObserver(this);
-		}
+		}*/
 
 		getPropertyChangeSupport().firePropertyChange("editorController", null, editorController);
 	}
