@@ -122,7 +122,7 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 					JFIBView<?, ?> childView = (JFIBView<?, ?>) getContainerView().getSubViewsMap().get(c);
 					panel.add(Box.createRigidArea(childView.getResultingJComponent().getSize()));
 				}
-				Component phComponent = new JPanel() {
+				JComponent phComponent = new JPanel() {
 					@Override
 					public Dimension getPreferredSize() {
 						return placeHolderSize;
@@ -151,6 +151,8 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 				PlaceHolder newPlaceHolder = new PlaceHolder(getContainerView(), "< flow item >", placeHolderBounds) {
 					@Override
 					public void insertComponent(FIBComponent newComponent, int oldIndex) {
+						FlowLayoutConstraints flowConstraints = new FlowLayoutConstraints();
+						newComponent.setConstraints(flowConstraints);
 						putSubComponentsAtIndex(newComponent, insertionIndex);
 					}
 				};
@@ -165,7 +167,7 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 				JFIBView<?, ?> childView = (JFIBView<?, ?>) getContainerView().getSubViewsMap().get(c);
 				panel.add(Box.createRigidArea(childView.getResultingJComponent().getSize()));
 			}
-			Component phComponent = new JPanel() {
+			JComponent phComponent = new JPanel() {
 				@Override
 				public Dimension getPreferredSize() {
 					return placeHolderSize;
@@ -186,7 +188,6 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 				public void insertComponent(FIBComponent newComponent, int oldIndex) {
 					FlowLayoutConstraints flowConstraints = new FlowLayoutConstraints();
 					newComponent.setConstraints(flowConstraints);
-
 					putSubComponentsAtIndex(newComponent, getComponent().getSubComponents().size());
 				}
 			};
