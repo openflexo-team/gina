@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.model.container.layout;
 
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
@@ -50,6 +51,7 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBProperty;
 import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
+import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 /**
  * This abstraction represent the constraints configuration of a component inside a container declaring a particular layout.<br>
@@ -59,7 +61,7 @@ import org.openflexo.gina.model.container.FIBPanel.Layout;
  *
  */
 @SuppressWarnings("serial")
-public abstract class ComponentConstraints extends Hashtable<String, String> {
+public abstract class ComponentConstraints extends Hashtable<String, String>implements HasPropertyChangeSupport {
 
 	static final Logger LOGGER = Logger.getLogger(FIBComponent.class.getPackage().getName());
 
@@ -84,8 +86,11 @@ public abstract class ComponentConstraints extends Hashtable<String, String> {
 
 	private FIBComponent component;
 
+	private PropertyChangeSupport pcSupport;
+
 	public ComponentConstraints() {
 		super();
+		pcSupport = new PropertyChangeSupport(this);
 	}
 
 	protected ComponentConstraints(String someConstraints) {
@@ -119,8 +124,19 @@ public abstract class ComponentConstraints extends Hashtable<String, String> {
 	}
 
 	@Override
+	public PropertyChangeSupport getPropertyChangeSupport() {
+		return pcSupport;
+	}
+
+	@Override
+	public String getDeletedProperty() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public synchronized String put(String key, String value) {
-		// String oldValue = get(key);
+		String oldValue = get(key);
 		String returned = super.put(key, value);
 
 		if (component != null && !ignoreNotif) {
@@ -129,6 +145,8 @@ public abstract class ComponentConstraints extends Hashtable<String, String> {
 					this);
 			component.notify(notification);
 		}
+
+		getPropertyChangeSupport().firePropertyChange(key, oldValue, value);
 
 		return returned;
 	}
