@@ -63,7 +63,7 @@ import org.openflexo.gina.swing.view.container.layout.JBorderLayout;
 import org.openflexo.logging.FlexoLogger;
 
 /**
- * Swing implementation for border layout
+ * Swing implementation for border layout editor
  * 
  * @author sylvain
  */
@@ -135,15 +135,9 @@ public class JEditableBorderLayout extends JBorderLayout implements JFIBEditable
 					PlaceHolder newPlaceHolder = new PlaceHolder(getContainerView(), "<" + l.getConstraint() + ">", bounds) {
 						@Override
 						public void insertComponent(FIBComponent newComponent, int oldIndex) {
-
-							System.out.println("He he on ajoute un composant " + newComponent + " a " + getContainerView().getComponent());
-							System.out.println("Location=" + l);
-
 							BorderLayoutConstraints blConstraints = new BorderLayoutConstraints(l);
 							newComponent.setConstraints(blConstraints);
 							getComponent().addToSubComponents(newComponent);
-
-							System.out.println("Hop: " + newComponent.getConstraints());
 						}
 					};
 					logger.fine("Made placeholder for " + l.getConstraint());

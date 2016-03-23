@@ -57,6 +57,7 @@ import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerViewDelegat
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.editor.view.container.layout.JEditableBorderLayout;
 import org.openflexo.gina.swing.editor.view.container.layout.JEditableFlowLayout;
+import org.openflexo.gina.swing.editor.view.container.layout.JEditableGridLayout;
 import org.openflexo.gina.swing.editor.view.container.layout.JEditableTwoColsLayout;
 import org.openflexo.gina.swing.editor.view.container.layout.JFIBEditableLayoutManager;
 import org.openflexo.gina.swing.view.container.JFIBPanelView;
@@ -346,7 +347,7 @@ public class JFIBEditablePanelView extends JFIBPanelView implements FIBSwingEdit
 			case twocols:
 				return new JEditableTwoColsLayout(this);
 			case grid:
-				return new JGridBagLayout(this);
+				return new JEditableGridLayout(this);
 			case gridbag:
 				return new JGridBagLayout(this);
 			default:

@@ -70,20 +70,19 @@ public class JGridLayout extends FIBLayoutManagerImpl<JPanel, JComponent, GridLa
 
 	@Override
 	public void setLayoutManager(JPanel container) {
-		container.setLayout(new GridLayout(getComponent().getRows(), getComponent().getCols(),
-				getComponent().getHGap(), getComponent().getVGap()));
+		container.setLayout(
+				new GridLayout(getComponent().getRows(), getComponent().getCols(), getComponent().getHGap(), getComponent().getVGap()));
 	}
 
 	@Override
 	public void doLayout() {
 		for (FIBView<?, JComponent> subComponentView : getContainerView().getSubViews()) {
-			registerComponentWithConstraints(subComponentView, (GridLayoutConstraints) subComponentView.getComponent()
-					.getConstraints());
+			registerComponentWithConstraints(subComponentView, (GridLayoutConstraints) subComponentView.getComponent().getConstraints());
 		}
 
 		for (int i = 0; i < getComponent().getRows(); i++) {
 			for (int j = 0; j < getComponent().getCols(); j++) {
-				getContainerView().getTechnologyComponent().add(getChildComponent(j, i));
+				getContainerView().getTechnologyComponent().add(getChildJComponent(j, i));
 			}
 		}
 	}
@@ -94,12 +93,22 @@ public class JGridLayout extends FIBLayoutManagerImpl<JPanel, JComponent, GridLa
 		// used with overriden scheme
 	}
 
-	protected JComponent getChildComponent(int col, int row) {
+	protected FIBComponent getChildComponent(int col, int row) {
 		for (FIBComponent subComponent : getComponent().getSubComponents()) {
 			GridLayoutConstraints glc = (GridLayoutConstraints) subComponent.getConstraints();
 			if (glc.getX() == col && glc.getY() == row) {
-				return getSubComponentView(subComponent).getResultingJComponent();
+				return subComponent;
 			}
+		}
+		// Otherwise, it's an empty cell
+		return null;
+
+	}
+
+	protected JComponent getChildJComponent(int col, int row) {
+		FIBComponent subComponent = getChildComponent(col, row);
+		if (subComponent != null) {
+			return getSubComponentView(subComponent).getResultingJComponent();
 		}
 		// Otherwise, it's an empty cell
 		return makeEmptyPanel();
