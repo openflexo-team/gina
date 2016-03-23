@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Panel id="0" borderLeft="0" layout="twocols" controllerClassName="org.openflexo.gina.controller.FIBController" border="empty" borderRight="0" trackViewPortWidth="true" borderBottom="0" borderTop="0" trackViewPortHeight="true">
+  <LocalizedDictionary id="1" />
+  <Label id="2" name="Label" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" label="first name" />
+  <TextField id="3" data="firstName" columns="7" name="TextField" text="TextField" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" />
+  <Label id="4" name="Label2" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" label="last name" />
+  <TextField id="5" data="lastName" columns="7" name="TextField2" text="TextField" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" />
+  <Label id="6" name="Label3" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" label="age" />
+  <Number id="7" minValue="0" columns="3" data="age" name="Integer" maxValue="120" increment="1" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" numberType="IntegerType" />
+  <Label id="8" name="Label4" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" label="details" />
+  <Label id="9" data="(((((firstName + &quot; &quot;) + lastName) + &quot; (aged &quot;) + age.toString()) + &quot;)&quot;)" name="Label5" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" label="label" />
+  <FIBVariable id="10" name="firstName" type="java.lang.String" />
+  <FIBVariable id="11" name="lastName" type="java.lang.String" />
+  <FIBVariable id="12" name="age" type="java.lang.Integer" />
+</Panel>
