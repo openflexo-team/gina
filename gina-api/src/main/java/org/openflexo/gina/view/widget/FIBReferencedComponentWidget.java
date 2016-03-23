@@ -39,12 +39,9 @@
 package org.openflexo.gina.view.widget;
 
 import org.openflexo.connie.BindingEvaluationContext;
-import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.widget.FIBReferencedComponent;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.FIBWidgetView;
-import org.openflexo.gina.view.FIBView.RenderingAdapter;
-import org.openflexo.gina.view.widget.FIBCustomWidget.CustomComponentRenderingAdapter;
 
 /**
  * This component allows to reuse an other component, and embed it into a widget<br>
@@ -61,7 +58,7 @@ public interface FIBReferencedComponentWidget<C> extends FIBWidgetView<FIBRefere
 
 	public BindingEvaluationContext getEmbeddedBindingEvaluationContext();
 
-	public FIBView<FIBComponent,C> getReferencedComponentView();
+	public FIBView<?, C> getReferencedComponentView();
 
 	@Override
 	public ReferencedComponentRenderingAdapter<C> getRenderingAdapter();

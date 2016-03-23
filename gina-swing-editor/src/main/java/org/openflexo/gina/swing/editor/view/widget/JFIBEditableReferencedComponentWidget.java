@@ -48,15 +48,16 @@ import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate;
 import org.openflexo.gina.swing.view.widget.JFIBReferencedComponentWidget;
+import org.openflexo.gina.swing.view.widget.JFIBReferencedComponentWidget.JReferenceComponentPanel;
 import org.openflexo.logging.FlexoLogger;
 
 public class JFIBEditableReferencedComponentWidget extends JFIBReferencedComponentWidget
-		implements FIBSwingEditableView<FIBReferencedComponent, JComponent> {
+		implements FIBSwingEditableView<FIBReferencedComponent, JReferenceComponentPanel> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableReferencedComponentWidget.class.getPackage().getName());
 
-	private final FIBSwingEditableViewDelegate<FIBReferencedComponent, JComponent> delegate;
+	private final FIBSwingEditableViewDelegate<FIBReferencedComponent, JReferenceComponentPanel> delegate;
 
 	private final FIBEditorController editorController;
 
@@ -74,7 +75,7 @@ public class JFIBEditableReferencedComponentWidget extends JFIBReferencedCompone
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBSwingEditableViewDelegate<FIBReferencedComponent, JComponent>(this);
+		delegate = new FIBSwingEditableViewDelegate<FIBReferencedComponent, JReferenceComponentPanel>(this);
 	}
 
 	@Override
@@ -84,7 +85,7 @@ public class JFIBEditableReferencedComponentWidget extends JFIBReferencedCompone
 	}
 
 	@Override
-	public FIBSwingEditableViewDelegate<FIBReferencedComponent, JComponent> getDelegate() {
+	public FIBSwingEditableViewDelegate<FIBReferencedComponent, JReferenceComponentPanel> getDelegate() {
 		return delegate;
 	}
 

@@ -38,17 +38,22 @@
 
 package org.openflexo.gina.swing.view.widget;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.logging.Logger;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.widget.FIBReferencedComponent;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
+import org.openflexo.gina.swing.view.widget.JFIBReferencedComponentWidget.JReferenceComponentPanel;
 import org.openflexo.gina.view.widget.impl.FIBReferencedComponentWidgetImpl;
 
 /**
@@ -59,8 +64,8 @@ import org.openflexo.gina.view.widget.impl.FIBReferencedComponentWidgetImpl;
  * @author sguerin
  * 
  */
-public class JFIBReferencedComponentWidget extends FIBReferencedComponentWidgetImpl<JComponent>
-		implements JFIBView<FIBReferencedComponent, JComponent> {
+public class JFIBReferencedComponentWidget extends FIBReferencedComponentWidgetImpl<JReferenceComponentPanel>
+		implements JFIBView<FIBReferencedComponent, JReferenceComponentPanel> {
 
 	private static final Logger logger = Logger.getLogger(JFIBReferencedComponentWidget.class.getPackage().getName());
 
@@ -70,26 +75,16 @@ public class JFIBReferencedComponentWidget extends FIBReferencedComponentWidgetI
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingReferencedComponentRenderingAdapter extends SwingRenderingAdapter<JComponent>
-			implements ReferencedComponentRenderingAdapter<JComponent> {
-
-		private final JLabel NOT_FOUND_LABEL = new JLabel("<Not found>");;
+	public static class SwingReferencedComponentRenderingAdapter extends SwingRenderingAdapter<JReferenceComponentPanel>
+			implements ReferencedComponentRenderingAdapter<JReferenceComponentPanel> {
 
 		@Override
-		public JComponent getJComponent(JComponent technologyComponent) {
-			if (technologyComponent == null) {
-				return NOT_FOUND_LABEL;
-			}
-			return technologyComponent;
-		}
-
-		@Override
-		public Color getDefaultForegroundColor(JComponent component) {
+		public Color getDefaultForegroundColor(JReferenceComponentPanel component) {
 			return UIManager.getColor("Panel.foreground");
 		}
 
 		@Override
-		public Color getDefaultBackgroundColor(JComponent component) {
+		public Color getDefaultBackgroundColor(JReferenceComponentPanel component) {
 			return UIManager.getColor("Panel.background");
 		}
 
@@ -114,6 +109,89 @@ public class JFIBReferencedComponentWidget extends FIBReferencedComponentWidgetI
 	@Override
 	public JComponent getResultingJComponent() {
 		return getRenderingAdapter().getResultingJComponent(this);
+	}
+
+	@Override
+	protected JReferenceComponentPanel makeTechnologyComponent() {
+		return new JReferenceComponentPanel(this);
+	}
+
+	@Override
+	public JFIBView<?, JReferenceComponentPanel> getReferencedComponentView() {
+		if (getTechnologyComponent() != null) {
+			return getTechnologyComponent().getReferencedComponentView();
+		}
+		return null;
+	}
+
+	/*@Override
+	protected void updateReferenceComponent() {
+		if (getTechnologyComponent() != null) {
+			getTechnologyComponent().updateReferenceComponent();
+		}
+		else {
+			technologyComponent = makeTechnologyComponent();
+		}
+	}*/
+
+	@Override
+	protected void referencedComponentChanged() {
+		if (getTechnologyComponent() != null) {
+			getTechnologyComponent().updateReferenceComponent();
+		}
+		/*else {
+			technologyComponent = makeTechnologyComponent();
+		}*/
+	}
+
+	@SuppressWarnings("serial")
+	public static class JReferenceComponentPanel extends JPanel {
+		private JLabel invalidComponentlabel;
+		private JFIBReferencedComponentWidget widget;
+		private JFIBView<FIBComponent, JReferenceComponentPanel> referencedComponentView;
+
+		public JReferenceComponentPanel(JFIBReferencedComponentWidget widget) {
+			super(new BorderLayout());
+			this.widget = widget;
+			setOpaque(false);
+			invalidComponentlabel = new JLabel("", JLabel.CENTER);
+			invalidComponentlabel.setFocusable(false);
+			updateReferenceComponent();
+		}
+
+		public JFIBReferencedComponentWidget getWidget() {
+			return widget;
+		}
+
+		public JFIBView<FIBComponent, JReferenceComponentPanel> getReferencedComponentView() {
+			return referencedComponentView;
+		}
+
+		protected void updateReferenceComponent() {
+			removeAll();
+
+			if (widget.getReferencedComponent() == null) {
+				invalidComponentlabel.setText("< Reference component >");
+				add(invalidComponentlabel, BorderLayout.CENTER);
+				setBorder(BorderFactory.createEtchedBorder());
+			}
+			else {
+				referencedComponentView = (JFIBView<FIBComponent, JReferenceComponentPanel>) widget.makeReferencedComponentView();
+				if (referencedComponentView == null) {
+					invalidComponentlabel.setText("< Invalid component >");
+					add(invalidComponentlabel, BorderLayout.CENTER);
+					setBorder(BorderFactory.createEtchedBorder());
+				}
+				else {
+					add(referencedComponentView.getResultingJComponent(), BorderLayout.CENTER);
+					setBorder(null);
+					getWidget().updateReferencedComponentView();
+				}
+			}
+			revalidate();
+			repaint();
+		}
+
 	}
 
 }
