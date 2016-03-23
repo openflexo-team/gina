@@ -52,6 +52,7 @@ import org.openflexo.gina.model.container.FIBTabPanel;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBButton;
 import org.openflexo.gina.model.widget.FIBCheckBox;
+import org.openflexo.gina.model.widget.FIBCustom;
 import org.openflexo.gina.model.widget.FIBDropDown;
 import org.openflexo.gina.model.widget.FIBImage;
 import org.openflexo.gina.model.widget.FIBLabel;
@@ -165,6 +166,9 @@ public class FIBBrowserController extends FIBController implements Observer {
 		}
 		else if (component instanceof FIBButton) {
 			return FIBEditorIconLibrary.BUTTON_ICON;
+		}
+		else if (component instanceof FIBCustom) {
+			return FIBEditorIconLibrary.CUSTOM_ICON;
 		}
 		else if (component instanceof FIBReferencedComponent) {
 			return FIBEditorIconLibrary.REFERENCE_COMPONENT_ICON;
