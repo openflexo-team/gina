@@ -90,7 +90,7 @@ import org.openflexo.toolbox.ToolBox;
  *            type of data beeing represented by this view
  * 
  */
-public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBViewImpl<M, C> implements FIBWidgetView<M, C, T> {
+public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBViewImpl<M, C>implements FIBWidgetView<M, C, T> {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBWidgetViewImpl.class.getPackage().getName());
 

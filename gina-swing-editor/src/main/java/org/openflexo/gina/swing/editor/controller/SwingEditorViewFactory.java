@@ -246,7 +246,7 @@ public class SwingEditorViewFactory extends SwingViewFactory {
 	}
 
 	@Override
-	public FIBCustomWidgetImpl<? extends JComponent, ?> makeCustomWidget(FIBCustom widget, FIBController controller) {
+	public FIBCustomWidgetImpl<? extends JComponent, ?, ?> makeCustomWidget(FIBCustom widget, FIBController controller) {
 		return new JFIBEditableCustomWidget(widget, fibEditorController);
 	}
 

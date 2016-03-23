@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.view.widget.impl;
 
+import java.beans.PropertyChangeEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -75,8 +76,8 @@ import org.openflexo.swing.CustomPopup.ApplyCancelListener;
  * @author sylvain
  * 
  */
-public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> extends FIBWidgetViewImpl<FIBCustom, C, T>
-		implements FIBCustomWidget<C, T>, ApplyCancelListener, BindingEvaluationContext {
+public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T> extends FIBWidgetViewImpl<FIBCustom, C, T>
+		implements FIBCustomWidget<C, CC, T>, ApplyCancelListener, BindingEvaluationContext {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBCustomWidgetImpl.class.getPackage().getName());
 
@@ -118,14 +119,21 @@ public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> ex
 		return (CustomComponentRenderingAdapter<C, T>) super.getRenderingAdapter();
 	}
 
-	@Override
+	/*@Override
 	protected C makeTechnologyComponent() {
 		C customComponent = makeCustomComponent((Class) getWidget().getComponentClass(),
 				(Class<T>) TypeUtils.getBaseClass(getWidget().getDataType()), getController());
 		return customComponent;
+	}*/
+
+	protected abstract CC getCustomComponent();
+
+	protected CC makeCustomComponent() {
+		return makeCustomComponent((Class) getWidget().getComponentClass(), (Class<T>) TypeUtils.getBaseClass(getWidget().getDataType()),
+				getController());
 	}
 
-	private C makeCustomComponent(Class<C> customComponentClass, Class<T> dataClass, FIBController controller) {
+	private CC makeCustomComponent(Class<CC> customComponentClass, Class<T> dataClass, FIBController controller) {
 		if (customComponentClass == null) {
 			LOGGER.warning("Could not instanciate custom component : no component class found");
 			return null;
@@ -134,7 +142,7 @@ public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> ex
 		types[0] = dataClass;
 		try {
 			boolean found = false;
-			Constructor<C> constructor = null;
+			Constructor<CC> constructor = null;
 			while (!found && types[0] != null) {
 				try {
 					constructor = customComponentClass.getConstructor(types);
@@ -158,7 +166,7 @@ public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> ex
 			}
 			Object[] args = new Object[1];
 			args[0] = null;
-			C returned = constructor.newInstance(args);
+			CC returned = constructor.newInstance(args);
 			returned.init(getComponent(), controller);
 			returned.addApplyCancelListener(this);
 			return returned;
@@ -178,8 +186,8 @@ public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> ex
 
 	@Override
 	public synchronized void delete() {
-		if (getTechnologyComponent() != null) {
-			getTechnologyComponent().removeApplyCancelListener(this);
+		if (getCustomComponent() != null) {
+			getCustomComponent().removeApplyCancelListener(this);
 		}
 		super.delete();
 	}
@@ -209,8 +217,8 @@ public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> ex
 	}*/
 
 	protected void dataChanged(boolean forceUpdate) {
-		if (forceUpdate || notEquals(getValue(), getTechnologyComponent().getEditedObject())) {
-			setValue(getTechnologyComponent().getEditedObject());
+		if (forceUpdate || notEquals(getValue(), getCustomComponent().getEditedObject())) {
+			setValue(getCustomComponent().getEditedObject());
 			FIBCustom widget = getWidget();
 			// NPE Protection
 			if (widget != null) {
@@ -338,7 +346,7 @@ public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> ex
 			return false;
 		}*/
 
-		if (getTechnologyComponent() != null) {
+		if (getCustomComponent() != null) {
 
 			// performAssignments();
 
@@ -347,10 +355,10 @@ public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> ex
 			try {
 				newValue = super.updateData();
 				// if (val != null) {
-				getTechnologyComponent().setEditedObject(newValue);
+				getCustomComponent().setEditedObject(newValue);
 				// }
 			} catch (ClassCastException e) {
-				getTechnologyComponent().setEditedObject(null);
+				getCustomComponent().setEditedObject(null);
 				LOGGER.warning("Unexpected ClassCastException in " + getTechnologyComponent() + ": " + e.getMessage());
 				// e.printStackTrace();
 			}
@@ -361,9 +369,9 @@ public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> ex
 			performAssignments();
 
 			try {
-				getTechnologyComponent().setRevertValue(newValue);
+				getCustomComponent().setRevertValue(newValue);
 			} catch (ClassCastException e) {
-				getTechnologyComponent().setRevertValue(null);
+				getCustomComponent().setRevertValue(null);
 				LOGGER.warning("Unexpected ClassCastException in " + getTechnologyComponent() + ": " + e.getMessage());
 				// e.printStackTrace();
 			}
@@ -379,7 +387,7 @@ public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> ex
 	@Override
 	public void fireApplyPerformed() {
 		if (LOGGER.isLoggable(Level.FINE)) {
-			LOGGER.fine("fireApplyPerformed() in FIBCustomWidget, value=" + getTechnologyComponent().getEditedObject());
+			LOGGER.fine("fireApplyPerformed() in FIBCustomWidget, value=" + getCustomComponent().getEditedObject());
 		}
 		// In this case, we force model updating
 		// updateModelFromWidget(true);
@@ -393,63 +401,20 @@ public abstract class FIBCustomWidgetImpl<C extends FIBCustomComponent<T>, T> ex
 	@Override
 	public Object getValue(BindingVariable variable) {
 		if (variable.getVariableName().equals("component")) {
-			return getTechnologyComponent();
+			return getCustomComponent();
 		}
 		return null;
 	}
 
-	/*protected class NotFoundComponent implements FIBCustomComponent {
-	
-		private JLabel label;
-	
-		public NotFoundComponent() {
-			label = new JLabel("< Custom component >");
+	protected abstract void updateCustomComponent();
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getPropertyName().equals(FIBCustom.COMPONENT_CLASS_KEY)) {
+			updateCustomComponent();
 		}
-	
-		@Override
-		public void init(FIBCustom component, FIBController controller) {
-		}
-	
-		@Override
-		public void addApplyCancelListener(ApplyCancelListener l) {
-		}
-	
-		@Override
-		public Object getEditedObject() {
-			return null;
-		}
-	
-		@Override
-		public JComponent getTechnologyComponent() {
-			return label;
-		}
-	
-		@Override
-		public Class<T> getRepresentedType() {
-			return null;
-		}
-	
-		@Override
-		public T getRevertValue() {
-			return null;
-		}
-	
-		@Override
-		public void removeApplyCancelListener(ApplyCancelListener l) {
-		}
-	
-		@Override
-		public void setEditedObject(Object object) {
-		}
-	
-		@Override
-		public void setRevertValue(Object object) {
-		}
-	
-		@Override
-		public void delete() {
-			label = null;
-		}
-	}*/
+
+		super.propertyChange(evt);
+	}
 
 }

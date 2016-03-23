@@ -39,11 +39,14 @@
 
 package org.openflexo.gina.swing.view.widget;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.logging.Logger;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
@@ -51,6 +54,7 @@ import org.openflexo.gina.model.widget.FIBCustom;
 import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
+import org.openflexo.gina.swing.view.widget.JFIBCustomWidget.JCustomComponentPanel;
 import org.openflexo.gina.view.widget.impl.FIBCustomWidgetImpl;
 
 /**
@@ -59,8 +63,8 @@ import org.openflexo.gina.view.widget.impl.FIBCustomWidgetImpl;
  * @author sguerin
  * 
  */
-public class JFIBCustomWidget<J extends JComponent & FIBCustomComponent<T>, T> extends FIBCustomWidgetImpl<J, T>
-		implements JFIBView<FIBCustom, J> {
+public class JFIBCustomWidget<CC extends JComponent & FIBCustomComponent<T>, T>
+		extends FIBCustomWidgetImpl<JCustomComponentPanel<CC, T>, CC, T>implements JFIBView<FIBCustom, JCustomComponentPanel<CC, T>> {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBCustomWidget.class.getPackage().getName());
 
@@ -73,16 +77,16 @@ public class JFIBCustomWidget<J extends JComponent & FIBCustomComponent<T>, T> e
 	public static class SwingCustomComponentRenderingAdapter<J extends JComponent, T> extends SwingRenderingAdapter<J>
 			implements CustomComponentRenderingAdapter<J, T> {
 
-		private final JLabel ERROR_LABEL = new JLabel("<Cannot instanciate component>");
+		// private final JLabel ERROR_LABEL = new JLabel("<Cannot instanciate component>");
 
 		// Return default label if technology component cannot be set
-		@Override
+		/*@Override
 		public JComponent getJComponent(JComponent technologyComponent) {
 			if (technologyComponent == null) {
 				return ERROR_LABEL;
 			}
 			return technologyComponent;
-		}
+		}*/
 
 		@Override
 		public Color getDefaultForegroundColor(JComponent component) {
@@ -97,12 +101,12 @@ public class JFIBCustomWidget<J extends JComponent & FIBCustomComponent<T>, T> e
 	}
 
 	public JFIBCustomWidget(FIBCustom model, FIBController controller) {
-		super(model, controller, new SwingCustomComponentRenderingAdapter<J, T>());
+		super(model, controller, new SwingCustomComponentRenderingAdapter<JCustomComponentPanel<CC, T>, T>());
 	}
 
 	@Override
-	public SwingCustomComponentRenderingAdapter<J, T> getRenderingAdapter() {
-		return (SwingCustomComponentRenderingAdapter<J, T>) super.getRenderingAdapter();
+	public SwingCustomComponentRenderingAdapter<JCustomComponentPanel<CC, T>, T> getRenderingAdapter() {
+		return (SwingCustomComponentRenderingAdapter<JCustomComponentPanel<CC, T>, T>) super.getRenderingAdapter();
 	}
 
 	@Override
@@ -113,6 +117,84 @@ public class JFIBCustomWidget<J extends JComponent & FIBCustomComponent<T>, T> e
 	@Override
 	public JComponent getResultingJComponent() {
 		return getRenderingAdapter().getResultingJComponent(this);
+	}
+
+	/*@Override
+	protected C makeTechnologyComponent() {
+		C customComponent = makeCustomComponent((Class) getWidget().getComponentClass(),
+				(Class<T>) TypeUtils.getBaseClass(getWidget().getDataType()), getController());
+		return customComponent;
+	}*/
+
+	@Override
+	protected JCustomComponentPanel<CC, T> makeTechnologyComponent() {
+		return new JCustomComponentPanel<CC, T>(this);
+	}
+
+	@Override
+	protected CC getCustomComponent() {
+		if (getTechnologyComponent() != null) {
+			return getTechnologyComponent().getCustomComponent();
+		}
+		return null;
+	}
+
+	@Override
+	protected void updateCustomComponent() {
+		if (getTechnologyComponent() != null) {
+			getTechnologyComponent().updateCustomComponent();
+		}
+		else {
+			technologyComponent = makeTechnologyComponent();
+		}
+	}
+
+	@SuppressWarnings("serial")
+	public static class JCustomComponentPanel<CC extends JComponent & FIBCustomComponent<T>, T> extends JPanel {
+		private JLabel invalidComponentlabel;
+		private JFIBCustomWidget<CC, T> widget;
+		private CC customComponent;
+
+		public JCustomComponentPanel(JFIBCustomWidget<CC, T> widget) {
+			super(new BorderLayout());
+			this.widget = widget;
+			setOpaque(false);
+			invalidComponentlabel = new JLabel("", JLabel.CENTER);
+			invalidComponentlabel.setFocusable(false);
+			updateCustomComponent();
+		}
+
+		public JFIBCustomWidget<CC, T> getWidget() {
+			return widget;
+		}
+
+		public CC getCustomComponent() {
+			return customComponent;
+		}
+
+		protected void updateCustomComponent() {
+			removeAll();
+			if (widget.getComponent().getComponentClass() == null) {
+				invalidComponentlabel.setText("< Custom component >");
+				add(invalidComponentlabel, BorderLayout.CENTER);
+				setBorder(BorderFactory.createEtchedBorder());
+			}
+			else {
+				customComponent = widget.makeCustomComponent();
+				if (customComponent == null) {
+					invalidComponentlabel.setText("< Invalid component >");
+					add(invalidComponentlabel, BorderLayout.CENTER);
+					setBorder(BorderFactory.createEtchedBorder());
+				}
+				else {
+					add(customComponent, BorderLayout.CENTER);
+					setBorder(null);
+				}
+			}
+			revalidate();
+			repaint();
+		}
+
 	}
 
 }

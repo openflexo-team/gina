@@ -343,7 +343,7 @@ public class FIBController implements BindingEvaluationContext, Observer, Proper
 			if (variable.getVariableName().equals(c.getName())) {
 				FIBView<?, ?> returned = viewForComponent(c);
 				if (returned instanceof FIBCustomWidget) {
-					return ((FIBCustomWidget<?, ?>) returned).getTechnologyComponent();
+					return ((FIBCustomWidget<?, ?, ?>) returned).getTechnologyComponent();
 				}
 				return returned;
 			}

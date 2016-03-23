@@ -49,15 +49,16 @@ import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate;
 import org.openflexo.gina.swing.view.widget.JFIBCustomWidget;
+import org.openflexo.gina.swing.view.widget.JFIBCustomWidget.JCustomComponentPanel;
 import org.openflexo.logging.FlexoLogger;
 
-public class JFIBEditableCustomWidget<J extends JComponent & FIBCustomComponent<T>, T> extends JFIBCustomWidget<J, T>
-		implements FIBSwingEditableView<FIBCustom, J> {
+public class JFIBEditableCustomWidget<CC extends JComponent & FIBCustomComponent<T>, T> extends JFIBCustomWidget<CC, T>
+		implements FIBSwingEditableView<FIBCustom, JCustomComponentPanel<CC, T>> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableCustomWidget.class.getPackage().getName());
 
-	private final FIBSwingEditableViewDelegate<FIBCustom, J> delegate;
+	private final FIBSwingEditableViewDelegate<FIBCustom, JCustomComponentPanel<CC, T>> delegate;
 
 	private final FIBEditorController editorController;
 
@@ -75,7 +76,7 @@ public class JFIBEditableCustomWidget<J extends JComponent & FIBCustomComponent<
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBSwingEditableViewDelegate<FIBCustom, J>(this);
+		delegate = new FIBSwingEditableViewDelegate<FIBCustom, JCustomComponentPanel<CC, T>>(this);
 	}
 
 	@Override
@@ -85,7 +86,7 @@ public class JFIBEditableCustomWidget<J extends JComponent & FIBCustomComponent<
 	}
 
 	@Override
-	public FIBSwingEditableViewDelegate<FIBCustom, J> getDelegate() {
+	public FIBSwingEditableViewDelegate<FIBCustom, JCustomComponentPanel<CC, T>> getDelegate() {
 		return delegate;
 	}
 

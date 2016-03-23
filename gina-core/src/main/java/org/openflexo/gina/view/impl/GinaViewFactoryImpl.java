@@ -221,7 +221,7 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 
 	public abstract FIBButtonWidgetImpl<? extends C> makeButton(FIBButton widget, FIBController controller);
 
-	public abstract FIBCustomWidgetImpl<? extends C, ?> makeCustomWidget(FIBCustom widget, FIBController controller);
+	public abstract FIBCustomWidgetImpl<? extends C, ?, ?> makeCustomWidget(FIBCustom widget, FIBController controller);
 
 	public abstract FIBReferencedComponentWidgetImpl<? extends C> makeReferencedComponentWidget(FIBReferencedComponent widget,
 			FIBController controller);

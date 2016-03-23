@@ -332,7 +332,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 	}
 
 	@Override
-	public FIBCustomWidgetImpl<? extends JComponent, ?> makeCustomWidget(FIBCustom widget, FIBController controller) {
+	public FIBCustomWidgetImpl<? extends JComponent, ?, ?> makeCustomWidget(FIBCustom widget, FIBController controller) {
 		return new JFIBCustomWidget(widget, controller);
 	}
 

@@ -39,15 +39,9 @@
 
 package org.openflexo.gina.view.widget;
 
-import java.awt.Image;
-
-import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.gina.model.widget.FIBCustom;
 import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent;
 import org.openflexo.gina.view.FIBWidgetView;
-import org.openflexo.gina.view.FIBView.RenderingAdapter;
-import org.openflexo.gina.view.widget.FIBImageWidget.ImageRenderingAdapter;
-import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 
 /**
  * Generic Gina widget presenting a custom component<br>
@@ -61,13 +55,13 @@ import org.openflexo.swing.CustomPopup.ApplyCancelListener;
  * @author sylvain
  * 
  */
-public interface FIBCustomWidget<C extends FIBCustomComponent<T>, T> extends FIBWidgetView<FIBCustom, C, T> {
+public interface FIBCustomWidget<C, CC extends FIBCustomComponent<T>, T> extends FIBWidgetView<FIBCustom, C, T> {
 
 	@Override
 	public C getTechnologyComponent();
-	
+
 	@Override
-	public CustomComponentRenderingAdapter<C,T> getRenderingAdapter();
+	public CustomComponentRenderingAdapter<C, T> getRenderingAdapter();
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)
@@ -76,9 +70,8 @@ public interface FIBCustomWidget<C extends FIBCustomComponent<T>, T> extends FIB
 	 *
 	 * @param <C>
 	 */
-	public static interface CustomComponentRenderingAdapter<C,T> extends RenderingAdapter<C> {
+	public static interface CustomComponentRenderingAdapter<C, T> extends RenderingAdapter<C> {
 
 	}
-
 
 }
