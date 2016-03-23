@@ -119,23 +119,31 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 		return newText;
 	}
 
+	private boolean widgetUpdating = false;
+
 	/**
 	 * Update static value represented in text component
 	 */
 	private void updateStaticText() {
-		// widgetUpdating = true;
-		// try {
-		if (StringUtils.isNotEmpty(getWidget().getText())) {
-			getRenderingAdapter().setText(getTechnologyComponent(), getWidget().getText());
+		if (modelUpdating) {
+			return;
 		}
-		/*} finally {
+		widgetUpdating = true;
+		try {
+			if (StringUtils.isNotEmpty(getWidget().getText())) {
+				getRenderingAdapter().setText(getTechnologyComponent(), getWidget().getText());
+			}
+		} finally {
 			widgetUpdating = false;
-		}*/
+		}
 	}
 
 	private boolean modelUpdating = false;
 
 	protected boolean textChanged() {
+		if (widgetUpdating) {
+			return false;
+		}
 		if (notEquals(getValue(), getRenderingAdapter().getText(getTechnologyComponent()))) {
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("updateModelFromWidget() in " + this);
