@@ -123,8 +123,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	@Override
 	public void delete() {
 
-		System.out.println("@@@@@@@@@ Delete view for component " + getComponent());
-		Thread.dumpStack();
+		// System.out.println("@@@@@@@@@ Delete view for component " + getComponent());
+		// Thread.dumpStack();
 
 		if (isDeleted) {
 			return;
