@@ -218,7 +218,7 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 
 	protected boolean valueChanged() {
 		T editedValue = null;
-		if (!getRenderingAdapter().isCheckboxSelected(getTechnologyComponent())) {
+		if (!getComponent().getAllowsNull() || !getRenderingAdapter().isCheckboxSelected(getTechnologyComponent())) {
 			editedValue = getEditedValue();
 		}
 		if (notEquals(getValue(), editedValue)) {
