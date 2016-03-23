@@ -58,13 +58,13 @@ import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.editor.view.container.layout.JEditableBorderLayout;
 import org.openflexo.gina.swing.editor.view.container.layout.JEditableBoxLayout;
 import org.openflexo.gina.swing.editor.view.container.layout.JEditableFlowLayout;
+import org.openflexo.gina.swing.editor.view.container.layout.JEditableGridBagLayout;
 import org.openflexo.gina.swing.editor.view.container.layout.JEditableGridLayout;
 import org.openflexo.gina.swing.editor.view.container.layout.JEditableTwoColsLayout;
 import org.openflexo.gina.swing.editor.view.container.layout.JFIBEditableLayoutManager;
 import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.swing.view.container.layout.JAbsolutePositionningLayout;
 import org.openflexo.gina.swing.view.container.layout.JButtonLayout;
-import org.openflexo.gina.swing.view.container.layout.JGridBagLayout;
 import org.openflexo.logging.FlexoLogger;
 
 public class JFIBEditablePanelView extends JFIBPanelView implements FIBSwingEditableContainerView<FIBPanel, JPanel> {
@@ -349,7 +349,7 @@ public class JFIBEditablePanelView extends JFIBPanelView implements FIBSwingEdit
 			case grid:
 				return new JEditableGridLayout(this);
 			case gridbag:
-				return new JGridBagLayout(this);
+				return new JEditableGridBagLayout(this);
 			default:
 				return super.makeFIBLayoutManager(layoutType);
 		}

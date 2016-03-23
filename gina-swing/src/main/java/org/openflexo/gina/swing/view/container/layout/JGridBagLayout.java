@@ -39,6 +39,8 @@
 
 package org.openflexo.gina.swing.view.container.layout;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -71,13 +73,22 @@ public class JGridBagLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Gri
 
 	@Override
 	public void setLayoutManager(JPanel container) {
-		container.setLayout(new GridBagLayout());
+		container.setLayout(makeGridBagLayout());
+	}
+
+	protected GridBagLayout makeGridBagLayout() {
+		return new GridBagLayout();
 	}
 
 	@Override
 	protected void performAddChild(FIBView<?, JComponent> childView, GridBagLayoutConstraints gridBagConstraints) {
 
 		JComponent addedJComponent = ((JFIBView<?, ?>) childView).getResultingJComponent();
+		_addChildToContainerWithConstraints(addedJComponent, getContainerView().getTechnologyComponent(), gridBagConstraints);
+
+	}
+
+	protected void _addChildToContainerWithConstraints(Component child, Container container, GridBagLayoutConstraints gridBagConstraints) {
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = gridBagConstraints.getGridX();
@@ -93,7 +104,7 @@ public class JGridBagLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Gri
 		c.ipadx = gridBagConstraints.getPadX();
 		c.ipady = gridBagConstraints.getPadY();
 
-		getContainerView().getTechnologyComponent().add(addedJComponent, c);
+		container.add(child, c);
 
 	}
 
