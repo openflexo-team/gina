@@ -41,7 +41,6 @@ package org.openflexo.gina.swing.editor.view.container.layout;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,8 +91,7 @@ public class JEditableGridLayout extends JGridLayout implements JFIBEditableLayo
 			FIBComponent[][] existingComponents = new FIBComponent[getComponent().getCols()][getComponent().getRows()];
 			Component[][] phComponents = new Component[getComponent().getCols()][getComponent().getRows()];
 
-			JPanel panel = new JPanel(
-					new GridLayout(getComponent().getRows(), getComponent().getCols(), getComponent().getHGap(), getComponent().getVGap()));
+			JPanel panel = new JPanel(makeGridLayout());
 			panel.setPreferredSize(getContainerView().getResultingJComponent().getSize());
 			panel.setSize(getContainerView().getResultingJComponent().getSize());
 
@@ -142,15 +140,9 @@ public class JEditableGridLayout extends JGridLayout implements JFIBEditableLayo
 
 							@Override
 							public void insertComponent(FIBComponent newComponent, int oldIndex) {
-
-								System.out.println(
-										"He he on ajoute un composant " + newComponent + " a " + getContainerView().getComponent());
-
 								GridLayoutConstraints gridConstraints = new GridLayoutConstraints(finalCol, finalRow);
 								newComponent.setConstraints(gridConstraints);
 								getComponent().addToSubComponents(newComponent);
-
-								System.out.println("Hop: " + newComponent.getConstraints());
 							}
 						};
 						logger.fine("Made placeholder for col=" + col + " row=" + row);

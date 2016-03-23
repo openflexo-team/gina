@@ -70,8 +70,11 @@ public class JGridLayout extends FIBLayoutManagerImpl<JPanel, JComponent, GridLa
 
 	@Override
 	public void setLayoutManager(JPanel container) {
-		container.setLayout(
-				new GridLayout(getComponent().getRows(), getComponent().getCols(), getComponent().getHGap(), getComponent().getVGap()));
+		container.setLayout(makeGridLayout());
+	}
+
+	protected GridLayout makeGridLayout() {
+		return new GridLayout(getComponent().getRows(), getComponent().getCols(), getComponent().getHGap(), getComponent().getVGap());
 	}
 
 	@Override
