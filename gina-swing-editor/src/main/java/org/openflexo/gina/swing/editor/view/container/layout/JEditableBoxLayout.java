@@ -154,7 +154,7 @@ public class JEditableBoxLayout extends JBoxLayout implements JFIBEditableLayout
 					}
 				};
 				newPlaceHolder.setVisible(false);
-				System.out.println(">>> Add placeholder bounds=" + placeHolderBounds);
+				// System.out.println(">>> Add placeholder bounds=" + placeHolderBounds);
 				returned.add(newPlaceHolder);
 			}
 
@@ -192,7 +192,7 @@ public class JEditableBoxLayout extends JBoxLayout implements JFIBEditableLayout
 				}
 			};
 			newPlaceHolder.setVisible(false);
-			System.out.println("*** Add placeholder bounds=" + placeHolderBounds);
+			// System.out.println("*** Add placeholder bounds=" + placeHolderBounds);
 			returned.add(newPlaceHolder);
 		}
 
@@ -202,8 +202,6 @@ public class JEditableBoxLayout extends JBoxLayout implements JFIBEditableLayout
 	private Rectangle makePlaceHolderBounds(Component component, int deltaX, int deltaY, Dimension preferredSize) {
 		Rectangle placeHolderBounds = new Rectangle(component.getBounds().x + deltaX, component.getBounds().y + deltaY,
 				/*(int) preferredSize.getWidth(), (int) preferredSize.getHeight()*/ component.getWidth(), component.getHeight());
-
-		System.out.println("Les bounds qu'on veut: " + placeHolderBounds);
 
 		if (placeHolderBounds.width < preferredSize.getWidth()) {
 			placeHolderBounds.width = (int) preferredSize.getWidth();
