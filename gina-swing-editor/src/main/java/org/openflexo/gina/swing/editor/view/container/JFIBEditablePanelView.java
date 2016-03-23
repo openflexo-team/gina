@@ -56,13 +56,13 @@ import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerViewDelegate;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.editor.view.container.layout.JEditableBorderLayout;
+import org.openflexo.gina.swing.editor.view.container.layout.JEditableBoxLayout;
 import org.openflexo.gina.swing.editor.view.container.layout.JEditableFlowLayout;
 import org.openflexo.gina.swing.editor.view.container.layout.JEditableGridLayout;
 import org.openflexo.gina.swing.editor.view.container.layout.JEditableTwoColsLayout;
 import org.openflexo.gina.swing.editor.view.container.layout.JFIBEditableLayoutManager;
 import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.swing.view.container.layout.JAbsolutePositionningLayout;
-import org.openflexo.gina.swing.view.container.layout.JBoxLayout;
 import org.openflexo.gina.swing.view.container.layout.JButtonLayout;
 import org.openflexo.gina.swing.view.container.layout.JGridBagLayout;
 import org.openflexo.logging.FlexoLogger;
@@ -339,7 +339,7 @@ public class JFIBEditablePanelView extends JFIBPanelView implements FIBSwingEdit
 			case border:
 				return new JEditableBorderLayout(this);
 			case box:
-				return new JBoxLayout(this);
+				return new JEditableBoxLayout(this);
 			case flow:
 				return new JEditableFlowLayout(this);
 			case buttons:

@@ -68,7 +68,11 @@ public class JBoxLayout extends FIBLayoutManagerImpl<JPanel, JComponent, BoxLayo
 
 	@Override
 	public void setLayoutManager(JPanel container) {
-		container.setLayout(new BoxLayout(container, getComponent().getBoxLayoutAxis().getAxis()));
+		container.setLayout(makeBoxLayout(container));
+	}
+
+	protected BoxLayout makeBoxLayout(JPanel container) {
+		return new BoxLayout(container, getComponent().getBoxLayoutAxis().getAxis());
 	}
 
 	@Override

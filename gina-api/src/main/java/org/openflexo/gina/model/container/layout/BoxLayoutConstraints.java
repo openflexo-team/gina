@@ -39,7 +39,6 @@
 
 package org.openflexo.gina.model.container.layout;
 
-import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 
 public class BoxLayoutConstraints extends ComponentConstraints {
@@ -49,6 +48,12 @@ public class BoxLayoutConstraints extends ComponentConstraints {
 
 	public BoxLayoutConstraints() {
 		super();
+	}
+
+	public BoxLayoutConstraints(float alignmentX, float alignmentY) {
+		super();
+		setAlignmentX(alignmentX);
+		setAlignmentY(alignmentY);
 	}
 
 	public BoxLayoutConstraints(String someConstraints) {
