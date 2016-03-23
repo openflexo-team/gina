@@ -671,7 +671,20 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		@Override
 		public void addToVariables(FIBVariable<?> aVariable) {
-			performSuperAdder(VARIABLES_KEY, aVariable);
+			if (aVariable.getName() == null) {
+				// we dont add variable with no name
+			}
+
+			FIBVariable<?> existingDataVariable = getVariable(aVariable.getName());
+			if (existingDataVariable != null) {
+				existingDataVariable.setType(aVariable.getType());
+				existingDataVariable.setMandatory(aVariable.isMandatory());
+				existingDataVariable.setValue((DataBinding) aVariable.getValue());
+			}
+			else {
+				performSuperAdder(VARIABLES_KEY, aVariable);
+			}
+
 			if (isRootComponent() && getBindingModel().bindingVariableNamed(aVariable.getName()) == null) {
 				getBindingModel().addToBindingVariables(aVariable.getBindingVariable());
 			}
@@ -1195,9 +1208,9 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		@Override
 		public void declareDependantOf(FIBComponent aComponent) /*
-																 * throws
-																 * DependancyLoopException
-																 */ {
+																* throws
+																* DependancyLoopException
+																*/ {
 			// logger.info("Component "+this+" depends of "+aComponent);
 			if (aComponent != null) {
 				if (aComponent == this) {

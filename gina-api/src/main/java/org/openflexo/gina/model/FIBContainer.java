@@ -814,6 +814,9 @@ public abstract interface FIBContainer extends FIBComponent {
 		@Override
 		@Deprecated
 		public Class<?> getDataClass() {
+			if (isSerializing()) {
+				return null;
+			}
 			if (isSettingDataClass) {
 				return null;
 			}
