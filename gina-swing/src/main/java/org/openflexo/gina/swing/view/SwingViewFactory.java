@@ -75,6 +75,7 @@ import org.openflexo.gina.model.widget.FIBColor;
 import org.openflexo.gina.model.widget.FIBCustom;
 import org.openflexo.gina.model.widget.FIBDropDown;
 import org.openflexo.gina.model.widget.FIBEditor;
+import org.openflexo.gina.model.widget.FIBEditorPane;
 import org.openflexo.gina.model.widget.FIBFile;
 import org.openflexo.gina.model.widget.FIBFont;
 import org.openflexo.gina.model.widget.FIBHtmlEditor;
@@ -98,6 +99,7 @@ import org.openflexo.gina.swing.view.widget.JFIBCheckboxListWidget;
 import org.openflexo.gina.swing.view.widget.JFIBColorWidget;
 import org.openflexo.gina.swing.view.widget.JFIBCustomWidget;
 import org.openflexo.gina.swing.view.widget.JFIBDropDownWidget;
+import org.openflexo.gina.swing.view.widget.JFIBEditorPaneWidget;
 import org.openflexo.gina.swing.view.widget.JFIBEditorWidget;
 import org.openflexo.gina.swing.view.widget.JFIBFileWidget;
 import org.openflexo.gina.swing.view.widget.JFIBFontWidget;
@@ -129,6 +131,7 @@ import org.openflexo.gina.view.widget.impl.FIBCheckboxListWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBColorWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBCustomWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBDropDownWidgetImpl;
+import org.openflexo.gina.view.widget.impl.FIBEditorPaneWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBEditorWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBFileWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBFontWidgetImpl;
@@ -254,6 +257,11 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 	@Override
 	public FIBTextAreaWidgetImpl<? extends JComponent> makeTextArea(FIBTextArea widget, FIBController controller) {
 		return new JFIBTextAreaWidget(widget, controller);
+	}
+
+	@Override
+	public FIBEditorPaneWidgetImpl<? extends JComponent> makeEditorPane(FIBEditorPane widget, FIBController controller) {
+		return new JFIBEditorPaneWidget(widget, controller);
 	}
 
 	@Override

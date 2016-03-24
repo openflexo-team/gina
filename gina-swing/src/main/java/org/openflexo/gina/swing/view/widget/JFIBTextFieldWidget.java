@@ -39,7 +39,6 @@
 
 package org.openflexo.gina.swing.view.widget;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Window;
@@ -48,10 +47,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
 import java.util.logging.Logger;
 
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -75,7 +72,7 @@ import org.openflexo.toolbox.ToolBox;
  * 
  * @author sylvain
  */
-public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField> implements FocusListener, JFIBView<FIBTextField, JTextField> {
+public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>implements FocusListener, JFIBView<FIBTextField, JTextField> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(JFIBTextFieldWidget.class.getPackage().getName());
@@ -114,13 +111,13 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField> impl
 
 	public static SwingTextFieldRenderingAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingTextFieldRenderingAdapter();
 
-	private final JPanel panel;
+	// private final JPanel panel;
 
 	public JFIBTextFieldWidget(FIBTextField model, FIBController controller) {
 		super(model, controller, RENDERING_TECHNOLOGY_ADAPTER);
-		panel = new JPanel(new BorderLayout());
-		panel.setOpaque(false);
-		panel.add(getTechnologyComponent(), BorderLayout.CENTER);
+		// panel = new JPanel(new BorderLayout());
+		// panel.setOpaque(false);
+		// panel.add(getTechnologyComponent(), BorderLayout.CENTER);
 		/*if (!ToolBox.isMacOSLaf()) {
 			panel.setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER,
 					BOTTOM_COMPENSATING_BORDER, RIGHT_COMPENSATING_BORDER));
@@ -129,14 +126,14 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField> impl
 		// updateFont();
 	}
 
-	@Override
+	/*@Override
 	protected void performUpdate() {
 		super.performUpdate();
 		if (!ToolBox.isMacOSLaf()) {
 			panel.setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
 					RIGHT_COMPENSATING_BORDER));
 		}
-	}
+	}*/
 
 	@Override
 	public SwingTextFieldRenderingAdapter getRenderingAdapter() {

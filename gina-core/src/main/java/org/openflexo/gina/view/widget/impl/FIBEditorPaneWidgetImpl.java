@@ -39,46 +39,24 @@
 
 package org.openflexo.gina.view.widget.impl;
 
-import java.util.logging.Logger;
-
 import org.openflexo.gina.controller.FIBController;
-import org.openflexo.gina.model.widget.FIBTextField;
-import org.openflexo.gina.view.widget.FIBTextFieldWidget;
+import org.openflexo.gina.model.widget.FIBEditorPane;
+import org.openflexo.gina.view.widget.FIBEditorPaneWidget;
 
 /**
- * Default base implementation for a simple widget allowing to display/edit a String in a TextField
+ * Default implementation for a text component to edit various kinds of content
  * 
- * @author sylvain
+ * @author sguerin
  */
-public abstract class FIBTextFieldWidgetImpl<C> extends FIBGenericTextWidgetImpl<FIBTextField, C>implements FIBTextFieldWidget<C> {
+public abstract class FIBEditorPaneWidgetImpl<C> extends FIBGenericTextWidgetImpl<FIBEditorPane, C>implements FIBEditorPaneWidget<C> {
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(FIBTextFieldWidgetImpl.class.getPackage().getName());
-
-	protected static final int DEFAULT_COLUMNS = 10;
-
-	public FIBTextFieldWidgetImpl(FIBTextField model, FIBController controller, TextFieldRenderingAdapter<C> renderingAdapter) {
+	public FIBEditorPaneWidgetImpl(FIBEditorPane model, FIBController controller, EditorPaneRenderingAdapter<C> renderingAdapter) {
 		super(model, controller, renderingAdapter);
 	}
 
 	@Override
-	protected void performUpdate() {
-		super.performUpdate();
-		updateColumns();
-	}
-
-	@Override
-	public TextFieldRenderingAdapter<C> getRenderingAdapter() {
-		return (TextFieldRenderingAdapter<C>) super.getRenderingAdapter();
-	}
-
-	public void updateColumns() {
-		getRenderingAdapter().setColumns(getTechnologyComponent(),
-				getWidget().getColumns() != null && getWidget().getColumns() > 0 ? getWidget().getColumns() : getDefaultColumns());
-	}
-
-	public int getDefaultColumns() {
-		return DEFAULT_COLUMNS;
+	public EditorPaneRenderingAdapter<C> getRenderingAdapter() {
+		return (EditorPaneRenderingAdapter<C>) super.getRenderingAdapter();
 	}
 
 }

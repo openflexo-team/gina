@@ -37,48 +37,32 @@
  * 
  */
 
-package org.openflexo.gina.view.widget.impl;
+package org.openflexo.gina.view.widget;
 
-import java.util.logging.Logger;
-
-import org.openflexo.gina.controller.FIBController;
-import org.openflexo.gina.model.widget.FIBTextField;
-import org.openflexo.gina.view.widget.FIBTextFieldWidget;
+import org.openflexo.gina.model.widget.FIBEditorPane;
 
 /**
- * Default base implementation for a simple widget allowing to display/edit a String in a TextField
+ * A text component to edit various kinds of content
  * 
+ * @param <C>
+ *            type of technology-specific component this view manage
+ *
  * @author sylvain
  */
-public abstract class FIBTextFieldWidgetImpl<C> extends FIBGenericTextWidgetImpl<FIBTextField, C>implements FIBTextFieldWidget<C> {
-
-	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(FIBTextFieldWidgetImpl.class.getPackage().getName());
-
-	protected static final int DEFAULT_COLUMNS = 10;
-
-	public FIBTextFieldWidgetImpl(FIBTextField model, FIBController controller, TextFieldRenderingAdapter<C> renderingAdapter) {
-		super(model, controller, renderingAdapter);
-	}
+public interface FIBEditorPaneWidget<C> extends FIBGenericTextWidget<FIBEditorPane, C> {
 
 	@Override
-	protected void performUpdate() {
-		super.performUpdate();
-		updateColumns();
-	}
+	public EditorPaneRenderingAdapter<C> getRenderingAdapter();
 
-	@Override
-	public TextFieldRenderingAdapter<C> getRenderingAdapter() {
-		return (TextFieldRenderingAdapter<C>) super.getRenderingAdapter();
-	}
+	/**
+	 * Specification of an adapter for a given rendering technology (eg Swing)
+	 * 
+	 * @author sylvain
+	 *
+	 * @param <C>
+	 */
+	public static interface EditorPaneRenderingAdapter<C> extends GenericTextRenderingAdapter<C> {
 
-	public void updateColumns() {
-		getRenderingAdapter().setColumns(getTechnologyComponent(),
-				getWidget().getColumns() != null && getWidget().getColumns() > 0 ? getWidget().getColumns() : getDefaultColumns());
-	}
-
-	public int getDefaultColumns() {
-		return DEFAULT_COLUMNS;
 	}
 
 }

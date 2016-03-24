@@ -83,6 +83,7 @@ import org.openflexo.gina.model.widget.FIBColor;
 import org.openflexo.gina.model.widget.FIBCustom;
 import org.openflexo.gina.model.widget.FIBDropDown;
 import org.openflexo.gina.model.widget.FIBEditor;
+import org.openflexo.gina.model.widget.FIBEditorPane;
 import org.openflexo.gina.model.widget.FIBFile;
 import org.openflexo.gina.model.widget.FIBFont;
 import org.openflexo.gina.model.widget.FIBHtmlEditor;
@@ -150,7 +151,7 @@ import org.openflexo.toolbox.StringUtils;
 		@Import(FIBFile.class), @Import(FIBFont.class), @Import(FIBHtmlEditor.class), @Import(FIBImage.class), @Import(FIBLabel.class),
 		@Import(FIBCheckboxList.class), @Import(FIBDropDown.class), @Import(FIBList.class), @Import(FIBRadioButtonList.class),
 		@Import(FIBNumber.class), @Import(FIBReferencedComponent.class), @Import(FIBTable.class), @Import(FIBEditor.class),
-		@Import(FIBTextArea.class), @Import(FIBTextField.class) })
+		@Import(FIBTextArea.class), @Import(FIBTextField.class), @Import(FIBEditorPane.class) })
 public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBaseIdentifier {
 
 	public static enum VerticalScrollBarPolicy {
