@@ -482,6 +482,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 	public List<FIBComponent> getMayDepends();
 
+	public List<FIBComponent> getMayAlters();
+
 	public FIBDependancy createNewExplicitDependancy();
 
 	public void deleteExplicitDependancy(FIBDependancy p);
@@ -1199,6 +1201,11 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		@Override
 		public Iterator<FIBComponent> getMayDependsIterator() {
 			return new ArrayList<FIBComponent>(mayDepends).iterator();
+		}
+
+		@Override
+		public List<FIBComponent> getMayAlters() {
+			return mayAlters;
 		}
 
 		@Override
