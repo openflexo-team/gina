@@ -828,7 +828,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 				// when they are not visible
 				((FIBViewImpl<?, ?>) v).updateVisibility();
 				if (v.isComponentVisible()) {
-					v.update();
+					((FIBViewImpl) v).performUpdate();
 				}
 			}
 			else {
