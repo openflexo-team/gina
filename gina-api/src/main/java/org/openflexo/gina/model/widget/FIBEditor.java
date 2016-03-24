@@ -77,22 +77,9 @@ public interface FIBEditor extends FIBTextWidget {
 	}
 
 	@PropertyIdentifier(type = Integer.class)
-	public static final String COLUMNS_KEY = "columns";
-	@PropertyIdentifier(type = Integer.class)
 	public static final String ROWS_KEY = "rows";
-	@PropertyIdentifier(type = String.class)
-	public static final String TEXT_KEY = "text";
 	@PropertyIdentifier(type = FIBTokenMarkerStyle.class)
 	public static final String TOKEN_MARKER_STYLE_KEY = "tokenMarkerStyle";
-
-	@Override
-	@Getter(value = COLUMNS_KEY)
-	@XMLAttribute
-	public Integer getColumns();
-
-	@Override
-	@Setter(COLUMNS_KEY)
-	public void setColumns(Integer columns);
 
 	@Getter(value = ROWS_KEY)
 	@XMLAttribute
@@ -100,15 +87,6 @@ public interface FIBEditor extends FIBTextWidget {
 
 	@Setter(ROWS_KEY)
 	public void setRows(Integer rows);
-
-	@Override
-	@Getter(value = TEXT_KEY)
-	@XMLAttribute
-	public String getText();
-
-	@Override
-	@Setter(TEXT_KEY)
-	public void setText(String text);
 
 	@Getter(value = TOKEN_MARKER_STYLE_KEY)
 	@XMLAttribute

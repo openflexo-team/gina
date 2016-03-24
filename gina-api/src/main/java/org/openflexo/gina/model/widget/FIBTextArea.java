@@ -53,18 +53,7 @@ import org.openflexo.model.annotations.XMLElement;
 public interface FIBTextArea extends FIBTextWidget {
 
 	@PropertyIdentifier(type = Integer.class)
-	public static final String COLUMNS_KEY = "columns";
-	@PropertyIdentifier(type = Integer.class)
 	public static final String ROWS_KEY = "rows";
-
-	@Override
-	@Getter(value = COLUMNS_KEY)
-	@XMLAttribute
-	public Integer getColumns();
-
-	@Override
-	@Setter(COLUMNS_KEY)
-	public void setColumns(Integer columns);
 
 	@Getter(value = ROWS_KEY)
 	@XMLAttribute

@@ -41,10 +41,10 @@
 			darkLevel="0" index="5" font="SansSerif,0,11" useScrollBar="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
 			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab2">
-			<Label label="parameters" index="100" constraints="twocols(location=left)"
+			<Label label="parameters" index="102" constraints="twocols(location=left)"
 				localize="true" />
 			<Table iteratorClassName="org.openflexo.gina.model.FIBParameter"
-				index="101" visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false"
+				index="103" visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false"
 				createNewRowOnClick="false" boundToSelectionManager="false"
 				showFooter="true" selectionMode="MultipleIntervalSelection"
 				localize="true" manageDynamicModel="true" name="ParametersTable"

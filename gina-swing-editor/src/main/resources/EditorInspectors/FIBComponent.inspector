@@ -505,7 +505,7 @@
 				displayTitle="true" /> </Table> </Panel> -->
 			<Label label="dependancies" index="100" constraints="twocols(location=left)"
 				localize="true" />
-			<Table iteratorClassName="org.openflexo.gina.model.FIBDependancy"
+			<Table index="101" iteratorClassName="org.openflexo.gina.model.FIBDependancy"
 				visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false"
 				createNewRowOnClick="false" boundToSelectionManager="false"
 				showFooter="true" selectionMode="MultipleIntervalSelection"

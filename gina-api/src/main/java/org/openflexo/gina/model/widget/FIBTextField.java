@@ -64,25 +64,25 @@ public interface FIBTextField extends FIBTextWidget {
 
 	public static abstract class FIBTextFieldImpl extends FIBTextWidgetImpl implements FIBTextField {
 
-		private boolean passwd = false;
+		// private boolean passwd = false;
 
-		public FIBTextFieldImpl() {
-		}
+		// public FIBTextFieldImpl() {
+		// }
 
 		@Override
 		public String getBaseName() {
 			return "TextField";
 		}
 
-		@Override
+		/*@Override
 		public boolean isPasswd() {
 			return passwd;
 		}
-
+		
 		@Override
 		public void setPasswd(boolean passwd) {
 			this.passwd = passwd;
-		}
+		}*/
 
 	}
 }
