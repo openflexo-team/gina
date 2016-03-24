@@ -482,7 +482,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	}
 
 	/**
-	 * Internally called to update the view
+	 * Internally called to update the view, once the visibility has been handled by {@link #update()} method
 	 * 
 	 */
 	protected void performUpdate() {
