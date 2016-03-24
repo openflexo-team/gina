@@ -504,7 +504,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 			Class embeddedEditor = null;
 			Constructor c = null;
 			try {
-				embeddedEditor = Class.forName("org.openflexo.gina.editor.FIBEmbeddedEditor");
+				embeddedEditor = Class.forName("org.openflexo.gina.swing.editor.FIBEmbeddedEditor");
 				c = embeddedEditor.getConstructors()[0];
 				/*
 				 * File fibFile = ((FileResourceImpl)
@@ -519,7 +519,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 				LOGGER.info("Opening FIB editor for " + component.getResource());
 				c.newInstance(args);
 			} catch (ClassNotFoundException e) {
-				LOGGER.warning("Cannot open FIB Editor, please add org.openflexo.gina.editor.FIBEmbeddedEditor in the class path");
+				LOGGER.warning("Cannot open FIB Editor, please add org.openflexo.gina.swing.editor.FIBEmbeddedEditor in the class path");
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			} catch (InstantiationException e) {
