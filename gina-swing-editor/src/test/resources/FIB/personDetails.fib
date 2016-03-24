@@ -3,9 +3,9 @@
   <LocalizedDictionary id="1" />
   <Image id="2" sizeAdjustment="OriginalSize" name="Image" imageFile="../../../../target/classes/FIBEditorPalette/Image/ImageBig.png" imageHeight="40" align="center" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=10;insetsLeft=0;insetsRight=0;insetsTop=0;location=center)" imageWidth="69" />
   <Label id="3" name="Label" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" label="first name" />
-  <TextField id="4" data="firstName" columns="7" name="TextField" text="TextField" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" />
+  <TextField id="4" data="firstName" columns="7" name="TextField" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" />
   <Label id="5" name="Label2" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" label="last name" />
-  <TextField id="6" data="lastName" columns="7" name="TextField2" text="TextField" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" />
+  <TextField id="6" data="lastName" columns="7" name="TextField2" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" />
   <Label id="7" name="Label3" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" label="age" />
   <Number id="8" minValue="0" columns="3" data="age" name="Integer" maxValue="120" increment="1" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" numberType="IntegerType" />
   <Label id="9" name="Label4" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" label="details" />

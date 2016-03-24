@@ -52,21 +52,10 @@ import org.openflexo.model.annotations.XMLElement;
 @XMLElement(xmlTag = "TextArea")
 public interface FIBTextArea extends FIBTextWidget {
 
-	@PropertyIdentifier(type = boolean.class)
-	public static final String VALIDATE_ON_RETURN_KEY = "validateOnReturn";
 	@PropertyIdentifier(type = Integer.class)
 	public static final String COLUMNS_KEY = "columns";
 	@PropertyIdentifier(type = Integer.class)
 	public static final String ROWS_KEY = "rows";
-
-	@Override
-	@Getter(value = VALIDATE_ON_RETURN_KEY, defaultValue = "false")
-	@XMLAttribute
-	public boolean isValidateOnReturn();
-
-	@Override
-	@Setter(VALIDATE_ON_RETURN_KEY)
-	public void setValidateOnReturn(boolean validateOnReturn);
 
 	@Override
 	@Getter(value = COLUMNS_KEY)

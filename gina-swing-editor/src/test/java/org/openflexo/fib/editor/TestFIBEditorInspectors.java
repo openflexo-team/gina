@@ -51,7 +51,8 @@ import org.openflexo.rm.ResourceLocator;
 public class TestFIBEditorInspectors extends FIBInspectorTestCase {
 
 	public static void main(String[] args) {
-		System.out.println(generateInspectorTestCaseClass(ResourceLocator.getResourceLocator().locateResource("EditorInspectors"), "EditorInspectors/"));
+		System.out.println(generateInspectorTestCaseClass(ResourceLocator.getResourceLocator().locateResource("EditorInspectors"),
+				"EditorInspectors/"));
 	}
 
 	@Test
@@ -192,6 +193,11 @@ public class TestFIBEditorInspectors extends FIBInspectorTestCase {
 	@Test
 	public void testFIBTextFieldInspector() {
 		validateFIB("EditorInspectors/FIBTextField.inspector");
+	}
+
+	@Test
+	public void testFIBTextWidgetInspector() {
+		validateFIB("EditorInspectors/FIBTextWidget.inspector");
 	}
 
 	@Test

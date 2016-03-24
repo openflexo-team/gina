@@ -39,7 +39,6 @@
 package org.openflexo.gina.model.widget;
 
 import org.openflexo.gina.model.FIBPropertyNotification;
-import org.openflexo.gina.model.widget.FIBTextWidget.FIBTextWidgetImpl;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -77,8 +76,6 @@ public interface FIBEditor extends FIBTextWidget {
 		FML /* Flexo Modelling Language */
 	}
 
-	@PropertyIdentifier(type = boolean.class)
-	public static final String VALIDATE_ON_RETURN_KEY = "validateOnReturn";
 	@PropertyIdentifier(type = Integer.class)
 	public static final String COLUMNS_KEY = "columns";
 	@PropertyIdentifier(type = Integer.class)
@@ -87,15 +84,6 @@ public interface FIBEditor extends FIBTextWidget {
 	public static final String TEXT_KEY = "text";
 	@PropertyIdentifier(type = FIBTokenMarkerStyle.class)
 	public static final String TOKEN_MARKER_STYLE_KEY = "tokenMarkerStyle";
-
-	@Override
-	@Getter(value = VALIDATE_ON_RETURN_KEY, defaultValue = "false")
-	@XMLAttribute
-	public boolean isValidateOnReturn();
-
-	@Override
-	@Setter(VALIDATE_ON_RETURN_KEY)
-	public void setValidateOnReturn(boolean validateOnReturn);
 
 	@Override
 	@Getter(value = COLUMNS_KEY)
@@ -171,7 +159,7 @@ public interface FIBEditor extends FIBTextWidget {
 
 		@Override
 		public void setTokenMarkerStyle(FIBTokenMarkerStyle tokenMarkerStyle) {
-			//System.out.println("setTokenMarkerStyle with " + tokenMarkerStyle);
+			// System.out.println("setTokenMarkerStyle with " + tokenMarkerStyle);
 			FIBPropertyNotification<FIBTokenMarkerStyle> notification = requireChange(TOKEN_MARKER_STYLE_KEY, tokenMarkerStyle);
 			if (notification != null) {
 				this.tokenMarkerStyle = tokenMarkerStyle;

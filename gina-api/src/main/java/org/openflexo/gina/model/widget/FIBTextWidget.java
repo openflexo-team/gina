@@ -45,7 +45,6 @@ import java.util.List;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.gina.model.FIBWidget;
-import org.openflexo.gina.model.FIBWidget.FIBWidgetImpl;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -100,9 +99,9 @@ public abstract interface FIBTextWidget extends FIBWidget {
 		public static BindingDefinition EDITABLE = new BindingDefinition("editable", Boolean.class, DataBinding.BindingDefinitionType.GET,
 				false);
 
-		private boolean validateOnReturn = false;
-		private String text = null;
-		private Integer columns = null;
+		// private boolean validateOnReturn = false;
+		// private String text = null;
+		// private Integer columns = null;
 		private DataBinding<Boolean> editable;
 
 		@Override
@@ -126,57 +125,6 @@ public abstract interface FIBTextWidget extends FIBWidget {
 		@Override
 		public Type getDefaultDataType() {
 			return String.class;
-		}
-
-		/**
-		 * @return the columns
-		 */
-		@Override
-		public Integer getColumns() {
-			return columns;
-		}
-
-		/**
-		 * @param columns
-		 *            the columns to set
-		 */
-		@Override
-		public void setColumns(Integer columns) {
-			this.columns = columns;
-		}
-
-		/**
-		 * @return the text
-		 */
-		@Override
-		public String getText() {
-			return text;
-		}
-
-		/**
-		 * @param text
-		 *            the text to set
-		 */
-		@Override
-		public void setText(String text) {
-			this.text = text;
-		}
-
-		/**
-		 * @return the validateOnReturn
-		 */
-		@Override
-		public boolean isValidateOnReturn() {
-			return validateOnReturn;
-		}
-
-		/**
-		 * @param validateOnReturn
-		 *            the validateOnReturn to set
-		 */
-		@Override
-		public void setValidateOnReturn(boolean validateOnReturn) {
-			this.validateOnReturn = validateOnReturn;
 		}
 
 		/**
