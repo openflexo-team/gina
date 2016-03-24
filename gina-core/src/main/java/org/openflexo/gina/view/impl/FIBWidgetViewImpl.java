@@ -105,9 +105,6 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 	private T data;
 
-	// protected boolean modelUpdating = false;
-	// protected boolean widgetUpdating = false;
-
 	private boolean enabled = true;
 
 	public static final Dimension MINIMUM_SIZE = new Dimension(30, 25);
@@ -115,8 +112,6 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	private final DynamicFormatter formatter;
 	private DynamicValueBindingContext valueBindingContext;
 	private final DynamicEventListener eventListener;
-
-	// private Map<DataBinding<?>, BindingValueChangeListener<?>> listeners;
 
 	private BindingValueChangeListener<Boolean> enableBindingValueChangeListener;
 
@@ -156,11 +151,6 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 		};
 
-		// addBindingValueChangeListeners();
-		// listenDataValueChange();
-		// listenEnableValueChange();
-
-		// update();
 	}
 
 	@Override
@@ -355,34 +345,6 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	 * GinaHandler.getInstance().pushStackEvent(e); }
 	 */
 
-	// public void updateBindingValueChangeListeners() {
-	// System.out.println("++++++++++++++++++++++++ updateBindingValueChangeListeners(). Est-ce vraiment necessaire ?");
-	/*
-	 * if (listeners != null) { deleteBindingValueChangeListener(); }
-	 * addBindingValueChangeListeners();
-	 */
-	// }
-
-	/*
-	 * private void addBindingValueChangeListeners() { if (listeners != null) {
-	 * deleteBindingValueChangeListener(); } listeners = new
-	 * HashMap<DataBinding<?>, BindingValueChangeListener<?>>(); for (final
-	 * DataBinding dataBinding : getDependencyBindings()) {
-	 * BindingValueChangeListener listener = new
-	 * BindingValueChangeListener(dataBinding, getBindingEvaluationContext()) {
-	 * 
-	 * @Override public void bindingValueChanged(Object source, Object newValue)
-	 * { System.out.println(" YYYYYYYEEEEEEEEESSSSSSSSS aussi pour " +
-	 * dataBinding + " avec newValue=" + newValue + " source=" + source); //
-	 * bindingValueHasChanged(dataBinding, newValue); } }; } }
-	 */
-
-	/*
-	 * private void deleteBindingValueChangeListener() { for
-	 * (BindingValueChangeListener<?> l : listeners.values()) {
-	 * l.stopObserving(); l.delete(); } listeners.clear(); listeners = null; }
-	 */
-
 	@Override
 	public synchronized void delete() {
 
@@ -426,31 +388,6 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			updateWidgetFromModel();
 		}*/
 	}
-
-	/**
-	 * Update the widget retrieving data from the model. This method is called when the observed property change.
-	 * 
-	 * @return boolean indicating if changes were required or not
-	 */
-	// @Override
-	// public abstract boolean updateWidgetFromModel();
-
-	/**
-	 * Update the model given the actual state of the widget
-	 * 
-	 * @return boolean indicating if changes were required or not
-	 */
-	// @Override
-	// public abstract boolean updateModelFromWidget();
-
-	/*
-	 * @Override public List<TargetObject> getChainedBindings(DataBinding<?>
-	 * binding, TargetObject object) { return
-	 * getWidget().getChainedBindings(binding, object); }
-	 * 
-	 * @Override public List<DataBinding<?>> getDependencyBindings() { return
-	 * getWidget().getDependencyBindings(); }
-	 */
 
 	// TODO: refactor this: should be implemented in Swing only
 	public final void focusGained(FocusEvent event) {
@@ -535,42 +472,9 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			return getData();
 		}
 
-		// SGU: Why this ????
-		// I removed this statement because i don't remember why this was used
-		/*if (getDataObject() == null) {
-			return null;
-		}*/
-
 		Object value = null;
 
 		try {
-			/*
-			 * if
-			 * (getWidget().getData().toString().equals("data.targetPatternRole"
-			 * )) { System.out.println("hop"); System.out.println("hop2");
-			 * Object o = getBindingEvaluationContext().getValue(new
-			 * BindingVariable("data", null)); System.out.println("hop3");
-			 * 
-			 * }
-			 */
-
-			/*
-			 * if
-			 * (getWidget().getData().toString().equals("data.userIdentifier"))
-			 * { System.out.println("hop, data=" + getWidget().getData() +
-			 * " valid=" + getWidget().getData().isValid());
-			 * System.out.println("getBindingEvaluationContext()=" +
-			 * getBindingEvaluationContext()); Object data =
-			 * getBindingEvaluationContext().getValue(new
-			 * BindingVariable("data", null)); System.out.println("data=" +
-			 * data); System.out.println("userId=" + ((KeyValueCoding)
-			 * data).objectForKey("userIdentifier")); value =
-			 * getWidget().getData
-			 * ().getBindingValue(getBindingEvaluationContext());
-			 * System.out.println("value=" + value + " of " + value.getClass());
-			 * }
-			 */
-
 			value = getWidget().getData().getBindingValue(getBindingEvaluationContext());
 			T returned = (T) value;
 			setData(returned);
@@ -614,14 +518,6 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 				LOGGER.warning("Unexpected InvocationTargetException while evaluating " + getWidget().getValueTransform() + e.getMessage());
 				e.printStackTrace();
 			}
-			/*if (!equals(old, aValue)) {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						updateWidgetFromModel();
-					}
-				});
-			}*/
 		}
 
 		boolean isValid = true;
@@ -647,12 +543,6 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			}
 		}
 		if (!isValid) {
-			/*SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					updateWidgetFromModel();
-				}
-			});*/
 			return;
 		}
 
@@ -661,11 +551,6 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		if (getWidget().getData() == null || getWidget().getData().isUnset()) {
 		}
 		else {
-			// SGU: Why this ????
-			// I removed this statement because i don't remember why this was used
-			/*if (getDataObject() == null) {
-				return;
-			}*/
 			try {
 				getWidget().getData().setBindingValue(aValue, getBindingEvaluationContext());
 			} catch (TypeMismatchException e) {
@@ -682,15 +567,6 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 		}
 
-		// updateComponentsExplicitelyDeclaredAsDependant();
-
-		/*
-		 * Iterator<FIBComponent> it = getWidget().getMayAltersIterator();
-		 * while(it.hasNext()) { FIBComponent c = it.next();
-		 * logger.info("Modified "+aValue+" now update "+c);
-		 * getController().viewForComponent(c).update(); }
-		 */
-
 		if (getWidget().getValueChangedAction().isValid()) {
 			try {
 				getWidget().getValueChangedAction().execute(getBindingEvaluationContext());
@@ -703,12 +579,6 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			}
 		}
 
-	}
-
-	@Deprecated
-	protected void updateDependingObjects() {
-
-		// updateBindingValueChangeListeners();
 	}
 
 	@Override
@@ -743,80 +613,46 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		return true;
 	}
 
-	/**
-	 * This method is called to update view representing a FIBComponent.<br>
-	 * 
-	 * @return a flag indicating if component has been updated
-	 */
-	/*@Override
-	public boolean update() {
-		super.update();
-	
-		updateData();
-	
-		updateEnability();
-		// if (isComponentVisible()) {
-		updateDynamicTooltip();
-		updateDependingObjects();
-	
-		if (updateWidgetFromModel()) {
-			updateComponentsExplicitelyDeclaredAsDependant();
-		}
-	
-		if (enableBindingValueChangeListener != null) {
-			enableBindingValueChangeListener.refreshObserving();
-		}
-	
-		return true;
-	}*/
+	// Flag used to protect updating against cycling
+	private boolean isPerformingUpdate = false;
 
+	/**
+	 * Internally called to update the view, once the visibility has been handled by {@link #update()} method
+	 * 
+	 */
 	@Override
 	protected void performUpdate() {
+
+		// We have here to protect updating scheme against infinite loop, because cycles are theorically possible (when using explicit
+		// dependancies)
+
+		if (isPerformingUpdate) {
+			return;
+		}
+
+		isPerformingUpdate = true;
+
 		super.performUpdate();
 
 		updateData();
 
 		updateEnability();
 		updateDynamicTooltip();
-		// updateDependingObjects();
 
 		updateComponentsExplicitelyDeclaredAsDependant();
 
-	}
+		isPerformingUpdate = false;
 
-	/**
-	 * This method is called to update view representing a FIBComponent.<br>
-	 * Callers are all the components that have been updated during current update loop. If the callers contains the component itself, does
-	 * nothing and return.
-	 * 
-	 * @param callers
-	 *            all the components that have been previously updated during current update loop
-	 * @return a flag indicating if component has been updated
-	 */
-	/*
-	 * @Override public boolean update(List<FIBComponent> callers) { try { if
-	 * (!super.update(callers)) { return false; } updateEnability(); //
-	 * logger.info("Updating "+getWidget()+" value="+getValue());
-	 * 
-	 * // Add the component to the list of callers to avoid loops
-	 * callers.add(getComponent());
-	 * 
-	 * if (isComponentVisible()) { updateDynamicTooltip();
-	 * updateDependingObjects(); if (updateWidgetFromModel()) {
-	 * updateComponentsExplicitel(callers); } } else if (checkValidDataPath()) {
-	 * // Even if the component is not visible, its visibility may depend // it
-	 * self from some depending component (which in that situation, // are very
-	 * important to know, aren'they ?) updateDependingObjects(); } return true;
-	 * } catch (Exception e) {
-	 * logger.warning("Unexpected exception while updating FIBWidgetView: " +
-	 * e.getMessage()); e.printStackTrace(); return false; } }
-	 */
+	}
 
 	protected void updateComponentsExplicitelyDeclaredAsDependant() {
 		if (getController() == null) {
 			return;
 		}
-		// logger.info("updateDependancies() for " + getWidget());
+		/*if (getWidget().getMayAlters().size() > 0) {
+			logger.info("updateDependancies() for " + getWidget());
+			logger.info("may alter: " + getWidget().getMayAlters());
+		}*/
 		Iterator<FIBComponent> it = getWidget().getMayAltersIterator();
 		while (it.hasNext()) {
 			FIBComponent c = it.next();
@@ -837,20 +673,6 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		}
 		// logger.info("END updateDependancies() for " + getWidget());
 	}
-
-	// @Override
-	// public void updateDataObject(final Object aDataObject) {
-	/*
-	 * if (!SwingUtilities.isEventDispatchThread()) { if
-	 * (logger.isLoggable(Level.WARNING)) { logger.warning(
-	 * "Update data object invoked outside the EDT!!! please investigate and make sure this is no longer the case. \n\tThis is a very SERIOUS problem! Do not let this pass."
-	 * ); } SwingUtilities.invokeLater(new Runnable() {
-	 * 
-	 * @Override public void run() { updateDataObject(aDataObject); } });
-	 * return; }
-	 */
-	// update(new ArrayList<FIBComponent>());
-	// }
 
 	@Override
 	public void updateLanguage() {
