@@ -507,6 +507,11 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 		return multipleValueModel;
 	}
 
+	@Override
+	public void clearMultipleValueModel() {
+		multipleValueModel = null;
+	}
+
 	protected abstract FIBMultipleValueModel<I> createMultipleValueModel();
 
 	protected abstract void proceedToListModelUpdate();
@@ -561,6 +566,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 
 	protected void updateMultipleValues() {
 		((FIBMultipleValueModelImpl) getMultipleValueModel()).update();
+		clearMultipleValueModel();
 		proceedToListModelUpdate();
 	}
 

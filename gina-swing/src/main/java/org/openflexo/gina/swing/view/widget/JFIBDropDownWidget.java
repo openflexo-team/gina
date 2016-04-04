@@ -205,14 +205,20 @@ public class JFIBDropDownWidget<T> extends FIBDropDownWidgetImpl<JDropDownPanel<
 		return newValue;
 	}*/
 
+	private boolean isUpdatingListModel = false;
+
 	@Override
 	protected void proceedToListModelUpdate() {
+		if (isUpdatingListModel) {
+			return;
+		}
 		if (getTechnologyComponent() != null) {
+			isUpdatingListModel = true;
 			getTechnologyComponent().jComboBox.setModel(getListModel());
-			// System.out.println("New list model = " + getListModel());
-			/*if (!isUpdating() && !isDeleted() && getTechnologyComponent() != null) {
+			if (/*!isUpdating() &&*/ !isDeleted() && getTechnologyComponent() != null) {
 				updateData();
-			}*/
+			}
+			isUpdatingListModel = false;
 		}
 	}
 

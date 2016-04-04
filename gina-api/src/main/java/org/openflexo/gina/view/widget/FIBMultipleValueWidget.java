@@ -67,6 +67,8 @@ public interface FIBMultipleValueWidget<M extends FIBMultipleValues, C, T, I> ex
 
 	public FIBMultipleValueModel<I> getMultipleValueModel();
 
+	public void clearMultipleValueModel();
+
 	public T getSelected();
 
 	public void setSelected(T selected);
