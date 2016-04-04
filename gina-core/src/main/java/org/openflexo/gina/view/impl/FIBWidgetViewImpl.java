@@ -556,9 +556,10 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				LOGGER.warning("Unexpected " + e + " cannot setValue() with " + getWidget().getData() + " and value " + aValue + " message="
-						+ e.getMessage());
-				// e.printStackTrace();
+				// Do not warn it: it happens sometimes
+				// LOGGER.warning("Unexpected " + e + " cannot setValue() with " + getWidget().getData() + " and value " + aValue + "
+				// message="
+				// + e.getMessage());
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
 			} catch (NotSettableContextException e) {
