@@ -68,7 +68,6 @@ import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.FIBWidgetView;
 import org.openflexo.gina.view.GinaViewFactory;
-import org.openflexo.gina.view.widget.FIBCustomWidget;
 import org.openflexo.gina.view.widget.FIBReferencedComponentWidget;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
@@ -337,19 +336,9 @@ public class FIBController
 		if (variable.getVariableName() == null) {
 			return null;
 		}
-		/*if (variable.getVariableName().equals("data")) {
-			return dataObject;
-		}*/
-		/*if (variableValues.get(variable.getVariableName()) != null) {
-			return getVariableValue(variable.getVariableName());
-		}*/
 		for (FIBComponent c : new ArrayList<FIBComponent>(views.keySet())) {
 			if (variable.getVariableName().equals(c.getName())) {
-				FIBView<?, ?> returned = viewForComponent(c);
-				if (returned instanceof FIBCustomWidget) {
-					return ((FIBCustomWidget<?, ?, ?>) returned).getTechnologyComponent();
-				}
-				return returned;
+				return viewForComponent(c);
 			}
 		}
 		if (variable.getVariableName().equals("controller")) {
