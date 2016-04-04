@@ -122,12 +122,11 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 		}
 		for (FIBComponent c : getContainerView().getComponent().getSubComponents()) {
 			FIBView<?, C2> subComponentView = getSubComponentView(c);
-			// if (subComponentView.isViewVisible()) {
-			performAddChild(subComponentView, (CC) c.getConstraints());
-			// }
-			// if (subComponentView.isViewVisible()) {
-			subComponentView.getRenderingAdapter().setVisible(subComponentView.getTechnologyComponent(), subComponentView.isViewVisible());
-			// }
+			if (subComponentView != null) {
+				performAddChild(subComponentView, (CC) c.getConstraints());
+				subComponentView.getRenderingAdapter().setVisible(subComponentView.getTechnologyComponent(),
+						subComponentView.isViewVisible());
+			}
 		}
 
 		getContainerView().getRenderingAdapter().revalidateAndRepaint(getContainerView().getTechnologyComponent());
