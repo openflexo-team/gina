@@ -60,6 +60,8 @@ public interface FIBCustomWidget<C, CC extends FIBCustomComponent<T>, T> extends
 	@Override
 	public C getTechnologyComponent();
 
+	public CC getCustomComponent();
+
 	@Override
 	public CustomComponentRenderingAdapter<C, T> getRenderingAdapter();
 

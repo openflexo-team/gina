@@ -132,7 +132,7 @@ public class JFIBCustomWidget<CC extends JComponent & FIBCustomComponent<T>, T>
 	}
 
 	@Override
-	protected CC getCustomComponent() {
+	public CC getCustomComponent() {
 		if (getTechnologyComponent() != null) {
 			return getTechnologyComponent().getCustomComponent();
 		}

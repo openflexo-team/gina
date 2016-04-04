@@ -126,7 +126,8 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 		return customComponent;
 	}*/
 
-	protected abstract CC getCustomComponent();
+	@Override
+	public abstract CC getCustomComponent();
 
 	protected CC makeCustomComponent() {
 		return makeCustomComponent((Class) getWidget().getComponentClass(), (Class<T>) TypeUtils.getBaseClass(getWidget().getDataType()),

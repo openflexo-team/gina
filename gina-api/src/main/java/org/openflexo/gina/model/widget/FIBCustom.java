@@ -264,6 +264,11 @@ public interface FIBCustom extends FIBWidget {
 			}
 		}
 
+		@Override
+		protected FIBCustomType makeViewType() {
+			return new FIBCustomType(this);
+		}
+
 		public boolean hasAssignment(String variableName) {
 			return getAssignent(variableName) != null;
 		}
