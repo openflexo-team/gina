@@ -240,7 +240,9 @@ public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel>implements ImageO
 							update();
 						}
 					});
-					return new ImageIcon(image);
+					// return new ImageIcon(image);
+					// In this case, image is not ready yet
+					return null;
 				}
 				double widthRatio = (double) currentWidth / imageWidth;
 				double heightRatio = (double) currentHeight / imageHeight;
