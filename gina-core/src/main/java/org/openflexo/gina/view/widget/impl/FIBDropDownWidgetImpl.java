@@ -79,7 +79,7 @@ public abstract class FIBDropDownWidgetImpl<C, T> extends FIBMultipleValueWidget
 
 		if (newValue == null && getWidget().getAutoSelectFirstRow() && getListModel().getSize() > 0) {
 
-			System.out.println("Selecting first value of" + getWidget().getName() + " : " + getListModel().getElementAt(0));
+			// System.out.println("Selecting first value of" + getWidget().getName() + " : " + getListModel().getElementAt(0));
 
 			newValue = getListModel().getElementAt(0);
 			setValue(newValue);
