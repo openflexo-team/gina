@@ -43,6 +43,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.beans.PropertyChangeSupport;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -219,12 +220,14 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 
 		if (notEquals(oldData, data)) {
 
-			if (getComponent().getDataClass() == null || (data != null && getComponent().getDataClass().isAssignableFrom(data.getClass()))) {
+			if (getComponent().getDataClass() == null
+					|| (data != null && getComponent().getDataClass().isAssignableFrom(data.getClass()))) {
 				// System.out.println("OK data " + data + " is an instance of " + getComponent().getDataClass());
 				this.data = data;
 				// System.out.println("from " + oldData + " to " + data);
 				getPropertyChangeSupport().firePropertyChange(DATA, oldData, data);
-			} else {
+			}
+			else {
 				if (getComponent().getDataClass() != null) {
 					// System.out.println("Sorry, data " + data + " of " + data.getClass() + " is not an instance of "
 					// + getComponent().getDataClass());
@@ -249,7 +252,8 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 	public JComponent getJComponentForObject(FIBComponent component) {
 		if (getComponent() == component) {
 			return getJComponent();
-		} else {
+		}
+		else {
 			for (FIBView v : getSubViews().values()) {
 				JComponent j = v.getJComponentForObject(component);
 				if (j != null) {
@@ -263,7 +267,8 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 	public JComponent geDynamicJComponentForObject(FIBComponent component) {
 		if (getComponent() == component) {
 			return getDynamicJComponent();
-		} else {
+		}
+		else {
 			for (FIBView v : getSubViews().values()) {
 				JComponent j = v.geDynamicJComponentForObject(component);
 				if (j != null) {
@@ -350,7 +355,8 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 				scrolledComponent.setBorder(BorderFactory.createEmptyBorder());
 			}
 			return scrolledComponent;
-		} else {
+		}
+		else {
 			return getJComponent();
 		}
 	}
@@ -464,7 +470,8 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 			getResultingJComponent().setVisible(visible);
 			if (getResultingJComponent().getParent() instanceof JComponent) {
 				((JComponent) getResultingJComponent().getParent()).revalidate();
-			} else if (getResultingJComponent().getParent() != null) {
+			}
+			else if (getResultingJComponent().getParent() != null) {
 				getResultingJComponent().getParent().validate();
 			}
 			if (getResultingJComponent().getParent() != null) {
@@ -472,7 +479,7 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 			}
 			if (visible) {
 				hiddenComponentBecomesVisible();
-				for (FIBView<?, ?, ?> view : subViews.values()) {
+				for (FIBView<?, ?, ?> view : new ArrayList<>(subViews.values())) {
 					view.updateVisibility();
 				}
 			}
@@ -621,7 +628,8 @@ public abstract class FIBView<M extends FIBComponent, J extends JComponent, T> i
 		}
 		if (o1 == null) {
 			return o2 == null;
-		} else {
+		}
+		else {
 			return o1.equals(o2);
 		}
 	}
