@@ -91,7 +91,7 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 	@Setter(OWNER_KEY)
 	public void setOwner(FIBComponent owner);
 
-	@Getter(value = LOCALIZED_ENTRIES_KEY, cardinality = Cardinality.LIST/*, inverse = FIBLocalizedEntry.DICTIONARY_KEY*/)
+	@Getter(value = LOCALIZED_ENTRIES_KEY, cardinality = Cardinality.LIST, inverse = FIBLocalizedEntry.DICTIONARY_KEY)
 	@CloningStrategy(StrategyType.CLONE)
 	@XMLElement
 	@Embedded
