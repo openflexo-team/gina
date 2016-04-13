@@ -486,10 +486,10 @@ public class TestBindingModel extends FIBTestCase {
 		assertNotNull(controller.getRootView());
 
 		System.out.println("Panel1: ");
-		System.out.println(panel1.getFactory().stringRepresentation(panel1));
+		System.out.println(panel1.getModelFactory().stringRepresentation(panel1));
 
 		System.out.println("Panel2: ");
-		System.out.println(panel2.getFactory().stringRepresentation(panel2));
+		System.out.println(panel2.getModelFactory().stringRepresentation(panel2));
 
 	}
 

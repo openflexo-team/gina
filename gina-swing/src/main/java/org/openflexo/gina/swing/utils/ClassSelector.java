@@ -51,7 +51,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import org.openflexo.gina.FIBLibrary;
+import org.openflexo.gina.ApplicationFIBLibrary;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.widget.FIBCustom;
@@ -72,7 +72,7 @@ import org.openflexo.swing.VerticalLayout;
  * @author sguerin
  * 
  */
-public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCustomComponent<Class> {
+public class ClassSelector extends TextFieldCustomPopup<Class>implements FIBCustomComponent<Class> {
 	@SuppressWarnings("hiding")
 	static final Logger LOGGER = Logger.getLogger(ClassSelector.class.getPackage().getName());
 
@@ -108,7 +108,8 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 		// !!!
 		if (oldValue != null) {
 			_revertValue = oldValue;
-		} else {
+		}
+		else {
 			_revertValue = null;
 		}
 		if (LOGGER.isLoggable(Level.FINE)) {
@@ -147,7 +148,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 		protected ClassSelectorDetailsPanel(Class aClass) {
 			super();
 
-			fibComponent = FIBLibrary.instance().retrieveFIBComponent(FIB_FILE_NAME, true);
+			fibComponent = ApplicationFIBLibrary.instance().retrieveFIBComponent(FIB_FILE_NAME, true);
 			controller = new CustomFIBController(fibComponent, SwingViewFactory.INSTANCE);
 			fibView = (JFIBView<?, ?>) controller.buildView(fibComponent);
 
@@ -311,7 +312,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 		logButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FlexoLoggingViewer.showLoggingViewer(FlexoLoggingManager.instance(), dialog);
+				FlexoLoggingViewer.showLoggingViewer(FlexoLoggingManager.instance(), ApplicationFIBLibrary.instance(), dialog);
 			}
 		});
 

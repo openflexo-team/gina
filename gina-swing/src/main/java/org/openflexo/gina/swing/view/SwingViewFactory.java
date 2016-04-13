@@ -57,7 +57,6 @@ import javax.swing.SwingUtilities;
 
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
@@ -502,7 +501,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 						e.printStackTrace();
 					}
 					component.setResource(fibLocation);
-					FIBLibrary.save(component, fibFile);
+					component.getFIBLibrary().save(component, fibFile);
 				} catch (IOException e) {
 					e.printStackTrace();
 					LOGGER.warning("Cannot create FIB temp file definition for component, aborting FIB edition");

@@ -57,6 +57,7 @@ import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingDefinition;
+import org.openflexo.gina.ApplicationFIBLibrary;
 import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.manager.HasBaseIdentifier;
@@ -141,6 +142,8 @@ import org.openflexo.toolbox.StringUtils;
  * <li>support for scrollbar</li>
  * </ul>
  * 
+ * A {@link FIBComponent} is generally registered in a {@link FIBLibrary}
+ * 
  * @author sylvain
  *
  */
@@ -198,6 +201,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		public abstract int getPolicy();
 	}
 
+	@PropertyIdentifier(type = FIBLibrary.class)
+	public static final String FIB_LIBRARY_KEY = "fibLibrary";
 	@PropertyIdentifier(type = FIBContainer.class)
 	public static final String PARENT_KEY = "parent";
 	@PropertyIdentifier(type = Integer.class)
@@ -245,6 +250,12 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	public static final String DEFINE_PREFERRED_DIMENSIONS = "definePreferredDimensions";
 	public static final String DEFINE_MAX_DIMENSIONS = "defineMaxDimensions";
 	public static final String DEFINE_MIN_DIMENSIONS = "defineMinDimensions";
+
+	@Getter(value = FIB_LIBRARY_KEY, ignoreType = true)
+	public FIBLibrary getFIBLibrary();
+
+	@Setter(FIB_LIBRARY_KEY)
+	public void setFIBLibrary(FIBLibrary fibLibrary);
 
 	@Override
 	@Getter(value = PARENT_KEY/* , inverse = FIBContainer.SUB_COMPONENTS_KEY */)
@@ -703,7 +714,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		@Override
 		public FIBVariable<?> createNewVariable() {
-			FIBVariable returned = getFactory().newInstance(FIBVariable.class);
+			FIBVariable returned = getModelFactory().newInstance(FIBVariable.class);
 			returned.setName("data" + (getVariables().size() > 0 ? "" + (getVariables().size() + 1) : ""));
 			returned.setType(Object.class);
 			addToVariables(returned);
@@ -1346,36 +1357,13 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			return this;
 		}
 
-		/*
-		 * private Type dataType;
-		 * 
-		 * @Override public Type getDataType() { if (dataType != null) { return
-		 * dataType; } if (dataClass == null) { return Object.class; } return
-		 * dataClass; }
-		 * 
-		 * @Override public void setDataType(Type type) { if (type != null &&
-		 * !type.equals(this.dataType)) { Type oldType = this.dataType;
-		 * this.dataType = type; updateDataBindingVariable();
-		 * getPropertyChangeSupport().firePropertyChange("dataType", oldType,
-		 * type); } }
-		 */
-
-		/*
-		 * @Override public Class<?> getDataClass() { return dataClass; }
-		 * 
-		 * @Override
-		 * 
-		 * @SuppressWarnings("rawtypes") public void setDataClass(Class<?>
-		 * dataClass) { FIBPropertyNotification<Class> notification =
-		 * requireChange(DATA_CLASS_KEY, (Class) dataClass); if (notification !=
-		 * null) { // System.out.println("data=" + getData() + " valid=" +
-		 * getData().isValid() + " reason: " + //
-		 * getData().invalidBindingReason()); this.dataClass = dataClass;
-		 * getData().markedAsToBeReanalized(); // System.out.println("data=" +
-		 * getData() + " valid=" + getData().isValid() + " reason: " + //
-		 * getData().invalidBindingReason()); updateDataBindingVariable();
-		 * updateDynamicAccessBindingVariable(); hasChanged(notification); } }
-		 */
+		@Override
+		public FIBLibrary getFIBLibrary() {
+			if (isRootComponent()) {
+				return (FIBLibrary) performSuperGetter(FIB_LIBRARY_KEY);
+			}
+			return getRootComponent().getFIBLibrary();
+		}
 
 		@Override
 		public Class<? extends FIBController> getControllerClass() {
@@ -1843,7 +1831,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		@Override
 		public FIBDependancy createNewExplicitDependancy() {
-			FIBDependancy returned = getFactory().newInstance(FIBDependancy.class);
+			FIBDependancy returned = getModelFactory().newInstance(FIBDependancy.class);
 			addToExplicitDependancies(returned);
 			return returned;
 		}
@@ -1856,7 +1844,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		@Override
 		public FIBLocalizedDictionary retrieveFIBLocalizedDictionary() {
 			if (getLocalizedDictionary() == null) {
-				FIBLocalizedDictionary newFIBLocalizedDictionary = getFactory().newInstance(FIBLocalizedDictionary.class);
+				FIBLocalizedDictionary newFIBLocalizedDictionary = getModelFactory().newInstance(FIBLocalizedDictionary.class);
 				setLocalizedDictionary(newFIBLocalizedDictionary);
 			}
 			return getLocalizedDictionary();
@@ -1938,12 +1926,24 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			if (getParent() != null) {
 				return getParent().getBindingFactory();
 			}
-			return FIBLibrary.instance().getBindingFactory();
+			if (getFIBLibrary() != null) {
+				return getFIBLibrary().getBindingFactory();
+			}
+			// We really have found nothing
+			return ApplicationFIBLibrary.instance().getBindingFactory();
 		}
 
 		@Override
 		public void setBindingFactory(BindingFactory bindingFactory) {
 			this.bindingFactory = bindingFactory;
+		}
+
+		@Override
+		public FIBModelFactory getModelFactory() {
+			if (getFIBLibrary() != null) {
+				return getFIBLibrary().getFIBModelFactory();
+			}
+			return super.getModelFactory();
 		}
 
 		// TODO: move to FIBContainer
@@ -2060,7 +2060,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				return getIdentifier() + " (" + e.getImplementedInterface().getSimpleName() + ")";
 			}*/
 			else {
-				org.openflexo.model.ModelEntity<?> e = getFactory().getModelEntityForInstance(this);
+				org.openflexo.model.ModelEntity<?> e = getModelFactory().getModelEntityForInstance(this);
 				return "<" + e.getImplementedInterface().getSimpleName() + ">";
 			}
 		}

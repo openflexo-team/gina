@@ -40,6 +40,7 @@ package org.openflexo.gina.swing.editor.widget;
 
 import java.util.logging.Logger;
 
+import org.openflexo.gina.ApplicationFIBLibrary;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.utils.FIBJPanel;
@@ -64,7 +65,7 @@ public class FIBEditorBrowser extends FIBJPanel<FIBComponent> {
 	private final FIBEditorController editorController;
 
 	public FIBEditorBrowser(FIBComponent fibComponent, FIBEditorController editorController) {
-		super(FIB_FILE, fibComponent, FlexoLocalization.getMainLocalizer());
+		super(FIB_FILE, fibComponent, ApplicationFIBLibrary.instance(), FlexoLocalization.getMainLocalizer());
 		this.editorController = editorController;
 		getController().setEditorController(editorController);
 	}

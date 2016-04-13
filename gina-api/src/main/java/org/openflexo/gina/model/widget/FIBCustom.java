@@ -230,7 +230,7 @@ public interface FIBCustom extends FIBWidget {
 						if (annotation != null) {
 							String variableName = COMPONENT_NAME + "." + annotation.name();
 							if (!hasAssignment(variableName)) {
-								FIBCustomAssignment newAssigment = getFactory().newInstance(FIBCustomAssignment.class);
+								FIBCustomAssignment newAssigment = getModelFactory().newInstance(FIBCustomAssignment.class);
 								newAssigment.setOwner(this);
 								newAssigment.setVariable(new DataBinding<Object>(variableName));
 								newAssigment.setValue(null);
@@ -354,7 +354,7 @@ public interface FIBCustom extends FIBWidget {
 		@Override
 		public FIBCustomAssignment createAssignment() {
 			logger.info("Called createAssignment()");
-			FIBCustomAssignment newAssignment = getFactory().newInstance(FIBCustomAssignment.class);
+			FIBCustomAssignment newAssignment = getModelFactory().newInstance(FIBCustomAssignment.class);
 			addToAssignments(newAssignment);
 			return newAssignment;
 		}

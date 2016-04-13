@@ -43,6 +43,7 @@ import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
+import org.openflexo.gina.FIBLibrary;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.localization.LocalizedDelegateImpl;
@@ -62,9 +63,9 @@ public class LocalizedEditor extends JDialog {
 	private final LocalizedDelegate localizedToEdit;
 
 	public LocalizedEditor(JFrame frame, String title, LocalizedDelegate localizedToEdit, LocalizedDelegate editorLocalized,
-			boolean displaySave, boolean displaySearchLocalized) {
+			FIBLibrary fibLibrary, boolean displaySave, boolean displaySearchLocalized) {
 		super(frame, editorLocalized.getLocalizedForKeyAndLanguage(title, FlexoLocalization.getCurrentLanguage()), false);
-		localizedPanel = new LocalizedPanel(localizedToEdit, editorLocalized, displaySave, displaySearchLocalized) {
+		localizedPanel = new LocalizedPanel(localizedToEdit, editorLocalized, fibLibrary, displaySave, displaySearchLocalized) {
 			@Override
 			public void save() {
 				LocalizedEditor.this.save();
@@ -87,7 +88,8 @@ public class LocalizedEditor extends JDialog {
 	public void save() {
 		if (localizedToEdit instanceof LocalizedDelegateImpl) {
 			((LocalizedDelegateImpl) localizedToEdit).saveAllDictionaries();
-		} else {
+		}
+		else {
 			LOGGER.warning("save localized not implemented");
 		}
 	}

@@ -156,7 +156,7 @@ public interface FIBCustomColumn extends FIBTableColumn {
 						if (annotation != null) {
 							String variableName = FIBCustomImpl.COMPONENT_NAME + "." + annotation.name();
 							if (!hasAssignment(variableName)) {
-								FIBCustomAssignment newAssignment = getFactory().newInstance(FIBCustomAssignment.class);
+								FIBCustomAssignment newAssignment = getModelFactory().newInstance(FIBCustomAssignment.class);
 								newAssignment.setOwner(this);
 								newAssignment.setMandatory(annotation.type() == CustomComponentParameter.Type.MANDATORY);
 								newAssignment.setVariable(new DataBinding<Object>(variableName));

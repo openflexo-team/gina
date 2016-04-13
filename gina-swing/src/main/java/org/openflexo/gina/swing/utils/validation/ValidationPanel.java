@@ -54,8 +54,8 @@ public abstract class ValidationPanel extends FIBJPanel<ValidationReport> {
 
 	public static Resource VALIDATION_PANEL_FIB = ResourceLocator.locateResource("Fib/ValidationPanel.fib");
 
-	public ValidationPanel(ValidationReport validationReport, LocalizedDelegate parentLocalizer) {
-		super(FIBLibrary.instance().retrieveFIBComponent(VALIDATION_PANEL_FIB, true), validationReport, parentLocalizer);
+	public ValidationPanel(ValidationReport validationReport, FIBLibrary fibLibrary, LocalizedDelegate parentLocalizer) {
+		super(fibLibrary.retrieveFIBComponent(VALIDATION_PANEL_FIB, true), validationReport, parentLocalizer);
 	}
 
 	@Override

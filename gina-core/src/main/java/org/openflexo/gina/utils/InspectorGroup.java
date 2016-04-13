@@ -68,11 +68,14 @@ public class InspectorGroup {
 	private final Hashtable<Class<?>, FIBInspector> inspectors;
 
 	private FIBModelFactory fibModelFactory;
+	private final FIBLibrary fibLibrary;
 
 	private final List<InspectorGroup> parentInspectorGroups;
 
-	public InspectorGroup(Resource inspectorDirectory, InspectorGroup... someInspectorGroups) {
+	public InspectorGroup(Resource inspectorDirectory, FIBLibrary fibLibrary, InspectorGroup... someInspectorGroups) {
 		inspectors = new Hashtable<Class<?>, FIBInspector>();
+
+		this.fibLibrary = fibLibrary;
 
 		try {
 			fibModelFactory = new FIBModelFactory(FIBInspector.class);
@@ -89,7 +92,7 @@ public class InspectorGroup {
 		for (Resource f : inspectorDirectory.getContents(Pattern.compile(".*[.]inspector"))) {
 			// System.out.println("Read "+f.getAbsolutePath());
 			logger.info("Loading " + f.getURI());
-			FIBComponent component = FIBLibrary.instance().retrieveFIBComponent(f, false, fibModelFactory);
+			FIBComponent component = fibLibrary.retrieveFIBComponent(f, false, fibModelFactory);
 			if (component instanceof FIBInspector) {
 				FIBInspector inspector = (FIBInspector) component;
 				if (inspector != null) {

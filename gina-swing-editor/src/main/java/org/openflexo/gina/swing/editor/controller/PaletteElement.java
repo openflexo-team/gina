@@ -246,7 +246,7 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 					if (isTabInsertion) {
 						// Special case where a new tab is added to a FIBTabPanel
 
-						FIBTab newTabComponent = containerComponent.getFactory().newFIBTab();
+						FIBTab newTabComponent = containerComponent.getModelFactory().newFIBTab();
 						newTabComponent.setLayout(Layout.border);
 						newTabComponent.setTitle("NewTab");
 						newTabComponent.finalizeDeserialization();

@@ -49,7 +49,6 @@ import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.TypeUtils;
-import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
@@ -244,14 +243,14 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 
 	private FIBComponent retrieveReferencedComponent() {
 
-		FIBReferencedComponent widg = getWidget();
+		FIBReferencedComponent widget = getWidget();
 		// NPE Protection when widget is null
-		if (widg != null) {
+		if (widget != null) {
 
-			if (widg.getDynamicComponent() != null && widg.getDynamicComponent().isSet() && widg.getDynamicComponent().isValid()) {
+			if (widget.getDynamicComponent() != null && widget.getDynamicComponent().isSet() && widget.getDynamicComponent().isValid()) {
 				// The component is dynamically defined, use it
 				try {
-					return widg.getDynamicComponent().getBindingValue(getBindingEvaluationContext());
+					return widget.getDynamicComponent().getBindingValue(getBindingEvaluationContext());
 				} catch (TypeMismatchException e) {
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
@@ -266,7 +265,13 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 		// Maybe the component file is defined ???
 		Resource componentFile = getComponentFile();
 		if (componentFile != null) {
-			return FIBLibrary.instance().retrieveFIBComponent(componentFile);
+			if (getComponent().getFIBLibrary() != null) {
+				return getComponent().getFIBLibrary().retrieveFIBComponent(componentFile);
+			}
+			else {
+				logger.warning("Component has no FIBLibrary !");
+				Thread.dumpStack();
+			}
 		}
 		return null;
 	}
@@ -317,8 +322,6 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 	protected FIBView<?, C> makeReferencedComponentView() {
 
 		FIBView<?, C> referencedComponentView = null;
-
-		System.out.println("Hop, on se construit le TechnologyComponent pour FIBReferencedComponentWidgetImpl");
 
 		// updateDynamicallyReferencedComponentWhenRequired();
 

@@ -54,32 +54,31 @@ import javax.swing.JPopupMenu;
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.DefaultBindable;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
+import org.openflexo.connie.DefaultBindable;
 import org.openflexo.connie.type.TypeUtils;
-import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.FIBModelFactory;
 import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.model.container.FIBPanel;
-import org.openflexo.gina.model.container.FIBSplitPanel;
 import org.openflexo.gina.model.container.FIBPanel.Border;
 import org.openflexo.gina.model.container.FIBPanel.FlowLayoutAlignment;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
+import org.openflexo.gina.model.container.FIBSplitPanel;
 import org.openflexo.gina.model.container.layout.BorderLayoutConstraints;
+import org.openflexo.gina.model.container.layout.BorderLayoutConstraints.BorderLayoutLocation;
 import org.openflexo.gina.model.container.layout.SplitLayoutConstraints;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
-import org.openflexo.gina.model.container.layout.BorderLayoutConstraints.BorderLayoutLocation;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.gina.model.widget.FIBButton;
 import org.openflexo.gina.model.widget.FIBCustom;
 import org.openflexo.gina.model.widget.FIBFile;
-import org.openflexo.gina.model.widget.FIBLabel;
-import org.openflexo.gina.model.widget.FIBReferencedComponent;
 import org.openflexo.gina.model.widget.FIBFile.FileMode;
+import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.gina.model.widget.FIBLabel.Align;
+import org.openflexo.gina.model.widget.FIBReferencedComponent;
 import org.openflexo.gina.swing.editor.FIBEmbeddedEditor;
 import org.openflexo.gina.swing.editor.controller.EditorAction.ActionAvailability;
 import org.openflexo.gina.swing.editor.controller.EditorAction.ActionPerformer;
@@ -122,8 +121,8 @@ public class ContextualMenu {
 			@Override
 			public FIBModelObject performAction(FIBModelObject object) {
 				FIBComponent parent = ((FIBComponent) object).getParent();
-				boolean deleteIt = JOptionPane.showConfirmDialog(editorController.getEditor().getFrame(), object
-						+ ": really delete this component (undoable operation) ?", "information", JOptionPane.YES_NO_CANCEL_OPTION,
+				boolean deleteIt = JOptionPane.showConfirmDialog(editorController.getEditor().getFrame(),
+						object + ": really delete this component (undoable operation) ?", "information", JOptionPane.YES_NO_CANCEL_OPTION,
 						JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION;
 				if (deleteIt) {
 					logger.info("Removing object " + object);
@@ -198,8 +197,8 @@ public class ContextualMenu {
 			public FIBModelObject performAction(FIBModelObject object) {
 				FIBReferencedComponent referencedComponent = (FIBReferencedComponent) object;
 
-				JFIBReferencedComponentWidget widgetView = (JFIBReferencedComponentWidget) editorController.getController().viewForComponent(
-						referencedComponent);
+				JFIBReferencedComponentWidget widgetView = (JFIBReferencedComponentWidget) editorController.getController()
+						.viewForComponent(referencedComponent);
 
 				Object dataObject = widgetView.getValue();
 				// File componentFile = rl.retrieveResourceAsFile(widgetView.getComponentFile());
@@ -292,7 +291,7 @@ public class ContextualMenu {
 				reusableComponent.setData(null);
 				reusableComponent.setVisible(null);
 				logger.info("Save to file " + params.reusableComponentFile.getAbsolutePath());
-				FIBLibrary.save(reusableComponent, params.reusableComponentFile);
+				reusableComponent.getFIBLibrary().save(reusableComponent, params.reusableComponentFile);
 				// logger.info("Current directory = " + editorController.getEditor().getEditedComponentFile().getParentFile());
 				// RelativePathFileConverter relativePathFileConverter = new RelativePathFileConverter(editorController.getEditor()
 				// .getEditedComponentFile().getParentFile());
@@ -328,12 +327,14 @@ public class ContextualMenu {
 			if (StringUtils.isNotEmpty(component.getName())) {
 				componentName = component.getName();
 				reusableComponentFile = new File(JFIBPreferences.getLastDirectory(), componentName + ".fib");
-			} else {
+			}
+			else {
 				reusableComponentFile = new File(JFIBPreferences.getLastDirectory(), "ReusableComponent.fib");
 			}
 			if (component.getData().isSet()) {
 				data = new DataBinding<Object>(component.getData().toString(), this, Object.class, BindingDefinitionType.GET);
-			} else {
+			}
+			else {
 				data = new DataBinding<Object>(this, Object.class, BindingDefinitionType.GET);
 			}
 		}

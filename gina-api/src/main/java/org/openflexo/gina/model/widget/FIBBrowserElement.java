@@ -843,7 +843,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 		@Override
 		public FIBAddAction createAddAction() {
-			FIBAddAction newAction = getFactory().newInstance(FIBAddAction.class);
+			FIBAddAction newAction = getModelFactory().newInstance(FIBAddAction.class);
 			newAction.setName("add_action");
 			addToActions(newAction);
 			return newAction;
@@ -851,7 +851,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 		@Override
 		public FIBRemoveAction createRemoveAction() {
-			FIBRemoveAction newAction = getFactory().newInstance(FIBRemoveAction.class);
+			FIBRemoveAction newAction = getModelFactory().newInstance(FIBRemoveAction.class);
 			newAction.setName("delete_action");
 			addToActions(newAction);
 			return newAction;
@@ -859,7 +859,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 		@Override
 		public FIBCustomAction createCustomAction() {
-			FIBCustomAction newAction = getFactory().newInstance(FIBCustomAction.class);
+			FIBCustomAction newAction = getModelFactory().newInstance(FIBCustomAction.class);
 			newAction.setName("custom_action");
 			addToActions(newAction);
 			return newAction;
@@ -899,7 +899,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public FIBBrowserElementChildren createChildren() {
 			logger.info("Called createChildren()");
-			FIBBrowserElementChildren newChildren = getFactory().newInstance(FIBBrowserElementChildren.class);
+			FIBBrowserElementChildren newChildren = getModelFactory().newInstance(FIBBrowserElementChildren.class);
 			newChildren.setName("children" + (getChildren().size() > 0 ? getChildren().size() : ""));
 			addToChildren(newChildren);
 			return newChildren;

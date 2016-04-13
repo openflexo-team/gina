@@ -332,7 +332,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 		@Override
 		public FIBReferenceAssignment createAssignment() {
 			logger.info("Called createAssignment()");
-			FIBReferenceAssignment newAssignment = getFactory().newInstance(FIBReferenceAssignment.class);
+			FIBReferenceAssignment newAssignment = getModelFactory().newInstance(FIBReferenceAssignment.class);
 			addToAssignments(newAssignment);
 			return newAssignment;
 		}

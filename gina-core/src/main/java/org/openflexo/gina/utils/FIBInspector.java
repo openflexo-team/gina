@@ -237,7 +237,7 @@ public interface FIBInspector extends FIBPanel {
 		@Override
 		public String getXMLRepresentation() {
 			// TODO: we use here the default factory !!!
-			return getFactory().stringRepresentation(this);
+			return getModelFactory().stringRepresentation(this);
 		}
 	}
 }

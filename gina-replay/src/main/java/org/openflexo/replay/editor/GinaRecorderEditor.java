@@ -3,7 +3,7 @@ package org.openflexo.replay.editor;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
-import org.openflexo.gina.FIBLibrary;
+import org.openflexo.gina.ApplicationFIBLibrary;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingViewFactory;
@@ -14,12 +14,10 @@ import org.openflexo.rm.ResourceLocator;
 public class GinaRecorderEditor {
 
 	public GinaRecorderEditor() {
-		final ResourceLocator rl = ResourceLocator.getResourceLocator();
-
 		Resource fibResource = ResourceLocator.locateSourceCodeResource("Editor/Editor.fib");
 		System.out.println("Fib: " + fibResource);
 
-		FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(fibResource);
+		FIBComponent fibComponent = ApplicationFIBLibrary.instance().retrieveFIBComponent(fibResource);
 		fibComponent.setControllerClass(GinaRecorderEditorController.class);
 
 		JFrame frame = new JFrame();

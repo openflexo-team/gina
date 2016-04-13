@@ -56,6 +56,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingViewFactory;
@@ -82,8 +83,8 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 
 	private final Hashtable<FIBInspector, JFIBView<?, ?>> inspectorViews;
 
-	public JFIBInspectorController(JFrame frame, Resource inspectorDirectory, LocalizedDelegate localizer) {
-		inspectorGroup = new InspectorGroup(inspectorDirectory);
+	public JFIBInspectorController(JFrame frame, Resource inspectorDirectory, FIBLibrary fibLibrary, LocalizedDelegate localizer) {
+		inspectorGroup = new InspectorGroup(inspectorDirectory, fibLibrary);
 		inspectorViews = new Hashtable<FIBInspector, JFIBView<?, ?>>();
 
 		for (FIBInspector inspector : inspectorGroup.getInspectors().values()) {
@@ -162,7 +163,7 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 		JTabbedPane tabPanelViewJComponent = null;
 
 		if (tabPanelView != null) {
-			tabPanelViewJComponent = (JTabbedPane) tabPanelView.getJComponent();
+			tabPanelViewJComponent = tabPanelView.getJComponent();
 			tabPanelViewJComponent.removeChangeListener(this);
 			// System.out.println("removeChangeListener for "+tabPanelView.getJComponent());
 		}
@@ -179,7 +180,7 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 			currentInspector = newInspector;
 			inspectorDialog.setTitle(newInspector.getParameter("title"));
 			tabPanelView = (JFIBTabPanelView) currentInspectorView.getController().viewForComponent(currentInspector.getTabPanel());
-			tabPanelViewJComponent = (JTabbedPane) tabPanelView.getJComponent();
+			tabPanelViewJComponent = tabPanelView.getJComponent();
 			if (lastInspectedTabIndex >= 0 && lastInspectedTabIndex < tabPanelViewJComponent.getTabCount()) {
 				tabPanelViewJComponent.setSelectedIndex(lastInspectedTabIndex);
 			}
@@ -209,7 +210,7 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		JTabbedPane tabPanelViewJComponent = (JTabbedPane) tabPanelView.getJComponent();
+		JTabbedPane tabPanelViewJComponent = tabPanelView.getJComponent();
 		lastInspectedTabIndex = tabPanelViewJComponent.getSelectedIndex();
 		// System.out.println("Change for index "+lastInspectedTabIndex);
 	}

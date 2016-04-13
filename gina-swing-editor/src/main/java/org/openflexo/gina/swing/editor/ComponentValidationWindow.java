@@ -41,6 +41,7 @@ package org.openflexo.gina.swing.editor;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
+import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
@@ -53,10 +54,10 @@ public class ComponentValidationWindow extends JDialog {
 	private final ValidationPanel validationPanel;
 	private final FIBEditorController editorController;
 
-	public ComponentValidationWindow(JFrame frame, FIBEditorController editorController) {
+	public ComponentValidationWindow(JFrame frame, FIBEditorController editorController, FIBLibrary fibLibrary) {
 		super(frame, FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, "component_validation"), false);
 		this.editorController = editorController;
-		validationPanel = new ValidationPanel(null, FIBAbstractEditor.LOCALIZATION) {
+		validationPanel = new ValidationPanel(null, fibLibrary, FIBAbstractEditor.LOCALIZATION) {
 			@Override
 			protected void performSelect(ValidationIssue<?, ?> validationIssue) {
 				ComponentValidationWindow.this.performSelect(validationIssue);
@@ -83,7 +84,7 @@ public class ComponentValidationWindow extends JDialog {
 	}
 
 	public void validateAndDisplayReportForComponent(FIBComponent component) throws InterruptedException {
-		validationPanel.validate(component.getFactory().getValidationModel(), component);
+		validationPanel.validate(component.getModelFactory().getValidationModel(), component);
 		setVisible(true);
 	}
 }

@@ -44,7 +44,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.util.logging.Logger;
 
-import org.openflexo.gina.FIBLibrary;
+import org.openflexo.gina.ApplicationFIBLibrary;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.model.validation.ValidationError;
 import org.openflexo.model.validation.ValidationReport;
@@ -69,7 +69,7 @@ public abstract class GenericFIBTestCase {
 	public void validateFIB(Resource fibFile) {
 		try {
 			System.out.println("Validating fib file " + fibFile);
-			FIBComponent component = FIBLibrary.instance().retrieveFIBComponent(fibFile);
+			FIBComponent component = ApplicationFIBLibrary.instance().retrieveFIBComponent(fibFile);
 			if (component == null) {
 				fail("Component not found: " + fibFile.getURI());
 			}
@@ -84,7 +84,7 @@ public abstract class GenericFIBTestCase {
 			e.printStackTrace();
 			fail("Interrupted FIB validation");
 		} finally {
-			FIBLibrary.instance().removeFIBComponentFromCache(fibFile);
+			ApplicationFIBLibrary.instance().removeFIBComponentFromCache(fibFile);
 		}
 	}
 
@@ -93,7 +93,8 @@ public abstract class GenericFIBTestCase {
 		for (File f : directory.listFiles()) {
 			if (f.isDirectory()) {
 				generateFIBTestCaseClass(f, relativePath + f.getName() + File.separator, sb);
-			} else if (f.getName().endsWith(".fib")) {
+			}
+			else if (f.getName().endsWith(".fib")) {
 				String fibName = f.getName().substring(0, f.getName().indexOf(".fib"));
 				sb.append("@Test\n");
 				sb.append("public void test" + fibName + "() {\n");
@@ -108,7 +109,8 @@ public abstract class GenericFIBTestCase {
 		for (File f : directory.listFiles()) {
 			if (f.isDirectory()) {
 				generateFIBTestCaseClass(f, relativePath + f.getName() + File.separator);
-			} else if (f.getName().endsWith(".fib")) {
+			}
+			else if (f.getName().endsWith(".fib")) {
 				String fibName = f.getName().substring(0, f.getName().indexOf(".fib"));
 				sb.append("@Test\n");
 				sb.append("public void test" + fibName + "() {\n");

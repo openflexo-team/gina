@@ -120,21 +120,15 @@ public interface FIBSplitPanel extends FIBContainer {
 
 		private FIBSplit split;
 
-		private final FIBMultiSplitLayoutFactory splitLayoutFactory = new FIBMultiSplitLayoutFactory(getFactory());
+		private FIBMultiSplitLayoutFactory splitLayoutFactory;
 
 		@Override
 		public FIBMultiSplitLayoutFactory getSplitLayoutFactory() {
+			if (splitLayoutFactory == null && getModelFactory() != null) {
+				splitLayoutFactory = new FIBMultiSplitLayoutFactory(getModelFactory());
+			}
 			return splitLayoutFactory;
 		}
-
-		/*
-		 * @Override public Layout getLayout() { return Layout.split; }
-		 */
-
-		/*@Override
-		public String getIdentifier() {
-			return null;
-		}*/
 
 		@Override
 		public String getFirstEmptyPlaceHolder() {
@@ -162,19 +156,19 @@ public interface FIBSplitPanel extends FIBContainer {
 		}
 
 		protected FIBRowSplit getDefaultHorizontalLayout() {
-			Leaf left = splitLayoutFactory.makeLeaf(findNextAvailableLeaf(LEFT));
+			Leaf left = getSplitLayoutFactory().makeLeaf(findNextAvailableLeaf(LEFT));
 			left.setWeight(0.5);
-			Leaf right = splitLayoutFactory.makeLeaf(findNextAvailableLeaf(RIGHT));
+			Leaf right = getSplitLayoutFactory().makeLeaf(findNextAvailableLeaf(RIGHT));
 			right.setWeight(0.5);
-			return splitLayoutFactory.makeRowSplit(left, splitLayoutFactory.makeDivider(), right);
+			return getSplitLayoutFactory().makeRowSplit(left, getSplitLayoutFactory().makeDivider(), right);
 		}
 
 		protected FIBColSplit getDefaultVerticalLayout() {
-			Leaf left = splitLayoutFactory.makeLeaf(findNextAvailableLeaf(TOP));
+			Leaf left = getSplitLayoutFactory().makeLeaf(findNextAvailableLeaf(TOP));
 			left.setWeight(0.5);
-			Leaf right = splitLayoutFactory.makeLeaf(findNextAvailableLeaf(BOTTOM));
+			Leaf right = getSplitLayoutFactory().makeLeaf(findNextAvailableLeaf(BOTTOM));
 			right.setWeight(0.5);
-			return splitLayoutFactory.makeColSplit(left, splitLayoutFactory.makeDivider(), right);
+			return getSplitLayoutFactory().makeColSplit(left, getSplitLayoutFactory().makeDivider(), right);
 		}
 
 		@Override
@@ -189,7 +183,7 @@ public interface FIBSplitPanel extends FIBContainer {
 
 		@Override
 		public Divider addDivider(Split parent) {
-			Divider returned = splitLayoutFactory.makeDivider();
+			Divider returned = getSplitLayoutFactory().makeDivider();
 			parent.addToChildren(returned);
 			notifySplitLayoutChange();
 			return returned;
@@ -197,7 +191,7 @@ public interface FIBSplitPanel extends FIBContainer {
 
 		@Override
 		public Leaf addLeaf(Split parent) {
-			Leaf returned = splitLayoutFactory.makeLeaf(findNextAvailableLeaf("leaf"));
+			Leaf returned = getSplitLayoutFactory().makeLeaf(findNextAvailableLeaf("leaf"));
 			parent.addToChildren(returned);
 			notifySplitLayoutChange();
 			return returned;
@@ -205,7 +199,7 @@ public interface FIBSplitPanel extends FIBContainer {
 
 		@Override
 		public ColSplit addVerticalSplit(Split parent) {
-			ColSplit returned = splitLayoutFactory.makeColSplit();
+			ColSplit returned = getSplitLayoutFactory().makeColSplit();
 			parent.addToChildren(returned);
 			notifySplitLayoutChange();
 			return returned;
@@ -213,7 +207,7 @@ public interface FIBSplitPanel extends FIBContainer {
 
 		@Override
 		public RowSplit addHorizontalSplit(Split parent) {
-			RowSplit returned = splitLayoutFactory.makeRowSplit();
+			RowSplit returned = getSplitLayoutFactory().makeRowSplit();
 			parent.addToChildren(returned);
 			notifySplitLayoutChange();
 			return returned;

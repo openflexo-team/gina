@@ -49,7 +49,7 @@ import org.openflexo.connie.Bindable;
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.gina.FIBLibrary;
+import org.openflexo.gina.ApplicationFIBLibrary;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.annotations.Adder;
@@ -127,7 +127,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 	public FIBParameter createNewParameter();
 
-	public FIBModelFactory getFactory();
+	public FIBModelFactory getModelFactory();
 
 	public boolean isValid();
 
@@ -205,8 +205,11 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 		}
 
 		@Override
-		public FIBModelFactory getFactory() {
-			return FIBLibrary.instance().getFIBModelFactory();
+		public FIBModelFactory getModelFactory() {
+			if (getComponent() != null && getComponent() != this) {
+				return getComponent().getModelFactory();
+			}
+			return ApplicationFIBLibrary.instance().getFIBModelFactory();
 		}
 
 		/**
@@ -217,7 +220,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 		 */
 		@Override
 		public Collection<? extends FIBModelObject> getEmbeddedObjects() {
-			return (Collection<? extends FIBModelObject>) getFactory().getEmbeddedObjects(this, EmbeddingType.CLOSURE);
+			return (Collection<? extends FIBModelObject>) getModelFactory().getEmbeddedObjects(this, EmbeddingType.CLOSURE);
 		}
 
 		/**
@@ -229,7 +232,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 		@Override
 		public final Collection<? extends Validable> getEmbeddedValidableObjects() {
 
-			List<?> embeddedObjects = getFactory().getEmbeddedObjects(this, EmbeddingType.CLOSURE);
+			List<?> embeddedObjects = getModelFactory().getEmbeddedObjects(this, EmbeddingType.CLOSURE);
 			List<Validable> returned = new ArrayList<Validable>();
 			for (Object e : embeddedObjects) {
 				if (e instanceof Validable) {
@@ -261,7 +264,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 		@Override
 		public FIBParameter createNewParameter() {
-			FIBParameter returned = getFactory().newInstance(FIBParameter.class);
+			FIBParameter returned = getModelFactory().newInstance(FIBParameter.class);
 			returned.setName("param");
 			returned.setValue("value");
 			addToParameters(returned);
@@ -304,7 +307,8 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 			if (getComponent() != null) {
 				return getComponent().getBindingFactory();
 			}
-			return FIBLibrary.instance().getBindingFactory();
+			return null;
+			// return FIBLibrary.instance().getBindingFactory();
 		}
 
 		/**
@@ -413,11 +417,11 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 		@Override
 		public final ValidationReport validate() throws InterruptedException {
-			return getFactory().getValidationModel().validate(this);
+			return getModelFactory().getValidationModel().validate(this);
 		}
 
 		public Class<?> getImplementedInterface() {
-			return getFactory().getModelEntityForInstance(this).getImplementedInterface();
+			return getModelFactory().getModelEntityForInstance(this).getImplementedInterface();
 		}
 
 		@Override
@@ -439,7 +443,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 		@Override
 		public String getBaseName() {
-			return getFactory().getModelEntityForInstance(this).getImplementedInterface().getSimpleName();
+			return getModelFactory().getModelEntityForInstance(this).getImplementedInterface().getSimpleName();
 		}
 
 		public boolean isNameUsedInHierarchy(String aName) {
@@ -485,7 +489,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 		@Override
 		public String getPresentationName() {
 			if (getComponent() != null) {
-				org.openflexo.model.ModelEntity<?> e = getComponent().getFactory().getModelEntityForInstance(this);
+				org.openflexo.model.ModelEntity<?> e = getComponent().getModelFactory().getModelEntityForInstance(this);
 				if (getName() != null) {
 					return getName() + " (" + e.getImplementedInterface().getSimpleName() + ")";
 				}

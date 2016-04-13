@@ -95,14 +95,15 @@ public class FlexoLoggingViewer implements HasPropertyChangeSupport {
 	private static FlexoLoggingViewer instance;
 	private static JFIBDialog<FlexoLoggingViewer> dialog;
 
-	public static void showLoggingViewer(FlexoLoggingManager loggingManager, Window parent) {
+	public static void showLoggingViewer(FlexoLoggingManager loggingManager, FIBLibrary fibLibrary, Window parent) {
 		System.out.println("showLoggingViewer with " + loggingManager);
-		FIBComponent loggingViewerComponent = FIBLibrary.instance().retrieveFIBComponent(LOGGING_VIEWER_FIB_NAME, true);
+		FIBComponent loggingViewerComponent = fibLibrary.retrieveFIBComponent(LOGGING_VIEWER_FIB_NAME, true);
 		if (instance == null || dialog == null) {
 			instance = new FlexoLoggingViewer(loggingManager);
 			dialog = JFIBDialog.instanciateAndShowDialog(loggingViewerComponent, instance, parent, false,
 					FlexoLocalization.getMainLocalizer());
-		} else {
+		}
+		else {
 			dialog.showDialog();
 		}
 	}
@@ -133,9 +134,11 @@ public class FlexoLoggingViewer implements HasPropertyChangeSupport {
 	public Color getColorForLogRecord(LogRecord record) {
 		if (record.level == Level.INFO) {
 			return Color.BLACK;
-		} else if (record.level == Level.WARNING) {
+		}
+		else if (record.level == Level.WARNING) {
 			return Color.RED;
-		} else if (record.level == Level.SEVERE) {
+		}
+		else if (record.level == Level.SEVERE) {
 			return Color.PINK;
 		}
 		return Color.GRAY;
@@ -173,7 +176,8 @@ public class FlexoLoggingViewer implements HasPropertyChangeSupport {
 	public void setIsInfiniteNumberOfLogs(boolean isInfinite) {
 		if (isInfinite) {
 			setNumberOfLogsToKeep(-1);
-		} else {
+		}
+		else {
 			setNumberOfLogsToKeep(500);
 		}
 	}

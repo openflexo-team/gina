@@ -670,7 +670,7 @@ public interface FIBTable extends FIBWidget {
 
 		@Override
 		public FIBAddAction createAddAction() {
-			FIBAddAction newAction = getFactory().newInstance(FIBAddAction.class);
+			FIBAddAction newAction = getModelFactory().newInstance(FIBAddAction.class);
 			newAction.setName("add_action");
 			addToActions(newAction);
 			return newAction;
@@ -678,7 +678,7 @@ public interface FIBTable extends FIBWidget {
 
 		@Override
 		public FIBRemoveAction createRemoveAction() {
-			FIBRemoveAction newAction = getFactory().newInstance(FIBRemoveAction.class);
+			FIBRemoveAction newAction = getModelFactory().newInstance(FIBRemoveAction.class);
 			newAction.setName("delete_action");
 			addToActions(newAction);
 			return newAction;
@@ -686,7 +686,7 @@ public interface FIBTable extends FIBWidget {
 
 		@Override
 		public FIBCustomAction createCustomAction() {
-			FIBCustomAction newAction = getFactory().newInstance(FIBCustomAction.class);
+			FIBCustomAction newAction = getModelFactory().newInstance(FIBCustomAction.class);
 			newAction.setName("custom_action");
 			addToActions(newAction);
 			return newAction;
@@ -743,7 +743,7 @@ public interface FIBTable extends FIBWidget {
 
 		@Override
 		public FIBLabelColumn createLabelColumn() {
-			FIBLabelColumn newColumn = getFactory().newInstance(FIBLabelColumn.class);
+			FIBLabelColumn newColumn = getModelFactory().newInstance(FIBLabelColumn.class);
 			newColumn.setName("label");
 			newColumn.setTitle("label");
 			addToColumns(newColumn);
@@ -752,7 +752,7 @@ public interface FIBTable extends FIBWidget {
 
 		@Override
 		public FIBTextFieldColumn createTextFieldColumn() {
-			FIBTextFieldColumn newColumn = getFactory().newInstance(FIBTextFieldColumn.class);
+			FIBTextFieldColumn newColumn = getModelFactory().newInstance(FIBTextFieldColumn.class);
 			newColumn.setName("textfield");
 			newColumn.setTitle("textfield");
 			addToColumns(newColumn);
@@ -761,7 +761,7 @@ public interface FIBTable extends FIBWidget {
 
 		@Override
 		public FIBCheckBoxColumn createCheckBoxColumn() {
-			FIBCheckBoxColumn newColumn = getFactory().newInstance(FIBCheckBoxColumn.class);
+			FIBCheckBoxColumn newColumn = getModelFactory().newInstance(FIBCheckBoxColumn.class);
 			newColumn.setName("checkbox");
 			newColumn.setTitle("checkbox");
 			addToColumns(newColumn);
@@ -770,7 +770,7 @@ public interface FIBTable extends FIBWidget {
 
 		@Override
 		public FIBDropDownColumn createDropDownColumn() {
-			FIBDropDownColumn newColumn = getFactory().newInstance(FIBDropDownColumn.class);
+			FIBDropDownColumn newColumn = getModelFactory().newInstance(FIBDropDownColumn.class);
 			newColumn.setName("dropdown");
 			newColumn.setTitle("dropdown");
 			addToColumns(newColumn);
@@ -779,7 +779,7 @@ public interface FIBTable extends FIBWidget {
 
 		@Override
 		public FIBNumberColumn createNumberColumn() {
-			FIBNumberColumn newColumn = getFactory().newInstance(FIBNumberColumn.class);
+			FIBNumberColumn newColumn = getModelFactory().newInstance(FIBNumberColumn.class);
 			newColumn.setName("number");
 			newColumn.setTitle("number");
 			addToColumns(newColumn);
@@ -788,7 +788,7 @@ public interface FIBTable extends FIBWidget {
 
 		@Override
 		public FIBIconColumn createIconColumn() {
-			FIBIconColumn newColumn = getFactory().newInstance(FIBIconColumn.class);
+			FIBIconColumn newColumn = getModelFactory().newInstance(FIBIconColumn.class);
 			newColumn.setName("icon");
 			newColumn.setTitle("icon");
 			addToColumns(newColumn);
@@ -797,7 +797,7 @@ public interface FIBTable extends FIBWidget {
 
 		@Override
 		public FIBCustomColumn createCustomColumn() {
-			FIBCustomColumn newColumn = getFactory().newInstance(FIBCustomColumn.class);
+			FIBCustomColumn newColumn = getModelFactory().newInstance(FIBCustomColumn.class);
 			newColumn.setName("custom");
 			newColumn.setTitle("custom");
 			addToColumns(newColumn);
@@ -806,7 +806,7 @@ public interface FIBTable extends FIBWidget {
 
 		@Override
 		public FIBButtonColumn createButtonColumn() {
-			FIBButtonColumn newColumn = getFactory().newInstance(FIBButtonColumn.class);
+			FIBButtonColumn newColumn = getModelFactory().newInstance(FIBButtonColumn.class);
 			newColumn.setName("button");
 			newColumn.setTitle("button");
 			addToColumns(newColumn);

@@ -64,8 +64,7 @@ import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.rm.Resource;
 
 /**
- * A JDialog (Swing implementation of a Dialog) representing a given
- * FIBComponent and a data<br>
+ * A JDialog (Swing implementation of a Dialog) representing a given FIBComponent and a data<br>
  * 
  * This implementation contains many helpers methods used to manage this.
  * 
@@ -82,29 +81,19 @@ public class JFIBDialog<T> extends JDialog {
 
 	private JFIBView<?, ?> view;
 
-	public static <T> JFIBDialog<T> instanciateDialog(Resource componentFile, T data, Window frame, boolean modal) {
-		return instanciateDialog(componentFile, data, frame, modal, null);
+	public static <T> JFIBDialog<T> instanciateDialog(Resource componentFile, T data, FIBLibrary fibLibrary, Window frame, boolean modal) {
+		return instanciateDialog(componentFile, data, fibLibrary, frame, modal, null);
 	}
 
-	public static <T> JFIBDialog<T> instanciateDialog(Resource componentFile, T data, Window frame, boolean modal,
+	public static <T> JFIBDialog<T> instanciateDialog(Resource componentFile, T data, FIBLibrary fibLibrary, Window frame, boolean modal,
 			LocalizedDelegate localizer) {
-		FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(componentFile);
+		FIBComponent fibComponent = fibLibrary.retrieveFIBComponent(componentFile);
 		if (fibComponent == null) {
 			LOGGER.warning("FileNotFoundException: " + componentFile.getURI());
 			return null;
 		}
 		return instanciateDialog(fibComponent, data, frame, modal, localizer);
 	}
-
-	/*
-	 * public static <T> FIBDialog<T> instanciateDialog(String fibFileName, T
-	 * data, Window frame, boolean modal, LocalizedDelegate localizer) {
-	 * FIBComponent fibComponent =
-	 * FIBLibrary.instance().retrieveFIBComponent(fibFileName,true); if
-	 * (fibComponent == null) { logger.warning("FileNotFoundException: " +
-	 * fibFileName); return null; } return instanciateDialog(fibComponent, data,
-	 * frame, modal, localizer); }
-	 */
 
 	public static <T> JFIBDialog<T> instanciateDialog(FIBComponent fibComponent, T data, Window frame, boolean modal,
 			LocalizedDelegate localizer) {
@@ -116,28 +105,27 @@ public class JFIBDialog<T> extends JDialog {
 		return new JFIBDialog<T>(fibComponent, data, frame, modal, controller);
 	}
 
-	public static <T> JFIBDialog<T> instanciateAndShowDialog(FIBComponent fibComponent, T data, Window frame,
-			boolean modal) {
+	public static <T> JFIBDialog<T> instanciateAndShowDialog(FIBComponent fibComponent, T data, Window frame, boolean modal) {
 		return instanciateAndShowDialog(fibComponent, data, frame, modal, (LocalizedDelegate) null);
 	}
 
-	public static <T> JFIBDialog<T> instanciateAndShowDialog(FIBComponent fibComponent, T data, Window frame,
-			boolean modal, LocalizedDelegate localizer) {
+	public static <T> JFIBDialog<T> instanciateAndShowDialog(FIBComponent fibComponent, T data, Window frame, boolean modal,
+			LocalizedDelegate localizer) {
 		JFIBDialog<T> dialog = instanciateDialog(fibComponent, data, frame, modal, localizer);
 		dialog.showDialog();
 		return dialog;
 	}
 
-	public static <T> JFIBDialog<T> instanciateAndShowDialog(FIBComponent fibComponent, T data, Window frame,
-			boolean modal, FIBController controller) {
+	public static <T> JFIBDialog<T> instanciateAndShowDialog(FIBComponent fibComponent, T data, Window frame, boolean modal,
+			FIBController controller) {
 		JFIBDialog<T> dialog = instanciateDialog(fibComponent, data, frame, modal, controller);
 		dialog.showDialog();
 		return dialog;
 	}
 
-	public static <T> JFIBDialog<T> instanciateAndShowDialog(Resource componentFile, T data, Window frame,
+	public static <T> JFIBDialog<T> instanciateAndShowDialog(Resource componentFile, T data, FIBLibrary fibLibrary, Window frame,
 			boolean modal, LocalizedDelegate localizer) {
-		FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(componentFile);
+		FIBComponent fibComponent = fibLibrary.retrieveFIBComponent(componentFile);
 		if (fibComponent == null) {
 			LOGGER.warning("FileNotFoundException: " + componentFile.getURI());
 			return null;
@@ -199,8 +187,7 @@ public class JFIBDialog<T> extends JDialog {
 		List<FIBButton> def = fibComponent.getDefaultButtons();
 		boolean defaultButtonSet = false;
 		if (def.size() > 0 && view instanceof FIBContainerViewImpl) {
-			JButton button = (JButton) ((FIBContainerViewImpl<?, ?, ?>) view).getTechnologyComponentForFIBComponent(def
-					.get(0));
+			JButton button = (JButton) ((FIBContainerViewImpl<?, ?, ?>) view).getTechnologyComponentForFIBComponent(def.get(0));
 			if (button != null) {
 				getRootPane().setDefaultButton(button);
 				defaultButtonSet = true;

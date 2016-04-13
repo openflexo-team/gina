@@ -497,7 +497,7 @@ public interface FIBBrowser extends FIBWidget {
 		@Override
 		public FIBBrowserElement createElement() {
 			logger.info("Called createElement()");
-			FIBBrowserElement newElement = getFactory().newInstance(FIBBrowserElement.class);
+			FIBBrowserElement newElement = getModelFactory().newInstance(FIBBrowserElement.class);
 			newElement.setName("element" + (getElements().size() > 0 ? getElements().size() : ""));
 			addToElements(newElement);
 			return newElement;

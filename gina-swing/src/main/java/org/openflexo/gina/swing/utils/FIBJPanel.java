@@ -59,10 +59,8 @@ import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 /**
- * This is the default implementation for a Swing panel defined using a FIB
- * model<br>
- * This class is an instanceof JPanel in which Swing FIB instantiation is
- * performed
+ * This is the default implementation for a Swing panel defined using a FIB model<br>
+ * This class is an instanceof JPanel in which Swing FIB instantiation is performed
  * 
  * @author sylvain
  * 
@@ -107,8 +105,8 @@ public abstract class FIBJPanel<T> extends JPanel implements FIBCustomComponent<
 		applyCancelListener = new Vector<ApplyCancelListener>();
 	}
 
-	public FIBJPanel(Resource fibFileName, T editedObject, LocalizedDelegate parentLocalizer) {
-		this(FIBLibrary.instance().retrieveFIBComponent(fibFileName, true), editedObject, parentLocalizer);
+	public FIBJPanel(Resource fibFileName, T editedObject, FIBLibrary fibLibrary, LocalizedDelegate parentLocalizer) {
+		this(fibLibrary.retrieveFIBComponent(fibFileName, true), editedObject, parentLocalizer);
 	}
 
 	/*

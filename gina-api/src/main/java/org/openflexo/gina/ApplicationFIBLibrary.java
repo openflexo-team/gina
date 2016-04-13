@@ -1,8 +1,9 @@
 /**
  * 
- * Copyright (c) 2014, Openflexo
+ * Copyright (c) 2013-2014, Openflexo
+ * Copyright (c) 2011-2012, AgileBirds
  * 
- * This file is part of Gina-swing, a component of the software infrastructure 
+ * This file is part of Gina-core, a component of the software infrastructure 
  * developed at Openflexo.
  * 
  * 
@@ -36,38 +37,42 @@
  * 
  */
 
-package org.openflexo.gina.swing.utils;
+package org.openflexo.gina;
 
 import java.util.logging.Logger;
 
-import org.openflexo.gina.FIBLibrary;
-import org.openflexo.localization.FlexoLocalization;
-import org.openflexo.rm.Resource;
-import org.openflexo.rm.ResourceLocator;
-
 /**
- * Widget allowing to select a class in a plain panel
+ * {@link ApplicationFIBLibrary} is the FIBLibrary that is used in the application.<br>
+ * Only one instance of that class might be instantiated inside a JVM.
  * 
- * @author sguerin
- * 
+ * @author sylvain
+ *
  */
-public class ClassEditor extends FIBJPanel<LoadedClassesInfo> {
-	@SuppressWarnings("hiding")
-	static final Logger LOGGER = Logger.getLogger(ClassEditor.class.getPackage().getName());
+public class ApplicationFIBLibrary extends FIBLibrary {
 
-	public static Resource FIB_FILE_NAME = ResourceLocator.getResourceLocator().locateResource("Fib/ClassEditor.fib");
+	static final Logger LOGGER = Logger.getLogger(ApplicationFIBLibrary.class.getPackage().getName());
 
-	public ClassEditor(LoadedClassesInfo editedObject, FIBLibrary fibLibrary) {
-		super(FIB_FILE_NAME, editedObject, fibLibrary, FlexoLocalization.getMainLocalizer());
+	private static ApplicationFIBLibrary instance;
+
+	private ApplicationFIBLibrary() {
+		super();
+		instance = this;
 	}
 
-	@Override
-	public Class<LoadedClassesInfo> getRepresentedType() {
-		return LoadedClassesInfo.class;
+	protected static ApplicationFIBLibrary createInstance() {
+		instance = new ApplicationFIBLibrary();
+		return instance;
 	}
 
-	@Override
-	public void delete() {
+	public static ApplicationFIBLibrary instance() {
+		if (instance == null) {
+			createInstance();
+		}
+		return instance;
+	}
+
+	public static boolean hasInstance() {
+		return instance != null;
 	}
 
 }

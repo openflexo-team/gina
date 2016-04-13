@@ -40,12 +40,12 @@
 package org.openflexo.gina.model.widget;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.openflexo.gina.model.FIBWidget;
-import org.openflexo.gina.model.FIBWidget.FIBWidgetImpl;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -117,11 +117,11 @@ public interface FIBHtmlEditor extends FIBWidget {
 
 	public boolean anyLineContains(FIBHtmlEditorOption option);
 
-	public Vector<FIBHtmlEditorOption> getAvailableOptions();
+	public List<FIBHtmlEditorOption> getAvailableOptions();
 
 	@Getter(value = VISIBLE_AND_UNUSED_OPTIONS_KEY, cardinality = Cardinality.LIST, inverse = FIBHtmlEditorOption.EDITOR_KEY)
 	@CloningStrategy(StrategyType.CLONE)
-	public Vector<FIBHtmlEditorOption> getVisibleAndUnusedOptions();
+	public List<FIBHtmlEditorOption> getVisibleAndUnusedOptions();
 
 	@Adder(VISIBLE_AND_UNUSED_OPTIONS_KEY)
 	public void addToVisibleAndUnusedOptions(FIBHtmlEditorOption anOption);
@@ -152,7 +152,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 
 		public static String[] option_keys = { MetaphaseEditorPanel.SOURCE_PANEL_KEY, MetaphaseEditorPanel.SOURCE_BUTTON_KEY,
 
-		MetaphaseEditorPanel.PAGE_PANEL_KEY, MetaphaseEditorPanel.OPEN_BUTTON_KEY, MetaphaseEditorPanel.SAVE_BUTTON_KEY,
+				MetaphaseEditorPanel.PAGE_PANEL_KEY, MetaphaseEditorPanel.OPEN_BUTTON_KEY, MetaphaseEditorPanel.SAVE_BUTTON_KEY,
 				MetaphaseEditorPanel.NEW_BUTTON_KEY, MetaphaseEditorPanel.PREVIEW_BUTTON_KEY,
 
 				MetaphaseEditorPanel.EDIT_PANEL_KEY, MetaphaseEditorPanel.CUT_BUTTON_KEY, MetaphaseEditorPanel.COPY_BUTTON_KEY,
@@ -198,8 +198,8 @@ public interface FIBHtmlEditor extends FIBWidget {
 
 				MetaphaseEditorPanel.ABOUT_PANEL_KEY, MetaphaseEditorPanel.ABOUT_BUTTON_KEY };
 
-		private Vector<FIBHtmlEditorOption> availableOptions;
-		private Vector<FIBHtmlEditorOption> visibleAndUnusedOptions;
+		private List<FIBHtmlEditorOption> availableOptions;
+		private List<FIBHtmlEditorOption> visibleAndUnusedOptions;
 
 		private Vector<FIBHtmlEditorOption> optionsInLine1;
 		private Vector<FIBHtmlEditorOption> optionsInLine2;
@@ -210,7 +210,6 @@ public interface FIBHtmlEditor extends FIBWidget {
 
 		public FIBHtmlEditorImpl() {
 			super();
-			buildAvailableOptions();
 			optionsInLine1 = new Vector<FIBHtmlEditorOption>();
 			optionsInLine2 = new Vector<FIBHtmlEditorOption>();
 			optionsInLine3 = new Vector<FIBHtmlEditorOption>();
@@ -364,34 +363,43 @@ public interface FIBHtmlEditor extends FIBWidget {
 			addToOptionsInLine1(getOption(MetaphaseEditorPanel.MISC_PANEL_KEY));
 		}
 
-		private void buildAvailableOptions() {
-			availableOptions = new Vector<FIBHtmlEditorOption>();
-			for (String s : option_keys) {
-				FIBHtmlEditorOption newOption = getFactory().newInstance(FIBHtmlEditorOption.class);
-				newOption.setName(s);
-				newOption.setEditor(this);
-				availableOptions.add(newOption);
+		@Override
+		public List<FIBHtmlEditorOption> getAvailableOptions() {
+			if (availableOptions == null && getModelFactory() != null) {
+				availableOptions = new ArrayList<FIBHtmlEditorOption>();
+				for (String s : option_keys) {
+					FIBHtmlEditorOption newOption = getModelFactory().newInstance(FIBHtmlEditorOption.class);
+					newOption.setName(s);
+					newOption.setEditor(this);
+					availableOptions.add(newOption);
+				}
+				visibleAndUnusedOptions = new ArrayList<FIBHtmlEditorOption>();
 			}
-			visibleAndUnusedOptions = new Vector<FIBHtmlEditorOption>();
+			return availableOptions;
 		}
 
 		@Override
 		public FIBHtmlEditorOption getOption(String key) {
-			for (FIBHtmlEditorOption option : availableOptions) {
-				if (option.getName().equals(key)) {
-					return option;
+			if (getAvailableOptions() != null) {
+				for (FIBHtmlEditorOption option : getAvailableOptions()) {
+					if (option.getName().equals(key)) {
+						return option;
+					}
 				}
 			}
 			return null;
 		}
 
 		private void ensureOptionRegistering(FIBHtmlEditorOption option) {
-			if (getOption(option.getName()) == null) {
-				availableOptions.add(option);
-			} else {
-				if (getOption(option.getName()) != option) {
-					int index = availableOptions.indexOf(getOption(option.getName()));
-					availableOptions.setElementAt(option, index);
+			if (getAvailableOptions() != null) {
+				if (getOption(option.getName()) == null) {
+					getAvailableOptions().add(option);
+				}
+				else {
+					if (getOption(option.getName()) != option) {
+						int index = getAvailableOptions().indexOf(getOption(option.getName()));
+						getAvailableOptions().set(index, option);
+					}
 				}
 			}
 		}
@@ -620,12 +628,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 		}
 
 		@Override
-		public Vector<FIBHtmlEditorOption> getAvailableOptions() {
-			return availableOptions;
-		}
-
-		@Override
-		public Vector<FIBHtmlEditorOption> getVisibleAndUnusedOptions() {
+		public List<FIBHtmlEditorOption> getVisibleAndUnusedOptions() {
 			return visibleAndUnusedOptions;
 		}
 

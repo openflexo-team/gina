@@ -181,7 +181,7 @@ public class FIBBrowserController extends FIBController /*implements Observer*/ 
 			return null;
 		}
 
-		ModelEntity<?> e = component.getFactory().getModelEntityForInstance(component);
+		ModelEntity<?> e = component.getModelFactory().getModelEntityForInstance(component);
 
 		if (StringUtils.isNotEmpty(component.getName())) {
 			return component.getName();

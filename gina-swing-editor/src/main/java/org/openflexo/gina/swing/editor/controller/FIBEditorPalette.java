@@ -84,6 +84,8 @@ public class FIBEditorPalette extends JDialog {
 
 	private FIBEditorController editorController;
 
+	private static FIBLibrary PALETTE_FIB_LIBRARY = new FIBLibrary();
+
 	public FIBEditorPalette(JFrame frame) {
 		super(frame, "Palette", false);
 
@@ -94,7 +96,7 @@ public class FIBEditorPalette extends JDialog {
 		for (Resource modelFIBFile : dir.getContents(Pattern.compile(".*[.]fib"))) {
 			String paletteURL = modelFIBFile.getURI().replace(".fib", ".palette");
 
-			FIBComponent modelComponent = FIBLibrary.instance().retrieveFIBComponent(modelFIBFile);
+			FIBComponent modelComponent = PALETTE_FIB_LIBRARY.retrieveFIBComponent(modelFIBFile);
 
 			int ind = paletteURL.indexOf("FIBEditorPalette");
 			if (ind > 0) {
@@ -104,11 +106,11 @@ public class FIBEditorPalette extends JDialog {
 
 			FIBComponent representationComponent = null;
 			if (representationFIBFile != null) {
-				representationComponent = FIBLibrary.instance().retrieveFIBComponent(representationFIBFile);
+				representationComponent = PALETTE_FIB_LIBRARY.retrieveFIBComponent(representationFIBFile);
 
 			}
 			else {
-				representationComponent = FIBLibrary.instance().retrieveFIBComponent(modelFIBFile);
+				representationComponent = PALETTE_FIB_LIBRARY.retrieveFIBComponent(modelFIBFile);
 			}
 			addPaletteElement(modelComponent, representationComponent);
 

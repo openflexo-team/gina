@@ -62,11 +62,17 @@ import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;
 
-final public class FIBLibrary {
+/**
+ * A {@link FIBLibrary} has the responsability of managing a collection of {@link FIBComponent} encoded as {@link Resource}
+ * 
+ * @author sylvain
+ *
+ */
+public class FIBLibrary {
 
 	static final Logger LOGGER = Logger.getLogger(FIBLibrary.class.getPackage().getName());
 
-	private static FIBLibrary _current;
+	// private static FIBLibrary _current;
 
 	private final Map<Resource, FIBComponent> _fibDefinitions;
 
@@ -74,7 +80,7 @@ final public class FIBLibrary {
 
 	private FIBModelFactory fibModelFactory;
 
-	private FIBLibrary() {
+	public FIBLibrary() {
 		super();
 		_fibDefinitions = new Hashtable<Resource, FIBComponent>();
 		try {
@@ -85,23 +91,23 @@ final public class FIBLibrary {
 		}
 	}
 
-	protected static FIBLibrary createInstance() {
+	/*protected static FIBLibrary createInstance() {
 		_current = new FIBLibrary();
 		return _current;
 	}
-
+	
 	public static FIBLibrary instance() {
 		if (_current == null) {
 			createInstance();
-
+	
 			// TODO GinaManager.getInstance().setup();
 		}
 		return _current;
 	}
-
+	
 	public static boolean hasInstance() {
 		return _current != null;
-	}
+	}*/
 
 	public FIBModelFactory getFIBModelFactory() {
 		return fibModelFactory;
@@ -154,6 +160,7 @@ final public class FIBLibrary {
 				FIBComponent component = (FIBComponent) factory.deserialize(fis);
 				component.setLastModified(fibFile.getLastUpdate());
 				component.setResource(fibFile);
+				component.setFIBLibrary(this);
 				_fibDefinitions.put(fibFile, component);
 				return component;
 			} catch (ModelDefinitionException e) {
@@ -221,6 +228,7 @@ final public class FIBLibrary {
 				FIBComponent component = (FIBComponent) factory.deserialize(inputStream);
 				component.setLastModified(new Date());
 				component.setResource(fibIdentifier);
+				component.setFIBLibrary(this);
 				_fibDefinitions.put(fibIdentifier, component);
 				return component;
 			} catch (ModelDefinitionException e) {
@@ -263,7 +271,7 @@ final public class FIBLibrary {
 		return _fibDefinitions.get(fibIdentifier);
 	}
 
-	public static boolean save(FIBComponent component, File file) {
+	public boolean save(FIBComponent component, File file) {
 		LOGGER.info("Save to file " + file.getAbsolutePath());
 
 		FileOutputStream out = null;
@@ -279,7 +287,7 @@ final public class FIBLibrary {
 		return false;
 	}
 
-	public static void saveComponentToStream(FIBComponent component, File fibFile, OutputStream stream) {
+	public void saveComponentToStream(FIBComponent component, File fibFile, OutputStream stream) {
 
 		try {
 			FIBModelFactory factory = new FIBModelFactory(fibFile.getParentFile());

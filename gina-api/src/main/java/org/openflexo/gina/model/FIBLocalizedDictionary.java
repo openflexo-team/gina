@@ -254,7 +254,7 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 			getDictForLang(language).put(key, value);
 			FIBLocalizedEntry entry = getEntry(language, key);
 			if (entry == null) {
-				FIBLocalizedEntry newEntry = getFactory().newInstance(FIBLocalizedEntry.class);
+				FIBLocalizedEntry newEntry = getModelFactory().newInstance(FIBLocalizedEntry.class);
 				newEntry.setKey(key);
 				newEntry.setLanguage(language.getName());
 				newEntry.setValue(value);
