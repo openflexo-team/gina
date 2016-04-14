@@ -49,7 +49,6 @@ import org.openflexo.gina.event.description.FIBTextEventDescription;
 import org.openflexo.gina.model.widget.FIBTextWidget;
 import org.openflexo.gina.view.impl.FIBWidgetViewImpl;
 import org.openflexo.gina.view.widget.FIBGenericTextWidget;
-import org.openflexo.toolbox.StringUtils;
 
 /**
  * Default base implementation for a simple widget allowing to display/edit a String in a TextField
@@ -125,7 +124,8 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 	 * Update static value represented in text component
 	 */
 	private void updateStaticText() {
-		if (modelUpdating) {
+		// TODO: use it to make placeholder support
+		/*if (modelUpdating) {
 			return;
 		}
 		widgetUpdating = true;
@@ -135,7 +135,7 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 			}
 		} finally {
 			widgetUpdating = false;
-		}
+		}*/
 	}
 
 	private boolean modelUpdating = false;
