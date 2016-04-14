@@ -90,7 +90,7 @@ import org.openflexo.toolbox.ToolBox;
  *            type of data beeing represented by this view
  * 
  */
-public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBViewImpl<M, C>implements FIBWidgetView<M, C, T> {
+public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBViewImpl<M, C> implements FIBWidgetView<M, C, T> {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBWidgetViewImpl.class.getPackage().getName());
 
@@ -669,7 +669,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 				}
 			}
 			else {
-				LOGGER.warning("Cannot find FIBViewImpl for component " + c);
+				// No need to warn it, since it might be normal during view building process
+				// LOGGER.warning("Cannot find FIBViewImpl for component " + c);
 			}
 		}
 		// logger.info("END updateDependancies() for " + getWidget());

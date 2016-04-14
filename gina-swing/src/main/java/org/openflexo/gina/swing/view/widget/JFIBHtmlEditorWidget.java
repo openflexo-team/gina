@@ -43,6 +43,7 @@ import java.awt.Color;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
+import javax.swing.JTextPane;
 import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
@@ -114,6 +115,10 @@ public class JFIBHtmlEditorWidget extends FIBHtmlEditorWidgetImpl<MetaphaseEdito
 			return UIManager.getColor("Panel.background");
 		}
 
+		@Override
+		public JTextPane getDynamicJComponent(MetaphaseEditorPanel technologyComponent) {
+			return technologyComponent.getHtmlTextPane();
+		}
 	}
 
 	public static SwingHtmlEditorWidgetRenderingAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingHtmlEditorWidgetRenderingAdapter();

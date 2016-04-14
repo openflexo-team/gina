@@ -62,7 +62,7 @@ import org.openflexo.gina.view.widget.impl.FIBLabelWidgetImpl;
  * 
  * @author sylvain
  */
-public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel>implements JFIBView<FIBLabel, JLabelPanel> {
+public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel> implements JFIBView<FIBLabel, JLabelPanel> {
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(JFIBLabelWidget.class.getPackage().getName());
 
@@ -73,7 +73,8 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel>implements J
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingLabelRenderingAdapter extends SwingRenderingAdapter<JLabelPanel>implements LabelRenderingAdapter<JLabelPanel> {
+	public static class SwingLabelRenderingAdapter extends SwingRenderingAdapter<JLabelPanel>
+			implements LabelRenderingAdapter<JLabelPanel> {
 
 		@Override
 		public String getText(JLabelPanel component) {
@@ -96,11 +97,6 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel>implements J
 		}
 
 		@Override
-		public JComponent getJComponent(JLabelPanel component) {
-			return component;
-		}
-
-		@Override
 		public Color getDefaultForegroundColor(JLabelPanel component) {
 			return UIManager.getColor("Label.foreground");
 		}
@@ -116,6 +112,10 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel>implements J
 			component.getLabel().setFont(aFont);
 		}
 
+		@Override
+		public JLabel getDynamicJComponent(JLabelPanel technologyComponent) {
+			return technologyComponent.getLabel();
+		}
 	}
 
 	public static SwingLabelRenderingAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingLabelRenderingAdapter();
@@ -136,7 +136,7 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel>implements J
 
 	@Override
 	public JComponent getResultingJComponent() {
-		JComponent returned = getRenderingAdapter().getResultingJComponent(this);
+		// JComponent returned = getRenderingAdapter().getResultingJComponent(this);
 		// System.out.println("Je retourne " + returned);
 		return getRenderingAdapter().getResultingJComponent(this);
 	}

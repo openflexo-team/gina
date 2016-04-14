@@ -52,8 +52,7 @@ import org.openflexo.gina.view.FIBView;
  * @param <M>
  *            type of {@link FIBComponent} this view represents
  * @param <C>
- *            type of technology-specific component this view manage (a subclass
- *            of JComponent)
+ *            type of technology-specific component this view manage (a subclass of JComponent)
  */
 public interface JFIBView<M extends FIBComponent, J extends JComponent> extends FIBView<M, J> {
 

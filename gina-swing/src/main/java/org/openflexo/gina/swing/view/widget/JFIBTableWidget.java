@@ -159,6 +159,11 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 			return UIManager.getColor("Table.background");
 		}
 
+		@Override
+		public JXTable getDynamicJComponent(JTablePanel<T> technologyComponent) {
+			return technologyComponent.getJTable();
+		}
+
 	}
 
 	public JFIBTableWidget(FIBTable fibTable, FIBController controller) {

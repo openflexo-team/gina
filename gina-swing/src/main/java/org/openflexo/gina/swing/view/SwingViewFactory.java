@@ -194,9 +194,14 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 		}
 
 		else {
-			returned.getTechnologyComponent().addMouseListener(new FIBMouseAdapter(returned, fibWidget));
 
-			returned.getTechnologyComponent().addKeyListener(new KeyAdapter() {
+			// We retrive the JComponent on which controls apply
+			JComponent dynamicJComponent = ((JFIBView) returned).getRenderingAdapter()
+					.getDynamicJComponent(returned.getTechnologyComponent());
+
+			dynamicJComponent.addMouseListener(new SwingMouseAdapter(returned, fibWidget));
+
+			dynamicJComponent.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent e) {
 					if (fibWidget.hasEnterPressedAction() && e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -214,7 +219,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 				}
 			});
 			if (StringUtils.isNotEmpty(fibWidget.getTooltipText())) {
-				returned.getTechnologyComponent().setToolTipText(fibWidget.getTooltipText());
+				dynamicJComponent.setToolTipText(fibWidget.getTooltipText());
 			}
 		}
 		// returned.updateGraphicalProperties();
@@ -394,6 +399,51 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 		}
 	}
 
+	public static class SwingFIBMouseEvent implements FIBMouseEvent {
+
+		private final MouseEvent e;
+
+		public SwingFIBMouseEvent(MouseEvent e) {
+			this.e = e;
+		}
+
+		@Override
+		public int getY() {
+			return e.getY();
+		}
+
+		@Override
+		public int getX() {
+			return e.getX();
+		}
+
+		@Override
+		public Object getSource() {
+			return e.getSource();
+		}
+
+		@Override
+		public Point getPoint() {
+			return e.getPoint();
+		}
+
+		@Override
+		public Point getLocationOnScreen() {
+			return e.getLocationOnScreen();
+		}
+
+		@Override
+		public int getClickCount() {
+			return e.getClickCount();
+		}
+
+		@Override
+		public int getButton() {
+			return e.getButton();
+		}
+
+	}
+
 	/**
 	 * A MouseAdapter which handle click actions<br>
 	 * Also perform mouse binding execution
@@ -401,56 +451,21 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 	 * @author sylvain
 	 * 
 	 */
-	protected class FIBMouseAdapter extends MouseAdapter {
+	protected class SwingMouseAdapter extends MouseAdapter {
 
 		private final FIBWidgetView<?, ? extends JComponent, ?> widgetView;
 
-		public FIBMouseAdapter(FIBWidgetView<?, ? extends JComponent, ?> widgetView, FIBWidget fibWidget) {
+		public SwingMouseAdapter(FIBWidgetView<?, ? extends JComponent, ?> widgetView, FIBWidget fibWidget) {
 			this.widgetView = widgetView;
 		}
 
-		private FIBMouseEvent makeMouseEvent(final MouseEvent e) {
-			return new FIBMouseEvent() {
-
-				@Override
-				public int getY() {
-					return e.getY();
-				}
-
-				@Override
-				public int getX() {
-					return e.getX();
-				}
-
-				@Override
-				public Object getSource() {
-					return e.getSource();
-				}
-
-				@Override
-				public Point getPoint() {
-					return e.getPoint();
-				}
-
-				@Override
-				public Point getLocationOnScreen() {
-					return e.getLocationOnScreen();
-				}
-
-				@Override
-				public int getClickCount() {
-					return e.getClickCount();
-				}
-
-				@Override
-				public int getButton() {
-					return e.getButton();
-				}
-			};
+		private FIBMouseEvent makeMouseEvent(MouseEvent e) {
+			return new SwingFIBMouseEvent(e);
 		}
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
+
 			widgetView.getController().fireMouseClicked(widgetView, e.getClickCount());
 			if (e.getClickCount() == 1) {
 				if (widgetView.getWidget().hasRightClickAction() && (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3)) {

@@ -156,6 +156,10 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 			return UIManager.getColor("FormattedTextField.background");
 		}
 
+		@Override
+		public JSpinner getDynamicJComponent(NumberSelectorPanel<T> technologyComponent) {
+			return technologyComponent.getValueChooser();
+		}
 	}
 
 	public static abstract class NumberSelectorPanel<T extends Number> extends JPanel {
@@ -257,6 +261,9 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 			valueChooser.setValue(aValue);
 		}
 
+		public JSpinner getValueChooser() {
+			return valueChooser;
+		}
 	}
 
 	/**

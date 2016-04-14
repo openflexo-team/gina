@@ -152,6 +152,10 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 			return UIManager.getColor("Tree.background");
 		}
 
+		@Override
+		public JTree getDynamicJComponent(JTreePanel<T> technologyComponent) {
+			return technologyComponent.getJTree();
+		}
 	}
 
 	public JFIBBrowserWidget(FIBBrowser fibBrowser, FIBController controller) {

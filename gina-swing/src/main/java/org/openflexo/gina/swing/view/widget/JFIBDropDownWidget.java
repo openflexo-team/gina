@@ -119,6 +119,10 @@ public class JFIBDropDownWidget<T> extends FIBDropDownWidgetImpl<JDropDownPanel<
 			return UIManager.getColor("ComboBox.background");
 		}
 
+		@Override
+		public JComboBox<T> getDynamicJComponent(JDropDownPanel<T> technologyComponent) {
+			return technologyComponent.getJComboBox();
+		}
 	}
 
 	public static class JDropDownPanel<T> extends JPanel {

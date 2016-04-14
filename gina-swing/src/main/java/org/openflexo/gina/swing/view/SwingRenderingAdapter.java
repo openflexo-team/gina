@@ -106,50 +106,36 @@ public abstract class SwingRenderingAdapter<J extends JComponent> implements Ren
 	}
 
 	/**
-	 * Return the effective component to be added to swing hierarchy<br>
-	 * This component may be the same as the one returned by {@link #getJComponent()} (if useScrollBar set to false) or an encapsulation in
-	 * a JScrollPane
+	 * Return the Technology Component defined for this view. In Swing this is always a JComponent
 	 * 
-	 * @return JComponent
+	 * @param technologyComponent
+	 * @return
 	 */
-	/*
-	 * public JComponent getResultingJComponent(J component, boolean
-	 * useScrollBar, VerticalScrollBarPolicy vPolicy, HorizontalScrollBarPolicy
-	 * hPolicy) { if (useScrollBar) { if (scrolledComponent == null) {
-	 * scrolledComponent = new JScrollPane(getJComponent(component),
-	 * vPolicy.getPolicy(), hPolicy.getPolicy());
-	 * scrolledComponent.setOpaque(false);
-	 * scrolledComponent.getViewport().setOpaque(false);
-	 * scrolledComponent.setBorder(BorderFactory.createEmptyBorder()); } return
-	 * scrolledComponent; } else { scrolledComponent = null; return
-	 * getJComponent(component); } }
-	 */
+	public final JComponent getJComponent(J technologyComponent) {
+		return technologyComponent;
+	}
 
-	// Default behaviour is to return component itself
-	public JComponent getJComponent(J technologyComponent) {
+	/**
+	 * Return the dynamic Technology Component defined for this view. In Swing this is always a JComponent<br>
+	 * The dynamic JComponent is the component on which controls applies (sometimes, for some widgets, the dynamic component is embedded in
+	 * a panel or something else, this panel is accessible through {@link #getJComponent(JComponent)})
+	 * 
+	 * Default behaviour is to return the technology component itself
+	 * 
+	 * @param technologyComponent
+	 * @return
+	 */
+	public JComponent getDynamicJComponent(J technologyComponent) {
 		return technologyComponent;
 	}
 
 	@Override
 	public boolean isVisible(J component) {
 		return getJComponent(component).isVisible();
-		/*
-		 * if (scrolledComponent != null) { return
-		 * scrolledComponent.isVisible(); } return
-		 * getJComponent(component).isVisible();
-		 */
 	}
 
 	@Override
 	public void setVisible(J component, boolean visible) {
-		/*
-		 * if (scrolledComponent != null) {
-		 * scrolledComponent.setVisible(visible); if
-		 * (scrolledComponent.getParent() instanceof JComponent) {
-		 * scrolledComponent.getParent().revalidate();
-		 * scrolledComponent.getParent().repaint(); } }
-		 */
-
 		JComponent jComponent = getJComponent(component);
 		if (jComponent.getParent() instanceof JViewport) {
 			JScrollPane jScrollPane = (JScrollPane) jComponent.getParent().getParent();
