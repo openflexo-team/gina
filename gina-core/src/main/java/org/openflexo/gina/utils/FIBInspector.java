@@ -182,13 +182,12 @@ public interface FIBInspector extends FIBPanel {
 
 		private void appendSuperInspector(FIBInspector superInspector) {
 
-			// TODO: i dont't know if this clone is still required (check this)
-			// FIBInspector clonedSuperInspector = (FIBInspector) superInspector.cloneObject();
-			FIBInspector clonedSuperInspector = superInspector;
+			// We have to clone the super inspector before to add it to current component
+			FIBInspector clonedSuperInspector = (FIBInspector) superInspector.cloneObject();
 
-			// System.out.println(">>>>> On append " + clonedSuperInspector.getInspectedClass() + " a " + getInspectedClass());
-
+			// Then we add it
 			append(clonedSuperInspector);
+			// System.out.println(">>>>> Append " + clonedSuperInspector.getInspectedClass() + " a " + getInspectedClass());
 
 		}
 
