@@ -70,7 +70,7 @@ import org.openflexo.gina.view.FIBView;
  * @param <C2>
  *            type of technology-specific component beeing contained by this view
  */
-public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extends FIBViewImpl<M, C> implements FIBContainerView<M, C, C2> {
+public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extends FIBViewImpl<M, C>implements FIBContainerView<M, C, C2> {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBContainerViewImpl.class.getPackage().getName());
 
@@ -151,6 +151,15 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	protected void componentBecomesInvisible() {
 		// System.out.println("************ Component " + getComponent() + " becomes INVISIBLE !!!!!!");
 		super.componentBecomesInvisible();
+		// Then iterate on all children, and update them
+		if (subViewsMap != null) {
+			for (FIBView v : new ArrayList<FIBView>(subViewsMap.values())) {
+				if (!v.isDeleted()) {
+					// System.out.println("Updating " + v.getComponent());
+					((FIBViewImpl) v).componentBecomesInvisible();
+				}
+			}
+		}
 	}
 
 	protected final void buildSubComponents() {
