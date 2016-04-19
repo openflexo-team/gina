@@ -181,7 +181,6 @@ public class JFIBReferencedComponentWidget extends FIBReferencedComponentWidgetI
 				setBorder(BorderFactory.createEtchedBorder());
 			}
 			else {
-				System.out.println("On reconstruit la vue");
 				referencedComponentView = (JFIBView<FIBComponent, JReferenceComponentPanel>) widget.makeReferencedComponentView();
 				if (referencedComponentView == null) {
 					invalidComponentlabel.setText("< Invalid component >");

@@ -162,8 +162,8 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 
 				@Override
 				public void bindingValueChanged(Object source, FIBComponent newValue) {
-					System.out.println(" bindingValueChanged() detected for dynamicComponent=" + getComponent().getDynamicComponent()
-							+ " with newValue=" + newValue + " source=" + source);
+					//System.out.println(" bindingValueChanged() detected for dynamicComponent=" + getComponent().getDynamicComponent()
+					//		+ " with newValue=" + newValue + " source=" + source);
 					updateComponent();
 					updateReferencedComponentView();
 				}
