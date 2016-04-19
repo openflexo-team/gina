@@ -302,4 +302,11 @@ public class FIBLibrary {
 		}
 	}
 
+	public String stringRepresentation(FIBComponent object) {
+		if (getFIBModelFactory() != null) {
+			return getFIBModelFactory().stringRepresentation(object);
+		}
+		return "!NoFactory";
+	}
+
 }
