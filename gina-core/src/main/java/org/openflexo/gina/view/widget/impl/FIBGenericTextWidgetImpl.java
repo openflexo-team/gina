@@ -96,6 +96,8 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 
 		String newText = super.updateData();
 
+		System.out.println("newText=" + newText);
+
 		String currentWidgetValue = getRenderingAdapter().getText(getTechnologyComponent());
 		if (notEquals(newText, currentWidgetValue)) {
 			if (modelUpdating) {
@@ -107,6 +109,7 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 			// widgetUpdating = true;
 			// try {
 			int caret = getRenderingAdapter().getCaretPosition(getTechnologyComponent());
+			System.out.println("setting newText=" + newText + " for component " + getComponent());
 			getRenderingAdapter().setText(getTechnologyComponent(), newText);
 			if (caret > -1 && newText != null && caret < newText.length()) {
 				getRenderingAdapter().setCaretPosition(getTechnologyComponent(), caret);

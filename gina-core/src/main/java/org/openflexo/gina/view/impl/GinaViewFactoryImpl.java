@@ -30,6 +30,7 @@ import org.openflexo.gina.model.widget.FIBReferencedComponent;
 import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTextArea;
 import org.openflexo.gina.model.widget.FIBTextField;
+import org.openflexo.gina.utils.FIBInspector;
 import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.FIBWidgetView;
 import org.openflexo.gina.view.GinaViewFactory;
@@ -88,6 +89,10 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 
 	private <F extends FIBContainer> FIBContainerView<F, ? extends C, ? extends C> buildContainer(F fibContainer,
 			FIBController controller) {
+
+		if (fibContainer instanceof FIBInspector) {
+			System.out.println("----------------------> J'instancie une vue pour l'inspecteur " + fibContainer);
+		}
 
 		if (fibContainer instanceof FIBTab) {
 			return (FIBContainerView<F, ? extends C, ? extends C>) makeTabView((FIBTab) fibContainer, controller);

@@ -59,6 +59,7 @@ import org.openflexo.connie.binding.BindingValueChangeListener;
 import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.connie.expr.BindingValue;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.event.GinaEvent.KIND;
@@ -90,7 +91,7 @@ import org.openflexo.toolbox.ToolBox;
  *            type of data beeing represented by this view
  * 
  */
-public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBViewImpl<M, C> implements FIBWidgetView<M, C, T> {
+public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBViewImpl<M, C>implements FIBWidgetView<M, C, T> {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBWidgetViewImpl.class.getPackage().getName());
 
@@ -381,6 +382,14 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		if (isDeleted()) {
 			return null;
 		}
+		/*if (getComponent().getName() != null && getComponent().getName().equals("FlexoConceptTextField")) {
+			System.out.println("updateData() in TF FlexoConceptTextField pour " + getComponent().getRootComponent());
+			System.out.println("data=" + getComponent().getData());
+			System.out.println("BV=" + ((BindingValue) getComponent().getData().getExpression()).getBindingVariable());
+			System.out.println("data value = "
+					+ getController().getValue(((BindingValue) getComponent().getData().getExpression()).getBindingVariable()));
+			System.out.println("Hop");
+		}*/
 		T newValue = getValue();
 		setData(newValue);
 		return newValue;

@@ -168,6 +168,11 @@ public class JFIBReferencedComponentWidget extends FIBReferencedComponentWidgetI
 		}
 
 		protected void updateReferenceComponent() {
+
+			if (referencedComponentView != null) {
+				referencedComponentView.delete();
+			}
+
 			removeAll();
 
 			if (widget.getReferencedComponent() == null) {
@@ -176,6 +181,7 @@ public class JFIBReferencedComponentWidget extends FIBReferencedComponentWidgetI
 				setBorder(BorderFactory.createEtchedBorder());
 			}
 			else {
+				System.out.println("On reconstruit la vue");
 				referencedComponentView = (JFIBView<FIBComponent, JReferenceComponentPanel>) widget.makeReferencedComponentView();
 				if (referencedComponentView == null) {
 					invalidComponentlabel.setText("< Invalid component >");
