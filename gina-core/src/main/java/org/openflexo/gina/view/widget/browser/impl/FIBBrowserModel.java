@@ -623,8 +623,11 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 				else if (variable.getVariableName().equals("object")) {
 					return getUserObject(); // representedObject;
 				}
-				else {
+				else if (widget != null && widget.getController() != null) {
 					return widget.getController().getValue(variable);
+				}
+				else {
+					return null;
 				}
 			}
 		}
