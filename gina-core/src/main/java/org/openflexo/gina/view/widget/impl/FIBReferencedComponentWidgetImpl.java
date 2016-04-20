@@ -85,7 +85,7 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 
 	private FIBComponent referencedComponent = null;
 
-	private FIBController embeddedFIBController;
+	protected FIBController embeddedFIBController;
 	// private final GinaViewFactory factory;
 	private final boolean isComponentLoading = false;
 
@@ -162,8 +162,8 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 
 				@Override
 				public void bindingValueChanged(Object source, FIBComponent newValue) {
-					//System.out.println(" bindingValueChanged() detected for dynamicComponent=" + getComponent().getDynamicComponent()
-					//		+ " with newValue=" + newValue + " source=" + source);
+					// System.out.println(" bindingValueChanged() detected for dynamicComponent=" + getComponent().getDynamicComponent()
+					// + " with newValue=" + newValue + " source=" + source);
 					updateComponent();
 					updateReferencedComponentView();
 				}
@@ -328,16 +328,16 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 		FIBComponent loaded = getReferencedComponent();
 
 		// If an embedded FIBController is already declared, delete it
-		if (embeddedFIBController != null) {
+		/*if (embeddedFIBController != null) {
 			embeddedFIBController.delete();
 			embeddedFIBController = null;
-		}
+		}*/
 
 		if (loaded != null) {
 
 			// Now, we instantiate a new embedded FIBController
 
-			embeddedFIBController = FIBController.instanciateController(loaded, getController().getViewFactory(),
+			FIBController embeddedFIBController = FIBController.instanciateController(loaded, getController().getViewFactory(),
 					getController().getLocalizer());
 
 			embeddedFIBController.setDataObject(getValue());

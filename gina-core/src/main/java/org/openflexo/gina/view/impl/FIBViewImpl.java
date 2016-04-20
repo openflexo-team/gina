@@ -152,6 +152,14 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	}
 
 	/**
+	 * When called, means that the view is no more displayed Calling this method disactivate all observing schemes related to this view
+	 */
+	@Override
+	public void hideView() {
+		componentBecomesInvisible();
+	}
+
+	/**
 	 * Called when the component view explicitely change its visibility state from INVISIBLE to VISIBLE
 	 */
 	protected void componentBecomesVisible() {

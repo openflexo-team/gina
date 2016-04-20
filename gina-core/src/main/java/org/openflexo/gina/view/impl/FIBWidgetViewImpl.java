@@ -59,7 +59,6 @@ import org.openflexo.connie.binding.BindingValueChangeListener;
 import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.connie.expr.BindingValue;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.event.GinaEvent.KIND;
