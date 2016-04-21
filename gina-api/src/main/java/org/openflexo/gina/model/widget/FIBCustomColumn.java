@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
@@ -373,13 +374,15 @@ public interface FIBCustomColumn extends FIBTableColumn {
 					variable.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET_SET);
 				}
 				this.variable = variable;
-				if (getOwner() != null && variable != null) {
-					variable.decode();
-				}
-				if (variable != null && variable.isValid()) {
-					VALUE.setType(variable.getAnalyzedType());
-					if (value != null) {
-						value.setBindingDefinition(VALUE);
+				if (getBindingFactory() != null) {
+					if (getOwner() != null && variable != null) {
+						variable.decode();
+					}
+					if (variable != null && variable.isValid()) {
+						VALUE.setType(variable.getAnalyzedType());
+						if (value != null) {
+							value.setBindingDefinition(VALUE);
+						}
 					}
 				}
 			}
@@ -423,6 +426,12 @@ public interface FIBCustomColumn extends FIBTableColumn {
 					return getOwner().getCustomComponentBindingModel();
 				}
 				return null;
+			}
+
+			@Override
+			public BindingFactory getBindingFactory() {
+				// TODO Auto-generated method stub
+				return super.getBindingFactory();
 			}
 
 		}
