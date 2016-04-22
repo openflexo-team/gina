@@ -97,7 +97,7 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 
 		if (newValue == null && getWidget().getAutoSelectFirstRow() && getMultipleValueModel().getSize() > 0) {
 
-			System.out.println("Selecting first value of" + getWidget().getName() + " : " + getMultipleValueModel().getElementAt(0));
+			//System.out.println("Selecting first value of " + getWidget().getName() + " : " + getMultipleValueModel().getElementAt(0));
 
 			newValue = getMultipleValueModel().getElementAt(0);
 			setValue(newValue);

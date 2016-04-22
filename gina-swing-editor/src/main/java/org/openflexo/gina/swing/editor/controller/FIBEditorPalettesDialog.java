@@ -37,20 +37,41 @@
  * 
  */
 
-package org.openflexo.gina.swing.editor;
+package org.openflexo.gina.swing.editor.controller;
 
-import java.io.File;
+import java.awt.Rectangle;
+import java.util.logging.Logger;
 
-import org.openflexo.gina.swing.editor.controller.FIBEditorPalettes;
-import org.openflexo.gina.swing.utils.JFIBInspectorController;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 
-public interface FIBGenericEditor {
+import org.openflexo.gina.swing.editor.FIBEditor;
+import org.openflexo.gina.swing.utils.JFIBPreferences;
+import org.openflexo.logging.FlexoLogger;
+import org.openflexo.swing.ComponentBoundSaver;
 
-	// public JFrame getFrame();
+public class FIBEditorPalettesDialog extends JDialog {
 
-	public FIBEditorPalettes getPalettes();
+	static final Logger logger = FlexoLogger.getLogger(FIBEditor.class.getPackage().getName());
 
-	public JFIBInspectorController getInspector();
+	private FIBEditorPalettes palettes;
 
-	public File getEditedComponentFile();
+	public FIBEditorPalettesDialog(JFrame frame, FIBEditorPalettes palette) {
+		super(frame, "Palettes", false);
+
+		getContentPane().add(palette);
+		setBounds(JFIBPreferences.getPaletteBounds());
+		new ComponentBoundSaver(this) {
+
+			@Override
+			public void saveBounds(Rectangle bounds) {
+				JFIBPreferences.setPaletteBounds(bounds);
+			}
+		};
+
+	}
+
+	public FIBEditorPalettes getPalettes() {
+		return palettes;
+	}
 }

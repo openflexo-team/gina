@@ -42,35 +42,37 @@ package org.openflexo.gina.swing.editor.controller;
 import java.awt.Cursor;
 import java.awt.Image;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.dnd.DragSource;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.FIBLibrary.FIBLibraryImpl;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.swing.editor.FIBEditor;
-import org.openflexo.gina.swing.utils.JFIBPreferences;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.utils.FIBIconLibrary;
 import org.openflexo.logging.FlexoLogger;
+import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
-import org.openflexo.swing.ComponentBoundSaver;
 import org.openflexo.toolbox.ToolBox;
 
-public class FIBEditorPalette extends JDialog {
+/**
+ * Represent a palette for the FIBEditor<br>
+ * A palette present some elements from a folder
+ * 
+ * 
+ * @author sylvain
+ *
+ */
+public class FIBEditorPalette extends JPanel {
 
 	static final Logger logger = FlexoLogger.getLogger(FIBEditor.class.getPackage().getName());
-
-	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
 	private static final Image DROP_OK_IMAGE = FIBIconLibrary.DROP_OK_CURSOR.getImage();
 	private static final Image DROP_KO_IMAGE = FIBIconLibrary.DROP_KO_CURSOR.getImage();
@@ -81,18 +83,16 @@ public class FIBEditorPalette extends JDialog {
 	public static final Cursor dropKO = ToolBox.getPLATFORM() == ToolBox.MACOS
 			? Toolkit.getDefaultToolkit().createCustomCursor(DROP_KO_IMAGE, new Point(16, 16), "Drop KO") : DragSource.DefaultMoveNoDrop;
 
-	private final JPanel paletteContent;
-
-	private FIBEditorController editorController;
-
 	private static FIBLibrary PALETTE_FIB_LIBRARY = FIBLibraryImpl.createInstance();
 
-	public FIBEditorPalette(JFrame frame) {
-		super(frame, "Palette", false);
+	private final Resource dir;
+	private final FIBEditorPalettes palettes;
 
-		paletteContent = new JPanel(null);
+	public FIBEditorPalette(Resource dir, FIBEditorPalettes palettes, Object dataObject) {
+		super(null);
 
-		Resource dir = ResourceLocator.locateResource("FIBEditorPalette");
+		this.dir = dir;
+		this.palettes = palettes;
 
 		for (Resource modelFIBFile : dir.getContents(Pattern.compile(".*[.]fib"))) {
 			String paletteURL = modelFIBFile.getURI().replace(".fib", ".palette");
@@ -113,7 +113,7 @@ public class FIBEditorPalette extends JDialog {
 			else {
 				representationComponent = PALETTE_FIB_LIBRARY.retrieveFIBComponent(modelFIBFile);
 			}
-			addPaletteElement(modelComponent, representationComponent);
+			addPaletteElement(modelComponent, representationComponent, dataObject);
 
 			/*System.out.println("********* FOUND palette element");
 			System.out.println("modelFIBFile=" + modelFIBFile);
@@ -121,31 +121,28 @@ public class FIBEditorPalette extends JDialog {
 			System.out.println(modelComponent.getFactory().stringRepresentation(modelComponent));*/
 		}
 
-		getContentPane().add(paletteContent);
-		setBounds(JFIBPreferences.getPaletteBounds());
-		new ComponentBoundSaver(this) {
-
-			@Override
-			public void saveBounds(Rectangle bounds) {
-				JFIBPreferences.setPaletteBounds(bounds);
-			}
-		};
-
 	}
 
-	private PaletteElement addPaletteElement(FIBComponent modelComponent, FIBComponent representationComponent) {
-		PaletteElement el = new PaletteElement(modelComponent, representationComponent, this);
+	@Override
+	public String getName() {
+		if (dir instanceof FileResourceImpl) {
+			return ((FileResourceImpl) dir).getFile().getName();
+		}
+		if (dir != null) {
+			return dir.getRelativePath();
+		}
+		return super.getName();
+	}
+
+	private PaletteElement addPaletteElement(FIBComponent modelComponent, FIBComponent representationComponent, Object dataObject) {
+		PaletteElement el = new PaletteElement(modelComponent, representationComponent, this, dataObject);
 		JComponent resultingJComponent = ((JFIBView<?, ?>) el.getView()).getResultingJComponent();
-		paletteContent.add(resultingJComponent);
+		add(resultingJComponent);
 		return el;
 	}
 
-	public FIBEditorController getEditorController() {
-		return editorController;
-	}
-
-	public void setEditorController(FIBEditorController editorController) {
-		this.editorController = editorController;
+	public FIBEditorPalettes getPalettes() {
+		return palettes;
 	}
 
 }

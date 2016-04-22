@@ -319,8 +319,8 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 		return contextualMenu;
 	}
 
-	public FIBEditorPalette getPalette() {
-		return editor.getPalette();
+	public FIBEditorPalettes getPalette() {
+		return editor.getPalettes();
 	}
 
 	public FIBEditorBrowser getEditorBrowser() {

@@ -60,7 +60,7 @@ import javax.swing.WindowConstants;
 
 import org.openflexo.gina.FIBLibrary.FIBLibraryImpl;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.controller.FIBEditorPalette;
+import org.openflexo.gina.swing.editor.controller.FIBEditorPalettes;
 import org.openflexo.gina.swing.editor.widget.FIBLibraryBrowser;
 import org.openflexo.gina.swing.utils.JFIBInspectorController;
 import org.openflexo.gina.swing.utils.JFIBPreferences;
@@ -196,9 +196,11 @@ public class LaunchAdvancedFIBEditor {
 
 			FIBLibraryBrowser libraryBrowser = new FIBLibraryBrowser(editor.getFIBLibrary());
 
+			FIBEditorPalettes palette = editor.makePalette();
+
 			centerPanel.add(libraryBrowser, LayoutPosition.TOP_LEFT.name());
 			centerPanel.add(editor.getMainPanel(), LayoutPosition.CENTER.name());
-			// centerPanel.add(controller.getKeyValuePanel(), LayoutPosition.TOP_RIGHT.name());
+			centerPanel.add(palette, LayoutPosition.TOP_RIGHT.name());
 			// centerPanel.add(controller.getBindingPanel(), LayoutPosition.BOTTOM_RIGHT.name());
 
 			frame.validate();
@@ -206,9 +208,6 @@ public class LaunchAdvancedFIBEditor {
 
 			JFIBInspectorController inspector = editor.makeInspector(frame);
 			inspector.setVisible(true);
-
-			FIBEditorPalette palette = editor.makePalette(frame);
-			palette.setVisible(true);
 
 		} catch (UnsupportedLookAndFeelException e) {
 			// TODO Auto-generated catch block
@@ -249,10 +248,10 @@ public class LaunchAdvancedFIBEditor {
 		left.setWeight(0.2);
 		left.setName(LayoutColumns.LEFT.name());
 		Node center = MSL_FACTORY.makeLeaf(LayoutPosition.CENTER.name());
-		center.setWeight(0.5);
+		center.setWeight(0.6);
 		center.setName(LayoutColumns.CENTER.name());
-		Split right = getVerticalSplit(LayoutPosition.TOP_RIGHT, 0.7, LayoutPosition.BOTTOM_RIGHT, 0.3);
-		right.setWeight(0.3);
+		Split right = getVerticalSplit(LayoutPosition.TOP_RIGHT, 0.4, LayoutPosition.BOTTOM_RIGHT, 0.6);
+		right.setWeight(0.2);
 		right.setName(LayoutColumns.RIGHT.name());
 		root.setChildren(left, MSL_FACTORY.makeDivider(), center, MSL_FACTORY.makeDivider(), right);
 		return root;

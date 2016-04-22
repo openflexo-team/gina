@@ -76,7 +76,8 @@ import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelFactory;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.controller.FIBEditorPalette;
+import org.openflexo.gina.swing.editor.controller.FIBEditorPalettes;
+import org.openflexo.gina.swing.editor.controller.FIBEditorPalettesDialog;
 import org.openflexo.gina.swing.utils.JFIBInspectorController;
 import org.openflexo.gina.swing.utils.JFIBPreferences;
 import org.openflexo.gina.swing.utils.localization.LocalizedEditor;
@@ -122,7 +123,7 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 
 	final JFrame frame;
 	// private JPanel mainPanel;
-	private final FIBEditorPalette palette;
+	private final FIBEditorPalettesDialog paletteDialog;
 
 	private final JFIBInspectorController inspector;
 
@@ -174,8 +175,8 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 
 		inspector = new JFIBInspectorController(frame, ResourceLocator.locateResource("EditorInspectors"), APP_FIB_LIBRARY, LOCALIZATION);
 
-		palette = new FIBEditorPalette(frame);
-		palette.setVisible(true);
+		paletteDialog = new FIBEditorPalettesDialog(frame, new FIBEditorPalettes());
+		paletteDialog.setVisible(true);
 
 		frame.setTitle("Flexo Interface Builder Editor");
 		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -319,7 +320,7 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 		paletteItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				palette.setVisible(true);
+				paletteDialog.setVisible(true);
 			}
 		});
 		inspectItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I,
@@ -398,8 +399,15 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 	}
 
 	@Override
-	public FIBEditorPalette getPalette() {
-		return palette;
+	public FIBEditorPalettes getPalettes() {
+		if (paletteDialog != null) {
+			return paletteDialog.getPalettes();
+		}
+		return null;
+	}
+
+	public FIBEditorPalettesDialog getPaletteDialog() {
+		return paletteDialog;
 	}
 
 	protected boolean confirmExit() {
@@ -476,7 +484,7 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 		else {
 			editorController = new FIBEditorController(factory, fibComponent, this, dataObject, getFrame());
 		}
-		getPalette().setEditorController(editorController);
+		getPaletteDialog().getPalettes().setEditorController(editorController);
 		frame.getContentPane().add(editorController.getEditorPanel());
 		frame.pack();
 

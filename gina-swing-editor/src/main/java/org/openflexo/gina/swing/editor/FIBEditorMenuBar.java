@@ -211,7 +211,7 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FIBEditorMenuBar.this.fibEditor.getPalette().setVisible(true);
+				FIBEditorMenuBar.this.fibEditor.getPalettes().setVisible(true);
 			}
 		});
 		logsItem = new JMenuItem(FlexoLocalization.localizedForKey(FIBEditor.LOCALIZATION, "logs"));

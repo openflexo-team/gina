@@ -65,7 +65,8 @@ import org.openflexo.gina.model.FIBModelFactory;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.controller.FIBEditorPalette;
+import org.openflexo.gina.swing.editor.controller.FIBEditorPalettes;
+import org.openflexo.gina.swing.editor.controller.FIBEditorPalettesDialog;
 import org.openflexo.gina.swing.utils.JFIBInspectorController;
 import org.openflexo.gina.swing.utils.JFIBPreferences;
 import org.openflexo.gina.swing.utils.localization.LocalizedEditor;
@@ -98,7 +99,7 @@ public class FIBEditor implements FIBGenericEditor {
 
 	public static Resource COMPONENT_LOCALIZATION_FIB = ResourceLocator.locateResource("Fib/LocalizedPanel.fib");
 
-	private FIBEditorPalette palette;
+	private FIBEditorPalettes palette;
 
 	private JFIBInspectorController inspector;
 
@@ -160,8 +161,15 @@ public class FIBEditor implements FIBGenericEditor {
 		return inspector;
 	}
 
-	public FIBEditorPalette makePalette(JFrame frame) {
-		palette = new FIBEditorPalette(frame);
+	public FIBEditorPalettesDialog makePaletteDialog(JFrame frame) {
+		if (palette == null) {
+			palette = makePalette();
+		}
+		return new FIBEditorPalettesDialog(frame, palette);
+	}
+
+	public FIBEditorPalettes makePalette() {
+		palette = new FIBEditorPalettes();
 		return palette;
 	}
 
@@ -174,8 +182,7 @@ public class FIBEditor implements FIBGenericEditor {
 		return inspector;
 	}
 
-	@Override
-	public FIBEditorPalette getPalette() {
+	public FIBEditorPalettes getPalettes() {
 		return palette;
 	}
 
@@ -222,7 +229,7 @@ public class FIBEditor implements FIBGenericEditor {
 		EditedFIBComponent newEditedFIB = new EditedFIBComponent("New.fib", fibComponent, getFIBLibrary());
 
 		editorController = new FIBEditorController(factory, fibComponent, this, frame);
-		getPalette().setEditorController(editorController);
+		getPalettes().setEditorController(editorController);
 
 		mainPanel.newEditedComponent(newEditedFIB, editorController);
 
@@ -253,7 +260,7 @@ public class FIBEditor implements FIBGenericEditor {
 
 		EditedFIBComponent newEditedFIB = new EditedFIBComponent(fibResource, getFIBLibrary());
 		editorController = new FIBEditorController(newEditedFIB.getFactory(), newEditedFIB.getFIBComponent(), this, frame);
-		getPalette().setEditorController(editorController);
+		getPalettes().setEditorController(editorController);
 		mainPanel.newEditedComponent(newEditedFIB, editorController);
 	}
 

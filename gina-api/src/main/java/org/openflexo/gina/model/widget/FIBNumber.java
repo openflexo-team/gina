@@ -43,7 +43,6 @@ import java.lang.reflect.Type;
 
 import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.gina.model.FIBWidget;
-import org.openflexo.gina.model.FIBWidget.FIBWidgetImpl;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -165,26 +164,26 @@ public interface FIBNumber extends FIBWidget {
 		public Number retrieveMinValue() {
 			if (minValue == null) {
 				switch (numberType) {
-				case ByteType:
-					minValue = Byte.MIN_VALUE;
-					break;
-				case ShortType:
-					minValue = Short.MIN_VALUE;
-					break;
-				case IntegerType:
-					minValue = Integer.MIN_VALUE;
-					break;
-				case LongType:
-					minValue = Long.MIN_VALUE;
-					break;
-				case FloatType:
-					minValue = -Float.MAX_VALUE;
-					break;
-				case DoubleType:
-					minValue = -Double.MAX_VALUE;
-					break;
-				default:
-					break;
+					case ByteType:
+						minValue = Byte.MIN_VALUE;
+						break;
+					case ShortType:
+						minValue = Short.MIN_VALUE;
+						break;
+					case IntegerType:
+						minValue = Integer.MIN_VALUE;
+						break;
+					case LongType:
+						minValue = Long.MIN_VALUE;
+						break;
+					case FloatType:
+						minValue = -Float.MAX_VALUE;
+						break;
+					case DoubleType:
+						minValue = -Double.MAX_VALUE;
+						break;
+					default:
+						break;
 				}
 			}
 			return minValue;
@@ -204,26 +203,26 @@ public interface FIBNumber extends FIBWidget {
 		public Number retrieveMaxValue() {
 			if (maxValue == null) {
 				switch (numberType) {
-				case ByteType:
-					maxValue = Byte.MAX_VALUE;
-					break;
-				case ShortType:
-					maxValue = Short.MAX_VALUE;
-					break;
-				case IntegerType:
-					maxValue = Integer.MAX_VALUE;
-					break;
-				case LongType:
-					maxValue = Long.MAX_VALUE;
-					break;
-				case FloatType:
-					maxValue = Float.MAX_VALUE;
-					break;
-				case DoubleType:
-					maxValue = Double.MAX_VALUE;
-					break;
-				default:
-					break;
+					case ByteType:
+						maxValue = Byte.MAX_VALUE;
+						break;
+					case ShortType:
+						maxValue = Short.MAX_VALUE;
+						break;
+					case IntegerType:
+						maxValue = Integer.MAX_VALUE;
+						break;
+					case LongType:
+						maxValue = Long.MAX_VALUE;
+						break;
+					case FloatType:
+						maxValue = Float.MAX_VALUE;
+						break;
+					case DoubleType:
+						maxValue = Double.MAX_VALUE;
+						break;
+					default:
+						break;
 				}
 			}
 			return maxValue;
@@ -243,26 +242,26 @@ public interface FIBNumber extends FIBWidget {
 		public Number retrieveIncrement() {
 			if (increment == null) {
 				switch (numberType) {
-				case ByteType:
-					increment = new Byte((byte) 1);
-					break;
-				case ShortType:
-					increment = new Short((short) 1);
-					break;
-				case IntegerType:
-					increment = new Integer(1);
-					break;
-				case LongType:
-					increment = new Long(1);
-					break;
-				case FloatType:
-					increment = new Float(1);
-					break;
-				case DoubleType:
-					increment = new Double(1);
-					break;
-				default:
-					break;
+					case ByteType:
+						increment = new Byte((byte) 1);
+						break;
+					case ShortType:
+						increment = new Short((short) 1);
+						break;
+					case IntegerType:
+						increment = new Integer(1);
+						break;
+					case LongType:
+						increment = new Long(1);
+						break;
+					case FloatType:
+						increment = new Float(1);
+						break;
+					case DoubleType:
+						increment = new Double(1);
+						break;
+					default:
+						break;
 				}
 			}
 			return increment;
@@ -281,20 +280,20 @@ public interface FIBNumber extends FIBWidget {
 		@Override
 		public Type getDefaultDataType() {
 			switch (numberType) {
-			case ByteType:
-				return Byte.class;
-			case ShortType:
-				return Short.class;
-			case IntegerType:
-				return Integer.class;
-			case LongType:
-				return Long.class;
-			case FloatType:
-				return Float.class;
-			case DoubleType:
-				return Double.class;
-			default:
-				return Number.class;
+				case ByteType:
+					return Byte.class;
+				case ShortType:
+					return Short.class;
+				case IntegerType:
+					return Integer.class;
+				case LongType:
+					return Long.class;
+				case FloatType:
+					return Float.class;
+				case DoubleType:
+					return Double.class;
+				default:
+					return Number.class;
 			}
 		}
 
@@ -309,6 +308,9 @@ public interface FIBNumber extends FIBWidget {
 			if (notification != null) {
 				this.numberType = numberType;
 				hasChanged(notification);
+				if (getData() != null) {
+					getData().setDeclaredType(getDefaultDataType());
+				}
 			}
 		}
 

@@ -1,0 +1,7 @@
+<SplitPanel>
+    <RowSplit name="RowSplit" weight="0.0">
+      <Leaf name="left" weight="0.5" />
+      <Divider />
+      <Leaf name="right" weight="0.5" />
+    </RowSplit>
+</SplitPanel>

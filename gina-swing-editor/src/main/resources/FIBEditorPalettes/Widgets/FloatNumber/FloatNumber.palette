@@ -1,0 +1,5 @@
+<Number name="DoubleNumber" data="paletteData.doubleValue" numberType="DoubleType" columns="4">
+	<Parameter name="x" value="190"/>
+	<Parameter name="y" value="175"/>
+    <FIBVariable name="paletteData" type="org.openflexo.gina.swing.editor.controller.FIBEditorPalettes$WidgetsPaletteData" />
+</Number>

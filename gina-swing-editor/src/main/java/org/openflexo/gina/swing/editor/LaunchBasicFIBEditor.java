@@ -55,7 +55,7 @@ import javax.swing.WindowConstants;
 
 import org.openflexo.gina.FIBLibrary.FIBLibraryImpl;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.controller.FIBEditorPalette;
+import org.openflexo.gina.swing.editor.controller.FIBEditorPalettesDialog;
 import org.openflexo.gina.swing.utils.JFIBInspectorController;
 import org.openflexo.gina.swing.utils.JFIBPreferences;
 import org.openflexo.localization.FlexoLocalization;
@@ -147,8 +147,8 @@ public class LaunchBasicFIBEditor {
 			JFIBInspectorController inspector = editor.makeInspector(frame);
 			inspector.setVisible(true);
 
-			FIBEditorPalette palette = editor.makePalette(frame);
-			palette.setVisible(true);
+			FIBEditorPalettesDialog paletteDialog = editor.makePaletteDialog(frame);
+			paletteDialog.setVisible(true);
 
 		} catch (UnsupportedLookAndFeelException e) {
 			// TODO Auto-generated catch block

@@ -1,8 +1,0 @@
-<FIBReferencedComponent>
-	<Parameter name="x" value="205"/>
-	<Parameter name="y" value="230"/>
-</FIBReferencedComponent>
-<!-- <Label label="Reference">
-	<Parameter name="x" value="205"/>
-	<Parameter name="y" value="225"/>
-</Label>-->

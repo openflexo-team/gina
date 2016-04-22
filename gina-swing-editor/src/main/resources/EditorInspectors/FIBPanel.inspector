@@ -98,7 +98,7 @@
 				<Label label="title_font" constraints="twocols(location=left)"
 					visible="((data.border = &quot;titled&quot;) | (data.border = &quot;rounded3d&quot;))"
 					localize="true" />
-				<Font sampleText="Sample for this font" localize="true"
+				<Font sampleText="Sample for this font" localize="true" allowsNull="true" allowsNullText=""
 					data="data.titleFont" constraints="twocols(location=right)"
 					visible="((data.border = &quot;titled&quot;) | (data.border = &quot;rounded3d&quot;))" />
 				<Label label="dark_level" constraints="twocols(location=left)"

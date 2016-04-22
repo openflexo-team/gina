@@ -76,6 +76,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 
 	@Getter(value = OPTIONS_IN_LINE1_KEY, cardinality = Cardinality.LIST, inverse = FIBHtmlEditorOption.EDITOR_KEY)
 	@CloningStrategy(StrategyType.CLONE)
+	@XMLElement(context = "Line1")
 	public List<FIBHtmlEditorOption> getOptionsInLine1();
 
 	@Setter(OPTIONS_IN_LINE1_KEY)
@@ -89,6 +90,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 
 	@Getter(value = OPTIONS_IN_LINE2_KEY, cardinality = Cardinality.LIST, inverse = FIBHtmlEditorOption.EDITOR_KEY)
 	@CloningStrategy(StrategyType.CLONE)
+	@XMLElement(context = "Line2")
 	public List<FIBHtmlEditorOption> getOptionsInLine2();
 
 	@Setter(OPTIONS_IN_LINE2_KEY)
@@ -102,6 +104,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 
 	@Getter(value = OPTIONS_IN_LINE3_KEY, cardinality = Cardinality.LIST, inverse = FIBHtmlEditorOption.EDITOR_KEY)
 	@CloningStrategy(StrategyType.CLONE)
+	@XMLElement(context = "Line3")
 	public List<FIBHtmlEditorOption> getOptionsInLine3();
 
 	@Setter(OPTIONS_IN_LINE3_KEY)

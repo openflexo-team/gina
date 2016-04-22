@@ -79,7 +79,7 @@ import org.openflexo.logging.FlexoLogger;
 public class PaletteElement implements FIBDraggable /* implements Transferable */ {
 	static final Logger logger = FlexoLogger.getLogger(PaletteElement.class.getPackage().getName());
 
-	private final FIBEditorPalette _palette;
+	private final FIBEditorPalette palette;
 	private final FIBComponent modelComponent;
 	private final FIBComponent representationComponent;
 	private final FIBView<FIBComponent, ? extends JComponent> view;
@@ -93,15 +93,16 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 	// private static final DataFlavor DATA_FLAVOR = new
 	// DataFlavor(PaletteElement.class, "PaletteElement");
 
-	public PaletteElement(FIBComponent modelComponent, FIBComponent representationComponent, FIBEditorPalette palette) {
+	public PaletteElement(FIBComponent modelComponent, FIBComponent representationComponent, FIBEditorPalette palette, Object dataObject) {
 		this.modelComponent = modelComponent;
 		this.representationComponent = representationComponent;
-		_palette = palette;
+		this.palette = palette;
 
 		int x = Integer.parseInt(representationComponent.getParameter("x"));
 		int y = Integer.parseInt(representationComponent.getParameter("y"));
 
 		view = FIBController.makeView(representationComponent, SwingViewFactory.INSTANCE, FIBAbstractEditor.LOCALIZATION);
+		view.getController().setVariableValue("paletteData", dataObject);
 
 		if (view.getTechnologyComponent() != null) {
 			Dimension size = view.getTechnologyComponent().getPreferredSize();
@@ -309,12 +310,12 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 				// initial cursor, transferrable, dsource listener
 				e.startDrag(FIBEditorPalette.dropKO, transferable, dsListener);
 
-				FIBEditorPalette.logger.info("Starting drag for " + _palette);
+				FIBEditorPalettes.logger.info("Starting drag for " + palette);
 				// getDrawingView().captureDraggedNode(PaletteElementView.this,
 				// e);
 			} catch (Exception idoe) {
 				idoe.printStackTrace();
-				FIBEditorPalette.logger.warning("Unexpected exception " + idoe);
+				FIBEditorPalettes.logger.warning("Unexpected exception " + idoe);
 			}
 		}
 
@@ -338,8 +339,8 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 
 			// getDrawingView().resetCapturedNode();
 			if (e.getDropSuccess() == false) {
-				if (FIBEditorPalette.logger.isLoggable(Level.INFO)) {
-					FIBEditorPalette.logger.info("Dropping was not successful");
+				if (FIBEditorPalettes.logger.isLoggable(Level.INFO)) {
+					FIBEditorPalettes.logger.info("Dropping was not successful");
 				}
 				return;
 			}
