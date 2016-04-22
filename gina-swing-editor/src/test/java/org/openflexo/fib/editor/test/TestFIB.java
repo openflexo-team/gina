@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import org.openflexo.gina.ApplicationFIBLibrary;
+import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.swing.editor.FIBAbstractEditor;
@@ -106,7 +106,7 @@ public class TestFIB extends JPanel {
 		Resource fibResource = ResourceLocator.locateSourceCodeResource("TestFIB/Test.fib");
 		System.out.println("Fib: " + fibResource);
 
-		FIBComponent fibComponent = ApplicationFIBLibrary.instance().retrieveFIBComponent(fibResource);
+		FIBComponent fibComponent = ApplicationFIBLibraryImpl.instance().retrieveFIBComponent(fibResource);
 
 		Coucou coucou = new Coucou();
 

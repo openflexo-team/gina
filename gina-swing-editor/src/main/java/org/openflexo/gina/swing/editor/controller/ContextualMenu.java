@@ -47,6 +47,7 @@ import java.io.File;
 import java.util.Hashtable;
 import java.util.logging.Logger;
 
+import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -100,7 +101,7 @@ public class ContextualMenu {
 	private Hashtable<EditorAction, PopupMenuItem> actions;
 	private JPopupMenu menu;
 
-	public ContextualMenu(FIBEditorController anEditorController) {
+	public ContextualMenu(FIBEditorController anEditorController, final JFrame frame) {
 		this.editorController = anEditorController;
 		actions = new Hashtable<EditorAction, PopupMenuItem>();
 		menu = new JPopupMenu();
@@ -121,9 +122,8 @@ public class ContextualMenu {
 			@Override
 			public FIBModelObject performAction(FIBModelObject object) {
 				FIBComponent parent = ((FIBComponent) object).getParent();
-				boolean deleteIt = JOptionPane.showConfirmDialog(editorController.getEditor().getFrame(),
-						object + ": really delete this component (undoable operation) ?", "information", JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION;
+				boolean deleteIt = JOptionPane.showConfirmDialog(frame, object + ": really delete this component (undoable operation) ?",
+						"information", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION;
 				if (deleteIt) {
 					logger.info("Removing object " + object);
 					object.delete();
@@ -183,7 +183,7 @@ public class ContextualMenu {
 			public FIBModelObject performAction(FIBModelObject object) {
 				FIBContainer component = (FIBContainer) object;
 				FIBContainer parent = component.getParent();
-				return makeReusableComponent(component, parent);
+				return makeReusableComponent(component, parent, frame);
 			}
 		}, new ActionAvailability() {
 			@Override
@@ -219,7 +219,7 @@ public class ContextualMenu {
 		}));
 	}
 
-	public FIBModelObject makeReusableComponent(FIBContainer component, FIBContainer parent) {
+	public FIBModelObject makeReusableComponent(FIBContainer component, FIBContainer parent, JFrame frame) {
 		FIBModelFactory dialogFactory = null;
 		try {
 			dialogFactory = new FIBModelFactory();
@@ -264,7 +264,7 @@ public class ContextualMenu {
 		controlPanel.addToSubComponents(cancelButton);
 		panel.addToSubComponents(controlPanel, new TwoColsLayoutConstraints(TwoColsLayoutLocation.center, true, false));
 
-		JFIBDialog dialog = JFIBDialog.instanciateAndShowDialog(panel, params, editorController.getEditor().getFrame(), true);
+		JFIBDialog dialog = JFIBDialog.instanciateAndShowDialog(panel, params, frame, true);
 
 		if (dialog.getStatus() == Status.VALIDATED) {
 			if (params.reusableComponentFile != null) {

@@ -56,9 +56,8 @@ import java.util.Observable;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
-import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
@@ -66,6 +65,7 @@ import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.FIBModelFactory;
+import org.openflexo.gina.swing.editor.EditedFIBComponent;
 import org.openflexo.gina.swing.editor.FIBAbstractEditor;
 import org.openflexo.gina.swing.editor.FIBGenericEditor;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
@@ -80,7 +80,19 @@ import org.openflexo.logging.FlexoLogger;
 import org.openflexo.swing.NoInsetsBorder;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
-public class FIBEditorController /* extends FIBController */extends Observable implements HasPropertyChangeSupport {
+/**
+ * This is a controller managing the edition of an {@link EditedFIBComponent}<br>
+ * 
+ * Such controller manages:
+ * <ul>
+ * <li>an single instance of {@link EditedFIBComponent}</li>
+ * <li>a</li>
+ * </ul>
+ * 
+ * @author sylvain
+ *
+ */
+public class FIBEditorController extends Observable implements HasPropertyChangeSupport {
 
 	private static final Logger logger = FlexoLogger.getLogger(FIBEditorController.class.getPackage().getName());
 
@@ -88,9 +100,13 @@ public class FIBEditorController /* extends FIBController */extends Observable i
 
 	private final FIBModelFactory factory;
 
-	private final JPanel editorPanel;
-	private final JFIBView<?, ?> fibPanel;
+	// private final JPanel editorPanel2;
+	// private final JFIBView<?, ?> fibPanel;
+
 	private final FIBGenericEditor editor;
+
+	private FIBEditorPanel editorPanel;
+	private FIBEditorBrowser editorBrowser;
 
 	private FIBComponent fibComponent = null;
 	private FIBComponent selectedObject = null;
@@ -105,10 +121,24 @@ public class FIBEditorController /* extends FIBController */extends Observable i
 
 	private final PropertyChangeSupport pcSupport;
 
-	private class FibWrappingPanel extends JPanel {
-		public FibWrappingPanel(JComponent wrappedFib) {
+	@SuppressWarnings("serial")
+	public class FIBEditorPanel extends JPanel {
+
+		private JFIBView<?, ?> fibPanel;
+
+		public FIBEditorPanel(FIBController controller) {
 			super(new BorderLayout());
-			add(wrappedFib);
+
+			fibPanel = (JFIBView<?, ?>) controller.buildView();
+			add(fibPanel.getJComponent());
+		}
+
+		public void updateWithDataObject(Object data) {
+			fibPanel.getController().setDataObject(data, true);
+		}
+
+		public void updateWithoutDataObject() {
+			fibPanel.getController().setDataObject(null, true);
 		}
 
 		@Override
@@ -172,14 +202,13 @@ public class FIBEditorController /* extends FIBController */extends Observable i
 		}
 	}
 
-	public FIBEditorController(FIBModelFactory factory, FIBComponent fibComponent, FIBGenericEditor editor) {
-		this(factory, fibComponent, editor, null);
+	public FIBEditorController(FIBModelFactory factory, FIBComponent fibComponent, FIBGenericEditor editor, JFrame frame) {
+		this(factory, fibComponent, editor, null, frame);
 		// Class testClass = null;
 
 		if (fibComponent instanceof FIBContainer) {
 			FIBContainer fibContainer = (FIBContainer) fibComponent;
-			boolean instantiable = fibContainer.getDataClass() != null
-					&& !Modifier.isAbstract(fibContainer.getDataClass().getModifiers());
+			boolean instantiable = fibContainer.getDataClass() != null && !Modifier.isAbstract(fibContainer.getDataClass().getModifiers());
 			if (instantiable) {
 				try {
 					instantiable = fibContainer.getDataClass().getConstructor(new Class[0]) != null;
@@ -194,7 +223,7 @@ public class FIBEditorController /* extends FIBController */extends Observable i
 					// testClass =
 					// Class.forName(fibComponent.getDataClassName());
 					Object testData = fibContainer.getDataClass().newInstance();
-					fibPanel.getController().setDataObject(testData);
+					editorPanel.updateWithDataObject(testData);
 				} catch (InstantiationException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -202,22 +231,24 @@ public class FIBEditorController /* extends FIBController */extends Observable i
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			} else {
-				fibPanel.getController().updateWithoutDataObject();
 			}
-		} else {
-			fibPanel.getController().updateWithoutDataObject();
+			else {
+				editorPanel.updateWithoutDataObject();
+			}
+		}
+		else {
+			editorPanel.updateWithoutDataObject();
 		}
 	}
 
-	public FIBEditorController(FIBModelFactory factory, FIBComponent fibComponent, FIBGenericEditor editor,
-			Object dataObject) {
-		this(factory, fibComponent, editor, dataObject, FIBController.instanciateController(fibComponent,
-				SwingEditorViewFactory.INSTANCE, FIBAbstractEditor.LOCALIZATION));
+	public FIBEditorController(FIBModelFactory factory, FIBComponent fibComponent, FIBGenericEditor editor, Object dataObject,
+			JFrame frame) {
+		this(factory, fibComponent, editor, dataObject,
+				FIBController.instanciateController(fibComponent, SwingEditorViewFactory.INSTANCE, FIBAbstractEditor.LOCALIZATION), frame);
 	}
 
-	public FIBEditorController(FIBModelFactory factory, FIBComponent fibComponent, FIBGenericEditor editor,
-			Object dataObject, FIBController controller) {
+	public FIBEditorController(FIBModelFactory factory, FIBComponent fibComponent, FIBGenericEditor editor, Object dataObject,
+			FIBController controller, JFrame frame) {
 
 		pcSupport = new PropertyChangeSupport(this);
 
@@ -229,34 +260,19 @@ public class FIBEditorController /* extends FIBController */extends Observable i
 		this.editor = editor;
 		this.fibComponent = fibComponent;
 
-		contextualMenu = new ContextualMenu(this);
+		contextualMenu = new ContextualMenu(this, frame);
 
 		addObserver(editor.getInspector());
 
-		editorPanel = new JPanel(new BorderLayout());
+		editorPanel = new FIBEditorPanel(controller);
 
-		/*
-		 * FIBComponent browserComponent =
-		 * FIBLibrary.instance().retrieveFIBComponent(BROWSER_FIB, false,
-		 * factory); browserController = new
-		 * FIBBrowserController(browserComponent, this); FIBViewImpl<?, ?, ?>
-		 * view = FIBController.makeView(browserComponent, browserController);
-		 * view.getController().setDataObject(fibComponent);
-		 */
-
-		fibPanel = (JFIBView<?, ?>) controller.buildView();
-
-		FIBEditorBrowser editorBrowser = new FIBEditorBrowser(fibComponent, this);
-
-		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, editorBrowser, new FibWrappingPanel(
-				fibPanel.getResultingJComponent()));
-
-		editorPanel.add(splitPane, BorderLayout.CENTER);
+		editorBrowser = new FIBEditorBrowser(fibComponent, this);
 
 		if (dataObject != null) {
-			fibPanel.getController().setDataObject(dataObject, true);
-		} else {
-			fibPanel.getController().updateWithoutDataObject();
+			editorPanel.updateWithDataObject(dataObject);
+		}
+		else {
+			editorPanel.updateWithoutDataObject();
 		}
 
 	}
@@ -307,8 +323,8 @@ public class FIBEditorController /* extends FIBController */extends Observable i
 		return editor.getPalette();
 	}
 
-	public FIBView<?, ?> getFibPanel() {
-		return fibPanel;
+	public FIBEditorBrowser getEditorBrowser() {
+		return editorBrowser;
 	}
 
 	public FIBComponent getFocusedObject() {

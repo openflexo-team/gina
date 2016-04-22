@@ -199,7 +199,7 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 
 		boolean isTabInsertion = modelComponent instanceof FIBPanel && target.getFIBComponent() instanceof FIBTabPanel;
 		if (!isTabInsertion && ph == null) {
-			boolean deleteIt = JOptionPane.showConfirmDialog(_palette.getEditorController().getEditor().getFrame(),
+			boolean deleteIt = JOptionPane.showConfirmDialog(target.getFrame(),
 					target.getFIBComponent() + ": really delete this component (undoable operation) ?", "information",
 					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION;
 			if (!deleteIt) {

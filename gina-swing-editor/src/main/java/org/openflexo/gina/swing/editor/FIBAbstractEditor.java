@@ -69,7 +69,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
 import org.openflexo.gina.ApplicationFIBLibrary;
+import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
 import org.openflexo.gina.FIBLibrary;
+import org.openflexo.gina.FIBLibrary.FIBLibraryImpl;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelFactory;
@@ -137,7 +139,7 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 	private ComponentValidationWindow componentValidationWindow;
 	private ComponentLocalizationWindow componentLocalizationWindow;
 
-	private ApplicationFIBLibrary APP_FIB_LIBRARY = ApplicationFIBLibrary.instance();
+	private ApplicationFIBLibrary APP_FIB_LIBRARY = ApplicationFIBLibraryImpl.instance();
 	private FIBLibrary editorFIBLibrary;
 
 	public FIBAbstractEditor() {
@@ -165,7 +167,7 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 			e.printStackTrace();
 		}
 
-		editorFIBLibrary = new FIBLibrary();
+		editorFIBLibrary = FIBLibraryImpl.createInstance();
 
 		frame = new JFrame();
 		frame.setPreferredSize(new Dimension(1200, 800));
@@ -385,7 +387,7 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 		return editorController;
 	}
 
-	@Override
+	// @Override
 	public JFrame getFrame() {
 		return frame;
 	}
@@ -469,10 +471,10 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 		}
 
 		if (getController() != null) {
-			editorController = new FIBEditorController(factory, fibComponent, this, dataObject, getController());
+			editorController = new FIBEditorController(factory, fibComponent, this, dataObject, getController(), getFrame());
 		}
 		else {
-			editorController = new FIBEditorController(factory, fibComponent, this, dataObject);
+			editorController = new FIBEditorController(factory, fibComponent, this, dataObject, getFrame());
 		}
 		getPalette().setEditorController(editorController);
 		frame.getContentPane().add(editorController.getEditorPanel());

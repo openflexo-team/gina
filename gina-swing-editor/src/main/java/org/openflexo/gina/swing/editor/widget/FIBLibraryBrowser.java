@@ -1,9 +1,8 @@
 /**
  * 
- * Copyright (c) 2013-2014, Openflexo
- * Copyright (c) 2011-2012, AgileBirds
+ * Copyright (c) 2014, Openflexo
  * 
- * This file is part of Gina-core, a component of the software infrastructure 
+ * This file is part of Gina-swing-editor, a component of the software infrastructure 
  * developed at Openflexo.
  * 
  * 
@@ -37,49 +36,53 @@
  * 
  */
 
-package org.openflexo.gina;
+package org.openflexo.gina.swing.editor.widget;
 
 import java.util.logging.Logger;
 
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
+import org.openflexo.gina.FIBLibrary;
+import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.swing.utils.FIBJPanel;
+import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.ResourceLocator;
 
 /**
- * {@link ApplicationFIBLibrary} is the FIBLibrary that is used in the application.<br>
- * Only one instance of that class might be instantiated inside a JVM.
+ * Browser for FIBEditor elements
  * 
  * @author sylvain
- *
+ * 
  */
-@ModelEntity
-@ImplementationClass(ApplicationFIBLibrary.ApplicationFIBLibraryImpl.class)
-public interface ApplicationFIBLibrary extends FIBLibrary {
+@SuppressWarnings("serial")
+public class FIBLibraryBrowser extends FIBJPanel<FIBLibrary> {
 
-	public static abstract class ApplicationFIBLibraryImpl extends FIBLibraryImpl implements ApplicationFIBLibrary {
+	protected static final Logger logger = Logger.getLogger(FIBLibraryBrowser.class.getPackage().getName());
 
-		static final Logger LOGGER = Logger.getLogger(ApplicationFIBLibrary.class.getPackage().getName());
+	public static Resource FIB_FILE = ResourceLocator.locateResource("Fib/FIBLibraryBrowser.fib");
 
-		private static ApplicationFIBLibrary instance;
-
-		/*public ApplicationFIBLibraryImpl() {
-			super();
-			instance = this;
-		}*/
-
-		public static ApplicationFIBLibrary createInstance() {
-			instance = FOLDER_FACTORY.newInstance(ApplicationFIBLibrary.class);
-			return instance;
-		}
-
-		public static ApplicationFIBLibrary instance() {
-			if (instance == null) {
-				createInstance();
-			}
-			return instance;
-		}
-
-		public static boolean hasInstance() {
-			return instance != null;
-		}
+	public FIBLibraryBrowser(FIBLibrary fibLibrary) {
+		super(FIB_FILE, fibLibrary, ApplicationFIBLibraryImpl.instance(), FlexoLocalization.getMainLocalizer());
 	}
+
+	@Override
+	protected FIBLibraryBrowserController makeFIBController(FIBComponent fibComponent, LocalizedDelegate parentLocalizer) {
+		return new FIBLibraryBrowserController(fibComponent);
+	}
+
+	@Override
+	public FIBLibraryBrowserController getController() {
+		return (FIBLibraryBrowserController) super.getController();
+	}
+
+	@Override
+	public Class<FIBLibrary> getRepresentedType() {
+		return FIBLibrary.class;
+	}
+
+	@Override
+	public void delete() {
+	}
+
 }

@@ -44,7 +44,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.util.logging.Logger;
 
-import org.openflexo.gina.ApplicationFIBLibrary;
+import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.model.validation.ValidationError;
 import org.openflexo.model.validation.ValidationReport;
@@ -69,7 +69,7 @@ public abstract class GenericFIBTestCase {
 	public void validateFIB(Resource fibFile) {
 		try {
 			System.out.println("Validating fib file " + fibFile);
-			FIBComponent component = ApplicationFIBLibrary.instance().retrieveFIBComponent(fibFile);
+			FIBComponent component = ApplicationFIBLibraryImpl.instance().retrieveFIBComponent(fibFile);
 			if (component == null) {
 				fail("Component not found: " + fibFile.getURI());
 			}
@@ -84,7 +84,7 @@ public abstract class GenericFIBTestCase {
 			e.printStackTrace();
 			fail("Interrupted FIB validation");
 		} finally {
-			ApplicationFIBLibrary.instance().removeFIBComponentFromCache(fibFile);
+			ApplicationFIBLibraryImpl.instance().removeFIBComponentFromCache(fibFile);
 		}
 	}
 

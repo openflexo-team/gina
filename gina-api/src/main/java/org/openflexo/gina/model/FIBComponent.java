@@ -57,7 +57,7 @@ import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingDefinition;
-import org.openflexo.gina.ApplicationFIBLibrary;
+import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
 import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.manager.HasBaseIdentifier;
@@ -1930,7 +1930,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				return getFIBLibrary().getBindingFactory();
 			}
 			// We really have found nothing
-			return ApplicationFIBLibrary.instance().getBindingFactory();
+			return ApplicationFIBLibraryImpl.instance().getBindingFactory();
 		}
 
 		@Override

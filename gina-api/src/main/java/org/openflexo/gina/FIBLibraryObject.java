@@ -39,47 +39,38 @@
 
 package org.openflexo.gina;
 
-import java.util.logging.Logger;
-
+import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.model.factory.AccessibleProxyObject;
+import org.openflexo.model.factory.DeletableProxyObject;
+import org.openflexo.model.factory.ModelFactory;
 
 /**
- * {@link ApplicationFIBLibrary} is the FIBLibrary that is used in the application.<br>
- * Only one instance of that class might be instantiated inside a JVM.
+ * A {@link FIBLibraryObject} is the base interface for FIBLibrary
  * 
  * @author sylvain
  *
  */
-@ModelEntity
-@ImplementationClass(ApplicationFIBLibrary.ApplicationFIBLibraryImpl.class)
-public interface ApplicationFIBLibrary extends FIBLibrary {
+@ModelEntity(isAbstract = true)
+@ImplementationClass(FIBLibraryObject.FIBLibraryObjectImpl.class)
+public abstract interface FIBLibraryObject extends AccessibleProxyObject, DeletableProxyObject {
 
-	public static abstract class ApplicationFIBLibraryImpl extends FIBLibraryImpl implements ApplicationFIBLibrary {
+	public static abstract class FIBLibraryObjectImpl implements FIBLibraryObject {
 
-		static final Logger LOGGER = Logger.getLogger(ApplicationFIBLibrary.class.getPackage().getName());
+		protected static ModelFactory FOLDER_FACTORY;
 
-		private static ApplicationFIBLibrary instance;
-
-		/*public ApplicationFIBLibraryImpl() {
-			super();
-			instance = this;
-		}*/
-
-		public static ApplicationFIBLibrary createInstance() {
-			instance = FOLDER_FACTORY.newInstance(ApplicationFIBLibrary.class);
-			return instance;
-		}
-
-		public static ApplicationFIBLibrary instance() {
-			if (instance == null) {
-				createInstance();
+		static {
+			try {
+				FOLDER_FACTORY = new ModelFactory(
+						ModelContextLibrary.getCompoundModelContext(FIBLibrary.class, ApplicationFIBLibrary.class, FIBFolder.class));
+			} catch (ModelDefinitionException e) {
+				e.printStackTrace();
 			}
-			return instance;
+
 		}
 
-		public static boolean hasInstance() {
-			return instance != null;
-		}
 	}
+
 }

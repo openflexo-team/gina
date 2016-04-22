@@ -47,7 +47,7 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.fib.FIBTestCase;
-import org.openflexo.gina.ApplicationFIBLibrary;
+import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
 import org.openflexo.gina.model.FIBWidget;
 import org.openflexo.gina.model.widget.FIBTextArea;
 import org.openflexo.gina.model.widget.FIBTextField;
@@ -71,7 +71,7 @@ public class TestInspector extends FIBTestCase {
 	@Test
 	@TestOrder(1)
 	public void testInstantiateInspectorGroup() {
-		inspectorGroup = new InspectorGroup(ResourceLocator.locateResource("TestInspector"), ApplicationFIBLibrary.instance());
+		inspectorGroup = new InspectorGroup(ResourceLocator.locateResource("TestInspector"), ApplicationFIBLibraryImpl.instance());
 		assertNotNull(inspectorGroup);
 	}
 

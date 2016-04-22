@@ -54,6 +54,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import org.openflexo.gina.FIBLibrary;
+import org.openflexo.gina.FIBLibrary.FIBLibraryImpl;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.utils.JFIBPreferences;
@@ -84,7 +85,7 @@ public class FIBEditorPalette extends JDialog {
 
 	private FIBEditorController editorController;
 
-	private static FIBLibrary PALETTE_FIB_LIBRARY = new FIBLibrary();
+	private static FIBLibrary PALETTE_FIB_LIBRARY = FIBLibraryImpl.createInstance();
 
 	public FIBEditorPalette(JFrame frame) {
 		super(frame, "Palette", false);

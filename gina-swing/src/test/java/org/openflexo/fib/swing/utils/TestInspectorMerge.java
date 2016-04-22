@@ -48,7 +48,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.fib.FIBTestCase;
-import org.openflexo.gina.ApplicationFIBLibrary;
+import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBWidget;
 import org.openflexo.gina.model.widget.FIBTextField;
@@ -72,7 +72,7 @@ public class TestInspectorMerge extends FIBTestCase {
 	@Test
 	@TestOrder(1)
 	public void testInstantiateInspectorGroup() {
-		inspectorGroup = new InspectorGroup(ResourceLocator.locateResource("TestInspectorMerge"), ApplicationFIBLibrary.instance());
+		inspectorGroup = new InspectorGroup(ResourceLocator.locateResource("TestInspectorMerge"), ApplicationFIBLibraryImpl.instance());
 		assertNotNull(inspectorGroup);
 	}
 

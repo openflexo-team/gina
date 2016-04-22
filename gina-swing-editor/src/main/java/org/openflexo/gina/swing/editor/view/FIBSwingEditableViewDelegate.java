@@ -42,6 +42,7 @@ package org.openflexo.gina.swing.editor.view;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Point;
+import java.awt.Window;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
@@ -61,6 +62,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import org.openflexo.gina.controller.FIBController;
@@ -252,6 +254,17 @@ public class FIBSwingEditableViewDelegate<M extends FIBComponent, J extends JCom
 
 		public FIBSwingEditableView<?, ?> getEditableView() {
 			return editableView;
+		}
+
+		public Window getWindow() {
+			return SwingUtilities.getWindowAncestor(editableView.getJComponent());
+		}
+
+		public JFrame getFrame() {
+			if (getWindow() instanceof JFrame) {
+				return (JFrame) getWindow();
+			}
+			return null;
 		}
 
 		/*

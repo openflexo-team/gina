@@ -49,7 +49,7 @@ import org.openflexo.connie.Bindable;
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.gina.ApplicationFIBLibrary;
+import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.annotations.Adder;
@@ -209,7 +209,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 			if (getComponent() != null && getComponent() != this) {
 				return getComponent().getModelFactory();
 			}
-			return ApplicationFIBLibrary.instance().getFIBModelFactory();
+			return ApplicationFIBLibraryImpl.instance().getFIBModelFactory();
 		}
 
 		/**

@@ -39,47 +39,44 @@
 
 package org.openflexo.gina;
 
-import java.util.logging.Logger;
+import java.util.List;
 
+import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Remover;
+import org.openflexo.model.annotations.Setter;
 
 /**
- * {@link ApplicationFIBLibrary} is the FIBLibrary that is used in the application.<br>
- * Only one instance of that class might be instantiated inside a JVM.
+ * A {@link FIBLibraryContainer} is the base interface for FIBLibrary
  * 
  * @author sylvain
  *
  */
-@ModelEntity
-@ImplementationClass(ApplicationFIBLibrary.ApplicationFIBLibraryImpl.class)
-public interface ApplicationFIBLibrary extends FIBLibrary {
+@ModelEntity(isAbstract = true)
+@ImplementationClass(FIBLibraryContainer.FIBLibraryContainerImpl.class)
+public abstract interface FIBLibraryContainer extends FIBLibraryObject {
 
-	public static abstract class ApplicationFIBLibraryImpl extends FIBLibraryImpl implements ApplicationFIBLibrary {
+	@PropertyIdentifier(type = FIBFolder.class, cardinality = Cardinality.LIST)
+	public static final String FOLDERS_KEY = "folders";
 
-		static final Logger LOGGER = Logger.getLogger(ApplicationFIBLibrary.class.getPackage().getName());
+	@Getter(value = FOLDERS_KEY, cardinality = Cardinality.LIST, inverse = FIBFolder.PARENT_KEY)
+	public List<FIBFolder> getFolders();
 
-		private static ApplicationFIBLibrary instance;
+	@Setter(FOLDERS_KEY)
+	public void setFolders(List<FIBFolder> folders);
 
-		/*public ApplicationFIBLibraryImpl() {
-			super();
-			instance = this;
-		}*/
+	@Adder(FOLDERS_KEY)
+	public void addToFolders(FIBFolder aFolder);
 
-		public static ApplicationFIBLibrary createInstance() {
-			instance = FOLDER_FACTORY.newInstance(ApplicationFIBLibrary.class);
-			return instance;
-		}
+	@Remover(FOLDERS_KEY)
+	public void removeFromFolders(FIBFolder aFolder);
 
-		public static ApplicationFIBLibrary instance() {
-			if (instance == null) {
-				createInstance();
-			}
-			return instance;
-		}
+	public static abstract class FIBLibraryContainerImpl extends FIBLibraryObjectImpl implements FIBLibraryContainer {
 
-		public static boolean hasInstance() {
-			return instance != null;
-		}
 	}
+
 }

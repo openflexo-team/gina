@@ -86,7 +86,7 @@ import org.openflexo.connie.expr.parser.ExpressionParser;
 import org.openflexo.connie.expr.parser.ParseException;
 import org.openflexo.connie.java.JavaBindingFactory;
 import org.openflexo.connie.type.TypeUtils;
-import org.openflexo.gina.ApplicationFIBLibrary;
+import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.event.GinaEvent.KIND;
 import org.openflexo.gina.event.GinaEventNotifier;
@@ -1587,7 +1587,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		logButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FlexoLoggingViewer.showLoggingViewer(FlexoLoggingManager.instance(), ApplicationFIBLibrary.instance(), dialog);
+				FlexoLoggingViewer.showLoggingViewer(FlexoLoggingManager.instance(), ApplicationFIBLibraryImpl.instance(), dialog);
 			}
 		});
 

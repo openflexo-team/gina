@@ -119,7 +119,7 @@ public class InspectorGroup {
 
 		// We first merge all inspectors inside the group
 		for (FIBInspector inspector : new ArrayList<FIBInspector>(inspectors.values())) {
-			// System.out.println("Merging " + inspector.getInspectedClass());
+			System.out.println("Merging " + inspector.getInspectedClass());
 			inspector.mergeWithParentInspectors();
 		}
 

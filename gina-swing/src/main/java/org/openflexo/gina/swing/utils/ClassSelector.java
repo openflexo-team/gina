@@ -51,7 +51,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import org.openflexo.gina.ApplicationFIBLibrary;
+import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.widget.FIBCustom;
@@ -148,7 +148,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class>implements FIBCust
 		protected ClassSelectorDetailsPanel(Class aClass) {
 			super();
 
-			fibComponent = ApplicationFIBLibrary.instance().retrieveFIBComponent(FIB_FILE_NAME, true);
+			fibComponent = ApplicationFIBLibraryImpl.instance().retrieveFIBComponent(FIB_FILE_NAME, true);
 			controller = new CustomFIBController(fibComponent, SwingViewFactory.INSTANCE);
 			fibView = (JFIBView<?, ?>) controller.buildView(fibComponent);
 
@@ -312,7 +312,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class>implements FIBCust
 		logButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FlexoLoggingViewer.showLoggingViewer(FlexoLoggingManager.instance(), ApplicationFIBLibrary.instance(), dialog);
+				FlexoLoggingViewer.showLoggingViewer(FlexoLoggingManager.instance(), ApplicationFIBLibraryImpl.instance(), dialog);
 			}
 		});
 
