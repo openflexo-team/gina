@@ -10,5 +10,5 @@
     <Line1Option index="10" name="JustificationPanel.CenterJustifyButton" />
     <Line1Option index="11" name="JustificationPanel.RightJustifyButton" />
     <Line1Option index="12" name="JustificationPanel.BlockJustifyButton" />
-    <FIBVariable name="paletteData" type="org.openflexo.gina.swing.editor.controller.FIBEditorPalettes$AdvancedPaletteData" />
+    <FIBVariable name="paletteData" type="org.openflexo.gina.swing.editor.palette.FIBEditorPalettes$AdvancedPaletteData" />
 </HTMLEditor>

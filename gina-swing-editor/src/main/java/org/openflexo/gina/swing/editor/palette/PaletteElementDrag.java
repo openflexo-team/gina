@@ -37,19 +37,13 @@
  * 
  */
 
-package org.openflexo.gina.swing.editor.controller;
+package org.openflexo.gina.swing.editor.palette;
 
 import java.awt.Point;
 
-import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate.FIBDropTarget;
+public class PaletteElementDrag extends ElementDrag<PaletteElement> {
 
-public interface FIBDraggable {
-
-	public void enableDragging();
-
-	public void disableDragging();
-
-	public boolean acceptDragging(FIBDropTarget target);
-
-	public boolean elementDragged(FIBDropTarget target, DropListener dl, Point pt);
+	public PaletteElementDrag(PaletteElement element, Point dragOrigin) {
+		super(element, dragOrigin);
+	}
 }

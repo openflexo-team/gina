@@ -55,7 +55,7 @@ import javax.swing.WindowConstants;
 
 import org.openflexo.gina.FIBLibrary.FIBLibraryImpl;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.controller.FIBEditorPalettesDialog;
+import org.openflexo.gina.swing.editor.palette.FIBEditorPalettesDialog;
 import org.openflexo.gina.swing.utils.JFIBInspectorController;
 import org.openflexo.gina.swing.utils.JFIBPreferences;
 import org.openflexo.localization.FlexoLocalization;

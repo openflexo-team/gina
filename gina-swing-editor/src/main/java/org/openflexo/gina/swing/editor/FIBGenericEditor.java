@@ -41,7 +41,7 @@ package org.openflexo.gina.swing.editor;
 
 import java.io.File;
 
-import org.openflexo.gina.swing.editor.controller.FIBEditorPalettes;
+import org.openflexo.gina.swing.editor.palette.FIBEditorPalettes;
 import org.openflexo.gina.swing.utils.JFIBInspectorController;
 
 public interface FIBGenericEditor {

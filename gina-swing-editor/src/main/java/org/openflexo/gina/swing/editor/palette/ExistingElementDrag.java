@@ -37,7 +37,7 @@
  * 
  */
 
-package org.openflexo.gina.swing.editor.controller;
+package org.openflexo.gina.swing.editor.palette;
 
 import java.awt.Point;
 

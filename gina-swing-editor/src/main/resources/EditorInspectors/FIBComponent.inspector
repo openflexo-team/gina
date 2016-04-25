@@ -481,7 +481,7 @@
 						constraints="gridbag(anchor=west;fill=none;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=10;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=5;padX=0;padY=0;weightX=0.0;weightY=0.0)"
 						localize="true" />
 					<Label label="opaque" index="12"
-						constraints="gridbag(anchor=west;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=12;insetsBottom=0;insetsLeft=5;insetsRight=5;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+						constraints="gridbag(anchor=east;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=12;insetsBottom=0;insetsLeft=5;insetsRight=5;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
 						localize="true" />
 					<CheckBox selected="false" index="11" data="data.opaque"
 						constraints="gridbag(anchor=west;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=11;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"

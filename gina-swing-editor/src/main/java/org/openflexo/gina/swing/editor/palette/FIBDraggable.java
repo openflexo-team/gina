@@ -1,7 +1,7 @@
 /**
  * 
  * Copyright (c) 2013-2014, Openflexo
- * Copyright (c) 2011-2012, AgileBirds
+ * Copyright (c) 2012-2012, AgileBirds
  * 
  * This file is part of Gina-swing-editor, a component of the software infrastructure 
  * developed at Openflexo.
@@ -37,41 +37,19 @@
  * 
  */
 
-package org.openflexo.gina.swing.editor.controller;
+package org.openflexo.gina.swing.editor.palette;
 
-import java.awt.Rectangle;
-import java.util.logging.Logger;
+import java.awt.Point;
 
-import javax.swing.JDialog;
-import javax.swing.JFrame;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate.FIBDropTarget;
 
-import org.openflexo.gina.swing.editor.FIBEditor;
-import org.openflexo.gina.swing.utils.JFIBPreferences;
-import org.openflexo.logging.FlexoLogger;
-import org.openflexo.swing.ComponentBoundSaver;
+public interface FIBDraggable {
 
-public class FIBEditorPalettesDialog extends JDialog {
+	public void enableDragging();
 
-	static final Logger logger = FlexoLogger.getLogger(FIBEditor.class.getPackage().getName());
+	public void disableDragging();
 
-	private FIBEditorPalettes palettes;
+	public boolean acceptDragging(FIBDropTarget target);
 
-	public FIBEditorPalettesDialog(JFrame frame, FIBEditorPalettes palette) {
-		super(frame, "Palettes", false);
-
-		getContentPane().add(palette);
-		setBounds(JFIBPreferences.getPaletteBounds());
-		new ComponentBoundSaver(this) {
-
-			@Override
-			public void saveBounds(Rectangle bounds) {
-				JFIBPreferences.setPaletteBounds(bounds);
-			}
-		};
-
-	}
-
-	public FIBEditorPalettes getPalettes() {
-		return palettes;
-	}
+	public boolean elementDragged(FIBDropTarget target, DropListener dl, Point pt);
 }

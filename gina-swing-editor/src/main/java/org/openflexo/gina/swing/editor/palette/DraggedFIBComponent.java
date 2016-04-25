@@ -37,7 +37,7 @@
  * 
  */
 
-package org.openflexo.gina.swing.editor.controller;
+package org.openflexo.gina.swing.editor.palette;
 
 import java.awt.Point;
 import java.util.logging.Logger;
@@ -45,6 +45,7 @@ import java.util.logging.Logger;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate.FIBDropTarget;
+import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.logging.FlexoLogger;
 

@@ -68,6 +68,8 @@ import org.openflexo.gina.model.FIBModelFactory;
 import org.openflexo.gina.swing.editor.EditedFIBComponent;
 import org.openflexo.gina.swing.editor.FIBAbstractEditor;
 import org.openflexo.gina.swing.editor.FIBGenericEditor;
+import org.openflexo.gina.swing.editor.palette.DropListener;
+import org.openflexo.gina.swing.editor.palette.FIBEditorPalettes;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate;
 import org.openflexo.gina.swing.editor.widget.FIBEditorBrowser;
@@ -77,6 +79,7 @@ import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.localization.Language;
 import org.openflexo.logging.FlexoLogger;
+import org.openflexo.model.undo.UndoManager;
 import org.openflexo.swing.NoInsetsBorder;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
@@ -459,4 +462,7 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 		// dropListeners.clear();
 	}
 
+	public UndoManager getUndoManager() {
+		return null;
+	}
 }

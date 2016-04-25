@@ -1,5 +1,5 @@
 <TextField data="paletteData.textFieldString" columns="8">
 	<Parameter name="x" value="50"/>
 	<Parameter name="y" value="5"/>
-    <FIBVariable name="paletteData" type="org.openflexo.gina.swing.editor.controller.FIBEditorPalettes$WidgetsPaletteData" />
+    <FIBVariable name="paletteData" type="org.openflexo.gina.swing.editor.palette.FIBEditorPalettes$WidgetsPaletteData" />
 </TextField>

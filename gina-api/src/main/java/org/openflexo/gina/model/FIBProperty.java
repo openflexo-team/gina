@@ -45,6 +45,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.model.annotations.PropertyIdentifier;
 
 /**
@@ -60,6 +61,7 @@ public class FIBProperty<T> {
 
 	public static void main(String[] args) {
 		System.out.println("Hop: " + getFIBProperty(FIBModelObject.class, FIBModelObject.NAME_KEY));
+		System.out.println("Hop: " + getFIBProperties(FIBTable.class));
 	}
 
 	private static Map<String, FIBProperty<?>> retrieveProperties(Class<?> ownerClass) {
@@ -138,19 +140,26 @@ public class FIBProperty<T> {
 		if (p.isPrimitive()) {
 			if (type.equals(Integer.class)) {
 				type = (Class<T>) Integer.TYPE;
-			} else if (type.equals(Short.class)) {
+			}
+			else if (type.equals(Short.class)) {
 				type = (Class<T>) Short.TYPE;
-			} else if (type.equals(Long.class)) {
+			}
+			else if (type.equals(Long.class)) {
 				type = (Class<T>) Long.TYPE;
-			} else if (type.equals(Byte.class)) {
+			}
+			else if (type.equals(Byte.class)) {
 				type = (Class<T>) Byte.TYPE;
-			} else if (type.equals(Double.class)) {
+			}
+			else if (type.equals(Double.class)) {
 				type = (Class<T>) Double.TYPE;
-			} else if (type.equals(Float.class)) {
+			}
+			else if (type.equals(Float.class)) {
 				type = (Class<T>) Float.TYPE;
-			} else if (type.equals(Character.class)) {
+			}
+			else if (type.equals(Character.class)) {
 				type = (Class<T>) Character.TYPE;
-			} else if (type.equals(Boolean.class)) {
+			}
+			else if (type.equals(Boolean.class)) {
 				type = (Class<T>) Boolean.TYPE;
 			}
 		}
@@ -227,17 +236,20 @@ public class FIBProperty<T> {
 		if (field == null) {
 			if (other.field != null)
 				return false;
-		} else if (!field.equals(other.field))
+		}
+		else if (!field.equals(other.field))
 			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
-		} else if (!name.equals(other.name))
+		}
+		else if (!name.equals(other.name))
 			return false;
 		if (type == null) {
 			if (other.type != null)
 				return false;
-		} else if (!type.equals(other.type))
+		}
+		else if (!type.equals(other.type))
 			return false;
 		return true;
 	}

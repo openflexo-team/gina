@@ -67,11 +67,11 @@ import javax.swing.SwingUtilities;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
-import org.openflexo.gina.swing.editor.controller.DraggedFIBComponent;
-import org.openflexo.gina.swing.editor.controller.DropListener;
-import org.openflexo.gina.swing.editor.controller.ExistingElementDrag;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.controller.FIBEditorPalette;
+import org.openflexo.gina.swing.editor.palette.DraggedFIBComponent;
+import org.openflexo.gina.swing.editor.palette.DropListener;
+import org.openflexo.gina.swing.editor.palette.ExistingElementDrag;
+import org.openflexo.gina.swing.editor.palette.FIBEditorPalette;
 import org.openflexo.gina.swing.editor.view.container.JFIBEditableSplitPanelView;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.view.FIBView;

@@ -37,7 +37,7 @@
  * 
  */
 
-package org.openflexo.gina.swing.editor.controller;
+package org.openflexo.gina.swing.editor.palette;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +48,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 
 import org.openflexo.gina.swing.editor.FIBEditor;
+import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;

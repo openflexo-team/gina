@@ -1,7 +1,7 @@
 /**
  * 
  * Copyright (c) 2013-2014, Openflexo
- * Copyright (c) 2012-2012, AgileBirds
+ * Copyright (c) 2011-2012, AgileBirds
  * 
  * This file is part of Gina-swing-editor, a component of the software infrastructure 
  * developed at Openflexo.
@@ -37,36 +37,41 @@
  * 
  */
 
-package org.openflexo.gina.swing.editor.controller;
+package org.openflexo.gina.swing.editor.palette;
 
-import java.awt.Point;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.IOException;
+import java.awt.Rectangle;
+import java.util.logging.Logger;
 
-public abstract class ElementDrag<T> implements Transferable {
-	public static final DataFlavor DEFAULT_FLAVOR = new DataFlavor(ElementDrag.class, "PaletteElement");
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 
-	private T _transferedData;
+import org.openflexo.gina.swing.editor.FIBEditor;
+import org.openflexo.gina.swing.utils.JFIBPreferences;
+import org.openflexo.logging.FlexoLogger;
+import org.openflexo.swing.ComponentBoundSaver;
 
-	public ElementDrag(T transferedData, Point dragOrigin) {
-		_transferedData = transferedData;
+public class FIBEditorPalettesDialog extends JDialog {
+
+	static final Logger logger = FlexoLogger.getLogger(FIBEditor.class.getPackage().getName());
+
+	private FIBEditorPalettes palettes;
+
+	public FIBEditorPalettesDialog(JFrame frame, FIBEditorPalettes palette) {
+		super(frame, "Palettes", false);
+
+		getContentPane().add(palette);
+		setBounds(JFIBPreferences.getPaletteBounds());
+		new ComponentBoundSaver(this) {
+
+			@Override
+			public void saveBounds(Rectangle bounds) {
+				JFIBPreferences.setPaletteBounds(bounds);
+			}
+		};
+
 	}
 
-	@Override
-	public DataFlavor[] getTransferDataFlavors() {
-		return new DataFlavor[] { DEFAULT_FLAVOR };
+	public FIBEditorPalettes getPalettes() {
+		return palettes;
 	}
-
-	@Override
-	public boolean isDataFlavorSupported(DataFlavor flavor) {
-		return true;
-	}
-
-	@Override
-	public T getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-		return _transferedData;
-	}
-
 }

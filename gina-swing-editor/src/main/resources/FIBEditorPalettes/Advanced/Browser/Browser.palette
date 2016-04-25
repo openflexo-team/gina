@@ -6,22 +6,22 @@
 		useScrollBar="false" rootVisible="false" readOnly="false">
 		<BrowserElement id="2"
 			filtered="false" label="'Root'" defaultVisible="true"
-			dataClassName="org.openflexo.gina.swing.editor.controller.FIBEditorPalettes$AdvancedPaletteData" name="sampleData"
+			dataClassName="org.openflexo.gina.swing.editor.palette.FIBEditorPalettes$AdvancedPaletteData" name="sampleData"
 			isEditable="false">
 			<Children id="5" name="folders" data="sampleData.browserFolders" />
 		</BrowserElement>
 		<BrowserElement id="3" icon="folder.icon"
 			filtered="false" label="folder.folderName" defaultVisible="true"
-			dataClassName="org.openflexo.gina.swing.editor.controller.FIBEditorPalettes$AdvancedPaletteData$BrowserFolder" name="folder"
+			dataClassName="org.openflexo.gina.swing.editor.palette.FIBEditorPalettes$AdvancedPaletteData$BrowserFolder" name="folder"
 			isEditable="false">
 			<Children id="6" name="items" data="folder.items" />
 		</BrowserElement>
 		<BrowserElement id="4" icon="item.icon"
 			filtered="false" label="item.itemName" defaultVisible="true"
-			dataClassName="org.openflexo.gina.swing.editor.controller.FIBEditorPalettes$AdvancedPaletteData$BrowserItem" name="item"
+			dataClassName="org.openflexo.gina.swing.editor.palette.FIBEditorPalettes$AdvancedPaletteData$BrowserItem" name="item"
 			isEditable="false">
 		</BrowserElement>
 	<Parameter name="x" value="145"/>
 	<Parameter name="y" value="10"/>
-    <FIBVariable name="paletteData" type="org.openflexo.gina.swing.editor.controller.FIBEditorPalettes$AdvancedPaletteData" />
+    <FIBVariable name="paletteData" type="org.openflexo.gina.swing.editor.palette.FIBEditorPalettes$AdvancedPaletteData" />
 	</Browser>

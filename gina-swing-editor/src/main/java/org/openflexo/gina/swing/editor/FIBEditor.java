@@ -65,8 +65,9 @@ import org.openflexo.gina.model.FIBModelFactory;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.controller.FIBEditorPalettes;
-import org.openflexo.gina.swing.editor.controller.FIBEditorPalettesDialog;
+import org.openflexo.gina.swing.editor.inspector.FIBInspectors;
+import org.openflexo.gina.swing.editor.palette.FIBEditorPalettes;
+import org.openflexo.gina.swing.editor.palette.FIBEditorPalettesDialog;
 import org.openflexo.gina.swing.utils.JFIBInspectorController;
 import org.openflexo.gina.swing.utils.JFIBPreferences;
 import org.openflexo.gina.swing.utils.localization.LocalizedEditor;
@@ -102,6 +103,8 @@ public class FIBEditor implements FIBGenericEditor {
 	private FIBEditorPalettes palette;
 
 	private JFIBInspectorController inspector;
+
+	private FIBInspectors inspectors;
 
 	private FIBEditorController editorController;
 
@@ -173,6 +176,11 @@ public class FIBEditor implements FIBGenericEditor {
 		return palette;
 	}
 
+	public FIBInspectors makeInspectors() {
+		inspectors = new FIBInspectors();
+		return inspectors;
+	}
+
 	public FIBLibrary getFIBLibrary() {
 		return fibLibrary;
 	}
@@ -182,6 +190,7 @@ public class FIBEditor implements FIBGenericEditor {
 		return inspector;
 	}
 
+	@Override
 	public FIBEditorPalettes getPalettes() {
 		return palette;
 	}
