@@ -98,7 +98,11 @@ public interface FIBLocalizedEntry extends FIBModelObject {
 
 		@Override
 		public FIBComponent getComponent() {
-			return getLocalizedDictionary().getComponent();
+			FIBLocalizedDictionary dic = getLocalizedDictionary();
+			if (dic != null) {
+				return dic.getComponent();
+			}
+			return null;
 		}
 
 		@Override
@@ -109,8 +113,8 @@ public interface FIBLocalizedEntry extends FIBModelObject {
 	}
 
 	@DefineValidationRule
-	public static class LocalizedEntryShouldNotBeRegisteredTwice extends
-			ValidationRule<LocalizedEntryShouldNotBeRegisteredTwice, FIBLocalizedEntry> {
+	public static class LocalizedEntryShouldNotBeRegisteredTwice
+			extends ValidationRule<LocalizedEntryShouldNotBeRegisteredTwice, FIBLocalizedEntry> {
 		public LocalizedEntryShouldNotBeRegisteredTwice() {
 			super(FIBLocalizedEntry.class, "localized_entry_should_not_be_registered_twice");
 		}
@@ -153,20 +157,21 @@ public interface FIBLocalizedEntry extends FIBModelObject {
 	}
 
 	@DefineValidationRule
-	public static class LocalizedEntryShouldNotRedefineParentTranslation extends
-			ValidationRule<LocalizedEntryShouldNotRedefineParentTranslation, FIBLocalizedEntry> {
+	public static class LocalizedEntryShouldNotRedefineParentTranslation
+			extends ValidationRule<LocalizedEntryShouldNotRedefineParentTranslation, FIBLocalizedEntry> {
 		public LocalizedEntryShouldNotRedefineParentTranslation() {
 			super(FIBLocalizedEntry.class, "localized_entry_should_not_redefine_parent_translation");
 		}
 
 		@Override
-		public ValidationIssue<LocalizedEntryShouldNotRedefineParentTranslation, FIBLocalizedEntry> applyValidation(FIBLocalizedEntry entry) {
+		public ValidationIssue<LocalizedEntryShouldNotRedefineParentTranslation, FIBLocalizedEntry> applyValidation(
+				FIBLocalizedEntry entry) {
 
 			// System.out.println("looking up " + entry);
 			// System.out.println("parent=" + entry.getLocalizedDictionary().getParent());
 			if (entry.getLocalizedDictionary() != null && entry.getLocalizedDictionary().getParent() != null) {
-				String parentTranslation = entry.getLocalizedDictionary().getParent()
-						.getLocalizedForKeyAndLanguage(entry.getKey(), Language.retrieveLanguage(entry.getLanguage()));
+				String parentTranslation = entry.getLocalizedDictionary().getParent().getLocalizedForKeyAndLanguage(entry.getKey(),
+						Language.retrieveLanguage(entry.getLanguage()));
 				// System.out.println("parentTranslation=" + parentTranslation);
 				if (parentTranslation != null && parentTranslation.equals(entry.getValue())) {
 					DeleteUnnecessaryTranslation fixProposal = new DeleteUnnecessaryTranslation(entry);
@@ -177,8 +182,8 @@ public interface FIBLocalizedEntry extends FIBModelObject {
 			return null;
 		}
 
-		protected static class DeleteUnnecessaryTranslation extends
-				FixProposal<LocalizedEntryShouldNotRedefineParentTranslation, FIBLocalizedEntry> {
+		protected static class DeleteUnnecessaryTranslation
+				extends FixProposal<LocalizedEntryShouldNotRedefineParentTranslation, FIBLocalizedEntry> {
 
 			private final FIBLocalizedEntry entry;
 
