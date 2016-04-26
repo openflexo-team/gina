@@ -107,11 +107,17 @@ public class FIBController
 			try {
 				// System.out.println("Class=" +
 				// fibComponent.getControllerClass());
-				Constructor<? extends FIBController> c = fibComponent.getControllerClass().getConstructor(FIBComponent.class,
-						GinaViewFactory.class);
-				// System.out.println("Constructor=" + c);
-				returned = c.newInstance(fibComponent, viewFactory);
-				// System.out.println("returned=" + returned);
+				try {
+					Constructor<? extends FIBController> c = fibComponent.getControllerClass().getConstructor(FIBComponent.class,
+							GinaViewFactory.class);
+					// System.out.println("Constructor=" + c);
+					returned = c.newInstance(fibComponent, viewFactory);
+					// System.out.println("returned=" + returned);
+				} catch (NoSuchMethodException e) {
+					Constructor<? extends FIBController> c = fibComponent.getControllerClass().getConstructor(FIBComponent.class);
+					// System.out.println("Constructor=" + c);
+					returned = c.newInstance(fibComponent);
+				}
 			} catch (SecurityException e) {
 				LOGGER.warning("SecurityException: Could not instanciate " + fibComponent.getControllerClass());
 			} catch (NoSuchMethodException e) {
@@ -447,8 +453,7 @@ public class FIBController
 	public final <M extends FIBComponent> FIBView<M, ?> buildView(M fibComponent) {
 		if (fibComponent instanceof FIBContainer) {
 			return (FIBView<M, ?>) getViewFactory().makeContainer((FIBContainer) fibComponent, this);
-		}
-		else if (fibComponent instanceof FIBWidget) {
+		} else if (fibComponent instanceof FIBWidget) {
 			return (FIBView<M, ?>) getViewFactory().makeWidget((FIBWidget) fibComponent, this);
 		}
 		return null;
@@ -531,8 +536,7 @@ public class FIBController
 				returned.setParent(getParentLocalizer());
 			}
 			return returned;
-		}
-		else {
+		} else {
 			LOGGER.warning("Could not find localizer");
 			return null;
 		}
@@ -714,8 +718,7 @@ public class FIBController
 			for (Object o : newSelection) {
 				if (oldSelection != null && oldSelection.contains(o)) {
 					objectsToRemoveFromSelection.remove(o);
-				}
-				else {
+				} else {
 					objectsToAddToSelection.add(o);
 				}
 			}
