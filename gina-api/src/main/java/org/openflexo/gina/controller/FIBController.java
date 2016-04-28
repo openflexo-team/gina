@@ -102,17 +102,17 @@ public class FIBController
 		 * if (fibComponent != null) {
 		 * fibComponent.getFactory().stringRepresentation(fibComponent); }
 		 */
+		if (fibComponent.getControllerClass() == null) {
+			LOGGER.warning("No FIBController class declared for "+fibComponent);
+		}
+
 		if (fibComponent.getControllerClass() != null) {
 
 			try {
-				// System.out.println("Class=" +
-				// fibComponent.getControllerClass());
 				try {
 					Constructor<? extends FIBController> c = fibComponent.getControllerClass().getConstructor(FIBComponent.class,
 							GinaViewFactory.class);
-					// System.out.println("Constructor=" + c);
 					returned = c.newInstance(fibComponent, viewFactory);
-					// System.out.println("returned=" + returned);
 				} catch (NoSuchMethodException e) {
 					Constructor<? extends FIBController> c = fibComponent.getControllerClass().getConstructor(FIBComponent.class);
 					// System.out.println("Constructor=" + c);
