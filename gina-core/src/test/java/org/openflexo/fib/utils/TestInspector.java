@@ -48,6 +48,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.fib.FIBTestCase;
 import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
+import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBWidget;
 import org.openflexo.gina.model.widget.FIBTextArea;
 import org.openflexo.gina.model.widget.FIBTextField;
@@ -77,31 +78,39 @@ public class TestInspector extends FIBTestCase {
 
 	@Test
 	@TestOrder(2)
+	public void testFIBComponent() {
+		FIBInspector componentInspector = inspectorGroup.inspectorForClass(FIBComponent.class);
+		System.out.println(componentInspector.getXMLRepresentation());
+	}
+
+	@Test
+	@TestOrder(3)
 	public void testFIBWidget() {
 		FIBInspector widgetInspector = inspectorGroup.inspectorForClass(FIBWidget.class);
 		System.out.println(widgetInspector.getXMLRepresentation());
 	}
 
 	@Test
-	@TestOrder(3)
+	@TestOrder(4)
 	public void testFIBTextAreaWidget() {
 		FIBInspector textAreaInspector = inspectorGroup.inspectorForClass(FIBTextArea.class);
 		System.out.println(textAreaInspector.getXMLRepresentation());
 	}
 
 	@Test
-	@TestOrder(4)
+	@TestOrder(5)
 	public void testFIBTextFieldWidget() {
 		FIBInspector textFieldInspector = inspectorGroup.inspectorForClass(FIBTextField.class);
 		System.out.println(textFieldInspector.getXMLRepresentation());
 	}
 
 	@Test
-	@TestOrder(5)
+	@TestOrder(6)
 	public void testFIBTextFieldWidgetInspectors() {
 		List<FIBInspector> inspectors = inspectorGroup.inspectorsForClass(FIBTextField.class);
 		System.out.println("inspectors=" + inspectors);
-		assertEquals(2, inspectors.size());
+		assertEquals(3, inspectors.size());
+		assertTrue(inspectors.contains(inspectorGroup.inspectorForClass(FIBComponent.class)));
 		assertTrue(inspectors.contains(inspectorGroup.inspectorForClass(FIBWidget.class)));
 		assertTrue(inspectors.contains(inspectorGroup.inspectorForClass(FIBTextField.class)));
 	}

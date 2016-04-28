@@ -94,7 +94,7 @@ public abstract class FIBJPanel<T> extends JPanel implements FIBCustomComponent<
 
 		fibComponent = component;
 		controller = makeFIBController(fibComponent, parentLocalizer);
-		fibView = (JFIBView<?, ?>) controller.buildView(fibComponent);
+		fibView = (JFIBView<?, ?>) controller.buildView(fibComponent, true);
 
 		controller.setDataObject(editedObject);
 

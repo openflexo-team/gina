@@ -457,11 +457,9 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		}
 
 		if (isDeleted()) {
-			System.out.println("Attention quelqu'un appelle update() pour un composant delete !!!");
+			System.out.println("update() called for a deleted component view !!!");
 			return false;
 		}
-
-		// System.out.println("update of " + this);
 
 		isUpdating = true;
 
@@ -594,14 +592,13 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			setVisible(visible);
 			if (visible) {
 				componentBecomesVisible();
-			}
-			else {
+			} else {
 				componentBecomesInvisible();
 			}
 
 			if (getParentView() != null) {
 				getParentView().invalidateAndUpdateLayoutLater();
-
+				// getParentView().revalidateAndRepaint();
 			}
 
 		}
@@ -681,13 +678,11 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 				preferredSize.height = getComponent().getHeight();
 			}
 			getRenderingAdapter().setPreferredSize(getTechnologyComponent(), preferredSize);
-		}
-		else {
+		} else {
 			if (getComponent().hasTemporarySize()) {
 				getRenderingAdapter().setPreferredSize(getTechnologyComponent(),
 						new Dimension(getComponent().getTemporaryWidth(), getComponent().getTemporaryHeight()));
-			}
-			else {
+			} else {
 				// System.out.println("Clear de la prefered size pour " +
 				// getComponent());
 				if (getTechnologyComponent() != null) {
@@ -736,8 +731,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		if (getComponent().getBackgroundColor() != null) {
 			getRenderingAdapter().setBackgroundColor(getTechnologyComponent(), getComponent().getBackgroundColor());
 			getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
-		}
-		else {
+		} else {
 			getRenderingAdapter().setBackgroundColor(getTechnologyComponent(),
 					getRenderingAdapter().getDefaultBackgroundColor(getTechnologyComponent()));
 			getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
@@ -751,8 +745,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		if (getComponent().getForegroundColor() != null) {
 			getRenderingAdapter().setForegroundColor(getTechnologyComponent(), getComponent().getForegroundColor());
 			getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
-		}
-		else {
+		} else {
 			getRenderingAdapter().setForegroundColor(getTechnologyComponent(),
 					getRenderingAdapter().getDefaultForegroundColor(getTechnologyComponent()));
 			getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
@@ -765,8 +758,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		}
 		if (o1 == null) {
 			return o2 == null;
-		}
-		else {
+		} else {
 			return o1.equals(o2);
 		}
 	}
@@ -817,38 +809,31 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			}
 			// FIBEditorController controller = getEditorController();
 			// controller.notifyFocusedAndSelectedObject();
-		}
-		else if (evt.getPropertyName().equals(FIBComponent.MIN_WIDTH_KEY) || evt.getPropertyName().equals(FIBComponent.MIN_HEIGHT_KEY)
+		} else if (evt.getPropertyName().equals(FIBComponent.MIN_WIDTH_KEY) || evt.getPropertyName().equals(FIBComponent.MIN_HEIGHT_KEY)
 				|| evt.getPropertyName().equals(FIBComponent.DEFINE_MIN_DIMENSIONS)) {
 			updateMinimumSize();
 			if (getParentView() != null) {
 				getParentView().updateLayout();
 			}
-		}
-		else if (evt.getPropertyName().equals(FIBComponent.WIDTH_KEY) || evt.getPropertyName().equals(FIBComponent.HEIGHT_KEY)
+		} else if (evt.getPropertyName().equals(FIBComponent.WIDTH_KEY) || evt.getPropertyName().equals(FIBComponent.HEIGHT_KEY)
 				|| evt.getPropertyName().equals(FIBComponent.DEFINE_PREFERRED_DIMENSIONS)) {
 			updatePreferredSize();
 			if (getParentView() != null) {
 				getParentView().updateLayout();
 			}
-		}
-		else if (evt.getPropertyName().equals(FIBComponent.MAX_WIDTH_KEY) || evt.getPropertyName().equals(FIBComponent.MAX_HEIGHT_KEY)
+		} else if (evt.getPropertyName().equals(FIBComponent.MAX_WIDTH_KEY) || evt.getPropertyName().equals(FIBComponent.MAX_HEIGHT_KEY)
 				|| evt.getPropertyName().equals(FIBComponent.DEFINE_MAX_DIMENSIONS)) {
 			updateMaximumSize();
 			if (getParentView() != null) {
 				getParentView().updateLayout();
 			}
-		}
-		else if (evt.getPropertyName().equals(FIBComponent.FONT_KEY)) {
+		} else if (evt.getPropertyName().equals(FIBComponent.FONT_KEY)) {
 			updateFont();
-		}
-		else if (evt.getPropertyName().equals(FIBComponent.BACKGROUND_COLOR_KEY)) {
+		} else if (evt.getPropertyName().equals(FIBComponent.BACKGROUND_COLOR_KEY)) {
 			updateBackgroundColor();
-		}
-		else if (evt.getPropertyName().equals(FIBComponent.FOREGROUND_COLOR_KEY)) {
+		} else if (evt.getPropertyName().equals(FIBComponent.FOREGROUND_COLOR_KEY)) {
 			updateForegroundColor();
-		}
-		else if (evt.getPropertyName().equals(FIBComponent.OPAQUE_KEY)) {
+		} else if (evt.getPropertyName().equals(FIBComponent.OPAQUE_KEY)) {
 			updateOpacity();
 		}
 

@@ -204,8 +204,7 @@ public class JFIBTabPanelView extends FIBTabPanelViewImpl<JTabbedPane, JComponen
 					getTechnologyComponent().setTitleAt(index, getLocalized(((FIBTab) v.getComponent()).getTitle()));
 					index++;
 				}
-			}
-			else {
+			} else {
 				logger.warning("Unexpected component found in TabPanel: " + v.getComponent());
 			}
 		}
@@ -219,6 +218,11 @@ public class JFIBTabPanelView extends FIBTabPanelViewImpl<JTabbedPane, JComponen
 				getTechnologyComponent().add(((FIBTab) c).getTitle(), subComponentView.getResultingJComponent());
 			}
 		}
+	}
+
+	@Override
+	public void revalidateAndRepaint() {
+		getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
 	}
 
 }

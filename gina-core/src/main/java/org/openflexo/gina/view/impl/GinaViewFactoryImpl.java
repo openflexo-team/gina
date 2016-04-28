@@ -77,9 +77,10 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 	}
 
 	@Override
-	public <F extends FIBContainer> FIBContainerView<F, ? extends C, ? extends C> makeContainer(F fibContainer, FIBController controller) {
+	public <F extends FIBContainer> FIBContainerView<F, ? extends C, ? extends C> makeContainer(F fibContainer, FIBController controller,
+			boolean updateNow) {
 		FIBContainerView<F, ? extends C, ? extends C> returned = buildContainer(fibContainer, controller);
-		if (returned != null) {
+		if (returned != null && updateNow) {
 			// returned.updateGraphicalProperties();
 			returned.update();
 		}
@@ -91,14 +92,11 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 
 		if (fibContainer instanceof FIBTab) {
 			return (FIBContainerView<F, ? extends C, ? extends C>) makeTabView((FIBTab) fibContainer, controller);
-		}
-		else if (fibContainer instanceof FIBPanel) {
+		} else if (fibContainer instanceof FIBPanel) {
 			return (FIBContainerView<F, ? extends C, ? extends C>) makePanelView((FIBPanel) fibContainer, controller);
-		}
-		else if (fibContainer instanceof FIBTabPanel) {
+		} else if (fibContainer instanceof FIBTabPanel) {
 			return (FIBContainerView<F, ? extends C, ? extends C>) makeTabPanelView((FIBTabPanel) fibContainer, controller);
-		}
-		else if (fibContainer instanceof FIBSplitPanel) {
+		} else if (fibContainer instanceof FIBSplitPanel) {
 			return (FIBContainerView<F, ? extends C, ? extends C>) makeSplitPanelView((FIBSplitPanel) fibContainer, controller);
 		}
 

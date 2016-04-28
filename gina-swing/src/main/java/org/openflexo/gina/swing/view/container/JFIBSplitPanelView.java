@@ -193,4 +193,9 @@ public class JFIBSplitPanelView extends FIBSplitPanelViewImpl<JXMultiSplitPane, 
 		}
 	}
 
+	@Override
+	public void revalidateAndRepaint() {
+		getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
+	}
+
 }

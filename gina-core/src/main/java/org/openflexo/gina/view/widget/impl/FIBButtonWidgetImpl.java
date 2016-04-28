@@ -114,9 +114,9 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 		widgetExecuting = true;
 
 		switch (e.getAction()) {
-			case FIBMouseEventDescription.CLICKED:
-				this.buttonClicked();
-				break;
+		case FIBMouseEventDescription.CLICKED:
+			this.buttonClicked();
+			break;
 		}
 
 		widgetExecuting = false;
@@ -169,8 +169,7 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 			else {*/
 			if (getWidget().getLocalize()) {
 				text = getLocalized(getWidget().getLabel());
-			}
-			else {
+			} else {
 				text = getWidget().getLabel();
 			}
 			// }
@@ -195,8 +194,7 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 				e.printStackTrace();
 				getRenderingAdapter().setIcon(getTechnologyComponent(), null);
 			}
-		}
-		else {
+		} else {
 			getRenderingAdapter().setIcon(getTechnologyComponent(), null);
 		}
 	}

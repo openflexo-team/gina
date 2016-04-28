@@ -140,8 +140,8 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 	private ComponentValidationWindow componentValidationWindow;
 	private ComponentLocalizationWindow componentLocalizationWindow;
 
-	private ApplicationFIBLibrary APP_FIB_LIBRARY = ApplicationFIBLibraryImpl.instance();
-	private FIBLibrary editorFIBLibrary;
+	private final ApplicationFIBLibrary APP_FIB_LIBRARY = ApplicationFIBLibraryImpl.instance();
+	private final FIBLibrary editorFIBLibrary;
 
 	public FIBAbstractEditor() {
 		try {
@@ -417,8 +417,7 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 				JOptionPane.QUESTION_MESSAGE, null, null, JOptionPane.YES_OPTION);
 		if (ret == JOptionPane.YES_OPTION) {
 			return saveFIB();
-		}
-		else if (ret == JOptionPane.NO_OPTION) {
+		} else if (ret == JOptionPane.NO_OPTION) {
 			return true;
 		}
 		return false;
@@ -452,8 +451,7 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 		try {
 			if (getFIBResource() instanceof FileResourceImpl) {
 				factory = new FIBModelFactory(((FileResourceImpl) getFIBResource()).getFile().getParentFile());
-			}
-			else {
+			} else {
 				factory = new FIBModelFactory();
 			}
 		} catch (ModelDefinitionException e) {
@@ -480,8 +478,7 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 
 		if (getController() != null) {
 			editorController = new FIBEditorController(factory, fibComponent, this, dataObject, getController(), getFrame());
-		}
-		else {
+		} else {
 			editorController = new FIBEditorController(factory, fibComponent, this, dataObject, getFrame());
 		}
 		getPaletteDialog().getPalettes().setEditorController(editorController);
@@ -501,8 +498,7 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 		if (getEditedComponentFile() != null) {
 			logger.info("Save to file " + getEditedComponentFile().getAbsolutePath());
 			return editorFIBLibrary.save(fibComponent, getEditedComponentFile());
-		}
-		else {
+		} else {
 			logger.warning("Cannot save READ-ONLY resource: " + getFIBResource());
 			return false;
 		}
@@ -512,10 +508,9 @@ public abstract class FIBAbstractEditor implements FIBGenericEditor {
 		JFIBView<?, ? extends JComponent> view;
 		FIBController controller = makeNewController(fibComponent);
 		if (controller != null) {
-			view = (JFIBView<?, ? extends JComponent>) FIBController.makeView(fibComponent, SwingViewFactory.INSTANCE, controller);
-		}
-		else {
-			view = (JFIBView<?, ? extends JComponent>) FIBController.makeView(fibComponent, SwingViewFactory.INSTANCE, LOCALIZATION);
+			view = (JFIBView<?, ? extends JComponent>) FIBController.makeView(fibComponent, SwingViewFactory.INSTANCE, controller, true);
+		} else {
+			view = (JFIBView<?, ? extends JComponent>) FIBController.makeView(fibComponent, SwingViewFactory.INSTANCE, LOCALIZATION, true);
 		}
 		view.getController().setDataObject(editorController.getDataObject());
 		JDialog testInterface = new JDialog(frame, "Test", false);

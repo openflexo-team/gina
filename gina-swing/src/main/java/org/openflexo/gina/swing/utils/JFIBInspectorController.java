@@ -88,7 +88,7 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 		inspectorViews = new Hashtable<FIBInspector, JFIBView<?, ?>>();
 
 		for (FIBInspector inspector : inspectorGroup.getInspectors().values()) {
-			JFIBView<?, ?> inspectorView = (JFIBView<?, ?>) FIBController.makeView(inspector, SwingViewFactory.INSTANCE, localizer);
+			JFIBView<?, ?> inspectorView = (JFIBView<?, ?>) FIBController.makeView(inspector, SwingViewFactory.INSTANCE, localizer, true);
 			FlexoLocalization.addToLocalizationListeners(inspectorView);
 			inspectorViews.put(inspector, inspectorView);
 			logger.info("Initialized inspector for " + inspector.getDataClass());
@@ -135,8 +135,7 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 		if (newInspector == null) {
 			logger.warning("No inspector for " + object);
 			switchToEmptyContent();
-		}
-		else {
+		} else {
 			if (newInspector != currentInspector) {
 				switchToInspector(newInspector);
 			}
@@ -186,8 +185,7 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 			}
 			tabPanelViewJComponent.addChangeListener(this);
 			// System.out.println("addChangeListener for "+tabPanelView.getJComponent());
-		}
-		else {
+		} else {
 			logger.warning("No inspector view for " + newInspector);
 			switchToEmptyContent();
 		}

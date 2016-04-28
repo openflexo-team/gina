@@ -103,7 +103,7 @@ public class FIBController
 		 * fibComponent.getFactory().stringRepresentation(fibComponent); }
 		 */
 		if (fibComponent.getControllerClass() == null) {
-			LOGGER.warning("No FIBController class declared for "+fibComponent);
+			LOGGER.warning("No FIBController class declared for " + fibComponent);
 		}
 
 		if (fibComponent.getControllerClass() != null) {
@@ -145,13 +145,13 @@ public class FIBController
 	}
 
 	public static <F extends FIBComponent, C> FIBView<F, ? extends C> makeView(F fibComponent, GinaViewFactory<C> viewFactory,
-			LocalizedDelegate parentLocalizer) {
-		return makeView(fibComponent, viewFactory, instanciateController(fibComponent, viewFactory, parentLocalizer));
+			LocalizedDelegate parentLocalizer, boolean updateNow) {
+		return makeView(fibComponent, viewFactory, instanciateController(fibComponent, viewFactory, parentLocalizer), updateNow);
 	}
 
 	public static <F extends FIBComponent, C> FIBView<F, ? extends C> makeView(F fibComponent, GinaViewFactory<C> viewFactory,
-			FIBController controller) {
-		return (FIBView<F, ? extends C>) controller.buildView(fibComponent);
+			FIBController controller, boolean updateNow) {
+		return (FIBView<F, ? extends C>) controller.buildView(fibComponent, updateNow);
 	}
 
 	// private Object dataObject;
@@ -267,7 +267,7 @@ public class FIBController
 	}
 
 	public FIBView<FIBComponent, ?> buildView() {
-		FIBView<FIBComponent, ?> returned = buildView(rootComponent);
+		FIBView<FIBComponent, ?> returned = buildView(rootComponent, true);
 		returned.update();
 		return returned;
 	}
@@ -450,9 +450,9 @@ public class FIBController
 		}*/
 	}
 
-	public final <M extends FIBComponent> FIBView<M, ?> buildView(M fibComponent) {
+	public final <M extends FIBComponent> FIBView<M, ?> buildView(M fibComponent, boolean updateNow) {
 		if (fibComponent instanceof FIBContainer) {
-			return (FIBView<M, ?>) getViewFactory().makeContainer((FIBContainer) fibComponent, this);
+			return (FIBView<M, ?>) getViewFactory().makeContainer((FIBContainer) fibComponent, this, updateNow);
 		} else if (fibComponent instanceof FIBWidget) {
 			return (FIBView<M, ?>) getViewFactory().makeWidget((FIBWidget) fibComponent, this);
 		}

@@ -69,6 +69,8 @@ public interface FIBContainerView<M extends FIBContainer, C, C2> extends FIBView
 
 	public void invalidateAndUpdateLayoutLater();
 
+	public void revalidateAndRepaint();
+
 	@Override
 	public ContainerRenderingAdapter<C, C2> getRenderingAdapter();
 

@@ -147,42 +147,42 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> implemen
 			return;
 		}
 		switch (getComponent().getBorder()) {
-			case empty:
-				getTechnologyComponent().setBorder(
-						BorderFactory.createEmptyBorder(getComponent().getBorderTop() != null ? getComponent().getBorderTop() : 0,
-								getComponent().getBorderLeft() != null ? getComponent().getBorderLeft() : 0,
-								getComponent().getBorderBottom() != null ? getComponent().getBorderBottom() : 0,
-								getComponent().getBorderRight() != null ? getComponent().getBorderRight() : 0));
-				break;
-			case etched:
-				getTechnologyComponent().setBorder(BorderFactory.createEtchedBorder());
-				break;
-			case line:
-				getTechnologyComponent().setBorder(BorderFactory
-						.createLineBorder(getComponent().getBorderColor() != null ? getComponent().getBorderColor() : Color.black));
-				break;
-			case lowered:
-				getTechnologyComponent().setBorder(BorderFactory.createLoweredBevelBorder());
-				break;
-			case raised:
-				getTechnologyComponent().setBorder(BorderFactory.createRaisedBevelBorder());
-				break;
-			case titled:
-				getTechnologyComponent().setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
-						getLocalized(getComponent().getBorderTitle()), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION,
-						getComponent().retrieveValidFont(), getComponent().retrieveValidForegroundColor()));
-				break;
-			case rounded3d:
-				getTechnologyComponent().setBorder(new RoundedBorder(
-						StringUtils.isNotEmpty(getComponent().getBorderTitle()) ? getLocalized(getComponent().getBorderTitle()) : null,
-						getComponent().getBorderTop() != null ? getComponent().getBorderTop() : 0,
-						getComponent().getBorderLeft() != null ? getComponent().getBorderLeft() : 0,
-						getComponent().getBorderBottom() != null ? getComponent().getBorderBottom() : 0,
-						getComponent().getBorderRight() != null ? getComponent().getBorderRight() : 0, getComponent().getTitleFont(),
-						getComponent().retrieveValidForegroundColor(), getComponent().getDarkLevel()));
-				break;
-			default:
-				break;
+		case empty:
+			getTechnologyComponent()
+					.setBorder(BorderFactory.createEmptyBorder(getComponent().getBorderTop() != null ? getComponent().getBorderTop() : 0,
+							getComponent().getBorderLeft() != null ? getComponent().getBorderLeft() : 0,
+							getComponent().getBorderBottom() != null ? getComponent().getBorderBottom() : 0,
+							getComponent().getBorderRight() != null ? getComponent().getBorderRight() : 0));
+			break;
+		case etched:
+			getTechnologyComponent().setBorder(BorderFactory.createEtchedBorder());
+			break;
+		case line:
+			getTechnologyComponent().setBorder(BorderFactory
+					.createLineBorder(getComponent().getBorderColor() != null ? getComponent().getBorderColor() : Color.black));
+			break;
+		case lowered:
+			getTechnologyComponent().setBorder(BorderFactory.createLoweredBevelBorder());
+			break;
+		case raised:
+			getTechnologyComponent().setBorder(BorderFactory.createRaisedBevelBorder());
+			break;
+		case titled:
+			getTechnologyComponent().setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+					getLocalized(getComponent().getBorderTitle()), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION,
+					getComponent().retrieveValidFont(), getComponent().retrieveValidForegroundColor()));
+			break;
+		case rounded3d:
+			getTechnologyComponent().setBorder(new RoundedBorder(
+					StringUtils.isNotEmpty(getComponent().getBorderTitle()) ? getLocalized(getComponent().getBorderTitle()) : null,
+					getComponent().getBorderTop() != null ? getComponent().getBorderTop() : 0,
+					getComponent().getBorderLeft() != null ? getComponent().getBorderLeft() : 0,
+					getComponent().getBorderBottom() != null ? getComponent().getBorderBottom() : 0,
+					getComponent().getBorderRight() != null ? getComponent().getBorderRight() : 0, getComponent().getTitleFont(),
+					getComponent().retrieveValidForegroundColor(), getComponent().getDarkLevel()));
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -221,24 +221,24 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> implemen
 			@Override
 			public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
 				switch (orientation) {
-					case SwingConstants.VERTICAL:
-						return visibleRect.height / 10;
-					case SwingConstants.HORIZONTAL:
-						return visibleRect.width / 10;
-					default:
-						throw new IllegalArgumentException("Invalid orientation: " + orientation);
+				case SwingConstants.VERTICAL:
+					return visibleRect.height / 10;
+				case SwingConstants.HORIZONTAL:
+					return visibleRect.width / 10;
+				default:
+					throw new IllegalArgumentException("Invalid orientation: " + orientation);
 				}
 			}
 
 			@Override
 			public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
 				switch (orientation) {
-					case SwingConstants.VERTICAL:
-						return visibleRect.height;
-					case SwingConstants.HORIZONTAL:
-						return visibleRect.width;
-					default:
-						throw new IllegalArgumentException("Invalid orientation: " + orientation);
+				case SwingConstants.VERTICAL:
+					return visibleRect.height;
+				case SwingConstants.HORIZONTAL:
+					return visibleRect.width;
+				default:
+					throw new IllegalArgumentException("Invalid orientation: " + orientation);
 				}
 			}
 
@@ -389,25 +389,29 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> implemen
 			return new JAbsolutePositionningLayout(this);
 		}
 		switch (layoutType) {
-			case none:
-				return new JAbsolutePositionningLayout(this);
-			case border:
-				return new JBorderLayout(this);
-			case box:
-				return new JBoxLayout(this);
-			case flow:
-				return new JFlowLayout(this);
-			case buttons:
-				return new JButtonLayout(this);
-			case twocols:
-				return new JTwoColsLayout(this);
-			case grid:
-				return new JGridLayout(this);
-			case gridbag:
-				return new JGridBagLayout(this);
-			default:
-				return new JAbsolutePositionningLayout(this);
+		case none:
+			return new JAbsolutePositionningLayout(this);
+		case border:
+			return new JBorderLayout(this);
+		case box:
+			return new JBoxLayout(this);
+		case flow:
+			return new JFlowLayout(this);
+		case buttons:
+			return new JButtonLayout(this);
+		case twocols:
+			return new JTwoColsLayout(this);
+		case grid:
+			return new JGridLayout(this);
+		case gridbag:
+			return new JGridBagLayout(this);
+		default:
+			return new JAbsolutePositionningLayout(this);
 		}
 	}
 
+	@Override
+	public void revalidateAndRepaint() {
+		getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
+	}
 }

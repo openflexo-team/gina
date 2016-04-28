@@ -70,7 +70,7 @@ import org.openflexo.gina.view.FIBView;
  * @param <C2>
  *            type of technology-specific component beeing contained by this view
  */
-public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extends FIBViewImpl<M, C>implements FIBContainerView<M, C, C2> {
+public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extends FIBViewImpl<M, C> implements FIBContainerView<M, C, C2> {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBContainerViewImpl.class.getPackage().getName());
 
@@ -166,7 +166,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		subViewsMap.clear();
 		internallyBuildChildComponents();
 		addSubComponentsAndDoLayout();
-		// update();
+		performUpdateSubViews();
 	}
 
 	private void internallyBuildChildComponents() {
@@ -176,7 +176,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		for (FIBComponent subComponent : allSubComponents) {
 			FIBViewImpl<?, C2> subView = (FIBViewImpl<?, C2>) getController().viewForComponent(subComponent);
 			if (subView == null) {
-				subView = (FIBViewImpl<?, C2>) getController().buildView(subComponent);
+				subView = (FIBViewImpl<?, C2>) getController().buildView(subComponent, false);
 			}
 			registerViewForComponent(subView, subComponent);
 		}
@@ -195,8 +195,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	public Object getTechnologyComponentForFIBComponent(FIBComponent component) {
 		if (getComponent() == component) {
 			return getTechnologyComponent();
-		}
-		else {
+		} else {
 			for (FIBViewImpl<?, ?> v : getSubViews()) {
 				Object j = v.getTechnologyComponentForFIBComponent(component);
 				if (j != null) {
@@ -252,16 +251,20 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	@Override
 	protected void performUpdate() {
 		super.performUpdate();
+		performUpdateSubViews();
+		if (layoutIsInvalid) {
+			updateLayout();
+			layoutIsInvalid = false;
+		}
+	}
+
+	private void performUpdateSubViews() {
 		if (subViewsMap != null) {
 			for (FIBView v : new ArrayList<FIBView>(subViewsMap.values())) {
 				if (!v.isDeleted() && v.isViewVisible()) {
 					v.update();
 				}
 			}
-		}
-		if (layoutIsInvalid) {
-			updateLayout();
-			layoutIsInvalid = false;
 		}
 	}
 
@@ -384,6 +387,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 
 	@Override
 	public void invalidateAndUpdateLayoutLater() {
+		System.out.println("Called invalidate and update layout later for " + getComponent());
 		layoutIsInvalid = true;
 		// TODO: avoid when possible
 		/*SwingUtilities.invokeLater(new Runnable() {

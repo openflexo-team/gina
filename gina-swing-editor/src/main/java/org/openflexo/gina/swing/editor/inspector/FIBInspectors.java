@@ -86,7 +86,7 @@ public class FIBInspectors {
 
 		JFIBView<?, ?> inspectorView = (JFIBView<?, ?>) FIBController.makeView(
 				fontAndColorInspectorGroup.inspectorForClass(FIBComponent.class), SwingViewFactory.INSTANCE,
-				FlexoLocalization.getMainLocalizer());
+				FlexoLocalization.getMainLocalizer(), true);
 
 		panelGroup = new FlexoCollabsiblePanelGroup();
 		panelGroup.addContents("Font and colors", inspectorView.getJComponent());

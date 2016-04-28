@@ -115,9 +115,9 @@ public class FIBEditor implements FIBGenericEditor {
 	final FileSystemResourceLocatorImpl resourceLocator;
 
 	static ApplicationFIBLibrary APP_FIB_LIBRARY = ApplicationFIBLibraryImpl.instance();
-	private FIBLibrary fibLibrary;
+	private final FIBLibrary fibLibrary;
 
-	private MainPanel mainPanel;
+	private final MainPanel mainPanel;
 	private FIBEditorMenuBar menuBar;
 
 	private EditedFIBComponent editedFIB;
@@ -279,8 +279,7 @@ public class FIBEditor implements FIBGenericEditor {
 		}
 		if (editedFIB.getSourceFile() != null) {
 			editedFIB.save();
-		}
-		else {
+		} else {
 			saveFIBAs(frame);
 		}
 	}
@@ -311,7 +310,7 @@ public class FIBEditor implements FIBGenericEditor {
 
 	public void testFIB(JFrame frame) {
 		JFIBView<?, ? extends JComponent> view = (JFIBView<?, ? extends JComponent>) FIBController.makeView(editedFIB.getFIBComponent(),
-				SwingViewFactory.INSTANCE, LOCALIZATION);
+				SwingViewFactory.INSTANCE, LOCALIZATION, true);
 
 		// Class testClass = null;
 		if (editedFIB.getFIBComponent() instanceof FIBContainer && ((FIBContainer) editedFIB.getFIBComponent()).getDataClass() != null) {
@@ -328,8 +327,7 @@ public class FIBEditor implements FIBGenericEditor {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		else {
+		} else {
 			view.getController().updateWithoutDataObject();
 		}
 

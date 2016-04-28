@@ -72,7 +72,7 @@ import org.openflexo.swing.VerticalLayout;
  * @author sguerin
  * 
  */
-public class ClassSelector extends TextFieldCustomPopup<Class>implements FIBCustomComponent<Class> {
+public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCustomComponent<Class> {
 	@SuppressWarnings("hiding")
 	static final Logger LOGGER = Logger.getLogger(ClassSelector.class.getPackage().getName());
 
@@ -108,8 +108,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class>implements FIBCust
 		// !!!
 		if (oldValue != null) {
 			_revertValue = oldValue;
-		}
-		else {
+		} else {
 			_revertValue = null;
 		}
 		if (LOGGER.isLoggable(Level.FINE)) {
@@ -150,7 +149,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class>implements FIBCust
 
 			fibComponent = ApplicationFIBLibraryImpl.instance().retrieveFIBComponent(FIB_FILE_NAME, true);
 			controller = new CustomFIBController(fibComponent, SwingViewFactory.INSTANCE);
-			fibView = (JFIBView<?, ?>) controller.buildView(fibComponent);
+			fibView = (JFIBView<?, ?>) controller.buildView(fibComponent, true);
 
 			controller.setDataObject(new LoadedClassesInfo(aClass));
 

@@ -54,7 +54,8 @@ public interface GinaViewFactory<C> {
 
 	public boolean allowsFIBEdition();
 
-	public <F extends FIBContainer> FIBContainerView<F, ? extends C, ? extends C> makeContainer(F fibContainer, FIBController controller);
+	public <F extends FIBContainer> FIBContainerView<F, ? extends C, ? extends C> makeContainer(F fibContainer, FIBController controller,
+			boolean updateNow);
 
 	public <F extends FIBWidget> FIBWidgetView<F, ? extends C, ?> makeWidget(F fibWidget, FIBController controller);
 

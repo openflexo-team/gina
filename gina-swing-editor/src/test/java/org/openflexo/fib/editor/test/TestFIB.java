@@ -111,7 +111,7 @@ public class TestFIB extends JPanel {
 		Coucou coucou = new Coucou();
 
 		JFIBView<?, ?> testFibPanel = (JFIBView<?, ?>) FIBController.makeView(fibComponent, SwingViewFactory.INSTANCE,
-				FIBAbstractEditor.LOCALIZATION);
+				FIBAbstractEditor.LOCALIZATION, true);
 		testFibPanel.getController().setDataObject(coucou);
 
 		frame.getContentPane().add(testFibPanel.getResultingJComponent());

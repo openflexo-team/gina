@@ -216,8 +216,7 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 				// The component file is statically defined, use it
 				return widg.getComponentFile();
 			}
-		}
-		else {
+		} else {
 			logger.warning("FIBReferencedComponent with null widget, please investigate");
 		}
 
@@ -267,8 +266,7 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 		if (componentFile != null) {
 			if (getComponent().getFIBLibrary() != null) {
 				return getComponent().getFIBLibrary().retrieveFIBComponent(componentFile);
-			}
-			else {
+			} else {
 				logger.warning("Component has no FIBLibrary !");
 				Thread.dumpStack();
 			}
@@ -346,15 +344,13 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 				referencedComponentView = (FIBWidgetView) embeddedFIBController.getViewFactory().makeWidget((FIBWidget) loaded,
 						embeddedFIBController);
 				referencedComponentView.setEmbeddingComponent(this);
-			}
-			else if (loaded instanceof FIBContainer) {
+			} else if (loaded instanceof FIBContainer) {
 				referencedComponentView = (FIBContainerView) embeddedFIBController.getViewFactory().makeContainer((FIBContainer) loaded,
-						embeddedFIBController);
+						embeddedFIBController, true);
 				referencedComponentView.setEmbeddingComponent(this);
 			}
 
-		}
-		else {
+		} else {
 			if (!isComponentLoading) {
 				logger.warning("ReferencedComponent = null and I'm NOT loading anything... : " + this.getComponentFile());
 			}
@@ -433,6 +429,7 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 
 				embeddedFIBController.setDataObject(getValue(), /*true*/false);
 
+				System.out.println("update referenced component view");
 				getReferencedComponentView().update();
 
 				// Call the parent view for a complete layout: the referencedComponentView will be computed during this loop
@@ -440,8 +437,7 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 					getParentView().updateLayout();
 				}*/
 
-			}
-			else {
+			} else {
 				logger.warning("Inconsistant data: " + getValue() + " is not a "
 						+ ((FIBContainer) embeddedFIBController.getRootComponent()).getDataType());
 			}

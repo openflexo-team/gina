@@ -26,7 +26,7 @@ public class GinaRecorderEditor {
 		// FIBController.instanciateController(fibComponent,
 		// FlexoLocalization.getMainLocalizer());
 		JFIBView<?, JComponent> editor = (JFIBView<?, JComponent>) GinaRecorderEditorController.makeView(fibComponent,
-				SwingViewFactory.INSTANCE, (LocalizedDelegate) null);
+				SwingViewFactory.INSTANCE, (LocalizedDelegate) null, true);
 
 		// FIBRecorderManager.getInstance().getCurrentRecorder().load(new
 		// File("D:/test-gina-recorder"));
