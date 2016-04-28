@@ -261,7 +261,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	private void performUpdateSubViews() {
 		if (subViewsMap != null) {
 			for (FIBView v : new ArrayList<FIBView>(subViewsMap.values())) {
-				if (!v.isDeleted() && v.isViewVisible()) {
+				if (!v.isDeleted() /*&& v.isViewVisible()*/) {
 					v.update();
 				}
 			}
@@ -387,7 +387,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 
 	@Override
 	public void invalidateAndUpdateLayoutLater() {
-		System.out.println("Called invalidate and update layout later for " + getComponent());
+		// System.out.println("Called invalidate and update layout later for " + getComponent());
 		layoutIsInvalid = true;
 		// TODO: avoid when possible
 		/*SwingUtilities.invokeLater(new Runnable() {
@@ -405,6 +405,11 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	public void propertyChange(PropertyChangeEvent evt) {
 
 		if (evt.getPropertyName().equals(FIBContainer.SUB_COMPONENTS_KEY)) {
+			System.out.println("Hop a a ajoute " + evt.getNewValue());
+			if (evt.getNewValue() instanceof FIBComponent) {
+				FIBComponent newComponent = (FIBComponent) evt.getNewValue();
+				System.out.println(newComponent.getFIBLibrary().stringRepresentation(newComponent));
+			}
 			updateLayout();
 		}
 
