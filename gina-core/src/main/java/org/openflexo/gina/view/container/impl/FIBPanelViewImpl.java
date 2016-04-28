@@ -151,7 +151,7 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 
 	@Override
 	public void updateLayout() {
-		// logger.info("relayout panel " + getComponent());
+		logger.info("relayout panel (caution !!! this is really costly !)" + getComponent());
 
 		// TODO: please reimplement this and make it more efficient !!!!
 
@@ -159,6 +159,8 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 
 		getLayoutManager().setLayoutManager(getTechnologyComponent());
 		buildSubComponents();
+		
+		
 		// updateDataObject(getDataObject());
 		// update();
 	}

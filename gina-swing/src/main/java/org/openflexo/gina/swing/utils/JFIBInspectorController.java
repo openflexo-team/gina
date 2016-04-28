@@ -83,16 +83,19 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 
 	private final Hashtable<FIBInspector, JFIBView<?, ?>> inspectorViews;
 
+	private final LocalizedDelegate localizer;
+
 	public JFIBInspectorController(JFrame frame, Resource inspectorDirectory, FIBLibrary fibLibrary, LocalizedDelegate localizer) {
 		inspectorGroup = new InspectorGroup(inspectorDirectory, fibLibrary);
 		inspectorViews = new Hashtable<FIBInspector, JFIBView<?, ?>>();
+		this.localizer = localizer;
 
-		for (FIBInspector inspector : inspectorGroup.getInspectors().values()) {
+		/*for (FIBInspector inspector : inspectorGroup.getInspectors().values()) {
 			JFIBView<?, ?> inspectorView = (JFIBView<?, ?>) FIBController.makeView(inspector, SwingViewFactory.INSTANCE, localizer, true);
 			FlexoLocalization.addToLocalizationListeners(inspectorView);
 			inspectorViews.put(inspector, inspectorView);
 			logger.info("Initialized inspector for " + inspector.getDataClass());
-		}
+		}*/
 
 		inspectorDialog = new JDialog(frame, "Inspector", false);
 		inspectorDialog.setBounds(JFIBPreferences.getInspectorBounds());
@@ -116,6 +119,18 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 		inspectorDialog.setResizable(true);
 		rootPane.revalidate();
 		inspectorDialog.setVisible(true);
+	}
+
+	private JFIBView<?, ?> getInspectorViewForInspector(FIBInspector inspector) {
+		JFIBView<?, ?> inspectorView = inspectorViews.get(inspector);
+		if (inspectorView == null) {
+			inspector.mergeWithParentInspectors();
+			inspectorView = (JFIBView<?, ?>) FIBController.makeView(inspector, SwingViewFactory.INSTANCE, localizer, true);
+			FlexoLocalization.addToLocalizationListeners(inspectorView);
+			inspectorViews.put(inspector, inspectorView);
+		}
+		return inspectorView;
+
 	}
 
 	private FIBInspector currentInspector = null;
@@ -145,6 +160,9 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 
 	private void switchToEmptyContent() {
 		// System.out.println("switchToEmptyContent()");
+		if (currentInspectorView != null) {
+			currentInspectorView.hideView();
+		}
 		currentInspector = null;
 		currentInspectorView = null;
 		rootPane.removeAll();
@@ -154,10 +172,20 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 	}
 
 	private void switchToInspector(FIBInspector newInspector) {
+
+		if (currentInspector == newInspector) {
+			return;
+		}
 		/*
 		 * if (newInspector.getDataClass() == FIBPanel.class) {
 		 * System.out.println("Hop: "+newInspector.getXMLRepresentation()); }
 		 */
+
+		// System.out.println("switchToInspector() "+newInspector);
+
+		if (currentInspectorView != null) {
+			currentInspectorView.hideView();
+		}
 
 		JTabbedPane tabPanelViewJComponent = null;
 
@@ -167,10 +195,9 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 			// System.out.println("removeChangeListener for "+tabPanelView.getJComponent());
 		}
 
-		// System.out.println("switchToInspector() "+newInspector);
-		JFIBView<?, ?> view = inspectorViews.get(newInspector);
-		if (view != null) {
-			currentInspectorView = view;
+		currentInspectorView = getInspectorViewForInspector(newInspector);
+
+		if (currentInspectorView != null) {
 			rootPane.removeAll();
 			JComponent resultingJComponent = currentInspectorView.getResultingJComponent();
 			rootPane.add(resultingJComponent, BorderLayout.CENTER);

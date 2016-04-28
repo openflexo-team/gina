@@ -405,11 +405,13 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	public void propertyChange(PropertyChangeEvent evt) {
 
 		if (evt.getPropertyName().equals(FIBContainer.SUB_COMPONENTS_KEY)) {
-			System.out.println("Hop a a ajoute " + evt.getNewValue());
+			/*System.out.println("Hop a a ajoute " + evt.getNewValue());
 			if (evt.getNewValue() instanceof FIBComponent) {
 				FIBComponent newComponent = (FIBComponent) evt.getNewValue();
-				System.out.println(newComponent.getFIBLibrary().stringRepresentation(newComponent));
-			}
+				if (newComponent.getFIBLibrary() != null) {
+					System.out.println(newComponent.getFIBLibrary().stringRepresentation(newComponent));
+				}
+			}*/
 			updateLayout();
 		}
 

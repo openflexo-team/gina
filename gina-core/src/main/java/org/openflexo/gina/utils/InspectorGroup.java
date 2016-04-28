@@ -101,12 +101,10 @@ public class InspectorGroup {
 						logger.fine("Loaded inspector: " + f.getURI() + " for " + inspector.getDataClass());
 						progress(f, inspector);
 					}
-				}
-				else {
+				} else {
 					logger.warning("Not found: " + f.getURI());
 				}
-			}
-			else {
+			} else {
 				logger.warning("Component in " + f + " is not an inspector !");
 			}
 		}
@@ -118,10 +116,10 @@ public class InspectorGroup {
 		}
 
 		// We first merge all inspectors inside the group
-		for (FIBInspector inspector : new ArrayList<FIBInspector>(inspectors.values())) {
+		/*for (FIBInspector inspector : new ArrayList<FIBInspector>(inspectors.values())) {
 			System.out.println("Merging " + inspector.getInspectedClass());
 			inspector.mergeWithParentInspectors();
-		}
+		}*/
 
 		// Then, for each parent inspector group, we compute the resulting inspector from superclasses.
 		// Then we choose the most specialized one to merge with the new inspector
@@ -165,7 +163,9 @@ public class InspectorGroup {
 	 * @return
 	 */
 	public FIBInspector inspectorForClass(Class<?> aClass) {
-		return TypeUtils.objectForClass(aClass, inspectors);
+		FIBInspector returned = TypeUtils.objectForClass(aClass, inspectors);
+		returned.mergeWithParentInspectors();
+		return returned;
 	}
 
 	/**
@@ -180,6 +180,7 @@ public class InspectorGroup {
 		for (FIBInspector inspector : getInspectors().values()) {
 			if (inspector.getDataClass().isAssignableFrom(aClass)) {
 				if (!returned.contains(inspector)) {
+					inspector.mergeWithParentInspectors();
 					returned.add(inspector);
 				}
 			}

@@ -144,7 +144,7 @@ public interface FIBInspector extends FIBPanel {
 
 			// TODO: reinit current with container found in unmergedComponent
 			// reset merge
-			// isMerged = false;
+			isMerged = false;
 		}
 
 		@Override
@@ -182,7 +182,7 @@ public interface FIBInspector extends FIBPanel {
 
 		private void appendSuperInspector(FIBInspector superInspector) {
 
-			System.out.println("**** Appending " + superInspector + " to " + this);
+			// System.out.println("**** Appending " + superInspector + " to " + this);
 
 			// We have to clone the super inspector before to add it to current component
 			FIBInspector clonedSuperInspector = (FIBInspector) superInspector.cloneObject();
