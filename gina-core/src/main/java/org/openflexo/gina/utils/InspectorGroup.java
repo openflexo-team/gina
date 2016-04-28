@@ -164,7 +164,9 @@ public class InspectorGroup {
 	 */
 	public FIBInspector inspectorForClass(Class<?> aClass) {
 		FIBInspector returned = TypeUtils.objectForClass(aClass, inspectors);
-		returned.mergeWithParentInspectors();
+		if (returned != null) {
+			returned.mergeWithParentInspectors();
+		}
 		return returned;
 	}
 
