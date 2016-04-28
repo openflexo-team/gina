@@ -502,6 +502,9 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 				}
 
 				private void ensureRootExpanded() {
+					if (widget == null || widget.getBrowser() == null || widget.getBrowserModel() == null) {
+						return;
+					}
 					if (!widget.getBrowser().getRootVisible() && (BrowserCell) widget.getBrowserModel().getRoot() != null
 							&& ((BrowserCell) widget.getBrowserModel().getRoot()).getChildCount() == 1) {
 						// Only one cell and roots are hidden, expand this first
