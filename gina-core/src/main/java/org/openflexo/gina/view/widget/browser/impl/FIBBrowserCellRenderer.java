@@ -114,8 +114,7 @@ public class FIBBrowserCellRenderer<T> extends DefaultTreeCellRenderer {
 					if (widget.getWidget().getBackgroundSelectionColor() != null) {
 						setBackgroundSelectionColor(widget.getWidget().getBackgroundSelectionColor());
 					}
-				}
-				else {
+				} else {
 					if (widget.getWidget().getTextNonSelectionColor() != null) {
 						setTextSelectionColor(widget.getWidget().getTextNonSelectionColor());
 					}
@@ -128,11 +127,10 @@ public class FIBBrowserCellRenderer<T> extends DefaultTreeCellRenderer {
 			JLabel returned = (JLabel) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 			if (widget.isEnabled()) {
 				if (isEnabled(representedObject)) {
-					if (widget.getWidget().getTextNonSelectionColor() != null) {
+					if (widget.getWidget() != null && widget.getWidget().getTextNonSelectionColor() != null) {
 						setTextNonSelectionColor(widget.getWidget().getTextNonSelectionColor());
 					}
-				}
-				else {
+				} else {
 					setEnabled(false);
 				}
 			}
@@ -147,8 +145,7 @@ public class FIBBrowserCellRenderer<T> extends DefaultTreeCellRenderer {
 				if (color != null) {
 					returned.setForeground(color);
 				}
-			}
-			else {
+			} else {
 				Color color = getNonSelectedColor(representedObject);
 				if (color != null) {
 					returned.setForeground(color);
