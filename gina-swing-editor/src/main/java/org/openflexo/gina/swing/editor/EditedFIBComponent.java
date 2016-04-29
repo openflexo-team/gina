@@ -137,19 +137,20 @@ public class EditedFIBComponent extends PropertyChangedSupportDefaultImplementat
 			if (getSourceFile() != null) {
 				logger.info("Save to file " + getSourceFile());
 				getFIBLibrary().save(fibComponent, getSourceFile());
-			}
-			else {
+			} else {
 				logger.warning("Cannot save FIBComponent: source resource is not a file");
 			}
-		}
-		else {
+		} else {
 			logger.warning("Cannot save FIBComponent: source resource is null");
 		}
 	}
 
 	public void saveAs(FileResourceImpl sourceResource) {
+		String oldName = getName();
+		name = null;
 		setSourceResource(sourceResource);
 		save();
+		getPropertyChangeSupport().firePropertyChange("name", oldName, getName());
 	}
 
 }

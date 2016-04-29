@@ -245,15 +245,18 @@ public class FIBEditor implements FIBGenericEditor {
 	}
 
 	public void loadFIB(JFrame frame) {
-		if (getFileChooser(frame).showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
-			File fibFile = getFileChooser(frame).getSelectedFile();
+
+		FlexoFileChooser fileChooser = getFileChooser(frame);
+
+		if (fileChooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
+			File fibFile = fileChooser.getSelectedFile();
 			loadFIB(fibFile, frame);
 		}
 	}
 
 	public void loadFIB(File fibFile, JFrame frame) {
 
-		if (!fibFile.exists()) {
+		if (fibFile != null && !fibFile.exists()) {
 			JOptionPane.showMessageDialog(frame, "File " + fibFile.getAbsolutePath() + " does not exist anymore");
 			return;
 		}
@@ -288,8 +291,12 @@ public class FIBEditor implements FIBGenericEditor {
 		if (editedFIB == null) {
 			return;
 		}
-		if (getFileChooser(frame).showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
-			File file = getFileChooser(frame).getSelectedFile();
+
+		FlexoFileChooser fileChooser = getFileChooser(frame);
+
+		if (fileChooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
+			File file = fileChooser.getSelectedFile();
+			System.out.println("file=" + file);
 			if (!file.getName().endsWith(".fib")) {
 				file = new File(file.getParentFile(), file.getName() + ".fib");
 			}
