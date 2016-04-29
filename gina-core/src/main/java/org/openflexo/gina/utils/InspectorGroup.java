@@ -101,10 +101,12 @@ public class InspectorGroup {
 						logger.fine("Loaded inspector: " + f.getURI() + " for " + inspector.getDataClass());
 						progress(f, inspector);
 					}
-				} else {
+				}
+				else {
 					logger.warning("Not found: " + f.getURI());
 				}
-			} else {
+			}
+			else {
 				logger.warning("Component in " + f + " is not an inspector !");
 			}
 		}
