@@ -203,7 +203,7 @@ public class InspectorGroup {
 		// System.out.println("visitSuperInspectors in " + this + " inspectorGroup=" + inspectorGroup + " parent=" +
 		// inspectorGroup.parentInspectorGroups);
 		for (InspectorGroup parentInspectorGroup : inspectorGroup.parentInspectorGroups) {
-			if (parentInspectorGroup != this) {
+			if (parentInspectorGroup != this && parentInspectorGroup != null) {
 				visitSuperInspectors(parentInspectorGroup, inspectorList);
 			}
 		}
