@@ -102,6 +102,7 @@ public class FIBModelFactory extends ModelFactory {
 		addConverter(new DataBindingConverter());
 		addConverter(new ComponentConstraintsConverter());
 		addConverter(new TypeConverter(null));
+		addConverter(new ResourceLocationConverter());
 		validationModel = new FIBValidationModel(this);
 	}
 
