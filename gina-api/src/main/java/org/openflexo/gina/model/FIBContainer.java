@@ -597,11 +597,11 @@ public abstract interface FIBContainer extends FIBComponent {
 								if (child.getName() != null) {
 									overridingComponent = getSubComponentNamed(child.getName());
 								}
-								if (overridingComponent != null) {
+								if (overridingComponent != null /*&& overridingComponent.isHidden()*/) {
 									insert = false;
-									if (overridingComponent.isHidden()) {
+									/*if (overridingComponent.isHidden()) {
 										removeFromSubComponents(overridingComponent);
-									}
+									}*/
 								}
 							}
 							else {
