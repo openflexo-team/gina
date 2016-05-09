@@ -41,8 +41,9 @@ package org.openflexo.gina.swing.editor;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.util.Hashtable;
-import java.util.Vector;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
@@ -50,9 +51,6 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JTabbedPane;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 
 import org.openflexo.gina.ApplicationFIBLibrary;
@@ -85,9 +83,14 @@ import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.swing.FlexoFileChooser;
 
-// TODO: switch to the right editor controller when switching tab
-// 		getPalette().setEditorController(editorController);
-public class FIBEditor implements FIBGenericEditor {
+/**
+ * This class provides a generic framework for managing {@link FIBComponent} edition<br>
+ * 
+ * 
+ * @author sylvain
+ *
+ */
+public class FIBEditor {
 
 	static final Logger logger = FlexoLogger.getLogger(FIBEditor.class.getPackage().getName());
 
@@ -101,12 +104,8 @@ public class FIBEditor implements FIBGenericEditor {
 	public static Resource COMPONENT_LOCALIZATION_FIB = ResourceLocator.locateResource("Fib/LocalizedPanel.fib");
 
 	private FIBEditorPalettes palette;
-
 	private JFIBInspectorController inspector;
-
 	private FIBInspectors inspectors;
-
-	private FIBEditorController editorController;
 
 	protected LocalizedEditor localizedEditor;
 	private ComponentValidationWindow componentValidationWindow;
@@ -117,10 +116,13 @@ public class FIBEditor implements FIBGenericEditor {
 	static ApplicationFIBLibrary APP_FIB_LIBRARY = ApplicationFIBLibraryImpl.instance();
 	private final FIBLibrary fibLibrary;
 
-	private final MainPanel mainPanel;
+	private MainPanel mainPanel;
 	private FIBEditorMenuBar menuBar;
 
-	private EditedFIBComponent editedFIB;
+	// This map stores all editors (FIBEditorController - editor of an EditedFIBComponent) managed by this FIBEditor
+	private final Map<EditedFIBComponent, FIBEditorController> controllers = new HashMap<EditedFIBComponent, FIBEditorController>();
+
+	private FIBEditorController activeEditorController = null;
 
 	public FIBEditor(FIBLibrary fibLibrary) {
 		super();
@@ -132,8 +134,44 @@ public class FIBEditor implements FIBGenericEditor {
 		resourceLocator.appendToDirectories(System.getProperty("user.home"));
 		ResourceLocator.appendDelegate(resourceLocator);
 
-		mainPanel = new MainPanel();
+	}
 
+	/**
+	 * Return a collection storing all components beeing edited in this FIBEditor
+	 * 
+	 * @return a collection of {@link EditedFIBComponent}
+	 */
+	public Collection<EditedFIBComponent> getEditedFIBComponents() {
+		return controllers.keySet();
+	}
+
+	/**
+	 * Return {@link FIBEditorController} managing edition of {@link EditedFIBComponent}, asserting that supplied edited component is edited
+	 * in this {@link FIBEditor}
+	 * 
+	 * @param editedComponent
+	 * @return
+	 */
+	public FIBEditorController getControllerForEditedFIBComponent(EditedFIBComponent editedComponent) {
+		return controllers.get(editedComponent);
+	}
+
+	/**
+	 * Return active {@link FIBEditorController}
+	 * 
+	 * @return
+	 */
+	public FIBEditorController getActiveEditorController() {
+		return activeEditorController;
+	}
+
+	/**
+	 * Return active {@link EditedFIBComponent}
+	 * 
+	 * @return
+	 */
+	public EditedFIBComponent getActiveEditedComponent() {
+		return activeEditorController.getEditedComponent();
 	}
 
 	private FlexoFileChooser getFileChooser(JFrame frame) {
@@ -181,16 +219,19 @@ public class FIBEditor implements FIBGenericEditor {
 		return inspectors;
 	}
 
+	public MainPanel makeMainPanel() {
+		mainPanel = new MainPanel(this);
+		return mainPanel;
+	}
+
 	public FIBLibrary getFIBLibrary() {
 		return fibLibrary;
 	}
 
-	@Override
 	public JFIBInspectorController getInspector() {
 		return inspector;
 	}
 
-	@Override
 	public FIBEditorPalettes getPalettes() {
 		return palette;
 	}
@@ -217,11 +258,38 @@ public class FIBEditor implements FIBGenericEditor {
 		System.exit(0);
 	}
 
-	public void closeFIB(JFrame frame) {
-		logger.warning("Not implemented yet");
+	/**
+	 * Internally used to create and register a new {@link FIBEditorController} managing the edition of a {@link EditedFIBComponent}
+	 * 
+	 * @param newEditedFIB
+	 * @param frame
+	 * @return
+	 */
+	private FIBEditorController newEditedComponent(EditedFIBComponent newEditedFIB, JFrame frame) {
+		FIBEditorController editorController = new FIBEditorController(newEditedFIB, this, frame);
+		if (getMainPanel() != null) {
+			mainPanel.newEditedComponent(editorController);
+		}
+		activate(editorController);
+		return editorController;
 	}
 
-	public void newFIB(JFrame frame) {
+	public FIBEditorController openFIBComponent(FIBComponent component, Resource fibResource, JFrame frame) {
+
+		if (fibResource instanceof FileResourceImpl) {
+			File fibFile = ((FileResourceImpl) fibResource).getFile();
+			JFIBPreferences.setLastFile(fibFile);
+		}
+
+		EditedFIBComponent newEditedFIB = new EditedFIBComponent(fibResource.getRelativePath(), component, getFIBLibrary());
+		newEditedFIB.setSourceResource(fibResource);
+
+		return newEditedComponent(newEditedFIB, frame);
+	}
+
+	private int newIndex = 0;
+
+	public FIBEditorController newFIB(JFrame frame) {
 
 		FIBModelFactory factory = null;
 
@@ -229,36 +297,44 @@ public class FIBEditor implements FIBGenericEditor {
 			factory = new FIBModelFactory();
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();
-			return;
+			return null;
 		}
 
 		FIBPanel fibComponent = factory.newInstance(FIBPanel.class);
 		fibComponent.setLayout(Layout.border);
 		fibComponent.finalizeDeserialization();
-		EditedFIBComponent newEditedFIB = new EditedFIBComponent("New.fib", fibComponent, getFIBLibrary());
+		EditedFIBComponent newEditedFIB = new EditedFIBComponent("New" + (newIndex > 0 ? newIndex + 1 : "") + ".fib", fibComponent,
+				getFIBLibrary());
+		newIndex++;
 
-		editorController = new FIBEditorController(factory, fibComponent, this, frame);
-		getPalettes().setEditorController(editorController);
-
-		mainPanel.newEditedComponent(newEditedFIB, editorController);
-
+		return newEditedComponent(newEditedFIB, frame);
 	}
 
-	public void loadFIB(JFrame frame) {
+	public FIBEditorController loadFIB(JFrame frame) {
 
 		FlexoFileChooser fileChooser = getFileChooser(frame);
 
 		if (fileChooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
 			File fibFile = fileChooser.getSelectedFile();
-			loadFIB(fibFile, frame);
+			return loadFIB(fibFile, frame);
 		}
+
+		return null;
 	}
 
-	public void loadFIB(File fibFile, JFrame frame) {
+	public FIBEditorController loadFIB(File fibFile, JFrame frame) {
+		return loadFIB(fibFile, null, frame);
+	}
+
+	public FIBEditorController loadFIB(Resource fibResource, JFrame frame) {
+		return loadFIB(fibResource, null, frame);
+	}
+
+	public FIBEditorController loadFIB(File fibFile, Object dataObject, JFrame frame) {
 
 		if (fibFile != null && !fibFile.exists()) {
 			JOptionPane.showMessageDialog(frame, "File " + fibFile.getAbsolutePath() + " does not exist anymore");
-			return;
+			return null;
 		}
 		JFIBPreferences.setLastFile(fibFile);
 
@@ -267,27 +343,33 @@ public class FIBEditor implements FIBGenericEditor {
 			fibResource = new FileResourceImpl(resourceLocator, fibFile);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return;
+			return null;
 		}
 
-		EditedFIBComponent newEditedFIB = new EditedFIBComponent(fibResource, getFIBLibrary());
-		editorController = new FIBEditorController(newEditedFIB.getFactory(), newEditedFIB.getFIBComponent(), this, frame);
-		getPalettes().setEditorController(editorController);
-		mainPanel.newEditedComponent(newEditedFIB, editorController);
+		return loadFIB(fibResource, dataObject, frame);
 	}
 
-	public void saveFIB(JFrame frame) {
+	public FIBEditorController loadFIB(Resource fibResource, Object dataObject, JFrame frame) {
+
+		EditedFIBComponent newEditedFIB = new EditedFIBComponent(fibResource, getFIBLibrary());
+		newEditedFIB.setDataObject(dataObject);
+
+		return newEditedComponent(newEditedFIB, frame);
+	}
+
+	public void saveFIB(EditedFIBComponent editedFIB, JFrame frame) {
 		if (editedFIB == null) {
 			return;
 		}
 		if (editedFIB.getSourceFile() != null) {
 			editedFIB.save();
-		} else {
-			saveFIBAs(frame);
+		}
+		else {
+			saveFIBAs(editedFIB, frame);
 		}
 	}
 
-	public void saveFIBAs(JFrame frame) {
+	public void saveFIBAs(EditedFIBComponent editedFIB, JFrame frame) {
 		if (editedFIB == null) {
 			return;
 		}
@@ -315,27 +397,37 @@ public class FIBEditor implements FIBGenericEditor {
 		}
 	}
 
-	public void testFIB(JFrame frame) {
+	public void closeFIB(EditedFIBComponent editedFIB, JFrame frame) {
+		logger.warning("Not implemented yet");
+	}
+
+	public void testFIB(EditedFIBComponent editedFIB, JFrame frame) {
 		JFIBView<?, ? extends JComponent> view = (JFIBView<?, ? extends JComponent>) FIBController.makeView(editedFIB.getFIBComponent(),
 				SwingViewFactory.INSTANCE, LOCALIZATION, true);
 
-		// Class testClass = null;
-		if (editedFIB.getFIBComponent() instanceof FIBContainer && ((FIBContainer) editedFIB.getFIBComponent()).getDataClass() != null) {
-			try {
-				// testClass =
-				// Class.forName(editedFIB.fibComponent.getDataClassName());
-				FIBContainer container = (FIBContainer) editedFIB.getFIBComponent();
-				Object testData = container.getDataClass().newInstance();
-				view.getController().setDataObject(testData);
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		if (editedFIB.getDataObject() != null) {
+			view.getController().setDataObject(editedFIB.getDataObject());
+		}
+		else {
+			if (editedFIB.getFIBComponent() instanceof FIBContainer
+					&& ((FIBContainer) editedFIB.getFIBComponent()).getDataClass() != null) {
+				try {
+					// testClass =
+					// Class.forName(editedFIB.fibComponent.getDataClassName());
+					FIBContainer container = (FIBContainer) editedFIB.getFIBComponent();
+					Object testData = container.getDataClass().newInstance();
+					view.getController().setDataObject(testData);
+				} catch (InstantiationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-		} else {
-			view.getController().updateWithoutDataObject();
+			else {
+				view.getController().updateWithoutDataObject();
+			}
 		}
 
 		JDialog testInterface = new JDialog(frame, "Test", false);
@@ -344,23 +436,19 @@ public class FIBEditor implements FIBGenericEditor {
 		testInterface.setVisible(true);
 	}
 
-	public void localizeFIB(JFrame frame) {
-
-		if (editorController == null) {
-			return;
-		}
+	public void localizeFIB(EditedFIBComponent editedFIB, JFrame frame) {
 
 		if (editedFIB != null && editedFIB.getFIBComponent() != null) {
 			editedFIB.getFIBComponent().searchAndRegisterAllLocalized();
-			getLocalizationWindow(editedFIB.getFIBComponent(), frame).setVisible(true);
+			getLocalizationWindow(editedFIB, frame).setVisible(true);
 		}
 
 	}
 
-	public void validateFIB(JFrame frame) {
+	public void validateFIB(EditedFIBComponent editedFIB, JFrame frame) {
 		if (editedFIB != null && editedFIB.getFIBComponent() != null) {
 			try {
-				getValidationWindow(editedFIB.getFIBComponent(), frame).validateAndDisplayReportForComponent(editedFIB.getFIBComponent());
+				getValidationWindow(editedFIB, frame).validateAndDisplayReportForComponent(editedFIB.getFIBComponent());
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -368,79 +456,69 @@ public class FIBEditor implements FIBGenericEditor {
 		}
 	}
 
-	protected ComponentValidationWindow getValidationWindow(FIBComponent component, JFrame frame) {
-		if (componentValidationWindow != null && componentValidationWindow.getFIBComponent() != component) {
+	protected ComponentValidationWindow getValidationWindow(EditedFIBComponent editedComponent, JFrame frame) {
+		if (componentValidationWindow != null && componentValidationWindow.getEditedComponent() != editedComponent) {
 			componentValidationWindow.dispose();
 			componentValidationWindow = null;
 		}
-		if (componentValidationWindow == null) {
+		FIBEditorController editorController = getControllerForEditedFIBComponent(editedComponent);
+		if (componentValidationWindow == null && editorController != null) {
 			componentValidationWindow = new ComponentValidationWindow(frame, editorController, APP_FIB_LIBRARY);
 		}
 		return componentValidationWindow;
 	}
 
-	protected ComponentLocalizationWindow getLocalizationWindow(FIBComponent component, JFrame frame) {
-		if (componentLocalizationWindow != null && componentLocalizationWindow.getFIBComponent() != component) {
+	protected ComponentLocalizationWindow getLocalizationWindow(EditedFIBComponent editedComponent, JFrame frame) {
+		if (componentLocalizationWindow != null && componentLocalizationWindow.getEditedComponent() != editedComponent) {
 			componentLocalizationWindow.dispose();
 			componentLocalizationWindow = null;
 		}
-		if (componentLocalizationWindow == null) {
-			componentLocalizationWindow = new ComponentLocalizationWindow(frame, editorController, APP_FIB_LIBRARY);
+		FIBEditorController editorController = getControllerForEditedFIBComponent(editedComponent);
+		if (componentLocalizationWindow == null && editorController != null) {
+			componentLocalizationWindow = new ComponentLocalizationWindow(frame, editorController);
 		}
 		return componentLocalizationWindow;
 	}
 
 	public void switchToLanguage(Language lang) {
 		FlexoLocalization.setCurrentLanguage(lang);
-		if (editorController != null) {
-			editorController.switchToLanguage(lang);
-		}
-	}
-
-	public EditedFIBComponent getEditedFIB() {
-		return editedFIB;
-	}
-
-	@Override
-	public File getEditedComponentFile() {
-		return editedFIB.getSourceFile();
-	}
-
-	public class MainPanel extends JTabbedPane implements ChangeListener {
-		private final Vector<EditedFIBComponent> editedComponents;
-		private final Hashtable<EditedFIBComponent, FIBEditorController> controllers;
-
-		public MainPanel() {
-			super();
-			editedComponents = new Vector<EditedFIBComponent>();
-			controllers = new Hashtable<EditedFIBComponent, FIBEditorController>();
-			addChangeListener(this);
-		}
-
-		public void newEditedComponent(EditedFIBComponent edited, FIBEditorController controller) {
-			editedComponents.add(edited);
-			controllers.put(edited, controller);
-			add(controller.getEditorPanel(), edited.getName());
-			revalidate();
-			setSelectedIndex(getComponentCount() - 1);
-		}
-
-		@Override
-		public void stateChanged(ChangeEvent e) {
-			logger.info("Change for " + e);
-			if (editedFIB != null) {
-				disactivate(editedFIB, controllers.get(editedFIB));
+		for (EditedFIBComponent editedComponent : getEditedFIBComponents()) {
+			FIBEditorController editorController = getControllerForEditedFIBComponent(editedComponent);
+			if (editorController != null) {
+				editorController.switchToLanguage(lang);
 			}
-			int index = getSelectedIndex();
-			editedFIB = editedComponents.get(index);
-			activate(editedFIB, controllers.get(editedFIB));
 		}
+
 	}
 
-	public void activate(EditedFIBComponent editedFIB, FIBEditorController controller) {
+	public boolean activate(FIBEditorController editorController) {
+		if (activeEditorController == editorController) {
+			return false;
+		}
+		if (activeEditorController != null) {
+			disactivate(activeEditorController);
+		}
+		System.out.println("Activate edition of " + editorController.getEditedComponent().getName());
+		activeEditorController = editorController;
+		if (getPalettes() != null) {
+			getPalettes().setEditorController(editorController);
+		}
+		if (getMainPanel() != null) {
+			mainPanel.focusOnEditedComponent(editorController);
+		}
+		return true;
 	}
 
-	public void disactivate(EditedFIBComponent editedFIB, FIBEditorController controller) {
+	public boolean disactivate(FIBEditorController editorController) {
+		if (activeEditorController == editorController) {
+			System.out.println("Desactivate edition of " + editorController.getEditedComponent().getName());
+			activeEditorController = null;
+			if (getPalettes() != null) {
+				getPalettes().setEditorController(null);
+			}
+			return true;
+		}
+		return false;
 	}
 
 }

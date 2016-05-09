@@ -325,7 +325,12 @@ public class FIBController
 			if (v instanceof FIBReferencedComponentWidget) {
 				FIBReferencedComponentWidget<?> w = (FIBReferencedComponentWidget<?>) v;
 				if (w.getReferencedComponentView() != null) {
-					l.addAll(w.getReferencedComponentView().getController().getAllViews());
+					if (w.getReferencedComponentView().getController() == this) {
+						System.out.println("Zut alors le controller de " + w.getReferencedComponentView() + " c'est " + this);
+					}
+					else {
+						l.addAll(w.getReferencedComponentView().getController().getAllViews());
+					}
 				} /*
 					* else { System.out.println("No view for " +
 					* FIBLibrary.instance
@@ -453,7 +458,8 @@ public class FIBController
 	public final <M extends FIBComponent> FIBView<M, ?> buildView(M fibComponent, boolean updateNow) {
 		if (fibComponent instanceof FIBContainer) {
 			return (FIBView<M, ?>) getViewFactory().makeContainer((FIBContainer) fibComponent, this, updateNow);
-		} else if (fibComponent instanceof FIBWidget) {
+		}
+		else if (fibComponent instanceof FIBWidget) {
 			return (FIBView<M, ?>) getViewFactory().makeWidget((FIBWidget) fibComponent, this);
 		}
 		return null;
@@ -536,7 +542,8 @@ public class FIBController
 				returned.setParent(getParentLocalizer());
 			}
 			return returned;
-		} else {
+		}
+		else {
 			LOGGER.warning("Could not find localizer");
 			return null;
 		}
@@ -718,7 +725,8 @@ public class FIBController
 			for (Object o : newSelection) {
 				if (oldSelection != null && oldSelection.contains(o)) {
 					objectsToRemoveFromSelection.remove(o);
-				} else {
+				}
+				else {
 					objectsToAddToSelection.add(o);
 				}
 			}

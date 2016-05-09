@@ -102,15 +102,25 @@ public class LaunchBasicFIBEditor {
 
 			final FIBEditor editor = new FIBEditor(FIBLibraryImpl.createInstance()) {
 				@Override
-				public void activate(EditedFIBComponent editedFIB, FIBEditorController controller) {
-					splitPane.setLeftComponent(controller.getEditorBrowser());
-					splitPane.revalidate();
+				public boolean activate(FIBEditorController editorController) {
+					if (super.activate(editorController)) {
+						splitPane.setLeftComponent(editorController.getEditorBrowser());
+						splitPane.revalidate();
+						splitPane.repaint();
+						return true;
+					}
+					return false;
 				}
 
 				@Override
-				public void disactivate(EditedFIBComponent editedFIB, FIBEditorController controller) {
-					splitPane.setLeftComponent(null);
-					splitPane.revalidate();
+				public boolean disactivate(FIBEditorController editorController) {
+					if (super.disactivate(editorController)) {
+						splitPane.setLeftComponent(null);
+						splitPane.revalidate();
+						splitPane.repaint();
+						return true;
+					}
+					return false;
 				}
 			};
 
@@ -138,7 +148,7 @@ public class LaunchBasicFIBEditor {
 
 			editor.makeMenuBar(frame);
 
-			splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, null, editor.getMainPanel());
+			splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, null, editor.makeMainPanel());
 
 			frame.getContentPane().add(splitPane);
 			frame.validate();

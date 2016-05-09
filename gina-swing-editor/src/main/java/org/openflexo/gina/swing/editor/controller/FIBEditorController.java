@@ -55,19 +55,16 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.logging.Logger;
 
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.FIBModelFactory;
 import org.openflexo.gina.swing.editor.EditedFIBComponent;
-import org.openflexo.gina.swing.editor.FIBAbstractEditor;
-import org.openflexo.gina.swing.editor.FIBGenericEditor;
+import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.palette.DropListener;
 import org.openflexo.gina.swing.editor.palette.FIBEditorPalettes;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
@@ -80,11 +77,12 @@ import org.openflexo.gina.view.FIBView;
 import org.openflexo.localization.Language;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.undo.UndoManager;
-import org.openflexo.swing.NoInsetsBorder;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 /**
  * This is a controller managing the edition of an {@link EditedFIBComponent}<br>
+ * 
+ * Swing view to be used is given by {@link #getEditorPanel()} method.
  * 
  * Such controller manages:
  * <ul>
@@ -101,175 +99,94 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 
 	private final FIBController controller;
 
-	private final FIBModelFactory factory;
+	private final EditedFIBComponent editedComponent;
 
-	// private final JPanel editorPanel2;
-	// private final JFIBView<?, ?> fibPanel;
-
-	private final FIBGenericEditor editor;
+	private final FIBEditor editor;
 
 	private FIBEditorPanel editorPanel;
 	private FIBEditorBrowser editorBrowser;
 
-	private FIBComponent fibComponent = null;
 	private FIBComponent selectedObject = null;
 	private FIBComponent focusedObject = null;
 
 	private final ContextualMenu contextualMenu;
 
-	private static final Border FOCUSED_BORDER = new NoInsetsBorder(BorderFactory.createLineBorder(Color.RED));
-	private static final Border SELECTED_BORDER = new NoInsetsBorder(BorderFactory.createLineBorder(Color.BLUE));
-
 	private final Map<FIBComponent, FIBSwingEditableViewDelegate<?, ?>> viewDelegates;
 
 	private final PropertyChangeSupport pcSupport;
 
-	@SuppressWarnings("serial")
-	public class FIBEditorPanel extends JPanel {
-
-		private JFIBView<?, ?> fibPanel;
-
-		public FIBEditorPanel(FIBController controller) {
-			super(new BorderLayout());
-
-			fibPanel = (JFIBView<?, ?>) controller.buildView();
-			add(fibPanel.getJComponent());
-		}
-
-		public void updateWithDataObject(Object data) {
-			fibPanel.getController().setDataObject(data, true);
-		}
-
-		public void updateWithoutDataObject() {
-			fibPanel.getController().setDataObject(null, true);
-		}
-
-		@Override
-		public void paint(Graphics g) {
-			super.paint(g);
-			paintFocusedAndSelected(g);
-		}
-
-		private void paintFocusedAndSelected(Graphics g) {
-			FIBSwingEditableViewDelegate<?, ?> focused = viewDelegates.get(getFocusedObject());
-			FIBSwingEditableViewDelegate<?, ?> selected = viewDelegates.get(getSelectedObject());
-			if (focused != null && focused != selected) {
-				Point origin = SwingUtilities.convertPoint(focused.getResultingJComponent(), new Point(), this);
-				// Graphics componentGraphics = g.create(origin.x, origin.y,
-				// focused.getJComponent().getWidth(), focused
-				// .getJComponent().getHeight());
-				Rectangle bounds = new Rectangle(origin.x, origin.y, focused.getResultingJComponent().getWidth() - 1,
-						focused.getJComponent().getHeight() - 1);
-				Graphics2D g2 = (Graphics2D) g;
-
-				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-				g2.setColor(Color.WHITE);
-				g2.fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 10, 10);
-				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-				g2.setStroke(new BasicStroke(0.5f));
-				g2.setColor(Color.LIGHT_GRAY);
-				g2.drawRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 10, 10);
-
-				// FOCUSED_BORDER.paintBorder(focused.getJComponent(),
-				// componentGraphics, 0, 0, focused.getJComponent()
-				// .getWidth(), focused.getJComponent().getHeight());
-				// componentGraphics.dispose();
-			}
-			if (selected != null) {
-				Point origin = SwingUtilities.convertPoint(selected.getResultingJComponent(), new Point(), this);
-				// Graphics componentGraphics = g.create(origin.x, origin.y,
-				// selected.getJComponent().getWidth(), selected
-				// .getJComponent().getHeight());
-
-				Rectangle bounds = new Rectangle(origin.x, origin.y, selected.getResultingJComponent().getWidth() - 1,
-						selected.getJComponent().getHeight() - 1);
-				Graphics2D g2 = (Graphics2D) g;
-
-				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.05f));
-				g2.setColor(Color.BLUE);
-				g2.fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 10, 10);
-				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-				g2.setStroke(new BasicStroke(0.5f));
-				g2.setColor(Color.BLUE.brighter());
-				g2.drawRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 10, 10);
-
-				// SELECTED_BORDER.paintBorder(selected.getJComponent(),
-				// componentGraphics, 0, 0, selected.getJComponent()
-				// .getWidth(), selected.getJComponent().getHeight());
-				// componentGraphics.dispose();
-			}
-		}
-	}
-
-	public FIBEditorController(FIBModelFactory factory, FIBComponent fibComponent, FIBGenericEditor editor, JFrame frame) {
-		this(factory, fibComponent, editor, null, frame);
+	public FIBEditorController(EditedFIBComponent editedComponent, FIBEditor editor, JFrame frame) {
+		this(editedComponent, null, editor, frame);
 		// Class testClass = null;
 
-		if (fibComponent instanceof FIBContainer) {
-			FIBContainer fibContainer = (FIBContainer) fibComponent;
-			boolean instantiable = fibContainer.getDataClass() != null && !Modifier.isAbstract(fibContainer.getDataClass().getModifiers());
-			if (instantiable) {
-				try {
-					instantiable = fibContainer.getDataClass().getConstructor(new Class[0]) != null;
-				} catch (SecurityException e) {
-					instantiable = false;
-				} catch (NoSuchMethodException e) {
-					instantiable = false;
+		if (editedComponent.getDataObject() != null) {
+			editorPanel.updateWithDataObject(editedComponent.getDataObject());
+		}
+		else {
+
+			if (editedComponent.getFIBComponent() instanceof FIBContainer) {
+				FIBContainer fibContainer = (FIBContainer) editedComponent.getFIBComponent();
+				boolean instantiable = fibContainer.getDataClass() != null
+						&& !Modifier.isAbstract(fibContainer.getDataClass().getModifiers());
+				if (instantiable) {
+					try {
+						instantiable = fibContainer.getDataClass().getConstructor(new Class[0]) != null;
+					} catch (SecurityException e) {
+						instantiable = false;
+					} catch (NoSuchMethodException e) {
+						instantiable = false;
+					}
 				}
-			}
-			if (instantiable) {
-				try {
-					// testClass =
-					// Class.forName(fibComponent.getDataClassName());
-					Object testData = fibContainer.getDataClass().newInstance();
-					editorPanel.updateWithDataObject(testData);
-				} catch (InstantiationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if (instantiable) {
+					try {
+						// testClass =
+						// Class.forName(fibComponent.getDataClassName());
+						Object testData = fibContainer.getDataClass().newInstance();
+						editorPanel.updateWithDataObject(testData);
+					} catch (InstantiationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				else {
+					editorPanel.updateWithoutDataObject();
 				}
 			}
 			else {
 				editorPanel.updateWithoutDataObject();
 			}
 		}
-		else {
-			editorPanel.updateWithoutDataObject();
-		}
 	}
 
-	public FIBEditorController(FIBModelFactory factory, FIBComponent fibComponent, FIBGenericEditor editor, Object dataObject,
+	public FIBEditorController(EditedFIBComponent editedComponent, Object dataObject, FIBEditor editor, JFrame frame) {
+		this(editedComponent, dataObject, editor, FIBController.instanciateController(editedComponent.getFIBComponent(),
+				SwingEditorViewFactory.INSTANCE, FIBEditor.LOCALIZATION), frame);
+	}
+
+	public FIBEditorController(EditedFIBComponent editedComponent, Object dataObject, FIBEditor editor, FIBController controller,
 			JFrame frame) {
-		this(factory, fibComponent, editor, dataObject,
-				FIBController.instanciateController(fibComponent, SwingEditorViewFactory.INSTANCE, FIBAbstractEditor.LOCALIZATION), frame);
-	}
-
-	public FIBEditorController(FIBModelFactory factory, FIBComponent fibComponent, FIBGenericEditor editor, Object dataObject,
-			FIBController controller, JFrame frame) {
 
 		pcSupport = new PropertyChangeSupport(this);
+		this.editedComponent = editedComponent;
 
 		this.controller = controller;
-		this.factory = factory;
 		viewDelegates = new HashMap<FIBComponent, FIBSwingEditableViewDelegate<?, ?>>();
 		controller.setViewFactory(new SwingEditorViewFactory(this));
 
 		this.editor = editor;
-		this.fibComponent = fibComponent;
 
 		contextualMenu = new ContextualMenu(this, frame);
 
-		addObserver(editor.getInspector());
+		if (editor.getInspector() != null) {
+			addObserver(editor.getInspector());
+		}
 
 		editorPanel = new FIBEditorPanel(controller);
 
-		editorBrowser = new FIBEditorBrowser(fibComponent, this);
+		editorBrowser = new FIBEditorBrowser(editedComponent.getFIBComponent(), this);
 
 		if (dataObject != null) {
 			editorPanel.updateWithDataObject(dataObject);
@@ -290,8 +207,12 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 		return null;
 	}
 
+	public EditedFIBComponent getEditedComponent() {
+		return editedComponent;
+	}
+
 	public FIBComponent getFIBComponent() {
-		return fibComponent;
+		return editedComponent.getFIBComponent();
 	}
 
 	public Object getDataObject() {
@@ -306,15 +227,15 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 		return controller;
 	}
 
-	public FIBGenericEditor getEditor() {
+	public FIBEditor getEditor() {
 		return editor;
 	}
 
 	public FIBModelFactory getFactory() {
-		return factory;
+		return editedComponent.getFactory();
 	}
 
-	public JPanel getEditorPanel() {
+	public FIBEditorPanel getEditorPanel() {
 		return editorPanel;
 	}
 
@@ -465,4 +386,90 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 	public UndoManager getUndoManager() {
 		return null;
 	}
+
+	@SuppressWarnings("serial")
+	public class FIBEditorPanel extends JPanel {
+
+		private JFIBView<?, ?> fibPanel;
+
+		public FIBEditorPanel(FIBController controller) {
+			super(new BorderLayout());
+
+			fibPanel = (JFIBView<?, ?>) controller.buildView();
+			add(fibPanel.getJComponent());
+		}
+
+		public FIBEditorController getEditorController() {
+			return FIBEditorController.this;
+		}
+
+		public void updateWithDataObject(Object data) {
+			fibPanel.getController().setDataObject(data, true);
+		}
+
+		public void updateWithoutDataObject() {
+			fibPanel.getController().setDataObject(null, true);
+		}
+
+		@Override
+		public void paint(Graphics g) {
+			super.paint(g);
+			paintFocusedAndSelected(g);
+		}
+
+		private void paintFocusedAndSelected(Graphics g) {
+			FIBSwingEditableViewDelegate<?, ?> focused = viewDelegates.get(getFocusedObject());
+			FIBSwingEditableViewDelegate<?, ?> selected = viewDelegates.get(getSelectedObject());
+			if (focused != null && focused != selected) {
+				Point origin = SwingUtilities.convertPoint(focused.getResultingJComponent(), new Point(), this);
+				// Graphics componentGraphics = g.create(origin.x, origin.y,
+				// focused.getJComponent().getWidth(), focused
+				// .getJComponent().getHeight());
+				Rectangle bounds = new Rectangle(origin.x, origin.y, focused.getResultingJComponent().getWidth() - 1,
+						focused.getJComponent().getHeight() - 1);
+				Graphics2D g2 = (Graphics2D) g;
+
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+				g2.setColor(Color.WHITE);
+				g2.fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 10, 10);
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+				g2.setStroke(new BasicStroke(0.5f));
+				g2.setColor(Color.LIGHT_GRAY);
+				g2.drawRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 10, 10);
+
+				// FOCUSED_BORDER.paintBorder(focused.getJComponent(),
+				// componentGraphics, 0, 0, focused.getJComponent()
+				// .getWidth(), focused.getJComponent().getHeight());
+				// componentGraphics.dispose();
+			}
+			if (selected != null) {
+				Point origin = SwingUtilities.convertPoint(selected.getResultingJComponent(), new Point(), this);
+				// Graphics componentGraphics = g.create(origin.x, origin.y,
+				// selected.getJComponent().getWidth(), selected
+				// .getJComponent().getHeight());
+
+				Rectangle bounds = new Rectangle(origin.x, origin.y, selected.getResultingJComponent().getWidth() - 1,
+						selected.getJComponent().getHeight() - 1);
+				Graphics2D g2 = (Graphics2D) g;
+
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.05f));
+				g2.setColor(Color.BLUE);
+				g2.fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 10, 10);
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+				g2.setStroke(new BasicStroke(0.5f));
+				g2.setColor(Color.BLUE.brighter());
+				g2.drawRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 10, 10);
+
+				// SELECTED_BORDER.paintBorder(selected.getJComponent(),
+				// componentGraphics, 0, 0, selected.getJComponent()
+				// .getWidth(), selected.getJComponent().getHeight());
+				// componentGraphics.dispose();
+			}
+		}
+	}
+
 }

@@ -1,4 +1,4 @@
-<Panel name="1" layout="border" dataClassName="org.openflexo.gina.editor.test.Coucou">
+<Panel name="1" layout="border" dataClassName="org.openflexo.gina.swing.editor.test.Coucou">
 
 	<Panel name="1.1" layout="flow" constraints="border(location=north)">
 		<Label label="name"/>
@@ -22,7 +22,7 @@
 				<CheckBox name="Checkbox" data="data.showProuts"/>
 				<Label label="show"/>
 			</Panel>
-			<Table name="LaTableDesProuts" iteratorClassName="org.openflexo.gina.editor.test.Prout" data="data.prouts" constraints="border(location=center)" visible="data.showProuts=true" visibleRowCount="5" rowHeight="20">
+			<Table name="LaTableDesProuts" iteratorClassName="org.openflexo.gina.swing.editor.test.Prout" data="data.prouts" constraints="border(location=center)" visible="data.showProuts=true" visibleRowCount="5" rowHeight="20">
 				<TextFieldColumn name="name" data="iterator.name" title="name" columnWidth="100" resizable="true"/>
 				<TextFieldColumn name="description" data="iterator.description" title="description" columnWidth="350" resizable="true" />
 				<AddAction name="make_new_prout" method="data.createNewProut()" isAvailable="data.isProutAddable()"/>
@@ -35,7 +35,7 @@
 					<Label label="description" constraints="twocols(location=left)"/>
 					<TextArea name="DetailedDescription" data="LaTableDesProuts.selected.description" constraints="twocols(location=right)"/>
 			    </Panel>
-			    <Table name="1.2.2.3.2" iteratorClassName="org.openflexo.gina.editor.test.Toto" data="LaTableDesProuts.selected.totoList" constraints="border(location=center)" visibleRowCount="5" rowHeight="20">
+			    <Table name="1.2.2.3.2" iteratorClassName="org.openflexo.gina.swing.editor.test.Toto" data="LaTableDesProuts.selected.totoList" constraints="border(location=center)" visibleRowCount="5" rowHeight="20">
 				    <TextFieldColumn name="name" data="iterator.name" title="name" columnWidth="100" resizable="true"/>
 				    <TextFieldColumn name="description" data="iterator.description" title="description" columnWidth="350" resizable="true" />
 			    </Table>

@@ -46,7 +46,6 @@ import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
-import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.view.GinaViewFactory;
@@ -77,7 +76,7 @@ public class FIBLocalizedEditorController extends FIBController {
 	private List<LocalizedEntry> matchingEntries;
 	private List<LocalizedEntry> issuesEntries;
 
-	private final FIBLibrary fibLibrary;
+	// private final FIBLibrary fibLibrary;
 
 	public final Language ENGLISH = Language.ENGLISH;
 	public final Language FRENCH = Language.FRENCH;
@@ -85,9 +84,9 @@ public class FIBLocalizedEditorController extends FIBController {
 
 	private LocalizedEntry selectedEntry;
 
-	public FIBLocalizedEditorController(FIBComponent rootComponent, GinaViewFactory<?> viewFactory, FIBLibrary fibLibrary) {
+	public FIBLocalizedEditorController(FIBComponent rootComponent, GinaViewFactory<?> viewFactory) {
 		super(rootComponent, viewFactory);
-		this.fibLibrary = fibLibrary;
+		setParentLocalizer(FlexoLocalization.getMainLocalizer());
 	}
 
 	@Override
@@ -253,7 +252,7 @@ public class FIBLocalizedEditorController extends FIBController {
 			Resource sourceCodeDirectoryResource = ResourceLocator.locateSourceCodeResource(parent.getLocalizedDirectoryResource());
 			LocalizedDelegate sourceLocalized = FlexoLocalization.getLocalizedDelegate(sourceCodeDirectoryResource, parent.getParent(),
 					true, true);
-			parentLocalizedEditor = new LocalizedEditor(null, "localized_editor", sourceLocalized, getLocalizer(), fibLibrary, true, false);
+			parentLocalizedEditor = new LocalizedEditor(null, "localized_editor", sourceLocalized, getLocalizer(), true, false);
 		}
 		parentLocalizedEditor.setVisible(true);
 	}

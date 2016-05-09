@@ -69,7 +69,7 @@ import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.model.container.FIBTab;
 import org.openflexo.gina.model.container.FIBTabPanel;
 import org.openflexo.gina.model.container.layout.ComponentConstraints;
-import org.openflexo.gina.swing.editor.FIBAbstractEditor;
+import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate.FIBDropTarget;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.view.SwingViewFactory;
@@ -101,7 +101,7 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 		int x = Integer.parseInt(representationComponent.getParameter("x"));
 		int y = Integer.parseInt(representationComponent.getParameter("y"));
 
-		view = FIBController.makeView(representationComponent, SwingViewFactory.INSTANCE, FIBAbstractEditor.LOCALIZATION, true);
+		view = FIBController.makeView(representationComponent, SwingViewFactory.INSTANCE, FIBEditor.LOCALIZATION, true);
 		view.getController().setVariableValue("paletteData", dataObject);
 
 		if (view.getTechnologyComponent() != null) {
@@ -253,7 +253,8 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 						newTabComponent.finalizeDeserialization();
 						((FIBTabPanel) targetComponent).addToSubComponents(newTabComponent);
 						return true;
-					} else {
+					}
+					else {
 						// Normal case, we replace targetComponent by newComponent
 						ComponentConstraints constraints = targetComponent.getConstraints();
 						containerComponent.removeFromSubComponents(targetComponent);
@@ -367,7 +368,8 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 			int myaction = e.getDropAction();
 			if ((myaction & dragAction) != 0) {
 				context.setCursor(DragSource.DefaultCopyDrop);
-			} else {
+			}
+			else {
 				context.setCursor(DragSource.DefaultCopyNoDrop);
 			}
 		}

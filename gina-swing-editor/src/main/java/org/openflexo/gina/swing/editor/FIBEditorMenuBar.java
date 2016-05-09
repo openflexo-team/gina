@@ -91,7 +91,9 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 		saveItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FIBEditorMenuBar.this.fibEditor.saveFIB(frame);
+				if (fibEditor.getActiveEditedComponent() != null) {
+					fibEditor.saveFIB(fibEditor.getActiveEditedComponent(), frame);
+				}
 			}
 		});
 
@@ -99,7 +101,9 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 		saveAsItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FIBEditorMenuBar.this.fibEditor.saveFIBAs(frame);
+				if (fibEditor.getActiveEditedComponent() != null) {
+					fibEditor.saveFIBAs(fibEditor.getActiveEditedComponent(), frame);
+				}
 			}
 		});
 
@@ -107,7 +111,9 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 		closeItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FIBEditorMenuBar.this.fibEditor.closeFIB(frame);
+				if (fibEditor.getActiveEditedComponent() != null) {
+					fibEditor.closeFIB(fibEditor.getActiveEditedComponent(), frame);
+				}
 			}
 		});
 
@@ -115,14 +121,16 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 		quitItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FIBEditorMenuBar.this.fibEditor.quit();
+				fibEditor.quit();
 			}
 		});
 		testInterfaceItem = new JMenuItem(FlexoLocalization.localizedForKey(FIBEditor.LOCALIZATION, "test_component"));
 		testInterfaceItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FIBEditorMenuBar.this.fibEditor.testFIB(frame);
+				if (fibEditor.getActiveEditedComponent() != null) {
+					fibEditor.testFIB(fibEditor.getActiveEditedComponent(), frame);
+				}
 			}
 		});
 
@@ -130,7 +138,9 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 		componentLocalizationItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FIBEditorMenuBar.this.fibEditor.localizeFIB(frame);
+				if (fibEditor.getActiveEditedComponent() != null) {
+					fibEditor.localizeFIB(fibEditor.getActiveEditedComponent(), frame);
+				}
 			}
 		});
 
@@ -188,7 +198,7 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 			languageItem.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					FIBEditorMenuBar.this.fibEditor.switchToLanguage(language);
+					fibEditor.switchToLanguage(language);
 				}
 			});
 			languagesItem.add(languageItem);
@@ -228,7 +238,7 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 			public void actionPerformed(ActionEvent e) {
 				if (FIBEditorMenuBar.this.fibEditor.localizedEditor == null) {
 					FIBEditorMenuBar.this.fibEditor.localizedEditor = new LocalizedEditor(frame, "localized_editor", FIBEditor.LOCALIZATION,
-							FIBEditor.LOCALIZATION, FIBEditor.APP_FIB_LIBRARY, true, false);
+							FIBEditor.LOCALIZATION, true, false);
 				}
 				FIBEditorMenuBar.this.fibEditor.localizedEditor.setVisible(true);
 			}
@@ -238,8 +248,10 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 		displayFileItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FIBEditor.logger.info("Getting this "
-						+ fibEditor.getEditedFIB().getFactory().stringRepresentation(fibEditor.getEditedFIB().getFIBComponent()));
+				if (fibEditor.getActiveEditedComponent() != null) {
+					FIBEditor.logger.info("Getting this " + fibEditor.getActiveEditedComponent().getFactory()
+							.stringRepresentation(fibEditor.getActiveEditedComponent().getFIBComponent()));
+				}
 			}
 		});
 
@@ -247,7 +259,9 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 		componentValidationItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FIBEditorMenuBar.this.fibEditor.validateFIB(frame);
+				if (fibEditor.getActiveEditedComponent() != null) {
+					fibEditor.validateFIB(fibEditor.getActiveEditedComponent(), frame);
+				}
 			}
 		});
 

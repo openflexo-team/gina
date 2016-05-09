@@ -14,16 +14,16 @@
 				constraints="twocols(expandHorizontally=true;location=right)">
 				<Assignment variable="component.bindable" value="data" />
 			</Custom>
-			<Label name="EnableLabel" label="enable" index="12" constraints="twocols(location=left)"
+			<Label name="EnableLabel" label="enable" index="22" constraints="twocols(location=left)"
 				localize="true" />
-			<Custom name="EnableBinding" index="13" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+			<Custom name="EnableBinding" index="23" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 				localize="true" manageDynamicModel="true" data="data.enable"
 				constraints="twocols(expandHorizontally=true;location=right)">
 				<Assignment variable="component.bindable" value="data" />
 			</Custom>
-			<CheckBox name="ReadOnlyCB" index="16" selected="false" data="data.readOnly"
+			<CheckBox name="ReadOnlyCB" index="26" selected="false" data="data.readOnly"
 				constraints="twocols(location=left)" localize="true" />
-			<Label name="ReadOnlyLabel" index="17" label="read_only_component"
+			<Label name="ReadOnlyLabel" index="27" label="read_only_component"
 				constraints="twocols(expandHorizontally=true;location=right)"
 				localize="true" />
 		</Tab>

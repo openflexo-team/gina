@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel layout="twocols" dataClassName="org.openflexo.gina.editor.test.LoadedClassesInfo">
-  <Table iteratorClassName="org.openflexo.gina.editor.test.LoadedClassesInfo$ClassInfo" visibleRowCount="3" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="false" selectionMode="MultipleIntervalSelection" selected="data.selectedClassInfo" textSelectionColor="255,255,255" textNonSelectionColor="0,0,0" backgroundSelectionColor="26,96,206" backgroundSecondarySelectionColor="173,215,255" backgroundNonSelectionColor="255,255,255" data="data.matchingClasses" constraints="twocols(location=center;index=1;expandHorizontally=true;expandVertically=true)" name="PotentialMatches" localize="true" manageDynamicModel="true">
+<Panel layout="twocols" dataClassName="org.openflexo.gina.swing.editor.test.LoadedClassesInfo">
+  <Table iteratorClassName="org.openflexo.gina.swing.editor.test.LoadedClassesInfo$ClassInfo" visibleRowCount="3" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="false" selectionMode="MultipleIntervalSelection" selected="data.selectedClassInfo" textSelectionColor="255,255,255" textNonSelectionColor="0,0,0" backgroundSelectionColor="26,96,206" backgroundSecondarySelectionColor="173,215,255" backgroundNonSelectionColor="255,255,255" data="data.matchingClasses" constraints="twocols(location=center;index=1;expandHorizontally=true;expandVertically=true)" name="PotentialMatches" localize="true" manageDynamicModel="true">
     <IconColumn data="iterator.icon" title="" columnWidth="20" resizable="false" displayTitle="true" name="icon" />
     <LabelColumn data="iterator.className" title="class" columnWidth="100" resizable="true" displayTitle="true" name="label" />
     <LabelColumn data="iterator.fullQualifiedName" title="location" columnWidth="200" resizable="true" displayTitle="true" name="label" />
     <LocalizedDictionary />
   </Table>
   <Browser root="data" iteratorClassName="java.lang.Object" visibleRowCount="8" rowHeight="18" boundToSelectionManager="false" selectionMode="DiscontiguousTreeSelection" selected="data.selectedClassInfo" showFooter="true" rootVisible="false" showRootsHandle="true" constraints="twocols(location=center;index=2;expandHorizontally=true;expandVertically=true)" name="ClassesBrowser" localize="true" manageDynamicModel="true">
-    <BrowserElement dataClassName="org.openflexo.gina.editor.test.LoadedClassesInfo$PackageInfo" label="package.packageName" visible="(!(package.isFiltered))" imageIconFile="../../../main/resources/Resources/Package.gif" isEditable="false" filtered="true" defaultVisible="true" name="package">
+    <BrowserElement dataClassName="org.openflexo.gina.swing.editor.test.LoadedClassesInfo$PackageInfo" label="package.packageName" visible="(!(package.isFiltered))" imageIconFile="../../../main/resources/Resources/Package.gif" isEditable="false" filtered="true" defaultVisible="true" name="package">
       <Children data="package.classes" name="children" />
     </BrowserElement>
-    <BrowserElement dataClassName="org.openflexo.gina.editor.test.LoadedClassesInfo" label="loadedClasses.toString" isEditable="false" filtered="false" defaultVisible="true" name="loadedClasses">
+    <BrowserElement dataClassName="org.openflexo.gina.swing.editor.test.LoadedClassesInfo" label="loadedClasses.toString" isEditable="false" filtered="false" defaultVisible="true" name="loadedClasses">
       <Children data="loadedClasses.packages" name="children" />
     </BrowserElement>
-    <BrowserElement dataClassName="org.openflexo.gina.editor.test.LoadedClassesInfo$ClassInfo" label="class.className" icon="class.icon" imageIconFile="../../../main/resources/Resources/Class.gif" isEditable="false" filtered="false" defaultVisible="true" name="class">
+    <BrowserElement dataClassName="org.openflexo.gina.swing.editor.test.LoadedClassesInfo$ClassInfo" label="class.className" icon="class.icon" imageIconFile="../../../main/resources/Resources/Class.gif" isEditable="false" filtered="false" defaultVisible="true" name="class">
       <Children data="class.memberClasses" name="children" />
     </BrowserElement>
   </Browser>

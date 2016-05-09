@@ -16,9 +16,6 @@ import org.openflexo.toolbox.PropertyChangedSupportDefaultImplementation;
 /**
  * This represent the edition of a {@link FIBComponent}, in a given context<br>
  * 
- * 
- * 
- * 
  * @author sylvain
  *
  */
@@ -32,6 +29,7 @@ public class EditedFIBComponent extends PropertyChangedSupportDefaultImplementat
 	private FIBComponent fibComponent;
 	private final FIBLibrary fibLibrary;
 	private FIBModelFactory fibFactory;
+	private Object dataObject;
 
 	public EditedFIBComponent(String name, FIBComponent fibComponent, FIBLibrary fibLibrary) {
 		super();
@@ -68,6 +66,18 @@ public class EditedFIBComponent extends PropertyChangedSupportDefaultImplementat
 
 	public FIBLibrary getFIBLibrary() {
 		return fibLibrary;
+	}
+
+	public Object getDataObject() {
+		return dataObject;
+	}
+
+	public void setDataObject(Object dataObject) {
+		if ((dataObject == null && this.dataObject != null) || (dataObject != null && !dataObject.equals(this.dataObject))) {
+			Object oldValue = this.dataObject;
+			this.dataObject = dataObject;
+			getPropertyChangeSupport().firePropertyChange("dataObject", oldValue, dataObject);
+		}
 	}
 
 	public FIBModelFactory getFactory() {
@@ -137,10 +147,12 @@ public class EditedFIBComponent extends PropertyChangedSupportDefaultImplementat
 			if (getSourceFile() != null) {
 				logger.info("Save to file " + getSourceFile());
 				getFIBLibrary().save(fibComponent, getSourceFile());
-			} else {
+			}
+			else {
 				logger.warning("Cannot save FIBComponent: source resource is not a file");
 			}
-		} else {
+		}
+		else {
 			logger.warning("Cannot save FIBComponent: source resource is null");
 		}
 	}

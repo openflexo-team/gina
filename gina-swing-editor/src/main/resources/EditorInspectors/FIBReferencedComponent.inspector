@@ -7,20 +7,20 @@
 			darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
 			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
-			<Label label="file" constraints="twocols(location=left)"
+			<Label index="2" label="file" constraints="twocols(location=left)"
 				localize="true" />
-			<File isDirectory="false" localize="true" data="data.componentActualFile"
+			<File index="3" isDirectory="false" localize="true" data="data.componentActualFile"
 				constraints="twocols(expandHorizontally=true;location=right)" />
-			<Label label="dynamic_file" constraints="twocols(location=left)"
+			<Label index="4" label="dynamic_file" constraints="twocols(location=left)"
 				localize="true" />
-			<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+			<Custom index="5" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 				localize="true" manageDynamicModel="true" data="data.dynamicComponentFile"
 				constraints="twocols(expandHorizontally=true;location=right)">
 				<Assignment variable="component.bindable" value="data" />
 			</Custom>
-			<Label label="assignments" constraints="twocols(expandHorizontally=true;location=left)"
+			<Label index="6" label="assignments" constraints="twocols(expandHorizontally=true;location=left)"
 				localize="true" />
-			<Table
+			<Table index="7" 
 				iteratorClassName="org.openflexo.gina.model.widget.FIBReferencedComponent$FIBReferenceAssignment"
 				visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false"
 				createNewRowOnClick="false" boundToSelectionManager="false"

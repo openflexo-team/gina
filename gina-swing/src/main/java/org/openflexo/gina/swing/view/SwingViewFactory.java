@@ -167,7 +167,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 	@Override
 	public final <F extends FIBContainer> FIBContainerView<F, ? extends JComponent, ? extends JComponent> makeContainer(F fibContainer,
 			FIBController controller, boolean updateNow) {
-		//System.out.println("Make container view for " + fibContainer);
+		// System.out.println("Make container view for " + fibContainer);
 		FIBContainerView<F, ? extends JComponent, ? extends JComponent> returned = super.makeContainer(fibContainer, controller, updateNow);
 		if (returned != null && fibContainer.isRootComponent()) {
 			if (returned instanceof FIBContainerView && allowsFIBEdition()) {
@@ -224,7 +224,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 			}
 		}
 		// returned.updateGraphicalProperties();
-		returned.update();
+		// returned.update();
 		return returned;
 	}
 
@@ -472,11 +472,13 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 				if (widgetView.getWidget().hasRightClickAction() && (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3)) {
 					// Detected right-click associated with action
 					widgetView.applyRightClickAction(makeMouseEvent(e));
-				} else if (widgetView.getWidget().hasClickAction()) {
+				}
+				else if (widgetView.getWidget().hasClickAction()) {
 					// Detected click associated with action
 					widgetView.applySingleClickAction(makeMouseEvent(e));
 				}
-			} else if (e.getClickCount() == 2) {
+			}
+			else if (e.getClickCount() == 2) {
 				if (widgetView.getWidget().hasDoubleClickAction()) {
 					// Detected double-click associated with action
 					widgetView.applyDoubleClickAction(makeMouseEvent(e));

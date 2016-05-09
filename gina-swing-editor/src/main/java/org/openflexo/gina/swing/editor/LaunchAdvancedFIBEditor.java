@@ -118,15 +118,25 @@ public class LaunchAdvancedFIBEditor {
 
 			final FIBEditor editor = new FIBEditor(FIBLibraryImpl.createInstance()) {
 				@Override
-				public void activate(EditedFIBComponent editedFIB, FIBEditorController controller) {
-					centerPanel.add(controller.getEditorBrowser(), LayoutPosition.BOTTOM_LEFT.name());
-					centerPanel.revalidate();
+				public boolean activate(FIBEditorController editorController) {
+					if (super.activate(editorController)) {
+						centerPanel.add(editorController.getEditorBrowser(), LayoutPosition.BOTTOM_LEFT.name());
+						centerPanel.revalidate();
+						centerPanel.repaint();
+						return true;
+					}
+					return false;
 				}
 
 				@Override
-				public void disactivate(EditedFIBComponent editedFIB, FIBEditorController controller) {
-					// centerPanel.add(null, LayoutPosition.BOTTOM_LEFT.name());
-					// centerPanel.revalidate();
+				public boolean disactivate(FIBEditorController editorController) {
+					if (super.disactivate(editorController)) {
+						centerPanel.remove(editorController.getEditorBrowser());
+						centerPanel.revalidate();
+						centerPanel.repaint();
+						return true;
+					}
+					return false;
 				}
 			};
 
@@ -198,16 +208,18 @@ public class LaunchAdvancedFIBEditor {
 			FIBEditorPalettes palette = editor.makePalette();
 			// FIBInspectors inspectors = editor.makeInspectors();
 
+			JFIBInspectorController inspector = editor.makeInspector(frame);
+			inspector.setVisible(true);
+
+			MainPanel mainPanel = editor.makeMainPanel();
+
 			centerPanel.add(libraryBrowser, LayoutPosition.TOP_LEFT.name());
-			centerPanel.add(editor.getMainPanel(), LayoutPosition.CENTER.name());
+			centerPanel.add(mainPanel, LayoutPosition.CENTER.name());
 			centerPanel.add(palette, LayoutPosition.TOP_RIGHT.name());
 			// centerPanel.add(inspectors.getPanelGroup(), LayoutPosition.BOTTOM_RIGHT.name());
 
 			frame.validate();
 			frame.setVisible(true);
-
-			JFIBInspectorController inspector = editor.makeInspector(frame);
-			inspector.setVisible(true);
 
 		} catch (UnsupportedLookAndFeelException e) {
 			// TODO Auto-generated catch block

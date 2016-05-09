@@ -15,15 +15,15 @@
 				constraints="twocols(location=left)" localize="true" /> <Custom componentClassName="org.openflexo.gina.swing.utils.ClassSelector" 
 				localize="true" manageDynamicModel="true" data="data.dataClass" constraints="twocols(expandHorizontally=true;location=right)" 
 				/> -->
-			<Label index="8" label="controller_class" constraints="twocols(location=left)"
+			<Label index="18" label="controller_class" constraints="twocols(location=left)"
 				visible="data.isRootComponent" localize="true" />
-			<Custom index="9" componentClassName="org.openflexo.gina.swing.utils.ClassSelector"
+			<Custom index="19" componentClassName="org.openflexo.gina.swing.utils.ClassSelector"
 				localize="true" manageDynamicModel="true" data="data.controllerClass"
 				constraints="twocols(expandHorizontally=true;location=right)"
 				visible="data.isRootComponent" />
-			<Label index="10" label="visible" constraints="twocols(location=left)"
+			<Label index="20" label="visible" constraints="twocols(location=left)"
 				name="visibleLabel" localize="true" />
-			<Custom index="11" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+			<Custom index="21" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 				localize="true" manageDynamicModel="true" name="visibleValue" data="data.visible"
 				constraints="twocols(expandHorizontally=true;location=right)">
 				<Assignment variable="component.bindable" value="data" />
@@ -53,14 +53,14 @@
 			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="LayoutTab">
 			 <Label name="LayoutLabel" label="layout" constraints="twocols(location=left;insetsTop=15)"
 				localize="true" />
-			<Panel layout="twocols" border="rounded3d" borderTitle="free_location_constraints"
+			<Panel index="0" layout="twocols" border="rounded3d" borderTitle="free_location_constraints"
 				titleFont="SansSerif,0,10" darkLevel="1"
 				data="($org.openflexo.gina.model.container.layout.NoneLayoutConstraints)data.constraints"
 				dataClassName="org.openflexo.gina.model.container.layout.NoneLayoutConstraints"
 				constraints="twocols(expandHorizontally=true;location=right;insetsTop=0;insetsRight=10)"
 				visible="((data.parent != null) &amp; (data.parent.layout = &quot;none&quot;))"
 				opaque="false" name="NoneConstraints" />
-			<Panel layout="twocols" border="rounded3d" borderTitle="flow_layout_constraints"
+			<Panel index="1" layout="twocols" border="rounded3d" borderTitle="flow_layout_constraints"
 				titleFont="SansSerif,0,10" darkLevel="1"
 				data="($org.openflexo.gina.model.container.layout.FlowLayoutConstraints)data.constraints"
 				dataClassName="org.openflexo.gina.model.container.layout.FlowLayoutConstraints"
@@ -73,7 +73,7 @@
 					constraints="twocols(location=right)" name="flowConstraintsIndex"
 					localize="true" />
 			</Panel>
-			<Panel layout="twocols" border="rounded3d" darkLevel="1" borderTitle="border_layout_constraints" titleFont="SansSerif,0,10"
+			<Panel index="2" layout="twocols" border="rounded3d" darkLevel="1" borderTitle="border_layout_constraints" titleFont="SansSerif,0,10"
 				data="($org.openflexo.gina.model.container.layout.BorderLayoutConstraints)data.constraints"
 				dataClassName="org.openflexo.gina.model.container.layout.BorderLayoutConstraints"
 				constraints="twocols(expandHorizontally=true;location=right;insetsTop=0;insetsRight=10)"
@@ -85,7 +85,7 @@
 					constraints="twocols(location=right)" localize="true"
 					iteratorClassName="java.lang.Object" autoSelectFirstRow="false" />
 			</Panel>
-			<Panel layout="twocols" border="rounded3d" borderTitle="grid_layout_constraints"
+			<Panel index="3" layout="twocols" border="rounded3d" borderTitle="grid_layout_constraints"
 				titleFont="SansSerif,0,10" darkLevel="1"
 				data="($org.openflexo.gina.model.container.layout.GridLayoutConstraints)data.constraints"
 				dataClassName="org.openflexo.gina.model.container.layout.GridLayoutConstraints"
@@ -105,13 +105,13 @@
 						localize="true" />
 				</Panel>
 			</Panel>
-			<Panel layout="twocols" border="rounded3d" borderTitle="button_layout_constraints"
+			<Panel index="4" layout="twocols" border="rounded3d" borderTitle="button_layout_constraints"
 				titleFont="SansSerif,0,10" darkLevel="1"
 				data="($org.openflexo.gina.model.container.layout.ButtonLayoutConstraints)data.constraints"
 				dataClassName="org.openflexo.gina.model.container.layout.ButtonLayoutConstraints"
 				constraints="twocols(expandHorizontally=true;location=right;insetsTop=0;insetsRight=10)"
 				visible="(data.parent.layout = &quot;buttons&quot;)" name="ButtonConstraints" />
-			<Panel layout="twocols" border="rounded3d" borderTitle="box_layout_constraints"
+			<Panel index="5" layout="twocols" border="rounded3d" borderTitle="box_layout_constraints"
 				titleFont="SansSerif,0,10" darkLevel="1"
 				data="($org.openflexo.gina.model.container.layout.BoxLayoutConstraints)data.constraints"
 				dataClassName="org.openflexo.gina.model.container.layout.BoxLayoutConstraints"
@@ -136,7 +136,7 @@
 						constraints="flow()" name="boxConstraintsAlignY" localize="true" />
 				</Panel>
 			</Panel>
-			<Panel layout="twocols" border="rounded3d" borderTitle="two_cols_layout_constraints"
+			<Panel index="6" layout="twocols" border="rounded3d" borderTitle="two_cols_layout_constraints"
 				titleFont="SansSerif,0,10" darkLevel="1"
 				data="($org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints)data.constraints"
 				dataClassName="org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints"
@@ -185,7 +185,7 @@
 						name="twoColsConstraintsInsetsRight" localize="true" />
 				</Panel>
 			</Panel>
-			<Panel layout="twocols" border="rounded3d" borderTitle="grid_bag_layout_constraints"
+			<Panel index="7" layout="twocols" border="rounded3d" borderTitle="grid_bag_layout_constraints"
 				titleFont="SansSerif,0,10" darkLevel="1"
 				data="($org.openflexo.gina.model.container.layout.GridBagLayoutConstraints)data.constraints"
 				dataClassName="org.openflexo.gina.model.container.layout.GridBagLayoutConstraints"
@@ -327,7 +327,7 @@
 						name="gridBagConstraintsInsetsRight" localize="true" />
 				</Panel>
 			</Panel>
-			<Panel layout="twocols" border="titled" borderTitle="split_layout_constraints"
+			<Panel index="8" layout="twocols" border="titled" borderTitle="split_layout_constraints"
 				titleFont="SansSerif,0,10" darkLevel="0"
 				data="($org.openflexo.gina.model.container.layout.SplitLayoutConstraints)data.constraints"
 				dataClassName="org.openflexo.gina.model.container.layout.SplitLayoutConstraints"
@@ -353,9 +353,9 @@
 					name="Weight" localize="true" />
 			</Panel>
 
-			<Label name="DimensionLabel" label="dimensions" constraints="twocols(location=left;insetsTop=10)"
+			<Label index="20" name="DimensionLabel" label="dimensions" constraints="twocols(location=left;insetsTop=10)"
 				localize="true" />
-			<Panel name="DimensionPanel" layout="twocols" border="rounded3d"
+			<Panel index="21" name="DimensionPanel" layout="twocols" border="rounded3d"
 				darkLevel="1"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;location=right;insetsTop=10;insetsRight=10)"
 				opaque="false">
@@ -428,9 +428,9 @@
 				</Panel>
 			</Panel>
 
-			<Label name="ScrollbarLabel" label="scrollbar" constraints="twocols(location=left;insetsTop=10)"
+			<Label index="22" name="ScrollbarLabel" label="scrollbar" constraints="twocols(location=left;insetsTop=10)"
 				localize="true" />
-			<Panel layout="twocols" border="rounded3d" darkLevel="1"
+			<Panel index="23" layout="twocols" border="rounded3d" darkLevel="1"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;location=right;insetsTop=10;insetsRight=10)"
 				opaque="false" name="ScrollBarPolicy">
 				<CheckBox selected="false" data="data.useScrollBar"

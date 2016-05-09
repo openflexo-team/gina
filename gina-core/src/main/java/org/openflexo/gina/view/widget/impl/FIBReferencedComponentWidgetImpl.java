@@ -216,7 +216,8 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 				// The component file is statically defined, use it
 				return widg.getComponentFile();
 			}
-		} else {
+		}
+		else {
 			logger.warning("FIBReferencedComponent with null widget, please investigate");
 		}
 
@@ -263,10 +264,12 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 
 		// Maybe the component file is defined ???
 		Resource componentFile = getComponentFile();
+
 		if (componentFile != null) {
 			if (getComponent().getFIBLibrary() != null) {
 				return getComponent().getFIBLibrary().retrieveFIBComponent(componentFile);
-			} else {
+			}
+			else {
 				logger.warning("Component has no FIBLibrary !");
 				Thread.dumpStack();
 			}
@@ -280,6 +283,13 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 		updateComponent();
 		updateReferencedComponentView();
 		// updateDynamicallyReferencedComponentWhenRequired();
+	}
+
+	@Override
+	public Object updateData() {
+		Object returned = super.updateData();
+		updateReferencedComponentView();
+		return returned;
 	}
 
 	/**
@@ -317,6 +327,10 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 	@Override
 	public abstract FIBView<?, C> getReferencedComponentView();
 
+	protected FIBController makeEmbeddedFIBController(FIBComponent component) {
+		return FIBController.instanciateController(component, getController().getViewFactory(), getController().getLocalizer());
+	}
+
 	protected FIBView<?, C> makeReferencedComponentView() {
 
 		FIBView<?, C> referencedComponentView = null;
@@ -331,12 +345,19 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 			embeddedFIBController = null;
 		}*/
 
+		System.out.println("On essaie de construire la vue referencee");
+		System.out.println("loaded=" + loaded);
+
 		if (loaded != null) {
 
 			// Now, we instantiate a new embedded FIBController
 
-			FIBController embeddedFIBController = FIBController.instanciateController(loaded, getController().getViewFactory(),
-					getController().getLocalizer());
+			System.out.println("OK on instancie la ReferencedComponentView");
+			System.out.println("controller = " + getController());
+
+			FIBController embeddedFIBController = makeEmbeddedFIBController(loaded);
+
+			System.out.println("embeddedFIBController=" + embeddedFIBController);
 
 			embeddedFIBController.setDataObject(getValue());
 
@@ -344,13 +365,17 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 				referencedComponentView = (FIBWidgetView) embeddedFIBController.getViewFactory().makeWidget((FIBWidget) loaded,
 						embeddedFIBController);
 				referencedComponentView.setEmbeddingComponent(this);
-			} else if (loaded instanceof FIBContainer) {
+			}
+			else if (loaded instanceof FIBContainer) {
 				referencedComponentView = (FIBContainerView) embeddedFIBController.getViewFactory().makeContainer((FIBContainer) loaded,
 						embeddedFIBController, true);
 				referencedComponentView.setEmbeddingComponent(this);
 			}
 
-		} else {
+			System.out.println("referencedComponentView.getController()=" + referencedComponentView.getController());
+
+		}
+		else {
 			if (!isComponentLoading) {
 				logger.warning("ReferencedComponent = null and I'm NOT loading anything... : " + this.getComponentFile());
 			}
@@ -429,7 +454,6 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 
 				embeddedFIBController.setDataObject(getValue(), /*true*/false);
 
-				System.out.println("update referenced component view");
 				getReferencedComponentView().update();
 
 				// Call the parent view for a complete layout: the referencedComponentView will be computed during this loop
@@ -437,7 +461,8 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 					getParentView().updateLayout();
 				}*/
 
-			} else {
+			}
+			else {
 				logger.warning("Inconsistant data: " + getValue() + " is not a "
 						+ ((FIBContainer) embeddedFIBController.getRootComponent()).getDataType());
 			}

@@ -80,7 +80,6 @@ import org.openflexo.gina.model.widget.FIBFile.FileMode;
 import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.gina.model.widget.FIBLabel.Align;
 import org.openflexo.gina.model.widget.FIBReferencedComponent;
-import org.openflexo.gina.swing.editor.FIBEmbeddedEditor;
 import org.openflexo.gina.swing.editor.controller.EditorAction.ActionAvailability;
 import org.openflexo.gina.swing.editor.controller.EditorAction.ActionPerformer;
 import org.openflexo.gina.swing.utils.BindingSelector;
@@ -204,10 +203,12 @@ public class ContextualMenu {
 				// File componentFile = rl.retrieveResourceAsFile(widgetView.getComponentFile());
 
 				// if (componentFile != null) {
-				new FIBEmbeddedEditor(widgetView.getComponentFile(), dataObject);
+				// new FIBEmbeddedEditor(widgetView.getComponentFile(), dataObject);
 				/*} else {
 					logger.warning("Not found component file : " + componentFile);
 				}*/
+
+				editorController.getEditor().loadFIB(widgetView.getComponentFile(), dataObject, frame);
 
 				return referencedComponent;
 			}

@@ -55,9 +55,9 @@ public class ComponentValidationWindow extends JDialog {
 	private final FIBEditorController editorController;
 
 	public ComponentValidationWindow(JFrame frame, FIBEditorController editorController, FIBLibrary fibLibrary) {
-		super(frame, FlexoLocalization.localizedForKey(FIBAbstractEditor.LOCALIZATION, "component_validation"), false);
+		super(frame, FlexoLocalization.localizedForKey(FIBEditor.LOCALIZATION, "component_validation"), false);
 		this.editorController = editorController;
-		validationPanel = new ValidationPanel(null, fibLibrary, FIBAbstractEditor.LOCALIZATION) {
+		validationPanel = new ValidationPanel(null, fibLibrary, FIBEditor.LOCALIZATION) {
 			@Override
 			protected void performSelect(ValidationIssue<?, ?> validationIssue) {
 				ComponentValidationWindow.this.performSelect(validationIssue);
@@ -71,8 +71,8 @@ public class ComponentValidationWindow extends JDialog {
 		return editorController;
 	}
 
-	public FIBComponent getFIBComponent() {
-		return getEditorController().getFIBComponent();
+	public EditedFIBComponent getEditedComponent() {
+		return getEditorController().getEditedComponent();
 	}
 
 	protected void performSelect(ValidationIssue<?, ?> validationIssue) {

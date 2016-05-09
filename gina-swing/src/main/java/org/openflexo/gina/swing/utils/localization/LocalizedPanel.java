@@ -40,7 +40,7 @@ package org.openflexo.gina.swing.utils.localization;
 
 import java.util.logging.Logger;
 
-import org.openflexo.gina.FIBLibrary;
+import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.swing.utils.FIBJPanel;
@@ -66,9 +66,9 @@ public class LocalizedPanel extends FIBJPanel<LocalizedDelegate> {
 	final boolean displaySave;
 	final boolean displaySearchLocalized;
 
-	public LocalizedPanel(LocalizedDelegate localizedDelegate, LocalizedDelegate editorLocalizer, FIBLibrary fibLibrary,
-			boolean displaySave, boolean displaySearchLocalized) {
-		super(fibLibrary.retrieveFIBComponent(lOCALIZED_PANEL_FIB, true), localizedDelegate, editorLocalizer);
+	public LocalizedPanel(LocalizedDelegate localizedDelegate, LocalizedDelegate editorLocalizer, boolean displaySave,
+			boolean displaySearchLocalized) {
+		super(ApplicationFIBLibraryImpl.instance().retrieveFIBComponent(lOCALIZED_PANEL_FIB, true), localizedDelegate, editorLocalizer);
 		this.displaySave = displaySave;
 		this.displaySearchLocalized = displaySearchLocalized;
 		// We have here to renotify those flags, because the GUI was build BEFORE those values are set
@@ -79,7 +79,7 @@ public class LocalizedPanel extends FIBJPanel<LocalizedDelegate> {
 
 	@Override
 	protected FIBController makeFIBController(FIBComponent fibComponent, LocalizedDelegate parentLocalizer) {
-		return new FIBLocalizedEditorController(fibComponent, SwingViewFactory.INSTANCE, fibComponent.getFIBLibrary()) {
+		return new FIBLocalizedEditorController(fibComponent, SwingViewFactory.INSTANCE) {
 			@Override
 			public boolean displaySaveButton() {
 				return LocalizedPanel.this.displaySaveButton();
