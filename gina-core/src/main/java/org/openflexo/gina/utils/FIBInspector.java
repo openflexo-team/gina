@@ -143,9 +143,11 @@ public interface FIBInspector extends FIBPanel {
 			}
 
 			for (InspectorGroup parentInspectorGroup : parentInspectorGroups) {
-				FIBInspector parentInspector = parentInspectorGroup.inspectorForClass(getInspectedClass());
-				if (parentInspector != null) {
-					superInspectors.add(parentInspector);
+				if (parentInspectorGroup != null) {
+					FIBInspector parentInspector = parentInspectorGroup.inspectorForClass(getInspectedClass());
+					if (parentInspector != null) {
+						superInspectors.add(parentInspector);
+					}
 				}
 			}
 

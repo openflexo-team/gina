@@ -70,7 +70,7 @@ import org.openflexo.gina.view.FIBView;
  * @param <C2>
  *            type of technology-specific component beeing contained by this view
  */
-public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extends FIBViewImpl<M, C> implements FIBContainerView<M, C, C2> {
+public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extends FIBViewImpl<M, C>implements FIBContainerView<M, C, C2> {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBContainerViewImpl.class.getPackage().getName());
 
@@ -195,7 +195,8 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	public Object getTechnologyComponentForFIBComponent(FIBComponent component) {
 		if (getComponent() == component) {
 			return getTechnologyComponent();
-		} else {
+		}
+		else {
 			for (FIBViewImpl<?, ?> v : getSubViews()) {
 				Object j = v.getTechnologyComponentForFIBComponent(component);
 				if (j != null) {
@@ -358,11 +359,14 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	public List<FIBComponent> getNotHiddenSubComponents() {
 		List<FIBComponent> returned = new ArrayList<FIBComponent>();
 		for (FIBComponent subComponent : getComponent().getSubComponents()) {
-			if (subComponent.getParameter("hidden") == null || subComponent.getParameter("hidden").equalsIgnoreCase("false")) {
+			if (!subComponent.isHidden()) {
+				// if (subComponent.getParameter("hidden") == null || subComponent.getParameter("hidden").equalsIgnoreCase("false")) {
 				returned.add(subComponent);
-			} /*
-				* else { System.out.println("Ignoring " + subComponent); }
-				*/
+			}
+			else {
+				System.out.println("Ignoring " + subComponent);
+			}
+
 		}
 		return returned;
 	}

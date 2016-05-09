@@ -599,15 +599,9 @@ public abstract interface FIBContainer extends FIBComponent {
 								}
 								if (overridingComponent != null) {
 									insert = false;
-									/*
-									 * if
-									 * (overridingComponent.getParameter("hidden"
-									 * ) != null &&
-									 * overridingComponent.getParameter
-									 * ("hidden").equalsIgnoreCase("true")) {
-									 * removeFromSubComponents
-									 * (overridingComponent); }
-									 */
+									if (overridingComponent.isHidden()) {
+										removeFromSubComponents(overridingComponent);
+									}
 								}
 							}
 							else {
@@ -618,13 +612,10 @@ public abstract interface FIBContainer extends FIBComponent {
 							break;
 						}
 					}
-				} /*
-					* else { if (overridingComponent.getParameter("hidden") != null
-					* &&
-					* overridingComponent.getParameter("hidden").equalsIgnoreCase
-					* ("true")) { // Super property must be shadowed
-					* removeFromSubComponents(overridingComponent); } }
-					*/
+				}
+				else if (overridingComponent.isHidden()) {
+					removeFromSubComponents(overridingComponent);
+				}
 			}
 
 			if (container.getLocalizedDictionary() != null) {
