@@ -43,10 +43,13 @@ import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 
+import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.widget.FIBReferencedComponent;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate;
+import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.gina.swing.view.widget.JFIBReferencedComponentWidget;
 import org.openflexo.gina.swing.view.widget.JFIBReferencedComponentWidget.JReferenceComponentPanel;
 import org.openflexo.logging.FlexoLogger;
@@ -87,6 +90,14 @@ public class JFIBEditableReferencedComponentWidget extends JFIBReferencedCompone
 	@Override
 	public FIBSwingEditableViewDelegate<FIBReferencedComponent, JReferenceComponentPanel> getDelegate() {
 		return delegate;
+	}
+
+	@Override
+	protected FIBController makeEmbeddedFIBController(FIBComponent component) {
+		// We dont want here to use the EditableViewFactory, otherwise, FIBController will be the one used by embedding component
+		// TODO: if we want the referenced component to be editable, instanciate a new SwingEditorViewFactory
+		return FIBController.instanciateController(component, /*getController().getViewFactory()*/SwingViewFactory.INSTANCE,
+				getController().getLocalizer());
 	}
 
 }
