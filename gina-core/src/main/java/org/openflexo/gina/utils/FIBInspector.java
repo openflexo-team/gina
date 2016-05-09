@@ -73,7 +73,7 @@ public interface FIBInspector extends FIBPanel {
 
 	public void setInspectedClass(Class<?> inspectedClass);
 
-	public void identifySuperInspectors(InspectorGroup inspectorGroup);
+	public void identifySuperInspectors(InspectorGroup inspectorGroup, List<InspectorGroup> parentInspectorGroups);
 
 	public FIBInspector getUnmergedComponent();
 
@@ -120,7 +120,7 @@ public interface FIBInspector extends FIBPanel {
 		}
 
 		@Override
-		public void identifySuperInspectors(InspectorGroup inspectorGroup) {
+		public void identifySuperInspectors(InspectorGroup inspectorGroup, List<InspectorGroup> parentInspectorGroups) {
 
 			superInspectors.clear();
 
@@ -140,6 +140,13 @@ public interface FIBInspector extends FIBPanel {
 			for (Class<?> inspectorClass : parentClasses) {
 				superInspectors.add(inspectorGroup.inspectorForClass(inspectorClass));
 				// System.out.println("inspector " + inspectorGroup.inspectorForClass(inspectorClass).getInspectedClass());
+			}
+
+			for (InspectorGroup parentInspectorGroup : parentInspectorGroups) {
+				FIBInspector parentInspector = parentInspectorGroup.inspectorForClass(getInspectedClass());
+				if (parentInspector != null) {
+					superInspectors.add(parentInspector);
+				}
 			}
 
 			// TODO: reinit current with container found in unmergedComponent
