@@ -515,7 +515,9 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 		}
 		Object oldSelected = getSelected();
 		selectedObject = object;
-		LOGGER.fine("FIBTable: setSelectedObject with object " + object + " current is " + getSelected());
+		if (LOGGER.isLoggable(Level.FINE)) {
+			LOGGER.fine("FIBTable: setSelectedObject with object " + object + " current is " + getSelected());
+		}
 
 		getPropertyChangeSupport().firePropertyChange(SELECTED, oldSelected, object);
 	}
