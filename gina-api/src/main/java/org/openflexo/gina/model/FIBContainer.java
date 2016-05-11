@@ -320,7 +320,7 @@ public abstract interface FIBContainer extends FIBComponent {
 				if (insertionIndex < getSubComponents().size()) {
 					next = getSubComponents().get(insertionIndex);
 				}
-				if (insertionIndex > 0) {
+				if (insertionIndex > 0 && insertionIndex - 1 < getSubComponents().size()) {
 					previous = getSubComponents().get(insertionIndex - 1);
 				}
 
