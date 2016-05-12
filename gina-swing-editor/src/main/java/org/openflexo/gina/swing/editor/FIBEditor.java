@@ -66,6 +66,7 @@ import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.inspector.FIBInspectors;
 import org.openflexo.gina.swing.editor.palette.FIBEditorPalettes;
 import org.openflexo.gina.swing.editor.palette.FIBEditorPalettesDialog;
+import org.openflexo.gina.swing.utils.FIBEditorLoadingProgress;
 import org.openflexo.gina.swing.utils.JFIBInspectorController;
 import org.openflexo.gina.swing.utils.JFIBPreferences;
 import org.openflexo.gina.swing.utils.localization.LocalizedEditor;
@@ -124,10 +125,17 @@ public class FIBEditor {
 
 	private FIBEditorController activeEditorController = null;
 
+	private FIBEditorLoadingProgress progress;
+
 	public FIBEditor(FIBLibrary fibLibrary) {
+		this(fibLibrary, null);
+	}
+
+	public FIBEditor(FIBLibrary fibLibrary, FIBEditorLoadingProgress progress) {
 		super();
 
 		this.fibLibrary = fibLibrary;
+		this.progress = progress;
 
 		resourceLocator = new FileSystemResourceLocatorImpl();
 		resourceLocator.appendToDirectories(JFIBPreferences.getLastDirectory().getAbsolutePath());
@@ -193,33 +201,49 @@ public class FIBEditor {
 	}
 
 	public FIBEditorMenuBar makeMenuBar(JFrame frame) {
+		if (progress != null) {
+			progress.progress(FlexoLocalization.localizedForKey("make_menu_bar"));
+		}
 		menuBar = new FIBEditorMenuBar(this, frame);
 		return menuBar;
 	}
 
 	public JFIBInspectorController makeInspector(JFrame frame) {
-		inspector = new JFIBInspectorController(frame, ResourceLocator.locateResource("EditorInspectors"), APP_FIB_LIBRARY, LOCALIZATION);
+		inspector = new JFIBInspectorController(frame, ResourceLocator.locateResource("EditorInspectors"), APP_FIB_LIBRARY, LOCALIZATION,
+				progress);
 		return inspector;
 	}
 
 	public FIBEditorPalettesDialog makePaletteDialog(JFrame frame) {
 		if (palette == null) {
+			if (progress != null) {
+				progress.progress(FlexoLocalization.localizedForKey("make_palette_dialog"));
+			}
 			palette = makePalette();
 		}
 		return new FIBEditorPalettesDialog(frame, palette);
 	}
 
 	public FIBEditorPalettes makePalette() {
+		if (progress != null) {
+			progress.progress(FlexoLocalization.localizedForKey("make_palette"));
+		}
 		palette = new FIBEditorPalettes();
 		return palette;
 	}
 
 	public FIBInspectors makeInspectors() {
+		if (progress != null) {
+			progress.progress(FlexoLocalization.localizedForKey("make_inspectors"));
+		}
 		inspectors = new FIBInspectors();
 		return inspectors;
 	}
 
 	public MainPanel makeMainPanel() {
+		if (progress != null) {
+			progress.progress(FlexoLocalization.localizedForKey("make_main_panel"));
+		}
 		mainPanel = new MainPanel(this);
 		return mainPanel;
 	}

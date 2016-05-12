@@ -86,7 +86,21 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 	private final LocalizedDelegate localizer;
 
 	public JFIBInspectorController(JFrame frame, Resource inspectorDirectory, FIBLibrary fibLibrary, LocalizedDelegate localizer) {
-		inspectorGroup = new InspectorGroup(inspectorDirectory, fibLibrary);
+		this(frame, inspectorDirectory, fibLibrary, localizer, null);
+	}
+
+	public JFIBInspectorController(JFrame frame, Resource inspectorDirectory, FIBLibrary fibLibrary, LocalizedDelegate localizer,
+			final FIBEditorLoadingProgress progress) {
+		inspectorGroup = new InspectorGroup(inspectorDirectory, fibLibrary) {
+			@Override
+			public void progress(Resource f, FIBInspector inspector) {
+				super.progress(f, inspector);
+				if (progress != null) {
+					progress.progress(
+							FlexoLocalization.localizedForKey("loaded_inspector") + " " + inspector.getDataClass().getSimpleName());
+				}
+			}
+		};
 		inspectorViews = new Hashtable<FIBInspector, JFIBView<?, ?>>();
 		this.localizer = localizer;
 
@@ -150,7 +164,8 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 		if (newInspector == null) {
 			logger.warning("No inspector for " + object);
 			switchToEmptyContent();
-		} else {
+		}
+		else {
 			if (newInspector != currentInspector) {
 				switchToInspector(newInspector);
 			}
@@ -212,7 +227,8 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 			}
 			tabPanelViewJComponent.addChangeListener(this);
 			// System.out.println("addChangeListener for "+tabPanelView.getJComponent());
-		} else {
+		}
+		else {
 			logger.warning("No inspector view for " + newInspector);
 			switchToEmptyContent();
 		}
