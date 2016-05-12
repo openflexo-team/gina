@@ -257,6 +257,11 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 	}
 
 	@Override
+	protected void updateTechnologyComponent() {
+		getTechnologyComponent().updateTable();
+	}
+
+	@Override
 	public JFIBTableWidgetFooter<T> getFooter() {
 		return (JFIBTableWidgetFooter<T>) super.getFooter();
 	}
@@ -439,7 +444,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 	@SuppressWarnings("serial")
 	public static class JTablePanel<T> extends JPanel {
 
-		private final JXTable jTable;
+		private JXTable jTable;
 		private final JScrollPane scrollPane;
 		private final JFIBTableWidget<T> widget;
 
@@ -448,24 +453,44 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 			setOpaque(false);
 			this.widget = aWidget;
 
-			jTable = new JXTable(widget.getTableModel()) {
+			jTable = makeJTable();
+
+			scrollPane = new JScrollPane(jTable);
+			scrollPane.setOpaque(false);
+
+			add(scrollPane, BorderLayout.CENTER);
+
+			if (widget.getTable().getShowFooter() && widget.getFooter() != null) {
+				add(widget.getFooter().getFooterComponent(), BorderLayout.SOUTH);
+			}
+
+		}
+
+		public void updateTable() {
+			scrollPane.getViewport().remove(jTable);
+			jTable = makeJTable();
+			scrollPane.setViewportView(jTable);
+		}
+
+		private JXTable makeJTable() {
+			JXTable returned = new JXTable(widget.getTableModel()) {
 
 				@Override
 				protected void resetDefaultTableCellRendererColors(Component renderer, int row, int column) {
 				}
 
 			};
-			jTable.setVisibleRowCount(0);
-			jTable.setSortOrderCycle(SortOrder.ASCENDING, SortOrder.DESCENDING, SortOrder.UNSORTED);
-			jTable.setAutoCreateRowSorter(true);
-			jTable.setFillsViewportHeight(true);
-			jTable.setShowHorizontalLines(false);
-			jTable.setShowVerticalLines(false);
-			jTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-			jTable.addFocusListener(widget);
+			returned.setVisibleRowCount(0);
+			returned.setSortOrderCycle(SortOrder.ASCENDING, SortOrder.DESCENDING, SortOrder.UNSORTED);
+			returned.setAutoCreateRowSorter(true);
+			returned.setFillsViewportHeight(true);
+			returned.setShowHorizontalLines(false);
+			returned.setShowVerticalLines(false);
+			returned.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+			returned.addFocusListener(widget);
 
 			for (int i = 0; i < widget.getTableModel().getColumnCount(); i++) {
-				TableColumn col = jTable.getColumnModel().getColumn(i);
+				TableColumn col = returned.getColumnModel().getColumn(i);
 				// FlexoLocalization.localizedForKey(getController().getLocalizer(),getTableModel().columnAt(i).getTitle());
 				col.setWidth(widget.getTableModel().getDefaultColumnSize(i));
 				col.setPreferredWidth(widget.getTableModel().getDefaultColumnSize(i));
@@ -487,37 +512,37 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 				}
 			}
 			if (widget.getTable().getRowHeight() != null) {
-				jTable.setRowHeight(widget.getTable().getRowHeight());
+				returned.setRowHeight(widget.getTable().getRowHeight());
 			}
 			if (widget.getTable().getVisibleRowCount() != null) {
-				jTable.setVisibleRowCount(widget.getTable().getVisibleRowCount());
-				if (jTable.getRowHeight() == 0) {
-					jTable.setRowHeight(18);
+				returned.setVisibleRowCount(widget.getTable().getVisibleRowCount());
+				if (returned.getRowHeight() == 0) {
+					returned.setRowHeight(18);
 				}
 			}
 
-			jTable.setSelectionMode(widget.getTable().getSelectionMode().getMode());
+			returned.setSelectionMode(widget.getTable().getSelectionMode().getMode());
 			// jTable.getTableHeader().setReorderingAllowed(false);
 
-			jTable.getSelectionModel().addListSelectionListener(widget);
+			returned.getSelectionModel().addListSelectionListener(widget);
 
 			// _listSelectionModel = jTable.getSelectionModel();
 			// _listSelectionModel.addListSelectionListener(this);
 
 			if (widget.getWidget().getBoundToSelectionManager()) {
-				jTable.registerKeyboardAction(new ActionListener() {
+				returned.registerKeyboardAction(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						widget.getController().performCopyAction(widget.getSelected(), widget.getSelection());
 					}
 				}, KeyStroke.getKeyStroke(KeyEvent.VK_C, META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-				jTable.registerKeyboardAction(new ActionListener() {
+				returned.registerKeyboardAction(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						widget.getController().performCutAction(widget.getSelected(), widget.getSelection());
 					}
 				}, KeyStroke.getKeyStroke(KeyEvent.VK_X, META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-				jTable.registerKeyboardAction(new ActionListener() {
+				returned.registerKeyboardAction(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						widget.getController().performPasteAction(widget.getSelected(), widget.getSelection());
@@ -525,10 +550,8 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 				}, KeyStroke.getKeyStroke(KeyEvent.VK_V, META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 			}
 
-			scrollPane = new JScrollPane(jTable);
-			scrollPane.setOpaque(false);
 			if (widget.getTable().getCreateNewRowOnClick()) {
-				jTable.addMouseListener(new MouseAdapter() {
+				returned.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						if (jTable.getCellEditor() != null) {
@@ -553,15 +576,11 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 				});
 			}
 
-			add(scrollPane, BorderLayout.CENTER);
-
-			if (widget.getTable().getShowFooter() && widget.getFooter() != null) {
-				add(widget.getFooter().getFooterComponent(), BorderLayout.SOUTH);
-			}
-
+			return returned;
 		}
 
 		public void delete() {
+
 			if (scrollPane != null && widget.getTable().getCreateNewRowOnClick()) {
 				for (MouseListener l : scrollPane.getMouseListeners()) {
 					scrollPane.removeMouseListener(l);

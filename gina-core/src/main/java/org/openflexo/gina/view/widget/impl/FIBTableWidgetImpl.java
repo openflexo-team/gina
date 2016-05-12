@@ -457,11 +457,15 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 			_tableModel = null;
 		}
 
-		makeTechnologyComponent();
+		// We now just update (issue: the JTable was never destroyed) 
+		// makeTechnologyComponent();
+		updateTechnologyComponent();
 
 		update();
 
 	}
+
+	protected abstract void updateTechnologyComponent();
 
 	@Override
 	public synchronized void delete() {

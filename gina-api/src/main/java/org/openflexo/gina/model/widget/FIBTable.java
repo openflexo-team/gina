@@ -421,13 +421,15 @@ public interface FIBTable extends FIBWidget {
 		private void createTableBindingModel() {
 			tableBindingModel = new BindingModel(getBindingModel());
 
-			BindingVariable iteratorVariable = new BindingVariable(ITERATOR_NAME, getIteratorType());
+			Type inferedIteratorType = getInferedIteratorType();
+
+			BindingVariable iteratorVariable = new BindingVariable(ITERATOR_NAME,
+					inferedIteratorType != null ? inferedIteratorType : getIteratorType());
 			iteratorVariable.setCacheable(false);
 
 			tableBindingModel.addToBindingVariables(iteratorVariable);
 			// System.out.println("dataClass="+getDataClass()+" dataClassName="+dataClassName);
 
-			// logger.info("******** Table: "+getName()+" Add BindingVariable: iterator type="+getIteratorClass());
 		}
 
 		@Override
@@ -441,7 +443,10 @@ public interface FIBTable extends FIBWidget {
 		private void createActionBindingModel() {
 			actionBindingModel = new BindingModel(getBindingModel());
 
-			BindingVariable selectedVariable = new BindingVariable("selected", getIteratorType());
+			Type inferedIteratorType = getInferedIteratorType();
+
+			BindingVariable selectedVariable = new BindingVariable("selected",
+					inferedIteratorType != null ? inferedIteratorType : getIteratorType());
 			selectedVariable.setCacheable(false);
 			actionBindingModel.addToBindingVariables(selectedVariable);
 			// System.out.println("dataClass="+getDataClass()+" dataClassName="+dataClassName);
@@ -514,6 +519,17 @@ public interface FIBTable extends FIBWidget {
 				return iteratorType;
 			}
 			return iteratorClass;
+		}
+
+		public Type getInferedIteratorType() {
+			// Attempt to infer iterator type
+			if (getData() != null && getData().isSet() && getData().isValid()) {
+				Type accessedType = getData().getAnalyzedType();
+				if (accessedType instanceof ParameterizedType && ((ParameterizedType) accessedType).getActualTypeArguments().length > 0) {
+					return ((ParameterizedType) accessedType).getActualTypeArguments()[0];
+				}
+			}
+			return null;
 		}
 
 		@Override

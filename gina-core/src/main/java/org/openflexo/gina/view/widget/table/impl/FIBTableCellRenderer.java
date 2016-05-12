@@ -68,6 +68,10 @@ public class FIBTableCellRenderer<T, V> extends DefaultTableCellRenderer {
 		setFont(column.getColumnModel().retrieveValidFont());
 	}
 
+	public void delete() {
+		//System.out.println("delete FIBTableCellRenderer");
+	}
+
 	@Override
 	public void updateUI() {
 		super.updateUI();
@@ -110,6 +114,10 @@ public class FIBTableCellRenderer<T, V> extends DefaultTableCellRenderer {
 		setForeground(null);
 		setBackground(null);
 		Component returned = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+		// Prevent call for a deleted table model
+		if (this.column.isDeleted()) {
+			return returned;
+		}
 		row = table.convertRowIndexToModel(row);
 		if (returned instanceof JComponent) {
 			((JComponent) returned).setToolTipText(this.column.getTooltip(getTableModel().elementAt(row)));

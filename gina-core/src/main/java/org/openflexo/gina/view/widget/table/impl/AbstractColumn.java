@@ -125,12 +125,25 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 		return null;
 	}
 
+	private boolean isDeleted = false;
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
 	public void delete() {
 		columnModel.getPropertyChangeSupport().removePropertyChangeListener(this);
 
 		this.controller = null;
 		this.columnModel = null;
 		title = null;
+
+		if (_defaultTableCellRenderer != null) {
+			_defaultTableCellRenderer.delete();
+		}
+		_defaultTableCellRenderer = null;
+
+		isDeleted = true;
 	}
 
 	@Override
