@@ -328,14 +328,12 @@ public class ContextualMenu {
 			if (StringUtils.isNotEmpty(component.getName())) {
 				componentName = component.getName();
 				reusableComponentFile = new File(JFIBPreferences.getLastDirectory(), componentName + ".fib");
-			}
-			else {
+			} else {
 				reusableComponentFile = new File(JFIBPreferences.getLastDirectory(), "ReusableComponent.fib");
 			}
 			if (component.getData().isSet()) {
 				data = new DataBinding<Object>(component.getData().toString(), this, Object.class, BindingDefinitionType.GET);
-			}
-			else {
+			} else {
 				data = new DataBinding<Object>(this, Object.class, BindingDefinitionType.GET);
 			}
 		}
@@ -370,6 +368,9 @@ public class ContextualMenu {
 	}
 
 	public void displayPopupMenu(FIBModelObject object, Component invoker, MouseEvent e) {
+		if (menu == null) {
+			return;
+		}
 		for (EditorAction action : actions.keySet()) {
 			PopupMenuItem menuItem = actions.get(action);
 			menuItem.setObject(object);
