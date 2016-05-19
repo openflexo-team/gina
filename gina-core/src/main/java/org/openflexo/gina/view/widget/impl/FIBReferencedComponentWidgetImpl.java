@@ -40,6 +40,7 @@ package org.openflexo.gina.view.widget.impl;
 
 import java.beans.PropertyChangeEvent;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingEvaluationContext;
@@ -372,10 +373,23 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 
 		// logger.info("updateReferencedComponentView() called in FIBReferencedComponentWidget");
 
+		// Kept for future debug use
+		/*if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("EditionActionWidget")) {
+			FIBComponent rootComponent = embeddedFIBController.getRootComponent();
+			System.out.println("************ OK, on remet a jour la FIBReferencedComponentWidget");
+			System.out.println("rootComponent=" + rootComponent);
+			System.out.println("rootComponent.root=" + rootComponent.getRootComponent());
+			System.out.println("dataType=" + ((FIBContainer) rootComponent).getDataType());
+			System.out.println("dataType2=" + ((FIBContainer) rootComponent.getRootComponent()).getDataType());
+			System.out.println(rootComponent.getFIBLibrary().stringRepresentation(rootComponent));
+		}*/
+
 		if (getReferencedComponentView() != null && embeddedFIBController.getRootComponent() instanceof FIBContainer) {
-			if ((getValue() == null) || ((FIBContainer) embeddedFIBController.getRootComponent()).getDataType() == null
-					|| (TypeUtils.isTypeAssignableFrom(((FIBContainer) embeddedFIBController.getRootComponent()).getDataType(),
-							getValue().getClass()))) {
+
+			Type expectedDataType = ((FIBContainer) embeddedFIBController.getRootComponent().getRootComponent()).getDataType();
+
+			// If value is of right type, we update the referenced widget
+			if ((getValue() == null) || (TypeUtils.isTypeAssignableFrom(expectedDataType, getValue().getClass()))) {
 
 				performAssignments();
 
