@@ -347,6 +347,10 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 			return false;
 		}*/
 
+		if (!isViewVisible()) {
+			return super.updateData();
+		}
+
 		if (getCustomComponent() != null) {
 
 			// performAssignments();
