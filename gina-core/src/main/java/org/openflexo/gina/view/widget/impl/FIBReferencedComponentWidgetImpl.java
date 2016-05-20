@@ -398,8 +398,7 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 				getReferencedComponentView().update();
 
 			} else {
-				logger.warning("Inconsistant data: " + getValue() + " is not a "
-						+ ((FIBContainer) embeddedFIBController.getRootComponent()).getDataType());
+				logger.warning("Inconsistant data: " + getValue() + " is not a " + expectedDataType);
 			}
 
 		}
