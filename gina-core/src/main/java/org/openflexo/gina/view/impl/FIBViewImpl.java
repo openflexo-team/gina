@@ -173,6 +173,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		// VERY IMPORTANT: this was done in the constructor !
 		// listenVisibleValueChange();
 
+		visible = true;
+
 		// Update properties of current component
 		// (do not call update() otherwise a new verification of visibility will be done)
 		performUpdate();
@@ -189,13 +191,11 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		// Don't listen anymore to component variables
 		stopListeningVariablesValueChange();
 
+		visible = false;
+
 		// BIG TRICK: don't do it, otherwise you have no chance to be notified of a visibility change
 		// DONT DO THAT: stopListenVisibleValueChange();
 	}
-
-	/*protected void hiddenComponentBecomesVisible() {
-		update();
-	}*/
 
 	private void startListeningVariablesValueChange() {
 		for (FIBVariable<?> variable : getComponent().getVariables()) {
