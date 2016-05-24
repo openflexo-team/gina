@@ -96,6 +96,7 @@ import org.openflexo.gina.model.widget.FIBCustom;
 import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent;
 import org.openflexo.gina.swing.utils.logging.FlexoLoggingViewer;
 import org.openflexo.icon.UtilsIconLibrary;
+import org.openflexo.kvc.InvalidKeyValuePropertyException;
 import org.openflexo.logging.FlexoLoggingManager;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
@@ -221,7 +222,11 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 					// which has generally been edited
 					// By typing text in text field
 					if (getEditedObject() != null && getEditedObject().isValid()) {
-						apply();
+						try {
+							apply();
+						} catch (InvalidKeyValuePropertyException e) {
+							// Abort, widget is on an other object
+						}
 					}
 				}
 
