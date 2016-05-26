@@ -48,7 +48,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
@@ -158,6 +157,10 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 	private static final Logger LOGGER = Logger.getLogger(SwingViewFactory.class.getPackage().getName());
 
 	public static final SwingViewFactory INSTANCE = new SwingViewFactory();
+
+	// Prevent external instanciation
+	protected SwingViewFactory() {
+	}
 
 	@Override
 	public boolean allowsFIBEdition() {
@@ -487,12 +490,12 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 		}
 	}
 
-	private static class EditorLauncher extends MouseAdapter {
+	private class EditorLauncher extends MouseAdapter {
 		private final FIBComponent component;
 		private final FIBController controller;
 
 		public EditorLauncher(FIBController controller, FIBComponent component) {
-			LOGGER.fine("make EditorLauncher for component: " + component.getResource());
+			System.out.println("make EditorLauncher for component: " + component.getResource());
 			this.component = component;
 			this.controller = controller;
 		}
@@ -506,6 +509,11 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 		}
 
 		protected void openFIBEditor(final FIBComponent component, MouseEvent event) {
+
+			if (getInteractiveFIBEditor() == null) {
+				return;
+			}
+
 			if (component.getResource() == null) {
 				try {
 					File fibFile = File.createTempFile("FIBComponent", ".fib");
@@ -524,35 +532,9 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 					return;
 				}
 			}
-			Class embeddedEditor = null;
-			Constructor c = null;
-			try {
-				embeddedEditor = Class.forName("org.openflexo.gina.swing.editor.FIBEmbeddedEditor");
-				c = embeddedEditor.getConstructors()[0];
-				/*
-				 * File fibFile = ((FileResourceImpl)
-				 * component.getResource()).getFile(); if (!fibFile.exists()) {
-				 * logger.warning(
-				 * "Cannot find FIB file definition for component, aborting FIB edition"
-				 * ); return; }
-				 */
-				Object[] args = new Object[2];
-				args[0] = component.getResource();
-				args[1] = controller.getDataObject();
-				LOGGER.info("Opening FIB editor for " + component.getResource());
-				c.newInstance(args);
-			} catch (ClassNotFoundException e) {
-				LOGGER.warning("Cannot open FIB Editor, please add org.openflexo.gina.swing.editor.FIBEmbeddedEditor in the class path");
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				LOGGER.warning("Cannot instanciate " + embeddedEditor + " with constructor " + c + " because of unexpected exception ");
-				e.getTargetException().printStackTrace();
-			}
+
+			getInteractiveFIBEditor().openResource(component.getResource(), controller.getDataObject());
+
 		}
 
 	}

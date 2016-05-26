@@ -375,7 +375,9 @@ public class FIBEditor {
 
 	public FIBEditorController loadFIB(Resource fibResource, Object dataObject, JFrame frame) {
 
-		EditedFIBComponent newEditedFIB = new EditedFIBComponent(fibResource, getFIBLibrary());
+		Resource productionResource = fibResource;
+		Resource sourceResource = ResourceLocator.locateSourceCodeResource(productionResource);
+		EditedFIBComponent newEditedFIB = new EditedFIBComponent(sourceResource, productionResource, getFIBLibrary());
 		newEditedFIB.setDataObject(dataObject);
 
 		return newEditedComponent(newEditedFIB, frame);

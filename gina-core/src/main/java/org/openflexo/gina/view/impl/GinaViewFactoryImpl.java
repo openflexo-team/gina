@@ -30,6 +30,7 @@ import org.openflexo.gina.model.widget.FIBReferencedComponent;
 import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTextArea;
 import org.openflexo.gina.model.widget.FIBTextField;
+import org.openflexo.gina.utils.InteractiveFIBEditor;
 import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.FIBWidgetView;
 import org.openflexo.gina.view.GinaViewFactory;
@@ -71,9 +72,19 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 
 	private static final Logger LOGGER = Logger.getLogger(GinaViewFactoryImpl.class.getPackage().getName());
 
+	private InteractiveFIBEditor interactiveFIBEditor = null;
+
+	public InteractiveFIBEditor getInteractiveFIBEditor() {
+		return interactiveFIBEditor;
+	}
+
+	public void installInteractiveFIBEditor(InteractiveFIBEditor interactiveFIBEditor) {
+		this.interactiveFIBEditor = interactiveFIBEditor;
+	}
+
 	@Override
 	public boolean allowsFIBEdition() {
-		return false;
+		return interactiveFIBEditor != null;
 	}
 
 	@Override
@@ -92,11 +103,14 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 
 		if (fibContainer instanceof FIBTab) {
 			return (FIBContainerView<F, ? extends C, ? extends C>) makeTabView((FIBTab) fibContainer, controller);
-		} else if (fibContainer instanceof FIBPanel) {
+		}
+		else if (fibContainer instanceof FIBPanel) {
 			return (FIBContainerView<F, ? extends C, ? extends C>) makePanelView((FIBPanel) fibContainer, controller);
-		} else if (fibContainer instanceof FIBTabPanel) {
+		}
+		else if (fibContainer instanceof FIBTabPanel) {
 			return (FIBContainerView<F, ? extends C, ? extends C>) makeTabPanelView((FIBTabPanel) fibContainer, controller);
-		} else if (fibContainer instanceof FIBSplitPanel) {
+		}
+		else if (fibContainer instanceof FIBSplitPanel) {
 			return (FIBContainerView<F, ? extends C, ? extends C>) makeSplitPanelView((FIBSplitPanel) fibContainer, controller);
 		}
 
