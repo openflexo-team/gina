@@ -31,21 +31,25 @@ public class EditedFIBComponent extends PropertyChangedSupportDefaultImplementat
 	private FIBModelFactory fibFactory;
 	private Object dataObject;
 
-	public EditedFIBComponent(String name, FIBComponent fibComponent, FIBLibrary fibLibrary) {
+	protected EditedFIBComponent(FIBComponent fibComponent, FIBLibrary fibLibrary) {
 		super();
 		this.fibLibrary = fibLibrary;
-		this.name = name;
 		this.fibComponent = fibComponent;
 
 	}
 
-	public EditedFIBComponent(Resource sourceResource, FIBLibrary fibLibrary) {
+	protected EditedFIBComponent(String name, FIBComponent fibComponent, FIBLibrary fibLibrary) {
+		this(fibComponent, fibLibrary);
+		this.name = name;
+	}
+
+	protected EditedFIBComponent(Resource sourceResource, FIBLibrary fibLibrary) {
 		super();
 		this.fibLibrary = fibLibrary;
 		load(sourceResource);
 	}
 
-	public EditedFIBComponent(Resource sourceResource, Resource productionResource, FIBLibrary fibLibrary) {
+	protected EditedFIBComponent(Resource sourceResource, Resource productionResource, FIBLibrary fibLibrary) {
 		this(sourceResource, fibLibrary);
 		this.productionResource = productionResource;
 	}

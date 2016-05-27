@@ -201,7 +201,15 @@ public class JFIBEditor extends JFrame implements InteractiveFIBEditor {
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(centerPanel, BorderLayout.CENTER);
 
-		libraryBrowser = new FIBLibraryBrowser(editor.getFIBLibrary());
+		libraryBrowser = new FIBLibraryBrowser(editor.getFIBLibrary()) {
+			@Override
+			public void doubleClickOnComponentResource(Resource selectedComponentResource) {
+				System.out.println("doubleClickOnComponentResource " + selectedComponentResource);
+				if (selectedComponentResource != null) {
+					editor.openFIBComponent(selectedComponentResource, JFIBEditor.this);
+				}
+			}
+		};
 		palette = editor.makePalette();
 		// FIBInspectors inspectors = editor.makeInspectors();
 

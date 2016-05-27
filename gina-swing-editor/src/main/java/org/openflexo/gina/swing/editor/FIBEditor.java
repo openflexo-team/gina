@@ -41,8 +41,10 @@ package org.openflexo.gina.swing.editor;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -282,6 +284,55 @@ public class FIBEditor {
 		System.exit(0);
 	}
 
+	// Edited components, stored using their source resource
+	private List<EditedFIBComponent> editedComponents = new ArrayList<>();
+
+	private EditedFIBComponent retrieveEditedFIBComponent(Resource resource) {
+		return retrieveEditedFIBComponent(resource, null);
+	}
+
+	private EditedFIBComponent retrieveEditedFIBComponent(Resource resource, FIBComponent fibComponent) {
+
+		EditedFIBComponent returned = null;
+
+		Resource sourceResource = ResourceLocator.locateSourceCodeResource(resource);
+
+		// First, attempt to lookup considering resource as source resource or production resource
+		for (EditedFIBComponent e : editedComponents) {
+			if (e.getSourceResource() != null && e.getSourceResource() == resource) {
+				returned = e;
+				break;
+			}
+			if (e.getProductionResource() != null && e.getProductionResource() == resource) {
+				returned = e;
+				break;
+			}
+		}
+
+		if (returned == null) {
+			// OK, we have to instanciate it
+			Resource productionResource = null;
+			if (sourceResource == null || sourceResource.equals(resource)) {
+				// no source resource means that resource is already source resource
+				sourceResource = resource;
+			}
+			else {
+				productionResource = resource;
+			}
+			if (fibComponent == null) {
+				returned = new EditedFIBComponent(sourceResource, productionResource, getFIBLibrary());
+			}
+			else {
+				returned = new EditedFIBComponent(fibComponent, getFIBLibrary());
+				returned.setSourceResource(sourceResource);
+				returned.setProductionResource(productionResource);
+			}
+			editedComponents.add(returned);
+		}
+
+		return returned;
+	}
+
 	/**
 	 * Internally used to create and register a new {@link FIBEditorController} managing the edition of a {@link EditedFIBComponent}
 	 * 
@@ -289,26 +340,67 @@ public class FIBEditor {
 	 * @param frame
 	 * @return
 	 */
-	private FIBEditorController newEditedComponent(EditedFIBComponent newEditedFIB, JFrame frame) {
-		FIBEditorController editorController = new FIBEditorController(newEditedFIB, this, frame);
-		if (getMainPanel() != null) {
-			mainPanel.newEditedComponent(editorController);
+	private FIBEditorController openEditedComponent(EditedFIBComponent newEditedFIB, JFrame frame) {
+
+		FIBEditorController returned = controllers.get(newEditedFIB);
+
+		if (returned == null) {
+			returned = new FIBEditorController(newEditedFIB, this, frame);
+			controllers.put(newEditedFIB, returned);
+			if (getMainPanel() != null) {
+				mainPanel.newEditedComponent(returned);
+			}
 		}
-		activate(editorController);
-		return editorController;
+
+		activate(returned);
+		return returned;
 	}
 
-	public FIBEditorController openFIBComponent(FIBComponent component, Resource fibResource, JFrame frame) {
+	/**
+	 * Called to launch the edition of a FIBComponent in the editor<br>
+	 * Editor might be retrieved from cache, using resource attached to component.
+	 * 
+	 * @param component
+	 * @param frame
+	 * @return
+	 */
+	public FIBEditorController openFIBComponent(FIBComponent component, JFrame frame) {
+
+		EditedFIBComponent editedFIB = null;
+		if (component.getResource() == null) {
+			editedFIB = new EditedFIBComponent("New" + (newIndex > 0 ? newIndex + 1 : "") + ".fib", component, getFIBLibrary());
+			editedComponents.add(editedFIB);
+			newIndex++;
+		}
+		else {
+			if (component.getResource() instanceof FileResourceImpl) {
+				File fibFile = ((FileResourceImpl) component.getResource()).getFile();
+				JFIBPreferences.setLastFile(fibFile);
+			}
+			editedFIB = retrieveEditedFIBComponent(component.getResource(), component);
+		}
+
+		return openEditedComponent(editedFIB, frame);
+	}
+
+	/**
+	 * Called to launch the edition of a FIBComponent - identified by its resource - in the editor<br>
+	 * Editor might be retrieved from cache
+	 * 
+	 * @param fibResource
+	 * @param frame
+	 * @return
+	 */
+	public FIBEditorController openFIBComponent(Resource fibResource, JFrame frame) {
 
 		if (fibResource instanceof FileResourceImpl) {
 			File fibFile = ((FileResourceImpl) fibResource).getFile();
 			JFIBPreferences.setLastFile(fibFile);
 		}
 
-		EditedFIBComponent newEditedFIB = new EditedFIBComponent(fibResource.getRelativePath(), component, getFIBLibrary());
-		newEditedFIB.setSourceResource(fibResource);
+		EditedFIBComponent editedFIB = retrieveEditedFIBComponent(fibResource);
 
-		return newEditedComponent(newEditedFIB, frame);
+		return openEditedComponent(editedFIB, frame);
 	}
 
 	private int newIndex = 0;
@@ -329,9 +421,10 @@ public class FIBEditor {
 		fibComponent.finalizeDeserialization();
 		EditedFIBComponent newEditedFIB = new EditedFIBComponent("New" + (newIndex > 0 ? newIndex + 1 : "") + ".fib", fibComponent,
 				getFIBLibrary());
+		editedComponents.add(newEditedFIB);
 		newIndex++;
 
-		return newEditedComponent(newEditedFIB, frame);
+		return openEditedComponent(newEditedFIB, frame);
 	}
 
 	public FIBEditorController loadFIB(JFrame frame) {
@@ -375,12 +468,10 @@ public class FIBEditor {
 
 	public FIBEditorController loadFIB(Resource fibResource, Object dataObject, JFrame frame) {
 
-		Resource productionResource = fibResource;
-		Resource sourceResource = ResourceLocator.locateSourceCodeResource(productionResource);
-		EditedFIBComponent newEditedFIB = new EditedFIBComponent(sourceResource, productionResource, getFIBLibrary());
-		newEditedFIB.setDataObject(dataObject);
+		EditedFIBComponent editedFIB = retrieveEditedFIBComponent(fibResource);
+		editedFIB.setDataObject(dataObject);
 
-		return newEditedComponent(newEditedFIB, frame);
+		return openEditedComponent(editedFIB, frame);
 	}
 
 	public void saveFIB(EditedFIBComponent editedFIB, JFrame frame) {

@@ -68,7 +68,9 @@ public class FIBLibraryBrowser extends FIBJPanel<FIBLibrary> {
 
 	@Override
 	protected FIBLibraryBrowserController makeFIBController(FIBComponent fibComponent, LocalizedDelegate parentLocalizer) {
-		return new FIBLibraryBrowserController(fibComponent);
+		FIBLibraryBrowserController returned = new FIBLibraryBrowserController(fibComponent);
+		returned.setFIBLibraryBrowser(this);
+		return returned;
 	}
 
 	@Override
@@ -83,6 +85,22 @@ public class FIBLibraryBrowser extends FIBJPanel<FIBLibrary> {
 
 	@Override
 	public void delete() {
+	}
+
+	private Resource selectedComponentResource;
+
+	public Resource getSelectedComponentResource() {
+		return selectedComponentResource;
+	}
+
+	public void setSelectedComponentResource(Resource selectedComponentResource) {
+		logger.info(">>>>setSelectedComponentResource with " + selectedComponentResource);
+		this.selectedComponentResource = selectedComponentResource;
+	}
+
+	public void doubleClickOnComponentResource(Resource selectedComponentResource) {
+		setSelectedComponentResource(selectedComponentResource);
+		logger.info(">>>>doubleClickOnComponentResource with " + selectedComponentResource);
 	}
 
 }
