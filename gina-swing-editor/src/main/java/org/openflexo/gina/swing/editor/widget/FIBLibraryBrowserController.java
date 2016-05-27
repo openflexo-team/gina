@@ -57,22 +57,28 @@ public class FIBLibraryBrowserController extends FIBController /*implements Obse
 
 	private static final Logger logger = Logger.getLogger(FIBLibraryBrowserController.class.getPackage().getName());
 
-	private Resource selectedComponentResource;
+	private FIBLibraryBrowser fibLibraryBrowser;
 
 	public FIBLibraryBrowserController(FIBComponent rootComponent) {
 		super(rootComponent, SwingViewFactory.INSTANCE);
 	}
 
 	public Resource getSelectedComponentResource() {
-		return selectedComponentResource;
+		if (fibLibraryBrowser != null) {
+			return fibLibraryBrowser.getSelectedComponentResource();
+		}
+		return null;
 	}
 
 	public void setSelectedComponentResource(Resource selectedComponentResource) {
-		logger.info(">>>>setSelectedComponentResource with " + selectedComponentResource);
-		if (this.selectedComponentResource != selectedComponentResource) {
-			Object oldValue = this.selectedComponentResource;
-			this.selectedComponentResource = selectedComponentResource;
-			getPropertyChangeSupport().firePropertyChange("selectedComponentResource", oldValue, selectedComponentResource);
+		if (fibLibraryBrowser != null) {
+			fibLibraryBrowser.setSelectedComponentResource(selectedComponentResource);
+		}
+	}
+
+	public void doubleClickOnComponentResource(Resource selectedComponentResource) {
+		if (fibLibraryBrowser != null) {
+			fibLibraryBrowser.doubleClickOnComponentResource(selectedComponentResource);
 		}
 	}
 
@@ -116,6 +122,19 @@ public class FIBLibraryBrowserController extends FIBController /*implements Obse
 
 	public void rightClick(FIBComponent component, MouseEvent event) {
 		// editorController.getContextualMenu().displayPopupMenu(component, ((JFIBView<?, ?>) getRootView()).getJComponent(), event);
+	}
+
+	public FIBLibraryBrowser getFIBLibraryBrowser() {
+		return fibLibraryBrowser;
+	}
+
+	public void setFIBLibraryBrowser(FIBLibraryBrowser fibLibraryBrowser) {
+		if ((fibLibraryBrowser == null && this.fibLibraryBrowser != null)
+				|| (fibLibraryBrowser != null && !fibLibraryBrowser.equals(this.fibLibraryBrowser))) {
+			FIBLibraryBrowser oldValue = this.fibLibraryBrowser;
+			this.fibLibraryBrowser = fibLibraryBrowser;
+			getPropertyChangeSupport().firePropertyChange("fibLibraryBrowser", oldValue, fibLibraryBrowser);
+		}
 	}
 
 }

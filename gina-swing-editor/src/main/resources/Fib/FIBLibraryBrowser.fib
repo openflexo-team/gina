@@ -9,6 +9,7 @@
 		showRootsHandle="true" manageDynamicModel="true" root="data"
 		selectionMode="DiscontiguousTreeSelection"
 		rightClickAction="controller.rightClick(LibraryBrowser.selected,controller.mouseEvent)"
+		doubleClickAction="controller.doubleClickOnComponentResource(LibraryBrowser.selected)"
 		boundToSelectionManager="true" localize="true"
 		constraints="border(location=center;x=0;y=0)" iteratorClassName="org.openflexo.rm.Resource"
 		useScrollBar="false" selected="controller.selectedComponentResource"

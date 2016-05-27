@@ -67,6 +67,7 @@ import org.openflexo.model.exceptions.InvalidDataException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;
+import org.openflexo.rm.ResourceLocator;
 
 /**
  * A {@link FIBLibrary} has the responsability of managing a collection of {@link FIBComponent} encoded as {@link Resource}
@@ -110,6 +111,7 @@ public interface FIBLibrary extends FIBLibraryContainer {
 			return FOLDER_FACTORY.newInstance(FIBLibrary.class);
 		}
 
+		// This map stores FIBComponent related to their source resource
 		private final Map<Resource, FIBComponent> fibs;
 		private final BindingFactory bindingFactory = new FIBBindingFactory();
 		private FIBModelFactory fibModelFactory;
@@ -136,16 +138,20 @@ public interface FIBLibrary extends FIBLibraryContainer {
 		}
 
 		@Override
-		public boolean componentIsLoaded(Resource fibResourcePath) {
-			return fibs.get(fibResourcePath) != null;
+		public boolean componentIsLoaded(Resource fibResource) {
+			Resource sourceResource = ResourceLocator.locateSourceCodeResource(fibResource);
+			if (sourceResource == null) {
+				sourceResource = fibResource;
+			}
+			return fibs.get(fibResource) != null;
 		}
 
-		protected FIBFolder notifyLoaded(FIBComponent component, Resource resource) {
+		protected FIBFolder notifyLoaded(FIBComponent component, Resource sourceResource) {
 			// System.out.println(
 			// "In FIBLibrary [" + Integer.toHexString(hashCode()) + "] loading " + resource + " " + resource.getRelativePath());
 
-			FIBFolder returned = ensureFolderedOrganization(resource);
-			returned.addToResources(resource);
+			FIBFolder returned = ensureFolderedOrganization(sourceResource);
+			returned.addToResources(sourceResource);
 
 			return returned;
 		}
@@ -205,24 +211,28 @@ public interface FIBLibrary extends FIBLibraryContainer {
 		}
 
 		@Override
-		public FIBComponent retrieveFIBComponent(Resource fibFile, boolean useCache, FIBModelFactory factory) {
-			FIBComponent fibComponent = fibs.get(fibFile);
-			if (!useCache || fibComponent == null || fibComponent.getLastModified().before(fibFile.getLastUpdate())) {
+		public FIBComponent retrieveFIBComponent(Resource fibResource, boolean useCache, FIBModelFactory factory) {
+			Resource sourceResource = ResourceLocator.locateSourceCodeResource(fibResource);
+			if (sourceResource == null) {
+				sourceResource = fibResource;
+			}
+			FIBComponent fibComponent = fibs.get(sourceResource);
+			if (!useCache || fibComponent == null || fibComponent.getLastModified().before(fibResource.getLastUpdate())) {
 
 				if (LOGGER.isLoggable(Level.FINE)) {
-					LOGGER.fine("Load " + fibFile.getURI());
+					LOGGER.fine("Load " + fibResource.getURI());
 				}
 
 				InputStream fis = null;
 
 				try {
-					fis = fibFile.openInputStream();
+					fis = fibResource.openInputStream();
 					FIBComponent component = (FIBComponent) factory.deserialize(fis);
-					component.setLastModified(fibFile.getLastUpdate());
-					component.setResource(fibFile);
+					component.setLastModified(fibResource.getLastUpdate());
+					component.setResource(fibResource);
 					component.setFIBLibrary(this);
-					fibs.put(fibFile, component);
-					notifyLoaded(component, fibFile);
+					fibs.put(sourceResource, component);
+					notifyLoaded(component, sourceResource);
 					return component;
 				} catch (ModelDefinitionException e) {
 					// TODO Auto-generated catch block
@@ -252,8 +262,12 @@ public interface FIBLibrary extends FIBLibraryContainer {
 		}
 
 		@Override
-		public void removeFIBComponentFromCache(Resource fibFile) {
-			fibs.remove(fibFile);
+		public void removeFIBComponentFromCache(Resource fibResource) {
+			Resource sourceResource = ResourceLocator.locateSourceCodeResource(fibResource);
+			if (sourceResource == null) {
+				sourceResource = fibResource;
+			}
+			fibs.remove(sourceResource);
 		}
 
 		/*
@@ -277,13 +291,17 @@ public interface FIBLibrary extends FIBLibraryContainer {
 			}
 		}
 
-		private FIBComponent retrieveFIBComponent(Resource fibIdentifier, InputStream inputStream, boolean useCache) {
-			if (!useCache || fibs.get(fibIdentifier) == null) {
+		private FIBComponent retrieveFIBComponent(Resource fibResource, InputStream inputStream, boolean useCache) {
+			Resource sourceResource = ResourceLocator.locateSourceCodeResource(fibResource);
+			if (sourceResource == null) {
+				sourceResource = fibResource;
+			}
+			if (!useCache || fibs.get(sourceResource) == null) {
 
 				try {
 					FIBModelFactory factory;
-					if (fibIdentifier instanceof FileResourceImpl) {
-						factory = new FIBModelFactory(((FileResourceImpl) fibIdentifier).getFile().getParentFile());
+					if (fibResource instanceof FileResourceImpl) {
+						factory = new FIBModelFactory(((FileResourceImpl) fibResource).getFile().getParentFile());
 					}
 					else {
 						factory = new FIBModelFactory();
@@ -291,39 +309,39 @@ public interface FIBLibrary extends FIBLibraryContainer {
 
 					FIBComponent component = (FIBComponent) factory.deserialize(inputStream);
 					component.setLastModified(new Date());
-					component.setResource(fibIdentifier);
+					component.setResource(fibResource);
 					component.setFIBLibrary(this);
-					fibs.put(fibIdentifier, component);
-					notifyLoaded(component, fibIdentifier);
+					fibs.put(sourceResource, component);
+					notifyLoaded(component, sourceResource);
 					return component;
 				} catch (ModelDefinitionException e) {
 					if (LOGGER.isLoggable(Level.WARNING)) {
-						LOGGER.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
+						LOGGER.warning("Exception raised during Fib import '" + fibResource + "': " + e);
 					}
 					e.printStackTrace();
 				} catch (FileNotFoundException e) {
 					if (LOGGER.isLoggable(Level.WARNING)) {
-						LOGGER.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
+						LOGGER.warning("Exception raised during Fib import '" + fibResource + "': " + e);
 					}
 					e.printStackTrace();
 				} catch (IOException e) {
 					if (LOGGER.isLoggable(Level.WARNING)) {
-						LOGGER.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
+						LOGGER.warning("Exception raised during Fib import '" + fibResource + "': " + e);
 					}
 					e.printStackTrace();
 				} catch (JDOMException e) {
 					if (LOGGER.isLoggable(Level.WARNING)) {
-						LOGGER.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
+						LOGGER.warning("Exception raised during Fib import '" + fibResource + "': " + e);
 					}
 					e.printStackTrace();
 				} catch (InvalidDataException e) {
 					if (LOGGER.isLoggable(Level.WARNING)) {
-						LOGGER.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
+						LOGGER.warning("Exception raised during Fib import '" + fibResource + "': " + e);
 					}
 					e.printStackTrace();
 				} catch (Exception e) {
 					if (LOGGER.isLoggable(Level.WARNING)) {
-						LOGGER.warning("Exception raised during Fib import '" + fibIdentifier + "': " + e);
+						LOGGER.warning("Exception raised during Fib import '" + fibResource + "': " + e);
 					}
 					e.printStackTrace();
 					LOGGER.warning("Unhandled Exception");
@@ -333,7 +351,7 @@ public interface FIBLibrary extends FIBLibraryContainer {
 					}
 				}
 			}
-			return fibs.get(fibIdentifier);
+			return fibs.get(sourceResource);
 		}
 
 		@Override
