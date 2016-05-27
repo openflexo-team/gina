@@ -153,6 +153,9 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 	private Object currentInspectedObject = null;
 
 	public void inspectObject(Object object) {
+
+		System.out.println("Inspect object " + object + " current=" + currentInspectedObject);
+
 		if (object == currentInspectedObject) {
 			return;
 		}
@@ -167,8 +170,10 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 		}
 		else {
 			if (newInspector != currentInspector) {
+				System.out.println("On change d'inspecteur");
 				switchToInspector(newInspector);
 			}
+			System.out.println("On dit a l'inspecteur que c'est l'object " + object);
 			currentInspectorView.getController().setDataObject(object);
 		}
 	}
@@ -211,6 +216,9 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 		}
 
 		currentInspectorView = getInspectorViewForInspector(newInspector);
+		if (currentInspectorView != null) {
+			currentInspectorView.showView();
+		}
 
 		if (currentInspectorView != null) {
 			rootPane.removeAll();

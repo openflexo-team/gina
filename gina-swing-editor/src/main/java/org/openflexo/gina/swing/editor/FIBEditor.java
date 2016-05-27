@@ -340,7 +340,7 @@ public class FIBEditor {
 	 * @param frame
 	 * @return
 	 */
-	private FIBEditorController openEditedComponent(EditedFIBComponent newEditedFIB, JFrame frame) {
+	private FIBEditorController openEditedComponent(EditedFIBComponent newEditedFIB, Object dataObject, JFrame frame) {
 
 		FIBEditorController returned = controllers.get(newEditedFIB);
 
@@ -350,6 +350,10 @@ public class FIBEditor {
 			if (getMainPanel() != null) {
 				mainPanel.newEditedComponent(returned);
 			}
+		}
+
+		if (dataObject != null) {
+			returned.setDataObject(dataObject);
 		}
 
 		activate(returned);
@@ -364,7 +368,7 @@ public class FIBEditor {
 	 * @param frame
 	 * @return
 	 */
-	public FIBEditorController openFIBComponent(FIBComponent component, JFrame frame) {
+	public FIBEditorController openFIBComponent(FIBComponent component, Object dataObject, JFrame frame) {
 
 		EditedFIBComponent editedFIB = null;
 		if (component.getResource() == null) {
@@ -380,7 +384,7 @@ public class FIBEditor {
 			editedFIB = retrieveEditedFIBComponent(component.getResource(), component);
 		}
 
-		return openEditedComponent(editedFIB, frame);
+		return openEditedComponent(editedFIB, dataObject, frame);
 	}
 
 	/**
@@ -391,7 +395,7 @@ public class FIBEditor {
 	 * @param frame
 	 * @return
 	 */
-	public FIBEditorController openFIBComponent(Resource fibResource, JFrame frame) {
+	public FIBEditorController openFIBComponent(Resource fibResource, Object dataObject, JFrame frame) {
 
 		if (fibResource instanceof FileResourceImpl) {
 			File fibFile = ((FileResourceImpl) fibResource).getFile();
@@ -400,7 +404,7 @@ public class FIBEditor {
 
 		EditedFIBComponent editedFIB = retrieveEditedFIBComponent(fibResource);
 
-		return openEditedComponent(editedFIB, frame);
+		return openEditedComponent(editedFIB, dataObject, frame);
 	}
 
 	private int newIndex = 0;
@@ -424,7 +428,7 @@ public class FIBEditor {
 		editedComponents.add(newEditedFIB);
 		newIndex++;
 
-		return openEditedComponent(newEditedFIB, frame);
+		return openEditedComponent(newEditedFIB, null, frame);
 	}
 
 	public FIBEditorController loadFIB(JFrame frame) {
@@ -471,7 +475,7 @@ public class FIBEditor {
 		EditedFIBComponent editedFIB = retrieveEditedFIBComponent(fibResource);
 		editedFIB.setDataObject(dataObject);
 
-		return openEditedComponent(editedFIB, frame);
+		return openEditedComponent(editedFIB, dataObject, frame);
 	}
 
 	public void saveFIB(EditedFIBComponent editedFIB, JFrame frame) {

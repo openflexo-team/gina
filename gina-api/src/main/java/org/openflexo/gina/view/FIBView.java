@@ -148,6 +148,12 @@ public interface FIBView<M extends FIBComponent, C> extends LocalizationListener
 	public boolean isComponentVisible();
 
 	/**
+	 * When called, means that the view is displayed again<br>
+	 * Calling this method reactivate all observing schemes related to this view
+	 */
+	public void showView();
+
+	/**
 	 * When called, means that the view is no more displayed<br>
 	 * Calling this method disactivate all observing schemes related to this view
 	 */

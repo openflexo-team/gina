@@ -62,6 +62,7 @@ import org.openflexo.gina.swing.utils.JFIBPreferences;
 import org.openflexo.gina.utils.InteractiveFIBEditor;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.rm.Resource;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.swing.ComponentBoundSaver;
 import org.openflexo.swing.layout.JXMultiSplitPane;
 import org.openflexo.swing.layout.JXMultiSplitPane.DividerPainter;
@@ -102,9 +103,20 @@ public class JFIBEditor extends JFrame implements InteractiveFIBEditor {
 		if (!isVisible()) {
 			setVisible(true);
 		}
-		editor.loadFIB(fibResource, dataObject, this);
+		editor.openFIBComponent(fibResource, dataObject, this);
+
+		// editor.loadFIB(fibResource, dataObject, this);
 		toFront();
-		inspector.setVisible(true);
+
+		Resource sourceResource = ResourceLocator.locateSourceCodeResource(fibResource);
+		if (sourceResource != null) {
+			System.out.println("On selectionne " + sourceResource);
+			libraryBrowser.getController().setSelectedComponentResource(sourceResource);
+		}
+		else {
+			System.out.println("On selectionne 2 " + fibResource);
+			libraryBrowser.getController().setSelectedComponentResource(fibResource);
+		}
 	}
 
 	public JFIBEditor(FIBLibrary fibLibrary) {
@@ -206,7 +218,7 @@ public class JFIBEditor extends JFrame implements InteractiveFIBEditor {
 			public void doubleClickOnComponentResource(Resource selectedComponentResource) {
 				System.out.println("doubleClickOnComponentResource " + selectedComponentResource);
 				if (selectedComponentResource != null) {
-					editor.openFIBComponent(selectedComponentResource, JFIBEditor.this);
+					editor.openFIBComponent(selectedComponentResource, null, JFIBEditor.this);
 				}
 			}
 		};

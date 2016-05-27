@@ -120,14 +120,19 @@ public class ContextualMenu {
 		addToActions(new EditorAction("Delete", FIBEditorIconLibrary.DELETE_ICON, new ActionPerformer() {
 			@Override
 			public FIBModelObject performAction(FIBModelObject object) {
-				FIBComponent parent = ((FIBComponent) object).getParent();
-				boolean deleteIt = JOptionPane.showConfirmDialog(frame, object + ": really delete this component (undoable operation) ?",
-						"information", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION;
-				if (deleteIt) {
-					logger.info("Removing object " + object);
-					object.delete();
+				if (object instanceof FIBComponent) {
+					FIBContainer parent = ((FIBComponent) object).getParent();
+					boolean deleteIt = JOptionPane.showConfirmDialog(frame,
+							object + ": really delete this component (undoable operation) ?", "information",
+							JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION;
+					if (deleteIt) {
+						logger.info("Removing object " + object + " from " + parent);
+						parent.removeFromSubComponents((FIBComponent) object);
+						object.delete();
+					}
+					return parent;
 				}
-				return parent;
+				return null;
 			}
 		}, new ActionAvailability() {
 			@Override
@@ -328,12 +333,14 @@ public class ContextualMenu {
 			if (StringUtils.isNotEmpty(component.getName())) {
 				componentName = component.getName();
 				reusableComponentFile = new File(JFIBPreferences.getLastDirectory(), componentName + ".fib");
-			} else {
+			}
+			else {
 				reusableComponentFile = new File(JFIBPreferences.getLastDirectory(), "ReusableComponent.fib");
 			}
 			if (component.getData().isSet()) {
 				data = new DataBinding<Object>(component.getData().toString(), this, Object.class, BindingDefinitionType.GET);
-			} else {
+			}
+			else {
 				data = new DataBinding<Object>(this, Object.class, BindingDefinitionType.GET);
 			}
 		}
@@ -375,7 +382,9 @@ public class ContextualMenu {
 			PopupMenuItem menuItem = actions.get(action);
 			menuItem.setObject(object);
 		}
-		menu.show(invoker, e.getPoint().x, e.getPoint().y);
+		if (e != null && e.getPoint() != null) {
+			menu.show(invoker, e.getPoint().x, e.getPoint().y);
+		}
 	}
 
 	class PopupMenuItem extends JMenuItem {

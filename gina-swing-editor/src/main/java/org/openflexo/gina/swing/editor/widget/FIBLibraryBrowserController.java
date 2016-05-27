@@ -73,6 +73,7 @@ public class FIBLibraryBrowserController extends FIBController /*implements Obse
 	public void setSelectedComponentResource(Resource selectedComponentResource) {
 		if (fibLibraryBrowser != null) {
 			fibLibraryBrowser.setSelectedComponentResource(selectedComponentResource);
+			getPropertyChangeSupport().firePropertyChange("selectedComponentResource", null, selectedComponentResource);
 		}
 	}
 
