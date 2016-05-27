@@ -60,6 +60,7 @@ import org.openflexo.gina.model.widget.FIBImage;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.view.widget.FIBImageWidget;
+import org.openflexo.gina.view.impl.FIBViewImpl;
 import org.openflexo.gina.view.widget.impl.FIBImageWidgetImpl;
 
 /**
@@ -89,7 +90,9 @@ public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel>implements ImageO
 
 		@Override
 		public void setImage(JLabel component, Image anImage, FIBImageWidget<JLabel> widget) {
-			component.setIcon(((JFIBImageWidget) widget).makeImageIcon(anImage));
+			if (!((FIBViewImpl)widget).isUpdating()) {
+				component.setIcon(((JFIBImageWidget) widget).makeImageIcon(anImage));
+				}
 		}
 
 		@Override
