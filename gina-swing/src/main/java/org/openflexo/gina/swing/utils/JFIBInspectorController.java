@@ -154,7 +154,7 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 
 	public void inspectObject(Object object) {
 
-		System.out.println("Inspect object " + object + " current=" + currentInspectedObject);
+		// System.out.println("Inspect object " + object + " current=" + currentInspectedObject);
 
 		if (object == currentInspectedObject) {
 			return;
@@ -170,10 +170,8 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 		}
 		else {
 			if (newInspector != currentInspector) {
-				System.out.println("On change d'inspecteur");
 				switchToInspector(newInspector);
 			}
-			System.out.println("On dit a l'inspecteur que c'est l'object " + object);
 			currentInspectorView.getController().setDataObject(object);
 		}
 	}
