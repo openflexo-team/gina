@@ -342,6 +342,8 @@ public class FIBEditor {
 	 */
 	private FIBEditorController openEditedComponent(EditedFIBComponent newEditedFIB, Object dataObject, JFrame frame) {
 
+		newEditedFIB.setDataObject(dataObject);
+
 		FIBEditorController returned = controllers.get(newEditedFIB);
 
 		if (returned == null) {
