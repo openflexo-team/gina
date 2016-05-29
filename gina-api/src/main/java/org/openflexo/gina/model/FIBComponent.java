@@ -588,19 +588,10 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		@Deprecated
 		public static BindingDefinition VISIBLE = new BindingDefinition("visible", Boolean.class, DataBinding.BindingDefinitionType.GET,
 				false);
-		// @Deprecated
-		// private BindingDefinition DATA;
 
 		private Resource definitionFile;
 
 		private Date lastModified;
-
-		/*
-		 * @Deprecated public BindingDefinition getDataBindingDefinition() { if
-		 * (DATA == null) { DATA = new BindingDefinition("data",
-		 * getDefaultDataType(), DataBinding.BindingDefinitionType.GET, false);
-		 * } return DATA; }
-		 */
 
 		private Integer index;
 		private DataBinding<?> data;
@@ -623,12 +614,10 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		private boolean useScrollBar = false;
 		private HorizontalScrollBarPolicy horizontalScrollbarPolicy = null;
 		private VerticalScrollBarPolicy verticalScrollbarPolicy = null;
-		// private String dataClassName;
 
 		private final Vector<FIBComponent> mayDepends;
 		private final Vector<FIBComponent> mayAlters;
 
-		// protected Class dataClass;
 		private Class<? extends FIBController> controllerClass;
 
 		private FIBContainer parent;
@@ -739,12 +728,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			return true;
 		}
 
-		/*
-		 * @Override public FIBVariable<?> getVariable(String variableName) {
-		 * for (FIBVariable<?> v : getVariables()) { if
-		 * (v.getName().equals(variableName)) { return v; } } return null; }
-		 */
-
 		/**
 		 * Return a boolean indicating if hierarchy is valid (no cycle was detected in hierarchy)
 		 * 
@@ -762,34 +745,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			}
 			return true;
 		}
-
-		/*
-		 * public Hashtable<String,String> getLayoutConstraints() { return
-		 * layoutConstraints; }
-		 * 
-		 * public String getConstraint(String constraint) { return
-		 * layoutConstraints.get(constraint); }
-		 * 
-		 * public boolean getBooleanConstraint(String constraint) { return
-		 * layoutConstraints.get(constraint) != null &&
-		 * layoutConstraints.get(constraint).equalsIgnoreCase("true"); }
-		 * 
-		 * 
-		 * public String _getConstraints() { if (layoutConstraints.size() == 0)
-		 * return null; StringBuffer returned = new StringBuffer(); boolean
-		 * isFirst = true; for (String key : layoutConstraints.keySet()) {
-		 * String value = layoutConstraints.get(key);
-		 * returned.append((isFirst?"":";")+key+"="+value); isFirst = false; }
-		 * return returned.toString(); }
-		 * 
-		 * public void _setConstraints(String someConstraints) { StringTokenizer
-		 * st = new StringTokenizer(someConstraints,";"); while
-		 * (st.hasMoreTokens()) { String next = st.nextToken(); StringTokenizer
-		 * st2 = new StringTokenizer(next,"="); String key = null; String value
-		 * = null; if (st2.hasMoreTokens()) key = st2.nextToken(); if
-		 * (st2.hasMoreTokens()) value = st2.nextToken(); if (key != null &&
-		 * value != null) { layoutConstraints.put(key,value); } } }
-		 */
 
 		private ComponentConstraints constraints;
 
@@ -920,59 +875,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			}
 		}
 
-		/*
-		 * public String _getConditional() { return conditional; }
-		 * 
-		 * public void _setConditional(String conditional) { this.conditional =
-		 * conditional; DefaultExpressionParser parser = new
-		 * DefaultExpressionParser(); Vector<Variable> variables; try {
-		 * conditionalExpression = parser.parse(conditional); variables =
-		 * Expression.extractVariables(conditional);
-		 * System.out.println("Variables for "+conditional+"\n"+variables); }
-		 * catch (ParseException e) { e.printStackTrace(); } catch
-		 * (TypeMismatchException e) { e.printStackTrace(); } }
-		 * 
-		 * public boolean isConditional() { return conditional != null; }
-		 * 
-		 * public boolean evaluateCondition(final Object dataObject) { if
-		 * (dataObject == null) return false;
-		 * 
-		 * try { Expression returned = conditionalExpression.evaluate( new
-		 * EvaluationContext( new ExpressionParser.DefaultConstantFactory(), new
-		 * VariableFactory() { public Expression makeVariable(Word value) {
-		 * Object valueObject =
-		 * FIBKeyValueCoder.getObjectValue(dataObject,value.getValue()); if
-		 * (valueObject instanceof String) { return new
-		 * Constant.StringConstant((String)valueObject); } else if (valueObject
-		 * instanceof Enum) { return new
-		 * Constant.EnumConstant(((Enum)valueObject).name()); } else if
-		 * (valueObject instanceof Integer) { return new
-		 * Constant.IntegerConstant((Integer)valueObject); } else if
-		 * (valueObject instanceof Long) { return new
-		 * Constant.IntegerConstant((Long)valueObject); } else if (valueObject
-		 * instanceof Short) { return new
-		 * Constant.IntegerConstant((Short)valueObject); } else if (valueObject
-		 * instanceof Float) { return new
-		 * Constant.FloatConstant((Float)valueObject); } else if (valueObject
-		 * instanceof Double) { return new
-		 * Constant.FloatConstant((Double)valueObject); } else if (valueObject
-		 * instanceof Boolean) { return ((Boolean)valueObject ?
-		 * Constant.BooleanConstant.TRUE : Constant.BooleanConstant.FALSE); } //
-		 * TODO Handle others return new Variable(value.getValue()); } }, new
-		 * ExpressionParser.DefaultFunctionFactory()));
-		 * System.out.println("After evaluation: "
-		 * +returned+" of "+returned.getClass().getName()); if (returned
-		 * instanceof BooleanConstant) return
-		 * ((BooleanConstant)returned).getValue();
-		 * logger.warning("Could not evaluate: "
-		 * +conditional+" found: "+returned); return true; } catch
-		 * (TypeMismatchException e) { e.printStackTrace();
-		 * logger.warning("TypeMismatch: "+e.getMessage()); }
-		 * 
-		 * 
-		 * return true; }
-		 */
-
 		@Override
 		public boolean isRootComponent() {
 			return getParent() == null;
@@ -1009,18 +911,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		}
 
 		/**
-		 * Return (create when null) binding variable identified by "data"<br>
-		 * Default behavior is to generate a binding variable with the java type identified by data class
-		 */
-		/*
-		 * @Override public BindingVariable getDataBindingVariable() { if
-		 * (dataBindingVariable == null) { dataBindingVariable = new
-		 * BindingVariable("data", getDataType());
-		 * getBindingModel().addToBindingVariables(dataBindingVariable); }
-		 * return dataBindingVariable; }
-		 */
-
-		/**
 		 * Return (create when null) binding variable identified by "controller"<br>
 		 * Default behavior is to generate a binding variable with the java type identified by controller class
 		 * 
@@ -1051,19 +941,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			}
 			return dynamicAccessBindingVariable;
 		}
-
-		/*
-		 * @Override public void updateBindingModel() { if
-		 * (deserializationPerformed) { logger.fine("updateBindingModel()");
-		 * FIBComponentImpl root = (FIBComponentImpl) getRootComponent(); if
-		 * (root != null) { root._bindingModel = null;
-		 * root.createBindingModel(); } } }
-		 */
-
-		/*
-		 * @Override public void updateDataBindingVariable() {
-		 * getDataBindingVariable().setType(getDataType()); }
-		 */
 
 		@Override
 		public void updateControllerBindingVariable() {
@@ -1145,45 +1022,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			getDynamicAccessBindingVariable();
 		}
 
-		/*
-		 * protected void createBindingModel(BindingModel baseBindingModel) { if
-		 * (bindingModel == null) { if (baseBindingModel == null) { bindingModel
-		 * = new BindingModel(); } else { bindingModel = new
-		 * BindingModel(baseBindingModel); }
-		 * 
-		 * updateDataBindingVariable();
-		 * 
-		 * if (StringUtils.isNotEmpty(getName()) && getDynamicAccessType() !=
-		 * null) { bindingModel.addToBindingVariables(new
-		 * BindingVariable(getName(), getDynamicAccessType())); }
-		 * 
-		 * Iterator<FIBComponent> it = subComponentIterator(); while
-		 * (it.hasNext()) { FIBComponent subComponent = it.next(); if
-		 * (StringUtils.isNotEmpty(subComponent.getName()) &&
-		 * subComponent.getDynamicAccessType() != null) { bindingModel
-		 * .addToBindingVariables(new BindingVariable(subComponent.getName(),
-		 * subComponent.getDynamicAccessType())); } }
-		 * 
-		 * Class myControllerClass = getControllerClass(); if (myControllerClass
-		 * == null) { myControllerClass = FIBController.class; }
-		 * 
-		 * bindingModel.addToBindingVariables(new BindingVariable("controller",
-		 * myControllerClass));
-		 * 
-		 * it = subComponentIterator(); while (it.hasNext()) { FIBComponent
-		 * subComponent = it.next();
-		 * subComponent.notifiedBindingModelRecreated(); }
-		 * 
-		 * } // logger.info("Created binding model at root component level:\n"+
-		 * _bindingModel); }
-		 */
-
-		/*
-		 * @Override
-		 * 
-		 * @Deprecated public void notifiedBindingModelRecreated() { }
-		 */
-
 		@Deprecated
 		protected boolean deserializationPerformed = true;
 
@@ -1263,27 +1101,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			}
 		}
 
-		/*
-		 * private void searchLoopInDependanciesWith(FIBComponent aComponent,
-		 * Vector<FIBComponent> dependancies) throws DependancyLoopException {
-		 * for (FIBComponent c : aComponent.mayDepends) { if (c == this) { throw
-		 * new DependencyLoopException(dependencies); } Vector<FIBComponent>
-		 * newVector = new Vector<FIBComponent>();
-		 * newVector.addAll(dependencies); newVector.add(c);
-		 * searchLoopInDependenciesWith(c, newVector); } }
-		 */
-
-		/*
-		 * protected static class DependancyLoopException extends Exception {
-		 * private final Vector<FIBComponent> dependancies;
-		 * 
-		 * public DependencyLoopException(Vector<FIBComponent> dependancies) {
-		 * this.dependencies = dependancies; }
-		 * 
-		 * @Override public String getMessage() { return
-		 * "DependencyLoopException: " + dependencies; } }
-		 */
-
 		@Override
 		public Integer getIndex() {
 			if (index == null) {
@@ -1305,27 +1122,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				}
 			}
 		}
-
-		/*
-		 * @Override public DataBinding<?> getData() { if (data == null) { data
-		 * = new DataBinding<Object>(this, Object.class,
-		 * DataBinding.BindingDefinitionType.GET) {
-		 * 
-		 * @Override public Type getDeclaredType() { return getDataType(); } };
-		 * data.setBindingName("data"); } return data; }
-		 * 
-		 * @Override public void setData(DataBinding<?> data) { if (data !=
-		 * null) { this.data = new DataBinding<Object>(data.toString(), this,
-		 * data.getDeclaredType(), data.getBindingDefinitionType()) {
-		 * 
-		 * @Override public Type getDeclaredType() { return getDataType(); } };
-		 * 
-		 * this.data.setBindingName("data");
-		 * 
-		 * updateDynamicAccessBindingVariable();
-		 * 
-		 * } else { this.data = null; } }
-		 */
 
 		@Override
 		public DataBinding<Boolean> getVisible() {
@@ -1391,12 +1187,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				hasChanged(notification);
 			}
 		}
-
-		/*
-		 * public Type getDefaultDataClass() { return Object.class;
-		 * 
-		 * }
-		 */
 
 		@Override
 		public final Type getDynamicAccessType() {
@@ -1968,18 +1758,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				if (c2 instanceof FIBContainer) {
 					addAllSubComponents((FIBContainer) c2, returned);
 				}
-				/*
-				 * else if (c2 instanceof FIBReferencedComponent){ FIBComponent
-				 * referenced =((FIBReferencedComponent) c2).getComponent();
-				 * 
-				 * // TEST FIBReferencedComponent ref =
-				 * ((FIBReferencedComponent) c2);
-				 * 
-				 * 
-				 * if (referenced instanceof FIBContainer){
-				 * returned.add((FIBContainer) referenced);
-				 * addAllSubComponents((FIBContainer) referenced, returned); } }
-				 */
 			}
 		}
 
