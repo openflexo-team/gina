@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.view.container.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -117,7 +118,7 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 		// We perform here a first pass to set constraints for each sub
 		// component view
 
-		for (FIBView<?, C2> subComponentView : getContainerView().getSubViews()) {
+		for (FIBView<?, C2> subComponentView : new ArrayList<>(getContainerView().getSubViews())) {
 			registerComponentWithConstraints(subComponentView, (CC) subComponentView.getComponent().getConstraints());
 		}
 		for (FIBComponent c : getContainerView().getComponent().getSubComponents()) {
