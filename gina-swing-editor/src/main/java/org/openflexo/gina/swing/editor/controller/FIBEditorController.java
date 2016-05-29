@@ -273,7 +273,7 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 
 	public void setSelectedObject(FIBComponent aComponent) {
 		if (aComponent != selectedObject) {
-			System.out.println("setSelectedObject from " + selectedObject + " to " + aComponent);
+			//System.out.println("setSelectedObject from " + selectedObject + " to " + aComponent);
 			FIBComponent oldValue = selectedObject;
 			SelectedObjectChange change = new SelectedObjectChange(oldValue, aComponent);
 			selectedObject = aComponent;
@@ -283,22 +283,6 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 			getPropertyChangeSupport().firePropertyChange("selectedObject", oldValue, selectedObject);
 		}
 
-		// System.out.println("set selected: "+selectedObject);
-
-		/*
-		 * if (selectedObject != null) {
-		 * fibPanel.getController().viewForComponent
-		 * (selectedObject).getJComponent().setBorder(oldBorder); }
-		 * 
-		 * if (aComponent != null) { selectedObject = aComponent; oldBorder =
-		 * fibPanel
-		 * .getController().viewForComponent(aComponent).getJComponent().
-		 * getBorder();
-		 * fibPanel.getController().viewForComponent(aComponent).getJComponent
-		 * ().setBorder(BorderFactory.createLineBorder(Color.BLUE));
-		 * editor.getInspector().inspectObject(aComponent); } else {
-		 * editor.getInspector().inspectObject(null); }
-		 */
 	}
 
 	public void notifyFocusedAndSelectedObject() {
