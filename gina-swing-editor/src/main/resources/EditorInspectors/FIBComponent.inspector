@@ -67,11 +67,11 @@
 				constraints="twocols(expandHorizontally=true;location=right;insetsTop=0;insetsRight=10)"
 				visible="((data.parent != null) &amp; (data.parent.layout = &quot;flow&quot;))"
 				opaque="false" name="FlowConstraints">
-				<Label label="index" constraints="twocols(location=left)"
+				<!--  <Label label="index" constraints="twocols(location=left)"
 					localize="true" />
 				<Number numberType="IntegerType" data="data.index"
 					constraints="twocols(location=right)" name="flowConstraintsIndex"
-					localize="true" />
+					localize="true" /> -->
 			</Panel>
 			<Panel index="2" layout="twocols" border="rounded3d" darkLevel="1" borderTitle="border_layout_constraints" titleFont="SansSerif,0,10"
 				data="($org.openflexo.gina.model.container.layout.BorderLayoutConstraints)data.constraints"
