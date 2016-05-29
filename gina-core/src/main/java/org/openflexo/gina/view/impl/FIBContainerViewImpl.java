@@ -289,6 +289,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	 * getDynamicModel().setData(getValue()); notifyDynamicModelChanged(); } } }
 	 */
 
+	@Deprecated
 	@Override
 	protected boolean checkValidDataPath() {
 		if (getParentView() instanceof FIBViewImpl && !((FIBViewImpl) getParentView()).checkValidDataPath()) {

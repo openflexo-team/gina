@@ -540,6 +540,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	 * return true; }
 	 */
 
+	@Deprecated
 	protected abstract boolean checkValidDataPath();
 
 	@Override
