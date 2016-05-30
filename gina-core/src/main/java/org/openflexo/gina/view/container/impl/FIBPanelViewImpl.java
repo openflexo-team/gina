@@ -60,7 +60,7 @@ import org.openflexo.gina.view.impl.FIBContainerViewImpl;
  * 
  * @author sylvain
  */
-public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPanel, C, C2> implements FIBPanelView<C, C2> {
+public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPanel, C, C2>implements FIBPanelView<C, C2> {
 
 	private static final Logger logger = Logger.getLogger(FIBPanelViewImpl.class.getPackage().getName());
 
@@ -113,7 +113,11 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 
 	@Override
 	protected void addSubComponentsAndDoLayout() {
-		getLayoutManager().doLayout();
+		try {
+			getLayoutManager().doLayout();
+		} catch (ClassCastException e) {
+			logger.warning("Unexpected ClassCastException during ");
+		}
 	}
 
 	public FIBLayoutManager<C, C2, ?> getLayoutManager() {
