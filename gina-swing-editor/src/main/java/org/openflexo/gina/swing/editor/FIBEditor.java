@@ -140,7 +140,9 @@ public class FIBEditor {
 		this.progress = progress;
 
 		resourceLocator = new FileSystemResourceLocatorImpl();
-		resourceLocator.appendToDirectories(JFIBPreferences.getLastDirectory().getAbsolutePath());
+		if (JFIBPreferences.getLastDirectory() != null) {
+			resourceLocator.appendToDirectories(JFIBPreferences.getLastDirectory().getAbsolutePath());
+		}
 		resourceLocator.appendToDirectories(System.getProperty("user.home"));
 		ResourceLocator.appendDelegate(resourceLocator);
 
