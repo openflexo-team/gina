@@ -95,28 +95,60 @@ public class JFIBEditor extends JFrame implements InteractiveFIBEditor {
 	private JFIBInspectorController inspector;
 	private MainPanel mainPanel;
 
-	@Override
-	public void openResource(Resource fibResource, Object dataObject) {
-		if (fibLibrary == null) {
-			return;
-		}
-		if (!isVisible()) {
-			setVisible(true);
-		}
-		editor.openFIBComponent(fibResource, dataObject, this);
+	private FIBEditor getFIBEditor() {
+		if (editor == null) {
+			editor = new FIBEditor(fibLibrary) {
+				@Override
+				public boolean activate(FIBEditorController editorController) {
+					if (super.activate(editorController)) {
+						centerPanel.add(editorController.getEditorBrowser(), LayoutPosition.BOTTOM_LEFT.name());
+						centerPanel.revalidate();
+						centerPanel.repaint();
+						return true;
+					}
+					return false;
+				}
 
-		// editor.loadFIB(fibResource, dataObject, this);
-		toFront();
+				@Override
+				public boolean disactivate(FIBEditorController editorController) {
+					if (super.disactivate(editorController)) {
+						centerPanel.remove(editorController.getEditorBrowser());
+						centerPanel.revalidate();
+						centerPanel.repaint();
+						return true;
+					}
+					return false;
+				}
+			};
 
-		Resource sourceResource = ResourceLocator.locateSourceCodeResource(fibResource);
-		if (sourceResource != null) {
-			System.out.println("On selectionne " + sourceResource);
-			libraryBrowser.getController().setSelectedComponentResource(sourceResource);
+			editor.makeMenuBar(this);
+
+			libraryBrowser = new FIBLibraryBrowser(editor.getFIBLibrary()) {
+				@Override
+				public void doubleClickOnComponentResource(Resource selectedComponentResource) {
+					System.out.println("doubleClickOnComponentResource " + selectedComponentResource);
+					if (selectedComponentResource != null) {
+						editor.openFIBComponent(selectedComponentResource, null, JFIBEditor.this);
+					}
+				}
+			};
+			palette = editor.makePalette();
+			// FIBInspectors inspectors = editor.makeInspectors();
+
+			inspector = editor.makeInspector(this);
+			inspector.setVisible(false);
+
+			mainPanel = editor.makeMainPanel();
+
+			centerPanel.add(libraryBrowser, LayoutPosition.TOP_LEFT.name());
+			centerPanel.add(mainPanel, LayoutPosition.CENTER.name());
+			centerPanel.add(palette, LayoutPosition.TOP_RIGHT.name());
+			// centerPanel.add(inspectors.getPanelGroup(), LayoutPosition.BOTTOM_RIGHT.name());
+
+			centerPanel.revalidate();
 		}
-		else {
-			System.out.println("On selectionne 2 " + fibResource);
-			libraryBrowser.getController().setSelectedComponentResource(fibResource);
-		}
+
+		return editor;
 	}
 
 	public JFIBEditor(FIBLibrary fibLibrary) {
@@ -126,30 +158,6 @@ public class JFIBEditor extends JFrame implements InteractiveFIBEditor {
 		}
 
 		this.fibLibrary = fibLibrary;
-		editor = new FIBEditor(fibLibrary) {
-			@Override
-			public boolean activate(FIBEditorController editorController) {
-				if (super.activate(editorController)) {
-					centerPanel.add(editorController.getEditorBrowser(), LayoutPosition.BOTTOM_LEFT.name());
-					centerPanel.revalidate();
-					centerPanel.repaint();
-					return true;
-				}
-				return false;
-			}
-
-			@Override
-			public boolean disactivate(FIBEditorController editorController) {
-				if (super.disactivate(editorController)) {
-					centerPanel.remove(editorController.getEditorBrowser());
-					centerPanel.revalidate();
-					centerPanel.repaint();
-					return true;
-				}
-				return false;
-			}
-		};
-
 		setBounds(JFIBPreferences.getFrameBounds());
 
 		new ComponentBoundSaver(this) {
@@ -170,8 +178,6 @@ public class JFIBEditor extends JFrame implements InteractiveFIBEditor {
 				// editor.quit();
 			}
 		});
-
-		editor.makeMenuBar(this);
 
 		Split defaultLayout = getDefaultLayout();
 
@@ -212,28 +218,6 @@ public class JFIBEditor extends JFrame implements InteractiveFIBEditor {
 
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(centerPanel, BorderLayout.CENTER);
-
-		libraryBrowser = new FIBLibraryBrowser(editor.getFIBLibrary()) {
-			@Override
-			public void doubleClickOnComponentResource(Resource selectedComponentResource) {
-				System.out.println("doubleClickOnComponentResource " + selectedComponentResource);
-				if (selectedComponentResource != null) {
-					editor.openFIBComponent(selectedComponentResource, null, JFIBEditor.this);
-				}
-			}
-		};
-		palette = editor.makePalette();
-		// FIBInspectors inspectors = editor.makeInspectors();
-
-		inspector = editor.makeInspector(this);
-		inspector.setVisible(false);
-
-		mainPanel = editor.makeMainPanel();
-
-		centerPanel.add(libraryBrowser, LayoutPosition.TOP_LEFT.name());
-		centerPanel.add(mainPanel, LayoutPosition.CENTER.name());
-		centerPanel.add(palette, LayoutPosition.TOP_RIGHT.name());
-		// centerPanel.add(inspectors.getPanelGroup(), LayoutPosition.BOTTOM_RIGHT.name());
 
 		validate();
 
@@ -295,6 +279,30 @@ public class JFIBEditor extends JFrame implements InteractiveFIBEditor {
 		l3.setWeight(0.2);
 		split.setChildren(l1, MSL_FACTORY.makeDivider(), l2, MSL_FACTORY.makeDivider(), l3);
 		return split;
+	}
+
+	@Override
+	public void openResource(Resource fibResource, Object dataObject) {
+		if (fibLibrary == null) {
+			return;
+		}
+		if (!isVisible()) {
+			setVisible(true);
+		}
+		getFIBEditor().openFIBComponent(fibResource, dataObject, this);
+
+		// editor.loadFIB(fibResource, dataObject, this);
+		toFront();
+
+		Resource sourceResource = ResourceLocator.locateSourceCodeResource(fibResource);
+		if (sourceResource != null) {
+			System.out.println("On selectionne " + sourceResource);
+			libraryBrowser.getController().setSelectedComponentResource(sourceResource);
+		}
+		else {
+			System.out.println("On selectionne 2 " + fibResource);
+			libraryBrowser.getController().setSelectedComponentResource(fibResource);
+		}
 	}
 
 }
