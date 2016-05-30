@@ -351,8 +351,7 @@ public interface FIBPanel extends FIBContainer {
 		public void setLayout(Layout layout) {
 
 			FIBPropertyNotification<Layout> notification = requireChange(LAYOUT_KEY, layout);
-			if (notification != null) {
-
+			if (notification != null && layout != null) {
 				this.layout = layout;
 				switch (layout) {
 					case none:
@@ -408,9 +407,9 @@ public interface FIBPanel extends FIBContainer {
 
 				// Here we MUST mutate layout constraints for all children, otherwise ClassCastException will arise
 				for (FIBComponent child : getSubComponents()) {
-					//System.out.println("child with constraints " + child.getConstraints());
+					// System.out.println("child with constraints " + child.getConstraints());
 					child.normalizeConstraintsWhenRequired();
-					//System.out.println("child with constraints " + child.getConstraints());
+					// System.out.println("child with constraints " + child.getConstraints());
 				}
 
 				hasChanged(notification);
@@ -425,7 +424,7 @@ public interface FIBPanel extends FIBContainer {
 		@Override
 		public void setBorder(Border border) {
 			FIBPropertyNotification<Border> notification = requireChange(BORDER_KEY, border);
-			if (notification != null) {
+			if (notification != null && border != null) {
 				this.border = border;
 				switch (border) {
 					case line:
