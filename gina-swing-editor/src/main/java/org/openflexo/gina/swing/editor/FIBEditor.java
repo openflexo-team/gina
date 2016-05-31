@@ -399,14 +399,14 @@ public class FIBEditor {
 	 * @param frame
 	 * @return
 	 */
-	public FIBEditorController openFIBComponent(Resource fibResource, Object dataObject, JFrame frame) {
+	public FIBEditorController openFIBComponent(Resource fibResource, FIBComponent fibComponent, Object dataObject, JFrame frame) {
 
 		if (fibResource instanceof FileResourceImpl) {
 			File fibFile = ((FileResourceImpl) fibResource).getFile();
 			JFIBPreferences.setLastFile(fibFile);
 		}
 
-		EditedFIBComponent editedFIB = retrieveEditedFIBComponent(fibResource);
+		EditedFIBComponent editedFIB = retrieveEditedFIBComponent(fibResource, fibComponent);
 
 		return openEditedComponent(editedFIB, dataObject, frame);
 	}

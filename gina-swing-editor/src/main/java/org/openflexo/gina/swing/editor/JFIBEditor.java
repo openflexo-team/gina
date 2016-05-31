@@ -54,6 +54,7 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 import org.openflexo.gina.FIBLibrary;
+import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.palette.FIBEditorPalettes;
 import org.openflexo.gina.swing.editor.widget.FIBLibraryBrowser;
@@ -128,7 +129,7 @@ public class JFIBEditor extends JFrame implements InteractiveFIBEditor {
 				public void doubleClickOnComponentResource(Resource selectedComponentResource) {
 					System.out.println("doubleClickOnComponentResource " + selectedComponentResource);
 					if (selectedComponentResource != null) {
-						editor.openFIBComponent(selectedComponentResource, null, JFIBEditor.this);
+						editor.openFIBComponent(selectedComponentResource, null, null, JFIBEditor.this);
 					}
 				}
 			};
@@ -282,14 +283,14 @@ public class JFIBEditor extends JFrame implements InteractiveFIBEditor {
 	}
 
 	@Override
-	public void openResource(Resource fibResource, Object dataObject) {
+	public void openResource(Resource fibResource, FIBComponent component, Object dataObject) {
 		if (fibLibrary == null) {
 			return;
 		}
 		if (!isVisible()) {
 			setVisible(true);
 		}
-		getFIBEditor().openFIBComponent(fibResource, dataObject, this);
+		getFIBEditor().openFIBComponent(fibResource, component, dataObject, this);
 
 		// editor.loadFIB(fibResource, dataObject, this);
 		toFront();

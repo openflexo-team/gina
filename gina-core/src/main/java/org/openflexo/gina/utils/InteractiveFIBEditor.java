@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.utils;
 
+import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.rm.Resource;
 
 /**
@@ -49,5 +50,6 @@ import org.openflexo.rm.Resource;
  */
 public interface InteractiveFIBEditor {
 
-	public void openResource(Resource fibResource, Object dataObject);
+	public void openResource(Resource fibResource, FIBComponent component, Object dataObject);
+
 }

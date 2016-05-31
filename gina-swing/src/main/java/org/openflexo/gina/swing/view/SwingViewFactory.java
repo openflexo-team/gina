@@ -533,7 +533,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 				}
 			}
 
-			getInteractiveFIBEditor().openResource(component.getResource(), controller.getDataObject());
+			getInteractiveFIBEditor().openResource(component.getResource(), component.getComponent(), controller.getDataObject());
 
 		}
 
