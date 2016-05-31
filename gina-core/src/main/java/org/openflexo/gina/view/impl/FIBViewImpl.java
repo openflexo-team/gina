@@ -176,6 +176,14 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	 */
 	protected void componentBecomesVisible() {
 
+		if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("GridBagConstraints")) {
+			System.out.println("************ Component " + getComponent() + " becomes VISIBLE !!!!!!");
+		}
+
+		if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("TwoColsConstraints")) {
+			System.out.println("************ Component " + getComponent() + " becomes VISIBLE !!!!!!");
+		}
+
 		// System.out.println("************ Component " + getComponent() + " becomes VISIBLE !!!!!!");
 
 		// Restart listen component variables
@@ -196,6 +204,13 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	 * Called when the component view explicitely change its visibility state from VISIBLE to INVISIBLE
 	 */
 	protected void componentBecomesInvisible() {
+
+		if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("GridBagConstraints")) {
+			System.out.println("************ Component " + getComponent() + " becomes INVISIBLE !!!!!!");
+		}
+		if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("TwoColsConstraints")) {
+			System.out.println("************ Component " + getComponent() + " becomes INVISIBLE !!!!!!");
+		}
 
 		// System.out.println("************ Component " + getComponent() + " becomes INVISIBLE !!!!!!");
 
@@ -233,10 +248,34 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			System.out.println("On se met a ecouter la variable " + variable.getName() + " qui vaut " + variable.getValue());
 		}*/
 
+		if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("GridBagConstraints")) {
+			System.out.println("On se met a ecouter la variable " + variable.getName() + " qui vaut " + variable.getValue() + " valid="
+					+ variable.getValue().isValid());
+			System.out.println("reason=" + variable.getValue().invalidBindingReason());
+		}
+
+		if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("TwoColsConstraints")) {
+			System.out.println("On se met a ecouter la variable " + variable.getName() + " qui vaut " + variable.getValue() + " valid="
+					+ variable.getValue().isValid());
+			System.out.println("reason=" + variable.getValue().invalidBindingReason());
+		}
+
 		if (variable.getValue() != null && variable.getValue().isValid()) {
 			dataBindingValueChangeListener = new BindingValueChangeListener<T>(variable.getValue(), getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
+					if (getComponent() != null && getComponent().getName() != null
+							&& getComponent().getName().equals("GridBagConstraints")) {
+						System.out.println("************ On detecte un changement de la valeur de " + variable);
+						System.out.println(" bindingValueChanged() detected for data=" + variable.getValue() + " with newValue=" + newValue
+								+ " source=" + source);
+					}
+					if (getComponent() != null && getComponent().getName() != null
+							&& getComponent().getName().equals("TwoColsConstraints")) {
+						System.out.println("************ On detecte un changement de la valeur de " + variable);
+						System.out.println(" bindingValueChanged() detected for data=" + variable.getValue() + " with newValue=" + newValue
+								+ " source=" + source);
+					}
 					// System.out.println(" bindingValueChanged() detected for data=" + variable.getValue() + " with newValue=" + newValue
 					// + " source=" + source);
 					setVariableValue(variable, newValue);
@@ -248,6 +287,11 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			try {
 				T newValue = variable.getValue().getBindingValue(getBindingEvaluationContext());
 				setVariableValue(variable, newValue);
+
+				if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("GridBagConstraints")) {
+					System.out.println("************ La variable " + variable + " vaut maintenant " + newValue);
+				}
+
 			} catch (TypeMismatchException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
