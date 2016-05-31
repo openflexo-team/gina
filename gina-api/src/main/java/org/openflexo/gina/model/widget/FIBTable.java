@@ -429,7 +429,6 @@ public interface FIBTable extends FIBWidget {
 
 			tableBindingModel.addToBindingVariables(iteratorVariable);
 			// System.out.println("dataClass="+getDataClass()+" dataClassName="+dataClassName);
-
 		}
 
 		@Override
@@ -476,6 +475,22 @@ public interface FIBTable extends FIBWidget {
 				selected.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET_SET);
 			}
 			this.selected = selected;
+		}
+
+		@Override
+		public void revalidateBindings() {
+			super.revalidateBindings();
+			if (getData() != null && getData().isValid()) {
+				if (tableBindingModel != null) {
+					tableBindingModel.getBindingVariableAt(0).setType(getInferedIteratorType());
+				}
+			}
+			for (FIBTableColumn column : getColumns()) {
+				column.revalidateBindings();
+			}
+			if (selected != null) {
+				selected.revalidate();
+			}
 		}
 
 		@Override
@@ -575,19 +590,11 @@ public interface FIBTable extends FIBWidget {
 		public void notifiedBindingChanged(DataBinding<?> binding) {
 			logger.fine("notifyBindingChanged with " + binding);
 			super.notifiedBindingChanged(binding);
-			if (binding == getData()) {
-				if (getData() != null) {
-					Type accessedType = getData().getAnalyzedType();
-					if (accessedType instanceof ParameterizedType
-							&& ((ParameterizedType) accessedType).getActualTypeArguments().length > 0) {
-						Class newIteratorClass = TypeUtils.getBaseClass(((ParameterizedType) accessedType).getActualTypeArguments()[0]);
-						if (getIteratorClass() == null || !TypeUtils.isClassAncestorOf(newIteratorClass, getIteratorClass())) {
-							setIteratorClass(newIteratorClass);
-						}
-					}
+			if (binding == getData() && getData() != null) {
+				if (tableBindingModel != null) {
+					tableBindingModel.getBindingVariableAt(0).setType(getInferedIteratorType());
 				}
 			}
-
 		}
 
 		/*

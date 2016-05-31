@@ -122,6 +122,8 @@ public interface FIBVariable<T> extends FIBModelObject {
 
 	public BindingVariable appendToBindingModel(BindingModel bindingModel);
 
+	public void revalidateBindings();
+
 	public static abstract class FIBVariableImpl<T> extends FIBModelObjectImpl implements FIBVariable<T> {
 
 		private static final Logger LOGGER = Logger.getLogger(FIBVariable.class.getPackage().getName());
@@ -250,6 +252,13 @@ public interface FIBVariable<T> extends FIBModelObject {
 			performSuperSetter(FIBVariable.OWNER_KEY, ownerComponent);
 			if (getValue() != null) {
 				getValue().setOwner(ownerComponent);
+			}
+		}
+
+		@Override
+		public void revalidateBindings() {
+			if (value != null) {
+				value.revalidate();
 			}
 		}
 

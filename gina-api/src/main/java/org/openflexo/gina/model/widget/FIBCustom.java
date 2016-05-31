@@ -333,6 +333,14 @@ public interface FIBCustom extends FIBWidget {
 		}
 
 		@Override
+		public void revalidateBindings() {
+			super.revalidateBindings();
+			for (FIBCustomAssignment assign : getAssignments()) {
+				assign.revalidateBindings();
+			}
+		}
+
+		@Override
 		public void finalizeDeserialization() {
 			super.finalizeDeserialization();
 			for (FIBCustomAssignment assign : getAssignments()) {
@@ -470,6 +478,8 @@ public interface FIBCustom extends FIBWidget {
 		@DeserializationFinalizer
 		public void finalizeDeserialization();
 
+		public void revalidateBindings();
+
 		public static abstract class FIBCustomAssignmentImpl extends FIBModelObjectImpl implements FIBCustomAssignment {
 			@Deprecated
 			public static BindingDefinition VARIABLE = new BindingDefinition("variable", Object.class,
@@ -481,16 +491,6 @@ public interface FIBCustom extends FIBWidget {
 			private DataBinding<?> value;
 
 			private final boolean mandatory = true;
-
-			public FIBCustomAssignmentImpl() {
-			}
-
-			/*
-			 * public FIBCustomAssignmentImpl(FIBCustomColumn customColumn,
-			 * DataBinding<Object> variable, DataBinding<Object> value, boolean
-			 * mandatory) { this(); this.mandatory = mandatory;
-			 * setVariable(variable); setValue(value); }
-			 */
 
 			@Override
 			public boolean isMandatory() {
@@ -560,9 +560,19 @@ public interface FIBCustom extends FIBWidget {
 					value.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 					value.setBindingName("value");
 					this.value = value;
-				}
-				else {
+				} else {
 					getValue();
+				}
+			}
+
+			@Override
+			public void revalidateBindings() {
+				if (variable != null) {
+					variable.revalidate();
+				}
+				if (value != null) {
+					value.setOwner(getOwner());
+					value.revalidate();
 				}
 			}
 

@@ -176,8 +176,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 		public File getComponentActualFile() {
 			if (componentFile instanceof FileResourceImpl) {
 				return ((FileResourceImpl) componentFile).getFile();
-			}
-			else
+			} else
 				return null;
 		}
 
@@ -276,31 +275,13 @@ public interface FIBReferencedComponent extends FIBWidget {
 			return null;
 		}
 
-		/*@Override
-		public Vector<FIBReferenceAssignment> getAssignments() {
-			return assignments;
-		}
-		
-		public void setAssignments(Vector<FIBReferenceAssignment> assignments) {
-			this.assignments = assignments;
-		}
-		
 		@Override
-		public void addToAssignments(FIBReferenceAssignment a) {
-			if (getAssignment(a.getVariable().toString()) != null) {
-				removeFromAssignments(getAssignment(a.getVariable().toString()));
+		public void revalidateBindings() {
+			super.revalidateBindings();
+			for (FIBReferenceAssignment assign : getAssignments()) {
+				assign.revalidateBindings();
 			}
-			// a.setOwner(this);
-			assignments.add(a);
-			getPropertyChangeSupport().firePropertyChange(ASSIGNMENTS_KEY, null, assignments);
 		}
-		
-		@Override
-		public void removeFromAssignments(FIBReferenceAssignment a) {
-			// a.setOwner(null);
-			assignments.remove(a);
-			getPropertyChangeSupport().firePropertyChange(ASSIGNMENTS_KEY, null, assignments);
-		}*/
 
 		@Override
 		public void finalizeDeserialization() {
@@ -390,6 +371,8 @@ public interface FIBReferencedComponent extends FIBWidget {
 		@DeserializationFinalizer
 		public void finalizeDeserialization();
 
+		public void revalidateBindings();
+
 		public static abstract class FIBReferenceAssignmentImpl extends FIBModelObjectImpl implements FIBReferenceAssignment {
 
 			@Deprecated
@@ -466,9 +449,19 @@ public interface FIBReferencedComponent extends FIBWidget {
 					value.setDeclaredType(Object.class);
 					value.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 					this.value = value;
-				}
-				else {
+				} else {
 					getValue();
+				}
+			}
+
+			@Override
+			public void revalidateBindings() {
+				if (variable != null) {
+					variable.revalidate();
+				}
+				if (value != null) {
+					value.setOwner(getOwner());
+					value.revalidate();
 				}
 			}
 

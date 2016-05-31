@@ -460,10 +460,55 @@ public abstract interface FIBWidget extends FIBComponent {
 		}
 
 		@Override
+		public void revalidateBindings() {
+			super.revalidateBindings();
+			if (data != null) {
+				data.revalidate();
+			}
+			if (enable != null) {
+				enable.revalidate();
+			}
+			if (format != null) {
+				format.revalidate();
+			}
+			if (icon != null) {
+				icon.revalidate();
+			}
+			if (tooltip != null) {
+				tooltip.revalidate();
+			}
+			if (clickAction != null) {
+				clickAction.revalidate();
+			}
+			if (doubleClickAction != null) {
+				doubleClickAction.revalidate();
+			}
+			if (rightClickAction != null) {
+				rightClickAction.revalidate();
+			}
+			if (enterPressedAction != null) {
+				enterPressedAction.revalidate();
+			}
+			if (valueChangedAction != null) {
+				valueChangedAction.revalidate();
+			}
+			if (valueTransform != null) {
+				valueTransform.revalidate();
+			}
+			if (valueValidator != null) {
+				valueValidator.revalidate();
+			}
+
+		}
+
+		@Override
 		public void finalizeDeserialization() {
 
 			super.finalizeDeserialization();
 			getEventListener().createEventListenerBindingModel();
+			if (data != null) {
+				data.decode();
+			}
 			if (enable != null) {
 				enable.decode();
 			}
@@ -612,8 +657,7 @@ public abstract interface FIBWidget extends FIBComponent {
 					}
 				};
 				this.valueTransform.setBindingName("valueTransform");
-			}
-			else {
+			} else {
 				this.valueTransform = null;
 			}
 		}
@@ -818,8 +862,7 @@ public abstract interface FIBWidget extends FIBComponent {
 			public void notifiedBindingChanged(DataBinding<?> binding) {
 				if (binding == getValueTransform()) {
 					FIBWidgetImpl.this.notifiedBindingChanged(binding);
-				}
-				else if (binding == getValueValidator()) {
+				} else if (binding == getValueValidator()) {
 					FIBWidgetImpl.this.notifiedBindingChanged(binding);
 				}
 			}

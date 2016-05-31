@@ -376,6 +376,20 @@ public interface FIBBrowser extends FIBWidget {
 		}
 
 		@Override
+		public void revalidateBindings() {
+			super.revalidateBindings();
+			for (FIBBrowserElement element : getElements()) {
+				element.revalidateBindings();
+			}
+			if (selected != null) {
+				selected.revalidate();
+			}
+			if (selection != null) {
+				selection.revalidate();
+			}
+		}
+
+		@Override
 		public void finalizeDeserialization() {
 			logger.fine("finalizeDeserialization() for FIBTable " + getName());
 			super.finalizeDeserialization();

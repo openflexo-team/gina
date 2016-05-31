@@ -217,6 +217,8 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 	@Setter(VALUE_CHANGED_ACTION_KEY)
 	public void setValueChangedAction(DataBinding<?> valueChangedAction);
 
+	public void revalidateBindings();
+
 	public void finalizeTableDeserialization();
 
 	public Font retrieveValidFont();
@@ -326,6 +328,16 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 				data.setCachingStrategy(CachingStrategy.NO_CACHING);
 			}
 			this.data = data;
+		}
+
+		@Override
+		public void revalidateBindings() {
+			if (data != null) {
+				data.revalidate();
+			}
+			if (tooltip != null) {
+				tooltip.revalidate();
+			}
 		}
 
 		@Override
@@ -444,8 +456,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		public void setHasSpecificFont(boolean aFlag) {
 			if (aFlag) {
 				setFont(retrieveValidFont());
-			}
-			else {
+			} else {
 				setFont(null);
 			}
 		}

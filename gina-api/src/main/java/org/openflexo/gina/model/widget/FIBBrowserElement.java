@@ -304,6 +304,8 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 	public void searchLocalized(LocalizationEntryRetriever retriever);
 
+	public void revalidateBindings();
+
 	public static abstract class FIBBrowserElementImpl extends FIBModelObjectImpl implements FIBBrowserElement {
 
 		private static final Logger logger = Logger.getLogger(FIBBrowserElement.class.getPackage().getName());
@@ -560,6 +562,31 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}
 
 		@Override
+		public void revalidateBindings() {
+			if (label != null) {
+				label.revalidate();
+			}
+			if (icon != null) {
+				icon.revalidate();
+			}
+			if (tooltip != null) {
+				tooltip.revalidate();
+			}
+			if (enabled != null) {
+				enabled.revalidate();
+			}
+			if (visible != null) {
+				visible.revalidate();
+			}
+			if (editableLabel != null) {
+				editableLabel.revalidate();
+			}
+			for (FIBBrowserElementChildren c : getChildren()) {
+				c.revalidateBindings();
+			}
+		}
+
+		@Override
 		public void finalizeBrowserDeserialization() {
 			logger.fine("finalizeBrowserDeserialization() for FIBBrowserElement " + getDataClass());
 			if (label != null) {
@@ -653,8 +680,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		public void setHasSpecificFont(boolean aFlag) {
 			if (aFlag) {
 				setFont(retrieveValidFont());
-			}
-			else {
+			} else {
 				setFont(null);
 			}
 		}
@@ -1026,6 +1052,8 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 		public Bindable getChildBindable();
 
+		public void revalidateBindings();
+
 		public static abstract class FIBBrowserElementChildrenImpl extends FIBModelObjectImpl implements FIBBrowserElementChildren {
 
 			private static final Logger logger = Logger.getLogger(FIBBrowserElementChildren.class.getPackage().getName());
@@ -1188,6 +1216,18 @@ public interface FIBBrowserElement extends FIBModelObject {
 			}
 
 			@Override
+			public void revalidateBindings() {
+				if (data != null) {
+					data.setOwner(getOwner().getIterator());
+					data.revalidate();
+				}
+				if (visible != null) {
+					visible.setOwner(getOwner().getIterator());
+					visible.revalidate();
+				}
+			}
+
+			@Override
 			public void finalizeBrowserDeserialization() {
 				logger.fine("finalizeBrowserDeserialization() for FIBBrowserElementChildren ");
 				if (data != null) {
@@ -1220,8 +1260,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 				}
 				if (isMultipleAccess()) {
 					return TypeUtils.getBaseClass(((ParameterizedType) accessedType).getActualTypeArguments()[0]);
-				}
-				else {
+				} else {
 					return TypeUtils.getBaseClass(getAccessedType());
 				}
 			}

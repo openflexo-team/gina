@@ -260,6 +260,14 @@ public interface FIBList extends FIBMultipleValues {
 		}
 
 		@Override
+		public void revalidateBindings() {
+			super.revalidateBindings();
+			if (selected != null) {
+				selected.revalidate();
+			}
+		}
+
+		@Override
 		public void finalizeDeserialization() {
 			super.finalizeDeserialization();
 			if (selected != null) {
