@@ -186,8 +186,7 @@ public interface FIBVariable<T> extends FIBModelObject {
 				};
 				this.value.setBindingName(getName());
 				// updateDynamicAccessBindingVariable();
-			}
-			else {
+			} else {
 				this.value = null;
 			}
 
@@ -244,6 +243,14 @@ public interface FIBVariable<T> extends FIBModelObject {
 		@Override
 		public void setTypeClass(Class<T> typeClass) {
 			setType(typeClass);
+		}
+
+		@Override
+		public void setOwner(FIBComponent ownerComponent) {
+			performSuperSetter(FIBVariable.OWNER_KEY, ownerComponent);
+			if (getValue() != null) {
+				getValue().setOwner(ownerComponent);
+			}
 		}
 
 	}
