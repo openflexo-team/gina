@@ -242,6 +242,9 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 	}
 
 	private void performAssignments() {
+		if (isDeleted()) {
+			return;
+		}
 		for (FIBCustomAssignment assign : getWidget().getAssignments()) {
 			DataBinding<?> variableDB = assign.getVariable();
 			DataBinding<?> valueDB = assign.getValue();
