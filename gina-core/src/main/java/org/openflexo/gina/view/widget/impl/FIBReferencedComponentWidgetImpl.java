@@ -215,7 +215,8 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 				// The component file is statically defined, use it
 				return widg.getComponentFile();
 			}
-		} else {
+		}
+		else {
 			logger.warning("FIBReferencedComponent with null widget, please investigate");
 		}
 
@@ -261,7 +262,8 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 		if (componentFile != null) {
 			if (getComponent().getFIBLibrary() != null) {
 				return getComponent().getFIBLibrary().retrieveFIBComponent(componentFile);
-			} else {
+			}
+			else {
 				logger.warning("Component has no FIBLibrary !");
 				Thread.dumpStack();
 			}
@@ -287,6 +289,28 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 	public abstract FIBView<?, C> getReferencedComponentView();
 
 	protected FIBController makeEmbeddedFIBController(FIBComponent component) {
+		// System.out.println("Building FIBController for component " + component);
+		if (getComponent().getControllerFactory() != null && getComponent().getControllerFactory().isSet()
+				&& getComponent().getControllerFactory().isValid()) {
+			// System.out.println("Using custom factory");
+			FIBController returned = null;
+			try {
+				returned = getComponent().getControllerFactory().getBindingValue(getBindingEvaluationContext());
+			} catch (TypeMismatchException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NullReferenceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			// System.out.println("factory " + getComponent().getControllerFactory() + " gives " + returned);
+			if (returned != null) {
+				return returned;
+			}
+		}
 		return FIBController.instanciateController(component, getController().getViewFactory(), getController().getLocalizer());
 	}
 
@@ -313,13 +337,15 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 				referencedComponentView = (FIBWidgetView) embeddedFIBController.getViewFactory().makeWidget((FIBWidget) loaded,
 						embeddedFIBController);
 				referencedComponentView.setEmbeddingComponent(this);
-			} else if (loaded instanceof FIBContainer) {
+			}
+			else if (loaded instanceof FIBContainer) {
 				referencedComponentView = (FIBContainerView) embeddedFIBController.getViewFactory().makeContainer((FIBContainer) loaded,
 						embeddedFIBController, true);
 				referencedComponentView.setEmbeddingComponent(this);
 			}
 
-		} else {
+		}
+		else {
 			if (!isComponentLoading) {
 				logger.warning("ReferencedComponent = null and I'm NOT loading anything... : " + this.getComponentFile());
 			}
@@ -397,7 +423,8 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 
 				getReferencedComponentView().update();
 
-			} else {
+			}
+			else {
 				logger.warning("Inconsistant data: " + getValue() + " is not a " + expectedDataType);
 			}
 

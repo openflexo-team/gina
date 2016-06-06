@@ -48,6 +48,7 @@ import java.util.logging.Logger;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingDefinition;
+import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.model.FIBPropertyNotification;
@@ -80,6 +81,8 @@ public interface FIBReferencedComponent extends FIBWidget {
 	public static final String DYNAMIC_COMPONENT_FILE_KEY = "dynamicComponentFile";
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String DYNAMIC_COMPONENT_KEY = "dynamicComponent";
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String CONTROLLER_FACTORY_KEY = "controllerFactory";
 	@PropertyIdentifier(type = Vector.class)
 	public static final String ASSIGNMENTS_KEY = "assignments";
 
@@ -109,6 +112,13 @@ public interface FIBReferencedComponent extends FIBWidget {
 	@Setter(DYNAMIC_COMPONENT_KEY)
 	public void setDynamicComponent(DataBinding<FIBComponent> dynamicComponent);
 
+	@Getter(value = CONTROLLER_FACTORY_KEY)
+	@XMLAttribute
+	public DataBinding<FIBController> getControllerFactory();
+
+	@Setter(CONTROLLER_FACTORY_KEY)
+	public void setControllerFactory(DataBinding<FIBController> controllerFactory);
+
 	@Getter(value = ASSIGNMENTS_KEY, cardinality = Cardinality.LIST, inverse = FIBReferenceAssignment.OWNER_KEY)
 	@XMLElement
 	@CloningStrategy(StrategyType.CLONE)
@@ -134,6 +144,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 		private Resource componentFile;
 		private DataBinding<Resource> dynamicComponentFile;
 		private DataBinding<FIBComponent> dynamicComponent;
+		private DataBinding<FIBController> controllerFactory;
 
 		// TODO: Should be moved to FIBReferencedComponent widget
 		// private FIBComponent referencedComponent;
@@ -176,7 +187,8 @@ public interface FIBReferencedComponent extends FIBWidget {
 		public File getComponentActualFile() {
 			if (componentFile instanceof FileResourceImpl) {
 				return ((FileResourceImpl) componentFile).getFile();
-			} else
+			}
+			else
 				return null;
 		}
 
@@ -247,6 +259,38 @@ public interface FIBReferencedComponent extends FIBWidget {
 				}
 
 				this.dynamicComponent = dynamicComponent;
+
+				// referencedComponent = null;
+				notify(notification);
+			}
+
+		}
+
+		@Override
+		public DataBinding<FIBController> getControllerFactory() {
+
+			if (controllerFactory == null) {
+				controllerFactory = new DataBinding<FIBController>(this, FIBController.class, DataBinding.BindingDefinitionType.GET);
+				controllerFactory.setBindingName("controllerFactory");
+			}
+			return controllerFactory;
+		}
+
+		@Override
+		public void setControllerFactory(DataBinding<FIBController> controllerFactory) {
+
+			FIBPropertyNotification<DataBinding<FIBController>> notification = requireChange(CONTROLLER_FACTORY_KEY, controllerFactory);
+
+			if (notification != null) {
+
+				if (controllerFactory != null) {
+					controllerFactory.setOwner(this);
+					controllerFactory.setDeclaredType(FIBController.class);
+					controllerFactory.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+					controllerFactory.setBindingName("controllerFactory");
+				}
+
+				this.controllerFactory = controllerFactory;
 
 				// referencedComponent = null;
 				notify(notification);
@@ -449,7 +493,8 @@ public interface FIBReferencedComponent extends FIBWidget {
 					value.setDeclaredType(Object.class);
 					value.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 					this.value = value;
-				} else {
+				}
+				else {
 					getValue();
 				}
 			}
