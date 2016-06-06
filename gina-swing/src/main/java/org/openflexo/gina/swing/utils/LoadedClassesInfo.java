@@ -83,7 +83,8 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		currentLoader = LoadedClassesInfo.class.getClassLoader();
 		if (appLoader != currentLoader) {
 			loaders = new ClassLoader[] { appLoader, currentLoader };
-		} else {
+		}
+		else {
 			loaders = new ClassLoader[] { appLoader };
 		}
 		// instance = new LoadedClassesInfo();
@@ -94,7 +95,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 	}
 
 	private static Hashtable<Package, PackageInfo> packages;
-	private static Vector<PackageInfo> packageList;
+	private static List<PackageInfo> packageList;
 	private static boolean needsReordering = true;
 	private static Hashtable<String, Vector<ClassInfo>> classesForName;
 	private static List<LoadedClassesInfo> instances;
@@ -167,7 +168,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 	public static List<PackageInfo> getPackages() {
 		if (needsReordering) {
-			packageList = new Vector<PackageInfo>();
+			packageList = new ArrayList<PackageInfo>();
 			for (Package p : packages.keySet()) {
 				packageList.add(packages.get(p));
 			}
@@ -216,7 +217,8 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 				LOGGER.fine("Store " + returned + " in package " + p.packageName);
 			}
 			return returned;
-		} else if (c.isMemberClass()) {
+		}
+		else if (c.isMemberClass()) {
 			// System.out.println("Member class: "+c+" of "+c.getDeclaringClass());
 			ClassInfo parentClass = registerClass(c.getEnclosingClass());
 			if (parentClass != null) {
@@ -224,7 +226,8 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 				return returned;
 			}
 			return null;
-		} else {
+		}
+		else {
 			// System.out.println("Ignored class: "+c);
 			return null;
 		}
@@ -493,7 +496,8 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 				String simpleName;
 				if (patternString.lastIndexOf(".") > -1) {
 					simpleName = patternString.substring(patternString.lastIndexOf(".") + 1);
-				} else {
+				}
+				else {
 					simpleName = patternString;
 				}
 				Vector<ClassInfo> exactMatches = new Vector<ClassInfo>();
