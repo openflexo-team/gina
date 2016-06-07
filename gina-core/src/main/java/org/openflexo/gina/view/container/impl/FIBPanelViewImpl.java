@@ -60,7 +60,7 @@ import org.openflexo.gina.view.impl.FIBContainerViewImpl;
  * 
  * @author sylvain
  */
-public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPanel, C, C2>implements FIBPanelView<C, C2> {
+public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPanel, C, C2> implements FIBPanelView<C, C2> {
 
 	private static final Logger logger = Logger.getLogger(FIBPanelViewImpl.class.getPackage().getName());
 
@@ -156,6 +156,10 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 	@Override
 	public void updateLayout() {
 		// logger.info("relayout panel (caution !!! this is really costly !)" + getComponent());
+
+		if (isDeleted()) {
+			return;
+		}
 
 		// TODO: please reimplement this and make it more efficient !!!!
 
