@@ -45,7 +45,6 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.gina.model.FIBPropertyNotification;
-import org.openflexo.gina.model.widget.FIBMultipleValues.FIBMultipleValuesImpl;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;

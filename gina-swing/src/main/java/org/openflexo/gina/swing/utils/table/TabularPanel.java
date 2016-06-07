@@ -82,12 +82,12 @@ public class TabularPanel extends JPanel implements TableModelListener, ListSele
 	protected Vector<Object> _selectedObjects;
 	protected boolean _selectedObjectsNeedsRecomputing;
 
-	public TabularPanel(AbstractModel model, int visibleRowCount) {
+	public TabularPanel(AbstractModel<?, ?> model, int visibleRowCount) {
 		this(model);
 		setVisibleRowCount(visibleRowCount);
 	}
 
-	public TabularPanel(@Nonnull AbstractModel model) {
+	public TabularPanel(@Nonnull AbstractModel<?, ?> model) {
 		super();
 		_model = model;
 
@@ -109,7 +109,8 @@ public class TabularPanel extends JPanel implements TableModelListener, ListSele
 			col.setPreferredWidth(model.getDefaultColumnSize(i));
 			if (model.getColumnResizable(i)) {
 				col.setResizable(true);
-			} else {
+			}
+			else {
 				// L'idee, c'est d'etre vraiment sur ;-) !
 				col.setWidth(model.getDefaultColumnSize(i));
 				col.setMinWidth(model.getDefaultColumnSize(i));
@@ -155,14 +156,16 @@ public class TabularPanel extends JPanel implements TableModelListener, ListSele
 									LOGGER.fine("Double-click detected in a editable cell. Do nothing !");
 								}
 							}
-						} else if (row > -1 && row < _model.getRowCount()) {
+						}
+						else if (row > -1 && row < _model.getRowCount()) {
 							if (LOGGER.isLoggable(Level.FINE)) {
 								if (LOGGER.isLoggable(Level.FINE)) {
 									LOGGER.fine("Double-click detected in a NON-editable cell. Select !");
 								}
 							}
 						}
-					} else if (e.getClickCount() == 1) {
+					}
+					else if (e.getClickCount() == 1) {
 						if (LOGGER.isLoggable(Level.FINE)) {
 							if (LOGGER.isLoggable(Level.FINE)) {
 								LOGGER.fine("Simple-click detected !");
@@ -191,9 +194,9 @@ public class TabularPanel extends JPanel implements TableModelListener, ListSele
 			    if ((!e.isConsumed()) && (_controller.getSelectionManager() != null)) {
 			        _controller.getSelectionManager().getContextualMenuManager().processMousePressed(e);
 			    }
-
+			
 			}
-
+			
 			public void mouseReleased(MouseEvent e)
 			{
 			    super.mouseReleased(e);
@@ -255,7 +258,7 @@ public class TabularPanel extends JPanel implements TableModelListener, ListSele
 		return _selectedObjects;
 	}
 
-	public boolean isSelected(Vector objectList) {
+	public boolean isSelected(Vector<?> objectList) {
 		return getSelectedObjects().containsAll(objectList);
 	}
 
@@ -306,10 +309,12 @@ public class TabularPanel extends JPanel implements TableModelListener, ListSele
 			if (event.getNewModel() != null) {
 				event.getNewModel().addObserver(this);
 			}
-		} else if (e instanceof AbstractModel.SelectObjectEvent) {
+		}
+		else if (e instanceof AbstractModel.SelectObjectEvent) {
 			AbstractModel.SelectObjectEvent event = (AbstractModel.SelectObjectEvent) e;
 			selectObject(event.getSelectedObject());
-		} else if (e instanceof AbstractModel.RowMoveForObjectEvent) {
+		}
+		else if (e instanceof AbstractModel.RowMoveForObjectEvent) {
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine("Reselect object, and then the edited cell");
 			}

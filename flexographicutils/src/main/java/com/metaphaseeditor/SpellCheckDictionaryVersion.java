@@ -22,7 +22,6 @@
 
 package com.metaphaseeditor;
 
-import java.io.File;
 import java.io.InputStream;
 
 import org.openflexo.rm.ResourceLocator;
@@ -32,12 +31,12 @@ import org.openflexo.rm.ResourceLocator;
  * @author Rudolf Visagie
  */
 public enum SpellCheckDictionaryVersion {
-	STRICT_UK("Spellcheck/dictionary/eng_uk_strict.zip"), LIBERAL_UK("Spellcheck/dictionary/eng_uk_liberal.zip"), STRICT_US(
-			"Spellcheck/dictionary/eng_us_strict.zip"), LIBERAL_US("Spellcheck/dictionary/eng_us_liberal.zip"), CUSTOM(null);
+	STRICT_UK("Spellcheck/dictionary/eng_uk_strict.zip"),
+	LIBERAL_UK("Spellcheck/dictionary/eng_uk_liberal.zip"),
+	STRICT_US("Spellcheck/dictionary/eng_us_strict.zip"),
+	LIBERAL_US("Spellcheck/dictionary/eng_us_liberal.zip"),
+	CUSTOM(null);
 
-
-	
-	
 	private String filename;
 
 	SpellCheckDictionaryVersion(String filename) {

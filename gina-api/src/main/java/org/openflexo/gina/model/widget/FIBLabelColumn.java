@@ -41,8 +41,6 @@ package org.openflexo.gina.model.widget;
 
 import java.lang.reflect.Type;
 
-import org.openflexo.gina.model.widget.FIBTableColumn.ColumnType;
-import org.openflexo.gina.model.widget.FIBTableColumn.FIBTableColumnImpl;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;

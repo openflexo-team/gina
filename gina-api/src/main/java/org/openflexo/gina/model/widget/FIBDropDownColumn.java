@@ -48,10 +48,6 @@ import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.connie.type.GenericArrayTypeImpl;
 import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.connie.type.WilcardTypeImpl;
-import org.openflexo.gina.model.FIBModelObject;
-import org.openflexo.gina.model.FIBModelObject.BindingMustBeValid;
-import org.openflexo.gina.model.widget.FIBTableColumn.ColumnType;
-import org.openflexo.gina.model.widget.FIBTableColumn.FIBTableColumnImpl;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -106,8 +102,8 @@ public interface FIBDropDownColumn extends FIBTableColumn {
 		private static final Logger logger = Logger.getLogger(FIBMultipleValues.class.getPackage().getName());
 
 		@Deprecated
-		public static BindingDefinition LIST = new BindingDefinition("list", new ParameterizedTypeImpl(List.class, new WilcardTypeImpl(
-				Object.class)), DataBinding.BindingDefinitionType.GET, false);
+		public static BindingDefinition LIST = new BindingDefinition("list",
+				new ParameterizedTypeImpl(List.class, new WilcardTypeImpl(Object.class)), DataBinding.BindingDefinitionType.GET, false);
 		@Deprecated
 		public static BindingDefinition ARRAY = new BindingDefinition("array", new GenericArrayTypeImpl(new WilcardTypeImpl(Object.class)),
 				DataBinding.BindingDefinitionType.GET, false);

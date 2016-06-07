@@ -46,7 +46,6 @@ import java.util.Vector;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.model.FIBPropertyNotification;
-import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.gina.model.widget.FIBHtmlEditor.FIBHtmlEditorImpl;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -165,7 +164,8 @@ public interface FIBHtmlEditorOption extends FIBModelObject {
 				}
 				if (getLevel(s) == level) {
 					index++;
-				} else if (optionName.startsWith(s)) {
+				}
+				else if (optionName.startsWith(s)) {
 					index = 0;
 				}
 			}
@@ -213,7 +213,8 @@ public interface FIBHtmlEditorOption extends FIBModelObject {
 								// System.out.println("For "+this+" add to visible and unused");
 								editor.addToVisibleAndUnusedOptions(this);
 							}
-						} else {
+						}
+						else {
 							if (getParentOption() != null) {
 								if (editor.getOptionsInLine1().contains(getParentOption())) {
 									editor.addToOptionsInLine1(this);
@@ -226,7 +227,8 @@ public interface FIBHtmlEditorOption extends FIBModelObject {
 								}
 							}
 						}
-					} else {
+					}
+					else {
 						if (editor.getOptionsInLine1().contains(this)) {
 							editor.removeFromOptionsInLine1(this);
 						}

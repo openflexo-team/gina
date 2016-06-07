@@ -2,27 +2,25 @@ package org.openflexo.replay.cases;
 
 import java.util.Random;
 
-import org.openflexo.replay.sampleData.Person;
 import org.openflexo.gina.manager.EventManager;
 import org.openflexo.gina.manager.GinaEventContext;
-import org.openflexo.gina.manager.URID;
-import org.openflexo.replay.GinaReplayManager;
+import org.openflexo.replay.sampleData.Person;
 import org.openflexo.replay.utils.Task;
 
 public class ChangeFirstnameTask extends Task {
-	
+
 	private Person person;
 
 	public ChangeFirstnameTask(EventManager manager, String title, Person person) {
 		super(manager, title);
-		
+
 		this.person = person;
 	}
 
 	@Override
 	public void run() {
 		this.GENotifier.startThreadStack(this);
-		
+
 		System.out.println("<<TASK>> started");
 
 		for (int i = 0; i < 0; ++i) {
@@ -42,7 +40,7 @@ public class ChangeFirstnameTask extends Task {
 			this.person.setFirstName(this.person.getFirstName() + i);
 			context.close();
 		}
-		
+
 		this.GENotifier.endTask(this);
 	}
 

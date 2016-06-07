@@ -43,8 +43,6 @@ import java.lang.reflect.Type;
 
 import javax.swing.Icon;
 
-import org.openflexo.gina.model.widget.FIBTableColumn.ColumnType;
-import org.openflexo.gina.model.widget.FIBTableColumn.FIBTableColumnImpl;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;

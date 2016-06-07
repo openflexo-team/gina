@@ -46,8 +46,6 @@ import javax.swing.Icon;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.binding.BindingDefinition;
-import org.openflexo.gina.model.widget.FIBTableColumn.ColumnType;
-import org.openflexo.gina.model.widget.FIBTableColumn.FIBTableColumnImpl;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -83,8 +81,8 @@ public interface FIBButtonColumn extends FIBTableColumn {
 	public static abstract class FIBButtonColumnImpl extends FIBTableColumnImpl implements FIBButtonColumn {
 
 		@Deprecated
-		public static BindingDefinition BUTTON_ICON = new BindingDefinition("buttonIcon", Icon.class,
-				DataBinding.BindingDefinitionType.GET, false);
+		public static BindingDefinition BUTTON_ICON = new BindingDefinition("buttonIcon", Icon.class, DataBinding.BindingDefinitionType.GET,
+				false);
 		@Deprecated
 		public static BindingDefinition ACTION = new BindingDefinition("action", Object.class, DataBinding.BindingDefinitionType.EXECUTE,
 				false);
@@ -146,7 +144,7 @@ public interface FIBButtonColumn extends FIBTableColumn {
 			}
 			return buttonIcon;
 		}
-
+		
 		public void setButtonIcon(DataBinding buttonIcon) {
 			if (buttonIcon != null) {
 				buttonIcon.setOwner(this);

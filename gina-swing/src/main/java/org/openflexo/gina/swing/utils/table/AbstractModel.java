@@ -328,7 +328,7 @@ public abstract class AbstractModel<M extends Observable, D> extends DefaultTabl
 	}
 
 	public String getColumnTooltip(int col) {
-		AbstractColumn column = columnAt(col);
+		AbstractColumn<?, ?> column = columnAt(col);
 		if (column != null) {
 			return column.getLocalizedTooltip();
 		}
@@ -336,7 +336,7 @@ public abstract class AbstractModel<M extends Observable, D> extends DefaultTabl
 	}
 
 	public int getDefaultColumnSize(int col) {
-		AbstractColumn column = columnAt(col);
+		AbstractColumn<?, ?> column = columnAt(col);
 		if (column != null) {
 			return column.getDefaultWidth();
 		}
@@ -344,7 +344,7 @@ public abstract class AbstractModel<M extends Observable, D> extends DefaultTabl
 	}
 
 	public boolean getColumnResizable(int col) {
-		AbstractColumn column = columnAt(col);
+		AbstractColumn<?, ?> column = columnAt(col);
 		if (column != null) {
 			return column.getResizable();
 		}
@@ -353,7 +353,7 @@ public abstract class AbstractModel<M extends Observable, D> extends DefaultTabl
 
 	@Override
 	public Class getColumnClass(int col) {
-		AbstractColumn column = columnAt(col);
+		AbstractColumn<?, ?> column = columnAt(col);
 		if (column != null) {
 			return column.getValueClass();
 		}
@@ -383,10 +383,10 @@ public abstract class AbstractModel<M extends Observable, D> extends DefaultTabl
 
 	@Override
 	public void setValueAt(Object value, int row, int col) {
-		AbstractColumn column = columnAt(col);
+		AbstractColumn<?, ?> column = columnAt(col);
 		if (column != null && column instanceof EditableColumn) {
 			D object = elementAt(row);
-			((EditableColumn) column).setValueFor(object, value/*, getBindingEvaluationContext()*/);
+			((EditableColumn<D, Object>) column).setValueFor(object, value/*, getBindingEvaluationContext()*/);
 			fireCellUpdated(object, row, col);
 		}
 	}
@@ -413,7 +413,8 @@ public abstract class AbstractModel<M extends Observable, D> extends DefaultTabl
 
 	protected class DMCellRenderer extends DefaultTableCellRenderer {
 		@Override
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row,
+				int column) {
 			Component returned = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			return returned;
 		}

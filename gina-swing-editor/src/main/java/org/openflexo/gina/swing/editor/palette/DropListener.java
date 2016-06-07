@@ -394,11 +394,11 @@ public class DropListener implements DropTargetListener {
 				 */
 
 				data = e.getTransferable().getTransferData(chosen);
-				if (logger.isLoggable(Level.FINE)) {
-					logger.fine("data is a " + data.getClass().getName());
-				}
 				if (data == null) {
 					throw new NullPointerException();
+				}
+				if (logger.isLoggable(Level.FINE)) {
+					logger.fine("data is a " + data.getClass().getName());
 				}
 			} catch (Throwable t) {
 				if (logger.isLoggable(Level.WARNING)) {
@@ -413,10 +413,11 @@ public class DropListener implements DropTargetListener {
 
 				try {
 					FIBDraggable element = (FIBDraggable) data;
-					if (element == null) {
-						e.rejectDrop();
-						return;
-					}
+					// FD remove code: element cannot be null due to the try catch
+					// if (element == null) {
+					// e.rejectDrop();
+					// return;
+					// }
 					Object source = e.getSource();
 
 					// OK, let's got for the drop

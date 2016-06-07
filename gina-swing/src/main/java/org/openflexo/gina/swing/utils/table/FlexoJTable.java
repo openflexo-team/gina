@@ -50,7 +50,7 @@ public class FlexoJTable extends JTable {
 
 	protected AbstractModel _model;
 
-	public FlexoJTable(AbstractModel dm) {
+	public FlexoJTable(AbstractModel<?, ?> dm) {
 		super(dm);
 		_model = dm;
 		// Following line is very important and must be kept in order

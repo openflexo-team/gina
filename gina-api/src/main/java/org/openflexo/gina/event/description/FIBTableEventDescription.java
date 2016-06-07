@@ -1,6 +1,5 @@
 package org.openflexo.gina.event.description;
 
-import org.openflexo.gina.event.description.EventDescription.EventDescriptionImpl;
 import org.openflexo.gina.manager.EventManager;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -25,15 +24,13 @@ public abstract interface FIBTableEventDescription extends FIBEventDescription {
 
 	@PropertyIdentifier(type = Integer.class)
 	public static final String ROW = "row";
-	
+
 	@PropertyIdentifier(type = Integer.class)
 	public static final String COL = "col";
-	
 
 	@Initializer
 	public FIBTableEventDescription init(@Parameter(ACTION) String action, @Parameter(VALUE) String value,
 			@Parameter(CLASS_VALUE) String classValue, @Parameter(ROW) Integer row, @Parameter(COL) Integer col);
-
 
 	@Getter(value = ROW, defaultValue = "0")
 	@XMLAttribute
@@ -41,29 +38,29 @@ public abstract interface FIBTableEventDescription extends FIBEventDescription {
 
 	@Setter(ROW)
 	public void setRow(int row);
-	
+
 	@Getter(value = COL, defaultValue = "0")
 	@XMLAttribute
 	public int getCol();
 
 	@Setter(COL)
 	public void setCol(int col);
-	
+
 	@Getter(value = CLASS_VALUE, defaultValue = "")
 	@XMLAttribute
 	public String getClassValue();
 
 	@Setter(CLASS_VALUE)
 	public void setClassValue(String col);
-	
+
 	public Object getObjectValue();
-	
+
 	public abstract class FIBTableEventDescriptionImpl extends FIBEventDescriptionImpl implements FIBTableEventDescription {
-		
+
 		@Override
 		public Object getObjectValue() {
 			return EventManager.getObjectValue(getValue(), getClassValue());
 		}
-		
+
 	}
 }

@@ -44,10 +44,7 @@ import java.lang.reflect.Type;
 
 import javax.swing.JFileChooser;
 
-import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBWidget;
-import org.openflexo.gina.model.FIBComponent.LocalizationEntryRetriever;
-import org.openflexo.gina.model.FIBWidget.FIBWidgetImpl;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;

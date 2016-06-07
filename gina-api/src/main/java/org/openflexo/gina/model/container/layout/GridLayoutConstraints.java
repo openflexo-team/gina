@@ -39,7 +39,6 @@
 
 package org.openflexo.gina.model.container.layout;
 
-import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 
 public class GridLayoutConstraints extends ComponentConstraints {

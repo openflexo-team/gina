@@ -555,9 +555,6 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 			else {
 				newEditionMode = EditionMode.BINDING_EXPRESSION;
 			}
-			if (newDataBinding == null) {
-				newEditionMode = EditionMode.NORMAL_BINDING;
-			}
 		}
 		else {
 			newEditionMode = EditionMode.NORMAL_BINDING;
