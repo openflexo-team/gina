@@ -525,7 +525,9 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 						e.printStackTrace();
 					}
 					component.setResource(fibLocation);
-					component.getFIBLibrary().save(component, fibFile);
+					if (component.getFIBLibrary() != null) {
+						component.getFIBLibrary().save(component, fibFile);
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 					LOGGER.warning("Cannot create FIB temp file definition for component, aborting FIB edition");
