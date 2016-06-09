@@ -457,7 +457,7 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 			_tableModel = null;
 		}
 
-		// We now just update (issue: the JTable was never destroyed) 
+		// We now just update (issue: the JTable was never destroyed)
 		// makeTechnologyComponent();
 		updateTechnologyComponent();
 
@@ -551,6 +551,9 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 		Comparator<Object> comparator = new Comparator<Object>() {
 			@Override
 			public int compare(Object o1, Object o2) {
+				if (o1 == null || o2 == null) {
+					return 0;
+				}
 				return o1.hashCode() - o2.hashCode();
 			}
 		};
@@ -559,6 +562,9 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 		List<Object> sortedL2 = new ArrayList<Object>(l2);
 		Collections.sort(sortedL2, comparator);
 		for (int i = 0; i < sortedL1.size(); i++) {
+			if (sortedL1.get(i) == null) {
+				return true;
+			}
 			if (!sortedL1.get(i).equals(sortedL2.get(i))) {
 				return false;
 			}
