@@ -951,13 +951,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		@Override
 		public void updateDynamicAccessBindingVariable() {
 
-			if (this instanceof FIBTable) {
-				System.out.println(
-						"$$$$$$$$$$$$ updateDynamicAccessBindingVariable() for " + this + " current=" + getDynamicAccessBindingVariable());
-				System.out.println("dynamicType=" + getDynamicAccessType());
-				System.out.println("viewType=" + getViewType());
-			}
-
 			if (getDynamicAccessBindingVariable() != null) {
 				// if (getDynamicAccessBindingVariable().getVariableName() !=
 				// getName()) {
