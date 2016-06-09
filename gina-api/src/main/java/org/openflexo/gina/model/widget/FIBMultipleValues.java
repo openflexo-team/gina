@@ -387,7 +387,8 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 						}
 					}
 				}
-			} else if (binding == getArray()) {
+			}
+			else if (binding == getArray()) {
 				if (getArray() != null) {
 					Type accessedType = getArray().getAnalyzedType();
 					if (accessedType instanceof GenericArrayType) {
@@ -397,7 +398,8 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 						}
 					}
 				}
-			} else if (binding == getData()) {
+			}
+			else if (binding == getData()) {
 				if (getData() != null) {
 					Type accessedType = getData().getAnalyzedType();
 					/*if (accessedType instanceof Class && ((Class)accessedType).isEnum()) {
@@ -406,7 +408,8 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 					getPropertyChangeSupport().firePropertyChange(ITERATOR_CLASS_KEY, null, getIteratorClass());
 					getPropertyChangeSupport().firePropertyChange("iteratorType", null, getIteratorType());
 				}
-			} else if (binding == getFormat()) {
+			}
+			else if (binding == getFormat()) {
 				notifyChange(FORMAT_KEY, null, getFormat());
 			}
 		}
@@ -450,7 +453,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		@Override
 		public void setShowText(Boolean showText) {
 			FIBPropertyNotification<Boolean> notification = requireChange(SHOW_TEXT_KEY, showText);
-			if (notification != null) {
+			if (notification != null && showText != null) {
 				this.showText = showText;
 				hasChanged(notification);
 			}
