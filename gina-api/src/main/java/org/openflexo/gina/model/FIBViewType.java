@@ -93,9 +93,9 @@ public class FIBViewType<F extends FIBComponent> implements CustomType {
 	@Override
 	public String simpleRepresentation() {
 		if (fibComponent != null) {
-			return "FIBViewType<" + fibComponent.getName() + ">";
+			return getClass().getSimpleName() + "<" + fibComponent.getName() + ">";
 		}
-		return "FIBViewType<>";
+		return getClass().getSimpleName() + "<>";
 	}
 
 	@Override

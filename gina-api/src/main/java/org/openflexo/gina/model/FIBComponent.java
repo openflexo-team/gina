@@ -684,7 +684,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				existingDataVariable.setType(aVariable.getType());
 				existingDataVariable.setMandatory(aVariable.isMandatory());
 				existingDataVariable.setValue((DataBinding) aVariable.getValue());
-			} else {
+			}
+			else {
 				performSuperAdder(VARIABLES_KEY, aVariable);
 			}
 
@@ -789,84 +790,86 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				}
 				someConstraints.setComponent(this);
 				return someConstraints;
-			} else if (getParent() instanceof FIBPanel) {
+			}
+			else if (getParent() instanceof FIBPanel) {
 				// Init to default value when relevant but null
 				if (someConstraints == null) {
 					ComponentConstraints returned;
 					switch (((FIBPanel) getParent()).getLayout()) {
-					case none:
-						returned = new NoneLayoutConstraints();
-						break;
-					case flow:
-						returned = new FlowLayoutConstraints();
-						break;
-					case grid:
-						returned = new GridLayoutConstraints();
-						break;
-					case box:
-						returned = new BoxLayoutConstraints();
-						break;
-					case border:
-						returned = new BorderLayoutConstraints();
-						break;
-					case twocols:
-						returned = new TwoColsLayoutConstraints();
-						break;
-					case gridbag:
-						returned = new GridBagLayoutConstraints();
-						break;
-					case buttons:
-						returned = new ButtonLayoutConstraints();
-						break;
-					default:
-						returned = new NoneLayoutConstraints();
-						break;
+						case none:
+							returned = new NoneLayoutConstraints();
+							break;
+						case flow:
+							returned = new FlowLayoutConstraints();
+							break;
+						case grid:
+							returned = new GridLayoutConstraints();
+							break;
+						case box:
+							returned = new BoxLayoutConstraints();
+							break;
+						case border:
+							returned = new BorderLayoutConstraints();
+							break;
+						case twocols:
+							returned = new TwoColsLayoutConstraints();
+							break;
+						case gridbag:
+							returned = new GridBagLayoutConstraints();
+							break;
+						case buttons:
+							returned = new ButtonLayoutConstraints();
+							break;
+						default:
+							returned = new NoneLayoutConstraints();
+							break;
 					}
 					returned.setComponent(this);
 					return returned;
 				}
 				// Mutate to right type when necessary
 				switch (((FIBPanel) getParent()).getLayout()) {
-				case none:
-					if (!(someConstraints instanceof NoneLayoutConstraints)) {
-						return new NoneLayoutConstraints(someConstraints);
-					}
-					break;
-				case flow:
-					if (!(someConstraints instanceof FlowLayoutConstraints)) {
-						return new FlowLayoutConstraints(someConstraints);
-					}
-					break;
-				case grid:
-					if (!(someConstraints instanceof GridLayoutConstraints)) {
-						return new GridLayoutConstraints(someConstraints);
-					}
-					break;
-				case box:
-					if (!(someConstraints instanceof BoxLayoutConstraints)) {
-						return new BoxLayoutConstraints(someConstraints);
-					}
-					break;
-				case border:
-					if (!(someConstraints instanceof BorderLayoutConstraints)) {
-						return new BorderLayoutConstraints(someConstraints);
-					}
-					break;
-				case twocols:
-					if (!(someConstraints instanceof TwoColsLayoutConstraints)) {
-						return new TwoColsLayoutConstraints(someConstraints);
-					}
-					break;
-				case gridbag:
-					if (!(someConstraints instanceof GridBagLayoutConstraints)) {
-						return new GridBagLayoutConstraints(someConstraints);
-					}
-					break;
-				default:
+					case none:
+						if (!(someConstraints instanceof NoneLayoutConstraints)) {
+							return new NoneLayoutConstraints(someConstraints);
+						}
+						break;
+					case flow:
+						if (!(someConstraints instanceof FlowLayoutConstraints)) {
+							return new FlowLayoutConstraints(someConstraints);
+						}
+						break;
+					case grid:
+						if (!(someConstraints instanceof GridLayoutConstraints)) {
+							return new GridLayoutConstraints(someConstraints);
+						}
+						break;
+					case box:
+						if (!(someConstraints instanceof BoxLayoutConstraints)) {
+							return new BoxLayoutConstraints(someConstraints);
+						}
+						break;
+					case border:
+						if (!(someConstraints instanceof BorderLayoutConstraints)) {
+							return new BorderLayoutConstraints(someConstraints);
+						}
+						break;
+					case twocols:
+						if (!(someConstraints instanceof TwoColsLayoutConstraints)) {
+							return new TwoColsLayoutConstraints(someConstraints);
+						}
+						break;
+					case gridbag:
+						if (!(someConstraints instanceof GridBagLayoutConstraints)) {
+							return new GridBagLayoutConstraints(someConstraints);
+						}
+						break;
+					default:
 				}
 				someConstraints.setComponent(this);
 				return someConstraints;
-			} else {
+			}
+			else {
 				// No constraints for a component which container is not custom
 				// layouted
 				return someConstraints;
@@ -899,7 +902,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 					createBindingModel();
 				}
 				return bindingModel;
-			} else {
+			}
+			else {
 				if (getRootComponent() != null && getRootComponent() != this) {
 					return getRootComponent().getBindingModel();
 				}
@@ -946,6 +950,14 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		@Override
 		public void updateDynamicAccessBindingVariable() {
+
+			if (this instanceof FIBTable) {
+				System.out.println(
+						"$$$$$$$$$$$$ updateDynamicAccessBindingVariable() for " + this + " current=" + getDynamicAccessBindingVariable());
+				System.out.println("dynamicType=" + getDynamicAccessType());
+				System.out.println("viewType=" + getViewType());
+			}
+
 			if (getDynamicAccessBindingVariable() != null) {
 				// if (getDynamicAccessBindingVariable().getVariableName() !=
 				// getName()) {
@@ -1092,7 +1104,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				if (!((FIBComponentImpl) aComponent).mayAlters.contains(this)) {
 					((FIBComponentImpl) aComponent).mayAlters.add(this);
 				}
-			} else {
+			}
+			else {
 				LOGGER.warning("Trying to test dependency against a NULL Fib Component");
 			}
 		}
@@ -1200,7 +1213,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			if (font == null) {
 				if (!isRootComponent() && hasValidHierarchy()) {
 					return getParent().retrieveValidFont();
-				} else {
+				}
+				else {
 					return null; // Use system default
 				}
 			}
@@ -1213,7 +1227,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			if (foregroundColor == null) {
 				if (!isRootComponent() && hasValidHierarchy()) {
 					return getParent().retrieveValidForegroundColor();
-				} else {
+				}
+				else {
 					return null; // Use default
 				}
 			}
@@ -1226,7 +1241,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			if (backgroundColor == null) {
 				if (!isRootComponent() && hasValidHierarchy()) {
 					return getParent().retrieveValidBackgroundColor();
-				} else {
+				}
+				else {
 					return null; // Use system default
 				}
 			}
@@ -1303,7 +1319,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				if (useScrollBar) {
 					horizontalScrollbarPolicy = HorizontalScrollBarPolicy.HORIZONTAL_SCROLLBAR_AS_NEEDED;
 					verticalScrollbarPolicy = VerticalScrollBarPolicy.VERTICAL_SCROLLBAR_AS_NEEDED;
-				} else {
+				}
+				else {
 					horizontalScrollbarPolicy = null;
 					verticalScrollbarPolicy = null;
 				}
@@ -1482,7 +1499,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 					LOGGER.warning("Could not find class " + p.getValue());
 				}
 
-			} else {
+			}
+			else {
 				performSuperAdder(PARAMETERS_KEY, p);
 			}
 		}
@@ -1506,7 +1524,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 					 */
 					setWidth(100);
 					setHeight(100);
-				} else {
+				}
+				else {
 					clearTemporarySize();
 					setWidth(null);
 					setHeight(null);
@@ -1529,7 +1548,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				setMaxWidth(1024);
 				setMaxHeight(1024);
 				// v.delete();
-			} else {
+			}
+			else {
 				setMaxWidth(null);
 				setMaxHeight(null);
 			}
@@ -1553,7 +1573,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				// v.delete();
 				setMinWidth(10);
 				setMinHeight(10);
-			} else {
+			}
+			else {
 				setMinWidth(null);
 				setMinHeight(null);
 			}
@@ -1664,7 +1685,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			for (FIBComponent c : subComponents) {
 				if (c instanceof FIBButton) {
 					buttons.add((FIBButton) c);
-				} else if (c instanceof FIBContainer) {
+				}
+				else if (c instanceof FIBContainer) {
 					buttons.addAll(getFIBButtons(((FIBContainer) c).getSubComponents()));
 				}
 			}
@@ -1767,7 +1789,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 					public void remove() {
 					}
 				};
-			} else {
+			}
+			else {
 				return allSubComponents.iterator();
 			}
 		}

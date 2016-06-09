@@ -70,12 +70,16 @@ public class FIBTableType extends FIBWidgetType<FIBTable> {
 
 		@Override
 		public Type getType() {
+			Type returned = getFIBComponent().getInferedIteratorType();
+			if (returned != null) {
+				return returned;
+			}
 			return getFIBComponent().getIteratorClass();
 		}
 
 		@Override
 		public String getTooltip() {
-			return "value_being_currently_selected_in_browser";
+			return "value_being_currently_selected_in_table";
 		}
 
 		@Override

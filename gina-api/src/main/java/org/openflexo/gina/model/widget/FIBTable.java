@@ -297,6 +297,8 @@ public interface FIBTable extends FIBWidget {
 
 	public void moveToBottom(FIBTableAction a);
 
+	public Type getInferedIteratorType();
+
 	public static abstract class FIBTableImpl extends FIBWidgetImpl implements FIBTable {
 
 		private static final Logger logger = Logger.getLogger(FIBTable.class.getPackage().getName());
@@ -536,6 +538,7 @@ public interface FIBTable extends FIBWidget {
 			return iteratorClass;
 		}
 
+		@Override
 		public Type getInferedIteratorType() {
 			// Attempt to infer iterator type
 			if (getData() != null && getData().isSet() && getData().isValid()) {
