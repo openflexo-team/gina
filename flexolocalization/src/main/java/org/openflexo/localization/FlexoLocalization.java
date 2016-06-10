@@ -79,6 +79,7 @@ import org.openflexo.rm.Resource;
  * 
  * @author sylvain
  */
+@Deprecated
 public class FlexoLocalization {
 
 	private static final Logger logger = Logger.getLogger(FlexoLocalization.class.getPackage().getName());
@@ -109,9 +110,11 @@ public class FlexoLocalization {
 	public static void initWith(LocalizedDelegate delegate) {
 		if (!FlexoLocalization.isInitialized()) {
 			mainLocalizer = delegate;
-		} else {
+		}
+		else {
 			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Locales have already been initialized. Unless you know what you are doing, this should not happen is therefore prevented.");
+				logger.warning(
+						"Locales have already been initialized. Unless you know what you are doing, this should not happen is therefore prevented.");
 			}
 		}
 
@@ -199,22 +202,26 @@ public class FlexoLocalization {
 						delegate.registerNewEntry(key, language, key);
 					}
 					return value;
-				} else {
+				}
+				else {
 					// No parent exists, we will use keys
 					for (Language l : Language.availableValues()) {
 						delegate.registerNewEntry(key, l, key);
 					}
 					return key;
 				}
-			} else {
+			}
+			else {
 				if (delegate.getParent() != null) {
 					return localizedForKeyAndLanguage(delegate.getParent(), key, language, false);
-				} else {
+				}
+				else {
 					// logger.warning("Not found and not handling new entries for localized for key " + key + " delegate=" + delegate);
 					return key;
 				}
 			}
-		} else {
+		}
+		else {
 			return returned;
 		}
 	}
@@ -256,7 +263,8 @@ public class FlexoLocalization {
 				logger.warning("FlexoLocalization not initialized, returning key as localized key=" + key);
 				uninitalizedLocalizationWarningDone = true;
 			}
-		} else {
+		}
+		else {
 			setLocalizedForKeyAndLanguage(mainLocalizer, key, value, language);
 		}
 	}
@@ -362,8 +370,8 @@ public class FlexoLocalization {
 			}
 			if (component.getParent() != null && component.getParent().getParent() instanceof JTabbedPane) {
 				if (((JTabbedPane) component.getParent().getParent()).indexOfComponent(component) > -1) {
-					((JTabbedPane) component.getParent().getParent()).setTitleAt(
-							((JTabbedPane) component.getParent().getParent()).indexOfComponent(component), text);
+					((JTabbedPane) component.getParent().getParent())
+							.setTitleAt(((JTabbedPane) component.getParent().getParent()).indexOfComponent(component), text);
 				}
 			}
 		}
@@ -405,7 +413,8 @@ public class FlexoLocalization {
 			LocalizationListener l = i.next().get();
 			if (l == null) {
 				i.remove();
-			} else {
+			}
+			else {
 				l.languageChanged(language);
 			}
 		}
@@ -423,10 +432,9 @@ public class FlexoLocalization {
 	}
 
 	public static void main(String[] args) {
-		System.out.println("Testing localizedForKeyWithParams(String,String...): "
-				+ localizedForKeyWithParams(
-						"Must display first param here ($0) and second one: ($1) and third one:($2) then repeat second one ($1)", "foo1",
-						"foo2", "foo3"));
+		System.out.println("Testing localizedForKeyWithParams(String,String...): " + localizedForKeyWithParams(
+				"Must display first param here ($0) and second one: ($1) and third one:($2) then repeat second one ($1)", "foo1", "foo2",
+				"foo3"));
 	}
 
 	/**
@@ -459,10 +467,12 @@ public class FlexoLocalization {
 				if (object.length > index) {
 					if (object[index] != null) {
 						m.appendReplacement(returned, object[index].toString());
-					} else {
+					}
+					else {
 						m.appendReplacement(returned, "");
 					}
-				} else {
+				}
+				else {
 					if (logger.isLoggable(Level.WARNING)) {
 						logger.warning("Argument index " + index + " is greater than number of arguments");
 					}
@@ -491,7 +501,7 @@ public class FlexoLocalization {
 		}
 		return key;
 		/*try {
-
+		
 			// Object objectForKey = BindingEvaluator.evaluateBinding(key, object);
 			Object objectForKey = KeyValueDecoder.valueForKey(object, key);
 			if (objectForKey != null) {
