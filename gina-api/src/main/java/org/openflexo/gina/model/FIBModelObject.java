@@ -220,7 +220,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 		 */
 		@Override
 		public Collection<? extends FIBModelObject> getEmbeddedObjects() {
-			return (Collection<? extends FIBModelObject>) getModelFactory().getEmbeddedObjects(this, EmbeddingType.CLOSURE);
+			return (Collection) getModelFactory().getEmbeddedObjects(this, EmbeddingType.CLOSURE);
 		}
 
 		/**
