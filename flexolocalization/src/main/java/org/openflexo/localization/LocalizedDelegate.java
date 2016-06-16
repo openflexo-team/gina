@@ -60,20 +60,40 @@ import org.openflexo.toolbox.HasPropertyChangeSupport;
 public interface LocalizedDelegate {
 
 	/**
+	 * Return String matching specified key and language set as default language<br>
+	 * 
 	 * This is general and main method to use localized in Flexo.<br>
 	 * Applicable language is chosen from the one defined in FlexoLocalization (configurable from GeneralPreferences).<br>
-	 * Use english names for keys, such as 'some_english_words'
+	 * Use english names for keys, such as 'some_english_words'<br>
+	 * 
+	 * Usage example: <code>localizedForKey("some_english_words")</code>
 	 * 
 	 * @param key
 	 * @return String matching specified key and language defined as default in {@link FlexoLocalization}
 	 */
 	public String localizedForKey(String key);
 
-	public String localizedForKeyWithParams(String key, Object... object);
+	/**
+	 * Return String matching specified key and language set as default language, asserting that the locale to translate contains some
+	 * parametered references<br>
+	 * 
+	 * Usage examples:<br>
+	 * <ul>
+	 * <li><code>localizedForKeyWithParams("hello_($firstParameter)", anObject)</code><br>
+	 * Return parametered locale such as "Hello World !", asserting that anObject respond to a getter method named firstParameter() or
+	 * getFirstParameter() whise value is "World" in run-time context</li>
+	 * <li><code>localizedForKeyWithParams("hello_($0)_($1)_and_($2)", "Pierre", "Paul", "Jacques")</code><br>
+	 * Return parametered locales, such as "Bonjour Pierre, Paul et Jacques !"</li>
+	 * </ul>
+	 *
+	 * @param key
+	 * @param objects
+	 * @return String matching specified key and language defined as default in {@link FlexoLocalization}
+	 */
+	public String localizedForKeyWithParams(String key, Object... objects);
 
 	/**
 	 * Return String matching specified key and language<br>
-	 * If this key is not localized, this method MUST return null, in order to forward request to parent delegate
 	 * 
 	 * @param key
 	 * @param language
