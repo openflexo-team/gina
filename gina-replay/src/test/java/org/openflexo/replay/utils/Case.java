@@ -21,20 +21,36 @@ import org.openflexo.replay.Scenario;
 import org.openflexo.replay.ScenarioNode;
 import org.openflexo.replay.test.ReplayTestConfiguration;
 
+/**
+ * This class represents a basic test Case used to test FIB recording, replaying and checking.
+ * This class should be inherited in order to specify the behavior of the test.
+ * 
+ * Examples of tests are available in org.openflexo.replay.cases
+ * 
+ * This class, when in record mod (by default), will create a scenarri/last-scenario file in the
+ * resources folder.
+ * You can use the CreateTestFromScenario tool to generate a JUnit test from it.
+ * 
+ * @author Alexandre
+ *
+ */
 public abstract class Case {
 
 	static private Case instance;
 	static private CaseCommandWindow commandWindow;
 	static private GinaReplayManager manager;
 	static private ExecutorService executor;
-	
-	static private ReplayTestConfiguration testConfiguration;
 
 	static public void initCase(Case c) {
 		instance = c;
 
+		// we create a GinaReplayManager that we manage the whole record/replay
 		manager = new GinaReplayManager();
-		//manager.addEventDescriptionModels(FIBEventDescription.class, TreeNodeEventDescription.class);
+		// we add the FIBEventDescription (and children) model to the factory
+		manager.addEventDescriptionModels(FIBEventDescription.class);
+		// we could've added TreeNodeEventDescription.class to manage Diana Events
+
+		// we create and select a replay session
 		GinaReplaySession recorder = new GinaReplaySession(manager);
 		manager.setCurrentSession(recorder);
 		
@@ -42,11 +58,13 @@ public abstract class Case {
 		assertNotNull(recorder);
 		assertEquals(manager.getCurrentSession(), recorder);
 		
-		recorder.start(testConfiguration);
-		if (testConfiguration == null) {
+		// start and check the recording of the application started event
+		recorder.start();
+		if (recorder.isRecording()) {
 			assertRecordedInteraction(manager, 0, ApplicationEventDescription.class);
 		}
 
+		// init the command window for the controller (e.g. with the save scenario button)
 		commandWindow = new CaseCommandWindow(manager);
 		
 		c.start();
@@ -75,7 +93,7 @@ public abstract class Case {
 			assertNotNull(ui);
 	
 			d = ui.getDescription();
-			// todo
+			// TODO
 			assert(d.getClass().isAssignableFrom(cls));
 		}
 		else {
@@ -85,10 +103,6 @@ public abstract class Case {
 			d = ui.getDescription();*/
 		}
 		//assert(d.getClass().isAssignableFrom(cls));
-	}
-	
-	static public void ginaReplayStartupHook(ReplayTestConfiguration config) {
-		testConfiguration = config;
 	}
 	
 	static public void initExecutor(int threadNumber) {

@@ -9,6 +9,12 @@ import org.openflexo.gina.manager.EventManager;
 import org.openflexo.gina.manager.GinaTask;
 import org.openflexo.gina.manager.URID;
 
+/**
+ * Represents a simple recordable Task.
+ * 
+ * @author Alexandre
+ *
+ */
 public abstract class Task implements GinaTask, Runnable {
 
 	private URID urid;

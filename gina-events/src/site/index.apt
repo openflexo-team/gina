@@ -1,0 +1,50 @@
+Gina Events
+===========
+
+This project provides a library of events / listeners designed to record user interactions and system responses.
+This is used as a base for the gina-replay project.
+
+Getting started
+---------------
+
+To use this library you should :
+
+* Instantiate an EventManager
+
+* Give it to any FIB you want to manage, using the instanciateController(FIBComponent fibComponent, LocalizedDelegate parentLocalizer, EventManager recorderManager)
+  (By doing this you will register the given FIB and its widgets to this EventManager)
+
+* You can now create class implementing the interface GinaEventListener
+
+* And register them to the EventManager with addListener(GinaEventListener l)
+
+* Your listener will receive all modifications by the eventPerformed(GinaEvent e, Stack<GinaStackEvent> stack) method
+
+
+What is a GinaEvent ?
+---------------------
+
+GinaEvent is used to represent any event that could happen.
+It is divided in two :
+- UserInteraction : representing an event done by the user (as a click, a selection, ...)
+- SystemEvent : representing the response of the system to a stimulus. This stimulus can be a UserInteraction.
+
+In both cases, the GinaEvent (UserInteraction or SystemEvent) has a EventDescription that contains all the required data
+to describe an Event. This class is just a basic model and should be extended to support any event.
+
+The library enables you to keep track of causalty of the events (e.g. what UserInteraction causes what series of SystemEvent).
+
+How to instantiate a GinaEvent ?
+--------------------------------
+
+A GinaEvent is thrown by a GinaEventNotifier 
+
+
+Using tasks
+-----------
+
+
+Implementing event notifiers
+----------------------------
+
+You want to implement your own events ?

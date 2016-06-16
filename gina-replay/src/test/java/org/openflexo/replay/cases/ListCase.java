@@ -7,20 +7,15 @@
 
 package org.openflexo.replay.cases;
 
-import static org.junit.Assert.assertTrue;
-
 import java.awt.Dimension;
 import java.util.List;
 
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBBrowser;
-import org.openflexo.fib.model.FIBBrowserElement;
 import org.openflexo.fib.model.FIBLabel;
 import org.openflexo.fib.model.FIBList;
 import org.openflexo.fib.model.TwoColsLayoutConstraints;
-import org.openflexo.fib.model.FIBBrowserElement.FIBBrowserElementChildren;
 import org.openflexo.fib.model.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.replay.sampleData.Family;
 import org.openflexo.replay.sampleData.Person;

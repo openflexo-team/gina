@@ -11,9 +11,27 @@ import org.openflexo.gina.event.description.ApplicationEventDescription;
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.manager.GinaEventFactory;
 import org.openflexo.replay.GinaReplayManager;
+import org.openflexo.replay.GinaReplaySession;
 import org.openflexo.replay.InteractionCycle;
 import org.openflexo.replay.Scenario;
 
+/**
+ * This class is used to configure a replay.
+ * As you can see in the example org.openflexo.replay.test.Tester, this class should be used as the following :
+ *   - instantiate the class
+ *   - load a scenario via loadScenario
+ *   - execute runMain in order to launch the scenario environment (it will load the main function of the target class)
+ * 
+ * The target class MUST implements the ginaReplayStartupHook function as in the replay.utils.Case example :
+ *   static public void ginaReplayStartupHook(ReplayTestConfiguration config) {
+ *		testConfiguration = config;
+ *	 }
+ *
+ * Then the static testConfiguration 
+ * 
+ * @author Alexandre
+ *
+ */
 public class ReplayTestConfiguration {
 
 	private GinaReplayManager manager;
@@ -30,7 +48,12 @@ public class ReplayTestConfiguration {
 		factory.addModel(EventDescription.class);
 		factory.addModel(GinaEvent.class);
 	}
-		
+	
+	/**
+	 * Load a specified scenario to be replayed.
+	 * This will search the mainClass that will be launched by executing runMake().
+	 * @param scenarioToLoad
+	 */
 	public void loadScenario(File scenarioToLoad) {
 		this.scenarioToLoad = scenarioToLoad;
 
@@ -57,12 +80,17 @@ public class ReplayTestConfiguration {
 		return mainClassLauncher;
 	}
 	
+	/**
+	 * Set the static configuration to this and run the main class of the scenario.
+	 * The main class should have a main function to be launched.
+	 */
 	public void runMain() {
-		if (mainClassLauncher == null)
+		if (mainClassLauncher == null) 
 			return;
 	
+		GinaReplaySession.setNextTestConfiguration(this);
 		// set the hook
-		try {
+		/*try {
 			Method hook = mainClassLauncher.getMethod("ginaReplayStartupHook", ReplayTestConfiguration.class);
 			hook.invoke(null, this);
 		} catch (NoSuchMethodException | SecurityException e) {
@@ -75,7 +103,7 @@ public class ReplayTestConfiguration {
 			mainClassLauncher = null;
 			scenarioBase = null;
 			return;
-		}
+		}*/
 		
 		// run the main
 		try {

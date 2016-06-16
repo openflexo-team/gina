@@ -18,7 +18,10 @@ import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter.Cardinality;
 
 /**
- * This manages a Scenario
+ * This represents a scenario.
+ * A scenario is composed of a list of ScenarioNode, each can be:
+ *   - an InteractionCycle that represents events from the user and the responses of the system
+ *   - another Scenario that can be loaded and played *TODO not functional yet*
  * 
  * @author Alexandre
  */

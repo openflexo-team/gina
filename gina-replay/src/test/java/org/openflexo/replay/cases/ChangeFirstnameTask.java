@@ -5,8 +5,6 @@ import java.util.Random;
 import org.openflexo.replay.sampleData.Person;
 import org.openflexo.gina.manager.EventManager;
 import org.openflexo.gina.manager.GinaEventContext;
-import org.openflexo.gina.manager.URID;
-import org.openflexo.replay.GinaReplayManager;
 import org.openflexo.replay.utils.Task;
 
 public class ChangeFirstnameTask extends Task {

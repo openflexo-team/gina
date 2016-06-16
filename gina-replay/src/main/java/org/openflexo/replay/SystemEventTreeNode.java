@@ -23,6 +23,13 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter.Cardinality;
 
+/**
+ * This class is used to organize SystemEvent as a tree depending of their origin.
+ * This is used to keep track of the causality of the SystemEvent responses.
+ * 
+ * @author Alexandre
+ *
+ */
 @ModelEntity
 //@ImplementationClass(SystemEventTreeNode.SystemEventTreeNodeImpl.class)
 @Imports({ @Import(InteractionCycle.class) })

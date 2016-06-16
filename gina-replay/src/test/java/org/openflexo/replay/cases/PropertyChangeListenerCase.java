@@ -5,13 +5,9 @@ import java.awt.Dimension;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
-import org.openflexo.fib.model.FIBButton;
 import org.openflexo.fib.model.FIBLabel;
 import org.openflexo.fib.model.FIBTextField;
 import org.openflexo.fib.model.TwoColsLayoutConstraints;

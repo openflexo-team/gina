@@ -13,9 +13,9 @@ import org.openflexo.model.factory.ModelFactory;
  * This class manages manages :
  *  - all the registered items
  *  - the current stack event
- *  - the current replayer
+ *  - the current GinaReplaySession recorded / replayer
  *  
- *  It should be unique for a set of registered items.
+ *  It should be unique for a set of registered items. (only 1 Manager for 1 managed Widget)
  * 
  * @author Alexandre
  *

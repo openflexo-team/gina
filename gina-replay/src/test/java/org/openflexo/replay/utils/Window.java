@@ -6,6 +6,12 @@ import org.openflexo.fib.model.FIBPanel.Layout;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.replay.GinaReplayManager;
 
+/**
+ * Basic window for test purposes.
+ * 
+ * @author Alexandre
+ *
+ */
 public class Window {
 	protected GraphicalContextDelegate gcDelegate;
 	protected GinaReplayManager manager;

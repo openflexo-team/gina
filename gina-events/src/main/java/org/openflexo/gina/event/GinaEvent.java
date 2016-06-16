@@ -50,6 +50,8 @@ public abstract interface GinaEvent {
 	public KIND getKind();
 	
 	public boolean matchesIdentity(GinaEvent e);
+	public boolean matchesEvent(GinaEvent e);
+	public void checkMatchingEvent(GinaEvent e) throws InvalidRecorderStateException;
 	
 	public abstract class GinaEventImpl implements GinaEvent {
 
@@ -59,6 +61,10 @@ public abstract interface GinaEvent {
 		
 		public boolean matchesEvent(GinaEvent e) {
 			return this.getDescription().matchesEvent(e.getDescription());
+		}
+		
+		public void checkMatchingEvent(GinaEvent e) throws InvalidRecorderStateException {
+			this.getDescription().checkMatchingEvent(e.getDescription());
 		}
 		
 		public String toString() {
