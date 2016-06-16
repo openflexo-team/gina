@@ -132,8 +132,6 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		}
 		_localizedDictionaries = new Hashtable<Language, Properties>();
 
-		LocalizedDelegate a = null;
-		a.localizedForKey("toto");
 	}
 
 	@Override
