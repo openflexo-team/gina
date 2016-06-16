@@ -60,8 +60,6 @@ import java.util.Vector;
 import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.AbstractButton;
 import javax.swing.JComponent;
@@ -71,7 +69,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.TableColumn;
 
 import org.apache.commons.io.IOUtils;
-import org.openflexo.connie.BindingEvaluator;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
@@ -104,6 +101,11 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	private List<Entry> entries;
 
 	private final PropertyChangeSupport pcSupport;
+
+	private final WeakHashMap<Component, String> _storedLocalizedForComponents = new WeakHashMap<Component, String>();
+	private final WeakHashMap<JComponent, String> _storedLocalizedForComponentTooltips = new WeakHashMap<JComponent, String>();
+	private final WeakHashMap<TitledBorder, String> _storedLocalizedForBorders = new WeakHashMap<TitledBorder, String>();
+	private final WeakHashMap<TableColumn, String> _storedLocalizedForTableColumn = new WeakHashMap<TableColumn, String>();
 
 	public static enum SearchMode {
 		Contains, BeginsWith, EndsWith
@@ -786,11 +788,11 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 	/**
 	 * This is general and main method to use localized in Flexo.<br>
-	 * Applicable language is chosen from the one defined in Preferences.<br>
+	 * Applicable language is chosen from the one defined in FlexoLocalization (configurable from GeneralPreferences).<br>
 	 * Use english names for keys, such as 'some_english_words'
 	 * 
 	 * @param key
-	 * @return localized String
+	 * @return String matching specified key and language defined as default in {@link FlexoLocalization}
 	 */
 	@Override
 	public String localizedForKey(String key) {
@@ -889,18 +891,8 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	@Override
 	public String localizedForKeyWithParams(String key, Object... object) {
 		String base = localizedForKey(key);
-		return replaceAllParamsInString(base, object);
+		return FlexoLocalization.replaceAllParamsInString(base, object);
 	}
-
-	private final WeakHashMap<Component, String> _storedLocalizedForComponents = new WeakHashMap<Component, String>();
-
-	private final WeakHashMap<JComponent, String> _storedLocalizedForComponentTooltips = new WeakHashMap<JComponent, String>();
-
-	private final WeakHashMap<TitledBorder, String> _storedLocalizedForBorders = new WeakHashMap<TitledBorder, String>();
-
-	private final WeakHashMap<TableColumn, String> _storedLocalizedForTableColumn = new WeakHashMap<TableColumn, String>();
-
-	// private final WeakHashMap<Component, String> _storedAdditionalStrings = new WeakHashMap<Component, String>();
 
 	@Override
 	public String localizedForKey(String key, Component component) {
@@ -1009,84 +1001,6 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			f.repaint();
 		}
 
-	}
-
-	/**
-	 * @param returned
-	 * @param object
-	 */
-	private static String replaceAllParamsInString(String aString, Object... object) {
-		if (logger.isLoggable(Level.FINER)) {
-			logger.finer("replaceAllParamsInString() with " + aString + " and " + object);
-		}
-		// Pattern p = Pattern.compile("*\\($[a-zA-Z]\\)*");
-		// Pattern p = Pattern.compile("\\p{Punct}\\bJava(\\w*)\\p{Punct}");
-		// Pattern p = Pattern.compile("\\(\\bJava(\\w*)\\)");
-		// Pattern p = Pattern.compile("\\(\\$(\\w*)\\)");
-		Pattern p = Pattern.compile("\\(\\$([_0-9a-zA-Z[\\.]]+)\\)");
-		Matcher m = p.matcher(aString);
-		StringBuffer returned = new StringBuffer();
-		while (m.find()) {
-			int nextIndex = m.start();
-			String foundPattern = m.group();
-			if (logger.isLoggable(Level.FINE)) {
-				logger.finest("Found '" + foundPattern + "' at position " + nextIndex);
-			}
-			String suffix = m.group(1);
-			if (logger.isLoggable(Level.FINE)) {
-				logger.finest("Suffix is " + suffix);
-			}
-			try {
-				int index = Integer.parseInt(suffix);
-				if (object.length > index) {
-					if (object[index] != null) {
-						m.appendReplacement(returned, object[index].toString());
-					}
-					else {
-						m.appendReplacement(returned, "");
-					}
-				}
-				else {
-					if (logger.isLoggable(Level.WARNING)) {
-						logger.warning("Argument index " + index + " is greater than number of arguments");
-					}
-				}
-			} catch (NumberFormatException e) {
-				try {
-					m.appendReplacement(returned, valueForKeyAndObject(suffix, object[0]));
-				} catch (IllegalArgumentException e2) {
-					logger.warning("Unexpected IllegalArgumentException " + e2.getMessage());
-				}
-			}
-		}
-		m.appendTail(returned);
-		if (logger.isLoggable(Level.FINE)) {
-			logger.finer("Returning " + returned);
-		}
-		return returned.toString();
-	}
-
-	private static String valueForKeyAndObject(String key, Object object) {
-
-		try {
-			return BindingEvaluator.evaluateBinding(key, object).toString();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return key;
-		/*try {
-		
-			// Object objectForKey = BindingEvaluator.evaluateBinding(key, object);
-			Object objectForKey = KeyValueDecoder.valueForKey(object, key);
-			if (objectForKey != null) {
-				return objectForKey.toString();
-			} else {
-				return "";
-			}
-		} catch (InvalidObjectSpecificationException e) {
-			logger.warning(e.getMessage());
-			return key;
-		}*/
 	}
 
 }

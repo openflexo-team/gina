@@ -60,12 +60,12 @@ import org.openflexo.toolbox.HasPropertyChangeSupport;
 public interface LocalizedDelegate {
 
 	/**
-	 * Return String matching specified key and language defined as default in {@link FlexoLocalization}<br>
-	 * If this key is not localized, this method MUST return null, in order to forward request to parent delegate
+	 * This is general and main method to use localized in Flexo.<br>
+	 * Applicable language is chosen from the one defined in FlexoLocalization (configurable from GeneralPreferences).<br>
+	 * Use english names for keys, such as 'some_english_words'
 	 * 
 	 * @param key
-	 * @param language
-	 * @return
+	 * @return String matching specified key and language defined as default in {@link FlexoLocalization}
 	 */
 	public String localizedForKey(String key);
 

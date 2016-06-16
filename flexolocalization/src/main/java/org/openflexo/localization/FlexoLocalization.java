@@ -45,7 +45,10 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.openflexo.connie.BindingEvaluator;
 import org.openflexo.rm.Resource;
 
 /**
@@ -518,5 +521,83 @@ public class FlexoLocalization {
 		}
 		return returned;
 	}*/
+
+	/**
+	 * @param returned
+	 * @param object
+	 */
+	public static String replaceAllParamsInString(String aString, Object... object) {
+		if (logger.isLoggable(Level.FINER)) {
+			logger.finer("replaceAllParamsInString() with " + aString + " and " + object);
+		}
+		// Pattern p = Pattern.compile("*\\($[a-zA-Z]\\)*");
+		// Pattern p = Pattern.compile("\\p{Punct}\\bJava(\\w*)\\p{Punct}");
+		// Pattern p = Pattern.compile("\\(\\bJava(\\w*)\\)");
+		// Pattern p = Pattern.compile("\\(\\$(\\w*)\\)");
+		Pattern p = Pattern.compile("\\(\\$([_0-9a-zA-Z[\\.]]+)\\)");
+		Matcher m = p.matcher(aString);
+		StringBuffer returned = new StringBuffer();
+		while (m.find()) {
+			int nextIndex = m.start();
+			String foundPattern = m.group();
+			if (logger.isLoggable(Level.FINE)) {
+				logger.finest("Found '" + foundPattern + "' at position " + nextIndex);
+			}
+			String suffix = m.group(1);
+			if (logger.isLoggable(Level.FINE)) {
+				logger.finest("Suffix is " + suffix);
+			}
+			try {
+				int index = Integer.parseInt(suffix);
+				if (object.length > index) {
+					if (object[index] != null) {
+						m.appendReplacement(returned, object[index].toString());
+					}
+					else {
+						m.appendReplacement(returned, "");
+					}
+				}
+				else {
+					if (logger.isLoggable(Level.WARNING)) {
+						logger.warning("Argument index " + index + " is greater than number of arguments");
+					}
+				}
+			} catch (NumberFormatException e) {
+				try {
+					m.appendReplacement(returned, valueForKeyAndObject(suffix, object[0]));
+				} catch (IllegalArgumentException e2) {
+					logger.warning("Unexpected IllegalArgumentException " + e2.getMessage());
+				}
+			}
+		}
+		m.appendTail(returned);
+		if (logger.isLoggable(Level.FINE)) {
+			logger.finer("Returning " + returned);
+		}
+		return returned.toString();
+	}
+
+	private static String valueForKeyAndObject(String key, Object object) {
+
+		try {
+			return BindingEvaluator.evaluateBinding(key, object).toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return key;
+		/*try {
+		
+			// Object objectForKey = BindingEvaluator.evaluateBinding(key, object);
+			Object objectForKey = KeyValueDecoder.valueForKey(object, key);
+			if (objectForKey != null) {
+				return objectForKey.toString();
+			} else {
+				return "";
+			}
+		} catch (InvalidObjectSpecificationException e) {
+			logger.warning(e.getMessage());
+			return key;
+		}*/
+	}
 
 }
