@@ -103,15 +103,19 @@ public interface LocalizedDelegate {
 
 	/**
 	 * Return String matching specified key and language<br>
+	 * If #createsNewEntryInFirstEditableParent set to true, will try to enter a new traduction.<br>
+	 * LocalizedDelegate are recursively requested to their parents, and the first one who respond true to
+	 * {@link #handleNewEntry(String, Language)} will add a new entry
 	 * 
 	 * @param key
 	 * @param language
 	 * @return
 	 */
-	public String localizedForKeyAndLanguage(String key, Language language, boolean createsNewEntriesIfNonExistant);
+	public String localizedForKeyAndLanguage(String key, Language language, boolean createsNewEntryInFirstEditableParent);
 
 	/**
-	 * Return a boolean indicating if this delegate handle creation of new entries
+	 * Return a boolean indicating if this delegate handle creation of new entries<br>
+	 * When returning true, indicates that this delegate might be edited in this context.
 	 * 
 	 * @param key
 	 * @param language

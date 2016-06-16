@@ -58,6 +58,7 @@ import org.openflexo.gina.model.FIBVariable;
 import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.widget.FIBReferencedComponentWidget;
+import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
 
 /**
@@ -689,7 +690,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	@Override
 	public String getLocalized(String key) {
 		if (getController() != null && getController().getLocalizerForComponent(getComponent()) != null) {
-			return getController().getLocalizerForComponent(getComponent()).localizedForKey(key);
+			return getController().getLocalizerForComponent(getComponent()).localizedForKeyAndLanguage(key,
+					FlexoLocalization.getCurrentLanguage(), true);
 		}
 		return key;
 	}

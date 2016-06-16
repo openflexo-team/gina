@@ -61,6 +61,7 @@ import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTableColumn;
 import org.openflexo.gina.view.widget.FIBTableWidget;
+import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 /**
@@ -167,7 +168,8 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 
 	public String getLocalized(String key) {
 		if (getController() != null) {
-			return getController().getLocalizerForComponent(getColumnModel().getOwner()).localizedForKey(key);
+			return getController().getLocalizerForComponent(getColumnModel().getOwner()).localizedForKeyAndLanguage(key,
+					FlexoLocalization.getCurrentLanguage(), true);
 		}
 		else {
 			logger.warning("Controller not defined");

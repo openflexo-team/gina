@@ -232,46 +232,102 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 
 		@Override
 		public String localizedForKeyAndLanguage(String key, Language language) {
-			return localizedForKeyAndLanguage(key, language, false);
+			return localizedForKeyAndLanguage(key, language, handleNewEntry(key, language));
 		}
 
+		/**
+		 * Return String matching specified key and language<br>
+		 * If #createsNewEntryInFirstEditableParent set to true, will try to enter a new traduction.<br>
+		 * LocalizedDelegate are recursively requested to their parents, and the first one who respond true to
+		 * {@link #handleNewEntry(String, Language)} will add a new entry
+		 * 
+		 * @param key
+		 * @param language
+		 * @return
+		 */
+		// TODO: duplicated code as in LocalizedDelegateImpl, please refactor this to avoid code duplication
 		@Override
-		public String localizedForKeyAndLanguage(String key, Language language, boolean createsNewEntriesIfNonExistant) {
+		public String localizedForKeyAndLanguage(String key, Language language, boolean createsNewEntryInFirstEditableParent) {
+
+			if (key == null || StringUtils.isEmpty(key)) {
+				return null;
+			}
+
+			/*boolean debug = false;
+			
+			if (key.equals("Super classes")) {
+				System.out.println("OK, j'ai le truc Super classes");
+				System.out.println("createsNewEntryInFirstEditableParent=" + createsNewEntryInFirstEditableParent);
+				debug = true;
+				LocalizedDelegate l = this;
+				while (l.getParent() != null) {
+					System.out.println("> " + l);
+					l = l.getParent();
+				}
+				// Thread.dumpStack();
+			}*/
+
+			String localized = getDictForLang(language).get(key);
+
+			if (localized == null) {
+				// Not found in this delegate
+				if (handleNewEntry(key, language)) {
+					// We then have to create entry here
+					addEntry(key);
+					return getDictForLang(language).get(key);
+				}
+				else {
+					if (getParent() != null) {
+						// Nice, we forward the request to the parent
+						return getParent().localizedForKeyAndLanguage(key, language, createsNewEntryInFirstEditableParent);
+					}
+					return key;
+				}
+			}
+
+			return localized;
+		}
+
+		// @Override
+		/*public String localizedForKeyAndLanguage2(String key, Language language, boolean createsNewEntriesIfNonExistant) {
 			if (key == null || StringUtils.isEmpty(key)) {
 				return null;
 			}
 			// if (isSearchingNewEntries) logger.info("-------> called localizedForKeyAndLanguage() key="+key+" lang="+language);
-
+		
+			boolean debug = false;
+		
+			if (key.equals("properties_declared_in_this_class")) {
+				System.out.println("OK, j'ai le truc properties_declared_in_this_class");
+				debug = true;
+			}
+		
 			String returned = getDictForLang(language).get(key);
-
+		
+			if (debug) {
+				System.out.println("returned=" + returned);
+				System.out.println("getParent()=" + getParent());
+				System.out.println("createsNewEntriesIfNonExistant=" + createsNewEntriesIfNonExistant);
+				// Thread.dumpStack();
+			}
+		
 			if (returned == null) {
 				if (getParent() != null) {
+					if (debug) {
+						System.out.println("Le parent de " + this + " c'est " + getParent());
+					}
+					returned = getParent().localizedForKeyAndLanguage(key, language);
 					returned = getParent().localizedForKeyAndLanguage(key, language, !createsNewEntriesIfNonExistant);
 				}
+				if (createsNewEntriesIfNonExistant) {
 				if (returned == null && createsNewEntriesIfNonExistant) {
 					foundLocalized(key);
 				}
 			}
-
+		
 			return returned;
-
-			/*String returned = getDictForLang(language).get(key);
-			if (returned == null) {
-			String defaultValue = getDefaultValue(key, language);
-			if (handleNewEntry(key, language)) {
-				if (!key.equals(defaultValue)) {
-					addToEntries(new FIBLocalizedEntry(this, key, language.getName(), defaultValue));
-					logger.fine("FIBLocalizedDictionary: store value " + defaultValue + " for key " + key + " for language " + language);
-				} else {
-					getDictForLang(language).put(key, defaultValue);
-					logger.fine("FIBLocalizedDictionary: undefined value for key " + key + " for language " + language);
-				}
-				// dynamicEntries = null;
-			}
-			return defaultValue;
-			}
-			return returned;*/
-		}
+		
+		}*/
 
 		// TODO: duplicated code as in LocalizedDelegateImpl, please refactor this to avoid code duplication
 		@Override
@@ -635,8 +691,8 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 			getPropertyChangeSupport().firePropertyChange(ENTRIES_KEY, null, getEntries());
 		}
 
-		public DynamicEntry addEntry() {
-			String key = "new_entry";
+		public DynamicEntry addEntry(String key) {
+
 			DynamicEntry newDynamicEntry = new DynamicEntry(key);
 			dynamicEntries.add(newDynamicEntry);
 			Collections.sort(dynamicEntries, new Comparator<DynamicEntry>() {
@@ -645,7 +701,12 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 					return Collator.getInstance().compare(o1.key, o2.key);
 				}
 			});
+			searchTranslation(newDynamicEntry);
 			return null;
+		}
+
+		public DynamicEntry addEntry() {
+			return addEntry("new_entry");
 		}
 
 		public void deleteEntry(DynamicEntry entry) {

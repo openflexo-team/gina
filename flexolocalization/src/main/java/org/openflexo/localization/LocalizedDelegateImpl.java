@@ -291,16 +291,22 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	}
 
 	public Entry addEntry(String key) {
+		System.out.println("Adding " + key + " in " + this);
 		// Add in all dictionaries, when required
 		for (Language language : Language.availableValues()) {
 			addEntryInDictionary(language, key, key, false);
 		}
 		entries = null;
-		setChanged();
-		notifyObservers();
+		// setChanged();
+		// notifyObservers();
 		Entry returned = getEntry(key);
+		System.out.println("Added entry " + returned + " " + returned.getKey() + " english=" + returned.getEnglish());
 		searchTranslation(returned);
 		getPropertyChangeSupport().firePropertyChange("entries", null, getEntries());
+		if (automaticSaving) {
+			logger.info("************** Save because added: " + key + " in " + this);
+			save();
+		}
 		return returned;
 	}
 
@@ -700,21 +706,24 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	@Override
 	public void searchTranslation(LocalizedEntry entry) {
 		if (getParent() != null) {
-			String englishTranslation = parent.localizedForKeyAndLanguage(entry.getKey(), Language.ENGLISH);
+			String englishTranslation = parent.localizedForKeyAndLanguage(entry.getKey(), Language.ENGLISH, false);
 			if (entry.getKey().equals(englishTranslation)) {
 				englishTranslation = automaticEnglishTranslation(entry.getKey());
 			}
 			entry.setEnglish(englishTranslation);
-			String dutchTranslation = parent.localizedForKeyAndLanguage(entry.getKey(), Language.DUTCH);
+			// System.out.println("englishTranslation=" + englishTranslation);
+			String dutchTranslation = parent.localizedForKeyAndLanguage(entry.getKey(), Language.DUTCH, false);
 			if (entry.getKey().equals(dutchTranslation)) {
 				dutchTranslation = automaticDutchTranslation(entry.getKey());
 			}
 			entry.setDutch(dutchTranslation);
-			String frenchTranslation = parent.localizedForKeyAndLanguage(entry.getKey(), Language.FRENCH);
+			// System.out.println("dutchTranslation=" + dutchTranslation);
+			String frenchTranslation = parent.localizedForKeyAndLanguage(entry.getKey(), Language.FRENCH, false);
 			if (entry.getKey().equals(frenchTranslation)) {
 				frenchTranslation = automaticFrenchTranslation(entry.getKey());
 			}
 			entry.setFrench(frenchTranslation);
+			// System.out.println("frenchTranslation=" + frenchTranslation);
 		}
 		else {
 			String englishTranslation = entry.getKey().toString();
@@ -802,7 +811,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 	@Override
 	public String localizedForKeyAndLanguage(String key, Language language) {
-		return retrieveLocalizedForKeyAndLanguage(key, language, handleNewEntry(key, language));
+		return localizedForKeyAndLanguage(key, language, handleNewEntry(key, language));
 	}
 
 	/**
@@ -812,81 +821,91 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	 * @param language
 	 * @return
 	 */
-	private String retrieveLocalizedForKeyAndLanguage(String key, Language language, boolean createsNewEntriesIfNonExistant) {
+	/*private String retrieveLocalizedForKeyAndLanguage(String key, Language language, boolean createsNewEntryInFirstEditableParent) {
+	
+		if (key == null || StringUtils.isEmpty(key)) {
+			return null;
+		}
+	
+		Properties currentLanguageDict = getDictionary(language);
+	
+		String localized = currentLanguageDict.getProperty(key);
+	
+		if (localized == null && createsNewEntryInFirstEditableParent) {
+			// We have to find the right place to add the entry
+	
+			if (handleNewEntry(key, language)) {
+				addEntry(key);
+				if (automaticSaving) {
+					logger.info("************** Save because added: " + key + " in " + this);
+					save();
+				}
+				return currentLanguageDict.getProperty(key);
+			}
+			else if (getParent() != null) {
+				return getParent().
+			}
+		}
+		else {
+			return localized;
+		}
+	}*/
+
+	/**
+	 * Return String matching specified key and language<br>
+	 * If #createsNewEntryInFirstEditableParent set to true, will try to enter a new traduction.<br>
+	 * LocalizedDelegate are recursively requested to their parents, and the first one who respond true to
+	 * {@link #handleNewEntry(String, Language)} will add a new entry
+	 * 
+	 * @param key
+	 * @param language
+	 * @return
+	 */
+	@Override
+	public String localizedForKeyAndLanguage(String key, Language language, boolean createsNewEntryInFirstEditableParent) {
 
 		if (key == null || StringUtils.isEmpty(key)) {
 			return null;
 		}
 
-		/*if (!createsNewEntriesIfNonExistant) {
-			return getLocalizedForKeyAndLanguage(key, language);
+		/*boolean debug = false;
+		
+		if (key.equals("Super classes")) {
+			System.out.println("OK, j'ai le truc Super classes dans " + this);
+			System.out.println("createsNewEntryInFirstEditableParent=" + createsNewEntryInFirstEditableParent);
+			debug = true;
+			LocalizedDelegate l = this;
+			while (l.getParent() != null) {
+				System.out.println("> " + l);
+				l = l.getParent();
+			}
+			// Thread.dumpStack();
 		}*/
 
 		Properties currentLanguageDict = getDictionary(language);
-
 		String localized = currentLanguageDict.getProperty(key);
 
-		if (localized == null && createsNewEntriesIfNonExistant) {
-			addEntry(key);
-			if (automaticSaving) {
-				logger.info("************** Save because added: " + key + " in " + this);
-				save();
-			}
-			return currentLanguageDict.getProperty(key);
-		}
-		else {
-			return localized;
-		}
-	}
+		/*if (debug) {
+			System.out.println("La1 localized=" + localized);
+		}*/
 
-	@Override
-	public String localizedForKeyAndLanguage(String key, Language language, boolean createsNewEntriesIfNonExistant) {
-
-		if (key == null) {
-			return null;
-		}
-
-		String returned = retrieveLocalizedForKeyAndLanguage(key, language, false);
-
-		if (returned == null) {
-			// Not found
-			if (createsNewEntriesIfNonExistant && handleNewEntry(key, language)) {
-				// We have to register this new entries
-				if (getParent() != null) {
-					// A parent exists, we will try to use locales provided by the parent
-					for (Language l : Language.availableValues()) {
-						String value = getParent().localizedForKeyAndLanguage(key, l, false);
-						if (value == null) {
-							value = key;
-						}
-						if (l == language) {
-							returned = value;
-						}
-						registerNewEntry(key, l, value);
-					}
-					return returned;
-				}
-				else {
-					// No parent exists, we will use keys
-					for (Language l : Language.availableValues()) {
-						registerNewEntry(key, l, key);
-					}
-					return key;
-				}
+		if (localized == null) {
+			// Not found in this delegate
+			if (handleNewEntry(key, language)) {
+				// We then have to create entry here
+				addEntry(key);
+				return currentLanguageDict.getProperty(key);
 			}
 			else {
 				if (getParent() != null) {
-					return getParent().localizedForKeyAndLanguage(key, language, false);
+					// Nice, we forward the request to the parent
+					return getParent().localizedForKeyAndLanguage(key, language, createsNewEntryInFirstEditableParent);
 				}
-				else {
-					// logger.warning("Not found and not handling new entries for localized for key " + key + " delegate=" + delegate);
-					return key;
-				}
+				return key;
 			}
 		}
-		else {
-			return returned;
-		}
+
+		return localized;
 	}
 
 	@Override
