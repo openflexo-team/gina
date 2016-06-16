@@ -165,8 +165,10 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 		// Locales for GINA
 		// (based on deprecated resources, to be removed)
-		public static LocalizedDelegate GINA_LOCALIZATION = new LocalizedDelegateImpl(ResourceLocator.locateResource("GinaLocalization"),
-				new LocalizedDelegateImpl(ResourceLocator.locateResource("FlexoLocalization/Deprecated"), null, false, false), true, true);
+		public static LocalizedDelegate GINA_LOCALIZATION = new LocalizedDelegateImpl(
+				ResourceLocator.locateResource("GinaLocalization/General"),
+				/*new LocalizedDelegateImpl(ResourceLocator.locateResource("FlexoLocalization/Deprecated"), null, false, false)*/null, true,
+				true);
 
 		/*static {
 			ResourceLocator rl = ResourceLocator.getResourceLocator();
