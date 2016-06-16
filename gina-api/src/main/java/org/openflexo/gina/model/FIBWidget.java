@@ -154,7 +154,7 @@ public abstract interface FIBWidget extends FIBComponent {
 	@Setter(TOOLTIP_TEXT_KEY)
 	public void setTooltipText(String tooltipText);
 
-	@Getter(value = LOCALIZE_KEY, defaultValue = "true")
+	@Getter(value = LOCALIZE_KEY, defaultValue = "false")
 	@XMLAttribute
 	public boolean getLocalize();
 
@@ -657,7 +657,8 @@ public abstract interface FIBWidget extends FIBComponent {
 					}
 				};
 				this.valueTransform.setBindingName("valueTransform");
-			} else {
+			}
+			else {
 				this.valueTransform = null;
 			}
 		}
@@ -862,7 +863,8 @@ public abstract interface FIBWidget extends FIBComponent {
 			public void notifiedBindingChanged(DataBinding<?> binding) {
 				if (binding == getValueTransform()) {
 					FIBWidgetImpl.this.notifiedBindingChanged(binding);
-				} else if (binding == getValueValidator()) {
+				}
+				else if (binding == getValueValidator()) {
 					FIBWidgetImpl.this.notifiedBindingChanged(binding);
 				}
 			}

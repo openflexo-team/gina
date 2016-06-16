@@ -133,18 +133,4 @@ public class LocalizedPanel extends FIBJPanel<LocalizedDelegate> {
 		}
 	}
 
-	/*public static void main(String[] args) {
-	
-		Resource fibValidationLocalizedDelegate = ResourceLocator.locateResource("FIBValidationLocalized");
-		LocalizedDelegate VALIDATION_LOCALIZATION = FlexoLocalization
-				.getLocalizedDelegate(fibValidationLocalizedDelegate, null, true, true);
-	
-		JFrame f = new JFrame();
-		LocalizedPanel editor = new LocalizedPanel(VALIDATION_LOCALIZATION, null);
-		f.getContentPane().add(editor);
-		f.validate();
-		f.pack();
-		f.show();
-	}*/
-
 }

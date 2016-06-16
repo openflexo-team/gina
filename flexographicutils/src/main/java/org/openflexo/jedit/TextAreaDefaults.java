@@ -34,8 +34,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import org.openflexo.localization.FlexoLocalization;
-
 /**
  * Encapsulates default settings for a text area. This can be passed to the constructor once the necessary fields have been filled out. The
  * advantage of doing this over calling lots of set() methods after creating the text area is that this method is faster.
@@ -85,7 +83,7 @@ public class TextAreaDefaults {
 	 * @return
 	 */
 	private static JMenuItem makeMenu(String string, ActionListener actionListener) {
-		JMenuItem menu = new JMenuItem(FlexoLocalization.localizedForKey(string));
+		JMenuItem menu = new JMenuItem(string/*FlexoLocalization.getMainLocalizer().localizedForKey(string)*/);
 		menu.addActionListener(actionListener);
 		return menu;
 	}

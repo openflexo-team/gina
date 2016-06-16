@@ -60,7 +60,6 @@ import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.swing.view.widget.JFIBColorWidget.ColorSelectorPanel;
 import org.openflexo.gina.view.widget.impl.FIBColorWidgetImpl;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.swing.ColorSelector;
 
 /**
@@ -154,9 +153,8 @@ public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>
 			checkBox = new JCheckBox();
 			checkBox.setHorizontalTextPosition(JCheckBox.LEADING);
 
-			checkBox.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, widget.getComponent().getAllowsNullText(),
-					checkBox));
-			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
+			checkBox.setText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey(widget.getComponent().getAllowsNullText(), checkBox));
+			checkBox.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedTooltipForKey("undefined_value", checkBox));
 
 			checkBox.addActionListener(new ActionListener() {
 
@@ -184,8 +182,8 @@ public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>
 		}
 
 		public void updateLanguage() {
-			checkBox.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "transparent", checkBox));
-			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
+			checkBox.setText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("transparent", checkBox));
+			checkBox.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedTooltipForKey("undefined_value", checkBox));
 		}
 
 		public void updateFont(Font font) {

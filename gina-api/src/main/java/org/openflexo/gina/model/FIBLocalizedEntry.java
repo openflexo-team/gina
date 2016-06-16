@@ -170,7 +170,7 @@ public interface FIBLocalizedEntry extends FIBModelObject {
 			// System.out.println("looking up " + entry);
 			// System.out.println("parent=" + entry.getLocalizedDictionary().getParent());
 			if (entry.getLocalizedDictionary() != null && entry.getLocalizedDictionary().getParent() != null) {
-				String parentTranslation = entry.getLocalizedDictionary().getParent().getLocalizedForKeyAndLanguage(entry.getKey(),
+				String parentTranslation = entry.getLocalizedDictionary().getParent().localizedForKeyAndLanguage(entry.getKey(),
 						Language.retrieveLanguage(entry.getLanguage()));
 				// System.out.println("parentTranslation=" + parentTranslation);
 				if (parentTranslation != null && parentTranslation.equals(entry.getValue())) {

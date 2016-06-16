@@ -46,6 +46,7 @@ import org.openflexo.gina.FIBLibrary.FIBLibraryImpl;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelObject;
+import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingViewFactory;
@@ -76,7 +77,8 @@ public class FIBInspectors {
 	public FIBInspectors() {
 
 		Resource fontAndColorInspectorsDir = ResourceLocator.locateResource("EditorInspectors/FontAndColors");
-		InspectorGroup fontAndColorInspectorGroup = new InspectorGroup(fontAndColorInspectorsDir, INSPECTORS_FIB_LIBRARY) {
+		InspectorGroup fontAndColorInspectorGroup = new InspectorGroup(fontAndColorInspectorsDir, INSPECTORS_FIB_LIBRARY,
+				FIBModelObjectImpl.GINA_LOCALIZATION) {
 			@Override
 			public void progress(Resource f, FIBInspector inspector) {
 				super.progress(f, inspector);

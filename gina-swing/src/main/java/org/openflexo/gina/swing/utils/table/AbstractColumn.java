@@ -49,7 +49,6 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
 import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.toolbox.ToolBox;
 
 /**
@@ -116,14 +115,14 @@ public abstract class AbstractColumn<D, T> {
 		if (_title == null || !_displayTitle) {
 			return " ";
 		}
-		return FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, getTitle());
+		return FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey(getTitle());
 	}
 
 	public String getLocalizedTooltip() {
 		if (_title == null) {
 			return " ";
 		}
-		return FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, _title);
+		return FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey(_title);
 	}
 
 	public int getDefaultWidth() {
@@ -190,7 +189,8 @@ public abstract class AbstractColumn<D, T> {
 		 * @return the default table cell renderer
 		 */
 		@Override
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row,
+				int column) {
 			Component returned = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			if (!isSelected || ToolBox.isMacOSLaf()) {
 				setComponentBackground(returned, hasFocus, isSelected, row, column);
@@ -206,15 +206,18 @@ public abstract class AbstractColumn<D, T> {
 		protected void setComponentBackground(Component component, boolean hasFocus, boolean isSelected, int row, int column) {
 			if (hasFocus && getModel() != null && getModel().isCellEditable(row, column) && isSelected) {
 				component.setForeground(SELECTED_CELL_TABULAR_VIEW_FOREGROUND_COLOR);
-			} else {
+			}
+			else {
 				component.setForeground(UNSELECTED_CELL_TABULAR_VIEW_FOREGROUND_COLOR);
 			}
 			if (isSelected) {
 				component.setBackground(SELECTED_LINES_TABULAR_VIEW_COLOR);
-			} else {
+			}
+			else {
 				if (row % 2 == 0) {
 					component.setBackground(ODD_LINES_TABULAR_VIEW_COLOR);
-				} else {
+				}
+				else {
 					component.setBackground(NON_ODD_LINES_TABULAR_VIEW_COLOR);
 				}
 			}

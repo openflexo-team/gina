@@ -108,7 +108,6 @@ import org.openflexo.gina.swing.utils.table.IconColumn;
 import org.openflexo.gina.swing.utils.table.StringColumn;
 import org.openflexo.gina.swing.utils.table.TabularPanel;
 import org.openflexo.gina.utils.FIBIconLibrary;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.swing.ButtonsControlPanel;
 import org.openflexo.swing.MouseOverButton;
 import org.openflexo.swing.VerticalLayout;
@@ -505,7 +504,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		_controlPanel = new ButtonsControlPanel() {
 			@Override
 			public String localizedForKeyAndButton(String key, JButton component) {
-				return FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, key, component);
+				return FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey(key, component);
 			}
 		};
 		connectButton = _controlPanel.addButton("connect", new ActionListener() {
@@ -561,18 +560,17 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			if (bindingSelector.editionMode == EditionMode.COMPOUND_BINDING) {
 				showHideCompoundBindingsButton.setNormalIcon(FIBIconLibrary.TOGGLE_ARROW_TOP_ICON);
 				showHideCompoundBindingsButton.setMouseOverIcon(FIBIconLibrary.TOGGLE_ARROW_TOP_SELECTED_ICON);
-				showHideCompoundBindingsButton
-						.setToolTipText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, SPECIFY_BASIC_BINDING));
+				showHideCompoundBindingsButton.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey(SPECIFY_BASIC_BINDING));
 				showHideCompoundBindingsButtonLabel
-						.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, SPECIFY_BASIC_BINDING) + "  ");
+						.setText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey(SPECIFY_BASIC_BINDING) + "  ");
 			}
 			else {
 				showHideCompoundBindingsButton.setNormalIcon(FIBIconLibrary.TOGGLE_ARROW_BOTTOM_ICON);
 				showHideCompoundBindingsButton.setMouseOverIcon(FIBIconLibrary.TOGGLE_ARROW_BOTTOM_SELECTED_ICON);
 				showHideCompoundBindingsButton
-						.setToolTipText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, SPECIFY_COMPOUND_BINDING));
+						.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey(SPECIFY_COMPOUND_BINDING));
 				showHideCompoundBindingsButtonLabel
-						.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, SPECIFY_COMPOUND_BINDING) + "  ");
+						.setText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey(SPECIFY_COMPOUND_BINDING) + "  ");
 			}
 
 			JPanel showHideCompoundBindingsButtonPanel = new JPanel();
@@ -591,12 +589,11 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			optionsPanel.add(optionsWestPanel, BorderLayout.WEST);
 		}
 
-		currentTypeLabel = new JLabel(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "no_type"), SwingConstants.LEFT);
+		currentTypeLabel = new JLabel(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("no_type"), SwingConstants.LEFT);
 		currentTypeLabel.setFont(new Font("SansSerif", Font.ITALIC, 10));
 		currentTypeLabel.setForeground(Color.GRAY);
 
-		searchedTypeLabel = new JLabel("[" + FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "no_type") + "]",
-				SwingConstants.LEFT);
+		searchedTypeLabel = new JLabel("[" + FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("no_type") + "]", SwingConstants.LEFT);
 		searchedTypeLabel.setFont(new Font("SansSerif", Font.PLAIN, 10));
 		searchedTypeLabel.setForeground(Color.RED);
 
@@ -679,7 +676,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 	private String getTypeStringRepresentation() {
 		if (bindingSelector.getEditedObject() == null || bindingSelector.getEditedObject().getDeclaredType() == null) {
-			return FlexoLocalization.localizedForKey("no_type");
+			return FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("no_type");
 		}
 		else {
 			return TypeUtils.simpleRepresentation(bindingSelector.getEditedObject().getDeclaredType());
@@ -1289,7 +1286,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 		public String getTypeStringRepresentation() {
 			if (getResultingType() == null) {
-				return FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "no_type");
+				return FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("no_type");
 			}
 			else {
 				return TypeUtils.simpleRepresentation(getResultingType());

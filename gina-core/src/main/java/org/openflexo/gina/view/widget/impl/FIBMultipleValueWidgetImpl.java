@@ -65,7 +65,6 @@ import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.gina.model.widget.FIBMultipleValues;
 import org.openflexo.gina.view.impl.FIBWidgetViewImpl;
 import org.openflexo.gina.view.widget.FIBMultipleValueWidget;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.toolbox.StringUtils;
 
 /**
@@ -446,13 +445,13 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 				if (value != null) {
 					String stringRepresentation = getStringRepresentation(value);
 					if (stringRepresentation == null || stringRepresentation.length() == 0) {
-						stringRepresentation = "<html><i>"
-								+ FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "empty_string") + "</i></html>";
+						stringRepresentation = "<html><i>" + FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("empty_string")
+								+ "</i></html>";
 					}
 					label.setText(stringRepresentation);
 				}
 				else {
-					label.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "no_selection"));
+					label.setText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("no_selection"));
 				}
 				if (FIBMultipleValueWidgetImpl.this.getFont() != null) {
 					label.setFont(FIBMultipleValueWidgetImpl.this.getFont());

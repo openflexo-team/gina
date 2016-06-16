@@ -210,12 +210,17 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 		}*/
 
 		@Override
-		public String getLocalizedForKeyAndLanguage(String key, Language language) {
-			return getLocalizedForKeyAndLanguage(key, language, false);
+		public String localizedForKey(String key) {
+			return localizedForKeyAndLanguage(key, FlexoLocalization.getCurrentLanguage());
 		}
 
 		@Override
-		public String getLocalizedForKeyAndLanguage(String key, Language language, boolean createsNewEntriesIfNonExistant) {
+		public String localizedForKeyAndLanguage(String key, Language language) {
+			return localizedForKeyAndLanguage(key, language, false);
+		}
+
+		@Override
+		public String localizedForKeyAndLanguage(String key, Language language, boolean createsNewEntriesIfNonExistant) {
 			if (key == null || StringUtils.isEmpty(key)) {
 				return null;
 			}
@@ -223,8 +228,13 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 
 			String returned = getDictForLang(language).get(key);
 
-			if (returned == null && createsNewEntriesIfNonExistant) {
-				foundLocalized(key);
+			if (returned == null) {
+				if (getParent() != null) {
+					returned = getParent().localizedForKeyAndLanguage(key, language, !createsNewEntriesIfNonExistant);
+				}
+				if (returned == null && createsNewEntriesIfNonExistant) {
+					foundLocalized(key);
+				}
 			}
 
 			return returned;
@@ -326,7 +336,7 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 			@Override
 			public String getEnglish() {
 				// The locale might be found in parent localizer
-				String returned = FlexoLocalization.localizedForKeyAndLanguage(FIBLocalizedDictionaryImpl.this, key, Language.ENGLISH);
+				String returned = localizedForKeyAndLanguage(key, Language.ENGLISH);
 				if (returned == null) {
 					returned = key;
 				}
@@ -343,7 +353,7 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 			@Override
 			public String getFrench() {
 				// The locale might be found in parent localizer
-				String returned = FlexoLocalization.localizedForKeyAndLanguage(FIBLocalizedDictionaryImpl.this, key, Language.FRENCH);
+				String returned = localizedForKeyAndLanguage(key, Language.FRENCH);
 				if (returned == null) {
 					returned = key;
 				}
@@ -360,7 +370,7 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 			@Override
 			public String getDutch() {
 				// The locale might be found in parent localizer
-				String returned = FlexoLocalization.localizedForKeyAndLanguage(FIBLocalizedDictionaryImpl.this, key, Language.DUTCH);
+				String returned = localizedForKeyAndLanguage(key, Language.DUTCH);
 				if (returned == null) {
 					returned = key;
 				}
@@ -577,19 +587,17 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 		@Override
 		public void searchTranslation(LocalizedEntry entry) {
 			if (getParent() != null) {
-				String englishTranslation = FlexoLocalization.localizedForKeyAndLanguage(getParent(), entry.getKey(), Language.ENGLISH,
-						false);
+				String englishTranslation = getParent().localizedForKeyAndLanguage(entry.getKey(), Language.ENGLISH, false);
 				if (entry.getKey().equals(englishTranslation)) {
 					englishTranslation = automaticEnglishTranslation(entry.getKey());
 				}
 				entry.setEnglish(englishTranslation);
-				String dutchTranslation = FlexoLocalization.localizedForKeyAndLanguage(getParent(), entry.getKey(), Language.DUTCH, false);
+				String dutchTranslation = getParent().localizedForKeyAndLanguage(entry.getKey(), Language.DUTCH, false);
 				if (entry.getKey().equals(dutchTranslation)) {
 					dutchTranslation = automaticDutchTranslation(entry.getKey());
 				}
 				entry.setDutch(dutchTranslation);
-				String frenchTranslation = FlexoLocalization.localizedForKeyAndLanguage(getParent(), entry.getKey(), Language.FRENCH,
-						false);
+				String frenchTranslation = getParent().localizedForKeyAndLanguage(entry.getKey(), Language.FRENCH, false);
 				if (entry.getKey().equals(frenchTranslation)) {
 					frenchTranslation = automaticFrenchTranslation(entry.getKey());
 				}

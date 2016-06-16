@@ -60,7 +60,6 @@ import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.swing.view.widget.JFIBFontWidget.FontSelectorPanel;
 import org.openflexo.gina.view.widget.impl.FIBFontWidgetImpl;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.swing.FontSelector;
 
 /**
@@ -71,7 +70,7 @@ import org.openflexo.swing.FontSelector;
  * 
  * @author sylvain
  */
-public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel> implements FocusListener, JFIBView<FIBFont, FontSelectorPanel> {
+public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel>implements FocusListener, JFIBView<FIBFont, FontSelectorPanel> {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBFontWidget.class.getPackage().getName());
 
@@ -153,9 +152,8 @@ public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel> impleme
 			checkBox = new JCheckBox();
 			checkBox.setHorizontalTextPosition(JCheckBox.LEADING);
 
-			checkBox.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, widget.getComponent().getAllowsNullText(),
-					checkBox));
-			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
+			checkBox.setText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey(widget.getComponent().getAllowsNullText(), checkBox));
+			checkBox.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedTooltipForKey("undefined_value", checkBox));
 
 			checkBox.addActionListener(new ActionListener() {
 
@@ -183,8 +181,8 @@ public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel> impleme
 		}
 
 		public void updateLanguage() {
-			checkBox.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
-			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
+			checkBox.setText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("undefined_value", checkBox));
+			checkBox.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedTooltipForKey("undefined_value", checkBox));
 		}
 
 	}

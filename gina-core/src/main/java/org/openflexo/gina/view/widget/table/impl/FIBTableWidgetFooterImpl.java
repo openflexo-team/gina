@@ -50,7 +50,6 @@ import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTableAction;
 import org.openflexo.gina.view.widget.FIBTableWidget;
 import org.openflexo.gina.view.widget.impl.FIBTableWidgetFooter;
-import org.openflexo.localization.FlexoLocalization;
 
 /**
  * Default base implementation for a table widget footer (the footer is synchronized with the selection of table)
@@ -204,7 +203,7 @@ public abstract class FIBTableWidgetFooterImpl<C, T> implements FIBTableWidgetFo
 
 	@Override
 	public String getLocalized(String key) {
-		return FlexoLocalization.localizedForKey(getController().getLocalizerForComponent(fibTable), key);
+		return getController().getLocalizerForComponent(fibTable).localizedForKey(key);
 	}
 
 }

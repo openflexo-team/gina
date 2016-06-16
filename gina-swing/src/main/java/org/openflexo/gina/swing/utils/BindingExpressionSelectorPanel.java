@@ -49,7 +49,6 @@ import javax.swing.JButton;
 
 import org.openflexo.connie.DataBinding;
 import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.swing.ButtonsControlPanel;
 import org.openflexo.toolbox.ToolBox;
 
@@ -98,7 +97,7 @@ public class BindingExpressionSelectorPanel extends AbstractBindingSelectorPanel
 		_controlPanel = new ButtonsControlPanel() {
 			@Override
 			public String localizedForKeyAndButton(String key, JButton component) {
-				return FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, key, component);
+				return FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey(key, component);
 			}
 		};
 		_applyButton = _controlPanel.addButton("apply", new ActionListener() {
@@ -209,9 +208,9 @@ public class BindingExpressionSelectorPanel extends AbstractBindingSelectorPanel
 					+ _bindingSelector.getEditedObject().getClass().getSimpleName());
 			return;
 		}
-
+		
 		BindingExpression bindingExpression = (BindingExpression) _bindingSelector.getEditedObject();
-
+		
 		_expressionPanel.setEditedExpression(bindingExpression);*/
 
 		_expressionPanel.setEditedExpression(bindingSelector.getEditedObject());

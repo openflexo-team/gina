@@ -46,7 +46,6 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.utils.validation.ValidationPanel;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.validation.ValidationIssue;
 
 public class ComponentValidationWindow extends JDialog {
@@ -55,9 +54,9 @@ public class ComponentValidationWindow extends JDialog {
 	private final FIBEditorController editorController;
 
 	public ComponentValidationWindow(JFrame frame, FIBEditorController editorController, FIBLibrary fibLibrary) {
-		super(frame, FlexoLocalization.localizedForKey(FIBEditor.LOCALIZATION, "component_validation"), false);
+		super(frame, FIBEditor.EDITOR_LOCALIZATION.localizedForKey("component_validation"), false);
 		this.editorController = editorController;
-		validationPanel = new ValidationPanel(null, fibLibrary, FIBEditor.LOCALIZATION) {
+		validationPanel = new ValidationPanel(null, fibLibrary, FIBEditor.EDITOR_LOCALIZATION) {
 			@Override
 			protected void performSelect(ValidationIssue<?, ?> validationIssue) {
 				ComponentValidationWindow.this.performSelect(validationIssue);

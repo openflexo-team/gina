@@ -71,7 +71,6 @@ import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.swing.view.widget.JFIBNumberWidget.NumberSelectorPanel;
 import org.openflexo.gina.view.widget.impl.FIBNumberWidgetImpl;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.toolbox.ToolBox;
 
 /**
@@ -173,7 +172,7 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 
 			setOpaque(false);
 			checkBox = new JCheckBox();
-			checkBox.setToolTipText(FlexoLocalization.localizedForKey("undefined_value", checkBox));
+			checkBox.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("undefined_value", checkBox));
 			checkBox.addActionListener(new ActionListener() {
 
 				@Override
@@ -240,7 +239,7 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 		}
 
 		public void updateLanguage() {
-			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
+			checkBox.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedTooltipForKey("undefined_value", checkBox));
 		}
 
 		protected abstract SpinnerNumberModel makeSpinnerModel();

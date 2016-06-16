@@ -39,8 +39,13 @@
 
 package org.openflexo.localization;
 
+import java.awt.Component;
 import java.io.File;
 import java.util.List;
+
+import javax.swing.JComponent;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.TableColumn;
 
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
@@ -55,6 +60,18 @@ import org.openflexo.toolbox.HasPropertyChangeSupport;
 public interface LocalizedDelegate {
 
 	/**
+	 * Return String matching specified key and language defined as default in {@link FlexoLocalization}<br>
+	 * If this key is not localized, this method MUST return null, in order to forward request to parent delegate
+	 * 
+	 * @param key
+	 * @param language
+	 * @return
+	 */
+	public String localizedForKey(String key);
+
+	public String localizedForKeyWithParams(String key, Object... object);
+
+	/**
 	 * Return String matching specified key and language<br>
 	 * If this key is not localized, this method MUST return null, in order to forward request to parent delegate
 	 * 
@@ -62,7 +79,7 @@ public interface LocalizedDelegate {
 	 * @param language
 	 * @return
 	 */
-	public String getLocalizedForKeyAndLanguage(String key, Language language);
+	public String localizedForKeyAndLanguage(String key, Language language);
 
 	/**
 	 * Return String matching specified key and language<br>
@@ -71,7 +88,7 @@ public interface LocalizedDelegate {
 	 * @param language
 	 * @return
 	 */
-	public String getLocalizedForKeyAndLanguage(String key, Language language, boolean createsNewEntriesIfNonExistant);
+	public String localizedForKeyAndLanguage(String key, Language language, boolean createsNewEntriesIfNonExistant);
 
 	/**
 	 * Return a boolean indicating if this delegate handle creation of new entries
@@ -121,6 +138,18 @@ public interface LocalizedDelegate {
 	public void searchTranslation(LocalizedEntry entry);
 
 	public void searchLocalized();
+
+	public String localizedForKey(String key, Component component);
+
+	public String localizedTooltipForKey(String key, JComponent component);
+
+	public String localizedForKey(String key, TitledBorder border);
+
+	public String localizedForKey(String key, TableColumn column);
+
+	public void clearStoredLocalizedForComponents();
+
+	public void updateGUILocalized();
 
 	/**
 	 * Represents a localized entry<br>

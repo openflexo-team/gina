@@ -63,7 +63,6 @@ import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBBrowserElement;
 import org.openflexo.gina.model.widget.FIBBrowserElement.FIBBrowserElementChildren;
 import org.openflexo.gina.view.widget.FIBBrowserWidget;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.ToolBox;
 
@@ -138,7 +137,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 	}
 
 	public String getLocalized(String key) {
-		return FlexoLocalization.localizedForKey(getController().getLocalizerForComponent(getBrowser()), key);
+		return getController().getLocalizerForComponent(getBrowser()).localizedForKey(key);
 	}
 
 	protected void setModel(FIBBrowserModel model) {

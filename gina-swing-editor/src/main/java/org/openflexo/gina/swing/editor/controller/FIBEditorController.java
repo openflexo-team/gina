@@ -163,7 +163,7 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 
 	public FIBEditorController(EditedFIBComponent editedComponent, Object dataObject, FIBEditor editor, JFrame frame) {
 		this(editedComponent, dataObject, editor, FIBController.instanciateController(editedComponent.getFIBComponent(),
-				SwingEditorViewFactory.INSTANCE, FIBEditor.LOCALIZATION), frame);
+				SwingEditorViewFactory.INSTANCE, FIBEditor.EDITOR_LOCALIZATION), frame);
 	}
 
 	public FIBEditorController(EditedFIBComponent editedComponent, Object dataObject, FIBEditor editor, FIBController controller,

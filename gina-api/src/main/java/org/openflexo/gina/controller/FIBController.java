@@ -550,7 +550,7 @@ public class FIBController
 	}
 
 	public String getLocalizedForKey(String key) {
-		String returned = getLocalizer().getLocalizedForKeyAndLanguage(key, FlexoLocalization.getCurrentLanguage());
+		String returned = getLocalizer().localizedForKeyAndLanguage(key, FlexoLocalization.getCurrentLanguage());
 		if (returned == null) {
 			return key;
 		}

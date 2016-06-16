@@ -49,6 +49,7 @@ import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelFactory;
+import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
@@ -72,7 +73,8 @@ public class InspectorGroup {
 
 	private final List<InspectorGroup> parentInspectorGroups;
 
-	public InspectorGroup(Resource inspectorDirectory, FIBLibrary fibLibrary, InspectorGroup... someInspectorGroups) {
+	public InspectorGroup(Resource inspectorDirectory, FIBLibrary fibLibrary, LocalizedDelegate locales,
+			InspectorGroup... someInspectorGroups) {
 		inspectors = new Hashtable<Class<?>, FIBInspector>();
 
 		this.fibLibrary = fibLibrary;
@@ -97,6 +99,7 @@ public class InspectorGroup {
 				FIBInspector inspector = (FIBInspector) component;
 				if (inspector != null) {
 					if (inspector.getDataClass() != null) {
+						inspector.setLocales(locales);
 						inspectors.put(inspector.getDataClass(), inspector);
 						logger.fine("Loaded inspector: " + f.getURI() + " for " + inspector.getDataClass());
 						progress(f, inspector);

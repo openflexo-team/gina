@@ -56,8 +56,6 @@ import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.localization.LocalizedDelegate.LocalizedEntry;
 import org.openflexo.localization.LocalizedDelegateImpl;
 import org.openflexo.localization.LocalizedDelegateImpl.SearchMode;
-import org.openflexo.rm.Resource;
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.StringUtils;
 
 /**
@@ -179,8 +177,8 @@ public class FIBLocalizedEditorController extends FIBController {
 							}
 						}
 						for (Language l : Language.getAvailableLanguages()) {
-							if (getDataObject().getLocalizedForKeyAndLanguage(e.getKey(), l) != null
-									&& getDataObject().getLocalizedForKeyAndLanguage(e.getKey(), l).contains(text)) {
+							if (getDataObject().localizedForKeyAndLanguage(e.getKey(), l) != null
+									&& getDataObject().localizedForKeyAndLanguage(e.getKey(), l).contains(text)) {
 								if (!matchingEntries.contains(e)) {
 									matchingEntries.add(e);
 								}
@@ -192,8 +190,8 @@ public class FIBLocalizedEditorController extends FIBController {
 							matchingEntries.add(e);
 						}
 						for (Language l : Language.getAvailableLanguages()) {
-							if (getDataObject().getLocalizedForKeyAndLanguage(e.getKey(), l) != null
-									&& getDataObject().getLocalizedForKeyAndLanguage(e.getKey(), l).startsWith(text)) {
+							if (getDataObject().localizedForKeyAndLanguage(e.getKey(), l) != null
+									&& getDataObject().localizedForKeyAndLanguage(e.getKey(), l).startsWith(text)) {
 								if (!matchingEntries.contains(e)) {
 									matchingEntries.add(e);
 								}
@@ -205,8 +203,8 @@ public class FIBLocalizedEditorController extends FIBController {
 							matchingEntries.add(e);
 						}
 						for (Language l : Language.getAvailableLanguages()) {
-							if (getDataObject().getLocalizedForKeyAndLanguage(e.getKey(), l) != null
-									&& getDataObject().getLocalizedForKeyAndLanguage(e.getKey(), l).endsWith(text)) {
+							if (getDataObject().localizedForKeyAndLanguage(e.getKey(), l) != null
+									&& getDataObject().localizedForKeyAndLanguage(e.getKey(), l).endsWith(text)) {
 								if (!matchingEntries.contains(e)) {
 									matchingEntries.add(e);
 								}
@@ -249,17 +247,17 @@ public class FIBLocalizedEditorController extends FIBController {
 	public void showParentLocalizedEditor() {
 		if (parentLocalizedEditor == null && getDataObject().getParent() instanceof LocalizedDelegateImpl) {
 			LocalizedDelegateImpl parent = (LocalizedDelegateImpl) getDataObject().getParent();
-			Resource sourceCodeDirectoryResource = ResourceLocator.locateSourceCodeResource(parent.getLocalizedDirectoryResource());
+			/*Resource sourceCodeDirectoryResource = ResourceLocator.locateSourceCodeResource(parent.getLocalizedDirectoryResource());
 			LocalizedDelegate sourceLocalized = FlexoLocalization.getLocalizedDelegate(sourceCodeDirectoryResource, parent.getParent(),
-					true, true);
-			parentLocalizedEditor = new LocalizedEditor(null, "localized_editor", sourceLocalized, getLocalizer(), true, false);
+					true, true);*/
+			parentLocalizedEditor = new LocalizedEditor(null, "localized_editor", /*sourceLocalized,*/parent, getLocalizer(), true, false);
 		}
 		parentLocalizedEditor.setVisible(true);
 	}
 
 	public void apply() {
 		LOGGER.info("Applying localized to GUI");
-		FlexoLocalization.updateGUILocalized();
+		getDataObject().updateGUILocalized();
 	}
 
 	public void save() {
@@ -344,8 +342,8 @@ public class FIBLocalizedEditorController extends FIBController {
 			for (LocalizedEntry e : new ArrayList<LocalizedEntry>(getDataObject().getEntries())) {
 				boolean overrideWithDifferentValues = false;
 				for (Language l : Language.getAvailableLanguages()) {
-					String localValue = getDataObject().getLocalizedForKeyAndLanguage(e.getKey(), l, false);
-					String parentValue = getDataObject().getParent().getLocalizedForKeyAndLanguage(e.getKey(), l, false);
+					String localValue = getDataObject().localizedForKeyAndLanguage(e.getKey(), l, false);
+					String parentValue = getDataObject().getParent().localizedForKeyAndLanguage(e.getKey(), l, false);
 					if (parentValue == null || !parentValue.equals(localValue)) {
 						overrideWithDifferentValues = true;
 					}

@@ -62,6 +62,7 @@ import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.FIBModelFactory;
+import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
@@ -77,6 +78,7 @@ import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
 import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.localization.LocalizedDelegateImpl;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
@@ -97,12 +99,8 @@ public class FIBEditor {
 
 	static final Logger logger = FlexoLogger.getLogger(FIBEditor.class.getPackage().getName());
 
-	// Instanciate a new localizer in directory
-	// src/dev/resources/FIBEditorLocalizer
-	// linked to parent localizer (which is Openflexo main localizer)
-	public static LocalizedDelegate LOCALIZATION = FlexoLocalization.getLocalizedDelegate(
-			ResourceLocator.locateResource("FIBEditorLocalized"),
-			FlexoLocalization.getLocalizedDelegate(ResourceLocator.locateResource("Localized"), null, false, false), true, true);
+	public static LocalizedDelegate EDITOR_LOCALIZATION = new LocalizedDelegateImpl(
+			ResourceLocator.locateResource("GinaLocalization/GinaSwingEditor"), FIBModelObjectImpl.GINA_LOCALIZATION, true, true);
 
 	public static Resource COMPONENT_LOCALIZATION_FIB = ResourceLocator.locateResource("Fib/LocalizedPanel.fib");
 
@@ -206,22 +204,22 @@ public class FIBEditor {
 
 	public FIBEditorMenuBar makeMenuBar(JFrame frame) {
 		if (progress != null) {
-			progress.progress(FlexoLocalization.localizedForKey("make_menu_bar"));
+			progress.progress(EDITOR_LOCALIZATION.localizedForKey("make_menu_bar"));
 		}
 		menuBar = new FIBEditorMenuBar(this, frame);
 		return menuBar;
 	}
 
 	public JFIBInspectorController makeInspector(JFrame frame) {
-		inspector = new JFIBInspectorController(frame, ResourceLocator.locateResource("EditorInspectors"), APP_FIB_LIBRARY, LOCALIZATION,
-				progress);
+		inspector = new JFIBInspectorController(frame, ResourceLocator.locateResource("EditorInspectors"), APP_FIB_LIBRARY,
+				EDITOR_LOCALIZATION, progress);
 		return inspector;
 	}
 
 	public FIBEditorPalettesDialog makePaletteDialog(JFrame frame) {
 		if (palette == null) {
 			if (progress != null) {
-				progress.progress(FlexoLocalization.localizedForKey("make_palette_dialog"));
+				progress.progress(EDITOR_LOCALIZATION.localizedForKey("make_palette_dialog"));
 			}
 			palette = makePalette();
 		}
@@ -230,7 +228,7 @@ public class FIBEditor {
 
 	public FIBEditorPalettes makePalette() {
 		if (progress != null) {
-			progress.progress(FlexoLocalization.localizedForKey("make_palette"));
+			progress.progress(EDITOR_LOCALIZATION.localizedForKey("make_palette"));
 		}
 		palette = new FIBEditorPalettes();
 		return palette;
@@ -238,7 +236,7 @@ public class FIBEditor {
 
 	public FIBInspectors makeInspectors() {
 		if (progress != null) {
-			progress.progress(FlexoLocalization.localizedForKey("make_inspectors"));
+			progress.progress(EDITOR_LOCALIZATION.localizedForKey("make_inspectors"));
 		}
 		inspectors = new FIBInspectors();
 		return inspectors;
@@ -246,7 +244,7 @@ public class FIBEditor {
 
 	public MainPanel makeMainPanel() {
 		if (progress != null) {
-			progress.progress(FlexoLocalization.localizedForKey("make_main_panel"));
+			progress.progress(EDITOR_LOCALIZATION.localizedForKey("make_main_panel"));
 		}
 		mainPanel = new MainPanel(this);
 		return mainPanel;
@@ -528,7 +526,7 @@ public class FIBEditor {
 
 	public void testFIB(EditedFIBComponent editedFIB, JFrame frame) {
 		JFIBView<?, ? extends JComponent> view = (JFIBView<?, ? extends JComponent>) FIBController.makeView(editedFIB.getFIBComponent(),
-				SwingViewFactory.INSTANCE, LOCALIZATION, true);
+				SwingViewFactory.INSTANCE, EDITOR_LOCALIZATION, true);
 
 		if (editedFIB.getDataObject() != null) {
 			view.getController().setDataObject(editedFIB.getDataObject());

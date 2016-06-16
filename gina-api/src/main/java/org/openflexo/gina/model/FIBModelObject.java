@@ -50,8 +50,8 @@ import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.localization.LocalizedDelegateImpl;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -76,7 +76,6 @@ import org.openflexo.model.validation.ValidationIssue;
 import org.openflexo.model.validation.ValidationReport;
 import org.openflexo.model.validation.ValidationRule;
 import org.openflexo.model.validation.ValidationWarning;
-import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.StringUtils;
 
@@ -164,14 +163,16 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 		public static final String DELETED_PROPERTY = "Deleted";
 
-		// TODO: Localizer for the FIB, should be refactored
-		public static LocalizedDelegate LOCALIZATION;
+		// Locales for GINA
+		// (based on deprecated resources, to be removed)
+		public static LocalizedDelegate GINA_LOCALIZATION = new LocalizedDelegateImpl(ResourceLocator.locateResource("GinaLocalization"),
+				new LocalizedDelegateImpl(ResourceLocator.locateResource("FlexoLocalization/Deprecated"), null, false, false), true, true);
 
-		static {
+		/*static {
 			ResourceLocator rl = ResourceLocator.getResourceLocator();
 			Resource generalLocalizedDelegate = ResourceLocator.locateResource("Localized");
 			Resource fibLocalizedDelegate = ResourceLocator.locateResource("FIBLocalized");
-
+		
 			if (fibLocalizedDelegate != null) {
 				if (generalLocalizedDelegate != null) {
 					LOCALIZATION = FlexoLocalization.getLocalizedDelegate(fibLocalizedDelegate,
@@ -189,7 +190,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 					LOCALIZATION = FlexoLocalization.getLocalizedDelegate(generalLocalizedDelegate, null, false, false);
 				}
 			}
-		}
+		}*/
 
 		// private String name;
 		// private String description;

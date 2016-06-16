@@ -39,6 +39,8 @@
 
 package org.openflexo.localization;
 
+import java.awt.Component;
+import java.awt.Frame;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -51,13 +53,25 @@ import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Properties;
 import java.util.Vector;
+import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.swing.AbstractButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JTabbedPane;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.TableColumn;
 
 import org.apache.commons.io.IOUtils;
+import org.openflexo.connie.BindingEvaluator;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
@@ -264,6 +278,15 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		}
 	}
 
+	@Override
+	public boolean registerNewEntry(String key, Language language, String value) {
+		addEntryInDictionary(language, key, value, true);
+		if (automaticSaving) {
+			save();
+		}
+		return true;
+	}
+
 	public Entry addEntry(String key) {
 		// Add in all dictionaries, when required
 		for (Language language : Language.availableValues()) {
@@ -316,61 +339,28 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		return true;
 	}
 
-	/**
-	 * Return String matching specified key and language<br>
-	 * 
-	 * @param key
-	 * @param language
-	 * @return
-	 */
-	@Override
-	public String getLocalizedForKeyAndLanguage(String key, Language language, boolean createsNewEntriesIfNonExistant) {
-
-		if (key == null || StringUtils.isEmpty(key)) {
-			return null;
-		}
-
-		if (!createsNewEntriesIfNonExistant) {
-			return getLocalizedForKeyAndLanguage(key, language);
-		}
-
-		Properties currentLanguageDict = getDictionary(language);
-
-		String localized = currentLanguageDict.getProperty(key);
-
-		if (localized == null) {
-			addEntry(key);
-			if (automaticSaving) {
-				System.out.println("Save because added: " + key);
-				save();
-			}
-			return currentLanguageDict.getProperty(key);
-		}
-		else {
-			return localized;
-		}
-	}
-
-	@Override
+	/*@Override
 	public String getLocalizedForKeyAndLanguage(String key, Language language) {
-
+	
 		if (key == null || StringUtils.isEmpty(key)) {
 			return null;
 		}
-
+	
 		Properties currentLanguageDict = getDictionary(language);
 		// String localized = currentLanguageDict.getProperty(key);
-
-		return currentLanguageDict.getProperty(key);
-
-		/*if (localized == null) {
-			addEntry(key);
-			save();
-			return currentLanguageDict.getProperty(key);
-		} else {
-			return localized;
-		}*/
-	}
+	
+		String returned = currentLanguageDict.getProperty(key);
+	
+		if (returned != null) {
+			return returned;
+		}
+	
+		if (parent != null) {
+			return parent.getLocalizedForKeyAndLanguage(key, language);
+		}
+	
+		return null;
+	}*/
 
 	public void setLocalizedForKeyAndLanguage(String key, String value, Language language) {
 		if (_localizedDictionaries == null) {
@@ -398,7 +388,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 		@Override
 		public String getEnglish() {
-			String localized = getLocalizedForKeyAndLanguage(key, Language.ENGLISH);
+			String localized = localizedForKeyAndLanguage(key, Language.ENGLISH);
 			return localized != null ? localized : key;
 			// return localizedForKeyAndLanguage(key, Language.ENGLISH);
 		}
@@ -413,7 +403,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 		@Override
 		public String getFrench() {
-			String localized = getLocalizedForKeyAndLanguage(key, Language.FRENCH);
+			String localized = localizedForKeyAndLanguage(key, Language.FRENCH);
 			return localized != null ? localized : key;
 			// return localizedForKeyAndLanguage(key, Language.FRENCH);
 		}
@@ -428,7 +418,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 		@Override
 		public String getDutch() {
-			String localized = getLocalizedForKeyAndLanguage(key, Language.DUTCH);
+			String localized = localizedForKeyAndLanguage(key, Language.DUTCH);
 			return localized != null ? localized : key;
 			// return localizedForKeyAndLanguage(key, Language.DUTCH);
 		}
@@ -707,17 +697,17 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	@Override
 	public void searchTranslation(LocalizedEntry entry) {
 		if (getParent() != null) {
-			String englishTranslation = FlexoLocalization.localizedForKeyAndLanguage(parent, entry.getKey(), Language.ENGLISH);
+			String englishTranslation = parent.localizedForKeyAndLanguage(entry.getKey(), Language.ENGLISH);
 			if (entry.getKey().equals(englishTranslation)) {
 				englishTranslation = automaticEnglishTranslation(entry.getKey());
 			}
 			entry.setEnglish(englishTranslation);
-			String dutchTranslation = FlexoLocalization.localizedForKeyAndLanguage(parent, entry.getKey(), Language.DUTCH);
+			String dutchTranslation = parent.localizedForKeyAndLanguage(entry.getKey(), Language.DUTCH);
 			if (entry.getKey().equals(dutchTranslation)) {
 				dutchTranslation = automaticDutchTranslation(entry.getKey());
 			}
 			entry.setDutch(dutchTranslation);
-			String frenchTranslation = FlexoLocalization.localizedForKeyAndLanguage(parent, entry.getKey(), Language.FRENCH);
+			String frenchTranslation = parent.localizedForKeyAndLanguage(entry.getKey(), Language.FRENCH);
 			if (entry.getKey().equals(frenchTranslation)) {
 				frenchTranslation = automaticFrenchTranslation(entry.getKey());
 			}
@@ -747,15 +737,6 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	private String automaticFrenchTranslation(String key) {
 		return key;
 		// return automaticEnglishTranslation(key);
-	}
-
-	@Override
-	public boolean registerNewEntry(String key, Language language, String value) {
-		addEntryInDictionary(language, key, value, true);
-		if (automaticSaving) {
-			save();
-		}
-		return true;
 	}
 
 	@Override
@@ -801,6 +782,311 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 	@Override
 	public void searchLocalized() {
+	}
+
+	/**
+	 * This is general and main method to use localized in Flexo.<br>
+	 * Applicable language is chosen from the one defined in Preferences.<br>
+	 * Use english names for keys, such as 'some_english_words'
+	 * 
+	 * @param key
+	 * @return localized String
+	 */
+	@Override
+	public String localizedForKey(String key) {
+		return localizedForKeyAndLanguage(key, FlexoLocalization.getCurrentLanguage());
+	}
+
+	@Override
+	public String localizedForKeyAndLanguage(String key, Language language) {
+		return retrieveLocalizedForKeyAndLanguage(key, language, handleNewEntry(key, language));
+	}
+
+	/**
+	 * Return String matching specified key and language<br>
+	 * 
+	 * @param key
+	 * @param language
+	 * @return
+	 */
+	private String retrieveLocalizedForKeyAndLanguage(String key, Language language, boolean createsNewEntriesIfNonExistant) {
+
+		if (key == null || StringUtils.isEmpty(key)) {
+			return null;
+		}
+
+		/*if (!createsNewEntriesIfNonExistant) {
+			return getLocalizedForKeyAndLanguage(key, language);
+		}*/
+
+		Properties currentLanguageDict = getDictionary(language);
+
+		String localized = currentLanguageDict.getProperty(key);
+
+		if (localized == null && createsNewEntriesIfNonExistant) {
+			addEntry(key);
+			if (automaticSaving) {
+				logger.info("************** Save because added: " + key + " in " + this);
+				save();
+			}
+			return currentLanguageDict.getProperty(key);
+		}
+		else {
+			return localized;
+		}
+	}
+
+	@Override
+	public String localizedForKeyAndLanguage(String key, Language language, boolean createsNewEntriesIfNonExistant) {
+
+		if (key == null) {
+			return null;
+		}
+
+		String returned = retrieveLocalizedForKeyAndLanguage(key, language, false);
+
+		if (returned == null) {
+			// Not found
+			if (createsNewEntriesIfNonExistant && handleNewEntry(key, language)) {
+				// We have to register this new entries
+				if (getParent() != null) {
+					// A parent exists, we will try to use locales provided by the parent
+					for (Language l : Language.availableValues()) {
+						String value = getParent().localizedForKeyAndLanguage(key, l, false);
+						if (value == null) {
+							value = key;
+						}
+						if (l == language) {
+							returned = value;
+						}
+						registerNewEntry(key, l, value);
+					}
+					return returned;
+				}
+				else {
+					// No parent exists, we will use keys
+					for (Language l : Language.availableValues()) {
+						registerNewEntry(key, l, key);
+					}
+					return key;
+				}
+			}
+			else {
+				if (getParent() != null) {
+					return getParent().localizedForKeyAndLanguage(key, language, false);
+				}
+				else {
+					// logger.warning("Not found and not handling new entries for localized for key " + key + " delegate=" + delegate);
+					return key;
+				}
+			}
+		}
+		else {
+			return returned;
+		}
+	}
+
+	@Override
+	public String localizedForKeyWithParams(String key, Object... object) {
+		String base = localizedForKey(key);
+		return replaceAllParamsInString(base, object);
+	}
+
+	private final WeakHashMap<Component, String> _storedLocalizedForComponents = new WeakHashMap<Component, String>();
+
+	private final WeakHashMap<JComponent, String> _storedLocalizedForComponentTooltips = new WeakHashMap<JComponent, String>();
+
+	private final WeakHashMap<TitledBorder, String> _storedLocalizedForBorders = new WeakHashMap<TitledBorder, String>();
+
+	private final WeakHashMap<TableColumn, String> _storedLocalizedForTableColumn = new WeakHashMap<TableColumn, String>();
+
+	// private final WeakHashMap<Component, String> _storedAdditionalStrings = new WeakHashMap<Component, String>();
+
+	@Override
+	public String localizedForKey(String key, Component component) {
+		if (logger.isLoggable(Level.FINE)) {
+			logger.finest("localizedForKey called with " + key + " for " + component.getClass().getName());
+		}
+		_storedLocalizedForComponents.put(component, key);
+		return localizedForKey(key);
+	}
+
+	@Override
+	public String localizedTooltipForKey(String key, JComponent component) {
+		if (logger.isLoggable(Level.FINE)) {
+			logger.finest("localizedForKey called with " + key + " for " + component.getClass().getName());
+		}
+		_storedLocalizedForComponentTooltips.put(component, key);
+		return localizedForKey(key);
+	}
+
+	@Override
+	public String localizedForKey(String key, TitledBorder border) {
+		if (logger.isLoggable(Level.FINE)) {
+			logger.finest("localizedForKey called with " + key + " for border " + border.getClass().getName());
+		}
+		_storedLocalizedForBorders.put(border, key);
+		return localizedForKey(key);
+	}
+
+	@Override
+	public String localizedForKey(String key, TableColumn column) {
+		if (logger.isLoggable(Level.FINE)) {
+			logger.finest("localizedForKey called with " + key + " for border " + column.getClass().getName());
+		}
+		_storedLocalizedForTableColumn.put(column, key);
+		return localizedForKey(key);
+	}
+
+	/*public String localizedForKey(String key, String additionalString, Component component) {
+		if (key == null) {
+			return null;
+		}
+		if (logger.isLoggable(Level.FINE)) {
+			logger.finest("localizedForKey called with " + key + " for " + component.getClass().getName());
+		}
+		_storedLocalizedForComponents.put(component, key);
+		_storedAdditionalStrings.put(component, additionalString);
+		return localizedForKey(key) + additionalString;
+	}*/
+
+	@Override
+	public void clearStoredLocalizedForComponents() {
+		_storedLocalizedForComponents.clear();
+		_storedLocalizedForBorders.clear();
+		// _storedAdditionalStrings.clear();
+		_storedLocalizedForTableColumn.clear();
+		// localizationListeners.clear();
+	}
+
+	@Override
+	public void updateGUILocalized() {
+		for (Map.Entry<Component, String> e : _storedLocalizedForComponents.entrySet()) {
+			Component component = e.getKey();
+			String string = e.getValue();
+			String text = localizedForKey(string);
+			/*String additionalString = _storedAdditionalStrings.get(component);
+			if (additionalString != null) {
+				text = text + additionalString;
+			}*/
+			if (component instanceof AbstractButton) {
+				((AbstractButton) component).setText(text);
+			}
+			if (component instanceof JLabel) {
+				((JLabel) component).setText(text);
+			}
+			component.setName(text);
+			if (component.getParent() instanceof JTabbedPane) {
+				if (((JTabbedPane) component.getParent()).indexOfComponent(component) > -1) {
+					((JTabbedPane) component.getParent()).setTitleAt(((JTabbedPane) component.getParent()).indexOfComponent(component),
+							text);
+				}
+			}
+			if (component.getParent() != null && component.getParent().getParent() instanceof JTabbedPane) {
+				if (((JTabbedPane) component.getParent().getParent()).indexOfComponent(component) > -1) {
+					((JTabbedPane) component.getParent().getParent())
+							.setTitleAt(((JTabbedPane) component.getParent().getParent()).indexOfComponent(component), text);
+				}
+			}
+		}
+		for (Map.Entry<JComponent, String> e : _storedLocalizedForComponentTooltips.entrySet()) {
+			JComponent component = e.getKey();
+			String string = e.getValue();
+			String text = localizedForKey(string);
+			component.setToolTipText(text);
+		}
+		for (Map.Entry<TitledBorder, String> e : _storedLocalizedForBorders.entrySet()) {
+			String string = e.getValue();
+			String text = localizedForKey(string);
+			e.getKey().setTitle(text);
+		}
+		for (Map.Entry<TableColumn, String> e : _storedLocalizedForTableColumn.entrySet()) {
+			String string = e.getValue();
+			String text = localizedForKey(string);
+			e.getKey().setHeaderValue(text);
+		}
+		for (Frame f : Frame.getFrames()) {
+			f.repaint();
+		}
+
+	}
+
+	/**
+	 * @param returned
+	 * @param object
+	 */
+	private static String replaceAllParamsInString(String aString, Object... object) {
+		if (logger.isLoggable(Level.FINER)) {
+			logger.finer("replaceAllParamsInString() with " + aString + " and " + object);
+		}
+		// Pattern p = Pattern.compile("*\\($[a-zA-Z]\\)*");
+		// Pattern p = Pattern.compile("\\p{Punct}\\bJava(\\w*)\\p{Punct}");
+		// Pattern p = Pattern.compile("\\(\\bJava(\\w*)\\)");
+		// Pattern p = Pattern.compile("\\(\\$(\\w*)\\)");
+		Pattern p = Pattern.compile("\\(\\$([_0-9a-zA-Z[\\.]]+)\\)");
+		Matcher m = p.matcher(aString);
+		StringBuffer returned = new StringBuffer();
+		while (m.find()) {
+			int nextIndex = m.start();
+			String foundPattern = m.group();
+			if (logger.isLoggable(Level.FINE)) {
+				logger.finest("Found '" + foundPattern + "' at position " + nextIndex);
+			}
+			String suffix = m.group(1);
+			if (logger.isLoggable(Level.FINE)) {
+				logger.finest("Suffix is " + suffix);
+			}
+			try {
+				int index = Integer.parseInt(suffix);
+				if (object.length > index) {
+					if (object[index] != null) {
+						m.appendReplacement(returned, object[index].toString());
+					}
+					else {
+						m.appendReplacement(returned, "");
+					}
+				}
+				else {
+					if (logger.isLoggable(Level.WARNING)) {
+						logger.warning("Argument index " + index + " is greater than number of arguments");
+					}
+				}
+			} catch (NumberFormatException e) {
+				try {
+					m.appendReplacement(returned, valueForKeyAndObject(suffix, object[0]));
+				} catch (IllegalArgumentException e2) {
+					logger.warning("Unexpected IllegalArgumentException " + e2.getMessage());
+				}
+			}
+		}
+		m.appendTail(returned);
+		if (logger.isLoggable(Level.FINE)) {
+			logger.finer("Returning " + returned);
+		}
+		return returned.toString();
+	}
+
+	private static String valueForKeyAndObject(String key, Object object) {
+
+		try {
+			return BindingEvaluator.evaluateBinding(key, object).toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return key;
+		/*try {
+		
+			// Object objectForKey = BindingEvaluator.evaluateBinding(key, object);
+			Object objectForKey = KeyValueDecoder.valueForKey(object, key);
+			if (objectForKey != null) {
+				return objectForKey.toString();
+			} else {
+				return "";
+			}
+		} catch (InvalidObjectSpecificationException e) {
+			logger.warning(e.getMessage());
+			return key;
+		}*/
 	}
 
 }

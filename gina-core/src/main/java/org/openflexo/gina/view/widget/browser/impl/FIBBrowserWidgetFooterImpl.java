@@ -49,12 +49,11 @@ import java.util.logging.Logger;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBBrowserAction;
-import org.openflexo.gina.model.widget.FIBBrowserElement;
 import org.openflexo.gina.model.widget.FIBBrowserAction.ActionType;
+import org.openflexo.gina.model.widget.FIBBrowserElement;
 import org.openflexo.gina.view.widget.FIBBrowserWidget;
 import org.openflexo.gina.view.widget.impl.FIBBrowserWidgetFooter;
 import org.openflexo.gina.view.widget.impl.FIBBrowserWidgetImpl;
-import org.openflexo.localization.FlexoLocalization;
 
 /**
  * Base implementation for a browser widget footer (the footer is synchronized with the selection of browser)
@@ -218,7 +217,7 @@ public abstract class FIBBrowserWidgetFooterImpl<C, T> implements FIBBrowserWidg
 
 	@Override
 	public String getLocalized(String key) {
-		return FlexoLocalization.localizedForKey(getController().getLocalizerForComponent(_widget.getComponent()), key);
+		return getController().getLocalizerForComponent(_widget.getComponent()).localizedForKey(key);
 	}
 
 }

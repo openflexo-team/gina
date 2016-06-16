@@ -63,7 +63,7 @@ public class LocalizedEditor extends JDialog {
 
 	public LocalizedEditor(JFrame frame, String title, LocalizedDelegate localizedToEdit, LocalizedDelegate editorLocalized,
 			boolean displaySave, boolean displaySearchLocalized) {
-		super(frame, editorLocalized.getLocalizedForKeyAndLanguage(title, FlexoLocalization.getCurrentLanguage()), false);
+		super(frame, editorLocalized.localizedForKeyAndLanguage(title, FlexoLocalization.getCurrentLanguage()), false);
 		localizedPanel = new LocalizedPanel(localizedToEdit, editorLocalized, displaySave, displaySearchLocalized) {
 			@Override
 			public void save() {
