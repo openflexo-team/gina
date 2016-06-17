@@ -148,7 +148,8 @@ public class JFIBFontWidget extends FIBFontWidgetImpl<FontSelectorPanel>implemen
 			selector = new FontSelector();
 			selector.addApplyCancelListener(widget);
 			selector.addFocusListener(widget);
-			selector.setEnabled(false);
+			// Fixed bug where font selector widget was always disabled
+			selector.setEnabled(true);
 			checkBox = new JCheckBox();
 			checkBox.setHorizontalTextPosition(JCheckBox.LEADING);
 
