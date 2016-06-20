@@ -95,7 +95,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		Contains, BeginsWith, EndsWith
 	}
 
-	protected LocalizedDelegateImpl(Resource localizedDirectory, LocalizedDelegate parent, boolean automaticSaving, boolean editingSupport) {
+	public LocalizedDelegateImpl(Resource localizedDirectory, LocalizedDelegate parent, boolean automaticSaving, boolean editingSupport) {
 		this.automaticSaving = automaticSaving;
 		this.editingSupport = editingSupport;
 		this.parent = parent;
@@ -106,10 +106,12 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			if (sourceCodeResource == null) {
 				localizedDirectoryResource = localizedDirectory;
 				automaticSaving = false;
-			} else {
+			}
+			else {
 				localizedDirectoryResource = sourceCodeResource;
 			}
-		} else {
+		}
+		else {
 			localizedDirectoryResource = localizedDirectory;
 		}
 		_localizedDictionaries = new Hashtable<Language, Properties>();
@@ -128,10 +130,10 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	public Resource getLocalizedDirectoryResource() {
 		return localizedDirectoryResource;
 	}
+
 	public void setLocalizedDirectoryResource(Resource r) {
 		localizedDirectoryResource = r;
 	}
-
 
 	private Properties getDictionary(Language language) {
 		Properties dict = _localizedDictionaries.get(language);
@@ -153,7 +155,8 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		InputStream dict = getInputStreamForLanguage(language);
 		if (dict == null) {
 			logger.warning("Could not find dictionary for " + language + " in " + localizedDirectoryResource);
-		} else {
+		}
+		else {
 			try {
 				if (logger.isLoggable(Level.INFO)) {
 					logger.info("Loading dictionary for language " + language.getName() + " Dir=" + localizedDirectoryResource.toString());
@@ -192,8 +195,8 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	}
 
 	private File getDictionaryFileForLanguage(Language language) {
-		return ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResourceWithBaseLocation(localizedDirectoryResource,
-				language.getName() + ".dict"));
+		return ResourceLocator.retrieveResourceAsFile(
+				ResourceLocator.locateResourceWithBaseLocation(localizedDirectoryResource, language.getName() + ".dict"));
 	}
 
 	private void saveDictionary(Language language, Properties dict) {
@@ -231,9 +234,9 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 	/*private void loadLocalizedDictionaries() {
 		_localizedDictionaries = new Hashtable<Language, Properties>();
-
+	
 		Thread.dumpStack();
-
+	
 		for (Language language : Language.availableValues()) {
 			InputStream dict = getInputStreamForLanguage(language);
 			if (logger.isLoggable(Level.INFO)) {
@@ -253,8 +256,8 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		Properties dict = getDictionary(language);
 		if (!required && dict.getProperty(key) == null || required) {
 			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Adding entry '" + key + "' in " + language + " dictionary, in directory "
-						+ localizedDirectoryResource.toString());
+				logger.fine(
+						"Adding entry '" + key + "' in " + language + " dictionary, in directory " + localizedDirectoryResource.toString());
 			}
 			dict.setProperty(key, value);
 			// saveDictionary(language, dict);
@@ -342,7 +345,8 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 				save();
 			}
 			return currentLanguageDict.getProperty(key);
-		} else {
+		}
+		else {
 			return localized;
 		}
 	}
@@ -514,7 +518,8 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 				setEnglish(addHTMLSupport(getEnglish()));
 				setFrench(addHTMLSupport(getFrench()));
 				setDutch(addHTMLSupport(getDutch()));
-			} else {
+			}
+			else {
 				setEnglish(removeHTMLSupport(getEnglish()));
 				setFrench(removeHTMLSupport(getFrench()));
 				setDutch(removeHTMLSupport(getDutch()));
@@ -717,7 +722,8 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 				frenchTranslation = automaticFrenchTranslation(entry.getKey());
 			}
 			entry.setFrench(frenchTranslation);
-		} else {
+		}
+		else {
 			String englishTranslation = entry.getKey().toString();
 			englishTranslation = englishTranslation.replace("_", " ");
 			englishTranslation = englishTranslation.substring(0, 1).toUpperCase() + englishTranslation.substring(1);

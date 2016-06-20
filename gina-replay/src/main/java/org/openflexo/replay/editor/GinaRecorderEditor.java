@@ -1,16 +1,13 @@
 package org.openflexo.replay.editor;
 
-import java.io.File;
-
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 
-import org.openflexo.fib.FIBLibrary;
-import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.fib.view.FIBView;
-import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
+import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.swing.view.JFIBView;
+import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.localization.LocalizedDelegate;
-import org.openflexo.replay.GinaReplayManager;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 
@@ -25,23 +22,26 @@ import org.openflexo.rm.ResourceLocator;
 public class GinaRecorderEditor {
 
 	public GinaRecorderEditor() {
-		final ResourceLocator rl = ResourceLocator.getResourceLocator();
-
 		Resource fibResource = ResourceLocator.locateSourceCodeResource("Editor/Editor.fib");
 		System.out.println("Fib: " + fibResource);
 
-		FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(fibResource);
+		FIBComponent fibComponent = ApplicationFIBLibraryImpl.instance().retrieveFIBComponent(fibResource);
 		fibComponent.setControllerClass(GinaRecorderEditorController.class);
 
 		JFrame frame = new JFrame();
 
-		//FIBRecorderEditorController controller = FIBController.instanciateController(fibComponent, FlexoLocalization.getMainLocalizer());
-		FIBView editor = GinaRecorderEditorController.makeView(fibComponent, (LocalizedDelegate) null);
+		// FIBRecorderEditorController controller =
+		// FIBController.instanciateController(fibComponent,
+		// FlexoLocalization.getMainLocalizer());
+		JFIBView<?, JComponent> editor = (JFIBView<?, JComponent>) GinaRecorderEditorController.makeView(fibComponent,
+				SwingViewFactory.INSTANCE, (LocalizedDelegate) null, true);
 
-		//FIBRecorderManager.getInstance().getCurrentRecorder().load(new File("D:/test-gina-recorder"));
-		// TODO editor.getController().setDataObject(GinaManager.getInstance().getCurrentRecorder().getRootNode());
+		// FIBRecorderManager.getInstance().getCurrentRecorder().load(new
+		// File("D:/test-gina-recorder"));
+		// TODO
+		// editor.getController().setDataObject(GinaManager.getInstance().getCurrentRecorder().getRootNode());
 
-		frame.getContentPane().add(editor.getResultingJComponent());
+		frame.getContentPane().add(editor.getJComponent());
 		frame.setSize(720, 800);
 		frame.setVisible(true);
 	}

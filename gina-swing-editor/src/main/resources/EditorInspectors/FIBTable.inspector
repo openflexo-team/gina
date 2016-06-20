@@ -1,417 +1,676 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Inspector layout="border" darkLevel="0" dataClassName="org.openflexo.fib.model.FIBTable" name="Inspector">
-  <TabPanel name="Tab" constraints="border(location=center)">
-    <Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
-      <Label label="iterator_class" constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true" />
-      <Custom componentClassName="org.openflexo.fib.swing.utils.ClassSelector" localize="true" manageDynamicModel="true" data="data.iteratorClass" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" />
-      <Label label="visible_row_count" constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true" />
-      <Number minValue="1" maxValue="100" increment="1" numberType="IntegerType" columns="3" data="data.visibleRowCount" constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" localize="true" />
-      <Label label="row_height" constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true" />
-      <Number minValue="5" maxValue="100" increment="1" numberType="IntegerType" columns="3" data="data.rowHeight" constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" localize="true" />
-      <CheckBox selected="false" data="data.autoSelectFirstRow" constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true" />
-      <Label label="select_first_row" constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" localize="true" />
-      <CheckBox selected="false" data="data.createNewRowOnClick" constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true" />
-      <Label label="create_new_row_on_click" constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" localize="true" />
-      <CheckBox selected="false" data="data.showFooter" constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true" />
-      <Label label="show_footer" constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" localize="true" />
-    </Tab>
-    <Tab title="Table" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="1" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab">
-      <TabPanel constraints="twocols(expandHorizontally=true;expandVertically=true;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=center)">
-        <Tab title="Columns" layout="gridbag" titleFont="SansSerif,0,11" darkLevel="0" index="0">
-          <Table iteratorClassName="org.openflexo.fib.model.FIBTableColumn" visibleRowCount="5" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="ColumnsTable" index="0" data="data.columns" constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)">
-            <TextFieldColumn data="iterator.title" title="title" columnWidth="200" resizable="true" displayTitle="true" name="title" />
-            <LabelColumn data="iterator.columnType" title="type" columnWidth="150" resizable="true" displayTitle="true" name="type" />
-            <CheckBoxColumn data="iterator.resizable" title="Resize" columnWidth="50" resizable="false" displayTitle="true" name="resizable" />
-            <CheckBoxColumn data="iterator.displayTitle" title="title" columnWidth="50" resizable="false" displayTitle="true" name="displayTitle" />
-            <NumberColumn numberType="IntegerType" data="iterator.columnWidth" title="width" columnWidth="100" resizable="true" displayTitle="true" name="columnWidth" />
-            <CustomColumn componentClassName="org.openflexo.fib.swing.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.data" title="Data" columnWidth="300" resizable="true" displayTitle="true" name="visibleValue">
-              <ColumnAssignment variable="component.bindable" value="iterator" />
-            </CustomColumn>
-            <AddAction method="data.createLabelColumn()" name="new_label_column" />
-            <AddAction method="data.createTextFieldColumn()" name="new_textfield_column" />
-            <AddAction method="data.createCheckBoxColumn()" name="new_checkbox_column" />
-            <AddAction method="data.createDropDownColumn()" name="new_dropdown_column" />
-            <AddAction method="data.createNumberColumn()" name="new_number_column" />
-            <AddAction method="data.createIconColumn()" name="new_icon_column" />
-            <AddAction method="data.createCustomColumn()" name="new_custom_column" />
-            <AddAction method="data.createButtonColumn()" name="new_button_column" />
-            <RemoveAction method="data.deleteColumn(selected)" name="delete_column" />
-            <CustomAction method="data.moveToTop(selected)" name="move_to_top" />
-            <CustomAction method="data.moveUp(selected)" name="move_up" />
-            <CustomAction method="data.moveDown(selected)" name="move_down" />
-            <CustomAction method="data.moveToBottom(selected)" name="move_to_bottom" />
-          </Table>
-          <Panel layout="twocols" borderTop="2" borderBottom="2" borderLeft="2" borderRight="2" titleFont="SansSerif,0,11" darkLevel="0" index="1" constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=0.0)" visible="(ColumnsTable.selected != null)">
-            <Label label="title" index="0" constraints="twocols(expandHorizontally=true;expandVertically=false;index=0;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true" />
-            <TextField index="1" data="ColumnsTable.selected.title" constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" localize="true" columns="7" text="TextField" />
-            <Label label="type" index="2" constraints="twocols(expandHorizontally=true;expandVertically=false;index=2;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true" />
-            <TextField index="3" data="ColumnsTable.selected.columnType.name" constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" readOnly="true" localize="true" columns="7" />
-            <Label label="data" index="10" constraints="twocols(expandHorizontally=true;expandVertically=false;index=10;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true" />
-            <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" index="11" data="ColumnsTable.selected.data" constraints="twocols(expandHorizontally=true;expandVertically=false;index=11;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
-              <Assignment variable="component.bindable" value="ColumnsTable.selected" />
-            </Custom>
-            <Label label="tooltip" index="12" constraints="twocols(expandHorizontally=true;expandVertically=false;index=12;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true" />
-            <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" index="13" data="ColumnsTable.selected.tooltip" constraints="twocols(expandHorizontally=true;expandVertically=false;index=13;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
-              <Assignment variable="component.bindable" value="ColumnsTable.selected" />
-            </Custom>
-            <Label label="format" index="14" constraints="twocols(expandHorizontally=true;expandVertically=false;index=14;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true" />
-            <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" index="15" data="ColumnsTable.selected.format" constraints="twocols(expandHorizontally=true;expandVertically=false;index=15;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
-              <Assignment variable="component.bindable" value="ColumnsTable.selected.formatter" />
-            </Custom>
-            <Label label="value_changed_action" index="16" constraints="twocols(expandHorizontally=true;expandVertically=false;index=16;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true" />
-            <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" index="17" data="ColumnsTable.selected.valueChangedAction" constraints="twocols(expandHorizontally=true;expandVertically=false;index=17;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
-              <Assignment variable="component.bindable" value="ColumnsTable.selected" />
-            </Custom>
-            <Label label="foreground_color" index="18" constraints="twocols(expandHorizontally=true;expandVertically=false;index=18;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true" />
-            <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" index="19" data="ColumnsTable.selected.color" constraints="twocols(expandHorizontally=true;expandVertically=false;index=19;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
-              <Assignment variable="component.bindable" value="ColumnsTable.selected" />
-            </Custom>
-            <Label label="background_color" index="20" constraints="twocols(expandHorizontally=true;expandVertically=false;index=20;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true" />
-            <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" index="21" data="ColumnsTable.selected.bgColor" constraints="twocols(expandHorizontally=true;expandVertically=false;index=21;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
-              <Assignment variable="component.bindable" value="ColumnsTable.selected" />
-            </Custom>
-            <Label label="action" index="22" constraints="twocols(expandHorizontally=true;expandVertically=false;index=22;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" visible="ColumnsTable.selected.class.simpleName == &quot;FIBButtonColumn&quot;" localize="true" />
-            <Panel layout="border" titleFont="SansSerif,0,11" darkLevel="0" index="23" data="($org.openflexo.fib.model.FIBButtonColumn)ColumnsTable.selected" dataClassName="org.openflexo.fib.model.FIBButtonColumn" constraints="twocols(expandHorizontally=true;expandVertically=false;index=23;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)" visible="ColumnsTable.selected.class.simpleName == &quot;FIBButtonColumn&quot;" name="buttonColumn">
-              <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" name="actionvalue" data="buttonColumn.data.action" constraints="border(location=center)">
-                <Assignment variable="component.bindable" value="buttonColumn.data" />
-              </Custom>
-            </Panel>
-            <Label label="enable" index="24" constraints="twocols(expandHorizontally=true;expandVertically=false;index=24;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" visible="ColumnsTable.selected.class.simpleName == &quot;FIBButtonColumn&quot;" localize="true" />
-            <Panel layout="border" titleFont="SansSerif,0,11" darkLevel="0" index="25" data="($org.openflexo.fib.model.FIBButtonColumn)ColumnsTable.selected" dataClassName="org.openflexo.fib.model.FIBButtonColumn" constraints="twocols(expandHorizontally=true;expandVertically=false;index=25;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)" visible="ColumnsTable.selected.class.simpleName == &quot;FIBButtonColumn&quot;" name="buttonColumnEnabled">
-              <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" name="enabledvalue" data="buttonColumnEnabled.data.enabled" constraints="border(location=center)">
-                <Assignment variable="component.bindable" value="buttonColumnEnabled.data" />
-              </Custom>
-            </Panel>
-            <Label label="define_specific_font" index="26" constraints="twocols(expandHorizontally=true;expandVertically=false;index=26;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true" />
-            <Panel layout="flow" hGap="5" vGap="5" flowAlignment="LEADING" titleFont="SansSerif,0,11" darkLevel="0" index="27" constraints="twocols(anchor=center;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=27;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=0.0;weightY=0.0)">
-              <CheckBox selected="false" data="ColumnsTable.selected.hasSpecificFont" constraints="flow()" localize="true" />
-              <Font sampleText="Sample for this font" localize="true" enable="((ColumnsTable.selected != null) &amp; ColumnsTable.selected.hasSpecificFont)" data="ColumnsTable.selected.font" constraints="flow()" />
-            </Panel>
-          </Panel>
-        </Tab>
-        <Tab title="Actions" layout="border" titleFont="SansSerif,0,11" darkLevel="0" index="1">
-          <Table iteratorClassName="org.openflexo.fib.model.FIBTableAction" visibleRowCount="5" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="ActionsTable" data="data.actions" constraints="border(location=center)">
-            <TextFieldColumn data="iterator.name" title="action" columnWidth="200" resizable="true" displayTitle="true" name="name" />
-            <LabelColumn data="iterator.actionType" title="type" columnWidth="80" resizable="true" displayTitle="true" name="type" />
-            <CustomColumn componentClassName="org.openflexo.fib.swing.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.method" title="method" columnWidth="300" resizable="true" displayTitle="true" name="visibleValue">
-              <ColumnAssignment variable="component.bindable" value="iterator" />
-            </CustomColumn>
-            <CustomColumn componentClassName="org.openflexo.fib.swing.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.isAvailable" title="available" columnWidth="300" resizable="true" displayTitle="true" name="visibleValue">
-              <ColumnAssignment variable="component.bindable" value="iterator" />
-            </CustomColumn>
-            <AddAction method="data.createAddAction()" name="new_add_action" />
-            <AddAction method="data.createRemoveAction()" name="new_remove_action" />
-            <AddAction method="data.createCustomAction()" name="new_custom_action" />
-            <RemoveAction method="data.deleteAction(selected)" name="delete_action" />
-          </Table>
-        </Tab>
-      </TabPanel>
-    </Tab>
-    <Tab title="Controls" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="2" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="ControlsTab">
-      <Label label="selected" constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true" />
-      <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.selected" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
-        <Assignment variable="component.bindable" value="data" />
-      </Custom>
-      <CheckBox selected="false" data="data.boundToSelectionManager" constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true" />
-      <Label label="bound_to_selection_manager" constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" localize="true" />
-      <Label label="selectionMode" constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true" />
-      <DropDown data="data.selectionMode" constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" localize="true" iteratorClassName="java.lang.Object" autoSelectFirstRow="false" />
-    </Tab>
-    <Tab title="Graphics" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="4" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="GraphicsTab">
-      <Panel layout="border" border="titled" borderTitle="table_colors" titleFont="SansSerif,0,11" darkLevel="0" index="0" constraints="twocols(expandHorizontally=true;expandVertically=false;index=0;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=center)">
-        <Panel layout="gridbag" hGap="5" vGap="5" cols="2" rows="3" borderTitle="Panel" titleFont="SansSerif,0,11" darkLevel="0" constraints="border(location=center)">
-          <Label label="bg_selection_color" align="right" index="0" constraints="gridbag(anchor=east;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" localize="true" />
-          <Color index="1" data="data.backgroundSelectionColor" constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=5;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" localize="true" />
-          <Label label="text_selection_color" align="right" index="2" constraints="gridbag(anchor=east;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=2;insetsBottom=0;insetsLeft=5;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" localize="true" />
-          <Color index="3" data="data.textSelectionColor" constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=3;insetsBottom=0;insetsLeft=5;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" localize="true" />
-          <Label label="bg_sec_selection_color" align="right" index="4" constraints="gridbag(anchor=east;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=4;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" localize="true" />
-          <Color index="5" data="data.backgroundSecondarySelectionColor" constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=5;insetsBottom=0;insetsLeft=5;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" localize="true" />
-          <Label label="text_non_selectionColor" align="right" index="6" constraints="gridbag(anchor=east;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=6;insetsBottom=0;insetsLeft=5;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" localize="true" />
-          <Color index="7" data="data.textNonSelectionColor" constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=7;insetsBottom=0;insetsLeft=5;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" localize="true" />
-          <Label label="bg_non_selection_color" align="right" index="8" constraints="gridbag(anchor=east;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=8;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" localize="true" />
-          <Color index="9" data="data.backgroundNonSelectionColor" constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=9;insetsBottom=0;insetsLeft=5;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" localize="true" />
-        </Panel>
-      </Panel>
-    </Tab>
-  </TabPanel>
-  <LocalizedDictionary>
-    <Localized key="title" lang="English" value="Title" />
-    <Localized key="type" lang="English" value="Type" />
-    <Localized key="width" lang="English" value="Width" />
-    <Localized key="move_up" lang="English" value="Move up" />
-    <Localized key="move_down" lang="English" value="Move down" />
-    <Localized key="method" lang="English" value="Method" />
-    <Localized key="delete_action" lang="English" value="Delete action" />
-    <Localized key="title" lang="French" value="Titre" />
-    <Localized key="type" lang="French" value="Type" />
-    <Localized key="width" lang="French" value="Largeur" />
-    <Localized key="Data" lang="French" value="Donnée" />
-    <Localized key="move_up" lang="French" value="Remonter" />
-    <Localized key="move_down" lang="French" value="Descendre" />
-    <Localized key="method" lang="French" value="Méthode" />
-    <Localized key="delete_action" lang="French" value="Supprimer l'action" />
-    <Localized key="Basic" lang="French" value="Basique" />
-    <Localized key="Graphics" lang="French" value="Graphisme" />
-    <Localized key="title" lang="Dutch" value="Title" />
-    <Localized key="type" lang="Dutch" value="Type" />
-    <Localized key="width" lang="Dutch" value="Width" />
-    <Localized key="move_up" lang="Dutch" value="Move up" />
-    <Localized key="move_down" lang="Dutch" value="Move down" />
-    <Localized key="method" lang="Dutch" value="Method" />
-    <Localized key="delete_action" lang="Dutch" value="Delete action" />
-    <Localized key="action" lang="French" value="Action" />
-    <Localized key="available" lang="French" value="Disponibilité" />
-    <Localized key="bg_non_selection_color" lang="French" value="Arrière plan" />
-    <Localized key="bg_sec_selection_color" lang="French" value="Arrière plan sélectionné" />
-    <Localized key="bg_selection_color" lang="French" value="Arrière plan sélectionné" />
-    <Localized key="bg_non_selection_color" lang="English" value="Background" />
-    <Localized key="bg_sec_selection_color" lang="English" value="Selection background" />
-    <Localized key="bg_selection_color" lang="English" value="Selection background" />
-    <Localized key="bg_selection_color" lang="Dutch" value="Selection background" />
-    <Localized key="bg_sec_selection_color" lang="Dutch" value="Selection background" />
-    <Localized key="bg_non_selection_color" lang="Dutch" value="Background" />
-    <Localized key="bound_to_selection_manager" lang="French" value="Connecté à un gestionnaire de sélection" />
-    <Localized key="create_new_row_on_click" lang="French" value="Créer une nouvelle ligne si click" />
-    <Localized key="Columns" lang="French" value="Colonnes" />
-    <Localized key="Controls" lang="French" value="Contrôles" />
-    <Localized key="delete_column" lang="French" value="Supprimer la colonne" />
-    <Localized key="iterator_class" lang="French" value="Classe de l'itérateur" />
-    <Localized key="move_to_bottom" lang="French" value="En dernier" />
-    <Localized key="move_to_top" lang="French" value="En premier" />
-    <Localized key="new_add_action" lang="French" value="Créer une action AJOUT" />
-    <Localized key="new_checkbox_column" lang="French" value="Colonne CHECKBOX" />
-    <Localized key="new_custom_action" lang="French" value="Créer une action CUSTOM" />
-    <Localized key="new_custom_column" lang="French" value="Colonne CUSTOM" />
-    <Localized key="new_dropdown_column" lang="French" value="Colonne DROPDOWN" />
-    <Localized key="new_icon_column" lang="French" value="Colonne ICONE" />
-    <Localized key="new_label_column" lang="French" value="Colonne LABEL" />
-    <Localized key="new_number_column" lang="French" value="Colonne NUMBER" />
-    <Localized key="new_remove_action" lang="French" value="Créer une action REMOVE" />
-    <Localized key="new_textfield_column" lang="French" value="Colonne TEXTFIELD" />
-    <Localized key="row_height" lang="French" value="Hauteur de ligne" />
-    <Localized key="select_first_row" lang="French" value="Sélectionner la première ligne" />
-    <Localized key="selected" lang="French" value="Sélection" />
-    <Localized key="selectionMode" lang="French" value="Mode de sélection" />
-    <Localized key="show_footer" lang="French" value="Voir le pied de table" />
-    <Localized key="text_non_selectionColor" lang="French" value="Texte non sélectionné" />
-    <Localized key="text_selection_color" lang="French" value="Texte sélectionné" />
-    <Localized key="visible_row_count" lang="French" value="Nombre de lignes visibles" />
-    <Localized key="action" lang="English" value="Action" />
-    <Localized key="available" lang="English" value="Available" />
-    <Localized key="bound_to_selection_manager" lang="English" value="Bound to selection manager" />
-    <Localized key="create_new_row_on_click" lang="English" value="Create new row on click" />
-    <Localized key="delete_column" lang="English" value="Delete column" />
-    <Localized key="iterator_class" lang="English" value="Iterator class" />
-    <Localized key="move_to_bottom" lang="English" value="Move to bottom" />
-    <Localized key="move_to_top" lang="English" value="Move to top" />
-    <Localized key="new_add_action" lang="English" value="New ADD action" />
-    <Localized key="new_custom_action" lang="English" value="New CUSTOM action" />
-    <Localized key="new_remove_action" lang="English" value="New DELETE action" />
-    <Localized key="new_checkbox_column" lang="English" value="Column CHECKBOX" />
-    <Localized key="new_custom_column" lang="English" value="Column CUSTOM" />
-    <Localized key="new_dropdown_column" lang="English" value="Column DROPDOWN" />
-    <Localized key="new_icon_column" lang="English" value="Column ICONE" />
-    <Localized key="new_label_column" lang="English" value="Column LABEL" />
-    <Localized key="new_number_column" lang="English" value="Column NUMBER" />
-    <Localized key="new_textfield_column" lang="English" value="Column TEXTFIELD" />
-    <Localized key="new_checkbox_column" lang="Dutch" value="Column CHECKBOX" />
-    <Localized key="row_height" lang="English" value="Row height" />
-    <Localized key="select_first_row" lang="English" value="Select first row" />
-    <Localized key="selected" lang="English" value="Selected" />
-    <Localized key="selectionMode" lang="English" value="Selection mode" />
-    <Localized key="show_footer" lang="English" value="Show footer" />
-    <Localized key="text_non_selectionColor" lang="English" value="Non selected text" />
-    <Localized key="text_selection_color" lang="English" value="Selected text" />
-    <Localized key="visible_row_count" lang="English" value="Visible row count" />
-    <Localized key="table_colors" lang="English" value="Table colors" />
-    <Localized key="table_colors" lang="French" value="Couleurs de la table" />
-    <Localized key="enable" lang="English" value="Enable" />
-    <Localized key="format" lang="English" value="Format" />
-    <Localized key="enable" lang="French" value="Activer" />
-    <Localized key="format" lang="French" value="Format" />
-    <Localized key="Basic" lang="French" value="Basique" />
-    <Localized key="enable" lang="Dutch" value="Enable" />
-    <Localized key="format" lang="Dutch" value="Format" />
-    <Localized key="dynamic_model" lang="French" value="Modèle dynamique" />
-    <Localized key="localize_component" lang="French" value="Localiser le composant" />
-    <Localized key="read_only_component" lang="French" value="Composant en lecture seule" />
-    <Localized key="value_changed" lang="French" value="Valeur changée" />
-    <Localized key="value_changed" lang="English" value="Value changed" />
-    <Localized key="dynamic_model" lang="English" value="Dynamic model" />
-    <Localized key="localize_component" lang="English" value="Localize component" />
-    <Localized key="read_only_component" lang="English" value="Read-only component" />
-    <Localized key="value_changed" lang="Dutch" value="Value changed" />
-    <Localized key="read_only_component" lang="Dutch" value="Read-only component" />
-    <Localized key="localize_component" lang="Dutch" value="Localize component" />
-    <Localized key="dynamic_model" lang="Dutch" value="Dynamic model" />
-    <Localized key="name" lang="English" value="Name" />
-    <Localized key="index" lang="English" value="Index" />
-    <Localized key="location" lang="English" value="Location" />
-    <Localized key="column" lang="English" value="Column" />
-    <Localized key="top" lang="English" value="Top" />
-    <Localized key="left" lang="English" value="Left" />
-    <Localized key="right" lang="English" value="Right" />
-    <Localized key="define_specific_font" lang="English" value="Define specific font" />
-    <Localized key="define_preferred_dimensions" lang="English" value="Define preferred dimensions" />
-    <Localized key="width" lang="English" value="Width" />
-    <Localized key="height" lang="English" value="Height" />
-    <Localized key="value" lang="English" value="Value" />
-    <Localized key="name" lang="French" value="Nom" />
-    <Localized key="index" lang="French" value="Index" />
-    <Localized key="location" lang="French" value="Positionement" />
-    <Localized key="column" lang="French" value="Colonne" />
-    <Localized key="top" lang="French" value="Haut" />
-    <Localized key="left" lang="French" value="Gauche" />
-    <Localized key="right" lang="French" value="Droit" />
-    <Localized key="define_specific_font" lang="French" value="Définir la police spécifique" />
-    <Localized key="define_preferred_dimensions" lang="French" value="Définir les dimensions préférées" />
-    <Localized key="width" lang="French" value="Largeur" />
-    <Localized key="height" lang="French" value="Hauteur" />
-    <Localized key="value" lang="French" value="Valeur" />
-    <Localized key="Basic" lang="French" value="Basique" />
-    <Localized key="Advanced" lang="French" value="Avancé" />
-    <Localized key="Graphics" lang="French" value="Graphisme" />
-    <Localized key="name" lang="Dutch" value="Name" />
-    <Localized key="index" lang="Dutch" value="Index" />
-    <Localized key="location" lang="Dutch" value="Location" />
-    <Localized key="column" lang="Dutch" value="Column" />
-    <Localized key="top" lang="Dutch" value="Top" />
-    <Localized key="left" lang="Dutch" value="Left" />
-    <Localized key="right" lang="Dutch" value="Right" />
-    <Localized key="define_specific_font" lang="Dutch" value="Define specific font" />
-    <Localized key="define_preferred_dimensions" lang="Dutch" value="Define preferred dimensions" />
-    <Localized key="width" lang="Dutch" value="Width" />
-    <Localized key="height" lang="Dutch" value="Height" />
-    <Localized key="value" lang="Dutch" value="Value" />
-    <Localized key="alignmentX" lang="French" value="Alignement X" />
-    <Localized key="alignmentY" lang="French" value="Alignement Y" />
-    <Localized key="anchor" lang="French" value="Ancrage" />
-    <Localized key="bottom" lang="French" value="Bas" />
-    <Localized key="data" lang="French" value="Donnée" />
-    <Localized key="data_class" lang="French" value="Classe de donnée" />
-    <Localized key="delete_dependency" lang="French" value="Supprimer la dépendance" />
-    <Localized key="delete_parameter" lang="French" value="Supprimer le paramètre" />
-    <Localized key="dependency" lang="French" value="Dépendance" />
-    <Localized key="expand_horizontally" lang="French" value="Etendre horizontalement" />
-    <Localized key="expand_vertically" lang="French" value="Etendre verticalement" />
-    <Localized key="fill" lang="French" value="Remplir" />
-    <Localized key="gridHeight" lang="French" value="Grid height" />
-    <Localized key="gridWidth" lang="French" value="Grid width" />
-    <Localized key="gridX" lang="French" value="Grid X" />
-    <Localized key="gridY" lang="French" value="Grid Y" />
-    <Localized key="Insets" lang="French" value="Insets" />
-    <Localized key="make_new_dependency" lang="French" value="Créer une nouvelle dépendance" />
-    <Localized key="make_new_parameter" lang="French" value="Créer un nouveau paramètre" />
-    <Localized key="owner" lang="French" value="Propriétaire" />
-    <Localized key="pads" lang="French" value="Pads" />
-    <Localized key="padX" lang="French" value="Pad X" />
-    <Localized key="padY" lang="French" value="Pad Y" />
-    <Localized key="Params" lang="French" value="Paramètres" />
-    <Localized key="owner" lang="English" value="Owner" />
-    <Localized key="pads" lang="English" value="Pads" />
-    <Localized key="pads" lang="Dutch" value="Pads" />
-    <Localized key="padX" lang="English" value="Pad X" />
-    <Localized key="padX" lang="Dutch" value="Pad X" />
-    <Localized key="padY" lang="English" value="Pad Y" />
-    <Localized key="padY" lang="Dutch" value="Pad Y" />
-    <Localized key="owner" lang="Dutch" value="Owner" />
-    <Localized key="make_new_parameter" lang="English" value="Make new parameter" />
-    <Localized key="make_new_parameter" lang="Dutch" value="Make new parameter" />
-    <Localized key="make_new_dependency" lang="English" value="Make new dependency" />
-    <Localized key="make_new_dependency" lang="Dutch" value="Make new dependency" />
-    <Localized key="gridY" lang="English" value="Grid Y" />
-    <Localized key="gridY" lang="Dutch" value="Grid Y" />
-    <Localized key="gridX" lang="English" value="Grid X" />
-    <Localized key="gridX" lang="Dutch" value="Grid X" />
-    <Localized key="gridWidth" lang="English" value="Grid width" />
-    <Localized key="gridWidth" lang="Dutch" value="Grid width" />
-    <Localized key="gridHeight" lang="English" value="Grid height" />
-    <Localized key="gridHeight" lang="Dutch" value="Grid height" />
-    <Localized key="fill" lang="English" value="Fill" />
-    <Localized key="fill" lang="Dutch" value="Fill" />
-    <Localized key="expand_vertically" lang="English" value="Expand vertically" />
-    <Localized key="expand_vertically" lang="Dutch" value="Expand vertically" />
-    <Localized key="expand_horizontally" lang="English" value="Expand horizontally" />
-    <Localized key="expand_horizontally" lang="Dutch" value="Expand horizontally" />
-    <Localized key="dependency" lang="English" value="Dependency" />
-    <Localized key="dependency" lang="Dutch" value="Dependency" />
-    <Localized key="delete_parameter" lang="English" value="Delete parameter" />
-    <Localized key="delete_parameter" lang="Dutch" value="Delete parameter" />
-    <Localized key="delete_dependency" lang="English" value="Delete dependency" />
-    <Localized key="delete_dependency" lang="Dutch" value="Delete dependency" />
-    <Localized key="data_class" lang="English" value="Data class" />
-    <Localized key="data_class" lang="Dutch" value="Data class" />
-    <Localized key="data" lang="English" value="Data" />
-    <Localized key="data" lang="Dutch" value="Data" />
-    <Localized key="bottom" lang="English" value="Bottom" />
-    <Localized key="bottom" lang="Dutch" value="Bottom" />
-    <Localized key="anchor" lang="English" value="Anchor" />
-    <Localized key="anchor" lang="Dutch" value="Anchor" />
-    <Localized key="alignmentX" lang="English" value="Alignment X" />
-    <Localized key="alignmentX" lang="Dutch" value="Alignment X" />
-    <Localized key="alignmentY" lang="English" value="Alignment Y" />
-    <Localized key="alignmentY" lang="Dutch" value="Alignment Y" />
-    <Localized key="font_and_colors" lang="English" value="Font and colors" />
-    <Localized key="font_and_colors" lang="French" value="Police et couleurs" />
-    <Localized key="component_size_management" lang="English" value="Component size management" />
-    <Localized key="component_size_management" lang="French" value="Gestion de la taille du composant" />
-    <Localized key="background_color" lang="English" value="Background color" />
-    <Localized key="foreground_color" lang="English" value="Foreground color" />
-    <Localized key="background_color" lang="French" value="Couleur de l'arrière-plan" />
-    <Localized key="foreground_color" lang="French" value="Couleur d'avant-plan" />
-    <Localized key="background_color" lang="Dutch" value="Background color" />
-    <Localized key="foreground_color" lang="Dutch" value="Foreground color" />
-    <Localized key="border_layout_constraints" lang="French" value="Contraintes de positionnement mode &quot;BORDER&quot;" />
-    <Localized key="box_layout_constraints" lang="French" value="Contraintes de positionnement mode &quot;BOX&quot;" />
-    <Localized key="grid_bag_layout_constraints" lang="French" value="Contraintes de positionnement mode &quot;GRID BAG&quot;" />
-    <Localized key="grid_layout_constraints" lang="French" value="Contraintes de positionnement mode &quot;GRID&quot;" />
-    <Localized key="free_location_constraints" lang="French" value="Contraintes de positionnement mode &quot;LIBRE&quot;" />
-    <Localized key="flow_layout_constraints" lang="French" value="Contraintes de positionnement mode &quot;FLOW&quot;" />
-    <Localized key="border_layout_constraints" lang="English" value="Border Layout constraints" />
-    <Localized key="box_layout_constraints" lang="English" value="Box Layout constraints" />
-    <Localized key="define_maximum_dimensions" lang="English" value="Define maximum dimensions" />
-    <Localized key="define_minimum_dimensions" lang="English" value="Define minimum dimensions" />
-    <Localized key="flow_layout_constraints" lang="English" value="Flow Layout constraints" />
-    <Localized key="free_location_constraints" lang="English" value="Free Location constraints" />
-    <Localized key="grid_bag_layout_constraints" lang="English" value="Grid Bag Layout constraints" />
-    <Localized key="grid_layout_constraints" lang="English" value="Grid Layout constraints" />
-    <Localized key="horizontal_policy" lang="French" value="Contraintes horizontales" />
-    <Localized key="horizontal_policy" lang="English" value="Horizontal policy" />
-    <Localized key="vertical_policy" lang="French" value="Contraintes verticales" />
-    <Localized key="vertical_policy" lang="English" value="Vertical policy" />
-    <Localized key="define_maximum_dimensions" lang="French" value="Définir des dimensions maximum" />
-    <Localized key="define_minimum_dimensions" lang="French" value="Définir des dimensions minimum" />
-    <Localized key="scroll_bar_policy" lang="French" value="Utilisation de &quot;scroll bars&quot;" />
-    <Localized key="scroll_bar_policy" lang="English" value="Scroll Bar policy" />
-    <Localized key="two_cols_layout_constraints" lang="French" value="Contraintes de positionnement mode &quot;TWO COLS&quot;" />
-    <Localized key="two_cols_layout_constraints" lang="English" value="Two Columns Layout constraints" />
-    <Localized key="use_scrollbar" lang="French" value="Utiliser des scroll bars" />
-    <Localized key="use_scrollbar" lang="English" value="Use scroll bars" />
-    <Localized key="visible" lang="French" value="Visible" />
-    <Localized key="visible" lang="English" value="Visible" />
-    <Localized key="weights" lang="French" value="Poids" />
-    <Localized key="weights" lang="English" value="Weights" />
-    <Localized key="weightX" lang="French" value="Poids en X" />
-    <Localized key="weightY" lang="French" value="Poids en Y" />
-    <Localized key="weightX" lang="English" value="Weight X" />
-    <Localized key="weightY" lang="English" value="Weight Y" />
-    <Localized key="name" lang="English" value="Name" />
-    <Localized key="value" lang="English" value="Value" />
-    <Localized key="name" lang="French" value="Nom" />
-    <Localized key="value" lang="French" value="Valeur" />
-    <Localized key="Basic" lang="French" value="Basique" />
-    <Localized key="Advanced" lang="French" value="Avancé" />
-    <Localized key="Graphics" lang="French" value="Graphisme" />
-    <Localized key="name" lang="Dutch" value="Name" />
-    <Localized key="value" lang="Dutch" value="Value" />
-    <Localized key="delete_parameter" lang="French" value="Supprimer le paramètre" />
-    <Localized key="Depends" lang="French" value="Dépendances" />
-    <Localized key="Doc" lang="French" value="Doc" />
-    <Localized key="make_new_parameter" lang="French" value="Créer un nouveau paramètre" />
-    <Localized key="Params" lang="French" value="Paramètres" />
-    <Localized key="Params" lang="English" value="Params" />
-    <Localized key="make_new_parameter" lang="English" value="Make new parameter" />
-    <Localized key="delete_parameter" lang="English" value="Delete parameter" />
-  </LocalizedDictionary>
-  <Parameter name="title" value="Table" />
+<Inspector layout="border" darkLevel="0"
+	dataClassName="org.openflexo.gina.model.widget.FIBTable" name="Inspector">
+	<TabPanel name="Tab" constraints="border(location=center)">
+		<Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11"
+			darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true"
+			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
+			<Label index="2" label="iterator_class"
+				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<Custom index="3" componentClassName="org.openflexo.gina.swing.utils.ClassSelector"
+				localize="true" manageDynamicModel="true" data="data.iteratorClass"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" />
+			<Label index="4" label="visible_row_count"
+				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<Number index="5" minValue="1" maxValue="100" increment="1" numberType="IntegerType"
+				columns="3" data="data.visibleRowCount"
+				constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+				localize="true" />
+			<Label index="6" label="row_height"
+				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<Number index="7" minValue="5" maxValue="100" increment="1" numberType="IntegerType"
+				columns="3" data="data.rowHeight"
+				constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+				localize="true" />
+			<CheckBox index="8" selected="false" data="data.autoSelectFirstRow"
+				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<Label index="9" label="select_first_row"
+				constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+				localize="true" />
+			<CheckBox index="10" selected="false" data="data.createNewRowOnClick"
+				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<Label index="11" label="create_new_row_on_click"
+				constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+				localize="true" />
+			<CheckBox index="12" selected="false" data="data.showFooter"
+				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<Label index="13" label="show_footer"
+				constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+				localize="true" />
+		</Tab>
+		<Tab title="Table" layout="twocols" titleFont="SansSerif,0,11"
+			darkLevel="0" index="1" font="SansSerif,0,11" useScrollBar="true"
+			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab">
+			<TabPanel
+				constraints="twocols(expandHorizontally=true;expandVertically=true;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=center)">
+				<Tab title="Columns" layout="gridbag" titleFont="SansSerif,0,11"
+					darkLevel="0" index="0">
+					<Table iteratorClassName="org.openflexo.gina.model.widget.FIBTableColumn"
+						visibleRowCount="5" rowHeight="18" autoSelectFirstRow="false"
+						createNewRowOnClick="false" boundToSelectionManager="false"
+						showFooter="true" selectionMode="MultipleIntervalSelection"
+						localize="true" manageDynamicModel="true" name="ColumnsTable"
+						index="0" data="data.columns"
+						constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)">
+						<TextFieldColumn data="iterator.title" title="title"
+							columnWidth="80" resizable="true" displayTitle="true" name="title" />
+						<LabelColumn data="iterator.columnType" title="type"
+							columnWidth="80" resizable="true" displayTitle="true" name="type" />
+						<CheckBoxColumn data="iterator.resizable" title="Resize"
+							columnWidth="30" resizable="true" displayTitle="true" name="resizable" />
+						<CheckBoxColumn data="iterator.displayTitle" title="title"
+							columnWidth="30" resizable="true" displayTitle="true" name="displayTitle" />
+						<NumberColumn numberType="IntegerType" data="iterator.columnWidth"
+							title="width" columnWidth="50" resizable="true" displayTitle="true"
+							name="columnWidth" />
+						<CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+							customRendering="false" disableTerminateEditOnFocusLost="false"
+							data="iterator.data" title="Data" columnWidth="80" resizable="true"
+							displayTitle="true" name="visibleValue">
+							<ColumnAssignment variable="component.bindable"
+								value="iterator" />
+						</CustomColumn>
+						<AddAction method="data.createLabelColumn()" name="new_label_column" />
+						<AddAction method="data.createTextFieldColumn()" name="new_textfield_column" />
+						<AddAction method="data.createCheckBoxColumn()" name="new_checkbox_column" />
+						<AddAction method="data.createDropDownColumn()" name="new_dropdown_column" />
+						<AddAction method="data.createNumberColumn()" name="new_number_column" />
+						<AddAction method="data.createIconColumn()" name="new_icon_column" />
+						<AddAction method="data.createCustomColumn()" name="new_custom_column" />
+						<AddAction method="data.createButtonColumn()" name="new_button_column" />
+						<RemoveAction method="data.deleteColumn(selected)"
+							name="delete_column" />
+						<CustomAction method="data.moveToTop(selected)" name="move_to_top" />
+						<CustomAction method="data.moveUp(selected)" name="move_up" />
+						<CustomAction method="data.moveDown(selected)" name="move_down" />
+						<CustomAction method="data.moveToBottom(selected)"
+							name="move_to_bottom" />
+					</Table>
+					<Panel layout="twocols" borderTop="2" borderBottom="2"
+						borderLeft="2" borderRight="2" titleFont="SansSerif,0,11"
+						darkLevel="0" index="1"
+						constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=0.0)"
+						visible="(ColumnsTable.selected != null)">
+						<Label label="title" index="0"
+							constraints="twocols(expandHorizontally=true;expandVertically=false;index=0;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+							localize="true" />
+						<TextField index="1" data="ColumnsTable.selected.title"
+							constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+							localize="true" columns="7" text="TextField" />
+						<Label label="type" index="2"
+							constraints="twocols(expandHorizontally=true;expandVertically=false;index=2;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+							localize="true" />
+						<TextField index="3" data="ColumnsTable.selected.columnType.name"
+							constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+							readOnly="true" localize="true" columns="7" />
+						<Label label="data" index="10"
+							constraints="twocols(expandHorizontally=true;expandVertically=false;index=10;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+							localize="true" />
+						<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+							localize="true" manageDynamicModel="true" index="11"
+							data="ColumnsTable.selected.data"
+							constraints="twocols(expandHorizontally=true;expandVertically=false;index=11;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+							<Assignment variable="component.bindable" value="ColumnsTable.selected" />
+						</Custom>
+						<Label label="tooltip" index="12"
+							constraints="twocols(expandHorizontally=true;expandVertically=false;index=12;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+							localize="true" />
+						<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+							localize="true" manageDynamicModel="true" index="13"
+							data="ColumnsTable.selected.tooltip"
+							constraints="twocols(expandHorizontally=true;expandVertically=false;index=13;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+							<Assignment variable="component.bindable" value="ColumnsTable.selected" />
+						</Custom>
+						<Label label="format" index="14"
+							constraints="twocols(expandHorizontally=true;expandVertically=false;index=14;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+							localize="true" />
+						<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+							localize="true" manageDynamicModel="true" index="15"
+							data="ColumnsTable.selected.format"
+							constraints="twocols(expandHorizontally=true;expandVertically=false;index=15;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+							<Assignment variable="component.bindable" value="ColumnsTable.selected.formatter" />
+						</Custom>
+						<Label label="value_changed_action" index="16"
+							constraints="twocols(expandHorizontally=true;expandVertically=false;index=16;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+							localize="true" />
+						<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+							localize="true" manageDynamicModel="true" index="17"
+							data="ColumnsTable.selected.valueChangedAction"
+							constraints="twocols(expandHorizontally=true;expandVertically=false;index=17;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+							<Assignment variable="component.bindable" value="ColumnsTable.selected" />
+						</Custom>
+						<Label label="foreground_color" index="18"
+							constraints="twocols(expandHorizontally=true;expandVertically=false;index=18;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+							localize="true" />
+						<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+							localize="true" manageDynamicModel="true" index="19"
+							data="ColumnsTable.selected.color"
+							constraints="twocols(expandHorizontally=true;expandVertically=false;index=19;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+							<Assignment variable="component.bindable" value="ColumnsTable.selected" />
+						</Custom>
+						<Label label="background_color" index="20"
+							constraints="twocols(expandHorizontally=true;expandVertically=false;index=20;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+							localize="true" />
+						<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+							localize="true" manageDynamicModel="true" index="21"
+							data="ColumnsTable.selected.bgColor"
+							constraints="twocols(expandHorizontally=true;expandVertically=false;index=21;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+							<Assignment variable="component.bindable" value="ColumnsTable.selected" />
+						</Custom>
+						<Label label="action" index="22"
+							constraints="twocols(expandHorizontally=true;expandVertically=false;index=22;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+							visible="ColumnsTable.selected.class.simpleName == &quot;FIBButtonColumn&quot;"
+							localize="true" />
+						<Panel layout="border" titleFont="SansSerif,0,11" darkLevel="0"
+							index="23"
+							data="($org.openflexo.gina.model.widget.FIBButtonColumn)ColumnsTable.selected"
+							dataClassName="org.openflexo.gina.model.widget.FIBButtonColumn"
+							constraints="twocols(expandHorizontally=true;expandVertically=false;index=23;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)"
+							visible="ColumnsTable.selected.class.simpleName == &quot;FIBButtonColumn&quot;"
+							name="buttonColumn">
+							<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+								localize="true" manageDynamicModel="true" name="actionvalue"
+								data="buttonColumn.data.action" constraints="border(location=center)">
+								<Assignment variable="component.bindable" value="buttonColumn.data" />
+							</Custom>
+						</Panel>
+						<Label label="enable" index="24"
+							constraints="twocols(expandHorizontally=true;expandVertically=false;index=24;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+							visible="ColumnsTable.selected.class.simpleName == &quot;FIBButtonColumn&quot;"
+							localize="true" />
+						<Panel layout="border" titleFont="SansSerif,0,11" darkLevel="0"
+							index="25"
+							data="($org.openflexo.gina.model.widget.FIBButtonColumn)ColumnsTable.selected"
+							dataClassName="org.openflexo.gina.model.widget.FIBButtonColumn"
+							constraints="twocols(expandHorizontally=true;expandVertically=false;index=25;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)"
+							visible="ColumnsTable.selected.class.simpleName == &quot;FIBButtonColumn&quot;"
+							name="buttonColumnEnabled">
+							<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+								localize="true" manageDynamicModel="true" name="enabledvalue"
+								data="buttonColumnEnabled.data.enabled" constraints="border(location=center)">
+								<Assignment variable="component.bindable" value="buttonColumnEnabled.data" />
+							</Custom>
+						</Panel>
+						<Label label="define_specific_font" index="26"
+							constraints="twocols(expandHorizontally=true;expandVertically=false;index=26;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+							localize="true" />
+						<Panel layout="flow" hGap="5" vGap="5" flowAlignment="LEADING"
+							titleFont="SansSerif,0,11" darkLevel="0" index="27"
+							constraints="twocols(anchor=center;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=27;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=0.0;weightY=0.0)">
+							<CheckBox selected="false"
+								data="ColumnsTable.selected.hasSpecificFont" constraints="flow()"
+								localize="true" />
+							<Font sampleText="Sample for this font" localize="true"
+								enable="((ColumnsTable.selected != null) &amp; ColumnsTable.selected.hasSpecificFont)"
+								data="ColumnsTable.selected.font" constraints="flow()" />
+						</Panel>
+					</Panel>
+				</Tab>
+				<Tab title="Actions" layout="border" titleFont="SansSerif,0,11"
+					darkLevel="0" index="1">
+					<Table iteratorClassName="org.openflexo.gina.model.widget.FIBTableAction"
+						visibleRowCount="5" rowHeight="18" autoSelectFirstRow="false"
+						createNewRowOnClick="false" boundToSelectionManager="false"
+						showFooter="true" selectionMode="MultipleIntervalSelection"
+						localize="true" manageDynamicModel="true" name="ActionsTable"
+						data="data.actions" constraints="border(location=center)">
+						<TextFieldColumn data="iterator.name" title="action"
+							columnWidth="80" resizable="true" displayTitle="true" name="name" />
+						<LabelColumn data="iterator.actionType" title="type"
+							columnWidth="50" resizable="true" displayTitle="true" name="type" />
+						<CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+							customRendering="false" disableTerminateEditOnFocusLost="false"
+							data="iterator.method" title="method" columnWidth="80"
+							resizable="true" displayTitle="true" name="visibleValue">
+							<ColumnAssignment variable="component.bindable"
+								value="iterator" />
+						</CustomColumn>
+						<CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+							customRendering="false" disableTerminateEditOnFocusLost="false"
+							data="iterator.isAvailable" title="available" columnWidth="80"
+							resizable="true" displayTitle="true" name="visibleValue">
+							<ColumnAssignment variable="component.bindable"
+								value="iterator" />
+						</CustomColumn>
+						<AddAction method="data.createAddAction()" name="new_add_action" />
+						<AddAction method="data.createRemoveAction()" name="new_remove_action" />
+						<AddAction method="data.createCustomAction()" name="new_custom_action" />
+						<RemoveAction method="data.deleteAction(selected)"
+							name="delete_action" />
+					</Table>
+				</Tab>
+			</TabPanel>
+		</Tab>
+		<Tab title="Controls" layout="twocols" titleFont="SansSerif,0,11"
+			darkLevel="0" index="2" font="SansSerif,0,11" useScrollBar="true"
+			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="ControlsTab">
+			<Label label="selected"
+				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				localize="true" manageDynamicModel="true" data="data.selected"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+				<Assignment variable="component.bindable" value="data" />
+			</Custom>
+			<CheckBox selected="false" data="data.boundToSelectionManager"
+				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<Label label="bound_to_selection_manager"
+				constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+				localize="true" />
+			<Label label="selectionMode"
+				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<DropDown data="data.selectionMode"
+				constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+				localize="true" iteratorClassName="java.lang.Object"
+				autoSelectFirstRow="false" />
+		</Tab>
+		<Tab title="Graphics" layout="twocols" titleFont="SansSerif,0,11"
+			darkLevel="0" index="4" font="SansSerif,0,11" useScrollBar="true"
+			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="GraphicsTab">
+			<Panel layout="border" border="titled" borderTitle="table_colors"
+				titleFont="SansSerif,0,11" darkLevel="0" index="0"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=0;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=center)">
+				<Panel layout="gridbag" hGap="5" vGap="5" cols="2" rows="3"
+					borderTitle="Panel" titleFont="SansSerif,0,11" darkLevel="0"
+					constraints="border(location=center)">
+					<Label label="bg_selection_color" align="right" index="0"
+						constraints="gridbag(anchor=east;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+						localize="true" />
+					<Color index="1" data="data.backgroundSelectionColor"
+						constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=5;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+						localize="true" />
+					<Label label="text_selection_color" align="right" index="2"
+						constraints="gridbag(anchor=east;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=2;insetsBottom=0;insetsLeft=5;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+						localize="true" />
+					<Color index="3" data="data.textSelectionColor"
+						constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=3;insetsBottom=0;insetsLeft=5;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+						localize="true" />
+					<Label label="bg_sec_selection_color" align="right" index="4"
+						constraints="gridbag(anchor=east;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=4;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+						localize="true" />
+					<Color index="5" data="data.backgroundSecondarySelectionColor"
+						constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=5;insetsBottom=0;insetsLeft=5;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+						localize="true" />
+					<Label label="text_non_selectionColor" align="right" index="6"
+						constraints="gridbag(anchor=east;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=6;insetsBottom=0;insetsLeft=5;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+						localize="true" />
+					<Color index="7" data="data.textNonSelectionColor"
+						constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=7;insetsBottom=0;insetsLeft=5;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+						localize="true" />
+					<Label label="bg_non_selection_color" align="right" index="8"
+						constraints="gridbag(anchor=east;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=8;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+						localize="true" />
+					<Color index="9" data="data.backgroundNonSelectionColor"
+						constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=9;insetsBottom=0;insetsLeft=5;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+						localize="true" />
+				</Panel>
+			</Panel>
+		</Tab>
+	</TabPanel>
+	<LocalizedDictionary>
+		<Localized key="title" lang="English" value="Title" />
+		<Localized key="type" lang="English" value="Type" />
+		<Localized key="width" lang="English" value="Width" />
+		<Localized key="move_up" lang="English" value="Move up" />
+		<Localized key="move_down" lang="English" value="Move down" />
+		<Localized key="method" lang="English" value="Method" />
+		<Localized key="delete_action" lang="English" value="Delete action" />
+		<Localized key="title" lang="French" value="Titre" />
+		<Localized key="type" lang="French" value="Type" />
+		<Localized key="width" lang="French" value="Largeur" />
+		<Localized key="Data" lang="French" value="Donnée" />
+		<Localized key="move_up" lang="French" value="Remonter" />
+		<Localized key="move_down" lang="French" value="Descendre" />
+		<Localized key="method" lang="French" value="Méthode" />
+		<Localized key="delete_action" lang="French" value="Supprimer l'action" />
+		<Localized key="Basic" lang="French" value="Basique" />
+		<Localized key="Graphics" lang="French" value="Graphisme" />
+		<Localized key="title" lang="Dutch" value="Title" />
+		<Localized key="type" lang="Dutch" value="Type" />
+		<Localized key="width" lang="Dutch" value="Width" />
+		<Localized key="move_up" lang="Dutch" value="Move up" />
+		<Localized key="move_down" lang="Dutch" value="Move down" />
+		<Localized key="method" lang="Dutch" value="Method" />
+		<Localized key="delete_action" lang="Dutch" value="Delete action" />
+		<Localized key="action" lang="French" value="Action" />
+		<Localized key="available" lang="French" value="Disponibilité" />
+		<Localized key="bg_non_selection_color" lang="French" value="Arrière plan" />
+		<Localized key="bg_sec_selection_color" lang="French"
+			value="Arrière plan sélectionné" />
+		<Localized key="bg_selection_color" lang="French"
+			value="Arrière plan sélectionné" />
+		<Localized key="bg_non_selection_color" lang="English"
+			value="Background" />
+		<Localized key="bg_sec_selection_color" lang="English"
+			value="Selection background" />
+		<Localized key="bg_selection_color" lang="English"
+			value="Selection background" />
+		<Localized key="bg_selection_color" lang="Dutch"
+			value="Selection background" />
+		<Localized key="bg_sec_selection_color" lang="Dutch"
+			value="Selection background" />
+		<Localized key="bg_non_selection_color" lang="Dutch" value="Background" />
+		<Localized key="bound_to_selection_manager" lang="French"
+			value="Connecté à un gestionnaire de sélection" />
+		<Localized key="create_new_row_on_click" lang="French"
+			value="Créer une nouvelle ligne si click" />
+		<Localized key="Columns" lang="French" value="Colonnes" />
+		<Localized key="Controls" lang="French" value="Contrôles" />
+		<Localized key="delete_column" lang="French" value="Supprimer la colonne" />
+		<Localized key="iterator_class" lang="French" value="Classe de l'itérateur" />
+		<Localized key="move_to_bottom" lang="French" value="En dernier" />
+		<Localized key="move_to_top" lang="French" value="En premier" />
+		<Localized key="new_add_action" lang="French"
+			value="Créer une action AJOUT" />
+		<Localized key="new_checkbox_column" lang="French" value="Colonne CHECKBOX" />
+		<Localized key="new_custom_action" lang="French"
+			value="Créer une action CUSTOM" />
+		<Localized key="new_custom_column" lang="French" value="Colonne CUSTOM" />
+		<Localized key="new_dropdown_column" lang="French" value="Colonne DROPDOWN" />
+		<Localized key="new_icon_column" lang="French" value="Colonne ICONE" />
+		<Localized key="new_label_column" lang="French" value="Colonne LABEL" />
+		<Localized key="new_number_column" lang="French" value="Colonne NUMBER" />
+		<Localized key="new_remove_action" lang="French"
+			value="Créer une action REMOVE" />
+		<Localized key="new_textfield_column" lang="French"
+			value="Colonne TEXTFIELD" />
+		<Localized key="row_height" lang="French" value="Hauteur de ligne" />
+		<Localized key="select_first_row" lang="French"
+			value="Sélectionner la première ligne" />
+		<Localized key="selected" lang="French" value="Sélection" />
+		<Localized key="selectionMode" lang="French" value="Mode de sélection" />
+		<Localized key="show_footer" lang="French" value="Voir le pied de table" />
+		<Localized key="text_non_selectionColor" lang="French"
+			value="Texte non sélectionné" />
+		<Localized key="text_selection_color" lang="French"
+			value="Texte sélectionné" />
+		<Localized key="visible_row_count" lang="French"
+			value="Nombre de lignes visibles" />
+		<Localized key="action" lang="English" value="Action" />
+		<Localized key="available" lang="English" value="Available" />
+		<Localized key="bound_to_selection_manager" lang="English"
+			value="Bound to selection manager" />
+		<Localized key="create_new_row_on_click" lang="English"
+			value="Create new row on click" />
+		<Localized key="delete_column" lang="English" value="Delete column" />
+		<Localized key="iterator_class" lang="English" value="Iterator class" />
+		<Localized key="move_to_bottom" lang="English" value="Move to bottom" />
+		<Localized key="move_to_top" lang="English" value="Move to top" />
+		<Localized key="new_add_action" lang="English" value="New ADD action" />
+		<Localized key="new_custom_action" lang="English" value="New CUSTOM action" />
+		<Localized key="new_remove_action" lang="English" value="New DELETE action" />
+		<Localized key="new_checkbox_column" lang="English" value="Column CHECKBOX" />
+		<Localized key="new_custom_column" lang="English" value="Column CUSTOM" />
+		<Localized key="new_dropdown_column" lang="English" value="Column DROPDOWN" />
+		<Localized key="new_icon_column" lang="English" value="Column ICONE" />
+		<Localized key="new_label_column" lang="English" value="Column LABEL" />
+		<Localized key="new_number_column" lang="English" value="Column NUMBER" />
+		<Localized key="new_textfield_column" lang="English"
+			value="Column TEXTFIELD" />
+		<Localized key="new_checkbox_column" lang="Dutch" value="Column CHECKBOX" />
+		<Localized key="row_height" lang="English" value="Row height" />
+		<Localized key="select_first_row" lang="English" value="Select first row" />
+		<Localized key="selected" lang="English" value="Selected" />
+		<Localized key="selectionMode" lang="English" value="Selection mode" />
+		<Localized key="show_footer" lang="English" value="Show footer" />
+		<Localized key="text_non_selectionColor" lang="English"
+			value="Non selected text" />
+		<Localized key="text_selection_color" lang="English" value="Selected text" />
+		<Localized key="visible_row_count" lang="English" value="Visible row count" />
+		<Localized key="table_colors" lang="English" value="Table colors" />
+		<Localized key="table_colors" lang="French" value="Couleurs de la table" />
+		<Localized key="enable" lang="English" value="Enable" />
+		<Localized key="format" lang="English" value="Format" />
+		<Localized key="enable" lang="French" value="Activer" />
+		<Localized key="format" lang="French" value="Format" />
+		<Localized key="Basic" lang="French" value="Basique" />
+		<Localized key="enable" lang="Dutch" value="Enable" />
+		<Localized key="format" lang="Dutch" value="Format" />
+		<Localized key="dynamic_model" lang="French" value="Modèle dynamique" />
+		<Localized key="localize_component" lang="French"
+			value="Localiser le composant" />
+		<Localized key="read_only_component" lang="French"
+			value="Composant en lecture seule" />
+		<Localized key="value_changed" lang="French" value="Valeur changée" />
+		<Localized key="value_changed" lang="English" value="Value changed" />
+		<Localized key="dynamic_model" lang="English" value="Dynamic model" />
+		<Localized key="localize_component" lang="English"
+			value="Localize component" />
+		<Localized key="read_only_component" lang="English"
+			value="Read-only component" />
+		<Localized key="value_changed" lang="Dutch" value="Value changed" />
+		<Localized key="read_only_component" lang="Dutch"
+			value="Read-only component" />
+		<Localized key="localize_component" lang="Dutch"
+			value="Localize component" />
+		<Localized key="dynamic_model" lang="Dutch" value="Dynamic model" />
+		<Localized key="name" lang="English" value="Name" />
+		<Localized key="index" lang="English" value="Index" />
+		<Localized key="location" lang="English" value="Location" />
+		<Localized key="column" lang="English" value="Column" />
+		<Localized key="top" lang="English" value="Top" />
+		<Localized key="left" lang="English" value="Left" />
+		<Localized key="right" lang="English" value="Right" />
+		<Localized key="define_specific_font" lang="English"
+			value="Define specific font" />
+		<Localized key="define_preferred_dimensions" lang="English"
+			value="Define preferred dimensions" />
+		<Localized key="width" lang="English" value="Width" />
+		<Localized key="height" lang="English" value="Height" />
+		<Localized key="value" lang="English" value="Value" />
+		<Localized key="name" lang="French" value="Nom" />
+		<Localized key="index" lang="French" value="Index" />
+		<Localized key="location" lang="French" value="Positionement" />
+		<Localized key="column" lang="French" value="Colonne" />
+		<Localized key="top" lang="French" value="Haut" />
+		<Localized key="left" lang="French" value="Gauche" />
+		<Localized key="right" lang="French" value="Droit" />
+		<Localized key="define_specific_font" lang="French"
+			value="Définir la police spécifique" />
+		<Localized key="define_preferred_dimensions" lang="French"
+			value="Définir les dimensions préférées" />
+		<Localized key="width" lang="French" value="Largeur" />
+		<Localized key="height" lang="French" value="Hauteur" />
+		<Localized key="value" lang="French" value="Valeur" />
+		<Localized key="Basic" lang="French" value="Basique" />
+		<Localized key="Advanced" lang="French" value="Avancé" />
+		<Localized key="Graphics" lang="French" value="Graphisme" />
+		<Localized key="name" lang="Dutch" value="Name" />
+		<Localized key="index" lang="Dutch" value="Index" />
+		<Localized key="location" lang="Dutch" value="Location" />
+		<Localized key="column" lang="Dutch" value="Column" />
+		<Localized key="top" lang="Dutch" value="Top" />
+		<Localized key="left" lang="Dutch" value="Left" />
+		<Localized key="right" lang="Dutch" value="Right" />
+		<Localized key="define_specific_font" lang="Dutch"
+			value="Define specific font" />
+		<Localized key="define_preferred_dimensions" lang="Dutch"
+			value="Define preferred dimensions" />
+		<Localized key="width" lang="Dutch" value="Width" />
+		<Localized key="height" lang="Dutch" value="Height" />
+		<Localized key="value" lang="Dutch" value="Value" />
+		<Localized key="alignmentX" lang="French" value="Alignement X" />
+		<Localized key="alignmentY" lang="French" value="Alignement Y" />
+		<Localized key="anchor" lang="French" value="Ancrage" />
+		<Localized key="bottom" lang="French" value="Bas" />
+		<Localized key="data" lang="French" value="Donnée" />
+		<Localized key="data_class" lang="French" value="Classe de donnée" />
+		<Localized key="delete_dependency" lang="French"
+			value="Supprimer la dépendance" />
+		<Localized key="delete_parameter" lang="French"
+			value="Supprimer le paramètre" />
+		<Localized key="dependency" lang="French" value="Dépendance" />
+		<Localized key="expand_horizontally" lang="French"
+			value="Etendre horizontalement" />
+		<Localized key="expand_vertically" lang="French"
+			value="Etendre verticalement" />
+		<Localized key="fill" lang="French" value="Remplir" />
+		<Localized key="gridHeight" lang="French" value="Grid height" />
+		<Localized key="gridWidth" lang="French" value="Grid width" />
+		<Localized key="gridX" lang="French" value="Grid X" />
+		<Localized key="gridY" lang="French" value="Grid Y" />
+		<Localized key="Insets" lang="French" value="Insets" />
+		<Localized key="make_new_dependency" lang="French"
+			value="Créer une nouvelle dépendance" />
+		<Localized key="make_new_parameter" lang="French"
+			value="Créer un nouveau paramètre" />
+		<Localized key="owner" lang="French" value="Propriétaire" />
+		<Localized key="pads" lang="French" value="Pads" />
+		<Localized key="padX" lang="French" value="Pad X" />
+		<Localized key="padY" lang="French" value="Pad Y" />
+		<Localized key="Params" lang="French" value="Paramètres" />
+		<Localized key="owner" lang="English" value="Owner" />
+		<Localized key="pads" lang="English" value="Pads" />
+		<Localized key="pads" lang="Dutch" value="Pads" />
+		<Localized key="padX" lang="English" value="Pad X" />
+		<Localized key="padX" lang="Dutch" value="Pad X" />
+		<Localized key="padY" lang="English" value="Pad Y" />
+		<Localized key="padY" lang="Dutch" value="Pad Y" />
+		<Localized key="owner" lang="Dutch" value="Owner" />
+		<Localized key="make_new_parameter" lang="English"
+			value="Make new parameter" />
+		<Localized key="make_new_parameter" lang="Dutch"
+			value="Make new parameter" />
+		<Localized key="make_new_dependency" lang="English"
+			value="Make new dependency" />
+		<Localized key="make_new_dependency" lang="Dutch"
+			value="Make new dependency" />
+		<Localized key="gridY" lang="English" value="Grid Y" />
+		<Localized key="gridY" lang="Dutch" value="Grid Y" />
+		<Localized key="gridX" lang="English" value="Grid X" />
+		<Localized key="gridX" lang="Dutch" value="Grid X" />
+		<Localized key="gridWidth" lang="English" value="Grid width" />
+		<Localized key="gridWidth" lang="Dutch" value="Grid width" />
+		<Localized key="gridHeight" lang="English" value="Grid height" />
+		<Localized key="gridHeight" lang="Dutch" value="Grid height" />
+		<Localized key="fill" lang="English" value="Fill" />
+		<Localized key="fill" lang="Dutch" value="Fill" />
+		<Localized key="expand_vertically" lang="English" value="Expand vertically" />
+		<Localized key="expand_vertically" lang="Dutch" value="Expand vertically" />
+		<Localized key="expand_horizontally" lang="English"
+			value="Expand horizontally" />
+		<Localized key="expand_horizontally" lang="Dutch"
+			value="Expand horizontally" />
+		<Localized key="dependency" lang="English" value="Dependency" />
+		<Localized key="dependency" lang="Dutch" value="Dependency" />
+		<Localized key="delete_parameter" lang="English" value="Delete parameter" />
+		<Localized key="delete_parameter" lang="Dutch" value="Delete parameter" />
+		<Localized key="delete_dependency" lang="English" value="Delete dependency" />
+		<Localized key="delete_dependency" lang="Dutch" value="Delete dependency" />
+		<Localized key="data_class" lang="English" value="Data class" />
+		<Localized key="data_class" lang="Dutch" value="Data class" />
+		<Localized key="data" lang="English" value="Data" />
+		<Localized key="data" lang="Dutch" value="Data" />
+		<Localized key="bottom" lang="English" value="Bottom" />
+		<Localized key="bottom" lang="Dutch" value="Bottom" />
+		<Localized key="anchor" lang="English" value="Anchor" />
+		<Localized key="anchor" lang="Dutch" value="Anchor" />
+		<Localized key="alignmentX" lang="English" value="Alignment X" />
+		<Localized key="alignmentX" lang="Dutch" value="Alignment X" />
+		<Localized key="alignmentY" lang="English" value="Alignment Y" />
+		<Localized key="alignmentY" lang="Dutch" value="Alignment Y" />
+		<Localized key="font_and_colors" lang="English" value="Font and colors" />
+		<Localized key="font_and_colors" lang="French" value="Police et couleurs" />
+		<Localized key="component_size_management" lang="English"
+			value="Component size management" />
+		<Localized key="component_size_management" lang="French"
+			value="Gestion de la taille du composant" />
+		<Localized key="background_color" lang="English" value="Background color" />
+		<Localized key="foreground_color" lang="English" value="Foreground color" />
+		<Localized key="background_color" lang="French"
+			value="Couleur de l'arrière-plan" />
+		<Localized key="foreground_color" lang="French"
+			value="Couleur d'avant-plan" />
+		<Localized key="background_color" lang="Dutch" value="Background color" />
+		<Localized key="foreground_color" lang="Dutch" value="Foreground color" />
+		<Localized key="border_layout_constraints" lang="French"
+			value="Contraintes de positionnement mode &quot;BORDER&quot;" />
+		<Localized key="box_layout_constraints" lang="French"
+			value="Contraintes de positionnement mode &quot;BOX&quot;" />
+		<Localized key="grid_bag_layout_constraints" lang="French"
+			value="Contraintes de positionnement mode &quot;GRID BAG&quot;" />
+		<Localized key="grid_layout_constraints" lang="French"
+			value="Contraintes de positionnement mode &quot;GRID&quot;" />
+		<Localized key="free_location_constraints" lang="French"
+			value="Contraintes de positionnement mode &quot;LIBRE&quot;" />
+		<Localized key="flow_layout_constraints" lang="French"
+			value="Contraintes de positionnement mode &quot;FLOW&quot;" />
+		<Localized key="border_layout_constraints" lang="English"
+			value="Border Layout constraints" />
+		<Localized key="box_layout_constraints" lang="English"
+			value="Box Layout constraints" />
+		<Localized key="define_maximum_dimensions" lang="English"
+			value="Define maximum dimensions" />
+		<Localized key="define_minimum_dimensions" lang="English"
+			value="Define minimum dimensions" />
+		<Localized key="flow_layout_constraints" lang="English"
+			value="Flow Layout constraints" />
+		<Localized key="free_location_constraints" lang="English"
+			value="Free Location constraints" />
+		<Localized key="grid_bag_layout_constraints" lang="English"
+			value="Grid Bag Layout constraints" />
+		<Localized key="grid_layout_constraints" lang="English"
+			value="Grid Layout constraints" />
+		<Localized key="horizontal_policy" lang="French"
+			value="Contraintes horizontales" />
+		<Localized key="horizontal_policy" lang="English" value="Horizontal policy" />
+		<Localized key="vertical_policy" lang="French"
+			value="Contraintes verticales" />
+		<Localized key="vertical_policy" lang="English" value="Vertical policy" />
+		<Localized key="define_maximum_dimensions" lang="French"
+			value="Définir des dimensions maximum" />
+		<Localized key="define_minimum_dimensions" lang="French"
+			value="Définir des dimensions minimum" />
+		<Localized key="scroll_bar_policy" lang="French"
+			value="Utilisation de &quot;scroll bars&quot;" />
+		<Localized key="scroll_bar_policy" lang="English" value="Scroll Bar policy" />
+		<Localized key="two_cols_layout_constraints" lang="French"
+			value="Contraintes de positionnement mode &quot;TWO COLS&quot;" />
+		<Localized key="two_cols_layout_constraints" lang="English"
+			value="Two Columns Layout constraints" />
+		<Localized key="use_scrollbar" lang="French"
+			value="Utiliser des scroll bars" />
+		<Localized key="use_scrollbar" lang="English" value="Use scroll bars" />
+		<Localized key="visible" lang="French" value="Visible" />
+		<Localized key="visible" lang="English" value="Visible" />
+		<Localized key="weights" lang="French" value="Poids" />
+		<Localized key="weights" lang="English" value="Weights" />
+		<Localized key="weightX" lang="French" value="Poids en X" />
+		<Localized key="weightY" lang="French" value="Poids en Y" />
+		<Localized key="weightX" lang="English" value="Weight X" />
+		<Localized key="weightY" lang="English" value="Weight Y" />
+		<Localized key="name" lang="English" value="Name" />
+		<Localized key="value" lang="English" value="Value" />
+		<Localized key="name" lang="French" value="Nom" />
+		<Localized key="value" lang="French" value="Valeur" />
+		<Localized key="Basic" lang="French" value="Basique" />
+		<Localized key="Advanced" lang="French" value="Avancé" />
+		<Localized key="Graphics" lang="French" value="Graphisme" />
+		<Localized key="name" lang="Dutch" value="Name" />
+		<Localized key="value" lang="Dutch" value="Value" />
+		<Localized key="delete_parameter" lang="French"
+			value="Supprimer le paramètre" />
+		<Localized key="Depends" lang="French" value="Dépendances" />
+		<Localized key="Doc" lang="French" value="Doc" />
+		<Localized key="make_new_parameter" lang="French"
+			value="Créer un nouveau paramètre" />
+		<Localized key="Params" lang="French" value="Paramètres" />
+		<Localized key="Params" lang="English" value="Params" />
+		<Localized key="make_new_parameter" lang="English"
+			value="Make new parameter" />
+		<Localized key="delete_parameter" lang="English" value="Delete parameter" />
+	</LocalizedDictionary>
+	<Parameter name="title" value="Table" />
 </Inspector>

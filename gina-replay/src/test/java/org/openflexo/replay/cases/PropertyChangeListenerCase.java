@@ -1,17 +1,18 @@
 package org.openflexo.replay.cases;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.awt.Dimension;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import static org.junit.Assert.assertNotNull;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
-import org.openflexo.fib.model.FIBLabel;
-import org.openflexo.fib.model.FIBTextField;
-import org.openflexo.fib.model.TwoColsLayoutConstraints;
-import org.openflexo.fib.model.TwoColsLayoutConstraints.TwoColsLayoutLocation;
+import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
+import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoColsLayoutLocation;
+import org.openflexo.gina.model.widget.FIBLabel;
+import org.openflexo.gina.model.widget.FIBTextField;
 import org.openflexo.replay.sampleData.Gender;
 //import org.openflexo.replay.sampleData.Family.Gender;
 import org.openflexo.replay.sampleData.Person;
@@ -25,27 +26,27 @@ import org.openflexo.test.TestOrder;
 public class PropertyChangeListenerCase extends Case {
 
 	private static Person personA;
-	
+
 	public static void main(String[] args) {
-		//initExecutor(2);
+		// initExecutor(2);
 		initCase(new PropertyChangeListenerCase());
 	}
-	
+
 	@Test
 	@TestOrder(1)
 	public void testInit() {
 		main(null);
-		
+
 		assertNotNull(Case.getInstance());
 	}
-	
+
 	@Test
 	@TestOrder(2)
 	public void testModify() {
 		getPersonA().setAge(20);
 		getPersonA().setFirstName("Alex");
 	}
-	
+
 	@Test
 	@TestOrder(3)
 	public void testWait() {
@@ -56,39 +57,40 @@ public class PropertyChangeListenerCase extends Case {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void start() {
 		new Window(getManager(), 'A', Person.class, PropertyChangeListenerController.class, getPersonA());
 	}
-	
+
 	@Override
 	public Dimension getWindowSize() {
 		return new Dimension(320, 100);
 	}
-	
+
 	@Override
 	public void initWindow(Window w) {
 		FIBLabel labelFirstname = GraphicalContextDelegate.getFactory().newInstance(FIBLabel.class);
 		labelFirstname.setLabel("Firstname :");
-		
+
 		FIBTextField textFieldFirstname = GraphicalContextDelegate.getFactory().newInstance(FIBTextField.class);
-		textFieldFirstname.setData(new DataBinding<String>("data.firstName", textFieldFirstname, String.class, BindingDefinitionType.GET_SET));
+		textFieldFirstname
+				.setData(new DataBinding<String>("data.firstName", textFieldFirstname, String.class, BindingDefinitionType.GET_SET));
 		textFieldFirstname.setName("firstnameTextField");
-		
+
 		FIBLabel labelLastname = GraphicalContextDelegate.getFactory().newInstance(FIBLabel.class);
 		labelLastname.setLabel("Lastname :");
-		
+
 		FIBTextField textFieldLastname = GraphicalContextDelegate.getFactory().newInstance(FIBTextField.class);
 		textFieldLastname.setData(new DataBinding<String>("data.lastName", textFieldLastname, String.class, BindingDefinitionType.GET_SET));
 		textFieldLastname.setName("lastnameTextField");
-		
+
 		w.getComponent().addToSubComponents(labelFirstname, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, true, false));
 		w.getComponent().addToSubComponents(textFieldFirstname, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false));
 		w.getComponent().addToSubComponents(labelLastname, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, true, false));
 		w.getComponent().addToSubComponents(textFieldLastname, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false));
-	
-		assert(w.getComponent().isValid());
+
+		assert (w.getComponent().isValid());
 	}
 
 	public static Person getPersonA() {
@@ -99,11 +101,11 @@ public class PropertyChangeListenerCase extends Case {
 
 		return personA;
 	}
-	
+
 	public static void setPersonA(Person person) {
 		personA.setLastName(person.getLastName());
 		personA.setFirstName(person.getFirstName());
-		
+
 	}
 
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Panel id="0" darkLevel="0" useScrollBar="false" protectContent="false"
+	height="200" name="main" layout="border"
+	controllerClassName="org.openflexo.gina.swing.editor.widget.FIBLibraryBrowserController"
+	border="empty" trackViewPortWidth="true" width="300"
+	dataClassName="org.openflexo.gina.FIBLibrary" titleFont="Lucida Grande,0,13"
+	trackViewPortHeight="true">
+	<Browser id="1" deepExploration="true" showFooter="true"
+		showRootsHandle="true" manageDynamicModel="true" root="data"
+		selectionMode="DiscontiguousTreeSelection"
+		rightClickAction="controller.rightClick(LibraryBrowser.selected,controller.mouseEvent)"
+		doubleClickAction="controller.doubleClickOnComponentResource(LibraryBrowser.selected)"
+		boundToSelectionManager="true" localize="true"
+		constraints="border(location=center;x=0;y=0)" iteratorClassName="org.openflexo.rm.Resource"
+		useScrollBar="false" selected="controller.selectedComponentResource"
+		name="LibraryBrowser" rootVisible="true" readOnly="false">
+		<BrowserElement id="2" icon="controller.iconFor(library)"
+			filtered="false" label="controller.textFor(library)" defaultVisible="true"
+			dataClassName="org.openflexo.gina.FIBLibrary" name="library"
+			isEditable="false">
+			<Children id="5" name="folders" data="library.folders" />
+		</BrowserElement>
+		<BrowserElement id="3" icon="controller.iconFor(folder)"
+			filtered="false" label="folder.flattenedName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.FIBFolder" name="folder"
+			isEditable="false">
+			<Children id="6" name="flattenedFolders" data="folder.flattenedFolders" />
+			<Children id="7" name="flattenedResources" data="folder.flattenedResources" />
+		</BrowserElement>
+		<BrowserElement id="4" icon="controller.iconFor(resource)"
+			filtered="false" label="controller.textFor(resource)" defaultVisible="true"
+			dataClassName="org.openflexo.rm.Resource" name="resource"
+			isEditable="false">
+		</BrowserElement>
+	</Browser>
+</Panel>

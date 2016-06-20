@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel layout="border" hGap="5" vGap="5" flowAlignment="LEADING" titleFont="Lucida Grande,0,13" darkLevel="0" dataClassName="org.openflexo.fib.editor.test.Family">
-  <Table iteratorClassName="org.openflexo.fib.editor.test.Family$Person" visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" textSelectionColor="255,255,255" textNonSelectionColor="0,0,0" backgroundSelectionColor="41,90,209" backgroundSecondarySelectionColor="173,215,255" backgroundNonSelectionColor="255,255,255" localize="true" manageDynamicModel="true" name="LaBelleTable" index="0" data="data.children" constraints="border(index=0;location=center)">
-    <TextFieldColumn data="iterator.firstName" title="colonne 1" columnWidth="40" resizable="true" displayTitle="true" />
-    <TextFieldColumn data="iterator.lastName" title="col2" columnWidth="60" resizable="true" displayTitle="true" />
-    <LabelColumn data="((iterator.firstName + &quot; &quot;) + iterator.lastName)" title="label" columnWidth="100" resizable="true" displayTitle="true" name="label" />
-    <NumberColumn numberType="IntegerType" data="data.hashCode" title="number" columnWidth="100" resizable="true" displayTitle="true" name="number" />
-    <AddAction method="data.createChild()" name="new_child" />
-    <RemoveAction method="data.deleteChild(selected)" name="delete_child" />
+<Panel id="0" vGap="5" borderLeft="0" hGap="5" layout="border" controllerClassName="org.openflexo.gina.controller.FIBController" border="empty" borderRight="0" flowAlignment="LEADING" trackViewPortWidth="true" borderBottom="0" titleFont="Lucida Grande,0,13" borderTop="0" trackViewPortHeight="true">
+  <LocalizedDictionary id="1" />
+  <Table id="2" showFooter="true" manageDynamicModel="true" selectionMode="MultipleIntervalSelection" index="0" constraints="border(index=0;location=center)" visibleRowCount="5" rowHeight="20" textSelectionColor="255,255,255" iteratorClassName="org.openflexo.gina.sampleData.Person" backgroundSelectionColor="41,90,209" backgroundNonSelectionColor="255,255,255" data="data.children" name="LaBelleTable" textNonSelectionColor="0,0,0" backgroundSecondarySelectionColor="173,215,255">
+    <TextFieldColumn id="3" data="iterator.firstName" displayTitle="true" title="colonne 1" columnWidth="40" resizable="true" showIcon="false" />
+    <TextFieldColumn id="4" data="iterator.lastName" displayTitle="true" title="col2" columnWidth="60" resizable="true" showIcon="false" />
+    <LabelColumn id="5" data="((iterator.firstName + &quot; &quot;) + iterator.lastName)" displayTitle="true" title="label" name="label" columnWidth="100" resizable="true" showIcon="false" />
+    <NumberColumn id="6" data="data.hashCode" numberType="IntegerType" displayTitle="true" title="number" name="number" columnWidth="100" resizable="true" showIcon="false" />
+    <AddAction id="7" name="new_child" method="data.createChild()" />
+    <RemoveAction id="8" name="delete_child" method="data.deleteChild(selected)" />
   </Table>
-  <TextField index="1" data="LaBelleTable.selected.toString" constraints="border(index=1;location=north)" localize="true" columns="6" text="TextField" />
-  <FIBReferencedComponent dynamicComponentFile="data.fibForPerson(LaBelleTable.selected)" visible="LaBelleTable.selected != null" localize="true" manageDynamicModel="true" index="1" data="LaBelleTable.selected" constraints="border(location=east)" />
-  <LocalizedDictionary />
+  <TextField id="9" data="LaBelleTable.selected.toString" columns="6" name="TextField" text="TextField" index="1" constraints="border(index=1;location=north)" />
+  <FIBReferencedComponent id="10" visible="(LaBelleTable.selected != null)" manageDynamicModel="true" data="LaBelleTable.selected" height="300" name="ReferencedComponent" index="1" dynamicComponentFile="data.fibForPerson(LaBelleTable.selected)" width="300" constraints="border(location=east)">
+  </FIBReferencedComponent>
+  <FIBVariable id="12" name="data" type="org.openflexo.gina.sampleData.Family" />
 </Panel>

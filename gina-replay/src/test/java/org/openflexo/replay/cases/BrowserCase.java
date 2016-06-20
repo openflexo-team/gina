@@ -8,14 +8,15 @@
 package org.openflexo.replay.cases;
 
 import java.awt.Dimension;
+
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
-import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBBrowser;
-import org.openflexo.fib.model.FIBBrowserElement;
-import org.openflexo.fib.model.TwoColsLayoutConstraints;
-import org.openflexo.fib.model.FIBBrowserElement.FIBBrowserElementChildren;
-import org.openflexo.fib.model.TwoColsLayoutConstraints.TwoColsLayoutLocation;
+import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
+import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoColsLayoutLocation;
+import org.openflexo.gina.model.widget.FIBBrowser;
+import org.openflexo.gina.model.widget.FIBBrowserElement;
+import org.openflexo.gina.model.widget.FIBBrowserElement.FIBBrowserElementChildren;
 import org.openflexo.replay.sampleData.Family;
 import org.openflexo.replay.sampleData.Person;
 import org.openflexo.replay.utils.Case;

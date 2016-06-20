@@ -1,8 +1,9 @@
 package org.openflexo.replay.utils;
 
-import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.model.FIBPanel;
-import org.openflexo.fib.model.FIBPanel.Layout;
+import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.container.FIBPanel;
+import org.openflexo.gina.model.container.FIBPanel.Layout;
+import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.replay.GinaReplayManager;
 
@@ -18,9 +19,9 @@ public class Window {
 
 	protected FIBPanel component;
 	protected FIBController controller;
-	
-	private char letter;
-	
+
+	private final char letter;
+
 	public Window(GinaReplayManager manager, char letter, Class<?> dataClass, Class<? extends FIBController> controllerClass, Object data) {
 		this.letter = letter;
 		this.manager = manager;
@@ -33,12 +34,13 @@ public class Window {
 		component.setLayout(Layout.twocols);
 		component.setDataClass(dataClass);
 		component.setControllerClass(controllerClass);
-		
+
 		// Create the window
 		Case.getInstance().initWindow(this);
-		
+
 		// Instantiate the controller
-		controller = FIBController.instanciateController(component, FlexoLocalization.getMainLocalizer(), manager.getEventManager());
+		controller = FIBController.instanciateController(component, SwingViewFactory.INSTANCE, FlexoLocalization.getMainLocalizer(),
+				manager.getEventManager());
 		controller.setDataObject(data);
 		controller.buildView();
 
@@ -52,5 +54,5 @@ public class Window {
 	public FIBPanel getComponent() {
 		return this.component;
 	}
-	
+
 }

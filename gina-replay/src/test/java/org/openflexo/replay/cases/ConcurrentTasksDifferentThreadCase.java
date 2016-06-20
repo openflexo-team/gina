@@ -4,11 +4,11 @@ import java.awt.Dimension;
 
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
-import org.openflexo.fib.model.FIBButton;
-import org.openflexo.fib.model.FIBLabel;
-import org.openflexo.fib.model.FIBTextField;
-import org.openflexo.fib.model.TwoColsLayoutConstraints;
-import org.openflexo.fib.model.TwoColsLayoutConstraints.TwoColsLayoutLocation;
+import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
+import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoColsLayoutLocation;
+import org.openflexo.gina.model.widget.FIBButton;
+import org.openflexo.gina.model.widget.FIBLabel;
+import org.openflexo.gina.model.widget.FIBTextField;
 import org.openflexo.replay.sampleData.Gender;
 import org.openflexo.replay.sampleData.Person;
 //import org.openflexo.replay.sampleData.Family.Gender;
