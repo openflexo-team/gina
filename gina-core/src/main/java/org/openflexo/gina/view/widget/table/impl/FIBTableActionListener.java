@@ -124,7 +124,7 @@ public class FIBTableActionListener<T> implements ActionListener, BindingEvaluat
 		if (isRemoveAction() && selectedObject == null) {
 			return false;
 		}
-		if (tableAction.getIsAvailable() != null && tableAction.getIsAvailable().isValid()) {
+		if (tableAction != null && tableAction.getIsAvailable() != null && tableAction.getIsAvailable().isValid()) {
 			this.selectedObject = selectedObject;
 			Object returned = null;
 			try {
@@ -147,8 +147,8 @@ public class FIBTableActionListener<T> implements ActionListener, BindingEvaluat
 	}
 
 	protected void performAction(T selectedObject) {
-		if (tableAction.getMethod() != null && tableAction.getMethod().isValid()) {
-			logger.info("Perform action " + tableAction.getName() + " method " + tableAction.getMethod());
+		if (tableAction != null && tableAction.getMethod() != null && tableAction.getMethod().isValid()) {
+			// logger.info("Perform action " + tableAction.getName() + " method " + tableAction.getMethod());
 			// logger.info("controller="+getController()+" of "+getController().getClass().getSimpleName());
 			this.selectedObject = selectedObject;
 			T newObject = null;
@@ -161,18 +161,12 @@ public class FIBTableActionListener<T> implements ActionListener, BindingEvaluat
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
 			}
+
 			if (tableWidget != null) {
-				// tableWidget.updateWidgetFromModel();
 				tableWidget.update();
 				tableWidget.performSelect(newObject);
 			}
 
-			/*if (newObject != null) {
-				int index = tableModel.getTableWidget().getValue().indexOf(newObject);
-				if (index > -1) {
-					tableModel.getTableWidget().getListSelectionModel().setSelectionInterval(index,index);
-				}
-			}*/
 		}
 	}
 
