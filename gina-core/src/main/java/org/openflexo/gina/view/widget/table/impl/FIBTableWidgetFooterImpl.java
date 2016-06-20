@@ -105,9 +105,33 @@ public abstract class FIBTableWidgetFooterImpl<C, T> implements FIBTableWidgetFo
 	public void minusPressed() {
 		for (FIBTableAction action : removeActions.keySet()) {
 			FIBTableActionListener<T> actionListener = removeActions.get(action);
-			if (actionListener.isActive(tableWidget.getSelected())) {
-				// actionListener.performAction(_tableModel.getSelectedObject(), _tableModel.getSelectedObjects());
-				actionListener.performAction(tableWidget.getSelected());
+			int index = -1;
+			if (tableWidget.getSelected() != null && tableWidget.getValue() instanceof List) {
+				index = ((List) tableWidget.getValue()).indexOf(tableWidget.getSelected());
+			}
+
+			if (tableWidget.getSelection() != null && tableWidget.getSelection().size() > 1) {
+				// Multiple selection
+				for (T selectedObject : tableWidget.getSelection()) {
+					if (actionListener.isActive(selectedObject)) {
+						actionListener.performAction(selectedObject);
+					}
+				}
+			}
+			else if (tableWidget.getSelected() != null) {
+				if (actionListener.isActive(tableWidget.getSelected())) {
+					actionListener.performAction(tableWidget.getSelected());
+				}
+			}
+
+			if (index > -1 && tableWidget.getValue() instanceof List) {
+				List<T> l = (List<T>) tableWidget.getValue();
+				if (index < l.size()) {
+					tableWidget.performSelect(l.get(index));
+				}
+				else if (l.size() > 0) {
+					tableWidget.performSelect(l.get(l.size() - 1));
+				}
 			}
 		}
 	}
