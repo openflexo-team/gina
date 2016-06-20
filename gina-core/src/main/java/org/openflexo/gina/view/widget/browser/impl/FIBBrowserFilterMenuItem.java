@@ -45,16 +45,14 @@ import java.util.logging.Logger;
 
 import javax.swing.JCheckBoxMenuItem;
 
-import org.openflexo.localization.FlexoLocalization;
-
 public class FIBBrowserFilterMenuItem extends JCheckBoxMenuItem implements ActionListener {
 	protected static final Logger logger = Logger.getLogger(FIBBrowserFilterMenuItem.class.getPackage().getName());
 
 	protected FIBBrowserElementType _elementType;
 
 	public FIBBrowserFilterMenuItem(FIBBrowserElementType elementType) {
-		super(FlexoLocalization.localizedForKey(elementType.getController().getLocalizerForComponent(elementType.getBrowser()), elementType
-				.getBrowserElement().getName()), elementType.getBrowserElement().getImageIcon(), !elementType.isFiltered());
+		super(elementType.getController().getLocalizerForComponent(elementType.getBrowser()).localizedForKey(
+				elementType.getBrowserElement().getName()), elementType.getBrowserElement().getImageIcon(), !elementType.isFiltered());
 		_elementType = elementType;
 		addActionListener(this);
 	}

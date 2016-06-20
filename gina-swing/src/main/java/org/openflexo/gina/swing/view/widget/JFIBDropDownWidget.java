@@ -61,7 +61,6 @@ import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.swing.view.widget.JFIBDropDownWidget.JDropDownPanel;
 import org.openflexo.gina.view.widget.impl.FIBDropDownWidgetImpl;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.toolbox.ToolBox;
 
 /**
@@ -132,7 +131,7 @@ public class JFIBDropDownWidget<T> extends FIBDropDownWidgetImpl<JDropDownPanel<
 		public JDropDownPanel(final JFIBDropDownWidget<T> widget) {
 			super(new BorderLayout());
 			resetButton = new JButton();
-			resetButton.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "reset", resetButton));
+			resetButton.setText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("reset", resetButton));
 			resetButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {

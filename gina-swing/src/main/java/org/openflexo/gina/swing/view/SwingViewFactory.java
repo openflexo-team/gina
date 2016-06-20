@@ -495,7 +495,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 		private final FIBController controller;
 
 		public EditorLauncher(FIBController controller, FIBComponent component) {
-			System.out.println("make EditorLauncher for component: " + component.getResource());
+			// System.out.println("make EditorLauncher for component: " + component.getResource());
 			this.component = component;
 			this.controller = controller;
 		}

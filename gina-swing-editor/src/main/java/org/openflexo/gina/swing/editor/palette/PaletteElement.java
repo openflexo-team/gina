@@ -101,7 +101,7 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 		int x = Integer.parseInt(representationComponent.getParameter("x"));
 		int y = Integer.parseInt(representationComponent.getParameter("y"));
 
-		view = FIBController.makeView(representationComponent, SwingViewFactory.INSTANCE, FIBEditor.LOCALIZATION, true);
+		view = FIBController.makeView(representationComponent, SwingViewFactory.INSTANCE, FIBEditor.EDITOR_LOCALIZATION, true);
 		view.getController().setVariableValue("paletteData", dataObject);
 
 		if (view.getTechnologyComponent() != null) {

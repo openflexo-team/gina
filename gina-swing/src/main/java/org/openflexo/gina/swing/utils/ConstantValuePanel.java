@@ -65,7 +65,6 @@ import org.openflexo.connie.expr.Constant.StringConstant;
 import org.openflexo.connie.expr.EvaluationType;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.swing.DateSelector;
 import org.openflexo.toolbox.ToolBox;
 
@@ -109,8 +108,7 @@ class ConstantValuePanel extends JPanel {
 		dateSelector = null;
 		durationSelector = null;
 		integerValueChooser = null;
-		selectStaticBindingCB = new JCheckBox(
-				FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "define_a_constant_value"));
+		selectStaticBindingCB = new JCheckBox(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("define_a_constant_value"));
 		selectStaticBindingCB.setFont(SMALL_FONT);
 		selectStaticBindingCB.setSelected(false);
 		selectStaticBindingCB.addActionListener(new ActionListener() {
@@ -131,9 +129,9 @@ class ConstantValuePanel extends JPanel {
 		else {
 			currentType = kindOf(bindingValueSelectorPanel.bindingSelector.getEditedObject().getDeclaredType());
 			if (currentType == EvaluationType.BOOLEAN) {
-				final String UNSELECTED = FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "select_a_value");
-				final String TRUE = FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "true");
-				final String FALSE = FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "false");
+				final String UNSELECTED = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("select_a_value");
+				final String TRUE = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("true");
+				final String FALSE = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("false");
 				String[] availableValues = { UNSELECTED, TRUE, FALSE };
 				selectValueCB = new JComboBox<String>(availableValues);
 				selectValueCB.setFont(SMALL_FONT);
@@ -256,15 +254,15 @@ class ConstantValuePanel extends JPanel {
 		if (bindingValueSelectorPanel.bindingSelector.getEditedObject() == null
 				|| bindingValueSelectorPanel.bindingSelector.getEditedObject().getDeclaredType() == null
 				|| TypeUtils.isObject(bindingValueSelectorPanel.bindingSelector.getEditedObject().getDeclaredType())) {
-			final String SELECT = FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "select");
-			final String BOOLEAN = FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "boolean");
-			final String INTEGER = FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "integer");
-			final String FLOAT = FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "float");
-			final String STRING = FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "string");
-			final String DATE = FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "date");
-			final String DURATION = FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "duration");
-			final String DKV = FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "enum");
-			final String NULL = FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "null");
+			final String SELECT = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("select");
+			final String BOOLEAN = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("boolean");
+			final String INTEGER = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("integer");
+			final String FLOAT = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("float");
+			final String STRING = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("string");
+			final String DATE = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("date");
+			final String DURATION = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("duration");
+			final String DKV = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("enum");
+			final String NULL = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("null");
 			String[] availableValues = { SELECT, BOOLEAN, INTEGER, FLOAT, STRING, DATE, DURATION, DKV, NULL };
 			typeCB = new JComboBox<String>(availableValues);
 			typeCB.addActionListener(new ActionListener() {
@@ -408,7 +406,7 @@ class ConstantValuePanel extends JPanel {
 	}
 
 	void enableStaticBindingPanel() {
-		bindingValueSelectorPanel.connectButton.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "validate"));
+		bindingValueSelectorPanel.connectButton.setText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("validate"));
 		selectStaticBindingCB.setSelected(true);
 		if (selectValueCB != null) {
 			selectValueCB.setEnabled(true);
@@ -428,7 +426,7 @@ class ConstantValuePanel extends JPanel {
 	}
 
 	void disableStaticBindingPanel() {
-		bindingValueSelectorPanel.connectButton.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "connect"));
+		bindingValueSelectorPanel.connectButton.setText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("connect"));
 		selectStaticBindingCB.setSelected(false);
 		if (selectValueCB != null) {
 			selectValueCB.setEnabled(false);

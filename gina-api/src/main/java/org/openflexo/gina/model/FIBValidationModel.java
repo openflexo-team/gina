@@ -39,8 +39,10 @@
 package org.openflexo.gina.model;
 
 import org.openflexo.connie.BindingEvaluator;
+import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.localization.LocalizedDelegateImpl;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.validation.Validable;
 import org.openflexo.model.validation.ValidationModel;
@@ -55,9 +57,9 @@ import org.openflexo.rm.ResourceLocator;
  */
 public class FIBValidationModel extends ValidationModel {
 
-	private static Resource fibValidationLocalizedDelegate = ResourceLocator.locateResource("FIBValidationLocalized");
-	private static LocalizedDelegate VALIDATION_LOCALIZATION = FlexoLocalization.getLocalizedDelegate(fibValidationLocalizedDelegate, null,
-			true, true);
+	private static Resource fibValidationLocalizedDelegate = ResourceLocator.locateResource("GinaLocalization/FIBValidation");
+	public static LocalizedDelegate VALIDATION_LOCALIZATION = new LocalizedDelegateImpl(fibValidationLocalizedDelegate,
+			FIBModelObjectImpl.GINA_LOCALIZATION, true, true);
 
 	public FIBValidationModel(FIBModelFactory fibModelFactory) throws ModelDefinitionException {
 		super(fibModelFactory.getModelContext());
@@ -96,7 +98,7 @@ public class FIBValidationModel extends ValidationModel {
 
 	@Override
 	public String localizedInContext(String key, Object context) {
-		String localized = VALIDATION_LOCALIZATION.getLocalizedForKeyAndLanguage(key, FlexoLocalization.getCurrentLanguage(), true);
+		String localized = VALIDATION_LOCALIZATION.localizedForKeyAndLanguage(key, FlexoLocalization.getCurrentLanguage(), true);
 		if (localized != null && localized.contains("($")) {
 			String asBindingExpression = asBindingExpression(localized);
 			try {

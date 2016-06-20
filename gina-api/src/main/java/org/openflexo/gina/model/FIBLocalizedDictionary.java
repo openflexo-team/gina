@@ -39,6 +39,8 @@
 
 package org.openflexo.gina.model;
 
+import java.awt.Component;
+import java.awt.Frame;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.text.Collator;
@@ -50,7 +52,16 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.WeakHashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.AbstractButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JTabbedPane;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.TableColumn;
 
 import org.openflexo.gina.model.FIBComponent.LocalizationEntryRetriever;
 import org.openflexo.localization.FlexoLocalization;
@@ -123,6 +134,11 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 		private final List<FIBLocalizedEntry> entries;
 		private final Map<Language, Hashtable<String, String>> values;
 		private List<DynamicEntry> dynamicEntries = null;
+
+		private final WeakHashMap<Component, String> _storedLocalizedForComponents = new WeakHashMap<Component, String>();
+		private final WeakHashMap<JComponent, String> _storedLocalizedForComponentTooltips = new WeakHashMap<JComponent, String>();
+		private final WeakHashMap<TitledBorder, String> _storedLocalizedForBorders = new WeakHashMap<TitledBorder, String>();
+		private final WeakHashMap<TableColumn, String> _storedLocalizedForTableColumn = new WeakHashMap<TableColumn, String>();
 
 		// private final boolean isSearchingNewEntries = false;
 
@@ -210,41 +226,217 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 		}*/
 
 		@Override
-		public String getLocalizedForKeyAndLanguage(String key, Language language) {
-			return getLocalizedForKeyAndLanguage(key, language, false);
+		public String localizedForKey(String key) {
+			return localizedForKeyAndLanguage(key, FlexoLocalization.getCurrentLanguage());
 		}
 
 		@Override
-		public String getLocalizedForKeyAndLanguage(String key, Language language, boolean createsNewEntriesIfNonExistant) {
+		public String localizedForKeyAndLanguage(String key, Language language) {
+			return localizedForKeyAndLanguage(key, language, handleNewEntry(key, language));
+		}
+
+		/**
+		 * Return String matching specified key and language<br>
+		 * If #createsNewEntryInFirstEditableParent set to true, will try to enter a new traduction.<br>
+		 * LocalizedDelegate are recursively requested to their parents, and the first one who respond true to
+		 * {@link #handleNewEntry(String, Language)} will add a new entry
+		 * 
+		 * @param key
+		 * @param language
+		 * @return
+		 */
+		// TODO: duplicated code as in LocalizedDelegateImpl, please refactor this to avoid code duplication
+		@Override
+		public String localizedForKeyAndLanguage(String key, Language language, boolean createsNewEntryInFirstEditableParent) {
+
+			if (key == null || StringUtils.isEmpty(key)) {
+				return null;
+			}
+
+			/*boolean debug = false;
+			
+			if (key.equals("Super classes")) {
+				System.out.println("OK, j'ai le truc Super classes");
+				System.out.println("createsNewEntryInFirstEditableParent=" + createsNewEntryInFirstEditableParent);
+				debug = true;
+				LocalizedDelegate l = this;
+				while (l.getParent() != null) {
+					System.out.println("> " + l);
+					l = l.getParent();
+				}
+				// Thread.dumpStack();
+			}*/
+
+			String localized = getDictForLang(language).get(key);
+
+			if (localized == null) {
+				// Not found in this delegate
+				if (handleNewEntry(key, language)) {
+					// We then have to create entry here
+					addEntry(key);
+					return getDictForLang(language).get(key);
+				}
+				else {
+					if (getParent() != null) {
+						// Nice, we forward the request to the parent
+						return getParent().localizedForKeyAndLanguage(key, language, createsNewEntryInFirstEditableParent);
+					}
+					return key;
+				}
+			}
+
+			return localized;
+		}
+
+		// @Override
+		/*public String localizedForKeyAndLanguage2(String key, Language language, boolean createsNewEntriesIfNonExistant) {
 			if (key == null || StringUtils.isEmpty(key)) {
 				return null;
 			}
 			// if (isSearchingNewEntries) logger.info("-------> called localizedForKeyAndLanguage() key="+key+" lang="+language);
-
+		
+			boolean debug = false;
+		
+			if (key.equals("properties_declared_in_this_class")) {
+				System.out.println("OK, j'ai le truc properties_declared_in_this_class");
+				debug = true;
+			}
+		
 			String returned = getDictForLang(language).get(key);
-
-			if (returned == null && createsNewEntriesIfNonExistant) {
-				foundLocalized(key);
+		
+			if (debug) {
+				System.out.println("returned=" + returned);
+				System.out.println("getParent()=" + getParent());
+				System.out.println("createsNewEntriesIfNonExistant=" + createsNewEntriesIfNonExistant);
+				// Thread.dumpStack();
 			}
-
-			return returned;
-
-			/*String returned = getDictForLang(language).get(key);
+		
 			if (returned == null) {
-			String defaultValue = getDefaultValue(key, language);
-			if (handleNewEntry(key, language)) {
-				if (!key.equals(defaultValue)) {
-					addToEntries(new FIBLocalizedEntry(this, key, language.getName(), defaultValue));
-					logger.fine("FIBLocalizedDictionary: store value " + defaultValue + " for key " + key + " for language " + language);
-				} else {
-					getDictForLang(language).put(key, defaultValue);
-					logger.fine("FIBLocalizedDictionary: undefined value for key " + key + " for language " + language);
+				if (getParent() != null) {
+					if (debug) {
+						System.out.println("Le parent de " + this + " c'est " + getParent());
+					}
+					returned = getParent().localizedForKeyAndLanguage(key, language);
+					returned = getParent().localizedForKeyAndLanguage(key, language, !createsNewEntriesIfNonExistant);
 				}
-				// dynamicEntries = null;
+				if (createsNewEntriesIfNonExistant) {
+				if (returned == null && createsNewEntriesIfNonExistant) {
+					foundLocalized(key);
+				}
 			}
-			return defaultValue;
+		
+			return returned;
+		
+		}*/
+
+		// TODO: duplicated code as in LocalizedDelegateImpl, please refactor this to avoid code duplication
+		@Override
+		public String localizedForKeyWithParams(String key, Object... object) {
+			String base = localizedForKey(key);
+			return FlexoLocalization.replaceAllParamsInString(base, object);
+		}
+
+		// TODO: duplicated code as in LocalizedDelegateImpl, please refactor this to avoid code duplication
+		@Override
+		public String localizedForKey(String key, Component component) {
+			if (logger.isLoggable(Level.FINE)) {
+				logger.finest("localizedForKey called with " + key + " for " + component.getClass().getName());
 			}
-			return returned;*/
+			_storedLocalizedForComponents.put(component, key);
+			return localizedForKey(key);
+		}
+
+		// TODO: duplicated code as in LocalizedDelegateImpl, please refactor this to avoid code duplication
+		@Override
+		public String localizedTooltipForKey(String key, JComponent component) {
+			if (logger.isLoggable(Level.FINE)) {
+				logger.finest("localizedForKey called with " + key + " for " + component.getClass().getName());
+			}
+			_storedLocalizedForComponentTooltips.put(component, key);
+			return localizedForKey(key);
+		}
+
+		// TODO: duplicated code as in LocalizedDelegateImpl, please refactor this to avoid code duplication
+		@Override
+		public String localizedForKey(String key, TitledBorder border) {
+			if (logger.isLoggable(Level.FINE)) {
+				logger.finest("localizedForKey called with " + key + " for border " + border.getClass().getName());
+			}
+			_storedLocalizedForBorders.put(border, key);
+			return localizedForKey(key);
+		}
+
+		// TODO: duplicated code as in LocalizedDelegateImpl, please refactor this to avoid code duplication
+		@Override
+		public String localizedForKey(String key, TableColumn column) {
+			if (logger.isLoggable(Level.FINE)) {
+				logger.finest("localizedForKey called with " + key + " for border " + column.getClass().getName());
+			}
+			_storedLocalizedForTableColumn.put(column, key);
+			return localizedForKey(key);
+		}
+
+		// TODO: duplicated code as in LocalizedDelegateImpl, please refactor this to avoid code duplication
+		@Override
+		public void clearStoredLocalizedForComponents() {
+			_storedLocalizedForComponents.clear();
+			_storedLocalizedForBorders.clear();
+			// _storedAdditionalStrings.clear();
+			_storedLocalizedForTableColumn.clear();
+			// localizationListeners.clear();
+		}
+
+		// TODO: duplicated code as in LocalizedDelegateImpl, please refactor this to avoid code duplication
+		@Override
+		public void updateGUILocalized() {
+			for (Map.Entry<Component, String> e : _storedLocalizedForComponents.entrySet()) {
+				Component component = e.getKey();
+				String string = e.getValue();
+				String text = localizedForKey(string);
+				/*String additionalString = _storedAdditionalStrings.get(component);
+				if (additionalString != null) {
+					text = text + additionalString;
+				}*/
+				if (component instanceof AbstractButton) {
+					((AbstractButton) component).setText(text);
+				}
+				if (component instanceof JLabel) {
+					((JLabel) component).setText(text);
+				}
+				component.setName(text);
+				if (component.getParent() instanceof JTabbedPane) {
+					if (((JTabbedPane) component.getParent()).indexOfComponent(component) > -1) {
+						((JTabbedPane) component.getParent()).setTitleAt(((JTabbedPane) component.getParent()).indexOfComponent(component),
+								text);
+					}
+				}
+				if (component.getParent() != null && component.getParent().getParent() instanceof JTabbedPane) {
+					if (((JTabbedPane) component.getParent().getParent()).indexOfComponent(component) > -1) {
+						((JTabbedPane) component.getParent().getParent())
+								.setTitleAt(((JTabbedPane) component.getParent().getParent()).indexOfComponent(component), text);
+					}
+				}
+			}
+			for (Map.Entry<JComponent, String> e : _storedLocalizedForComponentTooltips.entrySet()) {
+				JComponent component = e.getKey();
+				String string = e.getValue();
+				String text = localizedForKey(string);
+				component.setToolTipText(text);
+			}
+			for (Map.Entry<TitledBorder, String> e : _storedLocalizedForBorders.entrySet()) {
+				String string = e.getValue();
+				String text = localizedForKey(string);
+				e.getKey().setTitle(text);
+			}
+			for (Map.Entry<TableColumn, String> e : _storedLocalizedForTableColumn.entrySet()) {
+				String string = e.getValue();
+				String text = localizedForKey(string);
+				e.getKey().setHeaderValue(text);
+			}
+			for (Frame f : Frame.getFrames()) {
+				f.repaint();
+			}
+
 		}
 
 		public void setLocalizedForKeyAndLanguage(String key, String value, Language language) {
@@ -326,7 +518,7 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 			@Override
 			public String getEnglish() {
 				// The locale might be found in parent localizer
-				String returned = FlexoLocalization.localizedForKeyAndLanguage(FIBLocalizedDictionaryImpl.this, key, Language.ENGLISH);
+				String returned = localizedForKeyAndLanguage(key, Language.ENGLISH);
 				if (returned == null) {
 					returned = key;
 				}
@@ -343,7 +535,7 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 			@Override
 			public String getFrench() {
 				// The locale might be found in parent localizer
-				String returned = FlexoLocalization.localizedForKeyAndLanguage(FIBLocalizedDictionaryImpl.this, key, Language.FRENCH);
+				String returned = localizedForKeyAndLanguage(key, Language.FRENCH);
 				if (returned == null) {
 					returned = key;
 				}
@@ -360,7 +552,7 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 			@Override
 			public String getDutch() {
 				// The locale might be found in parent localizer
-				String returned = FlexoLocalization.localizedForKeyAndLanguage(FIBLocalizedDictionaryImpl.this, key, Language.DUTCH);
+				String returned = localizedForKeyAndLanguage(key, Language.DUTCH);
 				if (returned == null) {
 					returned = key;
 				}
@@ -499,8 +691,8 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 			getPropertyChangeSupport().firePropertyChange(ENTRIES_KEY, null, getEntries());
 		}
 
-		public DynamicEntry addEntry() {
-			String key = "new_entry";
+		public DynamicEntry addEntry(String key) {
+
 			DynamicEntry newDynamicEntry = new DynamicEntry(key);
 			dynamicEntries.add(newDynamicEntry);
 			Collections.sort(dynamicEntries, new Comparator<DynamicEntry>() {
@@ -509,7 +701,12 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 					return Collator.getInstance().compare(o1.key, o2.key);
 				}
 			});
+			searchTranslation(newDynamicEntry);
 			return null;
+		}
+
+		public DynamicEntry addEntry() {
+			return addEntry("new_entry");
 		}
 
 		public void deleteEntry(DynamicEntry entry) {
@@ -577,19 +774,17 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 		@Override
 		public void searchTranslation(LocalizedEntry entry) {
 			if (getParent() != null) {
-				String englishTranslation = FlexoLocalization.localizedForKeyAndLanguage(getParent(), entry.getKey(), Language.ENGLISH,
-						false);
+				String englishTranslation = getParent().localizedForKeyAndLanguage(entry.getKey(), Language.ENGLISH, false);
 				if (entry.getKey().equals(englishTranslation)) {
 					englishTranslation = automaticEnglishTranslation(entry.getKey());
 				}
 				entry.setEnglish(englishTranslation);
-				String dutchTranslation = FlexoLocalization.localizedForKeyAndLanguage(getParent(), entry.getKey(), Language.DUTCH, false);
+				String dutchTranslation = getParent().localizedForKeyAndLanguage(entry.getKey(), Language.DUTCH, false);
 				if (entry.getKey().equals(dutchTranslation)) {
 					dutchTranslation = automaticDutchTranslation(entry.getKey());
 				}
 				entry.setDutch(dutchTranslation);
-				String frenchTranslation = FlexoLocalization.localizedForKeyAndLanguage(getParent(), entry.getKey(), Language.FRENCH,
-						false);
+				String frenchTranslation = getParent().localizedForKeyAndLanguage(entry.getKey(), Language.FRENCH, false);
 				if (entry.getKey().equals(frenchTranslation)) {
 					frenchTranslation = automaticFrenchTranslation(entry.getKey());
 				}

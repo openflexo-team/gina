@@ -37,7 +37,6 @@
  * 
  */
 
-
 package org.openflexo.swing;
 
 import java.awt.BorderLayout;
@@ -64,7 +63,7 @@ import org.openflexo.localization.FlexoLocalization;
  * @author sguerin
  * 
  */
-public class FontSelector extends CustomPopup<Font> implements FontSelectionModel {
+public class FontSelector extends CustomPopup<Font>implements FontSelectionModel {
 
 	@SuppressWarnings("hiding")
 	static final Logger logger = Logger.getLogger(FontSelector.class.getPackage().getName());
@@ -86,7 +85,8 @@ public class FontSelector extends CustomPopup<Font> implements FontSelectionMode
 		// WARNING: we need here to clone to keep track back of previous data !!!
 		if (oldValue != null) {
 			_revertValue = new Font(oldValue.getFontName(), oldValue.getStyle(), oldValue.getSize());
-		} else {
+		}
+		else {
 			_revertValue = null;
 		}
 		if (logger.isLoggable(Level.FINE)) {
@@ -119,7 +119,8 @@ public class FontSelector extends CustomPopup<Font> implements FontSelectionMode
 	public Font getSelectedFont() {
 		if (getEditedObject() != null) {
 			return getEditedObject();
-		} else {
+		}
+		else {
 			return DEFAULT_FONT;
 		}
 	}
@@ -177,8 +178,8 @@ public class FontSelector extends CustomPopup<Font> implements FontSelectionMode
 
 			_controlPanel = new JPanel();
 			_controlPanel.setLayout(new FlowLayout());
-			_controlPanel.add(_applyButton = new JButton(FlexoLocalization.localizedForKey("ok")));
-			_controlPanel.add(_cancelButton = new JButton(FlexoLocalization.localizedForKey("cancel")));
+			_controlPanel.add(_applyButton = new JButton(FlexoLocalization.getMainLocalizer().localizedForKey("ok")));
+			_controlPanel.add(_cancelButton = new JButton(FlexoLocalization.getMainLocalizer().localizedForKey("cancel")));
 			_applyButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -272,7 +273,8 @@ public class FontSelector extends CustomPopup<Font> implements FontSelectionMode
 			previewLabel.setFont(getEditedObject());
 			if (FontSelector.super.getEditedObject() != null) {
 				previewLabel.setText(JFontChooser.fontDescription(getEditedObject()));
-			} else {
+			}
+			else {
 				previewLabel.setText("");
 			}
 		}

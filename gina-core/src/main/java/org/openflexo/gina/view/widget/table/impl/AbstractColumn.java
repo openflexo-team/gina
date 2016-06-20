@@ -168,7 +168,8 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 
 	public String getLocalized(String key) {
 		if (getController() != null) {
-			return FlexoLocalization.localizedForKey(getController().getLocalizerForComponent(getColumnModel().getOwner()), key);
+			return getController().getLocalizerForComponent(getColumnModel().getOwner()).localizedForKeyAndLanguage(key,
+					FlexoLocalization.getCurrentLanguage(), true);
 		}
 		else {
 			logger.warning("Controller not defined");

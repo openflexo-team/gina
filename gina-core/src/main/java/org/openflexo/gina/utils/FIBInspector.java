@@ -45,6 +45,8 @@ import java.util.List;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBTabPanel;
+import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -89,6 +91,18 @@ public interface FIBInspector extends FIBPanel {
 
 	public String getXMLRepresentation();
 
+	/**
+	 * Return the locales to be used as general locales in the context of that inspector<br>
+	 * Note that the locales defined in the component overrides those locales
+	 */
+	public LocalizedDelegate getLocales();
+
+	/**
+	 * Sets the locales to be used as general locales in the context of that inspector<br>
+	 * Note that the locales defined in the component overrides those locales
+	 */
+	public void setLocales(LocalizedDelegate locales);
+
 	public static abstract class FIBInspectorImpl extends FIBPanelImpl implements FIBInspector {
 
 		private static final String TITLE_KEY = "title";
@@ -98,6 +112,8 @@ public interface FIBInspector extends FIBPanel {
 
 		private FIBInspector unmergedComponent;
 		private final List<FIBInspector> superInspectors = new ArrayList<>();
+
+		private LocalizedDelegate locales = null;
 
 		@Override
 		public String getInspectorTitle() {
@@ -209,9 +225,9 @@ public interface FIBInspector extends FIBPanel {
 
 		// @Override
 		/*public void appendSuperInspectors(InspectorGroup inspectorGroup) {
-
+		
 			if (!isMerged) {
-
+		
 				if (getDataClass() == null) {
 					return;
 				}
@@ -231,7 +247,7 @@ public interface FIBInspector extends FIBPanel {
 				}
 				isMerged = true;
 			}
-
+		
 		}*/
 
 		@Override
@@ -249,5 +265,23 @@ public interface FIBInspector extends FIBPanel {
 			// TODO: we use here the default factory !!!
 			return getModelFactory().stringRepresentation(this);
 		}
+
+		/**
+		 * Return the locales to be used as general locales in the context of that inspector<br>
+		 * Note that the locales defined in the component overrides those locales
+		 */
+		@Override
+		public LocalizedDelegate getLocales() {
+			if (locales == null) {
+				return FlexoLocalization.getMainLocalizer();
+			}
+			return locales;
+		}
+
+		@Override
+		public void setLocales(LocalizedDelegate locales) {
+			this.locales = locales;
+		}
+
 	}
 }

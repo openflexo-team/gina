@@ -58,6 +58,7 @@ import javax.swing.event.ChangeListener;
 
 import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.gina.swing.view.container.JFIBTabPanelView;
@@ -91,13 +92,13 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 
 	public JFIBInspectorController(JFrame frame, Resource inspectorDirectory, FIBLibrary fibLibrary, LocalizedDelegate localizer,
 			final FIBEditorLoadingProgress progress) {
-		inspectorGroup = new InspectorGroup(inspectorDirectory, fibLibrary) {
+		inspectorGroup = new InspectorGroup(inspectorDirectory, fibLibrary, FIBModelObjectImpl.GINA_LOCALIZATION) {
 			@Override
 			public void progress(Resource f, FIBInspector inspector) {
 				super.progress(f, inspector);
 				if (progress != null) {
-					progress.progress(
-							FlexoLocalization.localizedForKey("loaded_inspector") + " " + inspector.getDataClass().getSimpleName());
+					progress.progress(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("loaded_inspector") + " "
+							+ inspector.getDataClass().getSimpleName());
 				}
 			}
 		};

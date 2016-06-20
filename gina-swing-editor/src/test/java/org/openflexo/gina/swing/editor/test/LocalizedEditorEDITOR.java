@@ -51,7 +51,7 @@ public class LocalizedEditorEDITOR extends GinaSwingEditorTestCase {
 	public void testLocalizedEditor()
 			throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 
-		instanciateFIBEdition("LocalizedEditor", LocalizedPanel.lOCALIZED_PANEL_FIB, FIBEditor.LOCALIZATION);
+		instanciateFIBEdition("LocalizedEditor", LocalizedPanel.lOCALIZED_PANEL_FIB, FIBEditor.EDITOR_LOCALIZATION);
 	}
 
 }

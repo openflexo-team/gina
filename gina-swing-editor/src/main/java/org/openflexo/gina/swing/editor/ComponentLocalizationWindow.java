@@ -44,7 +44,6 @@ import javax.swing.JFrame;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.utils.localization.LocalizedPanel;
-import org.openflexo.localization.FlexoLocalization;
 
 /**
  * Dialog used in FIBEditor, and used to edit localized of a {@link FIBComponent}
@@ -59,10 +58,10 @@ public class ComponentLocalizationWindow extends JDialog {
 	private final FIBEditorController editorController;
 
 	public ComponentLocalizationWindow(JFrame frame, final FIBEditorController editorController) {
-		super(frame, FlexoLocalization.localizedForKey(FIBEditor.LOCALIZATION, "component_localization"), false);
+		super(frame, FIBEditor.EDITOR_LOCALIZATION.localizedForKey("component_localization"), false);
 		this.editorController = editorController;
-		localizedPanel = new LocalizedPanel(editorController.getFIBComponent().getLocalizedDictionary(), FIBEditor.LOCALIZATION, false,
-				true) {
+		localizedPanel = new LocalizedPanel(editorController.getFIBComponent().getLocalizedDictionary(), FIBEditor.EDITOR_LOCALIZATION,
+				false, true) {
 			@Override
 			public void searchLocalized() {
 				editorController.getFIBComponent().searchAndRegisterAllLocalized();

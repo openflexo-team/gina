@@ -690,7 +690,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	@Override
 	public String getLocalized(String key) {
 		if (getController() != null && getController().getLocalizerForComponent(getComponent()) != null) {
-			return FlexoLocalization.localizedForKey(getController().getLocalizerForComponent(getComponent()), key);
+			return getController().getLocalizerForComponent(getComponent()).localizedForKeyAndLanguage(key,
+					FlexoLocalization.getCurrentLanguage(), true);
 		}
 		return key;
 	}

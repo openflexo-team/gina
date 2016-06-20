@@ -60,7 +60,6 @@ import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.swing.view.widget.JFIBColorWidget.ColorSelectorPanel;
 import org.openflexo.gina.view.widget.impl.FIBColorWidgetImpl;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.swing.ColorSelector;
 
 /**
@@ -150,13 +149,13 @@ public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>
 			selector = new ColorSelector();
 			selector.addApplyCancelListener(widget);
 			selector.addFocusListener(widget);
-			selector.setEnabled(false);
+			// Fixed bug where color selector widget was always disabled
+			selector.setEnabled(true);
 			checkBox = new JCheckBox();
 			checkBox.setHorizontalTextPosition(JCheckBox.LEADING);
 
-			checkBox.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, widget.getComponent().getAllowsNullText(),
-					checkBox));
-			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
+			checkBox.setText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey(widget.getComponent().getAllowsNullText(), checkBox));
+			checkBox.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedTooltipForKey("undefined_value", checkBox));
 
 			checkBox.addActionListener(new ActionListener() {
 
@@ -179,13 +178,16 @@ public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>
 
 		@Override
 		public void setEnabled(boolean enabled) {
+
+			System.out.println("Pour le ColorWidget " + widget.getComponent().getName() + " on met ENABLED a " + enabled);
+
 			super.setEnabled(enabled);
 			selector.getDownButton().setEnabled(enabled);
 		}
 
 		public void updateLanguage() {
-			checkBox.setText(FlexoLocalization.localizedForKey(FIBModelObjectImpl.LOCALIZATION, "transparent", checkBox));
-			checkBox.setToolTipText(FlexoLocalization.localizedTooltipForKey(FIBModelObjectImpl.LOCALIZATION, "undefined_value", checkBox));
+			checkBox.setText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("transparent", checkBox));
+			checkBox.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedTooltipForKey("undefined_value", checkBox));
 		}
 
 		public void updateFont(Font font) {
@@ -196,6 +198,9 @@ public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>
 
 	public JFIBColorWidget(FIBColor model, FIBController controller) {
 		super(model, controller, RENDERING_TECHNOLOGY_ADAPTER);
+		if (model.getName() != null && model.getName().equals("ProutLeColorSelector1")) {
+			System.out.println("OK, je l'ai !!!!!!!!");
+		}
 	}
 
 	@Override

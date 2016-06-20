@@ -132,14 +132,16 @@ public class FlexoLoggingViewer implements HasPropertyChangeSupport {
 	}
 
 	public Color getColorForLogRecord(LogRecord record) {
-		if (record.level == Level.INFO) {
-			return Color.BLACK;
-		}
-		else if (record.level == Level.WARNING) {
-			return Color.RED;
-		}
-		else if (record.level == Level.SEVERE) {
-			return Color.PINK;
+		if (record != null) {
+			if (record.level == Level.INFO) {
+				return Color.BLACK;
+			}
+			else if (record.level == Level.WARNING) {
+				return Color.RED;
+			}
+			else if (record.level == Level.SEVERE) {
+				return Color.PINK;
+			}
 		}
 		return Color.GRAY;
 	}
@@ -200,7 +202,7 @@ public class FlexoLoggingViewer implements HasPropertyChangeSupport {
 			if (loggingFileName != null && new File(loggingFileName).exists()) {
 				configurationFile = new File(loggingFileName);
 			}
-			*/
+			 */
 		}
 		if (configurationFile != null) {
 			return rl.retrieveResourceAsFile(configurationFile);
