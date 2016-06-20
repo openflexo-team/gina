@@ -306,14 +306,13 @@ public class FIBLocalizedEditorController extends FIBController {
 	}
 
 	public LocalizedEntry addEntry() {
-		if (getDataObject() instanceof LocalizedDelegateImpl) {
-			LocalizedEntry returned = ((LocalizedDelegateImpl) getDataObject()).addEntry();
+		LocalizedEntry returned = getDataObject().addEntry();
+		//LocalizedDelegate delegate = getDataObject();
 			// refresh();
-			getPropertyChangeSupport().firePropertyChange("matchingEntries", null, getMatchingEntries());
-			getPropertyChangeSupport().firePropertyChange("issuesEntries", null, getIssuesEntries());
-			return returned;
-		}
-		return null;
+		getPropertyChangeSupport().firePropertyChange("matchingEntries", null, getMatchingEntries());
+		getPropertyChangeSupport().firePropertyChange("issuesEntries", null, getIssuesEntries());
+		getDataObject().getPropertyChangeSupport().firePropertyChange("entries", null, getDataObject().getEntries());
+		return returned;
 	}
 
 	public void removeEntry(LocalizedEntry entry) {
@@ -322,6 +321,7 @@ public class FIBLocalizedEditorController extends FIBController {
 		getIssuesEntries().remove(entry);
 		getPropertyChangeSupport().firePropertyChange("matchingEntries", null, getMatchingEntries());
 		getPropertyChangeSupport().firePropertyChange("issuesEntries", null, getIssuesEntries());
+		getDataObject().getPropertyChangeSupport().firePropertyChange("entries", null, getDataObject().getEntries());
 		// refresh();
 	}
 
