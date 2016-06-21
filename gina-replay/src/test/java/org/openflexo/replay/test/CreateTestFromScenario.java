@@ -12,6 +12,23 @@ import org.apache.commons.io.FilenameUtils;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.ResourceLocator;
 
+/**
+ * This tool creates a JUnit test class that will replay and test a recorded scenario.
+ * This is useful for continuous testing.
+ * 
+ * This class needs :
+ *   - an input scenario file (the XML recorded)
+ *   - an output class file (where the JUnit class file should be written)
+ *        If set to 'auto', the output class file will be determined by the main class of the scenario.
+ * 
+ * The JUnit class will be generated from the scenarii/tests/template template file.
+ * 
+ * This provides the following program :
+ * CreateTestFromScenario [input="scenarii/last-scenario"] [output="auto"]
+ * 
+ * @author Alexandre
+ *
+ */
 public class CreateTestFromScenario {
 	private String input, output;
 	private final String templatePath = "scenarii/tests/template";

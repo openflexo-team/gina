@@ -56,7 +56,7 @@ import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.binding.SettableBindingEvaluationContext;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.manager.EventManager;
-import org.openflexo.gina.manager.Registerable;
+import org.openflexo.gina.manager.Registrable;
 import org.openflexo.gina.manager.URID;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
@@ -84,7 +84,7 @@ import org.openflexo.toolbox.StringUtils;
  * 
  */
 public class FIBController
-		implements SettableBindingEvaluationContext, /*Observer,*/ /*PropertyChangeListener,*/ HasPropertyChangeSupport, Registerable {
+		implements SettableBindingEvaluationContext, /*Observer,*/ /*PropertyChangeListener,*/ HasPropertyChangeSupport, Registrable {
 
 	static final Logger LOGGER = Logger.getLogger(FIBController.class.getPackage().getName());
 

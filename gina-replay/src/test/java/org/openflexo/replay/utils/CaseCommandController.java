@@ -11,7 +11,11 @@ public class CaseCommandController extends FIBController {
 	}
 
 	public void save() {
-		// GinaRecorderManager.getInstance().getCurrentRecorder().save(new File("D:/test-gina-recorder"));
+		/**
+		 * TODO : currently the scenario is saved automatically to 'last-scenario'
+		 */
+		//File scenarioDir = ((FileResourceImpl) ResourceLocator.locateSourceCodeResource("scenarii")).getFile();
+		//GinaRecorderManager.getInstance().getCurrentRecorder().save(scenarioDir);
 	}
 
 }

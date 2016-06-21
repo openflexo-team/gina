@@ -8,13 +8,13 @@ import org.openflexo.gina.event.description.NotifyMethodEventDescription;
 import org.openflexo.gina.manager.EventManager;
 import org.openflexo.gina.manager.GinaEventListener;
 import org.openflexo.gina.manager.GinaStackEvent;
-import org.openflexo.gina.manager.Registerable;
+import org.openflexo.gina.manager.Registrable;
 
 public abstract class NullGinaEventNotifier<D extends EventDescription> {
 	private List<GinaEventListener> ginaListeners = new ArrayList<GinaEventListener>();
 	
 	protected EventManager manager;
-	protected Registerable parent;
+	protected Registrable parent;
 
 	public NullGinaEventNotifier() {
 	}

@@ -1,4 +1,4 @@
-package org.openflexo.replay.test;
+package org.openflexo.replay.tests;
 
 import static org.junit.Assert.*;
 
@@ -6,28 +6,26 @@ import java.io.File;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.openflexo.gina.event.InvalidRecorderStateException;
+import org.openflexo.replay.test.ReplayTestConfiguration;
+import org.openflexo.replay.test.TestParameter;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.ResourceLocator;
 
 /**
- * This class will replay and check the last scenario file.
- * It is useful to check a recorded scenario quickly.
+ * This manages a diana recording/replaying example.
+ * TODO some parts are functionals (check /diana-api/src/main/java/org/openflexo/gina/event/description/TreeNodeEventDescription.java)
+ * It will require to import event enabled version of diana to be used.
  * 
  * @author Alexandre
  *
  */
 @RunWith(Parameterized.class)
-public class Tester {
-
-	private TestParameter testParam;
-
+public class DrawindTreeNodeCaseTest {
 	static private ReplayTestConfiguration testConfiguration;
 	
 	public static void init() {
@@ -42,7 +40,7 @@ public class Tester {
     	init();
     	LinkedList<TestParameter[]> list = new LinkedList<TestParameter[]>();
 
-		int size = testConfiguration.getSession().getScenario().size();
+		int size = testConfiguration.getManager().getCurrentSession().getScenario().size();
 
         for(int i=0; i<size; ++i)
         {
@@ -54,40 +52,17 @@ public class Tester {
     	return list;
     }
 
-    public Tester(TestParameter param) {
-    	testParam = param;
+    public DrawindTreeNodeCaseTest(TestParameter param) {
     }
 
     @Test
     public void test() {
     	try {
-    		testConfiguration.getSession().checkNextStep(true);
+    		testConfiguration.getManager().getCurrentSession().checkNextStep(false);
 		} catch (InvalidRecorderStateException e) {
 			assertTrue(e.getMessage(), false);
 		}
 
     	assertTrue(true);
     }
-    
-    @BeforeClass
-	public static void initGUI() {
-    	//simpleCase = new MultiEventsCase();
-		//gcDelegate = new GraphicalContextDelegate(FIBCheckboxListWidgetTest.class.getSimpleName());
-	}
-
-	@AfterClass
-	public static void waitGUI() {
-		//gcDelegate.waitGUI();
-	}
-
-	/*@Before
-	public void setUp() {
-		gcDelegate.setUp();
-	}
-
-	@Override
-	@After
-	public void tearDown() throws Exception {
-		gcDelegate.tearDown();
-	}*/
 }

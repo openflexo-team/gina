@@ -14,6 +14,14 @@ import org.openflexo.replay.GinaReplayManager;
 import org.openflexo.replay.GinaReplaySession;
 import org.openflexo.replay.sampleData.Person;
 
+/**
+ * Represents the control panel during a recording session.
+ * Currently just the 'save' button is displayed.
+ * TODO should be extended is required
+ * 
+ * @author Alexandre
+ *
+ */
 public class CaseCommandWindow {
 	private GraphicalContextDelegate gcDelegate;
 	private FIBPanel component;

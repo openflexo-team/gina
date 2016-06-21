@@ -1,12 +1,12 @@
 package org.openflexo.gina.manager;
 
 /**
- * This interface represents a way to identify in an unique way an object.
+ * This interface represents a way to identify in an unique way an object using URID.
  * 
  * @author Alexandre
  *
  */
-public interface Registerable extends HasBaseIdentifier {
+public interface Registrable extends HasBaseIdentifier {
 
 	public URID getURID();
 	

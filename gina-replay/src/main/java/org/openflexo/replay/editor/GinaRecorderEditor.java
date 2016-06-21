@@ -11,6 +11,14 @@ import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 
+/**
+ * This class is used to launch the fib editor (Editor/Editor.fib).
+ * This editor is used to edit a recorded scenario.
+ * *TODO not functional : scenario and events can be loaded, but editing event properties is not possible yet*
+ * 
+ * @author Alexandre
+ *
+ */
 public class GinaRecorderEditor {
 
 	public GinaRecorderEditor() {

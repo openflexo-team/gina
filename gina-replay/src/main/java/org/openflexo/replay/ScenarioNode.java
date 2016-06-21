@@ -11,11 +11,12 @@ import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 
 /**
- * This interface/implementation represents a node in a scenarion : it could be an InteractionCycle or another Scenario
+ * This class represents a node in a scenario. It could be :
+ *   - an InteractionCycle that represents events from the user and the responses of the system
+ *   - another Scenario that can be loaded and played *TODO not functional yet*
  * 
  * @author Alexandre
  */
-
 @ModelEntity
 @ImplementationClass(ScenarioNode.ScenarioNodeImpl.class)
 @Imports({ @Import(InteractionCycle.class) })

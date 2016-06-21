@@ -4,6 +4,11 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 
+/**
+ * Describes a GinaEvent performed by the system, as a response to an UserInteraction
+ * 
+ * @author Alexandre
+ */
 @ModelEntity
 @ImplementationClass(SystemEvent.SystemEventImpl.class)
 @XMLElement(xmlTag = "SystemEvent")

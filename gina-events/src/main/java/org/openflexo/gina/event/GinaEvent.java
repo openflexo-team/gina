@@ -15,11 +15,13 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 
 /**
- * This abstract class represents an Event described by an EventDescription
+ * This abstract class represents an event :
+ *  - performed by the system in the case of the inherited class SystemEvent
+ *  - performed by the user in the case of the inherited class UserInteraction
+ * All the description of the event is contained in the EventDescription attribute.
  * 
  * @author Alexandre
  */
-
 @ModelEntity
 @ImplementationClass(value = GinaEvent.GinaEventImpl.class)
 @Imports({ @Import(EventDescription.class), @Import(UserInteraction.class), @Import(SystemEvent.class) })
@@ -47,6 +49,8 @@ public abstract interface GinaEvent {
 	public KIND getKind();
 
 	public boolean matchesIdentity(GinaEvent e);
+	public boolean matchesEvent(GinaEvent e);
+	public void checkMatchingEvent(GinaEvent e) throws InvalidRecorderStateException;
 
 	public abstract class GinaEventImpl implements GinaEvent {
 
@@ -57,6 +61,10 @@ public abstract interface GinaEvent {
 
 		public boolean matchesEvent(GinaEvent e) {
 			return this.getDescription().matchesEvent(e.getDescription());
+		}
+		
+		public void checkMatchingEvent(GinaEvent e) throws InvalidRecorderStateException {
+			this.getDescription().checkMatchingEvent(e.getDescription());
 		}
 
 		@Override

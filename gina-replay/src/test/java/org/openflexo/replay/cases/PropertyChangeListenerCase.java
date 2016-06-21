@@ -6,6 +6,7 @@ import java.awt.Dimension;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.junit.Assert.assertNotNull;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;

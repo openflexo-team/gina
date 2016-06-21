@@ -20,6 +20,13 @@ import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 
+/**
+ * This class is used to organize SystemEvent as a tree depending of their origin.
+ * This is used to keep track of the causality of the SystemEvent responses.
+ * 
+ * @author Alexandre
+ *
+ */
 @ModelEntity
 // @ImplementationClass(SystemEventTreeNode.SystemEventTreeNodeImpl.class)
 @Imports({ @Import(InteractionCycle.class) })

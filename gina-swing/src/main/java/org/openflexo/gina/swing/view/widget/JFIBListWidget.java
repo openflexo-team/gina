@@ -179,8 +179,8 @@ public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T> implements
 
 	@Override
 	public void executeEvent(EventDescription e) {
-		widgetExecuting = true;
 		super.executeEvent(e);
+		widgetExecuting = true;
 
 		getTechnologyComponent().revalidate();
 		getTechnologyComponent().repaint();

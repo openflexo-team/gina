@@ -7,13 +7,13 @@ import org.openflexo.gina.event.description.GinaTaskEventDescription;
 import org.openflexo.gina.manager.EventManager;
 import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.gina.manager.GinaTask;
-import org.openflexo.gina.manager.Registerable;
+import org.openflexo.gina.manager.Registrable;
 
 public abstract class GinaTaskEventNotifier extends GinaEventNotifier<GinaTaskEventDescription> {
 	private Stack<GinaStackEvent> stackEvents;
 	private GinaStackEvent gseTask;
 
-	public GinaTaskEventNotifier(EventManager manager, Registerable parent) {
+	public GinaTaskEventNotifier(EventManager manager, Registrable parent) {
 		super(manager, parent);
 	}
 

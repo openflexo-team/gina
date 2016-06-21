@@ -18,8 +18,9 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 
 /**
- * This class represents an cycle of interaction (user and system) : - It starts by 1 UserInteraction - It is followed by 1 or many
- * SystemEvent, in response of the previous UserInteraction
+ * This class represents a cycle of interaction (user and system) :
+ *  - It starts by 1 UserInteraction
+ *  - It is followed by 1 or many SystemEvent, in response of the previous UserInteraction
  * 
  * @author Alexandre
  */
