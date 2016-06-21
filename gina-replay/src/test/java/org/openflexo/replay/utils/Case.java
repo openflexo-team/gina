@@ -10,6 +10,7 @@ import java.util.concurrent.Executors;
 import org.openflexo.gina.event.UserInteraction;
 import org.openflexo.gina.event.description.ApplicationEventDescription;
 import org.openflexo.gina.event.description.EventDescription;
+import org.openflexo.gina.event.description.FIBEventDescription;
 //import org.openflexo.gina.event.description.TreeNodeEventDescription;
 import org.openflexo.gina.manager.EventManager;
 import org.openflexo.replay.GinaReplayManager;
@@ -45,7 +46,7 @@ public abstract class Case {
 		// we create a GinaReplayManager that we manage the whole record/replay
 		manager = new GinaReplayManager();
 		// we add the FIBEventDescription (and children) model to the factory
-		//manager.addEventDescriptionModels(FIBEventDescription.class);
+		manager.addEventDescriptionModels(FIBEventDescription.class);
 		// we could've added TreeNodeEventDescription.class to manage Diana Events
 
 		// we create and select a replay session

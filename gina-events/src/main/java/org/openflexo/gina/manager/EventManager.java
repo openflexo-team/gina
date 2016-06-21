@@ -16,10 +16,21 @@ import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
+/**
+ * The EventManager manages all aspects of event recording.
+ * It keeps a register of :
+ * - all the listeners that should be notified
+ * - all the registrable objects
+ * - all the stack of events
+ * 
+ * It also manages locking for multi-threading operations
+ * 
+ * @author Alexandre
+ */
 public class EventManager implements GinaEventListener {
 	private List<GinaEventListener> listeners = new ArrayList<GinaEventListener>();
 
-	private Map<URID, Registerable> registry;
+	private Map<URID, Registrable> registry;
 	private Map<String, Integer> uridSequences;
 	private Map<Long, ThreadStack> threadStackEvents;
 	private List<GinaEventContext> contexts;
@@ -31,7 +42,7 @@ public class EventManager implements GinaEventListener {
 	private long startTime;
 
 	public EventManager() {
-		this.registry = new HashMap<URID, Registerable>();
+		this.registry = new HashMap<URID, Registrable>();
 		this.uridSequences = new HashMap<String, Integer>();
 		this.threadStackEvents = new HashMap<Long, ThreadStack>();
 
@@ -140,7 +151,7 @@ public class EventManager implements GinaEventListener {
 		headLock.unlock();
 	}
 
-	public URID register(Registerable obj) {
+	public URID register(Registrable obj) {
 		if (obj.getURID() != null)
 			return obj.getURID();
 
@@ -154,15 +165,15 @@ public class EventManager implements GinaEventListener {
 		return urid;
 	}
 
-	public void unregister(Registerable obj) {
+	public void unregister(Registrable obj) {
 		System.out.println("Unregistering " + obj.getURID());
 		obj.setURID(null);
 
 		this.registry.remove(obj.getURID());
 	}
 
-	public Registerable find(String identifier) {
-		for (Map.Entry<URID, Registerable> r : this.registry.entrySet()) {
+	public Registrable find(String identifier) {
+		for (Map.Entry<URID, Registrable> r : this.registry.entrySet()) {
 			if (r.getKey().getIdentifier().equals(identifier)) {
 				return r.getValue();
 			}
@@ -171,7 +182,7 @@ public class EventManager implements GinaEventListener {
 		return null;
 	}
 
-	public URID generateURID(Registerable obj) {
+	public URID generateURID(Registrable obj) {
 		String base = obj.getBaseIdentifier();
 		int sequence = 0;
 

@@ -8,15 +8,23 @@ import org.openflexo.gina.event.description.NotifyMethodEventDescription;
 import org.openflexo.gina.manager.EventManager;
 import org.openflexo.gina.manager.GinaEventListener;
 import org.openflexo.gina.manager.GinaStackEvent;
-import org.openflexo.gina.manager.Registerable;
+import org.openflexo.gina.manager.Registrable;
 
+/**
+ * An GineEventNotifier is used to throw events using the method raise.
+ * It requires an EventManager to send events to and a Registerable parent to identify the origin.
+ * 
+ * @author Alexandre
+ *
+ * @param <D> EventDescription root class
+ */
 public abstract class GinaEventNotifier<D extends EventDescription> {
 	private List<GinaEventListener> ginaListeners = new ArrayList<GinaEventListener>();
 	
 	protected EventManager manager;
-	protected Registerable parent;
+	protected Registrable parent;
 
-	public GinaEventNotifier(EventManager manager, Registerable parent) {
+	public GinaEventNotifier(EventManager manager, Registrable parent) {
 		this.parent = parent;
 		this.manager = manager;
 		if (this.manager != null)
@@ -52,6 +60,10 @@ public abstract class GinaEventNotifier<D extends EventDescription> {
 		return raise(d, null);
 	}
 
+	/**
+	 * This throw a GinaEvent to the EventManager and also create a stack of events to manage causality.
+	 * Please remember to call ginaStackEvent.end() before unreferencing it.
+	 */
 	public GinaStackEvent raise(D d, Object o) {
 		if (this.manager == null)
 			return new GinaStackEvent();
@@ -84,6 +96,9 @@ public abstract class GinaEventNotifier<D extends EventDescription> {
 		}
 	}*/
 	
+	/**
+	 * Used for debug, to notify something append in a method.
+	 */
 	public GinaStackEvent notifyMethod() {
 		return notifyMethod(null);
 	}
@@ -109,8 +124,15 @@ public abstract class GinaEventNotifier<D extends EventDescription> {
 		return se;
 	}
 
+	/**
+	 * This method is used to determine if an action is an User Interaction or a System Event.
+	 * @param d EventDescription
+	 */
 	public abstract GinaEvent.KIND computeClass(D d);
 
+	/**
+	 * This method is used to set the identity of the event emitter, using the object o
+	 */
 	public abstract void setIdentity(D d, Object o) throws MissingIdentityParameterException;
 
 }

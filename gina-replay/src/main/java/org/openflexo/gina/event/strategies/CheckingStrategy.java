@@ -14,6 +14,8 @@ import org.openflexo.gina.event.InvalidRecorderStateException;
 import org.openflexo.gina.event.SystemEvent;
 import org.openflexo.gina.event.UserInteraction;
 import org.openflexo.gina.event.GinaEvent.KIND;
+import org.openflexo.gina.event.description.FIBSelectionEventDescription;
+import org.openflexo.gina.event.description.item.DescriptionItem;
 import org.openflexo.gina.manager.GinaStackEvent;
 
 /**
@@ -66,6 +68,14 @@ public abstract class CheckingStrategy {
 	 * @param stack
 	 */
 	public void eventPerformed(GinaEvent e, Stack<GinaStackEvent> stack) {
+		/*System.out.println("Event : " + e.getKind());
+		if (e.getDescription() instanceof FIBSelectionEventDescription) {
+			FIBSelectionEventDescription fe = (FIBSelectionEventDescription) e.getDescription();
+			System.out.println(fe.getLead());
+			for (DescriptionItem di : fe.getValues())
+				System.out.println(di);
+		}*/
+		
 		GinaEvent origin = session.getEventOrigin(e, stack);
 		GinaEvent userOrigin = session.getEventUserOrigin(e, stack);
 
@@ -75,17 +85,11 @@ public abstract class CheckingStrategy {
 			lastEventReplayed = null;
 			return;
 		}
-		/*System.out.println("Response : " + e + ", origin : " + origin + ", userOrigin : " + userOrigin);
-		if (e.getDescription() instanceof FIBSelectionEventDescription) {
-			FIBSelectionEventDescription fe = (FIBSelectionEventDescription) e.getDescription();
-			System.out.println(fe.getLead());
-			for (DescriptionItem di : fe.getValues())
-				System.out.println(di);
-		}*/
+		//System.out.println("Response : " + e + ", origin : " + origin + ", userOrigin : " + userOrigin);
 
 		// add as event or state depending of its origin
 		if (e.getKind() != KIND.USER_INTERACTION && replayNodeToEvents.containsKey(userOrigin)) {
-			// System.out.println("State updated : " + e);
+			//System.out.println("State updated : " + e);
 			UserInteraction replayed = replayNodeToEvents.get(userOrigin);
 			if (replayEvents.containsKey(replayed)) {
 				//System.out.println("/// ADDED \\\\\\");

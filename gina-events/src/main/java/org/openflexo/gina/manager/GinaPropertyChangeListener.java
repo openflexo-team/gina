@@ -7,7 +7,7 @@ import org.openflexo.gina.event.GinaEvent.KIND;
 import org.openflexo.gina.event.GinaEventNotifier;
 import org.openflexo.gina.event.description.NotifyMethodEventDescription;
 
-public class GinaPropertyChangeListener implements PropertyChangeListener, Registerable {
+public class GinaPropertyChangeListener implements PropertyChangeListener, Registrable {
 	
 	private GinaEventNotifier<NotifyMethodEventDescription> GENotifier;
 

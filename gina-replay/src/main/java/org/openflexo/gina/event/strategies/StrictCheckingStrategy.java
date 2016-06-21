@@ -44,9 +44,9 @@ public class StrictCheckingStrategy extends CheckingStrategy {
 			}
 		}
 		
-		/*System.out.println("1 : " + listReplayed);
-		System.out.println("2 : " + listExcepted);*/
-		
+		//System.out.println("1 : " + listReplayed);
+		//System.out.println("2 : " + listExcepted);
+
 		for(GinaEvent e : listExcepted) {
 			GinaEvent matching = findSystemEvent(listReplayed, e);
 			

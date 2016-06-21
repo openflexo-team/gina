@@ -1,6 +1,11 @@
 package org.openflexo.gina.manager;
 
-
+/**
+ * A sequentialURID is just an URID composed of a basename and a sequence number.
+ * 
+ * @author Alexandre
+ *
+ */
 public class SequentialURID implements URID {
 
 	private String baseIdentifier;

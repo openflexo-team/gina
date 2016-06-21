@@ -121,6 +121,10 @@ public class ReplayTestConfiguration {
 			return;
 		}
 	}
+	
+	public GinaReplaySession getSession() {
+		return manager.getCurrentSession();
+	}
 
 	public GinaReplayManager getManager() {
 		return manager;

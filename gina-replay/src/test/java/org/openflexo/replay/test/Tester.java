@@ -42,7 +42,7 @@ public class Tester {
     	init();
     	LinkedList<TestParameter[]> list = new LinkedList<TestParameter[]>();
 
-		int size = testConfiguration.getManager().getCurrentSession().getScenario().size();
+		int size = testConfiguration.getSession().getScenario().size();
 
         for(int i=0; i<size; ++i)
         {
@@ -61,7 +61,7 @@ public class Tester {
     @Test
     public void test() {
     	try {
-    		testConfiguration.getManager().getCurrentSession().checkNextStep(true);
+    		testConfiguration.getSession().checkNextStep(true);
 		} catch (InvalidRecorderStateException e) {
 			assertTrue(e.getMessage(), false);
 		}

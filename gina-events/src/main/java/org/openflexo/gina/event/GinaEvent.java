@@ -15,11 +15,13 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 
 /**
- * This abstract class represents an Event described by an EventDescription
+ * This abstract class represents an event :
+ *  - performed by the system in the case of the inherited class SystemEvent
+ *  - performed by the user in the case of the inherited class UserInteraction
+ * All the description of the event is contained in the EventDescription attribute.
  * 
  * @author Alexandre
  */
-
 @ModelEntity
 @ImplementationClass(value = GinaEvent.GinaEventImpl.class)
 @Imports({ @Import(EventDescription.class), @Import(UserInteraction.class), @Import(SystemEvent.class) })

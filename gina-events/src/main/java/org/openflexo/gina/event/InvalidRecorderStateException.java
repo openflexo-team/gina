@@ -7,7 +7,7 @@ public class InvalidRecorderStateException extends Exception {
 	private GinaEvent state;
 	
 	public InvalidRecorderStateException(String message) {
-        this(message/*, null*/, (GinaEvent)null);
+        this(message, (GinaEvent)null);
     }
 	
 	public InvalidRecorderStateException(String value1, String value2) {

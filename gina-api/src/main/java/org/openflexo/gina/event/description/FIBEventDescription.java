@@ -6,7 +6,7 @@ import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.event.InvalidRecorderStateException;
 import org.openflexo.gina.event.MissingIdentityParameterException;
 import org.openflexo.gina.manager.EventManager;
-import org.openflexo.gina.manager.Registerable;
+import org.openflexo.gina.manager.Registrable;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.FIBWidgetView;
 import org.openflexo.model.annotations.Getter;
@@ -109,7 +109,7 @@ public abstract interface FIBEventDescription extends EventDescription {
 		}
 		
 		public FIBWidgetView<?, ?, ?> getWidgetView(EventManager manager) {
-			Registerable parent = manager.find(getParentIdentifier());
+			Registrable parent = manager.find(getParentIdentifier());
 			if (!(parent instanceof FIBController))
 				return null;
 
