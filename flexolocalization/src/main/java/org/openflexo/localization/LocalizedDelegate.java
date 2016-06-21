@@ -57,7 +57,7 @@ import org.openflexo.toolbox.HasPropertyChangeSupport;
  * @author sylvain
  * 
  */
-public interface LocalizedDelegate {
+public interface LocalizedDelegate extends HasPropertyChangeSupport {
 
 	/**
 	 * Return String matching specified key and language set as default language<br>
@@ -174,6 +174,8 @@ public interface LocalizedDelegate {
 	public void clearStoredLocalizedForComponents();
 
 	public void updateGUILocalized();
+
+	public LocalizedEntry addEntry();
 
 	/**
 	 * Represents a localized entry<br>

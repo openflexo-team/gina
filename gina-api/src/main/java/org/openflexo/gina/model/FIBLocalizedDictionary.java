@@ -215,21 +215,30 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 			return dict;
 		}
 
-		/*public String getDefaultValue(String key, Language language) {
-		if (mainLocalizer != null) {
-			return mainLocalizer.getLocalizedForKeyAndLanguage(key, language);
-		}
-		// Otherwise, don't know what to do, return key
-		return key;
-		// logger.info("Searched default value for key "+key+" return "+FlexoLocalization.localizedForKey(key));
-		// return FlexoLocalization.localizedForKeyAndLanguage(key, language, false, false);
-		}*/
-
+		/**
+		 * Return String matching specified key and language set as default language<br>
+		 * 
+		 * This is general and main method to use localized in Flexo.<br>
+		 * Applicable language is chosen from the one defined in FlexoLocalization (configurable from GeneralPreferences).<br>
+		 * Use english names for keys, such as 'some_english_words'<br>
+		 * 
+		 * Usage example: <code>localizedForKey("some_english_words")</code>
+		 * 
+		 * @param key
+		 * @return String matching specified key and language defined as default in {@link FlexoLocalization}
+		 */
 		@Override
 		public String localizedForKey(String key) {
 			return localizedForKeyAndLanguage(key, FlexoLocalization.getCurrentLanguage());
 		}
 
+		/**
+		 * Return String matching specified key and language<br>
+		 * 
+		 * @param key
+		 * @param language
+		 * @return
+		 */
 		@Override
 		public String localizedForKeyAndLanguage(String key, Language language) {
 			return localizedForKeyAndLanguage(key, language, handleNewEntry(key, language));
@@ -287,47 +296,6 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 
 			return localized;
 		}
-
-		// @Override
-		/*public String localizedForKeyAndLanguage2(String key, Language language, boolean createsNewEntriesIfNonExistant) {
-			if (key == null || StringUtils.isEmpty(key)) {
-				return null;
-			}
-			// if (isSearchingNewEntries) logger.info("-------> called localizedForKeyAndLanguage() key="+key+" lang="+language);
-		
-			boolean debug = false;
-		
-			if (key.equals("properties_declared_in_this_class")) {
-				System.out.println("OK, j'ai le truc properties_declared_in_this_class");
-				debug = true;
-			}
-		
-			String returned = getDictForLang(language).get(key);
-		
-			if (debug) {
-				System.out.println("returned=" + returned);
-				System.out.println("getParent()=" + getParent());
-				System.out.println("createsNewEntriesIfNonExistant=" + createsNewEntriesIfNonExistant);
-				// Thread.dumpStack();
-			}
-		
-			if (returned == null) {
-				if (getParent() != null) {
-					if (debug) {
-						System.out.println("Le parent de " + this + " c'est " + getParent());
-					}
-					returned = getParent().localizedForKeyAndLanguage(key, language);
-					returned = getParent().localizedForKeyAndLanguage(key, language, !createsNewEntriesIfNonExistant);
-				}
-				if (createsNewEntriesIfNonExistant) {
-				if (returned == null && createsNewEntriesIfNonExistant) {
-					foundLocalized(key);
-				}
-			}
-		
-			return returned;
-		
-		}*/
 
 		// TODO: duplicated code as in LocalizedDelegateImpl, please refactor this to avoid code duplication
 		@Override
