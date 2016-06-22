@@ -178,9 +178,6 @@ public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>
 
 		@Override
 		public void setEnabled(boolean enabled) {
-
-			System.out.println("Pour le ColorWidget " + widget.getComponent().getName() + " on met ENABLED a " + enabled);
-
 			super.setEnabled(enabled);
 			selector.getDownButton().setEnabled(enabled);
 		}
@@ -198,9 +195,6 @@ public class JFIBColorWidget extends FIBColorWidgetImpl<ColorSelectorPanel>
 
 	public JFIBColorWidget(FIBColor model, FIBController controller) {
 		super(model, controller, RENDERING_TECHNOLOGY_ADAPTER);
-		if (model.getName() != null && model.getName().equals("ProutLeColorSelector1")) {
-			System.out.println("OK, je l'ai !!!!!!!!");
-		}
 	}
 
 	@Override
