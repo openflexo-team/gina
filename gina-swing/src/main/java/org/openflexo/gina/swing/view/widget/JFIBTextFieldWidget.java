@@ -72,7 +72,7 @@ import org.openflexo.toolbox.ToolBox;
  * 
  * @author sylvain
  */
-public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>implements FocusListener, JFIBView<FIBTextField, JTextField> {
+public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField> implements FocusListener, JFIBView<FIBTextField, JTextField> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(JFIBTextFieldWidget.class.getPackage().getName());
@@ -216,7 +216,7 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField>imple
 			public void removeUpdate(DocumentEvent e) {
 				GinaStackEvent stack = GENotifier.raise(FIBEventFactory.getInstance().createTextEvent(FIBTextEventDescription.REMOVED,
 						e.getOffset(), e.getLength(), "", getValue()));
-				if (!validateOnReturn && !isUpdating()) {
+				if (!validateOnReturn && !isUpdating() && !widgetUpdating()) {
 					textChanged();
 					// updateModelFromWidget();
 				}
