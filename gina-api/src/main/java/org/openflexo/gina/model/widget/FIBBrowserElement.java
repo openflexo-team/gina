@@ -680,7 +680,8 @@ public interface FIBBrowserElement extends FIBModelObject {
 		public void setHasSpecificFont(boolean aFlag) {
 			if (aFlag) {
 				setFont(retrieveValidFont());
-			} else {
+			}
+			else {
 				setFont(null);
 			}
 		}
@@ -1260,7 +1261,8 @@ public interface FIBBrowserElement extends FIBModelObject {
 				}
 				if (isMultipleAccess()) {
 					return TypeUtils.getBaseClass(((ParameterizedType) accessedType).getActualTypeArguments()[0]);
-				} else {
+				}
+				else {
 					return TypeUtils.getBaseClass(getAccessedType());
 				}
 			}
