@@ -104,21 +104,25 @@ public abstract class FIBGenericTextWidgetImpl<F extends FIBTextWidget, C> exten
 			if (newText != null && (newText + "\n").equals(currentWidgetValue)) {
 				return newText;
 			}
-			// widgetUpdating = true;
-			// try {
-			int caret = getRenderingAdapter().getCaretPosition(getTechnologyComponent());
-			getRenderingAdapter().setText(getTechnologyComponent(), newText);
-			if (caret > -1 && newText != null && caret < newText.length()) {
-				getRenderingAdapter().setCaretPosition(getTechnologyComponent(), caret);
+			widgetUpdating = true;
+			try {
+				int caret = getRenderingAdapter().getCaretPosition(getTechnologyComponent());
+				getRenderingAdapter().setText(getTechnologyComponent(), newText);
+				if (caret > -1 && newText != null && caret < newText.length()) {
+					getRenderingAdapter().setCaretPosition(getTechnologyComponent(), caret);
+				}
+			} finally {
+				widgetUpdating = false;
 			}
-			// } finally {
-			// widgetUpdating = false;
-			// }
 		}
 		return newText;
 	}
 
 	private boolean widgetUpdating = false;
+
+	protected boolean widgetUpdating() {
+		return widgetUpdating;
+	}
 
 	/**
 	 * Update static value represented in text component
