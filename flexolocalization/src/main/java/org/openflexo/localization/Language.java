@@ -162,8 +162,8 @@ public abstract class Language implements ChoiceList {
 	 * @return Vector of
 	 * 
 	 *         <pre>
-	 * Language
-	 * </pre>
+	 *         Language
+	 *         </pre>
 	 * 
 	 *         objects
 	 */
@@ -194,7 +194,8 @@ public abstract class Language implements ChoiceList {
 	public static Language get(Locale locale) {
 		if (locale == Locale.ENGLISH || locale == Locale.UK || locale == Locale.US) {
 			return ENGLISH;
-		} else if (locale == Locale.FRANCE || locale == Locale.FRENCH) {
+		}
+		else if (locale == Locale.FRANCE || locale == Locale.FRENCH) {
 			return FRENCH;
 		}
 		return ENGLISH;
@@ -240,7 +241,8 @@ public abstract class Language implements ChoiceList {
 	public abstract String getTag();
 
 	public String getLocalizedName() {
-		return FlexoLocalization.localizedForKey(getName());
+		// return FlexoLocalization.localizedForKey(getName());
+		return getName();
 	}
 
 	public static Vector<Language> availableValues() {

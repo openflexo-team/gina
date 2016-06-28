@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Inspector layout="border" darkLevel="0" dataClassName="org.openflexo.fib.model.FIBMultipleValues" name="Inspector">
+<Inspector layout="border" darkLevel="0" dataClassName="org.openflexo.gina.model.widget.FIBMultipleValues" name="Inspector">
   <TabPanel name="Tab" constraints="border(location=center)">
     <Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
       <Label label="static_list" constraints="twocols(location=left)" localize="true" />
       <TextField data="data.staticList" constraints="twocols(expandHorizontally=true;location=right)" localize="true" columns="15" />
       <Label label="list" constraints="twocols(location=left)" localize="true" />
-      <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.list" constraints="twocols(expandHorizontally=true;location=right)">
+      <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.list" constraints="twocols(expandHorizontally=true;location=right)">
         <Assignment variable="component.bindable" value="data" />
       </Custom>
       <Label label="array" constraints="twocols(location=left)" localize="true" />
-      <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.array" constraints="twocols(expandHorizontally=true;location=right)">
+      <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.array" constraints="twocols(expandHorizontally=true;location=right)">
         <Assignment variable="component.bindable" value="data" />
       </Custom>
       <Label label="iterator_class" constraints="twocols(location=left)" localize="true" />
-      <Custom componentClassName="org.openflexo.fib.swing.utils.ClassSelector" localize="true" manageDynamicModel="true" data="data.iteratorClass" constraints="twocols(expandHorizontally=true;location=right)" />
+      <Custom componentClassName="org.openflexo.gina.swing.utils.ClassSelector" localize="true" manageDynamicModel="true" data="data.iteratorClass" constraints="twocols(expandHorizontally=true;location=right)" />
     </Tab>
     <Tab title="Advanced" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="1" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab">
       <CheckBox selected="false" data="data.autoSelectFirstRow" constraints="twocols(location=left)" localize="true" />
@@ -23,7 +23,7 @@
       <CheckBox selected="false" data="data.showIcon" constraints="twocols(location=left)" localize="true" />
       <Label label="show_icon" constraints="twocols(expandHorizontally=true;location=right)" localize="true" />
       <Label label="icon" constraints="twocols(location=left)" visible="data.showIcon" localize="true" />
-      <Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.icon" constraints="twocols(expandHorizontally=true;location=right)" visible="data.showIcon">
+      <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.icon" constraints="twocols(expandHorizontally=true;location=right)" visible="data.showIcon">
         <Assignment variable="component.bindable" value="data.formatter" />
       </Custom>
     </Tab>

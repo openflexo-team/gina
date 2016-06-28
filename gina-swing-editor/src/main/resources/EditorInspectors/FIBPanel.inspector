@@ -1,579 +1,742 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Inspector layout="border" darkLevel="0" dataClassName="org.openflexo.fib.model.FIBPanel" name="Inspector">
-  <TabPanel name="Tab" constraints="border(location=center)">
-    <Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
-      <Panel layout="twocols" border="titled" borderTitle="Layout" titleFont="SansSerif,0,11" darkLevel="0" constraints="twocols(expandHorizontally=true;location=center)" name="LayoutPanel">
-        <Label label="layout" constraints="twocols(location=left)" localize="true" />
-        <DropDown data="data.layout" constraints="twocols(location=right)" localize="true" iteratorClassName="java.lang.Object" autoSelectFirstRow="false" />
-        <Label label="alignment" constraints="twocols(location=left)" visible="(data.layout = &quot;flow&quot;) | (data.layout = &quot;buttons&quot;)" localize="true" />
-        <DropDown showReset="true" data="data.flowAlignment" constraints="twocols(location=right)" visible="(data.layout = &quot;flow&quot;) | (data.layout = &quot;buttons&quot;)" localize="true" iteratorClassName="java.lang.Object" autoSelectFirstRow="false" />
-        <Label label="axis" constraints="twocols(location=left)" visible="(data.layout = &quot;box&quot;)" localize="true" />
-        <DropDown data="data.boxLayoutAxis" constraints="twocols(location=right)" visible="(data.layout = &quot;box&quot;)" localize="true" iteratorClassName="java.lang.Object" autoSelectFirstRow="false" />
-        <Panel layout="flow" hGap="0" vGap="0" flowAlignment="LEADING" titleFont="SansSerif,0,11" darkLevel="0" constraints="twocols(expandHorizontally=true;location=center)" visible="((data.layout = &quot;flow&quot;) | (data.layout = &quot;grid&quot;))">
-          <Label label="hGap" constraints="flow()" localize="true" />
-          <Number numberType="IntegerType" columns="3" data="data.hGap" constraints="flow()" localize="true" />
-          <Label label="vGap" constraints="flow()" localize="true" />
-          <Number numberType="IntegerType" columns="3" data="data.vGap" constraints="flow()" localize="true" />
-        </Panel>
-        <Panel layout="flow" hGap="0" vGap="0" flowAlignment="LEADING" titleFont="SansSerif,0,11" darkLevel="0" constraints="twocols(expandHorizontally=true;location=center)" visible="(data.layout = &quot;grid&quot;)">
-          <Label label="columns" constraints="flow()" localize="true" />
-          <Number numberType="IntegerType" columns="3" data="data.cols" constraints="flow()" localize="true" />
-          <Label label="rows" constraints="flow()" localize="true" />
-          <Number numberType="IntegerType" columns="3" data="data.rows" constraints="flow()" localize="true" />
-        </Panel>
-      </Panel>
-    </Tab>
-    <Tab title="Components" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="1" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab">
-      <CheckBox selected="false" data="data.protectContent" constraints="twocols(location=left)" localize="true" />
-      <Label label="protect_content_against_modifications" constraints="twocols(location=right)" localize="true" />
-      <CheckBox selected="false" data="data.trackViewPortWidth" constraints="twocols(location=left)" localize="true" />
-      <Label label="track_view_port_width" constraints="twocols(location=right)" localize="true" />
-      <CheckBox selected="false" data="data.trackViewPortHeight" constraints="twocols(location=left)" localize="true" />
-      <Label label="track_view_port_height" constraints="twocols(location=right)" localize="true" />
-    </Tab>
-    <Tab title="Graphics" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="4" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="GraphicsTab">
-      <Panel layout="twocols" border="rounded3d" borderTitle="Border" borderTop="2" borderBottom="2" borderRight="2" titleFont="SansSerif,0,11" darkLevel="1" constraints="twocols(expandHorizontally=true;location=center)" name="BorderPanel">
-        <Label label="border" constraints="twocols(location=left)" localize="true" />
-        <Panel layout="flow" hGap="0" vGap="0" flowAlignment="LEADING" titleFont="SansSerif,0,11" darkLevel="0" constraints="twocols(location=right)">
-          <DropDown data="data.border" constraints="flow()" localize="true" iteratorClassName="java.lang.Object" autoSelectFirstRow="false" />
-          <Color data="data.borderColor" constraints="flow()" visible="(data.border = &quot;line&quot;)" localize="true" />
-          <TextField data="data.borderTitle" constraints="flow()" visible="((data.border = &quot;titled&quot;) | (data.border = &quot;rounded3d&quot;))" localize="true" />
-        </Panel>
-        <Label label="title_font" constraints="twocols(location=left)" visible="((data.border = &quot;titled&quot;) | (data.border = &quot;rounded3d&quot;))" localize="true" />
-        <Font sampleText="Sample for this font" localize="true" data="data.titleFont" constraints="twocols(location=right)" visible="((data.border = &quot;titled&quot;) | (data.border = &quot;rounded3d&quot;))" />
-        <Label label="dark_level" constraints="twocols(location=left)" visible="(data.border = &quot;rounded3d&quot;)" localize="true" />
-        <Number numberType="IntegerType" columns="3" data="data.darkLevel" constraints="twocols(location=right)" visible="(data.border = &quot;rounded3d&quot;)" localize="true" />
-        <Panel layout="flow" hGap="5" vGap="0" flowAlignment="LEADING" titleFont="SansSerif,0,11" darkLevel="0" constraints="twocols(expandHorizontally=true;location=center)" visible="((data.border = &quot;empty&quot;) | (data.border = &quot;rounded3d&quot;))">
-          <Label label="top" constraints="flow()" localize="true" />
-          <Number numberType="IntegerType" columns="2" data="data.borderTop" constraints="flow()" localize="true" />
-          <Label label="left" constraints="flow()" localize="true" />
-          <Number numberType="IntegerType" columns="2" data="data.borderLeft" constraints="flow()" localize="true" />
-          <Label label="bottom" constraints="flow()" localize="true" />
-          <Number numberType="IntegerType" columns="2" data="data.borderBottom" constraints="flow()" localize="true" />
-          <Label label="right" constraints="flow()" localize="true" />
-          <Number numberType="IntegerType" columns="2" data="data.borderRight" constraints="flow()" localize="true" />
-        </Panel>
-      </Panel>
-    </Tab>
-  </TabPanel>
-  <LocalizedDictionary>
-    <Localized key="name" lang="English" value="Name" />
-    <Localized key="index" lang="English" value="Index" />
-    <Localized key="location" lang="English" value="Location" />
-    <Localized key="column" lang="English" value="Column" />
-    <Localized key="top" lang="English" value="Top" />
-    <Localized key="left" lang="English" value="Left" />
-    <Localized key="right" lang="English" value="Right" />
-    <Localized key="define_specific_font" lang="English" value="Define specific font" />
-    <Localized key="define_preferred_dimensions" lang="English" value="Define preferred dimensions" />
-    <Localized key="width" lang="English" value="Width" />
-    <Localized key="height" lang="English" value="Height" />
-    <Localized key="value" lang="English" value="Value" />
-    <Localized key="name" lang="French" value="Nom" />
-    <Localized key="index" lang="French" value="Index" />
-    <Localized key="location" lang="French" value="Positionement" />
-    <Localized key="column" lang="French" value="Colonne" />
-    <Localized key="top" lang="French" value="Haut" />
-    <Localized key="left" lang="French" value="Gauche" />
-    <Localized key="right" lang="French" value="Droit" />
-    <Localized key="define_specific_font" lang="French" value="Définir la police spécifique" />
-    <Localized key="define_preferred_dimensions" lang="French" value="Définir les dimensions préférées" />
-    <Localized key="width" lang="French" value="Largeur" />
-    <Localized key="height" lang="French" value="Hauteur" />
-    <Localized key="value" lang="French" value="Valeur" />
-    <Localized key="Basic" lang="French" value="Basique" />
-    <Localized key="Advanced" lang="French" value="Avancé" />
-    <Localized key="Graphics" lang="French" value="Graphisme" />
-    <Localized key="name" lang="Dutch" value="Name" />
-    <Localized key="index" lang="Dutch" value="Index" />
-    <Localized key="location" lang="Dutch" value="Location" />
-    <Localized key="column" lang="Dutch" value="Column" />
-    <Localized key="top" lang="Dutch" value="Top" />
-    <Localized key="left" lang="Dutch" value="Left" />
-    <Localized key="right" lang="Dutch" value="Right" />
-    <Localized key="define_specific_font" lang="Dutch" value="Define specific font" />
-    <Localized key="define_preferred_dimensions" lang="Dutch" value="Define preferred dimensions" />
-    <Localized key="width" lang="Dutch" value="Width" />
-    <Localized key="height" lang="Dutch" value="Height" />
-    <Localized key="value" lang="Dutch" value="Value" />
-    <Localized key="alignmentX" lang="French" value="Alignement X" />
-    <Localized key="alignmentY" lang="French" value="Alignement Y" />
-    <Localized key="anchor" lang="French" value="Ancrage" />
-    <Localized key="bottom" lang="French" value="Bas" />
-    <Localized key="data" lang="French" value="Donnée" />
-    <Localized key="data_class" lang="French" value="Classe de donnée" />
-    <Localized key="delete_dependency" lang="French" value="Supprimer la dépendance" />
-    <Localized key="delete_parameter" lang="French" value="Supprimer le paramètre" />
-    <Localized key="dependency" lang="French" value="Dépendance" />
-    <Localized key="expand_horizontally" lang="French" value="Etendre horizontalement" />
-    <Localized key="expand_vertically" lang="French" value="Etendre verticalement" />
-    <Localized key="fill" lang="French" value="Remplir" />
-    <Localized key="gridHeight" lang="French" value="Grid height" />
-    <Localized key="gridWidth" lang="French" value="Grid width" />
-    <Localized key="gridX" lang="French" value="Grid X" />
-    <Localized key="gridY" lang="French" value="Grid Y" />
-    <Localized key="Insets" lang="French" value="Insets" />
-    <Localized key="make_new_dependency" lang="French" value="Créer une nouvelle dépendance" />
-    <Localized key="make_new_parameter" lang="French" value="Créer un nouveau paramètre" />
-    <Localized key="owner" lang="French" value="Propriétaire" />
-    <Localized key="pads" lang="French" value="Pads" />
-    <Localized key="padX" lang="French" value="Pad X" />
-    <Localized key="padY" lang="French" value="Pad Y" />
-    <Localized key="Params" lang="French" value="Params" />
-    <Localized key="owner" lang="English" value="Owner" />
-    <Localized key="pads" lang="English" value="Pads" />
-    <Localized key="pads" lang="Dutch" value="Pads" />
-    <Localized key="padX" lang="English" value="Pad X" />
-    <Localized key="padX" lang="Dutch" value="Pad X" />
-    <Localized key="padY" lang="English" value="Pad Y" />
-    <Localized key="padY" lang="Dutch" value="Pad Y" />
-    <Localized key="owner" lang="Dutch" value="Owner" />
-    <Localized key="make_new_parameter" lang="English" value="Make new parameter" />
-    <Localized key="make_new_parameter" lang="Dutch" value="Make new parameter" />
-    <Localized key="make_new_dependency" lang="English" value="Make new dependency" />
-    <Localized key="make_new_dependency" lang="Dutch" value="Make new dependency" />
-    <Localized key="gridY" lang="English" value="Grid Y" />
-    <Localized key="gridY" lang="Dutch" value="Grid Y" />
-    <Localized key="gridX" lang="English" value="Grid X" />
-    <Localized key="gridX" lang="Dutch" value="Grid X" />
-    <Localized key="gridWidth" lang="English" value="Grid width" />
-    <Localized key="gridWidth" lang="Dutch" value="Grid width" />
-    <Localized key="gridHeight" lang="English" value="Grid height" />
-    <Localized key="gridHeight" lang="Dutch" value="Grid height" />
-    <Localized key="fill" lang="English" value="Fill" />
-    <Localized key="fill" lang="Dutch" value="Fill" />
-    <Localized key="expand_vertically" lang="English" value="Expand vertically" />
-    <Localized key="expand_vertically" lang="Dutch" value="Expand vertically" />
-    <Localized key="expand_horizontally" lang="English" value="Expand horizontally" />
-    <Localized key="expand_horizontally" lang="Dutch" value="Expand horizontally" />
-    <Localized key="dependency" lang="English" value="Dependency" />
-    <Localized key="dependency" lang="Dutch" value="Dependency" />
-    <Localized key="delete_parameter" lang="English" value="Delete parameter" />
-    <Localized key="delete_parameter" lang="Dutch" value="Delete parameter" />
-    <Localized key="delete_dependency" lang="English" value="Delete dependency" />
-    <Localized key="delete_dependency" lang="Dutch" value="Delete dependency" />
-    <Localized key="data_class" lang="English" value="Data class" />
-    <Localized key="data_class" lang="Dutch" value="Data class" />
-    <Localized key="data" lang="English" value="Data" />
-    <Localized key="data" lang="Dutch" value="Data" />
-    <Localized key="bottom" lang="English" value="Bottom" />
-    <Localized key="bottom" lang="Dutch" value="Bottom" />
-    <Localized key="anchor" lang="English" value="Anchor" />
-    <Localized key="anchor" lang="Dutch" value="Anchor" />
-    <Localized key="alignmentX" lang="English" value="Alignment X" />
-    <Localized key="alignmentX" lang="Dutch" value="Alignment X" />
-    <Localized key="alignmentY" lang="English" value="Alignment Y" />
-    <Localized key="alignmentY" lang="Dutch" value="Alignment Y" />
-    <Localized key="font_and_colors" lang="English" value="Font and colors" />
-    <Localized key="font_and_colors" lang="French" value="Police et couleur" />
-    <Localized key="component_size_management" lang="English" value="Component size management" />
-    <Localized key="component_size_management" lang="French" value="Gestion de la taille des composants" />
-    <Localized key="background_color" lang="English" value="Background color" />
-    <Localized key="foreground_color" lang="English" value="Foreground color" />
-    <Localized key="background_color" lang="French" value="Couleur de l'arrière-plan" />
-    <Localized key="foreground_color" lang="French" value="Couleur d'avant-plan" />
-    <Localized key="background_color" lang="Dutch" value="Background color" />
-    <Localized key="foreground_color" lang="Dutch" value="Foreground color" />
-    <Localized key="border_layout_constraints" lang="French" value="Contraintes de bord de mise en page" />
-    <Localized key="box_layout_constraints" lang="French" value="Contrainte de boîte de mise en page" />
-    <Localized key="grid_bag_layout_constraints" lang="French" value="Contraintes de mise en page grid-bag" />
-    <Localized key="grid_layout_constraints" lang="French" value="Contraintes de mise en page avec grille" />
-    <Localized key="free_location_constraints" lang="French" value="Contraintes d 'espace libre" />
-    <Localized key="flow_layout_constraints" lang="French" value="Contraintes de mise en page &quot;flow&quot;" />
-    <Localized key="border_layout_constraints" lang="English" value="Border layout constraints" />
-    <Localized key="box_layout_constraints" lang="English" value="Box layout constraints" />
-    <Localized key="define_maximum_dimensions" lang="English" value="Define maximum dimensions" />
-    <Localized key="define_minimum_dimensions" lang="English" value="Define minimum dimensions" />
-    <Localized key="flow_layout_constraints" lang="English" value="Flow layout constraints" />
-    <Localized key="free_location_constraints" lang="English" value="Free location constraints" />
-    <Localized key="grid_bag_layout_constraints" lang="English" value="Grid bag layout constraints" />
-    <Localized key="grid_layout_constraints" lang="English" value="Grid layout constraints" />
-    <Localized key="horizontal_policy" lang="French" value="horizontal_policy" />
-    <Localized key="horizontal_policy" lang="English" value="horizontal_policy" />
-    <Localized key="vertical_policy" lang="French" value="vertical_policy" />
-    <Localized key="vertical_policy" lang="English" value="vertical_policy" />
-    <Localized key="define_maximum_dimensions" lang="French" value="Définir les dimensions maximales" />
-    <Localized key="define_minimum_dimensions" lang="French" value="Définir les dimensions minimales" />
-    <Localized key="scroll_bar_policy" lang="French" value="Politique de scroll bas" />
-    <Localized key="scroll_bar_policy" lang="English" value="Scroll bar policy" />
-    <Localized key="two_cols_layout_constraints" lang="French" value="Contraintes de mise en page &quot;two cols&quot;" />
-    <Localized key="two_cols_layout_constraints" lang="English" value="Two cols layout constraints" />
-    <Localized key="use_scrollbar" lang="French" value="Utiliser scrollbar" />
-    <Localized key="use_scrollbar" lang="English" value="Use scrollbar" />
-    <Localized key="visible" lang="French" value="Visible" />
-    <Localized key="visible" lang="English" value="Visible" />
-    <Localized key="weights" lang="French" value="Poids" />
-    <Localized key="weights" lang="English" value="Weights" />
-    <Localized key="weightX" lang="French" value="weightX" />
-    <Localized key="weightY" lang="French" value="weightY" />
-    <Localized key="weightX" lang="English" value="weightX" />
-    <Localized key="weightY" lang="English" value="weightY" />
-    <Localized key="name" lang="English" value="Name" />
-    <Localized key="value" lang="English" value="Value" />
-    <Localized key="name" lang="French" value="Nom" />
-    <Localized key="value" lang="French" value="Valeur" />
-    <Localized key="Basic" lang="French" value="Basique" />
-    <Localized key="Advanced" lang="French" value="Avancé" />
-    <Localized key="Graphics" lang="French" value="Graphisme" />
-    <Localized key="name" lang="Dutch" value="Name" />
-    <Localized key="value" lang="Dutch" value="Value" />
-    <Localized key="delete_parameter" lang="French" value="Supprimer le paramètre" />
-    <Localized key="Depends" lang="French" value="Depends" />
-    <Localized key="Doc" lang="French" value="Doc" />
-    <Localized key="make_new_parameter" lang="French" value="Créer un nouveau paramètre" />
-    <Localized key="Params" lang="French" value="Paramètres" />
-    <Localized key="Params" lang="English" value="Params" />
-    <Localized key="make_new_parameter" lang="English" value="Make new parameter" />
-    <Localized key="delete_parameter" lang="English" value="Delete parameter" />
-    <Localized key="controller_class" lang="English" value="Controller class" />
-    <Localized key="controller_class" lang="French" value="Classe  Controller" />
-    <Localized key="controller_class" lang="Dutch" value="Controller class" />
-    <Localized key="layout" lang="English" value="Layout" />
-    <Localized key="layout" lang="French" value="Mise en page" />
-    <Localized key="layout" lang="Dutch" value="Layout" />
-    <Localized key="none" lang="English" value="None" />
-    <Localized key="none" lang="French" value="Aucun" />
-    <Localized key="none" lang="Dutch" value="None" />
-    <Localized key="None" lang="English" value="None" />
-    <Localized key="None" lang="French" value="Aucun" />
-    <Localized key="None" lang="Dutch" value="None" />
-    <Localized key="flow" lang="English" value="Flow" />
-    <Localized key="flow" lang="French" value="Débit" />
-    <Localized key="flow" lang="Dutch" value="Flow" />
-    <Localized key="Flow" lang="English" value="Flow" />
-    <Localized key="Flow" lang="French" value="Flow" />
-    <Localized key="Flow" lang="Dutch" value="Flow" />
-    <Localized key="border" lang="English" value="border" />
-    <Localized key="border" lang="French" value="bord" />
-    <Localized key="border" lang="Dutch" value="border" />
-    <Localized key="grid" lang="English" value="grid" />
-    <Localized key="grid" lang="French" value="grid" />
-    <Localized key="grid" lang="Dutch" value="grid" />
-    <Localized key="box" lang="English" value="box" />
-    <Localized key="box" lang="French" value="box" />
-    <Localized key="box" lang="Dutch" value="box" />
-    <Localized key="twocols" lang="English" value="twocols" />
-    <Localized key="twocols" lang="French" value="twocols" />
-    <Localized key="twocols" lang="Dutch" value="twocols" />
-    <Localized key="gridbag" lang="English" value="gridbag" />
-    <Localized key="gridbag" lang="French" value="gridbag" />
-    <Localized key="gridbag" lang="Dutch" value="gridbag" />
-    <Localized key="split" lang="English" value="split" />
-    <Localized key="split" lang="French" value="split" />
-    <Localized key="split" lang="Dutch" value="split" />
-    <Localized key="alignment" lang="English" value="Alignment" />
-    <Localized key="alignment" lang="French" value="Alignment" />
-    <Localized key="alignment" lang="Dutch" value="Alignment" />
-    <Localized key="LEFT" lang="English" value="LEFT" />
-    <Localized key="LEFT" lang="French" value="Gauche" />
-    <Localized key="LEFT" lang="Dutch" value="LEFT" />
-    <Localized key="RIGHT" lang="English" value="RIGHT" />
-    <Localized key="RIGHT" lang="French" value="RIGHT" />
-    <Localized key="RIGHT" lang="Dutch" value="RIGHT" />
-    <Localized key="CENTER" lang="English" value="CENTER" />
-    <Localized key="CENTER" lang="French" value="CENTER" />
-    <Localized key="CENTER" lang="Dutch" value="CENTER" />
-    <Localized key="LEADING" lang="English" value="LEADING" />
-    <Localized key="LEADING" lang="French" value="LEADING" />
-    <Localized key="LEADING" lang="Dutch" value="LEADING" />
-    <Localized key="TRAILING" lang="English" value="TRAILING" />
-    <Localized key="TRAILING" lang="French" value="TRAILING" />
-    <Localized key="TRAILING" lang="Dutch" value="TRAILING" />
-    <Localized key="axis" lang="English" value="axis" />
-    <Localized key="axis" lang="French" value="axes" />
-    <Localized key="axis" lang="Dutch" value="as" />
-    <Localized key="X_AXIS" lang="English" value="X_AXIS" />
-    <Localized key="X_AXIS" lang="French" value="X_AXIS" />
-    <Localized key="X_AXIS" lang="Dutch" value="X_AXIS" />
-    <Localized key="Y_AXIS" lang="English" value="Y_AXIS" />
-    <Localized key="Y_AXIS" lang="French" value="Y_AXIS" />
-    <Localized key="Y_AXIS" lang="Dutch" value="Y_AXIS" />
-    <Localized key="hGap" lang="English" value="hGap" />
-    <Localized key="hGap" lang="French" value="hGap" />
-    <Localized key="hGap" lang="Dutch" value="hGap" />
-    <Localized key="vGap" lang="English" value="vGap" />
-    <Localized key="vGap" lang="French" value="vGap" />
-    <Localized key="vGap" lang="Dutch" value="vGap" />
-    <Localized key="columns" lang="English" value="columns" />
-    <Localized key="columns" lang="French" value="colonnes" />
-    <Localized key="columns" lang="Dutch" value="columns" />
-    <Localized key="rows" lang="English" value="Rows" />
-    <Localized key="rows" lang="French" value="Lignes" />
-    <Localized key="rows" lang="Dutch" value="Rows" />
-    <Localized key="Layout" lang="English" value="Layout" />
-    <Localized key="Layout" lang="French" value="Miser en page" />
-    <Localized key="Layout" lang="Dutch" value="Layout" />
-    <Localized key="Component" lang="English" value="Component" />
-    <Localized key="Component" lang="French" value="Composant" />
-    <Localized key="Component" lang="Dutch" value="Component" />
-    <Localized key="Constraints" lang="English" value="Constraints" />
-    <Localized key="Constraints" lang="French" value="Contraintes" />
-    <Localized key="Constraints" lang="Dutch" value="Constraints" />
-    <Localized key="reorder_components" lang="English" value="Reorder components" />
-    <Localized key="reorder_components" lang="French" value="Retrer les composants" />
-    <Localized key="reorder_components" lang="Dutch" value="Reorder components" />
-    <Localized key="First" lang="English" value="First" />
-    <Localized key="First" lang="French" value="First" />
-    <Localized key="First" lang="Dutch" value="First" />
-    <Localized key="Up" lang="English" value="Up" />
-    <Localized key="Up" lang="French" value="Up" />
-    <Localized key="Up" lang="Dutch" value="Up" />
-    <Localized key="Down" lang="English" value="Down" />
-    <Localized key="Down" lang="French" value="Down" />
-    <Localized key="Down" lang="Dutch" value="Down" />
-    <Localized key="Last" lang="English" value="Last" />
-    <Localized key="Last" lang="French" value="Last" />
-    <Localized key="Last" lang="Dutch" value="Last" />
-    <Localized key="protect_content_against_modifications" lang="English" value="Protect content against modifications" />
-    <Localized key="protect_content_against_modifications" lang="French" value="Protéger le contenu contre les modifications" />
-    <Localized key="protect_content_against_modifications" lang="Dutch" value="Protect content against modifications" />
-    <Localized key="track_view_port_width" lang="English" value="Track view port width" />
-    <Localized key="track_view_port_width" lang="French" value="Track view port width" />
-    <Localized key="track_view_port_width" lang="Dutch" value="Track view port width" />
-    <Localized key="track_view_port_height" lang="English" value="Track view port height" />
-    <Localized key="track_view_port_height" lang="French" value="Track view port height" />
-    <Localized key="track_view_port_height" lang="Dutch" value="Track view port height" />
-    <Localized key="north" lang="English" value="North" />
-    <Localized key="north" lang="French" value="Nord" />
-    <Localized key="north" lang="Dutch" value="North" />
-    <Localized key="North" lang="English" value="North" />
-    <Localized key="North" lang="French" value="Nord" />
-    <Localized key="North" lang="Dutch" value="North" />
-    <Localized key="south" lang="English" value="South" />
-    <Localized key="south" lang="French" value="Sud" />
-    <Localized key="south" lang="Dutch" value="South" />
-    <Localized key="South" lang="English" value="South" />
-    <Localized key="South" lang="French" value="South" />
-    <Localized key="South" lang="Dutch" value="South" />
-    <Localized key="east" lang="English" value="East" />
-    <Localized key="east" lang="French" value="Est" />
-    <Localized key="east" lang="Dutch" value="East" />
-    <Localized key="East" lang="English" value="East" />
-    <Localized key="East" lang="French" value="East" />
-    <Localized key="East" lang="Dutch" value="East" />
-    <Localized key="west" lang="English" value="West" />
-    <Localized key="west" lang="French" value="Ouest" />
-    <Localized key="west" lang="Dutch" value="West" />
-    <Localized key="West" lang="English" value="West" />
-    <Localized key="West" lang="French" value="Ouest" />
-    <Localized key="West" lang="Dutch" value="West" />
-    <Localized key="center" lang="English" value="Center" />
-    <Localized key="center" lang="French" value="Centré" />
-    <Localized key="center" lang="Dutch" value="Center" />
-    <Localized key="Center" lang="English" value="Center" />
-    <Localized key="Center" lang="French" value="Center" />
-    <Localized key="Center" lang="Dutch" value="Center" />
-    <Localized key="beforeFirstLine" lang="English" value="beforeFirstLine" />
-    <Localized key="beforeFirstLine" lang="French" value="beforeFirstLine" />
-    <Localized key="beforeFirstLine" lang="Dutch" value="beforeFirstLine" />
-    <Localized key="afterLastLine" lang="English" value="afterLastLine" />
-    <Localized key="afterLastLine" lang="French" value="afterLastLine" />
-    <Localized key="afterLastLine" lang="Dutch" value="afterLastLine" />
-    <Localized key="beforeLineBegins" lang="English" value="beforeLineBegins" />
-    <Localized key="beforeLineBegins" lang="French" value="beforeLineBegins" />
-    <Localized key="beforeLineBegins" lang="Dutch" value="beforeLineBegins" />
-    <Localized key="afterLineEnds" lang="English" value="afterLineEnds" />
-    <Localized key="afterLineEnds" lang="French" value="afterLineEnds" />
-    <Localized key="afterLineEnds" lang="Dutch" value="afterLineEnds" />
-    <Localized key="pageStart" lang="English" value="pageStart" />
-    <Localized key="pageStart" lang="French" value="pageStart" />
-    <Localized key="pageStart" lang="Dutch" value="pageStart" />
-    <Localized key="pageEnd" lang="English" value="pageEnd" />
-    <Localized key="pageEnd" lang="French" value="pageEnd" />
-    <Localized key="pageEnd" lang="Dutch" value="pageEnd" />
-    <Localized key="lineStart" lang="English" value="lineStart" />
-    <Localized key="lineStart" lang="French" value="lineStart" />
-    <Localized key="lineStart" lang="Dutch" value="lineStart" />
-    <Localized key="lineEnd" lang="English" value="lineEnd" />
-    <Localized key="lineEnd" lang="French" value="lineEnd" />
-    <Localized key="lineEnd" lang="Dutch" value="lineEnd" />
-    <Localized key="row" lang="English" value="row" />
-    <Localized key="row" lang="French" value="row" />
-    <Localized key="row" lang="Dutch" value="row" />
-    <Localized key="Left" lang="English" value="Left" />
-    <Localized key="Left" lang="French" value="Gauche" />
-    <Localized key="Left" lang="Dutch" value="Left" />
-    <Localized key="Right" lang="English" value="Right" />
-    <Localized key="Right" lang="French" value="Right" />
-    <Localized key="Right" lang="Dutch" value="Right" />
-    <Localized key="Insets" lang="English" value="Insets" />
-    <Localized key="Insets" lang="Dutch" value="Insets" />
-    <Localized key="relative" lang="English" value="relative" />
-    <Localized key="relative" lang="French" value="relatif" />
-    <Localized key="relative" lang="Dutch" value="relative" />
-    <Localized key="remainder" lang="English" value="remainder" />
-    <Localized key="remainder" lang="French" value="Restant" />
-    <Localized key="remainder" lang="Dutch" value="remainder" />
-    <Localized key="north_east" lang="English" value="North east" />
-    <Localized key="north_east" lang="French" value="Nord est" />
-    <Localized key="north_east" lang="Dutch" value="North east" />
-    <Localized key="north_west" lang="English" value="North west" />
-    <Localized key="north_west" lang="French" value="Nord ouest" />
-    <Localized key="north_west" lang="Dutch" value="North west" />
-    <Localized key="south_east" lang="English" value="South east" />
-    <Localized key="south_east" lang="French" value="Sud est" />
-    <Localized key="south_east" lang="Dutch" value="South east" />
-    <Localized key="south_west" lang="English" value="South west" />
-    <Localized key="south_west" lang="French" value="Sud ouest" />
-    <Localized key="south_west" lang="Dutch" value="South west" />
-    <Localized key="horizontal" lang="English" value="Horizontal" />
-    <Localized key="horizontal" lang="French" value="Horizontal" />
-    <Localized key="horizontal" lang="Dutch" value="Horizontal" />
-    <Localized key="vertical" lang="English" value="vertical" />
-    <Localized key="vertical" lang="French" value="vertical" />
-    <Localized key="vertical" lang="Dutch" value="vertical" />
-    <Localized key="both" lang="English" value="Both" />
-    <Localized key="both" lang="French" value="Bi-directionnelle" />
-    <Localized key="both" lang="Dutch" value="Beide" />
-    <Localized key="Both" lang="English" value="Both" />
-    <Localized key="Both" lang="French" value="Both" />
-    <Localized key="Both" lang="Dutch" value="Both" />
-    <Localized key="X" lang="English" value="X" />
-    <Localized key="X" lang="French" value="X" />
-    <Localized key="X" lang="Dutch" value="X" />
-    <Localized key="pixels" lang="English" value="pixels" />
-    <Localized key="pixels" lang="French" value="pixels" />
-    <Localized key="pixels" lang="Dutch" value="pixels" />
-    <Localized key="identifier" lang="English" value="Identifier" />
-    <Localized key="identifier" lang="French" value="Identifiant" />
-    <Localized key="identifier" lang="Dutch" value="Identifier" />
-    <Localized key="weight" lang="English" value="Weight" />
-    <Localized key="weight" lang="French" value="Poid" />
-    <Localized key="weight" lang="Dutch" value="Weight" />
-    <Localized key="split_layout_constraints" lang="English" value="Split layout constraints" />
-    <Localized key="split_layout_constraints" lang="French" value="Contraintes de mise en page &quot;split&quot;" />
-    <Localized key="split_layout_constraints" lang="Dutch" value="Split layout constraints" />
-    <Localized key="HORIZONTAL_SCROLLBAR_AS_NEEDED" lang="English" value="HORIZONTAL SCROLLBAR AS NEEDED" />
-    <Localized key="HORIZONTAL_SCROLLBAR_AS_NEEDED" lang="French" value="HORIZONTAL SCROLLBAR AS NEEDED" />
-    <Localized key="HORIZONTAL_SCROLLBAR_AS_NEEDED" lang="Dutch" value="HORIZONTAL SCROLLBAR AS NEEDED" />
-    <Localized key="HORIZONTAL_SCROLLBAR_NEVER" lang="English" value="HORIZONTAL SCROLLBAR NEVER" />
-    <Localized key="HORIZONTAL_SCROLLBAR_NEVER" lang="French" value="HORIZONTAL SCROLLBAR NEVER" />
-    <Localized key="HORIZONTAL_SCROLLBAR_NEVER" lang="Dutch" value="HORIZONTAL SCROLLBAR NEVER" />
-    <Localized key="HORIZONTAL_SCROLLBAR_ALWAYS" lang="English" value="HORIZONTAL SCROLLBAR ALWAYS" />
-    <Localized key="HORIZONTAL_SCROLLBAR_ALWAYS" lang="French" value="HORIZONTAL SCROLLBAR ALWAYS" />
-    <Localized key="HORIZONTAL_SCROLLBAR_ALWAYS" lang="Dutch" value="HORIZONTAL SCROLLBAR ALWAYS" />
-    <Localized key="VERTICAL_SCROLLBAR_AS_NEEDED" lang="English" value="VERTICAL SCROLLBAR AS NEEDED" />
-    <Localized key="VERTICAL_SCROLLBAR_AS_NEEDED" lang="French" value="VERTICAL SCROLLBAR AS NEEDED" />
-    <Localized key="VERTICAL_SCROLLBAR_AS_NEEDED" lang="Dutch" value="VERTICAL SCROLLBAR AS NEEDED" />
-    <Localized key="VERTICAL_SCROLLBAR_NEVER" lang="English" value="VERTICAL SCROLLBAR NEVER" />
-    <Localized key="VERTICAL_SCROLLBAR_NEVER" lang="French" value="VERTICAL SCROLLBAR NEVER" />
-    <Localized key="VERTICAL_SCROLLBAR_NEVER" lang="Dutch" value="VERTICAL SCROLLBAR NEVER" />
-    <Localized key="VERTICAL_SCROLLBAR_ALWAYS" lang="English" value="VERTICAL SCROLLBAR ALWAYS" />
-    <Localized key="VERTICAL_SCROLLBAR_ALWAYS" lang="French" value="VERTICAL SCROLLBAR ALWAYS" />
-    <Localized key="VERTICAL_SCROLLBAR_ALWAYS" lang="Dutch" value="VERTICAL SCROLLBAR ALWAYS" />
-    <Localized key="empty" lang="English" value="empty" />
-    <Localized key="empty" lang="French" value="empty" />
-    <Localized key="empty" lang="Dutch" value="empty" />
-    <Localized key="line" lang="English" value="Line" />
-    <Localized key="line" lang="French" value="Ligne" />
-    <Localized key="line" lang="Dutch" value="Line" />
-    <Localized key="etched" lang="English" value="etched" />
-    <Localized key="etched" lang="French" value="etched" />
-    <Localized key="etched" lang="Dutch" value="etched" />
-    <Localized key="raised" lang="English" value="raised" />
-    <Localized key="raised" lang="French" value="raised" />
-    <Localized key="raised" lang="Dutch" value="raised" />
-    <Localized key="lowered" lang="English" value="Lowered" />
-    <Localized key="lowered" lang="French" value="Abaissé" />
-    <Localized key="lowered" lang="Dutch" value="Lowered" />
-    <Localized key="titled" lang="English" value="titled" />
-    <Localized key="titled" lang="French" value="titled" />
-    <Localized key="titled" lang="Dutch" value="titled" />
-    <Localized key="rounded3d" lang="English" value="rounded3d" />
-    <Localized key="rounded3d" lang="French" value="rounded3d" />
-    <Localized key="rounded3d" lang="Dutch" value="rounded3d" />
-    <Localized key="title_font" lang="English" value="title_font" />
-    <Localized key="title_font" lang="French" value="title_font" />
-    <Localized key="title_font" lang="Dutch" value="title_font" />
-    <Localized key="dark_level" lang="English" value="Dark level" />
-    <Localized key="dark_level" lang="French" value="Niveau de gris" />
-    <Localized key="dark_level" lang="Dutch" value="Dark level" />
-    <Localized key="Border" lang="English" value="Border" />
-    <Localized key="Border" lang="French" value="Bord" />
-    <Localized key="Border" lang="Dutch" value="Boord" />
-    <Localized key="opaque" lang="English" value="opaque" />
-    <Localized key="opaque" lang="French" value="opaque" />
-    <Localized key="opaque" lang="Dutch" value="opaque" />
-    <Localized key="Dynamic dependencies" lang="English" value="Dynamic dependencies" />
-    <Localized key="Dynamic dependencies" lang="French" value="Dynamic dependencies" />
-    <Localized key="Dynamic dependencies" lang="Dutch" value="Dynamic dependencies" />
-    <Localized key="Explicit dependencies" lang="English" value="Explicit dependencies" />
-    <Localized key="Explicit dependencies" lang="French" value="Explicit dependencies" />
-    <Localized key="Explicit dependencies" lang="Dutch" value="Explicit dependencies" />
-    <Localized key="Basic" lang="English" value="Basic" />
-    <Localized key="Basic" lang="Dutch" value="Basis" />
-    <Localized key="Components" lang="English" value="Components" />
-    <Localized key="Components" lang="French" value="Components" />
-    <Localized key="Components" lang="Dutch" value="Components" />
-    <Localized key="Controls" lang="English" value="Controls" />
-    <Localized key="Controls" lang="French" value="Controls" />
-    <Localized key="Controls" lang="Dutch" value="Controls" />
-    <Localized key="Graphics" lang="English" value="Graphics" />
-    <Localized key="Graphics" lang="Dutch" value="Graphics" />
-    <Localized key="Depends" lang="English" value="Depends" />
-    <Localized key="Depends" lang="Dutch" value="Depends" />
-    <Localized key="Doc" lang="English" value="Doc" />
-    <Localized key="Doc" lang="Dutch" value="Doc" />
-    <Localized key="Aucun" lang="English" value="Aucun" />
-    <Localized key="Aucun" lang="French" value="Aucun" />
-    <Localized key="Aucun" lang="Dutch" value="Aucun" />
-    <Localized key="Débit" lang="English" value="Débit" />
-    <Localized key="Débit" lang="French" value="Débit" />
-    <Localized key="Débit" lang="Dutch" value="Débit" />
-    <Localized key="bord" lang="English" value="bord" />
-    <Localized key="bord" lang="French" value="bord" />
-    <Localized key="bord" lang="Dutch" value="bord" />
-    <Localized key="Nord" lang="English" value="Nord" />
-    <Localized key="Nord" lang="French" value="Nord" />
-    <Localized key="Nord" lang="Dutch" value="Nord" />
-    <Localized key="Sud" lang="English" value="Sud" />
-    <Localized key="Sud" lang="French" value="Sud" />
-    <Localized key="Sud" lang="Dutch" value="Sud" />
-    <Localized key="Est" lang="English" value="Est" />
-    <Localized key="Est" lang="French" value="Est" />
-    <Localized key="Est" lang="Dutch" value="Est" />
-    <Localized key="Ouest" lang="English" value="Ouest" />
-    <Localized key="Ouest" lang="French" value="Ouest" />
-    <Localized key="Ouest" lang="Dutch" value="Ouest" />
-    <Localized key="Centré" lang="English" value="Centré" />
-    <Localized key="Centré" lang="French" value="Centré" />
-    <Localized key="Centré" lang="Dutch" value="Centré" />
-    <Localized key="Gauche" lang="English" value="Gauche" />
-    <Localized key="Gauche" lang="French" value="Gauche" />
-    <Localized key="Gauche" lang="Dutch" value="Gauche" />
-    <Localized key="Droit" lang="English" value="Droit" />
-    <Localized key="Droit" lang="French" value="Droit" />
-    <Localized key="Droit" lang="Dutch" value="Droit" />
-    <Localized key="Bi-directionnelle" lang="English" value="Bi-directionnelle" />
-    <Localized key="Bi-directionnelle" lang="French" value="Bi-directionnelle" />
-    <Localized key="Bi-directionnelle" lang="Dutch" value="Bi-directionnelle" />
-    <Localized key="ligne" lang="English" value="Line" />
-    <Localized key="ligne" lang="French" value="Ligne" />
-    <Localized key="ligne" lang="Dutch" value="Line" />
-    <Localized key="visible" lang="Dutch" value="Visible" />
-    <Localized key="free_location_constraints" lang="Dutch" value="Free location constraints" />
-    <Localized key="flow_layout_constraints" lang="Dutch" value="Flow layout constraints" />
-    <Localized key="border_layout_constraints" lang="Dutch" value="Border layout constraints" />
-    <Localized key="grid_layout_constraints" lang="Dutch" value="Grid layout constraints" />
-    <Localized key="box_layout_constraints" lang="Dutch" value="Box layout constraints" />
-    <Localized key="two_cols_layout_constraints" lang="Dutch" value="Two cols layout constraints" />
-    <Localized key="weights" lang="Dutch" value="Weights" />
-    <Localized key="weightX" lang="Dutch" value="weightX" />
-    <Localized key="weightY" lang="Dutch" value="weightY" />
-    <Localized key="Beide" lang="English" value="Beide" />
-    <Localized key="Beide" lang="French" value="Beide" />
-    <Localized key="Beide" lang="Dutch" value="Beide" />
-    <Localized key="grid_bag_layout_constraints" lang="Dutch" value="Grid bag layout constraints" />
-    <Localized key="define_minimum_dimensions" lang="Dutch" value="Define minimum dimensions" />
-    <Localized key="define_maximum_dimensions" lang="Dutch" value="Define maximum dimensions" />
-    <Localized key="component_size_management" lang="Dutch" value="Component size management" />
-    <Localized key="use_scrollbar" lang="Dutch" value="Use scrollbar" />
-    <Localized key="horizontal_policy" lang="Dutch" value="horizontal_policy" />
-    <Localized key="vertical_policy" lang="Dutch" value="vertical_policy" />
-    <Localized key="scroll_bar_policy" lang="Dutch" value="Scroll bar policy" />
-    <Localized key="font_and_colors" lang="Dutch" value="Font and colors" />
-    <Localized key="Params" lang="Dutch" value="Params" />
-  </LocalizedDictionary>
-  <Parameter name="title" value="Panel" />
-  <Parameter name="title" value="Panel" />
+<Inspector layout="border" darkLevel="0"
+	dataClassName="org.openflexo.gina.model.container.FIBPanel" name="Inspector">
+	<TabPanel name="Tab" constraints="border(location=center)">
+		<Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11"
+			darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true"
+			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab" 
+			trackViewPortWidth="true" trackViewPortHeight="true">
+		</Tab>
+		<Tab title="Container" layout="twocols" titleFont="SansSerif,0,11"
+			darkLevel="0" index="1" font="SansSerif,0,11" useScrollBar="true"
+			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab" 
+			trackViewPortWidth="true" trackViewPortHeight="true">
+
+			<Label label="layout" constraints="twocols(location=left)"
+				localize="true" index="0" />
+			<DropDown data="data.layout" constraints="twocols(location=right)"
+				localize="true" iteratorClassName="java.lang.Object"
+				autoSelectFirstRow="false" name="LayoutDD" index="1" />
+
+			<Label label="alignment" index="2" constraints="twocols(location=left)"
+				visible="(data.layout = &quot;flow&quot;) | (data.layout = &quot;buttons&quot;)"
+				localize="true" />
+			<DropDown showReset="false" index="3" data="data.flowAlignment"
+				constraints="twocols(location=right)"
+				visible="(data.layout = &quot;flow&quot;) | (data.layout = &quot;buttons&quot;)"
+				localize="true" iteratorClassName="java.lang.Object"
+				autoSelectFirstRow="false" name="FlowAlignmentDD" />
+			<Label label="axis" index="4" constraints="twocols(location=left)"
+				visible="(data.layout = &quot;box&quot;)" localize="true" />
+			<DropDown data="data.boxLayoutAxis" index="5"
+				constraints="twocols(location=right)" visible="(data.layout = &quot;box&quot;)"
+				localize="true" iteratorClassName="java.lang.Object"
+				autoSelectFirstRow="false" name="BoxLayoutAxisDD" />
+
+			<Label label="hGap" index="6" constraints="twocols(location=left)"
+				localize="true"
+				visible="((data.layout = &quot;flow&quot;) | (data.layout = &quot;grid&quot;))" />
+			<Number index="7" numberType="IntegerType" columns="3" data="data.hGap"
+				constraints="twocols(location=right)" localize="true"
+				visible="((data.layout = &quot;flow&quot;) | (data.layout = &quot;grid&quot;))" />
+			<Label index="8" label="vGap" constraints="twocols(location=left)"
+				localize="true"
+				visible="((data.layout = &quot;flow&quot;) | (data.layout = &quot;grid&quot;))" />
+			<Number index="9" numberType="IntegerType" columns="3" data="data.vGap"
+				constraints="twocols(location=right)" localize="true"
+				visible="((data.layout = &quot;flow&quot;) | (data.layout = &quot;grid&quot;))" />
+
+			<Label index="10" label="columns" constraints="twocols(location=left)"
+				localize="true" visible="(data.layout = &quot;grid&quot;)" />
+			<Number index="11" numberType="IntegerType" columns="3"
+				data="data.cols" constraints="twocols(location=right)" localize="true"
+				visible="(data.layout = &quot;grid&quot;)" />
+			<Label index="12" label="rows" constraints="twocols(location=left)"
+				localize="true" visible="(data.layout = &quot;grid&quot;)" />
+			<Number index="13" numberType="IntegerType" columns="3"
+				data="data.rows" constraints="twocols(location=right)" localize="true"
+				visible="(data.layout = &quot;grid&quot;)" />
+
+
+			<CheckBox selected="false" data="data.protectContent" index="100"
+				constraints="twocols(location=left)" localize="true" />
+			<Label label="protect_content_against_modifications" index="101"
+				constraints="twocols(location=right)" localize="true" />
+			<CheckBox selected="false" data="data.trackViewPortWidth"
+				index="102" constraints="twocols(location=left)" localize="true" />
+			<Label label="track_view_port_width" constraints="twocols(location=right)"
+				index="103" localize="true" />
+			<CheckBox selected="false" data="data.trackViewPortHeight"
+				index="104" constraints="twocols(location=left)" localize="true" />
+			<Label label="track_view_port_height" constraints="twocols(location=right)"
+				index="105" localize="true" />
+		</Tab>
+		<Tab title="Graphics" layout="twocols" titleFont="SansSerif,0,11"
+			darkLevel="0" index="4" font="SansSerif,0,11" useScrollBar="true"
+			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="GraphicsTab">
+			<Label name="BorderLabel" label="border" constraints="twocols(location=left;insetsTop=15)"
+				localize="true" />
+			<Panel layout="twocols" border="rounded3d"
+				borderTop="2" borderBottom="2" borderRight="2" titleFont="SansSerif,0,11"
+				darkLevel="1" constraints="twocols(expandHorizontally=true;location=right;insetsTop=10;insetsRight=10)"
+				name="BorderPanel">
+				<Label label="border" constraints="twocols(location=left)"
+					localize="true" />
+				<Panel layout="flow" hGap="0" vGap="0" flowAlignment="LEADING"
+					titleFont="SansSerif,0,11" darkLevel="0" constraints="twocols(location=right)">
+					<DropDown data="data.border" constraints="flow()"
+						localize="true" autoSelectFirstRow="false" name="BorderDD" />
+					<Color data="data.borderColor" constraints="flow()"
+						visible="(data.border = &quot;line&quot;)" localize="true" />
+					<TextField data="data.borderTitle" constraints="flow()"
+						visible="((data.border = &quot;titled&quot;) | (data.border = &quot;rounded3d&quot;))"
+						localize="true" />
+				</Panel>
+				<Label label="title_font" constraints="twocols(location=left)"
+					visible="((data.border = &quot;titled&quot;) | (data.border = &quot;rounded3d&quot;))"
+					localize="true" />
+				<Font sampleText="Sample for this font" localize="true" allowsNull="true" allowsNullText=""
+					data="data.titleFont" constraints="twocols(location=right)"
+					visible="((data.border = &quot;titled&quot;) | (data.border = &quot;rounded3d&quot;))" />
+				<Label label="dark_level" constraints="twocols(location=left)"
+					visible="(data.border = &quot;rounded3d&quot;)" localize="true" />
+				<Number numberType="IntegerType" columns="3" data="data.darkLevel"
+					constraints="twocols(location=right)" visible="(data.border = &quot;rounded3d&quot;)"
+					localize="true" />
+				<Panel layout="flow" hGap="0" vGap="0" flowAlignment="LEADING"
+					titleFont="SansSerif,0,11" darkLevel="0"
+					constraints="twocols(expandHorizontally=true;location=center)"
+					visible="((data.border = &quot;empty&quot;) | (data.border = &quot;rounded3d&quot;))">
+					<Label label="top" constraints="flow()" localize="true" />
+					<Number numberType="IntegerType" columns="2" data="data.borderTop"
+						constraints="flow()" localize="true" />
+					<Label label="left" constraints="flow()" localize="true" />
+					<Number numberType="IntegerType" columns="2" data="data.borderLeft"
+						constraints="flow()" localize="true" />
+					<Label label="bottom" constraints="flow()" localize="true" />
+					<Number numberType="IntegerType" columns="2" data="data.borderBottom"
+						constraints="flow()" localize="true" />
+					<Label label="right" constraints="flow()" localize="true" />
+					<Number numberType="IntegerType" columns="2" data="data.borderRight"
+						constraints="flow()" localize="true" />
+				</Panel>
+			</Panel>
+		</Tab>
+	</TabPanel>
+	<LocalizedDictionary>
+		<Localized key="name" lang="English" value="Name" />
+		<Localized key="index" lang="English" value="Index" />
+		<Localized key="location" lang="English" value="Location" />
+		<Localized key="column" lang="English" value="Column" />
+		<Localized key="top" lang="English" value="Top" />
+		<Localized key="left" lang="English" value="Left" />
+		<Localized key="right" lang="English" value="Right" />
+		<Localized key="define_specific_font" lang="English"
+			value="Define specific font" />
+		<Localized key="define_preferred_dimensions" lang="English"
+			value="Define preferred dimensions" />
+		<Localized key="width" lang="English" value="Width" />
+		<Localized key="height" lang="English" value="Height" />
+		<Localized key="value" lang="English" value="Value" />
+		<Localized key="name" lang="French" value="Nom" />
+		<Localized key="index" lang="French" value="Index" />
+		<Localized key="location" lang="French" value="Positionement" />
+		<Localized key="column" lang="French" value="Colonne" />
+		<Localized key="top" lang="French" value="Haut" />
+		<Localized key="left" lang="French" value="Gauche" />
+		<Localized key="right" lang="French" value="Droit" />
+		<Localized key="define_specific_font" lang="French"
+			value="Définir la police spécifique" />
+		<Localized key="define_preferred_dimensions" lang="French"
+			value="Définir les dimensions préférées" />
+		<Localized key="width" lang="French" value="Largeur" />
+		<Localized key="height" lang="French" value="Hauteur" />
+		<Localized key="value" lang="French" value="Valeur" />
+		<Localized key="Basic" lang="French" value="Basique" />
+		<Localized key="Advanced" lang="French" value="Avancé" />
+		<Localized key="Graphics" lang="French" value="Graphisme" />
+		<Localized key="name" lang="Dutch" value="Name" />
+		<Localized key="index" lang="Dutch" value="Index" />
+		<Localized key="location" lang="Dutch" value="Location" />
+		<Localized key="column" lang="Dutch" value="Column" />
+		<Localized key="top" lang="Dutch" value="Top" />
+		<Localized key="left" lang="Dutch" value="Left" />
+		<Localized key="right" lang="Dutch" value="Right" />
+		<Localized key="define_specific_font" lang="Dutch"
+			value="Define specific font" />
+		<Localized key="define_preferred_dimensions" lang="Dutch"
+			value="Define preferred dimensions" />
+		<Localized key="width" lang="Dutch" value="Width" />
+		<Localized key="height" lang="Dutch" value="Height" />
+		<Localized key="value" lang="Dutch" value="Value" />
+		<Localized key="alignmentX" lang="French" value="Alignement X" />
+		<Localized key="alignmentY" lang="French" value="Alignement Y" />
+		<Localized key="anchor" lang="French" value="Ancrage" />
+		<Localized key="bottom" lang="French" value="Bas" />
+		<Localized key="data" lang="French" value="Donnée" />
+		<Localized key="data_class" lang="French" value="Classe de donnée" />
+		<Localized key="delete_dependency" lang="French"
+			value="Supprimer la dépendance" />
+		<Localized key="delete_parameter" lang="French"
+			value="Supprimer le paramètre" />
+		<Localized key="dependency" lang="French" value="Dépendance" />
+		<Localized key="expand_horizontally" lang="French"
+			value="Etendre horizontalement" />
+		<Localized key="expand_vertically" lang="French"
+			value="Etendre verticalement" />
+		<Localized key="fill" lang="French" value="Remplir" />
+		<Localized key="gridHeight" lang="French" value="Grid height" />
+		<Localized key="gridWidth" lang="French" value="Grid width" />
+		<Localized key="gridX" lang="French" value="Grid X" />
+		<Localized key="gridY" lang="French" value="Grid Y" />
+		<Localized key="Insets" lang="French" value="Insets" />
+		<Localized key="make_new_dependency" lang="French"
+			value="Créer une nouvelle dépendance" />
+		<Localized key="make_new_parameter" lang="French"
+			value="Créer un nouveau paramètre" />
+		<Localized key="owner" lang="French" value="Propriétaire" />
+		<Localized key="pads" lang="French" value="Pads" />
+		<Localized key="padX" lang="French" value="Pad X" />
+		<Localized key="padY" lang="French" value="Pad Y" />
+		<Localized key="Params" lang="French" value="Params" />
+		<Localized key="owner" lang="English" value="Owner" />
+		<Localized key="pads" lang="English" value="Pads" />
+		<Localized key="pads" lang="Dutch" value="Pads" />
+		<Localized key="padX" lang="English" value="Pad X" />
+		<Localized key="padX" lang="Dutch" value="Pad X" />
+		<Localized key="padY" lang="English" value="Pad Y" />
+		<Localized key="padY" lang="Dutch" value="Pad Y" />
+		<Localized key="owner" lang="Dutch" value="Owner" />
+		<Localized key="make_new_parameter" lang="English"
+			value="Make new parameter" />
+		<Localized key="make_new_parameter" lang="Dutch"
+			value="Make new parameter" />
+		<Localized key="make_new_dependency" lang="English"
+			value="Make new dependency" />
+		<Localized key="make_new_dependency" lang="Dutch"
+			value="Make new dependency" />
+		<Localized key="gridY" lang="English" value="Grid Y" />
+		<Localized key="gridY" lang="Dutch" value="Grid Y" />
+		<Localized key="gridX" lang="English" value="Grid X" />
+		<Localized key="gridX" lang="Dutch" value="Grid X" />
+		<Localized key="gridWidth" lang="English" value="Grid width" />
+		<Localized key="gridWidth" lang="Dutch" value="Grid width" />
+		<Localized key="gridHeight" lang="English" value="Grid height" />
+		<Localized key="gridHeight" lang="Dutch" value="Grid height" />
+		<Localized key="fill" lang="English" value="Fill" />
+		<Localized key="fill" lang="Dutch" value="Fill" />
+		<Localized key="expand_vertically" lang="English" value="Expand vertically" />
+		<Localized key="expand_vertically" lang="Dutch" value="Expand vertically" />
+		<Localized key="expand_horizontally" lang="English"
+			value="Expand horizontally" />
+		<Localized key="expand_horizontally" lang="Dutch"
+			value="Expand horizontally" />
+		<Localized key="dependency" lang="English" value="Dependency" />
+		<Localized key="dependency" lang="Dutch" value="Dependency" />
+		<Localized key="delete_parameter" lang="English" value="Delete parameter" />
+		<Localized key="delete_parameter" lang="Dutch" value="Delete parameter" />
+		<Localized key="delete_dependency" lang="English" value="Delete dependency" />
+		<Localized key="delete_dependency" lang="Dutch" value="Delete dependency" />
+		<Localized key="data_class" lang="English" value="Data class" />
+		<Localized key="data_class" lang="Dutch" value="Data class" />
+		<Localized key="data" lang="English" value="Data" />
+		<Localized key="data" lang="Dutch" value="Data" />
+		<Localized key="bottom" lang="English" value="Bottom" />
+		<Localized key="bottom" lang="Dutch" value="Bottom" />
+		<Localized key="anchor" lang="English" value="Anchor" />
+		<Localized key="anchor" lang="Dutch" value="Anchor" />
+		<Localized key="alignmentX" lang="English" value="Alignment X" />
+		<Localized key="alignmentX" lang="Dutch" value="Alignment X" />
+		<Localized key="alignmentY" lang="English" value="Alignment Y" />
+		<Localized key="alignmentY" lang="Dutch" value="Alignment Y" />
+		<Localized key="font_and_colors" lang="English" value="Font and colors" />
+		<Localized key="font_and_colors" lang="French" value="Police et couleur" />
+		<Localized key="component_size_management" lang="English"
+			value="Component size management" />
+		<Localized key="component_size_management" lang="French"
+			value="Gestion de la taille des composants" />
+		<Localized key="background_color" lang="English" value="Background color" />
+		<Localized key="foreground_color" lang="English" value="Foreground color" />
+		<Localized key="background_color" lang="French"
+			value="Couleur de l'arrière-plan" />
+		<Localized key="foreground_color" lang="French"
+			value="Couleur d'avant-plan" />
+		<Localized key="background_color" lang="Dutch" value="Background color" />
+		<Localized key="foreground_color" lang="Dutch" value="Foreground color" />
+		<Localized key="border_layout_constraints" lang="French"
+			value="Contraintes de bord de mise en page" />
+		<Localized key="box_layout_constraints" lang="French"
+			value="Contrainte de boîte de mise en page" />
+		<Localized key="grid_bag_layout_constraints" lang="French"
+			value="Contraintes de mise en page grid-bag" />
+		<Localized key="grid_layout_constraints" lang="French"
+			value="Contraintes de mise en page avec grille" />
+		<Localized key="free_location_constraints" lang="French"
+			value="Contraintes d 'espace libre" />
+		<Localized key="flow_layout_constraints" lang="French"
+			value="Contraintes de mise en page &quot;flow&quot;" />
+		<Localized key="border_layout_constraints" lang="English"
+			value="Border layout constraints" />
+		<Localized key="box_layout_constraints" lang="English"
+			value="Box layout constraints" />
+		<Localized key="define_maximum_dimensions" lang="English"
+			value="Define maximum dimensions" />
+		<Localized key="define_minimum_dimensions" lang="English"
+			value="Define minimum dimensions" />
+		<Localized key="flow_layout_constraints" lang="English"
+			value="Flow layout constraints" />
+		<Localized key="free_location_constraints" lang="English"
+			value="Free location constraints" />
+		<Localized key="grid_bag_layout_constraints" lang="English"
+			value="Grid bag layout constraints" />
+		<Localized key="grid_layout_constraints" lang="English"
+			value="Grid layout constraints" />
+		<Localized key="horizontal_policy" lang="French" value="horizontal_policy" />
+		<Localized key="horizontal_policy" lang="English" value="horizontal_policy" />
+		<Localized key="vertical_policy" lang="French" value="vertical_policy" />
+		<Localized key="vertical_policy" lang="English" value="vertical_policy" />
+		<Localized key="define_maximum_dimensions" lang="French"
+			value="Définir les dimensions maximales" />
+		<Localized key="define_minimum_dimensions" lang="French"
+			value="Définir les dimensions minimales" />
+		<Localized key="scroll_bar_policy" lang="French"
+			value="Politique de scroll bas" />
+		<Localized key="scroll_bar_policy" lang="English" value="Scroll bar policy" />
+		<Localized key="two_cols_layout_constraints" lang="French"
+			value="Contraintes de mise en page &quot;two cols&quot;" />
+		<Localized key="two_cols_layout_constraints" lang="English"
+			value="Two cols layout constraints" />
+		<Localized key="use_scrollbar" lang="French" value="Utiliser scrollbar" />
+		<Localized key="use_scrollbar" lang="English" value="Use scrollbar" />
+		<Localized key="visible" lang="French" value="Visible" />
+		<Localized key="visible" lang="English" value="Visible" />
+		<Localized key="weights" lang="French" value="Poids" />
+		<Localized key="weights" lang="English" value="Weights" />
+		<Localized key="weightX" lang="French" value="weightX" />
+		<Localized key="weightY" lang="French" value="weightY" />
+		<Localized key="weightX" lang="English" value="weightX" />
+		<Localized key="weightY" lang="English" value="weightY" />
+		<Localized key="name" lang="English" value="Name" />
+		<Localized key="value" lang="English" value="Value" />
+		<Localized key="name" lang="French" value="Nom" />
+		<Localized key="value" lang="French" value="Valeur" />
+		<Localized key="Basic" lang="French" value="Basique" />
+		<Localized key="Advanced" lang="French" value="Avancé" />
+		<Localized key="Graphics" lang="French" value="Graphisme" />
+		<Localized key="name" lang="Dutch" value="Name" />
+		<Localized key="value" lang="Dutch" value="Value" />
+		<Localized key="delete_parameter" lang="French"
+			value="Supprimer le paramètre" />
+		<Localized key="Depends" lang="French" value="Depends" />
+		<Localized key="Doc" lang="French" value="Doc" />
+		<Localized key="make_new_parameter" lang="French"
+			value="Créer un nouveau paramètre" />
+		<Localized key="Params" lang="French" value="Paramètres" />
+		<Localized key="Params" lang="English" value="Params" />
+		<Localized key="make_new_parameter" lang="English"
+			value="Make new parameter" />
+		<Localized key="delete_parameter" lang="English" value="Delete parameter" />
+		<Localized key="controller_class" lang="English" value="Controller class" />
+		<Localized key="controller_class" lang="French" value="Classe  Controller" />
+		<Localized key="controller_class" lang="Dutch" value="Controller class" />
+		<Localized key="layout" lang="English" value="Layout" />
+		<Localized key="layout" lang="French" value="Mise en page" />
+		<Localized key="layout" lang="Dutch" value="Layout" />
+		<Localized key="none" lang="English" value="None" />
+		<Localized key="none" lang="French" value="Aucun" />
+		<Localized key="none" lang="Dutch" value="None" />
+		<Localized key="None" lang="English" value="None" />
+		<Localized key="None" lang="French" value="Aucun" />
+		<Localized key="None" lang="Dutch" value="None" />
+		<Localized key="flow" lang="English" value="Flow" />
+		<Localized key="flow" lang="French" value="Débit" />
+		<Localized key="flow" lang="Dutch" value="Flow" />
+		<Localized key="Flow" lang="English" value="Flow" />
+		<Localized key="Flow" lang="French" value="Flow" />
+		<Localized key="Flow" lang="Dutch" value="Flow" />
+		<Localized key="border" lang="English" value="border" />
+		<Localized key="border" lang="French" value="bord" />
+		<Localized key="border" lang="Dutch" value="border" />
+		<Localized key="grid" lang="English" value="grid" />
+		<Localized key="grid" lang="French" value="grid" />
+		<Localized key="grid" lang="Dutch" value="grid" />
+		<Localized key="box" lang="English" value="box" />
+		<Localized key="box" lang="French" value="box" />
+		<Localized key="box" lang="Dutch" value="box" />
+		<Localized key="twocols" lang="English" value="twocols" />
+		<Localized key="twocols" lang="French" value="twocols" />
+		<Localized key="twocols" lang="Dutch" value="twocols" />
+		<Localized key="gridbag" lang="English" value="gridbag" />
+		<Localized key="gridbag" lang="French" value="gridbag" />
+		<Localized key="gridbag" lang="Dutch" value="gridbag" />
+		<Localized key="split" lang="English" value="split" />
+		<Localized key="split" lang="French" value="split" />
+		<Localized key="split" lang="Dutch" value="split" />
+		<Localized key="alignment" lang="English" value="Alignment" />
+		<Localized key="alignment" lang="French" value="Alignment" />
+		<Localized key="alignment" lang="Dutch" value="Alignment" />
+		<Localized key="LEFT" lang="English" value="LEFT" />
+		<Localized key="LEFT" lang="French" value="Gauche" />
+		<Localized key="LEFT" lang="Dutch" value="LEFT" />
+		<Localized key="RIGHT" lang="English" value="RIGHT" />
+		<Localized key="RIGHT" lang="French" value="RIGHT" />
+		<Localized key="RIGHT" lang="Dutch" value="RIGHT" />
+		<Localized key="CENTER" lang="English" value="CENTER" />
+		<Localized key="CENTER" lang="French" value="CENTER" />
+		<Localized key="CENTER" lang="Dutch" value="CENTER" />
+		<Localized key="LEADING" lang="English" value="LEADING" />
+		<Localized key="LEADING" lang="French" value="LEADING" />
+		<Localized key="LEADING" lang="Dutch" value="LEADING" />
+		<Localized key="TRAILING" lang="English" value="TRAILING" />
+		<Localized key="TRAILING" lang="French" value="TRAILING" />
+		<Localized key="TRAILING" lang="Dutch" value="TRAILING" />
+		<Localized key="axis" lang="English" value="axis" />
+		<Localized key="axis" lang="French" value="axes" />
+		<Localized key="axis" lang="Dutch" value="as" />
+		<Localized key="X_AXIS" lang="English" value="X_AXIS" />
+		<Localized key="X_AXIS" lang="French" value="X_AXIS" />
+		<Localized key="X_AXIS" lang="Dutch" value="X_AXIS" />
+		<Localized key="Y_AXIS" lang="English" value="Y_AXIS" />
+		<Localized key="Y_AXIS" lang="French" value="Y_AXIS" />
+		<Localized key="Y_AXIS" lang="Dutch" value="Y_AXIS" />
+		<Localized key="hGap" lang="English" value="hGap" />
+		<Localized key="hGap" lang="French" value="hGap" />
+		<Localized key="hGap" lang="Dutch" value="hGap" />
+		<Localized key="vGap" lang="English" value="vGap" />
+		<Localized key="vGap" lang="French" value="vGap" />
+		<Localized key="vGap" lang="Dutch" value="vGap" />
+		<Localized key="columns" lang="English" value="columns" />
+		<Localized key="columns" lang="French" value="colonnes" />
+		<Localized key="columns" lang="Dutch" value="columns" />
+		<Localized key="rows" lang="English" value="Rows" />
+		<Localized key="rows" lang="French" value="Lignes" />
+		<Localized key="rows" lang="Dutch" value="Rows" />
+		<Localized key="Layout" lang="English" value="Layout" />
+		<Localized key="Layout" lang="French" value="Miser en page" />
+		<Localized key="Layout" lang="Dutch" value="Layout" />
+		<Localized key="Component" lang="English" value="Component" />
+		<Localized key="Component" lang="French" value="Composant" />
+		<Localized key="Component" lang="Dutch" value="Component" />
+		<Localized key="Constraints" lang="English" value="Constraints" />
+		<Localized key="Constraints" lang="French" value="Contraintes" />
+		<Localized key="Constraints" lang="Dutch" value="Constraints" />
+		<Localized key="reorder_components" lang="English"
+			value="Reorder components" />
+		<Localized key="reorder_components" lang="French"
+			value="Retrer les composants" />
+		<Localized key="reorder_components" lang="Dutch"
+			value="Reorder components" />
+		<Localized key="First" lang="English" value="First" />
+		<Localized key="First" lang="French" value="First" />
+		<Localized key="First" lang="Dutch" value="First" />
+		<Localized key="Up" lang="English" value="Up" />
+		<Localized key="Up" lang="French" value="Up" />
+		<Localized key="Up" lang="Dutch" value="Up" />
+		<Localized key="Down" lang="English" value="Down" />
+		<Localized key="Down" lang="French" value="Down" />
+		<Localized key="Down" lang="Dutch" value="Down" />
+		<Localized key="Last" lang="English" value="Last" />
+		<Localized key="Last" lang="French" value="Last" />
+		<Localized key="Last" lang="Dutch" value="Last" />
+		<Localized key="protect_content_against_modifications" lang="English"
+			value="Protect content against modifications" />
+		<Localized key="protect_content_against_modifications" lang="French"
+			value="Protéger le contenu contre les modifications" />
+		<Localized key="protect_content_against_modifications" lang="Dutch"
+			value="Protect content against modifications" />
+		<Localized key="track_view_port_width" lang="English"
+			value="Track view port width" />
+		<Localized key="track_view_port_width" lang="French"
+			value="Track view port width" />
+		<Localized key="track_view_port_width" lang="Dutch"
+			value="Track view port width" />
+		<Localized key="track_view_port_height" lang="English"
+			value="Track view port height" />
+		<Localized key="track_view_port_height" lang="French"
+			value="Track view port height" />
+		<Localized key="track_view_port_height" lang="Dutch"
+			value="Track view port height" />
+		<Localized key="north" lang="English" value="North" />
+		<Localized key="north" lang="French" value="Nord" />
+		<Localized key="north" lang="Dutch" value="North" />
+		<Localized key="North" lang="English" value="North" />
+		<Localized key="North" lang="French" value="Nord" />
+		<Localized key="North" lang="Dutch" value="North" />
+		<Localized key="south" lang="English" value="South" />
+		<Localized key="south" lang="French" value="Sud" />
+		<Localized key="south" lang="Dutch" value="South" />
+		<Localized key="South" lang="English" value="South" />
+		<Localized key="South" lang="French" value="South" />
+		<Localized key="South" lang="Dutch" value="South" />
+		<Localized key="east" lang="English" value="East" />
+		<Localized key="east" lang="French" value="Est" />
+		<Localized key="east" lang="Dutch" value="East" />
+		<Localized key="East" lang="English" value="East" />
+		<Localized key="East" lang="French" value="East" />
+		<Localized key="East" lang="Dutch" value="East" />
+		<Localized key="west" lang="English" value="West" />
+		<Localized key="west" lang="French" value="Ouest" />
+		<Localized key="west" lang="Dutch" value="West" />
+		<Localized key="West" lang="English" value="West" />
+		<Localized key="West" lang="French" value="Ouest" />
+		<Localized key="West" lang="Dutch" value="West" />
+		<Localized key="center" lang="English" value="Center" />
+		<Localized key="center" lang="French" value="Centré" />
+		<Localized key="center" lang="Dutch" value="Center" />
+		<Localized key="Center" lang="English" value="Center" />
+		<Localized key="Center" lang="French" value="Center" />
+		<Localized key="Center" lang="Dutch" value="Center" />
+		<Localized key="beforeFirstLine" lang="English" value="beforeFirstLine" />
+		<Localized key="beforeFirstLine" lang="French" value="beforeFirstLine" />
+		<Localized key="beforeFirstLine" lang="Dutch" value="beforeFirstLine" />
+		<Localized key="afterLastLine" lang="English" value="afterLastLine" />
+		<Localized key="afterLastLine" lang="French" value="afterLastLine" />
+		<Localized key="afterLastLine" lang="Dutch" value="afterLastLine" />
+		<Localized key="beforeLineBegins" lang="English" value="beforeLineBegins" />
+		<Localized key="beforeLineBegins" lang="French" value="beforeLineBegins" />
+		<Localized key="beforeLineBegins" lang="Dutch" value="beforeLineBegins" />
+		<Localized key="afterLineEnds" lang="English" value="afterLineEnds" />
+		<Localized key="afterLineEnds" lang="French" value="afterLineEnds" />
+		<Localized key="afterLineEnds" lang="Dutch" value="afterLineEnds" />
+		<Localized key="pageStart" lang="English" value="pageStart" />
+		<Localized key="pageStart" lang="French" value="pageStart" />
+		<Localized key="pageStart" lang="Dutch" value="pageStart" />
+		<Localized key="pageEnd" lang="English" value="pageEnd" />
+		<Localized key="pageEnd" lang="French" value="pageEnd" />
+		<Localized key="pageEnd" lang="Dutch" value="pageEnd" />
+		<Localized key="lineStart" lang="English" value="lineStart" />
+		<Localized key="lineStart" lang="French" value="lineStart" />
+		<Localized key="lineStart" lang="Dutch" value="lineStart" />
+		<Localized key="lineEnd" lang="English" value="lineEnd" />
+		<Localized key="lineEnd" lang="French" value="lineEnd" />
+		<Localized key="lineEnd" lang="Dutch" value="lineEnd" />
+		<Localized key="row" lang="English" value="row" />
+		<Localized key="row" lang="French" value="row" />
+		<Localized key="row" lang="Dutch" value="row" />
+		<Localized key="Left" lang="English" value="Left" />
+		<Localized key="Left" lang="French" value="Gauche" />
+		<Localized key="Left" lang="Dutch" value="Left" />
+		<Localized key="Right" lang="English" value="Right" />
+		<Localized key="Right" lang="French" value="Right" />
+		<Localized key="Right" lang="Dutch" value="Right" />
+		<Localized key="Insets" lang="English" value="Insets" />
+		<Localized key="Insets" lang="Dutch" value="Insets" />
+		<Localized key="relative" lang="English" value="relative" />
+		<Localized key="relative" lang="French" value="relatif" />
+		<Localized key="relative" lang="Dutch" value="relative" />
+		<Localized key="remainder" lang="English" value="remainder" />
+		<Localized key="remainder" lang="French" value="Restant" />
+		<Localized key="remainder" lang="Dutch" value="remainder" />
+		<Localized key="north_east" lang="English" value="North east" />
+		<Localized key="north_east" lang="French" value="Nord est" />
+		<Localized key="north_east" lang="Dutch" value="North east" />
+		<Localized key="north_west" lang="English" value="North west" />
+		<Localized key="north_west" lang="French" value="Nord ouest" />
+		<Localized key="north_west" lang="Dutch" value="North west" />
+		<Localized key="south_east" lang="English" value="South east" />
+		<Localized key="south_east" lang="French" value="Sud est" />
+		<Localized key="south_east" lang="Dutch" value="South east" />
+		<Localized key="south_west" lang="English" value="South west" />
+		<Localized key="south_west" lang="French" value="Sud ouest" />
+		<Localized key="south_west" lang="Dutch" value="South west" />
+		<Localized key="horizontal" lang="English" value="Horizontal" />
+		<Localized key="horizontal" lang="French" value="Horizontal" />
+		<Localized key="horizontal" lang="Dutch" value="Horizontal" />
+		<Localized key="vertical" lang="English" value="vertical" />
+		<Localized key="vertical" lang="French" value="vertical" />
+		<Localized key="vertical" lang="Dutch" value="vertical" />
+		<Localized key="both" lang="English" value="Both" />
+		<Localized key="both" lang="French" value="Bi-directionnelle" />
+		<Localized key="both" lang="Dutch" value="Beide" />
+		<Localized key="Both" lang="English" value="Both" />
+		<Localized key="Both" lang="French" value="Both" />
+		<Localized key="Both" lang="Dutch" value="Both" />
+		<Localized key="X" lang="English" value="X" />
+		<Localized key="X" lang="French" value="X" />
+		<Localized key="X" lang="Dutch" value="X" />
+		<Localized key="pixels" lang="English" value="pixels" />
+		<Localized key="pixels" lang="French" value="pixels" />
+		<Localized key="pixels" lang="Dutch" value="pixels" />
+		<Localized key="identifier" lang="English" value="Identifier" />
+		<Localized key="identifier" lang="French" value="Identifiant" />
+		<Localized key="identifier" lang="Dutch" value="Identifier" />
+		<Localized key="weight" lang="English" value="Weight" />
+		<Localized key="weight" lang="French" value="Poid" />
+		<Localized key="weight" lang="Dutch" value="Weight" />
+		<Localized key="split_layout_constraints" lang="English"
+			value="Split layout constraints" />
+		<Localized key="split_layout_constraints" lang="French"
+			value="Contraintes de mise en page &quot;split&quot;" />
+		<Localized key="split_layout_constraints" lang="Dutch"
+			value="Split layout constraints" />
+		<Localized key="HORIZONTAL_SCROLLBAR_AS_NEEDED" lang="English"
+			value="HORIZONTAL SCROLLBAR AS NEEDED" />
+		<Localized key="HORIZONTAL_SCROLLBAR_AS_NEEDED" lang="French"
+			value="HORIZONTAL SCROLLBAR AS NEEDED" />
+		<Localized key="HORIZONTAL_SCROLLBAR_AS_NEEDED" lang="Dutch"
+			value="HORIZONTAL SCROLLBAR AS NEEDED" />
+		<Localized key="HORIZONTAL_SCROLLBAR_NEVER" lang="English"
+			value="HORIZONTAL SCROLLBAR NEVER" />
+		<Localized key="HORIZONTAL_SCROLLBAR_NEVER" lang="French"
+			value="HORIZONTAL SCROLLBAR NEVER" />
+		<Localized key="HORIZONTAL_SCROLLBAR_NEVER" lang="Dutch"
+			value="HORIZONTAL SCROLLBAR NEVER" />
+		<Localized key="HORIZONTAL_SCROLLBAR_ALWAYS" lang="English"
+			value="HORIZONTAL SCROLLBAR ALWAYS" />
+		<Localized key="HORIZONTAL_SCROLLBAR_ALWAYS" lang="French"
+			value="HORIZONTAL SCROLLBAR ALWAYS" />
+		<Localized key="HORIZONTAL_SCROLLBAR_ALWAYS" lang="Dutch"
+			value="HORIZONTAL SCROLLBAR ALWAYS" />
+		<Localized key="VERTICAL_SCROLLBAR_AS_NEEDED" lang="English"
+			value="VERTICAL SCROLLBAR AS NEEDED" />
+		<Localized key="VERTICAL_SCROLLBAR_AS_NEEDED" lang="French"
+			value="VERTICAL SCROLLBAR AS NEEDED" />
+		<Localized key="VERTICAL_SCROLLBAR_AS_NEEDED" lang="Dutch"
+			value="VERTICAL SCROLLBAR AS NEEDED" />
+		<Localized key="VERTICAL_SCROLLBAR_NEVER" lang="English"
+			value="VERTICAL SCROLLBAR NEVER" />
+		<Localized key="VERTICAL_SCROLLBAR_NEVER" lang="French"
+			value="VERTICAL SCROLLBAR NEVER" />
+		<Localized key="VERTICAL_SCROLLBAR_NEVER" lang="Dutch"
+			value="VERTICAL SCROLLBAR NEVER" />
+		<Localized key="VERTICAL_SCROLLBAR_ALWAYS" lang="English"
+			value="VERTICAL SCROLLBAR ALWAYS" />
+		<Localized key="VERTICAL_SCROLLBAR_ALWAYS" lang="French"
+			value="VERTICAL SCROLLBAR ALWAYS" />
+		<Localized key="VERTICAL_SCROLLBAR_ALWAYS" lang="Dutch"
+			value="VERTICAL SCROLLBAR ALWAYS" />
+		<Localized key="empty" lang="English" value="empty" />
+		<Localized key="empty" lang="French" value="empty" />
+		<Localized key="empty" lang="Dutch" value="empty" />
+		<Localized key="line" lang="English" value="Line" />
+		<Localized key="line" lang="French" value="Ligne" />
+		<Localized key="line" lang="Dutch" value="Line" />
+		<Localized key="etched" lang="English" value="etched" />
+		<Localized key="etched" lang="French" value="etched" />
+		<Localized key="etched" lang="Dutch" value="etched" />
+		<Localized key="raised" lang="English" value="raised" />
+		<Localized key="raised" lang="French" value="raised" />
+		<Localized key="raised" lang="Dutch" value="raised" />
+		<Localized key="lowered" lang="English" value="Lowered" />
+		<Localized key="lowered" lang="French" value="Abaissé" />
+		<Localized key="lowered" lang="Dutch" value="Lowered" />
+		<Localized key="titled" lang="English" value="titled" />
+		<Localized key="titled" lang="French" value="titled" />
+		<Localized key="titled" lang="Dutch" value="titled" />
+		<Localized key="rounded3d" lang="English" value="rounded3d" />
+		<Localized key="rounded3d" lang="French" value="rounded3d" />
+		<Localized key="rounded3d" lang="Dutch" value="rounded3d" />
+		<Localized key="title_font" lang="English" value="title_font" />
+		<Localized key="title_font" lang="French" value="title_font" />
+		<Localized key="title_font" lang="Dutch" value="title_font" />
+		<Localized key="dark_level" lang="English" value="Dark level" />
+		<Localized key="dark_level" lang="French" value="Niveau de gris" />
+		<Localized key="dark_level" lang="Dutch" value="Dark level" />
+		<Localized key="Border" lang="English" value="Border" />
+		<Localized key="Border" lang="French" value="Bord" />
+		<Localized key="Border" lang="Dutch" value="Boord" />
+		<Localized key="opaque" lang="English" value="opaque" />
+		<Localized key="opaque" lang="French" value="opaque" />
+		<Localized key="opaque" lang="Dutch" value="opaque" />
+		<Localized key="Dynamic dependencies" lang="English"
+			value="Dynamic dependencies" />
+		<Localized key="Dynamic dependencies" lang="French"
+			value="Dynamic dependencies" />
+		<Localized key="Dynamic dependencies" lang="Dutch"
+			value="Dynamic dependencies" />
+		<Localized key="Explicit dependencies" lang="English"
+			value="Explicit dependencies" />
+		<Localized key="Explicit dependencies" lang="French"
+			value="Explicit dependencies" />
+		<Localized key="Explicit dependencies" lang="Dutch"
+			value="Explicit dependencies" />
+		<Localized key="Basic" lang="English" value="Basic" />
+		<Localized key="Basic" lang="Dutch" value="Basis" />
+		<Localized key="Components" lang="English" value="Components" />
+		<Localized key="Components" lang="French" value="Components" />
+		<Localized key="Components" lang="Dutch" value="Components" />
+		<Localized key="Controls" lang="English" value="Controls" />
+		<Localized key="Controls" lang="French" value="Controls" />
+		<Localized key="Controls" lang="Dutch" value="Controls" />
+		<Localized key="Graphics" lang="English" value="Graphics" />
+		<Localized key="Graphics" lang="Dutch" value="Graphics" />
+		<Localized key="Depends" lang="English" value="Depends" />
+		<Localized key="Depends" lang="Dutch" value="Depends" />
+		<Localized key="Doc" lang="English" value="Doc" />
+		<Localized key="Doc" lang="Dutch" value="Doc" />
+		<Localized key="Aucun" lang="English" value="Aucun" />
+		<Localized key="Aucun" lang="French" value="Aucun" />
+		<Localized key="Aucun" lang="Dutch" value="Aucun" />
+		<Localized key="Débit" lang="English" value="Débit" />
+		<Localized key="Débit" lang="French" value="Débit" />
+		<Localized key="Débit" lang="Dutch" value="Débit" />
+		<Localized key="bord" lang="English" value="bord" />
+		<Localized key="bord" lang="French" value="bord" />
+		<Localized key="bord" lang="Dutch" value="bord" />
+		<Localized key="Nord" lang="English" value="Nord" />
+		<Localized key="Nord" lang="French" value="Nord" />
+		<Localized key="Nord" lang="Dutch" value="Nord" />
+		<Localized key="Sud" lang="English" value="Sud" />
+		<Localized key="Sud" lang="French" value="Sud" />
+		<Localized key="Sud" lang="Dutch" value="Sud" />
+		<Localized key="Est" lang="English" value="Est" />
+		<Localized key="Est" lang="French" value="Est" />
+		<Localized key="Est" lang="Dutch" value="Est" />
+		<Localized key="Ouest" lang="English" value="Ouest" />
+		<Localized key="Ouest" lang="French" value="Ouest" />
+		<Localized key="Ouest" lang="Dutch" value="Ouest" />
+		<Localized key="Centré" lang="English" value="Centré" />
+		<Localized key="Centré" lang="French" value="Centré" />
+		<Localized key="Centré" lang="Dutch" value="Centré" />
+		<Localized key="Gauche" lang="English" value="Gauche" />
+		<Localized key="Gauche" lang="French" value="Gauche" />
+		<Localized key="Gauche" lang="Dutch" value="Gauche" />
+		<Localized key="Droit" lang="English" value="Droit" />
+		<Localized key="Droit" lang="French" value="Droit" />
+		<Localized key="Droit" lang="Dutch" value="Droit" />
+		<Localized key="Bi-directionnelle" lang="English" value="Bi-directionnelle" />
+		<Localized key="Bi-directionnelle" lang="French" value="Bi-directionnelle" />
+		<Localized key="Bi-directionnelle" lang="Dutch" value="Bi-directionnelle" />
+		<Localized key="ligne" lang="English" value="Line" />
+		<Localized key="ligne" lang="French" value="Ligne" />
+		<Localized key="ligne" lang="Dutch" value="Line" />
+		<Localized key="visible" lang="Dutch" value="Visible" />
+		<Localized key="free_location_constraints" lang="Dutch"
+			value="Free location constraints" />
+		<Localized key="flow_layout_constraints" lang="Dutch"
+			value="Flow layout constraints" />
+		<Localized key="border_layout_constraints" lang="Dutch"
+			value="Border layout constraints" />
+		<Localized key="grid_layout_constraints" lang="Dutch"
+			value="Grid layout constraints" />
+		<Localized key="box_layout_constraints" lang="Dutch"
+			value="Box layout constraints" />
+		<Localized key="two_cols_layout_constraints" lang="Dutch"
+			value="Two cols layout constraints" />
+		<Localized key="weights" lang="Dutch" value="Weights" />
+		<Localized key="weightX" lang="Dutch" value="weightX" />
+		<Localized key="weightY" lang="Dutch" value="weightY" />
+		<Localized key="Beide" lang="English" value="Beide" />
+		<Localized key="Beide" lang="French" value="Beide" />
+		<Localized key="Beide" lang="Dutch" value="Beide" />
+		<Localized key="grid_bag_layout_constraints" lang="Dutch"
+			value="Grid bag layout constraints" />
+		<Localized key="define_minimum_dimensions" lang="Dutch"
+			value="Define minimum dimensions" />
+		<Localized key="define_maximum_dimensions" lang="Dutch"
+			value="Define maximum dimensions" />
+		<Localized key="component_size_management" lang="Dutch"
+			value="Component size management" />
+		<Localized key="use_scrollbar" lang="Dutch" value="Use scrollbar" />
+		<Localized key="horizontal_policy" lang="Dutch" value="horizontal_policy" />
+		<Localized key="vertical_policy" lang="Dutch" value="vertical_policy" />
+		<Localized key="scroll_bar_policy" lang="Dutch" value="Scroll bar policy" />
+		<Localized key="font_and_colors" lang="Dutch" value="Font and colors" />
+		<Localized key="Params" lang="Dutch" value="Params" />
+	</LocalizedDictionary>
+	<Parameter name="title" value="Panel" />
+	<Parameter name="title" value="Panel" />
 </Inspector>

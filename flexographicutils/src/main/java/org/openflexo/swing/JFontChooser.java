@@ -37,7 +37,6 @@
  * 
  */
 
-
 package org.openflexo.swing;
 
 import java.awt.BorderLayout;
@@ -59,8 +58,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import org.openflexo.localization.FlexoLocalization;
 
 public class JFontChooser extends JPanel implements ChangeListener {
 
@@ -116,7 +113,7 @@ public class JFontChooser extends JPanel implements ChangeListener {
 			@Override
 			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 				JLabel returned = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-				returned.setText(FlexoLocalization.localizedForKey(returned.getText()));
+				// returned.setText(FlexoLocalization.localizedForKey(returned.getText()));
 				return returned;
 			}
 		});
@@ -177,7 +174,8 @@ public class JFontChooser extends JPanel implements ChangeListener {
 		if (aFont == null) {
 			return "null";
 		}
-		return FlexoLocalization.localizedForKey(fontStyle(aFont));
+		// return FlexoLocalization.localizedForKey(fontStyle(aFont));
+		return fontStyle(aFont);
 	}
 
 	private static String fontStyle(Font aFont) {

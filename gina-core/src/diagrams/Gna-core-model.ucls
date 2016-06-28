@@ -106,7 +106,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <enumeration id="12" language="java" name="org.openflexo.fib.model.SelectionMode" project="gina-core" 
+  <enumeration id="12" language="java" name="org.openflexo.fib.model.widget.SelectionMode" project="gina-core" 
     file="/gina-core/src/main/java/org/openflexo/fib/model/SelectionMode.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="52" width="137" x="393" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -241,7 +241,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <interface id="26" language="java" name="org.openflexo.fib.model.FIBColor" project="gina-core" 
+  <interface id="26" language="java" name="org.openflexo.fib.model.widget.FIBColor" project="gina-core" 
     file="/gina-core/src/main/java/org/openflexo/fib/model/FIBColor.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="293" y="142"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -250,7 +250,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </interface>  
-  <class id="27" language="java" name="org.openflexo.fib.model.FIBColor.FIBColorImpl" project="gina-core" 
+  <class id="27" language="java" name="org.openflexo.fib.model.widget.FIBColor.FIBColorImpl" project="gina-core" 
     file="/gina-core/src/main/java/org/openflexo/fib/model/FIBColor.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="293" y="234"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -269,7 +269,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="29" language="java" name="org.openflexo.fib.model.FIBButton.ActionBindingMustBeValid" project="gina-core" 
+  <class id="29" language="java" name="org.openflexo.fib.model.widget.FIBButton.ActionBindingMustBeValid" project="gina-core" 
     file="/gina-core/src/main/java/org/openflexo/fib/model/FIBButton.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="396" y="523"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -278,7 +278,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="30" language="java" name="org.openflexo.fib.model.FIBButton.FIBButtonImpl" project="gina-core" 
+  <class id="30" language="java" name="org.openflexo.fib.model.widget.FIBButton.FIBButtonImpl" project="gina-core" 
     file="/gina-core/src/main/java/org/openflexo/fib/model/FIBButton.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="105" y="525"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -287,7 +287,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <enumeration id="31" language="java" name="org.openflexo.fib.model.FIBButton.ButtonType" project="gina-core" 
+  <enumeration id="31" language="java" name="org.openflexo.fib.model.widget.FIBButton.ButtonType" project="gina-core" 
     file="/gina-core/src/main/java/org/openflexo/fib/model/FIBButton.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="114" y="375"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -296,7 +296,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </enumeration>  
-  <interface id="32" language="java" name="org.openflexo.fib.model.FIBButton" project="gina-core" 
+  <interface id="32" language="java" name="org.openflexo.fib.model.widget.FIBButton" project="gina-core" 
     file="/gina-core/src/main/java/org/openflexo/fib/model/FIBButton.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="272" y="374"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -344,7 +344,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <interface id="37" language="java" name="org.openflexo.fib.model.FIBFont" project="gina-core" 
+  <interface id="37" language="java" name="org.openflexo.fib.model.widget.FIBFont" project="gina-core" 
     file="/gina-core/src/main/java/org/openflexo/fib/model/FIBFont.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="510" y="425"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -353,7 +353,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </interface>  
-  <class id="38" language="java" name="org.openflexo.fib.model.FIBFont.FIBFontImpl" project="gina-core" 
+  <class id="38" language="java" name="org.openflexo.fib.model.widget.FIBFont.FIBFontImpl" project="gina-core" 
     file="/gina-core/src/main/java/org/openflexo/fib/model/FIBFont.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="502" y="321"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -362,7 +362,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <enumeration id="39" language="java" name="org.openflexo.fib.model.FIBFile.FileMode" project="gina-core" 
+  <enumeration id="39" language="java" name="org.openflexo.fib.model.widget.FIBFile.FileMode" project="gina-core" 
     file="/gina-core/src/main/java/org/openflexo/fib/model/FIBFile.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="284" y="750"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -371,7 +371,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </enumeration>  
-  <interface id="40" language="java" name="org.openflexo.fib.model.FIBFile" project="gina-core" 
+  <interface id="40" language="java" name="org.openflexo.fib.model.widget.FIBFile" project="gina-core" 
     file="/gina-core/src/main/java/org/openflexo/fib/model/FIBFile.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="89" y="749"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -380,7 +380,7 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </interface>  
-  <class id="41" language="java" name="org.openflexo.fib.model.FIBFile.FIBFileImpl" project="gina-core" 
+  <class id="41" language="java" name="org.openflexo.fib.model.widget.FIBFile.FIBFileImpl" project="gina-core" 
     file="/gina-core/src/main/java/org/openflexo/fib/model/FIBFile.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="183" y="642"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 

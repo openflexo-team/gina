@@ -112,9 +112,10 @@ public class EditDistance {
 		}
 		int cost = matrix[a_size - 1][b_size - 1];
 
-		if (false) {
-			System.out.println(dumpMatrix(word, similar, matrix));
-		}
+		// FD remove code: debug code?
+		// if (false) {
+		// System.out.println(dumpMatrix(word, similar, matrix));
+		// }
 
 		return cost;
 	}

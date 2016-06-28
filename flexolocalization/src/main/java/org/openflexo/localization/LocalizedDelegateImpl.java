@@ -39,6 +39,8 @@
 
 package org.openflexo.localization;
 
+import java.awt.Component;
+import java.awt.Frame;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -51,11 +53,20 @@ import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Properties;
 import java.util.Vector;
+import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.AbstractButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JTabbedPane;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.TableColumn;
 
 import org.apache.commons.io.IOUtils;
 import org.openflexo.rm.FileResourceImpl;
@@ -91,11 +102,16 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 	private final PropertyChangeSupport pcSupport;
 
+	private final WeakHashMap<Component, String> _storedLocalizedForComponents = new WeakHashMap<Component, String>();
+	private final WeakHashMap<JComponent, String> _storedLocalizedForComponentTooltips = new WeakHashMap<JComponent, String>();
+	private final WeakHashMap<TitledBorder, String> _storedLocalizedForBorders = new WeakHashMap<TitledBorder, String>();
+	private final WeakHashMap<TableColumn, String> _storedLocalizedForTableColumn = new WeakHashMap<TableColumn, String>();
+
 	public static enum SearchMode {
 		Contains, BeginsWith, EndsWith
 	}
 
-	protected LocalizedDelegateImpl(Resource localizedDirectory, LocalizedDelegate parent, boolean automaticSaving, boolean editingSupport) {
+	public LocalizedDelegateImpl(Resource localizedDirectory, LocalizedDelegate parent, boolean automaticSaving, boolean editingSupport) {
 		this.automaticSaving = automaticSaving;
 		this.editingSupport = editingSupport;
 		this.parent = parent;
@@ -106,13 +122,16 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			if (sourceCodeResource == null) {
 				localizedDirectoryResource = localizedDirectory;
 				automaticSaving = false;
-			} else {
+			}
+			else {
 				localizedDirectoryResource = sourceCodeResource;
 			}
-		} else {
+		}
+		else {
 			localizedDirectoryResource = localizedDirectory;
 		}
 		_localizedDictionaries = new Hashtable<Language, Properties>();
+
 	}
 
 	@Override
@@ -128,10 +147,10 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	public Resource getLocalizedDirectoryResource() {
 		return localizedDirectoryResource;
 	}
+
 	public void setLocalizedDirectoryResource(Resource r) {
 		localizedDirectoryResource = r;
 	}
-
 
 	private Properties getDictionary(Language language) {
 		Properties dict = _localizedDictionaries.get(language);
@@ -153,7 +172,8 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		InputStream dict = getInputStreamForLanguage(language);
 		if (dict == null) {
 			logger.warning("Could not find dictionary for " + language + " in " + localizedDirectoryResource);
-		} else {
+		}
+		else {
 			try {
 				if (logger.isLoggable(Level.INFO)) {
 					logger.info("Loading dictionary for language " + language.getName() + " Dir=" + localizedDirectoryResource.toString());
@@ -192,8 +212,8 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	}
 
 	private File getDictionaryFileForLanguage(Language language) {
-		return ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResourceWithBaseLocation(localizedDirectoryResource,
-				language.getName() + ".dict"));
+		return ResourceLocator.retrieveResourceAsFile(
+				ResourceLocator.locateResourceWithBaseLocation(localizedDirectoryResource, language.getName() + ".dict"));
 	}
 
 	private void saveDictionary(Language language, Properties dict) {
@@ -231,9 +251,9 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 	/*private void loadLocalizedDictionaries() {
 		_localizedDictionaries = new Hashtable<Language, Properties>();
-
+	
 		Thread.dumpStack();
-
+	
 		for (Language language : Language.availableValues()) {
 			InputStream dict = getInputStreamForLanguage(language);
 			if (logger.isLoggable(Level.INFO)) {
@@ -253,25 +273,40 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		Properties dict = getDictionary(language);
 		if (!required && dict.getProperty(key) == null || required) {
 			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Adding entry '" + key + "' in " + language + " dictionary, in directory "
-						+ localizedDirectoryResource.toString());
+				logger.fine(
+						"Adding entry '" + key + "' in " + language + " dictionary, in directory " + localizedDirectoryResource.toString());
 			}
 			dict.setProperty(key, value);
 			// saveDictionary(language, dict);
 		}
 	}
 
+	@Override
+	public boolean registerNewEntry(String key, Language language, String value) {
+		addEntryInDictionary(language, key, value, true);
+		if (automaticSaving) {
+			save();
+		}
+		return true;
+	}
+
 	public Entry addEntry(String key) {
+		System.out.println("Adding " + key + " in " + this);
 		// Add in all dictionaries, when required
 		for (Language language : Language.availableValues()) {
 			addEntryInDictionary(language, key, key, false);
 		}
 		entries = null;
-		setChanged();
-		notifyObservers();
+		// setChanged();
+		// notifyObservers();
 		Entry returned = getEntry(key);
+		System.out.println("Added entry " + returned + " " + returned.getKey() + " english=" + returned.getEnglish());
 		searchTranslation(returned);
 		getPropertyChangeSupport().firePropertyChange("entries", null, getEntries());
+		if (automaticSaving) {
+			logger.info("************** Save because added: " + key + " in " + this);
+			save();
+		}
 		return returned;
 	}
 
@@ -313,60 +348,28 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		return true;
 	}
 
-	/**
-	 * Return String matching specified key and language<br>
-	 * 
-	 * @param key
-	 * @param language
-	 * @return
-	 */
-	@Override
-	public String getLocalizedForKeyAndLanguage(String key, Language language, boolean createsNewEntriesIfNonExistant) {
-
-		if (key == null || StringUtils.isEmpty(key)) {
-			return null;
-		}
-
-		if (!createsNewEntriesIfNonExistant) {
-			return getLocalizedForKeyAndLanguage(key, language);
-		}
-
-		Properties currentLanguageDict = getDictionary(language);
-
-		String localized = currentLanguageDict.getProperty(key);
-
-		if (localized == null) {
-			addEntry(key);
-			if (automaticSaving) {
-				System.out.println("Save because added: " + key);
-				save();
-			}
-			return currentLanguageDict.getProperty(key);
-		} else {
-			return localized;
-		}
-	}
-
-	@Override
+	/*@Override
 	public String getLocalizedForKeyAndLanguage(String key, Language language) {
-
+	
 		if (key == null || StringUtils.isEmpty(key)) {
 			return null;
 		}
-
+	
 		Properties currentLanguageDict = getDictionary(language);
 		// String localized = currentLanguageDict.getProperty(key);
-
-		return currentLanguageDict.getProperty(key);
-
-		/*if (localized == null) {
-			addEntry(key);
-			save();
-			return currentLanguageDict.getProperty(key);
-		} else {
-			return localized;
-		}*/
-	}
+	
+		String returned = currentLanguageDict.getProperty(key);
+	
+		if (returned != null) {
+			return returned;
+		}
+	
+		if (parent != null) {
+			return parent.getLocalizedForKeyAndLanguage(key, language);
+		}
+	
+		return null;
+	}*/
 
 	public void setLocalizedForKeyAndLanguage(String key, String value, Language language) {
 		if (_localizedDictionaries == null) {
@@ -394,7 +397,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 		@Override
 		public String getEnglish() {
-			String localized = getLocalizedForKeyAndLanguage(key, Language.ENGLISH);
+			String localized = localizedForKeyAndLanguage(key, Language.ENGLISH);
 			return localized != null ? localized : key;
 			// return localizedForKeyAndLanguage(key, Language.ENGLISH);
 		}
@@ -409,7 +412,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 		@Override
 		public String getFrench() {
-			String localized = getLocalizedForKeyAndLanguage(key, Language.FRENCH);
+			String localized = localizedForKeyAndLanguage(key, Language.FRENCH);
 			return localized != null ? localized : key;
 			// return localizedForKeyAndLanguage(key, Language.FRENCH);
 		}
@@ -424,7 +427,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 		@Override
 		public String getDutch() {
-			String localized = getLocalizedForKeyAndLanguage(key, Language.DUTCH);
+			String localized = localizedForKeyAndLanguage(key, Language.DUTCH);
 			return localized != null ? localized : key;
 			// return localizedForKeyAndLanguage(key, Language.DUTCH);
 		}
@@ -514,7 +517,8 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 				setEnglish(addHTMLSupport(getEnglish()));
 				setFrench(addHTMLSupport(getFrench()));
 				setDutch(addHTMLSupport(getDutch()));
-			} else {
+			}
+			else {
 				setEnglish(removeHTMLSupport(getEnglish()));
 				setFrench(removeHTMLSupport(getFrench()));
 				setDutch(removeHTMLSupport(getDutch()));
@@ -702,22 +706,26 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	@Override
 	public void searchTranslation(LocalizedEntry entry) {
 		if (getParent() != null) {
-			String englishTranslation = FlexoLocalization.localizedForKeyAndLanguage(parent, entry.getKey(), Language.ENGLISH);
+			String englishTranslation = parent.localizedForKeyAndLanguage(entry.getKey(), Language.ENGLISH, false);
 			if (entry.getKey().equals(englishTranslation)) {
 				englishTranslation = automaticEnglishTranslation(entry.getKey());
 			}
 			entry.setEnglish(englishTranslation);
-			String dutchTranslation = FlexoLocalization.localizedForKeyAndLanguage(parent, entry.getKey(), Language.DUTCH);
+			// System.out.println("englishTranslation=" + englishTranslation);
+			String dutchTranslation = parent.localizedForKeyAndLanguage(entry.getKey(), Language.DUTCH, false);
 			if (entry.getKey().equals(dutchTranslation)) {
 				dutchTranslation = automaticDutchTranslation(entry.getKey());
 			}
 			entry.setDutch(dutchTranslation);
-			String frenchTranslation = FlexoLocalization.localizedForKeyAndLanguage(parent, entry.getKey(), Language.FRENCH);
+			// System.out.println("dutchTranslation=" + dutchTranslation);
+			String frenchTranslation = parent.localizedForKeyAndLanguage(entry.getKey(), Language.FRENCH, false);
 			if (entry.getKey().equals(frenchTranslation)) {
 				frenchTranslation = automaticFrenchTranslation(entry.getKey());
 			}
 			entry.setFrench(frenchTranslation);
-		} else {
+			// System.out.println("frenchTranslation=" + frenchTranslation);
+		}
+		else {
 			String englishTranslation = entry.getKey().toString();
 			englishTranslation = englishTranslation.replace("_", " ");
 			englishTranslation = englishTranslation.substring(0, 1).toUpperCase() + englishTranslation.substring(1);
@@ -741,15 +749,6 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	private String automaticFrenchTranslation(String key) {
 		return key;
 		// return automaticEnglishTranslation(key);
-	}
-
-	@Override
-	public boolean registerNewEntry(String key, Language language, String value) {
-		addEntryInDictionary(language, key, value, true);
-		if (automaticSaving) {
-			save();
-		}
-		return true;
 	}
 
 	@Override
@@ -795,6 +794,233 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 	@Override
 	public void searchLocalized() {
+	}
+
+	/**
+	 * This is general and main method to use localized in Flexo.<br>
+	 * Applicable language is chosen from the one defined in FlexoLocalization (configurable from GeneralPreferences).<br>
+	 * Use english names for keys, such as 'some_english_words'
+	 * 
+	 * @param key
+	 * @return String matching specified key and language defined as default in {@link FlexoLocalization}
+	 */
+	@Override
+	public String localizedForKey(String key) {
+		return localizedForKeyAndLanguage(key, FlexoLocalization.getCurrentLanguage());
+	}
+
+	@Override
+	public String localizedForKeyAndLanguage(String key, Language language) {
+		return localizedForKeyAndLanguage(key, language, handleNewEntry(key, language));
+	}
+
+	/**
+	 * Return String matching specified key and language<br>
+	 * 
+	 * @param key
+	 * @param language
+	 * @return
+	 */
+	/*private String retrieveLocalizedForKeyAndLanguage(String key, Language language, boolean createsNewEntryInFirstEditableParent) {
+	
+		if (key == null || StringUtils.isEmpty(key)) {
+			return null;
+		}
+	
+		Properties currentLanguageDict = getDictionary(language);
+	
+		String localized = currentLanguageDict.getProperty(key);
+	
+		if (localized == null && createsNewEntryInFirstEditableParent) {
+			// We have to find the right place to add the entry
+	
+			if (handleNewEntry(key, language)) {
+				addEntry(key);
+				if (automaticSaving) {
+					logger.info("************** Save because added: " + key + " in " + this);
+					save();
+				}
+				return currentLanguageDict.getProperty(key);
+			}
+			else if (getParent() != null) {
+				return getParent().
+			}
+		}
+		else {
+			return localized;
+		}
+	}*/
+
+	/**
+	 * Return String matching specified key and language<br>
+	 * If #createsNewEntryInFirstEditableParent set to true, will try to enter a new traduction.<br>
+	 * LocalizedDelegate are recursively requested to their parents, and the first one who respond true to
+	 * {@link #handleNewEntry(String, Language)} will add a new entry
+	 * 
+	 * @param key
+	 * @param language
+	 * @return
+	 */
+	@Override
+	public String localizedForKeyAndLanguage(String key, Language language, boolean createsNewEntryInFirstEditableParent) {
+
+		if (key == null || StringUtils.isEmpty(key)) {
+			return null;
+		}
+
+		/*boolean debug = false;
+		
+		if (key.equals("Super classes")) {
+			System.out.println("OK, j'ai le truc Super classes dans " + this);
+			System.out.println("createsNewEntryInFirstEditableParent=" + createsNewEntryInFirstEditableParent);
+			debug = true;
+			LocalizedDelegate l = this;
+			while (l.getParent() != null) {
+				System.out.println("> " + l);
+				l = l.getParent();
+			}
+			// Thread.dumpStack();
+		}*/
+
+		Properties currentLanguageDict = getDictionary(language);
+		String localized = currentLanguageDict.getProperty(key);
+
+		/*if (debug) {
+			System.out.println("La1 localized=" + localized);
+		}*/
+
+		if (localized == null) {
+			// Not found in this delegate
+			if (handleNewEntry(key, language)) {
+				// We then have to create entry here
+				addEntry(key);
+				return currentLanguageDict.getProperty(key);
+			}
+			else {
+				if (getParent() != null) {
+					// Nice, we forward the request to the parent
+					return getParent().localizedForKeyAndLanguage(key, language, createsNewEntryInFirstEditableParent);
+				}
+				return key;
+			}
+		}
+
+		return localized;
+	}
+
+	@Override
+	public String localizedForKeyWithParams(String key, Object... object) {
+		String base = localizedForKey(key);
+		return FlexoLocalization.replaceAllParamsInString(base, object);
+	}
+
+	@Override
+	public String localizedForKey(String key, Component component) {
+		if (logger.isLoggable(Level.FINE)) {
+			logger.finest("localizedForKey called with " + key + " for " + component.getClass().getName());
+		}
+		_storedLocalizedForComponents.put(component, key);
+		return localizedForKey(key);
+	}
+
+	@Override
+	public String localizedTooltipForKey(String key, JComponent component) {
+		if (logger.isLoggable(Level.FINE)) {
+			logger.finest("localizedForKey called with " + key + " for " + component.getClass().getName());
+		}
+		_storedLocalizedForComponentTooltips.put(component, key);
+		return localizedForKey(key);
+	}
+
+	@Override
+	public String localizedForKey(String key, TitledBorder border) {
+		if (logger.isLoggable(Level.FINE)) {
+			logger.finest("localizedForKey called with " + key + " for border " + border.getClass().getName());
+		}
+		_storedLocalizedForBorders.put(border, key);
+		return localizedForKey(key);
+	}
+
+	@Override
+	public String localizedForKey(String key, TableColumn column) {
+		if (logger.isLoggable(Level.FINE)) {
+			logger.finest("localizedForKey called with " + key + " for border " + column.getClass().getName());
+		}
+		_storedLocalizedForTableColumn.put(column, key);
+		return localizedForKey(key);
+	}
+
+	/*public String localizedForKey(String key, String additionalString, Component component) {
+		if (key == null) {
+			return null;
+		}
+		if (logger.isLoggable(Level.FINE)) {
+			logger.finest("localizedForKey called with " + key + " for " + component.getClass().getName());
+		}
+		_storedLocalizedForComponents.put(component, key);
+		_storedAdditionalStrings.put(component, additionalString);
+		return localizedForKey(key) + additionalString;
+	}*/
+
+	@Override
+	public void clearStoredLocalizedForComponents() {
+		_storedLocalizedForComponents.clear();
+		_storedLocalizedForBorders.clear();
+		// _storedAdditionalStrings.clear();
+		_storedLocalizedForTableColumn.clear();
+		// localizationListeners.clear();
+	}
+
+	@Override
+	public void updateGUILocalized() {
+		for (Map.Entry<Component, String> e : _storedLocalizedForComponents.entrySet()) {
+			Component component = e.getKey();
+			String string = e.getValue();
+			String text = localizedForKey(string);
+			/*String additionalString = _storedAdditionalStrings.get(component);
+			if (additionalString != null) {
+				text = text + additionalString;
+			}*/
+			if (component instanceof AbstractButton) {
+				((AbstractButton) component).setText(text);
+			}
+			if (component instanceof JLabel) {
+				((JLabel) component).setText(text);
+			}
+			component.setName(text);
+			if (component.getParent() instanceof JTabbedPane) {
+				if (((JTabbedPane) component.getParent()).indexOfComponent(component) > -1) {
+					((JTabbedPane) component.getParent()).setTitleAt(((JTabbedPane) component.getParent()).indexOfComponent(component),
+							text);
+				}
+			}
+			if (component.getParent() != null && component.getParent().getParent() instanceof JTabbedPane) {
+				if (((JTabbedPane) component.getParent().getParent()).indexOfComponent(component) > -1) {
+					((JTabbedPane) component.getParent().getParent())
+							.setTitleAt(((JTabbedPane) component.getParent().getParent()).indexOfComponent(component), text);
+				}
+			}
+		}
+		for (Map.Entry<JComponent, String> e : _storedLocalizedForComponentTooltips.entrySet()) {
+			JComponent component = e.getKey();
+			String string = e.getValue();
+			String text = localizedForKey(string);
+			component.setToolTipText(text);
+		}
+		for (Map.Entry<TitledBorder, String> e : _storedLocalizedForBorders.entrySet()) {
+			String string = e.getValue();
+			String text = localizedForKey(string);
+			e.getKey().setTitle(text);
+		}
+		for (Map.Entry<TableColumn, String> e : _storedLocalizedForTableColumn.entrySet()) {
+			String string = e.getValue();
+			String text = localizedForKey(string);
+			e.getKey().setHeaderValue(text);
+		}
+		for (Frame f : Frame.getFrames()) {
+			f.repaint();
+		}
+
 	}
 
 }

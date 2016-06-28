@@ -1,0 +1,19 @@
+<Table iteratorClassName="org.openflexo.gina.swing.editor.palette.FIBEditorPalettes$AdvancedPaletteData$TableItem"
+	visibleRowCount="5" rowHeight="18" autoSelectFirstRow="true" width="125" height="100"
+	createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true"
+	selectionMode="MultipleIntervalSelection" selected="data.selectedClassInfo"
+	textSelectionColor="255,255,255" textNonSelectionColor="0,0,0"
+	backgroundSelectionColor="26,96,206" backgroundSecondarySelectionColor="173,215,255"
+	backgroundNonSelectionColor="255,255,255" data="paletteData.tableItems"
+	constraints="twocols(location=center;index=1;expandHorizontally=true;expandVertically=true)"
+	name="PotentialMatches" localize="true" manageDynamicModel="true">
+	<IconColumn data="iterator.icon" title="" columnWidth="20"
+		resizable="false" displayTitle="true" name="icon" />
+	<LabelColumn data="iterator.data1" title="col1"
+		columnWidth="50" resizable="true" displayTitle="true" name="data1" />
+	<LabelColumn data="iterator.data2" title="col2"
+		columnWidth="50" resizable="true" displayTitle="true" name="data2" />
+	<Parameter name="x" value="10" />
+	<Parameter name="y" value="10" />
+    <FIBVariable name="paletteData" type="org.openflexo.gina.swing.editor.palette.FIBEditorPalettes$AdvancedPaletteData" />
+</Table>

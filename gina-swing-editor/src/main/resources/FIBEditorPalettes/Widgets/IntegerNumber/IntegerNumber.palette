@@ -1,0 +1,4 @@
+<Number name="IntegerNumber" data="12" numberType="IntegerType" columns="4">
+	<Parameter name="x" value="190"/>
+	<Parameter name="y" value="150"/>
+</Number>

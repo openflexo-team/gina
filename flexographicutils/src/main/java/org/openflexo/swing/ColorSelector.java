@@ -37,7 +37,6 @@
  * 
  */
 
-
 package org.openflexo.swing;
 
 import java.awt.BorderLayout;
@@ -65,7 +64,7 @@ import org.openflexo.localization.FlexoLocalization;
  * @author sguerin
  * 
  */
-public class ColorSelector extends CustomPopup<Color> implements ColorSelectionModel {
+public class ColorSelector extends CustomPopup<Color>implements ColorSelectionModel {
 
 	static final Logger logger = Logger.getLogger(ColorSelector.class.getPackage().getName());
 
@@ -83,7 +82,8 @@ public class ColorSelector extends CustomPopup<Color> implements ColorSelectionM
 		// WARNING: we need here to clone to keep track back of previous data !!!
 		if (oldValue != null) {
 			_revertValue = new Color(oldValue.getRed(), oldValue.getGreen(), oldValue.getBlue());
-		} else {
+		}
+		else {
 			_revertValue = null;
 		}
 		if (logger.isLoggable(Level.FINE)) {
@@ -133,8 +133,8 @@ public class ColorSelector extends CustomPopup<Color> implements ColorSelectionM
 
 			_controlPanel = new JPanel();
 			_controlPanel.setLayout(new FlowLayout());
-			_controlPanel.add(_applyButton = new JButton(FlexoLocalization.localizedForKey("ok")));
-			_controlPanel.add(_cancelButton = new JButton(FlexoLocalization.localizedForKey("cancel")));
+			_controlPanel.add(_applyButton = new JButton(FlexoLocalization.getMainLocalizer().localizedForKey("ok")));
+			_controlPanel.add(_cancelButton = new JButton(FlexoLocalization.getMainLocalizer().localizedForKey("cancel")));
 			_applyButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -259,7 +259,8 @@ public class ColorSelector extends CustomPopup<Color> implements ColorSelectionM
 	public Color getSelectedColor() {
 		if (getEditedObject() != null) {
 			return getEditedObject();
-		} else {
+		}
+		else {
 			return Color.WHITE;
 		}
 	}
