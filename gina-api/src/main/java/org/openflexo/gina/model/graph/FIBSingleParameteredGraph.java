@@ -1,8 +1,9 @@
 /**
  * 
- * Copyright (c) 2014, Openflexo
+ * Copyright (c) 2013-2014, Openflexo
+ * Copyright (c) 2011-2012, AgileBirds
  * 
- * This file is part of Diana-core, a component of the software infrastructure 
+ * This file is part of Gina-core, a component of the software infrastructure 
  * developed at Openflexo.
  * 
  * 
@@ -36,48 +37,34 @@
  * 
  */
 
-package org.openflexo.gina.view;
+package org.openflexo.gina.model.graph;
 
-import org.openflexo.gina.controller.FIBController;
-import org.openflexo.gina.model.FIBContainer;
-import org.openflexo.gina.model.FIBWidget;
+import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 
 /**
- * Represent the view factory for a given technology (eg. Swing)
- * 
- * @author sylvain
- * 
- * @param <C>
- *            base minimal class of components build by this tool factory (eg JComponent for Swing)
+ * A graph determined by a unique parameter on which we iterate<br>
+ * This parameter might be continuous or take values on a discrete set of values
  */
-public interface GinaViewFactory<C> {
+@ModelEntity(isAbstract = true)
+@ImplementationClass(FIBSingleParameteredGraph.FIBSingleParameteredGraphImpl.class)
+public interface FIBSingleParameteredGraph extends FIBGraph {
 
-	public boolean allowsFIBEdition();
+	@PropertyIdentifier(type = String.class)
+	public static final String PARAMETER_NAME_KEY = "parameterName";
 
-	/**
-	 * Build and return a new view (instance of {@link FIBContainerView}) for supplied {@link FIBContainer} and controller
-	 * 
-	 * @param fibContainer
-	 * @param controller
-	 * @param updateNow
-	 * @return
-	 */
-	public <F extends FIBContainer> FIBContainerView<F, ? extends C, ? extends C> makeContainer(F fibContainer, FIBController controller,
-			boolean updateNow);
+	@Getter(value = PARAMETER_NAME_KEY)
+	@XMLAttribute
+	public String getParameterName();
 
-	/**
-	 * Build and return a new view (instance of {@link FIBWidgetView}) for supplied {@link FIBWidget} and controller
-	 * 
-	 * @param fibWidget
-	 * @param controller
-	 * @return
-	 */
-	public <F extends FIBWidget> FIBWidgetView<F, ? extends C, ?> makeWidget(F fibWidget, FIBController controller);
+	@Setter(PARAMETER_NAME_KEY)
+	public void setParameterName(String data);
 
-	public void show(FIBController controller);
+	public static abstract class FIBSingleParameteredGraphImpl extends FIBGraphImpl implements FIBSingleParameteredGraph {
 
-	public void hide(FIBController controller);
-
-	public void disposeWindow(FIBController controller);
-
+	}
 }

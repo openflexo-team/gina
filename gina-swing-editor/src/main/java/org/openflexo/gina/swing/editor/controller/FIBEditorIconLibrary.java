@@ -77,5 +77,6 @@ public class FIBEditorIconLibrary {
 	public static final ImageIcon NUMBER_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/SpinnerIcon.png"));
 	public static final ImageIcon IMAGE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ImageIcon.png"));
 	public static final ImageIcon CUSTOM_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/LayeredPaneIcon.png"));
+	public static final ImageIcon GRAPH_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Small_BIRT.gif"));
 
 }

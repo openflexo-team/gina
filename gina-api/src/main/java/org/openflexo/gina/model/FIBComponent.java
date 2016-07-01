@@ -76,6 +76,7 @@ import org.openflexo.gina.model.container.layout.GridLayoutConstraints;
 import org.openflexo.gina.model.container.layout.NoneLayoutConstraints;
 import org.openflexo.gina.model.container.layout.SplitLayoutConstraints;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
+import org.openflexo.gina.model.graph.FIBGraph;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBButton;
 import org.openflexo.gina.model.widget.FIBCheckBox;
@@ -154,7 +155,7 @@ import org.openflexo.toolbox.StringUtils;
 		@Import(FIBFile.class), @Import(FIBFont.class), @Import(FIBHtmlEditor.class), @Import(FIBImage.class), @Import(FIBLabel.class),
 		@Import(FIBCheckboxList.class), @Import(FIBDropDown.class), @Import(FIBList.class), @Import(FIBRadioButtonList.class),
 		@Import(FIBNumber.class), @Import(FIBReferencedComponent.class), @Import(FIBTable.class), @Import(FIBEditor.class),
-		@Import(FIBTextArea.class), @Import(FIBTextField.class), @Import(FIBEditorPane.class) })
+		@Import(FIBTextArea.class), @Import(FIBTextField.class), @Import(FIBEditorPane.class), @Import(FIBGraph.class) })
 public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBaseIdentifier {
 
 	public static enum VerticalScrollBarPolicy {

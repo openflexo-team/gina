@@ -48,6 +48,7 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBSplitPanel;
 import org.openflexo.gina.model.container.FIBTabPanel;
+import org.openflexo.gina.model.graph.FIBGraph;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBButton;
 import org.openflexo.gina.model.widget.FIBCheckBox;
@@ -171,6 +172,9 @@ public class FIBBrowserController extends FIBController /*implements Observer*/ 
 		}
 		else if (component instanceof FIBReferencedComponent) {
 			return FIBEditorIconLibrary.REFERENCE_COMPONENT_ICON;
+		}
+		else if (component instanceof FIBGraph) {
+			return FIBEditorIconLibrary.GRAPH_ICON;
 		}
 		return null;
 

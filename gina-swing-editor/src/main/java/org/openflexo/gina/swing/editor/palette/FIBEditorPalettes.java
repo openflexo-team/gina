@@ -67,8 +67,8 @@ public class FIBEditorPalettes extends JTabbedPane {
 
 		palettes = new ArrayList<>();
 
-		Resource[] paletteDirs = new Resource[3];
-		Object[] paletteData = new Object[3];
+		Resource[] paletteDirs = new Resource[4];
+		Object[] paletteData = new Object[4];
 
 		paletteDirs[0] = ResourceLocator.locateResource("FIBEditorPalettes/Panels");
 		paletteData[0] = new WidgetsPaletteData();
@@ -79,7 +79,10 @@ public class FIBEditorPalettes extends JTabbedPane {
 		paletteDirs[2] = ResourceLocator.locateResource("FIBEditorPalettes/Advanced");
 		paletteData[2] = new AdvancedPaletteData();
 
-		for (int i = 0; i < 3; i++) {
+		paletteDirs[3] = ResourceLocator.locateResource("FIBEditorPalettes/Graphs");
+		paletteData[3] = new WidgetsPaletteData();
+
+		for (int i = 0; i < 4; i++) {
 			Resource paletteDir = paletteDirs[i];
 			Object data = paletteData[i];
 			FIBEditorPalette palette = new FIBEditorPalette(paletteDir, this, data);

@@ -1,8 +1,9 @@
 /**
  * 
- * Copyright (c) 2014, Openflexo
+ * Copyright (c) 2013-2014, Openflexo
+ * Copyright (c) 2011-2012, AgileBirds
  * 
- * This file is part of Diana-core, a component of the software infrastructure 
+ * This file is part of Gina-core, a component of the software infrastructure 
  * developed at Openflexo.
  * 
  * 
@@ -36,48 +37,32 @@
  * 
  */
 
-package org.openflexo.gina.view;
+package org.openflexo.gina.model.graph;
 
-import org.openflexo.gina.controller.FIBController;
-import org.openflexo.gina.model.FIBContainer;
-import org.openflexo.gina.model.FIBWidget;
+import org.openflexo.gina.model.FIBModelObject;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
+import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Setter;
 
-/**
- * Represent the view factory for a given technology (eg. Swing)
- * 
- * @author sylvain
- * 
- * @param <C>
- *            base minimal class of components build by this tool factory (eg JComponent for Swing)
- */
-public interface GinaViewFactory<C> {
+@ModelEntity(isAbstract = true)
+@ImplementationClass(FIBGraphFunction.FIBGraphFunctionImpl.class)
+public interface FIBGraphFunction extends FIBModelObject {
 
-	public boolean allowsFIBEdition();
+	@PropertyIdentifier(type = FIBGraph.class)
+	public static final String OWNER_KEY = "owner";
 
-	/**
-	 * Build and return a new view (instance of {@link FIBContainerView}) for supplied {@link FIBContainer} and controller
-	 * 
-	 * @param fibContainer
-	 * @param controller
-	 * @param updateNow
-	 * @return
-	 */
-	public <F extends FIBContainer> FIBContainerView<F, ? extends C, ? extends C> makeContainer(F fibContainer, FIBController controller,
-			boolean updateNow);
+	@Getter(value = OWNER_KEY)
+	@CloningStrategy(StrategyType.IGNORE)
+	public FIBGraph getOwner();
 
-	/**
-	 * Build and return a new view (instance of {@link FIBWidgetView}) for supplied {@link FIBWidget} and controller
-	 * 
-	 * @param fibWidget
-	 * @param controller
-	 * @return
-	 */
-	public <F extends FIBWidget> FIBWidgetView<F, ? extends C, ?> makeWidget(F fibWidget, FIBController controller);
+	@Setter(OWNER_KEY)
+	public void setOwner(FIBGraph graph);
 
-	public void show(FIBController controller);
+	public static abstract class FIBGraphFunctionImpl extends FIBModelObjectImpl implements FIBGraphFunction {
 
-	public void hide(FIBController controller);
-
-	public void disposeWindow(FIBController controller);
-
+	}
 }

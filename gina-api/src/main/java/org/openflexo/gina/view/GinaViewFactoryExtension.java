@@ -1,8 +1,9 @@
 /**
  * 
- * Copyright (c) 2014, Openflexo
+ * Copyright (c) 2013-2016, Openflexo
+ * Copyright (c) 2011-2012, AgileBirds
  * 
- * This file is part of Diana-core, a component of the software infrastructure 
+ * This file is part of Gina-core, a component of the software infrastructure 
  * developed at Openflexo.
  * 
  * 
@@ -35,7 +36,6 @@
  * or visit www.openflexo.org if you need additional information.
  * 
  */
-
 package org.openflexo.gina.view;
 
 import org.openflexo.gina.controller.FIBController;
@@ -43,16 +43,27 @@ import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.FIBWidget;
 
 /**
- * Represent the view factory for a given technology (eg. Swing)
+ * Extension for {@link GinaViewFactory}
  * 
  * @author sylvain
  * 
- * @param <C>
- *            base minimal class of components build by this tool factory (eg JComponent for Swing)
  */
-public interface GinaViewFactory<C> {
+public interface GinaViewFactoryExtension {
 
-	public boolean allowsFIBEdition();
+	/**
+	 * Install the extension with supplied view factory as extension point
+	 * 
+	 * @param viewFactory
+	 */
+	public void install(GinaViewFactory<?> viewFactory);
+
+	/**
+	 * Return true if this extension manages supplied container
+	 * 
+	 * @param fibContainer
+	 * @return
+	 */
+	public boolean handleContainer(FIBContainer fibContainer);
 
 	/**
 	 * Build and return a new view (instance of {@link FIBContainerView}) for supplied {@link FIBContainer} and controller
@@ -62,8 +73,15 @@ public interface GinaViewFactory<C> {
 	 * @param updateNow
 	 * @return
 	 */
-	public <F extends FIBContainer> FIBContainerView<F, ? extends C, ? extends C> makeContainer(F fibContainer, FIBController controller,
-			boolean updateNow);
+	public <F extends FIBContainer> FIBContainerView<F, ?, ?> makeContainer(F fibContainer, FIBController controller, boolean updateNow);
+
+	/**
+	 * Return true if this extension manages supplied widget
+	 * 
+	 * @param fibWidget
+	 * @return
+	 */
+	public boolean handleWidget(FIBWidget fibWidget);
 
 	/**
 	 * Build and return a new view (instance of {@link FIBWidgetView}) for supplied {@link FIBWidget} and controller
@@ -72,12 +90,6 @@ public interface GinaViewFactory<C> {
 	 * @param controller
 	 * @return
 	 */
-	public <F extends FIBWidget> FIBWidgetView<F, ? extends C, ?> makeWidget(F fibWidget, FIBController controller);
-
-	public void show(FIBController controller);
-
-	public void hide(FIBController controller);
-
-	public void disposeWindow(FIBController controller);
+	public <W extends FIBWidget> FIBWidgetView<W, ?, ?> makeWidget(W fibWidget, FIBController controller);
 
 }
