@@ -1,0 +1,62 @@
+<Inspector name="Inspector" layout="border"
+	dataClassName="org.openflexo.gina.model.graph.FIBGraphFunction">
+	<Parameter name="title" value="Graph function prout" />
+
+	<TabPanel name="Tab" constraints="border(location=center)">
+		<Tab title="Basic" layout="twocols" titleFont="SansSerif,0,10"
+			darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true"
+			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab"
+			trackViewPortWidth="true" trackViewPortHeight="true">
+
+			<Label name="ExpressionLabel" label="expression" index="2"
+				constraints="twocols(location=left)" localize="true" />
+			<Custom name="ExpressionBinding" index="3"
+				componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				localize="true" manageDynamicModel="true" data="data.expression"
+				constraints="twocols(expandHorizontally=true;location=right)">
+				<Assignment variable="component.bindable" value="data" />
+			</Custom>
+
+			<Label label="graph_type" index="4" constraints="twocols(location=left)"
+				localize="true" />
+			<DropDown data="data.graphType" index="5"
+				constraints="twocols(location=right)" localize="true"
+				iteratorClassName="org.openflexo.gina.model.graph.FIBGraphFunction$GraphType"
+				autoSelectFirstRow="true" />
+
+		</Tab>
+
+		<Tab title="Graphics" layout="twocols" titleFont="SansSerif,0,10"
+			darkLevel="0" index="4" font="SansSerif,0,11" useScrollBar="true"
+			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="GraphicsTab">
+			<Label label="foreground" index="0"
+				constraints="twocols(location=left)"
+				localize="true" />
+			<Color index="1" data="data.foregroundColor" allowsNull="false" allowsNullText=""
+				constraints="twocols(location=right)"
+				localize="true" />
+			<Label label="background_type" index="2" constraints="twocols(location=left)"
+				localize="true" />
+			<DropDown data="data.backgroundType" index="3"
+				constraints="twocols(location=right)" localize="true"
+				iteratorClassName="org.openflexo.gina.model.graph.FIBGraphFunction$FunctionBackgroundType"
+				autoSelectFirstRow="true" />
+			<Label label="background_1" index="4"
+				constraints="twocols(location=left)"
+				localize="true" />
+			<Color index="5" data="data.backgroundColor1" allowsNull="false" allowsNullText=""
+				constraints="twocols(location=right)"
+				localize="true" />
+			<Label label="background_2" index="6"
+				constraints="twocols(location=left)"
+				localize="true" />
+			<Color index="7" data="data.backgroundColor2" allowsNull="false" allowsNullText=""
+				constraints="twocols(location=right)"
+				localize="true" />
+		</Tab>
+
+	</TabPanel>
+
+</Inspector>

@@ -42,6 +42,7 @@ package org.openflexo.gina.model.graph;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import org.openflexo.connie.BindingModel;
 import org.openflexo.gina.model.FIBWidget;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
@@ -86,6 +87,8 @@ public interface FIBGraph extends FIBWidget {
 
 	@Remover(FUNCTIONS_KEY)
 	public void removeFromFunctions(FIBGraphFunction aFunction);
+
+	public BindingModel getGraphBindingModel();
 
 	public static abstract class FIBGraphImpl extends FIBWidgetImpl implements FIBGraph {
 

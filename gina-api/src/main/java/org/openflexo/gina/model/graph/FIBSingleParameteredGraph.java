@@ -39,6 +39,10 @@
 
 package org.openflexo.gina.model.graph;
 
+import java.lang.reflect.Type;
+
+import org.openflexo.connie.BindingModel;
+import org.openflexo.connie.BindingVariable;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -62,9 +66,36 @@ public interface FIBSingleParameteredGraph extends FIBGraph {
 	public String getParameterName();
 
 	@Setter(PARAMETER_NAME_KEY)
-	public void setParameterName(String data);
+	public void setParameterName(String parameterName);
+
+	public Type getParameterType();
 
 	public static abstract class FIBSingleParameteredGraphImpl extends FIBGraphImpl implements FIBSingleParameteredGraph {
+
+		private BindingModel graphBindingModel;
+		private BindingVariable parameterBindingVariable;
+
+		@Override
+		public BindingModel getGraphBindingModel() {
+			if (graphBindingModel == null) {
+				createGraphBindingModel();
+			}
+			return graphBindingModel;
+		}
+
+		private void createGraphBindingModel() {
+			graphBindingModel = new BindingModel(getBindingModel());
+			parameterBindingVariable = new BindingVariable(getParameterName(), getParameterType());
+			graphBindingModel.addToBindingVariables(parameterBindingVariable);
+		}
+
+		@Override
+		public void setParameterName(String parameterName) {
+			performSuperSetter(PARAMETER_NAME_KEY, parameterName);
+			if (parameterBindingVariable != null) {
+				parameterBindingVariable.setVariableName(parameterName);
+			}
+		}
 
 	}
 }

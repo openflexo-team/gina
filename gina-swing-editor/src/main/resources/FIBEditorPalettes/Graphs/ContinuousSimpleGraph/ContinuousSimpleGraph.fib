@@ -1,2 +1,4 @@
-<FIBContinuousSimpleFunctionGraph>
+<FIBContinuousSimpleFunctionGraph
+	parameterName="x" width="100" height="100" minValue="0.0" maxValue="100.0"
+	stepsNumber="100" majorTickSpacing="20.0" minorTickSpacing="5.0">
 </FIBContinuousSimpleFunctionGraph>

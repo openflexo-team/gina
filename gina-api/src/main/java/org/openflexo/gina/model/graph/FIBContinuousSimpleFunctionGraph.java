@@ -39,6 +39,8 @@
 
 package org.openflexo.gina.model.graph;
 
+import java.lang.reflect.Type;
+
 import org.openflexo.connie.DataBinding;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -64,6 +66,12 @@ import org.openflexo.model.annotations.XMLElement;
 @ImplementationClass(FIBContinuousSimpleFunctionGraph.FIBContinuousSimpleFunctionGraphImpl.class)
 @XMLElement
 public interface FIBContinuousSimpleFunctionGraph extends FIBSimpleFunctionGraph {
+
+	public static final Double DEFAULT_MIN_VALUE = 0.0;
+	public static final Double DEFAULT_MAX_VALUE = 100.0;
+	public static final Double DEFAULT_MINOR_TICK_SPACING = 5.0;
+	public static final Double DEFAULT_MAJOR_TICK_SPACING = 20.0;
+	public static final Integer DEFAULT_STEPS_NUMBER = 100;
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String MIN_VALUE_KEY = "minValue";
@@ -138,6 +146,7 @@ public interface FIBContinuousSimpleFunctionGraph extends FIBSimpleFunctionGraph
 				minValue.setBindingName(MIN_VALUE_KEY);
 			}
 			this.minValue = minValue;
+			getPropertyChangeSupport().firePropertyChange(MIN_VALUE_KEY, null, minValue);
 		}
 
 		@Override
@@ -158,6 +167,7 @@ public interface FIBContinuousSimpleFunctionGraph extends FIBSimpleFunctionGraph
 				maxValue.setBindingName(MAX_VALUE_KEY);
 			}
 			this.maxValue = maxValue;
+			getPropertyChangeSupport().firePropertyChange(MAX_VALUE_KEY, null, maxValue);
 		}
 
 		@Override
@@ -178,6 +188,7 @@ public interface FIBContinuousSimpleFunctionGraph extends FIBSimpleFunctionGraph
 				minorTickSpacing.setBindingName(MINOR_TICK_SPACING_KEY);
 			}
 			this.minorTickSpacing = minorTickSpacing;
+			getPropertyChangeSupport().firePropertyChange(MINOR_TICK_SPACING_KEY, null, minorTickSpacing);
 		}
 
 		@Override
@@ -198,6 +209,7 @@ public interface FIBContinuousSimpleFunctionGraph extends FIBSimpleFunctionGraph
 				majorTickSpacing.setBindingName(MAJOR_TICK_SPACING_KEY);
 			}
 			this.majorTickSpacing = majorTickSpacing;
+			getPropertyChangeSupport().firePropertyChange(MAJOR_TICK_SPACING_KEY, null, majorTickSpacing);
 		}
 
 		@Override
@@ -218,6 +230,19 @@ public interface FIBContinuousSimpleFunctionGraph extends FIBSimpleFunctionGraph
 				stepsNumber.setBindingName(STEPS_NUMBER_KEY);
 			}
 			this.stepsNumber = stepsNumber;
+			getPropertyChangeSupport().firePropertyChange(STEPS_NUMBER_KEY, null, stepsNumber);
 		}
+
+		@Override
+		public Type getParameterType() {
+			if (getMinValue() != null && getMinValue().isSet() && getMinValue().isValid()) {
+				return getMinValue().getAnalyzedType();
+			}
+			if (getMaxValue() != null && getMaxValue().isSet() && getMaxValue().isValid()) {
+				return getMaxValue().getAnalyzedType();
+			}
+			return Number.class;
+		}
+
 	}
 }

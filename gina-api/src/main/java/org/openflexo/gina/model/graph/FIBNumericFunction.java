@@ -3,7 +3,7 @@
  * Copyright (c) 2013-2014, Openflexo
  * Copyright (c) 2011-2012, AgileBirds
  * 
- * This file is part of Gina-swing-editor, a component of the software infrastructure 
+ * This file is part of Gina-core, a component of the software infrastructure 
  * developed at Openflexo.
  * 
  * 
@@ -37,15 +37,28 @@
  * 
  */
 
-package org.openflexo.gina.swing.utils;
+package org.openflexo.gina.model.graph;
 
-import org.openflexo.gina.model.FIBModelObject;
+import java.lang.reflect.Type;
 
-public class SelectedObjectChange extends FIBEditorNotification<FIBModelObject> {
-	public static String SELECTION = "selection";
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.XMLElement;
 
-	public SelectedObjectChange(FIBModelObject oldValue, FIBModelObject newValue) {
-		super(SELECTION, oldValue, newValue);
+@ModelEntity
+@ImplementationClass(FIBNumericFunction.FIBNumericFunctionImpl.class)
+@XMLElement
+public interface FIBNumericFunction extends FIBGraphFunction {
+
+	public static abstract class FIBNumericFunctionImpl extends FIBGraphFunctionImpl implements FIBNumericFunction {
+
+		@Override
+		public Type getType() {
+			if (getExpression() != null && getExpression().isSet() && getExpression().isValid()) {
+				return getExpression().getAnalyzedType();
+			}
+			return Number.class;
+		}
+
 	}
-
 }

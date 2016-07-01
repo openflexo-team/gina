@@ -6,23 +6,39 @@
 	dataClassName="org.openflexo.gina.model.FIBComponent" titleFont="Lucida Grande,0,13"
 	trackViewPortHeight="true">
 	<Browser id="1" deepExploration="true" showFooter="true"
-		showRootsHandle="true" manageDynamicModel="true" root="data"
+		rowHeight="18" showRootsHandle="true" manageDynamicModel="true" root="data"
 		selectionMode="DiscontiguousTreeSelection"
 		rightClickAction="controller.rightClick(ComponentBrowser.selected,controller.mouseEvent)"
 		boundToSelectionManager="true" localize="true"
-		constraints="border(location=center;x=0;y=0)" iteratorClassName="org.openflexo.gina.model.FIBComponent"
+		constraints="border(location=center;x=0;y=0)" iteratorClassName="org.openflexo.gina.model.FIBModelObject"
 		useScrollBar="false" selected="controller.editorController.selectedObject"
 		name="ComponentBrowser" rootVisible="true" readOnly="false">
-		<BrowserElement id="2" icon="controller.iconFor(element)"
-			filtered="false" label="element.presentationName" defaultVisible="true"
-			dataClassName="org.openflexo.gina.model.FIBComponent" name="element"
-			isEditable="false" />
+		<BrowserElement icon="controller.iconFor(graph)"
+			filtered="false" label="graph.presentationName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.model.graph.FIBGraph" name="graph"
+			isEditable="true" editableLabel="graph.name">
+			<Children name="functions" data="graph.functions" />
+			<BrowserAddAction name="add_numeric_function"
+				method="controller.createNumericFunction(selected)" />
+			<BrowserAddAction name="add_discrete_function"
+				method="controller.createDiscreteFunction(selected)" />
+			<BrowserRemoveAction name="remove_function"
+				method="controller.deleteFunction(selected)" />
+		</BrowserElement>
 		<BrowserElement id="3" icon="controller.iconFor(container)"
 			filtered="false" label="container.presentationName" defaultVisible="true"
 			dataClassName="org.openflexo.gina.model.FIBContainer" name="container"
-			isEditable="false">
+			isEditable="true" editableLabel="container.name">
 			<Children id="4" name="children" data="container.subComponents" />
 		</BrowserElement>
+		<BrowserElement id="2" icon="controller.iconFor(element)"
+			filtered="false" label="element.presentationName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.model.FIBComponent" name="element"
+			isEditable="true" editableLabel="element.name"/>
+		<BrowserElement icon="controller.iconFor(element)"
+			filtered="false" label="element.presentationName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.model.FIBModelObject" name="element"
+			isEditable="true" editableLabel="element.name"/>
 	</Browser>
 	<Panel id="5" darkLevel="0" vGap="5" useScrollBar="false"
 		protectContent="false" hGap="5" layout="border" border="empty"

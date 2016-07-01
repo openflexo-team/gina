@@ -48,6 +48,10 @@ import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.model.container.FIBSplitPanel;
 import org.openflexo.gina.model.container.FIBTab;
 import org.openflexo.gina.model.converter.ComponentConstraintsConverter;
+import org.openflexo.gina.model.graph.FIBContinuousSimpleFunctionGraph;
+import org.openflexo.gina.model.graph.FIBDiscreteFunction;
+import org.openflexo.gina.model.graph.FIBGraph;
+import org.openflexo.gina.model.graph.FIBNumericFunction;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBBrowserElement;
 import org.openflexo.gina.model.widget.FIBBrowserElement.FIBBrowserElementChildren;
@@ -257,6 +261,28 @@ public class FIBModelFactory extends ModelFactory {
 	public FIBDependancy newFIBDependancy(FIBComponent masterComponent) {
 		FIBDependancy returned = newInstance(FIBDependancy.class);
 		returned.setMasterComponent(masterComponent);
+		return returned;
+	}
+
+	public FIBContinuousSimpleFunctionGraph newFIBContinuousSimpleFunctionGraph() {
+		FIBContinuousSimpleFunctionGraph returned = newInstance(FIBContinuousSimpleFunctionGraph.class);
+		returned.setMinValue(new DataBinding<Double>(FIBContinuousSimpleFunctionGraph.DEFAULT_MIN_VALUE.toString()));
+		returned.setMaxValue(new DataBinding<Double>(FIBContinuousSimpleFunctionGraph.DEFAULT_MAX_VALUE.toString()));
+		returned.setMajorTickSpacing(new DataBinding<Double>(FIBContinuousSimpleFunctionGraph.DEFAULT_MAJOR_TICK_SPACING.toString()));
+		returned.setMinorTickSpacing(new DataBinding<Double>(FIBContinuousSimpleFunctionGraph.DEFAULT_MINOR_TICK_SPACING.toString()));
+		returned.setStepsNumber(new DataBinding<Integer>(FIBContinuousSimpleFunctionGraph.DEFAULT_STEPS_NUMBER.toString()));
+		return returned;
+	}
+
+	public FIBNumericFunction newFIBNumericFunction(FIBGraph graph) {
+		FIBNumericFunction returned = newInstance(FIBNumericFunction.class);
+		graph.addToFunctions(returned);
+		return returned;
+	}
+
+	public FIBDiscreteFunction newFIBDiscreteFunction(FIBGraph graph) {
+		FIBDiscreteFunction returned = newInstance(FIBDiscreteFunction.class);
+		graph.addToFunctions(returned);
 		return returned;
 	}
 

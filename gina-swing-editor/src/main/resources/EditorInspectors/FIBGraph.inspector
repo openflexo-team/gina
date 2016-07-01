@@ -1,0 +1,14 @@
+<Inspector 
+	   name="Inspector" 
+	   layout="border" 
+	   dataClassName="org.openflexo.gina.model.graph.FIBGraph">
+	<Parameter name="title" value="Graph"/>
+
+		<TabPanel name="Tab" constraints="border(location=center)">
+
+			<Tab name="BasicTab" title="Basic" index="0" layout="twocols" font="SansSerif,0,11" >
+			</Tab>
+						
+		</TabPanel>
+
+</Inspector>

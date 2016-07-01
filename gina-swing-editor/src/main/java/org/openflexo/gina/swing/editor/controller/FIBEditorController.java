@@ -63,6 +63,7 @@ import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.FIBModelFactory;
+import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.swing.editor.EditedFIBComponent;
 import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.palette.DropListener;
@@ -106,8 +107,8 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 	private FIBEditorPanel editorPanel;
 	private FIBEditorBrowser editorBrowser;
 
-	private FIBComponent selectedObject = null;
-	private FIBComponent focusedObject = null;
+	private FIBModelObject selectedObject = null;
+	private FIBModelObject focusedObject = null;
 
 	private final ContextualMenu contextualMenu;
 
@@ -251,11 +252,11 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 		return editorBrowser;
 	}
 
-	public FIBComponent getFocusedObject() {
+	public FIBModelObject getFocusedObject() {
 		return focusedObject;
 	}
 
-	public void setFocusedObject(FIBComponent aComponent) {
+	public void setFocusedObject(FIBModelObject aComponent) {
 
 		if (aComponent != focusedObject) {
 			// System.out.println("setFocusedObject with "+aComponent);
@@ -267,14 +268,14 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 		}
 	}
 
-	public FIBComponent getSelectedObject() {
+	public FIBModelObject getSelectedObject() {
 		return selectedObject;
 	}
 
-	public void setSelectedObject(FIBComponent aComponent) {
+	public void setSelectedObject(FIBModelObject aComponent) {
 		if (aComponent != selectedObject) {
-			//System.out.println("setSelectedObject from " + selectedObject + " to " + aComponent);
-			FIBComponent oldValue = selectedObject;
+			// System.out.println("setSelectedObject from " + selectedObject + " to " + aComponent);
+			FIBModelObject oldValue = selectedObject;
 			SelectedObjectChange change = new SelectedObjectChange(oldValue, aComponent);
 			selectedObject = aComponent;
 			setChanged();

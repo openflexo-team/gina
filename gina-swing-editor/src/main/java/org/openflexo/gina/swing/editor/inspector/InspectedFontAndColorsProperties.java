@@ -65,7 +65,7 @@ public class InspectedFontAndColorsProperties extends InspectedProperties<FIBCom
 
 	@Override
 	public List<FIBComponent> getSelection() {
-		return Collections.singletonList(getController().getSelectedObject());
+		return Collections.singletonList(getController().getSelectedObject().getComponent());
 	}
 
 	@Override
