@@ -43,7 +43,11 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import org.openflexo.connie.BindingFactory;
+import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.DefaultBindable;
+import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -71,6 +75,8 @@ public interface FIBDiscreteSimpleFunctionGraph extends FIBSimpleFunctionGraph {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String VALUES_KEY = "values";
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String LABELS_KEY = "labels";
 
 	@Getter(VALUES_KEY)
 	@XMLAttribute
@@ -79,10 +85,27 @@ public interface FIBDiscreteSimpleFunctionGraph extends FIBSimpleFunctionGraph {
 	@Setter(VALUES_KEY)
 	public void setValues(DataBinding<List<?>> values);
 
+	@Getter(LABELS_KEY)
+	@XMLAttribute
+	public DataBinding<String> getLabels();
+
+	@Setter(LABELS_KEY)
+	public void setLabels(DataBinding<String> label);
+
 	public static abstract class FIBDiscreteSimpleFunctionGraphImpl extends FIBSimpleFunctionGraphImpl
 			implements FIBDiscreteSimpleFunctionGraph {
 
 		private DataBinding<List<?>> values = null;
+		private DataBinding<String> labels = null;
+		private ParameterExpressionDelegate parameterExpressionDelegate;
+
+		public FIBDiscreteSimpleFunctionGraphImpl() {
+			parameterExpressionDelegate = new ParameterExpressionDelegate();
+		}
+
+		public ParameterExpressionDelegate getParameterExpressionDelegate() {
+			return parameterExpressionDelegate;
+		}
 
 		@Override
 		public DataBinding<List<?>> getValues() {
@@ -106,6 +129,27 @@ public interface FIBDiscreteSimpleFunctionGraph extends FIBSimpleFunctionGraph {
 		}
 
 		@Override
+		public DataBinding<String> getLabels() {
+			if (labels == null) {
+				labels = new DataBinding<String>(parameterExpressionDelegate, String.class, DataBinding.BindingDefinitionType.GET);
+				labels.setBindingName(LABELS_KEY);
+			}
+			return labels;
+		}
+
+		@Override
+		public void setLabels(DataBinding<String> labels) {
+			if (labels != null) {
+				labels.setOwner(parameterExpressionDelegate);
+				labels.setDeclaredType(String.class);
+				labels.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				labels.setBindingName(LABELS_KEY);
+			}
+			this.labels = labels;
+			getPropertyChangeSupport().firePropertyChange(LABELS_KEY, null, labels);
+		}
+
+		@Override
 		public Type getParameterType() {
 			if (getValues() != null && getValues().isSet() && getValues().isValid()) {
 				Type accessedType = getValues().getAnalyzedType();
@@ -126,5 +170,31 @@ public interface FIBDiscreteSimpleFunctionGraph extends FIBSimpleFunctionGraph {
 				}
 			}
 		}
+
+		private class ParameterExpressionDelegate extends DefaultBindable {
+			@Override
+			public BindingModel getBindingModel() {
+				return getGraphBindingModel();
+			}
+
+			public FIBComponent getComponent() {
+				return FIBDiscreteSimpleFunctionGraphImpl.this;
+			}
+
+			@Override
+			public BindingFactory getBindingFactory() {
+				return getComponent().getBindingFactory();
+			}
+
+			@Override
+			public void notifiedBindingChanged(DataBinding<?> dataBinding) {
+			}
+
+			@Override
+			public void notifiedBindingDecoded(DataBinding<?> dataBinding) {
+			}
+
+		}
+
 	}
 }

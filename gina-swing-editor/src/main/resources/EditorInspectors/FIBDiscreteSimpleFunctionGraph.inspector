@@ -15,6 +15,15 @@
 				constraints="twocols(expandHorizontally=true;location=right)">
 				<Assignment variable="component.bindable" value="data" />
 			</Custom>
+
+			<Label name="LabelsLabel" label="labels" index="8"
+				constraints="twocols(location=left)" localize="true" />
+			<Custom name="LabelsBinding" index="9"
+				componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				localize="true" manageDynamicModel="true" data="data.labels"
+				constraints="twocols(expandHorizontally=true;location=right)">
+				<Assignment variable="component.bindable" value="data.parameterExpressionDelegate" />
+			</Custom>
 		</Tab>
 
 	</TabPanel>

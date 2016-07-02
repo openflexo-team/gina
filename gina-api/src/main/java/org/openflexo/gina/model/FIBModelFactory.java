@@ -276,6 +276,11 @@ public class FIBModelFactory extends ModelFactory {
 
 	public FIBNumericFunction newFIBNumericFunction(FIBGraph graph) {
 		FIBNumericFunction returned = newInstance(FIBNumericFunction.class);
+		returned.setMinValue(new DataBinding<Double>(FIBNumericFunction.DEFAULT_MIN_VALUE.toString()));
+		returned.setMaxValue(new DataBinding<Double>(FIBNumericFunction.DEFAULT_MAX_VALUE.toString()));
+		returned.setMajorTickSpacing(new DataBinding<Double>(FIBNumericFunction.DEFAULT_MAJOR_TICK_SPACING.toString()));
+		returned.setMinorTickSpacing(new DataBinding<Double>(FIBNumericFunction.DEFAULT_MINOR_TICK_SPACING.toString()));
+		returned.setStepsNumber(new DataBinding<Integer>(FIBNumericFunction.DEFAULT_STEPS_NUMBER.toString()));
 		graph.addToFunctions(returned);
 		return returned;
 	}
