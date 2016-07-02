@@ -57,6 +57,7 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 
 /**
@@ -67,11 +68,25 @@ import org.openflexo.model.annotations.XMLElement;
  */
 @ModelEntity(isAbstract = true)
 @ImplementationClass(FIBGraph.FIBGraphImpl.class)
-@Imports({ @Import(FIBContinuousSimpleFunctionGraph.class) })
+@Imports({ @Import(FIBContinuousSimpleFunctionGraph.class), @Import(FIBDiscreteSimpleFunctionGraph.class) })
 public interface FIBGraph extends FIBWidget {
+
+	public static final int DEFAULT_BORDER_TOP = 10;
+	public static final int DEFAULT_BORDER_BOTTOM = 10;
+	public static final int DEFAULT_BORDER_RIGHT = 10;
+	public static final int DEFAULT_BORDER_LEFT = 10;
 
 	@PropertyIdentifier(type = List.class)
 	public static final String FUNCTIONS_KEY = "functions";
+
+	@PropertyIdentifier(type = Integer.class)
+	public static final String BORDER_TOP_KEY = "borderTop";
+	@PropertyIdentifier(type = Integer.class)
+	public static final String BORDER_BOTTOM_KEY = "borderBottom";
+	@PropertyIdentifier(type = Integer.class)
+	public static final String BORDER_LEFT_KEY = "borderLeft";
+	@PropertyIdentifier(type = Integer.class)
+	public static final String BORDER_RIGHT_KEY = "borderRight";
 
 	@Getter(value = FUNCTIONS_KEY, cardinality = Cardinality.LIST, inverse = FIBGraphFunction.OWNER_KEY)
 	@XMLElement
@@ -87,6 +102,34 @@ public interface FIBGraph extends FIBWidget {
 
 	@Remover(FUNCTIONS_KEY)
 	public void removeFromFunctions(FIBGraphFunction aFunction);
+
+	@Getter(value = BORDER_TOP_KEY, defaultValue = "" + DEFAULT_BORDER_TOP)
+	@XMLAttribute
+	public int getBorderTop();
+
+	@Setter(value = BORDER_TOP_KEY)
+	public void setBorderTop(int top);
+
+	@Getter(value = BORDER_BOTTOM_KEY, defaultValue = "" + DEFAULT_BORDER_BOTTOM)
+	@XMLAttribute
+	public int getBorderBottom();
+
+	@Setter(value = BORDER_BOTTOM_KEY)
+	public void setBorderBottom(int bottom);
+
+	@Getter(value = BORDER_LEFT_KEY, defaultValue = "" + DEFAULT_BORDER_LEFT)
+	@XMLAttribute
+	public int getBorderLeft();
+
+	@Setter(value = BORDER_LEFT_KEY)
+	public void setBorderLeft(int left);
+
+	@Getter(value = BORDER_RIGHT_KEY, defaultValue = "" + DEFAULT_BORDER_RIGHT)
+	@XMLAttribute
+	public int getBorderRight();
+
+	@Setter(value = BORDER_RIGHT_KEY)
+	public void setBorderRight(int right);
 
 	public BindingModel getGraphBindingModel();
 

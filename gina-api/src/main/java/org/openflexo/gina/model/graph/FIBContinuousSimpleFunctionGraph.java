@@ -53,7 +53,7 @@ import org.openflexo.model.annotations.XMLElement;
 /**
  * Represents a 2D-base graph [y=f(x) or x=f(y)] representing functions where:
  * <ul>
- * <li>a coordinate is iterated over continuous or discrete values</li>
+ * <li>a coordinate is iterated over continuous values</li>
  * <li>a coordinates is based on an expression using opposite coordinate (iterated value, which can be discrete or continuous)</li><br>
  * </ul>
  * 
@@ -83,6 +83,16 @@ public interface FIBContinuousSimpleFunctionGraph extends FIBSimpleFunctionGraph
 	public static final String MAJOR_TICK_SPACING_KEY = "majorTickSpacing";
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String STEPS_NUMBER_KEY = "stepsNumber";
+	@PropertyIdentifier(type = Boolean.class)
+	public static final String DISPLAY_MAJOR_TICKS_KEY = "displayMajorTicks";
+	@PropertyIdentifier(type = Boolean.class)
+	public static final String DISPLAY_MINOR_TICKS_KEY = "displayMinorTicks";
+	@PropertyIdentifier(type = Boolean.class)
+	public static final String DISPLAY_REFERENCE_MARKS_KEY = "displayReferenceMarks";
+	@PropertyIdentifier(type = Boolean.class)
+	public static final String DISPLAY_LABELS_KEY = "displayLabels";
+	@PropertyIdentifier(type = Boolean.class)
+	public static final String DISPLAY_GRID_KEY = "displayGrid";
 
 	@Getter(MIN_VALUE_KEY)
 	@XMLAttribute
@@ -118,6 +128,41 @@ public interface FIBContinuousSimpleFunctionGraph extends FIBSimpleFunctionGraph
 
 	@Setter(STEPS_NUMBER_KEY)
 	public void setStepsNumber(DataBinding<Integer> stepsNumber);
+
+	@Getter(value = DISPLAY_MAJOR_TICKS_KEY, defaultValue = "true")
+	@XMLAttribute
+	public boolean getDisplayMajorTicks();
+
+	@Setter(DISPLAY_MAJOR_TICKS_KEY)
+	public void setDisplayMajorTicks(boolean displayMajorTicks);
+
+	@Getter(value = DISPLAY_MINOR_TICKS_KEY, defaultValue = "false")
+	@XMLAttribute
+	public boolean getDisplayMinorTicks();
+
+	@Setter(DISPLAY_MINOR_TICKS_KEY)
+	public void setDisplayMinorTicks(boolean displayMinorTicks);
+
+	@Getter(value = DISPLAY_REFERENCE_MARKS_KEY, defaultValue = "true")
+	@XMLAttribute
+	public boolean getDisplayReferenceMarks();
+
+	@Setter(DISPLAY_REFERENCE_MARKS_KEY)
+	public void setDisplayReferenceMarks(boolean displayReferenceMarks);
+
+	@Getter(value = DISPLAY_LABELS_KEY, defaultValue = "true")
+	@XMLAttribute
+	public boolean getDisplayLabels();
+
+	@Setter(DISPLAY_LABELS_KEY)
+	public void setDisplayLabels(boolean displayLabels);
+
+	@Getter(value = DISPLAY_GRID_KEY, defaultValue = "false")
+	@XMLAttribute
+	public boolean getDisplayGrid();
+
+	@Setter(DISPLAY_GRID_KEY)
+	public void setDisplayGrid(boolean displayGrid);
 
 	public static abstract class FIBContinuousSimpleFunctionGraphImpl extends FIBSimpleFunctionGraphImpl
 			implements FIBContinuousSimpleFunctionGraph {

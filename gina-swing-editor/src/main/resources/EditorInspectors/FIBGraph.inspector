@@ -1,14 +1,38 @@
-<Inspector 
-	   name="Inspector" 
-	   layout="border" 
-	   dataClassName="org.openflexo.gina.model.graph.FIBGraph">
-	<Parameter name="title" value="Graph"/>
+<Inspector name="Inspector" layout="border"
+	dataClassName="org.openflexo.gina.model.graph.FIBGraph">
+	<Parameter name="title" value="Graph" />
 
-		<TabPanel name="Tab" constraints="border(location=center)">
+	<TabPanel name="Tab" constraints="border(location=center)">
 
-			<Tab name="BasicTab" title="Basic" index="0" layout="twocols" font="SansSerif,0,11" >
-			</Tab>
-						
-		</TabPanel>
+		<Tab name="BasicTab" title="Basic" index="0" layout="twocols"
+			font="SansSerif,0,11">
+		</Tab>
+
+		<Tab title="Graphics" layout="twocols" titleFont="SansSerif,0,11"
+			darkLevel="0" index="4" font="SansSerif,0,11" useScrollBar="true"
+			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="GraphicsTab">
+			<Label name="BorderLabel" label="borders"
+				constraints="twocols(location=left;insetsTop=15)" localize="true" />
+			<Panel layout="flow" hGap="0" vGap="0" flowAlignment="LEADING"
+				titleFont="SansSerif,0,11" border="rounded3d"
+				constraints="twocols(expandHorizontally=true;location=right;insetsTop=10;insetsRight=10)"
+				borderTop="2" borderBottom="2" borderRight="2" darkLevel="1" >
+				<Label label="top" constraints="flow()" localize="true" />
+				<Number numberType="IntegerType" columns="2" data="data.borderTop"
+					constraints="flow()" localize="true" />
+				<Label label="left" constraints="flow()" localize="true" />
+				<Number numberType="IntegerType" columns="2" data="data.borderLeft"
+					constraints="flow()" localize="true" />
+				<Label label="bottom" constraints="flow()" localize="true" />
+				<Number numberType="IntegerType" columns="2" data="data.borderBottom"
+					constraints="flow()" localize="true" />
+				<Label label="right" constraints="flow()" localize="true" />
+				<Number numberType="IntegerType" columns="2" data="data.borderRight"
+					constraints="flow()" localize="true" />
+			</Panel>
+		</Tab>
+
+	</TabPanel>
 
 </Inspector>

@@ -73,7 +73,7 @@ public interface FIBSingleParameteredGraph extends FIBGraph {
 	public static abstract class FIBSingleParameteredGraphImpl extends FIBGraphImpl implements FIBSingleParameteredGraph {
 
 		private BindingModel graphBindingModel;
-		private BindingVariable parameterBindingVariable;
+		protected BindingVariable parameterBindingVariable;
 
 		@Override
 		public BindingModel getGraphBindingModel() {

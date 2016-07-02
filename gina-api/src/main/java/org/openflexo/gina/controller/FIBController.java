@@ -931,4 +931,42 @@ public class FIBController
 		return TypeUtils.objectForClass(aClass, fibPanelsForClasses);
 	}
 
+	private SampleData sampleData;
+
+	public SampleData getSampleData() {
+		if (sampleData == null) {
+			sampleData = new SampleData();
+		}
+		return sampleData;
+	}
+
+	public static class SampleData {
+		public List<Person> persons;
+		public Person martin, mary, john, martinJr1, martinJr2, martinJr3, martinJr4;
+
+		public SampleData() {
+			persons = new ArrayList<Person>();
+			persons.add(martin = new Person("Martin", 173, 73.7));
+			persons.add(mary = new Person("Mary", 165, 57.0));
+			persons.add(john = new Person("John", 107, 26.3));
+			persons.add(martinJr1 = new Person("Martin Jr 1", 97, 19.2));
+			persons.add(martinJr2 = new Person("Martin Jr 2", 95, 18.7));
+			persons.add(martinJr3 = new Person("Martin Jr 3", 74, 10.2));
+			persons.add(martinJr4 = new Person("Martin Jr 4", 57, 5.2));
+		}
+
+		public static class Person {
+			public String name;
+			public int size;
+			public double weight;
+
+			public Person(String name, int size, double weight) {
+				super();
+				this.name = name;
+				this.size = size;
+				this.weight = weight;
+			}
+		}
+	}
+
 }
