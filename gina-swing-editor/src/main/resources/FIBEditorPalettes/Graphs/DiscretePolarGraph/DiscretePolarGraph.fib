@@ -1,0 +1,16 @@
+
+<FIBDiscretePolarFunctionGraph id="1"
+	values="controller.sampleData.persons" height="100" name="Graph" width="100"
+	labels="person.name" constraints="border(location=center)"
+	parameterName="person">
+	<FIBNumericFunction id="2" majorTickSpacing="20.0"
+		expression="person.size" backgroundColor2="255,255,255"
+		backgroundColor1="51,51,255" minValue="0.0" backgroundType="COLORED"
+		stepsNumber="100" minorTickSpacing="5.0" graphType="BAR_GRAPH"
+		foregroundColor="0,0,255" maxValue="200.0" />
+	<FIBNumericFunction id="3" majorTickSpacing="20.0"
+		expression="person.weight" backgroundColor2="255,255,255"
+		backgroundColor1="255,255,0" minValue="0.0" backgroundType="COLORED"
+		stepsNumber="100" minorTickSpacing="5.0" graphType="BAR_GRAPH"
+		foregroundColor="255,204,0" maxValue="100.0" />
+</FIBDiscretePolarFunctionGraph>

@@ -51,13 +51,13 @@ import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 
 /**
- * Represents a 2D-base graph [y=f(x) or x=f(y)] representing functions where:
+ * Represents a 2D-base polar graph [r=f(A)] representing functions where:
  * <ul>
- * <li>a coordinate is iterated over continuous values</li>
- * <li>a coordinates is based on an expression using opposite coordinate (iterated value, which can be discrete or continuous)</li><br>
+ * <li>angle is iterated over continuous values, expressed as radian angles between -2*PI and 2*PI</li>
+ * <li>radius is based on an expression using angle (iterated value, which is here continuous)</li><br>
  * </ul>
  * 
- * Such graphs allows only one parameter which is the abciss or the ordinate
+ * Such graphs allows only one parameter which is angle of the polar graph
  * 
  * @author sylvain
  * 
