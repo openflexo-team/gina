@@ -37,6 +37,7 @@ afterLastLine=AfterLastLine
 afterLineEnds=AfterLineEnds
 align=Align
 anchor=Anchor
+angle_tick_spacing=Angle tick spacing
 apply=Apply
 arithmetic=Arithmetic
 assignments=Assignments
