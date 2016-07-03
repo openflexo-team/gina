@@ -155,7 +155,16 @@ public interface FIBGraphFunction extends FIBModelObject {
 		@Override
 		public String getPresentationName() {
 			if (getExpression() != null && getExpression().isSet() && getExpression().isValid()) {
-				return "y = " + getExpression().toString();
+				if (getOwner() instanceof FIBSimpleFunctionGraph) {
+					return "y = " + getExpression().toString();
+				}
+				else if (getOwner() instanceof FIBPolarFunctionGraph) {
+					return "r = " + getExpression().toString();
+				}
+				else {
+					return getExpression().toString();
+				}
+
 			}
 			return super.getPresentationName();
 		}

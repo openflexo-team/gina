@@ -68,7 +68,8 @@ import org.openflexo.model.annotations.XMLElement;
  */
 @ModelEntity(isAbstract = true)
 @ImplementationClass(FIBGraph.FIBGraphImpl.class)
-@Imports({ @Import(FIBContinuousSimpleFunctionGraph.class), @Import(FIBDiscreteSimpleFunctionGraph.class) })
+@Imports({ @Import(FIBContinuousSimpleFunctionGraph.class), @Import(FIBDiscreteSimpleFunctionGraph.class),
+		@Import(FIBContinuousPolarFunctionGraph.class) })
 public interface FIBGraph extends FIBWidget {
 
 	public static final int DEFAULT_BORDER_TOP = 10;

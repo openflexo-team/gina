@@ -1,0 +1,10 @@
+
+<FIBContinuousPolarFunctionGraph id="1"
+	height="100" width="100" constraints="border(location=center)"
+	parameterName="a" stepsNumber="100" name="Graph" angleTickSpacing="0.1">
+	<FIBNumericFunction id="2" majorTickSpacing="20.0"
+		expression="a" backgroundColor2="255,255,255" backgroundColor1="0,204,255"
+		minValue="0.0" backgroundType="COLORED" stepsNumber="100"
+		minorTickSpacing="5.0" graphType="CURVE" foregroundColor="0,0,255"
+		maxValue="6" />
+</FIBContinuousPolarFunctionGraph>
