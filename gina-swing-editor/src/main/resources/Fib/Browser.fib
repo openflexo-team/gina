@@ -22,8 +22,6 @@
 				method="controller.createNumericFunction(selected)" />
 			<BrowserAddAction name="add_discrete_function"
 				method="controller.createDiscreteFunction(selected)" />
-			<BrowserRemoveAction name="remove_function"
-				method="controller.deleteFunction(selected)" />
 		</BrowserElement>
 		<BrowserElement id="3" icon="controller.iconFor(container)"
 			filtered="false" label="container.presentationName" defaultVisible="true"
@@ -34,11 +32,18 @@
 		<BrowserElement id="2" icon="controller.iconFor(element)"
 			filtered="false" label="element.presentationName" defaultVisible="true"
 			dataClassName="org.openflexo.gina.model.FIBComponent" name="element"
-			isEditable="true" editableLabel="element.name"/>
+			isEditable="true" editableLabel="element.name" />
+		<BrowserElement icon="controller.iconFor(element)"
+			filtered="false" label="element.presentationName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.model.graph.FIBGraphFunction" name="element"
+			isEditable="true" editableLabel="element.name">
+			<BrowserRemoveAction name="remove_function"
+				method="controller.deleteFunction(selected)" />
+		</BrowserElement>
 		<BrowserElement icon="controller.iconFor(element)"
 			filtered="false" label="element.presentationName" defaultVisible="true"
 			dataClassName="org.openflexo.gina.model.FIBModelObject" name="element"
-			isEditable="true" editableLabel="element.name"/>
+			isEditable="true" editableLabel="element.name" />
 	</Browser>
 	<Panel id="5" darkLevel="0" vGap="5" useScrollBar="false"
 		protectContent="false" hGap="5" layout="border" border="empty"

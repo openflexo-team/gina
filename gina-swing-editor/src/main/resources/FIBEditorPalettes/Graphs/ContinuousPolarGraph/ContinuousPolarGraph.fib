@@ -6,5 +6,5 @@
 		expression="a" backgroundColor2="255,255,255" backgroundColor1="0,204,255"
 		minValue="0.0" backgroundType="COLORED" stepsNumber="100"
 		minorTickSpacing="5.0" graphType="CURVE" foregroundColor="0,0,255"
-		maxValue="6" />
+		maxValue="360" />
 </FIBContinuousPolarFunctionGraph>

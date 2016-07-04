@@ -22,7 +22,16 @@
 				componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 				localize="true" manageDynamicModel="true" data="data.labels"
 				constraints="twocols(expandHorizontally=true;location=right)">
-				<Assignment variable="component.bindable" value="data.parameterExpressionDelegate" />
+				<!--  <Assignment variable="component.bindable" value="data.parameterExpressionDelegate" /> -->
+			</Custom>
+
+			<Label name="AngleExtentLabel" label="angle_extent" index="10"
+				constraints="twocols(location=left)" localize="true" />
+			<Custom name="AngleExtentBinding" index="11"
+				componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				localize="true" manageDynamicModel="true" data="data.angleExtent"
+				constraints="twocols(expandHorizontally=true;location=right)">
+				<!--  <Assignment variable="component.bindable" value="data.parameterExpressionDelegate" />-->
 			</Custom>
 		</Tab>
 

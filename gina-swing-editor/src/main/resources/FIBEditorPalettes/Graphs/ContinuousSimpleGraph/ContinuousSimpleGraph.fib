@@ -1,4 +1,3 @@
-<FIBContinuousSimpleFunctionGraph
-	parameterName="x" width="100" height="100" minValue="0.0" maxValue="100.0"
-	stepsNumber="100" majorTickSpacing="20.0" minorTickSpacing="5.0">
-</FIBContinuousSimpleFunctionGraph>
+  <FIBContinuousSimpleFunctionGraph id="1" minValue="-100.0" minorTickSpacing="5.0" height="100" majorTickSpacing="20.0" parameterOrientation="HORIZONTAL" width="100" constraints="border(location=center)" parameterName="x" stepsNumber="100" name="Graph" maxValue="100.0">
+    <FIBNumericFunction id="2" expression="((x * x) / 100)" backgroundColor2="255,255,255" backgroundColor1="0,204,255" backgroundType="COLORED" graphType="CURVE" foregroundColor="0,0,255" />
+  </FIBContinuousSimpleFunctionGraph>

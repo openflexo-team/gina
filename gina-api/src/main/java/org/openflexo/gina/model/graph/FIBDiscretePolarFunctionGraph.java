@@ -59,7 +59,7 @@ import org.openflexo.model.annotations.XMLElement;
 /**
  * Represents a 2D-base polar graph [r=f(A)] representing functions where:
  * <ul>
- * <li>angle is iterated over discrete values, expressed as radian angles between -2*PI and 2*PI</li>
+ * <li>angle is iterated over discrete values, expressed as radian angles between 0 and 360 degrees</li>
  * <li>radius is based on an expression using angle (iterated value, which is here discrete)</li><br>
  * </ul>
  * 
@@ -77,6 +77,8 @@ public interface FIBDiscretePolarFunctionGraph extends FIBPolarFunctionGraph {
 	public static final String VALUES_KEY = "values";
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String LABELS_KEY = "labels";
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String ANGLE_EXTENT_KEY = "angleExtent";
 
 	@Getter(VALUES_KEY)
 	@XMLAttribute
@@ -92,11 +94,19 @@ public interface FIBDiscretePolarFunctionGraph extends FIBPolarFunctionGraph {
 	@Setter(LABELS_KEY)
 	public void setLabels(DataBinding<String> label);
 
+	@Getter(ANGLE_EXTENT_KEY)
+	@XMLAttribute
+	public DataBinding<Double> getAngleExtent();
+
+	@Setter(ANGLE_EXTENT_KEY)
+	public void setAngleExtent(DataBinding<Double> angleExtent);
+
 	public static abstract class FIBDiscretePolarFunctionGraphImpl extends FIBPolarFunctionGraphImpl
 			implements FIBDiscretePolarFunctionGraph {
 
 		private DataBinding<List<?>> values = null;
 		private DataBinding<String> labels = null;
+		private DataBinding<Double> angleExtent = null;
 		private ParameterExpressionDelegate parameterExpressionDelegate;
 
 		public FIBDiscretePolarFunctionGraphImpl() {
@@ -126,6 +136,27 @@ public interface FIBDiscretePolarFunctionGraph extends FIBPolarFunctionGraph {
 			}
 			this.values = values;
 			getPropertyChangeSupport().firePropertyChange(VALUES_KEY, null, values);
+		}
+
+		@Override
+		public DataBinding<Double> getAngleExtent() {
+			if (angleExtent == null) {
+				angleExtent = new DataBinding<Double>(parameterExpressionDelegate, Double.class, DataBinding.BindingDefinitionType.GET);
+				angleExtent.setBindingName(ANGLE_EXTENT_KEY);
+			}
+			return angleExtent;
+		}
+
+		@Override
+		public void setAngleExtent(DataBinding<Double> angleExtent) {
+			if (angleExtent != null) {
+				angleExtent.setOwner(parameterExpressionDelegate);
+				angleExtent.setDeclaredType(Double.class);
+				angleExtent.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				angleExtent.setBindingName(ANGLE_EXTENT_KEY);
+			}
+			this.angleExtent = angleExtent;
+			getPropertyChangeSupport().firePropertyChange(ANGLE_EXTENT_KEY, null, angleExtent);
 		}
 
 		@Override

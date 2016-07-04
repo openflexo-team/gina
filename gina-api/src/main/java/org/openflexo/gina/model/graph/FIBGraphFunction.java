@@ -63,7 +63,7 @@ import org.openflexo.model.annotations.XMLAttribute;
 public interface FIBGraphFunction extends FIBModelObject {
 
 	public static enum GraphType {
-		POINTS, POLYLIN, RECT_POLYLIN, CURVE, BAR_GRAPH, COLORED_STEPS
+		POINTS, POLYLIN, RECT_POLYLIN, CURVE, BAR_GRAPH, COLORED_STEPS, SECTORS
 	}
 
 	public static enum FunctionBackgroundType {

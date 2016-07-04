@@ -45,7 +45,7 @@ import org.openflexo.model.annotations.ModelEntity;
 /**
  * Represents a 2D-base polar graph [r=f(A)] representing functions where:
  * <ul>
- * <li>angle is iterated over continuous or discrete values, expressed as radian angles between -2*PI and 2*PI</li>
+ * <li>angle is iterated over continuous or discrete values, expressed as radian angles between 0 and 360 degrees</li>
  * <li>radius is based on an expression using angle (iterated value, which can be discrete or continuous)</li><br>
  * </ul>
  * 
