@@ -631,7 +631,7 @@ public abstract interface FIBContainer extends FIBComponent {
 			// deserializationPerformed = false;
 
 			finalizeDeserialization();
-			for (FIBComponent c : getSubComponents()) {
+			for (FIBComponent c : new ArrayList<>(getSubComponents())) {
 				recursivelyFinalizeDeserialization(c);
 			}
 
