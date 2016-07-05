@@ -59,6 +59,7 @@ import org.openflexo.connie.binding.BindingValueChangeListener;
 import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.connie.expr.BindingValue;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.event.GinaEvent.KIND;
@@ -212,9 +213,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
-					// System.out.println(" bindingValueChanged() detected for data="
-					// + getComponent().getData() + " with newValue="
-					// + newValue + " source=" + source);
+					//System.out.println(" **** bindingValueChanged() detected for data=" + getComponent().getData() + " with newValue="
+					//			+ newValue + " source=" + source);
 
 					updateData();
 				}
@@ -560,6 +560,13 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		}
 		else {
 			try {
+				/*System.out.println("On tente un set " + getWidget().getData() + " avec " + aValue);
+				System.out.println("valid=" + getWidget().getData().isValid());
+				System.out.println("reason=" + getWidget().getData().invalidBindingReason());
+				if (getWidget().getData().isBindingValue()) {
+					System.out.println(
+							"Hop: " + ((BindingValue) getWidget().getData().getExpression()).getLastBindingPathElement().getClass());
+				}*/
 				getWidget().getData().setBindingValue(aValue, getBindingEvaluationContext());
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
