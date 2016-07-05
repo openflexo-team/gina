@@ -16,14 +16,14 @@
       <Custom componentClassName="org.openflexo.gina.swing.utils.ClassSelector" localize="true" manageDynamicModel="true" data="data.iteratorClass" constraints="twocols(expandHorizontally=true;location=right)" />
     </Tab>
     <Tab title="Advanced" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="1" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab">
-      <CheckBox selected="false" data="data.autoSelectFirstRow" constraints="twocols(location=left)" localize="true" />
-      <Label label="select_first_row" constraints="twocols(location=right)" localize="true" />
-      <CheckBox selected="false" data="data.showText" constraints="twocols(location=left)" localize="true" />
-      <Label label="show_text" constraints="twocols(expandHorizontally=true;location=right)" localize="true" />
-      <CheckBox selected="false" data="data.showIcon" constraints="twocols(location=left)" localize="true" />
-      <Label label="show_icon" constraints="twocols(expandHorizontally=true;location=right)" localize="true" />
-      <Label label="icon" constraints="twocols(location=left)" visible="data.showIcon" localize="true" />
-      <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.icon" constraints="twocols(expandHorizontally=true;location=right)" visible="data.showIcon">
+      <CheckBox index="6" selected="false" data="data.autoSelectFirstRow" constraints="twocols(location=left)" localize="true" />
+      <Label index="7" label="select_first_row" constraints="twocols(location=right)" localize="true" />
+      <CheckBox index="8" selected="false" data="data.showText" constraints="twocols(location=left)" localize="true" />
+      <Label index="9" label="show_text" constraints="twocols(expandHorizontally=true;location=right)" localize="true" />
+      <CheckBox index="10" selected="false" data="data.showIcon" constraints="twocols(location=left)" localize="true" />
+      <Label index="11" label="show_icon" constraints="twocols(expandHorizontally=true;location=right)" localize="true" />
+      <Label index="12" label="icon" constraints="twocols(location=left)" visible="data.showIcon" localize="true" />
+      <Custom index="13" componentClassName="org.openflexo.gina.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="data.icon" constraints="twocols(expandHorizontally=true;location=right)" visible="data.showIcon">
         <Assignment variable="component.bindable" value="data.formatter" />
       </Custom>
     </Tab>
