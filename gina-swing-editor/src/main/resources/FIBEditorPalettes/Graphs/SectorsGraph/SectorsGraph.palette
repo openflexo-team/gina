@@ -1,0 +1,4 @@
+<Image imageFile="SectorsGraph.png">
+	<Parameter name="x" value="230"/>
+	<Parameter name="y" value="80"/>
+</Image>

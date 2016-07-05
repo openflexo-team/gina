@@ -45,9 +45,14 @@ import javax.swing.ImageIcon;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBSplitPanel;
 import org.openflexo.gina.model.container.FIBTabPanel;
+import org.openflexo.gina.model.graph.FIBDiscreteFunction;
+import org.openflexo.gina.model.graph.FIBGraph;
+import org.openflexo.gina.model.graph.FIBGraphFunction;
+import org.openflexo.gina.model.graph.FIBNumericFunction;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBButton;
 import org.openflexo.gina.model.widget.FIBCheckBox;
@@ -101,7 +106,7 @@ public class FIBBrowserController extends FIBController /*implements Observer*/ 
 
 	public FIBComponent getSelectedComponent() {
 		if (editorController != null) {
-			return editorController.getSelectedObject();
+			return editorController.getSelectedObject().getComponent();
 		}
 		return null;
 	}
@@ -117,60 +122,66 @@ public class FIBBrowserController extends FIBController /*implements Observer*/ 
 		}
 	}
 
-	public ImageIcon iconFor(FIBComponent component) {
-		if (component == null) {
+	public ImageIcon iconFor(FIBModelObject element) {
+		if (element == null) {
 			return null;
 		}
-		if (component.isRootComponent()) {
+		if (element instanceof FIBComponent && ((FIBComponent) element).isRootComponent()) {
 			return FIBEditorIconLibrary.ROOT_COMPONENT_ICON;
 		}
-		else if (component instanceof FIBTabPanel) {
+		else if (element instanceof FIBTabPanel) {
 			return FIBEditorIconLibrary.TABS_ICON;
 		}
-		else if (component instanceof FIBPanel) {
+		else if (element instanceof FIBPanel) {
 			return FIBEditorIconLibrary.PANEL_ICON;
 		}
-		else if (component instanceof FIBSplitPanel) {
+		else if (element instanceof FIBSplitPanel) {
 			return FIBEditorIconLibrary.SPLIT_PANEL_ICON;
 		}
-		else if (component instanceof FIBCheckBox) {
+		else if (element instanceof FIBCheckBox) {
 			return FIBEditorIconLibrary.CHECKBOX_ICON;
 		}
-		else if (component instanceof FIBLabel) {
+		else if (element instanceof FIBLabel) {
 			return FIBEditorIconLibrary.LABEL_ICON;
 		}
-		else if (component instanceof FIBTable) {
+		else if (element instanceof FIBTable) {
 			return FIBEditorIconLibrary.TABLE_ICON;
 		}
-		else if (component instanceof FIBBrowser) {
+		else if (element instanceof FIBBrowser) {
 			return FIBEditorIconLibrary.TREE_ICON;
 		}
-		else if (component instanceof FIBTextArea) {
+		else if (element instanceof FIBTextArea) {
 			return FIBEditorIconLibrary.TEXTAREA_ICON;
 		}
-		else if (component instanceof FIBTextField) {
+		else if (element instanceof FIBTextField) {
 			return FIBEditorIconLibrary.TEXTFIELD_ICON;
 		}
-		else if (component instanceof FIBImage) {
+		else if (element instanceof FIBImage) {
 			return FIBEditorIconLibrary.IMAGE_ICON;
 		}
-		else if (component instanceof FIBNumber) {
+		else if (element instanceof FIBNumber) {
 			return FIBEditorIconLibrary.NUMBER_ICON;
 		}
-		else if (component instanceof FIBDropDown) {
+		else if (element instanceof FIBDropDown) {
 			return FIBEditorIconLibrary.DROPDOWN_ICON;
 		}
-		else if (component instanceof FIBRadioButtonList) {
+		else if (element instanceof FIBRadioButtonList) {
 			return FIBEditorIconLibrary.RADIOBUTTON_ICON;
 		}
-		else if (component instanceof FIBButton) {
+		else if (element instanceof FIBButton) {
 			return FIBEditorIconLibrary.BUTTON_ICON;
 		}
-		else if (component instanceof FIBCustom) {
+		else if (element instanceof FIBCustom) {
 			return FIBEditorIconLibrary.CUSTOM_ICON;
 		}
-		else if (component instanceof FIBReferencedComponent) {
+		else if (element instanceof FIBReferencedComponent) {
 			return FIBEditorIconLibrary.REFERENCE_COMPONENT_ICON;
+		}
+		else if (element instanceof FIBGraph) {
+			return FIBEditorIconLibrary.GRAPH_ICON;
+		}
+		else if (element instanceof FIBGraphFunction) {
+			return FIBEditorIconLibrary.GRAPH_FUNCTION_ICON;
 		}
 		return null;
 
@@ -207,4 +218,19 @@ public class FIBBrowserController extends FIBController /*implements Observer*/ 
 		System.out.println("Searching " + getSearchedLabel());
 	}
 
+	public FIBNumericFunction createNumericFunction(FIBGraph graph) {
+		return editorController.getFactory().newFIBNumericFunction(graph);
+	}
+
+	public FIBDiscreteFunction createDiscreteFunction(FIBGraph graph) {
+		return editorController.getFactory().newFIBDiscreteFunction(graph);
+	}
+
+	public FIBGraphFunction deleteFunction(FIBGraphFunction function) {
+		if (function.getOwner() != null) {
+			function.getOwner().removeFromFunctions(function);
+			function.delete();
+		}
+		return function;
+	}
 }

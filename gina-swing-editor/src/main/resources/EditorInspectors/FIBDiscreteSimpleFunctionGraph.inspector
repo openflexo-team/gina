@@ -1,0 +1,31 @@
+<Inspector name="Inspector" layout="border"
+	dataClassName="org.openflexo.gina.model.graph.FIBDiscreteSimpleFunctionGraph">
+	<Parameter name="title" value="Discrete function graph" />
+
+	<TabPanel name="Tab" constraints="border(location=center)">
+
+		<Tab name="BasicTab" title="Basic" index="0" layout="twocols"
+			font="SansSerif,0,11">
+
+			<Label name="ValuesLabel" label="values" index="6"
+				constraints="twocols(location=left)" localize="true" />
+			<Custom name="ValuesBinding" index="7"
+				componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				localize="true" manageDynamicModel="true" data="data.values"
+				constraints="twocols(expandHorizontally=true;location=right)">
+				<Assignment variable="component.bindable" value="data" />
+			</Custom>
+
+			<Label name="LabelsLabel" label="labels" index="8"
+				constraints="twocols(location=left)" localize="true" />
+			<Custom name="LabelsBinding" index="9"
+				componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				localize="true" manageDynamicModel="true" data="data.labels"
+				constraints="twocols(expandHorizontally=true;location=right)">
+				<Assignment variable="component.bindable" value="data.parameterExpressionDelegate" />
+			</Custom>
+		</Tab>
+
+	</TabPanel>
+
+</Inspector>

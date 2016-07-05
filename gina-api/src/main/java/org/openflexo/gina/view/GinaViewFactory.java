@@ -54,9 +54,24 @@ public interface GinaViewFactory<C> {
 
 	public boolean allowsFIBEdition();
 
+	/**
+	 * Build and return a new view (instance of {@link FIBContainerView}) for supplied {@link FIBContainer} and controller
+	 * 
+	 * @param fibContainer
+	 * @param controller
+	 * @param updateNow
+	 * @return
+	 */
 	public <F extends FIBContainer> FIBContainerView<F, ? extends C, ? extends C> makeContainer(F fibContainer, FIBController controller,
 			boolean updateNow);
 
+	/**
+	 * Build and return a new view (instance of {@link FIBWidgetView}) for supplied {@link FIBWidget} and controller
+	 * 
+	 * @param fibWidget
+	 * @param controller
+	 * @return
+	 */
 	public <F extends FIBWidget> FIBWidgetView<F, ? extends C, ?> makeWidget(F fibWidget, FIBController controller);
 
 	public void show(FIBController controller);

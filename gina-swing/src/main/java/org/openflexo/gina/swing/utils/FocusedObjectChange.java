@@ -39,12 +39,12 @@
 
 package org.openflexo.gina.swing.utils;
 
-import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.FIBModelObject;
 
-public class FocusedObjectChange extends FIBEditorNotification<FIBComponent> {
+public class FocusedObjectChange extends FIBEditorNotification<FIBModelObject> {
 	public static final String FOCUS = "focus";
 
-	public FocusedObjectChange(FIBComponent oldValue, FIBComponent newValue) {
+	public FocusedObjectChange(FIBModelObject oldValue, FIBModelObject newValue) {
 		super(FOCUS, oldValue, newValue);
 	}
 

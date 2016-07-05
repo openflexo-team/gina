@@ -67,7 +67,7 @@ import org.openflexo.gina.view.widget.impl.FIBImageWidgetImpl;
  * 
  * @author sylvain
  */
-public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel> implements ImageObserver, JFIBView<FIBImage, JLabel> {
+public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel>implements ImageObserver, JFIBView<FIBImage, JLabel> {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBImageWidget.class.getPackage().getName());
 
@@ -77,7 +77,7 @@ public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel> implements Image
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingImageRenderingAdapter extends SwingRenderingAdapter<JLabel> implements ImageRenderingAdapter<JLabel> {
+	public static class SwingImageRenderingAdapter extends SwingRenderingAdapter<JLabel>implements ImageRenderingAdapter<JLabel> {
 
 		@Override
 		public Image getImage(JLabel component, FIBImageWidget<JLabel> widget) {
@@ -198,9 +198,9 @@ public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel> implements Image
 		});
 
 		labelWidget.setFocusable(false); // There is not much point in giving
-											// focus to a label since there is
-											// no KeyBindings nor KeyListener
-											// on it.
+		// focus to a label since there is
+		// no KeyBindings nor KeyListener
+		// on it.
 		if (getWidget().getData().isValid()) {
 			labelWidget.setText(" ");
 		}
@@ -216,60 +216,67 @@ public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel> implements Image
 		if (getWidget() == null) {
 			return null;
 		}
-		int currentWidth = getRenderingAdapter().getWidth(getTechnologyComponent());
-		int currentHeight = getRenderingAdapter().getHeight(getTechnologyComponent());
-		switch (getWidget().getSizeAdjustment()) {
-		case OriginalSize:
-			return new ImageIcon(image);
-		case FitToAvailableSize:
-			return new ImageIcon(image.getScaledInstance(currentWidth, currentHeight, Image.SCALE_SMOOTH));
-		case FitToAvailableSizeRespectRatio:
-			int imageWidth = image.getWidth(this);
-			int imageHeight = image.getHeight(this);
-			if (imageWidth <= 0 || imageHeight <= 0) {
-				synchronized (this) {
-					LOGGER.fine("Image is not ready, waiting...");
-					computeImageLater = true;
-					return null;
-				}
-			}
-			// This is just looking for troubles because it makes a loop in
-			// layout
-			//
-			if ((currentWidth == 0 || currentHeight == 0) && !imageIsAsynchronouslyBuilding) {
-				imageIsAsynchronouslyBuilding = true;
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						update();
-						imageIsAsynchronouslyBuilding = false;
-					}
-				});
-				// return new ImageIcon(image);
-				// In this case, image is not ready yet
-				return null;
-			}
-			double widthRatio = (double) currentWidth / imageWidth;
-			double heightRatio = (double) currentHeight / imageHeight;
-			double ratio = widthRatio < heightRatio ? widthRatio : heightRatio;
-			int newWidth = (int) (imageWidth * ratio);
-			int newHeight = (int) (imageHeight * ratio);
-			if (newWidth <= 0) {
-				newWidth = 1;
-			}
-			if (newHeight <= 0) {
-				newHeight = 1;
-			}
-			return new ImageIcon(image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH));
-		case AdjustDimensions:
-			return new ImageIcon(image.getScaledInstance(getWidget().getImageWidth(), getWidget().getImageHeight(), Image.SCALE_SMOOTH));
-		case AdjustWidth:
-			return new ImageIcon(image.getScaledInstance(getWidget().getImageWidth(), -1, Image.SCALE_SMOOTH));
-		case AdjustHeight:
-			return new ImageIcon(image.getScaledInstance(-1, getWidget().getImageHeight(), Image.SCALE_SMOOTH));
-		default:
+		if (getWidget().isDeleted()) {
 			return null;
 		}
+		int currentWidth = getRenderingAdapter().getWidth(getTechnologyComponent());
+		int currentHeight = getRenderingAdapter().getHeight(getTechnologyComponent());
+		if (getWidget().getSizeAdjustment() != null) {
+			switch (getWidget().getSizeAdjustment()) {
+				case OriginalSize:
+					return new ImageIcon(image);
+				case FitToAvailableSize:
+					return new ImageIcon(image.getScaledInstance(currentWidth, currentHeight, Image.SCALE_SMOOTH));
+				case FitToAvailableSizeRespectRatio:
+					int imageWidth = image.getWidth(this);
+					int imageHeight = image.getHeight(this);
+					if (imageWidth <= 0 || imageHeight <= 0) {
+						synchronized (this) {
+							LOGGER.fine("Image is not ready, waiting...");
+							computeImageLater = true;
+							return null;
+						}
+					}
+					// This is just looking for troubles because it makes a loop in
+					// layout
+					//
+					if ((currentWidth == 0 || currentHeight == 0) && !imageIsAsynchronouslyBuilding) {
+						imageIsAsynchronouslyBuilding = true;
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								update();
+								imageIsAsynchronouslyBuilding = false;
+							}
+						});
+						// return new ImageIcon(image);
+						// In this case, image is not ready yet
+						return null;
+					}
+					double widthRatio = (double) currentWidth / imageWidth;
+					double heightRatio = (double) currentHeight / imageHeight;
+					double ratio = widthRatio < heightRatio ? widthRatio : heightRatio;
+					int newWidth = (int) (imageWidth * ratio);
+					int newHeight = (int) (imageHeight * ratio);
+					if (newWidth <= 0) {
+						newWidth = 1;
+					}
+					if (newHeight <= 0) {
+						newHeight = 1;
+					}
+					return new ImageIcon(image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH));
+				case AdjustDimensions:
+					return new ImageIcon(
+							image.getScaledInstance(getWidget().getImageWidth(), getWidget().getImageHeight(), Image.SCALE_SMOOTH));
+				case AdjustWidth:
+					return new ImageIcon(image.getScaledInstance(getWidget().getImageWidth(), -1, Image.SCALE_SMOOTH));
+				case AdjustHeight:
+					return new ImageIcon(image.getScaledInstance(-1, getWidget().getImageHeight(), Image.SCALE_SMOOTH));
+				default:
+					return null;
+			}
+		}
+		return null;
 	}
 
 	private boolean computeImageLater = false;

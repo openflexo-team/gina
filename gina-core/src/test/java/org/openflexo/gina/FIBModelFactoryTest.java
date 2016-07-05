@@ -38,31 +38,40 @@
 
 package org.openflexo.gina;
 
-import static org.junit.Assert.fail;
-
 import java.util.logging.Logger;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openflexo.gina.model.FIBModelFactory;
 import org.openflexo.logging.FlexoLogger;
+import org.openflexo.model.exceptions.MissingImplementationException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.test.OrderedRunner;
+import org.openflexo.test.TestOrder;
 
 /**
  * Test instanciation of FIBModelFactory<br>
  * TODO: instanciate all widgets
  * 
  */
+@RunWith(OrderedRunner.class)
 public class FIBModelFactoryTest {
 
+	@SuppressWarnings("unused")
 	private static final Logger LOGGER = FlexoLogger.getLogger(FIBModelFactoryTest.class.getPackage().getName());
 
+	private static FIBModelFactory factory;
+
 	@Test
-	public void testInstanciateFIBModelFactory() {
-		try {
-			FIBModelFactory factory = new FIBModelFactory();
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-			fail();
-		}
+	@TestOrder(1)
+	public void instanciateFIBModelFactory() throws ModelDefinitionException {
+		factory = new FIBModelFactory();
 	}
+
+	@Test
+	@TestOrder(2)
+	public void checkMethodImplementations() throws ModelDefinitionException, MissingImplementationException {
+		factory.checkMethodImplementations();
+	}
+
 }

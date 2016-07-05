@@ -260,10 +260,10 @@ public class LaunchAdvancedFIBEditor {
 		left.setWeight(0.2);
 		left.setName(LayoutColumns.LEFT.name());
 		Node center = MSL_FACTORY.makeLeaf(LayoutPosition.CENTER.name());
-		center.setWeight(0.6);
+		center.setWeight(0.55);
 		center.setName(LayoutColumns.CENTER.name());
 		Split right = getVerticalSplit(LayoutPosition.TOP_RIGHT, 0.4, LayoutPosition.BOTTOM_RIGHT, 0.6);
-		right.setWeight(0.2);
+		right.setWeight(0.25);
 		right.setName(LayoutColumns.RIGHT.name());
 		root.setChildren(left, MSL_FACTORY.makeDivider(), center, MSL_FACTORY.makeDivider(), right);
 		return root;
