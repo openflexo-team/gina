@@ -276,8 +276,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 						System.out.println(" bindingValueChanged() detected for data=" + variable.getValue() + " with newValue=" + newValue
 								+ " source=" + source);
 					}*/
-					//System.out.println(" !!!!!!!!!!!!!!!  bindingValueChanged() detected for data=" + variable.getValue()
-					//		+ " with newValue=" + newValue + " source=" + source);
+					// System.out.println(" !!!!!!!!!!!!!!! bindingValueChanged() detected for data=" + variable.getValue()
+					// + " with newValue=" + newValue + " source=" + source);
 					setVariableValue(variable, newValue);
 				}
 			};
@@ -348,14 +348,20 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 		T oldValue = (T) variables.get(variable);
 
-		//System.out.println("On change la valeur de " + variable.getName() + " de " + oldValue + " a " + value);
+		// System.out.println("On change la valeur de " + variable.getName() + " de " + oldValue + " a " + value);
 
 		if (notEquals(oldValue, value)) {
 			variables.put(variable, value);
 			getPropertyChangeSupport().firePropertyChange(variable.getName(), oldValue, value);
 			// getController().getPropertyChangeSupport().firePropertyChange(variable.getName(), oldValue, value);
 			// TODO: we have to duplicate the call here, please refactor !!!
-			getController().setVariableValue(variable.getName(), value);
+			try {
+				getController().setVariableValue(variable.getName(), value);
+			} catch (Exception e) {
+				LOGGER.warning("Unexpected exception " + e);
+				LOGGER.warning("Please investigate");
+				Thread.dumpStack();
+			}
 		}
 	}
 
