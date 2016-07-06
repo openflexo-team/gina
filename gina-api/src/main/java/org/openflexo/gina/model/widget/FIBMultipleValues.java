@@ -251,13 +251,13 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 
 		@Override
 		public void revalidateBindings() {
-			super.revalidateBindings();
 			if (list != null) {
 				list.revalidate();
 			}
 			if (array != null) {
 				array.revalidate();
 			}
+			super.revalidateBindings();
 		}
 
 		@Override
