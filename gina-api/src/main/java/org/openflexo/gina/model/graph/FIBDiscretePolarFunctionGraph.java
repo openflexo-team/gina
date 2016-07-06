@@ -113,6 +113,23 @@ public interface FIBDiscretePolarFunctionGraph extends FIBPolarFunctionGraph {
 			parameterExpressionDelegate = new ParameterExpressionDelegate();
 		}
 
+		@Override
+		public void revalidateBindings() {
+			if (values != null) {
+				values.revalidate();
+				if (parameterBindingVariable != null) {
+					parameterBindingVariable.setType(getParameterType());
+				}
+			}
+			if (labels != null) {
+				labels.revalidate();
+			}
+			if (angleExtent != null) {
+				angleExtent.revalidate();
+			}
+			super.revalidateBindings();
+		}
+
 		public ParameterExpressionDelegate getParameterExpressionDelegate() {
 			return parameterExpressionDelegate;
 		}

@@ -63,7 +63,7 @@ import org.openflexo.model.annotations.XMLElement;
  * 
  */
 @ModelEntity
-@ImplementationClass(FIBContinuousPolarFunctionGraph.FIBContinuousSimpleFunctionGraphImpl.class)
+@ImplementationClass(FIBContinuousPolarFunctionGraph.FIBContinuousPolarFunctionGraphImpl.class)
 @XMLElement
 public interface FIBContinuousPolarFunctionGraph extends FIBPolarFunctionGraph {
 
@@ -125,11 +125,22 @@ public interface FIBContinuousPolarFunctionGraph extends FIBPolarFunctionGraph {
 	@Setter(DISPLAY_GRID_KEY)
 	public void setDisplayGrid(boolean displayGrid);
 
-	public static abstract class FIBContinuousSimpleFunctionGraphImpl extends FIBPolarFunctionGraphImpl
+	public static abstract class FIBContinuousPolarFunctionGraphImpl extends FIBPolarFunctionGraphImpl
 			implements FIBContinuousPolarFunctionGraph {
 
 		private DataBinding<Double> angleTickSpacing = null;
 		private DataBinding<Integer> stepsNumber = null;
+
+		@Override
+		public void revalidateBindings() {
+			super.revalidateBindings();
+			if (angleTickSpacing != null) {
+				angleTickSpacing.revalidate();
+			}
+			if (stepsNumber != null) {
+				stepsNumber.revalidate();
+			}
+		}
 
 		@Override
 		public DataBinding<Double> getAngleTickSpacing() {

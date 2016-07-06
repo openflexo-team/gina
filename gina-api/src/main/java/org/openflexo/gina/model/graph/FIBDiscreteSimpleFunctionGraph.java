@@ -103,6 +103,17 @@ public interface FIBDiscreteSimpleFunctionGraph extends FIBSimpleFunctionGraph {
 			parameterExpressionDelegate = new ParameterExpressionDelegate();
 		}
 
+		@Override
+		public void revalidateBindings() {
+			super.revalidateBindings();
+			if (values != null) {
+				values.revalidate();
+			}
+			if (labels != null) {
+				labels.revalidate();
+			}
+		}
+
 		public ParameterExpressionDelegate getParameterExpressionDelegate() {
 			return parameterExpressionDelegate;
 		}
