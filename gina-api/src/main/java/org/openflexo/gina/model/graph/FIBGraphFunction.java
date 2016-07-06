@@ -143,6 +143,8 @@ public interface FIBGraphFunction extends FIBModelObject {
 
 	public Type getType();
 
+	public void revalidateBindings();
+
 	public static abstract class FIBGraphFunctionImpl extends FIBModelObjectImpl implements FIBGraphFunction {
 
 		private DataBinding<?> expression;
@@ -254,5 +256,13 @@ public interface FIBGraphFunction extends FIBModelObject {
 			}
 			return returned;
 		}
+
+		@Override
+		public void revalidateBindings() {
+			if (expression != null) {
+				expression.revalidate();
+			}
+		}
+
 	}
 }

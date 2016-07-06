@@ -143,6 +143,26 @@ public interface FIBNumericFunction extends FIBGraphFunction {
 		private DataBinding<Integer> stepsNumber = null;
 
 		@Override
+		public void revalidateBindings() {
+			super.revalidateBindings();
+			if (minValue != null) {
+				minValue.revalidate();
+			}
+			if (maxValue != null) {
+				maxValue.revalidate();
+			}
+			if (minorTickSpacing != null) {
+				minorTickSpacing.revalidate();
+			}
+			if (majorTickSpacing != null) {
+				majorTickSpacing.revalidate();
+			}
+			if (stepsNumber != null) {
+				stepsNumber.revalidate();
+			}
+		}
+
+		@Override
 		public Type getType() {
 			if (getExpression() != null && getExpression().isSet() && getExpression().isValid()) {
 				return getExpression().getAnalyzedType();

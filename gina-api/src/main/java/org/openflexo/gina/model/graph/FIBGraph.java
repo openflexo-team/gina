@@ -146,5 +146,12 @@ public interface FIBGraph extends FIBWidget {
 			return Object.class;
 		}
 
+		@Override
+		public void revalidateBindings() {
+			super.revalidateBindings();
+			for (FIBGraphFunction function : getFunctions()) {
+				function.revalidateBindings();
+			}
+		}
 	}
 }
