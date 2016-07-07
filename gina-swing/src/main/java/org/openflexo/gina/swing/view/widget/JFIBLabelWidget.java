@@ -42,12 +42,15 @@ package org.openflexo.gina.swing.view.widget;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
@@ -62,7 +65,7 @@ import org.openflexo.gina.view.widget.impl.FIBLabelWidgetImpl;
  * 
  * @author sylvain
  */
-public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel> implements JFIBView<FIBLabel, JLabelPanel> {
+public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel>implements JFIBView<FIBLabel, JLabelPanel> {
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(JFIBLabelWidget.class.getPackage().getName());
 
@@ -73,8 +76,9 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel> implements 
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingLabelRenderingAdapter extends SwingRenderingAdapter<JLabelPanel>
-			implements LabelRenderingAdapter<JLabelPanel> {
+	public static class SwingLabelRenderingAdapter extends SwingRenderingAdapter<JLabelPanel>implements LabelRenderingAdapter<JLabelPanel> {
+
+		private boolean isLayouted = false;
 
 		@Override
 		public String getText(JLabelPanel component) {
@@ -82,8 +86,43 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel> implements 
 		}
 
 		@Override
-		public void setText(JLabelPanel component, String aText) {
-			component.getLabel().setText(aText);
+		public void setText(final JLabelPanel component, final String aText) {
+
+			if (component.getWidget().getWidget().getTrimText()) {
+				isLayouted = false;
+				if (component.getSize().width > 0) {
+					trimTextTo(aText, component, component.getSize().width);
+					isLayouted = true;
+				}
+				else {
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							if (!isLayouted && component.getWidget().getWidget().getTrimText()) {
+								trimTextTo(aText, component, component.getSize().width);
+								isLayouted = true;
+							}
+						}
+					});
+				}
+			}
+			else {
+				component.getLabel().setText(aText);
+			}
+
+		}
+
+		private void trimTextTo(String labelText, JLabelPanel component, int width) {
+			FontMetrics fm = component.getFontMetrics(component.getWidget().getFont());
+			List<String> lines = trimString(labelText, width, fm);
+			StringBuffer htmlText = new StringBuffer();
+			htmlText.append("<html>");
+			for (int j = 0; j < lines.size(); j++) {
+				String line = lines.get(j);
+				htmlText.append(line + (j == lines.size() - 1 ? "" : "<br>"));
+			}
+			htmlText.append("</html>");
+			component.getLabel().setText(htmlText.toString());
 		}
 
 		@Override
@@ -118,7 +157,7 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel> implements 
 		}
 	}
 
-	public static SwingLabelRenderingAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingLabelRenderingAdapter();
+	// public static SwingLabelRenderingAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingLabelRenderingAdapter();
 
 	public JFIBLabelWidget(FIBLabel model, FIBController controller) {
 		super(model, controller, new SwingLabelRenderingAdapter() /*RENDERING_TECHNOLOGY_ADAPTER*/);
