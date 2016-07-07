@@ -41,10 +41,12 @@ package org.openflexo.gina.view.widget.impl;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.beans.PropertyChangeEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
@@ -221,13 +223,13 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 			array = null;
 
 			if (getWidget() != null && getWidget().getList() != null && getWidget().getList().isValid() /*
-																										 * &&
-																										 * getDataObject
-																										 * (
-																										 * )
-																										 * !=
-																										 * null
-																										 */) {
+																										* &&
+																										* getDataObject
+																										* (
+																										* )
+																										* !=
+																										* null
+																										*/) {
 
 				Object accessedList = null;
 				try {
@@ -246,13 +248,13 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 			}
 
 			else if (getWidget() != null && getWidget().getArray() != null && getWidget().getArray().isValid() /*
-																												 * &&
-																												 * getDataObject
-																												 * (
-																												 * )
-																												 * !=
-																												 * null
-																												 */) {
+																												* &&
+																												* getDataObject
+																												* (
+																												* )
+																												* !=
+																												* null
+																												*/) {
 
 				Object accessedArray = null;
 				try {
@@ -642,6 +644,43 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 
 		}
 		super.propertyChange(evt);
+	}
+
+	protected static List<String> trimString(String s, int width, FontMetrics fm) {
+		if (width <= 0) {
+			return Collections.singletonList(s);
+		}
+		List<String> returned = new ArrayList<>();
+		String current = s;
+		while (fm.stringWidth(current) > width) {
+			int cutIndex = indexOfFirstCharExceeding(current, width, fm);
+			returned.add(current.substring(0, cutIndex));
+			// Remove first blank char when any
+			current = current.substring(cutIndex + (current.charAt(cutIndex) == ' ' ? 1 : 0));
+		}
+		returned.add(current);
+		return returned;
+	}
+
+	protected static int indexOfFirstCharExceeding(String s, int width, FontMetrics fm) {
+		int i = 0;
+		if (width > 0) {
+			while (fm.stringWidth(s.substring(0, i)) < width) {
+				i++;
+			}
+			// Now find the right place to "cut" the text, goes backward to find a char matching space, comma, ';' or dot
+			boolean found = false;
+			while (!found && i > 0) {
+				char c = s.charAt(i);
+				if (c == ' ' || c == ',' || c == ';' || c == '.' || c == '?' || c == '!') {
+					found = true;
+				}
+				else {
+					i--;
+				}
+			}
+		}
+		return i;
 	}
 
 }

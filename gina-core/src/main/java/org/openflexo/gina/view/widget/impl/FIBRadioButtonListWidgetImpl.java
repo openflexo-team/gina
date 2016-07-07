@@ -97,7 +97,7 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 
 		if (newValue == null && getWidget().getAutoSelectFirstRow() && getMultipleValueModel().getSize() > 0) {
 
-			//System.out.println("Selecting first value of " + getWidget().getName() + " : " + getMultipleValueModel().getElementAt(0));
+			// System.out.println("Selecting first value of " + getWidget().getName() + " : " + getMultipleValueModel().getElementAt(0));
 
 			newValue = getMultipleValueModel().getElementAt(0);
 			setValue(newValue);
@@ -136,6 +136,7 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 				LOGGER.fine("updateModelFromWidget with " + getSelectedValue());
 			}
 			if (getSelectedValue() != null && !isUpdating()) {
+				System.out.println("On selectionne " + getSelectedValue());
 				setValue(getSelectedValue());
 			}
 			modelUpdating = false;
@@ -154,10 +155,7 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if ((evt.getPropertyName().equals(FIBWidget.FORMAT_KEY)) || (evt.getPropertyName().equals(FIBWidget.LOCALIZE_KEY))
-				|| (evt.getPropertyName().equals(FIBRadioButtonList.COLUMNS_KEY))
-				|| (evt.getPropertyName().equals(FIBRadioButtonList.H_GAP_KEY))
-				|| (evt.getPropertyName().equals(FIBRadioButtonList.V_GAP_KEY))) {
+		if ((evt.getPropertyName().equals(FIBWidget.FORMAT_KEY)) || (evt.getPropertyName().equals(FIBWidget.LOCALIZE_KEY))) {
 			updateRadioButtonListLayout();
 		}
 		super.propertyChange(evt);
