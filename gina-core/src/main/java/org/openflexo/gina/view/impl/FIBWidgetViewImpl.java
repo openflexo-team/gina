@@ -41,12 +41,16 @@ package org.openflexo.gina.view.impl;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.event.FocusEvent;
 import java.awt.event.InputEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -59,7 +63,6 @@ import org.openflexo.connie.binding.BindingValueChangeListener;
 import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.connie.expr.BindingValue;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.event.GinaEvent.KIND;
@@ -213,8 +216,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
-					//System.out.println(" **** bindingValueChanged() detected for data=" + getComponent().getData() + " with newValue="
-					//			+ newValue + " source=" + source);
+					// System.out.println(" **** bindingValueChanged() detected for data=" + getComponent().getData() + " with newValue="
+					// + newValue + " source=" + source);
 
 					updateData();
 				}
@@ -1065,5 +1068,45 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 	private boolean invokeLaterScheduled = false;
 	private long lastSchedule = -1;
+
+	protected static List<String> trimString(String s, int width, FontMetrics fm) {
+		if (width <= 0) {
+			return Collections.singletonList(s);
+		}
+		List<String> returned = new ArrayList<>();
+		String current = s;
+		while (fm.stringWidth(current) > width) {
+			int cutIndex = indexOfFirstCharExceeding(current, width, fm);
+			returned.add(current.substring(0, cutIndex));
+			// Remove first blank char when any
+			int desiredCut = cutIndex + (cutIndex < current.length() && current.charAt(cutIndex) == ' ' ? 1 : 0);
+			if (desiredCut > 0 && desiredCut < current.length()) {
+				current = current.substring(desiredCut);
+			}
+		}
+		returned.add(current);
+		return returned;
+	}
+
+	protected static int indexOfFirstCharExceeding(String s, int width, FontMetrics fm) {
+		int i = 0;
+		if (width > 0) {
+			while (fm.stringWidth(s.substring(0, i)) < width) {
+				i++;
+			}
+			// Now find the right place to "cut" the text, goes backward to find a char matching space, comma, ';' or dot
+			boolean found = false;
+			while (!found && i > 0 && i < s.length()) {
+				char c = s.charAt(i);
+				if (c == ' ' || c == ',' || c == ';' || c == '.' || c == '?' || c == '!') {
+					found = true;
+				}
+				else {
+					i--;
+				}
+			}
+		}
+		return i;
+	}
 
 }

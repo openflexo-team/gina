@@ -221,13 +221,13 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 			array = null;
 
 			if (getWidget() != null && getWidget().getList() != null && getWidget().getList().isValid() /*
-																										 * &&
-																										 * getDataObject
-																										 * (
-																										 * )
-																										 * !=
-																										 * null
-																										 */) {
+																										* &&
+																										* getDataObject
+																										* (
+																										* )
+																										* !=
+																										* null
+																										*/) {
 
 				Object accessedList = null;
 				try {
@@ -246,13 +246,13 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 			}
 
 			else if (getWidget() != null && getWidget().getArray() != null && getWidget().getArray().isValid() /*
-																												 * &&
-																												 * getDataObject
-																												 * (
-																												 * )
-																												 * !=
-																												 * null
-																												 */) {
+																												* &&
+																												* getDataObject
+																												* (
+																												* )
+																												* !=
+																												* null
+																												*/) {
 
 				Object accessedArray = null;
 				try {

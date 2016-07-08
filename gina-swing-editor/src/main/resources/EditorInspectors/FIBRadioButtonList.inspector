@@ -7,18 +7,11 @@
 			darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
 			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
-			<Label index="0" label="columns" constraints="twocols(location=left)"
+			<CheckBox name="TrimTextCB" index="0" selected="false"
+				data="data.trimText" constraints="twocols(location=left)" localize="true" />
+			<Label name="TrimTextLabel" index="1" label="trim_text"
+				constraints="twocols(expandHorizontally=true;location=right)"
 				localize="true" />
-			<Number index="1" numberType="IntegerType" data="data.columns"
-				constraints="twocols(location=right)" localize="true" />
-			<Label index="2" label="h_gap" constraints="twocols(location=left)"
-				localize="true" />
-			<Number index="3" numberType="IntegerType" data="data.HGap"
-				constraints="twocols(location=right)" localize="true" />
-			<Label index="4" label="v_gap" constraints="twocols(location=left)"
-				localize="true" />
-			<Number index="5" numberType="IntegerType" data="data.VGap"
-				constraints="twocols(location=right)" localize="true" />
 		</Tab>
 	</TabPanel>
 	<Parameter name="title" value="RadioButtons" />

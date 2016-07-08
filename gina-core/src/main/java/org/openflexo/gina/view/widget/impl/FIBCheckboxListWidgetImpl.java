@@ -176,9 +176,7 @@ public abstract class FIBCheckboxListWidgetImpl<C, T> extends FIBMultipleValueWi
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if ((evt.getPropertyName().equals(FIBWidget.FORMAT_KEY)) || (evt.getPropertyName().equals(FIBWidget.LOCALIZE_KEY))
-				|| (evt.getPropertyName().equals(FIBCheckboxList.COLUMNS_KEY)) || (evt.getPropertyName().equals(FIBCheckboxList.H_GAP_KEY))
-				|| (evt.getPropertyName().equals(FIBCheckboxList.V_GAP_KEY)) || (evt.getPropertyName().equals(FIBWidget.ICON_KEY))
-				|| (evt.getPropertyName().equals(FIBMultipleValues.SHOW_ICON_KEY))
+				|| (evt.getPropertyName().equals(FIBWidget.ICON_KEY)) || (evt.getPropertyName().equals(FIBMultipleValues.SHOW_ICON_KEY))
 				|| (evt.getPropertyName().equals(FIBMultipleValues.SHOW_TEXT_KEY))) {
 			updateCheckboxListLayout();
 		}

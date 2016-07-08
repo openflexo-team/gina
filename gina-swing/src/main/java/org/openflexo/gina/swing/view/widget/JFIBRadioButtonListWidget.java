@@ -39,21 +39,23 @@
 
 package org.openflexo.gina.swing.view.widget;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.FontMetrics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.logging.Logger;
 
-import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
@@ -149,46 +151,107 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 		private T selectedValue;
 		private ButtonGroup buttonGroup;
 		private JRadioButton[] radioButtonArray;
+		private JLabel[] labelsArray;
 		private final JFIBRadioButtonListWidget<T> widget;
 
 		public JRadioButtonPanel(JFIBRadioButtonListWidget<T> widget) {
-			super(new GridLayout(0, widget.getWidget().getColumns(), widget.getWidget().getHGap(), widget.getWidget().getVGap()));
+			super(new GridBagLayout());
 			setOpaque(false);
 			this.widget = widget;
 			rebuildRadioButtons();
 		}
 
+		private boolean isLayouted = false;
+
 		public void update() {
 			removeAll();
-			((GridLayout) getLayout()).setColumns(widget.getWidget().getColumns());
-			((GridLayout) getLayout()).setHgap(widget.getWidget().getHGap());
-			((GridLayout) getLayout()).setVgap(widget.getWidget().getVGap());
-			// TODO: remove listeners !!!
 			rebuildRadioButtons();
 		}
 
-		private void rebuildRadioButtons() {
-			buttonGroup = new ButtonGroup();
-			radioButtonArray = new JRadioButton[widget.getMultipleValueModel().getSize()];
+		private void resizeWidthTo(int width) {
+			FontMetrics fm = getFontMetrics(getFont());
 			for (int i = 0; i < widget.getMultipleValueModel().getSize(); i++) {
 				T object = widget.getMultipleValueModel().getElementAt(i);
-				JRadioButton rb = new JRadioButton(widget.getStringRepresentation(object), FIBViewImpl.equals(object, selectedValue));
+				String labelText = widget.getStringRepresentation(object);
+				if (labelText != null) {
+					List<String> lines = trimString(labelText, width, fm);
+					StringBuffer htmlText = new StringBuffer();
+					htmlText.append("<html>");
+					for (int j = 0; j < lines.size(); j++) {
+						String line = lines.get(j);
+						htmlText.append(line + (j == lines.size() - 1 ? "" : "<br>"));
+					}
+					htmlText.append("</html>");
+					labelsArray[i].setText(htmlText.toString());
+				}
+			}
+			revalidate();
+			repaint();
+		}
+
+		/*@Override
+		public void setPreferredSize(Dimension preferredSize) {
+			System.out.println("Tiens on me donne une preferredSize: " + preferredSize);
+			super.setPreferredSize(preferredSize);
+		}*/
+
+		@Override
+		public void revalidate() {
+			System.out.println("Revalidate with " + getSize());
+			super.revalidate();
+		}
+
+		private void rebuildRadioButtons() {
+
+			isLayouted = false;
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					if (!isLayouted && JRadioButtonPanel.this.widget.getWidget().getTrimText()) {
+						isLayouted = true;
+						resizeWidthTo(getSize().width - 50);
+					}
+				}
+			});
+
+			buttonGroup = new ButtonGroup();
+
+			radioButtonArray = new JRadioButton[widget.getMultipleValueModel().getSize()];
+			labelsArray = new JLabel[widget.getMultipleValueModel().getSize()];
+
+			for (int i = 0; i < widget.getMultipleValueModel().getSize(); i++) {
+				T object = widget.getMultipleValueModel().getElementAt(i);
+				JRadioButton rb = new JRadioButton(widget.getWidget().getTrimText() ? "" : widget.getStringRepresentation(object),
+						FIBViewImpl.equals(object, selectedValue));
+				rb.setVerticalAlignment(JCheckBox.TOP);
 				rb.setOpaque(false);
 				rb.addActionListener(new RadioButtonListener(rb, object, i));
 				radioButtonArray[i] = rb;
+
+				GridBagConstraints c = new GridBagConstraints();
+				c.insets = new Insets(0, 0, 0, 0);
+				c.fill = GridBagConstraints.NONE;
+				c.weightx = 0; // 1.0;
+				c.gridwidth = 1;
+				c.anchor = GridBagConstraints.NORTHEAST;
+				add(rb, c);
+
+				JLabel label = new JLabel();
+				labelsArray[i] = label;
+
 				// Handle the case of icon should be displayed
 				if (widget.getWidget().getShowIcon() && widget.getWidget().getIcon().isSet() && widget.getWidget().getIcon().isValid()) {
-					rb.setHorizontalAlignment(JCheckBox.LEFT);
-					rb.setText(null);
-					final JLabel label = new JLabel(widget.getStringRepresentation(object), widget.getIconRepresentation(object),
-							JLabel.LEADING);
-					Dimension ps = rb.getPreferredSize();
-					rb.setLayout(new BorderLayout());
-					label.setLabelFor(rb);
-					label.setBorder(BorderFactory.createEmptyBorder(0, ps.width, 0, 0));
-					rb.add(label);
+					label.setIcon(widget.getIconRepresentation(object));
 				}
-				add(rb);
+
+				c.insets = new Insets(2, 5, 5, 5);
+				c.fill = GridBagConstraints.BOTH;
+				c.anchor = GridBagConstraints.CENTER;
+				c.weightx = 1.0; // 2.0;
+				c.gridwidth = GridBagConstraints.REMAINDER;
+
+				add(label, c);
+
 				buttonGroup.add(rb);
 				if (object.equals(widget.getValue())) {
 					rb.setSelected(true);
@@ -205,7 +268,9 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 
 		public void setSelectedValue(T selectedValue) {
 			if (selectedValue != null) {
+				// System.out.println("on doit reselectionner " + selectedValue);
 				int newSelectedIndex = widget.getMultipleValueModel().indexOf(selectedValue);
+				// System.out.println("newSelectedIndex=" + newSelectedIndex);
 				if (newSelectedIndex >= 0 && newSelectedIndex < widget.getMultipleValueModel().getSize()) {
 					radioButtonArray[newSelectedIndex].doClick();
 				}

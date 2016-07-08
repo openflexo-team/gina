@@ -39,11 +39,12 @@
 
 package org.openflexo.gina.swing.view.widget;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.FontMetrics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -51,11 +52,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
@@ -139,11 +140,13 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 		private List<T> selectedValues;
 
 		public JCheckBoxListPanel(JFIBCheckboxListWidget<T> widget) {
-			super(new GridLayout(0, widget.getWidget().getColumns(), widget.getWidget().getHGap(), widget.getWidget().getVGap()));
+			super(new GridBagLayout());
 			setOpaque(false);
 			this.widget = widget;
 			rebuildCheckboxes();
 		}
+
+		private boolean isLayouted = false;
 
 		public List<T> getSelectedValues() {
 			return selectedValues;
@@ -167,35 +170,81 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 
 		public void update() {
 			removeAll();
-			((GridLayout) getLayout()).setColumns(widget.getWidget().getColumns());
-			((GridLayout) getLayout()).setHgap(widget.getWidget().getHGap());
-			((GridLayout) getLayout()).setVgap(widget.getWidget().getVGap());
 			// TODO: remove listeners !!!
 			rebuildCheckboxes();
 		}
 
+		private void resizeWidthTo(int width) {
+			FontMetrics fm = getFontMetrics(getFont());
+			for (int i = 0; i < widget.getMultipleValueModel().getSize(); i++) {
+				T object = widget.getMultipleValueModel().getElementAt(i);
+				String labelText = widget.getStringRepresentation(object);
+				if (labelText != null) {
+					List<String> lines = trimString(labelText, width, fm);
+					StringBuffer htmlText = new StringBuffer();
+					htmlText.append("<html>");
+					for (int j = 0; j < lines.size(); j++) {
+						String line = lines.get(j);
+						htmlText.append(line + (j == lines.size() - 1 ? "" : "<br>"));
+					}
+					htmlText.append("</html>");
+					labelsArray[i].setText(htmlText.toString());
+				}
+			}
+			revalidate();
+			repaint();
+		}
+
 		final protected void rebuildCheckboxes() {
+
+			isLayouted = false;
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					if (!isLayouted && JCheckBoxListPanel.this.widget.getWidget().getTrimText()) {
+						isLayouted = true;
+						resizeWidthTo(getSize().width - 50);
+					}
+				}
+			});
+
 			checkboxesArray = new JCheckBox[widget.getMultipleValueModel().getSize()];
 			labelsArray = new JLabel[widget.getMultipleValueModel().getSize()];
 
 			for (int i = 0; i < widget.getMultipleValueModel().getSize(); i++) {
 				T object = widget.getMultipleValueModel().getElementAt(i);
-				String text = widget.getStringRepresentation(object);
-				JCheckBox cb = new JCheckBox(text, containsObject(object));
+				// We create checkboxes without text
+				// Text will be assigned to checkboxes during the first ComponentResize event (see constructor)
+				JCheckBox cb = new JCheckBox(widget.getWidget().getTrimText() ? "" : widget.getStringRepresentation(object),
+						containsObject(object));
 				cb.setOpaque(false);
 				cb.addActionListener(new CheckboxListener(cb, object, i));
 				checkboxesArray[i] = cb;
+
+				GridBagConstraints c = new GridBagConstraints();
+				c.insets = new Insets(0, 0, 0, 0);
+				c.fill = GridBagConstraints.NONE;
+				c.weightx = 0; // 1.0;
+				c.gridwidth = 1;
+				c.anchor = GridBagConstraints.NORTHEAST;
+				add(cb, c);
+
+				JLabel label = new JLabel();
+				labelsArray[i] = label;
+
+				// Handle the case of icon should be displayed
 				if (widget.getWidget().getShowIcon() && widget.getWidget().getIcon().isSet() && widget.getWidget().getIcon().isValid()) {
-					cb.setHorizontalAlignment(JCheckBox.LEFT);
-					cb.setText(null);
-					final JLabel label = new JLabel(text, widget.getIconRepresentation(object), JLabel.LEADING);
-					Dimension ps = cb.getPreferredSize();
-					cb.setLayout(new BorderLayout());
-					label.setLabelFor(cb);
-					label.setBorder(BorderFactory.createEmptyBorder(0, ps.width, 0, 0));
-					cb.add(label);
+					label.setIcon(widget.getIconRepresentation(object));
 				}
-				add(cb);
+
+				c.insets = new Insets(2, 5, 5, 5);
+				c.fill = GridBagConstraints.BOTH;
+				c.anchor = GridBagConstraints.CENTER;
+				c.weightx = 1.0; // 2.0;
+				c.gridwidth = GridBagConstraints.REMAINDER;
+
+				add(label, c);
+
 			}
 			revalidate();
 

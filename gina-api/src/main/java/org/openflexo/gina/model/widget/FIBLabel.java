@@ -86,6 +86,8 @@ public interface FIBLabel extends FIBWidget {
 	public static final String LABEL_KEY = "label";
 	@PropertyIdentifier(type = Align.class)
 	public static final String ALIGN_KEY = "align";
+	@PropertyIdentifier(type = boolean.class)
+	public static final String TRIM_TEXT_KEY = "trimText";
 
 	@Getter(value = LABEL_KEY)
 	@XMLAttribute
@@ -100,6 +102,13 @@ public interface FIBLabel extends FIBWidget {
 
 	@Setter(ALIGN_KEY)
 	public void setAlign(Align align);
+
+	@Getter(value = TRIM_TEXT_KEY, defaultValue = "false")
+	@XMLAttribute
+	public boolean getTrimText();
+
+	@Setter(TRIM_TEXT_KEY)
+	public void setTrimText(boolean trimText);
 
 	public static abstract class FIBLabelImpl extends FIBWidgetImpl implements FIBLabel {
 
