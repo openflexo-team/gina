@@ -1079,7 +1079,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			int cutIndex = indexOfFirstCharExceeding(current, width, fm);
 			returned.add(current.substring(0, cutIndex));
 			// Remove first blank char when any
-			int desiredCut = cutIndex + (current.charAt(cutIndex) == ' ' ? 1 : 0);
+			int desiredCut = cutIndex + (cutIndex < current.length() && current.charAt(cutIndex) == ' ' ? 1 : 0);
 			if (desiredCut > 0 && desiredCut < current.length()) {
 				current = current.substring(desiredCut);
 			}

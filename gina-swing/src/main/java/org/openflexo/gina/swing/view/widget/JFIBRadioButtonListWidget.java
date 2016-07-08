@@ -189,6 +189,18 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 			repaint();
 		}
 
+		/*@Override
+		public void setPreferredSize(Dimension preferredSize) {
+			System.out.println("Tiens on me donne une preferredSize: " + preferredSize);
+			super.setPreferredSize(preferredSize);
+		}*/
+
+		@Override
+		public void revalidate() {
+			System.out.println("Revalidate with " + getSize());
+			super.revalidate();
+		}
+
 		private void rebuildRadioButtons() {
 
 			isLayouted = false;
