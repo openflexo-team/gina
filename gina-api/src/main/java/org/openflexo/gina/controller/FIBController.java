@@ -321,7 +321,7 @@ public class FIBController
 	public List<FIBView<?, ?>> getAllViews() {
 		List<FIBView<?, ?>> l = new ArrayList<FIBView<?, ?>>();
 		l.addAll(views.values());
-		for (FIBView<?, ?> v : views.values()) {
+		for (FIBView<?, ?> v : new ArrayList<FIBView<?, ?>>(views.values())) {
 			if (v instanceof FIBReferencedComponentWidget) {
 				FIBReferencedComponentWidget<?> w = (FIBReferencedComponentWidget<?>) v;
 				if (w.getReferencedComponentView() != null) {
