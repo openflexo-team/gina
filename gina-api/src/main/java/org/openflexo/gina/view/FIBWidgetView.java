@@ -43,6 +43,7 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.Icon;
 
+import org.openflexo.connie.DataBinding;
 import org.openflexo.gina.event.GenericEventPerformer;
 import org.openflexo.gina.event.GinaEventNotifier;
 import org.openflexo.gina.event.description.EventDescription;
@@ -71,14 +72,37 @@ import org.openflexo.gina.model.FIBWidget;
 public interface FIBWidgetView<M extends FIBWidget, C, T>
 		extends FIBView<M, C>, PropertyChangeListener, GenericEventPerformer<FIBEventDescription>, HasEventNotifier<FIBEventDescription> {
 
+	/**
+	 * Return the value represented by the widget<br>
+	 * Note that if value binding has been set for related FIBWidget, return the value computed from the value binding<br>
+	 * If no value was declared, return the value represented by this FIBWidgetView
+	 * 
+	 * @return
+	 */
 	public T getValue();
 
+	/**
+	 * Programmatically sets the value represented by the widget
+	 * 
+	 * @param value
+	 */
 	public void setValue(T value);
 
-	public T getData();
+	/**
+	 * Return the value represented by this widget view<br>
+	 * This is the value beeing actually represented by widget, without any further evaluation: the {@link DataBinding} is not re-evaluated
+	 * 
+	 * @return
+	 */
+	public T getRepresentedValue();
 
-	public void setData(T data);
+	/*public T getData();
+	
+	public void setData(T data);*/
 
+	/**
+	 * Return boolean indicating if represented widget defines a value binding (a connection to some data)
+	 */
 	public boolean hasValue();
 
 	/**
@@ -91,6 +115,7 @@ public interface FIBWidgetView<M extends FIBWidget, C, T>
 	 * 
 	 * @return the value as it has been computed from the model
 	 */
+	// TODO: rename to updateValue()
 	public T updateData();
 
 	public boolean isComponentEnabled();

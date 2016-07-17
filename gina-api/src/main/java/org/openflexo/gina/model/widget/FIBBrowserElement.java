@@ -371,17 +371,11 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 		@Override
 		public void setOwner(FIBBrowser browser) {
-			BindingModel oldBindingModel = getBindingModel();
+			// BindingModel oldBindingModel = getBindingModel();
 			performSuperSetter(OWNER_KEY, browser);
-			bindingModelMightChange(oldBindingModel);
-		}
-
-		protected void bindingModelMightChange(BindingModel oldBindingModel) {
-			// Ensure the current binding model will be updated
-			notifiedBindingModelRecreated();
-			iterator.bindingModelMightChange(oldBindingModel);
+			iterator.updateBindingModel();
 			for (FIBBrowserElementChildren e : getChildren()) {
-				((FIBBrowserElementChildrenImpl) e).bindingModelMightChange(oldBindingModel);
+				((FIBBrowserElementChildrenImpl) e).updateBindingModel();
 			}
 			// Update binding model for actions associated with this fib browser elememt
 			for (FIBBrowserAction action : getActions()) {
@@ -776,7 +770,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 				return iteratorBindingModel;
 			}
 
-			private void bindingModelMightChange(BindingModel oldBindingModel) {
+			private void updateBindingModel() {
 				getBindingModel();
 				iteratorBindingModel.setBaseBindingModel(FIBBrowserElementImpl.this.getBindingModel());
 			}
@@ -1075,16 +1069,16 @@ public interface FIBBrowserElement extends FIBModelObject {
 			public static BindingDefinition CAST = new BindingDefinition("cast", Object.class, DataBinding.BindingDefinitionType.GET,
 					false);
 
-			protected void bindingModelMightChange(BindingModel oldBindingModel) {
+			private void updateBindingModel() {
 				if (childBindable != null) {
-					childBindable.bindingModelMightChange(oldBindingModel);
+					childBindable.updateBindingModel();
 				}
 			}
 
 			private class FIBChildBindable extends DefaultBindable {
 				private BindingModel childBindingModel = null;
 
-				private void bindingModelMightChange(BindingModel oldBindingModel) {
+				private void updateBindingModel() {
 					childBindingModel.setBaseBindingModel(FIBBrowserElementChildrenImpl.this.getBindingModel());
 				}
 

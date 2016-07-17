@@ -44,8 +44,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingEvaluationContext;
-import org.openflexo.connie.BindingModel;
-import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.InvocationTargetTransformException;
@@ -55,6 +53,8 @@ import org.openflexo.connie.type.CustomType;
 import org.openflexo.connie.type.CustomTypeFactory;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.logging.FlexoLogger;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.toolbox.PropertyChangedSupportDefaultImplementation;
 
 /**
  * Represent the type of a {@link FIBView} representing a given {@link FIBComponent}<br>
@@ -159,17 +159,22 @@ public class FIBViewType<F extends FIBComponent> implements CustomType {
 		return Collections.emptyList();
 	}
 
-	public static abstract class DynamicProperty {
+	public static abstract class DynamicProperty extends PropertyChangedSupportDefaultImplementation {
+
+		@PropertyIdentifier(type = String.class)
+		public static final String NAME_KEY = "name";
+		@PropertyIdentifier(type = Type.class)
+		public static final String TYPE_KEY = "type";
 
 		public abstract String getName();
 
 		public abstract Type getType();
 
-		private BindingVariable bindingVariable;
+		// private BindingVariable bindingVariable;
 
 		public abstract String getTooltip();
 
-		public BindingVariable getBindingVariable() {
+		/*public BindingVariable getBindingVariable() {
 			if (bindingVariable == null) {
 				bindingVariable = new BindingVariable(getName(), getType()) {
 					@Override
@@ -179,15 +184,15 @@ public class FIBViewType<F extends FIBComponent> implements CustomType {
 				};
 			}
 			return bindingVariable;
-		}
+		}*/
 
 		/**
 		 * Return (create when null) binding variable identified by this dynamic property
 		 */
-		public BindingVariable appendToBindingModel(BindingModel bindingModel) {
+		/*public BindingVariable appendToBindingModel(BindingModel bindingModel) {
 			bindingModel.addToBindingVariables(getBindingVariable());
 			return getBindingVariable();
-		}
+		}*/
 
 		public abstract Object getBindingValue(Object target, BindingEvaluationContext context)
 				throws TypeMismatchException, NullReferenceException, InvocationTargetTransformException;

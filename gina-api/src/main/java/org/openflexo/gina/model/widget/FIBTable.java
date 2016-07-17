@@ -63,7 +63,6 @@ import org.openflexo.gina.model.FIBWidget;
 import org.openflexo.gina.model.widget.FIBTableAction.FIBAddAction;
 import org.openflexo.gina.model.widget.FIBTableAction.FIBCustomAction;
 import org.openflexo.gina.model.widget.FIBTableAction.FIBRemoveAction;
-import org.openflexo.gina.model.widget.FIBTableColumn.FIBTableColumnImpl;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -349,7 +348,7 @@ public interface FIBTable extends FIBWidget {
 			return "Table";
 		}
 
-		@Override
+		/*@Override
 		public void bindingModelMightChange(BindingModel oldBindingModel) {
 			super.bindingModelMightChange(oldBindingModel);
 			getTableBindingModel().setBaseBindingModel(getBindingModel());
@@ -357,11 +356,7 @@ public interface FIBTable extends FIBWidget {
 			for (FIBTableColumn e : getColumns()) {
 				((FIBTableColumnImpl) e).bindingModelMightChange(oldBindingModel);
 			}
-			/*
-			 * for (FIBTableAction e : getActions()) { ((FIBTableActionImpl)
-			 * e).bindingModelMightChange(oldBindingModel); }
-			 */
-		}
+		}*/
 
 		/*
 		 * @Override public FIBTableColumn getColumnWithTitle(String title) {

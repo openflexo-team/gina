@@ -40,43 +40,40 @@
 package org.openflexo.gina.swing.utils;
 
 import java.awt.BorderLayout;
-import java.awt.Rectangle;
 import java.util.Hashtable;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingViewFactory;
-import org.openflexo.gina.swing.view.container.JFIBTabPanelView;
 import org.openflexo.gina.utils.FIBInspector;
 import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.rm.Resource;
-import org.openflexo.rm.ResourceLocator;
-import org.openflexo.swing.ComponentBoundSaver;
 
-public class JFIBInspectorController implements Observer, ChangeListener {
+/**
+ * Base implementation of an inspector controller in the context of a set of inspectors beeing displayed<br>
+ * MAnages a JPanel represented by this inspector controller: unbound in swing hierarchy at creation, see {@link #getRootPane()}
+ * 
+ * Uses the Observable/Observer scheme: deprecated, will be replaced by HasPropertyChangeSupport scheme
+ * 
+ * @author sylvain
+ *
+ */
+public class JFIBInspectorController implements Observer {
 
 	static final Logger logger = Logger.getLogger(JFIBInspectorController.class.getPackage().getName());
 
-	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
-
-	private final JDialog inspectorDialog;
 	private final JPanel EMPTY_CONTENT;
 	private final JPanel rootPane;
 
@@ -86,11 +83,11 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 
 	private final LocalizedDelegate localizer;
 
-	public JFIBInspectorController(JFrame frame, Resource inspectorDirectory, FIBLibrary fibLibrary, LocalizedDelegate localizer) {
-		this(frame, inspectorDirectory, fibLibrary, localizer, null);
+	public JFIBInspectorController(Resource inspectorDirectory, FIBLibrary fibLibrary, LocalizedDelegate localizer) {
+		this(inspectorDirectory, fibLibrary, localizer, null);
 	}
 
-	public JFIBInspectorController(JFrame frame, Resource inspectorDirectory, FIBLibrary fibLibrary, LocalizedDelegate localizer,
+	public JFIBInspectorController(Resource inspectorDirectory, FIBLibrary fibLibrary, LocalizedDelegate localizer,
 			final FIBEditorLoadingProgress progress) {
 		inspectorGroup = new InspectorGroup(inspectorDirectory, fibLibrary, FIBModelObjectImpl.GINA_LOCALIZATION) {
 			@Override
@@ -105,35 +102,22 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 		inspectorViews = new Hashtable<FIBInspector, JFIBView<?, ?>>();
 		this.localizer = localizer;
 
-		/*for (FIBInspector inspector : inspectorGroup.getInspectors().values()) {
-			JFIBView<?, ?> inspectorView = (JFIBView<?, ?>) FIBController.makeView(inspector, SwingViewFactory.INSTANCE, localizer, true);
-			FlexoLocalization.addToLocalizationListeners(inspectorView);
-			inspectorViews.put(inspector, inspectorView);
-			logger.info("Initialized inspector for " + inspector.getDataClass());
-		}*/
-
-		inspectorDialog = new JDialog(frame, "Inspector", false);
-		inspectorDialog.setBounds(JFIBPreferences.getInspectorBounds());
-		new ComponentBoundSaver(inspectorDialog) {
-
-			@Override
-			public void saveBounds(Rectangle bounds) {
-				JFIBPreferences.setInspectorBounds(bounds);
-			}
-		};
 		// GPO: Isn't there a bit too much panels here?
 		EMPTY_CONTENT = new JPanel(new BorderLayout());
 		// EMPTY_CONTENT.setPreferredSize(new Dimension(400,400));
 		EMPTY_CONTENT.add(new JLabel("No selection", SwingConstants.CENTER), BorderLayout.CENTER);
 
 		rootPane = new JPanel(new BorderLayout());
-		inspectorDialog.getContentPane().setLayout(new BorderLayout());
-		inspectorDialog.getContentPane().add(rootPane, BorderLayout.CENTER);
 
-		switchToEmptyContent();
-		inspectorDialog.setResizable(true);
-		rootPane.revalidate();
-		inspectorDialog.setVisible(true);
+	}
+
+	/**
+	 * Return JPanel represented by this inspector controller: unbound in swing hierarchy at creation
+	 * 
+	 * @return
+	 */
+	public JPanel getRootPane() {
+		return rootPane;
 	}
 
 	private JFIBView<?, ?> getInspectorViewForInspector(FIBInspector inspector) {
@@ -148,8 +132,8 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 
 	}
 
-	private FIBInspector currentInspector = null;
-	private JFIBView<?, ?> currentInspectorView = null;
+	protected FIBInspector currentInspector = null;
+	protected JFIBView<?, ?> currentInspectorView = null;
 
 	private Object currentInspectedObject = null;
 
@@ -177,7 +161,7 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 		}
 	}
 
-	private void switchToEmptyContent() {
+	protected void switchToEmptyContent() {
 		// System.out.println("switchToEmptyContent()");
 		if (currentInspectorView != null) {
 			currentInspectorView.hideView();
@@ -190,10 +174,17 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 		rootPane.repaint();
 	}
 
-	private void switchToInspector(FIBInspector newInspector) {
+	/**
+	 * Request switching to new inspector<br>
+	 * Returned flag indicates if the root pane has been updated (type of inspected object changed)
+	 * 
+	 * @param newInspector
+	 * @return
+	 */
+	protected boolean switchToInspector(FIBInspector newInspector) {
 
 		if (currentInspector == newInspector) {
-			return;
+			return false;
 		}
 		/*
 		 * if (newInspector.getDataClass() == FIBPanel.class) {
@@ -206,39 +197,30 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 			currentInspectorView.hideView();
 		}
 
-		JTabbedPane tabPanelViewJComponent = null;
-
-		if (tabPanelView != null) {
-			tabPanelViewJComponent = tabPanelView.getJComponent();
-			tabPanelViewJComponent.removeChangeListener(this);
-			// System.out.println("removeChangeListener for "+tabPanelView.getJComponent());
-		}
-
 		currentInspectorView = getInspectorViewForInspector(newInspector);
 		if (currentInspectorView != null) {
 			currentInspectorView.showView();
 		}
 
 		if (currentInspectorView != null) {
-			rootPane.removeAll();
-			JComponent resultingJComponent = currentInspectorView.getResultingJComponent();
-			rootPane.add(resultingJComponent, BorderLayout.CENTER);
-			rootPane.revalidate();
-			rootPane.repaint();
+			updateRootPane();
 			currentInspector = newInspector;
-			inspectorDialog.setTitle(newInspector.getParameter("title"));
-			tabPanelView = (JFIBTabPanelView) currentInspectorView.getController().viewForComponent(currentInspector.getTabPanel());
-			tabPanelViewJComponent = tabPanelView.getJComponent();
-			if (lastInspectedTabIndex >= 0 && lastInspectedTabIndex < tabPanelViewJComponent.getTabCount()) {
-				tabPanelViewJComponent.setSelectedIndex(lastInspectedTabIndex);
-			}
-			tabPanelViewJComponent.addChangeListener(this);
-			// System.out.println("addChangeListener for "+tabPanelView.getJComponent());
+			return true;
 		}
 		else {
 			logger.warning("No inspector view for " + newInspector);
 			switchToEmptyContent();
 		}
+
+		return false;
+	}
+
+	protected void updateRootPane() {
+		rootPane.removeAll();
+		JComponent resultingJComponent = currentInspectorView.getResultingJComponent();
+		rootPane.add(resultingJComponent, BorderLayout.CENTER);
+		rootPane.revalidate();
+		rootPane.repaint();
 	}
 
 	@Override
@@ -251,19 +233,5 @@ public class JFIBInspectorController implements Observer, ChangeListener {
 				}
 			}
 		}
-	}
-
-	private int lastInspectedTabIndex = -1;
-	private JFIBTabPanelView tabPanelView;
-
-	@Override
-	public void stateChanged(ChangeEvent e) {
-		JTabbedPane tabPanelViewJComponent = tabPanelView.getJComponent();
-		lastInspectedTabIndex = tabPanelViewJComponent.getSelectedIndex();
-		// System.out.println("Change for index "+lastInspectedTabIndex);
-	}
-
-	public void setVisible(boolean flag) {
-		inspectorDialog.setVisible(flag);
 	}
 }

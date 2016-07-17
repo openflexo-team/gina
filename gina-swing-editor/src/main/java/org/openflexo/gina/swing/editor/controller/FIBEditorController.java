@@ -185,6 +185,10 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 			addObserver(editor.getInspector());
 		}
 
+		if (editor.getInspectors() != null) {
+			addObserver(editor.getInspectors());
+		}
+
 		editorPanel = new FIBEditorPanel(controller);
 
 		editorBrowser = new FIBEditorBrowser(editedComponent.getFIBComponent(), this);

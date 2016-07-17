@@ -58,7 +58,7 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.palette.FIBEditorPalettes;
 import org.openflexo.gina.swing.editor.widget.FIBLibraryBrowser;
-import org.openflexo.gina.swing.utils.JFIBInspectorController;
+import org.openflexo.gina.swing.utils.JFIBDialogInspectorController;
 import org.openflexo.gina.swing.utils.JFIBPreferences;
 import org.openflexo.gina.utils.InteractiveFIBEditor;
 import org.openflexo.logging.FlexoLogger;
@@ -93,7 +93,7 @@ public class JFIBEditor extends JFrame implements InteractiveFIBEditor {
 
 	private FIBLibraryBrowser libraryBrowser;
 	private FIBEditorPalettes palette;
-	private JFIBInspectorController inspector;
+	private JFIBDialogInspectorController inspector;
 	private MainPanel mainPanel;
 
 	private FIBEditor getFIBEditor() {

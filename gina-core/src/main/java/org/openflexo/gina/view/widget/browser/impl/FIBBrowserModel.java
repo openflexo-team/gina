@@ -105,6 +105,10 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 
 	}
 
+	public FIBBrowserWidget getWidget() {
+		return widget;
+	}
+
 	public void delete() {
 		for (FIBBrowserElement c : _elementTypes.keySet()) {
 			_elementTypes.get(c).delete();
@@ -624,7 +628,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 					return getUserObject(); // representedObject;
 				}
 				else if (widget != null && widget.getController() != null) {
-					return widget.getController().getValue(variable);
+					return widget.getValue(variable);
 				}
 				else {
 					return null;

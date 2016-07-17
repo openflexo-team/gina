@@ -148,9 +148,9 @@ public class FIBTextAreaWidgetTest extends FIBTestCase {
 
 		// controller.viewForComponent(firstNameTF).update();
 
-		assertEquals("Robert", controller.viewForWidget(firstNameTF).getData());
-		assertEquals("Smith", controller.viewForWidget(lastNameTF).getData());
-		assertEquals("Robert Smith", controller.viewForWidget(fullNameTF).getData());
+		assertEquals("Robert", controller.viewForWidget(firstNameTF).getRepresentedValue());
+		assertEquals("Smith", controller.viewForWidget(lastNameTF).getRepresentedValue());
+		assertEquals("Robert Smith", controller.viewForWidget(fullNameTF).getRepresentedValue());
 	}
 
 	/**
@@ -161,9 +161,9 @@ public class FIBTextAreaWidgetTest extends FIBTestCase {
 	public void test3ModifyValueInModel() {
 		family1.getFather().setFirstName("Roger");
 		family1.getFather().setLastName("Rabbit");
-		assertEquals("Roger", controller.viewForWidget(firstNameTF).getData());
-		assertEquals("Rabbit", controller.viewForWidget(lastNameTF).getData());
-		assertEquals("Roger Rabbit", controller.viewForWidget(fullNameTF).getData());
+		assertEquals("Roger", controller.viewForWidget(firstNameTF).getRepresentedValue());
+		assertEquals("Rabbit", controller.viewForWidget(lastNameTF).getRepresentedValue());
+		assertEquals("Roger Rabbit", controller.viewForWidget(fullNameTF).getRepresentedValue());
 	}
 
 	/**
@@ -181,7 +181,7 @@ public class FIBTextAreaWidgetTest extends FIBTestCase {
 
 		assertEquals("James", family1.getFather().getFirstName());
 		assertEquals("Dean", family1.getFather().getLastName());
-		assertEquals("James Dean", controller.viewForWidget(fullNameTF).getData());
+		assertEquals("James Dean", controller.viewForWidget(fullNameTF).getRepresentedValue());
 		assertEquals("James Dean", w3.getTechnologyComponent().getText());
 
 	}
@@ -211,9 +211,9 @@ public class FIBTextAreaWidgetTest extends FIBTestCase {
 		assertNotNull(controller.viewForComponent(fullNameLabel));
 		assertNotNull(controller.viewForComponent(fullNameTF));
 
-		assertEquals("Robert", controller.viewForWidget(firstNameTF).getData());
-		assertEquals("Smith", controller.viewForWidget(lastNameTF).getData());
-		assertEquals("Robert Smith", controller.viewForWidget(fullNameTF).getData());
+		assertEquals("Robert", controller.viewForWidget(firstNameTF).getRepresentedValue());
+		assertEquals("Smith", controller.viewForWidget(lastNameTF).getRepresentedValue());
+		assertEquals("Robert Smith", controller.viewForWidget(fullNameTF).getRepresentedValue());
 	}
 
 	@BeforeClass

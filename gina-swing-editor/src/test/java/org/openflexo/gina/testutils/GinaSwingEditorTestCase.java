@@ -57,7 +57,7 @@ import org.openflexo.gina.FIBLibrary.FIBLibraryImpl;
 import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.palette.FIBEditorPalettesDialog;
-import org.openflexo.gina.swing.utils.JFIBInspectorController;
+import org.openflexo.gina.swing.utils.JFIBDialogInspectorController;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.logging.FlexoLoggingManager;
 import org.openflexo.rm.Resource;
@@ -155,7 +155,7 @@ public class GinaSwingEditorTestCase {
 
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, null, editor.makeMainPanel());
 
-		JFIBInspectorController inspector = editor.makeInspector(gcDelegate.getFrame());
+		JFIBDialogInspectorController inspector = editor.makeInspector(gcDelegate.getFrame());
 		inspector.setVisible(true);
 
 		FIBEditorPalettesDialog paletteDialog = editor.makePaletteDialog(gcDelegate.getFrame());

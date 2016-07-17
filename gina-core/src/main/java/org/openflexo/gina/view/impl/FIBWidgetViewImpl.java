@@ -63,7 +63,6 @@ import org.openflexo.connie.binding.BindingValueChangeListener;
 import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.event.GinaEvent.KIND;
 import org.openflexo.gina.event.GinaEventNotifier;
@@ -107,7 +106,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 	protected C technologyComponent;
 
-	private T data;
+	private T representedValue;
 
 	private boolean enabled = true;
 
@@ -216,8 +215,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
-					// System.out.println(" **** bindingValueChanged() detected for data=" + getComponent().getData() + " with newValue="
-					// + newValue + " source=" + source);
+					System.out.println(" **** bindingValueChanged() detected for data=" + getComponent().getData() + " with newValue="
+							+ newValue + " source=" + source);
 
 					updateData();
 				}
@@ -265,22 +264,22 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		}
 	}
 
-	@Override
+	/*@Override
 	public T getData() {
-		return data;
-	}
+		return representedValue;
+	}*/
 
-	@Override
+	/*@Override
 	public void setData(T data) {
-
-		T oldData = this.data;
-
+	
+		T oldData = this.representedValue;
+	
 		if (notEquals(oldData, data)) {
-
+	
 			if (data == null || (getComponent().getDataClass() == null)
 					|| getComponent().getDataClass().isAssignableFrom(data.getClass())) {
-				this.data = data;
-				getPropertyChangeSupport().firePropertyChange(DATA, oldData, data);
+				this.representedValue = data;
+				getPropertyChangeSupport().firePropertyChange(VALUE, oldData, data);
 			}
 			else {
 				if ((getComponent().getDataType() == null)
@@ -288,22 +287,22 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 					// System.out.println("OK, data " + data + " of " +
 					// data.getClass() + " is an instance of "
 					// + getComponent().getDataClass());
-					this.data = (T) TypeUtils.castTo(data, getComponent().getDataType());
-					getPropertyChangeSupport().firePropertyChange(DATA, oldData, data);
+					this.representedValue = (T) TypeUtils.castTo(data, getComponent().getDataType());
+					getPropertyChangeSupport().firePropertyChange(VALUE, oldData, data);
 				}
-
+	
 				else {
 					if (getComponent().getDataClass() != null) {
 						// System.out.println("Sorry, data " + data + " of " +
 						// data.getClass() + " is not an instance of "
 						// + getComponent().getDataClass());
 					}
-					this.data = null;
-					getPropertyChangeSupport().firePropertyChange(DATA, oldData, null);
+					this.representedValue = null;
+					getPropertyChangeSupport().firePropertyChange(VALUE, oldData, null);
 				}
 			}
 		}
-	}
+	}*/
 
 	@Override
 	public GinaEventNotifier<FIBEventDescription> getNotifier() {
@@ -384,20 +383,16 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		if (isDeleted()) {
 			return null;
 		}
-		/*if (getComponent().getName() != null && getComponent().getName().equals("FlexoConceptTextField")) {
-			System.out.println("updateData() in TF FlexoConceptTextField pour " + getComponent().getRootComponent());
-			System.out.println("data=" + getComponent().getData());
-			System.out.println("BV=" + ((BindingValue) getComponent().getData().getExpression()).getBindingVariable());
-			System.out.println("data value = "
-					+ getController().getValue(((BindingValue) getComponent().getData().getExpression()).getBindingVariable()));
-			System.out.println("Hop");
-		}*/
+
+		T oldValue = representedValue;
 		T newValue = getValue();
-		setData(newValue);
-		return newValue;
-		/*if (!isUpdating() && !isDeleted() && getTechnologyComponent() != null && isComponentVisible()) {
-			updateWidgetFromModel();
-		}*/
+
+		if (notEquals(newValue, representedValue)) {
+			representedValue = getValue();
+			getPropertyChangeSupport().firePropertyChange(VALUE, oldValue, newValue);
+		}
+
+		return representedValue;
 	}
 
 	// TODO: refactor this: should be implemented in Swing only
@@ -468,10 +463,25 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	}
 
 	@Override
+	public T getRepresentedValue() {
+		return representedValue;
+	}
+
+	/**
+	 * Return boolean indicating if represented widget defines a value binding (a connection to some data)
+	 */
+	@Override
 	public final boolean hasValue() {
 		return getComponent().getData() != null && getComponent().getData().isSet();
 	}
 
+	/**
+	 * Return the value represented by the widget<br>
+	 * Note that if value binding has been set for related FIBWidget, return the value computed from the value binding<br>
+	 * If no value was declared, return the value represented by this FIBWidgetView
+	 * 
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public T getValue() {
@@ -480,16 +490,16 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		}
 
 		if (getWidget().getData() == null || getWidget().getData().isUnset()) {
-			return getData();
+			return representedValue;
 		}
 
 		Object value = null;
 
 		try {
 			value = getWidget().getData().getBindingValue(getBindingEvaluationContext());
-			T returned = (T) value;
-			setData(returned);
-			return returned;
+			representedValue = (T) value;
+			// setRepresentedValue(returned);
+			return representedValue;
 		} catch (TypeMismatchException e) {
 			LOGGER.warning("Widget " + getWidget() + " TypeMismatchException: " + e.getMessage());
 			return null;
@@ -504,6 +514,11 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 	}
 
+	/**
+	 * Programmatically sets the value represented by the widget
+	 * 
+	 * @param value
+	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public void setValue(T aValue) {
@@ -557,7 +572,9 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			return;
 		}
 
-		setData(aValue);
+		T oldValue = representedValue;
+
+		representedValue = aValue;
 
 		if (getWidget().getData() == null || getWidget().getData().isUnset()) {
 		}
@@ -598,17 +615,19 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			}
 		}
 
+		getPropertyChangeSupport().firePropertyChange(VALUE, oldValue, representedValue);
+
 	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 
-		if (evt.getPropertyName().equals(FIBWidget.DATA_KEY)) {
+		if (evt.getPropertyName().equals(FIBWidget.VALUE_KEY)) {
 			updateData();
 		}
-		if (evt.getPropertyName().equals(FIBWidget.MANAGE_DYNAMIC_MODEL_KEY)) {
+		/*if (evt.getPropertyName().equals(FIBWidget.MANAGE_DYNAMIC_MODEL_KEY)) {
 			getComponent().updateDynamicAccessBindingVariable();
-		}
+		}*/
 		else if (evt.getPropertyName().equals(FIBWidget.READ_ONLY_KEY) || evt.getPropertyName().equals(FIBWidget.ENABLE_KEY)) {
 			updateEnability();
 		}
@@ -616,7 +635,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		super.propertyChange(evt);
 	}
 
-	@Override
+	/*@Override
 	protected boolean checkValidDataPath() {
 		if (getParentView() instanceof FIBViewImpl && !((FIBViewImpl<?, ?>) getParentView()).checkValidDataPath()) {
 			return false;
@@ -630,7 +649,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			}
 		}
 		return true;
-	}
+	}*/
 
 	// Flag used to protect updating against cycling
 	private boolean isPerformingUpdate = false;

@@ -49,12 +49,16 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingEvaluationContext;
+import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.binding.BindingValueChangeListener;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBVariable;
+import org.openflexo.gina.model.bindings.FIBChildBindingVariable;
+import org.openflexo.gina.model.bindings.FIBComponentBindingModel;
+import org.openflexo.gina.model.bindings.FIBVariableBindingVariable;
 import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.widget.FIBReferencedComponentWidget;
@@ -336,6 +340,10 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		return (T) variables.get(variable);
 	}
 
+	protected <T> void fireVariableChanged(FIBVariable<T> variable, T oldValue, T newValue) {
+		getPropertyChangeSupport().firePropertyChange(variable.getName(), oldValue, newValue);
+	}
+
 	/**
 	 * Sets value of supplied variable
 	 * 
@@ -344,24 +352,15 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> void setVariableValue(FIBVariable<T> variable, T value) {
+	public final <T> void setVariableValue(FIBVariable<T> variable, T value) {
 
 		T oldValue = (T) variables.get(variable);
 
-		// System.out.println("On change la valeur de " + variable.getName() + " de " + oldValue + " a " + value);
+		System.out.println("setVariableValue " + variable.getName() + " de " + oldValue + " a " + value);
 
 		if (notEquals(oldValue, value)) {
 			variables.put(variable, value);
-			getPropertyChangeSupport().firePropertyChange(variable.getName(), oldValue, value);
-			// getController().getPropertyChangeSupport().firePropertyChange(variable.getName(), oldValue, value);
-			// TODO: we have to duplicate the call here, please refactor !!!
-			try {
-				getController().setVariableValue(variable.getName(), value);
-			} catch (Exception e) {
-				LOGGER.warning("Unexpected exception " + e);
-				LOGGER.warning("Please investigate");
-				Thread.dumpStack();
-			}
+			fireVariableChanged(variable, oldValue, value);
 		}
 	}
 
@@ -451,6 +450,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	 */
 	@Override
 	public BindingEvaluationContext getBindingEvaluationContext() {
+
 		/*
 		 * if (getComponent() != null && getComponent().getName() != null &&
 		 * getComponent().getName().equals("DropSchemePanel")) { if
@@ -467,10 +467,44 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		if (getEmbeddingComponent() != null) {
 			return getEmbeddingComponent().getEmbeddedBindingEvaluationContext();
 		}
-		if (getParentView() != null) {
+
+		return this;
+
+		/*if (getParentView() != null) {
 			return getParentView().getBindingEvaluationContext();
 		}
-		return getController();
+		return getController();*/
+	}
+
+	@Override
+	public Object getValue(BindingVariable variable) {
+		Object returned = null;
+		if (variable.getVariableName().equals(FIBComponentBindingModel.CONTROLLER_KEY)) {
+			return getController();
+		}
+		if (variable instanceof FIBVariableBindingVariable) {
+			returned = getVariableValue(((FIBVariableBindingVariable) variable).getVariable());
+			if (returned != null) {
+				return returned;
+			}
+		}
+		if (variable instanceof FIBChildBindingVariable) {
+			return getController().viewForComponent(((FIBChildBindingVariable) variable).getComponent());
+		}
+		if (getParentView() != null) {
+			return getParentView().getValue(variable);
+		}
+		return null;
+	}
+
+	@Override
+	public void setValue(Object value, BindingVariable variable) {
+		if (variable instanceof FIBVariableBindingVariable) {
+			setVariableValue((FIBVariable) ((FIBVariableBindingVariable) variable).getVariable(), value);
+		}
+		else if (getParentView() != null) {
+			getParentView().setValue(value, variable);
+		}
 	}
 
 	@Override
@@ -595,8 +629,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	 * return true; }
 	 */
 
-	@Deprecated
-	protected abstract boolean checkValidDataPath();
+	// @Deprecated
+	// protected abstract boolean checkValidDataPath();
 
 	@Override
 	public final boolean isComponentVisible() {

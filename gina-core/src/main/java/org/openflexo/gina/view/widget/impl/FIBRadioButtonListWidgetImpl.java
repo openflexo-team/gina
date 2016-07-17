@@ -92,16 +92,29 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 	}
 
 	@Override
+	protected void updateMultipleValues() {
+		super.updateMultipleValues();
+		autoSelectFirstRowWhenRequired();
+	}
+
+	private void autoSelectFirstRowWhenRequired() {
+		if (getValue() == null && getWidget().getAutoSelectFirstRow() && getMultipleValueModel().getSize() > 0) {
+			// System.out.println("Selecting first value of " + getWidget().getName() + " : " + getMultipleValueModel().getElementAt(0));
+			T newValue = getMultipleValueModel().getElementAt(0);
+			setValue(newValue);
+		}
+	}
+
+	@Override
 	public T updateData() {
 		T newValue = super.updateData();
 
-		if (newValue == null && getWidget().getAutoSelectFirstRow() && getMultipleValueModel().getSize() > 0) {
-
+		autoSelectFirstRowWhenRequired();
+		/*if (newValue == null && getWidget().getAutoSelectFirstRow() && getMultipleValueModel().getSize() > 0) {
 			// System.out.println("Selecting first value of " + getWidget().getName() + " : " + getMultipleValueModel().getElementAt(0));
-
 			newValue = getMultipleValueModel().getElementAt(0);
 			setValue(newValue);
-		}
+		}*/
 
 		if (notEquals(newValue, getSelectedValue()) /*|| listModelRequireChange()*/ || multipleValueModel == null) {
 			if (LOGGER.isLoggable(Level.FINE)) {

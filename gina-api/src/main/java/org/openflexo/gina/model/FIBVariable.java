@@ -41,8 +41,6 @@ package org.openflexo.gina.model;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-import org.openflexo.connie.BindingModel;
-import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.expr.Expression;
 import org.openflexo.connie.type.TypeUtils;
@@ -118,9 +116,9 @@ public interface FIBVariable<T> extends FIBModelObject {
 	@Setter(MANDATORY_KEY)
 	public void setMandatory(boolean mandatory);
 
-	public BindingVariable getBindingVariable();
+	// public BindingVariable getBindingVariable();
 
-	public BindingVariable appendToBindingModel(BindingModel bindingModel);
+	// public BindingVariable appendToBindingModel(BindingModel bindingModel);
 
 	public void revalidateBindings();
 
@@ -130,11 +128,11 @@ public interface FIBVariable<T> extends FIBModelObject {
 
 		private DataBinding<T> value;
 
-		@Override
+		/*@Override
 		public void setName(String name) {
 			performSuperSetter(NAME_KEY, name);
 			getBindingVariable().setVariableName(getName());
-		}
+		}*/
 
 		@Override
 		public Type getType() {
@@ -155,7 +153,7 @@ public interface FIBVariable<T> extends FIBModelObject {
 		public void setType(Type type) {
 			Class<T> oldTypeClass = getTypeClass();
 			performSuperSetter(TYPE_KEY, type);
-			getBindingVariable().setType(type);
+			// getBindingVariable().setType(type);
 			getPropertyChangeSupport().firePropertyChange("typeClass", oldTypeClass, getTypeClass());
 		}
 
@@ -188,7 +186,8 @@ public interface FIBVariable<T> extends FIBModelObject {
 				};
 				this.value.setBindingName(getName());
 				// updateDynamicAccessBindingVariable();
-			} else {
+			}
+			else {
 				this.value = null;
 			}
 
@@ -202,30 +201,30 @@ public interface FIBVariable<T> extends FIBModelObject {
 			System.out.println("isBeingCloned=" + isBeingCloned());
 			System.out.println("isCreatedByCloning=" + isCreatedByCloning());*/
 
-			if (!isCreatedByCloning()) {
+			/*if (!isCreatedByCloning()) {
 				getBindingVariable().setType(getType());
-			}
+			}*/
 		}
 
-		private BindingVariable bindingVariable;
+		// private BindingVariable bindingVariable;
 
-		@Override
+		/*@Override
 		public BindingVariable getBindingVariable() {
 			if (bindingVariable == null) {
 				bindingVariable = new BindingVariable(getName(), getType(), true);
 			}
 			return bindingVariable;
-		}
+		}*/
 
 		/**
 		 * Return (create when null) binding variable identified by "data"<br>
 		 * Default behavior is to generate a binding variable with the java type identified by data class
 		 */
-		@Override
+		/*@Override
 		public BindingVariable appendToBindingModel(BindingModel bindingModel) {
 			bindingModel.addToBindingVariables(getBindingVariable());
 			return getBindingVariable();
-		}
+		}*/
 
 		@Override
 		public FIBComponent getComponent() {

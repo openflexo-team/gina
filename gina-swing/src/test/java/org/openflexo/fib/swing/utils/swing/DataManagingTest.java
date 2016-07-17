@@ -148,9 +148,9 @@ public class DataManagingTest extends FIBTestCase {
 
 		// controller.viewForComponent(firstNameTF).update();
 
-		assertEquals("Robert", controller.viewForWidget(firstNameTF).getData());
-		assertEquals("Smith", controller.viewForWidget(lastNameTF).getData());
-		assertEquals("Robert Smith", controller.viewForWidget(fullNameTF).getData());
+		assertEquals("Robert", controller.viewForWidget(firstNameTF).getRepresentedValue());
+		assertEquals("Smith", controller.viewForWidget(lastNameTF).getRepresentedValue());
+		assertEquals("Robert Smith", controller.viewForWidget(fullNameTF).getRepresentedValue());
 	}
 
 	/**
@@ -165,9 +165,9 @@ public class DataManagingTest extends FIBTestCase {
 		family2.getFather().setFirstName("Roger");
 		family2.getFather().setLastName("Rabbit");
 		controller.setDataObject(family2);
-		assertEquals("Roger", controller.viewForWidget(firstNameTF).getData());
-		assertEquals("Rabbit", controller.viewForWidget(lastNameTF).getData());
-		assertEquals("Roger Rabbit", controller.viewForWidget(fullNameTF).getData());
+		assertEquals("Roger", controller.viewForWidget(firstNameTF).getRepresentedValue());
+		assertEquals("Rabbit", controller.viewForWidget(lastNameTF).getRepresentedValue());
+		assertEquals("Roger Rabbit", controller.viewForWidget(fullNameTF).getRepresentedValue());
 	}
 
 	/**
@@ -184,9 +184,9 @@ public class DataManagingTest extends FIBTestCase {
 
 		family3.getFather().setFirstName("Jeannot");
 		family3.getFather().setLastName("Lapin");
-		assertEquals("Jeannot", controller.viewForWidget(firstNameTF).getData());
-		assertEquals("Lapin", controller.viewForWidget(lastNameTF).getData());
-		assertEquals("Jeannot Lapin", controller.viewForWidget(fullNameTF).getData());
+		assertEquals("Jeannot", controller.viewForWidget(firstNameTF).getRepresentedValue());
+		assertEquals("Lapin", controller.viewForWidget(lastNameTF).getRepresentedValue());
+		assertEquals("Jeannot Lapin", controller.viewForWidget(fullNameTF).getRepresentedValue());
 	}
 
 	@BeforeClass

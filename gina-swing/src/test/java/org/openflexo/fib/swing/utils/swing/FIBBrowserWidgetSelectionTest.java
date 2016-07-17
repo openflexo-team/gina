@@ -211,18 +211,18 @@ public class FIBBrowserWidgetSelectionTest extends FIBTestCase {
 		w.resetSelection();
 		w.addToSelection(family.getBiggestChild());
 
-		assertEquals("Jacky3", controller.viewForWidget(firstNameTF).getData());
-		assertEquals("Smith", controller.viewForWidget(lastNameTF).getData());
-		assertEquals("Jacky3 Smith", controller.viewForWidget(fullNameTF).getData());
+		assertEquals("Jacky3", controller.viewForWidget(firstNameTF).getRepresentedValue());
+		assertEquals("Smith", controller.viewForWidget(lastNameTF).getRepresentedValue());
+		assertEquals("Jacky3 Smith", controller.viewForWidget(fullNameTF).getRepresentedValue());
 
 		family.getBiggestChild().setFirstName("Roger");
 		family.getBiggestChild().setLastName("Rabbit");
 		family.getBiggestChild().setAge(12);
 		family.getBiggestChild().setGender(Gender.Female);
 
-		assertEquals("Roger", controller.viewForWidget(firstNameTF).getData());
-		assertEquals("Rabbit", controller.viewForWidget(lastNameTF).getData());
-		assertEquals("Roger Rabbit", controller.viewForWidget(fullNameTF).getData());
+		assertEquals("Roger", controller.viewForWidget(firstNameTF).getRepresentedValue());
+		assertEquals("Rabbit", controller.viewForWidget(lastNameTF).getRepresentedValue());
+		assertEquals("Roger Rabbit", controller.viewForWidget(fullNameTF).getRepresentedValue());
 
 	}
 
@@ -242,9 +242,9 @@ public class FIBBrowserWidgetSelectionTest extends FIBTestCase {
 		w.addToSelection(family.getChildren().get(2));
 		w.addToSelection(family.getChildren().get(3));
 
-		assertEquals("Jacky2", controller.viewForWidget(firstNameTF).getData());
-		assertEquals("Smith", controller.viewForWidget(lastNameTF).getData());
-		assertEquals("Jacky2 Smith", controller.viewForWidget(fullNameTF).getData());
+		assertEquals("Jacky2", controller.viewForWidget(firstNameTF).getRepresentedValue());
+		assertEquals("Smith", controller.viewForWidget(lastNameTF).getRepresentedValue());
+		assertEquals("Jacky2 Smith", controller.viewForWidget(fullNameTF).getRepresentedValue());
 
 	}
 

@@ -176,11 +176,11 @@ public class FIBCheckboxListWidgetTest extends FIBTestCase {
 		assertNotNull(controller.viewForComponent(checkboxListLabel4));
 		assertNotNull(controller.viewForComponent(checkboxList4));
 
-		assertEquals(Collections.singletonList("value1"), controller.viewForWidget(checkboxList1).getData());
-		assertEquals(null, controller.viewForWidget(checkboxList2).getData());
-		assertEquals(Collections.singletonList(family.getChildren().get(0)), controller.viewForWidget(checkboxList3).getData());
-		assertEquals(Collections.singletonList(family.getParents()[0]), controller.viewForWidget(checkboxList4).getData());
-		assertEquals(family.getJackies(), controller.viewForWidget(checkboxList5).getData());
+		assertEquals(Collections.singletonList("value1"), controller.viewForWidget(checkboxList1).getRepresentedValue());
+		assertEquals(null, controller.viewForWidget(checkboxList2).getRepresentedValue());
+		assertEquals(Collections.singletonList(family.getChildren().get(0)), controller.viewForWidget(checkboxList3).getRepresentedValue());
+		assertEquals(Collections.singletonList(family.getParents()[0]), controller.viewForWidget(checkboxList4).getRepresentedValue());
+		assertEquals(family.getJackies(), controller.viewForWidget(checkboxList5).getRepresentedValue());
 
 	}
 
@@ -213,7 +213,7 @@ public class FIBCheckboxListWidgetTest extends FIBTestCase {
 		assertEquals(true, w5.getCheckboxAtIndex(3).isSelected());
 		assertEquals(true, w5.getCheckboxAtIndex(4).isSelected());
 
-		assertEquals(family.getJackies(), controller.viewForWidget(checkboxList5).getData());
+		assertEquals(family.getJackies(), controller.viewForWidget(checkboxList5).getRepresentedValue());
 	}
 
 	/**

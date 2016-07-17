@@ -117,7 +117,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 	public FIBTable getOwner();
 
 	@Setter(OWNER_KEY)
-	public void setOwner(FIBTable customColumn);
+	public void setOwner(FIBTable ownerTable);
 
 	@Getter(value = DATA_KEY)
 	@XMLAttribute
@@ -306,8 +306,11 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 			return getOwner();
 		}
 
-		protected void bindingModelMightChange(BindingModel oldBindingModel) {
-			formatter.bindingModelMightChange(oldBindingModel);
+		@Override
+		public void setOwner(FIBTable ownerTable) {
+			// BindingModel oldBindingModel = getBindingModel();
+			performSuperSetter(OWNER_KEY, ownerTable);
+			formatter.updateBindingModel();
 		}
 
 		@Override
@@ -456,7 +459,8 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		public void setHasSpecificFont(boolean aFlag) {
 			if (aFlag) {
 				setFont(retrieveValidFont());
-			} else {
+			}
+			else {
 				setFont(null);
 			}
 		}
@@ -534,7 +538,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		private class FIBFormatter extends DefaultBindable {
 			private BindingModel formatterBindingModel = null;
 
-			private void bindingModelMightChange(BindingModel oldBindingModel) {
+			private void updateBindingModel() {
 				getBindingModel();
 				formatterBindingModel.setBaseBindingModel(getOwner().getTableBindingModel());
 			}
