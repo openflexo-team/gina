@@ -134,17 +134,19 @@ public interface FIBVariable<T> extends FIBModelObject {
 			getBindingVariable().setVariableName(getName());
 		}*/
 
+		private Type variableType = null;
+
 		@Override
 		public Type getType() {
 			// System.out.println("On me demande mon type " + getName() + " value=" + getValue());
-			if (!isCreatedByCloning() && getOwner() != null && getOwner().getRootComponent() != null
+			if (variableType == null && !isCreatedByCloning() && getOwner() != null && getOwner().getRootComponent() != null
 					&& !getOwner().getRootComponent().isDeserializing() && !getOwner().getRootComponent().isCreatedByCloning()
 					&& getValue() != null && getValue().isSet() && getValue().isValid()) {
-				return getValue().getAnalyzedType();
+				variableType = getValue().getAnalyzedType();
 			}
-			Type returned = (Type) performSuperGetter(TYPE_KEY);
-			if (returned != null) {
-				return returned;
+			// Type returned = (Type) performSuperGetter(TYPE_KEY);
+			if (variableType != null) {
+				return variableType;
 			}
 			return Object.class;
 		}
@@ -152,8 +154,9 @@ public interface FIBVariable<T> extends FIBModelObject {
 		@Override
 		public void setType(Type type) {
 			Class<T> oldTypeClass = getTypeClass();
-			performSuperSetter(TYPE_KEY, type);
-			// getBindingVariable().setType(type);
+			Type oldType = variableType;
+			variableType = type;
+			getPropertyChangeSupport().firePropertyChange(TYPE_KEY, oldType, variableType);
 			getPropertyChangeSupport().firePropertyChange("typeClass", oldTypeClass, getTypeClass());
 		}
 
@@ -164,8 +167,11 @@ public interface FIBVariable<T> extends FIBModelObject {
 					@Override
 					public void notifyBindingChanged(Expression oldValue, Expression newValue) {
 						super.notifyBindingChanged(oldValue, newValue);
-						getPropertyChangeSupport().firePropertyChange(TYPE_KEY, null, getType());
-						getPropertyChangeSupport().firePropertyChange("typeClass", null, getTypeClass());
+						/*getPropertyChangeSupport().firePropertyChange(TYPE_KEY, null, getType());
+						getPropertyChangeSupport().firePropertyChange("typeClass", null, getTypeClass());*/
+						if (isSet() && isValid()) {
+							setType(getAnalyzedType());
+						}
 					}
 				};
 				value.setBindingName(getName());
@@ -180,8 +186,11 @@ public interface FIBVariable<T> extends FIBModelObject {
 					@Override
 					public void notifyBindingChanged(Expression oldValue, Expression newValue) {
 						super.notifyBindingChanged(oldValue, newValue);
-						getPropertyChangeSupport().firePropertyChange(TYPE_KEY, null, getType());
-						getPropertyChangeSupport().firePropertyChange("typeClass", null, getTypeClass());
+						if (isSet() && isValid()) {
+							setType(getAnalyzedType());
+						}
+						// getPropertyChangeSupport().firePropertyChange(TYPE_KEY, null, getType());
+						// getPropertyChangeSupport().firePropertyChange("typeClass", null, getTypeClass());
 					}
 				};
 				this.value.setBindingName(getName());
