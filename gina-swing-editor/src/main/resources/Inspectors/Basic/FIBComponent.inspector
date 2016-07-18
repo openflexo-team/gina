@@ -13,11 +13,5 @@
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data" />
 	</Custom>
-	<Label name="NameLabel" index="98" label="name" constraints="twocols(location=left)"
-		localize="true" />
-	<TextField name="NameTF" index="99" data="data.name"
-		constraints="twocols(expandHorizontally=true;location=right)"
-		localize="true" columns="15" />
-
 	<Parameter name="title" value="Component" />
 </Inspector>

@@ -4,7 +4,7 @@
 			<Label label="description" index="100" constraints="twocols(location=left)"
 				localize="true" />
 			<TextArea index="101" data="data.description" columns="15"
-				constraints="twocols(expandHorizontally=true;expandVertically=true;location=right)"
+				constraints="twocols(expandHorizontally=true;expandVertically=true;location=right;insetsRight=10)"
 				useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
 				verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" localize="true" />
 	<Parameter name="title" value="Basic" />

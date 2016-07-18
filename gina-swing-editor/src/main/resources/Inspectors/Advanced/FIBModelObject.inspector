@@ -2,13 +2,13 @@
 <Inspector layout="twocols" darkLevel="0"
 	dataClassName="org.openflexo.gina.model.FIBModelObject" name="Inspector">
 	<Label label="parameters" index="102" constraints="twocols(location=left)"
-		localize="true" />
+		localize="true"  font="SansSerif,0,11"/>
 	<Table iteratorClassName="org.openflexo.gina.model.FIBParameter"
 		index="103" visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false"
 		createNewRowOnClick="false" boundToSelectionManager="false"
 		showFooter="true" selectionMode="MultipleIntervalSelection" localize="true"
 		manageDynamicModel="true" name="ParametersTable" data="data.parameters"
-		constraints="twocols(expandHorizontally=true;expandVertically=true;location=right)">
+		constraints="twocols(expandHorizontally=true;expandVertically=true;location=right;insetsRight=10)">
 		<TextFieldColumn data="iterator.name" title="name"
 			columnWidth="30" resizable="true" displayTitle="true" name="name" />
 		<TextFieldColumn data="iterator.value" title="value"

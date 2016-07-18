@@ -1,37 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Inspector layout="border" darkLevel="0" font="SansSerif,0,11"
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
 	dataClassName="org.openflexo.gina.model.FIBComponent" name="Inspector">
 	<Panel layout="twocols" borderTitle="Panel" titleFont="SansSerif,0,10"
 		darkLevel="0" index="0"
 		constraints="twocols(expandHorizontally=true;expandVertically=false;index=0;location=right)">
-		<Label label="font" index="1"
-			constraints="twocols(expandHorizontally=false;expandVertically=false;location=left;insetsTop=10)"
-			localize="true" />
-		<Font localize="true" index="2" data="data.font" allowsNull="true"
-			allowsNullText=""
-			constraints="twocols(expandHorizontally=true;expandVertically=false;index=0;location=right;insetsTop=10)" />
-		<Label label="background" index="5"
-			constraints="twocols(expandHorizontally=false;expandVertically=false;location=left)"
-			localize="true" />
-		<Color index="6" data="data.backgroundColor" allowsNull="true"
-			allowsNullText=""
-			constraints="twocols(expandHorizontally=false;expandVertically=false;index=0;location=right)"
-			localize="true" />
-		<Label label="foreground" index="9"
-			constraints="twocols(expandHorizontally=false;expandVertically=false;location=left)"
-			localize="true" />
-		<Color index="10" data="data.foregroundColor" allowsNull="true"
-			allowsNullText=""
-			constraints="twocols(expandHorizontally=false;expandVertically=false;index=0;location=right)"
-			localize="true" />
-		<Label label="opaque" index="12"
-			constraints="twocols(expandHorizontally=false;expandVertically=false;location=left)"
-			localize="true" />
-		<CheckBox selected="false" index="11" data="data.opaque"
-			constraints="twocols(expandHorizontally=false;expandVertically=false;index=0;location=right)"
-			localize="true" />
+		<Panel layout="twocols" border="rounded3d" borderTitle="fonts_and_colors"
+			titleFont="SansSerif,0,10" darkLevel="1"
+			constraints="twocols(expandHorizontally=true;location=center;insetsTop=5;insetsRight=10)">
+			<Label label="font" index="1"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;location=left;insetsTop=0)"
+				localize="true" />
+			<Font localize="true" index="2" data="data.font" allowsNull="true"
+				allowsNullText=""
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=0;location=right;insetsTop=0)" />
+			<Label label="background" index="5"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;location=left)"
+				localize="true" />
+			<Color index="6" data="data.backgroundColor" allowsNull="true"
+				allowsNullText=""
+				constraints="twocols(expandHorizontally=false;expandVertically=false;index=0;location=right)"
+				localize="true" />
+			<Label label="foreground" index="9"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;location=left)"
+				localize="true" />
+			<Color index="10" data="data.foregroundColor" allowsNull="true"
+				allowsNullText=""
+				constraints="twocols(expandHorizontally=false;expandVertically=false;index=0;location=right)"
+				localize="true" />
+			<Label label="opaque" index="12"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;location=left)"
+				localize="true" />
+			<CheckBox selected="false" index="11" data="data.opaque"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;index=0;location=right)"
+				localize="true" />
+		</Panel>
 	</Panel>
 	<LocalizedDictionary>
 	</LocalizedDictionary>
-	<Parameter name="title" value="Font and colors" />
+	<Parameter name="title" value="Fonts and colors" />
 </Inspector>
