@@ -163,11 +163,21 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			public int getPolicy() {
 				return ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
 			}
+
+			@Override
+			public String getPresentationName() {
+				return "as_needed";
+			}
 		},
 		VERTICAL_SCROLLBAR_NEVER {
 			@Override
 			public int getPolicy() {
 				return ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER;
+			}
+
+			@Override
+			public String getPresentationName() {
+				return "never";
 			}
 		},
 		VERTICAL_SCROLLBAR_ALWAYS {
@@ -175,8 +185,15 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			public int getPolicy() {
 				return ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
 			}
+
+			@Override
+			public String getPresentationName() {
+				return "always";
+			}
 		};
 		public abstract int getPolicy();
+
+		public abstract String getPresentationName();
 	}
 
 	public static enum HorizontalScrollBarPolicy {
@@ -185,11 +202,21 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			public int getPolicy() {
 				return ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED;
 			}
+
+			@Override
+			public String getPresentationName() {
+				return "as_needed";
+			}
 		},
 		HORIZONTAL_SCROLLBAR_NEVER {
 			@Override
 			public int getPolicy() {
 				return ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER;
+			}
+
+			@Override
+			public String getPresentationName() {
+				return "never";
 			}
 		},
 		HORIZONTAL_SCROLLBAR_ALWAYS {
@@ -197,8 +224,15 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			public int getPolicy() {
 				return ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS;
 			}
+
+			@Override
+			public String getPresentationName() {
+				return "always";
+			}
 		};
 		public abstract int getPolicy();
+
+		public abstract String getPresentationName();
 	}
 
 	@PropertyIdentifier(type = FIBLibrary.class)
@@ -883,7 +917,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		}
 
 		@Override
-		public boolean isRootComponent() {
+		public final boolean isRootComponent() {
 			return getParent() == null;
 		}
 
@@ -1397,7 +1431,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		}
 
 		protected void clearTemporarySize() {
-			System.out.println("Clear temporary size !!!");
 			temporarySize = false;
 			temporaryWidth = null;
 			temporaryHeight = null;
