@@ -218,9 +218,23 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 		personElement
 				.setLabel(new DataBinding<String>("\"My relative: \"+person.toString", browser, String.class, BindingDefinitionType.GET));
 
-		browser.addToElements(personElement);
+		org.openflexo.gina.model.widget.FIBBrowserAction.FIBAddAction addAction = factory
+				.newInstance(org.openflexo.gina.model.widget.FIBBrowserAction.FIBAddAction.class);
+		personElement.addToActions(addAction);
 
+		assertEquals(2, addAction.getBindingModel().getBindingVariablesCount());
+
+		browser.addToElements(personElement);
 		assertTrue(browser.getRoot().isValid());
+
+		assertEquals(8, addAction.getBindingModel().getBindingVariablesCount());
+
+		org.openflexo.gina.model.widget.FIBBrowserAction.FIBAddAction addAction2 = factory
+				.newInstance(org.openflexo.gina.model.widget.FIBBrowserAction.FIBAddAction.class);
+		personElement.addToActions(addAction2);
+
+		System.out.println("AddAction2 BM=" + addAction2.getBindingModel());
+		assertEquals(8, addAction2.getBindingModel().getBindingVariablesCount());
 
 		System.out.println("Person Element BM = " + personElement.getBindingModel());
 
@@ -253,6 +267,12 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 		assertNotNull(parents.getChildBindable().getBindingModel().bindingVariableNamed("controller"));
 		assertNotNull(parents.getChildBindable().getBindingModel().bindingVariableNamed("browser"));
 		assertNotNull(parents.getChildBindable().getBindingModel().bindingVariableNamed("child"));
+
+		org.openflexo.gina.model.widget.FIBBrowserAction.FIBAddAction addAction3 = factory
+				.newInstance(org.openflexo.gina.model.widget.FIBBrowserAction.FIBAddAction.class);
+		personElement.addToActions(addAction3);
+
+		System.out.println("AddAction3 BM=" + addAction3.getBindingModel());
 
 	}
 

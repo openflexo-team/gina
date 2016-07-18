@@ -180,8 +180,15 @@ public abstract interface FIBBrowserAction extends FIBModelObject {
 		}
 
 		@Override
+		public void setOwner(FIBBrowserElement browserElement) {
+			performSuperSetter(OWNER_KEY, browserElement);
+			updateBindingModel();
+		}
+
+		@Override
 		public void updateBindingModel() {
-			if (actionBindingModel != null) {
+			if (actionBindingModel != null && getOwner() != null) {
+				getOwner().getActionBindingModel().setBaseBindingModel(getOwner().getBindingModel());
 				actionBindingModel.setBaseBindingModel(getOwner().getActionBindingModel());
 			}
 		}
