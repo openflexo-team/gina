@@ -153,6 +153,12 @@ public interface FIBVariable<T> extends FIBModelObject {
 
 		@Override
 		public void setType(Type type) {
+			if (getValue() != null && getValue().isSet() && getValue().isValid()) {
+				if (!TypeUtils.isTypeAssignableFrom(getValue().getAnalyzedType(), type, true)) {
+					// supplied type is not compatible with analysed type as infered from value binding, abort
+					return;
+				}
+			}
 			Class<T> oldTypeClass = getTypeClass();
 			Type oldType = variableType;
 			variableType = type;
