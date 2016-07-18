@@ -560,7 +560,8 @@ public interface FIBCustom extends FIBWidget {
 					value.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 					value.setBindingName("value");
 					this.value = value;
-				} else {
+				}
+				else {
 					getValue();
 				}
 			}

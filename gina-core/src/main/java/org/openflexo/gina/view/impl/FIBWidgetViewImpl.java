@@ -215,9 +215,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
-					System.out.println(" **** bindingValueChanged() detected for data=" + getComponent().getData() + " with newValue="
-							+ newValue + " source=" + source);
-
+					// System.out.println(" **** bindingValueChanged() detected for data=" + getComponent().getData() + " with newValue="
+					// + newValue + " source=" + source);
 					updateData();
 				}
 			};
