@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
 	dataClassName="org.openflexo.gina.model.FIBComponent" name="Inspector">
-	<Label index="58" label="controller_class" constraints="twocols(location=left)"
+	<Label index="30" label="controller_class" constraints="twocols(location=left)"
 		visible="data.isRootComponent" localize="true"  name="ControllerClassLabel"/>
-	<Custom index="59" componentClassName="org.openflexo.gina.swing.utils.ClassSelector"
+	<Custom index="31" componentClassName="org.openflexo.gina.swing.utils.ClassSelector"
 		localize="true" manageDynamicModel="true" data="data.controllerClass"
 		constraints="twocols(expandHorizontally=true;location=right)" visible="data.isRootComponent" name="ControllerClassSelector"/>
-	<Label index="60" label="visible" constraints="twocols(location=left)"
+	<Label index="32" label="visible" constraints="twocols(location=left)"
 		name="visibleLabel" localize="true" />
-	<Custom index="61" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom index="33" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 		localize="true" manageDynamicModel="true" name="visibleValue" data="data.visible"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data" />

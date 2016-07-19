@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBTableColumn" name="Inspector">
+	<Label label="foreground_color" index="18"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=18;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+		localize="true" />
+	<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" index="19"
+		data="data.color"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=19;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+		<Assignment variable="component.bindable" value="data" />
+	</Custom>
+	<Label label="background_color" index="20"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=20;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+		localize="true" />
+	<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" index="21"
+		data="data.bgColor"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=21;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+		<Assignment variable="component.bindable" value="data" />
+	</Custom>
+	<Label label="define_specific_font" index="26"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=26;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+		localize="true" />
+	<Panel layout="flow" hGap="5" vGap="5" flowAlignment="LEADING"
+		titleFont="SansSerif,0,11" darkLevel="0" index="27"
+		constraints="twocols(anchor=center;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=27;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right;padX=0;padY=0;weightX=0.0;weightY=0.0)">
+		<CheckBox selected="false" data="data.hasSpecificFont"
+			constraints="flow()" localize="true" />
+		<Font sampleText="Sample for this font" localize="true"
+			enable="((data != null) &amp; data.hasSpecificFont)"
+			data="data.font" constraints="flow()" />
+	</Panel>
+	<Parameter name="title" value="Table column" />
+</Inspector>

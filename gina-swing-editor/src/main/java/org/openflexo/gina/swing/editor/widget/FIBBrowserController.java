@@ -55,22 +55,37 @@ import org.openflexo.gina.model.graph.FIBGraphFunction;
 import org.openflexo.gina.model.graph.FIBNumericFunction;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBButton;
+import org.openflexo.gina.model.widget.FIBButtonColumn;
 import org.openflexo.gina.model.widget.FIBCheckBox;
+import org.openflexo.gina.model.widget.FIBCheckBoxColumn;
 import org.openflexo.gina.model.widget.FIBCustom;
+import org.openflexo.gina.model.widget.FIBCustomColumn;
 import org.openflexo.gina.model.widget.FIBDropDown;
+import org.openflexo.gina.model.widget.FIBDropDownColumn;
+import org.openflexo.gina.model.widget.FIBIconColumn;
 import org.openflexo.gina.model.widget.FIBImage;
 import org.openflexo.gina.model.widget.FIBLabel;
+import org.openflexo.gina.model.widget.FIBLabelColumn;
 import org.openflexo.gina.model.widget.FIBNumber;
+import org.openflexo.gina.model.widget.FIBNumberColumn;
 import org.openflexo.gina.model.widget.FIBRadioButtonList;
 import org.openflexo.gina.model.widget.FIBReferencedComponent;
 import org.openflexo.gina.model.widget.FIBTable;
+import org.openflexo.gina.model.widget.FIBTableAction;
+import org.openflexo.gina.model.widget.FIBTableAction.ActionType;
+import org.openflexo.gina.model.widget.FIBTableAction.FIBAddAction;
+import org.openflexo.gina.model.widget.FIBTableAction.FIBCustomAction;
+import org.openflexo.gina.model.widget.FIBTableAction.FIBRemoveAction;
+import org.openflexo.gina.model.widget.FIBTableColumn;
 import org.openflexo.gina.model.widget.FIBTextArea;
 import org.openflexo.gina.model.widget.FIBTextField;
+import org.openflexo.gina.model.widget.FIBTextFieldColumn;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.controller.FIBEditorIconLibrary;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.gina.view.GinaViewFactory;
+import org.openflexo.icon.IconFactory;
 import org.openflexo.model.ModelEntity;
 import org.openflexo.toolbox.StringUtils;
 
@@ -183,6 +198,18 @@ public class FIBBrowserController extends FIBController /*implements Observer*/ 
 		else if (element instanceof FIBGraphFunction) {
 			return FIBEditorIconLibrary.GRAPH_FUNCTION_ICON;
 		}
+		else if (element instanceof FIBTableColumn) {
+			return FIBEditorIconLibrary.TABLE_COLUMN_ICON;
+		}
+		else if (element instanceof FIBTableAction) {
+			if (((FIBTableAction) element).getActionType() == ActionType.Add) {
+				return IconFactory.getImageIcon(FIBEditorIconLibrary.TABLE_ACTION_ICON, FIBEditorIconLibrary.DUPLICATE);
+			}
+			if (((FIBTableAction) element).getActionType() == ActionType.Delete) {
+				return IconFactory.getImageIcon(FIBEditorIconLibrary.TABLE_ACTION_ICON, FIBEditorIconLibrary.DELETE);
+			}
+			return FIBEditorIconLibrary.TABLE_ACTION_ICON;
+		}
 		return null;
 
 	}
@@ -216,6 +243,148 @@ public class FIBBrowserController extends FIBController /*implements Observer*/ 
 
 	public void search() {
 		System.out.println("Searching " + getSearchedLabel());
+	}
+
+	public FIBLabelColumn createLabelColumn(FIBTable table) {
+		FIBLabelColumn newColumn = editorController.getFactory().newInstance(FIBLabelColumn.class);
+		newColumn.setName("label");
+		newColumn.setTitle("label");
+		table.addToColumns(newColumn);
+		return newColumn;
+	}
+
+	public FIBTextFieldColumn createTextFieldColumn(FIBTable table) {
+		FIBTextFieldColumn newColumn = editorController.getFactory().newInstance(FIBTextFieldColumn.class);
+		newColumn.setName("textfield");
+		newColumn.setTitle("textfield");
+		table.addToColumns(newColumn);
+		return newColumn;
+	}
+
+	public FIBCheckBoxColumn createCheckBoxColumn(FIBTable table) {
+		FIBCheckBoxColumn newColumn = editorController.getFactory().newInstance(FIBCheckBoxColumn.class);
+		newColumn.setName("checkbox");
+		newColumn.setTitle("checkbox");
+		table.addToColumns(newColumn);
+		return newColumn;
+	}
+
+	public FIBDropDownColumn createDropDownColumn(FIBTable table) {
+		FIBDropDownColumn newColumn = editorController.getFactory().newInstance(FIBDropDownColumn.class);
+		newColumn.setName("dropdown");
+		newColumn.setTitle("dropdown");
+		table.addToColumns(newColumn);
+		return newColumn;
+	}
+
+	public FIBNumberColumn createNumberColumn(FIBTable table) {
+		FIBNumberColumn newColumn = editorController.getFactory().newInstance(FIBNumberColumn.class);
+		newColumn.setName("number");
+		newColumn.setTitle("number");
+		table.addToColumns(newColumn);
+		return newColumn;
+	}
+
+	public FIBIconColumn createIconColumn(FIBTable table) {
+		FIBIconColumn newColumn = editorController.getFactory().newInstance(FIBIconColumn.class);
+		newColumn.setName("icon");
+		newColumn.setTitle("icon");
+		table.addToColumns(newColumn);
+		return newColumn;
+	}
+
+	public FIBCustomColumn createCustomColumn(FIBTable table) {
+		FIBCustomColumn newColumn = editorController.getFactory().newInstance(FIBCustomColumn.class);
+		newColumn.setName("custom");
+		newColumn.setTitle("custom");
+		table.addToColumns(newColumn);
+		return newColumn;
+	}
+
+	public FIBButtonColumn createButtonColumn(FIBTable table) {
+		FIBButtonColumn newColumn = editorController.getFactory().newInstance(FIBButtonColumn.class);
+		newColumn.setName("button");
+		newColumn.setTitle("button");
+		table.addToColumns(newColumn);
+		return newColumn;
+	}
+
+	public FIBTableColumn deleteColumn(FIBTableColumn columnToDelete) {
+		logger.info("Called deleteColumn() with " + columnToDelete);
+		if (columnToDelete.getOwner() != null) {
+			columnToDelete.getOwner().removeFromColumns(columnToDelete);
+			columnToDelete.delete();
+		}
+		return columnToDelete;
+	}
+
+	public FIBAddAction createAddAction(FIBTable table) {
+		System.out.println("create add action");
+		FIBAddAction newAction = editorController.getFactory().newInstance(FIBAddAction.class);
+		newAction.setName("add_action");
+		table.addToActions(newAction);
+		return newAction;
+	}
+
+	public FIBRemoveAction createRemoveAction(FIBTable table) {
+		FIBRemoveAction newAction = editorController.getFactory().newInstance(FIBRemoveAction.class);
+		newAction.setName("delete_action");
+		table.addToActions(newAction);
+		return newAction;
+	}
+
+	public FIBCustomAction createCustomAction(FIBTable table) {
+		FIBCustomAction newAction = editorController.getFactory().newInstance(FIBCustomAction.class);
+		newAction.setName("custom_action");
+		table.addToActions(newAction);
+		return newAction;
+	}
+
+	public FIBTableAction deleteAction(FIBTableAction actionToDelete) {
+		logger.info("Called deleteAction() with " + actionToDelete);
+		if (actionToDelete.getOwner() != null) {
+			actionToDelete.getOwner().removeFromActions(actionToDelete);
+			actionToDelete.delete();
+		}
+		return actionToDelete;
+	}
+
+	public void moveToTop(FIBTableColumn c) {
+		if (c == null || c.getOwner() == null) {
+			return;
+		}
+		c.getOwner().getColumns().remove(c);
+		c.getOwner().getColumns().add(0, c);
+		c.getOwner().getPropertyChangeSupport().firePropertyChange(FIBTable.COLUMNS_KEY, null, c.getOwner().getColumns());
+	}
+
+	public void moveUp(FIBTableColumn c) {
+		if (c == null || c.getOwner() == null) {
+			return;
+		}
+		int index = c.getOwner().getColumns().indexOf(c);
+		c.getOwner().getColumns().remove(c);
+		c.getOwner().getColumns().add(index - 1, c);
+		c.getOwner().getPropertyChangeSupport().firePropertyChange(FIBTable.COLUMNS_KEY, null, c.getOwner().getColumns());
+	}
+
+	public void moveDown(FIBTableColumn c) {
+		if (c == null || c.getOwner() == null) {
+			return;
+		}
+		int index = c.getOwner().getColumns().indexOf(c);
+		c.getOwner().getColumns().remove(c);
+		c.getOwner().getColumns().add(index + 1, c);
+		c.getOwner().getPropertyChangeSupport().firePropertyChange(FIBTable.COLUMNS_KEY, null, c.getOwner().getColumns());
+	}
+
+	public void moveToBottom(FIBTableColumn c) {
+		if (c == null || c.getOwner() == null) {
+			return;
+		}
+		c.getOwner().getColumns().remove(c);
+		c.getOwner().getColumns().add(c);
+		c.getOwner().getPropertyChangeSupport().firePropertyChange(FIBTable.COLUMNS_KEY, null, c.getOwner().getColumns());
 	}
 
 	public FIBNumericFunction createNumericFunction(FIBGraph graph) {

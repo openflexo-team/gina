@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBTable" name="Inspector">
+	<Label  index="0" label="selected"
+		constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+		localize="true" />
+	<Custom index="1" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.selected"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+		<Assignment variable="component.bindable" value="data" />
+	</Custom>
+	<CheckBox index="2" selected="false" data="data.boundToSelectionManager"
+		constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+		localize="true" />
+	<Label index="3" label="bound_to_selection_manager"
+		constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+		localize="true" />
+	<Label index="4" label="selectionMode"
+		constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+		localize="true" />
+	<DropDown index="5" data="data.selectionMode"
+		constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+		localize="true" iteratorClassName="java.lang.Object"
+		autoSelectFirstRow="false" />
+	<LocalizedDictionary />
+	<Parameter name="title" value="Table" />
+</Inspector>

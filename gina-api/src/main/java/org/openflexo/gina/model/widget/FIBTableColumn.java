@@ -702,6 +702,20 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 			retriever.foundLocalized(getTooltipText());
 		}
 
+		/*@Override
+		public String getPresentationName() {
+			return getName();
+		}*/
+
+		@Override
+		public String getName() {
+			String returned = (String) performSuperGetter(NAME_KEY);
+			if (returned == null) {
+				return getTitle();
+			}
+			return returned;
+		}
+
 	}
 
 	@DefineValidationRule

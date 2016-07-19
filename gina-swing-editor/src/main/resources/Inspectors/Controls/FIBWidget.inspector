@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.FIBWidget" name="Inspector">
+	<CheckBox name="DynamicModelCB" index="20" selected="false"
+		data="data.manageDynamicModel" constraints="twocols(location=left)"
+		localize="true" />
+	<Label name="DynamicModelLabel" index="21" label="dynamic_model"
+		constraints="twocols(expandHorizontally=true;location=right)"
+		localize="true" />
+	<Label label="click_action" index="22" constraints="twocols(location=left)"
+		localize="true" />
+	<Custom index="23" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.clickAction"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data.eventListener" />
+	</Custom>
+	<Label index="24" label="double_click_action" constraints="twocols(location=left)"
+		localize="true" />
+	<Custom index="25" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.doubleClickAction"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data.eventListener" />
+	</Custom>
+	<Label index="26" label="right_click_action" constraints="twocols(location=left)"
+		localize="true" />
+	<Custom index="27" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.rightClickAction"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data.eventListener" />
+	</Custom>
+	<Label index="28" label="enter_pressed_action" constraints="twocols(location=left)"
+		localize="true" />
+	<Custom index="29" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.enterPressedAction"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data" />
+	</Custom>
+	<Label index="30" label="value_changed" constraints="twocols(location=left)"
+		localize="true" />
+	<Custom index="31" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.valueChangedAction"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data" />
+	</Custom>
+	<LocalizedDictionary>
+		<Localized key="dynamic_model" lang="French" value="Modèle dynamique" />
+		<Localized key="localize_component" lang="French"
+			value="Localiser le composant" />
+		<Localized key="read_only_component" lang="French"
+			value="Composant en lecture seule" />
+		<Localized key="value_changed" lang="French" value="Valeur changée" />
+		<Localized key="value_changed" lang="English" value="Value changed" />
+		<Localized key="dynamic_model" lang="English" value="Dynamic model" />
+		<Localized key="localize_component" lang="English"
+			value="Localize component" />
+		<Localized key="read_only_component" lang="English"
+			value="Read-only component" />
+		<Localized key="value_changed" lang="Dutch" value="Value changed" />
+		<Localized key="read_only_component" lang="Dutch"
+			value="Read-only component" />
+		<Localized key="localize_component" lang="Dutch"
+			value="Localize component" />
+		<Localized key="dynamic_model" lang="Dutch" value="Dynamic model" />
+	</LocalizedDictionary>
+	<Parameter name="title" value="Widget" />
+</Inspector>

@@ -68,6 +68,7 @@ public class FIBEditorInspectorController implements Observer {
 	JFIBInspectorController definitionInspector;
 	JFIBInspectorController basicInspector;
 	JFIBInspectorController containerInspector;
+	JFIBInspectorController controlsInspector;
 	JFIBInspectorController layoutInspector;
 	JFIBInspectorController fontAndColorsInspector;
 	JFIBInspectorController advancedInspector;
@@ -87,6 +88,9 @@ public class FIBEditorInspectorController implements Observer {
 		containerInspector = new JFIBInspectorController(ResourceLocator.locateResource("Inspectors/Container"), INSPECTORS_FIB_LIBRARY,
 				FIBModelObjectImpl.GINA_LOCALIZATION);
 
+		controlsInspector = new JFIBInspectorController(ResourceLocator.locateResource("Inspectors/Controls"), INSPECTORS_FIB_LIBRARY,
+				FIBModelObjectImpl.GINA_LOCALIZATION);
+
 		layoutInspector = new JFIBInspectorController(ResourceLocator.locateResource("Inspectors/Layout"), INSPECTORS_FIB_LIBRARY,
 				FIBModelObjectImpl.GINA_LOCALIZATION);
 
@@ -100,10 +104,11 @@ public class FIBEditorInspectorController implements Observer {
 		panelGroup.addContents("Definition", definitionInspector.getRootPane());
 		panelGroup.addContents("Basic", basicInspector.getRootPane());
 		panelGroup.addContents("Container", containerInspector.getRootPane());
+		panelGroup.addContents("Controls", controlsInspector.getRootPane());
 		panelGroup.addContents("Layout", layoutInspector.getRootPane());
 		panelGroup.addContents("Font and colors", fontAndColorsInspector.getRootPane());
 		panelGroup.addContents("Advanced", advancedInspector.getRootPane());
-		panelGroup.setOpenedPanel(0); // Open basic inspector
+		panelGroup.setOpenedPanel(0); // Open definition inspector
 	}
 
 	public FlexoCollabsiblePanelGroup getPanelGroup() {
@@ -134,6 +139,7 @@ public class FIBEditorInspectorController implements Observer {
 		definitionInspector.inspectObject(object);
 		basicInspector.inspectObject(object);
 		containerInspector.inspectObject(object);
+		controlsInspector.inspectObject(object);
 		layoutInspector.inspectObject(object);
 		fontAndColorsInspector.inspectObject(object);
 		advancedInspector.inspectObject(object);

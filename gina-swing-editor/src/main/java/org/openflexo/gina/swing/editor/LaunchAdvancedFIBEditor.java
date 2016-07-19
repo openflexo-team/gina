@@ -63,6 +63,7 @@ import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.inspector.FIBEditorInspectorController;
 import org.openflexo.gina.swing.editor.palette.FIBEditorPalettes;
 import org.openflexo.gina.swing.editor.widget.FIBLibraryBrowser;
+import org.openflexo.gina.swing.utils.JFIBDialogInspectorController;
 import org.openflexo.gina.swing.utils.JFIBPreferences;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.logging.FlexoLogger;
@@ -208,8 +209,8 @@ public class LaunchAdvancedFIBEditor {
 			FIBEditorPalettes palette = editor.makePalette();
 			FIBEditorInspectorController inspectors = editor.makeInspectors();
 
-			// JFIBDialogInspectorController inspector = editor.makeInspector(frame);
-			// inspector.setVisible(true);
+			JFIBDialogInspectorController inspector = editor.makeInspector(frame);
+			inspector.setVisible(true);
 
 			MainPanel mainPanel = editor.makeMainPanel();
 
