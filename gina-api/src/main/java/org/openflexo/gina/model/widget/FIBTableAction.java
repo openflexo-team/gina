@@ -195,6 +195,10 @@ public abstract interface FIBTableAction extends FIBModelObject {
 			retriever.foundLocalized(getName());
 		}
 
+		@Override
+		public String getPresentationName() {
+			return getName();
+		}
 	}
 
 	@ModelEntity

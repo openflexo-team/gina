@@ -525,6 +525,11 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		getPropertyChangeSupport().firePropertyChange(SELECTED, oldSelectedObject, object);
 	}
 
+	@Override
+	public void performClearSelection() {
+		clearSelection();
+	}
+
 	public void clearSelection() {
 		getTreeSelectionModel().clearSelection();
 	}

@@ -71,6 +71,8 @@ public interface FIBBrowserWidget<C, T> extends FIBWidgetView<FIBBrowser, C, T>,
 
 	public void performSelect(List<T> objects, boolean force);
 
+	public void performClearSelection();
+
 	public void performExpand(T o);
 
 	public boolean isEnabled();

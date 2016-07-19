@@ -253,6 +253,11 @@ public abstract interface FIBBrowserAction extends FIBModelObject {
 			retriever.foundLocalized(getName());
 		}
 
+		@Override
+		public String getPresentationName() {
+			return getName();
+		}
+
 	}
 
 	@ModelEntity
