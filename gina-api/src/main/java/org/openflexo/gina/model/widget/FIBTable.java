@@ -254,30 +254,43 @@ public interface FIBTable extends FIBWidget {
 
 	public BindingModel getTableBindingModel();
 
+	@Deprecated
 	public FIBAddAction createAddAction();
 
+	@Deprecated
 	public FIBRemoveAction createRemoveAction();
 
+	@Deprecated
 	public FIBCustomAction createCustomAction();
 
+	@Deprecated
 	public FIBTableAction deleteAction(FIBTableAction actionToDelete);
 
+	@Deprecated
 	public FIBLabelColumn createLabelColumn();
 
+	@Deprecated
 	public FIBTextFieldColumn createTextFieldColumn();
 
+	@Deprecated
 	public FIBCheckBoxColumn createCheckBoxColumn();
 
+	@Deprecated
 	public FIBDropDownColumn createDropDownColumn();
 
+	@Deprecated
 	public FIBNumberColumn createNumberColumn();
 
+	@Deprecated
 	public FIBIconColumn createIconColumn();
 
+	@Deprecated
 	public FIBCustomColumn createCustomColumn();
 
+	@Deprecated
 	public FIBButtonColumn createButtonColumn();
 
+	@Deprecated
 	public FIBTableColumn deleteColumn(FIBTableColumn columnToDelete);
 
 	public void moveToTop(FIBTableColumn c);
@@ -690,6 +703,7 @@ public interface FIBTable extends FIBWidget {
 		}
 
 		@Override
+		@Deprecated
 		public FIBAddAction createAddAction() {
 			FIBAddAction newAction = getModelFactory().newInstance(FIBAddAction.class);
 			newAction.setName("add_action");
@@ -698,6 +712,7 @@ public interface FIBTable extends FIBWidget {
 		}
 
 		@Override
+		@Deprecated
 		public FIBRemoveAction createRemoveAction() {
 			FIBRemoveAction newAction = getModelFactory().newInstance(FIBRemoveAction.class);
 			newAction.setName("delete_action");
@@ -706,6 +721,7 @@ public interface FIBTable extends FIBWidget {
 		}
 
 		@Override
+		@Deprecated
 		public FIBCustomAction createCustomAction() {
 			FIBCustomAction newAction = getModelFactory().newInstance(FIBCustomAction.class);
 			newAction.setName("custom_action");
@@ -714,6 +730,7 @@ public interface FIBTable extends FIBWidget {
 		}
 
 		@Override
+		@Deprecated
 		public FIBTableAction deleteAction(FIBTableAction actionToDelete) {
 			logger.info("Called deleteAction() with " + actionToDelete);
 			removeFromActions(actionToDelete);
@@ -763,6 +780,7 @@ public interface FIBTable extends FIBWidget {
 		}
 
 		@Override
+		@Deprecated
 		public FIBLabelColumn createLabelColumn() {
 			FIBLabelColumn newColumn = getModelFactory().newInstance(FIBLabelColumn.class);
 			newColumn.setName("label");
@@ -772,6 +790,7 @@ public interface FIBTable extends FIBWidget {
 		}
 
 		@Override
+		@Deprecated
 		public FIBTextFieldColumn createTextFieldColumn() {
 			FIBTextFieldColumn newColumn = getModelFactory().newInstance(FIBTextFieldColumn.class);
 			newColumn.setName("textfield");
@@ -781,6 +800,7 @@ public interface FIBTable extends FIBWidget {
 		}
 
 		@Override
+		@Deprecated
 		public FIBCheckBoxColumn createCheckBoxColumn() {
 			FIBCheckBoxColumn newColumn = getModelFactory().newInstance(FIBCheckBoxColumn.class);
 			newColumn.setName("checkbox");
@@ -789,6 +809,7 @@ public interface FIBTable extends FIBWidget {
 			return newColumn;
 		}
 
+		@Deprecated
 		@Override
 		public FIBDropDownColumn createDropDownColumn() {
 			FIBDropDownColumn newColumn = getModelFactory().newInstance(FIBDropDownColumn.class);
@@ -798,6 +819,7 @@ public interface FIBTable extends FIBWidget {
 			return newColumn;
 		}
 
+		@Deprecated
 		@Override
 		public FIBNumberColumn createNumberColumn() {
 			FIBNumberColumn newColumn = getModelFactory().newInstance(FIBNumberColumn.class);
@@ -807,6 +829,7 @@ public interface FIBTable extends FIBWidget {
 			return newColumn;
 		}
 
+		@Deprecated
 		@Override
 		public FIBIconColumn createIconColumn() {
 			FIBIconColumn newColumn = getModelFactory().newInstance(FIBIconColumn.class);
@@ -816,6 +839,7 @@ public interface FIBTable extends FIBWidget {
 			return newColumn;
 		}
 
+		@Deprecated
 		@Override
 		public FIBCustomColumn createCustomColumn() {
 			FIBCustomColumn newColumn = getModelFactory().newInstance(FIBCustomColumn.class);
@@ -825,6 +849,7 @@ public interface FIBTable extends FIBWidget {
 			return newColumn;
 		}
 
+		@Deprecated
 		@Override
 		public FIBButtonColumn createButtonColumn() {
 			FIBButtonColumn newColumn = getModelFactory().newInstance(FIBButtonColumn.class);
@@ -834,6 +859,7 @@ public interface FIBTable extends FIBWidget {
 			return newColumn;
 		}
 
+		@Deprecated
 		@Override
 		public FIBTableColumn deleteColumn(FIBTableColumn columnToDelete) {
 			logger.info("Called deleteColumn() with " + columnToDelete);

@@ -42,6 +42,14 @@
 			<BrowserAddAction method="controller.createCustomAction(selected)"
 				name="new_custom_action" />
 		</BrowserElement>
+		<BrowserElement icon="controller.iconFor(browser)"
+			filtered="false" label="browser.presentationName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.model.widget.FIBBrowser" name="browser"
+			isEditable="true" editableLabel="browser.name">
+			<Children name="elements" data="browser.elements" />
+			<BrowserAddAction name="new_element"
+				method="controller.createElement(selected)" />
+		</BrowserElement>
 		<BrowserElement icon="controller.iconFor(graph)"
 			filtered="false" label="graph.presentationName" defaultVisible="true"
 			dataClassName="org.openflexo.gina.model.graph.FIBGraph" name="graph"
@@ -77,12 +85,39 @@
 			<BrowserRemoveAction name="remove_column"
 				method="controller.deleteColumn(selected)" />
 		</BrowserElement>
-		<BrowserElement icon="controller.iconFor(column)"
-			filtered="false" label="column.presentationName" defaultVisible="true"
-			dataClassName="org.openflexo.gina.model.widget.FIBTableAction" name="column"
-			isEditable="true" editableLabel="column.name">
+		<BrowserElement icon="controller.iconFor(action)"
+			filtered="false" label="action.presentationName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.model.widget.FIBTableAction" name="action"
+			isEditable="true" editableLabel="action.name">
 			<BrowserRemoveAction name="remove_action"
 				method="controller.deleteAction(selected)" />
+		</BrowserElement>
+		<BrowserElement icon="controller.iconFor(element)"
+			filtered="false" label="element.presentationName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.model.widget.FIBBrowserElement" name="element"
+			isEditable="true" editableLabel="element.name">
+			<Children name="children" data="element.children" />
+			<Children name="children" data="element.actions" />
+            <BrowserAddAction method="controller.createChildren(selected)" name="add_children" />
+            <BrowserAddAction method="controller.createBrowserAddAction(selected)" name="new_add_action" />
+            <BrowserAddAction method="controller.createBrowserRemoveAction(selected)" name="new_remove_action" />
+            <BrowserAddAction method="controller.createBrowserCustomAction(selected)" name="new_custom_action" />
+ 			<BrowserRemoveAction name="remove_element"
+				method="controller.deleteElement(selected)" />
+		</BrowserElement>
+		<BrowserElement icon="controller.iconFor(children)"
+			filtered="false" label="children.presentationName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.model.widget.FIBBrowserElement$FIBBrowserElementChildren" name="children"
+			isEditable="true" editableLabel="children.name">
+			<BrowserRemoveAction name="remove_children"
+				method="controller.deleteChildren(selected)" />
+		</BrowserElement>
+		<BrowserElement icon="controller.iconFor(action)"
+			filtered="false" label="action.presentationName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.model.widget.FIBBrowserAction" name="action"
+			isEditable="true" editableLabel="action.name">
+			<BrowserRemoveAction name="remove_action"
+				method="controller.deleteBrowserAction(selected)" />
 		</BrowserElement>
 		<BrowserElement icon="controller.iconFor(element)"
 			filtered="false" label="element.presentationName" defaultVisible="true"

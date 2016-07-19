@@ -76,7 +76,12 @@ public class FIBEditorIconLibrary {
 	public static final ImageIcon TABLE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/TableIcon.png"));
 	public static final ImageIcon TABLE_COLUMN_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/TableColumnIcon.png"));
 	public static final ImageIcon TABLE_ACTION_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ActionIcon.png"));
-	public static final ImageIcon TREE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/TreeIcon.png"));
+	public static final ImageIcon BROWSER_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/TreeIcon.png"));
+	public static final ImageIcon BROWSER_ELEMENT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/BrowserElement.png"));
+	public static final ImageIcon BROWSER_ELEMENT_CHILDREN_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/CheckBoxIcon.png"));
+	public static final ImageIcon BROWSER_ELEMENT_ACTION_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/ActionIcon.png"));
 	public static final ImageIcon NUMBER_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/SpinnerIcon.png"));
 	public static final ImageIcon IMAGE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ImageIcon.png"));
 	public static final ImageIcon CUSTOM_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/LayeredPaneIcon.png"));

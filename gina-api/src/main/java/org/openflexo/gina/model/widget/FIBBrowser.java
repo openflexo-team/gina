@@ -256,8 +256,10 @@ public interface FIBBrowser extends FIBWidget {
 
 	public FIBBrowserElement elementForClass(Class<?> aClass);
 
+	@Deprecated
 	public FIBBrowserElement createElement();
 
+	@Deprecated
 	public FIBBrowserElement deleteElement(FIBBrowserElement elementToDelete);
 
 	public void moveToTop(FIBBrowserElement e);
@@ -310,7 +312,6 @@ public interface FIBBrowser extends FIBWidget {
 		public String getBaseName() {
 			return "Browser";
 		}
-
 
 		@Override
 		public DataBinding<Object> getRoot() {
@@ -500,6 +501,7 @@ public interface FIBBrowser extends FIBWidget {
 		}
 
 		@Override
+		@Deprecated
 		public FIBBrowserElement createElement() {
 			logger.info("Called createElement()");
 			FIBBrowserElement newElement = getModelFactory().newInstance(FIBBrowserElement.class);
@@ -509,6 +511,7 @@ public interface FIBBrowser extends FIBWidget {
 		}
 
 		@Override
+		@Deprecated
 		public FIBBrowserElement deleteElement(FIBBrowserElement elementToDelete) {
 			logger.info("Called elementToDelete() with " + elementToDelete);
 			removeFromElements(elementToDelete);

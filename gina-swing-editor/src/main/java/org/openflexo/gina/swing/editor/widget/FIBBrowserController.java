@@ -54,6 +54,9 @@ import org.openflexo.gina.model.graph.FIBGraph;
 import org.openflexo.gina.model.graph.FIBGraphFunction;
 import org.openflexo.gina.model.graph.FIBNumericFunction;
 import org.openflexo.gina.model.widget.FIBBrowser;
+import org.openflexo.gina.model.widget.FIBBrowserAction;
+import org.openflexo.gina.model.widget.FIBBrowserElement;
+import org.openflexo.gina.model.widget.FIBBrowserElement.FIBBrowserElementChildren;
 import org.openflexo.gina.model.widget.FIBButton;
 import org.openflexo.gina.model.widget.FIBButtonColumn;
 import org.openflexo.gina.model.widget.FIBCheckBox;
@@ -163,7 +166,7 @@ public class FIBBrowserController extends FIBController /*implements Observer*/ 
 			return FIBEditorIconLibrary.TABLE_ICON;
 		}
 		else if (element instanceof FIBBrowser) {
-			return FIBEditorIconLibrary.TREE_ICON;
+			return FIBEditorIconLibrary.BROWSER_ICON;
 		}
 		else if (element instanceof FIBTextArea) {
 			return FIBEditorIconLibrary.TEXTAREA_ICON;
@@ -210,6 +213,21 @@ public class FIBBrowserController extends FIBController /*implements Observer*/ 
 			}
 			return FIBEditorIconLibrary.TABLE_ACTION_ICON;
 		}
+		else if (element instanceof FIBBrowserElement) {
+			return FIBEditorIconLibrary.BROWSER_ELEMENT_ICON;
+		}
+		else if (element instanceof FIBBrowserElementChildren) {
+			return FIBEditorIconLibrary.BROWSER_ELEMENT_CHILDREN_ICON;
+		}
+		else if (element instanceof FIBBrowserAction) {
+			if (((FIBBrowserAction) element).getActionType() == org.openflexo.gina.model.widget.FIBBrowserAction.ActionType.Add) {
+				return IconFactory.getImageIcon(FIBEditorIconLibrary.BROWSER_ELEMENT_ACTION_ICON, FIBEditorIconLibrary.DUPLICATE);
+			}
+			if (((FIBBrowserAction) element).getActionType() == org.openflexo.gina.model.widget.FIBBrowserAction.ActionType.Delete) {
+				return IconFactory.getImageIcon(FIBEditorIconLibrary.BROWSER_ELEMENT_ACTION_ICON, FIBEditorIconLibrary.DELETE);
+			}
+			return FIBEditorIconLibrary.BROWSER_ELEMENT_ACTION_ICON;
+		}
 		return null;
 
 	}
@@ -243,6 +261,73 @@ public class FIBBrowserController extends FIBController /*implements Observer*/ 
 
 	public void search() {
 		System.out.println("Searching " + getSearchedLabel());
+	}
+
+	public FIBBrowserElement createElement(FIBBrowser browser) {
+		logger.info("Called createElement()");
+		FIBBrowserElement newElement = editorController.getFactory().newInstance(FIBBrowserElement.class);
+		newElement.setName("element" + (browser.getElements().size() > 0 ? browser.getElements().size() : ""));
+		browser.addToElements(newElement);
+		return newElement;
+	}
+
+	public FIBBrowserElement deleteElement(FIBBrowserElement elementToDelete) {
+		logger.info("Called elementToDelete() with " + elementToDelete);
+		if (elementToDelete.getOwner() != null) {
+			elementToDelete.getOwner().removeFromElements(elementToDelete);
+			elementToDelete.delete();
+		}
+		return elementToDelete;
+	}
+
+	public org.openflexo.gina.model.widget.FIBBrowserAction.FIBAddAction createBrowserAddAction(FIBBrowserElement element) {
+		org.openflexo.gina.model.widget.FIBBrowserAction.FIBAddAction newAction = editorController.getFactory()
+				.newInstance(org.openflexo.gina.model.widget.FIBBrowserAction.FIBAddAction.class);
+		newAction.setName("add_action");
+		element.addToActions(newAction);
+		return newAction;
+	}
+
+	public org.openflexo.gina.model.widget.FIBBrowserAction.FIBRemoveAction createBrowserRemoveAction(FIBBrowserElement element) {
+		org.openflexo.gina.model.widget.FIBBrowserAction.FIBRemoveAction newAction = editorController.getFactory()
+				.newInstance(org.openflexo.gina.model.widget.FIBBrowserAction.FIBRemoveAction.class);
+		newAction.setName("delete_action");
+		element.addToActions(newAction);
+		return newAction;
+	}
+
+	public org.openflexo.gina.model.widget.FIBBrowserAction.FIBCustomAction createBrowserCustomAction(FIBBrowserElement element) {
+		org.openflexo.gina.model.widget.FIBBrowserAction.FIBCustomAction newAction = editorController.getFactory()
+				.newInstance(org.openflexo.gina.model.widget.FIBBrowserAction.FIBCustomAction.class);
+		newAction.setName("custom_action");
+		element.addToActions(newAction);
+		return newAction;
+	}
+
+	public FIBBrowserAction deleteBrowserAction(FIBBrowserAction actionToDelete) {
+		logger.info("Called deleteBrowserAction() with " + actionToDelete);
+		if (actionToDelete.getOwner() != null) {
+			actionToDelete.getOwner().removeFromActions(actionToDelete);
+			actionToDelete.delete();
+		}
+		return actionToDelete;
+	}
+
+	public FIBBrowserElementChildren createChildren(FIBBrowserElement element) {
+		logger.info("Called createChildren()");
+		FIBBrowserElementChildren newChildren = editorController.getFactory().newInstance(FIBBrowserElementChildren.class);
+		newChildren.setName("children" + (element.getChildren().size() > 0 ? element.getChildren().size() : ""));
+		element.addToChildren(newChildren);
+		return newChildren;
+	}
+
+	public FIBBrowserElementChildren deleteChildren(FIBBrowserElementChildren childrenToDelete) {
+		logger.info("Called elementToDelete() with " + childrenToDelete);
+		if (childrenToDelete.getOwner() != null) {
+			childrenToDelete.getOwner().removeFromChildren(childrenToDelete);
+			childrenToDelete.delete();
+		}
+		return childrenToDelete;
 	}
 
 	public FIBLabelColumn createLabelColumn(FIBTable table) {

@@ -278,12 +278,16 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 	public Font retrieveValidFont();
 
+	@Deprecated
 	public FIBAddAction createAddAction();
 
+	@Deprecated
 	public FIBRemoveAction createRemoveAction();
 
+	@Deprecated
 	public FIBCustomAction createCustomAction();
 
+	@Deprecated
 	public FIBBrowserAction deleteAction(FIBBrowserAction actionToDelete);
 
 	public void moveToTop(FIBBrowserElementChildren e);
@@ -298,8 +302,10 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 	public void setImageIconFile(File imageIconFile);
 
+	@Deprecated
 	public FIBBrowserElementChildren createChildren();
 
+	@Deprecated
 	public FIBBrowserElementChildren deleteChildren(FIBBrowserElementChildren elementToDelete);
 
 	public void searchLocalized(LocalizationEntryRetriever retriever);
@@ -863,6 +869,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}*/
 
 		@Override
+		@Deprecated
 		public FIBAddAction createAddAction() {
 			FIBAddAction newAction = getModelFactory().newInstance(FIBAddAction.class);
 			newAction.setName("add_action");
@@ -871,6 +878,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}
 
 		@Override
+		@Deprecated
 		public FIBRemoveAction createRemoveAction() {
 			FIBRemoveAction newAction = getModelFactory().newInstance(FIBRemoveAction.class);
 			newAction.setName("delete_action");
@@ -879,6 +887,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}
 
 		@Override
+		@Deprecated
 		public FIBCustomAction createCustomAction() {
 			FIBCustomAction newAction = getModelFactory().newInstance(FIBCustomAction.class);
 			newAction.setName("custom_action");
@@ -887,6 +896,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}
 
 		@Override
+		@Deprecated
 		public FIBBrowserAction deleteAction(FIBBrowserAction actionToDelete) {
 			logger.info("Called deleteAction() with " + actionToDelete);
 			removeFromActions(actionToDelete);
@@ -918,6 +928,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}*/
 
 		@Override
+		@Deprecated
 		public FIBBrowserElementChildren createChildren() {
 			logger.info("Called createChildren()");
 			FIBBrowserElementChildren newChildren = getModelFactory().newInstance(FIBBrowserElementChildren.class);
@@ -927,6 +938,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}
 
 		@Override
+		@Deprecated
 		public FIBBrowserElementChildren deleteChildren(FIBBrowserElementChildren elementToDelete) {
 			logger.info("Called elementToDelete() with " + elementToDelete);
 			removeFromChildren(elementToDelete);
@@ -992,6 +1004,10 @@ public interface FIBBrowserElement extends FIBModelObject {
 			}
 		}
 
+		@Override
+		public String getPresentationName() {
+			return getName();
+		}
 	}
 
 	@ModelEntity
@@ -1068,6 +1084,14 @@ public interface FIBBrowserElement extends FIBModelObject {
 			@Deprecated
 			public static BindingDefinition CAST = new BindingDefinition("cast", Object.class, DataBinding.BindingDefinitionType.GET,
 					false);
+
+			@Override
+			public String getPresentationName() {
+				if (getData() != null && getData().isSet() && getData().isValid()) {
+					return getData().toString();
+				}
+				return getName();
+			}
 
 			private void updateBindingModel() {
 				if (childBindable != null) {

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBBrowser" name="Inspector">
+	<Label index="0" label="selected" constraints="twocols(location=left)"
+		localize="true" name="SelectedLabel"/>
+	<Custom index="1" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.selected" name="SelectedBinding"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data" />
+	</Custom>
+	<CheckBox index="2" selected="false" data="data.boundToSelectionManager"
+		constraints="twocols(location=left)" localize="true" name="BoundToSMCB"/>
+	<Label index="3" label="bound_to_selection_manager" constraints="twocols(location=right)"
+		localize="true" name="BoundToSMLabel"/>
+	<CheckBox index="4" selected="false" data="data.deepExploration" name="DeepExplorationCB"
+		constraints="twocols(location=left)" localize="true" />
+	<Label index="5" label="deep_exploration_support" constraints="twocols(location=right)"
+		localize="true" name="DeepExplorationLabel"/>
+	<Label index="6" label="selectionMode" constraints="twocols(location=left)"
+		localize="true" name="SelectionModeLabel"/>
+	<DropDown index="7" data="data.treeSelectionMode" constraints="twocols(location=right)"
+		localize="true" iteratorClassName="org.openflexo.gina.model.widget.TreeSelectionMode"
+		autoSelectFirstRow="false" name="SelectionModeDD"/>
+	<Parameter name="title" value="Browser" />
+</Inspector>

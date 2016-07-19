@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
 	dataClassName="org.openflexo.gina.model.widget.FIBTable" name="Inspector">
-	<Label  index="0" label="selected"
+	<Label index="0" label="selected"
 		constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 		localize="true" />
 	<Custom index="1" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"

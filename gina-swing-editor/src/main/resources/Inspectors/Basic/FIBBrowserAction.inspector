@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
-	dataClassName="org.openflexo.gina.model.widget.FIBTableAction" name="Inspector">
+	dataClassName="org.openflexo.gina.model.widget.FIBBrowserAction" name="Inspector">
 	<Label label="name" index="0"
 		constraints="twocols(expandHorizontally=false;expandVertically=false;location=left;insetsTop=5)"
 		localize="true" />
