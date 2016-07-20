@@ -1088,7 +1088,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	private long lastSchedule = -1;
 
 	protected static List<String> trimString(String s, int width, FontMetrics fm) {
-		if (width <= 0) {
+		if (width <= 0 || s == null || fm == null) {
 			return Collections.singletonList(s);
 		}
 		List<String> returned = new ArrayList<>();

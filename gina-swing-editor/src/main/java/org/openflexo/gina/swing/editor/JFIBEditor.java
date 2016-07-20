@@ -56,9 +56,9 @@ import javax.swing.WindowConstants;
 import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
+import org.openflexo.gina.swing.editor.inspector.FIBEditorInspectorController;
 import org.openflexo.gina.swing.editor.palette.FIBEditorPalettes;
 import org.openflexo.gina.swing.editor.widget.FIBLibraryBrowser;
-import org.openflexo.gina.swing.utils.JFIBDialogInspectorController;
 import org.openflexo.gina.swing.utils.JFIBPreferences;
 import org.openflexo.gina.utils.InteractiveFIBEditor;
 import org.openflexo.logging.FlexoLogger;
@@ -93,7 +93,7 @@ public class JFIBEditor extends JFrame implements InteractiveFIBEditor {
 
 	private FIBLibraryBrowser libraryBrowser;
 	private FIBEditorPalettes palette;
-	private JFIBDialogInspectorController inspector;
+	// private JFIBDialogInspectorController inspector;
 	private MainPanel mainPanel;
 
 	private FIBEditor getFIBEditor() {
@@ -134,17 +134,17 @@ public class JFIBEditor extends JFrame implements InteractiveFIBEditor {
 				}
 			};
 			palette = editor.makePalette();
-			// FIBInspectors inspectors = editor.makeInspectors();
+			FIBEditorInspectorController inspectors = editor.makeInspectors();
 
-			inspector = editor.makeInspector(this);
-			inspector.setVisible(false);
+			// inspector = editor.makeInspector(this);
+			// inspector.setVisible(false);
 
 			mainPanel = editor.makeMainPanel();
 
 			centerPanel.add(libraryBrowser, LayoutPosition.TOP_LEFT.name());
 			centerPanel.add(mainPanel, LayoutPosition.CENTER.name());
 			centerPanel.add(palette, LayoutPosition.TOP_RIGHT.name());
-			// centerPanel.add(inspectors.getPanelGroup(), LayoutPosition.BOTTOM_RIGHT.name());
+			centerPanel.add(inspectors.getPanelGroup(), LayoutPosition.BOTTOM_RIGHT.name());
 
 			centerPanel.revalidate();
 		}
