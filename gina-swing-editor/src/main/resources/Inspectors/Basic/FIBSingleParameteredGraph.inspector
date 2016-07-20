@@ -1,0 +1,11 @@
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.graph.FIBSingleParameteredGraph">
+	<Parameter name="title" value="Graph" />
+
+	<Label name="ParameterNameLabel" index="2" label="parameter_name"
+		constraints="twocols(location=left)" />
+	<TextField name="ParameterNameTF" data="data.parameterName"
+		index="3" constraints="twocols(location=right;expandHorizontally=true)"
+		columns="15" />
+
+</Inspector>

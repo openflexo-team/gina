@@ -38,7 +38,7 @@
 		localize="true" />
 	<Number minValue="10" maxValue="1000" increment="10" numberType="IntegerType"
 		columns="3" index="17" data="data.columnWidth" constraints="twocols(location=right)"
-		name="ColumnWidthNumber" localize="true" enable="(LayoutBrowser.selected != null)" />
+		name="ColumnWidthNumber" localize="true"/>
 
 	<Label label="tooltip" index="18"
 		constraints="twocols(expandHorizontally=true;expandVertically=false;index=12;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"

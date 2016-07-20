@@ -122,7 +122,7 @@ public interface FIBFile extends FIBWidget {
 	@Setter(DEFAULT_DIRECTORY_KEY)
 	public void setDefaultDirectory(File defaultDirectory);
 
-	@Getter(value = COLUMNS_KEY)
+	@Getter(value = COLUMNS_KEY, defaultValue = "10")
 	@XMLAttribute
 	public Integer getColumns();
 
@@ -136,7 +136,7 @@ public interface FIBFile extends FIBWidget {
 		private String title;
 		private boolean directory = false;
 		private File defaultDirectory;
-		private Integer columns;
+		private Integer columns = 10;
 
 		public FIBFileImpl() {
 		}

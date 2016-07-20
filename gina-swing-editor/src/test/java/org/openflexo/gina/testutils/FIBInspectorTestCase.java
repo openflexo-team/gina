@@ -43,7 +43,6 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
 import org.openflexo.gina.model.FIBComponent;
@@ -53,8 +52,8 @@ import org.openflexo.gina.utils.GenericFIBTestCase;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.validation.ValidationError;
 import org.openflexo.model.validation.ValidationReport;
+import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;
-import org.openflexo.rm.ResourceLocator;
 
 /**
  * Generic test case allowing to test a FIB component used as an inspector (a .inspector file)
@@ -97,6 +96,45 @@ public abstract class FIBInspectorTestCase extends GenericFIBTestCase {
 	}
 
 	public static String generateInspectorTestCaseClass(Resource directory, String relativePath) {
+		if (directory instanceof FileResourceImpl) {
+			return generateInspectorTestCaseClass(((FileResourceImpl) directory).getFile(), relativePath);
+		}
+		return null;
+	}
+
+	public static String generateInspectorTestCaseClass(File directory, String relativePath) {
+		StringBuffer sb = new StringBuffer();
+		for (File f : directory.listFiles()) {
+			if (f.isDirectory()) {
+				generateInspectorTestCaseClass(f, relativePath + f.getName() + File.separator, sb);
+			}
+			else if (f.getName().endsWith(".inspector")) {
+				String fibName = f.getName().substring(0, f.getName().indexOf(".inspector"));
+				sb.append("@Test\n");
+				sb.append("public void test" + fibName + "Inspector() {\n");
+				sb.append("  validateFIB(\"" + relativePath + f.getName() + "\");\n");
+				sb.append("}\n\n");
+			}
+		}
+		return sb.toString();
+	}
+
+	private static void generateInspectorTestCaseClass(File directory, String relativePath, StringBuffer sb) {
+		for (File f : directory.listFiles()) {
+			if (f.isDirectory()) {
+				generateFIBTestCaseClass(f, relativePath + f.getName() + File.separator);
+			}
+			else if (f.getName().endsWith(".inspector")) {
+				String fibName = f.getName().substring(0, f.getName().indexOf(".inspector"));
+				sb.append("@Test\n");
+				sb.append("public void test" + fibName + directory.getName() + "Inspector() {\n");
+				sb.append("  validateFIB(\"" + relativePath + f.getName() + "\");\n");
+				sb.append("}\n\n");
+			}
+		}
+	}
+
+	/*public static String generateInspectorTestCaseClass(Resource directory, String relativePath) {
 		StringBuffer sb = new StringBuffer();
 		for (Resource rloc : directory.getContents(Pattern.compile(".*[.]inspector"))) {
 			File f = ResourceLocator.getResourceLocator().retrieveResourceAsFile(rloc);
@@ -107,6 +145,6 @@ public abstract class FIBInspectorTestCase extends GenericFIBTestCase {
 			sb.append("}\n\n");
 		}
 		return sb.toString();
-	}
+	}*/
 
 }

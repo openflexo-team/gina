@@ -1,0 +1,27 @@
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.graph.FIBGraphFunction">
+	<Parameter name="title" value="Graph function prout" />
+
+	<Label index="2" label="function_name" constraints="twocols(location=left)"
+		localize="true" />
+	<TextField index="3" data="data.name"
+		constraints="twocols(expandHorizontally=true;location=right)"
+		localize="true" columns="15" />
+
+	<Label name="ExpressionLabel" label="expression" index="4"
+		constraints="twocols(location=left)" localize="true" />
+	<Custom name="ExpressionBinding" index="5"
+		componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.expression"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data" />
+	</Custom>
+
+	<Label label="graph_type" index="6" constraints="twocols(location=left)"
+		localize="true" />
+	<DropDown data="data.graphType" index="7"
+		constraints="twocols(location=right)" localize="true"
+		iteratorClassName="org.openflexo.gina.model.graph.FIBGraphFunction$GraphType"
+		autoSelectFirstRow="true" />
+
+</Inspector>

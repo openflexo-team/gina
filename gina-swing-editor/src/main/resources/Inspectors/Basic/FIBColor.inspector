@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBColor" name="Inspector">
+	<Label index="0" label="allowsNull" constraints="twocols(location=left)"
+		localize="true" />
+	<CheckBox index="1" selected="false" data="data.allowsNull" constraints="twocols(location=right)"
+		localize="true" />
+	<Parameter name="title" value="Color" />
+</Inspector>

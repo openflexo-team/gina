@@ -149,12 +149,16 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getSource() == columnModel) {
-			if ((evt.getPropertyName().equals(FIBTableColumn.COLUMN_WIDTH_KEY)) || (evt.getPropertyName().equals(FIBTableColumn.DATA_KEY))
+			if (evt.getPropertyName().equals(FIBTableColumn.DELETED)) {
+				System.out.println("deleted column");
+			}
+			else if ((evt.getPropertyName().equals(FIBTableColumn.COLUMN_WIDTH_KEY))
+					|| (evt.getPropertyName().equals(FIBTableColumn.DATA_KEY))
 					|| (evt.getPropertyName().equals(FIBTableColumn.DISPLAY_TITLE_KEY))
 					|| (evt.getPropertyName().equals(FIBTableColumn.FONT_KEY))
 					|| (evt.getPropertyName().equals(FIBTableColumn.RESIZABLE_KEY))
 					|| (evt.getPropertyName().equals(FIBTableColumn.TITLE_KEY))) {
-				if (controller.viewForComponent(columnModel.getOwner()) != null) {
+				if (columnModel != null && columnModel.getOwner() != null && controller.viewForComponent(columnModel.getOwner()) != null) {
 					((FIBTableWidget) controller.viewForComponent(columnModel.getOwner())).updateTable();
 				}
 			}

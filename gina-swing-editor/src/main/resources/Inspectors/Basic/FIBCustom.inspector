@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBCustom" name="Inspector">
+	<Label index="0" label="component_class" constraints="twocols(location=left)"
+		localize="true" />
+	<Custom index="1" componentClassName="org.openflexo.gina.swing.utils.ClassSelector"
+		localize="true" manageDynamicModel="true" data="data.componentClass"
+		constraints="twocols(expandHorizontally=true;location=right)" />
+	<Label index="2" label="assignments" constraints="twocols(expandHorizontally=true;location=left)"
+		localize="true" />
+	<Table index="3" iteratorClassName="org.openflexo.gina.model.widget.FIBCustom$FIBCustomAssignment"
+		visibleRowCount="3" rowHeight="20" autoSelectFirstRow="false"
+		createNewRowOnClick="false" boundToSelectionManager="false"
+		showFooter="true" selectionMode="MultipleIntervalSelection" localize="true"
+		manageDynamicModel="true" name="AssignmentsTable" data="data.assignments"
+		constraints="twocols(expandHorizontally=true;expandVertically=true;location=right)">
+		<CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+			customRendering="false" disableTerminateEditOnFocusLost="false"
+			data="iterator.variable" title="Variable" columnWidth="30"
+			resizable="true" displayTitle="true">
+			<ColumnAssignment variable="component.bindable"
+				value="iterator" />
+		</CustomColumn>
+		<CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+			customRendering="false" disableTerminateEditOnFocusLost="false"
+			data="iterator.value" title="Value" columnWidth="30" resizable="true"
+			displayTitle="true">
+			<ColumnAssignment variable="component.bindable"
+				value="data" />
+		</CustomColumn>
+		<AddAction method="data.createAssignment()" name="new_assignment" />
+		<RemoveAction method="data.deleteAssignment(selected)"
+			name="delete_assignment" />
+	</Table>
+	<Parameter name="title" value="Custom component" />
+</Inspector>

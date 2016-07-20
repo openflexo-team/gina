@@ -19,7 +19,7 @@
 	<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 		localize="true" manageDynamicModel="true" index="11" data="data.method"
 		constraints="twocols(expandHorizontally=true;expandVertically=false;location=right)">
-		<Assignment variable="component.bindable" value="data.owner.iterator" />
+		<Assignment variable="component.bindable" value="data" />
 	</Custom>
 	<Label label="is_available" index="12"
 		constraints="twocols(expandHorizontally=false;expandVertically=false;location=left)"
@@ -27,7 +27,7 @@
 	<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 		localize="true" manageDynamicModel="true" index="13" data="data.isAvailable"
 		constraints="twocols(expandHorizontally=true;expandVertically=false;location=right)">
-		<Assignment variable="component.bindable" value="data.owner.iterator" />
+		<Assignment variable="component.bindable" value="data" />
 	</Custom>
 	<Parameter name="title" value="Table action" />
 </Inspector>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBFile" name="Inspector">
+	<Label index="2" label="mode" constraints="twocols(expandHorizontally=true;location=left)"
+		localize="true" />
+	<DropDown index="3" data="data.mode"
+		constraints="twocols(expandHorizontally=true;location=right)"
+		localize="true" iteratorClassName="org.openflexo.gina.model.widget.FIBFile$FileMode"
+		autoSelectFirstRow="false" />
+	<Label index="4" label="filter" constraints="twocols(expandHorizontally=true;location=left)"
+		localize="true" />
+	<TextField index="5" data="data.filter"
+		constraints="twocols(expandHorizontally=true;location=right)"
+		localize="true" columns="15" />
+	<Label index="6" label="title" constraints="twocols(expandHorizontally=true;location=left)"
+		localize="true" />
+	<TextField index="7" data="data.title"
+		constraints="twocols(expandHorizontally=true;location=right)"
+		localize="true" columns="15" />
+	<CheckBox index="8" selected="false" data="data.directory"
+		constraints="twocols(expandHorizontally=true;location=left)" localize="true" />
+	<Label index="9" label="select_directories_only" constraints="twocols(expandHorizontally=true;location=right)"
+		localize="true" />
+	<Label index="10" label="default_directory" constraints="twocols(expandHorizontally=true;location=left)"
+		localize="true" />
+	<File index="11" isDirectory="true" columns="5" localize="true"
+		data="data.defaultDirectory" constraints="twocols(expandHorizontally=true;location=right)" />
+	<Label index="12" label="columns" constraints="twocols(location=left)"
+		localize="true" />
+	<Number index="13" numberType="IntegerType" data="data.columns"
+		constraints="twocols(expandHorizontally=false;location=right)" localize="true" />
+	<Parameter name="title" value="File/Directory Selector" />
+</Inspector>

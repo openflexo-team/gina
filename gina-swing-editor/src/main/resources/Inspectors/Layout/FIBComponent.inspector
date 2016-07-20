@@ -65,18 +65,20 @@
 		<Number numberType="IntegerType" data="boxLayout.index"
 			constraints="twocols(location=right)" name="boxConstraintsIndex"
 			localize="true" />
-		<Panel layout="flow" hGap="5" vGap="0" flowAlignment="LEADING"
-			titleFont="SansSerif,0,10" darkLevel="0" constraints="twocols()"
-			opaque="false">
-			<Label label="alignmentX" constraints="flow()" localize="true" />
-			<Number minValue="0.0" maxValue="1.0" increment="0.05"
-				numberType="FloatType" columns="5" data="boxLayout.alignmentX"
-				constraints="flow()" name="boxConstraintsAlignX" localize="true" />
-			<Label label="alignmentY" constraints="flow()" localize="true" />
-			<Number minValue="0.0" maxValue="1.0" increment="0.05"
-				numberType="FloatType" columns="5" data="boxLayout.alignmentY"
-				constraints="flow()" name="boxConstraintsAlignY" localize="true" />
-		</Panel>
+
+		<Label label="alignmentX" constraints="twocols(location=left)"
+			localize="true" />
+		<Number minValue="0.0" maxValue="1.0" increment="0.05"
+			numberType="FloatType" columns="5" data="boxLayout.alignmentX"
+			constraints="twocols(location=right)" name="boxConstraintsAlignX"
+			localize="true" />
+		<Label label="alignmentY" constraints="twocols(location=left)"
+			localize="true" />
+		<Number minValue="0.0" maxValue="1.0" increment="0.05"
+			numberType="FloatType" columns="5" data="boxLayout.alignmentY"
+			constraints="twocols(location=right)" name="boxConstraintsAlignY"
+			localize="true" />
+
 	</Panel>
 	<!-- data="($org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints)data.constraints" 
 		dataClassName="org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints" -->

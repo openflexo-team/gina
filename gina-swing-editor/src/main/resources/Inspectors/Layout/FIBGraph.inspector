@@ -1,0 +1,25 @@
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.graph.FIBGraph">
+	<Parameter name="title" value="Graph" />
+
+	<Panel layout="twocols" border="rounded3d" borderTop="2"
+		borderTitle="border" titleFont="SansSerif,0,10" borderBottom="2"
+		borderRight="2" darkLevel="1"
+		constraints="twocols(expandHorizontally=true;location=right;insetsTop=10;insetsRight=10)"
+		name="BorderPanel">
+
+		<Label label="top" constraints="twocols(location=left)" localize="true" />
+		<Number numberType="IntegerType" columns="2" data="data.borderTop"
+			constraints="twocols(location=right)" localize="true" />
+		<Label label="left" constraints="twocols(location=left)" localize="true" />
+		<Number numberType="IntegerType" columns="2" data="data.borderLeft"
+			constraints="twocols(location=right)" localize="true" />
+		<Label label="bottom" constraints="twocols(location=left)" localize="true" />
+		<Number numberType="IntegerType" columns="2" data="data.borderBottom"
+			constraints="twocols(location=right)" localize="true" />
+		<Label label="right" constraints="twocols(location=left)" localize="true" />
+		<Number numberType="IntegerType" columns="2" data="data.borderRight"
+			constraints="twocols(location=right)" localize="true" />
+	</Panel>
+
+</Inspector>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBEditor" name="Inspector">
+	<Label index="2" label="columns" constraints="twocols(location=left)"
+		localize="true" />
+	<Number index="3" numberType="IntegerType" data="data.columns"
+		constraints="twocols()" localize="true" />
+	<Label index="4" label="rows" constraints="twocols(location=left)"
+		localize="true" />
+	<Number index="5" numberType="IntegerType" data="data.rows"
+		constraints="twocols()" localize="true" />
+	<Label index="6" label="markers_style" constraints="twocols(location=left)"
+		localize="true" />
+	<DropDown index="7" data="data.tokenMarkerStyle" constraints="twocols(location=right)"
+		localize="true" iteratorClassName="java.lang.Object"
+		autoSelectFirstRow="false" />
+	<Parameter name="title" value="Editor" />
+</Inspector>

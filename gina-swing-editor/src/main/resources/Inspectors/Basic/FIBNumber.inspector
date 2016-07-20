@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBNumber" name="Inspector">
+
+	<Label index="2" label="type" constraints="twocols(location=left)"
+		localize="true" />
+	<DropDown index="3" data="data.numberType" constraints="twocols(location=right)"
+		localize="true" iteratorClassName="org.openflexo.gina.model.widget.FIBNumber$NumberType"
+		autoSelectFirstRow="false" />
+	<Label index="4" label="columns" constraints="twocols(location=left)"
+		localize="true" />
+	<Number index="5" numberType="IntegerType" data="data.columns" columns="5"
+		constraints="twocols(location=right)" localize="true" />
+	<Label index="6" label="min" constraints="twocols(location=left)" localize="true" />
+	<Number index="7" numberType="IntegerType" data="data.minValueAsInteger" columns="5"
+		constraints="twocols(location=right)" localize="true" />
+	<Label index="8" label="max" constraints="twocols(location=left)" localize="true" />
+	<Number index="9" numberType="IntegerType" data="data.maxValueAsInteger" columns="5"
+		constraints="twocols(location=right)" localize="true" />
+	<Label index="10" label="increment" constraints="twocols(location=left)"
+		localize="true" />
+	<Number index="11" numberType="IntegerType" data="data.incrementAsInteger" columns="5"
+		constraints="twocols(location=right)" localize="true" />
+	<Label index="12" label="allowsNull" constraints="twocols(location=left)"
+		localize="true" />
+	<CheckBox index="13" selected="false" data="data.allowsNull" constraints="twocols(location=right)"
+		localize="true" />
+	<Label index="14" label="validateOnReturn" constraints="twocols(location=left)"
+		localize="true" />
+	<CheckBox index="15" selected="false" data="data.validateOnReturn"
+		constraints="twocols(location=right)" localize="true" />
+
+	<Parameter name="title" value="Number" />
+</Inspector>

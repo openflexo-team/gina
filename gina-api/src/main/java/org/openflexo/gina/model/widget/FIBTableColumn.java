@@ -394,7 +394,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		@Override
 		public void setColumnWidth(Integer columnWidth) {
 			FIBPropertyNotification<Integer> notification = requireChange(COLUMN_WIDTH_KEY, columnWidth);
-			if (notification != null) {
+			if (notification != null && columnWidth != null) {
 				this.columnWidth = columnWidth;
 				hasChanged(notification);
 			}
@@ -408,7 +408,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		@Override
 		public void setResizable(Boolean resizable) {
 			FIBPropertyNotification<Boolean> notification = requireChange(RESIZABLE_KEY, resizable);
-			if (notification != null) {
+			if (notification != null && resizable != null) {
 				this.resizable = resizable;
 				hasChanged(notification);
 			}
@@ -422,7 +422,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		@Override
 		public void setDisplayTitle(Boolean displayTitle) {
 			FIBPropertyNotification<Boolean> notification = requireChange(DISPLAY_TITLE_KEY, displayTitle);
-			if (notification != null) {
+			if (notification != null && displayTitle != null) {
 				this.displayTitle = displayTitle;
 				hasChanged(notification);
 			}
@@ -524,7 +524,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		@Override
 		public void setShowIcon(Boolean showIcon) {
 			FIBPropertyNotification<Boolean> notification = requireChange(SHOW_ICON_KEY, showIcon);
-			if (notification != null) {
+			if (notification != null && showIcon != null) {
 				this.showIcon = showIcon;
 				hasChanged(notification);
 			}
@@ -540,7 +540,9 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 
 			private void updateBindingModel() {
 				getBindingModel();
-				formatterBindingModel.setBaseBindingModel(getOwner().getTableBindingModel());
+				if (formatterBindingModel != null && getOwner() != null) {
+					formatterBindingModel.setBaseBindingModel(getOwner().getTableBindingModel());
+				}
 			}
 
 			@Override
