@@ -209,8 +209,7 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 
 			for (int i = 0; i < widget.getMultipleValueModel().getSize(); i++) {
 				T object = widget.getMultipleValueModel().getElementAt(i);
-				JRadioButton rb = new JRadioButton(widget.getWidget().getTrimText() ? "" : widget.getStringRepresentation(object),
-						FIBViewImpl.equals(object, selectedValue));
+				JRadioButton rb = new JRadioButton("", FIBViewImpl.equals(object, selectedValue));
 				rb.setVerticalAlignment(JCheckBox.TOP);
 				rb.setOpaque(false);
 				rb.addActionListener(new RadioButtonListener(rb, object, i));
@@ -224,7 +223,7 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 				c.anchor = GridBagConstraints.NORTHEAST;
 				add(rb, c);
 
-				JLabel label = new JLabel();
+				JLabel label = new JLabel(widget.getWidget().getTrimText() ? "" : widget.getStringRepresentation(object));
 				labelsArray[i] = label;
 
 				// Handle the case of icon should be displayed
@@ -234,7 +233,7 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 
 				c.insets = new Insets(2, 5, 5, 5);
 				c.fill = GridBagConstraints.BOTH;
-				c.anchor = GridBagConstraints.CENTER;
+				c.anchor = GridBagConstraints.WEST;
 				c.weightx = 1.0; // 2.0;
 				c.gridwidth = GridBagConstraints.REMAINDER;
 

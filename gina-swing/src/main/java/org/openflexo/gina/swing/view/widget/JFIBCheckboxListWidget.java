@@ -215,8 +215,7 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 				T object = widget.getMultipleValueModel().getElementAt(i);
 				// We create checkboxes without text
 				// Text will be assigned to checkboxes during the first ComponentResize event (see constructor)
-				JCheckBox cb = new JCheckBox(widget.getWidget().getTrimText() ? "" : widget.getStringRepresentation(object),
-						containsObject(object));
+				JCheckBox cb = new JCheckBox("", containsObject(object));
 				cb.setOpaque(false);
 				cb.addActionListener(new CheckboxListener(cb, object, i));
 				checkboxesArray[i] = cb;
@@ -229,7 +228,7 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 				c.anchor = GridBagConstraints.NORTHEAST;
 				add(cb, c);
 
-				JLabel label = new JLabel();
+				JLabel label = new JLabel(widget.getWidget().getTrimText() ? "" : widget.getStringRepresentation(object));
 				labelsArray[i] = label;
 
 				// Handle the case of icon should be displayed
@@ -239,7 +238,7 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 
 				c.insets = new Insets(2, 5, 5, 5);
 				c.fill = GridBagConstraints.BOTH;
-				c.anchor = GridBagConstraints.CENTER;
+				c.anchor = GridBagConstraints.WEST;
 				c.weightx = 1.0; // 2.0;
 				c.gridwidth = GridBagConstraints.REMAINDER;
 
