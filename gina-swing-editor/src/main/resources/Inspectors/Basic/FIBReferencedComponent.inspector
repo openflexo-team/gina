@@ -13,16 +13,23 @@
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data" />
 	</Custom>
-	<Label index="6" label="controller_factory" constraints="twocols(location=left)"
+	<Label index="6" label="dynamic_component" constraints="twocols(location=left)"
 		localize="true" />
 	<Custom index="7" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.dynamicComponent"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data" />
+	</Custom>
+	<Label index="8" label="controller_factory" constraints="twocols(location=left)"
+		localize="true" />
+	<Custom index="9" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 		localize="true" manageDynamicModel="true" data="data.controllerFactory"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data" />
 	</Custom>
-	<Label index="8" label="assignments"
+	<Label index="10" label="assignments"
 		constraints="twocols(expandHorizontally=true;location=left)" localize="true" />
-	<Table index="9"
+	<Table index="11"
 		iteratorClassName="org.openflexo.gina.model.widget.FIBReferencedComponent$FIBReferenceAssignment"
 		visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false"
 		createNewRowOnClick="false" boundToSelectionManager="false"
