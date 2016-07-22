@@ -67,7 +67,7 @@
 				index="16" constraints="twocols(location=left)" localize="true" />
 			<CheckBox index="17" selected="false" localize="true"
 				constraints="twocols(location=right)" name="DisplayReferenceCB"
-				data="data.displayRefenceMarks" useScrollBar="false"/>
+				data="data.displayReferenceMarks" useScrollBar="false"/>
 			<Label name="DisplayLabelsLabel" label="display_labels"
 				index="18" constraints="twocols(location=left)" localize="true" />
 			<CheckBox index="19" selected="false" localize="true"
