@@ -1166,6 +1166,19 @@ public abstract interface FIBWidget extends FIBComponent {
 	}
 
 	@DefineValidationRule
+	public static class ValueBindingMustBeValid extends BindingMustBeValid<FIBWidget> {
+		public ValueBindingMustBeValid() {
+			super("'value'_binding_is_not_valid", FIBWidget.class);
+		}
+
+		@Override
+		public DataBinding getBinding(FIBWidget object) {
+			return object.getData();
+		}
+
+	}
+
+	@DefineValidationRule
 	public static class TooltipBindingMustBeValid extends BindingMustBeValid<FIBWidget> {
 		public TooltipBindingMustBeValid() {
 			super("'tooltip'_binding_is_not_valid", FIBWidget.class);
