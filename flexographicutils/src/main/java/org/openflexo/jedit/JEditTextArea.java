@@ -1988,7 +1988,7 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 		private Component center;
 		private Component right;
 		private Component bottom;
-		private final Vector<Component> leftOfScrollBar = new Vector<Component>();
+		private final Vector<Component> leftOfScrollBar = new Vector<>();
 	}
 
 	static class CaretBlinker implements ActionListener {
@@ -2357,7 +2357,7 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 		painter.setRows(rows);
 	}
 
-	protected Vector<CursorPositionListener> _cursorPositionListeners = new Vector<CursorPositionListener>();
+	protected Vector<CursorPositionListener> _cursorPositionListeners = new Vector<>();
 
 	public void addToCursorPositionListener(CursorPositionListener listener) {
 		_cursorPositionListeners.add(listener);

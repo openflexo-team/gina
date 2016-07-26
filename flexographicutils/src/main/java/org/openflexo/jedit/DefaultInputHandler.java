@@ -49,7 +49,7 @@ public class DefaultInputHandler extends InputHandler {
 	 * Creates a new input handler with no key bindings defined.
 	 */
 	public DefaultInputHandler() {
-		bindings = currentBindings = new Hashtable();
+		bindings = currentBindings = new Hashtable<>();
 	}
 
 	/**
@@ -113,7 +113,8 @@ public class DefaultInputHandler extends InputHandler {
 			addKeyBinding("MA+DOWN", COPY_LINE_DOWN);
 			// addKeyBinding("M+Z",UNDO);
 			// addKeyBinding("M+Y",REDO);
-		} else {
+		}
+		else {
 			addKeyBinding("C+C", COPY);
 			addKeyBinding("C+X", CUT);
 			addKeyBinding("C+V", PASTE);
@@ -140,7 +141,7 @@ public class DefaultInputHandler extends InputHandler {
 	 */
 	@Override
 	public void addKeyBinding(String keyBinding, ActionListener action) {
-		Hashtable current = bindings;
+		Hashtable<KeyStroke, Object> current = bindings;
 
 		StringTokenizer st = new StringTokenizer(keyBinding);
 		while (st.hasMoreTokens()) {
@@ -154,13 +155,15 @@ public class DefaultInputHandler extends InputHandler {
 			if (st.hasMoreTokens()) {
 				Object o = current.get(keyStroke);
 				if (o instanceof Hashtable) {
-					current = (Hashtable) o;
-				} else {
-					o = new Hashtable();
-					current.put(keyStroke, o);
-					current = (Hashtable) o;
+					current = (Hashtable<KeyStroke, Object>) o;
 				}
-			} else {
+				else {
+					o = new Hashtable<>();
+					current.put(keyStroke, o);
+					current = (Hashtable<KeyStroke, Object>) o;
+				}
+			}
+			else {
 				current.put(keyStroke, action);
 			}
 		}
@@ -238,15 +241,17 @@ public class DefaultInputHandler extends InputHandler {
 				}
 				currentBindings = bindings;
 				return;
-			} else if (o instanceof ActionListener) {
+			}
+			else if (o instanceof ActionListener) {
 				currentBindings = bindings;
 
 				executeAction((ActionListener) o, evt.getSource(), null);
 
 				evt.consume();
 				return;
-			} else if (o instanceof Hashtable) {
-				currentBindings = (Hashtable) o;
+			}
+			else if (o instanceof Hashtable) {
+				currentBindings = (Hashtable<KeyStroke, Object>) o;
 				evt.consume();
 				return;
 			}
@@ -271,7 +276,8 @@ public class DefaultInputHandler extends InputHandler {
 				KeyStroke keyStroke;
 				if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z') {
 					keyStroke = KeyStroke.getKeyStroke(Character.toUpperCase(c), modifiers);
-				} else {
+				}
+				else {
 					keyStroke = KeyStroke.getKeyStroke(keyCode, modifiers);
 				}
 
@@ -280,9 +286,10 @@ public class DefaultInputHandler extends InputHandler {
 				// System.out.println("keyTyped() keyCode="+keyCode+" c="+c+" modifiers="+modifiers+" o="+o+ "event="+evt);
 
 				if (o instanceof Hashtable) {
-					currentBindings = (Hashtable) o;
+					currentBindings = (Hashtable<KeyStroke, Object>) o;
 					return;
-				} else if (o instanceof ActionListener) {
+				}
+				else if (o instanceof ActionListener) {
 					currentBindings = bindings;
 					// This has been performed in the keyPressed, forgetting it
 					/*executeAction((ActionListener)o,
@@ -330,18 +337,18 @@ public class DefaultInputHandler extends InputHandler {
 		if (index != -1) {
 			for (int i = 0; i < index; i++) {
 				switch (Character.toUpperCase(keyStroke.charAt(i))) {
-				case 'A':
-					modifiers |= InputEvent.ALT_MASK;
-					break;
-				case 'C':
-					modifiers |= InputEvent.CTRL_MASK;
-					break;
-				case 'M':
-					modifiers |= InputEvent.META_MASK;
-					break;
-				case 'S':
-					modifiers |= InputEvent.SHIFT_MASK;
-					break;
+					case 'A':
+						modifiers |= InputEvent.ALT_MASK;
+						break;
+					case 'C':
+						modifiers |= InputEvent.CTRL_MASK;
+						break;
+					case 'M':
+						modifiers |= InputEvent.META_MASK;
+						break;
+					case 'S':
+						modifiers |= InputEvent.SHIFT_MASK;
+						break;
 				}
 			}
 		}
@@ -350,13 +357,16 @@ public class DefaultInputHandler extends InputHandler {
 			char ch = Character.toUpperCase(key.charAt(0));
 			if (modifiers == 0) {
 				return KeyStroke.getKeyStroke(ch);
-			} else {
+			}
+			else {
 				return KeyStroke.getKeyStroke(ch, modifiers);
 			}
-		} else if (key.length() == 0) {
+		}
+		else if (key.length() == 0) {
 			System.err.println("Invalid key stroke: " + keyStroke);
 			return null;
-		} else {
+		}
+		else {
 			int ch;
 
 			try {
@@ -371,8 +381,8 @@ public class DefaultInputHandler extends InputHandler {
 	}
 
 	// private members
-	private Hashtable bindings;
-	private Hashtable currentBindings;
+	private Hashtable<KeyStroke, Object> bindings;
+	private Hashtable<KeyStroke, Object> currentBindings;
 
 	private DefaultInputHandler(DefaultInputHandler copy) {
 		bindings = currentBindings = copy.bindings;

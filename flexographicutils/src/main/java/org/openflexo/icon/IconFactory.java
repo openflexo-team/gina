@@ -70,12 +70,12 @@ public class IconFactory {
 		return new ImageIcon(result);
 	}
 
-	private static final Hashtable<ImageIcon, Hashtable<Integer, ImageIcon>> _storedIcons = new Hashtable<ImageIcon, Hashtable<Integer, ImageIcon>>();
+	private static final Hashtable<ImageIcon, Hashtable<Integer, ImageIcon>> _storedIcons = new Hashtable<>();
 
 	public static ImageIcon getImageIcon(ImageIcon icon, IconMarker... iconMarkers) {
 		Hashtable<Integer, ImageIcon> knownIcons = _storedIcons.get(icon);
 		if (knownIcons == null) {
-			knownIcons = new Hashtable<Integer, ImageIcon>();
+			knownIcons = new Hashtable<>();
 			_storedIcons.put(icon, knownIcons);
 		}
 		int code = 0;
@@ -91,7 +91,8 @@ public class IconFactory {
 			}
 			knownIcons.put(code, resultImage);
 			returned = resultImage;
-		} else {
+		}
+		else {
 			// logger.info("Retrieve icon "+code);
 		}
 		return returned;
@@ -103,7 +104,7 @@ public class IconFactory {
 
 	public static ImageIcon getDisabledIcon(ImageIcon imageIcon) {
 		if (_disabledIcons == null) {
-			_disabledIcons = new Hashtable<ImageIcon, ImageIcon>();
+			_disabledIcons = new Hashtable<>();
 		}
 		ImageIcon returned = _disabledIcons.get(imageIcon);
 		if (returned == null) {

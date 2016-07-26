@@ -75,7 +75,7 @@ public class DivDialog extends javax.swing.JDialog {
 		advisoryTitleLabel = new javax.swing.JLabel();
 		advisoryTitleTextField = new javax.swing.JTextField();
 		languageDirectionLabel = new javax.swing.JLabel();
-		languageDirectionComboBox = new javax.swing.JComboBox();
+		languageDirectionComboBox = new javax.swing.JComboBox<>();
 		okButton = new javax.swing.JButton();
 		cancelButton = new javax.swing.JButton();
 
@@ -111,7 +111,8 @@ public class DivDialog extends javax.swing.JDialog {
 
 		languageDirectionLabel.setText("Language Direction");
 
-		languageDirectionComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "Left to Right", "Right to Left" }));
+		languageDirectionComboBox
+				.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Left to Right", "Right to Left" }));
 
 		javax.swing.GroupLayout advancedPanelLayout = new javax.swing.GroupLayout(advancedPanel);
 		advancedPanel.setLayout(advancedPanelLayout);

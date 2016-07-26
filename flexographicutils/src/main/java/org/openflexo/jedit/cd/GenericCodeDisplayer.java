@@ -21,8 +21,8 @@ package org.openflexo.jedit.cd;
 
 import org.openflexo.jedit.JEditTextArea;
 import org.openflexo.jedit.TokenMarker;
+import org.openflexo.toolbox.TokenMarkerStyle;
 import org.openflexo.uicst.FontCst;
-import org.openflexo.uicst.TokenMarkerStyle;
 
 public class GenericCodeDisplayer extends JEditTextArea {
 

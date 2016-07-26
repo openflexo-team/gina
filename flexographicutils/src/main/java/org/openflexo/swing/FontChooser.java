@@ -92,9 +92,11 @@ public class FontChooser extends JDialog implements ActionListener {
 		FontChooser fc;
 		if (parent instanceof Frame) {
 			fc = new FontChooser((Frame) parent, currentFont);
-		} else if (parent instanceof Dialog) {
+		}
+		else if (parent instanceof Dialog) {
 			fc = new FontChooser((Dialog) parent, currentFont);
-		} else {
+		}
+		else {
 			fc = new FontChooser((Frame) null, currentFont);
 		}
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -115,7 +117,7 @@ public class FontChooser extends JDialog implements ActionListener {
 
 	// JColorChooser colorChooser;
 
-	JComboBox fontName;
+	JComboBox<String> fontName;
 
 	JCheckBox fontBold, fontItalic;
 
@@ -164,16 +166,18 @@ public class FontChooser extends JDialog implements ActionListener {
 		Container c = getContentPane();
 		c.setLayout(new VerticalLayout());
 		JPanel fontPanel = new JPanel();
-		fontName = new JComboBox(names);
+		fontName = new JComboBox<>(names);
 		if (initialFont != null) {
 			fontName.setSelectedItem(initialFont.getFamily());
-		} else {
+		}
+		else {
 			fontName.setSelectedIndex(1);
 		}
 		fontName.addActionListener(this);
 		if (initialFont != null) {
 			fontSize = new JTextField("" + initialFont.getSize(), 4);
-		} else {
+		}
+		else {
 			fontSize = new JTextField("12", 4);
 		}
 
@@ -200,7 +204,8 @@ public class FontChooser extends JDialog implements ActionListener {
 		fontBold = new JCheckBox("Bold");
 		if (initialFont != null) {
 			fontBold.setSelected(initialFont.isBold());
-		} else {
+		}
+		else {
 			fontBold.setSelected(false);
 		}
 
@@ -210,7 +215,8 @@ public class FontChooser extends JDialog implements ActionListener {
 		fontItalic.addActionListener(this);
 		if (initialFont != null) {
 			fontItalic.setSelected(initialFont.isItalic());
-		} else {
+		}
+		else {
 			fontItalic.setSelected(false);
 		}
 		fontPanel.add(new JLabel(" Font: "));

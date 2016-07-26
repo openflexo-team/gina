@@ -102,10 +102,10 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 	private final PropertyChangeSupport pcSupport;
 
-	private final WeakHashMap<Component, String> _storedLocalizedForComponents = new WeakHashMap<Component, String>();
-	private final WeakHashMap<JComponent, String> _storedLocalizedForComponentTooltips = new WeakHashMap<JComponent, String>();
-	private final WeakHashMap<TitledBorder, String> _storedLocalizedForBorders = new WeakHashMap<TitledBorder, String>();
-	private final WeakHashMap<TableColumn, String> _storedLocalizedForTableColumn = new WeakHashMap<TableColumn, String>();
+	private final WeakHashMap<Component, String> _storedLocalizedForComponents = new WeakHashMap<>();
+	private final WeakHashMap<JComponent, String> _storedLocalizedForComponentTooltips = new WeakHashMap<>();
+	private final WeakHashMap<TitledBorder, String> _storedLocalizedForBorders = new WeakHashMap<>();
+	private final WeakHashMap<TableColumn, String> _storedLocalizedForTableColumn = new WeakHashMap<>();
 
 	public static enum SearchMode {
 		Contains, BeginsWith, EndsWith
@@ -130,7 +130,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		else {
 			localizedDirectoryResource = localizedDirectory;
 		}
-		_localizedDictionaries = new Hashtable<Language, Properties>();
+		_localizedDictionaries = new Hashtable<>();
 
 	}
 
@@ -601,9 +601,9 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	public List<Entry> getEntries() {
 		if (entries == null) {
 			loadLocalizedDictionaries();
-			entries = new Vector<Entry>();
+			entries = new Vector<>();
 			if (_localizedDictionaries.size() > 0) {
-				Enumeration en = _localizedDictionaries.values().iterator().next().propertyNames();
+				Enumeration<?> en = _localizedDictionaries.values().iterator().next().propertyNames();
 				while (en.hasMoreElements()) {
 					entries.add(new Entry((String) en.nextElement()));
 				}
@@ -734,19 +734,19 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		}
 	}
 
-	private String automaticEnglishTranslation(String key) {
+	private static String automaticEnglishTranslation(String key) {
 		String englishTranslation = key.toString();
 		englishTranslation = englishTranslation.replace("_", " ");
 		englishTranslation = englishTranslation.substring(0, 1).toUpperCase() + englishTranslation.substring(1);
 		return englishTranslation;
 	}
 
-	private String automaticDutchTranslation(String key) {
+	private static String automaticDutchTranslation(String key) {
 		return key;
 		// return automaticEnglishTranslation(key);
 	}
 
-	private String automaticFrenchTranslation(String key) {
+	private static String automaticFrenchTranslation(String key) {
 		return key;
 		// return automaticEnglishTranslation(key);
 	}

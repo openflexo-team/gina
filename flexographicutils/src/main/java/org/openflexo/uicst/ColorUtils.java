@@ -282,7 +282,7 @@ public class ColorUtils {
 
 	// This may create a memory leak (although it will be limited to the 16.7M colors to the square ;-)) but according to
 	// the use we have of it, it should not be too much (only a few dozens of colors) and it should improve a lot the performance.
-	public static final HashMap<Color, HashMap<Color, Double>> constrastRatiosCache = new HashMap<Color, HashMap<Color, Double>>();
+	public static final HashMap<Color, HashMap<Color, Double>> constrastRatiosCache = new HashMap<>();
 
 	/**
 	 * Return true if the difference between two colors matches the W3C recommendations for readability See

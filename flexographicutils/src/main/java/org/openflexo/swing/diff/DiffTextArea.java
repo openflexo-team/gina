@@ -53,8 +53,8 @@ import org.openflexo.diff.ComputeDiff.DiffChange;
 import org.openflexo.diff.ComputeDiff.DiffReport;
 import org.openflexo.jedit.JEditTextAreaWithHighlights;
 import org.openflexo.jedit.TokenMarker;
-import org.openflexo.toolbox.FontCst;
 import org.openflexo.toolbox.TokenMarkerStyle;
+import org.openflexo.uicst.FontCst;
 
 public class DiffTextArea /* extends JTextArea */extends JEditTextAreaWithHighlights {
 	// This flag is used to get either left perspective or right perspective
@@ -99,10 +99,10 @@ public class DiffTextArea /* extends JTextArea */extends JEditTextAreaWithHighli
 		setEditable(false);
 		// System.out.println("DiffTextArea: columns="+maxCols+"\n"+globalText);
 
-		_changes = new Hashtable<DiffChange, ChangeBounds>();
+		_changes = new Hashtable<>();
 
 		// if (diffReport.getChanges().size() > 0) {
-		highlights = new Hashtable<DiffChange, DiffHighlight>();
+		highlights = new Hashtable<>();
 		for (DiffChange change : diffReport.getChanges()) {
 			highlights.put(change, makeHighlightForChange(change));
 		}
@@ -110,11 +110,14 @@ public class DiffTextArea /* extends JTextArea */extends JEditTextAreaWithHighli
 		int cols;
 		if (text.length < 10) {
 			cols = 2;
-		} else if (text.length < 100) {
+		}
+		else if (text.length < 100) {
 			cols = 3;
-		} else if (text.length < 1000) {
+		}
+		else if (text.length < 1000) {
 			cols = 4;
-		} else {
+		}
+		else {
 			cols = 5;
 		}
 		linesTA = new JTextArea(text.length, cols);
@@ -132,15 +135,15 @@ public class DiffTextArea /* extends JTextArea */extends JEditTextAreaWithHighli
 		              }
 		          });
 		      }
-
+		
 		      public void keyReleased(KeyEvent e)
 		      {
 		      }
-
+		
 		      public void keyTyped(KeyEvent e)
 		      {
 		      }
-
+		
 		  });*/
 		remove(vertical);
 		remove(horizontal);
@@ -185,7 +188,8 @@ public class DiffTextArea /* extends JTextArea */extends JEditTextAreaWithHighli
 		protected String getStringValue() {
 			if (isExtraLine) {
 				return "";
-			} else {
+			}
+			else {
 				return lineText;
 			}
 		}
@@ -199,7 +203,7 @@ public class DiffTextArea /* extends JTextArea */extends JEditTextAreaWithHighli
 	private int maxCols = 40;
 
 	private String buildText(String[] someText) {
-		Vector<Line> lines = new Vector<Line>();
+		Vector<Line> lines = new Vector<>();
 		for (int i = 0; i < someText.length; i++) {
 			String line = someText[i];
 			lines.add(new Line(line, i));
@@ -230,11 +234,14 @@ public class DiffTextArea /* extends JTextArea */extends JEditTextAreaWithHighli
 			if (!line.isExtraLine) {
 				if (line.lineNb < 10) {
 					linesTASB.append("   " + line.lineNb + " ");
-				} else if (line.lineNb < 100) {
+				}
+				else if (line.lineNb < 100) {
 					linesTASB.append("  " + line.lineNb + " ");
-				} else if (line.lineNb < 1000) {
+				}
+				else if (line.lineNb < 1000) {
 					linesTASB.append(" " + line.lineNb + " ");
-				} else {
+				}
+				else {
 					linesTASB.append("" + line.lineNb);
 				}
 				returned.append(line.getStringValue());
@@ -286,7 +293,8 @@ public class DiffTextArea /* extends JTextArea */extends JEditTextAreaWithHighli
 				i++;
 			}
 			return i;
-		} else {
+		}
+		else {
 			int i = 0;
 			while (i < text.length && text[i].lineNb <= lineNb) {
 				i++;
@@ -360,7 +368,8 @@ public class DiffTextArea /* extends JTextArea */extends JEditTextAreaWithHighli
 			if (beginLine <= endLine) {
 				beginPLine = lineToPhysLine(beginLine, true);
 				endPLine = lineToPhysLine(endLine, false);
-			} else {
+			}
+			else {
 				int oppositeLength = (isRight() ? change.getLast0() - change.getFirst0() : change.getLast1() - change.getFirst1()) + 1;
 				endPLine = lineToPhysLine(endLine, false);
 				beginPLine = endPLine - oppositeLength + 1;
@@ -399,7 +408,8 @@ public class DiffTextArea /* extends JTextArea */extends JEditTextAreaWithHighli
 		DiffChange previousChange = diffReport.changeBefore(change);
 		if (previousChange == null) {
 			return getFirstHeight(change) + (getHeightForChange(change) - buttonHeight) / 2;
-		} else {
+		}
+		else {
 			return (getHeightForChange(previousChange) - buttonHeight) / 2 + getHeightBetweenChange(previousChange, change)
 					+ (getHeightForChange(change) - buttonHeight) / 2;
 		}

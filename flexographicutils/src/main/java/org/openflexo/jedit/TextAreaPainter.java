@@ -76,7 +76,7 @@ public class TextAreaPainter extends JComponent implements TabExpander {
 		setForeground(Color.black);
 		setBackground(Color.white);
 
-		highlights = new Vector<Highlight>();
+		highlights = new Vector<>();
 
 		blockCaret = defaults.blockCaret;
 		styles = defaults.styles;
@@ -386,7 +386,8 @@ public class TextAreaPainter extends JComponent implements TabExpander {
 	public String getToolTipText(MouseEvent evt) {
 		if (highlights.size() > 0) {
 			return highlights.firstElement().getToolTipText(evt);
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
@@ -574,9 +575,11 @@ public class TextAreaPainter extends JComponent implements TabExpander {
 				styles[Token.INVALID].setGraphicsFlags(gfx, defaultFont);
 				gfx.drawString("~", 0, y + fm.getHeight());
 			}
-		} else if (tokenMarker == null) {
+		}
+		else if (tokenMarker == null) {
 			paintPlainLine(gfx, line, defaultFont, defaultColor, x, y);
-		} else {
+		}
+		else {
 			paintSyntaxLine(gfx, tokenMarker, line, defaultFont, defaultColor, x, y);
 		}
 	}
@@ -643,7 +646,8 @@ public class TextAreaPainter extends JComponent implements TabExpander {
 				gfx.setColor(lineHighlightColor);
 				gfx.fillRect(0, y, getWidth(), height);
 			}
-		} else {
+		}
+		else {
 			gfx.setColor(selectionColor);
 
 			int selectionStartLine = textArea.getSelectionStartLine();
@@ -658,16 +662,20 @@ public class TextAreaPainter extends JComponent implements TabExpander {
 				if (x1 == x2) {
 					x2++;
 				}
-			} else if (selectionStartLine == selectionEndLine) {
+			}
+			else if (selectionStartLine == selectionEndLine) {
 				x1 = textArea._offsetToX(line, selectionStart - lineStart);
 				x2 = textArea._offsetToX(line, selectionEnd - lineStart);
-			} else if (line == selectionStartLine) {
+			}
+			else if (line == selectionStartLine) {
 				x1 = textArea._offsetToX(line, selectionStart - lineStart);
 				x2 = getWidth();
-			} else if (line == selectionEndLine) {
+			}
+			else if (line == selectionEndLine) {
 				x1 = 0;
 				x2 = textArea._offsetToX(line, selectionEnd - lineStart);
-			} else {
+			}
+			else {
 				x1 = 0;
 				x2 = getWidth();
 			}
@@ -704,7 +712,8 @@ public class TextAreaPainter extends JComponent implements TabExpander {
 
 			if (textArea.isOverwriteEnabled()) {
 				gfx.fillRect(caretX, y + height - 1, caretWidth, 1);
-			} else {
+			}
+			else {
 				gfx.drawRect(caretX, y, caretWidth - 1, height - 1);
 			}
 		}

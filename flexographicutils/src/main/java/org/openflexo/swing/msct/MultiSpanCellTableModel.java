@@ -106,7 +106,7 @@ public class MultiSpanCellTableModel extends DefaultTableModel {
 			throw new IllegalArgumentException("addColumn() - null parameter");
 		columnIdentifiers.addElement(columnName);
 		int index = 0;
-		Enumeration eeration = dataVector.elements();
+		Enumeration<?> eeration = dataVector.elements();
 		while (eeration.hasMoreElements()) {
 			Object value;
 			if ((columnData != null) && (index < columnData.size()))
@@ -128,7 +128,8 @@ public class MultiSpanCellTableModel extends DefaultTableModel {
 		Vector newData = null;
 		if (rowData == null) {
 			newData = new Vector(getColumnCount());
-		} else {
+		}
+		else {
 			rowData.setSize(getColumnCount());
 		}
 		dataVector.addElement(newData);
@@ -143,7 +144,8 @@ public class MultiSpanCellTableModel extends DefaultTableModel {
 	public void insertRow(int row, Vector rowData) {
 		if (rowData == null) {
 			rowData = new Vector(getColumnCount());
-		} else {
+		}
+		else {
 			rowData.setSize(getColumnCount());
 		}
 
@@ -173,7 +175,7 @@ public class MultiSpanCellTableModel extends DefaultTableModel {
 	public void changeCellAttribute(int row, int column, Object command) {
 	 cellAtt.changeAttribute(row, column, command);
 	}
-
+	
 	public void changeCellAttribute(int[] rows, int[] columns, Object command) {
 	 cellAtt.changeAttribute(rows, columns, command);
 	}

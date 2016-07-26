@@ -63,9 +63,8 @@ import org.openflexo.localization.FlexoLocalization;
  * @author sguerin
  * 
  */
-public class FontSelector extends CustomPopup<Font>implements FontSelectionModel {
+public class FontSelector extends CustomPopup<Font> implements FontSelectionModel {
 
-	@SuppressWarnings("hiding")
 	static final Logger logger = Logger.getLogger(FontSelector.class.getPackage().getName());
 
 	private Font _revertValue;

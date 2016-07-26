@@ -96,7 +96,7 @@ public class LinkDialog extends javax.swing.JDialog {
 		mainTabbedPane = new javax.swing.JTabbedPane();
 		linkInfoPanel = new javax.swing.JPanel();
 		linkTypeLabel = new javax.swing.JLabel();
-		linkTypeComboBox = new javax.swing.JComboBox();
+		linkTypeComboBox = new javax.swing.JComboBox<>();
 		mainPanel = new javax.swing.JPanel();
 		advancedPanel = new javax.swing.JPanel();
 		idLabel = new javax.swing.JLabel();
@@ -108,7 +108,7 @@ public class LinkDialog extends javax.swing.JDialog {
 		advisoryTitleLabel = new javax.swing.JLabel();
 		advisoryTitleTextField = new javax.swing.JTextField();
 		languageDirectionLabel = new javax.swing.JLabel();
-		languageDirectionComboBox = new javax.swing.JComboBox();
+		languageDirectionComboBox = new javax.swing.JComboBox<>();
 		languageCodeLabel = new javax.swing.JLabel();
 		languageCodeTextField = new javax.swing.JTextField();
 		advisoryContentTypeLabel = new javax.swing.JLabel();
@@ -128,7 +128,7 @@ public class LinkDialog extends javax.swing.JDialog {
 
 		linkTypeLabel.setText("Link Type");
 
-		linkTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "URL" }));
+		linkTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "URL" }));
 		linkTypeComboBox.addActionListener(new java.awt.event.ActionListener() {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -177,7 +177,8 @@ public class LinkDialog extends javax.swing.JDialog {
 
 		languageDirectionLabel.setText("Language Direction");
 
-		languageDirectionComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "Left to Right", "Right to Left" }));
+		languageDirectionComboBox
+				.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Left to Right", "Right to Left" }));
 
 		languageCodeLabel.setText("Language Code");
 

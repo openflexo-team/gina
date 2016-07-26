@@ -141,9 +141,9 @@ public class TableDialog extends javax.swing.JDialog {
 		heightLabel = new javax.swing.JLabel();
 		heightSpinner = new javax.swing.JSpinner();
 		widthSpinner = new javax.swing.JSpinner();
-		widthTypeComboBox = new javax.swing.JComboBox();
+		widthTypeComboBox = new javax.swing.JComboBox<>();
 		headersLabel = new javax.swing.JLabel();
-		headersComboBox = new javax.swing.JComboBox();
+		headersComboBox = new javax.swing.JComboBox<>();
 		cellPaddingLabel = new javax.swing.JLabel();
 		cellPaddingSpinner = new javax.swing.JSpinner();
 		cellSpacingLabel = new javax.swing.JLabel();
@@ -151,7 +151,7 @@ public class TableDialog extends javax.swing.JDialog {
 		borderSizeLabel = new javax.swing.JLabel();
 		borderSizeSpinner = new javax.swing.JSpinner();
 		alignmentLabel = new javax.swing.JLabel();
-		alignmentComboBox = new javax.swing.JComboBox();
+		alignmentComboBox = new javax.swing.JComboBox<>();
 		captionLabel = new javax.swing.JLabel();
 		captionTextField = new javax.swing.JTextField();
 		summaryLabel = new javax.swing.JLabel();
@@ -178,11 +178,11 @@ public class TableDialog extends javax.swing.JDialog {
 
 		widthSpinner.setModel(new javax.swing.SpinnerNumberModel(200, 1, 2000, 1));
 
-		widthTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pixels", "Percent" }));
+		widthTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pixels", "Percent" }));
 
 		headersLabel.setText("Headers");
 
-		headersComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "First Row", "First Column", "Both" }));
+		headersComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "First Row", "First Column", "Both" }));
 
 		cellPaddingLabel.setText("Cell Padding");
 
@@ -198,7 +198,7 @@ public class TableDialog extends javax.swing.JDialog {
 
 		alignmentLabel.setText("Alignment");
 
-		alignmentComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "Left", "Center", "Right" }));
+		alignmentComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Left", "Center", "Right" }));
 
 		captionLabel.setText("Caption");
 

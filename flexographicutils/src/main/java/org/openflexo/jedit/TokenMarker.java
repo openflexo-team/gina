@@ -30,7 +30,7 @@ package org.openflexo.jedit;
 
 import javax.swing.text.Segment;
 
-import org.openflexo.uicst.TokenMarkerStyle;
+import org.openflexo.toolbox.TokenMarkerStyle;
 
 /**
  * A token marker that splits lines of text into tokens. Each token carries a length field and an indentification tag that can be mapped to

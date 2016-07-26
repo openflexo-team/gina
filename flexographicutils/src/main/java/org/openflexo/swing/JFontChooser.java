@@ -64,9 +64,9 @@ public class JFontChooser extends JPanel implements ChangeListener {
 	private JPanel mainPanel;
 	private JPanel previewPanel;
 	private JLabel previewLabel;
-	JList fontNameList;
-	JList fontStyleList;
-	JList fontSizeList;
+	JList<String> fontNameList;
+	JList<String> fontStyleList;
+	JList<String> fontSizeList;
 
 	private static String PLAIN = "plain";
 	private static String BOLD = "bold";
@@ -85,7 +85,7 @@ public class JFontChooser extends JPanel implements ChangeListener {
 
 		_fsm = fsm;
 		_fsm.addChangeListener(this);
-		fontNameList = new JList(GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames()) {
+		fontNameList = new JList<String>(GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames()) {
 			@Override
 			public Dimension getPreferredScrollableViewportSize() {
 				return new Dimension(175, 144);
@@ -101,7 +101,7 @@ public class JFontChooser extends JPanel implements ChangeListener {
 			}
 		});
 
-		fontStyleList = new JList(styles) {
+		fontStyleList = new JList<String>(styles) {
 			@Override
 			public Dimension getPreferredScrollableViewportSize() {
 				return new Dimension(100, 144);
@@ -127,7 +127,7 @@ public class JFontChooser extends JPanel implements ChangeListener {
 
 		});
 
-		fontSizeList = new JList(sizes) {
+		fontSizeList = new JList<String>(sizes) {
 			@Override
 			public Dimension getPreferredScrollableViewportSize() {
 				return new Dimension(25, 144);

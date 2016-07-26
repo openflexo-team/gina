@@ -57,8 +57,8 @@ import org.openflexo.diff.merge.IMerge;
 import org.openflexo.diff.merge.MergeChange;
 import org.openflexo.jedit.JEditTextAreaWithHighlights;
 import org.openflexo.jedit.TokenMarker;
-import org.openflexo.toolbox.FontCst;
 import org.openflexo.toolbox.TokenMarkerStyle;
+import org.openflexo.uicst.FontCst;
 
 public class MergeTextArea extends JEditTextAreaWithHighlights {
 	private MergeChange selectedChange;
@@ -96,7 +96,8 @@ public class MergeTextArea extends JEditTextAreaWithHighlights {
 		protected String getStringValue() {
 			if (isExtraLine) {
 				return "";
-			} else {
+			}
+			else {
 				return lineText;
 			}
 		}
@@ -110,7 +111,7 @@ public class MergeTextArea extends JEditTextAreaWithHighlights {
 	private int maxCols = 40;
 
 	private String buildText(MergeToken[] someText) {
-		Vector<Line> lines = new Vector<Line>();
+		Vector<Line> lines = new Vector<>();
 		for (int i = 0; i < someText.length; i++) {
 			String line = someText[i].getToken();
 			lines.add(new Line(line, i));
@@ -141,11 +142,14 @@ public class MergeTextArea extends JEditTextAreaWithHighlights {
 			if (!line.isExtraLine) {
 				if (line.lineNb < 10) {
 					linesTASB.append("   " + line.lineNb + " ");
-				} else if (line.lineNb < 100) {
+				}
+				else if (line.lineNb < 100) {
 					linesTASB.append("  " + line.lineNb + " ");
-				} else if (line.lineNb < 1000) {
+				}
+				else if (line.lineNb < 1000) {
 					linesTASB.append(" " + line.lineNb + " ");
-				} else {
+				}
+				else {
 					linesTASB.append("" + line.lineNb);
 				}
 				returned.append(line.getStringValue());
@@ -173,10 +177,10 @@ public class MergeTextArea extends JEditTextAreaWithHighlights {
 		setColumns(maxCols);
 		setEditable(false);
 
-		_changes = new Hashtable<MergeChange, ChangeBounds>();
+		_changes = new Hashtable<>();
 
 		// if (MergeReport.getChanges().size() > 0) {
-		highlights = new Hashtable<MergeChange, MergeHighlight>();
+		highlights = new Hashtable<>();
 		for (MergeChange change : _merge.getChanges()) {
 			highlights.put(change, makeHighlightForChange(change));
 		}
@@ -184,11 +188,14 @@ public class MergeTextArea extends JEditTextAreaWithHighlights {
 		int cols;
 		if (text.length < 10) {
 			cols = 2;
-		} else if (text.length < 100) {
+		}
+		else if (text.length < 100) {
 			cols = 3;
-		} else if (text.length < 1000) {
+		}
+		else if (text.length < 1000) {
 			cols = 4;
-		} else {
+		}
+		else {
 			cols = 5;
 		}
 		linesTA = new JTextArea(text.length, cols);
@@ -222,18 +229,21 @@ public class MergeTextArea extends JEditTextAreaWithHighlights {
 		globalText = buildText(_source.getTextTokens());
 		setText(globalText);
 		_changes.clear();
-		highlights = new Hashtable<MergeChange, MergeHighlight>();
+		highlights = new Hashtable<>();
 		for (MergeChange change : _merge.getChanges()) {
 			highlights.put(change, makeHighlightForChange(change));
 		}
 		int cols;
 		if (text.length < 10) {
 			cols = 2;
-		} else if (text.length < 100) {
+		}
+		else if (text.length < 100) {
 			cols = 3;
-		} else if (text.length < 1000) {
+		}
+		else if (text.length < 1000) {
 			cols = 4;
-		} else {
+		}
+		else {
 			cols = 5;
 		}
 		linesTA.setRows(text.length);
@@ -282,7 +292,8 @@ public class MergeTextArea extends JEditTextAreaWithHighlights {
 				i++;
 			}
 			return i;
-		} else {
+		}
+		else {
 			int i = 0;
 			while (i < text.length && text[i].lineNb <= lineNb) {
 				i++;
@@ -315,7 +326,8 @@ public class MergeTextArea extends JEditTextAreaWithHighlights {
 			bounds.y = cb.beginPLine * getLineHeight();
 			if (bounds.y < 50) {
 				bounds.y = 0;
-			} else {
+			}
+			else {
 				bounds.y -= 50;
 			}
 			// int requiredHeight = (cb.endPLine-cb.beginPLine+1)*getLineHeight()+50;
@@ -389,12 +401,14 @@ public class MergeTextArea extends JEditTextAreaWithHighlights {
 				if (beginLine <= endLine) {
 					beginPLine = lineToPhysLine(beginLine, true);
 					endPLine = lineToPhysLine(endLine, false);
-				} else {
+				}
+				else {
 					int oppositeLength = (isRight() ? change.getLast0() - change.getFirst0() : change.getLast2() - change.getFirst2()) + 1;
 					endPLine = lineToPhysLine(endLine, false);
 					beginPLine = endPLine - oppositeLength + 1;
 				}
-			} else {
+			}
+			else {
 				beginLine = change.getFirstMergeIndex();
 				endLine = change.getLastMergeIndex();
 				beginIndex = lineToChar(beginLine, true);
@@ -440,7 +454,8 @@ public class MergeTextArea extends JEditTextAreaWithHighlights {
 		MergeChange previousChange = _merge.changeBefore(change);
 		if (previousChange == null) {
 			return getFirstHeight(change) + (getHeightForChange(change) - buttonHeight) / 2;
-		} else {
+		}
+		else {
 			return (getHeightForChange(previousChange) - buttonHeight) / 2 + getHeightBetweenChange(previousChange, change)
 					+ (getHeightForChange(change) - buttonHeight) / 2;
 		}

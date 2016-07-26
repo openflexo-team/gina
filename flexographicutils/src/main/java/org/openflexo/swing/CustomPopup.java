@@ -142,7 +142,8 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 		_editedObject = editedObject;
 		if (ToolBox.getPLATFORM() != ToolBox.MACOS) {
 			_downButton = new ImageButton(UtilsIconLibrary.CUSTOM_POPUP_BUTTON);
-		} else {
+		}
+		else {
 			_downButton = new ImageButton(UtilsIconLibrary.CUSTOM_POPUP_DOWN);
 			_downButton.setDisabledIcon(UtilsIconLibrary.CUSTOM_POPUP_DOWN_DISABLED);
 		}
@@ -159,7 +160,7 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 		_frontComponent = buildFrontComponent();
 		add(_frontComponent, BorderLayout.CENTER);
 
-		applyCancelListener = new Vector<ApplyCancelListener>();
+		applyCancelListener = new Vector<>();
 		setFocusTraversalPolicy(new FocusTraversalPolicy() {
 
 			@Override
@@ -272,10 +273,12 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 		int newWidth = -1;
 		if (getRequiredWidth() < 0) {
 			newWidth = getCustomPanel().getDefaultSize().width;
-		} else if (getCustomPanel().getDefaultSize() != null) {
+		}
+		else if (getCustomPanel().getDefaultSize() != null) {
 			if (getRequiredWidth() > getCustomPanel().getDefaultSize().width) {
 				newWidth = getRequiredWidth();
-			} else {
+			}
+			else {
 				newWidth = getCustomPanel().getDefaultSize().width;
 			}
 		}
@@ -348,7 +351,7 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 
 		public CustomJPopupMenu(CustomPopup<?> invoker) {
 			super((Window) SwingUtilities.getAncestorOfClass(Window.class, invoker));
-			_childs = new Vector<CustomJPopupMenu>();
+			_childs = new Vector<>();
 			parentListener = new ParentPopupMoveListener();
 			setUndecorated(true);
 			getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -361,7 +364,8 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("This popup is " + this.hashCode() + " Parent popup is "
 						+ (parentPopupMenu == null ? "null" : parentPopupMenu.hashCode()));
-				// logger.info("Made new popup: "+Integer.toHexString(hashCode())+(getParentPopupMenu()!=null?" with parent: "+Integer.toHexString(getParentPopupMenu().hashCode()):""));
+				// logger.info("Made new popup: "+Integer.toHexString(hashCode())+(getParentPopupMenu()!=null?" with parent:
+				// "+Integer.toHexString(getParentPopupMenu().hashCode()):""));
 			}
 		}
 
@@ -413,7 +417,8 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			}
 			if (aBoolean) {
 				_requestVisibility = true;
-			} else {
+			}
+			else {
 				for (CustomJPopupMenu child : _childs) {
 					child.setVisible(false);
 				}
@@ -431,7 +436,8 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			if (aBoolean) {
 				registerParentListener();
 				_requestVisibility = false;
-			} else {
+			}
+			else {
 				unregisterParentListener();
 			}
 		}
@@ -463,10 +469,12 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 		if (e.getSource() == _downButton) {
 			if (!popupIsShown()) {
 				openPopup();
-			} else {
+			}
+			else {
 				closePopup();
 			}
-		} else {
+		}
+		else {
 			additionalActions();
 		}
 	}
@@ -507,8 +515,9 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 								w.getCustomPopup().pointerLeavesPopup();
 								w = w.getParentPopupMenu();
 							}
-						} else if (oppositeWindow != parentWindow || FocusManager.getCurrentManager().getFocusOwner() != null
-								&& !_frontComponent.hasFocus()) {
+						}
+						else if (oppositeWindow != parentWindow
+								|| FocusManager.getCurrentManager().getFocusOwner() != null && !_frontComponent.hasFocus()) {
 							// This test is used to detect the case of the lost of focus is performed
 							// Because a child popup gained the focus: in this case, nothing should be performed
 							if (oppositeWindow != null) {
@@ -700,8 +709,8 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 				public void mouseDragged(MouseEvent e) {
 					if (previous != null) {
 						Dimension size = getCustomPanel().getSize();
-						Dimension aDimension = new Dimension(size.width + e.getLocationOnScreen().x - previous.x, size.height
-								+ e.getLocationOnScreen().y - previous.y);
+						Dimension aDimension = new Dimension(size.width + e.getLocationOnScreen().x - previous.x,
+								size.height + e.getLocationOnScreen().y - previous.y);
 						getCustomPanel().setPreferredSize(aDimension);
 						_popup.pack();
 						previous = e.getLocationOnScreen();
@@ -715,7 +724,8 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 					}
 					if (getResizeRectangle().contains(e.getPoint())) {
 						_popup.setCursor(Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR));
-					} else {
+					}
+					else {
 						_popup.setCursor(Cursor.getDefaultCursor());
 					}
 				}
@@ -741,7 +751,8 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			};
 			_popup.addMouseListener(mouseListener);
 			_popup.addMouseMotionListener(mouseListener);
-		} else {
+		}
+		else {
 			logger.warning("Illegal component state: component is not showing on screen");
 			// _popup.show(this, 0, 0);
 		}
@@ -784,10 +795,12 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 		T currentValue = _editedObject;
 		if (value == null) {
 			return currentValue != null;
-		} else {
+		}
+		else {
 			if (useEqualsLookup()) {
 				return !value.equals(currentValue);
-			} else {
+			}
+			else {
 				return value != currentValue;
 			}
 		}

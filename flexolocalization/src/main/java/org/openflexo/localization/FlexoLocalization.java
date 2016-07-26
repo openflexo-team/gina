@@ -72,7 +72,7 @@ public class FlexoLocalization {
 
 	private static Language _currentLanguage;
 
-	private static List<WeakReference<LocalizationListener>> localizationListeners = new Vector<WeakReference<LocalizationListener>>();
+	private static List<WeakReference<LocalizationListener>> localizationListeners = new Vector<>();
 
 	/*private static final WeakHashMap<Component, String> _storedLocalizedForComponents = new WeakHashMap<Component, String>();
 	
@@ -497,7 +497,7 @@ public class FlexoLocalization {
 	}
 
 	public static void addToLocalizationListeners(LocalizationListener l) {
-		localizationListeners.add(new WeakReference<LocalizationListener>(l));
+		localizationListeners.add(new WeakReference<>(l));
 	}
 
 	public static void removeFromLocalizationListeners(LocalizationListener l) {

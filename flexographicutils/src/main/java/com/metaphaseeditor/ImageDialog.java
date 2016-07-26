@@ -122,14 +122,14 @@ public class ImageDialog extends javax.swing.JDialog {
 		vspaceLabel = new javax.swing.JLabel();
 		vspaceSpinner = new javax.swing.JSpinner();
 		alignLabel = new javax.swing.JLabel();
-		alignComboBox = new javax.swing.JComboBox();
+		alignComboBox = new javax.swing.JComboBox<>();
 		widthToggleButton = new javax.swing.JToggleButton();
 		heightToggleButton = new javax.swing.JToggleButton();
 		mLinkPanel = new javax.swing.JPanel();
 		linkUrlLabel = new javax.swing.JLabel();
 		linkUrlTextField = new javax.swing.JTextField();
 		targetLabel = new javax.swing.JLabel();
-		targetComboBox = new javax.swing.JComboBox();
+		targetComboBox = new javax.swing.JComboBox<>();
 		advancedPanel = new javax.swing.JPanel();
 		idTextField = new javax.swing.JTextField();
 		idLabel = new javax.swing.JLabel();
@@ -140,7 +140,7 @@ public class ImageDialog extends javax.swing.JDialog {
 		advisoryTitleTextField = new javax.swing.JTextField();
 		advisoryTitleLabel = new javax.swing.JLabel();
 		languageDirectionLabel = new javax.swing.JLabel();
-		languageDirectionComboBox = new javax.swing.JComboBox();
+		languageDirectionComboBox = new javax.swing.JComboBox<>();
 		styleClassesLabel = new javax.swing.JLabel();
 		styleClassesTextField = new javax.swing.JTextField();
 		longDescLabel = new javax.swing.JLabel();
@@ -181,7 +181,7 @@ public class ImageDialog extends javax.swing.JDialog {
 
 		alignLabel.setText("Align");
 
-		alignComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "Top", "Bottom", "Middle", "Left", "Right" }));
+		alignComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Top", "Bottom", "Middle", "Left", "Right" }));
 
 		widthToggleButton.setSelected(true);
 		widthToggleButton.setText("Default");
@@ -272,7 +272,7 @@ public class ImageDialog extends javax.swing.JDialog {
 
 		targetLabel.setText("Target");
 
-		targetComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None" }));
+		targetComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None" }));
 
 		javax.swing.GroupLayout mLinkPanelLayout = new javax.swing.GroupLayout(mLinkPanel);
 		mLinkPanel.setLayout(mLinkPanelLayout);
@@ -309,7 +309,8 @@ public class ImageDialog extends javax.swing.JDialog {
 
 		languageDirectionLabel.setText("Language Direction");
 
-		languageDirectionComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "Left to Right", "Right to Left" }));
+		languageDirectionComboBox
+				.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Left to Right", "Right to Left" }));
 
 		styleClassesLabel.setText("Style Classes");
 

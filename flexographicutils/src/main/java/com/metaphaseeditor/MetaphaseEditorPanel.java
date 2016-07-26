@@ -235,8 +235,8 @@ public class MetaphaseEditorPanel extends JPanel {
 		public void insertImage(JTextPane htmlTextPane);
 	}
 
-	private List<ContextMenuListener> contextMenuListeners = new ArrayList<ContextMenuListener>();
-	private List<EditorMouseMotionListener> editorMouseMotionListeners = new ArrayList<EditorMouseMotionListener>();
+	private List<ContextMenuListener> contextMenuListeners = new ArrayList<>();
+	private List<EditorMouseMotionListener> editorMouseMotionListeners = new ArrayList<>();
 
 	private enum ParagraphFormat {
 		PARAGRAPH_FORMAT("Format", null),
@@ -654,7 +654,7 @@ public class MetaphaseEditorPanel extends JPanel {
 	// The following two methods allow us to find an
 	// action provided by the editor kit by its name.
 	private void createEditorKitActionTable() {
-		editorKitActions = new Hashtable<Object, Action>();
+		editorKitActions = new Hashtable<>();
 		Action[] actionsArray = editorKit.getActions();
 		for (int i = 0; i < actionsArray.length; i++) {
 			Action a = actionsArray[i];
@@ -732,9 +732,9 @@ public class MetaphaseEditorPanel extends JPanel {
 		insertHorizontalLineButton = new javax.swing.JButton();
 		insertSpecialCharButton = new javax.swing.JButton();
 		insertImage = new javax.swing.JButton();
-		paragraphFormatComboBox = new javax.swing.JComboBox();
-		fontComboBox = new javax.swing.JComboBox();
-		fontSizeComboBox = new javax.swing.JComboBox();
+		paragraphFormatComboBox = new javax.swing.JComboBox<>();
+		fontComboBox = new javax.swing.JComboBox<>();
+		fontSizeComboBox = new javax.swing.JComboBox<>();
 		textColorButton = new javax.swing.JButton();
 		backgroundColorButton = new javax.swing.JButton();
 		aboutButton = new javax.swing.JButton();
@@ -994,7 +994,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		insertImage.setName(IMAGE_BUTTON_KEY);
 
-		paragraphFormatComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Normal", "Heading 1", "Heading 2",
+		paragraphFormatComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Normal", "Heading 1", "Heading 2",
 				"Heading 3", "Heading 4", "Heading 5", "Heading 6", "Formatted", "Address", "Normal (DIV)" }));
 		paragraphFormatComboBox.setToolTipText("Paragraph Format");
 		paragraphFormatComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -1005,7 +1005,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		paragraphFormatComboBox.setName(PARAGRAPH_FORMAT_PANEL_KEY);
 
-		fontComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Arial", "Comic Sans MS", "Courier New", "Georgia",
+		fontComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Arial", "Comic Sans MS", "Courier New", "Georgia",
 				"Lucinda Sans Unicode", "Tahoma", "Times New Roman", "Trebuchet MS", "Verdana" }));
 		fontComboBox.setToolTipText("Font");
 		fontComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -1016,7 +1016,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		fontComboBox.setName(FONT_PANEL_KEY);
 
-		fontSizeComboBox.setModel(new javax.swing.DefaultComboBoxModel(
+		fontSizeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(
 				new String[] { "8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36", "48", "72" }));
 		fontSizeComboBox.setToolTipText("Font Size");
 		fontSizeComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -1227,7 +1227,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		returned.setBorder(BorderFactory.createEmptyBorder());
 		returned.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
 
-		Vector<JButton> buttonList = new Vector<JButton>();
+		Vector<JButton> buttonList = new Vector<>();
 
 		for (JButton b : buttons) {
 			if (configuration.hasOption(b.getName())) {
@@ -1249,7 +1249,7 @@ public class MetaphaseEditorPanel extends JPanel {
 	}
 
 	private JPanel makeLinePanel(int line, final MetaphaseEditorConfiguration configuration) {
-		Vector<JComponent> components = new Vector<JComponent>();
+		Vector<JComponent> components = new Vector<>();
 		if (configuration.hasOption(SOURCE_PANEL_KEY, line)) {
 			components.add(sourcePanel);
 		}
@@ -1374,7 +1374,7 @@ public class MetaphaseEditorPanel extends JPanel {
 				if (listElement.getName().equals("li")) {
 					// re-add the existing attributes to the list item
 					AttributeSet listElementAttrs = listElement.getAttributes();
-					Enumeration currentAttrEnum = listElementAttrs.getAttributeNames();
+					Enumeration<?> currentAttrEnum = listElementAttrs.getAttributeNames();
 					while (currentAttrEnum.hasMoreElements()) {
 						Object attrName = currentAttrEnum.nextElement();
 						Object attrValue = listElement.getAttributes().getAttribute(attrName);
@@ -1767,7 +1767,7 @@ public class MetaphaseEditorPanel extends JPanel {
 				});
 			}
 			else if (vComponents[i] instanceof JComboBox) {
-				JComboBox comboBox = (JComboBox) vComponents[i];
+				JComboBox<?> comboBox = (JComboBox<?>) vComponents[i];
 				comboBox.addActionListener(new ActionListener() {
 
 					@Override
@@ -1795,7 +1795,7 @@ public class MetaphaseEditorPanel extends JPanel {
 				button.setEnabled(enabled);
 			}
 			else if (vComponents[i] instanceof JComboBox) {
-				JComboBox comboBox = (JComboBox) vComponents[i];
+				JComboBox<?> comboBox = (JComboBox<?>) vComponents[i];
 				comboBox.setEnabled(enabled);
 			}
 			else if (vComponents[i] instanceof JPanel) {

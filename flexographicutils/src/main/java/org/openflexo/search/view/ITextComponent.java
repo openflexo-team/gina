@@ -3,7 +3,7 @@
  * Copyright (c) 2013-2014, Openflexo
  * Copyright (c) 2011-2012, AgileBirds
  * 
- * This file is part of Flexographicutils, a component of the software infrastructure 
+ * This file is part of Flexoutils, a component of the software infrastructure 
  * developed at Openflexo.
  * 
  * 
@@ -37,68 +37,29 @@
  * 
  */
 
-package org.openflexo.swing;
+package org.openflexo.search.view;
 
-import java.util.Vector;
+import javax.swing.event.CaretListener;
+import javax.swing.text.Document;
 
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
+public interface ITextComponent {
 
-import org.openflexo.kvc.ChoiceList;
+	public void select(int start, int end);
 
-/**
- * @author gpolet
- * 
- */
-public class LookAndFeel implements ChoiceList<LookAndFeel> {
+	public boolean isEditable();
 
-	private static final Vector<LookAndFeel> availableValues = new Vector<>();
+	public int getCaretPosition();
 
-	public static LookAndFeel getDefaultLookAndFeel() {
-		for (LookAndFeel feel : availableValues()) {
-			if (feel.getClassName().equals(UIManager.getSystemLookAndFeelClassName())) {
-				return feel;
-			}
-		}
-		return availableValues().firstElement();
-	}
+	public void addCaretListener(CaretListener listener);
 
-	public static Vector<LookAndFeel> availableValues() {
-		if (availableValues.size() == 0) {
-			LookAndFeelInfo[] lafs = UIManager.getInstalledLookAndFeels();
-			for (int i = 0; i < lafs.length; i++) {
-				LookAndFeelInfo feel = lafs[i];
-				availableValues.add(new LookAndFeel(feel));
-			}
-		}
-		return availableValues;
-	}
+	public void removeCaretListener(CaretListener listener);
 
-	private final LookAndFeelInfo info;
+	public Document getDocument();
 
-	/**
-	 *
-	 */
-	public LookAndFeel(LookAndFeelInfo info) {
-		this.info = info;
-	}
+	public int getSelectionStart();
 
-	public String getClassName() {
-		return info.getClassName();
-	}
+	public int getSelectionEnd();
 
-	public String getName() {
-		return info.getName();
-	}
-
-	/**
-	 * Overrides getAvailableValues
-	 * 
-	 * @see org.openflexo.kvc.ChoiceList#getAvailableValues()
-	 */
-	@Override
-	public Vector<LookAndFeel> getAvailableValues() {
-		return availableValues;
-	}
+	public String getSelectedText();
 
 }

@@ -80,15 +80,12 @@ import javax.swing.table.TableModel;
  * be used as a complete UI for TableSorter. The default renderer of the tableHeader is decorated with a renderer that indicates the sorting
  * status of each column. In addition, a mouse listener is installed with the following behavior:
  * <ul>
- * <li>
- * Mouse-click: Clears the sorting status of all other columns and advances the sorting status of that column through three values:
+ * <li>Mouse-click: Clears the sorting status of all other columns and advances the sorting status of that column through three values:
  * {NOT_SORTED, ASCENDING, DESCENDING} (then back to NOT_SORTED again).
- * <li>
- * SHIFT-mouse-click: Clears the sorting status of all other columns and cycles the sorting status of the column through the same three
+ * <li>SHIFT-mouse-click: Clears the sorting status of all other columns and cycles the sorting status of the column through the same three
  * values, in the opposite order: {NOT_SORTED, DESCENDING, ASCENDING}.
- * <li>
- * CONTROL-mouse-click and CONTROL-SHIFT-mouse-click: as above except that the changes to the column do not cancel the statuses of columns
- * that are already sorting - giving a way to initiate a compound sort.
+ * <li>CONTROL-mouse-click and CONTROL-SHIFT-mouse-click: as above except that the changes to the column do not cancel the statuses of
+ * columns that are already sorting - giving a way to initiate a compound sort.
  * </ul>
  * <p/>
  * This is a long overdue rewrite of a class of the same name that first appeared in the swing table demos in 1997.
@@ -109,7 +106,7 @@ public class TableSorter extends AbstractTableModel {
 
 	private static final Directive EMPTY_DIRECTIVE = new Directive(-1, NOT_SORTED);
 
-	public static final Comparator COMPARABLE_COMAPRATOR = new Comparator() {
+	public static final Comparator COMPARABLE_COMPARATOR = new Comparator() {
 		@Override
 		public int compare(Object o1, Object o2) {
 			return ((Comparable) o1).compareTo(o2);
@@ -128,8 +125,8 @@ public class TableSorter extends AbstractTableModel {
 	private JTableHeader tableHeader;
 	private MouseListener mouseListener;
 	private TableModelListener tableModelListener;
-	private Map<Class, Comparator> columnComparators = new HashMap<Class, Comparator>();
-	List<Directive> sortingColumns = new ArrayList<Directive>();
+	private Map<Class, Comparator> columnComparators = new HashMap<>();
+	List<Directive> sortingColumns = new ArrayList<>();
 
 	public TableSorter() {
 		this.mouseListener = new MouseHandler();
@@ -242,7 +239,8 @@ public class TableSorter extends AbstractTableModel {
 	public void setColumnComparator(Class type, Comparator comparator) {
 		if (comparator == null) {
 			columnComparators.remove(type);
-		} else {
+		}
+		else {
 			columnComparators.put(type, comparator);
 		}
 	}
@@ -254,7 +252,7 @@ public class TableSorter extends AbstractTableModel {
 			return comparator;
 		}
 		if (Comparable.class.isAssignableFrom(columnType)) {
-			return COMPARABLE_COMAPRATOR;
+			return COMPARABLE_COMPARATOR;
 		}
 		return LEXICAL_COMPARATOR;
 	}
@@ -340,7 +338,7 @@ public class TableSorter extends AbstractTableModel {
 			int row1 = modelIndex;
 			int row2 = ((Row) o).modelIndex;
 
-			for (Iterator it = sortingColumns.iterator(); it.hasNext();) {
+			for (Iterator<?> it = sortingColumns.iterator(); it.hasNext();) {
 				Directive directive = (Directive) it.next();
 				int column = directive.column;
 				Object o1 = tableModel.getValueAt(row1, column);
@@ -350,11 +348,14 @@ public class TableSorter extends AbstractTableModel {
 				// Define null less than everything, except null.
 				if (o1 == null && o2 == null) {
 					comparison = 0;
-				} else if (o1 == null) {
+				}
+				else if (o1 == null) {
 					comparison = -1;
-				} else if (o2 == null) {
+				}
+				else if (o2 == null) {
 					comparison = 1;
-				} else {
+				}
+				else {
 					comparison = getComparator(column).compare(o1, o2);
 				}
 				if (comparison != 0) {
@@ -474,7 +475,8 @@ public class TableSorter extends AbstractTableModel {
 			// Horizontal line.
 			if (descending) {
 				g.setColor(color.darker().darker());
-			} else {
+			}
+			else {
 				g.setColor(color.brighter().brighter());
 			}
 			g.drawLine(dx, 0, 0, 0);
@@ -502,7 +504,8 @@ public class TableSorter extends AbstractTableModel {
 		}
 
 		@Override
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row,
+				int column) {
 			Component c = tableCellRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			if (c instanceof JLabel) {
 				JLabel l = (JLabel) c;

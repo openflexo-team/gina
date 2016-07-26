@@ -52,7 +52,7 @@ import org.openflexo.kvc.ChoiceList;
  * @author sguerin
  * 
  */
-public abstract class Language implements ChoiceList {
+public abstract class Language implements ChoiceList<Language> {
 
 	private static final Logger logger = Logger.getLogger(Language.class.getPackage().getName());
 
@@ -169,7 +169,7 @@ public abstract class Language implements ChoiceList {
 	 */
 	public static Vector<Language> getAvailableLanguages() {
 		if (availableLanguages == null) {
-			availableLanguages = new Vector<Language>();
+			availableLanguages = new Vector<>();
 			for (int i = 0; i < knownsLanguages.length; i++) {
 				availableLanguages.add(knownsLanguages[i]);
 			}
