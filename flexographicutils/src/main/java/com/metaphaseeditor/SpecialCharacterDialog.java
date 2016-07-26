@@ -29,15 +29,14 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
+import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
-import org.openflexo.toolbox.ImageIconResource;
 
 /**
  * 
  * @author Rudolf Visagie
  */
 public class SpecialCharacterDialog extends javax.swing.JDialog {
-	
 
 	String selectedChars = null;
 
@@ -89,10 +88,10 @@ public class SpecialCharacterDialog extends javax.swing.JDialog {
 
 		javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
 		mainPanel.setLayout(mainPanelLayout);
-		mainPanelLayout.setHorizontalGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 400,
-				Short.MAX_VALUE));
-		mainPanelLayout.setVerticalGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 251,
-				Short.MAX_VALUE));
+		mainPanelLayout.setHorizontalGroup(
+				mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 400, Short.MAX_VALUE));
+		mainPanelLayout.setVerticalGroup(
+				mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 251, Short.MAX_VALUE));
 
 		cancelButton.setText("Cancel");
 		cancelButton.addActionListener(new java.awt.event.ActionListener() {
@@ -104,13 +103,12 @@ public class SpecialCharacterDialog extends javax.swing.JDialog {
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+		layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 				.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
 						layout.createSequentialGroup().addContainerGap(325, Short.MAX_VALUE).addComponent(cancelButton).addContainerGap()));
-		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				layout.createSequentialGroup()
+		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(layout.createSequentialGroup()
 						.addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
 								javax.swing.GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(cancelButton)
