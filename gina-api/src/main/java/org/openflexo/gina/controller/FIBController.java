@@ -193,9 +193,9 @@ public class FIBController
 	public FIBController(FIBComponent rootComponent, GinaViewFactory<?> viewFactory) {
 		this.rootComponent = rootComponent;
 		pcSupport = new PropertyChangeSupport(this);
-		views = new Hashtable<FIBComponent, FIBView<?, ?>>();
-		selectionListeners = new Vector<FIBSelectionListener>();
-		mouseClickListeners = new Vector<FIBMouseClickListener>();
+		views = new Hashtable<>();
+		selectionListeners = new Vector<>();
+		mouseClickListeners = new Vector<>();
 		this.viewFactory = viewFactory;
 	}
 
@@ -206,7 +206,7 @@ public class FIBController
 			}
 			// Next for-block should not be necessary because deletion is
 			// recursive, but just to be sure
-			for (FIBView<?, ?> view : new ArrayList<FIBView<?, ?>>(views.values())) {
+			for (FIBView<?, ?> view : new ArrayList<>(views.values())) {
 				view.delete();
 			}
 			/*if (dataObject instanceof Observable) {
@@ -276,7 +276,7 @@ public class FIBController
 		return viewFactory;
 	}
 
-	public void setViewFactory(GinaViewFactory viewFactory) {
+	public void setViewFactory(GinaViewFactory<?> viewFactory) {
 		this.viewFactory = viewFactory;
 	}
 
@@ -319,7 +319,7 @@ public class FIBController
 
 	// Includes views from embedded components
 	public List<FIBView<?, ?>> getAllViews() {
-		List<FIBView<?, ?>> l = new ArrayList<FIBView<?, ?>>();
+		List<FIBView<?, ?>> l = new ArrayList<>();
 		l.addAll(views.values());
 		for (FIBView<?, ?> v : views.values()) {
 			if (v instanceof FIBReferencedComponentWidget) {
@@ -347,7 +347,7 @@ public class FIBController
 		if (variable.getVariableName() == null) {
 			return null;
 		}
-		for (FIBComponent c : new ArrayList<FIBComponent>(views.keySet())) {
+		for (FIBComponent c : new ArrayList<>(views.keySet())) {
 			if (variable.getVariableName().equals(c.getName())) {
 				return viewForComponent(c);
 			}
@@ -369,7 +369,7 @@ public class FIBController
 		return rootComponent;
 	}
 
-	public FIBView getRootView() {
+	public FIBView<?, ?> getRootView() {
 		return viewForComponent(getRootComponent());
 	}
 
@@ -607,7 +607,7 @@ public class FIBController
 		return selectionLeader;
 	}
 
-	public void setSelectionLeader(FIBSelectable selectionLeader) {
+	public void setSelectionLeader(FIBSelectable<?> selectionLeader) {
 		LOGGER.fine("Selection LEADER is now " + selectionLeader);
 		if (isEmbedded()) {
 			getEmbeddingController().setSelectionLeader(selectionLeader);
@@ -623,7 +623,7 @@ public class FIBController
 		return lastFocusedSelectable;
 	}
 
-	public void setLastFocusedSelectable(FIBSelectable lastFocusedSelectable) {
+	public void setLastFocusedSelectable(FIBSelectable<?> lastFocusedSelectable) {
 		if (isEmbedded()) {
 			getEmbeddingController().setLastFocusedSelectable(lastFocusedSelectable);
 			return;
@@ -655,17 +655,18 @@ public class FIBController
 			if (newFocusedWidget != null) {
 				newFocusedWidget.getRenderingAdapter().repaint(newFocusedWidget.getTechnologyComponent());
 				if (newFocusedWidget instanceof FIBSelectable) {
-					setLastFocusedSelectable((FIBSelectable) newFocusedWidget);
+					FIBSelectable<?> newFocusedWidgetS = (FIBSelectable) newFocusedWidget;
+					setLastFocusedSelectable(newFocusedWidgetS);
 					if (getLastFocusedSelectable().synchronizedWithSelection()) {
-						setSelectionLeader((FIBSelectable) newFocusedWidget);
-						fireSelectionChanged((FIBSelectable) newFocusedWidget);
+						setSelectionLeader(newFocusedWidgetS);
+						fireSelectionChanged(newFocusedWidgetS);
 					}
 				}
 			}
 		}
 	}
 
-	public boolean isFocused(FIBWidgetView widget) {
+	public boolean isFocused(FIBWidgetView<?, ?, ?> widget) {
 		return focusedWidget == widget;
 	}
 
@@ -719,8 +720,8 @@ public class FIBController
 			// The caller widget is the selection leader, and should fire
 			// selection change event all over the world !
 			fireSelectionChanged(widget);
-			List<Object> objectsToRemoveFromSelection = new Vector<Object>();
-			List<Object> objectsToAddToSelection = new Vector<Object>();
+			List<Object> objectsToRemoveFromSelection = new Vector<>();
+			List<Object> objectsToAddToSelection = new Vector<>();
 			if (oldSelection != null) {
 				objectsToRemoveFromSelection.addAll(oldSelection);
 			}
@@ -736,7 +737,7 @@ public class FIBController
 			for (FIBView<?, ?> v : getAllViews()) {
 				if (v instanceof FIBWidgetView && v instanceof FIBSelectable && v != getSelectionLeader()
 						&& ((FIBSelectable) v).synchronizedWithSelection()) {
-					FIBSelectable selectableComponent = (FIBSelectable) ((FIBWidgetView<?, ?, ?>) v);
+					FIBSelectable<Object> selectableComponent = (FIBSelectable) ((FIBWidgetView<?, ?, ?>) v);
 					for (Object o : objectsToAddToSelection) {
 						if (selectableComponent.mayRepresent(o)) {
 							selectableComponent.objectAddedToSelection(o);
@@ -747,7 +748,7 @@ public class FIBController
 						// SelectionLeader !!!
 						// Otherwise, if this selectable'selection is the cause
 						// of displaying of selection leader
-						// the selection leader might disapppear
+						// the selection leader might disappear
 						if (selectableComponent.mayRepresent(o) && selectableComponent == getSelectionLeader()) {
 							selectableComponent.objectRemovedFromSelection(o);
 						}
@@ -766,7 +767,7 @@ public class FIBController
 
 		for (FIBView<?, ?> v : getViews()) {
 			if (v instanceof FIBWidgetView && v instanceof FIBSelectable && ((FIBSelectable) v).synchronizedWithSelection()) {
-				FIBSelectable selectableComponent = (FIBSelectable) v;
+				FIBSelectable<Object> selectableComponent = (FIBSelectable) v;
 				if (selectableComponent.mayRepresent(o)) {
 					selectableComponent.objectAddedToSelection(o);
 					if (getSelectionLeader() == null) {
@@ -789,7 +790,7 @@ public class FIBController
 		LOGGER.fine("FIBController: objectRemovedFromSelection(): " + o);
 		for (FIBView<?, ?> v : getViews()) {
 			if (v instanceof FIBWidgetView && v instanceof FIBSelectable && ((FIBSelectable) v).synchronizedWithSelection()) {
-				FIBSelectable selectableComponent = (FIBSelectable) v;
+				FIBSelectable<Object> selectableComponent = (FIBSelectable) v;
 				if (selectableComponent.mayRepresent(o)) {
 					selectableComponent.objectRemovedFromSelection(o);
 				}
@@ -801,7 +802,7 @@ public class FIBController
 		LOGGER.fine("FIBController: selectionCleared()");
 		for (FIBView<?, ?> v : getViews()) {
 			if (v instanceof FIBWidgetView && v instanceof FIBSelectable && ((FIBSelectable) v).synchronizedWithSelection()) {
-				FIBSelectable selectableComponent = (FIBSelectable) v;
+				FIBSelectable<Object> selectableComponent = (FIBSelectable) v;
 				selectableComponent.selectionResetted();
 			}
 		}
@@ -813,7 +814,7 @@ public class FIBController
 	 * 
 	 * @param leader
 	 */
-	private void fireSelectionChanged(FIBSelectable leader) {
+	private void fireSelectionChanged(FIBSelectable<?> leader) {
 		// External synchronization
 		for (FIBSelectionListener l : selectionListeners) {
 			if (getSelectionLeader() != null) {

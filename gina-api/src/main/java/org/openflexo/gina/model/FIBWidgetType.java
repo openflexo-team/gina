@@ -107,7 +107,7 @@ public class FIBWidgetType<W extends FIBWidget> extends FIBViewType<W> {
 
 	public FIBWidgetType(W aWidget) {
 		super(aWidget);
-		pathElements = new HashMap<BindingPathElement, List<DynamicPropertyPathElement<? super W>>>();
+		pathElements = new HashMap<>();
 	}
 
 	@Override

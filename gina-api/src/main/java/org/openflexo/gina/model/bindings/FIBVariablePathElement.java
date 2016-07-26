@@ -101,16 +101,16 @@ public class FIBVariablePathElement extends SimplePathElement implements Propert
 
 	@Override
 	public Object getBindingValue(Object target, BindingEvaluationContext context) throws TypeMismatchException, NullReferenceException {
-		//System.out.println("j'evalue " + fibVariable + " pour " + target);
-		//System.out.println("il s'agit de " + fibVariable.getValue());
+		// System.out.println("j'evalue " + fibVariable + " pour " + target);
+		// System.out.println("il s'agit de " + fibVariable.getValue());
 		if (target instanceof FIBView) {
 			Object returned = ((FIBView) target).getVariableValue(fibVariable);
 			if (returned == null || TypeUtils.isTypeAssignableFrom(getType(), returned.getClass())) {
-				//System.out.println("Et je retourne");
+				// System.out.println("Et je retourne");
 				return returned;
 			}
 			else {
-				//System.out.println("Ouhlala, on me demande " + getType() + " mais j'ai " + returned.getClass());
+				// System.out.println("Ouhlala, on me demande " + getType() + " mais j'ai " + returned.getClass());
 				// System.out.println("d'un autre cote, la vue est visible ? " + ((FIBView) target).isViewVisible());
 				return null;
 			}

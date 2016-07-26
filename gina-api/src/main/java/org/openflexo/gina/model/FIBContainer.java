@@ -206,7 +206,7 @@ public abstract interface FIBContainer extends FIBComponent {
 
 		@Override
 		public final void setParent(FIBContainer parent) {
-			Map<FIBComponent, BindingModel> oldBindingModelMap = new HashMap<FIBComponent, BindingModel>();
+			Map<FIBComponent, BindingModel> oldBindingModelMap = new HashMap<>();
 			for (FIBComponent c : retrieveAllSubComponents()) {
 				oldBindingModelMap.put(c, c.getBindingModel());
 			}
@@ -225,7 +225,7 @@ public abstract interface FIBContainer extends FIBComponent {
 		 */
 		@Override
 		public List<FIBComponent> getAllSubComponents() {
-			List<FIBComponent> returned = new ArrayList<FIBComponent>();
+			List<FIBComponent> returned = new ArrayList<>();
 			appendAllSubComponents(this, returned);
 			return returned;
 		}
@@ -388,7 +388,7 @@ public abstract interface FIBContainer extends FIBComponent {
 
 		@Override
 		public Enumeration<FIBComponent> children() {
-			return (new Vector<FIBComponent>(getSubComponents())).elements();
+			return (new Vector<>(getSubComponents())).elements();
 		}
 
 		@Override
@@ -436,7 +436,7 @@ public abstract interface FIBContainer extends FIBComponent {
 		 */
 		@Override
 		public void append(FIBContainer container) {
-			List<FIBComponent> mergedComponents = new ArrayList<FIBComponent>();
+			List<FIBComponent> mergedComponents = new ArrayList<>();
 			for (int i = container.getSubComponents().size() - 1; i >= 0; i--) {
 				FIBComponent c2 = container.getSubComponents().get(i);
 				if (c2.getName() != null && c2 instanceof FIBContainer) {
@@ -709,7 +709,7 @@ public abstract interface FIBContainer extends FIBComponent {
 		}
 
 		private void notifyComponentIndexChanged(FIBComponent component) {
-			FIBPropertyNotification<ComponentConstraints> notification = new FIBPropertyNotification<ComponentConstraints>(
+			FIBPropertyNotification<ComponentConstraints> notification = new FIBPropertyNotification<>(
 					(FIBProperty<ComponentConstraints>) FIBProperty.getFIBProperty(getClass(), CONSTRAINTS_KEY), component.getConstraints(),
 					component.getConstraints());
 			component.notify(notification);

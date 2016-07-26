@@ -193,7 +193,7 @@ public class FIBTableType extends FIBWidgetType<FIBTable> {
 	@Override
 	public List<DynamicProperty> getDynamicProperties() {
 
-		List<DynamicProperty> returned = new ArrayList<DynamicProperty>();
+		List<DynamicProperty> returned = new ArrayList<>();
 		returned.addAll(super.getDynamicProperties());
 		returned.add(SELECTED);
 		returned.add(SELECTED_INDEX);

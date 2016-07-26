@@ -96,7 +96,7 @@ public interface FIBButtonColumn extends FIBTableColumn {
 		@Override
 		public DataBinding<Object> getAction() {
 			if (action == null) {
-				action = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
+				action = new DataBinding<>(this, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
 			}
 			return action;
 		}
@@ -118,7 +118,7 @@ public interface FIBButtonColumn extends FIBTableColumn {
 		@Override
 		public DataBinding<Boolean> getEnabled() {
 			if (enabled == null) {
-				enabled = new DataBinding<Boolean>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				enabled = new DataBinding<>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
 			}
 			return enabled;
 		}

@@ -392,7 +392,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<String> getLabel() {
 			if (label == null) {
-				label = new DataBinding<String>(iterator, String.class, DataBinding.BindingDefinitionType.GET);
+				label = new DataBinding<>(iterator, String.class, DataBinding.BindingDefinitionType.GET);
 				label.setBindingName("label");
 			}
 			return label;
@@ -416,7 +416,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<Icon> getIcon() {
 			if (icon == null) {
-				icon = new DataBinding<Icon>(iterator, Icon.class, DataBinding.BindingDefinitionType.GET);
+				icon = new DataBinding<>(iterator, Icon.class, DataBinding.BindingDefinitionType.GET);
 				icon.setBindingName("icon");
 			}
 			return icon;
@@ -440,7 +440,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<String> getTooltip() {
 			if (tooltip == null) {
-				tooltip = new DataBinding<String>(iterator, String.class, DataBinding.BindingDefinitionType.GET);
+				tooltip = new DataBinding<>(iterator, String.class, DataBinding.BindingDefinitionType.GET);
 				tooltip.setBindingName("tooltip");
 			}
 			return tooltip;
@@ -460,7 +460,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<Boolean> getEnabled() {
 			if (enabled == null) {
-				enabled = new DataBinding<Boolean>(iterator, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				enabled = new DataBinding<>(iterator, Boolean.class, DataBinding.BindingDefinitionType.GET);
 				enabled.setBindingName("enabled");
 			}
 			return enabled;
@@ -480,7 +480,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<Boolean> getVisible() {
 			if (visible == null) {
-				visible = new DataBinding<Boolean>(iterator, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				visible = new DataBinding<>(iterator, Boolean.class, DataBinding.BindingDefinitionType.GET);
 				visible.setBindingName("visible");
 			}
 			return visible;
@@ -514,7 +514,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<String> getEditableLabel() {
 			if (editableLabel == null) {
-				editableLabel = new DataBinding<String>(iterator, String.class, DataBinding.BindingDefinitionType.GET_SET);
+				editableLabel = new DataBinding<>(iterator, String.class, DataBinding.BindingDefinitionType.GET_SET);
 			}
 			return editableLabel;
 		}
@@ -707,7 +707,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<Color> getSelectedDynamicColor() {
 			if (selectedDynamicColor == null) {
-				selectedDynamicColor = new DataBinding<Color>(iterator, Color.class, DataBinding.BindingDefinitionType.GET);
+				selectedDynamicColor = new DataBinding<>(iterator, Color.class, DataBinding.BindingDefinitionType.GET);
 			}
 			return selectedDynamicColor;
 		}
@@ -725,7 +725,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<Color> getNonSelectedDynamicColor() {
 			if (nonSelectedDynamicColor == null) {
-				nonSelectedDynamicColor = new DataBinding<Color>(iterator, Color.class, DataBinding.BindingDefinitionType.GET);
+				nonSelectedDynamicColor = new DataBinding<>(iterator, Color.class, DataBinding.BindingDefinitionType.GET);
 			}
 			return nonSelectedDynamicColor;
 		}
@@ -1000,9 +1000,10 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 	}
 
-	@ModelEntity
-	@ImplementationClass(FIBBrowserElementChildren.FIBBrowserElementChildrenImpl.class)
-	@XMLElement(xmlTag = "Children")
+	// TODO import not known here when using the gradle build, why?
+	@org.openflexo.model.annotations.ModelEntity
+	@org.openflexo.model.annotations.ImplementationClass(FIBBrowserElementChildren.FIBBrowserElementChildrenImpl.class)
+	@org.openflexo.model.annotations.XMLElement(xmlTag = "Children")
 	public static interface FIBBrowserElementChildren extends FIBModelObject {
 
 		@PropertyIdentifier(type = DataBinding.class)
@@ -1158,7 +1159,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 			@Override
 			public DataBinding<Object> getData() {
 				if (data == null) {
-					data = new DataBinding<Object>(getOwner() != null ? getOwner().getIterator() : null, Object.class,
+					data = new DataBinding<>(getOwner() != null ? getOwner().getIterator() : null, Object.class,
 							DataBinding.BindingDefinitionType.GET);
 				}
 				return data;
@@ -1177,7 +1178,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 			@Override
 			public DataBinding<Boolean> getVisible() {
 				if (visible == null) {
-					visible = new DataBinding<Boolean>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
+					visible = new DataBinding<>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
 				}
 				return visible;
 			}
@@ -1195,7 +1196,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 			@Override
 			public DataBinding<Object> getCast() {
 				if (cast == null) {
-					cast = new DataBinding<Object>(getChildBindable(), Object.class, DataBinding.BindingDefinitionType.GET);
+					cast = new DataBinding<>(getChildBindable(), Object.class, DataBinding.BindingDefinitionType.GET);
 				}
 				return cast;
 			}

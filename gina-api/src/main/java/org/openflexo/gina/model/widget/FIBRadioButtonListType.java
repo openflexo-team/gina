@@ -129,7 +129,7 @@ public class FIBRadioButtonListType extends FIBWidgetType<FIBRadioButtonList> {
 		public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
 				throws TypeMismatchException, NullReferenceException {
 			if (target instanceof FIBRadioButtonListWidget) {
-				((FIBRadioButtonListWidget) target).setSelectedIndex((Integer) value);
+				((FIBRadioButtonListWidget<?, ?>) target).setSelectedIndex((Integer) value);
 				return;
 			}
 			logger.warning("Unexpected target=" + target + " context=" + context);
@@ -149,7 +149,7 @@ public class FIBRadioButtonListType extends FIBWidgetType<FIBRadioButtonList> {
 	@Override
 	public List<DynamicProperty> getDynamicProperties() {
 
-		List<DynamicProperty> returned = new ArrayList<DynamicProperty>();
+		List<DynamicProperty> returned = new ArrayList<>();
 		returned.addAll(super.getDynamicProperties());
 		returned.add(SELECTED);
 		returned.add(SELECTED_INDEX);

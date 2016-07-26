@@ -143,7 +143,7 @@ public abstract interface FIBBrowserAction extends FIBModelObject {
 		@Override
 		public DataBinding<Object> getMethod() {
 			if (method == null) {
-				method = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
+				method = new DataBinding<>(this, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
 			}
 			/*if(method.getOwner()==null){
 				method.setOwner(this);
@@ -164,7 +164,7 @@ public abstract interface FIBBrowserAction extends FIBModelObject {
 		@Override
 		public DataBinding<Boolean> getIsAvailable() {
 			if (isAvailable == null) {
-				isAvailable = new DataBinding<Boolean>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				isAvailable = new DataBinding<>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
 			}
 			return isAvailable;
 		}

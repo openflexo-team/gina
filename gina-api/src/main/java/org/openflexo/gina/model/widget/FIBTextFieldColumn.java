@@ -77,7 +77,7 @@ public interface FIBTextFieldColumn extends FIBTableColumn {
 		@Override
 		public DataBinding<Boolean> getIsEditable() {
 			if (isEditable == null) {
-				isEditable = new DataBinding<Boolean>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				isEditable = new DataBinding<>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
 			}
 			return isEditable;
 		}

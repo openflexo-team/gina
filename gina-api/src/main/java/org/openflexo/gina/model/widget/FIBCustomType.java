@@ -111,7 +111,7 @@ public class FIBCustomType extends FIBWidgetType<FIBCustom> {
 	@Override
 	public List<DynamicProperty> getDynamicProperties() {
 
-		List<DynamicProperty> returned = new ArrayList<DynamicProperty>();
+		List<DynamicProperty> returned = new ArrayList<>();
 		returned.addAll(super.getDynamicProperties());
 		returned.add(COMPONENT);
 		return returned;

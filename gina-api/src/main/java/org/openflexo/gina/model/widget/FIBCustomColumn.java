@@ -128,7 +128,7 @@ public interface FIBCustomColumn extends FIBTableColumn {
 
 		private static final Logger logger = Logger.getLogger(FIBCustomColumn.class.getPackage().getName());
 
-		private Class componentClass;
+		private Class<?> componentClass;
 		private boolean customRendering = false;
 
 		private boolean disableTerminateEditOnFocusLost = false;
@@ -136,7 +136,7 @@ public interface FIBCustomColumn extends FIBTableColumn {
 		private Vector<FIBCustomAssignment> assignments;
 
 		public FIBCustomColumnImpl() {
-			assignments = new Vector<FIBCustomAssignment>();
+			assignments = new Vector<>();
 		}
 
 		@Override
@@ -160,7 +160,7 @@ public interface FIBCustomColumn extends FIBTableColumn {
 								FIBCustomAssignment newAssignment = getModelFactory().newInstance(FIBCustomAssignment.class);
 								newAssignment.setOwner(this);
 								newAssignment.setMandatory(annotation.type() == CustomComponentParameter.Type.MANDATORY);
-								newAssignment.setVariable(new DataBinding<Object>(variableName));
+								newAssignment.setVariable(new DataBinding<>(variableName));
 								newAssignment.setValue(null);
 								addToAssignments(newAssignment);
 							}
@@ -361,7 +361,7 @@ public interface FIBCustomColumn extends FIBTableColumn {
 			@Override
 			public DataBinding<Object> getVariable() {
 				if (variable == null) {
-					variable = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.GET_SET);
+					variable = new DataBinding<>(this, Object.class, DataBinding.BindingDefinitionType.GET_SET);
 				}
 				return variable;
 			}
@@ -390,7 +390,7 @@ public interface FIBCustomColumn extends FIBTableColumn {
 			@Override
 			public DataBinding<Object> getValue() {
 				if (value == null) {
-					value = new DataBinding<Object>(getOwner(), Object.class, DataBinding.BindingDefinitionType.GET);
+					value = new DataBinding<>(getOwner(), Object.class, DataBinding.BindingDefinitionType.GET);
 				}
 				return value;
 			}

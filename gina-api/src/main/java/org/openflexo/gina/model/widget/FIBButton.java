@@ -114,8 +114,8 @@ public interface FIBButton extends FIBWidget {
 	public static abstract class FIBButtonImpl extends FIBWidgetImpl implements FIBButton {
 
 		@Deprecated
-		public static BindingDefinition BUTTON_ICON = new BindingDefinition("buttonIcon", Icon.class,
-				DataBinding.BindingDefinitionType.GET, false);
+		public static BindingDefinition BUTTON_ICON = new BindingDefinition("buttonIcon", Icon.class, DataBinding.BindingDefinitionType.GET,
+				false);
 		@Deprecated
 		public static BindingDefinition ACTION = new BindingDefinition("action", Object.class, DataBinding.BindingDefinitionType.EXECUTE,
 				false);
@@ -147,7 +147,7 @@ public interface FIBButton extends FIBWidget {
 		@Override
 		public DataBinding<Object> getAction() {
 			if (action == null) {
-				action = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
+				action = new DataBinding<>(this, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
 				action.setBindingName("action");
 			}
 			return action;
@@ -209,7 +209,7 @@ public interface FIBButton extends FIBWidget {
 		@Override
 		public DataBinding<Icon> getButtonIcon() {
 			if (buttonIcon == null) {
-				buttonIcon = new DataBinding<Icon>(this, Icon.class, DataBinding.BindingDefinitionType.GET);
+				buttonIcon = new DataBinding<>(this, Icon.class, DataBinding.BindingDefinitionType.GET);
 			}
 			return buttonIcon;
 		}

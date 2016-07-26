@@ -247,7 +247,7 @@ public interface FIBSplitPanel extends FIBContainer {
 
 		@Override
 		public List<Leaf> getAllLeaves() {
-			Vector<Leaf> returned = new Vector<Leaf>();
+			Vector<Leaf> returned = new Vector<>();
 			appendToLeaves(getSplit(), returned);
 			return returned;
 		}

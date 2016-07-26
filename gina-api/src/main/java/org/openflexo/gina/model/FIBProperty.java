@@ -65,11 +65,11 @@ public class FIBProperty<T> {
 	}
 
 	private static Map<String, FIBProperty<?>> retrieveProperties(Class<?> ownerClass) {
-		Map<String, FIBProperty<?>> returned = new HashMap<String, FIBProperty<?>>();
+		Map<String, FIBProperty<?>> returned = new HashMap<>();
 		for (Field f : ownerClass.getFields()) {
 			PropertyIdentifier parameter = f.getAnnotation(PropertyIdentifier.class);
 			if (parameter != null) {
-				FIBProperty p = new FIBProperty(f, parameter);
+				FIBProperty<?> p = new FIBProperty<>(f, parameter);
 				// System.out.println("Found " + p);
 				returned.put(p.getName(), p);
 			}
@@ -77,7 +77,7 @@ public class FIBProperty<T> {
 		return returned;
 	}
 
-	private static Map<Class<?>, Map<String, FIBProperty<?>>> cachedProperties = new HashMap<Class<?>, Map<String, FIBProperty<?>>>();
+	private static Map<Class<?>, Map<String, FIBProperty<?>>> cachedProperties = new HashMap<>();
 
 	public static <T> FIBProperty<T> getFIBProperty(Class<?> declaringClass, String name, Class<T> type) {
 		FIBProperty<T> returned = (FIBProperty<T>) getFIBProperty(declaringClass, name);
@@ -103,7 +103,7 @@ public class FIBProperty<T> {
 		return returned;
 	}
 
-	private static Map<Class<?>, Collection<FIBProperty<?>>> cache = new HashMap<Class<?>, Collection<FIBProperty<?>>>();
+	private static Map<Class<?>, Collection<FIBProperty<?>>> cache = new HashMap<>();
 
 	public static Collection<FIBProperty<?>> getFIBProperties(Class<?> declaringClass) {
 		Collection<FIBProperty<?>> returned = cache.get(declaringClass);
@@ -113,7 +113,7 @@ public class FIBProperty<T> {
 				cacheForClass = retrieveProperties(declaringClass);
 				cachedProperties.put(declaringClass, cacheForClass);
 			}
-			returned = new ArrayList<FIBProperty<?>>();
+			returned = new ArrayList<>();
 			returned.addAll(cacheForClass.values());
 			if (declaringClass.getSuperclass() != null) {
 				returned.addAll(getFIBProperties(declaringClass.getSuperclass()));
@@ -232,7 +232,7 @@ public class FIBProperty<T> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		FIBProperty other = (FIBProperty) obj;
+		FIBProperty<?> other = (FIBProperty<?>) obj;
 		if (field == null) {
 			if (other.field != null)
 				return false;

@@ -322,7 +322,7 @@ public abstract interface FIBWidget extends FIBComponent {
 
 		@Override
 		protected FIBWidgetType<?> makeViewType() {
-			return new FIBWidgetType(this);
+			return new FIBWidgetType<>(this);
 		}
 
 		/*
@@ -401,7 +401,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		public DataBinding<?> getData() {
 			if (data == null && !isSettingData) {
 				isSettingData = true;
-				data = new DataBinding(this, getDataType(), DataBinding.BindingDefinitionType.GET);
+				data = new DataBinding<>(this, getDataType(), DataBinding.BindingDefinitionType.GET);
 				data.setBindingName(DATA_KEY);
 				isSettingData = false;
 			}
@@ -422,7 +422,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		@Override
 		public DataBinding<String> getTooltip() {
 			if (tooltip == null) {
-				tooltip = new DataBinding<String>(this, String.class, DataBinding.BindingDefinitionType.GET);
+				tooltip = new DataBinding<>(this, String.class, DataBinding.BindingDefinitionType.GET);
 				tooltip.setBindingName(TOOLTIP_KEY);
 			}
 			return tooltip;
@@ -442,7 +442,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		@Override
 		public DataBinding<Boolean> getEnable() {
 			if (enable == null) {
-				enable = new DataBinding<Boolean>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				enable = new DataBinding<>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
 				enable.setBindingName(ENABLE_KEY);
 			}
 			return enable;
@@ -671,7 +671,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		@Override
 		public DataBinding<String> getFormat() {
 			if (format == null) {
-				format = new DataBinding<String>(formatter, String.class, DataBinding.BindingDefinitionType.GET);
+				format = new DataBinding<>(formatter, String.class, DataBinding.BindingDefinitionType.GET);
 				format.setCachingStrategy(CachingStrategy.NO_CACHING);
 				format.setBindingName(FORMAT_KEY);
 			}
@@ -697,7 +697,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		@Override
 		public DataBinding<Icon> getIcon() {
 			if (icon == null) {
-				icon = new DataBinding<Icon>(formatter, Icon.class, DataBinding.BindingDefinitionType.GET);
+				icon = new DataBinding<>(formatter, Icon.class, DataBinding.BindingDefinitionType.GET);
 				icon.setCachingStrategy(CachingStrategy.NO_CACHING);
 				icon.setBindingName(ICON_KEY);
 			}
@@ -946,7 +946,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		@Override
 		public DataBinding<Boolean> getValueValidator() {
 			if (valueValidator == null) {
-				valueValidator = new DataBinding<Boolean>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				valueValidator = new DataBinding<>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
 				valueValidator.setBindingName(VALUE_VALIDATOR_KEY);
 			}
 			return valueValidator;
@@ -966,7 +966,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		@Override
 		public DataBinding<?> getValueChangedAction() {
 			if (valueChangedAction == null) {
-				valueChangedAction = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
+				valueChangedAction = new DataBinding<>(this, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
 				valueChangedAction.setBindingName(VALUE_CHANGED_ACTION_KEY);
 			}
 			return valueChangedAction;
@@ -991,7 +991,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		@Override
 		public final DataBinding<?> getClickAction() {
 			if (clickAction == null) {
-				clickAction = new DataBinding<Object>(eventListener, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
+				clickAction = new DataBinding<>(eventListener, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
 				clickAction.setBindingName(CLICK_ACTION_KEY);
 			}
 			return clickAction;
@@ -1016,7 +1016,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		@Override
 		public DataBinding<?> getDoubleClickAction() {
 			if (doubleClickAction == null) {
-				doubleClickAction = new DataBinding<Object>(eventListener, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
+				doubleClickAction = new DataBinding<>(eventListener, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
 				doubleClickAction.setBindingName(DOUBLE_CLICK_ACTION_KEY);
 			}
 			return doubleClickAction;
@@ -1041,7 +1041,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		@Override
 		public DataBinding<?> getRightClickAction() {
 			if (rightClickAction == null) {
-				rightClickAction = new DataBinding<Object>(eventListener, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
+				rightClickAction = new DataBinding<>(eventListener, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
 				rightClickAction.setBindingName(RIGHT_CLICK_ACTION_KEY);
 			}
 			return rightClickAction;
@@ -1066,7 +1066,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		@Override
 		public DataBinding<?> getEnterPressedAction() {
 			if (enterPressedAction == null) {
-				enterPressedAction = new DataBinding<Object>(eventListener, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
+				enterPressedAction = new DataBinding<>(eventListener, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
 				enterPressedAction.setBindingName(ENTER_PRESSED_ACTION_KEY);
 			}
 			return enterPressedAction;
@@ -1125,7 +1125,7 @@ public abstract interface FIBWidget extends FIBComponent {
 			if (object.getManageDynamicModel() && StringUtils.isEmpty(object.getName())) {
 				GenerateDefaultName fixProposal1 = new GenerateDefaultName();
 				DisableDynamicModelManagement fixProposal2 = new DisableDynamicModelManagement();
-				return new ValidationWarning<FIBWidgetDeclaredAsDynamicShouldHaveAName, FIBWidget>(this, object,
+				return new ValidationWarning<>(this, object,
 						"widget_($validable.toString)_declares_managing_dynamic_model_but_does_not_have_a_name", fixProposal1,
 						fixProposal2);
 			}

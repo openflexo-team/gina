@@ -177,14 +177,14 @@ public interface FIBCustom extends FIBWidget {
 
 		public static final String COMPONENT_NAME = "component";
 
-		private Class componentClass;
-		private Class dataClassForComponent;
-		private final Class defaultDataClass = null;
+		private Class<?> componentClass;
+		private Class<?> dataClassForComponent;
+		private final Class<?> defaultDataClass = null;
 
 		private List<FIBCustomAssignment> assignments;
 
 		public FIBCustomImpl() {
-			assignments = new Vector<FIBCustomAssignment>();
+			assignments = new Vector<>();
 		}
 
 		@Override
@@ -218,7 +218,7 @@ public interface FIBCustom extends FIBWidget {
 
 		@Override
 		public void setComponentClass(Class<?> componentClass) {
-			FIBPropertyNotification notification = requireChange(COMPONENT_CLASS_KEY, componentClass);
+			FIBPropertyNotification<?> notification = requireChange(COMPONENT_CLASS_KEY, componentClass);
 			if (notification != null) {
 				this.componentClass = componentClass;
 				if (componentClass != null) {
@@ -232,7 +232,7 @@ public interface FIBCustom extends FIBWidget {
 							if (!hasAssignment(variableName)) {
 								FIBCustomAssignment newAssigment = getModelFactory().newInstance(FIBCustomAssignment.class);
 								newAssigment.setOwner(this);
-								newAssigment.setVariable(new DataBinding<Object>(variableName));
+								newAssigment.setVariable(new DataBinding<>(variableName));
 								newAssigment.setValue(null);
 								newAssigment.setMandatory(annotation.type() == FIBCustomComponent.CustomComponentParameter.Type.MANDATORY);
 								addToAssignments(newAssigment);
@@ -258,7 +258,7 @@ public interface FIBCustom extends FIBWidget {
 
 			if ((dataClassForComponent == null && this.dataClassForComponent != null)
 					|| (dataClassForComponent != null && !dataClassForComponent.equals(this.dataClassForComponent))) {
-				Class oldValue = this.dataClassForComponent;
+				Class<?> oldValue = this.dataClassForComponent;
 				this.dataClassForComponent = dataClassForComponent;
 				getPropertyChangeSupport().firePropertyChange("dataClassForComponent", oldValue, dataClassForComponent);
 			}
@@ -374,7 +374,7 @@ public interface FIBCustom extends FIBWidget {
 			return assignment;
 		}
 
-		private static final Hashtable<Class<?>, Class<?>> DATA_CLASS_FOR_COMPONENT = new Hashtable<Class<?>, Class<?>>();
+		private static final Hashtable<Class<?>, Class<?>> DATA_CLASS_FOR_COMPONENT = new Hashtable<>();
 
 		/**
 		 * Stuff to retrieve default data class from component class<br>
@@ -388,13 +388,13 @@ public interface FIBCustom extends FIBWidget {
 			Class<?> returned = DATA_CLASS_FOR_COMPONENT.get(componentClass);
 			if (returned == null) {
 				logger.fine("Searching dataClass for " + componentClass);
-				FIBCustomComponent customComponent = null;
-				for (Constructor constructor : componentClass.getConstructors()) {
+				FIBCustomComponent<?> customComponent = null;
+				for (Constructor<?> constructor : componentClass.getConstructors()) {
 					if (constructor.getGenericParameterTypes().length == 1) {
 						Object[] args = new Object[1];
 						args[0] = null;
 						try {
-							customComponent = (FIBCustomComponent) constructor.newInstance(args);
+							customComponent = (FIBCustomComponent<?>) constructor.newInstance(args);
 							break;
 						} catch (IllegalArgumentException e) {
 							// TODO Auto-generated catch block
@@ -516,7 +516,7 @@ public interface FIBCustom extends FIBWidget {
 			@Override
 			public DataBinding<?> getVariable() {
 				if (variable == null) {
-					variable = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.GET_SET);
+					variable = new DataBinding<>(this, Object.class, DataBinding.BindingDefinitionType.GET_SET);
 					variable.setBindingName("variable");
 				}
 				return variable;
@@ -545,7 +545,7 @@ public interface FIBCustom extends FIBWidget {
 			@Override
 			public DataBinding<?> getValue() {
 				if (value == null) {
-					value = new DataBinding<Object>(getOwner(), Object.class, DataBinding.BindingDefinitionType.GET);
+					value = new DataBinding<>(getOwner(), Object.class, DataBinding.BindingDefinitionType.GET);
 					value.setBindingName("value");
 				}
 				return value;
@@ -560,7 +560,8 @@ public interface FIBCustom extends FIBWidget {
 					value.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 					value.setBindingName("value");
 					this.value = value;
-				} else {
+				}
+				else {
 					getValue();
 				}
 			}

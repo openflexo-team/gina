@@ -313,7 +313,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		@Override
 		public DataBinding<?> getData() {
 			if (data == null) {
-				data = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.GET);
+				data = new DataBinding<>(this, Object.class, DataBinding.BindingDefinitionType.GET);
 				data.setCachingStrategy(CachingStrategy.NO_CACHING);
 			}
 			return data;
@@ -456,7 +456,8 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		public void setHasSpecificFont(boolean aFlag) {
 			if (aFlag) {
 				setFont(retrieveValidFont());
-			} else {
+			}
+			else {
 				setFont(null);
 			}
 		}
@@ -467,7 +468,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		@Override
 		public DataBinding<String> getFormat() {
 			if (format == null) {
-				format = new DataBinding<String>(formatter, String.class, DataBinding.BindingDefinitionType.GET);
+				format = new DataBinding<>(formatter, String.class, DataBinding.BindingDefinitionType.GET);
 				format.setCachingStrategy(CachingStrategy.NO_CACHING);
 				format.setBindingName("format");
 			}
@@ -489,7 +490,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		@Override
 		public DataBinding<Icon> getIcon() {
 			if (icon == null) {
-				icon = new DataBinding<Icon>(formatter, Icon.class, DataBinding.BindingDefinitionType.GET);
+				icon = new DataBinding<>(formatter, Icon.class, DataBinding.BindingDefinitionType.GET);
 				icon.setCachingStrategy(CachingStrategy.NO_CACHING);
 				icon.setBindingName("icon");
 			}
@@ -607,7 +608,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		@Override
 		public DataBinding<String> getTooltip() {
 			if (tooltip == null) {
-				tooltip = new DataBinding<String>(this, String.class, DataBinding.BindingDefinitionType.GET);
+				tooltip = new DataBinding<>(this, String.class, DataBinding.BindingDefinitionType.GET);
 				tooltip.setCachingStrategy(CachingStrategy.NO_CACHING);
 				tooltip.setBindingName("tooltip");
 			}
@@ -629,7 +630,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		@Override
 		public DataBinding<Color> getColor() {
 			if (color == null) {
-				color = new DataBinding<Color>(this, Color.class, DataBinding.BindingDefinitionType.GET);
+				color = new DataBinding<>(this, Color.class, DataBinding.BindingDefinitionType.GET);
 				color.setCachingStrategy(CachingStrategy.NO_CACHING);
 				color.setBindingName("color");
 			}
@@ -651,7 +652,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		@Override
 		public DataBinding<Color> getBgColor() {
 			if (bgColor == null) {
-				bgColor = new DataBinding<Color>(this, Color.class, DataBinding.BindingDefinitionType.GET);
+				bgColor = new DataBinding<>(this, Color.class, DataBinding.BindingDefinitionType.GET);
 				bgColor.setCachingStrategy(CachingStrategy.NO_CACHING);
 				bgColor.setBindingName("bgColor");
 			}
