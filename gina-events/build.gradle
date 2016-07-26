@@ -1,0 +1,4 @@
+dependencies {
+  compile group: "org.openflexo", name: "pamela-core", version: "1.+"
+  //  compile relativeProject(':flexolocalization')
+}
