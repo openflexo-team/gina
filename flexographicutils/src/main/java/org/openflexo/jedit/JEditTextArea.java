@@ -119,8 +119,8 @@ import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.search.view.ITextComponent;
 import org.openflexo.search.view.TextSearchPanel;
 import org.openflexo.swing.DialogFactory;
-import org.openflexo.toolbox.FontCst;
 import org.openflexo.toolbox.ToolBox;
+import org.openflexo.uicst.FontCst;
 
 /**
  * jEdit's text area component. It is more suited for editing program source code than JEditorPane, because it drops the unnecessary
