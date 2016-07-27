@@ -1,4 +1,4 @@
 rootProject.name = 'gina'
 
-include 'flexolocalization', 'gina-events', 'flexographicutils', 'gina-api'
-//'gina:gina-core', 'gina:gina-swing', 'gina:gina-replay', 'gina:gina-swing-editor', 'diana:diana-geom', 'diana:diana-api', 'diana:diana-core', 'diana:diana-swing', 'diana:diana-ppt-editor', 'diana:diana-drawing-editor', 'openflexo-core:flexo-foundation' 
+include 'flexolocalization', 'gina-events', 'flexographicutils', 'gina-api', 'gina-core'
+//'gina:gina-swing', 'gina:gina-replay', 'gina:gina-swing-editor', 'diana:diana-geom', 'diana:diana-api', 'diana:diana-core', 'diana:diana-swing', 'diana:diana-ppt-editor', 'diana:diana-drawing-editor', 'openflexo-core:flexo-foundation' 
