@@ -371,9 +371,9 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 				try {
 					value = valueDB.getBindingValue(getBindingEvaluationContext());
 					if (variableDB.isValid()) {
-						Object oldValue = variableDB.getBindingValue(embeddedFIBController);
+						Object oldValue = variableDB.getBindingValue(embeddedFIBController.getRootView());
 						if (value != oldValue) {
-							variableDB.setBindingValue(value, embeddedFIBController);
+							variableDB.setBindingValue(value, embeddedFIBController.getRootView());
 						}
 					}
 				} catch (TypeMismatchException e) {
@@ -434,7 +434,7 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 
 	@Override
 	public BindingEvaluationContext getEmbeddedBindingEvaluationContext() {
-		return embeddedFIBController;
+		return embeddedFIBController.getRootView();
 	}
 
 	@Override

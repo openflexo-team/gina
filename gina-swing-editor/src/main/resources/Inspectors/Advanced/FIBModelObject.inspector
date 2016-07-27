@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0"
+	dataClassName="org.openflexo.gina.model.FIBModelObject" name="Inspector">
+	<Label label="parameters" index="102" constraints="twocols(location=left)"
+		localize="true"  font="SansSerif,0,11"/>
+	<Table iteratorClassName="org.openflexo.gina.model.FIBParameter"
+		index="103" visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false"
+		createNewRowOnClick="false" boundToSelectionManager="false"
+		showFooter="true" selectionMode="MultipleIntervalSelection" localize="true"
+		manageDynamicModel="true" name="ParametersTable" data="data.parameters"
+		constraints="twocols(expandHorizontally=true;expandVertically=true;location=right;insetsRight=10)">
+		<TextFieldColumn data="iterator.name" title="name"
+			columnWidth="30" resizable="true" displayTitle="true" name="name" />
+		<TextFieldColumn data="iterator.value" title="value"
+			columnWidth="60" resizable="true" displayTitle="true" name="description" />
+		<AddAction method="data.createNewParameter()" isAvailable="data.isParameterAddable()"
+			name="make_new_parameter" />
+		<RemoveAction method="data.deleteParameter(selected)"
+			isAvailable="data.isParameterDeletable(selected)" name="delete_parameter" />
+	</Table>
+	<LocalizedDictionary>
+		<Localized key="name" lang="English" value="Name" />
+		<Localized key="value" lang="English" value="Value" />
+		<Localized key="name" lang="French" value="Nom" />
+		<Localized key="value" lang="French" value="Valeur" />
+		<Localized key="Basic" lang="French" value="Basique" />
+		<Localized key="Advanced" lang="French" value="Avancé" />
+		<Localized key="Graphics" lang="French" value="Graphisme" />
+		<Localized key="name" lang="Dutch" value="Name" />
+		<Localized key="value" lang="Dutch" value="Value" />
+		<Localized key="delete_parameter" lang="French"
+			value="Supprimer le paramètre" />
+		<Localized key="Depends" lang="French" value="Dépendances" />
+		<Localized key="Doc" lang="French" value="Doc" />
+		<Localized key="make_new_parameter" lang="French"
+			value="Créer un nouveau paramètre" />
+		<Localized key="Params" lang="French" value="Paramètres" />
+		<Localized key="Params" lang="English" value="Params" />
+		<Localized key="make_new_parameter" lang="English"
+			value="Make new parameter" />
+		<Localized key="delete_parameter" lang="English" value="Delete parameter" />
+	</LocalizedDictionary>
+	<Parameter name="title" value="Model object" />
+</Inspector>

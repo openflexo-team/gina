@@ -62,8 +62,8 @@ import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoCol
 import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.gina.model.widget.FIBRadioButtonList;
 import org.openflexo.gina.sampleData.Family;
-import org.openflexo.gina.sampleData.Person;
 import org.openflexo.gina.sampleData.Family.Gender;
+import org.openflexo.gina.sampleData.Person;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.gina.swing.view.widget.JFIBRadioButtonListWidget;
 import org.openflexo.localization.FlexoLocalization;
@@ -199,12 +199,12 @@ public class FIBRadioButtonListWidgetTest extends FIBTestCase {
 		assertNotNull(controller.viewForComponent(radioButtonListLabel4));
 		assertNotNull(controller.viewForComponent(radioButtonList4));
 
-		assertEquals("value1", controller.viewForWidget(radioButtonList1).getData());
-		assertEquals(null, controller.viewForWidget(radioButtonList2).getData());
-		assertEquals(family.getChildren().get(0), controller.viewForWidget(radioButtonList3).getData());
-		assertEquals(family.getParents()[0], controller.viewForWidget(radioButtonList4).getData());
-		assertEquals(family.getJackies().get(2), controller.viewForWidget(radioButtonList5).getData());
-		assertEquals(Gender.Male, controller.viewForWidget(radioButtonList6).getData());
+		assertEquals("value1", controller.viewForWidget(radioButtonList1).getRepresentedValue());
+		assertEquals(null, controller.viewForWidget(radioButtonList2).getRepresentedValue());
+		assertEquals(family.getChildren().get(0), controller.viewForWidget(radioButtonList3).getRepresentedValue());
+		assertEquals(family.getParents()[0], controller.viewForWidget(radioButtonList4).getRepresentedValue());
+		assertEquals(family.getJackies().get(2), controller.viewForWidget(radioButtonList5).getRepresentedValue());
+		assertEquals(Gender.Male, controller.viewForWidget(radioButtonList6).getRepresentedValue());
 
 		// assertEquals("Robert", controller.viewForComponent(firstNameTF).getData());
 		// assertEquals("Smith", controller.viewForComponent(lastNameTF).getData());
@@ -220,8 +220,8 @@ public class FIBRadioButtonListWidgetTest extends FIBTestCase {
 
 		family.setBiggestChild(family.getChildren().get(0));
 		family.getFather().setGender(Gender.Female);
-		assertEquals(family.getChildren().get(0), controller.viewForWidget(radioButtonList5).getData());
-		assertEquals(Gender.Female, controller.viewForWidget(radioButtonList6).getData());
+		assertEquals(family.getChildren().get(0), controller.viewForWidget(radioButtonList5).getRepresentedValue());
+		assertEquals(Gender.Female, controller.viewForWidget(radioButtonList6).getRepresentedValue());
 	}
 
 	/**
@@ -260,7 +260,7 @@ public class FIBRadioButtonListWidgetTest extends FIBTestCase {
 		// System.out.println("List model = " + w5.getDynamicJComponent().getModel());
 
 		family.setBiggestChild(junior);
-		assertEquals(junior, controller.viewForWidget(radioButtonList5).getData());
+		assertEquals(junior, controller.viewForWidget(radioButtonList5).getRepresentedValue());
 		assertEquals(junior, w5.getSelectedValue());
 
 	}

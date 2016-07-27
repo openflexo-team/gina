@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBTextWidget" name="Inspector">
+	<CheckBox index="0" selected="false" data="data.validateOnReturn"
+		constraints="twocols(location=left)" localize="true" />
+	<Label index="1" label="validate_on_return"
+		constraints="twocols(expandHorizontally=true;location=right)"
+		localize="true" />
+	<Parameter name="title" value="TextWidget" />
+</Inspector>

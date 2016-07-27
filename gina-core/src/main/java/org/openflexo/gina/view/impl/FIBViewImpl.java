@@ -49,12 +49,16 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingEvaluationContext;
+import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.binding.BindingValueChangeListener;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBVariable;
+import org.openflexo.gina.model.bindings.FIBChildBindingVariable;
+import org.openflexo.gina.model.bindings.FIBComponentBindingModel;
+import org.openflexo.gina.model.bindings.FIBVariableBindingVariable;
 import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.widget.FIBReferencedComponentWidget;
@@ -176,13 +180,13 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	 */
 	protected void componentBecomesVisible() {
 
-		if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("GridBagConstraints")) {
+		/*if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("GridBagConstraints")) {
 			System.out.println("************ Component " + getComponent() + " becomes VISIBLE !!!!!!");
 		}
-
+		
 		if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("TwoColsConstraints")) {
 			System.out.println("************ Component " + getComponent() + " becomes VISIBLE !!!!!!");
-		}
+		}*/
 
 		// System.out.println("************ Component " + getComponent() + " becomes VISIBLE !!!!!!");
 
@@ -248,23 +252,23 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			System.out.println("On se met a ecouter la variable " + variable.getName() + " qui vaut " + variable.getValue());
 		}*/
 
-		if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("GridBagConstraints")) {
+		/*if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("GridBagConstraints")) {
 			System.out.println("On se met a ecouter la variable " + variable.getName() + " qui vaut " + variable.getValue() + " valid="
 					+ variable.getValue().isValid());
 			System.out.println("reason=" + variable.getValue().invalidBindingReason());
 		}
-
+		
 		if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("TwoColsConstraints")) {
 			System.out.println("On se met a ecouter la variable " + variable.getName() + " qui vaut " + variable.getValue() + " valid="
 					+ variable.getValue().isValid());
 			System.out.println("reason=" + variable.getValue().invalidBindingReason());
-		}
+		}*/
 
 		if (variable.getValue() != null && variable.getValue().isValid()) {
 			dataBindingValueChangeListener = new BindingValueChangeListener<T>(variable.getValue(), getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
-					if (getComponent() != null && getComponent().getName() != null
+					/*if (getComponent() != null && getComponent().getName() != null
 							&& getComponent().getName().equals("GridBagConstraints")) {
 						System.out.println("************ On detecte un changement de la valeur de " + variable);
 						System.out.println(" bindingValueChanged() detected for data=" + variable.getValue() + " with newValue=" + newValue
@@ -275,9 +279,9 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 						System.out.println("************ On detecte un changement de la valeur de " + variable);
 						System.out.println(" bindingValueChanged() detected for data=" + variable.getValue() + " with newValue=" + newValue
 								+ " source=" + source);
-					}
-					// System.out.println(" bindingValueChanged() detected for data=" + variable.getValue() + " with newValue=" + newValue
-					// + " source=" + source);
+					}*/
+					// System.out.println(" !!!!!!!!!!!!!!! bindingValueChanged() detected for data=" + variable.getValue()
+					// + " with newValue=" + newValue + " source=" + source);
 					setVariableValue(variable, newValue);
 				}
 			};
@@ -287,10 +291,6 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			try {
 				T newValue = variable.getValue().getBindingValue(getBindingEvaluationContext());
 				setVariableValue(variable, newValue);
-
-				if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("GridBagConstraints")) {
-					System.out.println("************ La variable " + variable + " vaut maintenant " + newValue);
-				}
 
 			} catch (TypeMismatchException e) {
 				// TODO Auto-generated catch block
@@ -336,6 +336,10 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		return (T) variables.get(variable);
 	}
 
+	protected <T> void fireVariableChanged(FIBVariable<T> variable, T oldValue, T newValue) {
+		getPropertyChangeSupport().firePropertyChange(variable.getName(), oldValue, newValue);
+	}
+
 	/**
 	 * Sets value of supplied variable
 	 * 
@@ -344,13 +348,15 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> void setVariableValue(FIBVariable<T> variable, T value) {
+	public final <T> void setVariableValue(FIBVariable<T> variable, T value) {
 
 		T oldValue = (T) variables.get(variable);
 
+		// System.out.println("setVariableValue " + variable.getName() + " de " + oldValue + " a " + value);
+
 		if (notEquals(oldValue, value)) {
 			variables.put(variable, value);
-			getPropertyChangeSupport().firePropertyChange(variable.getName(), oldValue, value);
+			fireVariableChanged(variable, oldValue, value);
 		}
 	}
 
@@ -369,8 +375,11 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, Boolean newValue) {
-					// System.out.println("In component " + getComponent() + " bindingValueChanged() detected for visible="
-					// + getComponent().getVisible() + " with newValue=" + newValue + " source=" + source);
+					/*if (getComponent().getName() != null && (getComponent().getName().equals("ControllerClassLabel")
+							|| getComponent().getName().equals("ControllerClassSelector"))) {
+						System.out.println("In component " + getComponent() + " bindingValueChanged() detected for visible="
+								+ getComponent().getVisible() + " with newValue=" + newValue + " source=" + source);
+					}*/
 					updateVisibility();
 					// refreshObserving();
 				}
@@ -439,27 +448,49 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	 * @return
 	 */
 	@Override
-	public BindingEvaluationContext getBindingEvaluationContext() {
-		/*
-		 * if (getComponent() != null && getComponent().getName() != null &&
-		 * getComponent().getName().equals("DropSchemePanel")) { if
-		 * (getEmbeddingComponent() == null) {
-		 * System.out.println("for DropSchemePanel embedding component is " +
-		 * getEmbeddingComponent()); } }
-		 */
-		/*
-		 * if (getComponent() != null && getComponent().getName() != null &&
-		 * getComponent().getName().equals("DropSchemeWidget")) {
-		 * System.out.println("for DropSchemeWidget embedding component is " +
-		 * getEmbeddingComponent()); }
-		 */
+	public final BindingEvaluationContext getBindingEvaluationContext() {
+
 		if (getEmbeddingComponent() != null) {
 			return getEmbeddingComponent().getEmbeddedBindingEvaluationContext();
 		}
-		if (getParentView() != null) {
-			return getParentView().getBindingEvaluationContext();
+
+		return this;
+
+	}
+
+	@Override
+	public Object getValue(BindingVariable variable) {
+		Object returned = null;
+		if (variable.getVariableName().equals(FIBComponentBindingModel.CONTROLLER_KEY)) {
+			return getController();
 		}
-		return getController();
+		if (variable instanceof FIBVariableBindingVariable) {
+			returned = getVariableValue(((FIBVariableBindingVariable) variable).getVariable());
+			if (returned != null) {
+				return returned;
+			}
+		}
+		if (variable instanceof FIBChildBindingVariable) {
+			FIBView<?, ?> view = getController().viewForComponent(((FIBChildBindingVariable) variable).getComponent());
+			if (view == null) {
+				LOGGER.warning("Could not access component view for " + ((FIBChildBindingVariable) variable).getComponent());
+			}
+			return view;
+		}
+		if (getParentView() != null) {
+			return getParentView().getValue(variable);
+		}
+		return null;
+	}
+
+	@Override
+	public void setValue(Object value, BindingVariable variable) {
+		if (variable instanceof FIBVariableBindingVariable) {
+			setVariableValue((FIBVariable) ((FIBVariableBindingVariable) variable).getVariable(), value);
+		}
+		else if (getParentView() != null) {
+			getParentView().setValue(value, variable);
+		}
 	}
 
 	@Override
@@ -584,8 +615,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	 * return true; }
 	 */
 
-	@Deprecated
-	protected abstract boolean checkValidDataPath();
+	// @Deprecated
+	// protected abstract boolean checkValidDataPath();
 
 	@Override
 	public final boolean isComponentVisible() {

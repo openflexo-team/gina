@@ -52,8 +52,6 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.openflexo.connie.BindingVariable;
-import org.openflexo.connie.binding.SettableBindingEvaluationContext;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.manager.EventManager;
 import org.openflexo.gina.manager.Registrable;
@@ -83,8 +81,7 @@ import org.openflexo.toolbox.StringUtils;
  * @author sylvain
  * 
  */
-public class FIBController
-		implements SettableBindingEvaluationContext, /*Observer,*/ /*PropertyChangeListener,*/ HasPropertyChangeSupport, Registrable {
+public class FIBController implements HasPropertyChangeSupport, Registrable {
 
 	static final Logger LOGGER = Logger.getLogger(FIBController.class.getPackage().getName());
 
@@ -154,10 +151,6 @@ public class FIBController
 		return (FIBView<F, ? extends C>) controller.buildView(fibComponent, updateNow);
 	}
 
-	// private Object dataObject;
-
-	private final Map<String, Object> variableValues = new HashMap<>();
-
 	private final FIBComponent rootComponent;
 	private final Hashtable<FIBComponent, FIBView<?, ?>> views;
 	private FIBSelectable<?> selectionLeader;
@@ -209,11 +202,6 @@ public class FIBController
 			for (FIBView<?, ?> view : new ArrayList<>(views.values())) {
 				view.delete();
 			}
-			/*if (dataObject instanceof Observable) {
-				((Observable) dataObject).deleteObserver(this);
-			}*/
-			variableValues.clear();
-			// dataObject = null;
 			deleted = true;
 			getPropertyChangeSupport().firePropertyChange(DELETED, false, true);
 		}
@@ -269,6 +257,11 @@ public class FIBController
 	public FIBView<FIBComponent, ?> buildView() {
 		FIBView<FIBComponent, ?> returned = buildView(rootComponent, true);
 		returned.update();
+		// If data object was previously set, set the value to the root view
+		if (dataObject != null) {
+			setDataObject(dataObject);
+			dataObject = null;
+		}
 		return returned;
 	}
 
@@ -321,7 +314,7 @@ public class FIBController
 	public List<FIBView<?, ?>> getAllViews() {
 		List<FIBView<?, ?>> l = new ArrayList<>();
 		l.addAll(views.values());
-		for (FIBView<?, ?> v : views.values()) {
+		for (FIBView<?, ?> v : new ArrayList<FIBView<?, ?>>(views.values())) {
 			if (v instanceof FIBReferencedComponentWidget) {
 				FIBReferencedComponentWidget<?> w = (FIBReferencedComponentWidget<?>) v;
 				if (w.getReferencedComponentView() != null) {
@@ -331,38 +324,10 @@ public class FIBController
 					else {
 						l.addAll(w.getReferencedComponentView().getController().getAllViews());
 					}
-				} /*
-					* else { System.out.println("No view for " +
-					* FIBLibrary.instance
-					* ().getFIBModelFactory().stringRepresentation
-					* (w.getReferencedComponent())); }
-					*/
+				}
 			}
 		}
 		return l;
-	}
-
-	@Override
-	public Object getValue(BindingVariable variable) {
-		if (variable.getVariableName() == null) {
-			return null;
-		}
-		for (FIBComponent c : new ArrayList<>(views.keySet())) {
-			if (variable.getVariableName().equals(c.getName())) {
-				return viewForComponent(c);
-			}
-		}
-		if (variable.getVariableName().equals("controller")) {
-			return this;
-		}
-
-		return getVariableValue(variable.getVariableName());
-	}
-
-	@Override
-	public void setValue(Object value, BindingVariable variable) {
-		// System.out.println("Sets variable " + variable + " with " + value);
-		setVariableValue(variable.getVariableName(), value);
 	}
 
 	public FIBComponent getRootComponent() {
@@ -374,51 +339,39 @@ public class FIBController
 	}
 
 	public Object getVariableValue(String variableName) {
-		return variableValues.get(variableName);
+		if (getRootView() != null && getRootComponent().getVariable(variableName) != null) {
+			return getRootView().getVariableValue(getRootComponent().getVariable(variableName));
+		}
+		return null;
 	}
 
-	public void setVariableValue(String variableName, Object aValue/*, boolean forceUpdate*/) {
-		Object oldValue = getVariableValue(variableName);
-		// if (forceUpdate || aValue != oldValue) {
-		if (aValue != oldValue) {
-			/*if (oldValue instanceof HasPropertyChangeSupport && ((HasPropertyChangeSupport) oldValue).getPropertyChangeSupport() != null) {
-				((HasPropertyChangeSupport) oldValue).getPropertyChangeSupport().removePropertyChangeListener(this);
-			}
-			else if (oldValue instanceof Observable) {
-				((Observable) oldValue).deleteObserver(this);
-			}*/
-			// dataObject = aValue;
-
-			variableValues.put(variableName, aValue);
-
-			// Attempt to reduce time required to update component
-			// I suspect that if the 'data' notification is correctely handled,
-			// this is no more necessary
-			/*
-			 * if (getRootView() != null) { getRootView().update(); }
-			 */
-			/*if (dataObject instanceof HasPropertyChangeSupport) {
-				((HasPropertyChangeSupport) dataObject).getPropertyChangeSupport().addPropertyChangeListener(this);
-			}
-			else if (dataObject instanceof Observable) {
-				((Observable) dataObject).addObserver(this);
-			}*/
-			// setChanged();
-			// notifyObservers();
-			getPropertyChangeSupport().firePropertyChange(variableName, oldValue, aValue);
+	public void setVariableValue(String variableName, Object aValue) {
+		if (getRootView() != null && getRootComponent().getVariable(variableName) != null) {
+			getRootView().setVariableValue(getRootComponent().getVariable(variableName), aValue);
 		}
 	}
 
+	// If the root view was not yet instantiated, stores the data object
+	private Object dataObject = null;
+
 	@Deprecated
 	public Object getDataObject() {
-		// return dataObject;
-		return getVariableValue(FIBComponent.DEFAULT_DATA_VARIABLE);
+		Object returned = getVariableValue(FIBComponent.DEFAULT_DATA_VARIABLE);
+		if (returned != null) {
+			return returned;
+		}
+		return dataObject;
 	}
 
 	@Deprecated
 	public void setDataObject(Object anObject) {
-		// setDataObject(anObject, false);
-		setVariableValue(FIBComponent.DEFAULT_DATA_VARIABLE, anObject);
+		if (getRootView() != null && getRootComponent().getVariable(FIBComponent.DEFAULT_DATA_VARIABLE) != null) {
+			getRootView().setVariableValue(getRootComponent().getVariable(FIBComponent.DEFAULT_DATA_VARIABLE), anObject);
+		}
+		else {
+			dataObject = anObject;
+		}
+		// setVariableValue(FIBComponent.DEFAULT_DATA_VARIABLE, anObject);
 	}
 
 	@Deprecated
@@ -429,30 +382,6 @@ public class FIBController
 	@Deprecated
 	public void setDataObject(Object anObject, boolean forceUpdate) {
 		setDataObject(anObject);
-		/*if (forceUpdate || anObject != dataObject) {
-			Object oldDataObject = dataObject;
-			if (oldDataObject instanceof HasPropertyChangeSupport
-					&& ((HasPropertyChangeSupport) oldDataObject).getPropertyChangeSupport() != null) {
-				((HasPropertyChangeSupport) oldDataObject).getPropertyChangeSupport().removePropertyChangeListener(this);
-			}
-			else if (oldDataObject instanceof Observable) {
-				((Observable) oldDataObject).deleteObserver(this);
-			}
-			dataObject = anObject;
-		
-			// Attempt to reduce time required to update component
-			// I suspect that if the 'data' notification is correctely handled,
-			// this is no more necessary
-			if (dataObject instanceof HasPropertyChangeSupport) {
-				((HasPropertyChangeSupport) dataObject).getPropertyChangeSupport().addPropertyChangeListener(this);
-			}
-			else if (dataObject instanceof Observable) {
-				((Observable) dataObject).addObserver(this);
-			}
-			// setChanged();
-			// notifyObservers();
-			getPropertyChangeSupport().firePropertyChange("data", oldDataObject, anObject);
-		}*/
 	}
 
 	public final <M extends FIBComponent> FIBView<M, ?> buildView(M fibComponent, boolean updateNow) {
@@ -464,11 +393,6 @@ public class FIBController
 		}
 		return null;
 	}
-
-	/*@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		// getRootView().update();
-	}*/
 
 	public void show() {
 		getViewFactory().show(this);
@@ -930,6 +854,44 @@ public class FIBController
 	public Resource getFIBPanelForClass(Class<?> aClass) {
 
 		return TypeUtils.objectForClass(aClass, fibPanelsForClasses);
+	}
+
+	private SampleData sampleData;
+
+	public SampleData getSampleData() {
+		if (sampleData == null) {
+			sampleData = new SampleData();
+		}
+		return sampleData;
+	}
+
+	public static class SampleData {
+		public List<Person> persons;
+		public Person martin, mary, john, martinJr1, martinJr2, martinJr3, martinJr4;
+
+		public SampleData() {
+			persons = new ArrayList<Person>();
+			persons.add(martin = new Person("Martin", 173, 73.7));
+			persons.add(mary = new Person("Mary", 165, 57.0));
+			persons.add(john = new Person("John", 107, 26.3));
+			persons.add(martinJr1 = new Person("Martin Jr 1", 97, 19.2));
+			persons.add(martinJr2 = new Person("Martin Jr 2", 95, 18.7));
+			persons.add(martinJr3 = new Person("Martin Jr 3", 74, 10.2));
+			persons.add(martinJr4 = new Person("Martin Jr 4", 57, 5.2));
+		}
+
+		public static class Person {
+			public String name;
+			public int size;
+			public double weight;
+
+			public Person(String name, int size, double weight) {
+				super();
+				this.name = name;
+				this.size = size;
+				this.weight = weight;
+			}
+		}
 	}
 
 }

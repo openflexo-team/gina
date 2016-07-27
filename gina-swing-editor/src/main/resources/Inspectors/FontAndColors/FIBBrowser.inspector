@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBBrowser" name="Inspector">
+	<Panel layout="twocols" border="rounded3d" borderTitle="browser_colors"
+		name="BrowserColorsPanel" titleFont="SansSerif,0,10" darkLevel="1"
+		constraints="twocols(expandHorizontally=true;location=center;insetsTop=5;insetsRight=10)">
+		<Label label="bg_selection_color" align="right" index="0"
+			constraints="twocols(expandHorizontally=false;expandVertically=false;location=left)"
+			localize="true" />
+		<Color index="1" data="data.backgroundSelectionColor"
+			constraints="twocols(expandHorizontally=false;expandVertically=false;index=0;location=right)"
+			localize="true" />
+		<Label label="text_selection_color" align="right" index="2"
+			constraints="twocols(expandHorizontally=false;expandVertically=false;location=left)"
+			localize="true" />
+		<Color index="3" data="data.textSelectionColor"
+			constraints="twocols(expandHorizontally=false;expandVertically=false;index=0;location=right)"
+			localize="true" />
+		<Label label="bg_sec_selection_color" align="right" index="4"
+			constraints="twocols(expandHorizontally=false;expandVertically=false;location=left)"
+			localize="true" />
+		<Color index="5" data="data.backgroundSecondarySelectionColor"
+			constraints="twocols(expandHorizontally=false;expandVertically=false;index=0;location=right)"
+			localize="true" />
+		<Label label="text_non_selectionColor" align="right" index="6"
+			constraints="twocols(expandHorizontally=false;expandVertically=false;location=left)"
+			localize="true" />
+		<Color index="7" data="data.textNonSelectionColor"
+			constraints="twocols(expandHorizontally=false;expandVertically=false;index=0;location=right)"
+			localize="true" />
+		<Label label="bg_non_selection_color" align="right" index="8"
+			constraints="twocols(expandHorizontally=false;expandVertically=false;location=left)"
+			localize="true" />
+		<Color index="9" data="data.backgroundNonSelectionColor"
+			constraints="twocols(expandHorizontally=false;expandVertically=false;index=0;location=right)"
+			localize="true" />
+		<Label label="border_selection_color" align="right" index="10"
+			constraints="twocols(expandHorizontally=false;expandVertically=false;location=left)"
+			localize="true" />
+		<Color index="11" data="data.borderSelectionColor"
+			constraints="twocols(expandHorizontally=false;expandVertically=false;index=0;location=right)"
+			localize="true" />
+	</Panel>
+	<Parameter name="title" value="Browser" />
+</Inspector>

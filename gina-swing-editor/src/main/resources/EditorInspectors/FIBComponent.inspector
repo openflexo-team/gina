@@ -15,15 +15,15 @@
 				constraints="twocols(location=left)" localize="true" /> <Custom componentClassName="org.openflexo.gina.swing.utils.ClassSelector" 
 				localize="true" manageDynamicModel="true" data="data.dataClass" constraints="twocols(expandHorizontally=true;location=right)" 
 				/> -->
-			<Label index="18" label="controller_class" constraints="twocols(location=left)"
+			<Label index="58" label="controller_class" constraints="twocols(location=left)"
 				visible="data.isRootComponent" localize="true" />
-			<Custom index="19" componentClassName="org.openflexo.gina.swing.utils.ClassSelector"
+			<Custom index="59" componentClassName="org.openflexo.gina.swing.utils.ClassSelector"
 				localize="true" manageDynamicModel="true" data="data.controllerClass"
 				constraints="twocols(expandHorizontally=true;location=right)"
 				visible="data.isRootComponent" />
-			<Label index="20" label="visible" constraints="twocols(location=left)"
+			<Label index="60" label="visible" constraints="twocols(location=left)"
 				name="visibleLabel" localize="true" />
-			<Custom index="21" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+			<Custom index="61" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 				localize="true" manageDynamicModel="true" name="visibleValue" data="data.visible"
 				constraints="twocols(expandHorizontally=true;location=right)">
 				<Assignment variable="component.bindable" value="data" />
@@ -51,76 +51,69 @@
 			darkLevel="0" index="3" font="SansSerif,0,11" opaque="false"
 			useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
 			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="LayoutTab">
-			 <Label name="LayoutLabel" label="layout" constraints="twocols(location=left;insetsTop=15)"
-				localize="true" />
-			<Panel index="0" layout="twocols" border="rounded3d" borderTitle="free_location_constraints"
-				titleFont="SansSerif,0,10" darkLevel="1"
-				data="($org.openflexo.gina.model.container.layout.NoneLayoutConstraints)data.constraints"
-				dataClassName="org.openflexo.gina.model.container.layout.NoneLayoutConstraints"
-				constraints="twocols(expandHorizontally=true;location=right;insetsTop=0;insetsRight=10)"
+			<Panel index="0" layout="twocols" border="rounded3d"
+				borderTitle="free_location_constraints" titleFont="SansSerif,0,10"
+				darkLevel="1"
+				constraints="twocols(expandHorizontally=true;location=right;insetsTop=5;insetsRight=10)"
 				visible="((data.parent != null) &amp; (data.parent.layout = &quot;none&quot;))"
 				opaque="false" name="NoneConstraints" />
-			<Panel index="1" layout="twocols" border="rounded3d" borderTitle="flow_layout_constraints"
-				titleFont="SansSerif,0,10" darkLevel="1"
-				data="($org.openflexo.gina.model.container.layout.FlowLayoutConstraints)data.constraints"
-				dataClassName="org.openflexo.gina.model.container.layout.FlowLayoutConstraints"
-				constraints="twocols(expandHorizontally=true;location=right;insetsTop=0;insetsRight=10)"
+			<Panel index="1" layout="twocols" border="rounded3d"
+				borderTitle="flow_layout_constraints" titleFont="SansSerif,0,10"
+				darkLevel="1"
+				constraints="twocols(expandHorizontally=true;location=right;insetsTop=5;insetsRight=10)"
 				visible="((data.parent != null) &amp; (data.parent.layout = &quot;flow&quot;))"
 				opaque="false" name="FlowConstraints">
-				<!--  <Label label="index" constraints="twocols(location=left)"
-					localize="true" />
-				<Number numberType="IntegerType" data="data.index"
-					constraints="twocols(location=right)" name="flowConstraintsIndex"
-					localize="true" /> -->
+				<!-- <Label label="index" constraints="twocols(location=left)" localize="true" 
+					/> <Number numberType="IntegerType" data="data.index" constraints="twocols(location=right)" 
+					name="flowConstraintsIndex" localize="true" /> -->
 			</Panel>
-			<Panel index="2" layout="twocols" border="rounded3d" darkLevel="1" borderTitle="border_layout_constraints" titleFont="SansSerif,0,10"
-				data="($org.openflexo.gina.model.container.layout.BorderLayoutConstraints)data.constraints"
-				dataClassName="org.openflexo.gina.model.container.layout.BorderLayoutConstraints"
-				constraints="twocols(expandHorizontally=true;location=right;insetsTop=0;insetsRight=10)"
+			<Panel index="2" layout="twocols" border="rounded3d" darkLevel="1"
+				borderTitle="border_layout_constraints" titleFont="SansSerif,0,10"
+				constraints="twocols(expandHorizontally=true;location=right;insetsTop=5;insetsRight=10)"
 				visible="((data.parent != null) &amp; (data.parent.layout = &quot;border&quot;))"
 				opaque="false" name="BorderConstraints">
+				<FIBVariable name="borderLayout"
+					type="org.openflexo.gina.model.container.layout.BorderLayoutConstraints"
+					value="($org.openflexo.gina.model.container.layout.BorderLayoutConstraints)data.constraints" />
 				<Label label="location" constraints="twocols(location=left)"
 					localize="true" />
-				<DropDown data="BorderConstraints.data.location"
-					constraints="twocols(location=right)" localize="true"
-					iteratorClassName="java.lang.Object" autoSelectFirstRow="false" />
+				<DropDown data="borderLayout.location" constraints="twocols(location=right)"
+					localize="true"
+					iteratorClassName="org.openflexo.gina.model.container.layout.BorderLayoutConstraints$BorderLayoutLocation"
+					autoSelectFirstRow="false" />
 			</Panel>
-			<Panel index="3" layout="twocols" border="rounded3d" borderTitle="grid_layout_constraints"
-				titleFont="SansSerif,0,10" darkLevel="1"
-				data="($org.openflexo.gina.model.container.layout.GridLayoutConstraints)data.constraints"
-				dataClassName="org.openflexo.gina.model.container.layout.GridLayoutConstraints"
-				constraints="twocols(expandHorizontally=true;location=right;insetsTop=0;insetsRight=10)"
+			<Panel index="3" layout="twocols" border="rounded3d"
+				borderTitle="grid_layout_constraints" titleFont="SansSerif,0,10"
+				constraints="twocols(expandHorizontally=true;location=right;insetsTop=5;insetsRight=10)"
+				darkLevel="1"
 				visible="((data.parent != null) &amp; (data.parent.layout = &quot;grid&quot;))"
 				opaque="false" name="GridConstraints">
+				<FIBVariable name="gridLayout"
+					type="org.openflexo.gina.model.container.layout.GridLayoutConstraints"
+					value="($org.openflexo.gina.model.container.layout.GridLayoutConstraints)data.constraints" />
 				<Panel layout="flow" hGap="5" vGap="0" flowAlignment="LEADING"
 					titleFont="SansSerif,0,10" darkLevel="0" constraints="twocols()"
 					opaque="false">
 					<Label label="column" constraints="flow()" localize="true" />
-					<Number numberType="IntegerType" columns="3"
-						data="GridConstraints.data.x" constraints="flow()" name="gridConstraintsX"
-						localize="true" />
+					<Number numberType="IntegerType" columns="3" data="gridLayout.x"
+						constraints="flow()" name="gridConstraintsX" localize="true" />
 					<Label label="row" constraints="flow()" localize="true" />
-					<Number numberType="IntegerType" columns="3"
-						data="GridConstraints.data.y" constraints="flow()" name="gridConstraintsY"
-						localize="true" />
+					<Number numberType="IntegerType" columns="3" data="gridLayout.y"
+						constraints="flow()" name="gridConstraintsY" localize="true" />
 				</Panel>
 			</Panel>
-			<Panel index="4" layout="twocols" border="rounded3d" borderTitle="button_layout_constraints"
-				titleFont="SansSerif,0,10" darkLevel="1"
-				data="($org.openflexo.gina.model.container.layout.ButtonLayoutConstraints)data.constraints"
-				dataClassName="org.openflexo.gina.model.container.layout.ButtonLayoutConstraints"
-				constraints="twocols(expandHorizontally=true;location=right;insetsTop=0;insetsRight=10)"
-				visible="(data.parent.layout = &quot;buttons&quot;)" name="ButtonConstraints" />
-			<Panel index="5" layout="twocols" border="rounded3d" borderTitle="box_layout_constraints"
-				titleFont="SansSerif,0,10" darkLevel="1"
-				data="($org.openflexo.gina.model.container.layout.BoxLayoutConstraints)data.constraints"
-				dataClassName="org.openflexo.gina.model.container.layout.BoxLayoutConstraints"
-				constraints="twocols(expandHorizontally=true;location=right;insetsTop=0;insetsRight=10)"
+			<Panel index="5" layout="twocols" border="rounded3d"
+				borderTitle="box_layout_constraints" titleFont="SansSerif,0,10"
+				darkLevel="1"
+				constraints="twocols(expandHorizontally=true;location=right;insetsTop=5;insetsRight=10)"
 				visible="((data.parent != null) &amp; (data.parent.layout = &quot;box&quot;))"
 				opaque="false" name="BoxConstraints">
+				<FIBVariable name="boxLayout"
+					type="org.openflexo.gina.model.container.layout.BoxLayoutConstraints"
+					value="($org.openflexo.gina.model.container.layout.BoxLayoutConstraints)data.constraints" />
 				<Label label="index" constraints="twocols(location=left)"
 					localize="true" />
-				<Number numberType="IntegerType" data="BoxConstraints.data.index"
+				<Number numberType="IntegerType" data="boxLayout.index"
 					constraints="twocols(location=right)" name="boxConstraintsIndex"
 					localize="true" />
 				<Panel layout="flow" hGap="5" vGap="0" flowAlignment="LEADING"
@@ -128,39 +121,36 @@
 					opaque="false">
 					<Label label="alignmentX" constraints="flow()" localize="true" />
 					<Number minValue="0.0" maxValue="1.0" increment="0.05"
-						numberType="FloatType" columns="5" data="BoxConstraints.data.alignmentX"
+						numberType="FloatType" columns="5" data="boxLayout.alignmentX"
 						constraints="flow()" name="boxConstraintsAlignX" localize="true" />
 					<Label label="alignmentY" constraints="flow()" localize="true" />
 					<Number minValue="0.0" maxValue="1.0" increment="0.05"
-						numberType="FloatType" columns="5" data="BoxConstraints.data.alignmentY"
+						numberType="FloatType" columns="5" data="boxLayout.alignmentY"
 						constraints="flow()" name="boxConstraintsAlignY" localize="true" />
 				</Panel>
 			</Panel>
-			<Panel index="6" layout="twocols" border="rounded3d" borderTitle="two_cols_layout_constraints"
-				titleFont="SansSerif,0,10" darkLevel="1"
-				data="($org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints)data.constraints"
-				dataClassName="org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints"
-				constraints="twocols(expandHorizontally=true;location=right;insetsTop=0;insetsRight=10)"
+			<!-- data="($org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints)data.constraints" 
+				dataClassName="org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints" -->
+			<Panel index="6" layout="twocols" border="rounded3d"
+				borderTitle="two_cols_layout_constraints" titleFont="SansSerif,0,10"
+				darkLevel="1"
+				constraints="twocols(expandHorizontally=true;location=right;insetsTop=5;insetsRight=10)"
 				visible="((data.parent != null) &amp; (data.parent.layout = &quot;twocols&quot;))"
 				opaque="false" name="TwoColsConstraints">
-				<!--  <Label label="index" constraints="twocols(location=left)"
-					localize="true" />
-				<Number numberType="IntegerType" data="TwoColsConstraints.data.index"
-					constraints="twocols(location=right)" name="twoColsConstraintsIndex"
-					localize="true" /> -->
+				<FIBVariable name="twoColsLayout"
+					type="org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints"
+					value="($org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints)data.constraints" />
 				<Label label="location" constraints="twocols(location=left)"
 					localize="true" />
-				<DropDown data="TwoColsConstraints.data.location"
-					constraints="twocols(location=right)" localize="true"
-					iteratorClassName="java.lang.Object" autoSelectFirstRow="false" />
-				<CheckBox selected="false"
-					data="TwoColsConstraints.data.expandHorizontally" constraints="twocols(location=left)"
-					localize="true" />
+				<DropDown data="twoColsLayout.location" constraints="twocols(location=right)"
+					localize="true" iteratorClassName="java.lang.Object"
+					autoSelectFirstRow="false" />
+				<CheckBox selected="false" data="twoColsLayout.expandHorizontally"
+					constraints="twocols(location=left)" localize="true" />
 				<Label label="expand_horizontally" constraints="twocols(location=right)"
 					localize="true" />
-				<CheckBox selected="false"
-					data="TwoColsConstraints.data.expandVertically" constraints="twocols(location=left)"
-					localize="true" />
+				<CheckBox selected="false" data="twoColsLayout.expandVertically"
+					constraints="twocols(location=left)" localize="true" />
 				<Label label="expand_vertically" constraints="twocols(location=right)"
 					localize="true" />
 				<Panel layout="flow" hGap="0" vGap="0" flowAlignment="LEADING"
@@ -169,32 +159,34 @@
 					opaque="false">
 					<Label label="top" constraints="flow()" localize="true" />
 					<Number numberType="IntegerType" columns="2"
-						data="TwoColsConstraints.data.insetsTop" constraints="flow()"
+						data="twoColsLayout.insetsTop" constraints="flow()"
 						name="twoColsConstraintsInsetsTop" localize="true" />
 					<Label label="left" constraints="flow()" localize="true" />
 					<Number numberType="IntegerType" columns="2"
-						data="TwoColsConstraints.data.insetsLeft" constraints="flow()"
+						data="twoColsLayout.insetsLeft" constraints="flow()"
 						name="twoColsConstraintsInsetsLeft" localize="true" />
 					<Label label="bottom" constraints="flow()" localize="true" />
 					<Number numberType="IntegerType" columns="2"
-						data="TwoColsConstraints.data.insetsBottom" constraints="flow()"
+						data="twoColsLayout.insetsBottom" constraints="flow()"
 						name="twoColsConstraintsInsetsBottom" localize="true" />
 					<Label label="right" constraints="flow()" localize="true" />
 					<Number numberType="IntegerType" columns="2"
-						data="TwoColsConstraints.data.insetsRight" constraints="flow()"
+						data="twoColsLayout.insetsRight" constraints="flow()"
 						name="twoColsConstraintsInsetsRight" localize="true" />
 				</Panel>
 			</Panel>
-			<Panel index="7" layout="twocols" border="rounded3d" borderTitle="grid_bag_layout_constraints"
-				titleFont="SansSerif,0,10" darkLevel="1"
-				data="($org.openflexo.gina.model.container.layout.GridBagLayoutConstraints)data.constraints"
-				dataClassName="org.openflexo.gina.model.container.layout.GridBagLayoutConstraints"
-				constraints="twocols(expandHorizontally=true;location=right;insetsTop=0;insetsRight=10)"
+			<Panel index="7" layout="twocols" border="rounded3d"
+				borderTitle="grid_bag_layout_constraints" titleFont="SansSerif,0,10"
+				darkLevel="1"
+				constraints="twocols(expandHorizontally=true;location=right;insetsTop=5;insetsRight=10)"
 				visible="((data.parent != null) &amp; (data.parent.layout = &quot;gridbag&quot;))"
 				opaque="false" name="GridBagConstraints">
+				<FIBVariable name="gridBagLayout"
+					type="org.openflexo.gina.model.container.layout.GridBagLayoutConstraints"
+					value="($org.openflexo.gina.model.container.layout.GridBagLayoutConstraints)data.constraints" />
 				<Label label="index" constraints="twocols(location=left)"
 					localize="true" />
-				<Number numberType="IntegerType" data="GridBagConstraints.data.index"
+				<Number numberType="IntegerType" data="gridBagLayout.index"
 					constraints="twocols(location=right)" name="gridBagConstraintsIndex"
 					localize="true" />
 				<Label label="gridX" constraints="twocols(location=left)"
@@ -204,10 +196,10 @@
 					constraints="twocols(expandHorizontally=true;location=right)"
 					opaque="false">
 					<Number numberType="IntegerType" columns="3"
-						data="GridBagConstraints.data.gridX" constraints="flow()"
-						visible="(GridBagConstraints.data.gridX &gt;= 0)" name="gridBagConstraintsGridX"
+						data="gridBagLayout.gridX" constraints="flow()"
+						visible="(gridBagLayout.gridX &gt;= 0)" name="gridBagConstraintsGridX"
 						localize="true" />
-					<CheckBox selected="false" data="GridBagConstraints.data.gridXRelative"
+					<CheckBox selected="false" data="gridBagLayout.gridXRelative"
 						constraints="flow()" localize="true" />
 					<Label label="relative" constraints="flow()" localize="true" />
 				</Panel>
@@ -218,10 +210,10 @@
 					constraints="twocols(expandHorizontally=true;location=right)"
 					opaque="false">
 					<Number numberType="IntegerType" columns="3"
-						data="GridBagConstraints.data.gridY" constraints="flow()"
-						visible="(GridBagConstraints.data.gridY &gt;= 0)" name="gridBagConstraintsGridY"
+						data="gridBagLayout.gridY" constraints="flow()"
+						visible="(gridBagLayout.gridY &gt;= 0)" name="gridBagConstraintsGridY"
 						localize="true" />
-					<CheckBox selected="false" data="GridBagConstraints.data.gridYRelative"
+					<CheckBox selected="false" data="gridBagLayout.gridYRelative"
 						constraints="flow()" localize="true" />
 					<Label label="relative" constraints="flow()" localize="true" />
 				</Panel>
@@ -232,16 +224,14 @@
 					constraints="twocols(expandHorizontally=true;location=right)"
 					opaque="false">
 					<Number numberType="IntegerType" columns="3"
-						data="GridBagConstraints.data.gridWidth" constraints="flow()"
-						visible="(GridBagConstraints.data.gridWidth &gt; 0)" name="gridBagConstraintsGridWidth"
+						data="gridBagLayout.gridWidth" constraints="flow()"
+						visible="(gridBagLayout.gridWidth &gt; 0)" name="gridBagConstraintsGridWidth"
 						localize="true" />
-					<CheckBox selected="false"
-						data="GridBagConstraints.data.gridWidthRelative" constraints="flow()"
-						localize="true" />
+					<CheckBox selected="false" data="gridBagLayout.gridWidthRelative"
+						constraints="flow()" localize="true" />
 					<Label label="relative" constraints="flow()" localize="true" />
-					<CheckBox selected="false"
-						data="GridBagConstraints.data.gridWidthRemainder" constraints="flow()"
-						localize="true" />
+					<CheckBox selected="false" data="gridBagLayout.gridWidthRemainder"
+						constraints="flow()" localize="true" />
 					<Label label="remainder" constraints="flow()" localize="true" />
 				</Panel>
 				<Label label="gridHeight" constraints="twocols(location=left)"
@@ -251,16 +241,14 @@
 					constraints="twocols(expandHorizontally=true;location=right)"
 					opaque="false">
 					<Number numberType="IntegerType" columns="3"
-						data="GridBagConstraints.data.gridHeight" constraints="flow()"
-						visible="(GridBagConstraints.data.gridHeight &gt; 0)" name="gridBagConstraintsGridHeight"
+						data="gridBagLayout.gridHeight" constraints="flow()"
+						visible="(gridBagLayout.gridHeight &gt; 0)" name="gridBagConstraintsGridHeight"
 						localize="true" />
-					<CheckBox selected="false"
-						data="GridBagConstraints.data.gridHeightRelative" constraints="flow()"
-						localize="true" />
+					<CheckBox selected="false" data="gridBagLayout.gridHeightRelative"
+						constraints="flow()" localize="true" />
 					<Label label="relative" constraints="flow()" localize="true" />
-					<CheckBox selected="false"
-						data="GridBagConstraints.data.gridHeightRemainder" constraints="flow()"
-						localize="true" />
+					<CheckBox selected="false" data="gridBagLayout.gridHeightRemainder"
+						constraints="flow()" localize="true" />
 					<Label label="remainder" constraints="flow()" localize="true" />
 				</Panel>
 				<Label label="weights" constraints="twocols(location=left)"
@@ -271,21 +259,21 @@
 					opaque="false">
 					<Label label="weightX" constraints="flow()" localize="true" />
 					<Number numberType="DoubleType" columns="3"
-						data="GridBagConstraints.data.weightX" constraints="flow()"
+						data="gridBagLayout.weightX" constraints="flow()"
 						name="gridBagConstraintsWeightX" localize="true" />
 					<Label label="weightY" constraints="flow()" localize="true" />
 					<Number numberType="DoubleType" columns="3"
-						data="GridBagConstraints.data.weightY" constraints="flow()"
+						data="gridBagLayout.weightY" constraints="flow()"
 						name="gridBagConstraintsWeightY" localize="true" />
 				</Panel>
 				<Label label="anchor" constraints="twocols(location=left)"
 					localize="true" />
-				<DropDown data="GridBagConstraints.data.anchor"
-					constraints="twocols(location=right)" localize="true"
-					iteratorClassName="java.lang.Object" autoSelectFirstRow="false" />
+				<DropDown data="gridBagLayout.anchor" constraints="twocols(location=right)"
+					localize="true" iteratorClassName="java.lang.Object"
+					autoSelectFirstRow="false" />
 				<Label label="fill" constraints="twocols(location=left)"
 					localize="true" />
-				<DropDown data="GridBagConstraints.data.fill" constraints="twocols(location=right)"
+				<DropDown data="gridBagLayout.fill" constraints="twocols(location=right)"
 					localize="true" iteratorClassName="java.lang.Object"
 					autoSelectFirstRow="false" />
 				<Label label="pads" constraints="twocols(location=left)"
@@ -296,12 +284,12 @@
 					opaque="false">
 					<Label label="padX" constraints="flow()" localize="true" />
 					<Number numberType="IntegerType" columns="3"
-						data="GridBagConstraints.data.padX" constraints="flow()"
-						name="gridBagConstraintsPadX" localize="true" />
+						data="gridBagLayout.padX" constraints="flow()" name="gridBagConstraintsPadX"
+						localize="true" />
 					<Label label="padY" constraints="flow()" localize="true" />
 					<Number numberType="IntegerType" columns="3"
-						data="GridBagConstraints.data.padY" constraints="flow()"
-						name="gridBagConstraintsPadY" localize="true" />
+						data="gridBagLayout.padY" constraints="flow()" name="gridBagConstraintsPadY"
+						localize="true" />
 				</Panel>
 				<Label label="Insets" constraints="twocols(location=left)"
 					localize="true" />
@@ -311,53 +299,54 @@
 					opaque="false">
 					<Label label="top" constraints="flow()" localize="true" />
 					<Number numberType="IntegerType" columns="1"
-						data="GridBagConstraints.data.insetsTop" constraints="flow()"
+						data="gridBagLayout.insetsTop" constraints="flow()"
 						name="gridBagConstraintsInsetsTop" localize="true" />
 					<Label label="left" constraints="flow()" localize="true" />
 					<Number numberType="IntegerType" columns="1"
-						data="GridBagConstraints.data.insetsLeft" constraints="flow()"
+						data="gridBagLayout.insetsLeft" constraints="flow()"
 						name="gridBagConstraintsInsetsLeft" localize="true" />
 					<Label label="bottom" constraints="flow()" localize="true" />
 					<Number numberType="IntegerType" columns="1"
-						data="GridBagConstraints.data.insetsBottom" constraints="flow()"
+						data="gridBagLayout.insetsBottom" constraints="flow()"
 						name="gridBagConstraintsInsetsBottom" localize="true" />
 					<Label label="right" constraints="flow()" localize="true" />
 					<Number numberType="IntegerType" columns="1"
-						data="GridBagConstraints.data.insetsRight" constraints="flow()"
+						data="gridBagLayout.insetsRight" constraints="flow()"
 						name="gridBagConstraintsInsetsRight" localize="true" />
 				</Panel>
 			</Panel>
-			<Panel index="8" layout="twocols" border="titled" borderTitle="split_layout_constraints"
-				titleFont="SansSerif,0,10" darkLevel="0"
-				data="($org.openflexo.gina.model.container.layout.SplitLayoutConstraints)data.constraints"
-				dataClassName="org.openflexo.gina.model.container.layout.SplitLayoutConstraints"
-				constraints="twocols(expandHorizontally=true;location=right;insetsTop=0;insetsRight=10)"
+			<!-- data="($org.openflexo.gina.model.container.layout.SplitLayoutConstraints)data.constraints" 
+				dataClassName="org.openflexo.gina.model.container.layout.SplitLayoutConstraints" -->
+			<Panel index="8" layout="twocols" border="titled"
+				borderTitle="split_layout_constraints" titleFont="SansSerif,0,10"
+				darkLevel="0"
+				constraints="twocols(expandHorizontally=true;location=right;insetsTop=5;insetsRight=10)"
 				visible="((data.parent != null) &amp; (data.parent.layout = &quot;split&quot;))"
 				opaque="false" name="SplitLayoutConstraints">
+				<FIBVariable name="splitLayout"
+					type="org.openflexo.gina.model.container.layout.SplitLayoutConstraints"
+					value="($org.openflexo.gina.model.container.layout.SplitLayoutConstraints)data.constraints" />
 				<Label label="identifier" index="0"
 					constraints="twocols(expandHorizontally=false;expandVertically=false;index=0;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 					localize="true" />
-				<DropDown index="1" data="SplitLayoutConstraints.data.splitLeaf"
+				<DropDown index="1" data="splitLayout.splitLeaf"
 					constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
-					format="object.name" localize="true"
-					list="SplitLayoutConstraints.data.availableLeaves"
+					format="object.name" localize="true" list="splitLayout.availableLeaves"
 					iteratorClassName="org.openflexo.swing.layout.MultiSplitLayout$Leaf"
 					autoSelectFirstRow="true" />
 				<Label label="weight" index="2"
 					constraints="twocols(expandHorizontally=false;expandVertically=false;index=2;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 					localize="true" />
 				<Number minValue="0" maxValue="1" increment="0.05"
-					numberType="FloatType" columns="3" index="3"
-					data="SplitLayoutConstraints.data.weight"
+					numberType="FloatType" columns="3" index="3" data="splitLayout.weight"
 					constraints="twocols(expandHorizontally=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
 					name="Weight" localize="true" />
 			</Panel>
 
-			<Label index="20" name="DimensionLabel" label="dimensions" constraints="twocols(location=left;insetsTop=10)"
-				localize="true" />
-			<Panel index="21" name="DimensionPanel" layout="twocols" border="rounded3d"
+			<Panel index="21" name="DimensionPanel" layout="twocols"
+				border="rounded3d" borderTitle="dimensions" titleFont="SansSerif,0,10"
 				darkLevel="1"
-				constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;location=right;insetsTop=10;insetsRight=10)"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;location=right;insetsTop=5;insetsRight=10)"
 				opaque="false">
 				<CheckBox selected="false" index="0"
 					data="data.definePreferredDimensions"
@@ -367,19 +356,19 @@
 					titleFont="SansSerif,0,10" darkLevel="0" index="1"
 					constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;location=right)"
 					opaque="false">
-					<Label label="preferred" index="0"
-						constraints="flow(index=0)" localize="true" />
+					<Label label="pref" index="0" constraints="flow(index=0)"
+						localize="true" />
 					<Number minValue="0" maxValue="65535" increment="5"
 						numberType="IntegerType" columns="3" index="1" data="data.width"
 						constraints="flow(index=1)" name="preferredWidth" localize="true"
 						enable="data.definePreferredDimensions" />
-					<Label label="X" index="2" constraints="flow(index=2)"
+					<Label label="x" index="2" constraints="flow(index=2)"
 						localize="true" enable="data.definePreferredDimensions" />
 					<Number minValue="0" maxValue="65535" increment="5"
 						numberType="IntegerType" columns="3" index="3" data="data.height"
 						constraints="flow(index=3)" name="preferredHeight" localize="true"
 						enable="data.definePreferredDimensions" />
-					<Label label="pixels" index="4" constraints="flow(index=4)"
+					<Label label="px" index="4" constraints="flow(index=4)"
 						localize="true" />
 				</Panel>
 				<CheckBox selected="false" index="2" data="data.defineMinDimensions"
@@ -389,19 +378,19 @@
 					titleFont="SansSerif,0,10" darkLevel="0" index="3"
 					constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;location=right)"
 					opaque="false">
-					<Label label="minimum" index="0"
-						constraints="flow(index=0)" localize="true" />
+					<Label label="min" index="0" constraints="flow(index=0)"
+						localize="true" />
 					<Number minValue="0" maxValue="65535" increment="5"
 						numberType="IntegerType" columns="3" index="1" data="data.minWidth"
 						constraints="flow(index=1)" name="minWidth" localize="true"
 						enable="data.defineMinDimensions" />
-					<Label label="X" index="2" constraints="flow(index=2)"
+					<Label label="x" index="2" constraints="flow(index=2)"
 						localize="true" enable="data.defineMinDimensions" />
 					<Number minValue="0" maxValue="65535" increment="5"
 						numberType="IntegerType" columns="3" index="3" data="data.minHeight"
 						constraints="flow(index=3)" name="minHeight" localize="true"
 						enable="data.defineMinDimensions" />
-					<Label label="pixels" index="4" constraints="flow(index=4)"
+					<Label label="px" index="4" constraints="flow(index=4)"
 						localize="true" />
 				</Panel>
 				<CheckBox selected="false" index="4" data="data.defineMaxDimensions"
@@ -411,27 +400,26 @@
 					titleFont="SansSerif,0,10" darkLevel="0" index="5"
 					constraints="twocols(expandHorizontally=true;expandVertically=false;index=5;location=right)"
 					opaque="false">
-					<Label label="maximum" index="0"
-						constraints="flow(index=0)" localize="true" />
+					<Label label="max" index="0" constraints="flow(index=0)"
+						localize="true" />
 					<Number minValue="0" maxValue="65535" increment="5"
 						numberType="IntegerType" columns="3" index="1" data="data.maxWidth"
 						constraints="flow(index=1)" name="maxWidth" localize="true"
 						enable="data.defineMaxDimensions" />
-					<Label label="X" index="2" constraints="flow(index=2)"
+					<Label label="x" index="2" constraints="flow(index=2)"
 						localize="true" enable="data.defineMaxDimensions" />
 					<Number minValue="0" maxValue="65535" increment="5"
 						numberType="IntegerType" columns="3" index="3" data="data.maxHeight"
 						constraints="flow(index=3)" name="maxHeight" localize="true"
 						enable="data.defineMaxDimensions" />
-					<Label label="pixels" index="4" constraints="flow(index=4)"
+					<Label label="px" index="4" constraints="flow(index=4)"
 						localize="true" />
 				</Panel>
 			</Panel>
 
-			<Label index="22" name="ScrollbarLabel" label="scrollbar" constraints="twocols(location=left;insetsTop=10)"
-				localize="true" />
-			<Panel index="23" layout="twocols" border="rounded3d" darkLevel="1"
-				constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;location=right;insetsTop=10;insetsRight=10)"
+			<Panel index="23" layout="twocols" border="rounded3d"
+				darkLevel="1" borderTitle="scrollbar" titleFont="SansSerif,0,10"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;location=right;insetsTop=5;insetsRight=10)"
 				opaque="false" name="ScrollBarPolicy">
 				<CheckBox selected="false" data="data.useScrollBar"
 					constraints="twocols(location=left)" localize="true" />
@@ -441,12 +429,14 @@
 					visible="data.useScrollBar" localize="true" />
 				<DropDown data="data.horizontalScrollbarPolicy"
 					constraints="twocols(location=right)" visible="data.useScrollBar"
-					localize="true" iteratorClassName="java.lang.Object"
+					localize="true" format="object.presentationName"
+					iteratorClassName="org.openflexo.gina.model.FIBComponent$HorizontalScrollBarPolicy"
 					autoSelectFirstRow="false" />
 				<Label label="vertical_policy" constraints="twocols(location=left)"
 					visible="data.useScrollBar" localize="true" />
 				<DropDown data="data.verticalScrollbarPolicy" constraints="twocols(location=right)"
-					visible="data.useScrollBar" localize="true" iteratorClassName="java.lang.Object"
+					iteratorClassName="org.openflexo.gina.model.FIBComponent$VerticalScrollBarPolicy"
+					visible="data.useScrollBar" localize="true" format="object.presentationName"
 					autoSelectFirstRow="false" />
 			</Panel>
 		</Tab>
@@ -454,10 +444,10 @@
 			darkLevel="0" index="4" font="SansSerif,0,11" useScrollBar="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
 			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="GraphicsTab">
-			<Label name="FontsAndColorLabel" label="font_and_colors" constraints="twocols(location=left;insetsTop=15)"
-				localize="true" />
-			<Panel layout="twocols" border="rounded3d" 
-				titleFont="SansSerif,0,10" darkLevel="1"
+			<Label name="FontsAndColorLabel" label="font_and_colors"
+				constraints="twocols(location=left;insetsTop=15)" localize="true" />
+			<Panel layout="twocols" border="rounded3d" titleFont="SansSerif,0,10"
+				darkLevel="1"
 				constraints="twocols(expandHorizontally=true;location=right;insetsTop=10;insetsRight=10)">
 				<Panel layout="gridbag" borderTitle="Panel" titleFont="SansSerif,0,10"
 					darkLevel="0" index="0"
@@ -465,19 +455,21 @@
 					<Label label="define_specific_font" index="1"
 						constraints="gridbag(anchor=west;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=5;insetsRight=5;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
 						localize="true" />
-					<Font localize="true" index="2"
-						data="data.font" allowsNull="true" allowsNullText=""
+					<Font localize="true" index="2" data="data.font" allowsNull="true"
+						allowsNullText=""
 						constraints="gridbag(anchor=west;fill=none;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=2;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" />
 					<Label label="define_background_color" index="5"
 						constraints="gridbag(anchor=west;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=5;insetsBottom=0;insetsLeft=5;insetsRight=5;insetsTop=5;padX=0;padY=0;weightX=0.0;weightY=0.0)"
 						localize="true" />
-					<Color index="6" data="data.backgroundColor" allowsNull="true" allowsNullText=""
+					<Color index="6" data="data.backgroundColor" allowsNull="true"
+						allowsNullText=""
 						constraints="gridbag(anchor=west;fill=none;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=6;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=5;padX=0;padY=0;weightX=0.0;weightY=0.0)"
 						localize="true" />
 					<Label label="define_foreground_color" index="9"
 						constraints="gridbag(anchor=west;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=9;insetsBottom=0;insetsLeft=5;insetsRight=5;insetsTop=5;padX=0;padY=0;weightX=0.0;weightY=0.0)"
 						localize="true" />
-					<Color index="10" data="data.foregroundColor" allowsNull="true" allowsNullText=""
+					<Color index="10" data="data.foregroundColor" allowsNull="true"
+						allowsNullText=""
 						constraints="gridbag(anchor=west;fill=none;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=10;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=5;padX=0;padY=0;weightX=0.0;weightY=0.0)"
 						localize="true" />
 					<Label label="opaque" index="12"

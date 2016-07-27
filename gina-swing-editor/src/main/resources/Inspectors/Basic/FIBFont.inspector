@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBFont" name="Inspector">
+	<Label index="2" label="sample_text"
+		constraints="twocols(expandHorizontally=true;location=left)" localize="true" />
+	<TextField index="3" data="data.sampleText" constraints="twocols(location=right)"
+		localize="true" columns="15" />
+	<Label index="4" label="allowsNull" constraints="twocols(location=left)"
+		localize="true" />
+	<CheckBox index="5" selected="false" data="data.allowsNull"
+		constraints="twocols(location=right)" localize="true" />
+	<Parameter name="title" value="Font selector" />
+</Inspector>

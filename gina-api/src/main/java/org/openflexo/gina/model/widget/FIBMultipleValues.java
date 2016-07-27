@@ -251,13 +251,13 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 
 		@Override
 		public void revalidateBindings() {
-			super.revalidateBindings();
 			if (list != null) {
 				list.revalidate();
 			}
 			if (array != null) {
 				array.revalidate();
 			}
+			super.revalidateBindings();
 		}
 
 		@Override
@@ -301,6 +301,21 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 				return iteratorType;
 			}
 			return iteratorClass;
+		}
+
+		public Type getInferedIteratorType() {
+			// Attempt to infer iterator type
+			// System.out.println("getList()=" + getList());
+			// System.out.println("getList().isValid()=" + getList().isValid());
+			// System.out.println("getList().invalidBindingReason()=" + getList().invalidBindingReason());
+			if (getList() != null && getList().isSet() && getList().isValid()) {
+				Type accessedType = getList().getAnalyzedType();
+				// System.out.println("accessed type=" + accessedType);
+				if (accessedType instanceof ParameterizedType && ((ParameterizedType) accessedType).getActualTypeArguments().length > 0) {
+					return ((ParameterizedType) accessedType).getActualTypeArguments()[0];
+				}
+			}
+			return null;
 		}
 
 		@Override
@@ -348,6 +363,10 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		public Type getFormattedObjectType() {
 			if (isStaticList()) {
 				return String.class;
+			}
+			// System.out.println("getFormattedObjectType()? " + getInferedIteratorType());
+			if (getInferedIteratorType() != null) {
+				return getInferedIteratorType();
 			}
 			if (iteratorClass != null) {
 				return iteratorClass;

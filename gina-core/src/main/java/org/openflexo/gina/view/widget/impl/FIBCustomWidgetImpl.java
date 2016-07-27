@@ -411,7 +411,7 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 		if (variable.getVariableName().equals("component")) {
 			return getCustomComponent();
 		}
-		return null;
+		return super.getValue(variable);
 	}
 
 	protected abstract void updateCustomComponent();

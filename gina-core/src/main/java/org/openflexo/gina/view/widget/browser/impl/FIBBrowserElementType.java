@@ -490,7 +490,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			return iteratorObject;
 		}
 		else {
-			return getController().getValue(variable);
+			return getBrowserModel().getWidget().getValue(variable);
 		}
 	}
 

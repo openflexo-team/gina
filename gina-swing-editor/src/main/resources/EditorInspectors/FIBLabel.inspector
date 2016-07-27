@@ -1,21 +1,30 @@
-<Inspector 
-	   name="Inspector" 
-	   layout="border" 
-	   dataClassName="org.openflexo.gina.model.widget.FIBLabel">
-	<Parameter name="title" value="Label"/>
+<Inspector name="Inspector" layout="border"
+	dataClassName="org.openflexo.gina.model.widget.FIBLabel">
+	<Parameter name="title" value="Label" />
 
-		<TabPanel name="Tab" constraints="border(location=center)">
+	<TabPanel name="Tab" constraints="border(location=center)">
 
-			<Tab name="BasicTab" title="Basic" index="0" layout="twocols" font="SansSerif,0,11" >
-			
-				<Label name="LabelLabel" index="2" label="label" constraints="twocols(location=left)"/>
-				<TextField name="LabelTF" data="data.label" index="3" constraints="twocols(location=right;expandHorizontally=true)" columns="15"/>
-	
-				<Label name="AlignLabel" label="align" index="4" constraints="twocols(location=left)"/>
-				<DropDown name="AlignTF" data="data.align" index="5" constraints="twocols(location=right)" showReset="false"/>
-			
-			</Tab>
-						
-		</TabPanel>
+		<Tab name="BasicTab" title="Basic" index="0" layout="twocols"
+			font="SansSerif,0,11">
+
+			<Label name="LabelLabel" index="2" label="label"
+				constraints="twocols(location=left)" />
+			<TextField name="LabelTF" data="data.label" index="3"
+				constraints="twocols(location=right;expandHorizontally=true)"
+				columns="15" />
+
+			<Label name="AlignLabel" label="align" index="4"
+				constraints="twocols(location=left)" />
+			<DropDown name="AlignTF" data="data.align" index="5"
+				constraints="twocols(location=right)" showReset="false" />
+
+			<CheckBox name="TrimTextCB" index="6" selected="false"
+				data="data.trimText" constraints="twocols(location=left)" localize="true" />
+			<Label name="TrimTextLabel" index="7" label="trim_text"
+				constraints="twocols(expandHorizontally=true;location=right)"
+				localize="true" />
+		</Tab>
+
+	</TabPanel>
 
 </Inspector>

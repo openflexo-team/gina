@@ -70,7 +70,7 @@ public class FIBWidgetType<W extends FIBWidget> extends FIBViewType<W> {
 	public final DynamicProperty VALUE = new DynamicProperty() {
 		@Override
 		public String getName() {
-			return "data";
+			return "value";
 		}
 
 		@Override

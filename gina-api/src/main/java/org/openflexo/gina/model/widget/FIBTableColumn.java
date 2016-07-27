@@ -117,7 +117,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 	public FIBTable getOwner();
 
 	@Setter(OWNER_KEY)
-	public void setOwner(FIBTable customColumn);
+	public void setOwner(FIBTable ownerTable);
 
 	@Getter(value = DATA_KEY)
 	@XMLAttribute
@@ -306,8 +306,11 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 			return getOwner();
 		}
 
-		protected void bindingModelMightChange(BindingModel oldBindingModel) {
-			formatter.bindingModelMightChange(oldBindingModel);
+		@Override
+		public void setOwner(FIBTable ownerTable) {
+			// BindingModel oldBindingModel = getBindingModel();
+			performSuperSetter(OWNER_KEY, ownerTable);
+			formatter.updateBindingModel();
 		}
 
 		@Override
@@ -391,7 +394,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		@Override
 		public void setColumnWidth(Integer columnWidth) {
 			FIBPropertyNotification<Integer> notification = requireChange(COLUMN_WIDTH_KEY, columnWidth);
-			if (notification != null) {
+			if (notification != null && columnWidth != null) {
 				this.columnWidth = columnWidth;
 				hasChanged(notification);
 			}
@@ -405,7 +408,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		@Override
 		public void setResizable(Boolean resizable) {
 			FIBPropertyNotification<Boolean> notification = requireChange(RESIZABLE_KEY, resizable);
-			if (notification != null) {
+			if (notification != null && resizable != null) {
 				this.resizable = resizable;
 				hasChanged(notification);
 			}
@@ -419,7 +422,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		@Override
 		public void setDisplayTitle(Boolean displayTitle) {
 			FIBPropertyNotification<Boolean> notification = requireChange(DISPLAY_TITLE_KEY, displayTitle);
-			if (notification != null) {
+			if (notification != null && displayTitle != null) {
 				this.displayTitle = displayTitle;
 				hasChanged(notification);
 			}
@@ -521,7 +524,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		@Override
 		public void setShowIcon(Boolean showIcon) {
 			FIBPropertyNotification<Boolean> notification = requireChange(SHOW_ICON_KEY, showIcon);
-			if (notification != null) {
+			if (notification != null && showIcon != null) {
 				this.showIcon = showIcon;
 				hasChanged(notification);
 			}
@@ -535,9 +538,11 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		private class FIBFormatter extends DefaultBindable {
 			private BindingModel formatterBindingModel = null;
 
-			private void bindingModelMightChange(BindingModel oldBindingModel) {
+			private void updateBindingModel() {
 				getBindingModel();
-				formatterBindingModel.setBaseBindingModel(getOwner().getTableBindingModel());
+				if (formatterBindingModel != null && getOwner() != null) {
+					formatterBindingModel.setBaseBindingModel(getOwner().getTableBindingModel());
+				}
 			}
 
 			@Override
@@ -697,6 +702,20 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		public void searchLocalized(LocalizationEntryRetriever retriever) {
 			retriever.foundLocalized(getTitle());
 			retriever.foundLocalized(getTooltipText());
+		}
+
+		/*@Override
+		public String getPresentationName() {
+			return getName();
+		}*/
+
+		@Override
+		public String getName() {
+			String returned = (String) performSuperGetter(NAME_KEY);
+			if (returned == null) {
+				return getTitle();
+			}
+			return returned;
 		}
 
 	}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.container.FIBTab" name="Inspector">
+	<Label index="0" label="title" constraints="twocols(location=left;insetsTop=5)"
+		localize="true" />
+	<TextField index="1" data="data.title"
+		constraints="twocols(expandHorizontally=true;location=right;insetsRight=10;insetsTop=5)"
+		localize="true" />
+	<Label index="2" label="index" constraints="twocols(location=left)"
+		localize="true" />
+	<Number index="3" numberType="IntegerType" data="data.index"
+		constraints="twocols(location=right;insetsRight=10)" localize="true" />
+	<Parameter name="title" value="Tab pane" />
+</Inspector>

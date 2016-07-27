@@ -48,10 +48,11 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.openflexo.connie.type.TypeUtils;
+import org.openflexo.connie.binding.SettableBindingEvaluationContext;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
+import org.openflexo.gina.model.FIBVariable;
 import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.FIBView;
 
@@ -70,7 +71,8 @@ import org.openflexo.gina.view.FIBView;
  * @param <C2>
  *            type of technology-specific component beeing contained by this view
  */
-public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extends FIBViewImpl<M, C>implements FIBContainerView<M, C, C2> {
+public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extends FIBViewImpl<M, C>
+		implements FIBContainerView<M, C, C2>, SettableBindingEvaluationContext {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBContainerViewImpl.class.getPackage().getName());
 
@@ -207,48 +209,6 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		return null;
 	}
 
-	/*
-	 * protected final void addChildComponent(C2 c2, Object constraint) {
-	 * getRenderingAdapter().addComponent(c2, getTechnologyComponent(),
-	 * constraint); }
-	 */
-
-	/*
-	 * {// logger.info("addJComponent constraints=" + c); Object constraint =
-	 * constraints.get(c); LOGGER.fine(getComponent() + ": addJComponent " + c +
-	 * " constraint=" + constraint); if (constraint == null) {
-	 * getJComponent().add(c); } else { getJComponent().add(c, constraint); } }
-	 */
-
-	// @Override
-	// public abstract J getJComponent();
-
-	// TODO: refactor this
-	public Object getValue() {
-		LOGGER.warning("Please reimplement this !");
-		return null;
-	}
-
-	/*
-	 * { if (getDataObject() == null) { return null; } if
-	 * (getComponent().getData() == null || getComponent().getData().isUnset())
-	 * { return null; } try { return (T)
-	 * getComponent().getData().getBindingValue(getBindingEvaluationContext());
-	 * } catch (TypeMismatchException e) { e.printStackTrace(); return null; }
-	 * catch (NullReferenceException e) { e.printStackTrace(); return null; }
-	 * catch (InvocationTargetException e) { e.printStackTrace(); return null; }
-	 * }
-	 */
-
-	/*@Override
-	public boolean update() {
-		super.update();
-		for (FIBView v : new ArrayList<FIBView>(subViewsMap.values())) {
-			v.update();
-		}
-		return true;
-	}*/
-
 	@Override
 	protected void performUpdate() {
 		super.performUpdate();
@@ -289,7 +249,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	 * getDynamicModel().setData(getValue()); notifyDynamicModelChanged(); } } }
 	 */
 
-	@Deprecated
+	/*@Deprecated
 	@Override
 	protected boolean checkValidDataPath() {
 		if (getParentView() instanceof FIBViewImpl && !((FIBViewImpl) getParentView()).checkValidDataPath()) {
@@ -304,7 +264,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 			}
 		}
 		return true;
-	}
+	}*/
 
 	@Override
 	public void updateLanguage() {
@@ -422,4 +382,13 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 
 		super.propertyChange(evt);
 	}
+
+	@Override
+	protected <T> void fireVariableChanged(FIBVariable<T> variable, T oldValue, T newValue) {
+		super.fireVariableChanged(variable, oldValue, newValue);
+		for (FIBView<?, ?> child : getSubViews()) {
+			((FIBViewImpl<?, ?>) child).fireVariableChanged(variable, oldValue, newValue);
+		}
+	}
+
 }

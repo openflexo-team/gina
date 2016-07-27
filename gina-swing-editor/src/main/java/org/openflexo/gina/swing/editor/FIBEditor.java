@@ -66,11 +66,11 @@ import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.inspector.FIBInspectors;
+import org.openflexo.gina.swing.editor.inspector.FIBEditorInspectorController;
 import org.openflexo.gina.swing.editor.palette.FIBEditorPalettes;
 import org.openflexo.gina.swing.editor.palette.FIBEditorPalettesDialog;
 import org.openflexo.gina.swing.utils.FIBEditorLoadingProgress;
-import org.openflexo.gina.swing.utils.JFIBInspectorController;
+import org.openflexo.gina.swing.utils.JFIBDialogInspectorController;
 import org.openflexo.gina.swing.utils.JFIBPreferences;
 import org.openflexo.gina.swing.utils.localization.LocalizedEditor;
 import org.openflexo.gina.swing.view.JFIBView;
@@ -105,8 +105,8 @@ public class FIBEditor {
 	public static Resource COMPONENT_LOCALIZATION_FIB = ResourceLocator.locateResource("Fib/LocalizedPanel.fib");
 
 	private FIBEditorPalettes palette;
-	private JFIBInspectorController inspector;
-	private FIBInspectors inspectors;
+	private JFIBDialogInspectorController inspector;
+	private FIBEditorInspectorController inspectors;
 
 	protected LocalizedEditor localizedEditor;
 	private ComponentValidationWindow componentValidationWindow;
@@ -210,8 +210,8 @@ public class FIBEditor {
 		return menuBar;
 	}
 
-	public JFIBInspectorController makeInspector(JFrame frame) {
-		inspector = new JFIBInspectorController(frame, ResourceLocator.locateResource("EditorInspectors"), APP_FIB_LIBRARY,
+	public JFIBDialogInspectorController makeInspector(JFrame frame) {
+		inspector = new JFIBDialogInspectorController(frame, ResourceLocator.locateResource("EditorInspectors"), APP_FIB_LIBRARY,
 				EDITOR_LOCALIZATION, progress);
 		return inspector;
 	}
@@ -234,11 +234,11 @@ public class FIBEditor {
 		return palette;
 	}
 
-	public FIBInspectors makeInspectors() {
+	public FIBEditorInspectorController makeInspectors() {
 		if (progress != null) {
 			progress.progress(EDITOR_LOCALIZATION.localizedForKey("make_inspectors"));
 		}
-		inspectors = new FIBInspectors();
+		inspectors = new FIBEditorInspectorController();
 		return inspectors;
 	}
 
@@ -254,8 +254,12 @@ public class FIBEditor {
 		return fibLibrary;
 	}
 
-	public JFIBInspectorController getInspector() {
+	public JFIBDialogInspectorController getInspector() {
 		return inspector;
+	}
+
+	public FIBEditorInspectorController getInspectors() {
+		return inspectors;
 	}
 
 	public FIBEditorPalettes getPalettes() {

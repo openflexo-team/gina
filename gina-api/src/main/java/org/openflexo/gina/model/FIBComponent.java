@@ -54,14 +54,13 @@ import javax.swing.tree.TreeNode;
 
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.BindingModel;
-import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
 import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.manager.HasBaseIdentifier;
-import org.openflexo.gina.model.FIBViewType.DynamicProperty;
+import org.openflexo.gina.model.bindings.FIBComponentBindingModel;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBSplitPanel;
 import org.openflexo.gina.model.container.FIBTab;
@@ -76,6 +75,7 @@ import org.openflexo.gina.model.container.layout.GridLayoutConstraints;
 import org.openflexo.gina.model.container.layout.NoneLayoutConstraints;
 import org.openflexo.gina.model.container.layout.SplitLayoutConstraints;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
+import org.openflexo.gina.model.graph.FIBGraph;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBButton;
 import org.openflexo.gina.model.widget.FIBCheckBox;
@@ -154,7 +154,7 @@ import org.openflexo.toolbox.StringUtils;
 		@Import(FIBFile.class), @Import(FIBFont.class), @Import(FIBHtmlEditor.class), @Import(FIBImage.class), @Import(FIBLabel.class),
 		@Import(FIBCheckboxList.class), @Import(FIBDropDown.class), @Import(FIBList.class), @Import(FIBRadioButtonList.class),
 		@Import(FIBNumber.class), @Import(FIBReferencedComponent.class), @Import(FIBTable.class), @Import(FIBEditor.class),
-		@Import(FIBTextArea.class), @Import(FIBTextField.class), @Import(FIBEditorPane.class) })
+		@Import(FIBTextArea.class), @Import(FIBTextField.class), @Import(FIBEditorPane.class), @Import(FIBGraph.class) })
 public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBaseIdentifier {
 
 	public static enum VerticalScrollBarPolicy {
@@ -163,11 +163,21 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			public int getPolicy() {
 				return ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
 			}
+
+			@Override
+			public String getPresentationName() {
+				return "as_needed";
+			}
 		},
 		VERTICAL_SCROLLBAR_NEVER {
 			@Override
 			public int getPolicy() {
 				return ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER;
+			}
+
+			@Override
+			public String getPresentationName() {
+				return "never";
 			}
 		},
 		VERTICAL_SCROLLBAR_ALWAYS {
@@ -175,8 +185,15 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			public int getPolicy() {
 				return ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
 			}
+
+			@Override
+			public String getPresentationName() {
+				return "always";
+			}
 		};
 		public abstract int getPolicy();
+
+		public abstract String getPresentationName();
 	}
 
 	public static enum HorizontalScrollBarPolicy {
@@ -185,11 +202,21 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			public int getPolicy() {
 				return ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED;
 			}
+
+			@Override
+			public String getPresentationName() {
+				return "as_needed";
+			}
 		},
 		HORIZONTAL_SCROLLBAR_NEVER {
 			@Override
 			public int getPolicy() {
 				return ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER;
+			}
+
+			@Override
+			public String getPresentationName() {
+				return "never";
 			}
 		},
 		HORIZONTAL_SCROLLBAR_ALWAYS {
@@ -197,8 +224,15 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			public int getPolicy() {
 				return ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS;
 			}
+
+			@Override
+			public String getPresentationName() {
+				return "always";
+			}
 		};
 		public abstract int getPolicy();
+
+		public abstract String getPresentationName();
 	}
 
 	@PropertyIdentifier(type = FIBLibrary.class)
@@ -245,6 +279,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	public static final String LOCALIZED_DICTIONARY_KEY = "localizedDictionary";
 	@PropertyIdentifier(type = FIBVariable.class, cardinality = Cardinality.LIST)
 	public static final String VARIABLES_KEY = "variables";
+
+	public static final String DYNAMIC_ACCESS_TYPE_KEY = "dynamicAccessType";
 
 	public static final String DEFAULT_DATA_VARIABLE = "data";
 	public static final String DEFINE_PREFERRED_DIMENSIONS = "definePreferredDimensions";
@@ -515,7 +551,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	 * 
 	 * @return
 	 */
-	public BindingVariable getControllerBindingVariable();
+	// public BindingVariable getControllerBindingVariable();
 
 	/**
 	 * Return (create when null) binding variable identified by component name (this is dynamic access to data beeing edited in the
@@ -523,13 +559,13 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	 * 
 	 * @return
 	 */
-	public BindingVariable getDynamicAccessBindingVariable();
+	// public BindingVariable getDynamicAccessBindingVariable();
 
 	// public void updateDataBindingVariable();
 
-	public void updateControllerBindingVariable();
+	// public void updateControllerBindingVariable();
 
-	public void updateDynamicAccessBindingVariable();
+	// public void updateDynamicAccessBindingVariable();
 
 	/**
 	 * Search localized entries using {@link LocalizationEntryRetriever}
@@ -566,7 +602,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	public void removeFromVariables(FIBVariable<?> aVariable);
 
 	@Finder(collection = VARIABLES_KEY, attribute = FIBVariable.NAME_KEY)
-	public FIBVariable<?> getVariable(String variableName);
+	public FIBVariable getVariable(String variableName);
 
 	public FIBVariable<?> createNewVariable();
 
@@ -576,9 +612,12 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 	public boolean isVariableDeletable(FIBVariable<?> v);
 
-	public FIBViewType getViewType();
+	public FIBViewType<?> getViewType();
 
 	public void revalidateBindings();
+
+	@Override
+	public FIBComponentBindingModel getBindingModel();
 
 	public static abstract class FIBComponentImpl extends FIBModelObjectImpl implements FIBComponent {
 
@@ -623,10 +662,10 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		private FIBContainer parent;
 
-		protected BindingModel bindingModel = null;
-		protected BindingVariable dataBindingVariable;
-		protected BindingVariable controllerBindingVariable;
-		protected BindingVariable dynamicAccessBindingVariable;
+		protected FIBComponentBindingModel bindingModel = null;
+		// protected BindingVariable dataBindingVariable;
+		// protected BindingVariable controllerBindingVariable;
+		// protected BindingVariable dynamicAccessBindingVariable;
 
 		private FIBViewType<?> componentType;
 
@@ -662,14 +701,15 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		@Override
 		public void setParent(FIBContainer parent) {
 			if (this.parent != parent) {
-				BindingModel oldBindingModel = getBindingModel();
+				// BindingModel oldBindingModel = getBindingModel();
 				FIBContainer oldParent = this.parent;
 				this.parent = parent;
-				if (oldParent != null && getDynamicAccessBindingVariable() != null) {
+				/*if (oldParent != null && getDynamicAccessBindingVariable() != null) {
 					oldParent.getBindingModel().removeFromBindingVariables(getDynamicAccessBindingVariable());
-				}
+				}*/
 				// Changing parent might cause the BindingModel to be different
-				bindingModelMightChange(oldBindingModel);
+				// bindingModelMightChange(oldBindingModel);
+				getPropertyChangeSupport().firePropertyChange(PARENT_KEY, oldParent, parent);
 			}
 		}
 
@@ -689,18 +729,18 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				performSuperAdder(VARIABLES_KEY, aVariable);
 			}
 
-			if (isRootComponent() && getBindingModel().bindingVariableNamed(aVariable.getName()) == null) {
+			/*if (isRootComponent() && getBindingModel().bindingVariableNamed(aVariable.getName()) == null) {
 				getBindingModel().addToBindingVariables(aVariable.getBindingVariable());
-			}
+			}*/
 		}
 
-		@Override
+		/*@Override
 		public void removeFromVariables(FIBVariable<?> aVariable) {
 			performSuperRemover(VARIABLES_KEY, aVariable);
 			if (isRootComponent()) {
 				getBindingModel().removeFromBindingVariables(aVariable.getBindingVariable());
 			}
-		}
+		}*/
 
 		@Override
 		public FIBVariable<?> createNewVariable() {
@@ -877,7 +917,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		}
 
 		@Override
-		public boolean isRootComponent() {
+		public final boolean isRootComponent() {
 			return getParent() == null;
 		}
 
@@ -895,7 +935,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			return current;
 		}
 
-		@Override
+		/*@Override
 		public BindingModel getBindingModel() {
 			if (isRootComponent()) {
 				if (bindingModel == null) {
@@ -909,6 +949,19 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				}
 				return null;
 			}
+		}*/
+
+		private boolean bindingModelIsBeeingCreating = false;
+
+		@Override
+		public FIBComponentBindingModel getBindingModel() {
+			if (bindingModel == null && !bindingModelIsBeeingCreating) {
+				// createBindingModel();
+				bindingModelIsBeeingCreating = true;
+				bindingModel = new FIBComponentBindingModel(this);
+				bindingModelIsBeeingCreating = false;
+			}
+			return bindingModel;
 		}
 
 		/**
@@ -917,14 +970,14 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		 * 
 		 * @return
 		 */
-		@Override
+		/*@Override
 		public BindingVariable getControllerBindingVariable() {
 			if (controllerBindingVariable == null) {
 				controllerBindingVariable = new BindingVariable("controller", getControllerClass());
 				getBindingModel().addToBindingVariables(controllerBindingVariable);
 			}
 			return controllerBindingVariable;
-		}
+		}*/
 
 		/**
 		 * Return (create when null) binding variable identified by component name (this is dynamic access to data beeing edited in the
@@ -932,7 +985,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		 * 
 		 * @return
 		 */
-		@Override
+		/*@Override
 		public BindingVariable getDynamicAccessBindingVariable() {
 			if (dynamicAccessBindingVariable == null) {
 				if (StringUtils.isNotEmpty(getName()) && getDynamicAccessType() != null) {
@@ -941,16 +994,16 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				}
 			}
 			return dynamicAccessBindingVariable;
-		}
+		}*/
 
-		@Override
+		/*@Override
 		public void updateControllerBindingVariable() {
 			getControllerBindingVariable().setType(getControllerClass());
-		}
+		}*/
 
-		@Override
+		/*@Override
 		public void updateDynamicAccessBindingVariable() {
-
+		
 			if (getDynamicAccessBindingVariable() != null) {
 				// if (getDynamicAccessBindingVariable().getVariableName() !=
 				// getName()) {
@@ -982,22 +1035,22 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 					}
 				}
 			}
-		}
+		}*/
 
-		public void bindingModelMightChange(BindingModel oldBindingModel) {
-
+		/*public void bindingModelMightChange(BindingModel oldBindingModel) {
+		
 			// System.out.println("bindingModelMightChange");
-
+		
 			if (oldBindingModel != getBindingModel()) {
 				// System.out.println("fire");
 				getPropertyChangeSupport().firePropertyChange(BINDING_MODEL_PROPERTY, null, getBindingModel());
-
+		
 				// Following is deprecated ???
 				// getData().markedAsToBeReanalized();
 				updateDynamicAccessBindingVariable();
 			}
-
-		}
+		
+		}*/
 
 		/**
 		 * Internally called to create component BindingModel<br>
@@ -1005,24 +1058,24 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		 * all components BindingModel references the root component BindingModel<br>
 		 * 
 		 */
-		private void createBindingModel() {
-
+		/*private void createBindingModel() {
+		
 			bindingModel = new BindingModel();
-
+		
 			// Declare first all the variable of this component
 			for (FIBVariable<?> v : getVariables()) {
 				v.appendToBindingModel(bindingModel);
 			}
-
+		
 			// Also add dynamic properties
 			for (DynamicProperty p : getViewType().getDynamicProperties()) {
 				p.appendToBindingModel(bindingModel);
 			}
-
+		
 			// getDataBindingVariable();
 			getControllerBindingVariable();
 			getDynamicAccessBindingVariable();
-		}
+		}*/
 
 		@Deprecated
 		protected boolean deserializationPerformed = true;
@@ -1185,7 +1238,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			FIBPropertyNotification<Class> notification = requireChange(CONTROLLER_CLASS_KEY, (Class) controllerClass);
 			if (notification != null) {
 				this.controllerClass = controllerClass;
-				updateControllerBindingVariable();
+				// updateControllerBindingVariable();
 				hasChanged(notification);
 			}
 		}
@@ -1378,7 +1431,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		}
 
 		protected void clearTemporarySize() {
-			System.out.println("Clear temporary size !!!");
 			temporarySize = false;
 			temporaryWidth = null;
 			temporaryHeight = null;
@@ -1476,7 +1528,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				name = null;
 			}
 			super.setName(name);
-			updateDynamicAccessBindingVariable();
+			// updateDynamicAccessBindingVariable();
 		}
 
 		@Override

@@ -74,7 +74,7 @@ import org.openflexo.toolbox.StringUtils;
 public abstract interface FIBWidget extends FIBComponent {
 
 	@PropertyIdentifier(type = DataBinding.class)
-	public static final String DATA_KEY = "data";
+	public static final String VALUE_KEY = "value";
 	@PropertyIdentifier(type = Boolean.class)
 	public static final String READ_ONLY_KEY = "readOnly";
 	@PropertyIdentifier(type = DataBinding.class)
@@ -106,11 +106,13 @@ public abstract interface FIBWidget extends FIBComponent {
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String VALUE_VALIDATOR_KEY = "valueValidator";
 
-	@Getter(value = DATA_KEY)
-	@XMLAttribute
+	// TODO: rename to getValue()
+	@Getter(value = VALUE_KEY)
+	@XMLAttribute(xmlTag = "data")
 	public DataBinding<?> getData();
 
-	@Setter(DATA_KEY)
+	// TODO: rename to setValue(DataBinding<?>)
+	@Setter(VALUE_KEY)
 	public void setData(DataBinding<?> data);
 
 	public Type getDataType();
@@ -352,13 +354,13 @@ public abstract interface FIBWidget extends FIBComponent {
 		 * this.actionPerformed(e); }
 		 */
 
-		@Override
+		/*@Override
 		public void bindingModelMightChange(BindingModel oldBindingModel) {
 			super.bindingModelMightChange(oldBindingModel);
 			formatter.bindingModelMightChange(oldBindingModel);
 			valueBindable.bindingModelMightChange(oldBindingModel);
 			eventListener.bindingModelMightChange(oldBindingModel);
-		}
+		}*/
 
 		/*@Override
 		public String getIdentifier() {
@@ -402,7 +404,7 @@ public abstract interface FIBWidget extends FIBComponent {
 			if (data == null && !isSettingData) {
 				isSettingData = true;
 				data = new DataBinding<>(this, getDataType(), DataBinding.BindingDefinitionType.GET);
-				data.setBindingName(DATA_KEY);
+				data.setBindingName(VALUE_KEY);
 				isSettingData = false;
 			}
 			return data;
@@ -414,7 +416,7 @@ public abstract interface FIBWidget extends FIBComponent {
 				data.setOwner(this);
 				data.setDeclaredType(getDataType());
 				data.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
-				data.setBindingName(DATA_KEY);
+				data.setBindingName(VALUE_KEY);
 			}
 			this.data = data;
 		}
@@ -578,7 +580,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		 * 
 		 * @return
 		 */
-		@Override
+		/*@Override
 		public BindingVariable getDynamicAccessBindingVariable() {
 			if (dynamicAccessBindingVariable == null) {
 				if (StringUtils.isNotEmpty(getName()) && getDynamicAccessType() != null && getManageDynamicModel()) {
@@ -587,7 +589,7 @@ public abstract interface FIBWidget extends FIBComponent {
 				}
 			}
 			return dynamicAccessBindingVariable;
-		}
+		}*/
 
 		@Override
 		public boolean getManageDynamicModel() {
@@ -599,7 +601,7 @@ public abstract interface FIBWidget extends FIBComponent {
 			FIBPropertyNotification<Boolean> notification = requireChange(MANAGE_DYNAMIC_MODEL_KEY, manageDynamicModel);
 			if (notification != null) {
 				this.manageDynamicModel = manageDynamicModel;
-				updateDynamicAccessBindingVariable();
+				// updateDynamicAccessBindingVariable();
 				hasChanged(notification);
 			}
 		}
@@ -747,10 +749,10 @@ public abstract interface FIBWidget extends FIBComponent {
 		private class FIBFormatter extends DefaultBindable {
 			private BindingModel formatterBindingModel = null;
 
-			private void bindingModelMightChange(BindingModel oldBindingModel) {
+			/*private void bindingModelMightChange(BindingModel oldBindingModel) {
 				getBindingModel();
 				formatterBindingModel.setBaseBindingModel(FIBWidgetImpl.this.getBindingModel());
-			}
+			}*/
 
 			/*
 			 * public void notifiedBindingModelRecreated() {
@@ -816,10 +818,10 @@ public abstract interface FIBWidget extends FIBComponent {
 		private class FIBValueBindable extends DefaultBindable {
 			private BindingModel valueTransformerBindingModel = null;
 
-			private void bindingModelMightChange(BindingModel oldBindingModel) {
+			/*private void bindingModelMightChange(BindingModel oldBindingModel) {
 				getBindingModel();
 				valueTransformerBindingModel.setBaseBindingModel(FIBWidgetImpl.this.getBindingModel());
-			}
+			}*/
 
 			@Override
 			public BindingModel getBindingModel() {
@@ -831,7 +833,7 @@ public abstract interface FIBWidget extends FIBComponent {
 
 			private void createValueTransformerBindingModel() {
 				valueTransformerBindingModel = new BindingModel(FIBWidgetImpl.this.getBindingModel());
-				valueTransformerBindingModel.addToBindingVariables(new BindingVariable("value", Object.class) {
+				valueTransformerBindingModel.addToBindingVariables(new BindingVariable("valueToTransform", Object.class) {
 					@Override
 					public Type getType() {
 						return getDataType();
@@ -896,10 +898,10 @@ public abstract interface FIBWidget extends FIBComponent {
 		private class FIBEventListener extends DefaultBindable {
 			private BindingModel eventListenerBindingModel = null;
 
-			private void bindingModelMightChange(BindingModel oldBindingModel) {
+			/*private void bindingModelMightChange(BindingModel oldBindingModel) {
 				getBindingModel();
 				eventListenerBindingModel.setBaseBindingModel(FIBWidgetImpl.this.getBindingModel());
-			}
+			}*/
 
 			@Override
 			public BindingModel getBindingModel() {
@@ -1161,6 +1163,19 @@ public abstract interface FIBWidget extends FIBComponent {
 			}
 
 		}
+	}
+
+	@DefineValidationRule
+	public static class ValueBindingMustBeValid extends BindingMustBeValid<FIBWidget> {
+		public ValueBindingMustBeValid() {
+			super("'value'_binding_is_not_valid", FIBWidget.class);
+		}
+
+		@Override
+		public DataBinding getBinding(FIBWidget object) {
+			return object.getData();
+		}
+
 	}
 
 	@DefineValidationRule

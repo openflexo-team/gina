@@ -1,5 +1,9 @@
 package org.openflexo.gina.view.impl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ServiceLoader;
 import java.util.logging.Logger;
 
 import org.openflexo.gina.controller.FIBController;
@@ -34,6 +38,7 @@ import org.openflexo.gina.utils.InteractiveFIBEditor;
 import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.FIBWidgetView;
 import org.openflexo.gina.view.GinaViewFactory;
+import org.openflexo.gina.view.GinaViewFactoryExtension;
 import org.openflexo.gina.view.container.FIBPanelView;
 import org.openflexo.gina.view.container.FIBSplitPanelView;
 import org.openflexo.gina.view.container.FIBTabPanelView;
@@ -74,6 +79,20 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 
 	private InteractiveFIBEditor interactiveFIBEditor = null;
 
+	private List<GinaViewFactoryExtension> extensions = new ArrayList<>();
+
+	public GinaViewFactoryImpl() {
+		LOGGER.info("Loading available GinaViewFactory extensions...");
+		ServiceLoader<GinaViewFactoryExtension> loader = ServiceLoader.load(GinaViewFactoryExtension.class);
+		Iterator<GinaViewFactoryExtension> iterator = loader.iterator();
+		while (iterator.hasNext()) {
+			GinaViewFactoryExtension extension = iterator.next();
+			extension.install(this);
+			extensions.add(extension);
+		}
+		LOGGER.info("Loading available GinaViewFactory extensions. Done.");
+	}
+
 	public InteractiveFIBEditor getInteractiveFIBEditor() {
 		return interactiveFIBEditor;
 	}
@@ -90,7 +109,18 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 	@Override
 	public <F extends FIBContainer> FIBContainerView<F, ? extends C, ? extends C> makeContainer(F fibContainer, FIBController controller,
 			boolean updateNow) {
-		FIBContainerView<F, ? extends C, ? extends C> returned = buildContainer(fibContainer, controller);
+		FIBContainerView<F, ? extends C, ? extends C> returned = null;
+		for (GinaViewFactoryExtension extension : extensions) {
+			if (extension.handleContainer(fibContainer)) {
+				returned = (FIBContainerView<F, ? extends C, ? extends C>) extension.makeContainer(fibContainer, controller, updateNow);
+				if (returned != null) {
+					break;
+				}
+			}
+		}
+		if (returned == null) {
+			returned = buildContainer(fibContainer, controller);
+		}
 		if (returned != null && updateNow) {
 			// returned.updateGraphicalProperties();
 			returned.update();
@@ -120,9 +150,24 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <F extends FIBWidget> FIBWidgetView<F, ? extends C, ?> makeWidget(F fibWidget, FIBController controller) {
-		final FIBWidgetView<F, ? extends C, ?> returned = buildWidget(fibWidget, controller);
-		// returned.updateGraphicalProperties();
-		returned.update();
+		FIBWidgetView<F, ? extends C, ?> returned = null;
+		for (GinaViewFactoryExtension extension : extensions) {
+			if (extension.handleWidget(fibWidget)) {
+				returned = (FIBWidgetView<F, ? extends C, ?>) extension.makeWidget(fibWidget, controller);
+				if (returned != null) {
+					break;
+				}
+			}
+		}
+		if (returned == null) {
+			returned = buildWidget(fibWidget, controller);
+		}
+		if (returned != null) {
+			returned.update();
+		}
+		else {
+			LOGGER.warning("Could not build widget view for " + fibWidget);
+		}
 		return returned;
 	}
 

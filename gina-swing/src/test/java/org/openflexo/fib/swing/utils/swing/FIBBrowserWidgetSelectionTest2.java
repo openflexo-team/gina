@@ -282,18 +282,18 @@ public class FIBBrowserWidgetSelectionTest2 extends FIBTestCase {
 
 		assertFalse(details1.isViewVisible());
 		assertTrue(details2.isViewVisible());
-		assertEquals("Suzy", controller.viewForWidget(firstNameTF2).getData());
-		assertEquals("Smith", controller.viewForWidget(lastNameTF2).getData());
-		assertEquals("Suzy Smith", controller.viewForWidget(fullNameTF2).getData());
+		assertEquals("Suzy", controller.viewForWidget(firstNameTF2).getRepresentedValue());
+		assertEquals("Smith", controller.viewForWidget(lastNameTF2).getRepresentedValue());
+		assertEquals("Suzy Smith", controller.viewForWidget(fullNameTF2).getRepresentedValue());
 
 		w.resetSelection();
 		w.addToSelection(family.getChildren().get(2));
 
 		assertTrue(details1.isViewVisible());
 		assertFalse(details2.isViewVisible());
-		assertEquals("Jacky1", controller.viewForWidget(firstNameTF1).getData());
-		assertEquals("Smith", controller.viewForWidget(lastNameTF1).getData());
-		assertEquals("Jacky1 Smith", controller.viewForWidget(fullNameTF1).getData());
+		assertEquals("Jacky1", controller.viewForWidget(firstNameTF1).getRepresentedValue());
+		assertEquals("Smith", controller.viewForWidget(lastNameTF1).getRepresentedValue());
+		assertEquals("Jacky1 Smith", controller.viewForWidget(fullNameTF1).getRepresentedValue());
 
 	}
 

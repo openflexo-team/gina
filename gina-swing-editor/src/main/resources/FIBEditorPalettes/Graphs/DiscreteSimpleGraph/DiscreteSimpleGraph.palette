@@ -1,0 +1,4 @@
+<Image imageFile="DiscreteSimpleGraph.png">
+	<Parameter name="x" value="105"/>
+	<Parameter name="y" value="10"/>
+</Image>

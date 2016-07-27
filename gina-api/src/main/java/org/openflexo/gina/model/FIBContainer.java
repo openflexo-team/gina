@@ -45,16 +45,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.tree.TreeNode;
 
-import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
@@ -204,7 +201,7 @@ public abstract interface FIBContainer extends FIBComponent {
 		 * return super.getDataClass(); }
 		 */
 
-		@Override
+		/*@Override
 		public final void setParent(FIBContainer parent) {
 			Map<FIBComponent, BindingModel> oldBindingModelMap = new HashMap<>();
 			for (FIBComponent c : retrieveAllSubComponents()) {
@@ -216,7 +213,7 @@ public abstract interface FIBContainer extends FIBComponent {
 					((FIBComponentImpl) c).bindingModelMightChange(oldBindingModelMap.get(c));
 				}
 			}
-		}
+		}*/
 
 		/**
 		 * Return a recursive list of all components beeing embedded in this container
@@ -631,7 +628,7 @@ public abstract interface FIBContainer extends FIBComponent {
 			// deserializationPerformed = false;
 
 			finalizeDeserialization();
-			for (FIBComponent c : getSubComponents()) {
+			for (FIBComponent c : new ArrayList<>(getSubComponents())) {
 				recursivelyFinalizeDeserialization(c);
 			}
 
@@ -833,6 +830,14 @@ public abstract interface FIBContainer extends FIBComponent {
 				return getDefaultDataVariable().getType();
 			}
 			return null;
+		}
+
+		@Override
+		public void revalidateBindings() {
+			super.revalidateBindings();
+			for (FIBComponent subComponent : getSubComponents()) {
+				subComponent.revalidateBindings();
+			}
 		}
 
 		@Override

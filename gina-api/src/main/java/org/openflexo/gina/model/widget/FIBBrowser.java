@@ -49,13 +49,11 @@ import java.util.logging.Logger;
 
 import javax.swing.UIManager;
 
-import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.gina.model.FIBWidget;
-import org.openflexo.gina.model.widget.FIBBrowserElement.FIBBrowserElementImpl;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -258,8 +256,10 @@ public interface FIBBrowser extends FIBWidget {
 
 	public FIBBrowserElement elementForClass(Class<?> aClass);
 
+	@Deprecated
 	public FIBBrowserElement createElement();
 
+	@Deprecated
 	public FIBBrowserElement deleteElement(FIBBrowserElement elementToDelete);
 
 	public void moveToTop(FIBBrowserElement e);
@@ -311,14 +311,6 @@ public interface FIBBrowser extends FIBWidget {
 		@Override
 		public String getBaseName() {
 			return "Browser";
-		}
-
-		@Override
-		public void bindingModelMightChange(BindingModel oldBindingModel) {
-			super.bindingModelMightChange(oldBindingModel);
-			for (FIBBrowserElement e : getElements()) {
-				((FIBBrowserElementImpl) e).bindingModelMightChange(oldBindingModel);
-			}
 		}
 
 		@Override
@@ -509,6 +501,7 @@ public interface FIBBrowser extends FIBWidget {
 		}
 
 		@Override
+		@Deprecated
 		public FIBBrowserElement createElement() {
 			logger.info("Called createElement()");
 			FIBBrowserElement newElement = getModelFactory().newInstance(FIBBrowserElement.class);
@@ -518,6 +511,7 @@ public interface FIBBrowser extends FIBWidget {
 		}
 
 		@Override
+		@Deprecated
 		public FIBBrowserElement deleteElement(FIBBrowserElement elementToDelete) {
 			logger.info("Called elementToDelete() with " + elementToDelete);
 			removeFromElements(elementToDelete);

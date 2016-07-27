@@ -1,0 +1,12 @@
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.graph.FIBSimpleFunctionGraph">
+	<Parameter name="title" value="Simple function graph" />
+
+	<Label label="orientation" index="4" constraints="twocols(location=left)"
+		localize="true" />
+	<DropDown data="data.parameterOrientation" index="5"
+		constraints="twocols(location=right)" localize="true"
+		iteratorClassName="org.openflexo.gina.model.graph.FIBSimpleFunctionGraph$Orientation"
+		autoSelectFirstRow="true" />
+
+</Inspector>

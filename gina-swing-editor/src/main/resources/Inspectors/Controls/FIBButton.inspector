@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBButton" name="Inspector">
+	<Label index="0" label="action" constraints="twocols(location=left)"
+		localize="true" />
+	<Custom index="1" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.action"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data" />
+	</Custom>
+	<Parameter name="title" value="Button" />
+</Inspector>

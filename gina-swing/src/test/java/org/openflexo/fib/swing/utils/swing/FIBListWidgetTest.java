@@ -199,12 +199,12 @@ public class FIBListWidgetTest extends FIBTestCase {
 		assertNotNull(controller.viewForComponent(listLabel4));
 		assertNotNull(controller.viewForComponent(list4));
 
-		assertEquals("value1", controller.viewForWidget(list1).getData());
-		assertEquals(null, controller.viewForWidget(list2).getData());
-		assertEquals(family.getChildren().get(0), controller.viewForWidget(list3).getData());
-		assertEquals(family.getParents()[0], controller.viewForWidget(list4).getData());
-		assertEquals(family.getJackies().get(2), controller.viewForWidget(list5).getData());
-		assertEquals(Gender.Male, controller.viewForWidget(list6).getData());
+		assertEquals("value1", controller.viewForWidget(list1).getRepresentedValue());
+		assertEquals(null, controller.viewForWidget(list2).getRepresentedValue());
+		assertEquals(family.getChildren().get(0), controller.viewForWidget(list3).getRepresentedValue());
+		assertEquals(family.getParents()[0], controller.viewForWidget(list4).getRepresentedValue());
+		assertEquals(family.getJackies().get(2), controller.viewForWidget(list5).getRepresentedValue());
+		assertEquals(Gender.Male, controller.viewForWidget(list6).getRepresentedValue());
 
 		// assertEquals("Robert", controller.viewForComponent(firstNameTF).getData());
 		// assertEquals("Smith", controller.viewForComponent(lastNameTF).getData());
@@ -220,8 +220,8 @@ public class FIBListWidgetTest extends FIBTestCase {
 
 		family.setBiggestChild(family.getChildren().get(0));
 		family.getFather().setGender(Gender.Female);
-		assertEquals(family.getChildren().get(0), controller.viewForWidget(list5).getData());
-		assertEquals(Gender.Female, controller.viewForWidget(list6).getData());
+		assertEquals(family.getChildren().get(0), controller.viewForWidget(list5).getRepresentedValue());
+		assertEquals(Gender.Female, controller.viewForWidget(list6).getRepresentedValue());
 	}
 
 	/**
@@ -260,7 +260,7 @@ public class FIBListWidgetTest extends FIBTestCase {
 		// System.out.println("List model = " + w5.getDynamicJComponent().getModel());
 
 		family.setBiggestChild(junior);
-		assertEquals(junior, controller.viewForWidget(list5).getData());
+		assertEquals(junior, controller.viewForWidget(list5).getRepresentedValue());
 		assertEquals(junior, w5.getTechnologyComponent().getSelectedValue());
 
 	}

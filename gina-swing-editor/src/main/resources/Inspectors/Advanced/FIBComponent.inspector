@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0"
+	dataClassName="org.openflexo.gina.model.FIBComponent" name="Inspector">
+	<Label label="dependancies" index="100" constraints="twocols(location=left)"
+		localize="true" font="SansSerif,0,11" />
+	<Table index="101" iteratorClassName="org.openflexo.gina.model.FIBDependancy"
+		visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false"
+		createNewRowOnClick="false" boundToSelectionManager="false"
+		showFooter="true" selectionMode="MultipleIntervalSelection" localize="true"
+		manageDynamicModel="true" name="ExplicitDependenciesTable" data="data.explicitDependancies"
+		constraints="twocols(expandHorizontally=true;expandVertically=true;location=right;insetsRight=10)">
+		<LabelColumn data="iterator.owner.toString" title="owner"
+			columnWidth="30" resizable="true" displayTitle="true" />
+		<DropDownColumn list="iterator.component.rootComponent.namedComponents"
+			data="iterator.masterComponent" title="dependency" columnWidth="30"
+			resizable="true" displayTitle="true" />
+		<AddAction method="data.createNewExplicitDependancy()" name="make_new_dependency" />
+		<RemoveAction method="data.deleteExplicitDependancy(selected)"
+			name="delete_dependency" />
+	</Table>
+	<Parameter name="title" value="Component" />
+</Inspector>

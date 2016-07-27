@@ -1,0 +1,4 @@
+  <FIBDiscreteSimpleFunctionGraph id="1" values="controller.sampleData.persons" name="Graph" parameterOrientation="HORIZONTAL" labels="person.name" constraints="border(location=center)" borderBottom="30" parameterName="person">
+    <FIBNumericFunction id="2" majorTickSpacing="20" expression="person.size" backgroundColor2="255,255,255" backgroundColor1="51,102,255" minValue="0" backgroundType="GRADIENT" stepsNumber="5" name="Sizez" graphType="BAR_GRAPH" foregroundColor="0,0,255" maxValue="200" />
+    <FIBNumericFunction id="3" expression="person.weight" backgroundColor2="255,255,0" backgroundColor1="255,255,255" minValue="0" backgroundType="GRADIENT" name="Weight" graphType="BAR_GRAPH" foregroundColor="255,153,102" maxValue="120" />
+  </FIBDiscreteSimpleFunctionGraph>

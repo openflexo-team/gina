@@ -39,12 +39,12 @@
 
 package org.openflexo.gina.swing.utils;
 
-import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.FIBModelObject;
 
-public class SelectedObjectChange extends FIBEditorNotification<FIBComponent> {
+public class SelectedObjectChange extends FIBEditorNotification<FIBModelObject> {
 	public static String SELECTION = "selection";
 
-	public SelectedObjectChange(FIBComponent oldValue, FIBComponent newValue) {
+	public SelectedObjectChange(FIBModelObject oldValue, FIBModelObject newValue) {
 		super(SELECTION, oldValue, newValue);
 	}
 

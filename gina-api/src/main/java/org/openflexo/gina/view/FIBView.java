@@ -46,6 +46,7 @@ import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeListener;
 
 import org.openflexo.connie.BindingEvaluationContext;
+import org.openflexo.connie.binding.SettableBindingEvaluationContext;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBVariable;
@@ -66,9 +67,10 @@ import org.openflexo.toolbox.HasPropertyChangeSupport;
  * @param <C>
  *            type of technology-specific component this view manage
  */
-public interface FIBView<M extends FIBComponent, C> extends LocalizationListener, HasPropertyChangeSupport, PropertyChangeListener {
+public interface FIBView<M extends FIBComponent, C>
+		extends SettableBindingEvaluationContext, LocalizationListener, HasPropertyChangeSupport, PropertyChangeListener {
 
-	public static final String DATA = "data";
+	public static final String VALUE = "value";
 	public static final String VISIBLE = "visible";
 
 	public static final String DELETED_PROPERTY = "Deleted";

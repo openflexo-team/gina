@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBTableColumn" name="Inspector">
+	<Label name="NameLabel" index="0" label="name" constraints="twocols(location=left;insetsTop=5)"
+		localize="true" />
+	<TextField name="NameTF" index="1" data="data.name"
+		constraints="twocols(expandHorizontally=true;location=right;insetsTop=5;insetsRight=10)"
+		localize="true" columns="15" />
+
+	<Parameter name="title" value="Table column" />
+</Inspector>

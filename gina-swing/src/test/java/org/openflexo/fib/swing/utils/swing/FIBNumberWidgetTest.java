@@ -293,29 +293,29 @@ public class FIBNumberWidgetTest extends FIBTestCase {
 
 		// controller.viewForComponent(firstNameTF).update();
 
-		assertEquals(Byte.valueOf((byte) 1), controller.viewForWidget(bytePWidget).getData());
-		assertEquals(Byte.valueOf((byte) 7), controller.viewForWidget(byteOWidget).getData());
-		assertEquals(Byte.valueOf((byte) 8), controller.viewForWidget(byteSWidget).getData());
+		assertEquals(Byte.valueOf((byte) 1), controller.viewForWidget(bytePWidget).getRepresentedValue());
+		assertEquals(Byte.valueOf((byte) 7), controller.viewForWidget(byteOWidget).getRepresentedValue());
+		assertEquals(Byte.valueOf((byte) 8), controller.viewForWidget(byteSWidget).getRepresentedValue());
 
-		assertEquals(Short.valueOf((short) 2), controller.viewForWidget(shortPWidget).getData());
-		assertEquals(Short.valueOf((short) 8), controller.viewForWidget(shortOWidget).getData());
-		assertEquals(Short.valueOf((short) 10), controller.viewForWidget(shortSWidget).getData());
+		assertEquals(Short.valueOf((short) 2), controller.viewForWidget(shortPWidget).getRepresentedValue());
+		assertEquals(Short.valueOf((short) 8), controller.viewForWidget(shortOWidget).getRepresentedValue());
+		assertEquals(Short.valueOf((short) 10), controller.viewForWidget(shortSWidget).getRepresentedValue());
 
-		assertEquals(Integer.valueOf(3), controller.viewForWidget(integerPWidget).getData());
-		assertEquals(Integer.valueOf(9), controller.viewForWidget(integerOWidget).getData());
-		assertEquals(Integer.valueOf(12), controller.viewForWidget(integerSWidget).getData());
+		assertEquals(Integer.valueOf(3), controller.viewForWidget(integerPWidget).getRepresentedValue());
+		assertEquals(Integer.valueOf(9), controller.viewForWidget(integerOWidget).getRepresentedValue());
+		assertEquals(Integer.valueOf(12), controller.viewForWidget(integerSWidget).getRepresentedValue());
 
-		assertEquals(Long.valueOf(4), controller.viewForWidget(longPWidget).getData());
-		assertEquals(Long.valueOf(10), controller.viewForWidget(longOWidget).getData());
-		assertEquals(Long.valueOf(14), controller.viewForWidget(longSWidget).getData());
+		assertEquals(Long.valueOf(4), controller.viewForWidget(longPWidget).getRepresentedValue());
+		assertEquals(Long.valueOf(10), controller.viewForWidget(longOWidget).getRepresentedValue());
+		assertEquals(Long.valueOf(14), controller.viewForWidget(longSWidget).getRepresentedValue());
 
-		assertEquals(Float.valueOf(5), controller.viewForWidget(floatPWidget).getData());
-		assertEquals(Float.valueOf(11), controller.viewForWidget(floatOWidget).getData());
-		assertEquals(Float.valueOf(16), controller.viewForWidget(floatSWidget).getData());
+		assertEquals(Float.valueOf(5), controller.viewForWidget(floatPWidget).getRepresentedValue());
+		assertEquals(Float.valueOf(11), controller.viewForWidget(floatOWidget).getRepresentedValue());
+		assertEquals(Float.valueOf(16), controller.viewForWidget(floatSWidget).getRepresentedValue());
 
-		assertEquals(Double.valueOf(6), controller.viewForWidget(doublePWidget).getData());
-		assertEquals(Double.valueOf(12), controller.viewForWidget(doubleOWidget).getData());
-		assertEquals(Double.valueOf(18), controller.viewForWidget(doubleSWidget).getData());
+		assertEquals(Double.valueOf(6), controller.viewForWidget(doublePWidget).getRepresentedValue());
+		assertEquals(Double.valueOf(12), controller.viewForWidget(doubleOWidget).getRepresentedValue());
+		assertEquals(Double.valueOf(18), controller.viewForWidget(doubleSWidget).getRepresentedValue());
 
 	}
 
@@ -327,39 +327,39 @@ public class FIBNumberWidgetTest extends FIBTestCase {
 	public void test3ModifyValueInModel() {
 		numbers.setByteP((byte) 101);
 		numbers.setByteO(Byte.valueOf((byte) 107));
-		assertEquals((byte) 101, controller.viewForWidget(bytePWidget).getData());
-		assertEquals((byte) 107, controller.viewForWidget(byteOWidget).getData());
-		assertEquals((byte) 208, controller.viewForWidget(byteSWidget).getData());
+		assertEquals((byte) 101, controller.viewForWidget(bytePWidget).getRepresentedValue());
+		assertEquals((byte) 107, controller.viewForWidget(byteOWidget).getRepresentedValue());
+		assertEquals((byte) 208, controller.viewForWidget(byteSWidget).getRepresentedValue());
 
 		numbers.setShortP((short) 102);
 		numbers.setShortO(Short.valueOf((short) 108));
-		assertEquals((short) 102, controller.viewForWidget(shortPWidget).getData());
-		assertEquals((short) 108, controller.viewForWidget(shortOWidget).getData());
-		assertEquals((short) 210, controller.viewForWidget(shortSWidget).getData());
+		assertEquals((short) 102, controller.viewForWidget(shortPWidget).getRepresentedValue());
+		assertEquals((short) 108, controller.viewForWidget(shortOWidget).getRepresentedValue());
+		assertEquals((short) 210, controller.viewForWidget(shortSWidget).getRepresentedValue());
 
 		numbers.setIntP(103);
 		numbers.setIntO(Integer.valueOf(109));
-		assertEquals(103, controller.viewForWidget(integerPWidget).getData());
-		assertEquals(109, controller.viewForWidget(integerOWidget).getData());
-		assertEquals(212, controller.viewForWidget(integerSWidget).getData());
+		assertEquals(103, controller.viewForWidget(integerPWidget).getRepresentedValue());
+		assertEquals(109, controller.viewForWidget(integerOWidget).getRepresentedValue());
+		assertEquals(212, controller.viewForWidget(integerSWidget).getRepresentedValue());
 
 		numbers.setLongP(104);
 		numbers.setLongO(Long.valueOf(110));
-		assertEquals((long) 104, controller.viewForWidget(longPWidget).getData());
-		assertEquals((long) 110, controller.viewForWidget(longOWidget).getData());
-		assertEquals((long) 214, controller.viewForWidget(longSWidget).getData());
+		assertEquals((long) 104, controller.viewForWidget(longPWidget).getRepresentedValue());
+		assertEquals((long) 110, controller.viewForWidget(longOWidget).getRepresentedValue());
+		assertEquals((long) 214, controller.viewForWidget(longSWidget).getRepresentedValue());
 
 		numbers.setFloatP(105);
 		numbers.setFloatO(Float.valueOf(111));
-		assertEquals((float) 105, controller.viewForWidget(floatPWidget).getData());
-		assertEquals((float) 111, controller.viewForWidget(floatOWidget).getData());
-		assertEquals((float) 216, controller.viewForWidget(floatSWidget).getData());
+		assertEquals((float) 105, controller.viewForWidget(floatPWidget).getRepresentedValue());
+		assertEquals((float) 111, controller.viewForWidget(floatOWidget).getRepresentedValue());
+		assertEquals((float) 216, controller.viewForWidget(floatSWidget).getRepresentedValue());
 
 		numbers.setDoubleP(106);
 		numbers.setDoubleO(Double.valueOf(112));
-		assertEquals((double) 106, controller.viewForWidget(doublePWidget).getData());
-		assertEquals((double) 112, controller.viewForWidget(doubleOWidget).getData());
-		assertEquals((double) 218, controller.viewForWidget(doubleSWidget).getData());
+		assertEquals((double) 106, controller.viewForWidget(doublePWidget).getRepresentedValue());
+		assertEquals((double) 112, controller.viewForWidget(doubleOWidget).getRepresentedValue());
+		assertEquals((double) 218, controller.viewForWidget(doubleSWidget).getRepresentedValue());
 
 	}
 
@@ -378,7 +378,7 @@ public class FIBNumberWidgetTest extends FIBTestCase {
 		byteOWidgetView.getTechnologyComponent().setEditedValue((byte) 207);
 		assertEquals(Byte.valueOf((byte) 207), numbers.getByteO());
 
-		assertEquals((byte) 408, controller.viewForWidget(byteSWidget).getData());
+		assertEquals((byte) 408, controller.viewForWidget(byteSWidget).getRepresentedValue());
 
 		JFIBNumberWidget<Short> shortPWidgetView = (JFIBNumberWidget<Short>) controller.viewForComponent(shortPWidget);
 		shortPWidgetView.getTechnologyComponent().setEditedValue((short) 202);
@@ -388,7 +388,7 @@ public class FIBNumberWidgetTest extends FIBTestCase {
 		shortOWidgetView.getTechnologyComponent().setEditedValue((short) 208);
 		assertEquals(Short.valueOf((short) 208), numbers.getShortO());
 
-		assertEquals((short) 410, controller.viewForWidget(shortSWidget).getData());
+		assertEquals((short) 410, controller.viewForWidget(shortSWidget).getRepresentedValue());
 
 		JFIBNumberWidget<Integer> integerPWidgetView = (JFIBNumberWidget<Integer>) controller.viewForComponent(integerPWidget);
 		integerPWidgetView.getTechnologyComponent().setEditedValue(203);
@@ -398,7 +398,7 @@ public class FIBNumberWidgetTest extends FIBTestCase {
 		integerOWidgetView.getTechnologyComponent().setEditedValue(209);
 		assertEquals(Integer.valueOf(209), numbers.getIntO());
 
-		assertEquals(412, controller.viewForWidget(integerSWidget).getData());
+		assertEquals(412, controller.viewForWidget(integerSWidget).getRepresentedValue());
 
 		JFIBNumberWidget<Long> longPWidgetView = (JFIBNumberWidget<Long>) controller.viewForComponent(longPWidget);
 		longPWidgetView.getTechnologyComponent().setEditedValue((long) 204);
@@ -408,7 +408,7 @@ public class FIBNumberWidgetTest extends FIBTestCase {
 		longOWidgetView.getTechnologyComponent().setEditedValue((long) 210);
 		assertEquals(Long.valueOf(210), numbers.getLongO());
 
-		assertEquals((long) 414, controller.viewForWidget(longSWidget).getData());
+		assertEquals((long) 414, controller.viewForWidget(longSWidget).getRepresentedValue());
 
 		JFIBNumberWidget<Float> floatPWidgetView = (JFIBNumberWidget<Float>) controller.viewForComponent(floatPWidget);
 		floatPWidgetView.getTechnologyComponent().setEditedValue((float) 205);
@@ -418,7 +418,7 @@ public class FIBNumberWidgetTest extends FIBTestCase {
 		floatOWidgetView.getTechnologyComponent().setEditedValue((float) 211);
 		assertEquals(Float.valueOf(211), numbers.getFloatO(), 0.000001);
 
-		assertEquals((float) 416, controller.viewForWidget(floatSWidget).getData());
+		assertEquals((float) 416, controller.viewForWidget(floatSWidget).getRepresentedValue());
 
 		JFIBNumberWidget<Double> doublePWidgetView = (JFIBNumberWidget<Double>) controller.viewForComponent(doublePWidget);
 		doublePWidgetView.getTechnologyComponent().setEditedValue((double) 205);
@@ -428,7 +428,7 @@ public class FIBNumberWidgetTest extends FIBTestCase {
 		doubleOWidgetView.getTechnologyComponent().setEditedValue((double) 211);
 		assertEquals(Double.valueOf(211), numbers.getDoubleO(), 0.000001);
 
-		assertEquals((double) 416, controller.viewForWidget(doubleSWidget).getData());
+		assertEquals((double) 416, controller.viewForWidget(doubleSWidget).getRepresentedValue());
 
 	}
 

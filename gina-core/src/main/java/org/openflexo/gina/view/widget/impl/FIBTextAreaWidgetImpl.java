@@ -54,7 +54,7 @@ public abstract class FIBTextAreaWidgetImpl<C> extends FIBGenericTextWidgetImpl<
 
 	private static final Logger LOGGER = Logger.getLogger(FIBTextAreaWidgetImpl.class.getPackage().getName());
 
-	public static final int DEFAULT_COLUMNS = 30;
+	public static final int DEFAULT_COLUMNS = 20;
 	public static final int DEFAULT_ROWS = 5;
 
 	public FIBTextAreaWidgetImpl(FIBTextArea model, FIBController controller, TextAreaRenderingAdapter<C> RenderingAdapter) {

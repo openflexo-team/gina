@@ -131,9 +131,9 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 
 				@Override
 				public void bindingValueChanged(Object source, List<Object> newValue) {
-					// System.out.println(" bindingValueChanged() detected for list="
-					// + getComponent().getEnable() + " with newValue="
-					// + newValue + " source=" + source);
+					// System.out.println(" bindingValueChanged() detected for list=" + getComponent().getList() + " with newValue=" +
+					// newValue
+					// + " source=" + source);
 					updateMultipleValues();
 				}
 			};
@@ -221,13 +221,13 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 			array = null;
 
 			if (getWidget() != null && getWidget().getList() != null && getWidget().getList().isValid() /*
-																										 * &&
-																										 * getDataObject
-																										 * (
-																										 * )
-																										 * !=
-																										 * null
-																										 */) {
+																										* &&
+																										* getDataObject
+																										* (
+																										* )
+																										* !=
+																										* null
+																										*/) {
 
 				Object accessedList = null;
 				try {
@@ -246,13 +246,13 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 			}
 
 			else if (getWidget() != null && getWidget().getArray() != null && getWidget().getArray().isValid() /*
-																												 * &&
-																												 * getDataObject
-																												 * (
-																												 * )
-																												 * !=
-																												 * null
-																												 */) {
+																												* &&
+																												* getDataObject
+																												* (
+																												* )
+																												* !=
+																												* null
+																												*/) {
 
 				Object accessedArray = null;
 				try {

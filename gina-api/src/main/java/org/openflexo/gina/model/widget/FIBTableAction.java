@@ -126,6 +126,12 @@ public abstract interface FIBTableAction extends FIBModelObject {
 		}
 
 		@Override
+		public void setOwner(FIBTable ownerTable) {
+			// BindingModel oldBindingModel = getBindingModel();
+			performSuperSetter(OWNER_KEY, ownerTable);
+		}
+
+		@Override
 		public DataBinding<Object> getMethod() {
 			if (method == null) {
 				method = new DataBinding<>(this, Object.class, DataBinding.BindingDefinitionType.EXECUTE);
@@ -189,6 +195,10 @@ public abstract interface FIBTableAction extends FIBModelObject {
 			retriever.foundLocalized(getName());
 		}
 
+		@Override
+		public String getPresentationName() {
+			return getName();
+		}
 	}
 
 	@ModelEntity

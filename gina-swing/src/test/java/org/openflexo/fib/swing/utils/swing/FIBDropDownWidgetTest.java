@@ -207,12 +207,12 @@ public class FIBDropDownWidgetTest extends FIBTestCase {
 		assertNotNull(controller.viewForComponent(dropDownLabel4));
 		assertNotNull(controller.viewForComponent(dropDown4));
 
-		assertEquals("value1", controller.viewForWidget(dropDown1).getData());
-		assertEquals(null, controller.viewForWidget(dropDown2).getData());
-		assertEquals(family.getChildren().get(0), controller.viewForWidget(dropDown3).getData());
-		assertEquals(family.getParents()[0], controller.viewForWidget(dropDown4).getData());
-		assertEquals(family.getJackies().get(2), controller.viewForWidget(dropDown5).getData());
-		assertEquals(Gender.Male, controller.viewForWidget(dropDown6).getData());
+		assertEquals("value1", controller.viewForWidget(dropDown1).getRepresentedValue());
+		assertEquals(null, controller.viewForWidget(dropDown2).getRepresentedValue());
+		assertEquals(family.getChildren().get(0), controller.viewForWidget(dropDown3).getRepresentedValue());
+		assertEquals(family.getParents()[0], controller.viewForWidget(dropDown4).getRepresentedValue());
+		assertEquals(family.getJackies().get(2), controller.viewForWidget(dropDown5).getRepresentedValue());
+		assertEquals(Gender.Male, controller.viewForWidget(dropDown6).getRepresentedValue());
 
 		// assertEquals("Robert",
 		// controller.viewForComponent(firstNameTF).getData());
@@ -231,8 +231,8 @@ public class FIBDropDownWidgetTest extends FIBTestCase {
 
 		family.setBiggestChild(family.getChildren().get(0));
 		family.getFather().setGender(Gender.Female);
-		assertEquals(family.getChildren().get(0), controller.viewForWidget(dropDown5).getData());
-		assertEquals(Gender.Female, controller.viewForWidget(dropDown6).getData());
+		assertEquals(family.getChildren().get(0), controller.viewForWidget(dropDown5).getRepresentedValue());
+		assertEquals(Gender.Female, controller.viewForWidget(dropDown6).getRepresentedValue());
 	}
 
 	/**
@@ -272,7 +272,7 @@ public class FIBDropDownWidgetTest extends FIBTestCase {
 		// w5.getDynamicJComponent().getModel());
 
 		family.setBiggestChild(junior);
-		assertEquals(junior, controller.viewForWidget(dropDown5).getData());
+		assertEquals(junior, controller.viewForWidget(dropDown5).getRepresentedValue());
 		assertEquals(junior, w5.getTechnologyComponent().getJComboBox().getSelectedItem());
 
 	}

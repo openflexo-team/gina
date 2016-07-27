@@ -60,9 +60,9 @@ import javax.swing.WindowConstants;
 
 import org.openflexo.gina.FIBLibrary.FIBLibraryImpl;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
+import org.openflexo.gina.swing.editor.inspector.FIBEditorInspectorController;
 import org.openflexo.gina.swing.editor.palette.FIBEditorPalettes;
 import org.openflexo.gina.swing.editor.widget.FIBLibraryBrowser;
-import org.openflexo.gina.swing.utils.JFIBInspectorController;
 import org.openflexo.gina.swing.utils.JFIBPreferences;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.logging.FlexoLogger;
@@ -206,17 +206,17 @@ public class LaunchAdvancedFIBEditor {
 
 			FIBLibraryBrowser libraryBrowser = new FIBLibraryBrowser(editor.getFIBLibrary());
 			FIBEditorPalettes palette = editor.makePalette();
-			// FIBInspectors inspectors = editor.makeInspectors();
+			FIBEditorInspectorController inspectors = editor.makeInspectors();
 
-			JFIBInspectorController inspector = editor.makeInspector(frame);
-			inspector.setVisible(true);
+			// JFIBDialogInspectorController inspector = editor.makeInspector(frame);
+			// inspector.setVisible(true);
 
 			MainPanel mainPanel = editor.makeMainPanel();
 
 			centerPanel.add(libraryBrowser, LayoutPosition.TOP_LEFT.name());
 			centerPanel.add(mainPanel, LayoutPosition.CENTER.name());
 			centerPanel.add(palette, LayoutPosition.TOP_RIGHT.name());
-			// centerPanel.add(inspectors.getPanelGroup(), LayoutPosition.BOTTOM_RIGHT.name());
+			centerPanel.add(inspectors.getPanelGroup(), LayoutPosition.BOTTOM_RIGHT.name());
 
 			frame.validate();
 			frame.setVisible(true);
@@ -260,10 +260,10 @@ public class LaunchAdvancedFIBEditor {
 		left.setWeight(0.2);
 		left.setName(LayoutColumns.LEFT.name());
 		Node center = MSL_FACTORY.makeLeaf(LayoutPosition.CENTER.name());
-		center.setWeight(0.6);
+		center.setWeight(0.55);
 		center.setName(LayoutColumns.CENTER.name());
 		Split right = getVerticalSplit(LayoutPosition.TOP_RIGHT, 0.4, LayoutPosition.BOTTOM_RIGHT, 0.6);
-		right.setWeight(0.2);
+		right.setWeight(0.25);
 		right.setName(LayoutColumns.RIGHT.name());
 		root.setChildren(left, MSL_FACTORY.makeDivider(), center, MSL_FACTORY.makeDivider(), right);
 		return root;

@@ -278,12 +278,16 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 	public Font retrieveValidFont();
 
+	@Deprecated
 	public FIBAddAction createAddAction();
 
+	@Deprecated
 	public FIBRemoveAction createRemoveAction();
 
+	@Deprecated
 	public FIBCustomAction createCustomAction();
 
+	@Deprecated
 	public FIBBrowserAction deleteAction(FIBBrowserAction actionToDelete);
 
 	public void moveToTop(FIBBrowserElementChildren e);
@@ -298,8 +302,10 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 	public void setImageIconFile(File imageIconFile);
 
+	@Deprecated
 	public FIBBrowserElementChildren createChildren();
 
+	@Deprecated
 	public FIBBrowserElementChildren deleteChildren(FIBBrowserElementChildren elementToDelete);
 
 	public void searchLocalized(LocalizationEntryRetriever retriever);
@@ -371,17 +377,11 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 		@Override
 		public void setOwner(FIBBrowser browser) {
-			BindingModel oldBindingModel = getBindingModel();
+			// BindingModel oldBindingModel = getBindingModel();
 			performSuperSetter(OWNER_KEY, browser);
-			bindingModelMightChange(oldBindingModel);
-		}
-
-		protected void bindingModelMightChange(BindingModel oldBindingModel) {
-			// Ensure the current binding model will be updated
-			notifiedBindingModelRecreated();
-			iterator.bindingModelMightChange(oldBindingModel);
+			iterator.updateBindingModel();
 			for (FIBBrowserElementChildren e : getChildren()) {
-				((FIBBrowserElementChildrenImpl) e).bindingModelMightChange(oldBindingModel);
+				((FIBBrowserElementChildrenImpl) e).updateBindingModel();
 			}
 			// Update binding model for actions associated with this fib browser elememt
 			for (FIBBrowserAction action : getActions()) {
@@ -776,7 +776,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 				return iteratorBindingModel;
 			}
 
-			private void bindingModelMightChange(BindingModel oldBindingModel) {
+			private void updateBindingModel() {
 				getBindingModel();
 				iteratorBindingModel.setBaseBindingModel(FIBBrowserElementImpl.this.getBindingModel());
 			}
@@ -869,6 +869,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}*/
 
 		@Override
+		@Deprecated
 		public FIBAddAction createAddAction() {
 			FIBAddAction newAction = getModelFactory().newInstance(FIBAddAction.class);
 			newAction.setName("add_action");
@@ -877,6 +878,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}
 
 		@Override
+		@Deprecated
 		public FIBRemoveAction createRemoveAction() {
 			FIBRemoveAction newAction = getModelFactory().newInstance(FIBRemoveAction.class);
 			newAction.setName("delete_action");
@@ -885,6 +887,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}
 
 		@Override
+		@Deprecated
 		public FIBCustomAction createCustomAction() {
 			FIBCustomAction newAction = getModelFactory().newInstance(FIBCustomAction.class);
 			newAction.setName("custom_action");
@@ -893,6 +896,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}
 
 		@Override
+		@Deprecated
 		public FIBBrowserAction deleteAction(FIBBrowserAction actionToDelete) {
 			logger.info("Called deleteAction() with " + actionToDelete);
 			removeFromActions(actionToDelete);
@@ -924,6 +928,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}*/
 
 		@Override
+		@Deprecated
 		public FIBBrowserElementChildren createChildren() {
 			logger.info("Called createChildren()");
 			FIBBrowserElementChildren newChildren = getModelFactory().newInstance(FIBBrowserElementChildren.class);
@@ -933,6 +938,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}
 
 		@Override
+		@Deprecated
 		public FIBBrowserElementChildren deleteChildren(FIBBrowserElementChildren elementToDelete) {
 			logger.info("Called elementToDelete() with " + elementToDelete);
 			removeFromChildren(elementToDelete);
@@ -998,6 +1004,10 @@ public interface FIBBrowserElement extends FIBModelObject {
 			}
 		}
 
+		@Override
+		public String getPresentationName() {
+			return getName();
+		}
 	}
 
 	// TODO import not known here when using the gradle build, why?
@@ -1076,16 +1086,24 @@ public interface FIBBrowserElement extends FIBModelObject {
 			public static BindingDefinition CAST = new BindingDefinition("cast", Object.class, DataBinding.BindingDefinitionType.GET,
 					false);
 
-			protected void bindingModelMightChange(BindingModel oldBindingModel) {
+			@Override
+			public String getPresentationName() {
+				if (getData() != null && getData().isSet() && getData().isValid()) {
+					return getData().toString();
+				}
+				return getName();
+			}
+
+			private void updateBindingModel() {
 				if (childBindable != null) {
-					childBindable.bindingModelMightChange(oldBindingModel);
+					childBindable.updateBindingModel();
 				}
 			}
 
 			private class FIBChildBindable extends DefaultBindable {
 				private BindingModel childBindingModel = null;
 
-				private void bindingModelMightChange(BindingModel oldBindingModel) {
+				private void updateBindingModel() {
 					childBindingModel.setBaseBindingModel(FIBBrowserElementChildrenImpl.this.getBindingModel());
 				}
 

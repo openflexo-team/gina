@@ -62,8 +62,6 @@ public class JFIBPreferences {
 	public static final String LAST_FILES_COUNT = "LAST_FILES_COUNT";
 	public static final String LAST_FILE = "LAST_FILE";
 
-	
-
 	private static final Preferences prefs = Preferences.userRoot().node(FIB);
 
 	private static AWTRectangleConverter RECTANGLE_CONVERTER = new AWTRectangleConverter();
@@ -114,7 +112,7 @@ public class JFIBPreferences {
 	}
 
 	public static Rectangle getInspectorBounds() {
-		return getPreferredBounds(INSPECTOR, new Rectangle(1000, 400, 400, 400));
+		return getPreferredBounds(INSPECTOR, new Rectangle(1000, 400, 300, 300));
 	}
 
 	public static void setInspectorBounds(Rectangle bounds) {
@@ -122,7 +120,7 @@ public class JFIBPreferences {
 	}
 
 	public static Rectangle getPaletteBounds() {
-		return getPreferredBounds(PALETTE, new Rectangle(1000, 0, 400, 400));
+		return getPreferredBounds(PALETTE, new Rectangle(1000, 0, 300, 300));
 	}
 
 	public static void setPaletteBounds(Rectangle bounds) {
@@ -166,7 +164,8 @@ public class JFIBPreferences {
 		List<File> files = getLastFiles();
 		if (files.contains(file)) {
 			files.remove(file);
-		} else if (files.size() == getLastFileCount()) {
+		}
+		else if (files.size() == getLastFileCount()) {
 			files.remove(getLastFileCount() - 1);
 		}
 		files.add(0, file);

@@ -96,6 +96,11 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 
 	public FIBTableWidgetImpl(FIBTable fibTable, FIBController controller, TableRenderingAdapter<C, T> RenderingAdapter) {
 		super(fibTable, controller, RenderingAdapter);
+
+		/*for (FIBTableColumn column : fibTable.getColumns()) {
+			column.getPropertyChangeSupport().addPropertyChangeListener(this);
+		}*/
+
 		footer = makeFooter();
 	}
 
@@ -575,7 +580,7 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 
-		if ((evt.getPropertyName().equals(FIBTable.CREATE_NEW_ROW_ON_CLICK_KEY))
+		if ((evt.getPropertyName().equals(FIBTable.COLUMNS_KEY)) || (evt.getPropertyName().equals(FIBTable.CREATE_NEW_ROW_ON_CLICK_KEY))
 				|| (evt.getPropertyName().equals(FIBTable.ITERATOR_CLASS_KEY)) || (evt.getPropertyName().equals(FIBTable.ROW_HEIGHT_KEY))
 				|| (evt.getPropertyName().equals(FIBTable.VISIBLE_ROW_COUNT_KEY))
 				|| (evt.getPropertyName().equals(FIBTable.SHOW_FOOTER_KEY))) {

@@ -69,10 +69,10 @@ import org.openflexo.gina.model.widget.FIBNumber.NumberType;
 import org.openflexo.gina.model.widget.FIBNumberColumn;
 import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTableAction.FIBAddAction;
-import org.openflexo.gina.sampleData.Family;
-import org.openflexo.gina.sampleData.Person;
-import org.openflexo.gina.sampleData.Family.Gender;
 import org.openflexo.gina.model.widget.FIBTextFieldColumn;
+import org.openflexo.gina.sampleData.Family;
+import org.openflexo.gina.sampleData.Family.Gender;
+import org.openflexo.gina.sampleData.Person;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.test.OrderedRunner;
@@ -127,30 +127,35 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 		browser.setFormat(new DataBinding<String>("object.toString"));
 		assertTrue(browser.getFormat().isValid());
 
-		// System.out.println("Browser BM = " + browser.getBindingModel());
+		System.out.println("Browser BM = " + browser.getBindingModel());
 
-		assertEquals(5, browser.getBindingModel().getBindingVariablesCount());
-		assertNotNull(browser.getBindingModel().bindingVariableNamed("data"));
+		assertEquals(4, browser.getBindingModel().getBindingVariablesCount());
+		assertNotNull(browser.getBindingModel().bindingVariableNamed("value"));
 		assertNotNull(browser.getBindingModel().bindingVariableNamed("selected"));
 		assertNotNull(browser.getBindingModel().bindingVariableNamed("selection"));
 		assertNotNull(browser.getBindingModel().bindingVariableNamed("controller"));
-		assertNotNull(browser.getBindingModel().bindingVariableNamed("browser"));
 
-		assertEquals(6, browser.getFormat().getOwner().getBindingModel().getBindingVariablesCount());
-		assertNotNull(browser.getFormat().getOwner().getBindingModel().bindingVariableNamed("data"));
+		System.out.println("Browser formatter BM = " + browser.getFormat().getOwner().getBindingModel());
+
+		assertEquals(5, browser.getFormat().getOwner().getBindingModel().getBindingVariablesCount());
+		assertNotNull(browser.getFormat().getOwner().getBindingModel().bindingVariableNamed("value"));
 		assertNotNull(browser.getFormat().getOwner().getBindingModel().bindingVariableNamed("selected"));
 		assertNotNull(browser.getFormat().getOwner().getBindingModel().bindingVariableNamed("selection"));
 		assertNotNull(browser.getFormat().getOwner().getBindingModel().bindingVariableNamed("controller"));
-		assertNotNull(browser.getFormat().getOwner().getBindingModel().bindingVariableNamed("browser"));
 		assertNotNull(browser.getFormat().getOwner().getBindingModel().bindingVariableNamed("object"));
 
 		component.addToSubComponents(browser, new BorderLayoutConstraints(BorderLayoutLocation.west));
 
-		assertEquals(4, browser.getFormat().getOwner().getBindingModel().getBindingVariablesCount());
-		assertNotNull(browser.getFormat().getOwner().getBindingModel().bindingVariableNamed("data"));
+		System.out.println("Browser formatter BM = " + browser.getFormat().getOwner().getBindingModel());
+
+		assertEquals(7, browser.getFormat().getOwner().getBindingModel().getBindingVariablesCount());
+		assertNotNull(browser.getFormat().getOwner().getBindingModel().bindingVariableNamed("value"));
+		assertNotNull(browser.getFormat().getOwner().getBindingModel().bindingVariableNamed("selected"));
+		assertNotNull(browser.getFormat().getOwner().getBindingModel().bindingVariableNamed("selection"));
 		assertNotNull(browser.getFormat().getOwner().getBindingModel().bindingVariableNamed("controller"));
-		assertNotNull(browser.getFormat().getOwner().getBindingModel().bindingVariableNamed("browser"));
 		assertNotNull(browser.getFormat().getOwner().getBindingModel().bindingVariableNamed("object"));
+		assertNotNull(browser.getFormat().getOwner().getBindingModel().bindingVariableNamed("data"));
+		assertNotNull(browser.getFormat().getOwner().getBindingModel().bindingVariableNamed("browser"));
 
 	}
 
@@ -160,11 +165,16 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 
 		log("test3TestValueBindable()");
 
-		assertEquals(4, browser.getValueBindable().getBindingModel().getBindingVariablesCount());
-		assertNotNull(browser.getValueBindable().getBindingModel().bindingVariableNamed("data"));
-		assertNotNull(browser.getValueBindable().getBindingModel().bindingVariableNamed("controller"));
-		assertNotNull(browser.getValueBindable().getBindingModel().bindingVariableNamed("browser"));
+		System.out.println("Value Bindable BM = " + browser.getValueBindable().getBindingModel());
+
+		assertEquals(7, browser.getValueBindable().getBindingModel().getBindingVariablesCount());
 		assertNotNull(browser.getValueBindable().getBindingModel().bindingVariableNamed("value"));
+		assertNotNull(browser.getValueBindable().getBindingModel().bindingVariableNamed("selected"));
+		assertNotNull(browser.getValueBindable().getBindingModel().bindingVariableNamed("selection"));
+		assertNotNull(browser.getValueBindable().getBindingModel().bindingVariableNamed("controller"));
+		assertNotNull(browser.getValueBindable().getBindingModel().bindingVariableNamed("data"));
+		assertNotNull(browser.getValueBindable().getBindingModel().bindingVariableNamed("browser"));
+		assertNotNull(browser.getValueBindable().getBindingModel().bindingVariableNamed("valueToTransform"));
 
 	}
 
@@ -174,9 +184,12 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 
 		log("test4TestEventListener()");
 
-		assertEquals(4, browser.getEventListener().getBindingModel().getBindingVariablesCount());
-		assertNotNull(browser.getEventListener().getBindingModel().bindingVariableNamed("data"));
+		assertEquals(7, browser.getEventListener().getBindingModel().getBindingVariablesCount());
+		assertNotNull(browser.getEventListener().getBindingModel().bindingVariableNamed("value"));
+		assertNotNull(browser.getEventListener().getBindingModel().bindingVariableNamed("selected"));
+		assertNotNull(browser.getEventListener().getBindingModel().bindingVariableNamed("selection"));
 		assertNotNull(browser.getEventListener().getBindingModel().bindingVariableNamed("controller"));
+		assertNotNull(browser.getEventListener().getBindingModel().bindingVariableNamed("data"));
 		assertNotNull(browser.getEventListener().getBindingModel().bindingVariableNamed("browser"));
 		assertNotNull(browser.getEventListener().getBindingModel().bindingVariableNamed("event"));
 
@@ -205,26 +218,61 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 		personElement
 				.setLabel(new DataBinding<String>("\"My relative: \"+person.toString", browser, String.class, BindingDefinitionType.GET));
 
-		browser.addToElements(personElement);
+		org.openflexo.gina.model.widget.FIBBrowserAction.FIBAddAction addAction = factory
+				.newInstance(org.openflexo.gina.model.widget.FIBBrowserAction.FIBAddAction.class);
+		personElement.addToActions(addAction);
 
+		assertEquals(2, addAction.getBindingModel().getBindingVariablesCount());
+
+		browser.addToElements(personElement);
 		assertTrue(browser.getRoot().isValid());
 
-		assertEquals(3, personElement.getBindingModel().getBindingVariablesCount());
+		assertEquals(8, addAction.getBindingModel().getBindingVariablesCount());
+
+		org.openflexo.gina.model.widget.FIBBrowserAction.FIBAddAction addAction2 = factory
+				.newInstance(org.openflexo.gina.model.widget.FIBBrowserAction.FIBAddAction.class);
+		personElement.addToActions(addAction2);
+
+		System.out.println("AddAction2 BM=" + addAction2.getBindingModel());
+		assertEquals(8, addAction2.getBindingModel().getBindingVariablesCount());
+
+		System.out.println("Person Element BM = " + personElement.getBindingModel());
+
+		assertEquals(6, personElement.getBindingModel().getBindingVariablesCount());
+		assertNotNull(personElement.getBindingModel().bindingVariableNamed("value"));
+		assertNotNull(personElement.getBindingModel().bindingVariableNamed("selected"));
+		assertNotNull(personElement.getBindingModel().bindingVariableNamed("selection"));
 		assertNotNull(personElement.getBindingModel().bindingVariableNamed("data"));
 		assertNotNull(personElement.getBindingModel().bindingVariableNamed("controller"));
 		assertNotNull(personElement.getBindingModel().bindingVariableNamed("browser"));
 
-		assertEquals(4, personElement.getIterator().getBindingModel().getBindingVariablesCount());
+		System.out.println("Person Element Iterator BM = " + personElement.getIterator().getBindingModel());
+
+		assertEquals(7, personElement.getIterator().getBindingModel().getBindingVariablesCount());
+		assertNotNull(personElement.getIterator().getBindingModel().bindingVariableNamed("value"));
+		assertNotNull(personElement.getIterator().getBindingModel().bindingVariableNamed("selected"));
+		assertNotNull(personElement.getIterator().getBindingModel().bindingVariableNamed("selection"));
 		assertNotNull(personElement.getIterator().getBindingModel().bindingVariableNamed("data"));
 		assertNotNull(personElement.getIterator().getBindingModel().bindingVariableNamed("controller"));
 		assertNotNull(personElement.getIterator().getBindingModel().bindingVariableNamed("browser"));
 		assertNotNull(personElement.getIterator().getBindingModel().bindingVariableNamed("person"));
 
-		assertEquals(4, parents.getChildBindable().getBindingModel().getBindingVariablesCount());
+		System.out.println("Parents child bindable BM = " + parents.getChildBindable().getBindingModel());
+
+		assertEquals(7, parents.getChildBindable().getBindingModel().getBindingVariablesCount());
+		assertNotNull(parents.getChildBindable().getBindingModel().bindingVariableNamed("value"));
+		assertNotNull(parents.getChildBindable().getBindingModel().bindingVariableNamed("selected"));
+		assertNotNull(parents.getChildBindable().getBindingModel().bindingVariableNamed("selection"));
 		assertNotNull(parents.getChildBindable().getBindingModel().bindingVariableNamed("data"));
 		assertNotNull(parents.getChildBindable().getBindingModel().bindingVariableNamed("controller"));
 		assertNotNull(parents.getChildBindable().getBindingModel().bindingVariableNamed("browser"));
 		assertNotNull(parents.getChildBindable().getBindingModel().bindingVariableNamed("child"));
+
+		org.openflexo.gina.model.widget.FIBBrowserAction.FIBAddAction addAction3 = factory
+				.newInstance(org.openflexo.gina.model.widget.FIBBrowserAction.FIBAddAction.class);
+		personElement.addToActions(addAction3);
+
+		System.out.println("AddAction3 BM=" + addAction3.getBindingModel());
 
 	}
 
@@ -262,47 +310,57 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 		action.setMethod(new DataBinding<Object>("selected.toString"));
 		table.addToActions(action);
 
-		assertEquals(6, table.getBindingModel().getBindingVariablesCount());
-		assertNotNull(table.getBindingModel().bindingVariableNamed("data"));
+		System.out.println("Table BM = " + table.getBindingModel());
+
+		assertEquals(5, table.getBindingModel().getBindingVariablesCount());
+		assertNotNull(table.getBindingModel().bindingVariableNamed("value"));
 		assertNotNull(table.getBindingModel().bindingVariableNamed("selected"));
 		assertNotNull(table.getBindingModel().bindingVariableNamed("selectedIndex"));
 		assertNotNull(table.getBindingModel().bindingVariableNamed("selection"));
 		assertNotNull(table.getBindingModel().bindingVariableNamed("controller"));
-		assertNotNull(table.getBindingModel().bindingVariableNamed("table"));
 
-		assertEquals(7, c1.getBindingModel().getBindingVariablesCount());
-		assertNotNull(c1.getBindingModel().bindingVariableNamed("data"));
+		assertEquals(6, c1.getBindingModel().getBindingVariablesCount());
+		assertNotNull(c1.getBindingModel().bindingVariableNamed("value"));
 		assertNotNull(c1.getBindingModel().bindingVariableNamed("selected"));
 		assertNotNull(c1.getBindingModel().bindingVariableNamed("selectedIndex"));
 		assertNotNull(c1.getBindingModel().bindingVariableNamed("selection"));
 		assertNotNull(c1.getBindingModel().bindingVariableNamed("controller"));
-		assertNotNull(c1.getBindingModel().bindingVariableNamed("table"));
 		assertNotNull(c1.getBindingModel().bindingVariableNamed("iterator"));
 
-		assertEquals(7, action.getBindingModel().getBindingVariablesCount());
-		assertNotNull(action.getBindingModel().bindingVariableNamed("data"));
+		assertEquals(6, action.getBindingModel().getBindingVariablesCount());
+		assertNotNull(action.getBindingModel().bindingVariableNamed("value"));
 		assertNotNull(action.getBindingModel().bindingVariableNamed("selected"));
 		assertNotNull(action.getBindingModel().bindingVariableNamed("selectedIndex"));
 		assertNotNull(action.getBindingModel().bindingVariableNamed("selection"));
 		assertNotNull(action.getBindingModel().bindingVariableNamed("controller"));
-		assertNotNull(action.getBindingModel().bindingVariableNamed("table"));
 		assertNotNull(action.getBindingModel().bindingVariableNamed("selected"));
 
 		component.addToSubComponents(table, new BorderLayoutConstraints(BorderLayoutLocation.center));
 
-		assertEquals(5, c1.getBindingModel().getBindingVariablesCount());
-		assertNotNull(c1.getBindingModel().bindingVariableNamed("data"));
+		System.out.println("C1 BM = " + c1.getBindingModel());
+
+		assertEquals(9, c1.getBindingModel().getBindingVariablesCount());
+		assertNotNull(c1.getBindingModel().bindingVariableNamed("value"));
+		assertNotNull(c1.getBindingModel().bindingVariableNamed("selected"));
+		assertNotNull(c1.getBindingModel().bindingVariableNamed("selectedIndex"));
+		assertNotNull(c1.getBindingModel().bindingVariableNamed("selection"));
 		assertNotNull(c1.getBindingModel().bindingVariableNamed("controller"));
+		assertNotNull(c1.getBindingModel().bindingVariableNamed("iterator"));
+		assertNotNull(c1.getBindingModel().bindingVariableNamed("data"));
 		assertNotNull(c1.getBindingModel().bindingVariableNamed("table"));
 		assertNotNull(c1.getBindingModel().bindingVariableNamed("browser"));
-		assertNotNull(c1.getBindingModel().bindingVariableNamed("iterator"));
 
-		assertEquals(5, action.getBindingModel().getBindingVariablesCount());
-		assertNotNull(action.getBindingModel().bindingVariableNamed("data"));
+		System.out.println("action BM = " + action.getBindingModel());
+
+		assertEquals(9, action.getBindingModel().getBindingVariablesCount());
+		assertNotNull(action.getBindingModel().bindingVariableNamed("value"));
+		assertNotNull(action.getBindingModel().bindingVariableNamed("selected"));
+		assertNotNull(action.getBindingModel().bindingVariableNamed("selectedIndex"));
+		assertNotNull(action.getBindingModel().bindingVariableNamed("selection"));
 		assertNotNull(action.getBindingModel().bindingVariableNamed("controller"));
+		assertNotNull(action.getBindingModel().bindingVariableNamed("data"));
 		assertNotNull(action.getBindingModel().bindingVariableNamed("table"));
 		assertNotNull(action.getBindingModel().bindingVariableNamed("browser"));
-		assertNotNull(action.getBindingModel().bindingVariableNamed("selected"));
 	}
 
 	/**

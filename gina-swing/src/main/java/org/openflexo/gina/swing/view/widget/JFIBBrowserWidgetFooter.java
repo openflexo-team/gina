@@ -79,16 +79,14 @@ import org.openflexo.gina.view.widget.impl.FIBBrowserWidgetImpl;
 import org.openflexo.swing.ImageButton;
 
 /**
- * Swing implementation for a browser widget footer (the footer is synchronized
- * with the selection of browser)
+ * Swing implementation for a browser widget footer (the footer is synchronized with the selection of browser)
  * 
  * @param <T>
  *            type of objects managed by this footer
  * 
  * @author sylvain
  */
-public class JFIBBrowserWidgetFooter<T> extends FIBBrowserWidgetFooterImpl<JPanel, T> implements MouseListener,
-		WindowListener {
+public class JFIBBrowserWidgetFooter<T> extends FIBBrowserWidgetFooterImpl<JPanel, T>implements MouseListener, WindowListener {
 
 	protected static final Logger logger = Logger.getLogger(JFIBBrowserWidgetFooter.class.getPackage().getName());
 
@@ -111,12 +109,12 @@ public class JFIBBrowserWidgetFooter<T> extends FIBBrowserWidgetFooterImpl<JPane
 		footerPanel.setBorder(BorderFactory.createEmptyBorder());
 		footerPanel.setLayout(new BorderLayout());
 
-		plusButton = new BrowserButton(_addActions, FIBIconLibrary.BROWSER_PLUS_ICON,
-				FIBIconLibrary.BROWSER_PLUS_DISABLED_ICON, FIBIconLibrary.BROWSER_PLUS_SELECTED_ICON);
-		minusButton = new BrowserButton(_removeActions, FIBIconLibrary.BROWSER_MINUS_ICON,
-				FIBIconLibrary.BROWSER_MINUS_DISABLED_ICON, FIBIconLibrary.BROWSER_MINUS_SELECTED_ICON);
-		optionsButton = new BrowserButton(_otherActions, FIBIconLibrary.BROWSER_OPTIONS_ICON,
-				FIBIconLibrary.BROWSER_OPTIONS_DISABLED_ICON, FIBIconLibrary.BROWSER_OPTIONS_SELECTED_ICON);
+		plusButton = new BrowserButton(_addActions, FIBIconLibrary.BROWSER_PLUS_ICON, FIBIconLibrary.BROWSER_PLUS_DISABLED_ICON,
+				FIBIconLibrary.BROWSER_PLUS_SELECTED_ICON);
+		minusButton = new BrowserButton(_removeActions, FIBIconLibrary.BROWSER_MINUS_ICON, FIBIconLibrary.BROWSER_MINUS_DISABLED_ICON,
+				FIBIconLibrary.BROWSER_MINUS_SELECTED_ICON);
+		optionsButton = new BrowserButton(_otherActions, FIBIconLibrary.BROWSER_OPTIONS_ICON, FIBIconLibrary.BROWSER_OPTIONS_DISABLED_ICON,
+				FIBIconLibrary.BROWSER_OPTIONS_SELECTED_ICON);
 
 		filtersButton = new ImageButton(FIBIconLibrary.BROWSER_FILTERS_ICON);
 		filtersButton.setDisabledIcon(FIBIconLibrary.BROWSER_FILTERS_DISABLED_ICON);
@@ -194,7 +192,8 @@ public class JFIBBrowserWidgetFooter<T> extends FIBBrowserWidgetFooterImpl<JPane
 			public void setVisible(boolean b) {
 				if (b && !isVisible()) {
 					addPopupClosers(getWindow(footerPanel));
-				} else if (!b && isVisible()) {
+				}
+				else if (!b && isVisible()) {
 					removePopupClosers(getWindow(footerPanel));
 				}
 				super.setVisible(b);
@@ -209,8 +208,7 @@ public class JFIBBrowserWidgetFooter<T> extends FIBBrowserWidgetFooterImpl<JPane
 			}
 		};
 
-		for (Map.Entry<FIBBrowserElement, FIBBrowserElementType> e : _widget.getBrowserModel().getElementTypes()
-				.entrySet()) {
+		for (Map.Entry<FIBBrowserElement, FIBBrowserElementType> e : _widget.getBrowserModel().getElementTypes().entrySet()) {
 			if (e.getKey().getFiltered()) {
 				returned.add(new FIBBrowserFilterMenuItem(e.getValue()));
 			}
@@ -261,9 +259,8 @@ public class JFIBBrowserWidgetFooter<T> extends FIBBrowserWidgetFooterImpl<JPane
 	}
 
 	/**
-	 * Added mouselistners to each component of the root container c, exept this
-	 * button, and the calendar popup, because mouseclicks in them are not
-	 * supposed to clsoe the popup.
+	 * Added mouselistners to each component of the root container c, exept this button, and the calendar popup, because mouseclicks in them
+	 * are not supposed to clsoe the popup.
 	 * 
 	 * @param c
 	 *            the root container
@@ -284,9 +281,8 @@ public class JFIBBrowserWidgetFooter<T> extends FIBBrowserWidgetFooterImpl<JPane
 	}
 
 	/**
-	 * Added mouselistners to each component of the root container c, exept this
-	 * button, and the calendar popup, because mouseclicks in them are not
-	 * supposed to clsoe the popup.
+	 * Added mouselistners to each component of the root container c, exept this button, and the calendar popup, because mouseclicks in them
+	 * are not supposed to clsoe the popup.
 	 * 
 	 * @param c
 	 *            the root container
@@ -364,8 +360,8 @@ public class JFIBBrowserWidgetFooter<T> extends FIBBrowserWidgetFooterImpl<JPane
 		private final Map<FIBBrowserElement, Map<FIBBrowserAction, FIBBrowserActionListener<T>>> actions;
 		private final JButton button;
 
-		public BrowserButton(Map<FIBBrowserElement, Map<FIBBrowserAction, FIBBrowserActionListener<T>>> actions,
-				Icon icon, Icon disabledIcon, Icon pressedIcon) {
+		public BrowserButton(Map<FIBBrowserElement, Map<FIBBrowserAction, FIBBrowserActionListener<T>>> actions, Icon icon,
+				Icon disabledIcon, Icon pressedIcon) {
 			super();
 			this.actions = actions;
 			button = new ImageButton(icon);
@@ -393,10 +389,12 @@ public class JFIBBrowserWidgetFooter<T> extends FIBBrowserWidgetFooterImpl<JPane
 						}
 					}
 					active = activeActionCount > 0;
-				} else {
+				}
+				else {
 					active = false;
 				}
-			} else {
+			}
+			else {
 				active = false;
 			}
 			button.setEnabled(active);
@@ -405,7 +403,8 @@ public class JFIBBrowserWidgetFooter<T> extends FIBBrowserWidgetFooterImpl<JPane
 		private FIBBrowserElement elementForObject(Object object) {
 			if (object == null) {
 				return null;
-			} else {
+			}
+			else {
 				return _widget.getComponent().elementForClass(object.getClass());
 			}
 		}
@@ -426,7 +425,8 @@ public class JFIBBrowserWidgetFooter<T> extends FIBBrowserWidgetFooterImpl<JPane
 				if (listeners.size() == 1) {
 					listeners.get(0).setSelectedObject(_widget.getSelected());
 					listeners.get(0).actionPerformed(e);
-				} else if (listeners.size() > 1) {
+				}
+				else if (listeners.size() > 1) {
 					JPopupMenu popupMenu = new JPopupMenu();
 					for (FIBBrowserActionListener<T> actionListener : listeners) {
 						actionListener.setSelectedObject(_widget.getSelected());
