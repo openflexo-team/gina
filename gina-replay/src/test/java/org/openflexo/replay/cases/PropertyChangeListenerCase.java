@@ -1,21 +1,20 @@
 package org.openflexo.replay.cases;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Dimension;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.junit.Assert.assertNotNull;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.gina.model.widget.FIBTextField;
-import org.openflexo.replay.sampleData.Gender;
-//import org.openflexo.replay.sampleData.Family.Gender;
-import org.openflexo.replay.sampleData.Person;
+import org.openflexo.gina.sampleData.Family.Gender;
+import org.openflexo.gina.sampleData.Person;
 import org.openflexo.replay.utils.Case;
 import org.openflexo.replay.utils.GraphicalContextDelegate;
 import org.openflexo.replay.utils.Window;
@@ -37,7 +36,7 @@ public class PropertyChangeListenerCase extends Case {
 	public void testInit() {
 		main(null);
 
-		assertNotNull(Case.getInstance());
+		assertNotNull("the case is null", Case.getInstance());
 	}
 
 	@Test
@@ -90,7 +89,7 @@ public class PropertyChangeListenerCase extends Case {
 		w.getComponent().addToSubComponents(labelLastname, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, true, false));
 		w.getComponent().addToSubComponents(textFieldLastname, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false));
 
-		assert (w.getComponent().isValid());
+		assertTrue("component is invalid", w.getComponent().isValid());
 	}
 
 	public static Person getPersonA() {

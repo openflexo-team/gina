@@ -8,16 +8,15 @@ import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.gina.model.widget.FIBButton;
 import org.openflexo.gina.model.widget.FIBLabel;
+import org.openflexo.gina.sampleData.Person;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.replay.GinaReplayManager;
 import org.openflexo.replay.GinaReplaySession;
-import org.openflexo.replay.sampleData.Person;
 
 /**
- * Represents the control panel during a recording session.
- * Currently just the 'save' button is displayed.
- * TODO should be extended is required
+ * Represents the control panel during a recording session. Currently just the 'save' button is displayed. TODO should be extended is
+ * required
  * 
  * @author Alexandre
  *

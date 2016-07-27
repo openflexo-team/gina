@@ -17,14 +17,14 @@ import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.gina.model.widget.FIBDropDownColumn;
 import org.openflexo.gina.model.widget.FIBLabelColumn;
+import org.openflexo.gina.model.widget.FIBNumber.NumberType;
 import org.openflexo.gina.model.widget.FIBNumberColumn;
 import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTextFieldColumn;
-import org.openflexo.gina.model.widget.FIBNumber.NumberType;
-import org.openflexo.replay.sampleData.Family;
-import org.openflexo.replay.sampleData.Gender;
+import org.openflexo.gina.sampleData.Family;
+import org.openflexo.gina.sampleData.Family.Gender;
 //import org.openflexo.replay.sampleData.Family.Gender;
-import org.openflexo.replay.sampleData.Person;
+import org.openflexo.gina.sampleData.Person;
 import org.openflexo.replay.utils.Case;
 import org.openflexo.replay.utils.GraphicalContextDelegate;
 import org.openflexo.replay.utils.Window;
@@ -33,18 +33,18 @@ public class TableCase extends Case {
 
 	private FIBTable table;
 	private static Family family;
-	
+
 	public static void main(String[] args) {
-		//initExecutor(1);
+		// initExecutor(1);
 		initCase(new TableCase());
 	}
-	
+
 	@Override
 	public void start() {
 		new Window(getManager(), 'A', Family.class, FIBController.class, getFamily());
 		new Window(getManager(), 'B', Family.class, FIBController.class, getFamily());
 	}
-	
+
 	public static Family getFamily() {
 		if (family == null)
 			family = new Family();
@@ -55,7 +55,7 @@ public class TableCase extends Case {
 	public Dimension getWindowSize() {
 		return new Dimension(480, 320);
 	}
-	
+
 	@Override
 	public void initWindow(Window w) {
 		table = GraphicalContextDelegate.getFactory().newInstance(FIBTable.class);

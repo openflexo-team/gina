@@ -9,8 +9,8 @@ import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoCol
 import org.openflexo.gina.model.widget.FIBButton;
 import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.gina.model.widget.FIBTextField;
-import org.openflexo.replay.sampleData.Gender;
-import org.openflexo.replay.sampleData.Person;
+import org.openflexo.gina.sampleData.Family.Gender;
+import org.openflexo.gina.sampleData.Person;
 //import org.openflexo.replay.sampleData.Family.Gender;
 import org.openflexo.replay.utils.GraphicalContextDelegate;
 import org.openflexo.replay.utils.Window;
@@ -18,39 +18,40 @@ import org.openflexo.replay.utils.Window;
 public class ConcurrentTasksDifferentThreadCase extends ConcurrentTasksSameThreadCase {
 
 	private static Person personA;
-	
+
 	public static void main(String[] args) {
 		initExecutor(1);
 		initCase(new ConcurrentTasksDifferentThreadCase());
 	}
-	
+
 	@Override
 	public void start() {
 		new Window(getManager(), 'A', Person.class, ConcurrentTasksDifferentThreadController.class, getPersonA());
 	}
-	
+
 	@Override
 	public Dimension getWindowSize() {
 		return new Dimension(320, 100);
 	}
-	
+
 	@Override
 	public void initWindow(Window w) {
 		FIBLabel labelFirstname = GraphicalContextDelegate.getFactory().newInstance(FIBLabel.class);
 		labelFirstname.setLabel("Firstname :");
-		
+
 		FIBTextField textFieldFirstname = GraphicalContextDelegate.getFactory().newInstance(FIBTextField.class);
-		textFieldFirstname.setData(new DataBinding<String>("data.firstName", textFieldFirstname, String.class, BindingDefinitionType.GET_SET));
+		textFieldFirstname
+				.setData(new DataBinding<String>("data.firstName", textFieldFirstname, String.class, BindingDefinitionType.GET_SET));
 		textFieldFirstname.setName("firstnameTextField");
-		
+
 		FIBButton buttonTask = GraphicalContextDelegate.getFactory().newInstance(FIBButton.class);
 		buttonTask.setLabel("Start count task");
 		buttonTask.setAction(new DataBinding<Object>("controller.startTask()"));
 		buttonTask.setName("taskButton");
-		
+
 		w.getComponent().addToSubComponents(labelFirstname, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, true, false));
 		w.getComponent().addToSubComponents(textFieldFirstname, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false));
-		
+
 		w.getComponent().addToSubComponents(buttonTask, new TwoColsLayoutConstraints(TwoColsLayoutLocation.center, true, false));
 	}
 
@@ -60,11 +61,11 @@ public class ConcurrentTasksDifferentThreadCase extends ConcurrentTasksSameThrea
 
 		return personA;
 	}
-	
+
 	public static void setPersonA(Person person) {
 		personA.setLastName(person.getLastName());
 		personA.setFirstName(person.getFirstName());
-		
+
 	}
 
 }

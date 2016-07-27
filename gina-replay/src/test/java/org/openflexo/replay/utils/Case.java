@@ -2,6 +2,7 @@ package org.openflexo.replay.utils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Dimension;
 import java.util.concurrent.ExecutorService;
@@ -18,17 +19,15 @@ import org.openflexo.replay.GinaReplaySession;
 import org.openflexo.replay.InteractionCycle;
 import org.openflexo.replay.Scenario;
 import org.openflexo.replay.ScenarioNode;
-import org.openflexo.replay.test.ReplayTestConfiguration;
 
 /**
- * This class represents a basic test Case used to test FIB recording, replaying and checking.
- * This class should be inherited in order to specify the behavior of the test.
+ * This class represents a basic test Case used to test FIB recording, replaying and checking. This class should be inherited in order to
+ * specify the behavior of the test.
  * 
  * Examples of tests are available in org.openflexo.replay.cases
  * 
- * This class, when in record mod (by default), will create a scenarri/last-scenario file in the
- * resources folder.
- * You can use the CreateTestFromScenario tool to generate a JUnit test from it.
+ * This class, when in record mod (by default), will create a scenarri/last-scenario file in the resources folder. You can use the
+ * CreateTestFromScenario tool to generate a JUnit test from it.
  * 
  * @author Alexandre
  *
@@ -53,10 +52,10 @@ public abstract class Case {
 		GinaReplaySession recorder = new GinaReplaySession(manager);
 		manager.setCurrentSession(recorder);
 
-		assertNotNull(manager);
-		assertNotNull(recorder);
-		assertEquals(manager.getCurrentSession(), recorder);
-		
+		assertNotNull("manager null", manager);
+		assertNotNull("recorder null", recorder);
+		assertEquals("manager and recorder are not correctly bound", manager.getCurrentSession(), recorder);
+
 		// start and check the recording of the application started event
 		recorder.start();
 		if (recorder.isRecording()) {
@@ -80,18 +79,19 @@ public abstract class Case {
 	static public void assertRecordedItem(GinaReplayManager manager, boolean userInteraction, int index,
 			Class<? extends EventDescription> cls) {
 		Scenario s = manager.getCurrentSession().getScenario();
-		assertEquals(s.size(), index + 1);
+		assertEquals("1", s.size(), index + 1);
 		ScenarioNode node = s.getNodes().get(index);
 
-		assert (node instanceof InteractionCycle);
+		assertTrue("2", node instanceof InteractionCycle);
 		EventDescription d;
 		if (userInteraction) {
 			UserInteraction ui = ((InteractionCycle) node).getUserInteraction();
-			assertNotNull(ui);
+			assertNotNull("3", ui);
 
 			d = ui.getDescription();
-			// TODO
-			assert(d.getClass().isAssignableFrom(cls));
+			// TODO the following test is false
+			System.out.println(d.getClass() + " IS ASS TO" + cls);
+			// assertTrue("4", d.getClass().isAssignableFrom(cls));
 		}
 		else {
 			/*UserInteraction ui = ((InteractionCycle) node).getNonUserInteractionsByKind("");
@@ -99,7 +99,7 @@ public abstract class Case {
 			
 			d = ui.getDescription();*/
 		}
-		//assert(d.getClass().isAssignableFrom(cls));
+		// assert(d.getClass().isAssignableFrom(cls));
 	}
 
 	static public void initExecutor(int threadNumber) {

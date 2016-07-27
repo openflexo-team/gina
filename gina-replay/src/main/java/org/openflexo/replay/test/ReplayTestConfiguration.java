@@ -16,18 +16,14 @@ import org.openflexo.replay.InteractionCycle;
 import org.openflexo.replay.Scenario;
 
 /**
- * This class is used to configure a replay.
- * As you can see in the example org.openflexo.replay.test.Tester, this class should be used as the following :
- *   - instantiate the class
- *   - load a scenario via loadScenario
- *   - execute runMain in order to launch the scenario environment (it will load the main function of the target class)
+ * This class is used to configure a replay. As you can see in the example org.openflexo.replay.test.Tester, this class should be used as
+ * the following : - instantiate the class - load a scenario via loadScenario - execute runMain in order to launch the scenario environment
+ * (it will load the main function of the target class)
  * 
- * The target class MUST implements the ginaReplayStartupHook function as in the replay.utils.Case example :
- *   static public void ginaReplayStartupHook(ReplayTestConfiguration config) {
- *		testConfiguration = config;
- *	 }
+ * The target class MUST implements the ginaReplayStartupHook function as in the replay.utils.Case example : static public void
+ * ginaReplayStartupHook(ReplayTestConfiguration config) { testConfiguration = config; }
  *
- * Then the static testConfiguration 
+ * Then the static testConfiguration
  * 
  * @author Alexandre
  *
@@ -48,10 +44,10 @@ public class ReplayTestConfiguration {
 		factory.addModel(EventDescription.class);
 		factory.addModel(GinaEvent.class);
 	}
-	
+
 	/**
-	 * Load a specified scenario to be replayed.
-	 * This will search the mainClass that will be launched by executing runMake().
+	 * Load a specified scenario to be replayed. This will search the mainClass that will be launched by executing runMake().
+	 * 
 	 * @param scenarioToLoad
 	 */
 	public void loadScenario(File scenarioToLoad) {
@@ -59,13 +55,13 @@ public class ReplayTestConfiguration {
 
 		if (scenarioToLoad != null) {
 			deserializeScenario(scenarioToLoad);
-			
-			EventDescription d = ((InteractionCycle)scenarioBase.getNodes().get(0)).getUserInteraction().getDescription();
+
+			EventDescription d = ((InteractionCycle) scenarioBase.getNodes().get(0)).getUserInteraction().getDescription();
 			if (d instanceof ApplicationEventDescription) {
 				ApplicationEventDescription aed = (ApplicationEventDescription) d;
 				try {
 					mainClassLauncher = Class.forName(aed.getMainClass());
-					//System.out.println("Main class : " + mainClassLauncher);
+					// System.out.println("Main class : " + mainClassLauncher);
 				} catch (ClassNotFoundException e) {
 					System.out.println("The class '" + aed.getMainClass() + "' cannot be found in the classpath !");
 					scenarioBase = null;
@@ -75,19 +71,19 @@ public class ReplayTestConfiguration {
 				scenarioBase = null;
 		}
 	}
-	
+
 	public Class<?> getMainClassLauncher() {
 		return mainClassLauncher;
 	}
-	
+
 	/**
-	 * Set the static configuration to this and run the main class of the scenario.
-	 * The main class should have a main function to be launched.
+	 * Set the static configuration to this and run the main class of the scenario. The main class should have a main function to be
+	 * launched.
 	 */
 	public void runMain() {
-		if (mainClassLauncher == null) 
+		if (mainClassLauncher == null)
 			return;
-	
+
 		GinaReplaySession.setNextTestConfiguration(this);
 		// set the hook
 		/*try {
@@ -104,12 +100,12 @@ public class ReplayTestConfiguration {
 			scenarioBase = null;
 			return;
 		}*/
-		
+
 		// run the main
 		try {
 			Method hook = mainClassLauncher.getMethod("main", String[].class);
 			String[] params = null;
-			hook.invoke(null, (Object)params);
+			hook.invoke(null, (Object) params);
 		} catch (NoSuchMethodException | SecurityException e) {
 			System.out.println("The main function cannot be found in '" + mainClassLauncher + "' !");
 			mainClassLauncher = null;
@@ -121,7 +117,7 @@ public class ReplayTestConfiguration {
 			return;
 		}
 	}
-	
+
 	public GinaReplaySession getSession() {
 		return manager.getCurrentSession();
 	}
@@ -142,7 +138,7 @@ public class ReplayTestConfiguration {
 			this.manager.getCurrentSession().launched();
 		}
 	}
-	
+
 	private void deserializeScenario(File file) {
 		FileInputStream in = null;
 		try {
