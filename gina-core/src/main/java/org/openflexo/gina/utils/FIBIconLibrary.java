@@ -41,8 +41,8 @@ package org.openflexo.gina.utils;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
-import org.openflexo.toolbox.ImageIconResource;
 
 /**
  * Utility class containing all icons used in FIB
