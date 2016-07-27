@@ -1,0 +1,10 @@
+dependencies {
+  compile relativeProject(':gina-events')
+  compile relativeProject(':gina-test')
+  compile relativeProject(':gina-swing')
+}
+
+test {
+  exclude '**/Tester*'
+  exclude '**/DrawindTreeNodeCaseTest*'
+}
