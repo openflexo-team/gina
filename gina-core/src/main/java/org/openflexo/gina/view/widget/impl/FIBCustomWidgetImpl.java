@@ -130,8 +130,8 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 	public abstract CC getCustomComponent();
 
 	protected CC makeCustomComponent() {
-		return makeCustomComponent((Class) getWidget().getComponentClass(), (Class<T>) TypeUtils.getBaseClass(getWidget().getDataType()),
-				getController());
+		return makeCustomComponent((Class<CC>) (Class) getWidget().getComponentClass(),
+				(Class<T>) TypeUtils.getBaseClass(getWidget().getDataType()), getController());
 	}
 
 	private CC makeCustomComponent(Class<CC> customComponentClass, Class<T> dataClass, FIBController controller) {
