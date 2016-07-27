@@ -1,5 +1,6 @@
 dependencies {
   compile relativeProject(':gina-api')
+  compile relativeProject(':gina-test')
   //  compile project(':gina:flexolocalization')
   //  compile project(':gina:flexographicutils')
   //  compile project(':connie:connie-core')

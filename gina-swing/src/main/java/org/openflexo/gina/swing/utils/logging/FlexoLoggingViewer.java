@@ -53,6 +53,7 @@ import javax.swing.ImageIcon;
 import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.swing.utils.JFIBDialog;
+import org.openflexo.icon.ImageIconResource;
 import org.openflexo.icon.UtilsIconLibrary;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.logging.FlexoLoggingManager;
@@ -63,7 +64,6 @@ import org.openflexo.logging.LoggingFilter.FilterType;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
-import org.openflexo.toolbox.ImageIconResource;
 import org.openflexo.toolbox.StringUtils;
 
 public class FlexoLoggingViewer implements HasPropertyChangeSupport {

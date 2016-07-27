@@ -37,7 +37,7 @@
  * 
  */
 
-package org.openflexo.toolbox;
+package org.openflexo.gina.swing.utils;
 
 import java.io.File;
 import java.lang.reflect.Field;

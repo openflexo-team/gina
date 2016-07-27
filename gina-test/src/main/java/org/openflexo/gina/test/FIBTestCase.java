@@ -36,7 +36,7 @@
  * 
  */
 
-package org.openflexo.gina;
+package org.openflexo.gina.test;
 
 import java.util.logging.Logger;
 

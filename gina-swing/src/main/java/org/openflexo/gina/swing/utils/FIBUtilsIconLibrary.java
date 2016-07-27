@@ -38,8 +38,8 @@
 
 package org.openflexo.gina.swing.utils;
 
+import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
-import org.openflexo.toolbox.ImageIconResource;
 
 /**
  * Provides graphical resources used in the context of FIB
