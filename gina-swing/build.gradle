@@ -1,0 +1,10 @@
+dependencies {
+  compile group: "org.openflexo", name: "connie-core", version: "1.+"
+  compile relativeProject(':flexographicutils')
+  compile relativeProject(':gina-api')
+  compile relativeProject(':gina-core')
+}
+
+test {
+  exclude '**/FIBListWidgetTest*'
+}
