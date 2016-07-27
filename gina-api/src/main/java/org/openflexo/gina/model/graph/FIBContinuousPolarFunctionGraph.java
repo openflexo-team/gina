@@ -145,7 +145,7 @@ public interface FIBContinuousPolarFunctionGraph extends FIBPolarFunctionGraph {
 		@Override
 		public DataBinding<Double> getAngleTickSpacing() {
 			if (angleTickSpacing == null) {
-				angleTickSpacing = new DataBinding<Double>(this, Double.class, DataBinding.BindingDefinitionType.GET);
+				angleTickSpacing = new DataBinding<>(this, Double.class, DataBinding.BindingDefinitionType.GET);
 				angleTickSpacing.setBindingName(ANGLE_TICK_SPACING_KEY);
 			}
 			return angleTickSpacing;
@@ -166,7 +166,7 @@ public interface FIBContinuousPolarFunctionGraph extends FIBPolarFunctionGraph {
 		@Override
 		public DataBinding<Integer> getStepsNumber() {
 			if (stepsNumber == null) {
-				stepsNumber = new DataBinding<Integer>(this, Integer.class, DataBinding.BindingDefinitionType.GET);
+				stepsNumber = new DataBinding<>(this, Integer.class, DataBinding.BindingDefinitionType.GET);
 				stepsNumber.setBindingName(STEPS_NUMBER_KEY);
 			}
 			return stepsNumber;
