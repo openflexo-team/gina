@@ -19,9 +19,9 @@ import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.gina.model.widget.FIBList;
 import org.openflexo.gina.sampleData.Family;
 import org.openflexo.gina.sampleData.Person;
-import org.openflexo.replay.utils.Case;
-import org.openflexo.replay.utils.GraphicalContextDelegate;
-import org.openflexo.replay.utils.Window;
+import org.openflexo.replay.test.Case;
+import org.openflexo.replay.test.GraphicalContextDelegate;
+import org.openflexo.replay.test.Window;
 
 public class ListCase extends Case {
 

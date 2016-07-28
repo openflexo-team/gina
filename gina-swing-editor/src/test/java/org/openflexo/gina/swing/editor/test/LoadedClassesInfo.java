@@ -55,8 +55,8 @@ import java.util.regex.PatternSyntaxException;
 
 import javax.swing.Icon;
 
+import org.openflexo.gina.swing.utils.ClassScope;
 import org.openflexo.gina.utils.FIBIconLibrary;
-import org.openflexo.toolbox.ClassScope;
 import org.openflexo.toolbox.StringUtils;
 
 public class LoadedClassesInfo extends Observable {
@@ -74,7 +74,8 @@ public class LoadedClassesInfo extends Observable {
 		currentLoader = LoadedClassesInfo.class.getClassLoader();
 		if (appLoader != currentLoader) {
 			loaders = new ClassLoader[] { appLoader, currentLoader };
-		} else {
+		}
+		else {
 			loaders = new ClassLoader[] { appLoader };
 		}
 		instance = new LoadedClassesInfo();
@@ -147,12 +148,14 @@ public class LoadedClassesInfo extends Observable {
 				logger.fine("Store " + returned + " in package " + p.packageName);
 			}
 			return returned;
-		} else if (c.isMemberClass()) {
+		}
+		else if (c.isMemberClass()) {
 			// System.out.println("Member class: "+c+" of "+c.getDeclaringClass());
 			ClassInfo parentClass = registerClass(c.getEnclosingClass());
 			ClassInfo returned = parentClass.declareMember(c);
 			return returned;
-		} else {
+		}
+		else {
 			// System.out.println("Ignored class: "+c);
 			return null;
 		}
@@ -427,8 +430,8 @@ public class LoadedClassesInfo extends Observable {
 
 		boolean found = false;
 		while (matcher.find()) {
-			System.out.println("I found the text  starting at index and ending at index" + matcher.group() + matcher.start()
-					+ matcher.end());
+			System.out
+					.println("I found the text  starting at index and ending at index" + matcher.group() + matcher.start() + matcher.end());
 			found = true;
 		}
 		if (!found) {

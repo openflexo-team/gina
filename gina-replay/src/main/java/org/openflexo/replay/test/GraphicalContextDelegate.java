@@ -36,7 +36,7 @@
  * 
  */
 
-package org.openflexo.replay.utils;
+package org.openflexo.replay.test;
 
 import java.awt.AWTEvent;
 import java.awt.BorderLayout;

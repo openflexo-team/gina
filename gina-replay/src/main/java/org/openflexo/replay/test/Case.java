@@ -1,4 +1,4 @@
-package org.openflexo.replay.utils;
+package org.openflexo.replay.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

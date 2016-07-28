@@ -1,4 +1,4 @@
-package org.openflexo.replay.utils;
+package org.openflexo.replay.test;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.container.FIBPanel;

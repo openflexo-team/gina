@@ -3,7 +3,7 @@ package org.openflexo.replay.cases;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.view.GinaViewFactory;
-import org.openflexo.replay.utils.Case;
+import org.openflexo.replay.test.Case;
 import org.openflexo.replay.utils.Task;
 
 public class ConcurrentTasksSameThreadController extends FIBController {
