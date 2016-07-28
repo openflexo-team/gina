@@ -36,7 +36,7 @@
  * 
  */
 
-package org.openflexo.fib.swing.utils.swing;
+package org.openflexo.gina.swing.utils.swing;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -53,7 +53,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
-import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBVariable;
@@ -75,6 +74,7 @@ import org.openflexo.gina.swing.view.widget.JFIBCheckBoxWidget;
 import org.openflexo.gina.swing.view.widget.JFIBNumberWidget;
 import org.openflexo.gina.swing.view.widget.JFIBTextFieldWidget;
 import org.openflexo.gina.test.FIBTestCase;
+import org.openflexo.gina.test.SwingGraphicalContextDelegate;
 import org.openflexo.gina.view.GinaViewFactory;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.test.OrderedRunner;

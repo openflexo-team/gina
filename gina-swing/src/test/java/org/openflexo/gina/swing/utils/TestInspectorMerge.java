@@ -36,7 +36,7 @@
  * 
  */
 
-package org.openflexo.fib.swing.utils;
+package org.openflexo.gina.swing.utils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

@@ -36,11 +36,15 @@
  * 
  */
 
-package org.openflexo.fib.swing.utils.swing;
+package org.openflexo.gina.swing.utils.swing;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -50,50 +54,39 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
-import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
-import org.openflexo.gina.model.container.layout.BorderLayoutConstraints;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
-import org.openflexo.gina.model.container.layout.BorderLayoutConstraints.BorderLayoutLocation;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBBrowserElement;
-import org.openflexo.gina.model.widget.FIBLabel;
-import org.openflexo.gina.model.widget.FIBTextField;
 import org.openflexo.gina.model.widget.FIBBrowserElement.FIBBrowserElementChildren;
 import org.openflexo.gina.sampleData.Family;
 import org.openflexo.gina.sampleData.Person;
-import org.openflexo.gina.sampleData.Family.Gender;
 import org.openflexo.gina.swing.view.SwingViewFactory;
+import org.openflexo.gina.swing.view.widget.JFIBBrowserWidget;
 import org.openflexo.gina.test.FIBTestCase;
+import org.openflexo.gina.test.SwingGraphicalContextDelegate;
 import org.openflexo.gina.view.widget.FIBBrowserWidget;
+import org.openflexo.gina.view.widget.browser.impl.FIBBrowserModel.BrowserCell;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 /**
- * Test the structural and behavioural features of a simple master-detail pattern driven by a browser widget
+ * Test the structural and behavioural features of {@link FIBBrowserWidget} widget
  * 
  * @author sylvain
  * 
  */
 @RunWith(OrderedRunner.class)
-public class FIBBrowserWidgetSelectionTest extends FIBTestCase {
+public class FIBBrowserWidgetTest extends FIBTestCase {
 
 	private static SwingGraphicalContextDelegate gcDelegate;
 
 	private static FIBPanel component;
-	private static FIBPanel detailsPanel;
 	private static FIBBrowser browser;
-
-	private static FIBLabel firstNameLabel;
-	private static FIBTextField firstNameTF;
-	private static FIBLabel lastNameLabel;
-	private static FIBTextField lastNameTF;
-	private static FIBLabel fullNameLabel;
-	private static FIBTextField fullNameTF;
 
 	private static FIBController controller;
 	private static Family family;
@@ -105,18 +98,14 @@ public class FIBBrowserWidgetSelectionTest extends FIBTestCase {
 	@TestOrder(1)
 	public void test1CreateComponent() {
 
-		log("test1CreateComponent()");
-
 		component = newFIBPanel();
-		component.setLayout(Layout.border);
+		component.setLayout(Layout.twocols);
 		component.setDataClass(Family.class);
 
 		browser = newFIBBrowser();
-		browser.setName("browser");
 		browser.setRoot(new DataBinding<Object>("data", browser, Object.class, BindingDefinitionType.GET));
-		browser.setIteratorClass(Person.class);
 		browser.setBoundToSelectionManager(true);
-		browser.setManageDynamicModel(true);
+		browser.setIteratorClass(Person.class);
 
 		FIBBrowserElement rootElement = newFIBBrowserElement();
 		rootElement.setName("family");
@@ -138,37 +127,9 @@ public class FIBBrowserWidgetSelectionTest extends FIBTestCase {
 				.setLabel(new DataBinding<String>("\"My relative: \"+person.toString", browser, String.class, BindingDefinitionType.GET));
 
 		browser.addToElements(personElement);
-
-		detailsPanel = newFIBPanel();
-		detailsPanel.setLayout(Layout.twocols);
-
-		firstNameLabel = newFIBLabel("first_name");
-		detailsPanel.addToSubComponents(firstNameLabel, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false, false));
-		firstNameTF = newFIBTextField();
-		firstNameTF
-				.setData(new DataBinding<String>("browser.selected.firstName", firstNameTF, String.class, BindingDefinitionType.GET_SET));
-		detailsPanel.addToSubComponents(firstNameTF, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
-
-		lastNameLabel = newFIBLabel("last_name");
-		detailsPanel.addToSubComponents(lastNameLabel, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false, false));
-		lastNameTF = newFIBTextField();
-		lastNameTF.setData(new DataBinding<String>("browser.selected.lastName", lastNameTF, String.class, BindingDefinitionType.GET_SET));
-		detailsPanel.addToSubComponents(lastNameTF, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
-
-		fullNameLabel = newFIBLabel("full_name");
-		detailsPanel.addToSubComponents(fullNameLabel, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false, false));
-		fullNameTF = newFIBTextField();
-		fullNameTF.setData(new DataBinding<String>("browser.selected.firstName + ' ' + browser.selected.lastName", fullNameTF, String.class,
-				BindingDefinitionType.GET));
-		detailsPanel.addToSubComponents(fullNameTF, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
-
-		component.addToSubComponents(browser, new BorderLayoutConstraints(BorderLayoutLocation.west));
-		component.addToSubComponents(detailsPanel, new BorderLayoutConstraints(BorderLayoutLocation.center));
+		component.addToSubComponents(browser, new TwoColsLayoutConstraints(TwoColsLayoutLocation.center, true, true));
 
 		assertTrue(browser.getRoot().isValid());
-		assertTrue(firstNameTF.getData().isValid());
-		assertTrue(lastNameTF.getData().isValid());
-		assertTrue(fullNameTF.getData().isValid());
 
 	}
 
@@ -178,9 +139,6 @@ public class FIBBrowserWidgetSelectionTest extends FIBTestCase {
 	@Test
 	@TestOrder(2)
 	public void test2InstanciateComponent() {
-
-		log("test2InstanciateComponent()");
-
 		controller = FIBController.instanciateController(component, SwingViewFactory.INSTANCE, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);
 		family = new Family();
@@ -202,55 +160,77 @@ public class FIBBrowserWidgetSelectionTest extends FIBTestCase {
 	 */
 	@Test
 	@TestOrder(3)
-	public void test3SelectEditAndCheckValues() {
+	public void test3ModifyValueInModel() {
 
-		log("test3SelectEditAndCheckValues()");
+		JFIBBrowserWidget w = (JFIBBrowserWidget) controller.viewForComponent(browser);
 
-		FIBBrowserWidget w = (FIBBrowserWidget) controller.viewForComponent(browser);
+		BrowserCell root = (BrowserCell) w.getBrowserModel().getRoot();
 
-		w.resetSelection();
-		w.addToSelection(family.getBiggestChild());
+		assertEquals(family, root.getUserObject());
+		assertEquals(5, root.getChildCount());
+		assertEquals(family.getChildren().get(0), ((BrowserCell) root.getChildAt(0)).getUserObject());
+		assertEquals(family.getChildren().get(1), ((BrowserCell) root.getChildAt(1)).getUserObject());
+		assertEquals(family.getChildren().get(2), ((BrowserCell) root.getChildAt(2)).getUserObject());
+		assertEquals(family.getChildren().get(3), ((BrowserCell) root.getChildAt(3)).getUserObject());
+		assertEquals(family.getChildren().get(4), ((BrowserCell) root.getChildAt(4)).getUserObject());
 
-		assertEquals("Jacky3", controller.viewForWidget(firstNameTF).getRepresentedValue());
-		assertEquals("Smith", controller.viewForWidget(lastNameTF).getRepresentedValue());
-		assertEquals("Jacky3 Smith", controller.viewForWidget(fullNameTF).getRepresentedValue());
+		Person junior = family.createChild();
 
-		family.getBiggestChild().setFirstName("Roger");
-		family.getBiggestChild().setLastName("Rabbit");
-		family.getBiggestChild().setAge(12);
-		family.getBiggestChild().setGender(Gender.Female);
-
-		assertEquals("Roger", controller.viewForWidget(firstNameTF).getRepresentedValue());
-		assertEquals("Rabbit", controller.viewForWidget(lastNameTF).getRepresentedValue());
-		assertEquals("Roger Rabbit", controller.viewForWidget(fullNameTF).getRepresentedValue());
-
+		assertEquals(6, root.getChildCount());
+		assertEquals(junior, ((BrowserCell) root.getChildAt(5)).getUserObject());
 	}
 
 	/**
-	 * Update the model, and check that widgets have well reacted
+	 * Try to select some objects, check that selection is in sync with it
 	 */
 	@Test
 	@TestOrder(4)
-	public void test4SelectMultipleValues() {
-
-		log("test4SelectMultipleValues()");
+	public void test4PerfomSomeTestsWithSelection() {
 
 		FIBBrowserWidget w = (FIBBrowserWidget) controller.viewForComponent(browser);
 
 		w.resetSelection();
-		w.addToSelection(family.getChildren().get(1));
-		w.addToSelection(family.getChildren().get(2));
-		w.addToSelection(family.getChildren().get(3));
+		w.addToSelection(family);
 
-		assertEquals("Jacky2", controller.viewForWidget(firstNameTF).getRepresentedValue());
-		assertEquals("Smith", controller.viewForWidget(lastNameTF).getRepresentedValue());
-		assertEquals("Jacky2 Smith", controller.viewForWidget(fullNameTF).getRepresentedValue());
+		// The selection is here empty because iterator class has been declared as Person, Family is not a Person, therefore the selection
+		// is null
+		assertEquals(Collections.emptyList()/*Collections.singletonList(family)*/, w.getSelection());
+
+		w.resetSelection();
+		w.addToSelection(family.getChildren().get(0));
+
+		assertEquals(Collections.singletonList(family.getChildren().get(0)), w.getSelection());
+
+		// int[] indices = new int[3];
+		// indices[0] = 1;
+		// indices[1] = 2;
+		// indices[2] = 4;
+		// w7.getDynamicJComponent().setSelectedIndices(indices);
+
+		Person child1 = family.getChildren().get(1);
+		Person child2 = family.getChildren().get(2);
+		Person child4 = family.getChildren().get(4);
+
+		w.resetSelection();
+		w.addToSelection(child1);
+		w.addToSelection(child2);
+		w.addToSelection(child4);
+
+		List<Person> expectedSelection = new ArrayList<Person>();
+		expectedSelection.add(child1);
+		expectedSelection.add(child2);
+		expectedSelection.add(child4);
+
+		assertEquals(expectedSelection, w.getSelection());
+
+		controller.setFocusedWidget(w);
+		assertEquals(expectedSelection, controller.getSelectionLeader().getSelection());
 
 	}
 
 	@BeforeClass
 	public static void initGUI() {
-		gcDelegate = new SwingGraphicalContextDelegate(FIBBrowserWidgetSelectionTest.class.getSimpleName());
+		gcDelegate = new SwingGraphicalContextDelegate(FIBBrowserWidgetTest.class.getSimpleName());
 	}
 
 	@AfterClass

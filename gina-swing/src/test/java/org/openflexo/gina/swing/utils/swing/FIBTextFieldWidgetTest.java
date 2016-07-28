@@ -36,7 +36,7 @@
  * 
  */
 
-package org.openflexo.fib.swing.utils.swing;
+package org.openflexo.gina.swing.utils.swing;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -50,7 +50,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
-import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
@@ -60,19 +59,21 @@ import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.gina.model.widget.FIBTextField;
 import org.openflexo.gina.sampleData.Family;
 import org.openflexo.gina.swing.view.SwingViewFactory;
+import org.openflexo.gina.swing.view.widget.JFIBTextFieldWidget;
 import org.openflexo.gina.test.FIBTestCase;
+import org.openflexo.gina.test.SwingGraphicalContextDelegate;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 /**
- * Test some data manipulation
+ * Test the structural and behavioural features of FIBTextField widget
  * 
  * @author sylvain
  * 
  */
 @RunWith(OrderedRunner.class)
-public class DataManagingTest extends FIBTestCase {
+public class FIBTextFieldWidgetTest extends FIBTestCase {
 
 	private static SwingGraphicalContextDelegate gcDelegate;
 
@@ -87,7 +88,6 @@ public class DataManagingTest extends FIBTestCase {
 	private static FIBController controller;
 	private static Family family1;
 	private static Family family2;
-	private static Family family3;
 
 	/**
 	 * Create an initial component
@@ -154,44 +154,71 @@ public class DataManagingTest extends FIBTestCase {
 	}
 
 	/**
-	 * Update data object, sets new data and then update controller <br>
-	 * Check that widgets have well reacted
+	 * Update the model, and check that widgets have well reacted
 	 */
 	@Test
 	@TestOrder(3)
 	public void test3ModifyValueInModel() {
-
-		family2 = new Family();
-		family2.getFather().setFirstName("Roger");
-		family2.getFather().setLastName("Rabbit");
-		controller.setDataObject(family2);
+		family1.getFather().setFirstName("Roger");
+		family1.getFather().setLastName("Rabbit");
 		assertEquals("Roger", controller.viewForWidget(firstNameTF).getRepresentedValue());
 		assertEquals("Rabbit", controller.viewForWidget(lastNameTF).getRepresentedValue());
 		assertEquals("Roger Rabbit", controller.viewForWidget(fullNameTF).getRepresentedValue());
 	}
 
 	/**
-	 * Update data object, update controller with new data and then modify new data <br>
-	 * Check that widgets have well reacted
+	 * Update the widget, and check that model has well reacted
 	 */
 	@Test
 	@TestOrder(4)
-	public void test4ModifyValueInModel() {
+	public void test4ModifyValueInWidget() {
+		JFIBTextFieldWidget w1 = (JFIBTextFieldWidget) controller.viewForComponent(firstNameTF);
+		JFIBTextFieldWidget w2 = (JFIBTextFieldWidget) controller.viewForComponent(lastNameTF);
+		JFIBTextFieldWidget w3 = (JFIBTextFieldWidget) controller.viewForComponent(fullNameTF);
 
-		family3 = new Family();
+		w1.getTechnologyComponent().setText("James");
+		w2.getTechnologyComponent().setText("Dean");
 
-		controller.setDataObject(family3);
+		assertEquals("James", family1.getFather().getFirstName());
+		assertEquals("Dean", family1.getFather().getLastName());
+		assertEquals("James Dean", controller.viewForWidget(fullNameTF).getRepresentedValue());
+		assertEquals("James Dean", w3.getTechnologyComponent().getText());
 
-		family3.getFather().setFirstName("Jeannot");
-		family3.getFather().setLastName("Lapin");
-		assertEquals("Jeannot", controller.viewForWidget(firstNameTF).getRepresentedValue());
-		assertEquals("Lapin", controller.viewForWidget(lastNameTF).getRepresentedValue());
-		assertEquals("Jeannot Lapin", controller.viewForWidget(fullNameTF).getRepresentedValue());
+	}
+
+	/**
+	 * Instanciate component, while instanciating view BEFORE to set data
+	 */
+	@Test
+	@TestOrder(5)
+	public void test5InstanciateComponent() {
+		component.setDataClass(Family.class);
+		FIBController controller = FIBController.instanciateController(component, SwingViewFactory.INSTANCE,
+				FlexoLocalization.getMainLocalizer());
+		assertNotNull(controller);
+		System.out.println("controller=" + controller);
+		controller.buildView();
+		family2 = new Family();
+		controller.setDataObject(family2);
+
+		gcDelegate.addTab("Test3", controller);
+
+		assertNotNull(controller.getRootView());
+		assertNotNull(controller.viewForComponent(firstNameLabel));
+		assertNotNull(controller.viewForComponent(firstNameTF));
+		assertNotNull(controller.viewForComponent(lastNameLabel));
+		assertNotNull(controller.viewForComponent(lastNameTF));
+		assertNotNull(controller.viewForComponent(fullNameLabel));
+		assertNotNull(controller.viewForComponent(fullNameTF));
+
+		assertEquals("Robert", controller.viewForWidget(firstNameTF).getRepresentedValue());
+		assertEquals("Smith", controller.viewForWidget(lastNameTF).getRepresentedValue());
+		assertEquals("Robert Smith", controller.viewForWidget(fullNameTF).getRepresentedValue());
 	}
 
 	@BeforeClass
 	public static void initGUI() {
-		gcDelegate = new SwingGraphicalContextDelegate(DataManagingTest.class.getSimpleName());
+		gcDelegate = new SwingGraphicalContextDelegate(FIBTextFieldWidgetTest.class.getSimpleName());
 	}
 
 	@AfterClass

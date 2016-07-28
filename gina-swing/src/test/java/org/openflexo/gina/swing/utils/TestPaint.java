@@ -1,4 +1,4 @@
-package org.openflexo.fib.swing.utils;
+package org.openflexo.gina.swing.utils;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

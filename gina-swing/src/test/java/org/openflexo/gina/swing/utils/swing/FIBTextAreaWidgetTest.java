@@ -36,7 +36,7 @@
  * 
  */
 
-package org.openflexo.fib.swing.utils.swing;
+package org.openflexo.gina.swing.utils.swing;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -50,40 +50,40 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
-import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.gina.model.widget.FIBLabel;
-import org.openflexo.gina.model.widget.FIBTextField;
+import org.openflexo.gina.model.widget.FIBTextArea;
 import org.openflexo.gina.sampleData.Family;
 import org.openflexo.gina.swing.view.SwingViewFactory;
-import org.openflexo.gina.swing.view.widget.JFIBTextFieldWidget;
+import org.openflexo.gina.swing.view.widget.JFIBTextAreaWidget;
 import org.openflexo.gina.test.FIBTestCase;
+import org.openflexo.gina.test.SwingGraphicalContextDelegate;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 /**
- * Test the structural and behavioural features of FIBTextField widget
+ * Test the structural and behavioural features of FIBTextArea widget
  * 
  * @author sylvain
  * 
  */
 @RunWith(OrderedRunner.class)
-public class FIBTextFieldWidgetTest extends FIBTestCase {
+public class FIBTextAreaWidgetTest extends FIBTestCase {
 
 	private static SwingGraphicalContextDelegate gcDelegate;
 
 	private static FIBPanel component;
 	private static FIBLabel firstNameLabel;
-	private static FIBTextField firstNameTF;
+	private static FIBTextArea firstNameTF;
 	private static FIBLabel lastNameLabel;
-	private static FIBTextField lastNameTF;
+	private static FIBTextArea lastNameTF;
 	private static FIBLabel fullNameLabel;
-	private static FIBTextField fullNameTF;
+	private static FIBTextArea fullNameTF;
 
 	private static FIBController controller;
 	private static Family family1;
@@ -102,21 +102,21 @@ public class FIBTextFieldWidgetTest extends FIBTestCase {
 
 		firstNameLabel = newFIBLabel("first_name");
 		component.addToSubComponents(firstNameLabel, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false, false));
-		firstNameTF = newFIBTextField();
+		firstNameTF = newFIBTextArea();
 		firstNameTF.setData(new DataBinding<String>("data.father.firstName", firstNameTF, String.class, BindingDefinitionType.GET_SET));
 		component.addToSubComponents(firstNameTF, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
 		assertTrue(firstNameTF.getData().isValid());
 
 		lastNameLabel = newFIBLabel("last_name");
 		component.addToSubComponents(lastNameLabel, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false, false));
-		lastNameTF = newFIBTextField();
+		lastNameTF = newFIBTextArea();
 		lastNameTF.setData(new DataBinding<String>("data.father.lastName", lastNameTF, String.class, BindingDefinitionType.GET_SET));
 		component.addToSubComponents(lastNameTF, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
 		assertTrue(lastNameTF.getData().isValid());
 
 		fullNameLabel = newFIBLabel("full_name");
 		component.addToSubComponents(fullNameLabel, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false, false));
-		fullNameTF = newFIBTextField();
+		fullNameTF = newFIBTextArea();
 		fullNameTF.setData(new DataBinding<String>("data.father.firstName + ' ' + data.father.lastName", fullNameTF, String.class,
 				BindingDefinitionType.GET));
 		component.addToSubComponents(fullNameTF, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
@@ -172,9 +172,9 @@ public class FIBTextFieldWidgetTest extends FIBTestCase {
 	@Test
 	@TestOrder(4)
 	public void test4ModifyValueInWidget() {
-		JFIBTextFieldWidget w1 = (JFIBTextFieldWidget) controller.viewForComponent(firstNameTF);
-		JFIBTextFieldWidget w2 = (JFIBTextFieldWidget) controller.viewForComponent(lastNameTF);
-		JFIBTextFieldWidget w3 = (JFIBTextFieldWidget) controller.viewForComponent(fullNameTF);
+		JFIBTextAreaWidget w1 = (JFIBTextAreaWidget) controller.viewForComponent(firstNameTF);
+		JFIBTextAreaWidget w2 = (JFIBTextAreaWidget) controller.viewForComponent(lastNameTF);
+		JFIBTextAreaWidget w3 = (JFIBTextAreaWidget) controller.viewForComponent(fullNameTF);
 
 		w1.getTechnologyComponent().setText("James");
 		w2.getTechnologyComponent().setText("Dean");
@@ -218,7 +218,7 @@ public class FIBTextFieldWidgetTest extends FIBTestCase {
 
 	@BeforeClass
 	public static void initGUI() {
-		gcDelegate = new SwingGraphicalContextDelegate(FIBTextFieldWidgetTest.class.getSimpleName());
+		gcDelegate = new SwingGraphicalContextDelegate(FIBTextAreaWidgetTest.class.getSimpleName());
 	}
 
 	@AfterClass
