@@ -1,0 +1,5 @@
+dependencies {
+  compile relativeProject(':gina-api')
+  //  compile relativeProject(':gina-test')
+  compile relativeProject(':gina-swing')
+}
