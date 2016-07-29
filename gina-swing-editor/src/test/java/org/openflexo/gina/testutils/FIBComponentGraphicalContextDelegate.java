@@ -55,6 +55,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
 import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.swing.test.TestFIBEditor;
 import org.openflexo.rm.Resource;
 
 /**

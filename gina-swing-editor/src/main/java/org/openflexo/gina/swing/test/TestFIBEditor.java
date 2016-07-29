@@ -36,7 +36,7 @@
  * 
  */
 
-package org.openflexo.gina.testutils;
+package org.openflexo.gina.swing.test;
 
 import java.awt.Rectangle;
 import java.awt.event.WindowAdapter;

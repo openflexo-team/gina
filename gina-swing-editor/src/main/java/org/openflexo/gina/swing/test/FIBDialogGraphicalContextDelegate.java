@@ -36,7 +36,7 @@
  * 
  */
 
-package org.openflexo.gina.testutils;
+package org.openflexo.gina.swing.test;
 
 import java.awt.AWTEvent;
 import java.awt.BorderLayout;
