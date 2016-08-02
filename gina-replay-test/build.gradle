@@ -1,7 +1,7 @@
 dependencies {
-  compile relativeProject(':gina-events')
-  compile relativeProject(':gina-test')
-  compile relativeProject(':gina-swing')
+  compile relativeProject(':gina-replay')
+  compile group: 'junit', name: 'junit', version: '4.+'
+
   testCompile group: "org.openflexo", name: "testutils", version: "1.+"
 }
 

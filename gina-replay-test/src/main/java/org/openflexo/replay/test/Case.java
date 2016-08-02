@@ -41,7 +41,6 @@ public abstract class Case {
 
 	static public void initCase(Case c) {
 		instance = c;
-
 		// we create a GinaReplayManager that we manage the whole record/replay
 		manager = new GinaReplayManager();
 		// we add the FIBEventDescription (and children) model to the factory

@@ -9,22 +9,19 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
 import org.apache.commons.io.FilenameUtils;
+import org.openflexo.replay.ReplayConfiguration;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.ResourceLocator;
 
 /**
- * This tool creates a JUnit test class that will replay and test a recorded scenario.
- * This is useful for continuous testing.
+ * This tool creates a JUnit test class that will replay and test a recorded scenario. This is useful for continuous testing.
  * 
- * This class needs :
- *   - an input scenario file (the XML recorded)
- *   - an output class file (where the JUnit class file should be written)
- *        If set to 'auto', the output class file will be determined by the main class of the scenario.
+ * This class needs : - an input scenario file (the XML recorded) - an output class file (where the JUnit class file should be written) If
+ * set to 'auto', the output class file will be determined by the main class of the scenario.
  * 
  * The JUnit class will be generated from the scenarii/tests/template template file.
  * 
- * This provides the following program :
- * CreateTestFromScenario [input="scenarii/last-scenario"] [output="auto"]
+ * This provides the following program : CreateTestFromScenario [input="scenarii/last-scenario"] [output="auto"]
  * 
  * @author Alexandre
  *
@@ -39,31 +36,30 @@ public class CreateTestFromScenario {
 	}
 
 	private boolean create() {
-		ReplayTestConfiguration testConfiguration;
+		ReplayConfiguration testConfiguration;
 		File scenarioFile;
 		try {
-			testConfiguration = new ReplayTestConfiguration();
+			testConfiguration = new ReplayConfiguration();
 			scenarioFile = ((FileResourceImpl) ResourceLocator.locateResource(this.input)).getFile();
 			testConfiguration.loadScenario(scenarioFile);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Can't load " + this.input);
 			return false;
 		}
 
 		if (output.equals("auto")) {
-			output = ((FileResourceImpl) ResourceLocator.locateSourceCodeResource("scenarii"))
-					.getFile().getParentFile().getParentFile().getAbsolutePath()
-					+ File.separator + "java" + File.separator + "org" + File.separator + "openflexo"
-					+ File.separator + "replay" + File.separator + "tests" + File.separator;
-			
+			output = ((FileResourceImpl) ResourceLocator.locateSourceCodeResource("scenarii")).getFile().getParentFile().getParentFile()
+					.getAbsolutePath() + File.separator + "java" + File.separator + "org" + File.separator + "openflexo" + File.separator
+					+ "replay" + File.separator + "tests" + File.separator;
+
 			output += testConfiguration.getMainClassLauncher().getSimpleName() + "Test.java";
 		}
-		
+
 		String className = FilenameUtils.removeExtension(new File(output).getName());
 
 		System.out.println("Creating " + className + " (" + output + ") from " + input + "...");
-		
+
 		// Write file
 		PrintWriter writer;
 		try {
@@ -73,7 +69,7 @@ public class CreateTestFromScenario {
 			System.out.println("Can't open " + this.output);
 			return false;
 		}
-		
+
 		BufferedReader br;
 		File template = ((FileResourceImpl) ResourceLocator.locateResource(templatePath)).getFile();
 		try {
@@ -83,8 +79,8 @@ public class CreateTestFromScenario {
 			System.out.println("Can't open " + this.input);
 			return false;
 		}
-	    String line;
-	    try {
+		String line;
+		try {
 			while ((line = br.readLine()) != null) {
 				line = line.replaceAll("%%RESOURCE_SCENARIO%%", this.input);
 				line = line.replaceAll("%%CLASS_NAME%%", className);
@@ -96,10 +92,10 @@ public class CreateTestFromScenario {
 			return false;
 		}
 		writer.close();
-		
+
 		System.out.println("Creating successful !");
 		System.out.println("Output : " + this.output);
-		
+
 		return true;
 	}
 

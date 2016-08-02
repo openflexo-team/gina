@@ -1,11 +1,6 @@
 dependencies {
   compile relativeProject(':gina-api')
   compile relativeProject(':gina-test')
-  //  compile project(':gina:flexolocalization')
-  //  compile project(':gina:flexographicutils')
-  //  compile project(':connie:connie-core')
-  //  compile project(':pamela:pamela-core')
-  //  compile group: 'com.google.guava', name: 'guava', version: '19.0'
-  //  compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
+  testCompile group: "org.openflexo", name: "testutils", version: "1.+"
 }
 

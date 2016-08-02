@@ -1,4 +1,4 @@
-package org.openflexo.replay.test;
+package org.openflexo.replay;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,10 +10,6 @@ import org.openflexo.gina.event.GinaEvent;
 import org.openflexo.gina.event.description.ApplicationEventDescription;
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.manager.GinaEventFactory;
-import org.openflexo.replay.GinaReplayManager;
-import org.openflexo.replay.GinaReplaySession;
-import org.openflexo.replay.InteractionCycle;
-import org.openflexo.replay.Scenario;
 
 /**
  * This class is used to configure a replay. As you can see in the example org.openflexo.replay.test.Tester, this class should be used as
@@ -28,7 +24,7 @@ import org.openflexo.replay.Scenario;
  * @author Alexandre
  *
  */
-public class ReplayTestConfiguration {
+public class ReplayConfiguration {
 
 	private GinaReplayManager manager;
 	private File scenarioToLoad;
@@ -36,7 +32,7 @@ public class ReplayTestConfiguration {
 	private GinaEventFactory factory;
 	private Class<?> mainClassLauncher;
 
-	public ReplayTestConfiguration() {
+	public ReplayConfiguration() {
 		super();
 
 		factory = new GinaEventFactory();
