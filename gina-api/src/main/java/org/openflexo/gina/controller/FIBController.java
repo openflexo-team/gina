@@ -257,12 +257,12 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 
 	public FIBView<FIBComponent, ?> buildView() {
 		FIBView<FIBComponent, ?> returned = buildView(rootComponent, true);
-		returned.update();
 		// If data object was previously set, set the value to the root view
 		if (dataObject != null) {
 			setDataObject(dataObject);
 			dataObject = null;
 		}
+		returned.update();
 		return returned;
 	}
 
