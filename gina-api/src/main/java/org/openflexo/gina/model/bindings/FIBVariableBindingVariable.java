@@ -93,7 +93,13 @@ public class FIBVariableBindingVariable extends BindingVariable implements Prope
 		if (!typeIsBeingFetched) {
 			typeIsBeingFetched = true;
 			try {
-				return getVariable().getType();
+				// XtoF:: Not sure about this, but trying to fix issue with FCIType
+				if (getType() != null){
+					return getType();
+				}
+				else{
+					return getVariable().getType();
+				}
 			} finally {
 				typeIsBeingFetched = false;
 			}
