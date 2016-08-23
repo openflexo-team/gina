@@ -90,21 +90,20 @@ public class FIBVariableBindingVariable extends BindingVariable implements Prope
 
 	@Override
 	public Type getType() {
-		if (!typeIsBeingFetched) {
+
+		// XtoF:: Not sure about this, but trying to fix issue with FCIType
+		
+		Type stype = super.getType();
+		
+		if (!typeIsBeingFetched && stype == null) {
 			typeIsBeingFetched = true;
 			try {
-				// XtoF:: Not sure about this, but trying to fix issue with FCIType
-				if (getType() != null){
-					return getType();
-				}
-				else{
-					return getVariable().getType();
-				}
+				return getVariable().getType();
 			} finally {
 				typeIsBeingFetched = false;
 			}
 		}
-		return super.getType();
+		return stype;
 	}
 
 	public FIBVariable<?> getVariable() {
