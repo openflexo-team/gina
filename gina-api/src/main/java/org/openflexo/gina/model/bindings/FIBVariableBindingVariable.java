@@ -43,6 +43,8 @@ import java.beans.PropertyChangeListener;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+
+import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBVariable;
@@ -92,18 +94,20 @@ public class FIBVariableBindingVariable extends BindingVariable implements Prope
 	public Type getType() {
 
 		// XtoF:: Not sure about this, but trying to fix issue with FCIType
-		
-		Type stype = super.getType();
-		
-		if (!typeIsBeingFetched && stype == null) {
+		if (!typeIsBeingFetched) {
 			typeIsBeingFetched = true;
 			try {
-				return getVariable().getType();
+				Type stype = super.getType();
+				Type vtype = variable.getType();
+				if (vtype != stype && stype != java.lang.Object.class && TypeUtils.isTypeAssignableFrom(vtype, stype, true)){
+					return stype;
+				}
+				return vtype;
 			} finally {
 				typeIsBeingFetched = false;
 			}
 		}
-		return stype;
+		return super.getType();
 	}
 
 	public FIBVariable<?> getVariable() {
@@ -113,7 +117,7 @@ public class FIBVariableBindingVariable extends BindingVariable implements Prope
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 
-		if (evt.getSource() == getVariable()) {
+		if (evt.getSource() == variable) {
 			if (evt.getPropertyName().equals(FIBVariable.NAME_KEY)) {
 				System.out.println("Notify name changing for " + variable + " new=" + getVariableName());
 				if (getPropertyChangeSupport() != null) {
@@ -121,7 +125,7 @@ public class FIBVariableBindingVariable extends BindingVariable implements Prope
 				}
 			}
 			if (evt.getPropertyName().equals(TYPE_PROPERTY) || evt.getPropertyName().equals(FIBVariable.TYPE_KEY)) {
-				Type newType = getVariable().getType();
+				Type newType = variable.getType();
 				if (lastKnownType == null || !lastKnownType.equals(newType)) {
 					/*System.out.println("pcSupport=" + getPropertyChangeSupport());
 					if (getPropertyChangeSupport() == null) {
@@ -159,7 +163,7 @@ public class FIBVariableBindingVariable extends BindingVariable implements Prope
 				return flexoConceptInstance.getFlexoActor((FlexoRole<?>) variable);
 			}
 		}
-		
+
 		return flexoConceptInstance.getFlexoPropertyValue(variable);*/
 
 		System.out.println("TO BE IMPLEMENTED HERE !!!");
