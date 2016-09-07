@@ -386,7 +386,8 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	@Override
 	protected <T> void fireVariableChanged(FIBVariable<T> variable, T oldValue, T newValue) {
 		super.fireVariableChanged(variable, oldValue, newValue);
-		for (FIBView<?, ?> child : getSubViews()) {
+		ArrayList<FIBView<?, ?>> subviews = new ArrayList<FIBView<?, ?>>(getSubViews());
+		for (FIBView<?, ?> child : subviews) {
 			((FIBViewImpl<?, ?>) child).fireVariableChanged(variable, oldValue, newValue);
 		}
 	}
