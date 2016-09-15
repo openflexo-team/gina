@@ -43,8 +43,6 @@ import java.beans.PropertyChangeListener;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-
-import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBVariable;
@@ -90,9 +88,26 @@ public class FIBVariableBindingVariable extends BindingVariable implements Prope
 
 	private boolean typeIsBeingFetched = false;
 
+	
+	// TODO: investigate on this
+	// sgu : i commented out the fix of xtof while i do not understand what was to be fixed
 	@Override
 	public Type getType() {
+		if (!typeIsBeingFetched) {
+			typeIsBeingFetched = true;
+			try {
+				return type = getVariable().getType();
+			} finally {
+				typeIsBeingFetched = false;
+			}
+		}
+		// return super.getType();
+		return type;
+	}
 
+	/*@Override
+	public Type getType() {
+	
 		// XtoF:: Not sure about this, but trying to fix issue with FCIType
 		if (!typeIsBeingFetched) {
 			typeIsBeingFetched = true;
@@ -108,7 +123,7 @@ public class FIBVariableBindingVariable extends BindingVariable implements Prope
 			}
 		}
 		return super.getType();
-	}
+	}*/
 
 	public FIBVariable<?> getVariable() {
 		return variable;
@@ -163,7 +178,7 @@ public class FIBVariableBindingVariable extends BindingVariable implements Prope
 				return flexoConceptInstance.getFlexoActor((FlexoRole<?>) variable);
 			}
 		}
-
+		
 		return flexoConceptInstance.getFlexoPropertyValue(variable);*/
 
 		System.out.println("TO BE IMPLEMENTED HERE !!!");
