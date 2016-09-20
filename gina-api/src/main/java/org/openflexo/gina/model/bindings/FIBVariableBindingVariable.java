@@ -88,18 +88,42 @@ public class FIBVariableBindingVariable extends BindingVariable implements Prope
 
 	private boolean typeIsBeingFetched = false;
 
+	
+	// TODO: investigate on this
+	// sgu : i commented out the fix of xtof while i do not understand what was to be fixed
 	@Override
 	public Type getType() {
 		if (!typeIsBeingFetched) {
 			typeIsBeingFetched = true;
 			try {
-				return getVariable().getType();
+				return type = getVariable().getType();
+			} finally {
+				typeIsBeingFetched = false;
+			}
+		}
+		// return super.getType();
+		return type;
+	}
+
+	/*@Override
+	public Type getType() {
+	
+		// XtoF:: Not sure about this, but trying to fix issue with FCIType
+		if (!typeIsBeingFetched) {
+			typeIsBeingFetched = true;
+			try {
+				Type stype = super.getType();
+				Type vtype = variable.getType();
+				if (vtype != stype && stype != java.lang.Object.class && TypeUtils.isTypeAssignableFrom(vtype, stype, true)){
+					return stype;
+				}
+				return vtype;
 			} finally {
 				typeIsBeingFetched = false;
 			}
 		}
 		return super.getType();
-	}
+	}*/
 
 	public FIBVariable<?> getVariable() {
 		return variable;
@@ -108,7 +132,7 @@ public class FIBVariableBindingVariable extends BindingVariable implements Prope
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 
-		if (evt.getSource() == getVariable()) {
+		if (evt.getSource() == variable) {
 			if (evt.getPropertyName().equals(FIBVariable.NAME_KEY)) {
 				System.out.println("Notify name changing for " + variable + " new=" + getVariableName());
 				if (getPropertyChangeSupport() != null) {
@@ -116,7 +140,7 @@ public class FIBVariableBindingVariable extends BindingVariable implements Prope
 				}
 			}
 			if (evt.getPropertyName().equals(TYPE_PROPERTY) || evt.getPropertyName().equals(FIBVariable.TYPE_KEY)) {
-				Type newType = getVariable().getType();
+				Type newType = variable.getType();
 				if (lastKnownType == null || !lastKnownType.equals(newType)) {
 					/*System.out.println("pcSupport=" + getPropertyChangeSupport());
 					if (getPropertyChangeSupport() == null) {
