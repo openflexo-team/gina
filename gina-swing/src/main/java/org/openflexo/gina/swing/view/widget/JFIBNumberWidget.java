@@ -188,7 +188,7 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 																			* ,
 																			* "#.##"
 																			*/));
-			valueChooser.setValue(widget.getDefaultValue());
+			valueChooser.setValue(widget.getDefaultValue().doubleValue());
 			valueChooser.addChangeListener(new ChangeListener() {
 				@Override
 				public void stateChanged(ChangeEvent e) {
