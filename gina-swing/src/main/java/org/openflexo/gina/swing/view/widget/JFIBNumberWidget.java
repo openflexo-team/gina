@@ -257,7 +257,7 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 		public abstract T getEditedValue();
 
 		public void setEditedValue(T aValue) {
-			valueChooser.setValue(aValue);
+			valueChooser.setValue(aValue.doubleValue());
 		}
 
 		public JSpinner getValueChooser() {
