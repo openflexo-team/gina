@@ -5,7 +5,3 @@ dependencies {
   compile relativeProject(':gina-core')
   testCompile group: "org.openflexo", name: "testutils", version: "1.+"
 }
-
-test {
-  exclude '**/FIBListWidgetTest*'
-}
