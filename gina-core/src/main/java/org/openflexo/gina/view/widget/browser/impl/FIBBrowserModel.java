@@ -328,7 +328,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 		private FIBBrowserElementType browserElementType;
 		private boolean isDeleted = false;
 		private boolean isVisible = true;
-		private DynamicBindingEvaluationContextForBrowserCell dynamicBindingEvaluationContext;
+		private final DynamicBindingEvaluationContextForBrowserCell dynamicBindingEvaluationContext;
 
 		public BrowserCell(Object representedObject, BrowserCell father) {
 
@@ -809,7 +809,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			}
 
 			if (children != null) {
-				for (Object c : children) {
+				for (Object c : new ArrayList(children)) {
 					if (c instanceof BrowserCell) {
 						((BrowserCell) c).delete();
 					}
