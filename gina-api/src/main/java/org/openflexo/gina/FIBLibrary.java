@@ -39,9 +39,7 @@
 
 package org.openflexo.gina;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -65,7 +63,6 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.exceptions.InvalidDataException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 
@@ -97,9 +94,9 @@ public interface FIBLibrary extends FIBLibraryContainer {
 
 	public FIBComponent retrieveFIBComponent(Resource fibResourceLocation, boolean useCache);
 
-	public boolean save(FIBComponent component, File file);
+	public boolean save(FIBComponent component, Resource resourceToSave);
 
-	public void saveComponentToStream(FIBComponent component, File fibFile, OutputStream stream);
+	public void saveComponentToStream(FIBComponent component, Resource resourceToSave, OutputStream stream);
 
 	public String stringRepresentation(FIBComponent object);
 
@@ -299,13 +296,13 @@ public interface FIBLibrary extends FIBLibraryContainer {
 			if (!useCache || fibs.get(sourceResource) == null) {
 
 				try {
-					FIBModelFactory factory;
-					if (fibResource instanceof FileResourceImpl) {
+					FIBModelFactory factory = new FIBModelFactory(fibResource.getContainer());
+					/*if (fibResource instanceof FileResourceImpl) {
 						factory = new FIBModelFactory(((FileResourceImpl) fibResource).getFile().getParentFile());
 					}
 					else {
 						factory = new FIBModelFactory();
-					}
+					}*/
 
 					FIBComponent component = (FIBComponent) factory.deserialize(inputStream);
 					component.setLastModified(new Date());
@@ -355,13 +352,13 @@ public interface FIBLibrary extends FIBLibraryContainer {
 		}
 
 		@Override
-		public boolean save(FIBComponent component, File file) {
-			LOGGER.info("Save to file " + file.getAbsolutePath());
+		public boolean save(FIBComponent component, Resource resourceToSave) {
+			LOGGER.info("Save to resourceToSave " + resourceToSave);
 
-			FileOutputStream out = null;
+			OutputStream out = null;
 			try {
-				out = new FileOutputStream(file);
-				saveComponentToStream(component, file, out);
+				out = resourceToSave.openOutputStream();
+				saveComponentToStream(component, resourceToSave, out);
 				return true;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -372,15 +369,15 @@ public interface FIBLibrary extends FIBLibraryContainer {
 		}
 
 		@Override
-		public void saveComponentToStream(FIBComponent component, File fibFile, OutputStream stream) {
+		public void saveComponentToStream(FIBComponent component, Resource resourceToSave, OutputStream stream) {
 
 			try {
-				FIBModelFactory factory = new FIBModelFactory(fibFile.getParentFile());
+				FIBModelFactory factory = new FIBModelFactory(resourceToSave.getContainer());
 
 				factory.serialize(component, stream);
-				LOGGER.info("Succeeded to save: " + fibFile);
+				LOGGER.info("Succeeded to save: " + resourceToSave);
 			} catch (Exception e) {
-				LOGGER.warning("Failed to save: " + fibFile + " unexpected exception: " + e.getMessage());
+				LOGGER.warning("Failed to save: " + resourceToSave + " unexpected exception: " + e.getMessage());
 				e.printStackTrace();
 			} finally {
 				IOUtils.closeQuietly(stream);

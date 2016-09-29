@@ -38,7 +38,6 @@
 
 package org.openflexo.gina.model;
 
-import java.io.File;
 import java.lang.reflect.Type;
 
 import org.openflexo.connie.DataBinding;
@@ -76,11 +75,11 @@ import org.openflexo.gina.model.widget.FIBTextField;
 import org.openflexo.gina.model.widget.FIBTextFieldColumn;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.converter.DataBindingConverter;
-import org.openflexo.model.converter.RelativePathFileConverter;
-import org.openflexo.model.converter.ResourceLocationConverter;
+import org.openflexo.model.converter.RelativePathResourceConverter;
 import org.openflexo.model.converter.TypeConverter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.rm.Resource;
 
 /**
  * {@link ModelFactory} used to handle FIB models<br>
@@ -93,12 +92,14 @@ public class FIBModelFactory extends ModelFactory {
 
 	private final FIBValidationModel validationModel;
 
+	private RelativePathResourceConverter relativePathResourceConverter;
+
 	public FIBModelFactory() throws ModelDefinitionException {
 		super(ModelContextLibrary.getModelContext(FIBComponent.class));
 		addConverter(new DataBindingConverter());
 		addConverter(new ComponentConstraintsConverter());
 		addConverter(new TypeConverter(null));
-		addConverter(new ResourceLocationConverter());
+		addConverter(relativePathResourceConverter = new RelativePathResourceConverter(null));
 		validationModel = new FIBValidationModel(this);
 	}
 
@@ -107,13 +108,13 @@ public class FIBModelFactory extends ModelFactory {
 		addConverter(new DataBindingConverter());
 		addConverter(new ComponentConstraintsConverter());
 		addConverter(new TypeConverter(null));
-		addConverter(new ResourceLocationConverter());
+		addConverter(relativePathResourceConverter = new RelativePathResourceConverter(null));
 		validationModel = new FIBValidationModel(this);
 	}
 
-	public FIBModelFactory(File relativePath) throws ModelDefinitionException {
+	public FIBModelFactory(Resource containerResource) throws ModelDefinitionException {
 		this();
-		addConverter(new RelativePathFileConverter(relativePath));
+		relativePathResourceConverter.setContainerResource(containerResource);
 	}
 
 	public FIBValidationModel getValidationModel() {

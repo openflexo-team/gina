@@ -526,7 +526,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 					}
 					component.setResource(fibLocation);
 					if (component.getFIBLibrary() != null) {
-						component.getFIBLibrary().save(component, fibFile);
+						component.getFIBLibrary().save(component, fibLocation);
 					}
 				} catch (IOException e) {
 					e.printStackTrace();

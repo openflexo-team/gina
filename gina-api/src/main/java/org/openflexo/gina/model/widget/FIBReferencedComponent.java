@@ -86,17 +86,17 @@ public interface FIBReferencedComponent extends FIBWidget {
 	@PropertyIdentifier(type = Vector.class)
 	public static final String ASSIGNMENTS_KEY = "assignments";
 
-	@Getter(value = COMPONENT_FILE_KEY)
+	@Getter(value = COMPONENT_FILE_KEY, isStringConvertable = true)
 	@XMLAttribute
 	public Resource getComponentFile();
+
+	@Setter(COMPONENT_FILE_KEY)
+	public void setComponentFile(Resource componentFile);
 
 	// TODO : this is a Workaround for Fib File selector...It has to be fixed in a more efficient way
 	public File getComponentActualFile();
 
 	public void setComponentActualFile(File file) throws MalformedURLException, LocatorNotFoundException;
-
-	@Setter(COMPONENT_FILE_KEY)
-	public void setComponentFile(Resource componentFile);
 
 	@Getter(value = DYNAMIC_COMPONENT_FILE_KEY)
 	@XMLAttribute
