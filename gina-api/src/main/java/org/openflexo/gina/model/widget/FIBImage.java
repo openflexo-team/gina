@@ -42,6 +42,7 @@ package org.openflexo.gina.model.widget;
 import java.awt.Image;
 import java.io.File;
 import java.lang.reflect.Type;
+import java.net.MalformedURLException;
 
 import javax.swing.SwingConstants;
 
@@ -54,6 +55,9 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
+import org.openflexo.rm.FileResourceImpl;
+import org.openflexo.rm.Resource;
 
 @ModelEntity
 @ImplementationClass(FIBImage.FIBImageImpl.class)
@@ -86,7 +90,7 @@ public interface FIBImage extends FIBWidget {
 		OriginalSize, FitToAvailableSize, FitToAvailableSizeRespectRatio, AdjustWidth, AdjustHeight, AdjustDimensions
 	}
 
-	@PropertyIdentifier(type = File.class)
+	@PropertyIdentifier(type = Resource.class)
 	public static final String IMAGE_FILE_KEY = "imageFile";
 	@PropertyIdentifier(type = SizeAdjustment.class)
 	public static final String SIZE_ADJUSTMENT_KEY = "sizeAdjustment";
@@ -97,12 +101,18 @@ public interface FIBImage extends FIBWidget {
 	@PropertyIdentifier(type = Integer.class)
 	public static final String IMAGE_HEIGHT_KEY = "imageHeight";
 
-	@Getter(value = IMAGE_FILE_KEY)
+	@Getter(value = IMAGE_FILE_KEY, isStringConvertable = true)
 	@XMLAttribute
-	public File getImageFile();
+	public Resource getImageFile();
 
 	@Setter(IMAGE_FILE_KEY)
-	public void setImageFile(File imageFile);
+	public void setImageFile(Resource imageFile);
+
+	// TODO : this is a Workaround for Fib File selector...It has to be fixed in a more efficient way
+	public File getImageActualFile();
+
+	// TODO : this is a Workaround for Fib File selector...It has to be fixed in a more efficient way
+	public void setImageActualFile(File file) throws MalformedURLException, LocatorNotFoundException;
 
 	@Getter(value = SIZE_ADJUSTMENT_KEY)
 	@XMLAttribute
@@ -134,7 +144,7 @@ public interface FIBImage extends FIBWidget {
 
 	public static abstract class FIBImageImpl extends FIBWidgetImpl implements FIBImage {
 
-		private File imageFile;
+		private Resource imageFile;
 		private Align align = Align.left;
 		private Integer imageWidth;
 		private Integer imageHeight;
@@ -165,17 +175,34 @@ public interface FIBImage extends FIBWidget {
 		}
 
 		@Override
-		public File getImageFile() {
+		public Resource getImageFile() {
 			return imageFile;
 		}
 
 		@Override
-		public void setImageFile(File imageFile) {
-			FIBPropertyNotification<File> notification = requireChange(IMAGE_FILE_KEY, imageFile);
+		public void setImageFile(Resource imageFile) {
+			FIBPropertyNotification<Resource> notification = requireChange(IMAGE_FILE_KEY, imageFile);
 			if (notification != null) {
 				this.imageFile = imageFile;
 				hasChanged(notification);
 			}
+		}
+
+		// TODO : this is a Workaround for Fib File selector...It has to be fixed in a more efficient way
+		@Override
+		public File getImageActualFile() {
+			if (imageFile instanceof FileResourceImpl) {
+				return ((FileResourceImpl) imageFile).getFile();
+			}
+			else
+				return null;
+		}
+
+		// TODO : this is a Workaround for Fib File selector...It has to be fixed in a more efficient way
+		@Override
+		public void setImageActualFile(File file) throws MalformedURLException, LocatorNotFoundException {
+
+			this.setImageFile(new FileResourceImpl(file));
 		}
 
 		@Override

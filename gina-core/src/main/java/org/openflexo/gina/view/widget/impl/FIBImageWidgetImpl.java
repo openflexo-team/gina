@@ -59,7 +59,7 @@ import org.openflexo.swing.ImageUtils;
  * 
  * @author sylvain
  */
-public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, C, Image> implements FIBImageWidget<C> {
+public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, C, Image>implements FIBImageWidget<C> {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBImageWidgetImpl.class.getPackage().getName());
 
@@ -161,13 +161,12 @@ public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, 
 
 	protected void updateImageFile() {
 		if (getWidget().getImageFile() != null) {
-			// System.out.println("imageFile=" + getWidget().getImageFile() + " exists=" + getWidget().getImageFile().exists());
-			if (getWidget().getImageFile().exists()) {
-				originalImage = ImageUtils.loadImageFromFile(getWidget().getImageFile());
-				// System.out.println("set image: " + originalImage);
-				updateImageDefaultSize(originalImage);
-				getRenderingAdapter().setImage(getTechnologyComponent(), originalImage, this);
-			}
+			// if (getWidget().getImageFile().exists()) {
+			originalImage = ImageUtils.loadImageFromResource(getWidget().getImageFile());
+			// System.out.println("set image: " + originalImage);
+			updateImageDefaultSize(originalImage);
+			getRenderingAdapter().setImage(getTechnologyComponent(), originalImage, this);
+			// }
 		}
 	}
 

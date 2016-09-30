@@ -1,6 +1,5 @@
 package org.openflexo.gina.swing.editor;
 
-import java.io.File;
 import java.util.logging.Logger;
 
 import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
@@ -123,19 +122,12 @@ public class EditedFIBComponent extends PropertyChangedSupportDefaultImplementat
 		}
 	}
 
-	public File getSourceFile() {
-		if (sourceResource instanceof FileResourceImpl) {
-			return ((FileResourceImpl) sourceResource).getFile();
-		}
-		return null;
-	}
-
 	private void load(Resource sourceResource) {
 		setSourceResource(sourceResource);
 
-		if (getSourceFile() != null) {
+		if (sourceResource != null) {
 			try {
-				fibFactory = new FIBModelFactory(getSourceFile().getParentFile());
+				fibFactory = new FIBModelFactory(sourceResource.getContainer());
 			} catch (ModelDefinitionException e) {
 				e.printStackTrace();
 				return;
@@ -148,13 +140,8 @@ public class EditedFIBComponent extends PropertyChangedSupportDefaultImplementat
 
 	public void save() {
 		if (getSourceResource() != null) {
-			if (getSourceFile() != null) {
-				logger.info("Save to file " + getSourceFile());
-				getFIBLibrary().save(fibComponent, getSourceFile());
-			}
-			else {
-				logger.warning("Cannot save FIBComponent: source resource is not a file");
-			}
+			logger.info("Save to " + getSourceResource());
+			getFIBLibrary().save(fibComponent, getSourceResource());
 		}
 		else {
 			logger.warning("Cannot save FIBComponent: source resource is null");

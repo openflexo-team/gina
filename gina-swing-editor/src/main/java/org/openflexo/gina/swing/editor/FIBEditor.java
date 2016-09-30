@@ -125,7 +125,7 @@ public class FIBEditor {
 
 	private FIBEditorController activeEditorController = null;
 
-	private FIBEditorLoadingProgress progress;
+	private final FIBEditorLoadingProgress progress;
 
 	public FIBEditor(FIBLibrary fibLibrary) {
 		this(fibLibrary, null);
@@ -289,7 +289,7 @@ public class FIBEditor {
 	}
 
 	// Edited components, stored using their source resource
-	private List<EditedFIBComponent> editedComponents = new ArrayList<>();
+	private final List<EditedFIBComponent> editedComponents = new ArrayList<>();
 
 	private EditedFIBComponent retrieveEditedFIBComponent(Resource resource) {
 		return retrieveEditedFIBComponent(resource, null);
@@ -488,7 +488,7 @@ public class FIBEditor {
 		if (editedFIB == null) {
 			return;
 		}
-		if (editedFIB.getSourceFile() != null) {
+		if (editedFIB.getSourceResource() != null) {
 			editedFIB.save();
 		}
 		else {

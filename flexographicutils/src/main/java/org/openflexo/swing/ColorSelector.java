@@ -64,7 +64,7 @@ import org.openflexo.localization.FlexoLocalization;
  * @author sguerin
  * 
  */
-public class ColorSelector extends CustomPopup<Color>implements ColorSelectionModel {
+public class ColorSelector extends CustomPopup<Color> implements ColorSelectionModel {
 
 	static final Logger logger = Logger.getLogger(ColorSelector.class.getPackage().getName());
 
@@ -118,10 +118,10 @@ public class ColorSelector extends CustomPopup<Color>implements ColorSelectionMo
 	}
 
 	public class ColorDetailsPanel extends ResizablePanel {
-		private JColorChooser colorChooser;
+		private final JColorChooser colorChooser;
 		private JButton _applyButton;
 		private JButton _cancelButton;
-		private JPanel _controlPanel;
+		private final JPanel _controlPanel;
 
 		protected ColorDetailsPanel() {
 			super();

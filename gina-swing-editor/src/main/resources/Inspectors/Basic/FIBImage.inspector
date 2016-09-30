@@ -4,7 +4,7 @@
 	<Label index="2" label="image_file" constraints="twocols(location=left)"
 		localize="true" />
 	<File index="3" isDirectory="false" columns="5" localize="true"
-		data="data.imageFile" constraints="twocols(expandHorizontally=true;location=right)" />
+		data="data.imageActualFile" constraints="twocols(expandHorizontally=true;location=right)" />
 	<Label index="4" label="align" constraints="twocols(location=left)"
 		localize="true" />
 	<DropDown index="5" data="data.align" constraints="twocols(location=right)"

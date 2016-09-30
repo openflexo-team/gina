@@ -296,24 +296,27 @@ public class ContextualMenu {
 				DataBinding<Boolean> visible = reusableComponent.getVisible();
 				reusableComponent.setData(null);
 				reusableComponent.setVisible(null);
-				logger.info("Save to file " + params.reusableComponentFile.getAbsolutePath());
-				reusableComponent.getFIBLibrary().save(reusableComponent, params.reusableComponentFile);
-				// logger.info("Current directory = " + editorController.getEditor().getEditedComponentFile().getParentFile());
-				// RelativePathFileConverter relativePathFileConverter = new RelativePathFileConverter(editorController.getEditor()
-				// .getEditedComponentFile().getParentFile());
-				// String relativeFilePath = relativePathFileConverter.convertToString(params.reusableComponentFile);
-				// logger.info("Relative file path: " + relativeFilePath);
-				FIBReferencedComponent widget = dialogFactory.newFIBReferencedComponent();
+
 				try {
-					widget.setComponentFile(new FileResourceImpl(params.reusableComponentFile));
+					FileResourceImpl reusableComponentResource = new FileResourceImpl(params.reusableComponentFile);
+					logger.info("Save to " + reusableComponentResource);
+					reusableComponent.getFIBLibrary().save(reusableComponent, reusableComponentResource);
+					// logger.info("Current directory = " + editorController.getEditor().getEditedComponentFile().getParentFile());
+					// RelativePathFileConverter relativePathFileConverter = new RelativePathFileConverter(editorController.getEditor()
+					// .getEditedComponentFile().getParentFile());
+					// String relativeFilePath = relativePathFileConverter.convertToString(params.reusableComponentFile);
+					// logger.info("Relative file path: " + relativeFilePath);
+					FIBReferencedComponent widget = dialogFactory.newFIBReferencedComponent();
+					widget.setComponentFile(reusableComponentResource);
+					widget.setData(params.data);
+					widget.setVisible(visible);
+					parent.addToSubComponents(widget, reusableComponent.getConstraints());
+					return widget;
 				} catch (Exception e) {
 					logger.severe("Unable to create FileResourceLocation from File: " + params.reusableComponentFile.getName());
 					e.printStackTrace();
 				}
-				widget.setData(params.data);
-				widget.setVisible(visible);
-				parent.addToSubComponents(widget, reusableComponent.getConstraints());
-				return widget;
+
 			}
 		}
 
@@ -399,7 +402,7 @@ public class ContextualMenu {
 				public void actionPerformed(ActionEvent e) {
 					FIBModelObject selectThis = action.getPerformer().performAction(object);
 					if (selectThis instanceof FIBComponent) {
-						editorController.setSelectedObject((FIBComponent) selectThis);
+						editorController.setSelectedObject(selectThis);
 					}
 				}
 			});

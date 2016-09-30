@@ -226,6 +226,12 @@ public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel>implements ImageO
 				case OriginalSize:
 					return new ImageIcon(image);
 				case FitToAvailableSize:
+					if (currentWidth == 0) {
+						currentWidth = image.getWidth(this);
+					}
+					if (currentHeight == 0) {
+						currentHeight = image.getHeight(this);
+					}
 					return new ImageIcon(image.getScaledInstance(currentWidth, currentHeight, Image.SCALE_SMOOTH));
 				case FitToAvailableSizeRespectRatio:
 					int imageWidth = image.getWidth(this);

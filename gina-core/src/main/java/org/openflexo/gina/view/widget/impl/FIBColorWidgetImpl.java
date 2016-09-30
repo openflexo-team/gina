@@ -60,7 +60,8 @@ import org.openflexo.swing.CustomPopup.ApplyCancelListener;
  * 
  * @author sylvain
  */
-public abstract class FIBColorWidgetImpl<C> extends FIBWidgetViewImpl<FIBColor, C, Color>implements FIBColorWidget<C>, ApplyCancelListener {
+public abstract class FIBColorWidgetImpl<C> extends FIBWidgetViewImpl<FIBColor, C, Color>
+		implements FIBColorWidget<C>, ApplyCancelListener {
 
 	private static final Logger logger = Logger.getLogger(FIBColorWidgetImpl.class.getPackage().getName());
 
@@ -86,8 +87,9 @@ public abstract class FIBColorWidgetImpl<C> extends FIBWidgetViewImpl<FIBColor, 
 
 	@Override
 	public void fireApplyPerformed() {
-		GinaStackEvent stack = GENotifier
-				.raise(FIBEventFactory.getInstance().createValueEvent(FIBValueEventDescription.CHANGED, getValue().getRGB()));
+
+		GinaStackEvent stack = GENotifier.raise(FIBEventFactory.getInstance().createValueEvent(FIBValueEventDescription.CHANGED,
+				getValue() != null ? getValue().getRGB() : null));
 
 		// updateModelFromWidget();
 		colorChanged();
