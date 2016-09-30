@@ -39,6 +39,8 @@
 
 package org.openflexo.gina.view.container;
 
+import java.awt.Image;
+
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.view.FIBContainerView;
 
@@ -65,6 +67,10 @@ public interface FIBPanelView<C, C2> extends FIBContainerView<FIBPanel, C, C2> {
 	 * @param <C>
 	 */
 	public static interface PanelRenderingAdapter<C, C2> extends ContainerRenderingAdapter<C, C2> {
+
+		public Image getBackgroundImage(C component, FIBPanelView<C, C2> panelView);
+
+		public void setBackgroundImage(C component, Image anImage, FIBPanelView<C, C2> panelView);
 
 	}
 

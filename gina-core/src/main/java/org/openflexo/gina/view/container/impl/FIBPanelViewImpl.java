@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.view.container.impl;
 
+import java.awt.Image;
 import java.beans.PropertyChangeEvent;
 import java.util.logging.Logger;
 
@@ -47,8 +48,11 @@ import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.model.container.FIBTab;
 import org.openflexo.gina.model.container.layout.FIBLayoutManager;
+import org.openflexo.gina.model.widget.FIBImage;
 import org.openflexo.gina.view.container.FIBPanelView;
 import org.openflexo.gina.view.impl.FIBContainerViewImpl;
+import org.openflexo.rm.Resource;
+import org.openflexo.swing.ImageUtils;
 
 /**
  * Base implementation for a basic panel, as a container of some children component, with a given layout, and a border
@@ -60,7 +64,7 @@ import org.openflexo.gina.view.impl.FIBContainerViewImpl;
  * 
  * @author sylvain
  */
-public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPanel, C, C2> implements FIBPanelView<C, C2> {
+public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPanel, C, C2>implements FIBPanelView<C, C2> {
 
 	private static final Logger logger = Logger.getLogger(FIBPanelViewImpl.class.getPackage().getName());
 
@@ -77,6 +81,8 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 	protected void performUpdate() {
 		super.performUpdate();
 		updateBorder();
+		updateBackgroundImageFile();
+		updateBackgroundImageSizeAdjustment();
 	}
 
 	/*@Override
@@ -209,7 +215,54 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 		if (getComponent() instanceof FIBTab && evt.getPropertyName().equals(FIBTab.TITLE_KEY)) {
 			// Arghlll how do we update titles on this.
 		}
+
+		if (evt.getPropertyName().equals(FIBImage.IMAGE_FILE_KEY)) {
+			updateBackgroundImageFile();
+			// relayoutParentBecauseBackgroundImageChanged();
+		}
+		else if ((evt.getPropertyName().equals(FIBImage.SIZE_ADJUSTMENT_KEY)) || (evt.getPropertyName().equals(FIBImage.IMAGE_HEIGHT_KEY))
+				|| (evt.getPropertyName().equals(FIBImage.IMAGE_WIDTH_KEY))) {
+			updateBackgroundImageSizeAdjustment();
+			// relayoutParentBecauseBackgroundImageChanged();
+		}
+
 		super.propertyChange(evt);
 	}
+
+	private Image originalBackgroundImage;
+	private Resource loadedImageResource = null;
+
+	protected void updateBackgroundImageSizeAdjustment() {
+		// System.out.println("originalImage = " + originalImage);
+		if (originalBackgroundImage != null) {
+			updateBackgroundImageDefaultSize(originalBackgroundImage);
+			getRenderingAdapter().setBackgroundImage(getTechnologyComponent(), originalBackgroundImage, this);
+		}
+	}
+
+	protected void updateBackgroundImageFile() {
+		if (notEquals(getComponent().getImageFile(), loadedImageResource)) {
+			if (getComponent().getImageFile() != null) {
+				originalBackgroundImage = ImageUtils.loadImageFromResource(getComponent().getImageFile());
+				loadedImageResource = getComponent().getImageFile();
+				// System.out.println("Loaded image: " + getComponent().getImageFile()+" > "+originalBackgroundImage);
+				updateBackgroundImageDefaultSize(originalBackgroundImage);
+				getRenderingAdapter().setBackgroundImage(getTechnologyComponent(), originalBackgroundImage, this);
+			}
+			else {
+				originalBackgroundImage = null;
+				loadedImageResource = null;
+			}
+		}
+	}
+
+	protected abstract void updateBackgroundImageDefaultSize(Image image);
+
+	/*protected void relayoutParentBecauseBackgroundImageChanged() {
+		FIBContainerView<?, ?, ?> parentView = getParentView();
+		if (parentView != null) {
+			parentView.updateLayout();
+		}
+	}*/
 
 }

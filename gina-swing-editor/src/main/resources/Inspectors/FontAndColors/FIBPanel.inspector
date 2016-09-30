@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.container.FIBPanel" name="Inspector">
+	<Panel layout="twocols" border="rounded3d" borderTitle="background_image" name="BackgroundImagePanel"
+		titleFont="SansSerif,0,10" darkLevel="1"
+		constraints="twocols(expandHorizontally=true;location=center;insetsTop=5;insetsRight=10)">
+	<Label index="2" label="image_file" constraints="twocols(location=left)"
+		localize="true" />
+	<File index="3" isDirectory="false" columns="5" localize="true"
+		data="data.imageActualFile" constraints="twocols(expandHorizontally=true;location=right)" />
+	<Label index="4" label="align" constraints="twocols(location=left)"
+		localize="true" />
+	<DropDown index="5" data="data.align" constraints="twocols(location=right)"
+		localize="true" iteratorClassName="org.openflexo.gina.model.widget.FIBImage$Align"
+		autoSelectFirstRow="false" />
+	<Label index="6" label="size_adjustment" constraints="twocols(location=left)"
+		localize="true" />
+	<DropDown index="7" data="data.sizeAdjustment" constraints="twocols(location=right)"
+		localize="true" iteratorClassName="org.openflexo.gina.model.widget.FIBImage$SizeAdjustment"
+		autoSelectFirstRow="false" />
+	<Label index="8" label="image_width" constraints="twocols(location=left)"
+		visible="((data.sizeAdjustment = &quot;AdjustWidth&quot;) | (data.sizeAdjustment = &quot;AdjustDimensions&quot;))"
+		localize="true" />
+	<Number index="9" numberType="IntegerType" columns="3"
+		data="data.imageWidth" constraints="twocols(location=right)"
+		visible="((data.sizeAdjustment = &quot;AdjustWidth&quot;) | (data.sizeAdjustment = &quot;AdjustDimensions&quot;))"
+		localize="true" />
+	<Label index="10" label="image_height" constraints="twocols(location=left)"
+		visible="((data.sizeAdjustment = &quot;AdjustHeight&quot;) | (data.sizeAdjustment = &quot;AdjustDimensions&quot;))"
+		localize="true" />
+	<Number index="11" numberType="IntegerType" columns="3"
+		data="data.imageHeight" constraints="twocols(location=right)"
+		visible="((data.sizeAdjustment = &quot;AdjustHeight&quot;) | (data.sizeAdjustment = &quot;AdjustDimensions&quot;))"
+		localize="true" />
+	</Panel>
+	<LocalizedDictionary>
+	</LocalizedDictionary>
+	<Parameter name="title" value="Panel" />
+</Inspector>
