@@ -41,14 +41,23 @@ package org.openflexo.gina.view.container.impl;
 
 import java.awt.Image;
 import java.beans.PropertyChangeEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.BindingVariable;
+import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.binding.BindingValueChangeListener;
+import org.openflexo.connie.binding.Function.FunctionArgument;
+import org.openflexo.connie.binding.JavaMethodPathElement;
+import org.openflexo.connie.exception.NullReferenceException;
+import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.connie.expr.BindingValue;
 import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.FIBVariable;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.model.container.FIBTab;
 import org.openflexo.gina.model.container.layout.FIBLayoutManager;
-import org.openflexo.gina.model.widget.FIBImage;
 import org.openflexo.gina.view.container.FIBPanelView;
 import org.openflexo.gina.view.impl.FIBContainerViewImpl;
 import org.openflexo.rm.Resource;
@@ -70,6 +79,8 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 
 	private FIBLayoutManager<C, C2, ?> layoutManager;
 
+	private BindingValueChangeListener<Image> dynamicBackgroundImageBindingValueChangeListener;
+
 	public FIBPanelViewImpl(FIBPanel model, FIBController controller, PanelRenderingAdapter<C, C2> renderingAdapter) {
 		super(model, controller, renderingAdapter);
 		layoutManager = makeFIBLayoutManager(model.getLayout());
@@ -78,10 +89,53 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 	}
 
 	@Override
+	protected void componentBecomesVisible() {
+		super.componentBecomesVisible();
+		listenDynamicBackgroundImageValueChange();
+	}
+
+	@Override
+	protected void componentBecomesInvisible() {
+		super.componentBecomesInvisible();
+		stopListenDynamicBackgroundImageValueChange();
+	}
+
+	private void listenDynamicBackgroundImageValueChange() {
+		if (dynamicBackgroundImageBindingValueChangeListener != null) {
+			dynamicBackgroundImageBindingValueChangeListener.stopObserving();
+			dynamicBackgroundImageBindingValueChangeListener.delete();
+		}
+		if (getComponent().getDynamicBackgroundImage() != null && getComponent().getDynamicBackgroundImage().isValid()) {
+			dynamicBackgroundImageBindingValueChangeListener = new BindingValueChangeListener<Image>(
+					getComponent().getDynamicBackgroundImage(), getBindingEvaluationContext()) {
+				@Override
+				public void bindingValueChanged(Object source, Image newValue) {
+					System.out.println(" bindingValueChanged() detected for dynamicBackgroundImage="
+							+ getComponent().getDynamicBackgroundImage() + " with newValue=" + newValue + " source=" + source);
+					performUpdateBackgroundImage(newValue);
+				}
+			};
+		}
+	}
+
+	private void stopListenDynamicBackgroundImageValueChange() {
+		if (dynamicBackgroundImageBindingValueChangeListener != null) {
+			dynamicBackgroundImageBindingValueChangeListener.stopObserving();
+			dynamicBackgroundImageBindingValueChangeListener.delete();
+			dynamicBackgroundImageBindingValueChangeListener = null;
+		}
+	}
+
+	@Override
 	protected void performUpdate() {
 		super.performUpdate();
 		updateBorder();
-		updateBackgroundImageFile();
+		if (getComponent().getDynamicBackgroundImage().isSet() && getComponent().getDynamicBackgroundImage().isValid()) {
+			updateDynamicBackgroundImage();
+		}
+		else {
+			updateBackgroundImageFile();
+		}
 		updateBackgroundImageSizeAdjustment();
 	}
 
@@ -216,12 +270,16 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 			// Arghlll how do we update titles on this.
 		}
 
-		if (evt.getPropertyName().equals(FIBImage.IMAGE_FILE_KEY)) {
+		if (evt.getPropertyName().equals(FIBPanel.IMAGE_FILE_KEY)) {
 			updateBackgroundImageFile();
 			// relayoutParentBecauseBackgroundImageChanged();
 		}
-		else if ((evt.getPropertyName().equals(FIBImage.SIZE_ADJUSTMENT_KEY)) || (evt.getPropertyName().equals(FIBImage.IMAGE_HEIGHT_KEY))
-				|| (evt.getPropertyName().equals(FIBImage.IMAGE_WIDTH_KEY))) {
+		else if (evt.getPropertyName().equals(FIBPanel.DYNAMIC_BACKGROUND_IMAGE_KEY)) {
+			updateDynamicBackgroundImage();
+			// relayoutParentBecauseBackgroundImageChanged();
+		}
+		else if ((evt.getPropertyName().equals(FIBPanel.SIZE_ADJUSTMENT_KEY)) || (evt.getPropertyName().equals(FIBPanel.IMAGE_HEIGHT_KEY))
+				|| (evt.getPropertyName().equals(FIBPanel.IMAGE_WIDTH_KEY))) {
 			updateBackgroundImageSizeAdjustment();
 			// relayoutParentBecauseBackgroundImageChanged();
 		}
@@ -240,14 +298,37 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 		}
 	}
 
+	private void performUpdateBackgroundImage(Image newImage) {
+		originalBackgroundImage = newImage;
+		updateBackgroundImageDefaultSize(originalBackgroundImage);
+		getRenderingAdapter().setBackgroundImage(getTechnologyComponent(), originalBackgroundImage, this);
+	}
+
+	protected void updateDynamicBackgroundImage() {
+		if (getComponent().getDynamicBackgroundImage().isSet() && getComponent().getDynamicBackgroundImage().isValid()) {
+			try {
+				Image image = getComponent().getDynamicBackgroundImage().getBindingValue(getBindingEvaluationContext());
+				if (notEquals(image, originalBackgroundImage)) {
+					performUpdateBackgroundImage(image);
+				}
+			} catch (TypeMismatchException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NullReferenceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
 	protected void updateBackgroundImageFile() {
 		if (notEquals(getComponent().getImageFile(), loadedImageResource)) {
 			if (getComponent().getImageFile() != null) {
-				originalBackgroundImage = ImageUtils.loadImageFromResource(getComponent().getImageFile());
 				loadedImageResource = getComponent().getImageFile();
-				// System.out.println("Loaded image: " + getComponent().getImageFile()+" > "+originalBackgroundImage);
-				updateBackgroundImageDefaultSize(originalBackgroundImage);
-				getRenderingAdapter().setBackgroundImage(getTechnologyComponent(), originalBackgroundImage, this);
+				performUpdateBackgroundImage(ImageUtils.loadImageFromResource(getComponent().getImageFile()));
 			}
 			else {
 				originalBackgroundImage = null;

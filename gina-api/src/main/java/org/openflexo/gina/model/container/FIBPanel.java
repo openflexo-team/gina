@@ -42,12 +42,14 @@ package org.openflexo.gina.model.container;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Image;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.logging.Logger;
 
 import javax.swing.BoxLayout;
 
+import org.openflexo.connie.DataBinding;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.FIBPropertyNotification;
@@ -185,6 +187,8 @@ public interface FIBPanel extends FIBContainer {
 	public static final String IMAGE_WIDTH_KEY = "imageWidth";
 	@PropertyIdentifier(type = Integer.class)
 	public static final String IMAGE_HEIGHT_KEY = "imageHeight";
+	@PropertyIdentifier(type = Image.class)
+	public static final String DYNAMIC_BACKGROUND_IMAGE_KEY = "dynamicBackgroundImage";
 
 	@Override
 	@Getter(value = LAYOUT_KEY)
@@ -322,6 +326,13 @@ public interface FIBPanel extends FIBContainer {
 
 	// Background image
 
+	@Getter(value = DYNAMIC_BACKGROUND_IMAGE_KEY)
+	@XMLAttribute
+	public DataBinding<Image> getDynamicBackgroundImage();
+
+	@Setter(DYNAMIC_BACKGROUND_IMAGE_KEY)
+	public void setDynamicBackgroundImage(DataBinding<Image> dynamicImage);
+
 	@Getter(value = IMAGE_FILE_KEY, isStringConvertable = true)
 	@XMLAttribute
 	public Resource getImageFile();
@@ -399,6 +410,7 @@ public interface FIBPanel extends FIBContainer {
 		private Integer imageWidth;
 		private Integer imageHeight;
 		private SizeAdjustment sizeAdjustment = SizeAdjustment.OriginalSize;
+		private DataBinding<Image> dynamicBackgroundImage;
 
 		public FIBPanelImpl() {
 			super();
@@ -777,6 +789,33 @@ public interface FIBPanel extends FIBContainer {
 			if (getBorder() == Border.titled) {
 				retriever.foundLocalized(getBorderTitle());
 			}
+		}
+
+		@Override
+		public DataBinding<Image> getDynamicBackgroundImage() {
+
+			if (dynamicBackgroundImage == null) {
+				dynamicBackgroundImage = new DataBinding<Image>(this, Image.class, DataBinding.BindingDefinitionType.GET);
+				dynamicBackgroundImage.setBindingName("dynamicBackgroundImage");
+			}
+			return dynamicBackgroundImage;
+		}
+
+		@Override
+		public void setDynamicBackgroundImage(DataBinding<Image> dynamicBackgroundImage) {
+
+			FIBPropertyNotification<DataBinding<Image>> notification = requireChange(DYNAMIC_BACKGROUND_IMAGE_KEY, dynamicBackgroundImage);
+			if (notification != null) {
+				if (dynamicBackgroundImage != null) {
+					dynamicBackgroundImage.setOwner(this);
+					dynamicBackgroundImage.setDeclaredType(Image.class);
+					dynamicBackgroundImage.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+					dynamicBackgroundImage.setBindingName("dynamicBackgroundImage");
+				}
+				this.dynamicBackgroundImage = dynamicBackgroundImage;
+				notify(notification);
+			}
+
 		}
 
 		@Override
