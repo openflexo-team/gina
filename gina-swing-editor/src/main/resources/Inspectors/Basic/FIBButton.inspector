@@ -6,21 +6,28 @@
 	<TextField index="3" data="data.label"
 		constraints="twocols(expandHorizontally=true;location=right)"
 		localize="true" columns="15" />
-	<Label index="4" label="button_icon" constraints="twocols(location=left)"
+	<Label index="4" label="dynamic_label" constraints="twocols(location=left)"
 		localize="true" />
 	<Custom index="5" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.dynamicLabel"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data" />
+	</Custom>
+	<Label index="6" label="button_icon" constraints="twocols(location=left)"
+		localize="true" />
+	<Custom index="7" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 		localize="true" manageDynamicModel="true" data="data.buttonIcon"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data" />
 	</Custom>
-	<Label index="6" label="button_type" constraints="twocols(location=left)"
+	<Label index="8" label="button_type" constraints="twocols(location=left)"
 		localize="true" />
-	<DropDown index="7" data="data.buttonType" constraints="twocols(location=right)"
+	<DropDown index="9" data="data.buttonType" constraints="twocols(location=right)"
 		localize="true" iteratorClassName="java.lang.Object"
 		autoSelectFirstRow="false" />
-	<Label index="8" label="is_default"
+	<Label index="10" label="is_default"
 		constraints="twocols(expandHorizontally=true;location=left)" localize="true" />
-	<CheckBox index="9" selected="false" data="data.isDefault"
+	<CheckBox index="11" selected="false" data="data.isDefault"
 		constraints="twocols(location=right)" localize="true" />
 	<Parameter name="title" value="Button" />
 </Inspector>
