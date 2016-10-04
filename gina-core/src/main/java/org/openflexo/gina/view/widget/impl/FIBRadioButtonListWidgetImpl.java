@@ -73,19 +73,6 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 		return (RadioButtonRenderingAdapter<C, T>) super.getRenderingAdapter();
 	}
 
-	/*	@Override
-		public boolean update() {
-			boolean returned = super.update();
-			selectFirstRowIfRequired();
-			return returned;
-		}*/
-
-	/*private void selectFirstRowIfRequired() {
-		if (getSelectedValue() == null && getWidget().getAutoSelectFirstRow() && getMultipleValueModel().getSize() > 0) {
-			setSelectedValue(getMultipleValueModel().getElementAt(0));
-		}
-	}*/
-
 	@Override
 	protected FIBMultipleValueModel<T> createMultipleValueModel() {
 		return new FIBMultipleValueModelImpl();
@@ -110,28 +97,17 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 		T newValue = super.updateData();
 
 		autoSelectFirstRowWhenRequired();
-		/*if (newValue == null && getWidget().getAutoSelectFirstRow() && getMultipleValueModel().getSize() > 0) {
-			// System.out.println("Selecting first value of " + getWidget().getName() + " : " + getMultipleValueModel().getElementAt(0));
-			newValue = getMultipleValueModel().getElementAt(0);
-			setValue(newValue);
-		}*/
 
 		if (notEquals(newValue, getSelectedValue()) /*|| listModelRequireChange()*/ || multipleValueModel == null) {
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine("updateWidgetFromModel()");
 			}
 
-			// widgetUpdating = true;
 			setSelectedValue(newValue);
 			setSelected(newValue);
 			setSelectedIndex(getMultipleValueModel().indexOf(newValue));
 
-			// widgetUpdating = false;
-			// return true;
 		}
-		// return false;
-
-		// selectFirstRowIfRequired();
 
 		return newValue;
 	}
@@ -168,7 +144,8 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if ((evt.getPropertyName().equals(FIBWidget.FORMAT_KEY)) || (evt.getPropertyName().equals(FIBWidget.LOCALIZE_KEY))) {
+		if ((evt.getPropertyName().equals(FIBWidget.FORMAT_KEY)) || (evt.getPropertyName().equals(FIBWidget.LOCALIZE_KEY))
+				|| (evt.getPropertyName().equals(FIBRadioButtonList.TRIM_TEXT_KEY))) {
 			updateRadioButtonListLayout();
 		}
 		super.propertyChange(evt);

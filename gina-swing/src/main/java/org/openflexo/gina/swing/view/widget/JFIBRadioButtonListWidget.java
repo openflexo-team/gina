@@ -40,13 +40,11 @@
 package org.openflexo.gina.swing.view.widget;
 
 import java.awt.Color;
-import java.awt.FontMetrics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.ButtonGroup;
@@ -55,7 +53,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
@@ -140,10 +137,6 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 	@Override
 	protected void proceedToListModelUpdate() {
 		getTechnologyComponent().update();
-		/*if (!isUpdating() && !isDeleted() && getTechnologyComponent() != null) {
-			// updateWidgetFromModel();
-			updateData();
-		}*/
 	}
 
 	public static class JRadioButtonPanel<T> extends JPanel {
@@ -161,46 +154,25 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 			rebuildRadioButtons();
 		}
 
-		private boolean isLayouted = false;
-
 		public void update() {
 			removeAll();
 			rebuildRadioButtons();
 		}
 
-		private void resizeWidthTo(int width) {
-			FontMetrics fm = getFontMetrics(getFont());
-			for (int i = 0; i < widget.getMultipleValueModel().getSize(); i++) {
-				T object = widget.getMultipleValueModel().getElementAt(i);
-				String labelText = widget.getStringRepresentation(object);
-				if (labelText != null) {
-					List<String> lines = trimString(labelText, width, fm);
-					StringBuffer htmlText = new StringBuffer();
-					htmlText.append("<html>");
-					for (int j = 0; j < lines.size(); j++) {
-						String line = lines.get(j);
-						htmlText.append(line + (j == lines.size() - 1 ? "" : "<br>"));
+		/*@Override
+		public Dimension getPreferredSize() {
+			if (widget.getComponent().getTrimText()) {
+				for (JLabel l : labelsArray) {
+					if (l != null) {
+						System.out.println("label l: " + l.getPreferredSize() + " for " + l.getText());
 					}
-					htmlText.append("</html>");
-					labelsArray[i].setText(htmlText.toString());
 				}
+				return getSize();
 			}
-			revalidate();
-			repaint();
-		}
+			return super.getPreferredSize();
+		}*/
 
 		private void rebuildRadioButtons() {
-
-			isLayouted = false;
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					if (!isLayouted && JRadioButtonPanel.this.widget.getWidget().getTrimText()) {
-						isLayouted = true;
-						resizeWidthTo(getSize().width - 50);
-					}
-				}
-			});
 
 			buttonGroup = new ButtonGroup();
 
@@ -223,7 +195,8 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 				c.anchor = GridBagConstraints.NORTHEAST;
 				add(rb, c);
 
-				JLabel label = new JLabel(widget.getWidget().getTrimText() ? "" : widget.getStringRepresentation(object));
+				JLabel label = new JLabel(widget.getWidget().getTrimText() ? "<html>" + widget.getStringRepresentation(object) + "</html>"
+						: widget.getStringRepresentation(object));
 				labelsArray[i] = label;
 
 				// Handle the case of icon should be displayed
@@ -293,10 +266,6 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 			}
 		}
 	}
-
-	/*protected void fireSelectedValueChanged() {
-		selectionChanged();
-	}*/
 
 	@Override
 	protected void updateRadioButtonListLayout() {
