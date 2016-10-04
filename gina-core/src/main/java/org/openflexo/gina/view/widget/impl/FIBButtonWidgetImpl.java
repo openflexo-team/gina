@@ -223,13 +223,13 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				e.printStackTrace();
+				// can happen
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
 			}
 		}
 
-		else if (getWidget().getLabel() != null) {
+		if (text == null && getWidget().getLabel() != null) {
 			if (getWidget().getLocalize()) {
 				text = getLocalized(getWidget().getLabel());
 			}
