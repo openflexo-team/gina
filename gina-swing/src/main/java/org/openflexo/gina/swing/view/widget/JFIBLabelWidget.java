@@ -42,15 +42,12 @@ package org.openflexo.gina.swing.view.widget;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontMetrics;
-import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
@@ -78,7 +75,7 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel>implements J
 	 */
 	public static class SwingLabelRenderingAdapter extends SwingRenderingAdapter<JLabelPanel>implements LabelRenderingAdapter<JLabelPanel> {
 
-		private boolean isLayouted = false;
+		// private boolean isLayouted = false;
 
 		@Override
 		public String getText(JLabelPanel component) {
@@ -89,7 +86,8 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel>implements J
 		public void setText(final JLabelPanel component, final String aText) {
 
 			if (component.getWidget().getWidget().getTrimText()) {
-				isLayouted = false;
+				component.getLabel().setText("<html>" + aText + "</html>");
+				/*isLayouted = false;
 				if (component.getSize().width > 0) {
 					trimTextTo(aText, component, component.getSize().width);
 					isLayouted = true;
@@ -104,7 +102,7 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel>implements J
 							}
 						}
 					});
-				}
+				}*/
 			}
 			else {
 				component.getLabel().setText(aText);
@@ -112,7 +110,7 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel>implements J
 
 		}
 
-		private void trimTextTo(String labelText, JLabelPanel component, int width) {
+		/*private void trimTextTo(String labelText, JLabelPanel component, int width) {
 			FontMetrics fm = component.getFontMetrics(component.getWidget().getFont());
 			List<String> lines = trimString(labelText, width, fm);
 			StringBuffer htmlText = new StringBuffer();
@@ -123,7 +121,7 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel>implements J
 			}
 			htmlText.append("</html>");
 			component.getLabel().setText(htmlText.toString());
-		}
+		}*/
 
 		@Override
 		public int getHorizontalAlignment(JLabelPanel component) {
@@ -200,7 +198,7 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel>implements J
 			super(new BorderLayout());
 			this.widget = widget;
 			setOpaque(false);
-			label = new JLabel("");
+			label = new JLabel("prout");
 			label.setFocusable(false);
 			setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, TOP_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
 					RIGHT_COMPENSATING_BORDER));
