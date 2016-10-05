@@ -602,6 +602,13 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 		}
 
+		performValueChangedAction();
+
+		getPropertyChangeSupport().firePropertyChange(VALUE, oldValue, representedValue);
+
+	}
+
+	protected void performValueChangedAction() {
 		if (getWidget().getValueChangedAction().isValid()) {
 			try {
 				getWidget().getValueChangedAction().execute(getBindingEvaluationContext());
@@ -613,9 +620,6 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 				e.printStackTrace();
 			}
 		}
-
-		getPropertyChangeSupport().firePropertyChange(VALUE, oldValue, representedValue);
-
 	}
 
 	@Override

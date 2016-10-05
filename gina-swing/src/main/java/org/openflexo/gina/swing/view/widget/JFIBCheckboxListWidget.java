@@ -287,9 +287,12 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 							selectedValues.remove(value);
 						}
 					}
+
 					widget.selectionChanged();
 					widget.setSelected(selectedValues);
 					widget.setSelectedIndex(index);
+
+					widget.performValueChangedAction();
 				}
 			}
 
