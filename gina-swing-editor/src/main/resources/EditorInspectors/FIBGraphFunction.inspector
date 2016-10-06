@@ -1,6 +1,6 @@
 <Inspector name="Inspector" layout="border"
 	dataClassName="org.openflexo.gina.model.graph.FIBGraphFunction">
-	<Parameter name="title" value="Graph function prout" />
+	<Parameter name="title" value="Graph function" />
 
 	<TabPanel name="Tab" constraints="border(location=center)">
 		<Tab title="Basic" layout="twocols" titleFont="SansSerif,0,10"

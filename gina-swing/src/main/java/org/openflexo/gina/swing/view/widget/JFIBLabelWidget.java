@@ -198,7 +198,7 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel>implements J
 			super(new BorderLayout());
 			this.widget = widget;
 			setOpaque(false);
-			label = new JLabel("prout");
+			label = new JLabel("");
 			label.setFocusable(false);
 			setBorder(BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, TOP_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
 					RIGHT_COMPENSATING_BORDER));
