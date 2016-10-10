@@ -151,7 +151,6 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 		return (FIBView<F, ? extends C>) controller.buildView(fibComponent, updateNow);
 	}
 
-
 	private final FIBComponent rootComponent;
 	private final Hashtable<FIBComponent, FIBView<?, ?>> views;
 	private FIBSelectable<?> selectionLeader;
@@ -330,7 +329,6 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 		}
 		return l;
 	}
-
 
 	public FIBComponent getRootComponent() {
 		return rootComponent;
@@ -872,26 +870,35 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 
 		public SampleData() {
 			persons = new ArrayList<Person>();
-			persons.add(martin = new Person("Martin", 173, 73.7));
-			persons.add(mary = new Person("Mary", 165, 57.0));
-			persons.add(john = new Person("John", 107, 26.3));
-			persons.add(martinJr1 = new Person("Martin Jr 1", 97, 19.2));
-			persons.add(martinJr2 = new Person("Martin Jr 2", 95, 18.7));
-			persons.add(martinJr3 = new Person("Martin Jr 3", 74, 10.2));
-			persons.add(martinJr4 = new Person("Martin Jr 4", 57, 5.2));
+			List<Person> children = new ArrayList<Person>();
+			persons.add(martin = new Person("Martin", 173, 73.7, children));
+			persons.add(mary = new Person("Mary", 165, 57.0, children));
+			persons.add(john = new Person("John", 107, 26.3, null));
+			persons.add(martinJr1 = new Person("Martin Jr 1", 97, 19.2, null));
+			persons.add(martinJr2 = new Person("Martin Jr 2", 95, 18.7, null));
+			persons.add(martinJr3 = new Person("Martin Jr 3", 74, 10.2, null));
+			persons.add(martinJr4 = new Person("Martin Jr 4", 57, 5.2, null));
+			children.add(john);
+			children.add(martinJr1);
+			children.add(martinJr2);
+			children.add(martinJr3);
+			children.add(martinJr4);
 		}
 
 		public static class Person {
 			public String name;
 			public int size;
 			public double weight;
+			public List<Person> children;
 
-			public Person(String name, int size, double weight) {
+			public Person(String name, int size, double weight, List<Person> children) {
 				super();
 				this.name = name;
 				this.size = size;
 				this.weight = weight;
+				this.children = children;
 			}
+
 		}
 	}
 
