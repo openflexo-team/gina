@@ -62,10 +62,10 @@ How to create a new event kind for a new FIB Widget ?
 
 * Override the executeEvent method (in gina-core/gina.view.widget.impl) as follow
 	@Override
-	public void executeEvent(EventDescription e) {
+	public void executeEvent(EventDescription e) \{
 		widgetExecuting = true;
 	
-		switch (e.getAction()) {
+		switch (e.getAction()) \{
 			case FIBMyEventDescription.MY_ACTION:
 				// do something
 				break;
@@ -139,7 +139,7 @@ The GinaEventNotifier uses the raise method to through a GinaEvent.
 This method will also create a new stack of events used to determine causality of events, so it is important
 to close this event stacks once finished (usally just before leaving the scope where you called the raise method).
 
-{
+\{
 ...
 GinaStackEvent stack = ginaEventNotifier.raise(eventDescription, this);
 ...[all events raised here are considered as consequences of our first event,
