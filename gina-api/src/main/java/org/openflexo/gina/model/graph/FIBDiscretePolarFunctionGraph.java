@@ -76,6 +76,8 @@ public interface FIBDiscretePolarFunctionGraph extends FIBPolarFunctionGraph {
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String VALUES_KEY = "values";
 	@PropertyIdentifier(type = DataBinding.class)
+	public static final String SECONDARY_VALUES_KEY = "secondary_values";
+	@PropertyIdentifier(type = DataBinding.class)
 	public static final String LABELS_KEY = "labels";
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String ANGLE_EXTENT_KEY = "angleExtent";
@@ -86,6 +88,13 @@ public interface FIBDiscretePolarFunctionGraph extends FIBPolarFunctionGraph {
 
 	@Setter(VALUES_KEY)
 	public void setValues(DataBinding<List<?>> values);
+
+	@Getter(SECONDARY_VALUES_KEY)
+	@XMLAttribute
+	public DataBinding<List<?>> getSecondaryValues();
+
+	@Setter(SECONDARY_VALUES_KEY)
+	public void setSecondaryValues(DataBinding<List<?>> secondaryValues);
 
 	@Getter(LABELS_KEY)
 	@XMLAttribute
@@ -153,6 +162,7 @@ public interface FIBDiscretePolarFunctionGraph extends FIBPolarFunctionGraph {
 			}
 			this.values = values;
 			getPropertyChangeSupport().firePropertyChange(VALUES_KEY, null, values);
+			notifiedBindingChanged(this.values);
 		}
 
 		@Override
@@ -213,7 +223,7 @@ public interface FIBDiscretePolarFunctionGraph extends FIBPolarFunctionGraph {
 			super.notifiedBindingChanged(binding);
 			if (binding == values) {
 				if (parameterBindingVariable != null) {
-					System.out.println("Changing type to " + getParameterType());
+					//System.out.println("Changing type to " + getParameterType());
 					parameterBindingVariable.setType(getParameterType());
 				}
 			}
