@@ -865,41 +865,122 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 	}
 
 	public static class SampleData {
+		public List<Family> families;
 		public List<Person> persons;
 		public Person martin, mary, john, martinJr1, martinJr2, martinJr3, martinJr4;
 
 		public SampleData() {
-			persons = new ArrayList<Person>();
+			families = new ArrayList<>();
+			persons = new ArrayList<>();
+			families.add(makeFamily1());
+			families.add(makeFamily2());
+			families.add(makeFamily3());
+			families.add(makeFamily4());
+			families.add(makeFamily5());
+		}
+
+		private Family makeFamily1() {
 			List<Person> children = new ArrayList<Person>();
-			persons.add(martin = new Person("Martin", 173, 73.7, children));
-			persons.add(mary = new Person("Mary", 165, 57.0, children));
-			persons.add(john = new Person("John", 107, 26.3, null));
-			persons.add(martinJr1 = new Person("Martin Jr 1", 97, 19.2, null));
-			persons.add(martinJr2 = new Person("Martin Jr 2", 95, 18.7, null));
-			persons.add(martinJr3 = new Person("Martin Jr 3", 74, 10.2, null));
-			persons.add(martinJr4 = new Person("Martin Jr 4", 57, 5.2, null));
+			persons.add(martin = new Person("Martin", 173, 73.7));
+			persons.add(mary = new Person("Mary", 165, 57.0));
+			persons.add(john = new Person("John", 107, 26.3));
+			persons.add(martinJr1 = new Person("Martin Jr 1", 97, 19.2));
+			persons.add(martinJr2 = new Person("Martin Jr 2", 95, 18.7));
+			persons.add(martinJr3 = new Person("Martin Jr 3", 74, 10.2));
+			persons.add(martinJr4 = new Person("Martin Jr 4", 57, 5.2));
 			children.add(john);
 			children.add(martinJr1);
 			children.add(martinJr2);
 			children.add(martinJr3);
 			children.add(martinJr4);
+			return new Family(martin, mary, children);
+		}
+
+		private Family makeFamily2() {
+			Person tarzan, jane, cheeta;
+			List<Person> children = new ArrayList<Person>();
+			tarzan = new Person("Tarzan", 187, 92.7);
+			jane = new Person("Jane", 175, 62.0);
+			cheeta = new Person("Cheeta", 88, 26.3);
+			children.add(cheeta);
+			return new Family(tarzan, jane, children);
+		}
+
+		private Family makeFamily3() {
+			Person romeo, juliette, romeoJr1, romeoJr2, romeoJr3;
+			List<Person> children = new ArrayList<Person>();
+			romeo = new Person("Romeo", 173, 82.7);
+			juliette = new Person("Juliette", 165, 52.0);
+			romeoJr1 = new Person("Romeo Jr 1", 97, 19.2);
+			romeoJr2 = new Person("Romeo Jr 2", 95, 18.7);
+			romeoJr3 = new Person("Romeo Jr 3", 74, 10.2);
+			children.add(romeoJr1);
+			children.add(romeoJr2);
+			children.add(romeoJr3);
+			return new Family(romeo, juliette, children);
+		}
+
+		private Family makeFamily4() {
+			Person donald, daisy, riri, fifi, loulou;
+			List<Person> children = new ArrayList<Person>();
+			donald = new Person("Donald", 135, 53.5);
+			daisy = new Person("Daisy", 123, 48.6);
+			riri = new Person("Riri", 74, 10.3);
+			fifi = new Person("Fifi", 74, 10.1);
+			loulou = new Person("Loulou", 74, 10.2);
+			children.add(riri);
+			children.add(fifi);
+			children.add(loulou);
+			return new Family(donald, daisy, children);
+		}
+
+		private Family makeFamily5() {
+			Person adam, eve, cain, abel, seth;
+			List<Person> children = new ArrayList<Person>();
+			adam = new Person("Adam", 178, 84.7);
+			eve = new Person("Eve", 168, 54.0);
+			cain = new Person("Cain", 130, 37.2);
+			abel = new Person("Abel", 127, 28.1);
+			seth = new Person("Seth", 107, 10.2);
+			children.add(cain);
+			children.add(abel);
+			children.add(seth);
+			return new Family(adam, eve, children);
 		}
 
 		public static class Person {
 			public String name;
 			public int size;
 			public double weight;
-			public List<Person> children;
 
-			public Person(String name, int size, double weight, List<Person> children) {
+			public Person(String name, int size, double weight) {
 				super();
 				this.name = name;
 				this.size = size;
 				this.weight = weight;
-				this.children = children;
 			}
 
 		}
+
+		public static class Family {
+			public Person father;
+			public Person mother;
+			public List<Person> children;
+			public List<Person> persons;
+
+			public Family(Person father, Person mother, List<Person> children) {
+				super();
+				this.father = father;
+				this.mother = mother;
+				this.children = children;
+				persons = new ArrayList<>();
+				persons.add(father);
+				persons.add(mother);
+				persons.addAll(children);
+			}
+
+		}
+
 	}
 
 }
