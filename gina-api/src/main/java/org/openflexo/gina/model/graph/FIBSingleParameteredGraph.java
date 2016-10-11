@@ -83,7 +83,7 @@ public interface FIBSingleParameteredGraph extends FIBGraph {
 			return graphBindingModel;
 		}
 
-		private BindingModel createGraphBindingModel() {
+		protected BindingModel createGraphBindingModel() {
 			graphBindingModel = new BindingModel(getBindingModel());
 			parameterBindingVariable = new BindingVariable(getParameterName(), getParameterType());
 			graphBindingModel.addToBindingVariables(parameterBindingVariable);
