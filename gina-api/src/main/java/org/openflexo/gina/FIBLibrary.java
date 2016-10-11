@@ -358,7 +358,12 @@ public interface FIBLibrary extends FIBLibraryContainer {
 			OutputStream out = null;
 			try {
 				out = resourceToSave.openOutputStream();
-				saveComponentToStream(component, resourceToSave, out);
+				if (out != null) {
+					saveComponentToStream(component, resourceToSave, out);
+				}
+				else {
+					LOGGER.warning("Could not openOutStream for resource " + resourceToSave);
+				}
 				return true;
 			} catch (Exception e) {
 				e.printStackTrace();
