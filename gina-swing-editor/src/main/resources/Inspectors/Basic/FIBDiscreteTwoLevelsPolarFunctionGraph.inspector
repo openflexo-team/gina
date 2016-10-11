@@ -1,0 +1,39 @@
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.graph.FIBDiscreteTwoLevelsPolarFunctionGraph">
+	<Parameter name="title" value="Discrete function graph" />
+
+	<Label name="SecondaryParameterNameLabel" index="12" label="secondary_parameter_name"
+		constraints="twocols(location=left)" />
+	<TextField name="SecondaryParameterNameTF" data="data.secondaryParameterName"
+		index="13" constraints="twocols(location=right;expandHorizontally=true)"
+		columns="15" />
+
+	<Label name="SecondaryValuesLabel" label="secondary_values" index="14"
+		constraints="twocols(location=left)" localize="true" />
+	<Custom name="SecondaryValuesBinding" index="15"
+		componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.secondaryValues"
+		constraints="twocols(expandHorizontally=true;location=right)">
+	</Custom>
+
+	<Label name="SecondaryLabelsLabel" label="secondary_labels" index="16"
+		constraints="twocols(location=left)" localize="true" />
+	<Custom name="SecondaryLabelsBinding" index="17"
+		componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.secondaryLabels"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<!-- <Assignment variable="component.bindable" value="data.parameterExpressionDelegate" 
+			/> -->
+	</Custom>
+
+	<Label name="SecondaryAngleExtentLabel" label="secondary_angle_extent" index="18"
+		constraints="twocols(location=left)" localize="true" />
+	<Custom name="SecondaryAngleExtentBinding" index="19"
+		componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.secondaryAngleExtent"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<!-- <Assignment variable="component.bindable" value="data.parameterExpressionDelegate" 
+			/> -->
+	</Custom>
+
+</Inspector>

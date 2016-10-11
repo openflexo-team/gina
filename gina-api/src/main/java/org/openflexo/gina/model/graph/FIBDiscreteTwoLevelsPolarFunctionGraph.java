@@ -39,9 +39,16 @@
 
 package org.openflexo.gina.model.graph;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
 
+import org.openflexo.connie.BindingFactory;
+import org.openflexo.connie.BindingModel;
+import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.DefaultBindable;
+import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -63,16 +70,19 @@ import org.openflexo.model.annotations.XMLElement;
  * 
  */
 @ModelEntity
-@ImplementationClass(FIBDiscreteTwoLevelsPolarFunctionGraph.FIBDiscretePolarFunctionGraphImpl.class)
+@ImplementationClass(FIBDiscreteTwoLevelsPolarFunctionGraph.FIBDiscreteTwoLevelsPolarFunctionGraphImpl.class)
 @XMLElement
 public interface FIBDiscreteTwoLevelsPolarFunctionGraph extends FIBDiscretePolarFunctionGraph {
 
+	@PropertyIdentifier(type = String.class)
+	public static final String SECONDARY_PARAMETER_NAME_KEY = "secondaryParameterName";
+
 	@PropertyIdentifier(type = DataBinding.class)
-	public static final String SECONDARY_VALUES_KEY = "secondary_values";
+	public static final String SECONDARY_VALUES_KEY = "secondaryValues";
 	@PropertyIdentifier(type = DataBinding.class)
-	public static final String SECONDARY_LABELS_KEY = "labels";
+	public static final String SECONDARY_LABELS_KEY = "secondaryLabels";
 	@PropertyIdentifier(type = DataBinding.class)
-	public static final String SECONDARY_ANGLE_EXTENT_KEY = "angleExtent";
+	public static final String SECONDARY_ANGLE_EXTENT_KEY = "secondaryAngleExtent";
 
 	@Getter(SECONDARY_VALUES_KEY)
 	@XMLAttribute
@@ -81,12 +91,28 @@ public interface FIBDiscreteTwoLevelsPolarFunctionGraph extends FIBDiscretePolar
 	@Setter(SECONDARY_VALUES_KEY)
 	public void setSecondaryValues(DataBinding<List<?>> secondaryValues);
 
+	@Getter(SECONDARY_LABELS_KEY)
+	@XMLAttribute
+	public DataBinding<String> getSecondaryLabels();
+
+	@Setter(SECONDARY_LABELS_KEY)
+	public void setSecondaryLabels(DataBinding<String> label);
+
 	@Getter(SECONDARY_ANGLE_EXTENT_KEY)
 	@XMLAttribute
 	public DataBinding<Double> getSecondaryAngleExtent();
 
 	@Setter(SECONDARY_ANGLE_EXTENT_KEY)
 	public void setSecondaryAngleExtent(DataBinding<Double> angleExtent);
+
+	@Getter(value = SECONDARY_PARAMETER_NAME_KEY)
+	@XMLAttribute
+	public String getSecondaryParameterName();
+
+	@Setter(SECONDARY_PARAMETER_NAME_KEY)
+	public void setSecondaryParameterName(String parameterName);
+
+	public Type getSecondaryParameterType();
 
 	public static abstract class FIBDiscreteTwoLevelsPolarFunctionGraphImpl extends FIBDiscretePolarFunctionGraphImpl
 			implements FIBDiscreteTwoLevelsPolarFunctionGraph {
@@ -95,71 +121,68 @@ public interface FIBDiscreteTwoLevelsPolarFunctionGraph extends FIBDiscretePolar
 		private DataBinding<String> secondaryLabels = null;
 		private DataBinding<Double> secondaryAngleExtent = null;
 
-		// private BindingModel twoLevelsGraphBindingModel;
-		// protected BindingVariable parameterBindingVariable;
+		private BindingModel secondaryGraphBindingModel;
+		protected BindingVariable secondaryParameterBindingVariable;
+
+		private SecondaryParameterExpressionDelegate secondaryParameterExpressionDelegate;
 
 		public FIBDiscreteTwoLevelsPolarFunctionGraphImpl() {
+			secondaryParameterExpressionDelegate = new SecondaryParameterExpressionDelegate();
 		}
 
-		/*@Override
-		public BindingModel getGraphBindingModel() {
-			if (graphBindingModel == null) {
-				createGraphBindingModel();
+		public BindingModel getSecondaryGraphBindingModel() {
+			if (secondaryGraphBindingModel == null) {
+				createSecondaryGraphBindingModel();
 			}
-			return graphBindingModel;
+			return secondaryGraphBindingModel;
 		}
-		
+
+		protected BindingModel createSecondaryGraphBindingModel() {
+			secondaryGraphBindingModel = new BindingModel(getGraphBindingModel());
+			secondaryParameterBindingVariable = new BindingVariable(getSecondaryParameterName(), getSecondaryParameterType());
+			secondaryGraphBindingModel.addToBindingVariables(secondaryParameterBindingVariable);
+			return secondaryGraphBindingModel;
+		}
+
 		@Override
-		protected BindingModel createGraphBindingModel() {
-			graphBindingModel = new BindingModel(getBindingModel());
-			parameterBindingVariable = new BindingVariable(getParameterName(), getParameterType());
-			graphBindingModel.addToBindingVariables(parameterBindingVariable);
-			return graphBindingModel;
-		}*/
-
-		/*@Override
-		public void setParameterName(String parameterName) {
-			performSuperSetter(PARAMETER_NAME_KEY, parameterName);
-			if (parameterBindingVariable != null) {
-				parameterBindingVariable.setVariableName(parameterName);
+		public void setSecondaryParameterName(String parameterName) {
+			performSuperSetter(SECONDARY_PARAMETER_NAME_KEY, parameterName);
+			if (secondaryParameterBindingVariable != null) {
+				secondaryParameterBindingVariable.setVariableName(parameterName);
 			}
 		}
-		
+
 		@Override
 		public void revalidateBindings() {
-			if (values != null) {
-				values.revalidate();
-				if (parameterBindingVariable != null) {
-					parameterBindingVariable.setType(getParameterType());
+			if (secondaryValues != null) {
+				secondaryValues.revalidate();
+				if (secondaryParameterBindingVariable != null) {
+					secondaryParameterBindingVariable.setType(getSecondaryParameterType());
 				}
 			}
-			if (labels != null) {
-				labels.revalidate();
+			if (secondaryLabels != null) {
+				secondaryLabels.revalidate();
 			}
-			if (angleExtent != null) {
-				angleExtent.revalidate();
+			if (secondaryAngleExtent != null) {
+				secondaryAngleExtent.revalidate();
 			}
 			super.revalidateBindings();
 		}
-		
-		@Override
-		public ParameterExpressionDelegate getParameterExpressionDelegate() {
-			return parameterExpressionDelegate;
-		}
-		
+
 		@Override
 		public DataBinding<List<?>> getSecondaryValues() {
 			if (secondaryValues == null) {
-				secondaryValues = new DataBinding<List<?>>(parameterExpressionDelegate, List.class, DataBinding.BindingDefinitionType.GET);
+				secondaryValues = new DataBinding<List<?>>(getParameterExpressionDelegate(), List.class,
+						DataBinding.BindingDefinitionType.GET);
 				secondaryValues.setBindingName(SECONDARY_VALUES_KEY);
 			}
 			return secondaryValues;
 		}
-		
+
 		@Override
 		public void setSecondaryValues(DataBinding<List<?>> secondaryValues) {
 			if (secondaryValues != null) {
-				secondaryValues.setOwner(parameterExpressionDelegate);
+				secondaryValues.setOwner(getParameterExpressionDelegate());
 				secondaryValues.setDeclaredType(List.class);
 				secondaryValues.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 				secondaryValues.setBindingName(SECONDARY_VALUES_KEY);
@@ -168,96 +191,98 @@ public interface FIBDiscreteTwoLevelsPolarFunctionGraph extends FIBDiscretePolar
 			getPropertyChangeSupport().firePropertyChange(SECONDARY_VALUES_KEY, null, secondaryValues);
 			notifiedBindingChanged(this.secondaryValues);
 		}
-		
+
 		@Override
-		public DataBinding<Double> getAngleExtent() {
-			if (angleExtent == null) {
-				angleExtent = new DataBinding<Double>(parameterExpressionDelegate, Double.class, DataBinding.BindingDefinitionType.GET);
-				angleExtent.setBindingName(ANGLE_EXTENT_KEY);
+		public DataBinding<Double> getSecondaryAngleExtent() {
+			if (secondaryAngleExtent == null) {
+				secondaryAngleExtent = new DataBinding<Double>(secondaryParameterExpressionDelegate, Double.class,
+						DataBinding.BindingDefinitionType.GET);
+				secondaryAngleExtent.setBindingName(SECONDARY_ANGLE_EXTENT_KEY);
 			}
-			return angleExtent;
+			return secondaryAngleExtent;
 		}
-		
+
 		@Override
-		public void setAngleExtent(DataBinding<Double> angleExtent) {
-			if (angleExtent != null) {
-				angleExtent.setOwner(parameterExpressionDelegate);
-				angleExtent.setDeclaredType(Double.class);
-				angleExtent.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
-				angleExtent.setBindingName(ANGLE_EXTENT_KEY);
+		public void setSecondaryAngleExtent(DataBinding<Double> secondaryAngleExtent) {
+			if (secondaryAngleExtent != null) {
+				secondaryAngleExtent.setOwner(secondaryParameterExpressionDelegate);
+				secondaryAngleExtent.setDeclaredType(Double.class);
+				secondaryAngleExtent.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				secondaryAngleExtent.setBindingName(SECONDARY_ANGLE_EXTENT_KEY);
 			}
-			this.angleExtent = angleExtent;
-			getPropertyChangeSupport().firePropertyChange(ANGLE_EXTENT_KEY, null, angleExtent);
+			this.secondaryAngleExtent = secondaryAngleExtent;
+			getPropertyChangeSupport().firePropertyChange(SECONDARY_ANGLE_EXTENT_KEY, null, secondaryAngleExtent);
 		}
-		
+
 		@Override
-		public DataBinding<String> getLabels() {
-			if (labels == null) {
-				labels = new DataBinding<String>(parameterExpressionDelegate, String.class, DataBinding.BindingDefinitionType.GET);
-				labels.setBindingName(LABELS_KEY);
+		public DataBinding<String> getSecondaryLabels() {
+			if (secondaryLabels == null) {
+				secondaryLabels = new DataBinding<String>(secondaryParameterExpressionDelegate, String.class,
+						DataBinding.BindingDefinitionType.GET);
+				secondaryLabels.setBindingName(SECONDARY_LABELS_KEY);
 			}
-			return labels;
+			return secondaryLabels;
 		}
-		
+
 		@Override
-		public void setLabels(DataBinding<String> labels) {
-			if (labels != null) {
-				labels.setOwner(parameterExpressionDelegate);
-				labels.setDeclaredType(String.class);
-				labels.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
-				labels.setBindingName(LABELS_KEY);
+		public void setSecondaryLabels(DataBinding<String> secondaryLabels) {
+			if (secondaryLabels != null) {
+				secondaryLabels.setOwner(secondaryParameterExpressionDelegate);
+				secondaryLabels.setDeclaredType(String.class);
+				secondaryLabels.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				secondaryLabels.setBindingName(LABELS_KEY);
 			}
-			this.labels = labels;
-			getPropertyChangeSupport().firePropertyChange(LABELS_KEY, null, labels);
-			notifiedBindingChanged(this.labels);
+			this.secondaryLabels = secondaryLabels;
+			getPropertyChangeSupport().firePropertyChange(SECONDARY_LABELS_KEY, null, secondaryLabels);
+			notifiedBindingChanged(this.secondaryLabels);
 		}
-		
+
 		@Override
-		public Type getParameterType() {
-			if (getValues() != null && getValues().isSet() && getValues().isValid()) {
-				Type accessedType = getValues().getAnalyzedType();
+		public Type getSecondaryParameterType() {
+			if (getSecondaryValues() != null && getSecondaryValues().isSet() && getSecondaryValues().isValid()) {
+				Type accessedType = getSecondaryValues().getAnalyzedType();
 				if (accessedType instanceof ParameterizedType && ((ParameterizedType) accessedType).getActualTypeArguments().length > 0) {
 					return ((ParameterizedType) accessedType).getActualTypeArguments()[0];
 				}
 			}
 			return Object.class;
 		}
-		
+
 		@Override
 		public void notifiedBindingChanged(DataBinding<?> binding) {
 			super.notifiedBindingChanged(binding);
-			if (binding == values) {
-				if (parameterBindingVariable != null) {
-					// System.out.println("Changing type to " + getParameterType());
-					parameterBindingVariable.setType(getParameterType());
+			if (binding == secondaryValues) {
+				if (secondaryParameterBindingVariable != null) {
+					// System.out.println("Changing type to " + getSecondaryParameterType());
+					secondaryParameterBindingVariable.setType(getSecondaryParameterType());
 				}
 			}
 		}
-		
-		private class ParameterExpressionDelegate extends DefaultBindable {
+
+		private class SecondaryParameterExpressionDelegate extends DefaultBindable {
 			@Override
 			public BindingModel getBindingModel() {
-				return getGraphBindingModel();
+				return getSecondaryGraphBindingModel();
 			}
-		
+
 			public FIBComponent getComponent() {
-				return FIBDiscretePolarFunctionGraphImpl.this;
+				return FIBDiscreteTwoLevelsPolarFunctionGraphImpl.this;
 			}
-		
+
 			@Override
 			public BindingFactory getBindingFactory() {
 				return getComponent().getBindingFactory();
 			}
-		
+
 			@Override
 			public void notifiedBindingChanged(DataBinding<?> dataBinding) {
 			}
-		
+
 			@Override
 			public void notifiedBindingDecoded(DataBinding<?> dataBinding) {
 			}
-		
-		}*/
+
+		}
 
 	}
 }

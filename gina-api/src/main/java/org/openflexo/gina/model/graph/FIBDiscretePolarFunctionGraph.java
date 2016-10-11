@@ -105,7 +105,6 @@ public interface FIBDiscretePolarFunctionGraph extends FIBPolarFunctionGraph {
 			implements FIBDiscretePolarFunctionGraph {
 
 		private DataBinding<List<?>> values = null;
-		private DataBinding<List<?>> secondaryValues = null;
 		private DataBinding<String> labels = null;
 		private DataBinding<Double> angleExtent = null;
 		private ParameterExpressionDelegate parameterExpressionDelegate;
