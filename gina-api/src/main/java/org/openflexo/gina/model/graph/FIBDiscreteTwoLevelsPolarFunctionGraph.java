@@ -123,6 +123,8 @@ public interface FIBDiscreteTwoLevelsPolarFunctionGraph extends FIBDiscretePolar
 
 	public Type getSecondaryParameterType();
 
+	public BindingModel getSecondaryGraphBindingModel();
+
 	public static abstract class FIBDiscreteTwoLevelsPolarFunctionGraphImpl extends FIBDiscretePolarFunctionGraphImpl
 			implements FIBDiscreteTwoLevelsPolarFunctionGraph {
 
@@ -139,6 +141,7 @@ public interface FIBDiscreteTwoLevelsPolarFunctionGraph extends FIBDiscretePolar
 			secondaryParameterExpressionDelegate = new SecondaryParameterExpressionDelegate();
 		}
 
+		@Override
 		public BindingModel getSecondaryGraphBindingModel() {
 			if (secondaryGraphBindingModel == null) {
 				createSecondaryGraphBindingModel();

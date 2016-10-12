@@ -24,4 +24,17 @@
 		iteratorClassName="org.openflexo.gina.model.graph.FIBGraphFunction$GraphType"
 		autoSelectFirstRow="true" />
 
+	<Label index="8" label="angle_spacing" constraints="twocols(location=left)"
+		localize="true" visible="data.graphType == 'COLORED_STEPS'"/>
+	<Number index="9" minValue="0" maxValue="90" increment="0.5"
+		numberType="DoubleType" columns="3" data="data.angleSpacing"
+		constraints="twocols(location=right)" localize="true" visible="data.graphType == 'COLORED_STEPS'"/>
+
+	<Label index="10" label="steps_spacing" constraints="twocols(location=left)"
+		localize="true" visible="data.graphType == 'COLORED_STEPS'"/>
+	<Number index="11" minValue="0" maxValue="1" increment="0.05"
+		numberType="DoubleType" columns="3" data="data.stepsSpacing"
+		constraints="twocols(location=right)" localize="true" visible="data.graphType == 'COLORED_STEPS'"/>
+
+
 </Inspector>
