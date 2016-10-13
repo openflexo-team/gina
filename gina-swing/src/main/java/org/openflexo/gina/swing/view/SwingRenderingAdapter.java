@@ -131,7 +131,19 @@ public abstract class SwingRenderingAdapter<J extends JComponent> implements Ren
 
 	@Override
 	public boolean isVisible(J component) {
-		return getJComponent(component).isVisible();
+		JComponent current = component;
+		while (current != null) {
+			if (!current.isVisible()) {
+				return false;
+			}
+			if (current.getParent() instanceof JComponent) {
+				current = (JComponent) current.getParent();
+			}
+			else {
+				current = null;
+			}
+		}
+		return component.isVisible();
 	}
 
 	@Override
