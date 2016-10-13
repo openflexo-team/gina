@@ -176,6 +176,7 @@ public interface FIBDiscreteTwoLevelsPolarFunctionGraph extends FIBDiscretePolar
 
 		@Override
 		public void revalidateBindings() {
+			super.revalidateBindings();
 			if (secondaryValues != null) {
 				secondaryValues.revalidate();
 				if (secondaryParameterBindingVariable != null) {
@@ -188,7 +189,6 @@ public interface FIBDiscreteTwoLevelsPolarFunctionGraph extends FIBDiscretePolar
 			if (secondaryAngleExtent != null) {
 				secondaryAngleExtent.revalidate();
 			}
-			super.revalidateBindings();
 		}
 
 		/*@Override
@@ -281,9 +281,12 @@ public interface FIBDiscreteTwoLevelsPolarFunctionGraph extends FIBDiscretePolar
 		@Override
 		public void notifiedBindingChanged(DataBinding<?> binding) {
 			super.notifiedBindingChanged(binding);
+			if (binding == getValues()) {
+				// values have been changed, this will determine the type of secondary value type
+				notifiedBindingChanged(secondaryValues);
+			}
 			if (binding == secondaryValues) {
 				if (secondaryParameterBindingVariable != null) {
-					// System.out.println("Changing type to " + getSecondaryParameterType());
 					secondaryParameterBindingVariable.setType(getSecondaryParameterType());
 				}
 			}
