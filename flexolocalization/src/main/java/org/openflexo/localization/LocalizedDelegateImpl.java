@@ -128,6 +128,8 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			}
 		}
 		else {
+			if (localizedDirectory == null)
+				logger.warning("INVESTIGAGE: Localizer => localizedDirectory is null!" + this.toString());
 			localizedDirectoryResource = localizedDirectory;
 		}
 		_localizedDictionaries = new Hashtable<Language, Properties>();
