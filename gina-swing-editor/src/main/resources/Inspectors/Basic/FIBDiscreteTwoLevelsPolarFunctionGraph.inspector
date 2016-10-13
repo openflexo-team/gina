@@ -35,5 +35,12 @@
 		<!-- <Assignment variable="component.bindable" value="data.parameterExpressionDelegate" 
 			/> -->
 	</Custom>
+	
+		<Label name="DisplaySecondaryLabelsLabel" label="display_secondary_labels" index="24"
+		constraints="twocols(location=left)" localize="true" />
+	<CheckBox index="25" selected="false" localize="true"
+		constraints="twocols(location=right)" name="DisplaySecondaryLabelsCB" data="data.displaySecondaryLabels"
+		useScrollBar="false" />
+	
 
 </Inspector>
