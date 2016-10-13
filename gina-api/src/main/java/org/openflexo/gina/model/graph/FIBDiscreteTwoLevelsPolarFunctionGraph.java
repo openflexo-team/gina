@@ -86,6 +86,9 @@ public interface FIBDiscreteTwoLevelsPolarFunctionGraph extends FIBDiscretePolar
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String SECONDARY_ANGLE_EXTENT_KEY = "secondaryAngleExtent";
 
+	@PropertyIdentifier(type = Boolean.class)
+	public static final String DISPLAY_SECONDARY_LABELS_KEY = "displaySecondaryLabels";
+
 	@Getter(SECONDARY_VALUES_KEY)
 	@XMLAttribute
 	public DataBinding<List<?>> getSecondaryValues();
@@ -124,6 +127,13 @@ public interface FIBDiscreteTwoLevelsPolarFunctionGraph extends FIBDiscretePolar
 	public Type getSecondaryParameterType();
 
 	public BindingModel getSecondaryGraphBindingModel();
+
+	@Getter(value = DISPLAY_SECONDARY_LABELS_KEY, defaultValue = "true")
+	@XMLAttribute
+	public boolean getDisplaySecondaryLabels();
+
+	@Setter(DISPLAY_SECONDARY_LABELS_KEY)
+	public void setDisplaySecondaryLabels(boolean displayLabels);
 
 	public static abstract class FIBDiscreteTwoLevelsPolarFunctionGraphImpl extends FIBDiscretePolarFunctionGraphImpl
 			implements FIBDiscreteTwoLevelsPolarFunctionGraph {
