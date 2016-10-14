@@ -44,6 +44,7 @@ import java.awt.Font;
 import java.io.File;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
@@ -82,6 +83,10 @@ import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.rm.BasicResourceImpl;
+import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
+import org.openflexo.rm.FileResourceImpl;
+import org.openflexo.rm.Resource;
 
 @ModelEntity
 @ImplementationClass(FIBBrowserElement.FIBBrowserElementImpl.class)
@@ -96,6 +101,8 @@ public interface FIBBrowserElement extends FIBModelObject {
 	public static final String LABEL_KEY = "label";
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String ICON_KEY = "icon";
+	@PropertyIdentifier(type = Resource.class)
+	public static final String IMAGE_ICON_RESOURCE_KEY = "imageIconResource";
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String TOOLTIP_KEY = "tooltip";
 	@PropertyIdentifier(type = DataBinding.class)
@@ -298,9 +305,16 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 	public void moveToBottom(FIBBrowserElementChildren e);
 
+	@Getter(value = IMAGE_ICON_RESOURCE_KEY, isStringConvertable = true)
+	@XMLAttribute
+	public Resource getImageIconResource();
+
+	@Setter(IMAGE_ICON_RESOURCE_KEY)
+	public void setImageIconResource(Resource imageIconResource);
+
 	public File getImageIconFile();
 
-	public void setImageIconFile(File imageIconFile);
+	public void setImageIconFile(File file) throws MalformedURLException, LocatorNotFoundException;
 
 	@Deprecated
 	public FIBBrowserElementChildren createChildren();
@@ -344,7 +358,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		private DataBinding<Boolean> enabled;
 		private DataBinding<Boolean> visible;
 
-		private File imageIconFile;
+		private Resource imageIconResource;
 		private ImageIcon imageIcon;
 		private boolean isEditable = false;
 		private DataBinding<String> editableLabel;
@@ -741,18 +755,39 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}
 
 		@Override
-		public File getImageIconFile() {
-			return imageIconFile;
+		public Resource getImageIconResource() {
+			return imageIconResource;
 		}
 
 		@Override
-		public void setImageIconFile(File imageIconFile) {
-			FIBPropertyNotification<File> notification = requireChange(IMAGE_ICON_FILE_KEY, imageIconFile);
+		public void setImageIconResource(Resource imageIconResource) {
+			FIBPropertyNotification<Resource> notification = requireChange(IMAGE_ICON_RESOURCE_KEY, imageIconResource);
 			if (notification != null) {
-				this.imageIconFile = imageIconFile;
-				this.imageIcon = new ImageIcon(imageIconFile.getAbsolutePath());
+				this.imageIconResource = imageIconResource;
+				if (imageIconResource instanceof FileResourceImpl) {
+					this.imageIcon = new ImageIcon(((FileResourceImpl) imageIconResource).getFile().getAbsolutePath());
+				}
+				else if (imageIconResource instanceof BasicResourceImpl) {
+					this.imageIcon = new ImageIcon(((BasicResourceImpl) imageIconResource).getURL());
+				}
 				hasChanged(notification);
 			}
+		}
+
+		// TODO : this is a Workaround for Fib File selector...It has to be fixed in a more efficient way
+		@Override
+		public File getImageIconFile() {
+			if (imageIconResource instanceof FileResourceImpl) {
+				return ((FileResourceImpl) imageIconResource).getFile();
+			}
+			else
+				return null;
+		}
+
+		@Override
+		public void setImageIconFile(File file) throws MalformedURLException, LocatorNotFoundException {
+
+			this.setImageIconResource(new FileResourceImpl(file));
 		}
 
 		@Override
