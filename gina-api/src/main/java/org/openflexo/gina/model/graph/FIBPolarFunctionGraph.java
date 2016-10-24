@@ -39,8 +39,12 @@
 
 package org.openflexo.gina.model.graph;
 
+import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 
 /**
  * Represents a 2D-base polar graph [r=f(A)] representing functions where:
@@ -57,6 +61,34 @@ import org.openflexo.model.annotations.ModelEntity;
 @ModelEntity(isAbstract = true)
 @ImplementationClass(FIBPolarFunctionGraph.FIBPolarFunctionGraphImpl.class)
 public interface FIBPolarFunctionGraph extends FIBSingleParameteredGraph {
+
+	@PropertyIdentifier(type = Boolean.class)
+	public static final String DISPLAY_REFERENCE_MARKS_KEY = "displayReferenceMarks";
+	@PropertyIdentifier(type = Boolean.class)
+	public static final String DISPLAY_LABELS_KEY = "displayLabels";
+	@PropertyIdentifier(type = Boolean.class)
+	public static final String DISPLAY_GRID_KEY = "displayGrid";
+
+	@Getter(value = DISPLAY_REFERENCE_MARKS_KEY, defaultValue = "true")
+	@XMLAttribute
+	public boolean getDisplayReferenceMarks();
+
+	@Setter(DISPLAY_REFERENCE_MARKS_KEY)
+	public void setDisplayReferenceMarks(boolean displayReferenceMarks);
+
+	@Getter(value = DISPLAY_LABELS_KEY, defaultValue = "true")
+	@XMLAttribute
+	public boolean getDisplayLabels();
+
+	@Setter(DISPLAY_LABELS_KEY)
+	public void setDisplayLabels(boolean displayLabels);
+
+	@Getter(value = DISPLAY_GRID_KEY, defaultValue = "false")
+	@XMLAttribute
+	public boolean getDisplayGrid();
+
+	@Setter(DISPLAY_GRID_KEY)
+	public void setDisplayGrid(boolean displayGrid);
 
 	public static abstract class FIBPolarFunctionGraphImpl extends FIBSingleParameteredGraphImpl implements FIBPolarFunctionGraph {
 

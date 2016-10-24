@@ -242,7 +242,7 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 	}
 
 	private void performAssignments() {
-		if (isDeleted()) {
+		if (isDeleted() || getWidget() == null) {
 			return;
 		}
 		for (FIBCustomAssignment assign : getWidget().getAssignments()) {

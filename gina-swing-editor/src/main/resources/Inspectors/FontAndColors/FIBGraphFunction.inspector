@@ -1,6 +1,6 @@
 <Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
 	dataClassName="org.openflexo.gina.model.graph.FIBGraphFunction">
-	<Parameter name="title" value="Graph function prout" />
+	<Parameter name="title" value="Graph function" />
 
 	<Label label="foreground" index="0" constraints="twocols(location=left;insetsTop=5)"
 		localize="true" />

@@ -153,6 +153,7 @@ public interface FIBDiscretePolarFunctionGraph extends FIBPolarFunctionGraph {
 			}
 			this.values = values;
 			getPropertyChangeSupport().firePropertyChange(VALUES_KEY, null, values);
+			notifiedBindingChanged(this.values);
 		}
 
 		@Override
@@ -195,6 +196,7 @@ public interface FIBDiscretePolarFunctionGraph extends FIBPolarFunctionGraph {
 			}
 			this.labels = labels;
 			getPropertyChangeSupport().firePropertyChange(LABELS_KEY, null, labels);
+			notifiedBindingChanged(this.labels);
 		}
 
 		@Override
@@ -213,7 +215,7 @@ public interface FIBDiscretePolarFunctionGraph extends FIBPolarFunctionGraph {
 			super.notifiedBindingChanged(binding);
 			if (binding == values) {
 				if (parameterBindingVariable != null) {
-					System.out.println("Changing type to " + getParameterType());
+					// System.out.println("Changing type to " + getParameterType());
 					parameterBindingVariable.setType(getParameterType());
 				}
 			}

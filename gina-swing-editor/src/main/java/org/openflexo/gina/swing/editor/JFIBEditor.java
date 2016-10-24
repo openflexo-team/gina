@@ -217,6 +217,8 @@ public class JFIBEditor extends JFrame implements InteractiveFIBEditor {
 			}
 		});
 
+		editor = getFIBEditor();
+
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(centerPanel, BorderLayout.CENTER);
 

@@ -48,6 +48,7 @@ import org.openflexo.gina.model.widget.FIBImage;
 import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.impl.FIBWidgetViewImpl;
 import org.openflexo.gina.view.widget.FIBImageWidget;
+import org.openflexo.rm.Resource;
 import org.openflexo.swing.ImageUtils;
 
 /**
@@ -150,6 +151,7 @@ public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, 
 	}
 
 	private Image originalImage;
+	private Resource loadedImageResource = null;
 
 	protected void updateImageSizeAdjustment() {
 		// System.out.println("originalImage = " + originalImage);
@@ -160,13 +162,17 @@ public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, 
 	}
 
 	protected void updateImageFile() {
-		if (getWidget().getImageFile() != null) {
-			// if (getWidget().getImageFile().exists()) {
-			originalImage = ImageUtils.loadImageFromResource(getWidget().getImageFile());
-			// System.out.println("set image: " + originalImage);
-			updateImageDefaultSize(originalImage);
-			getRenderingAdapter().setImage(getTechnologyComponent(), originalImage, this);
-			// }
+		if (notEquals(getWidget().getImageFile(), loadedImageResource)) {
+			if (getWidget().getImageFile() != null) {
+				originalImage = ImageUtils.loadImageFromResource(getWidget().getImageFile());
+				loadedImageResource = getWidget().getImageFile();
+				updateImageDefaultSize(originalImage);
+				getRenderingAdapter().setImage(getTechnologyComponent(), originalImage, this);
+			}
+			else {
+				originalImage = null;
+				loadedImageResource = null;
+			}
 		}
 	}
 

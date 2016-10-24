@@ -75,7 +75,7 @@ import org.openflexo.rm.Resource;
 @XMLElement(xmlTag = "FIBReferencedComponent")
 public interface FIBReferencedComponent extends FIBWidget {
 
-	@PropertyIdentifier(type = File.class)
+	@PropertyIdentifier(type = Resource.class)
 	public static final String COMPONENT_FILE_KEY = "componentFile";
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String DYNAMIC_COMPONENT_FILE_KEY = "dynamicComponentFile";

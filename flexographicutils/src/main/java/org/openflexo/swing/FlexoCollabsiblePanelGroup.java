@@ -38,6 +38,9 @@
 
 package org.openflexo.swing;
 
+import java.awt.Dimension;
+import java.awt.LayoutManager;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +48,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JViewport;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.Scrollable;
+import javax.swing.SwingConstants;
 
 public class FlexoCollabsiblePanelGroup extends JScrollPane {
 
@@ -54,9 +60,57 @@ public class FlexoCollabsiblePanelGroup extends JScrollPane {
 	private FlexoCollabsiblePanel openedPanel;
 	private final JPanel mainPane;
 
+	/**
+	 * Specific implementation of a Scrollable scrolling only vertically.<br>
+	 * Width automatically adapts itself to available space
+	 * 
+	 * @author sylvain
+	 *
+	 */
+	public class JScrollablePanel extends JPanel implements Scrollable {
+
+		public JScrollablePanel(LayoutManager lm) {
+			super(lm);
+		}
+
+		@Override
+		public Dimension getPreferredScrollableViewportSize() {
+			return getPreferredSize();
+		}
+
+		@Override
+		public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
+			return 10;
+		}
+
+		@Override
+		public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
+			return (orientation == SwingConstants.VERTICAL) ? visibleRect.height : visibleRect.width;
+		}
+
+		@Override
+		public boolean getScrollableTracksViewportWidth() {
+			// We always return true here, as we want this panel always take the available
+			// width space
+			/*if (getParent() instanceof JViewport) {
+				return (((JViewport) getParent()).getWidth() > getPreferredSize().width);
+			}
+			return false;*/
+			return true;
+		}
+
+		@Override
+		public boolean getScrollableTracksViewportHeight() {
+			if (getParent() instanceof JViewport) {
+				return (((JViewport) getParent()).getHeight() > getPreferredSize().height);
+			}
+			return false;
+		}
+	}
+
 	public FlexoCollabsiblePanelGroup() {
 		super();
-		mainPane = new JPanel(new VerticalLayout());
+		mainPane = new JScrollablePanel(new VerticalLayout());
 		panels = new ArrayList<>();
 		openedPanel = null;
 		setViewportView(mainPane);

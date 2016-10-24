@@ -137,6 +137,7 @@ public interface FIBDiscreteSimpleFunctionGraph extends FIBSimpleFunctionGraph {
 			}
 			this.values = values;
 			getPropertyChangeSupport().firePropertyChange(VALUES_KEY, null, values);
+			notifiedBindingChanged(this.values);
 		}
 
 		@Override

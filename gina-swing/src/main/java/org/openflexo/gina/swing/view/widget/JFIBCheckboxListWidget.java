@@ -41,7 +41,6 @@ package org.openflexo.gina.swing.view.widget;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -56,7 +55,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
@@ -146,8 +144,6 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 			rebuildCheckboxes();
 		}
 
-		private boolean isLayouted = false;
-
 		public List<T> getSelectedValues() {
 			return selectedValues;
 		}
@@ -174,39 +170,7 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 			rebuildCheckboxes();
 		}
 
-		private void resizeWidthTo(int width) {
-			FontMetrics fm = getFontMetrics(getFont());
-			for (int i = 0; i < widget.getMultipleValueModel().getSize(); i++) {
-				T object = widget.getMultipleValueModel().getElementAt(i);
-				String labelText = widget.getStringRepresentation(object);
-				if (labelText != null) {
-					List<String> lines = trimString(labelText, width, fm);
-					StringBuffer htmlText = new StringBuffer();
-					htmlText.append("<html>");
-					for (int j = 0; j < lines.size(); j++) {
-						String line = lines.get(j);
-						htmlText.append(line + (j == lines.size() - 1 ? "" : "<br>"));
-					}
-					htmlText.append("</html>");
-					labelsArray[i].setText(htmlText.toString());
-				}
-			}
-			revalidate();
-			repaint();
-		}
-
 		final protected void rebuildCheckboxes() {
-
-			isLayouted = false;
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					if (!isLayouted && JCheckBoxListPanel.this.widget.getWidget().getTrimText()) {
-						isLayouted = true;
-						resizeWidthTo(getSize().width - 50);
-					}
-				}
-			});
 
 			checkboxesArray = new JCheckBox[widget.getMultipleValueModel().getSize()];
 			labelsArray = new JLabel[widget.getMultipleValueModel().getSize()];
@@ -228,7 +192,8 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 				c.anchor = GridBagConstraints.NORTHEAST;
 				add(cb, c);
 
-				JLabel label = new JLabel(widget.getWidget().getTrimText() ? "" : widget.getStringRepresentation(object));
+				JLabel label = new JLabel(widget.getWidget().getTrimText() ? "<html>" + widget.getStringRepresentation(object) + "</html>"
+						: widget.getStringRepresentation(object));
 				labelsArray[i] = label;
 
 				// Handle the case of icon should be displayed
@@ -322,9 +287,12 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 							selectedValues.remove(value);
 						}
 					}
+
 					widget.selectionChanged();
 					widget.setSelected(selectedValues);
 					widget.setSelectedIndex(index);
+
+					widget.performValueChangedAction();
 				}
 			}
 

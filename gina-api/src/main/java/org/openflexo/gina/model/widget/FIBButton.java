@@ -75,6 +75,8 @@ public interface FIBButton extends FIBWidget {
 	public static final String LABEL_KEY = "label";
 	@PropertyIdentifier(type = Boolean.class)
 	public static final String IS_DEFAULT_KEY = "isDefault";
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String DYNAMIC_LABEL_KEY = "dynamicLabel";
 
 	@Getter(value = ACTION_KEY)
 	@XMLAttribute
@@ -104,6 +106,13 @@ public interface FIBButton extends FIBWidget {
 	@Setter(LABEL_KEY)
 	public void setLabel(String label);
 
+	@Getter(value = DYNAMIC_LABEL_KEY)
+	@XMLAttribute
+	public DataBinding<String> getDynamicLabel();
+
+	@Setter(DYNAMIC_LABEL_KEY)
+	public void setDynamicLabel(DataBinding<String> dynamicLabel);
+
 	@Getter(value = IS_DEFAULT_KEY)
 	@XMLAttribute(xmlTag = "default")
 	public Boolean isDefault();
@@ -125,6 +134,7 @@ public interface FIBButton extends FIBWidget {
 		private String label;
 		private Boolean isDefault;
 		private DataBinding<Icon> buttonIcon;
+		private DataBinding<String> dynamicLabel;
 
 		public FIBButtonImpl() {
 		}
@@ -190,6 +200,33 @@ public interface FIBButton extends FIBWidget {
 				this.label = label;
 				hasChanged(notification);
 			}
+		}
+
+		@Override
+		public DataBinding<String> getDynamicLabel() {
+
+			if (dynamicLabel == null) {
+				dynamicLabel = new DataBinding<String>(this, String.class, DataBinding.BindingDefinitionType.GET);
+				dynamicLabel.setBindingName("dynamicLabel");
+			}
+			return dynamicLabel;
+		}
+
+		@Override
+		public void setDynamicLabel(DataBinding<String> dynamicLabel) {
+
+			FIBPropertyNotification<DataBinding<String>> notification = requireChange(DYNAMIC_LABEL_KEY, dynamicLabel);
+			if (notification != null) {
+				if (dynamicLabel != null) {
+					dynamicLabel.setOwner(this);
+					dynamicLabel.setDeclaredType(String.class);
+					dynamicLabel.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+					dynamicLabel.setBindingName("dynamicLabel");
+				}
+				this.dynamicLabel = dynamicLabel;
+				notify(notification);
+			}
+
 		}
 
 		@Override

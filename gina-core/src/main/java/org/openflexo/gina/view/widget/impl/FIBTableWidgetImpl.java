@@ -327,50 +327,9 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 						// Take care to this option as it may cause many issues
 						// A better solution is to remove this option and let
 						// the newSelection manager manage such feature
-						/*
-						 * System.out.println("lsm class = " +
-						 * getListSelectionModel().getClass());
-						 * System.out.println("asi=" +
-						 * getListSelectionModel().getAnchorSelectionIndex());
-						 * System.out.println("lsi=" +
-						 * getListSelectionModel().getLeadSelectionIndex());
-						 * System.out.println("msi=" +
-						 * getListSelectionModel().getMinSelectionIndex());
-						 * System.out.println("msi=" +
-						 * getListSelectionModel().getMaxSelectionIndex()); for
-						 * (int i = 0; i < 5; i++) {
-						 * System.out.println("selected (" + i + ") : " +
-						 * getListSelectionModel().isSelectedIndex(i)); }
-						 */
 						getListSelectionModel().clearSelection();
 						getListSelectionModel().setSelectionInterval(0, 0);
-						/*
-						 * System.out.println("asi=" +
-						 * getListSelectionModel().getAnchorSelectionIndex());
-						 * System.out.println("lsi=" +
-						 * getListSelectionModel().getLeadSelectionIndex());
-						 * System.out.println("msi=" +
-						 * getListSelectionModel().getMinSelectionIndex());
-						 * System.out.println("msi=" +
-						 * getListSelectionModel().getMaxSelectionIndex()); for
-						 * (int i = 0; i < 5; i++) {
-						 * System.out.println("selected (" + i + ") : " +
-						 * getListSelectionModel().isSelectedIndex(i)); }
-						 */
-						// System.out.println(getListSelectionModel().);
-						/*
-						 * getListSelectionModel().clearSelection();
-						 * getListSelectionModel().setLeadSelectionIndex(0);
-						 * getListSelectionModel().setAnchorSelectionIndex(0);
-						 */
-						/*
-						 * SwingUtilities.invokeLater(new Runnable() {
-						 * 
-						 * @Override public void run() {
-						 * getListSelectionModel().addSelectionInterval(0, 0); }
-						 * });
-						 */
-						// addToSelection(getTableModel().getValues().get(0));
+						setSelected(getTableModel().getValues().get(0));
 					}
 				}
 				else {

@@ -76,12 +76,6 @@ public interface FIBContinuousPolarFunctionGraph extends FIBPolarFunctionGraph {
 	public static final String STEPS_NUMBER_KEY = "stepsNumber";
 	@PropertyIdentifier(type = Boolean.class)
 	public static final String DISPLAY_ANGLE_TICKS_KEY = "displayAngleTicks";
-	@PropertyIdentifier(type = Boolean.class)
-	public static final String DISPLAY_REFERENCE_MARKS_KEY = "displayReferenceMarks";
-	@PropertyIdentifier(type = Boolean.class)
-	public static final String DISPLAY_LABELS_KEY = "displayLabels";
-	@PropertyIdentifier(type = Boolean.class)
-	public static final String DISPLAY_GRID_KEY = "displayGrid";
 
 	@Getter(ANGLE_TICK_SPACING_KEY)
 	@XMLAttribute
@@ -103,27 +97,6 @@ public interface FIBContinuousPolarFunctionGraph extends FIBPolarFunctionGraph {
 
 	@Setter(DISPLAY_ANGLE_TICKS_KEY)
 	public void setDisplayAngleTicks(boolean displayAngleTicks);
-
-	@Getter(value = DISPLAY_REFERENCE_MARKS_KEY, defaultValue = "true")
-	@XMLAttribute
-	public boolean getDisplayReferenceMarks();
-
-	@Setter(DISPLAY_REFERENCE_MARKS_KEY)
-	public void setDisplayReferenceMarks(boolean displayReferenceMarks);
-
-	@Getter(value = DISPLAY_LABELS_KEY, defaultValue = "true")
-	@XMLAttribute
-	public boolean getDisplayLabels();
-
-	@Setter(DISPLAY_LABELS_KEY)
-	public void setDisplayLabels(boolean displayLabels);
-
-	@Getter(value = DISPLAY_GRID_KEY, defaultValue = "false")
-	@XMLAttribute
-	public boolean getDisplayGrid();
-
-	@Setter(DISPLAY_GRID_KEY)
-	public void setDisplayGrid(boolean displayGrid);
 
 	public static abstract class FIBContinuousPolarFunctionGraphImpl extends FIBPolarFunctionGraphImpl
 			implements FIBContinuousPolarFunctionGraph {

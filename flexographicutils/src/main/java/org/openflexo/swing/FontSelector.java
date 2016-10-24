@@ -162,10 +162,10 @@ public class FontSelector extends CustomPopup<Font> implements FontSelectionMode
 	}
 
 	public class FontDetailsPanel extends ResizablePanel {
-		private JFontChooser fontChooser;
+		private final JFontChooser fontChooser;
 		private JButton _applyButton;
 		private JButton _cancelButton;
-		private JPanel _controlPanel;
+		private final JPanel _controlPanel;
 
 		protected FontDetailsPanel(Font editedFont) {
 			super();
@@ -255,7 +255,7 @@ public class FontSelector extends CustomPopup<Font> implements FontSelectionMode
 	}*/
 
 	protected class FontPreviewPanel extends JPanel {
-		private JLabel previewLabel;
+		private final JLabel previewLabel;
 
 		protected FontPreviewPanel() {
 			super(new BorderLayout());
@@ -271,12 +271,27 @@ public class FontSelector extends CustomPopup<Font> implements FontSelectionMode
 			// logger.info("Update front panel with "+JFontChooser.fontDescription(getEditedObject())+" font="+getEditedObject());
 			previewLabel.setFont(getEditedObject());
 			if (FontSelector.super.getEditedObject() != null) {
-				previewLabel.setText(JFontChooser.fontDescription(getEditedObject()));
+				previewLabel.setText(fontDescription(getEditedObject()));
 			}
 			else {
 				previewLabel.setText("");
 			}
 		}
+
+		public String fontDescription(Font aFont) {
+			if (aFont == null) {
+				return "null";
+			}
+			String familyName = aFont.getFamily();
+			if (familyName.contains(" ")) {
+				familyName = familyName.substring(0, familyName.indexOf(" "));
+			}
+			if (familyName.length() > 10) {
+				familyName = familyName.substring(0, 10);
+			}
+			return familyName + "," + JFontChooser.localizedFontStyle(aFont) + "," + aFont.getSize() + "pt";
+		}
+
 	}
 
 }

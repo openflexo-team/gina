@@ -91,6 +91,10 @@ public interface FIBGraphFunction extends FIBModelObject {
 	public static final String BACKGROUND_COLOR_1_KEY = "backgroundColor1";
 	@PropertyIdentifier(type = Color.class)
 	public static final String BACKGROUND_COLOR_2_KEY = "backgroundColor2";
+	@PropertyIdentifier(type = Double.class)
+	public static final String ANGLE_SPACING_KEY = "angleSpacing";
+	@PropertyIdentifier(type = Double.class)
+	public static final String STEPS_SPACING_KEY = "stepsSpacing";
 
 	@Getter(value = OWNER_KEY)
 	@CloningStrategy(StrategyType.IGNORE)
@@ -140,6 +144,30 @@ public interface FIBGraphFunction extends FIBModelObject {
 
 	@Setter(BACKGROUND_COLOR_2_KEY)
 	public void setBackgroundColor2(Color backgroundColor);
+
+	/**
+	 * Return spacing angle (expressed in degrees)
+	 * 
+	 * @return
+	 */
+	@Getter(value = ANGLE_SPACING_KEY, defaultValue = "2.0")
+	@XMLAttribute
+	public double getAngleSpacing();
+
+	@Setter(ANGLE_SPACING_KEY)
+	public void setAngleSpacing(double angleSpacing);
+
+	/**
+	 * Return steps spacing (between 0.0 and 1.0, 0.0 means no spacing, 1.0 hide all steps)
+	 * 
+	 * @return
+	 */
+	@Getter(value = STEPS_SPACING_KEY, defaultValue = "0.1")
+	@XMLAttribute
+	public double getStepsSpacing();
+
+	@Setter(STEPS_SPACING_KEY)
+	public void setStepsSpacing(double stepsSpacing);
 
 	public Type getType();
 
@@ -205,6 +233,9 @@ public interface FIBGraphFunction extends FIBModelObject {
 
 		@Override
 		public BindingModel getBindingModel() {
+			if (getOwner() instanceof FIBDiscreteTwoLevelsPolarFunctionGraph) {
+				return ((FIBDiscreteTwoLevelsPolarFunctionGraph) getOwner()).getSecondaryGraphBindingModel();
+			}
 			if (getOwner() != null) {
 				return getOwner().getGraphBindingModel();
 			}

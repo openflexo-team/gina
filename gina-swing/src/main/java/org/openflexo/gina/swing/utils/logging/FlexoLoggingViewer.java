@@ -122,6 +122,9 @@ public class FlexoLoggingViewer implements HasPropertyChangeSupport {
 	}
 
 	public Icon getIconForLogRecord(LogRecord record) {
+		if (record == null) {
+			return null;
+		}
 		if (record.level == Level.WARNING) {
 			return UtilsIconLibrary.WARNING_ICON;
 		}

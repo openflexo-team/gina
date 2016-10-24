@@ -86,7 +86,7 @@ public class FlexoLocalization {
 
 	private static LocalizedDelegate mainLocalizer;
 
-	private static boolean uninitalizedLocalizationWarningDone = false;
+	// private static boolean uninitalizedLocalizationWarningDone = false;
 
 	/**
 	 * Initialize localization given a supplied localization delegate
@@ -94,7 +94,11 @@ public class FlexoLocalization {
 	 * @param delegate
 	 */
 	public static void initWith(LocalizedDelegate delegate) {
-		if (!FlexoLocalization.isInitialized()) {
+		if (FlexoLocalization.isInitialized()) {
+			logger.info("Redefine general locales with " + delegate);
+		}
+		mainLocalizer = delegate;
+		/*if (!FlexoLocalization.isInitialized()) {
 			mainLocalizer = delegate;
 		}
 		else {
@@ -102,7 +106,7 @@ public class FlexoLocalization {
 				logger.warning(
 						"Locales have already been initialized. Unless you know what you are doing, this should not happen is therefore prevented.");
 			}
-		}
+		}*/
 
 	}
 

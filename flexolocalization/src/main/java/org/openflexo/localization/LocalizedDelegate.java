@@ -114,6 +114,13 @@ public interface LocalizedDelegate extends HasPropertyChangeSupport {
 	public String localizedForKeyAndLanguage(String key, Language language, boolean createsNewEntryInFirstEditableParent);
 
 	/**
+	 * Return boolean indicating if this delegate defines a translation for supplied key and language
+	 * 
+	 * @return
+	 */
+	public boolean hasKey(String key, Language language, boolean recursive);
+
+	/**
 	 * Return a boolean indicating if this delegate handle creation of new entries<br>
 	 * When returning true, indicates that this delegate might be edited in this context.
 	 * 

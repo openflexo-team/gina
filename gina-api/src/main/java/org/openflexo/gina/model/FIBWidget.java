@@ -1108,6 +1108,9 @@ public abstract interface FIBWidget extends FIBComponent {
 
 		@Override
 		public void notifiedBindingChanged(DataBinding<?> binding) {
+			if (binding == null) {
+				return;
+			}
 			// If a binding changed its value, then notify related property (asserting binding name has been set to property name)
 			getPropertyChangeSupport().firePropertyChange(binding.getBindingName() != null ? binding.getBindingName() : "UnknownBinding",
 					null, binding);

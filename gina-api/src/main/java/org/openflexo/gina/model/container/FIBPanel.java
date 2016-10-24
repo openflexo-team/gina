@@ -42,13 +42,19 @@ package org.openflexo.gina.model.container;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Image;
+import java.io.File;
+import java.net.MalformedURLException;
 import java.util.logging.Logger;
 
 import javax.swing.BoxLayout;
 
+import org.openflexo.connie.DataBinding;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.FIBPropertyNotification;
+import org.openflexo.gina.model.widget.FIBImage.Align;
+import org.openflexo.gina.model.widget.FIBImage.SizeAdjustment;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -56,6 +62,9 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
+import org.openflexo.rm.FileResourceImpl;
+import org.openflexo.rm.Resource;
 
 /**
  * Represents a basic panel, as a container of some children component, with a given layout, and a border
@@ -166,6 +175,20 @@ public interface FIBPanel extends FIBContainer {
 	public static final String TRACK_VIEW_PORT_WIDTH_KEY = "trackViewPortWidth";
 	@PropertyIdentifier(type = boolean.class)
 	public static final String TRACK_VIEW_PORT_HEIGHT_KEY = "trackViewPortHeight";
+
+	// Background image
+	@PropertyIdentifier(type = Resource.class)
+	public static final String IMAGE_FILE_KEY = "imageFile";
+	@PropertyIdentifier(type = SizeAdjustment.class)
+	public static final String SIZE_ADJUSTMENT_KEY = "sizeAdjustment";
+	@PropertyIdentifier(type = Align.class)
+	public static final String ALIGN_KEY = "align";
+	@PropertyIdentifier(type = Integer.class)
+	public static final String IMAGE_WIDTH_KEY = "imageWidth";
+	@PropertyIdentifier(type = Integer.class)
+	public static final String IMAGE_HEIGHT_KEY = "imageHeight";
+	@PropertyIdentifier(type = Image.class)
+	public static final String DYNAMIC_BACKGROUND_IMAGE_KEY = "dynamicBackgroundImage";
 
 	@Override
 	@Getter(value = LAYOUT_KEY)
@@ -301,6 +324,56 @@ public interface FIBPanel extends FIBContainer {
 	@Setter(TRACK_VIEW_PORT_HEIGHT_KEY)
 	public void setTrackViewPortHeight(boolean trackViewPortHeight);
 
+	// Background image
+
+	@Getter(value = DYNAMIC_BACKGROUND_IMAGE_KEY)
+	@XMLAttribute
+	public DataBinding<Image> getDynamicBackgroundImage();
+
+	@Setter(DYNAMIC_BACKGROUND_IMAGE_KEY)
+	public void setDynamicBackgroundImage(DataBinding<Image> dynamicImage);
+
+	@Getter(value = IMAGE_FILE_KEY, isStringConvertable = true)
+	@XMLAttribute
+	public Resource getImageFile();
+
+	@Setter(IMAGE_FILE_KEY)
+	public void setImageFile(Resource imageFile);
+
+	// TODO : this is a Workaround for Fib File selector...It has to be fixed in a more efficient way
+	public File getImageActualFile();
+
+	// TODO : this is a Workaround for Fib File selector...It has to be fixed in a more efficient way
+	public void setImageActualFile(File file) throws MalformedURLException, LocatorNotFoundException;
+
+	@Getter(value = SIZE_ADJUSTMENT_KEY)
+	@XMLAttribute
+	public SizeAdjustment getSizeAdjustment();
+
+	@Setter(SIZE_ADJUSTMENT_KEY)
+	public void setSizeAdjustment(SizeAdjustment sizeAdjustment);
+
+	@Getter(value = ALIGN_KEY)
+	@XMLAttribute
+	public Align getAlign();
+
+	@Setter(ALIGN_KEY)
+	public void setAlign(Align align);
+
+	@Getter(value = IMAGE_WIDTH_KEY)
+	@XMLAttribute
+	public Integer getImageWidth();
+
+	@Setter(IMAGE_WIDTH_KEY)
+	public void setImageWidth(Integer imageWidth);
+
+	@Getter(value = IMAGE_HEIGHT_KEY)
+	@XMLAttribute
+	public Integer getImageHeight();
+
+	@Setter(IMAGE_HEIGHT_KEY)
+	public void setImageHeight(Integer imageHeight);
+
 	public static abstract class FIBPanelImpl extends FIBContainerImpl implements FIBPanel {
 
 		private static final Logger logger = Logger.getLogger(FIBPanel.class.getPackage().getName());
@@ -331,6 +404,13 @@ public interface FIBPanel extends FIBContainer {
 		private boolean trackViewPortHeight = true;
 
 		private boolean protectContent = false;
+
+		private Resource imageFile;
+		private Align align = Align.left;
+		private Integer imageWidth;
+		private Integer imageHeight;
+		private SizeAdjustment sizeAdjustment = SizeAdjustment.OriginalSize;
+		private DataBinding<Image> dynamicBackgroundImage;
 
 		public FIBPanelImpl() {
 			super();
@@ -708,6 +788,120 @@ public interface FIBPanel extends FIBContainer {
 			super.searchLocalized(retriever);
 			if (getBorder() == Border.titled) {
 				retriever.foundLocalized(getBorderTitle());
+			}
+		}
+
+		@Override
+		public DataBinding<Image> getDynamicBackgroundImage() {
+
+			if (dynamicBackgroundImage == null) {
+				dynamicBackgroundImage = new DataBinding<Image>(this, Image.class, DataBinding.BindingDefinitionType.GET);
+				dynamicBackgroundImage.setBindingName("dynamicBackgroundImage");
+			}
+			return dynamicBackgroundImage;
+		}
+
+		@Override
+		public void setDynamicBackgroundImage(DataBinding<Image> dynamicBackgroundImage) {
+
+			FIBPropertyNotification<DataBinding<Image>> notification = requireChange(DYNAMIC_BACKGROUND_IMAGE_KEY, dynamicBackgroundImage);
+			if (notification != null) {
+				if (dynamicBackgroundImage != null) {
+					dynamicBackgroundImage.setOwner(this);
+					dynamicBackgroundImage.setDeclaredType(Image.class);
+					dynamicBackgroundImage.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+					dynamicBackgroundImage.setBindingName("dynamicBackgroundImage");
+				}
+				this.dynamicBackgroundImage = dynamicBackgroundImage;
+				notify(notification);
+			}
+
+		}
+
+		@Override
+		public Resource getImageFile() {
+			return imageFile;
+		}
+
+		@Override
+		public void setImageFile(Resource imageFile) {
+			FIBPropertyNotification<Resource> notification = requireChange(IMAGE_FILE_KEY, imageFile);
+			if (notification != null) {
+				this.imageFile = imageFile;
+				hasChanged(notification);
+			}
+		}
+
+		// TODO : this is a Workaround for Fib File selector...It has to be fixed in a more efficient way
+		@Override
+		public File getImageActualFile() {
+			if (imageFile instanceof FileResourceImpl) {
+				return ((FileResourceImpl) imageFile).getFile();
+			}
+			else
+				return null;
+		}
+
+		// TODO : this is a Workaround for Fib File selector...It has to be fixed in a more efficient way
+		@Override
+		public void setImageActualFile(File file) throws MalformedURLException, LocatorNotFoundException {
+
+			this.setImageFile(new FileResourceImpl(file));
+		}
+
+		@Override
+		public Align getAlign() {
+			return align;
+		}
+
+		@Override
+		public void setAlign(Align align) {
+			FIBPropertyNotification<Align> notification = requireChange(ALIGN_KEY, align);
+			if (notification != null) {
+				this.align = align;
+				hasChanged(notification);
+			}
+		}
+
+		@Override
+		public SizeAdjustment getSizeAdjustment() {
+			return sizeAdjustment;
+		}
+
+		@Override
+		public void setSizeAdjustment(SizeAdjustment sizeAdjustment) {
+			FIBPropertyNotification<SizeAdjustment> notification = requireChange(SIZE_ADJUSTMENT_KEY, sizeAdjustment);
+			if (notification != null) {
+				this.sizeAdjustment = sizeAdjustment;
+				hasChanged(notification);
+			}
+		}
+
+		@Override
+		public Integer getImageWidth() {
+			return imageWidth;
+		}
+
+		@Override
+		public void setImageWidth(Integer imageWidth) {
+			FIBPropertyNotification<Integer> notification = requireChange(IMAGE_WIDTH_KEY, imageWidth);
+			if (notification != null) {
+				this.imageWidth = imageWidth;
+				hasChanged(notification);
+			}
+		}
+
+		@Override
+		public Integer getImageHeight() {
+			return imageHeight;
+		}
+
+		@Override
+		public void setImageHeight(Integer imageHeight) {
+			FIBPropertyNotification<Integer> notification = requireChange(IMAGE_HEIGHT_KEY, imageHeight);
+			if (notification != null) {
+				this.imageHeight = imageHeight;
+				hasChanged(notification);
 			}
 		}
 

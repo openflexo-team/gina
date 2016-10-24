@@ -61,7 +61,6 @@ public abstract class FIBCheckboxListWidgetImpl<C, T> extends FIBMultipleValueWi
 
 	public FIBCheckboxListWidgetImpl(FIBCheckboxList model, FIBController controller, CheckboxListRenderingAdapter<C, T> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
-		// listenDataAsListValueChange();
 	}
 
 	@Override
@@ -111,15 +110,6 @@ public abstract class FIBCheckboxListWidgetImpl<C, T> extends FIBMultipleValueWi
 		}
 	}
 
-	/*@Override
-	public boolean update() {
-		super.update();
-		if (listenerToDataAsListValue != null) {
-			listenerToDataAsListValue.refreshObserving();
-		}
-		return true;
-	}*/
-
 	@Override
 	protected FIBMultipleValueModel<T> createMultipleValueModel() {
 		return new FIBMultipleValueModelImpl();
@@ -136,12 +126,8 @@ public abstract class FIBCheckboxListWidgetImpl<C, T> extends FIBMultipleValueWi
 				logger.fine("updateWidgetFromModel()");
 			}
 
-			// widgetUpdating = true;
 			setSelectedValues(newValue);
-			// widgetUpdating = false;
-			// return true;
 		}
-		// return false;
 		return newValue;
 	}
 
@@ -177,7 +163,8 @@ public abstract class FIBCheckboxListWidgetImpl<C, T> extends FIBMultipleValueWi
 	public void propertyChange(PropertyChangeEvent evt) {
 		if ((evt.getPropertyName().equals(FIBWidget.FORMAT_KEY)) || (evt.getPropertyName().equals(FIBWidget.LOCALIZE_KEY))
 				|| (evt.getPropertyName().equals(FIBWidget.ICON_KEY)) || (evt.getPropertyName().equals(FIBMultipleValues.SHOW_ICON_KEY))
-				|| (evt.getPropertyName().equals(FIBMultipleValues.SHOW_TEXT_KEY))) {
+				|| (evt.getPropertyName().equals(FIBMultipleValues.SHOW_TEXT_KEY))
+				|| (evt.getPropertyName().equals(FIBCheckboxList.TRIM_TEXT_KEY))) {
 			updateCheckboxListLayout();
 		}
 		super.propertyChange(evt);
