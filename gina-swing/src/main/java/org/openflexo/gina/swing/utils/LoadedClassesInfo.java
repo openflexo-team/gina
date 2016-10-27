@@ -40,7 +40,6 @@ package org.openflexo.gina.swing.utils;
 
 import java.beans.PropertyChangeSupport;
 import java.lang.reflect.TypeVariable;
-import java.net.URL;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -85,7 +84,8 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 	private Hashtable<Package, PackageInfo> packages;
 	private List<PackageInfo> packageList;
 	private boolean needsReordering = true;
-	private Hashtable<String, List<ClassInfo>> classesForName;
+	private Hashtable<String, List<ClassInfo>> registeredClassesForName;
+	private Hashtable<String, Class<?>> loadedClassesForName;
 	private List<LoadedClassesInfo> instances;
 
 	private List<IgnoredPattern> ignoredPatterns;
@@ -138,7 +138,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		ignoredPatterns.add(new IgnoredPattern("org.jdom2.*"));
 
 		instances = new ArrayList<LoadedClassesInfo>();
-		classesForName = new Hashtable<String, List<ClassInfo>>();
+		registeredClassesForName = new Hashtable<String, List<ClassInfo>>();
 		packages = new Hashtable<Package, PackageInfo>() {
 			@Override
 			public synchronized PackageInfo put(Package key, PackageInfo value) {
@@ -153,17 +153,51 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		for (Package p : Package.getPackages()) {
 			registerPackage(p);
 		}
+
+		loadedClassesForName = new Hashtable<>();
+
 		final Class<?>[] classes = ClassScope.getLoadedClasses(loaders);
-		int classesBeeingRegistered = 0;
+		// int classesBeeingRegistered = 0;
 		for (Class<?> cls : classes) {
 			if (!isFiltered(cls)) {
-				classesBeeingRegistered++;
-				registerClass(cls);
-				String className = cls.getName();
-				URL classLocation = ClassScope.getClassLocation(cls);
-				System.out.println("" + classesBeeingRegistered + " - " + "Registered class: " + className + " from " + classLocation);
+				loadedClassesForName.put(cls.getName(), cls);
+
+				// classesBeeingRegistered++;
+				// registerClass(cls);
+				// String className = cls.getName();
+				// URL classLocation = ClassScope.getClassLocation(cls);
+				// System.out.println("" + classesBeeingRegistered + " - " + "Registered class: " + className + " from " + classLocation);
 			}
 		}
+	}
+
+	/**
+	 * Explicitely search in all loaded classes if
+	 */
+	public List<Class<?>> search(String partialClassName) {
+		LOGGER.info("*************** Searching class " + partialClassName);
+		List<Class<?>> foundClasses = new ArrayList<Class<?>>();
+		try {
+			Class foundClass = Class.forName(partialClassName);
+			foundClasses.add(foundClass);
+			LOGGER.info("Found class " + foundClass);
+		} catch (ClassNotFoundException e) {
+		}
+		for (PackageInfo packageInfo : getPackages()) {
+			try {
+				Class foundClass = Class.forName(packageInfo.getPackageName() + "." + partialClassName);
+				foundClasses.add(foundClass);
+				LOGGER.info("Found class " + foundClass);
+			} catch (ClassNotFoundException e) {
+			}
+		}
+		for (String s : loadedClassesForName.keySet()) {
+			if (s.contains(partialClassName)) {
+				foundClasses.add(loadedClassesForName.get(s));
+			}
+		}
+		LOGGER.info("*************** Returning: " + foundClasses);
+		return foundClasses;
 	}
 
 	private boolean isFiltered(Class aClass) {
@@ -262,8 +296,8 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 	}
 
-	public Hashtable<String, List<ClassInfo>> getClassesForName() {
-		return classesForName;
+	public Hashtable<String, List<ClassInfo>> getRegisteredClassesForName() {
+		return registeredClassesForName;
 	}
 
 	public class PackageInfo implements HasPropertyChangeSupport {
@@ -369,9 +403,9 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 		public ClassInfo(Class aClass) {
 			pcSupport = new PropertyChangeSupport(this);
-			List<ClassInfo> listOfClassesWithThatName = classesForName.get(aClass.getSimpleName());
+			List<ClassInfo> listOfClassesWithThatName = registeredClassesForName.get(aClass.getSimpleName());
 			if (listOfClassesWithThatName == null) {
-				classesForName.put(aClass.getSimpleName(), listOfClassesWithThatName = new ArrayList<>());
+				registeredClassesForName.put(aClass.getSimpleName(), listOfClassesWithThatName = new ArrayList<>());
 			}
 			listOfClassesWithThatName.add(this);
 			className = aClass.getSimpleName();

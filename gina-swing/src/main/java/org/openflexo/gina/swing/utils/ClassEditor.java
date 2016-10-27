@@ -176,7 +176,7 @@ public class ClassEditor extends PropertyChangedSupportDefaultImplementation {
 	 */
 	private void explicitelySearch() {
 		LOGGER.info("*************** Searching class " + filteredClassName);
-		Vector<Class> foundClasses = new Vector<Class>();
+		/*Vector<Class> foundClasses = new Vector<Class>();
 		try {
 			Class foundClass = Class.forName(filteredClassName);
 			foundClasses.add(foundClass);
@@ -191,6 +191,11 @@ public class ClassEditor extends PropertyChangedSupportDefaultImplementation {
 			} catch (ClassNotFoundException e) {
 			}
 		}
+		for (Class c : foundClasses) {
+			loadedClassesInfo.registerClass(c);
+		}*/
+
+		List<Class<?>> foundClasses = loadedClassesInfo.search(filteredClassName);
 		for (Class c : foundClasses) {
 			loadedClassesInfo.registerClass(c);
 		}
@@ -219,15 +224,15 @@ public class ClassEditor extends PropertyChangedSupportDefaultImplementation {
 					simpleName = patternString;
 				}
 				List<ClassInfo> exactMatches = new ArrayList<ClassInfo>();
-				if (loadedClassesInfo.getClassesForName().get(simpleName) != null) {
-					exactMatches = loadedClassesInfo.getClassesForName().get(simpleName);
+				if (loadedClassesInfo.getRegisteredClassesForName().get(simpleName) != null) {
+					exactMatches = loadedClassesInfo.getRegisteredClassesForName().get(simpleName);
 					matchingClasses.addAll(exactMatches);
 				}
 				Pattern pattern = Pattern.compile(patternString);
-				for (String s : loadedClassesInfo.getClassesForName().keySet()) {
+				for (String s : loadedClassesInfo.getRegisteredClassesForName().keySet()) {
 					Matcher matcher = pattern.matcher(s);
 					if (matcher.find()) {
-						for (ClassInfo potentialMatch : loadedClassesInfo.getClassesForName().get(s)) {
+						for (ClassInfo potentialMatch : loadedClassesInfo.getRegisteredClassesForName().get(s)) {
 							PackageInfo packageInfo = loadedClassesInfo.registerPackage(potentialMatch.getClazz().getPackage());
 							if (!packageInfo.isFiltered()) {
 								if (!exactMatches.contains(potentialMatch)) {
