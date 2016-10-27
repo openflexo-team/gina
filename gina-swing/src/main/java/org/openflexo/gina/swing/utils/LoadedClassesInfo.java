@@ -55,6 +55,8 @@ import java.util.regex.PatternSyntaxException;
 import javax.swing.Icon;
 
 import org.openflexo.gina.utils.FIBIconLibrary;
+import org.openflexo.icon.IconFactory;
+import org.openflexo.icon.UtilsIconLibrary;
 import org.openflexo.toolbox.ClassScope;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.StringUtils;
@@ -100,19 +102,54 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 	private static Hashtable<String, Vector<ClassInfo>> classesForName;
 	private static List<LoadedClassesInfo> instances;
 
-	private String filteredPackageName = "*";
+	private static List<IgnoredPattern> ignoredPatterns;
+
+	// private String filteredPackageName = "*";
 	private String filteredClassName = "";
 
-	private final boolean searchMode = false;
+	private boolean searchMode = false;
 
 	public Vector<ClassInfo> matchingClasses = new Vector<ClassInfo>();
 
 	private final PropertyChangeSupport pcSupport;
 
+	public static class IgnoredPattern {
+		private String patternString;
+		private Pattern pattern;
+
+		public IgnoredPattern(String patternString) {
+			setPatternString(patternString);
+		}
+
+		public String getPatternString() {
+			return patternString;
+		}
+
+		public void setPatternString(String patternString) {
+			this.patternString = patternString;
+			pattern = Pattern.compile(patternString);
+		}
+
+		public boolean match(String s) {
+			Matcher matcher = pattern.matcher(s);
+			return matcher.find();
+		}
+	}
+
 	/**
 	 * Statically initialize this class with {@link ClassLoader}s
 	 */
 	private static void init() {
+
+		ignoredPatterns = new ArrayList<>();
+
+		ignoredPatterns.add(new IgnoredPattern("com.*"));
+		ignoredPatterns.add(new IgnoredPattern("org.apache.*"));
+		ignoredPatterns.add(new IgnoredPattern("org.eclipse.*"));
+		ignoredPatterns.add(new IgnoredPattern("org.jdesktop.*"));
+		ignoredPatterns.add(new IgnoredPattern("javassist.*"));
+		ignoredPatterns.add(new IgnoredPattern("org.jdom2.*"));
+
 		instances = new ArrayList<LoadedClassesInfo>();
 		classesForName = new Hashtable<String, Vector<ClassInfo>>();
 		packages = new Hashtable<Package, PackageInfo>() {
@@ -130,17 +167,39 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 			registerPackage(p);
 		}
 		final Class<?>[] classes = ClassScope.getLoadedClasses(loaders);
+		int classesBeeingRegistered = 0;
 		for (Class<?> cls : classes) {
-			registerClass(cls);
-			String className = cls.getName();
-			URL classLocation = ClassScope.getClassLocation(cls);
-			// System.out.println("Registered class: " + className + " from " +classLocation);
+			if (!isFiltered(cls)) {
+				classesBeeingRegistered++;
+				registerClass(cls);
+				String className = cls.getName();
+				URL classLocation = ClassScope.getClassLocation(cls);
+				System.out.println("" + classesBeeingRegistered + " - " + "Registered class: " + className + " from " + classLocation);
+			}
 		}
+	}
+
+	private static boolean isFiltered(Class aClass) {
+		for (IgnoredPattern ignoredPattern : ignoredPatterns) {
+			if (ignoredPattern.match(aClass.getName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean isFiltered(PackageInfo packageInfo) {
+		for (IgnoredPattern ignoredPattern : ignoredPatterns) {
+			if (ignoredPattern.match(packageInfo.packageName)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public LoadedClassesInfo() {
 		pcSupport = new PropertyChangeSupport(this);
-		setFilteredPackageName("*");
+		// setFilteredPackageName("*");
 		setFilteredClassName("");
 		setSelectedClassInfo(null);
 	}
@@ -149,7 +208,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		this();
 		if (aClass != null) {
 			ClassInfo ci = registerClass(aClass);
-			setFilteredPackageName("*");
+			// setFilteredPackageName("*");
 			setFilteredClassName(aClass.getName());
 			// instance.setFilteredPackageName(aClass.getPackage().getName());
 			setSelectedClassInfo(ci);
@@ -282,8 +341,10 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 			return classesList;
 		}
 
-		public boolean isFiltered(LoadedClassesInfo loadedClassesInfo) {
-			if (loadedClassesInfo.getFilteredPackageName() == null || StringUtils.isEmpty(loadedClassesInfo.getFilteredPackageName())) {
+		public boolean isFiltered() {
+			return LoadedClassesInfo.isFiltered(this);
+
+			/*if (loadedClassesInfo.getFilteredPackageName() == null || StringUtils.isEmpty(loadedClassesInfo.getFilteredPackageName())) {
 				return false;
 			}
 			if (packageName.startsWith(loadedClassesInfo.getFilteredPackageName())) {
@@ -300,7 +361,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 			} catch (PatternSyntaxException e) {
 				LOGGER.warning("PatternSyntaxException: " + patternString);
 				return false;
-			}
+			}*/
 		}
 
 		public Icon getIcon() {
@@ -404,10 +465,10 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 	}
 
-	public String getFilteredPackageName() {
+	/*public String getFilteredPackageName() {
 		return filteredPackageName;
 	}
-
+	
 	public void setFilteredPackageName(String filter) {
 		if (filter == null || !filter.equals(this.filteredPackageName)) {
 			String oldValue = this.filteredPackageName;
@@ -415,6 +476,10 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 			getPropertyChangeSupport().firePropertyChange("filteredPackageName", oldValue, filteredPackageName);
 			updateMatchingClasses();
 		}
+	}*/
+
+	public List<IgnoredPattern> getIgnoredPatterns() {
+		return ignoredPatterns;
 	}
 
 	public String getFilteredClassName() {
@@ -444,28 +509,59 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 				registerClass(c);
 			}*/
 			getPropertyChangeSupport().firePropertyChange("filteredClassName", oldValue, filteredClassName);
-			updateMatchingClasses();
+			if (searchMode) {
+				updateMatchingClasses();
+				getPropertyChangeSupport().firePropertyChange("searchMode", !searchMode(), searchMode());
+			}
 		}
 	}
 
 	public void search() {
+		LOGGER.info("SEARCH " + filteredClassName);
 		isExplicitelySearching = true;
 		explicitelySearch();
 		updateMatchingClasses();
 		isExplicitelySearching = false;
+		if (matchingClasses.size() != 1) {
+			searchMode = true;
+		}
+		getPropertyChangeSupport().firePropertyChange("searchMode", !searchMode(), searchMode());
+	}
+
+	public void done() {
+		LOGGER.info("Done with SEARCH " + filteredClassName);
+		searchMode = false;
+		setFilteredClassName("");
+		getPropertyChangeSupport().firePropertyChange("searchMode", !searchMode(), searchMode());
+	}
+
+	public boolean searchMode() {
+		return matchingClasses.size() != 1 && searchMode;
+	}
+
+	private boolean showFilteredPatterns = false;
+
+	public boolean showFilteredPatterns() {
+		return showFilteredPatterns;
+	}
+
+	public void toggleFilteredPatterns() {
+		showFilteredPatterns = !showFilteredPatterns;
+		getPropertyChangeSupport().firePropertyChange("showFilteredPatterns", !showFilteredPatterns, showFilteredPatterns);
 	}
 
 	/**
 	 * Internally called to explicitely search in all known packages if class identified by simple name exists
 	 */
 	private void explicitelySearch() {
+		LOGGER.info("*************** Searching class " + filteredClassName);
 		Vector<Class> foundClasses = new Vector<Class>();
-		try {
+		/*try {
 			Class foundClass = Class.forName(getFilteredPackageName() + "." + filteredClassName);
 			foundClasses.add(foundClass);
 			LOGGER.info("Found class " + foundClass);
 		} catch (ClassNotFoundException e) {
-		}
+		}*/
 		for (Package p : packages.keySet()) {
 			try {
 				Class foundClass = Class.forName(p.getName() + "." + filteredClassName);
@@ -483,6 +579,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 	private void updateMatchingClasses() {
 
+		LOGGER.info("*************** updateMatchingClasses() for " + filteredClassName);
 		// System.out.println("updateMatchingClasses() for " + filteredPackageName + " " + filteredClassName);
 
 		matchingClasses.clear();
@@ -511,7 +608,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 					if (matcher.find()) {
 						for (ClassInfo potentialMatch : classesForName.get(s)) {
 							PackageInfo packageInfo = registerPackage(potentialMatch.clazz.getPackage());
-							if (!packageInfo.isFiltered(this)) {
+							if (!packageInfo.isFiltered()) {
 								if (!exactMatches.contains(potentialMatch)) {
 									matchingClasses.add(potentialMatch);
 									// System.out.println("Found "+potentialMatch);
@@ -557,6 +654,8 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 			if (matchingClasses.size() < 2 && selectedClassInfo != null) {
 				setFilteredClassName(selectedClassInfo.getClazz().getName());
 			}
+			searchMode = false;
+			getPropertyChangeSupport().firePropertyChange("searchMode", !searchMode(), searchMode());
 		}
 	}
 
@@ -565,5 +664,42 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		if (selectedClassInfo != null) {
 			setFilteredClassName(selectedClassInfo.getClazz().getName());
 		}
+	}
+
+	public Icon getSearchIcon() {
+		return UtilsIconLibrary.SEARCH_ICON;
+	}
+
+	public Icon getDoneIcon() {
+		return UtilsIconLibrary.CANCEL_ICON;
+	}
+
+	public Icon getFiltersIcon() {
+		return UtilsIconLibrary.FILTERS_ICON;
+	}
+
+	public Icon getJavaIcon() {
+		return FIBIconLibrary.JAVA_ICON;
+	}
+
+	private Icon filterIcon = null;
+
+	public Icon getFilterIcon() {
+		if (filterIcon == null) {
+			filterIcon = IconFactory.getImageIcon(FIBIconLibrary.PACKAGE_ICON, UtilsIconLibrary.MINUS_MARKER);
+		}
+		return filterIcon;
+	}
+
+	public IgnoredPattern addIgnoredPattern() {
+		IgnoredPattern returned = new IgnoredPattern("<filter>");
+		ignoredPatterns.add(returned);
+		getPropertyChangeSupport().firePropertyChange("ignoredPatterns", null, returned);
+		return returned;
+	}
+
+	public void removeIgnoredPattern(IgnoredPattern patternToRemove) {
+		ignoredPatterns.remove(patternToRemove);
+		getPropertyChangeSupport().firePropertyChange("ignoredPatterns", patternToRemove, null);
 	}
 }
