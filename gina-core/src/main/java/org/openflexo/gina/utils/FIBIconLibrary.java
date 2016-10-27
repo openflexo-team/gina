@@ -96,6 +96,7 @@ public class FIBIconLibrary {
 			ResourceLocator.locateResource("Icons/GUI/RoundPanelBorderLeft.png"));
 
 	// Icons used in ClassSelector
+	public static final ImageIcon JAVA_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ClassSelector/Java.png"));
 	public static final ImageIcon PACKAGE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ClassSelector/Package.gif"));
 	public static final ImageIcon CLASS_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ClassSelector/Class.gif"));
 	public static final ImageIcon INTERFACE_ICON = new ImageIconResource(
