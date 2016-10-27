@@ -204,6 +204,9 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 				case LongType:
 					valueChooser.setValue(widget.getDefaultValue().longValue());
 					break;
+				case ByteType:
+					valueChooser.setValue(widget.getDefaultValue().longValue());
+					break;
 				default:
 					valueChooser.setValue(widget.getDefaultValue());
 			}
@@ -278,22 +281,22 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 		public void setEditedValue(T aValue) {
 			switch (widget.getWidget().getNumberType()) {
 				case DoubleType:
-					valueChooser.setValue(widget.getDefaultValue().doubleValue());
+					valueChooser.setValue(aValue.doubleValue());
 					break;
 				case FloatType:
-					valueChooser.setValue(widget.getDefaultValue().floatValue());
+					valueChooser.setValue(aValue.floatValue());
 					break;
 				case ShortType:
-					valueChooser.setValue(widget.getDefaultValue().shortValue());
+					valueChooser.setValue(aValue.shortValue());
 					break;
 				case IntegerType:
-					valueChooser.setValue(widget.getDefaultValue().intValue());
+					valueChooser.setValue(aValue.intValue());
 					break;
 				case LongType:
-					valueChooser.setValue(widget.getDefaultValue().longValue());
+					valueChooser.setValue(aValue.longValue());
 					break;
 				default:
-					valueChooser.setValue(widget.getDefaultValue());
+					valueChooser.setValue(aValue);
 			}
 
 		}
