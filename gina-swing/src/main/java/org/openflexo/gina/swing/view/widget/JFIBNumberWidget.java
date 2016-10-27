@@ -188,7 +188,26 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 																			* ,
 																			* "#.##"
 																			*/));
-			valueChooser.setValue(widget.getDefaultValue().doubleValue());
+			switch (widget.getWidget().getNumberType()) {
+				case DoubleType:
+					valueChooser.setValue(widget.getDefaultValue().doubleValue());
+					break;
+				case FloatType:
+					valueChooser.setValue(widget.getDefaultValue().floatValue());
+					break;
+				case ShortType:
+					valueChooser.setValue(widget.getDefaultValue().shortValue());
+					break;
+				case IntegerType:
+					valueChooser.setValue(widget.getDefaultValue().intValue());
+					break;
+				case LongType:
+					valueChooser.setValue(widget.getDefaultValue().longValue());
+					break;
+				default:
+					valueChooser.setValue(widget.getDefaultValue());
+			}
+
 			valueChooser.addChangeListener(new ChangeListener() {
 				@Override
 				public void stateChanged(ChangeEvent e) {
@@ -257,7 +276,26 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 		public abstract T getEditedValue();
 
 		public void setEditedValue(T aValue) {
-			valueChooser.setValue(aValue.doubleValue());
+			switch (widget.getWidget().getNumberType()) {
+				case DoubleType:
+					valueChooser.setValue(widget.getDefaultValue().doubleValue());
+					break;
+				case FloatType:
+					valueChooser.setValue(widget.getDefaultValue().floatValue());
+					break;
+				case ShortType:
+					valueChooser.setValue(widget.getDefaultValue().shortValue());
+					break;
+				case IntegerType:
+					valueChooser.setValue(widget.getDefaultValue().intValue());
+					break;
+				case LongType:
+					valueChooser.setValue(widget.getDefaultValue().longValue());
+					break;
+				default:
+					valueChooser.setValue(widget.getDefaultValue());
+			}
+
 		}
 
 		public JSpinner getValueChooser() {
