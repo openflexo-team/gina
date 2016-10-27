@@ -175,7 +175,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 	 * Explicitely search in all loaded classes if
 	 */
 	public List<Class<?>> search(String partialClassName) {
-		LOGGER.info("*************** Searching class " + partialClassName);
+		// LOGGER.info("*************** Searching class " + partialClassName);
 		List<Class<?>> foundClasses = new ArrayList<Class<?>>();
 		try {
 			Class foundClass = Class.forName(partialClassName);
@@ -196,7 +196,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 				foundClasses.add(loadedClassesForName.get(s));
 			}
 		}
-		LOGGER.info("*************** Returning: " + foundClasses);
+		// LOGGER.info("*************** Returning: " + foundClasses);
 		return foundClasses;
 	}
 

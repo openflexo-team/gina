@@ -138,7 +138,7 @@ public class ClassEditor extends PropertyChangedSupportDefaultImplementation {
 	}
 
 	public void search() {
-		LOGGER.info("SEARCH " + filteredClassName);
+		// LOGGER.info("SEARCH " + filteredClassName);
 		isExplicitelySearching = true;
 		explicitelySearch();
 		updateMatchingClasses();
