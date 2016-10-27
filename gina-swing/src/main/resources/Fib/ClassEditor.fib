@@ -1,90 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel layout="twocols" darkLevel="0"
-	dataClassName="org.openflexo.gina.swing.utils.LoadedClassesInfo">
-	<Panel layout="gridbag" borderTitle="Panel" darkLevel="0" index="1"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;index=0;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=center)">
-		<Label label="Package" index="0"
+<Panel id="0" borderLeft="0" sizeAdjustment="OriginalSize"
+	controllerClassName="org.openflexo.gina.controller.FIBController"
+	borderRight="0" border="empty" trackViewPortWidth="true" align="left"
+	borderBottom="0" borderTop="0" trackViewPortHeight="true" layout="twocols">
+	<Panel id="1" borderLeft="0" sizeAdjustment="OriginalSize"
+		borderRight="0" border="empty" trackViewPortWidth="true" index="1"
+		align="left"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=0;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=center)"
+		borderBottom="0" borderTitle="Panel" borderTop="0"
+		trackViewPortHeight="true" layout="gridbag" name="FIBPanel">
+		<Label id="2" name="PackageLabel" index="0" localize="true"
+			align="left"
 			constraints="gridbag(anchor=east;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
-			localize="true">
-			<LocalizedDictionary />
+			label="Package">
+			<LocalizedDictionary id="3" />
 		</Label>
-		<TextField index="1" data="data.filteredPackageName"
+		<TextField id="4" columns="6" name="FilteredPackageName"
+			data="data.filteredPackageName" text="TextField" index="1" localize="true"
 			constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=2;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=0.0)"
-			name="FilteredPackageName" localize="true" columns="6" text="TextField"
 			validateOnReturn="true" />
-		<Label label="Class" index="2"
+		<Label id="5" name="ClassLabel" index="2" localize="true"
+			font="Lucida Grande,0,12" align="left"
 			constraints="gridbag(anchor=east;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=2;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
-			font="Lucida Grande,0,12" localize="true">
-			<LocalizedDictionary />
+			label="Class">
+			<LocalizedDictionary id="6" />
 		</Label>
-		<TextField index="3" data="data.filteredClassName"
+		<TextField id="7" columns="6" name="FilteredClassName" data="data.filteredClassName"
+			text="TextField" index="3" localize="true"
 			constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=3;insetsBottom=0;insetsLeft=2;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=0.0)"
-			name="FilteredClassName" localize="true" columns="6" text="TextField"
 			validateOnReturn="true" />
-		<Button buttonType="Trigger" label="search" index="4"
+		<Button id="8" clickAction="data.search()" buttonType="Trigger"
+			name="Button" index="4" localize="true"
 			constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=4;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
-			localize="true" clickAction="data.search()">
-			<LocalizedDictionary />
+			label="search">
+			<LocalizedDictionary id="9" />
 		</Button>
-		<Label align="right" index="5" visible="data.matchingClasses.size != 1"
-			data="(data.matchingClasses.size > 1) ? ((&quot;Found &quot; + data.matchingClasses.size) + &quot; matches&quot;) : 'No matches'"
-			constraints="gridbag(anchor=east;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=5;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=1.0)"
-			font="Dialog,2,11" name="MatchesLabel" localize="false">
-			<LocalizedDictionary />
+		<Label id="10" visible="(data.matchingClasses.size != 1)" name="MatchesLabel"
+			data="((data.matchingClasses.size &gt; 1) ? ((&quot;Found &quot; + data.matchingClasses.size) + &quot; matches&quot;) : &quot;No matches&quot;)"
+			index="5" font="Dialog,2,11" align="right"
+			constraints="gridbag(anchor=east;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=5;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=1.0)">
+			<LocalizedDictionary id="11" />
 		</Label>
-		<Label align="right" index="6" visible="data.matchingClasses.size &lt;= 1"
-			label="You might use wildcards (* = any string) and press 'Search'"
+		<Label id="12" visible="(data.matchingClasses.size &lt;= 1)"
+			name="InfoLabel" index="6" localize="true" font="Dialog,2,10" align="right"
 			constraints="gridbag(anchor=east;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=5;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=1.0)"
-			font="Dialog,2,10" name="InfoLabel" localize="true">
-			<LocalizedDictionary />
+			label="You might use wildcards (* = any string) and press 'Search'">
+			<LocalizedDictionary id="13" />
 		</Label>
 	</Panel>
-	<Table iteratorClassName="org.openflexo.gina.swing.utils.LoadedClassesInfo$ClassInfo"
-		visibleRowCount="3" rowHeight="18" autoSelectFirstRow="false"
-		createNewRowOnClick="false" boundToSelectionManager="false"
-		showFooter="false" selectionMode="MultipleIntervalSelection" selected="data.selectedClassInfo"
-		textSelectionColor="255,255,255" textNonSelectionColor="0,0,0"
-		backgroundSelectionColor="26,96,206"
-		backgroundSecondarySelectionColor="173,215,255"
-		backgroundNonSelectionColor="255,255,255" localize="true"
-		manageDynamicModel="true" name="PotentialMatches" index="1"
-		data="data.matchingClasses" visible="data.matchingClasses.size &gt; 1"
-		doubleClickAction="data.performSelect(PotentialMatches.selected)"
-		constraints="twocols(expandHorizontally=true;expandVertically=true;index=1;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=center)">
-		<IconColumn data="iterator.icon" title="" columnWidth="20"
-			resizable="false" displayTitle="true" name="icon" />
-		<LabelColumn data="iterator.className" title="class"
-			columnWidth="100" resizable="true" displayTitle="true" name="label" />
-		<LabelColumn data="iterator.fullQualifiedName" title="location"
-			columnWidth="200" resizable="true" displayTitle="true" name="label" />
-		<LocalizedDictionary />
-	</Table>
-	<Browser root="data"
+	<Table id="14" visible="(data.matchingClasses.size &gt; 1)"
+		manageDynamicModel="true" doubleClickAction="data.performSelect(PotentialMatches.selected)"
+		selectionMode="MultipleIntervalSelection" data="data.matchingClasses"
+		index="1" localize="true"
+		constraints="twocols(expandHorizontally=true;expandVertically=true;index=1;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=center)"
+		visibleRowCount="3" rowHeight="18" textSelectionColor="255,255,255"
 		iteratorClassName="org.openflexo.gina.swing.utils.LoadedClassesInfo$ClassInfo"
-		visibleRowCount="8" rowHeight="18" boundToSelectionManager="false"
-		selectionMode="DiscontiguousTreeSelection" selected="data.selectedClassInfo"
-		showFooter="true" rootVisible="false" showRootsHandle="true" localize="true"
-		manageDynamicModel="true" name="ClassesBrowser" index="2"
-		deepExploration="true" doubleClickAction="data.performSelect(ClassesBrowser.selected)"
-		constraints="twocols(expandHorizontally=true;expandVertically=true;index=2;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=center)">
-		<BrowserElement
+		backgroundSelectionColor="26,96,206" backgroundNonSelectionColor="255,255,255"
+		selected="data.selectedClassInfo" name="PotentialMatches"
+		textNonSelectionColor="0,0,0" backgroundSecondarySelectionColor="173,215,255">
+		<IconColumn id="15" data="iterator.icon" displayTitle="true"
+			title="" name="icon" columnWidth="20" resizable="false" showIcon="false" />
+		<LabelColumn id="16" data="iterator.className"
+			displayTitle="true" title="class" name="label" columnWidth="100"
+			resizable="true" showIcon="false" />
+		<LabelColumn id="17" data="iterator.fullQualifiedName"
+			displayTitle="true" title="location" name="label" columnWidth="200"
+			resizable="true" showIcon="false" />
+		<LocalizedDictionary id="18" />
+	</Table>
+	<Browser id="19" showFooter="true" showRootsHandle="true" root="data"
+		manageDynamicModel="true" doubleClickAction="data.performSelect(ClassesBrowser.selected)"
+		selectionMode="DiscontiguousTreeSelection" index="2" localize="true"
+		constraints="twocols(expandHorizontally=true;expandVertically=true;index=2;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=center)"
+		visibleRowCount="8" deepExploration="true" rowHeight="18"
+		textSelectionColor="255,255,255"
+		iteratorClassName="org.openflexo.gina.swing.utils.LoadedClassesInfo$ClassInfo"
+		backgroundSelectionColor="9,80,208" backgroundNonSelectionColor="255,255,255"
+		selected="data.selectedClassInfo" name="ClassesBrowser"
+		textNonSelectionColor="0,0,0" backgroundSecondarySelectionColor="178,215,255">
+		<Dependancy id="20" componentName="FilteredPackageName" />
+		<BrowserElement id="21" icon="package.icon" filtered="true"
+			visible="(!(package.isFiltered(data))) &amp;&amp; (package.classes.size &gt; 0)" label="package.packageName"
 			dataClassName="org.openflexo.gina.swing.utils.LoadedClassesInfo$PackageInfo"
-			label="package.packageName" icon="package.icon" visible="(!(package.isFiltered(data)))"
-			isEditable="false" filtered="true" defaultVisible="true" name="package">
-			<Children data="package.classes" name="children" />
+			name="package" isEditable="false">
+			<Children id="22" name="children" data="package.classes" />
 		</BrowserElement>
-		<BrowserElement dataClassName="org.openflexo.gina.swing.utils.LoadedClassesInfo"
-			label="loadedClasses.toString" isEditable="false" filtered="false"
-			defaultVisible="true" name="loadedClasses">
-			<Children data="loadedClasses.packages" name="children" />
+		<BrowserElement id="23" label="loadedClasses.toString"
+			dataClassName="org.openflexo.gina.swing.utils.LoadedClassesInfo"
+			name="loadedClasses" isEditable="false">
+			<Children id="24" name="children" data="loadedClasses.packages" />
 		</BrowserElement>
-		<BrowserElement
+		<BrowserElement id="25" icon="class.icon" label="class.className"
 			dataClassName="org.openflexo.gina.swing.utils.LoadedClassesInfo$ClassInfo"
-			label="class.className" icon="class.icon" isEditable="false"
-			filtered="false" defaultVisible="true" name="class">
-			<Children data="class.memberClasses" name="children" />
+			name="class" isEditable="false">
+			<Children id="26" name="children" data="class.memberClasses" />
 		</BrowserElement>
-		<Dependancy componentName="FilteredPackageName" />
 	</Browser>
-	<LocalizedDictionary />
+	<FIBVariable id="27" name="data"
+		type="org.openflexo.gina.swing.utils.LoadedClassesInfo" />
+	<LocalizedDictionary id="28" />
 </Panel>
