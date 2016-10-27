@@ -177,12 +177,12 @@ public class ClassEditor extends PropertyChangedSupportDefaultImplementation {
 	private void explicitelySearch() {
 		LOGGER.info("*************** Searching class " + filteredClassName);
 		Vector<Class> foundClasses = new Vector<Class>();
-		/*try {
-			Class foundClass = Class.forName(getFilteredPackageName() + "." + filteredClassName);
+		try {
+			Class foundClass = Class.forName(filteredClassName);
 			foundClasses.add(foundClass);
 			LOGGER.info("Found class " + foundClass);
 		} catch (ClassNotFoundException e) {
-		}*/
+		}
 		for (PackageInfo packageInfo : loadedClassesInfo.getPackages()) {
 			try {
 				Class foundClass = Class.forName(packageInfo.getPackageName() + "." + filteredClassName);
