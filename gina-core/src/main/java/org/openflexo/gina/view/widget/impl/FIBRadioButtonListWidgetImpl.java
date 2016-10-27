@@ -125,7 +125,7 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 				LOGGER.fine("updateModelFromWidget with " + getSelectedValue());
 			}
 			if (getSelectedValue() != null && !isUpdating()) {
-				System.out.println("On selectionne " + getSelectedValue());
+				//System.out.println("On selectionne " + getSelectedValue());
 				setValue(getSelectedValue());
 			}
 			modelUpdating = false;
