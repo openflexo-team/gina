@@ -100,6 +100,15 @@ public class JFIBEditableTabView extends JFIBTabView implements FIBSwingEditable
 	}
 
 	@Override
+	protected void paintAdditionalInfo(Graphics g) {
+		if (getDelegate().getPlaceholders() != null) {
+			for (PlaceHolder ph : getDelegate().getPlaceholders()) {
+				ph.paint(g);
+			}
+		}
+	}
+
+	@Override
 	public FIBLayoutManager<JPanel, JComponent, ?> makeFIBLayoutManager(FIBPanel.Layout layoutType) {
 		if (layoutType == null) {
 			return super.makeFIBLayoutManager(layoutType);
