@@ -39,28 +39,24 @@
 
 package org.openflexo.gina.swing.editor.view.container.layout;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Rectangle;
+import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.container.layout.BorderLayoutConstraints;
+import org.openflexo.gina.model.container.layout.BorderLayoutConstraints.BorderLayoutLocation;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
+import org.openflexo.gina.swing.editor.view.PlaceHolder;
+import org.openflexo.gina.swing.editor.view.container.JFIBEditablePanelView;
+import org.openflexo.gina.swing.view.JFIBView;
+import org.openflexo.gina.swing.view.container.JFIBPanelView;
+import org.openflexo.gina.swing.view.container.layout.JBorderLayout;
+import org.openflexo.logging.FlexoLogger;
+
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
-import javax.swing.Box;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-
-import org.openflexo.gina.model.FIBComponent;
-import org.openflexo.gina.model.container.layout.BorderLayoutConstraints;
-import org.openflexo.gina.model.container.layout.BorderLayoutConstraints.BorderLayoutLocation;
-import org.openflexo.gina.swing.editor.view.PlaceHolder;
-import org.openflexo.gina.swing.editor.view.container.JFIBEditablePanelView;
-import org.openflexo.gina.swing.view.JFIBView;
-import org.openflexo.gina.swing.view.container.layout.JBorderLayout;
-import org.openflexo.logging.FlexoLogger;
 
 /**
  * Swing implementation for border layout editor
@@ -71,13 +67,13 @@ public class JEditableBorderLayout extends JBorderLayout implements JFIBEditable
 
 	private static final Logger logger = FlexoLogger.getLogger(JFIBEditablePanelView.class.getPackage().getName());
 
-	public JEditableBorderLayout(JFIBEditablePanelView panelView) {
+	public JEditableBorderLayout(JFIBPanelView panelView) {
 		super(panelView);
 	}
 
 	@Override
-	public JFIBEditablePanelView getContainerView() {
-		return (JFIBEditablePanelView) super.getContainerView();
+	public JFIBPanelView getContainerView() {
+		return (JFIBPanelView) super.getContainerView();
 	}
 
 	@Override
@@ -132,7 +128,7 @@ public class JEditableBorderLayout extends JBorderLayout implements JFIBEditable
 				// + existingComponent + " bounds=" + bounds);
 
 				if (existingComponent == null) {
-					PlaceHolder newPlaceHolder = new PlaceHolder(getContainerView(), "<" + l.getConstraint() + ">", bounds) {
+					PlaceHolder newPlaceHolder = new PlaceHolder((FIBSwingEditableContainerView)getContainerView(), "<" + l.getConstraint() + ">", bounds) {
 						@Override
 						public void insertComponent(FIBComponent newComponent, int oldIndex) {
 							BorderLayoutConstraints blConstraints = new BorderLayoutConstraints(l);

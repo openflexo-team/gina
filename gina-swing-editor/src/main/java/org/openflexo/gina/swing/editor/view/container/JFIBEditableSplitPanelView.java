@@ -39,12 +39,6 @@
 
 package org.openflexo.gina.swing.editor.view.container;
 
-import java.awt.Dimension;
-import java.util.List;
-import java.util.logging.Logger;
-
-import javax.swing.JComponent;
-
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBLeaf;
 import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBNode;
@@ -60,14 +54,17 @@ import org.openflexo.logging.FlexoLogger;
 import org.openflexo.swing.layout.JXMultiSplitPane;
 import org.openflexo.swing.layout.MultiSplitLayout.Node;
 
+import javax.swing.*;
+import java.awt.*;
+import java.util.List;
+import java.util.logging.Logger;
+
 public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 		implements FIBSwingEditableContainerView<FIBSplitPanel, JXMultiSplitPane> {
 
 	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableSplitPanelView.class.getPackage().getName());
 
 	private final FIBSwingEditableContainerViewDelegate<FIBSplitPanel, JXMultiSplitPane> delegate;
-
-	// private Vector<PlaceHolder> placeholders;
 
 	private final FIBEditorController editorController;
 
@@ -90,9 +87,6 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 
 	@Override
 	public void delete() {
-		/*
-		 * placeholders.clear(); placeholders = null;
-		 */
 		delegate.delete();
 		super.delete();
 	}
@@ -114,10 +108,7 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 					JFIBEditableSplitPanelView.this.getComponent().addToSubComponents(newComponent, splitLayoutConstraints);
 				}
 			};
-			// registerComponentWithConstraints(newPlaceHolder, n.getName());
 			newPlaceHolder.setVisible(false);
-			// placeholders.add(newPlaceHolder);
-			// logger.info("Made placeholder for " + n.getName());
 		}
 
 	}
@@ -137,25 +128,6 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 		}
 	}
 
-	/*
-	 * @Override protected void retrieveContainedJComponentsAndConstraints() {
-	 * if (placeholders == null) { placeholders = new Vector<PlaceHolder>(); }
-	 * placeholders.removeAllElements();
-	 * 
-	 * super.retrieveContainedJComponentsAndConstraints();
-	 * 
-	 * appendPlaceHolders(getLayout().getModel());
-	 * 
-	 * // logger.info("******** Set DropTargets"); if (getEditorController() !=
-	 * null) { for (PlaceHolder ph : placeholders) {
-	 * logger.fine("Set DropTarget for " + ph); // Put right drop target // new
-	 * FIBDropTarget(ph); } } }
-	 */
-
-	/*
-	 * @Override public Vector<PlaceHolder> getPlaceHolders() { return
-	 * placeholders; }
-	 */
 
 	@Override
 	public FIBSwingEditableContainerViewDelegate<FIBSplitPanel, JXMultiSplitPane> getDelegate() {
