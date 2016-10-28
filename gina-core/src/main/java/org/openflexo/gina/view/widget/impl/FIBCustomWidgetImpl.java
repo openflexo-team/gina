@@ -245,34 +245,36 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 		if (isDeleted() || getWidget() == null) {
 			return;
 		}
-		for (FIBCustomAssignment assign : getWidget().getAssignments()) {
-			DataBinding<?> variableDB = assign.getVariable();
-			DataBinding<?> valueDB = assign.getValue();
-			if (variableDB.isSet() && valueDB.isSet()) {
-				// System.out.println("Assignement " + variableDB + " with " + valueDB);
-				if (!valueDB.isValid()) {
-					LOGGER.warning("Assignment value not valid: " + valueDB + " reason: " + valueDB.invalidBindingReason());
-				}
-				if (!variableDB.isValid()) {
-					LOGGER.warning("Assignment variable not valid: " + variableDB + " reason: " + variableDB.invalidBindingReason());
-				}
-				if (valueDB != null && valueDB.isValid()) {
-					Object value = null;
-					try {
-						value = valueDB.getBindingValue(getBindingEvaluationContext());
-						// System.out.println("value=" + value);
-						if (variableDB.isValid()) {
-							// System.out.println("Assignment " + variableDB + " set value with " + value);
-							variableDB.setBindingValue(value, this);
+		if (getWidget().getAssignments() != null) {
+			for (FIBCustomAssignment assign : getWidget().getAssignments()) {
+				DataBinding<?> variableDB = assign.getVariable();
+				DataBinding<?> valueDB = assign.getValue();
+				if (variableDB.isSet() && valueDB.isSet()) {
+					// System.out.println("Assignement " + variableDB + " with " + valueDB);
+					if (!valueDB.isValid()) {
+						LOGGER.warning("Assignment value not valid: " + valueDB + " reason: " + valueDB.invalidBindingReason());
+					}
+					if (!variableDB.isValid()) {
+						LOGGER.warning("Assignment variable not valid: " + variableDB + " reason: " + variableDB.invalidBindingReason());
+					}
+					if (valueDB != null && valueDB.isValid()) {
+						Object value = null;
+						try {
+							value = valueDB.getBindingValue(getBindingEvaluationContext());
+							// System.out.println("value=" + value);
+							if (variableDB.isValid()) {
+								// System.out.println("Assignment " + variableDB + " set value with " + value);
+								variableDB.setBindingValue(value, this);
+							}
+						} catch (TypeMismatchException e) {
+							e.printStackTrace();
+						} catch (NullReferenceException e) {
+							// e.printStackTrace();
+						} catch (InvocationTargetException e) {
+							e.printStackTrace();
+						} catch (NotSettableContextException e) {
+							e.printStackTrace();
 						}
-					} catch (TypeMismatchException e) {
-						e.printStackTrace();
-					} catch (NullReferenceException e) {
-						// e.printStackTrace();
-					} catch (InvocationTargetException e) {
-						e.printStackTrace();
-					} catch (NotSettableContextException e) {
-						e.printStackTrace();
 					}
 				}
 			}
