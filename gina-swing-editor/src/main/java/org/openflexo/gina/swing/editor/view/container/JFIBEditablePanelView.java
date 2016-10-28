@@ -85,8 +85,6 @@ public class JFIBEditablePanelView extends JFIBPanelView implements FIBSwingEdit
 	public JFIBEditablePanelView(final FIBPanel model, FIBEditorController editorController) {
 		super(model, editorController.getController());
 		this.editorController = editorController;
-		// logger.info("************ Created FIBEditablePanelView for "+model);
-
 		delegate = new FIBSwingEditableContainerViewDelegate<FIBPanel, JPanel>(this);
 	}
 

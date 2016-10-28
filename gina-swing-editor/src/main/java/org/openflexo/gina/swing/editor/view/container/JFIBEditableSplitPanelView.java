@@ -42,6 +42,7 @@ package org.openflexo.gina.swing.editor.view.container;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBLeaf;
 import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBNode;
+import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBRowSplit;
 import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBSplit;
 import org.openflexo.gina.model.container.FIBSplitPanel;
 import org.openflexo.gina.model.container.layout.SplitLayoutConstraints;
@@ -56,6 +57,7 @@ import org.openflexo.swing.layout.MultiSplitLayout.Node;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -81,8 +83,7 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 	public JFIBEditableSplitPanelView(FIBSplitPanel model, FIBEditorController editorController) {
 		super(model, editorController.getController());
 		this.editorController = editorController;
-
-		delegate = new FIBSwingEditableContainerViewDelegate<FIBSplitPanel, JXMultiSplitPane>(this);
+		delegate = new FIBSwingEditableContainerViewDelegate<>(this);
 	}
 
 	@Override
@@ -91,7 +92,16 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 		super.delete();
 	}
 
-	private void appendPlaceHolder(final FIBLeaf n) {
+	@Override
+	protected void paintAdditionalInfo(Graphics g) {
+		if (getDelegate().getPlaceholders() != null) {
+			for (PlaceHolder ph : getDelegate().getPlaceholders()) {
+				ph.paint(g);
+			}
+		}
+	}
+
+	private void appendPlaceHolder(final FIBLeaf n, Rectangle current, List<PlaceHolder> placeHolders) {
 		boolean found = false;
 		for (FIBComponent subComponent : getComponent().getSubComponents()) {
 			if (n.getName().equals(((SplitLayoutConstraints) subComponent.getConstraints()).getSplitIdentifier())) {
@@ -99,9 +109,8 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 			}
 		}
 		if (!found) {
-
 			final SplitLayoutConstraints splitLayoutConstraints = SplitLayoutConstraints.makeSplitLayoutConstraints(n.getName());
-			PlaceHolder newPlaceHolder = new PlaceHolder(this, "<" + n.getName() + ">") {
+			PlaceHolder newPlaceHolder = new PlaceHolder(this, "<" + n.getName() + ">", current) {
 				@Override
 				public void insertComponent(FIBComponent newComponent, int oldIndex) {
 					System.out.println("getComponent=" + JFIBEditableSplitPanelView.this.getComponent());
@@ -109,22 +118,34 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 				}
 			};
 			newPlaceHolder.setVisible(false);
+			placeHolders.add(newPlaceHolder);
 		}
-
 	}
 
-	private void appendPlaceHolders(FIBSplit<?> s) {
+	private void appendPlaceHolders(FIBSplit<?> s, Rectangle current, List<PlaceHolder> placeHolders) {
+		int size = s.getChildren().size();
+		boolean vertical = s instanceof FIBRowSplit;
+		int width = vertical ? current.width/size : current.width;
+		int height = vertical ? current.height : current.height/size;
+
+		int x = 0, y = 0;
 		for (FIBNode n : s.getChildren()) {
-			appendPlaceHolders(n);
+			Rectangle childSize = new Rectangle(x, y, width, height);
+			appendPlaceHolders(n, childSize, placeHolders);
+			if (vertical) {
+				x += width;
+			} else {
+				y += height;
+			}
 		}
 	}
 
-	private void appendPlaceHolders(Node n) {
+	private void appendPlaceHolders(Node n, Rectangle current, List<PlaceHolder> placeHolders) {
 		if (n instanceof FIBSplit) {
-			appendPlaceHolders((FIBSplit) n);
+			appendPlaceHolders((FIBSplit) n, current, placeHolders);
 		}
 		else if (n instanceof FIBLeaf) {
-			appendPlaceHolder((FIBLeaf) n);
+			appendPlaceHolder((FIBLeaf) n, current, placeHolders);
 		}
 	}
 
@@ -136,8 +157,11 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 
 	@Override
 	public List<PlaceHolder> makePlaceHolders(Dimension preferredSize) {
-		System.out.println("Je suis sense calculer les placeholders pour la vue " + this + " size=" + getResultingJComponent().getSize());
-		return null;
+		List<PlaceHolder> result = new ArrayList<>();
+		Dimension size = getJComponent().getSize();
+		Rectangle origin = new Rectangle(0,0, size.width, size.height);
+		appendPlaceHolders(this.getLayout().getModel(), origin, result);
+		return result;
 	}
 
 }

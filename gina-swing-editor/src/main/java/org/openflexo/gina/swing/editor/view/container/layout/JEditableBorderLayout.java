@@ -124,9 +124,6 @@ public class JEditableBorderLayout extends JBorderLayout implements JFIBEditable
 				FIBComponent existingComponent = existingComponents.get(l);
 				Rectangle bounds = phComponents.get(l).getBounds();
 
-				// System.out.println("Pour " + l.getConstraint() + " existing="
-				// + existingComponent + " bounds=" + bounds);
-
 				if (existingComponent == null) {
 					PlaceHolder newPlaceHolder = new PlaceHolder((FIBSwingEditableContainerView)getContainerView(), "<" + l.getConstraint() + ">", bounds) {
 						@Override
