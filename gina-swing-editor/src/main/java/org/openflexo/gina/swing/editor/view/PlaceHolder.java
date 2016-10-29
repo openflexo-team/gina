@@ -39,20 +39,12 @@
 
 package org.openflexo.gina.swing.editor.view;
 
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.util.logging.Logger;
-
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.logging.FlexoLogger;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.logging.Logger;
 
 @SuppressWarnings("serial")
 public abstract class PlaceHolder {
@@ -76,7 +68,7 @@ public abstract class PlaceHolder {
 	}
 
 	public PlaceHolder(FIBSwingEditableContainerView<?, ?> view, String text) {
-		this(view, text, new Rectangle(100, 50));
+		this(view, text, new Rectangle(200, 200));
 	}
 
 	public Rectangle getBounds() {

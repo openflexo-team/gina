@@ -39,13 +39,12 @@
 
 package org.openflexo.gina.swing.editor.view;
 
-import java.awt.Dimension;
-import java.util.List;
-
-import javax.swing.JComponent;
-
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.view.FIBView;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.List;
 
 /**
  * Represent a {@link FIBView} with editing features
@@ -58,9 +57,7 @@ import org.openflexo.gina.view.FIBView;
 public interface FIBSwingEditableContainerView<M extends FIBContainer, J extends JComponent> extends FIBSwingEditableView<M, J> {
 
 	@Override
-	public FIBSwingEditableContainerViewDelegate<M, J> getDelegate();
+	FIBSwingEditableContainerViewDelegate<M, J> getDelegate();
 
-	// public Vector<PlaceHolder> getPlaceHolders();
-
-	public List<PlaceHolder> makePlaceHolders(Dimension preferredSize);
+	List<PlaceHolder> makePlaceHolders(Dimension preferredSize);
 }

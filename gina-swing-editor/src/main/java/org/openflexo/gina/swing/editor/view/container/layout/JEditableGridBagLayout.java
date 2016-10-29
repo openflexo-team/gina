@@ -39,24 +39,21 @@
 
 package org.openflexo.gina.swing.editor.view.container.layout;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
-
-import javax.swing.Box;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.layout.GridBagLayoutConstraints;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.editor.view.container.JFIBEditablePanelView;
 import org.openflexo.gina.swing.view.JFIBView;
+import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.swing.view.container.layout.JGridBagLayout;
 import org.openflexo.logging.FlexoLogger;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Swing implementation for edition of a GridBag layout
@@ -68,13 +65,13 @@ public class JEditableGridBagLayout extends JGridBagLayout
 
 	private static final Logger logger = FlexoLogger.getLogger(JFIBEditablePanelView.class.getPackage().getName());
 
-	public JEditableGridBagLayout(JFIBEditablePanelView panelView) {
+	public JEditableGridBagLayout(JFIBPanelView panelView) {
 		super(panelView);
 	}
 
 	@Override
-	public JFIBEditablePanelView getContainerView() {
-		return (JFIBEditablePanelView) super.getContainerView();
+	public JFIBPanelView getContainerView() {
+		return (JFIBPanelView) super.getContainerView();
 	}
 
 	@Override
@@ -150,7 +147,7 @@ public class JEditableGridBagLayout extends JGridBagLayout
 				 * placeHolderBounds.width = placeHolderBounds.width +
 				 * placeHolderBounds.x; placeHolderBounds.x = 0; }
 				 */
-				PlaceHolder newPlaceHolder = new PlaceHolder(getContainerView(), "< item >", placeHolderBounds) {
+				PlaceHolder newPlaceHolder = new PlaceHolder((FIBSwingEditableContainerView)getContainerView(), "< item >", placeHolderBounds) {
 					@Override
 					public void insertComponent(FIBComponent newComponent, int oldIndex) {
 						GridBagLayoutConstraints constraints = new GridBagLayoutConstraints();
@@ -191,7 +188,7 @@ public class JEditableGridBagLayout extends JGridBagLayout
 			// Rectangle(phComponent.getBounds().x + deltaX,
 			// phComponent.getBounds().y
 			// + deltaY, phComponent.getWidth(), phComponent.getHeight());
-			PlaceHolder newPlaceHolder = new PlaceHolder(getContainerView(), "< item >", placeHolderBounds) {
+			PlaceHolder newPlaceHolder = new PlaceHolder((FIBSwingEditableContainerView)getContainerView(), "< item >", placeHolderBounds) {
 				@Override
 				public void insertComponent(FIBComponent newComponent, int oldIndex) {
 					GridBagLayoutConstraints constraints = new GridBagLayoutConstraints();
