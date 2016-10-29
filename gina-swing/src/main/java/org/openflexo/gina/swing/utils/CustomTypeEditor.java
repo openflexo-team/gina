@@ -38,45 +38,27 @@
 
 package org.openflexo.gina.swing.utils;
 
-import org.junit.Test;
-import org.openflexo.gina.test.GenericFIBTestCase;
-import org.openflexo.rm.FileResourceImpl;
-import org.openflexo.rm.ResourceLocator;
+import org.openflexo.connie.type.CustomType;
+import org.openflexo.rm.Resource;
 
-public class TestEditorFibs extends GenericFIBTestCase {
+/**
+ * Represent editor suitable to edit a given CustomTypeClass, in the context of the {@link TypeSelector}
+ * 
+ * @author sylvain
+ *
+ */
+public interface CustomTypeEditor<T extends CustomType> {
 
-	public static void main(String[] args) {
-		System.out.println(generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib")).getFile(), "Fib/"));
-	}
+	public String getPresentationName();
 
-	@Test
-	public void testClassEditor() {
-		validateFIB("Fib/ClassEditor.fib");
-	}
+	/**
+	 * Return class of custom type beeing handled by this editor
+	 * 
+	 * @return
+	 */
+	public Class<T> getCustomType();
 
-	@Test
-	public void testClassSelector() {
-		validateFIB("Fib/ClassSelector.fib");
-	}
+	public Resource getFIBComponentResource();
 
-	@Test
-	public void testLocalizedPanel() {
-		validateFIB("Fib/LocalizedPanel.fib");
-	}
-
-	@Test
-	public void testLoggingViewer() {
-		validateFIB("Fib/LoggingViewer.fib");
-	}
-
-	@Test
-	public void testTypeSelector() {
-		validateFIB("Fib/TypeSelector.fib");
-	}
-
-	@Test
-	public void testValidationPanel() {
-		validateFIB("Fib/ValidationPanel.fib");
-	}
-
+	public T getEditedType();
 }

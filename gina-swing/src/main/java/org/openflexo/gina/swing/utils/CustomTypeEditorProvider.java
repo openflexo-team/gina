@@ -38,45 +38,22 @@
 
 package org.openflexo.gina.swing.utils;
 
-import org.junit.Test;
-import org.openflexo.gina.test.GenericFIBTestCase;
-import org.openflexo.rm.FileResourceImpl;
-import org.openflexo.rm.ResourceLocator;
+import org.openflexo.connie.type.CustomType;
 
-public class TestEditorFibs extends GenericFIBTestCase {
+/**
+ * A CustomTypeEditorProvider is responsible of providing custom type editors (UI) to the {@link TypeSelector}
+ * 
+ * @author sylvain
+ *
+ */
+public interface CustomTypeEditorProvider {
 
-	public static void main(String[] args) {
-		System.out.println(generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib")).getFile(), "Fib/"));
-	}
-
-	@Test
-	public void testClassEditor() {
-		validateFIB("Fib/ClassEditor.fib");
-	}
-
-	@Test
-	public void testClassSelector() {
-		validateFIB("Fib/ClassSelector.fib");
-	}
-
-	@Test
-	public void testLocalizedPanel() {
-		validateFIB("Fib/LocalizedPanel.fib");
-	}
-
-	@Test
-	public void testLoggingViewer() {
-		validateFIB("Fib/LoggingViewer.fib");
-	}
-
-	@Test
-	public void testTypeSelector() {
-		validateFIB("Fib/TypeSelector.fib");
-	}
-
-	@Test
-	public void testValidationPanel() {
-		validateFIB("Fib/ValidationPanel.fib");
-	}
+	/**
+	 * Return editor for supplied custom type
+	 * 
+	 * @param typeClass
+	 * @return
+	 */
+	public <T extends CustomType> CustomTypeEditor<T> getCustomTypeEditor(Class<T> typeClass);
 
 }

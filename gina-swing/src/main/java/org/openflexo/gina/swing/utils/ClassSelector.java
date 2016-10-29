@@ -72,7 +72,7 @@ import org.openflexo.swing.VerticalLayout;
  * @author sguerin
  * 
  */
-public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCustomComponent<Class> {
+public class ClassSelector extends TextFieldCustomPopup<Class>implements FIBCustomComponent<Class> {
 	@SuppressWarnings("hiding")
 	static final Logger LOGGER = Logger.getLogger(ClassSelector.class.getPackage().getName());
 
@@ -108,7 +108,8 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 		// !!!
 		if (oldValue != null) {
 			_revertValue = oldValue;
-		} else {
+		}
+		else {
 			_revertValue = null;
 		}
 		if (LOGGER.isLoggable(Level.FINE)) {
@@ -143,6 +144,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 		private final FIBComponent fibComponent;
 		private JFIBView<?, ?> fibView;
 		private CustomFIBController controller;
+		private ClassEditor classEditor;
 
 		protected ClassSelectorDetailsPanel(Class aClass) {
 			super();
@@ -151,7 +153,9 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 			controller = new CustomFIBController(fibComponent, SwingViewFactory.INSTANCE);
 			fibView = (JFIBView<?, ?>) controller.buildView(fibComponent, true);
 
-			controller.setDataObject(new LoadedClassesInfo(aClass));
+			classEditor = new ClassEditor(aClass);
+
+			controller.setDataObject(classEditor);
 
 			setLayout(new BorderLayout());
 			add(fibView.getResultingJComponent(), BorderLayout.CENTER);
@@ -166,12 +170,13 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 		}
 
 		public void update() {
-			controller.setDataObject(new LoadedClassesInfo(getEditedObject()));
+			classEditor.selectClass(getEditedObject());
+			// controller.setDataObject(new LoadedClassesInfo(getEditedObject()));
 		}
 
 		@Override
 		public Dimension getDefaultSize() {
-			return new Dimension(fibComponent.getWidth(), fibComponent.getHeight());
+			return new Dimension(300, 400);
 		}
 
 		public class CustomFIBController extends FIBController {
@@ -180,8 +185,8 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 			}
 
 			public void apply() {
-				LoadedClassesInfo dataObject = (LoadedClassesInfo) getDataObject();
-				setEditedObject(dataObject.getSelectedClassInfo().getRepresentedClass());
+				// LoadedClassesInfo dataObject = (LoadedClassesInfo) getDataObject();
+				setEditedObject(classEditor.getSelectedClassInfo().getRepresentedClass());
 				ClassSelector.this.apply();
 			}
 

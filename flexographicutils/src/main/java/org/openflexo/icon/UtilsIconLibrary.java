@@ -180,7 +180,14 @@ public class UtilsIconLibrary {
 	public static final ImageIcon CLOCK_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Clock.gif"));
 	public static final ImageIcon SEPARATOR_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Utils/Separator.gif"));
 	public static final ImageIcon SEARCH_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Utils/Search.png"));
+	public static final ImageIcon FILTERS_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Utils/Filters.png"));
 	public static final ImageIcon CANCEL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Utils/Cancel.png"));
+
+	public static final ImageIcon ERROR_MARKER_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Utils/ErrorMarker.gif"));
+	public static final ImageIcon MINUS_MARKER_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Utils/MinusMarker.png"));
+
+	public static final IconMarker ERROR_MARKER = new IconMarker(UtilsIconLibrary.ERROR_MARKER_ICON, 0, 9);
+	public static final IconMarker MINUS_MARKER = new IconMarker(UtilsIconLibrary.MINUS_MARKER_ICON, 0, 9);
 
 	// Flags
 	public static final ImageIcon UK_FLAG = new ImageIconResource(ResourceLocator.locateResource("Icons/Lang/uk-flag.gif"));

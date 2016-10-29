@@ -47,6 +47,7 @@ import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBWidget;
 import org.openflexo.gina.model.widget.FIBRadioButtonList;
 import org.openflexo.gina.view.widget.FIBRadioButtonListWidget;
+import org.openflexo.kvc.InvalidKeyValuePropertyException;
 
 /**
  * Base implementation for a widget able to select an item in a radio button panel
@@ -88,7 +89,11 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 		if (getValue() == null && getWidget().getAutoSelectFirstRow() && getMultipleValueModel().getSize() > 0) {
 			// System.out.println("Selecting first value of " + getWidget().getName() + " : " + getMultipleValueModel().getElementAt(0));
 			T newValue = getMultipleValueModel().getElementAt(0);
-			setValue(newValue);
+			try {
+				setValue(newValue);
+			} catch (InvalidKeyValuePropertyException e) {
+				LOGGER.warning("Ignored InvalidKeyValuePropertyException " + e.getMessage());
+			}
 		}
 	}
 
@@ -125,7 +130,7 @@ public abstract class FIBRadioButtonListWidgetImpl<C, T> extends FIBMultipleValu
 				LOGGER.fine("updateModelFromWidget with " + getSelectedValue());
 			}
 			if (getSelectedValue() != null && !isUpdating()) {
-				System.out.println("On selectionne " + getSelectedValue());
+				// System.out.println("On selectionne " + getSelectedValue());
 				setValue(getSelectedValue());
 			}
 			modelUpdating = false;
