@@ -135,14 +135,11 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 		int width = vertical ? current.width/size : current.width;
 		int height = vertical ? current.height : current.height/size;
 
-		System.out.println("-- Sizes --");
-
 		int x = 0, y = 0;
 		for (FIBNode node : s.getChildren()) {
 			if (!(node instanceof FIBDivider)) {
 				Rectangle childSize = new Rectangle(x, y, width, height);
 				appendPlaceHolders(node, childSize, placeHolders);
-				System.out.println("- " + childSize + " -> " + node);
 				if (vertical) {
 					x += width;
 				}
