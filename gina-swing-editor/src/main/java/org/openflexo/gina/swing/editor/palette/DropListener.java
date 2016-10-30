@@ -39,8 +39,19 @@
 
 package org.openflexo.gina.swing.editor.palette;
 
-import java.awt.Dimension;
-import java.awt.Point;
+import org.openflexo.gina.model.FIBContainer;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerViewDelegate;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate.FIBDropTarget;
+import org.openflexo.gina.swing.editor.view.PlaceHolder;
+import org.openflexo.gina.swing.view.JFIBView;
+import org.openflexo.gina.swing.view.container.JFIBPanelView;
+import org.openflexo.logging.FlexoLogger;
+import org.openflexo.swing.Focusable;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
@@ -52,19 +63,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.swing.SwingUtilities;
-
-import org.openflexo.gina.model.FIBContainer;
-import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
-import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerViewDelegate;
-import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
-import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate.FIBDropTarget;
-import org.openflexo.gina.swing.editor.view.PlaceHolder;
-import org.openflexo.gina.swing.view.JFIBView;
-import org.openflexo.gina.swing.view.container.JFIBPanelView;
-import org.openflexo.logging.FlexoLogger;
-import org.openflexo.swing.Focusable;
 
 /**
  * DTListener a listener that tracks the state of the operation
@@ -318,6 +316,7 @@ public class DropListener implements DropTargetListener {
 	private void fireDragExit() {
 		if (getContainerDelegate() != null) {
 			getContainerDelegate().dismissPlaceHolders();
+			getContainerDelegate().deletePlaceHolders();
 			getContainerDelegate().getEditorController().dragExit(this);
 		}
 
