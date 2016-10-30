@@ -40,6 +40,7 @@
 package org.openflexo.gina.swing.editor.view.container;
 
 import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBDivider;
 import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBLeaf;
 import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBNode;
 import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBRowSplit;
@@ -123,19 +124,31 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 	}
 
 	private void appendPlaceHolders(FIBSplit<?> s, Rectangle current, List<PlaceHolder> placeHolders) {
-		int size = s.getChildren().size();
+		int size = 0;
+		for (FIBNode<?> node : s.getChildren()) {
+			if (!(node instanceof FIBDivider)) {
+				size += 1;
+			}
+		}
+
 		boolean vertical = s instanceof FIBRowSplit;
 		int width = vertical ? current.width/size : current.width;
 		int height = vertical ? current.height : current.height/size;
 
+		System.out.println("-- Sizes --");
+
 		int x = 0, y = 0;
-		for (FIBNode n : s.getChildren()) {
-			Rectangle childSize = new Rectangle(x, y, width, height);
-			appendPlaceHolders(n, childSize, placeHolders);
-			if (vertical) {
-				x += width;
-			} else {
-				y += height;
+		for (FIBNode node : s.getChildren()) {
+			if (!(node instanceof FIBDivider)) {
+				Rectangle childSize = new Rectangle(x, y, width, height);
+				appendPlaceHolders(node, childSize, placeHolders);
+				System.out.println("- " + childSize + " -> " + node);
+				if (vertical) {
+					x += width;
+				}
+				else {
+					y += height;
+				}
 			}
 		}
 	}
