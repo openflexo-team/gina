@@ -100,8 +100,10 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	private final RenderingAdapter<C> renderingAdapter;
 
-	private final Map<FIBVariable<?>, Object> variables;
-	private final Map<FIBVariable<?>, BindingValueChangeListener<?>> variableListeners;
+	// Values of variable
+	// Lookup is performed on the name of the variable
+	private final Map<String, Object> variables;
+	private final Map<String, BindingValueChangeListener<?>> variableListeners;
 
 	public FIBViewImpl(M model, FIBController controller, RenderingAdapter<C> renderingAdapter) {
 		super();
@@ -116,8 +118,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 		model.getPropertyChangeSupport().addPropertyChangeListener(this);
 
-		variables = new HashMap<FIBVariable<?>, Object>();
-		variableListeners = new HashMap<FIBVariable<?>, BindingValueChangeListener<?>>();
+		variables = new HashMap<String, Object>();
+		variableListeners = new HashMap<String, BindingValueChangeListener<?>>();
 
 		// VERY IMPORTANT: we do it now and not later during update scheme because otherwise, we do not have any
 		// chance to be notified of a visibility change !!!
@@ -285,7 +287,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 					setVariableValue(variable, newValue);
 				}
 			};
-			variableListeners.put(variable, dataBindingValueChangeListener);
+			variableListeners.put(variable.getName(), dataBindingValueChangeListener);
 
 			// We force a first computing and notification of the value of variable
 			try {
@@ -333,7 +335,21 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getVariableValue(FIBVariable<T> variable) {
-		return (T) variables.get(variable);
+		
+		// Fixed Bug GINA-23
+		// Caused by the fact that inspectors are overriden
+		// Thus, FIBVariable "data" is duplicated here.
+		// And the call to getVariableValue(FIBVariable) was incorrect because addressing the overriden FIBVariable.
+		// To fix this, replaced HashMap variables in FIBViewImpl with a map where keys are String (and not FIBVariable)
+		
+		if (variables.containsKey(variable.getName())) {
+			return (T) variables.get(variable.getName());
+		}
+		else if (getParentView() != null) {
+			return getParentView().getVariableValue(variable);
+		}
+		return null;
+
 	}
 
 	protected <T> void fireVariableChanged(FIBVariable<T> variable, T oldValue, T newValue) {
@@ -355,7 +371,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		// System.out.println("setVariableValue " + variable.getName() + " de " + oldValue + " a " + value);
 
 		if (notEquals(oldValue, value)) {
-			variables.put(variable, value);
+			variables.put(variable.getName(), value);
 			fireVariableChanged(variable, oldValue, value);
 		}
 	}
