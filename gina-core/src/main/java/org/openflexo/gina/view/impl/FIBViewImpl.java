@@ -493,8 +493,9 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			}
 			return view;
 		}
-		if (getParentView() != null) {
-			return getParentView().getValue(variable);
+		FIBContainerView<?, ?, ?> pView = getParentView();
+		if (pView != null) {
+			return pView.getValue(variable);
 		}
 		return null;
 	}
