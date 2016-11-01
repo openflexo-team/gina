@@ -114,6 +114,8 @@ public interface FIBView<M extends FIBComponent, C>
 	 */
 	public BindingEvaluationContext getBindingEvaluationContext();
 
+	@Deprecated
+	// TODO: deprecate the same way as dataObject of FlexoController as it should be replaced with "data" binding variable
 	public Object getDataObject();
 
 	// TODO renamed to getFIBComponent()
