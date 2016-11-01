@@ -150,7 +150,7 @@ public abstract class FIBJPanel<T> extends JPanel implements FIBCustomComponent<
 
 	@Override
 	public void setEditedObject(T object) {
-		if ((editedObject == null && object != null) || !editedObject.equals(object)) {
+		if ((editedObject == null && object != null) || (editedObject != null && !editedObject.equals(object))) {
 			editedObject = object;
 			fireEditedObjectChanged();
 		}
