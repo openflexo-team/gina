@@ -210,9 +210,10 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			dataBindingValueChangeListener.delete();
 		}
 
-		if (getComponent().getData() != null && getComponent().getData().isValid()) {
-			dataBindingValueChangeListener = new BindingValueChangeListener<T>((DataBinding<T>) getComponent().getData(),
-					getBindingEvaluationContext()) {
+		DataBinding<T> data = (DataBinding<T>) getComponent().getData();
+
+		if (data != null && data.isValid()) {
+			dataBindingValueChangeListener = new BindingValueChangeListener<T>((DataBinding<T>) data, getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
 					// System.out.println(" **** bindingValueChanged() detected for data=" + getComponent().getData() + " with newValue="
