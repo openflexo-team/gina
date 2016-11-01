@@ -39,17 +39,15 @@
 
 package org.openflexo.gina.swing.view.container.layout;
 
-import java.awt.BorderLayout;
-
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.layout.BorderLayoutConstraints;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.container.impl.FIBLayoutManagerImpl;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * Swing implementation for border layout
@@ -74,7 +72,6 @@ public class JBorderLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Bord
 
 	@Override
 	public void doLayout() {
-		// TODO Auto-generated method stub
 		super.doLayout();
 		getContainerView().getTechnologyComponent().revalidate();
 		getContainerView().getTechnologyComponent().repaint();

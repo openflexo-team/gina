@@ -39,20 +39,12 @@
 
 package org.openflexo.gina.swing.editor.view;
 
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.util.logging.Logger;
-
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.logging.FlexoLogger;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.logging.Logger;
 
 @SuppressWarnings("serial")
 public abstract class PlaceHolder {
@@ -76,7 +68,7 @@ public abstract class PlaceHolder {
 	}
 
 	public PlaceHolder(FIBSwingEditableContainerView<?, ?> view, String text) {
-		this(view, text, new Rectangle(100, 50));
+		this(view, text, new Rectangle(200, 200));
 	}
 
 	public Rectangle getBounds() {
@@ -90,7 +82,6 @@ public abstract class PlaceHolder {
 	}
 
 	public void setVisible(boolean visible) {
-		// System.out.println("setVisible " + visible + " pour " + this);
 		this.visible = visible;
 	}
 
@@ -120,23 +111,19 @@ public abstract class PlaceHolder {
 
 	public void paint(Graphics g) {
 
-		if (isVisible()) {
+		Graphics2D g2 = (Graphics2D) g;
+		float alpha = isVisible() ? 0.2f : 0.1f;
+		int type = AlphaComposite.SRC_OVER;
+		AlphaComposite composite = AlphaComposite.getInstance(type, alpha);
+		g2.setComposite(composite);
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-			// System.out.println("Painting placeholder " + this);
 
-			Graphics2D g2 = (Graphics2D) g;
-
-			float alpha = 0.2f;
-			int type = AlphaComposite.SRC_OVER;
-			AlphaComposite composite = AlphaComposite.getInstance(type, alpha);
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g2.setComposite(composite);
-			g2.setColor(Color.YELLOW);
-			g2.fillRoundRect(bounds.x + 1, bounds.y + 1, bounds.width - 2, bounds.height - 2, 15, 15);
-			g2.setStroke(new BasicStroke(2.0f));
-			g2.setColor(Color.GRAY);
-			g2.drawRoundRect(bounds.x + 1, bounds.y + 1, bounds.width - 2, bounds.height - 2, 15, 15);
-		}
+		g2.setColor(isVisible() ? Color.GREEN : Color.YELLOW);
+		g2.fillRoundRect(bounds.x + 1, bounds.y + 1, bounds.width - 2, bounds.height - 2, 15, 15);
+		g2.setStroke(new BasicStroke(2.0f));
+		g2.setColor(Color.GRAY);
+		g2.drawRoundRect(bounds.x + 1, bounds.y + 1, bounds.width - 2, bounds.height - 2, 15, 15);
 
 	}
 

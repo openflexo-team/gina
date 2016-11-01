@@ -39,13 +39,12 @@
 
 package org.openflexo.gina.swing.editor.view;
 
-import java.util.List;
-import java.util.logging.Logger;
-
-import javax.swing.JComponent;
-
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.logging.FlexoLogger;
+
+import javax.swing.*;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class FIBSwingEditableContainerViewDelegate<M extends FIBContainer, J extends JComponent>
 		extends FIBSwingEditableViewDelegate<M, J> {
@@ -55,14 +54,7 @@ public class FIBSwingEditableContainerViewDelegate<M extends FIBContainer, J ext
 	private List<PlaceHolder> placeholders;
 
 	public FIBSwingEditableContainerViewDelegate(FIBSwingEditableContainerView<M, J> view) {
-
 		super(view);
-
-		/*
-		 * if (view.getPlaceHolders() != null) { for (PlaceHolder ph :
-		 * view.getPlaceHolders()) { // Listen to drag'n'drop events new
-		 * FIBDropTarget(ph); } }
-		 */
 	}
 
 	@Override
@@ -80,7 +72,6 @@ public class FIBSwingEditableContainerViewDelegate<M extends FIBContainer, J ext
 	}
 
 	public void dismissPlaceHolders() {
-		// this.placeholders = null;
 		if (placeholders != null) {
 			for (PlaceHolder ph : placeholders) {
 				ph.setVisible(false);
@@ -92,33 +83,4 @@ public class FIBSwingEditableContainerViewDelegate<M extends FIBContainer, J ext
 	public void deletePlaceHolders() {
 		this.placeholders = null;
 	}
-
-	/*
-	 * private final List<Object> placeHolderVisibleRequesters = new
-	 * ArrayList<Object>();
-	 * 
-	 * public void addToPlaceHolderVisibleRequesters(Object requester) { if
-	 * (!placeHolderVisibleRequesters.contains(requester)) {
-	 * placeHolderVisibleRequesters.add(requester);
-	 * updatePlaceHoldersVisibility(); } }
-	 * 
-	 * public void removeFromPlaceHolderVisibleRequesters(Object requester) { if
-	 * (placeHolderVisibleRequesters.remove(requester)) {
-	 * updatePlaceHoldersVisibility(); } }
-	 * 
-	 * private boolean updatePlaceHoldersVisibilityRequested = false;
-	 * 
-	 * private void updatePlaceHoldersVisibility() { if
-	 * (updatePlaceHoldersVisibilityRequested) { return; }
-	 * updatePlaceHoldersVisibilityRequested = true;
-	 * SwingUtilities.invokeLater(new Runnable() {
-	 * 
-	 * @Override public void run() { if (getView() != null) { boolean visible =
-	 * placeHolderVisibleRequesters.size() > 0; if (getView().getPlaceHolders()
-	 * != null) { //for (PlaceHolder ph : getView().getPlaceHolders()) { //
-	 * ph.setVisible(visible); //}
-	 * System.out.println("Tiens ce serait pas mal d'afficher les placeholders, la"
-	 * ); } updatePlaceHoldersVisibilityRequested = false; } } }); }
-	 */
-
 }

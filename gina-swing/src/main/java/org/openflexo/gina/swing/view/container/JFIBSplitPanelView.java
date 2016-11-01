@@ -39,13 +39,6 @@
 
 package org.openflexo.gina.swing.view.container;
 
-import java.awt.Color;
-import java.util.logging.Logger;
-
-import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBSplitPanel;
@@ -56,6 +49,10 @@ import org.openflexo.gina.view.container.impl.FIBSplitPanelViewImpl;
 import org.openflexo.swing.layout.JXMultiSplitPane;
 import org.openflexo.swing.layout.KnobDividerPainter;
 import org.openflexo.swing.layout.MultiSplitLayout;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.logging.Logger;
 
 /**
  * Swing implementation of a panel split into a given policy, with adjustable sliders<br>
@@ -125,7 +122,13 @@ public class JFIBSplitPanelView extends FIBSplitPanelViewImpl<JXMultiSplitPane, 
 
 		layout.setModel(getComponent().getSplit());
 
-		JXMultiSplitPane splitPane = new JXMultiSplitPane(layout);
+		JXMultiSplitPane splitPane = new JXMultiSplitPane(layout) {
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				paintAdditionalInfo(g);
+			}
+		};
 
 		splitPane.setDividerPainter(new KnobDividerPainter());
 
@@ -134,6 +137,9 @@ public class JFIBSplitPanelView extends FIBSplitPanelViewImpl<JXMultiSplitPane, 
 
 	public MultiSplitLayout getLayout() {
 		return layout;
+	}
+
+	protected void paintAdditionalInfo(Graphics g) {
 	}
 
 	@Override
@@ -149,26 +155,11 @@ public class JFIBSplitPanelView extends FIBSplitPanelViewImpl<JXMultiSplitPane, 
 
 	@Override
 	public synchronized void updateLayout() {
-
-		logger.info("relayout split panel " + getComponent());
-
 		layout.setModel(getComponent().getSplit());
-
-		/*
-		 * if (getSubViews() != null) { for (FIBViewImpl v :
-		 * getSubViews().values()) { if (v.getComponent().isDeleted()) {
-		 * v.delete(); } } }
-		 */
-
 		clearContainer();
-
 		buildSubComponents();
-		// updateDataObject(getDataObject());
-
 		// update();
-
 		getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
-
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {

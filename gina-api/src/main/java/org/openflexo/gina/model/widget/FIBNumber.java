@@ -344,6 +344,28 @@ public interface FIBNumber extends FIBWidget {
 
 		@Override
 		public Integer getColumns() {
+			if (columns == null) {
+				if (numberType == null) {
+					return 3;
+				}
+				switch (numberType) {
+					case ByteType:
+						return 2;
+					case ShortType:
+						return 3;
+					case IntegerType:
+						return 4;
+					case LongType:
+						return 6;
+					case FloatType:
+						return 5;
+					case DoubleType:
+						return 5;
+					default:
+						return 3;
+				}
+
+			}
 			return columns;
 		}
 

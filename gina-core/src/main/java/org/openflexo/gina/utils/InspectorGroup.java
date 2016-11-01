@@ -39,12 +39,6 @@
 
 package org.openflexo.gina.utils;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.logging.Logger;
-import java.util.regex.Pattern;
-
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.model.FIBComponent;
@@ -52,7 +46,14 @@ import org.openflexo.gina.model.FIBModelFactory;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.Resource;
-import org.openflexo.rm.ResourceLocator;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 /**
  * Implements a logical group of inspectors as a set of merged FIB components
@@ -64,26 +65,19 @@ public class InspectorGroup {
 
 	static final Logger logger = Logger.getLogger(InspectorGroup.class.getPackage().getName());
 
-	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
-
-	private final Hashtable<Class<?>, FIBInspector> inspectors;
+	private final Map<Class<?>, FIBInspector> inspectors;
 
 	private FIBModelFactory fibModelFactory;
-	private final FIBLibrary fibLibrary;
 
 	private final List<InspectorGroup> parentInspectorGroups;
 
-	public InspectorGroup(Resource inspectorDirectory, FIBLibrary fibLibrary, LocalizedDelegate locales,
-			InspectorGroup... someInspectorGroups) {
-		inspectors = new Hashtable<Class<?>, FIBInspector>();
-
-		this.fibLibrary = fibLibrary;
+	public InspectorGroup(Resource inspectorDirectory, FIBLibrary fibLibrary, LocalizedDelegate locales, InspectorGroup... someInspectorGroups) {
+		inspectors = new HashMap<>();
 
 		try {
-			fibModelFactory = new FIBModelFactory(FIBInspector.class);
+			fibModelFactory = new FIBModelFactory(inspectorDirectory, FIBInspector.class);
 		} catch (ModelDefinitionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "FIBModel is incorrect", e);
 		}
 
 		parentInspectorGroups = new ArrayList<>();
@@ -116,7 +110,6 @@ public class InspectorGroup {
 
 		// We first identify all parents
 		for (FIBInspector inspector : new ArrayList<FIBInspector>(inspectors.values())) {
-			// System.out.println("identifySuperInspectors " + inspector.getInspectedClass());
 			inspector.identifySuperInspectors(this, parentInspectorGroups);
 		}
 
@@ -151,8 +144,8 @@ public class InspectorGroup {
 	/**
 	 * Return the most specialized inspector, contained in this group, that represents supplied object
 	 * 
-	 * @param aClass
-	 * @return
+	 * @param object object to represent
+	 * @return an inspector for the object
 	 */
 	public FIBInspector inspectorForObject(Object object) {
 		if (object == null) {
@@ -204,7 +197,6 @@ public class InspectorGroup {
 	private void visitSuperInspectors(InspectorGroup inspectorGroup, List<FIBInspector> inspectorList) {
 		inspectorList.addAll(inspectorGroup.getInspectors().values());
 		// System.out.println("visitSuperInspectors in " + this + " inspectorGroup=" + inspectorGroup + " parent=" +
-		// inspectorGroup.parentInspectorGroups);
 		for (InspectorGroup parentInspectorGroup : inspectorGroup.parentInspectorGroups) {
 			if (parentInspectorGroup != this && parentInspectorGroup != null) {
 				visitSuperInspectors(parentInspectorGroup, inspectorList);
@@ -212,7 +204,7 @@ public class InspectorGroup {
 		}
 	}
 
-	public Hashtable<Class<?>, FIBInspector> getInspectors() {
+	public Map<Class<?>, FIBInspector> getInspectors() {
 		return inspectors;
 	}
 
