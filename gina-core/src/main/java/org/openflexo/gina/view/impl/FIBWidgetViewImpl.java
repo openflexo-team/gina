@@ -93,7 +93,7 @@ import org.openflexo.toolbox.ToolBox;
  *            type of data beeing represented by this view
  * 
  */
-public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBViewImpl<M, C>implements FIBWidgetView<M, C, T> {
+public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBViewImpl<M, C> implements FIBWidgetView<M, C, T> {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBWidgetViewImpl.class.getPackage().getName());
 
@@ -488,14 +488,16 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			return null;
 		}
 
-		if (getWidget().getData() == null || getWidget().getData().isUnset()) {
+		DataBinding<?> data = getWidget().getData();
+
+		if (data == null || data.isUnset()) {
 			return representedValue;
 		}
 
 		Object value = null;
 
 		try {
-			value = getWidget().getData().getBindingValue(getBindingEvaluationContext());
+			value = data.getBindingValue(getBindingEvaluationContext());
 			representedValue = (T) value;
 			// setRepresentedValue(returned);
 			return representedValue;
