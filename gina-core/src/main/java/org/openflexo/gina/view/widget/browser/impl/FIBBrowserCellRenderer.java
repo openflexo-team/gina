@@ -42,17 +42,12 @@
 
 package org.openflexo.gina.view.widget.browser.impl;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-
-import javax.swing.Icon;
-import javax.swing.JLabel;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultTreeCellRenderer;
-
 import org.openflexo.gina.view.widget.browser.impl.FIBBrowserModel.BrowserCell;
 import org.openflexo.gina.view.widget.impl.FIBBrowserWidgetImpl;
+
+import javax.swing.*;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import java.awt.*;
 
 @SuppressWarnings("serial")
 public class FIBBrowserCellRenderer<T> extends DefaultTreeCellRenderer {
@@ -103,7 +98,7 @@ public class FIBBrowserCellRenderer<T> extends DefaultTreeCellRenderer {
 	@Override
 	public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row,
 			boolean hasFocus) {
-		if (value instanceof BrowserCell) {
+		if (widget.getWidget() != null && value instanceof BrowserCell) {
 			Object representedObject = ((BrowserCell) value).getRepresentedObject();
 
 			if (sel) {
