@@ -415,42 +415,50 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 		return null;
 	}
 
+	private boolean widgetIsBeeingUpdating = false;
+
 	@Override
 	public void fireEditedObjectChanged() {
 
-		super.fireEditedObjectChanged();
+		widgetIsBeeingUpdating = true;
 
-		Class<?> baseClass = getBaseClass();
+		try {
+			super.fireEditedObjectChanged();
 
-		// First try to find the type of object
-		PrimitiveType primitiveType = getPrimitiveType();
-		if (primitiveType != null) {
-			setChoice(primitiveType);
-		}
-		else {
-			if (getEditedObject() instanceof CustomType && customTypeManager != null) {
-				CustomTypeFactory ctFactory = customTypeManager.getCustomTypeFactories().get(getEditedObject().getClass());
-				if (ctFactory != null && choices.contains(ctFactory.getCustomType())) {
-					setChoice(ctFactory.getCustomType());
-					ctFactory.configureFactory((CustomType) getEditedObject());
+			Class<?> baseClass = getBaseClass();
+
+			// First try to find the type of object
+			PrimitiveType primitiveType = getPrimitiveType();
+			if (primitiveType != null) {
+				setChoice(primitiveType);
+			}
+			else {
+				if (getEditedObject() instanceof CustomType && customTypeManager != null) {
+					CustomTypeFactory ctFactory = customTypeManager.getCustomTypeFactories().get(getEditedObject().getClass());
+					if (ctFactory != null && choices.contains(ctFactory.getCustomType())) {
+						setChoice(ctFactory.getCustomType());
+						ctFactory.configureFactory((CustomType) getEditedObject());
+					}
+				}
+				else if (getEditedObject() instanceof Class) {
+					setChoice(JAVA_TYPE);
 				}
 			}
-			else if (getEditedObject() instanceof Class) {
-				setChoice(JAVA_TYPE);
+
+			if (getEditedObject() instanceof ParameterizedType) {
+				updateGenericParameters(baseClass);
 			}
-		}
+			else if (getEditedObject() instanceof WildcardType) {
+				setChoice(JAVA_WILDCARD);
+				updateWildcardBounds();
+			}
 
-		if (getEditedObject() instanceof ParameterizedType) {
-			updateGenericParameters(baseClass);
-		}
-		else if (getEditedObject() instanceof WildcardType) {
-			setChoice(JAVA_WILDCARD);
-			updateWildcardBounds();
-		}
-
-		if (isJavaType()) {
-			getClassEditor().setSelectedClassInfo(getClassEditor().getLoadedClassesInfo().getClass(baseClass));
-			// getPropertyChangeSupport().firePropertyChange("loadedClassesInfo", null, getLoadedClassesInfo());
+			if (isJavaType()) {
+				getClassEditor().setSelectedClassInfo(getClassEditor().getLoadedClassesInfo().getClass(baseClass));
+				// getPropertyChangeSupport().firePropertyChange("loadedClassesInfo", null, getLoadedClassesInfo());
+			}
+		} finally {
+			widgetIsBeeingUpdating = false;
 		}
 
 	}
@@ -634,6 +642,12 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		// System.out.println("propertyChange with " + evt);
+
+		// Do not propagate evt if widget is beeing updating
+		if (widgetIsBeeingUpdating) {
+			return;
+		}
+
 		if (isCustomType() && evt.getSource() == getCurrentCustomTypeFactory()) {
 			// propertyChanged in CustomTypeFactory, regenerate new Type
 			setEditedObject(getCurrentCustomTypeFactory().makeCustomType(null));
@@ -709,7 +723,6 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 
 	@Override
 	public void updateCustomPanel(Type editedObject) {
-		// logger.info("updateCustomPanel with "+editedObject+" _selectorPanel="+_selectorPanel);
 		if (_selectorPanel != null) {
 			_selectorPanel.update();
 		}
@@ -978,8 +991,8 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 		FlexoLoggingManager.initialize(-1, true, loggingFile, Level.INFO, null);
 		final JDialog dialog = new JDialog((Frame) null, false);
 
-		// Type typeToEdit = String.class;
-		Type typeToEdit = new WilcardTypeImpl(String.class);
+		Type typeToEdit = String.class;
+		// Type typeToEdit = new WilcardTypeImpl(String.class);
 
 		final TypeSelector typeSelector = new TypeSelector(typeToEdit);
 		typeSelector.setRevertValue(Object.class);
