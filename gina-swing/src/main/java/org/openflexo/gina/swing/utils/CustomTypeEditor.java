@@ -39,6 +39,7 @@
 package org.openflexo.gina.swing.utils;
 
 import org.openflexo.connie.type.CustomType;
+import org.openflexo.gina.controller.FIBController;
 import org.openflexo.rm.Resource;
 
 /**
@@ -61,4 +62,12 @@ public interface CustomTypeEditor<T extends CustomType> {
 	public Resource getFIBComponentResource();
 
 	public T getEditedType();
+
+	/**
+	 * Factory for a FIBController managing component given by {@link #getEditor()} method
+	 * 
+	 * @return
+	 */
+	public FIBController makeFIBController();
+
 }
