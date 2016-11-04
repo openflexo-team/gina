@@ -335,13 +335,13 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getVariableValue(FIBVariable<T> variable) {
-		
+
 		// Fixed Bug GINA-23
 		// Caused by the fact that inspectors are overriden
 		// Thus, FIBVariable "data" is duplicated here.
 		// And the call to getVariableValue(FIBVariable) was incorrect because addressing the overriden FIBVariable.
 		// To fix this, replaced HashMap variables in FIBViewImpl with a map where keys are String (and not FIBVariable)
-		
+
 		if (variables.containsKey(variable.getName())) {
 			return (T) variables.get(variable.getName());
 		}
@@ -458,8 +458,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	/**
 	 * Return the BindingEvaluationContext valid in the context of current widget.<br>
-	 * Note that embedded component (components used in the context of FIBReferencedComponent) should point to the BindingEvaluationContext
-	 * of their embedding component
+	 * Note that an embedded component (components used in the context of FIBReferencedComponent) should point to the
+	 * BindingEvaluationContext of its embedding component
 	 * 
 	 * @return
 	 */
@@ -493,8 +493,9 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			}
 			return view;
 		}
-		if (getParentView() != null) {
-			return getParentView().getValue(variable);
+		FIBContainerView<?, ?, ?> pView = getParentView();
+		if (pView != null) {
+			return pView.getValue(variable);
 		}
 		return null;
 	}
