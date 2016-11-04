@@ -458,7 +458,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		@Override
 		public void setShowIcon(Boolean showIcon) {
 			FIBPropertyNotification<Boolean> notification = requireChange(SHOW_ICON_KEY, showIcon);
-			if (notification != null) {
+			if (notification != null && showIcon != null) {
 				this.showIcon = showIcon;
 				hasChanged(notification);
 			}
