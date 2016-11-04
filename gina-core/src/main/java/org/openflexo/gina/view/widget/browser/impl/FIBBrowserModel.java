@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -1030,6 +1031,9 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 						}
 						try {
 							nodesWereInserted(this, childIndices);
+						} catch (EmptyStackException e) {
+							// TODO: please investigate
+							LOGGER.warning("Unexpected exception: " + e);
 						} catch (Exception e) {
 							e.printStackTrace();
 							LOGGER.warning("Unexpected exception: " + e);
