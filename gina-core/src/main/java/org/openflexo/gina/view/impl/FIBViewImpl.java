@@ -372,7 +372,11 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 		if (notEquals(oldValue, value)) {
 			variables.put(variable.getName(), value);
-			fireVariableChanged(variable, oldValue, value);
+			// Fixed DIANA-23
+			// Caution: modifications subject to regression: please report any regression
+			if (isComponentVisible()) {
+				fireVariableChanged(variable, oldValue, value);
+			}
 		}
 	}
 
