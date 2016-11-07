@@ -1010,6 +1010,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				listAtIndex(0).setSelectedValue(elementToSelect, true);
 				listAtIndex(0).addListSelectionListener(this);
 				lastUpdatedList = 1;
+
 				for (int i = 0; i < bindingValue.getBindingPath().size(); i++) {
 					BindingPathElement pathElement = bindingValue.getBindingPath().get(i);
 					if (i + 2 == getVisibleColsCount()) {
@@ -1023,40 +1024,21 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 							}
 						});
 					}
-					/*
-					 * if (i==bindingValue.getBindingPath().size()-1) {
-					 * logger.info("Dernier element: "+pathElement); }
-					 */
 
-					if (!(bindingValue.isValid() && bindingValue.isLastBindingPathElement(pathElement/*, i*/)
-							&& bindingSelector.isConnected())) {
-						Type resultingType = bindingValue.getBindingPath().get(i).getType();
-						listAtIndex(i + 2).setModel(getColumnListModel(bindingValue.getBindingPath().get(i), resultingType));
-						lastUpdatedList = i + 2;
-					}
+					// Fixed MODULES-306/MODULES-333
+					// I think this conditional is not necessary, but i'm not sure not to have missed something
+					// Please report any regression
+					// if (!(bindingValue.isValid() && bindingValue.isLastBindingPathElement(pathElement) && bindingSelector.isConnected()))
+					// {
+					Type resultingType = bindingValue.getBindingPath().get(i).getType();
+					listAtIndex(i + 2).setModel(getColumnListModel(bindingValue.getBindingPath().get(i), resultingType));
+					lastUpdatedList = i + 2;
+					// }
 					listAtIndex(i + 1).removeListSelectionListener(this);
 
 					BindingColumnElement theElementToSelect = listAtIndex(i + 1).getModel().getElementFor(pathElement);
 					listAtIndex(i + 1).setSelectedValue(theElementToSelect, true);
 
-					/*
-					 * if (pathElement instanceof KeyValueProperty) {
-					 * BindingColumnElement propertyElementToSelect =
-					 * listAtIndex(i+1).getModel().getElementFor(pathElement);
-					 * listAtIndex(i +
-					 * 1).setSelectedValue(propertyElementToSelect, true); }
-					 * else if (pathElement instanceof MethodCall) {
-					 * BindingColumnElement methodElementToSelect =
-					 * listAtIndex(i
-					 * +1).getModel().getElementFor(((MethodCall)pathElement
-					 * ).getMethodDefinition()); listAtIndex(i +
-					 * 1).setSelectedValue(methodElementToSelect, true); if
-					 * (methodElementToSelect == null) {
-					 * logger.warning("Unexpected NULL BindingColumnElement"); }
-					 * /
-					 * /logger.info("Set selected value with "+methodElementToSelect
-					 * ); }
-					 */
 
 					listAtIndex(i + 1).addListSelectionListener(this);
 					if (i < bindingValue.getBindingPath().size() - 1) {
@@ -1987,6 +1969,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		if (LOGGER.isLoggable(Level.FINE)) {
 			LOGGER.fine("I select something from list at index " + index + " selected=" + newSelectedIndex);
 		}
+
 		if (newSelectedIndex < 0) {
 			return;
 		}
@@ -2425,11 +2408,11 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			if (selectedValue.getElement() instanceof SimplePathElement) {
 				// FIXED invalid type object comparison
 				if (selectedValue.getElement() != bindingValue.getBindingPathElementAtIndex(index - 1)) {
-					// System.out.println("bindingValue was " + bindingValue);
-					// System.out.println("select " + selectedValue.getElement());
+					System.out.println("bindingValue was " + bindingValue);
+					System.out.println("select " + selectedValue.getElement());
 					bindingSelector.disconnect();
 					bindingValue.setBindingPathElementAtIndex(selectedValue.getElement(), index - 1);
-					// System.out.println("bindingValue is now " + bindingValue);
+					System.out.println("bindingValue is now " + bindingValue);
 					binding.setExpression(bindingValue);
 					bindingSelector.fireEditedObjectChanged();
 				}
