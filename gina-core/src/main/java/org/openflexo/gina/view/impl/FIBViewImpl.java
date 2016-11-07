@@ -366,7 +366,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	@Override
 	public final <T> void setVariableValue(FIBVariable<T> variable, T value) {
 
-		T oldValue = (T) variables.get(variable);
+		T oldValue = (T) variables.get(variable.getName());
 
 		// System.out.println("setVariableValue " + variable.getName() + " de " + oldValue + " a " + value);
 
