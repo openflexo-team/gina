@@ -366,13 +366,17 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	@Override
 	public final <T> void setVariableValue(FIBVariable<T> variable, T value) {
 
-		T oldValue = (T) variables.get(variable);
+		T oldValue = (T) variables.get(variable.getName());
 
 		// System.out.println("setVariableValue " + variable.getName() + " de " + oldValue + " a " + value);
 
 		if (notEquals(oldValue, value)) {
 			variables.put(variable.getName(), value);
-			fireVariableChanged(variable, oldValue, value);
+			// Fixed DIANA-23
+			// Caution: modifications subject to regression: please report any regression
+			if (isComponentVisible()) {
+				fireVariableChanged(variable, oldValue, value);
+			}
 		}
 	}
 
