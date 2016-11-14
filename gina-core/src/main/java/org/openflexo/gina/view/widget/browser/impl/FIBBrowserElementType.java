@@ -61,7 +61,7 @@ import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBBrowserElement;
-import org.openflexo.gina.model.widget.FIBBrowserElement.FIBBrowserElementChildren;
+import org.openflexo.gina.model.widget.FIBBrowserElementChildren;
 import org.openflexo.gina.view.widget.FIBBrowserWidget;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.ToolBox;

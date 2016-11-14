@@ -16,7 +16,7 @@ import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBBrowserElement;
-import org.openflexo.gina.model.widget.FIBBrowserElement.FIBBrowserElementChildren;
+import org.openflexo.gina.model.widget.FIBBrowserElementChildren;
 import org.openflexo.replay.sampleData.Family;
 import org.openflexo.replay.sampleData.Person;
 import org.openflexo.replay.utils.Case;

@@ -12,13 +12,17 @@
 		constraints="twocols(location=left)" localize="true" name="BoundToSMCB"/>
 	<Label index="3" label="bound_to_selection_manager" constraints="twocols(location=right)"
 		localize="true" name="BoundToSMLabel"/>
-	<CheckBox index="4" selected="false" data="data.deepExploration" name="DeepExplorationCB"
+	<CheckBox index="4" selected="false" data="data.allowsDragAndDrop"
+		constraints="twocols(location=left)" localize="true" name="DNDCB"/>
+	<Label index="5" label="allows_drag_and_drop" constraints="twocols(location=right)"
+		localize="true" name="DNDLabel"/>
+	<CheckBox index="6" selected="false" data="data.deepExploration" name="DeepExplorationCB"
 		constraints="twocols(location=left)" localize="true" />
-	<Label index="5" label="deep_exploration_support" constraints="twocols(location=right)"
+	<Label index="7" label="deep_exploration_support" constraints="twocols(location=right)"
 		localize="true" name="DeepExplorationLabel"/>
-	<Label index="6" label="selectionMode" constraints="twocols(location=left)"
+	<Label index="8" label="selectionMode" constraints="twocols(location=left)"
 		localize="true" name="SelectionModeLabel"/>
-	<DropDown index="7" data="data.treeSelectionMode" constraints="twocols(location=right)"
+	<DropDown index="9" data="data.treeSelectionMode" constraints="twocols(location=right)"
 		localize="true" iteratorClassName="org.openflexo.gina.model.widget.TreeSelectionMode"
 		autoSelectFirstRow="false" name="SelectionModeDD"/>
 	<Parameter name="title" value="Browser" />

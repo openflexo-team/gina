@@ -42,11 +42,9 @@ package org.openflexo.gina.model.widget;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -60,7 +58,6 @@ import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DefaultBindable;
 import org.openflexo.connie.binding.BindingDefinition;
-import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBComponent.LocalizationEntryRetriever;
 import org.openflexo.gina.model.FIBModelObject;
@@ -68,7 +65,6 @@ import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.gina.model.widget.FIBBrowserAction.FIBAddAction;
 import org.openflexo.gina.model.widget.FIBBrowserAction.FIBCustomAction;
 import org.openflexo.gina.model.widget.FIBBrowserAction.FIBRemoveAction;
-import org.openflexo.gina.model.widget.FIBBrowserElement.FIBBrowserElementChildren.FIBBrowserElementChildrenImpl;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -131,6 +127,8 @@ public interface FIBBrowserElement extends FIBModelObject {
 	public static final String CHILDREN_KEY = "children";
 	@PropertyIdentifier(type = List.class)
 	public static final String ACTIONS_KEY = "actions";
+	@PropertyIdentifier(type = List.class)
+	public static final String DRAG_OPERATIONS_KEY = "dragOperations";
 
 	@Getter(value = OWNER_KEY /*, inverse = FIBBrowser.ELEMENTS_KEY*/)
 	@CloningStrategy(StrategyType.IGNORE)
@@ -271,13 +269,28 @@ public interface FIBBrowserElement extends FIBModelObject {
 	@Remover(ACTIONS_KEY)
 	public void removeFromActions(FIBBrowserAction anAction);
 
+	@Getter(value = DRAG_OPERATIONS_KEY, cardinality = Cardinality.LIST, inverse = FIBBrowserDragOperation.OWNER_KEY)
+	@XMLElement
+	@CloningStrategy(StrategyType.CLONE)
+	@Embedded
+	public List<FIBBrowserDragOperation> getDragOperations();
+
+	@Setter(DRAG_OPERATIONS_KEY)
+	public void setDragOperations(List<FIBBrowserDragOperation> actions);
+
+	@Adder(DRAG_OPERATIONS_KEY)
+	public void addToDragOperations(FIBBrowserDragOperation anAction);
+
+	@Remover(DRAG_OPERATIONS_KEY)
+	public void removeFromDragOperations(FIBBrowserDragOperation anAction);
+
 	public void finalizeBrowserDeserialization();
 
 	public void updateBindingModel();
 
 	public void notifiedBindingModelRecreated();
 
-	public Bindable getIterator();
+	public Bindable getIteratorBindable();
 
 	public ImageIcon getImageIcon();
 
@@ -376,10 +389,10 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 		private BindingModel actionBindingModel;
 
-		private final FIBBrowserElementIterator iterator;
+		private final FIBBrowserElementIteratorBindable iteratorBindable;
 
 		public FIBBrowserElementImpl() {
-			iterator = new FIBBrowserElementIterator();
+			iteratorBindable = new FIBBrowserElementIteratorBindable();
 			// children = new Vector<FIBBrowserElementChildren>();
 			// actions = new Vector<FIBBrowserAction>();
 		}
@@ -393,20 +406,24 @@ public interface FIBBrowserElement extends FIBModelObject {
 		public void setOwner(FIBBrowser browser) {
 			// BindingModel oldBindingModel = getBindingModel();
 			performSuperSetter(OWNER_KEY, browser);
-			iterator.updateBindingModel();
+			iteratorBindable.updateBindingModel();
 			for (FIBBrowserElementChildren e : getChildren()) {
-				((FIBBrowserElementChildrenImpl) e).updateBindingModel();
+				e.updateBindingModel();
 			}
 			// Update binding model for actions associated with this fib browser elememt
 			for (FIBBrowserAction action : getActions()) {
 				action.updateBindingModel();
+			}
+			// Update binding model for drag operations associated with this fib browser elememt
+			for (FIBBrowserDragOperation dragOperation : getDragOperations()) {
+				dragOperation.updateBindingModel();
 			}
 		}
 
 		@Override
 		public DataBinding<String> getLabel() {
 			if (label == null) {
-				label = new DataBinding<String>(iterator, String.class, DataBinding.BindingDefinitionType.GET);
+				label = new DataBinding<String>(iteratorBindable, String.class, DataBinding.BindingDefinitionType.GET);
 				label.setBindingName("label");
 			}
 			return label;
@@ -417,7 +434,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 			FIBPropertyNotification<DataBinding<String>> notification = requireChange(LABEL_KEY, label);
 			if (notification != null) {
 				if (label != null) {
-					label.setOwner(iterator);
+					label.setOwner(iteratorBindable);
 					label.setDeclaredType(String.class);
 					label.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 					label.setBindingName("label");
@@ -430,7 +447,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<Icon> getIcon() {
 			if (icon == null) {
-				icon = new DataBinding<Icon>(iterator, Icon.class, DataBinding.BindingDefinitionType.GET);
+				icon = new DataBinding<Icon>(iteratorBindable, Icon.class, DataBinding.BindingDefinitionType.GET);
 				icon.setBindingName("icon");
 			}
 			return icon;
@@ -441,7 +458,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 			FIBPropertyNotification<DataBinding<Icon>> notification = requireChange(ICON_KEY, icon);
 			if (notification != null) {
 				if (icon != null) {
-					icon.setOwner(iterator);
+					icon.setOwner(iteratorBindable);
 					icon.setDeclaredType(Icon.class);
 					icon.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 					icon.setBindingName("icon");
@@ -454,7 +471,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<String> getTooltip() {
 			if (tooltip == null) {
-				tooltip = new DataBinding<String>(iterator, String.class, DataBinding.BindingDefinitionType.GET);
+				tooltip = new DataBinding<String>(iteratorBindable, String.class, DataBinding.BindingDefinitionType.GET);
 				tooltip.setBindingName("tooltip");
 			}
 			return tooltip;
@@ -463,7 +480,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public void setTooltip(DataBinding<String> tooltip) {
 			if (tooltip != null) {
-				tooltip.setOwner(iterator);
+				tooltip.setOwner(iteratorBindable);
 				tooltip.setDeclaredType(String.class);
 				tooltip.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 				tooltip.setBindingName("tooltip");
@@ -474,7 +491,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<Boolean> getEnabled() {
 			if (enabled == null) {
-				enabled = new DataBinding<Boolean>(iterator, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				enabled = new DataBinding<Boolean>(iteratorBindable, Boolean.class, DataBinding.BindingDefinitionType.GET);
 				enabled.setBindingName("enabled");
 			}
 			return enabled;
@@ -483,7 +500,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public void setEnabled(DataBinding<Boolean> enabled) {
 			if (enabled != null) {
-				enabled.setOwner(iterator);
+				enabled.setOwner(iteratorBindable);
 				enabled.setDeclaredType(Boolean.class);
 				enabled.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 				enabled.setBindingName("enabled");
@@ -494,7 +511,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<Boolean> getVisible() {
 			if (visible == null) {
-				visible = new DataBinding<Boolean>(iterator, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				visible = new DataBinding<Boolean>(iteratorBindable, Boolean.class, DataBinding.BindingDefinitionType.GET);
 				visible.setBindingName("visible");
 			}
 			return visible;
@@ -503,7 +520,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public void setVisible(DataBinding visible) {
 			if (visible != null) {
-				visible.setOwner(iterator);
+				visible.setOwner(iteratorBindable);
 				visible.setDeclaredType(Boolean.class);
 				visible.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 				visible.setBindingName("visible");
@@ -528,7 +545,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<String> getEditableLabel() {
 			if (editableLabel == null) {
-				editableLabel = new DataBinding<String>(iterator, String.class, DataBinding.BindingDefinitionType.GET_SET);
+				editableLabel = new DataBinding<String>(iteratorBindable, String.class, DataBinding.BindingDefinitionType.GET_SET);
 			}
 			return editableLabel;
 		}
@@ -538,7 +555,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 			FIBPropertyNotification<DataBinding<String>> notification = requireChange(EDITABLE_LABEL_KEY, editableLabel);
 			if (notification != null) {
 				if (editableLabel != null) {
-					editableLabel.setOwner(iterator);
+					editableLabel.setOwner(iteratorBindable);
 					editableLabel.setDeclaredType(String.class);
 					editableLabel.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET_SET);
 				}
@@ -624,6 +641,9 @@ public interface FIBBrowserElement extends FIBModelObject {
 			for (FIBBrowserElementChildren c : getChildren()) {
 				c.finalizeBrowserDeserialization();
 			}
+			for (FIBBrowserDragOperation op : getDragOperations()) {
+				op.finalizeBrowserDeserialization();
+			}
 		}
 
 		@Override
@@ -703,7 +723,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<Font> getDynamicFont() {
 			if (dynamicFont == null) {
-				dynamicFont = new DataBinding<Font>(iterator, Font.class, DataBinding.BindingDefinitionType.GET);
+				dynamicFont = new DataBinding<Font>(iteratorBindable, Font.class, DataBinding.BindingDefinitionType.GET);
 			}
 			return dynamicFont;
 		}
@@ -711,7 +731,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public void setDynamicFont(DataBinding<Font> dynamicFont) {
 			if (dynamicFont != null) {
-				dynamicFont.setOwner(iterator);
+				dynamicFont.setOwner(iteratorBindable);
 				dynamicFont.setDeclaredType(Font.class);
 				dynamicFont.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 			}
@@ -721,7 +741,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<Color> getSelectedDynamicColor() {
 			if (selectedDynamicColor == null) {
-				selectedDynamicColor = new DataBinding<Color>(iterator, Color.class, DataBinding.BindingDefinitionType.GET);
+				selectedDynamicColor = new DataBinding<Color>(iteratorBindable, Color.class, DataBinding.BindingDefinitionType.GET);
 			}
 			return selectedDynamicColor;
 		}
@@ -729,7 +749,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public void setSelectedDynamicColor(DataBinding<Color> selectedDynamicColor) {
 			if (selectedDynamicColor != null) {
-				selectedDynamicColor.setOwner(iterator);
+				selectedDynamicColor.setOwner(iteratorBindable);
 				selectedDynamicColor.setDeclaredType(Color.class);
 				selectedDynamicColor.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 			}
@@ -739,7 +759,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<Color> getNonSelectedDynamicColor() {
 			if (nonSelectedDynamicColor == null) {
-				nonSelectedDynamicColor = new DataBinding<Color>(iterator, Color.class, DataBinding.BindingDefinitionType.GET);
+				nonSelectedDynamicColor = new DataBinding<Color>(iteratorBindable, Color.class, DataBinding.BindingDefinitionType.GET);
 			}
 			return nonSelectedDynamicColor;
 		}
@@ -747,7 +767,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public void setNonSelectedDynamicColor(DataBinding<Color> nonSelectedDynamicColor) {
 			if (nonSelectedDynamicColor != null) {
-				nonSelectedDynamicColor.setOwner(iterator);
+				nonSelectedDynamicColor.setOwner(iteratorBindable);
 				nonSelectedDynamicColor.setDeclaredType(Color.class);
 				nonSelectedDynamicColor.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 			}
@@ -796,11 +816,11 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}
 
 		@Override
-		public FIBBrowserElementIterator getIterator() {
-			return iterator;
+		public FIBBrowserElementIteratorBindable getIteratorBindable() {
+			return iteratorBindable;
 		}
 
-		private class FIBBrowserElementIterator extends DefaultBindable {
+		public class FIBBrowserElementIteratorBindable extends DefaultBindable {
 			private BindingModel iteratorBindingModel = null;
 
 			@Override
@@ -1043,348 +1063,6 @@ public interface FIBBrowserElement extends FIBModelObject {
 		public String getPresentationName() {
 			return getName();
 		}
-	}
-
-	@ModelEntity
-	@ImplementationClass(FIBBrowserElementChildren.FIBBrowserElementChildrenImpl.class)
-	@XMLElement(xmlTag = "Children")
-	public static interface FIBBrowserElementChildren extends FIBModelObject {
-
-		@PropertyIdentifier(type = DataBinding.class)
-		public static final String OWNER_KEY = "owner";
-		@PropertyIdentifier(type = DataBinding.class)
-		public static final String DATA_KEY = "data";
-		@PropertyIdentifier(type = DataBinding.class)
-		public static final String VISIBLE_KEY = "visible";
-		@PropertyIdentifier(type = DataBinding.class)
-		public static final String CAST_KEY = "cast";
-
-		@Getter(value = OWNER_KEY /*, inverse = FIBBrowserElement.CHILDREN_KEY*/)
-		public FIBBrowserElement getOwner();
-
-		@Setter(OWNER_KEY)
-		public void setOwner(FIBBrowserElement customColumn);
-
-		@Getter(value = DATA_KEY)
-		@XMLAttribute
-		public DataBinding<Object> getData();
-
-		@Setter(DATA_KEY)
-		public void setData(DataBinding<Object> data);
-
-		@Getter(value = VISIBLE_KEY)
-		@XMLAttribute
-		public DataBinding<Boolean> getVisible();
-
-		@Setter(VISIBLE_KEY)
-		public void setVisible(DataBinding<Boolean> visible);
-
-		@Getter(value = CAST_KEY)
-		@XMLAttribute
-		public DataBinding<Object> getCast();
-
-		@Setter(CAST_KEY)
-		public void setCast(DataBinding<Object> cast);
-
-		public void finalizeBrowserDeserialization();
-
-		public boolean isMultipleAccess();
-
-		public ImageIcon getImageIcon();
-
-		public Class<?> getBaseClass();
-
-		public Type getAccessedType();
-
-		public Bindable getChildBindable();
-
-		public void revalidateBindings();
-
-		public static abstract class FIBBrowserElementChildrenImpl extends FIBModelObjectImpl implements FIBBrowserElementChildren {
-
-			private static final Logger logger = Logger.getLogger(FIBBrowserElementChildren.class.getPackage().getName());
-
-			// private FIBBrowserElement browserElement;
-			private DataBinding<Object> data;
-			private DataBinding<Boolean> visible;
-			private DataBinding<Object> cast;
-			private FIBChildBindable childBindable;
-
-			@Deprecated
-			public static BindingDefinition DATA = new BindingDefinition("data", Object.class, DataBinding.BindingDefinitionType.GET,
-					false);
-			@Deprecated
-			public static BindingDefinition VISIBLE = new BindingDefinition("visible", Boolean.class, DataBinding.BindingDefinitionType.GET,
-					false);
-			@Deprecated
-			public static BindingDefinition CAST = new BindingDefinition("cast", Object.class, DataBinding.BindingDefinitionType.GET,
-					false);
-
-			@Override
-			public String getPresentationName() {
-				if (getData() != null && getData().isSet() && getData().isValid()) {
-					return getData().toString();
-				}
-				return getName();
-			}
-
-			private void updateBindingModel() {
-				if (childBindable != null) {
-					childBindable.updateBindingModel();
-				}
-			}
-
-			private class FIBChildBindable extends DefaultBindable {
-				private BindingModel childBindingModel = null;
-
-				private void updateBindingModel() {
-					childBindingModel.setBaseBindingModel(FIBBrowserElementChildrenImpl.this.getBindingModel());
-				}
-
-				@Override
-				public BindingFactory getBindingFactory() {
-					return FIBBrowserElementChildrenImpl.this.getBindingFactory();
-				}
-
-				@Override
-				public BindingModel getBindingModel() {
-					if (childBindingModel == null) {
-						createChildBindingModel();
-					}
-					return childBindingModel;
-				}
-
-				private void createChildBindingModel() {
-					childBindingModel = new BindingModel(FIBBrowserElementChildrenImpl.this.getBindingModel());
-					childBindingModel.addToBindingVariables(new BindingVariable("child", Object.class) {
-						@Override
-						public Type getType() {
-							if (getData().isSet()) {
-								Type type = getData().getAnalyzedType();
-								if (isSupportedListType(type)) {
-									if (type instanceof ParameterizedType) {
-										return ((ParameterizedType) type).getActualTypeArguments()[0];
-									}
-									logger.warning("Found supported list type " + type
-											+ " but it is not parameterized so I can't guess its content");
-									return Object.class;
-								}
-								return type;
-							}
-							return Object.class;
-						}
-
-						@Override
-						public boolean isCacheable() {
-							return false;
-						}
-
-					});
-				}
-
-				public FIBComponent getComponent() {
-					return getOwner().getComponent();
-				}
-
-				@Override
-				public void notifiedBindingChanged(DataBinding<?> dataBinding) {
-				}
-
-				@Override
-				public void notifiedBindingDecoded(DataBinding<?> dataBinding) {
-				}
-
-			}
-
-			@Override
-			public FIBChildBindable getChildBindable() {
-				if (childBindable == null) {
-					childBindable = new FIBChildBindable();
-				}
-				return childBindable;
-			}
-
-			public FIBBrowser getBrowser() {
-				return getOwner().getOwner();
-			}
-
-			@Override
-			public DataBinding<Object> getData() {
-				if (data == null) {
-					data = new DataBinding<Object>(getOwner() != null ? getOwner().getIterator() : null, Object.class,
-							DataBinding.BindingDefinitionType.GET);
-				}
-				return data;
-			}
-
-			@Override
-			public void setData(DataBinding<Object> data) {
-				if (data != null) {
-					data.setOwner(getOwner() != null ? getOwner().getIterator() : null);
-					data.setDeclaredType(Object.class);
-					data.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
-				}
-				this.data = data;
-			}
-
-			@Override
-			public DataBinding<Boolean> getVisible() {
-				if (visible == null) {
-					visible = new DataBinding<Boolean>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
-				}
-				return visible;
-			}
-
-			@Override
-			public void setVisible(DataBinding<Boolean> visible) {
-				if (visible != null) {
-					visible.setOwner(getOwner() != null ? getOwner().getIterator() : null);
-					visible.setDeclaredType(Boolean.class);
-					visible.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
-				}
-				this.visible = visible;
-			}
-
-			@Override
-			public DataBinding<Object> getCast() {
-				if (cast == null) {
-					cast = new DataBinding<Object>(getChildBindable(), Object.class, DataBinding.BindingDefinitionType.GET);
-				}
-				return cast;
-			}
-
-			@Override
-			public void setCast(DataBinding<Object> cast) {
-				cast.setOwner(getChildBindable());
-				cast.setDeclaredType(Object.class);
-				cast.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
-				this.cast = cast;
-			}
-
-			@Override
-			public FIBComponent getComponent() {
-				if (getOwner() != null) {
-					return getOwner().getComponent();
-				}
-				return null;
-			}
-
-			@Override
-			public void revalidateBindings() {
-				if (data != null) {
-					data.setOwner(getOwner().getIterator());
-					data.revalidate();
-				}
-				if (visible != null) {
-					visible.setOwner(getOwner().getIterator());
-					visible.revalidate();
-				}
-			}
-
-			@Override
-			public void finalizeBrowserDeserialization() {
-				logger.fine("finalizeBrowserDeserialization() for FIBBrowserElementChildren ");
-				if (data != null) {
-					data.setOwner(getOwner().getIterator());
-					data.decode();
-				}
-				if (visible != null) {
-					visible.setOwner(getOwner().getIterator());
-					visible.decode();
-				}
-			}
-
-			@Override
-			public ImageIcon getImageIcon() {
-				if (getBaseClass() == null) {
-					return null;
-				}
-				FIBBrowserElement e = getBrowser().elementForClass(getBaseClass());
-				if (e != null) {
-					return e.getImageIcon();
-				}
-				return null;
-			}
-
-			@Override
-			public Class getBaseClass() {
-				Type accessedType = getAccessedType();
-				if (accessedType == null) {
-					return null;
-				}
-				if (isMultipleAccess()) {
-					return TypeUtils.getBaseClass(((ParameterizedType) accessedType).getActualTypeArguments()[0]);
-				}
-				else {
-					return TypeUtils.getBaseClass(getAccessedType());
-				}
-			}
-
-			@Override
-			public Type getAccessedType() {
-				if (data != null && data.isSet()) {
-					return data.getAnalyzedType();
-				}
-				return null;
-			}
-
-			@Override
-			public boolean isMultipleAccess() {
-				/*System.out.println("This="+this);
-				System.out.println("getAccessedType()="+getAccessedType());
-				System.out.println("TypeUtils.isClassAncestorOf(List.class, TypeUtils.getBaseClass(accessedType))="+TypeUtils.isClassAncestorOf(List.class, TypeUtils.getBaseClass(getAccessedType())));
-				System.out.println("accessedType instanceof ParameterizedType="+(getAccessedType() instanceof ParameterizedType));
-				System.out.println("((ParameterizedType)accessedType).getActualTypeArguments().length > 0="+(((ParameterizedType)getAccessedType()).getActualTypeArguments().length > 0));*/
-				Type accessedType = getAccessedType();
-				if (accessedType == null) {
-					return false;
-				}
-				return isSupportedListType(accessedType);
-			}
-
-			private boolean isSupportedListType(Type accessedType) {
-				return TypeUtils.isClassAncestorOf(Iterable.class, TypeUtils.getBaseClass(accessedType))
-						|| TypeUtils.isClassAncestorOf(Enumeration.class, TypeUtils.getBaseClass(accessedType));
-			}
-
-		}
-
-		@DefineValidationRule
-		public static class DataBindingMustBeValid extends BindingMustBeValid<FIBBrowserElementChildren> {
-			public DataBindingMustBeValid() {
-				super("'data'_binding_is_not_valid", FIBBrowserElementChildren.class);
-			}
-
-			@Override
-			public DataBinding<?> getBinding(FIBBrowserElementChildren object) {
-				return object.getData();
-			}
-		}
-
-		@DefineValidationRule
-		public static class VisibleBindingMustBeValid extends BindingMustBeValid<FIBBrowserElementChildren> {
-			public VisibleBindingMustBeValid() {
-				super("'visible'_binding_is_not_valid", FIBBrowserElementChildren.class);
-			}
-
-			@Override
-			public DataBinding<?> getBinding(FIBBrowserElementChildren object) {
-				return object.getVisible();
-			}
-		}
-
-		@DefineValidationRule
-		public static class CastBindingMustBeValid extends BindingMustBeValid<FIBBrowserElementChildren> {
-			public CastBindingMustBeValid() {
-				super("'cast'_binding_is_not_valid", FIBBrowserElementChildren.class);
-			}
-
-			@Override
-			public DataBinding<?> getBinding(FIBBrowserElementChildren object) {
-				return object.getCast();
-			}
-		}
-
 	}
 
 	@DefineValidationRule

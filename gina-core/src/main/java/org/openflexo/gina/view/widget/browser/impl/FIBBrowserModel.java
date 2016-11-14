@@ -39,8 +39,13 @@
 
 package org.openflexo.gina.view.widget.browser.impl;
 
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -71,7 +76,7 @@ import org.openflexo.connie.binding.BindingValueListChangeListener;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBBrowserElement;
-import org.openflexo.gina.model.widget.FIBBrowserElement.FIBBrowserElementChildren;
+import org.openflexo.gina.model.widget.FIBBrowserElementChildren;
 import org.openflexo.gina.view.widget.FIBBrowserWidget;
 import org.openflexo.toolbox.StringUtils;
 
@@ -322,7 +327,10 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 		}
 	}
 
-	public class BrowserCell extends DefaultMutableTreeNode /*implements Observer*/ {
+	final public static DataFlavor BROWSER_CELL_FLAVOR = new DataFlavor(BrowserCell.class, "BrowserCell");
+	static DataFlavor flavors[] = { BROWSER_CELL_FLAVOR };
+
+	public class BrowserCell extends DefaultMutableTreeNode implements Transferable/*, Serializable*/ {
 
 		private boolean loaded = false;
 
@@ -395,7 +403,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 				childrenDataBindingValueChangeListeners.clear();
 			}
 			else {
-				childrenDataBindingValueChangeListeners = new HashMap<FIBBrowserElement.FIBBrowserElementChildren, BindingValueChangeListener<?>>();
+				childrenDataBindingValueChangeListeners = new HashMap<FIBBrowserElementChildren, BindingValueChangeListener<?>>();
 			}
 			// This is really important to this now
 			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
@@ -447,7 +455,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 				childrenCastBindingValueChangeListeners.clear();
 			}
 			else {
-				childrenCastBindingValueChangeListeners = new HashMap<FIBBrowserElement.FIBBrowserElementChildren, BindingValueChangeListener<?>>();
+				childrenCastBindingValueChangeListeners = new HashMap<FIBBrowserElementChildren, BindingValueChangeListener<?>>();
 			}
 			// This is really important to this now
 			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
@@ -478,7 +486,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 				childrenVisibleBindingValueChangeListeners.clear();
 			}
 			else {
-				childrenVisibleBindingValueChangeListeners = new HashMap<FIBBrowserElement.FIBBrowserElementChildren, BindingValueChangeListener<Boolean>>();
+				childrenVisibleBindingValueChangeListeners = new HashMap<FIBBrowserElementChildren, BindingValueChangeListener<Boolean>>();
 			}
 
 			// This is really important to this now
@@ -1132,6 +1140,60 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 		public TreePath getTreePath() {
 			return new TreePath(getPathToRoot(this, 0));
 		}
+
+		// --------- Transferable --------------
+
+		@Override
+		public boolean isDataFlavorSupported(DataFlavor df) {
+			return df.equals(BROWSER_CELL_FLAVOR);
+		}
+
+		/** implements Transferable interface */
+		@Override
+		public Object getTransferData(DataFlavor df) throws UnsupportedFlavorException, IOException {
+			if (df.equals(BROWSER_CELL_FLAVOR)) {
+				return new TransferedBrowserCell();
+			}
+			else
+				throw new UnsupportedFlavorException(df);
+		}
+
+		/** implements Transferable interface */
+		@Override
+		public DataFlavor[] getTransferDataFlavors() {
+			return flavors;
+		}
+
+		// --------- Serializable --------------
+
+		/*private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+			out.defaultWriteObject();
+		}
+		
+		private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+			in.defaultReadObject();
+		}*/
+
+	}
+
+	public static class TransferedBrowserCell implements Serializable {
+		// private final Point offset;
+
+		// private final ShapeNode<?> transfered;
+
+		public TransferedBrowserCell(/*ShapeNode<?> element, Point dragOffset*/) {
+			super();
+			// transfered = element;
+			// offset = dragOffset;
+		}
+
+		/*public Point getOffset() {
+			return offset;
+		}
+		
+		public ShapeNode<?> getTransferedElement() {
+			return transfered;
+		}*/
 
 	}
 
