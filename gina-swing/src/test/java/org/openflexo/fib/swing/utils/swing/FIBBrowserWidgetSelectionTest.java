@@ -61,9 +61,9 @@ import org.openflexo.gina.model.container.layout.BorderLayoutConstraints.BorderL
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBBrowserElement;
+import org.openflexo.gina.model.widget.FIBBrowserElementChildren;
 import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.gina.model.widget.FIBTextField;
-import org.openflexo.gina.model.widget.FIBBrowserElement.FIBBrowserElementChildren;
 import org.openflexo.gina.sampleData.Family;
 import org.openflexo.gina.sampleData.Person;
 import org.openflexo.gina.sampleData.Family.Gender;

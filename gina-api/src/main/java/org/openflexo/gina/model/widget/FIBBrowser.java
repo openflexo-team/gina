@@ -59,6 +59,7 @@ import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Embedded;
+import org.openflexo.model.annotations.Finder;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -84,6 +85,8 @@ public interface FIBBrowser extends FIBWidget {
 	public static final String ROW_HEIGHT_KEY = "rowHeight";
 	@PropertyIdentifier(type = boolean.class)
 	public static final String BOUND_TO_SELECTION_MANAGER_KEY = "boundToSelectionManager";
+	@PropertyIdentifier(type = boolean.class)
+	public static final String ALLOWS_DRAG_AND_DROP_KEY = "allowsDragAndDrop";
 	@PropertyIdentifier(type = boolean.class)
 	public static final String DEEP_EXPLORATION_KEY = "deepExploration";
 	@PropertyIdentifier(type = TreeSelectionMode.class)
@@ -155,6 +158,13 @@ public interface FIBBrowser extends FIBWidget {
 	@Setter(DEEP_EXPLORATION_KEY)
 	public void setDeepExploration(boolean deepExploration);
 
+	@Getter(value = ALLOWS_DRAG_AND_DROP_KEY, defaultValue = "false")
+	@XMLAttribute
+	public boolean getAllowsDragAndDrop();
+
+	@Setter(ALLOWS_DRAG_AND_DROP_KEY)
+	public void setAllowsDragAndDrop(boolean allowsDragAndDrop);
+
 	@Getter(value = SELECTION_MODE_KEY)
 	@XMLAttribute(xmlTag = "selectionMode")
 	public TreeSelectionMode getTreeSelectionMode();
@@ -190,6 +200,9 @@ public interface FIBBrowser extends FIBWidget {
 
 	@Remover(ELEMENTS_KEY)
 	public void removeFromElements(FIBBrowserElement aElement);
+
+	@Finder(name = ELEMENTS_KEY, attribute = FIBBrowserElement.NAME_KEY, collection = ELEMENTS_KEY)
+	public FIBBrowserElement getElement(String elementName);
 
 	@Getter(value = SHOW_FOOTER_KEY, defaultValue = "false")
 	@XMLAttribute

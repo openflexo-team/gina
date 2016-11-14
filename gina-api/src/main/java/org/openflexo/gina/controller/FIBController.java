@@ -960,6 +960,17 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 				this.weight = weight;
 			}
 
+			public void maryTo(Person otherPerson) {
+				System.out.println("Mary " + this + " with " + otherPerson);
+			}
+
+			public boolean canMaryWith(Person otherPerson) {
+				System.out.println("Can i mary with " + otherPerson + " ?");
+				/*if ((this == mary && otherPerson == john) || (this == mary && otherPerson == john)) {
+					return true;
+				}*/
+				return true;
+			}
 		}
 
 		public static class Family {

@@ -74,7 +74,7 @@ public class Person extends SampleData {
 	public void setFirstName(String firstName) {
 		String oldFirstName = this.firstName;
 		this.firstName = firstName;
-		//System.out.println("Notify firstName changed from " + oldFirstName + " to " + firstName);
+		// System.out.println("Notify firstName changed from " + oldFirstName + " to " + firstName);
 		getPropertyChangeSupport().firePropertyChange("firstName", oldFirstName, firstName);
 	}
 
@@ -105,4 +105,5 @@ public class Person extends SampleData {
 		this.gender = gender;
 		getPropertyChangeSupport().firePropertyChange("gender", oldGender, gender);
 	}
+
 }

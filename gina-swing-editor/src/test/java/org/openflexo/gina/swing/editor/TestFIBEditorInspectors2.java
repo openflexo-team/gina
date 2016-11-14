@@ -82,6 +82,11 @@ public class TestFIBEditorInspectors2 extends FIBInspectorTestCase {
 	}
 
 	@Test
+	public void testFIBBrowserDragOperationBasicInspector() {
+		validateFIB("Inspectors/Basic/FIBBrowserDragOperation.inspector");
+	}
+
+	@Test
 	public void testFIBBrowserElementBasicInspector() {
 		validateFIB("Inspectors/Basic/FIBBrowserElement.inspector");
 	}
@@ -142,6 +147,11 @@ public class TestFIBEditorInspectors2 extends FIBInspectorTestCase {
 	}
 
 	@Test
+	public void testFIBDiscreteTwoLevelsPolarFunctionGraphBasicInspector() {
+		validateFIB("Inspectors/Basic/FIBDiscreteTwoLevelsPolarFunctionGraph.inspector");
+	}
+
+	@Test
 	public void testFIBDropDownBasicInspector() {
 		validateFIB("Inspectors/Basic/FIBDropDown.inspector");
 	}
@@ -199,6 +209,11 @@ public class TestFIBEditorInspectors2 extends FIBInspectorTestCase {
 	@Test
 	public void testFIBNumericFunctionBasicInspector() {
 		validateFIB("Inspectors/Basic/FIBNumericFunction.inspector");
+	}
+
+	@Test
+	public void testFIBPolarFunctionGraphBasicInspector() {
+		validateFIB("Inspectors/Basic/FIBPolarFunctionGraph.inspector");
 	}
 
 	@Test
@@ -364,6 +379,11 @@ public class TestFIBEditorInspectors2 extends FIBInspectorTestCase {
 	@Test
 	public void testFIBGraphFunctionFontAndColorsInspector() {
 		validateFIB("Inspectors/FontAndColors/FIBGraphFunction.inspector");
+	}
+
+	@Test
+	public void testFIBPanelFontAndColorsInspector() {
+		validateFIB("Inspectors/FontAndColors/FIBPanel.inspector");
 	}
 
 	@Test
