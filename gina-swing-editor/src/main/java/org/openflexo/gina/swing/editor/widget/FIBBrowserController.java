@@ -55,8 +55,9 @@ import org.openflexo.gina.model.graph.FIBGraphFunction;
 import org.openflexo.gina.model.graph.FIBNumericFunction;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBBrowserAction;
+import org.openflexo.gina.model.widget.FIBBrowserDragOperation;
 import org.openflexo.gina.model.widget.FIBBrowserElement;
-import org.openflexo.gina.model.widget.FIBBrowserElement.FIBBrowserElementChildren;
+import org.openflexo.gina.model.widget.FIBBrowserElementChildren;
 import org.openflexo.gina.model.widget.FIBButton;
 import org.openflexo.gina.model.widget.FIBButtonColumn;
 import org.openflexo.gina.model.widget.FIBCheckBox;
@@ -228,6 +229,9 @@ public class FIBBrowserController extends FIBController /*implements Observer*/ 
 			}
 			return FIBEditorIconLibrary.BROWSER_ELEMENT_ACTION_ICON;
 		}
+		else if (element instanceof FIBBrowserDragOperation) {
+			return FIBEditorIconLibrary.DRAG_OPERATION_ICON;
+		}
 		return null;
 
 	}
@@ -311,6 +315,22 @@ public class FIBBrowserController extends FIBController /*implements Observer*/ 
 			actionToDelete.delete();
 		}
 		return actionToDelete;
+	}
+
+	public FIBBrowserDragOperation createBrowserDragOperation(FIBBrowserElement element) {
+		FIBBrowserDragOperation newOperation = editorController.getFactory().newInstance(FIBBrowserDragOperation.class);
+		newOperation.setName("drag_operation");
+		element.addToDragOperations(newOperation);
+		return newOperation;
+	}
+
+	public FIBBrowserDragOperation deleteBrowserDragOperation(FIBBrowserDragOperation operationToDelete) {
+		logger.info("Called deleteBrowserDragOperation() with " + operationToDelete);
+		if (operationToDelete.getOwner() != null) {
+			operationToDelete.getOwner().removeFromDragOperations(operationToDelete);
+			operationToDelete.delete();
+		}
+		return operationToDelete;
 	}
 
 	public FIBBrowserElementChildren createChildren(FIBBrowserElement element) {

@@ -39,11 +39,11 @@
           <Custom componentClassName="org.openflexo.gina.swing.utils.ClassSelector" localize="true" manageDynamicModel="true" data="ElementsTable.selected.dataClass" constraints="twocols(expandHorizontally=true;location=right)" />
           <Label label="label" constraints="twocols(location=left)" localize="true" />
           <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="ElementsTable.selected.label" constraints="twocols(expandHorizontally=true;location=right)">
-            <Assignment variable="component.bindable" value="ElementsTable.selected.iterator" />
+            <Assignment variable="component.bindable" value="ElementsTable.selected.iteratorBindable" />
           </Custom>
           <Label label="icon" constraints="twocols(location=left)" localize="true" />
           <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="ElementsTable.selected.icon" constraints="twocols(expandHorizontally=true;location=right)">
-            <Assignment variable="component.bindable" value="ElementsTable.selected.iterator" />
+            <Assignment variable="component.bindable" value="ElementsTable.selected.iteratorBindable" />
           </Custom>
           <Label label="icon_file" constraints="twocols(location=left)" localize="true" />
           <File mode="OpenMode" isDirectory="false" localize="true" data="ElementsTable.selected.imageIconFile" constraints="twocols(expandHorizontally=true;location=right)" />
@@ -51,21 +51,21 @@
         <Tab title="Advanced" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="1" font="SansSerif,0,11" name="DetailsAdvancedTab">
           <Label label="tooltip" constraints="twocols(location=left)" localize="true" />
           <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="ElementsTable.selected.tooltip" constraints="twocols(expandHorizontally=true;location=right)">
-            <Assignment variable="component.bindable" value="ElementsTable.selected.iterator" />
+            <Assignment variable="component.bindable" value="ElementsTable.selected.iteratorBindable" />
           </Custom>
           <Label label="enabled" constraints="twocols(location=left)" localize="true" />
           <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="ElementsTable.selected.enabled" constraints="twocols(expandHorizontally=true;location=right)">
-            <Assignment variable="component.bindable" value="ElementsTable.selected.iterator" />
+            <Assignment variable="component.bindable" value="ElementsTable.selected.iteratorBindable" />
           </Custom>
           <Label label="visible" constraints="twocols(location=left)" localize="true" />
           <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="ElementsTable.selected.visible" constraints="twocols(expandHorizontally=true;location=right)">
-            <Assignment variable="component.bindable" value="ElementsTable.selected.iterator" />
+            <Assignment variable="component.bindable" value="ElementsTable.selected.iteratorBindable" />
           </Custom>
           <Label label="is_label_editable" constraints="twocols(location=left)" localize="true" />
           <Panel layout="border" titleFont="SansSerif,0,11" darkLevel="0" constraints="twocols(expandHorizontally=true;location=right)">
             <CheckBox selected="false" data="ElementsTable.selected.isEditable" constraints="border(location=west)" localize="true" />
             <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" data="ElementsTable.selected.editableLabel" constraints="border(location=center)" visible="ElementsTable.selected.isEditable">
-              <Assignment variable="component.bindable" value="ElementsTable.selected.iterator" />
+              <Assignment variable="component.bindable" value="ElementsTable.selected.iteratorBindable" />
             </Custom>
           </Panel>
           <Label label="filtered" constraints="twocols(location=left)" localize="true" />
@@ -81,18 +81,18 @@
           </Panel>
           <Label label="dynamic_font" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true" />
           <Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector" localize="true" manageDynamicModel="true" index="21" data="ElementsTable.selected.dynamicFont" constraints="twocols(expandHorizontally=true;expandVertically=false;index=21;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
-            <Assignment variable="component.bindable" value="ElementsTable.selected.iterator" />
+            <Assignment variable="component.bindable" value="ElementsTable.selected.iteratorBindable" />
           </Custom>
         </Tab>
         <Tab title="Children" layout="border" titleFont="SansSerif,0,11" darkLevel="0" index="2" font="SansSerif,0,11" name="ChildrenTab">
-          <Table iteratorClassName="org.openflexo.gina.model.widget.FIBBrowserElement$FIBBrowserElementChildren" visibleRowCount="4" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="ChildrenTable" data="ElementsTable.selected.children" constraints="border(location=center)" font="SansSerif,0,11">
+          <Table iteratorClassName="org.openflexo.gina.model.widget.FIBBrowserElementChildren" visibleRowCount="4" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="ChildrenTable" data="ElementsTable.selected.children" constraints="border(location=center)" font="SansSerif,0,11">
             <IconColumn data="iterator.imageIcon" columnWidth="20" resizable="false" displayTitle="true" name="icon" />
             <TextFieldColumn data="iterator.name" title="name" columnWidth="100" resizable="true" displayTitle="true" name="name" />
             <CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.data" title="data" columnWidth="200" resizable="true" displayTitle="true" name="data">
-              <ColumnAssignment variable="component.bindable" value="iterator.owner.iterator" />
+              <ColumnAssignment variable="component.bindable" value="iterator.owner.iteratorBindable" />
             </CustomColumn>
             <CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.visible" title="visible" columnWidth="200" resizable="true" displayTitle="true" name="visible">
-              <ColumnAssignment variable="component.bindable" value="iterator.owner.iterator" />
+              <ColumnAssignment variable="component.bindable" value="iterator.owner.iteratorBindable" />
             </CustomColumn>
             <CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.cast" title="cast" columnWidth="200" resizable="true" displayTitle="true" name="cast">
               <ColumnAssignment variable="component.bindable" value="iterator.childBindable" />

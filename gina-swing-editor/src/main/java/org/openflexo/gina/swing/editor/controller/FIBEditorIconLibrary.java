@@ -82,6 +82,7 @@ public class FIBEditorIconLibrary {
 			ResourceLocator.locateResource("Icons/CheckBoxIcon.png"));
 	public static final ImageIcon BROWSER_ELEMENT_ACTION_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/ActionIcon.png"));
+	public static final ImageIcon DRAG_OPERATION_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/DragOperation.png"));
 	public static final ImageIcon NUMBER_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/SpinnerIcon.png"));
 	public static final ImageIcon IMAGE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ImageIcon.png"));
 	public static final ImageIcon CUSTOM_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/LayeredPaneIcon.png"));

@@ -60,7 +60,7 @@ import org.openflexo.gina.model.container.layout.BorderLayoutConstraints;
 import org.openflexo.gina.model.container.layout.BorderLayoutConstraints.BorderLayoutLocation;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBBrowserElement;
-import org.openflexo.gina.model.widget.FIBBrowserElement.FIBBrowserElementChildren;
+import org.openflexo.gina.model.widget.FIBBrowserElementChildren;
 import org.openflexo.gina.model.widget.FIBDropDownColumn;
 import org.openflexo.gina.model.widget.FIBLabelColumn;
 import org.openflexo.gina.model.widget.FIBNumber.NumberType;
@@ -246,16 +246,16 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 		assertNotNull(personElement.getBindingModel().bindingVariableNamed("controller"));
 		assertNotNull(personElement.getBindingModel().bindingVariableNamed("browser"));
 
-		System.out.println("Person Element Iterator BM = " + personElement.getIterator().getBindingModel());
+		System.out.println("Person Element Iterator BM = " + personElement.getIteratorBindable().getBindingModel());
 
-		assertEquals(7, personElement.getIterator().getBindingModel().getBindingVariablesCount());
-		assertNotNull(personElement.getIterator().getBindingModel().bindingVariableNamed("value"));
-		assertNotNull(personElement.getIterator().getBindingModel().bindingVariableNamed("selected"));
-		assertNotNull(personElement.getIterator().getBindingModel().bindingVariableNamed("selection"));
-		assertNotNull(personElement.getIterator().getBindingModel().bindingVariableNamed("data"));
-		assertNotNull(personElement.getIterator().getBindingModel().bindingVariableNamed("controller"));
-		assertNotNull(personElement.getIterator().getBindingModel().bindingVariableNamed("browser"));
-		assertNotNull(personElement.getIterator().getBindingModel().bindingVariableNamed("person"));
+		assertEquals(7, personElement.getIteratorBindable().getBindingModel().getBindingVariablesCount());
+		assertNotNull(personElement.getIteratorBindable().getBindingModel().bindingVariableNamed("value"));
+		assertNotNull(personElement.getIteratorBindable().getBindingModel().bindingVariableNamed("selected"));
+		assertNotNull(personElement.getIteratorBindable().getBindingModel().bindingVariableNamed("selection"));
+		assertNotNull(personElement.getIteratorBindable().getBindingModel().bindingVariableNamed("data"));
+		assertNotNull(personElement.getIteratorBindable().getBindingModel().bindingVariableNamed("controller"));
+		assertNotNull(personElement.getIteratorBindable().getBindingModel().bindingVariableNamed("browser"));
+		assertNotNull(personElement.getIteratorBindable().getBindingModel().bindingVariableNamed("person"));
 
 		System.out.println("Parents child bindable BM = " + parents.getChildBindable().getBindingModel());
 

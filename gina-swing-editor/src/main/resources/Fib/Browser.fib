@@ -97,17 +97,19 @@
 			dataClassName="org.openflexo.gina.model.widget.FIBBrowserElement" name="element"
 			isEditable="true" editableLabel="element.name">
 			<Children name="children" data="element.children" />
-			<Children name="children" data="element.actions" />
+			<Children name="actions" data="element.actions" />
+			<Children name="dragOperations" data="element.dragOperations" />
             <BrowserAddAction method="controller.createChildren(selected)" name="add_children" />
             <BrowserAddAction method="controller.createBrowserAddAction(selected)" name="new_add_action" />
             <BrowserAddAction method="controller.createBrowserRemoveAction(selected)" name="new_remove_action" />
             <BrowserAddAction method="controller.createBrowserCustomAction(selected)" name="new_custom_action" />
+            <BrowserAddAction method="controller.createBrowserDragOperation(selected)" name="new_drag_operation" />
  			<BrowserRemoveAction name="remove_element"
 				method="controller.deleteElement(selected)" />
 		</BrowserElement>
 		<BrowserElement icon="controller.iconFor(children)"
 			filtered="false" label="children.presentationName" defaultVisible="true"
-			dataClassName="org.openflexo.gina.model.widget.FIBBrowserElement$FIBBrowserElementChildren" name="children"
+			dataClassName="org.openflexo.gina.model.widget.FIBBrowserElementChildren" name="children"
 			isEditable="true" editableLabel="children.name">
 			<BrowserRemoveAction name="remove_children"
 				method="controller.deleteChildren(selected)" />
@@ -118,6 +120,13 @@
 			isEditable="true" editableLabel="action.name">
 			<BrowserRemoveAction name="remove_action"
 				method="controller.deleteBrowserAction(selected)" />
+		</BrowserElement>
+		<BrowserElement icon="controller.iconFor(operation)"
+			filtered="false" label="operation.presentationName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.model.widget.FIBBrowserDragOperation" name="operation"
+			isEditable="true" editableLabel="operation.name">
+			<BrowserRemoveAction name="remove_drag_operation"
+				method="controller.deleteBrowserDragOperation(selected)" />
 		</BrowserElement>
 		<BrowserElement icon="controller.iconFor(element)"
 			filtered="false" label="element.presentationName" defaultVisible="true"
