@@ -77,7 +77,7 @@
 		<Label id="51" manageDynamicModel="true" useScrollBar="false"
 			data="((controller.getLocalizedForKey(&quot;validation_report_for&quot;) + &quot; &quot;) + data.rootObject.toString)"
 			name="ValidationReportLabel" controllerClassName="org.openflexo.gina.controller.FIBController"
-			index="0" localize="true" align="left"
+			index="0" localize="false" align="left"
 			constraints="border(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=0;insetsBottom=10;insetsLeft=0;insetsRight=0;insetsTop=10;location=west;padX=0;padY=0;weightX=1.0;weightY=0.0)"
 			label="" readOnly="false" />
 		<DropDown id="52" manageDynamicModel="false" useScrollBar="false"
@@ -91,7 +91,7 @@
 		<Label id="53" manageDynamicModel="false" useScrollBar="false"
 			data="(((data.errorsCount.toString + &quot; errors, &quot;) + data.warningsCount.toString) + &quot; warnings&quot;)"
 			controllerClassName="org.openflexo.gina.controller.FIBController"
-			localize="true" font="Lucida Grande,2,10" align="right"
+			localize="false" font="Lucida Grande,2,10" align="right"
 			constraints="border(location=south)" label="" readOnly="false" />
 	</Panel>
 	<TabPanel id="54" useScrollBar="false"
