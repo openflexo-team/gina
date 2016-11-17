@@ -39,14 +39,6 @@
 
 package org.openflexo.gina.utils;
 
-import org.openflexo.connie.type.TypeUtils;
-import org.openflexo.gina.FIBLibrary;
-import org.openflexo.gina.model.FIBComponent;
-import org.openflexo.gina.model.FIBModelFactory;
-import org.openflexo.localization.LocalizedDelegate;
-import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.rm.Resource;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +46,14 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+
+import org.openflexo.connie.type.TypeUtils;
+import org.openflexo.gina.FIBLibrary;
+import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.FIBModelFactory;
+import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.rm.Resource;
 
 /**
  * Implements a logical group of inspectors as a set of merged FIB components
@@ -71,7 +71,8 @@ public class InspectorGroup {
 
 	private final List<InspectorGroup> parentInspectorGroups;
 
-	public InspectorGroup(Resource inspectorDirectory, FIBLibrary fibLibrary, LocalizedDelegate locales, InspectorGroup... someInspectorGroups) {
+	public InspectorGroup(Resource inspectorDirectory, FIBLibrary fibLibrary, LocalizedDelegate locales,
+			InspectorGroup... someInspectorGroups) {
 		inspectors = new HashMap<>();
 
 		try {
@@ -85,7 +86,7 @@ public class InspectorGroup {
 			parentInspectorGroups.add(inspectorGroup);
 		}
 
-		for (Resource f : inspectorDirectory.getContents(Pattern.compile(".*[.]inspector"))) {
+		for (Resource f : inspectorDirectory.getContents(Pattern.compile(".*[.]inspector"), true)) {
 			// System.out.println("Read "+f.getAbsolutePath());
 			logger.info("Loading " + f.getURI());
 			FIBComponent component = fibLibrary.retrieveFIBComponent(f, false, fibModelFactory);
@@ -144,7 +145,8 @@ public class InspectorGroup {
 	/**
 	 * Return the most specialized inspector, contained in this group, that represents supplied object
 	 * 
-	 * @param object object to represent
+	 * @param object
+	 *            object to represent
 	 * @return an inspector for the object
 	 */
 	public FIBInspector inspectorForObject(Object object) {
