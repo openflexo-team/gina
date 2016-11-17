@@ -194,7 +194,7 @@ public interface FIBInspector extends FIBPanel {
 
 			// unmergedComponent = (FIBInspector) cloneObject();
 
-			for (FIBInspector superInspector : superInspectors) {
+			for (FIBInspector superInspector : new ArrayList<>(superInspectors)) {
 				if (superInspector != null) {
 					superInspector.mergeWithParentInspectors();
 					appendSuperInspector(superInspector);
