@@ -39,6 +39,26 @@
 
 package org.openflexo.gina.view.widget.browser.impl;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
+import org.openflexo.connie.BindingEvaluationContext;
+import org.openflexo.connie.BindingVariable;
+import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.binding.BindingValueChangeListener;
+import org.openflexo.connie.binding.BindingValueListChangeListener;
+import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.widget.FIBBrowser;
+import org.openflexo.gina.model.widget.FIBBrowserElement;
+import org.openflexo.gina.model.widget.FIBBrowserElementChildren;
+import org.openflexo.gina.view.widget.FIBBrowserWidget;
+import org.openflexo.toolbox.StringUtils;
+
+import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -57,32 +77,11 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.swing.Icon;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreePath;
-
-import org.openflexo.connie.BindingEvaluationContext;
-import org.openflexo.connie.BindingVariable;
-import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingValueChangeListener;
-import org.openflexo.connie.binding.BindingValueListChangeListener;
-import org.openflexo.gina.controller.FIBController;
-import org.openflexo.gina.model.widget.FIBBrowser;
-import org.openflexo.gina.model.widget.FIBBrowserElement;
-import org.openflexo.gina.model.widget.FIBBrowserElementChildren;
-import org.openflexo.gina.view.widget.FIBBrowserWidget;
-import org.openflexo.toolbox.StringUtils;
-
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 
 public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 
@@ -630,10 +629,12 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 
 			@Override
 			public Object getValue(BindingVariable variable) {
-				if (variable.getVariableName().equals(getBrowserElement().getName())) {
+				FIBBrowserElement browserElement = getBrowserElement();
+				String variableName = variable.getVariableName();
+				if (browserElement != null && Objects.equals(variableName,browserElement.getName())) {
 					return getUserObject(); // representedObject;
 				}
-				else if (variable.getVariableName().equals("object")) {
+				else if (variableName.equals("object")) {
 					return getUserObject(); // representedObject;
 				}
 				else if (widget != null && widget.getController() != null) {

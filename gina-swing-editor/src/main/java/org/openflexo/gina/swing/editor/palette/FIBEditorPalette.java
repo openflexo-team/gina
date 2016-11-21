@@ -94,7 +94,7 @@ public class FIBEditorPalette extends JPanel {
 		this.dir = dir;
 		this.palettes = palettes;
 
-		for (Resource modelFIBFile : dir.getContents(Pattern.compile(".*[.]fib"))) {
+		for (Resource modelFIBFile : dir.getContents(Pattern.compile(".*[.]fib"), true)) {
 			String paletteURL = modelFIBFile.getURI().replace(".fib", ".palette");
 
 			FIBComponent modelComponent = PALETTE_FIB_LIBRARY.retrieveFIBComponent(modelFIBFile);
