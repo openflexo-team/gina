@@ -1,6 +1,3 @@
 dependencies {
-  //  compile group: "org.openflexo", name: "connie-core", version: "1.+"
   compile relativeProject(':gina-api')
-  //  compile group: 'com.google.guava', name: 'guava', version: '19.0'
-  //  compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
 }

@@ -1,7 +1,5 @@
 dependencies {
   compile relativeProject(':gina-swing-editor')
   compile group: 'junit', name: 'junit', version: '4.+'
-
-  //testCompile group: "org.openflexo", name: "testutils", version: "1.+"
 }
 

@@ -4,6 +4,4 @@ dependencies {
   compile relativeProject(':flexolocalization')
   compile relativeProject(':flexographicutils')
   compile relativeProject(':gina-events')
-  //  compile group: 'com.google.guava', name: 'guava', version: '19.0'
-  //  compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
 }
