@@ -203,4 +203,12 @@ public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea> impleme
 		getTechnologyComponent().selectAll();
 	}
 
+	@Override
+	protected void componentLoosesFocus() {
+		super.componentLoosesFocus();
+		if (!isUpdating()) {
+			textChanged();
+		}
+	}
+
 }

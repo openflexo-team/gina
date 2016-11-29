@@ -259,4 +259,12 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField> impl
 		getTechnologyComponent().selectAll();
 	}
 
+	@Override
+	protected void componentLoosesFocus() {
+		super.componentLoosesFocus();
+		if (!isUpdating()) {
+			textChanged();
+		}
+	}
+
 }
