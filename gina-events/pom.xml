@@ -55,10 +55,6 @@
             <artifactId>flexolocalization</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!-- SWINGX -->
-        <dependency>
-            <groupId>org.swinglabs.swingx</groupId>
-            <artifactId>swingx-core</artifactId>
-        </dependency>
+
     </dependencies>
 </project>
