@@ -959,6 +959,9 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 	}
 
 	public Bindable getBindable() {
+		if (_bindable == null && getEditedObject() != null) {
+			return getEditedObject().getOwner();
+		}
 		return _bindable;
 	}
 
