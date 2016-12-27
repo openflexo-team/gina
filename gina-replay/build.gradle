@@ -1,5 +1,5 @@
 dependencies {
-  compile relativeProject(':gina-events')
-  compile relativeProject(':gina-test')
-  compile relativeProject(':gina-swing')
+  compile project(':gina-events')
+  compile project(':gina-test')
+  compile project(':gina-swing')
 }

@@ -1,6 +1,6 @@
 dependencies {
-  compile relativeProject(':gina-api')
-  compile relativeProject(':gina-test')
+  compile project(':gina-api')
+  compile project(':gina-test')
   testCompile group: "org.openflexo", name: "testutils", version: "1.+"
 }
 

@@ -1,13 +1,14 @@
 dependencies {
   testCompile group: "org.openflexo", name: "testutils", version: "1.+"
   compile group: "org.openflexo", name: "flexoutils", version: "1.+"
-  compile relativeProject(':flexolocalization')
+  compile project(':flexolocalization')
   compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
   compile group: 'org.apache.xmlgraphics', name: 'batik-dom', version: '1.8'
   compile group: 'org.apache.xmlgraphics', name: 'batik-svggen', version: '1.8'
   compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
   compile group: 'org.swinglabs.swingx', name: 'swingx-core', version: '1.6.5-1'
 }
+
 // To be able to use private apple api
 compileJava {
     options.compilerArgs << "-XDignore.symbol.file=true"
