@@ -2,6 +2,7 @@ dependencies {
   compile project(':flexolocalization')
 
   compile group: "org.openflexo", name: "flexoutils", version: "1.+"
+
   compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
   compile group: 'org.apache.xmlgraphics', name: 'batik-dom', version: '1.8'
   compile group: 'org.apache.xmlgraphics', name: 'batik-svggen', version: '1.8'
