@@ -1,65 +1,12 @@
 
-subprojects {
-  apply plugin: 'maven'
-  apply plugin: 'java'
-
-  //  apply plugin: 'checkstyle'
-  //  apply plugin: 'pmd'
-  //  apply plugin: 'findbugs'
-  //  apply plugin: 'Site'
-
-  uploadArchives {
-    repositories {
-      mavenDeployer {
-        repository(url: "https://maven.openflexo.org/artifactory/openflexo-snapshot/")
-      }
-    }
-  }
-
-  compileJava.options.encoding = 'UTF-8'
-
-  tasks.withType(org.gradle.api.tasks.compile.JavaCompile) {
-    options.encoding = 'UTF-8'
-  }
-
+buildscript {
   repositories {
-    jcenter()
-    maven { url "https://maven.openflexo.org/artifactory/openflexo-snapshot/" }
-    maven { url "https://maven.openflexo.org/artifactory/openflexo-release/" }
-    maven { url "https://maven.openflexo.org/artifactory/openflexo-deps/" }
+    maven { url uri('https://maven.openflexo.org/artifactory/openflexo-snapshot/') }
   }
-
   dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.+'
-  }
-
-  test {
-    testLogging {
-      // Show that tests are run in the command-line output
-      events 'passed' //'started',
-      //showStandardStreams = true
-    }
-  }
-
-  if (org.gradle.api.JavaVersion.current().isJava8Compatible()) {
-    allprojects {
-      tasks.withType(org.gradle.api.tasks.javadoc.Javadoc) {
-        options.addBooleanOption('Xdoclint:none', true)
-      }
-    }
+    classpath group: 'org.openflexo', name: 'openflexo-buildplugin', version: '0.1-SNAPSHOT'
   }
 }
 
-
-allprojects {
-
-  group='org.openflexo'
-  version = '2.1-SNAPSHOT'
-
-  apply plugin: 'project-report'
-
-  htmlDependencyReport {
-    projects = project.allprojects
-  }
-
-}
+apply plugin: 'org.openflexo.buildplugin'
+openflexo.version = "2.1-SNAPSHOT"

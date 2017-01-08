@@ -1,7 +1,7 @@
 dependencies {
   compile project(':flexolocalization')
 
-  compile group: "org.openflexo", name: "flexoutils", version: "1.4-SNAPSHOT"
+  compile flexoUtils()
 
   compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
   compile group: 'org.apache.xmlgraphics', name: 'batik-dom', version: '1.8'
@@ -9,7 +9,7 @@ dependencies {
   compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
   compile group: 'org.swinglabs.swingx', name: 'swingx-core', version: '1.6.5-1'
 
-  testCompile group: "org.openflexo", name: "testutils", version: "1.4-SNAPSHOT"
+  testCompile testUtils()
 }
 
 // To be able to use private apple api
