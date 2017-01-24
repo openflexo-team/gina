@@ -1,10 +1,10 @@
 
 buildscript {
   repositories {
-    maven { url uri('https://maven.openflexo.org/artifactory/openflexo-snapshot/') }
+    maven { url uri('https://maven.openflexo.org/artifactory/openflexo-deps/') }
   }
   dependencies {
-    classpath group: 'org.openflexo', name: 'openflexo-buildplugin', version: '1.9.0-SNAPSHOT'
+    classpath group: 'org.openflexo', name: 'buildplugin', version: '0.1-SNAPSHOT'
   }
 }
 
