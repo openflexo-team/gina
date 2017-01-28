@@ -162,8 +162,8 @@ public abstract interface FIBFolder extends FIBLibraryContainer {
 			public FIBFolderNotification() {
 				initialFlattenFolder = getInitialFlattenFolder();
 				oldFlattenedName = initialFlattenFolder.getFlattenedName();
-				oldFlattenedFolders = new ArrayList<FIBFolder>(initialFlattenFolder.getFlattenedFolders());
-				oldFlattenedResources = new ArrayList<Resource>(initialFlattenFolder.getFlattenedResources());
+				oldFlattenedFolders = new ArrayList<>(initialFlattenFolder.getFlattenedFolders());
+				oldFlattenedResources = new ArrayList<>(initialFlattenFolder.getFlattenedResources());
 			}
 
 			public void fireChange() {

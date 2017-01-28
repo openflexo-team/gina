@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.swing.layout;
 
 import org.openflexo.swing.layout.MultiSplitLayout.ColSplit;
@@ -72,37 +71,37 @@ public interface MultiSplitLayoutFactory {
 
 		@Override
 		public <N extends Divider<N>> Divider<N> makeDivider() {
-			return new DefaultDivider<N>();
+			return new DefaultDivider<>();
 		}
 
 		@Override
 		public <N extends Leaf<N>> Leaf<N> makeLeaf() {
-			return new DefaultLeaf<N>();
+			return new DefaultLeaf<>();
 		}
 
 		@Override
 		public <N extends Leaf<N>> Leaf<N> makeLeaf(String name) {
-			return new DefaultLeaf<N>(name);
+			return new DefaultLeaf<>(name);
 		}
 
 		@Override
 		public <N extends Split<N>> Split<N> makeSplit() {
-			return new DefaultSplit<N>();
+			return new DefaultSplit<>();
 		}
 
 		@Override
 		public <N extends ColSplit<N>> ColSplit<N> makeColSplit() {
-			return new DefaultColSplit<N>();
+			return new DefaultColSplit<>();
 		}
 
 		@Override
 		public <N extends ColSplit<N>> ColSplit<N> makeColSplit(Leaf<?> top, Divider<?> divider, Leaf<?> bottom) {
-			return new DefaultColSplit((Leaf) top, (Divider) divider, (Leaf) bottom);
+			return new DefaultColSplit(top, divider, bottom);
 		}
 
 		@Override
 		public <N extends RowSplit<N>> RowSplit<N> makeRowSplit() {
-			return new DefaultRowSplit<N>();
+			return new DefaultRowSplit<>();
 		}
 
 		@Override

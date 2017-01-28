@@ -61,7 +61,7 @@ import org.openflexo.toolbox.HasPropertyChangeSupport;
  *
  */
 @SuppressWarnings("serial")
-public abstract class ComponentConstraints extends Hashtable<String, String>implements HasPropertyChangeSupport {
+public abstract class ComponentConstraints extends Hashtable<String, String> implements HasPropertyChangeSupport {
 
 	static final Logger LOGGER = Logger.getLogger(FIBComponent.class.getPackage().getName());
 
@@ -73,7 +73,7 @@ public abstract class ComponentConstraints extends Hashtable<String, String>impl
 		StringBuilder returned = new StringBuilder();
 		returned.append(getType().name()).append("(");
 		boolean isFirst = true;
-		List<String> keys = new ArrayList<String>(keySet());
+		List<String> keys = new ArrayList<>(keySet());
 		Collections.sort(keys);
 		for (String key : keys) {
 			String v = get(key);
@@ -140,7 +140,7 @@ public abstract class ComponentConstraints extends Hashtable<String, String>impl
 		String returned = super.put(key, value);
 
 		if (component != null && !ignoreNotif) {
-			FIBPropertyNotification<ComponentConstraints> notification = new FIBPropertyNotification<ComponentConstraints>(
+			FIBPropertyNotification<ComponentConstraints> notification = new FIBPropertyNotification<>(
 					(FIBProperty<ComponentConstraints>) FIBProperty.getFIBProperty(FIBComponent.class, FIBComponent.CONSTRAINTS_KEY), null,
 					this);
 			component.notify(notification);

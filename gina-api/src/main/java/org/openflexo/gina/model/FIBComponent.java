@@ -602,7 +602,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	public void removeFromVariables(FIBVariable<?> aVariable);
 
 	@Finder(collection = VARIABLES_KEY, attribute = FIBVariable.NAME_KEY)
-	public FIBVariable<?> getVariable(String variableName);
+	public FIBVariable getVariable(String variableName);
 
 	public FIBVariable<?> createNewVariable();
 
@@ -671,9 +671,9 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		public FIBComponentImpl() {
 			super();
-			explicitDependancies = new Vector<FIBDependancy>();
-			mayDepends = new Vector<FIBComponent>();
-			mayAlters = new Vector<FIBComponent>();
+			explicitDependancies = new Vector<>();
+			mayDepends = new Vector<>();
+			mayAlters = new Vector<>();
 		}
 
 		@Override
@@ -685,7 +685,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		}
 
 		protected FIBViewType<?> makeViewType() {
-			return new FIBViewType(this);
+			return new FIBViewType<>(this);
 		}
 
 		@Override
@@ -744,7 +744,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		@Override
 		public FIBVariable<?> createNewVariable() {
-			FIBVariable returned = getModelFactory().newInstance(FIBVariable.class);
+			FIBVariable<?> returned = getModelFactory().newInstance(FIBVariable.class);
 			returned.setName("data" + (getVariables().size() > 0 ? "" + (getVariables().size() + 1) : ""));
 			returned.setType(Object.class);
 			addToVariables(returned);
@@ -775,7 +775,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		 * @return
 		 */
 		private boolean hasValidHierarchy() {
-			List<FIBComponent> ancestors = new Vector<FIBComponent>();
+			List<FIBComponent> ancestors = new Vector<>();
 			FIBComponent c = this;
 			while (c != null) {
 				if (ancestors.contains(c)) {
@@ -811,7 +811,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		@Override
 		public void normalizeConstraintsWhenRequired() {
-			Class oldType = constraints != null ? constraints.getClass() : null;
+			Class<?> oldType = constraints != null ? constraints.getClass() : null;
 			constraints = _normalizeConstraintsWhenRequired(constraints);
 			if (constraints != null && notEquals(oldType, constraints.getClass())) {
 				getPropertyChangeSupport().firePropertyChange(CONSTRAINTS_KEY, null, constraints);
@@ -1109,7 +1109,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		@Override
 		public Iterator<FIBComponent> getMayDependsIterator() {
-			return new ArrayList<FIBComponent>(mayDepends).iterator();
+			return new ArrayList<>(mayDepends).iterator();
 		}
 
 		@Override
@@ -1119,7 +1119,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		@Override
 		public Iterator<FIBComponent> getMayAltersIterator() {
-			return new ArrayList<FIBComponent>(mayAlters).iterator();
+			return new ArrayList<>(mayAlters).iterator();
 		}
 
 		@Override
@@ -1181,7 +1181,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		@Override
 		public DataBinding<Boolean> getVisible() {
 			if (visible == null) {
-				visible = new DataBinding<Boolean>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				visible = new DataBinding<>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
 			}
 			return visible;
 		}
@@ -1189,7 +1189,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		@Override
 		public void setVisible(DataBinding<Boolean> visible) {
 			if (visible != null) {
-				visible = new DataBinding<Boolean>(visible.toString(), this, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				visible = new DataBinding<>(visible.toString(), this, Boolean.class, DataBinding.BindingDefinitionType.GET);
 				visible.setBindingName("data");
 			}
 			this.visible = visible;
@@ -1711,7 +1711,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		@Override
 		public List<FIBButton> getDefaultButtons() {
-			List<FIBButton> defaultButtons = new ArrayList<FIBButton>();
+			List<FIBButton> defaultButtons = new ArrayList<>();
 			if (this instanceof FIBContainer) {
 				List<FIBButton> buttons = getFIBButtons(((FIBContainer) this).getSubComponents());
 				if (buttons.size() > 0) {
@@ -1726,7 +1726,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		}
 
 		private List<FIBButton> getFIBButtons(List<FIBComponent> subComponents) {
-			List<FIBButton> buttons = new ArrayList<FIBButton>();
+			List<FIBButton> buttons = new ArrayList<>();
 			for (FIBComponent c : subComponents) {
 				if (c instanceof FIBButton) {
 					buttons.add((FIBButton) c);
@@ -1745,7 +1745,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		 */
 		@Override
 		public List<DataBinding<?>> getDeclaredBindings() {
-			List<DataBinding<?>> returned = new ArrayList<DataBinding<?>>();
+			List<DataBinding<?>> returned = new ArrayList<>();
 			// returned.add(getData());
 			for (FIBVariable<?> v : getVariables()) {
 				if (v.getValue() != null && v.getValue().isSet()) {
@@ -1798,7 +1798,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		// TODO: move to FIBContainer
 		public Vector<FIBComponent> retrieveAllSubComponents() {
 			if (this instanceof FIBContainer) {
-				Vector<FIBComponent> returned = new Vector<FIBComponent>();
+				Vector<FIBComponent> returned = new Vector<>();
 				addAllSubComponents((FIBContainer) this, returned);
 				return returned;
 			}
@@ -1843,7 +1843,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		// TODO: move to FIBContainer
 		@Override
 		public Vector<FIBComponent> getNamedComponents() {
-			Vector<FIBComponent> returned = new Vector<FIBComponent>();
+			Vector<FIBComponent> returned = new Vector<>();
 			for (FIBComponent c : retrieveAllSubComponents()) {
 				if (StringUtils.isNotEmpty(c.getName())) {
 					returned.add(c);
@@ -1913,7 +1913,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		@Override
 		public ValidationIssue<RootComponentShouldHaveDataClass, FIBComponent> applyValidation(FIBComponent object) {
 			if (object.isRootComponent() && object.getVariables().size() == 0) {
-				return new ValidationWarning<RootComponentShouldHaveDataClass, FIBComponent>(this, object,
+				return new ValidationWarning<>(this, object,
 						"component_($object.toString)_is_declared_as_root_but_does_not_declare_any_variables");
 			}
 			return null;
@@ -1932,8 +1932,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		public ValidationIssue<NonRootComponentShouldNotHaveLocalizedDictionary, FIBComponent> applyValidation(FIBComponent object) {
 			if (!object.isRootComponent() && object.getLocalizedDictionary() != null) {
 				RemoveExtraLocalizedDictionary fixProposal = new RemoveExtraLocalizedDictionary();
-				return new ValidationWarning<NonRootComponentShouldNotHaveLocalizedDictionary, FIBComponent>(this, object,
-						"component_($validable)_has_a_localized_dictionary_but_is_not_root_component", fixProposal);
+				return new ValidationWarning<>(this, object, "component_($validable)_has_a_localized_dictionary_but_is_not_root_component",
+						fixProposal);
 			}
 			return null;
 		}
@@ -1964,8 +1964,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			if (object.isRootComponent() && object instanceof FIBContainer) {
 				List<FIBButton> defaultButtons = ((FIBContainer) object).getDefaultButtons();
 				if (defaultButtons.size() > 1) {
-					return new ValidationWarning<RootComponentShouldHaveMaximumOneDefaultButton, FIBComponent>(this, object,
-							"component_($object.toString)_has_more_than_one_default_button");
+					return new ValidationWarning<>(this, object, "component_($object.toString)_has_more_than_one_default_button");
 				}
 			}
 			return null;

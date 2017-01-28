@@ -141,18 +141,15 @@ public class FIBValidationController extends FIBController {
 					if (fixProposal != null && fixProposal.getProblemIssue() == issue) {
 						proposal = fixProposal;
 					}
-					else if (((ProblemIssue) issue).getFixProposals().size() > 0) {
-						if (((ProblemIssue) issue).getFixProposals().size() == 1) {
-							proposal = ((ProblemIssue<?, ?>) issue).getFixProposals().get(0);
-						}
-						else {
-							List<FixProposal<?, ?>> availableProposals = ((ProblemIssue<?, ?>) issue)
-									.getFixProposals(fixProposal.getClass());
-							if (availableProposals.size() > 0) {
-								proposal = availableProposals.get(0);
-							}
-							else {
-								proposal = ((ProblemIssue<?, ?>) issue).getFixProposals().get(0);
+					else {
+						List<FixProposal> proposals = ((ProblemIssue) issue).getFixProposals();
+						if (proposals.size() > 0) {
+							proposal = proposals.get(0);
+							if (proposals.size() > 1) {
+								List<FixProposal> availableProposals = ((ProblemIssue) issue).getFixProposals(fixProposal.getClass());
+								if (availableProposals.size() > 0) {
+									proposal = availableProposals.get(0);
+								}
 							}
 						}
 					}

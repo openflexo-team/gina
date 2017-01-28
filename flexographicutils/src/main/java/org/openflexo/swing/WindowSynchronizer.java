@@ -59,8 +59,8 @@ public class WindowSynchronizer implements ComponentListener, WindowListener {
 	private Point location;
 
 	public WindowSynchronizer() {
-		synchronizedWindows = new ArrayList<Window>();
-		shownWindows = new ArrayList<Window>();
+		synchronizedWindows = new ArrayList<>();
+		shownWindows = new ArrayList<>();
 	}
 
 	public void addToSynchronizedWindows(Window window) {
@@ -111,12 +111,14 @@ public class WindowSynchronizer implements ComponentListener, WindowListener {
 		if (activeWindow != null) {
 			if (size != null) {
 				activeWindow.setSize(size);
-			} else {
+			}
+			else {
 				size = activeWindow.getSize();
 			}
 			if (location != null) {
 				activeWindow.setLocation(location);
-			} else {
+			}
+			else {
 				location = activeWindow.getLocation();
 			}
 		}

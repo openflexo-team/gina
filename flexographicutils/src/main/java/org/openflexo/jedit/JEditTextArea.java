@@ -119,8 +119,8 @@ import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.search.view.ITextComponent;
 import org.openflexo.search.view.TextSearchPanel;
 import org.openflexo.swing.DialogFactory;
-import org.openflexo.toolbox.FontCst;
 import org.openflexo.toolbox.ToolBox;
+import org.openflexo.uicst.FontCst;
 
 /**
  * jEdit's text area component. It is more suited for editing program source code than JEditorPane, because it drops the unnecessary
@@ -1988,7 +1988,7 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 		private Component center;
 		private Component right;
 		private Component bottom;
-		private final Vector<Component> leftOfScrollBar = new Vector<Component>();
+		private final Vector<Component> leftOfScrollBar = new Vector<>();
 	}
 
 	static class CaretBlinker implements ActionListener {
@@ -2357,7 +2357,7 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 		painter.setRows(rows);
 	}
 
-	protected Vector<CursorPositionListener> _cursorPositionListeners = new Vector<CursorPositionListener>();
+	protected Vector<CursorPositionListener> _cursorPositionListeners = new Vector<>();
 
 	public void addToCursorPositionListener(CursorPositionListener listener) {
 		_cursorPositionListeners.add(listener);

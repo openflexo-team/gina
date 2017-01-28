@@ -244,7 +244,7 @@ public interface FIBList extends FIBMultipleValues {
 		@Override
 		public DataBinding<Object> getSelected() {
 			if (selected == null) {
-				selected = new DataBinding<Object>(this, getIteratorType(), DataBinding.BindingDefinitionType.GET_SET);
+				selected = new DataBinding<>(this, getIteratorType(), DataBinding.BindingDefinitionType.GET_SET);
 			}
 			return selected;
 		}

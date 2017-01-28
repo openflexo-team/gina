@@ -308,12 +308,12 @@ public interface FIBBrowser extends FIBWidget {
 		private Color backgroundNonSelectionColor;
 		private Color borderSelectionColor;
 
-		private Class iteratorClass;
+		private Class<?> iteratorClass;
 
 		private final Hashtable<Class<?>, FIBBrowserElement> elementsForClasses;
 
 		public FIBBrowserImpl() {
-			elementsForClasses = new Hashtable<Class<?>, FIBBrowserElement>();
+			elementsForClasses = new Hashtable<>();
 		}
 
 		@Override
@@ -329,7 +329,7 @@ public interface FIBBrowser extends FIBWidget {
 		@Override
 		public DataBinding<Object> getRoot() {
 			if (root == null) {
-				root = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.GET);
+				root = new DataBinding<>(this, Object.class, DataBinding.BindingDefinitionType.GET);
 			}
 			return root;
 		}
@@ -347,7 +347,7 @@ public interface FIBBrowser extends FIBWidget {
 		@Override
 		public DataBinding<Object> getSelected() {
 			if (selected == null) {
-				selected = new DataBinding<Object>(this, getIteratorClass(), DataBinding.BindingDefinitionType.GET_SET);
+				selected = new DataBinding<>(this, getIteratorClass(), DataBinding.BindingDefinitionType.GET_SET);
 			}
 			return selected;
 		}
@@ -365,7 +365,7 @@ public interface FIBBrowser extends FIBWidget {
 		@Override
 		public DataBinding<List> getSelection() {
 			if (selection == null) {
-				selection = new DataBinding<List>(this, List.class, DataBinding.BindingDefinitionType.GET_SET);
+				selection = new DataBinding<>(this, List.class, DataBinding.BindingDefinitionType.GET_SET);
 			}
 			return selection;
 		}

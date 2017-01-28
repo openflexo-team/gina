@@ -91,7 +91,7 @@ public class FlexoFont {
 		return Integer.parseInt(s.substring(s.lastIndexOf(",") + 1));
 	}
 
-	private static final Hashtable<String, FlexoFont> fontHashtable = new Hashtable<String, FlexoFont>();
+	private static final Hashtable<String, FlexoFont> fontHashtable = new Hashtable<>();
 
 	public static FlexoFont get(String fontAsString) {
 		if (fontAsString == null) {

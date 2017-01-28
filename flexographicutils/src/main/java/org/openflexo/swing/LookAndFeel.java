@@ -50,9 +50,9 @@ import org.openflexo.kvc.ChoiceList;
  * @author gpolet
  * 
  */
-public class LookAndFeel implements ChoiceList {
+public class LookAndFeel implements ChoiceList<LookAndFeel> {
 
-	private static final Vector<LookAndFeel> availableValues = new Vector<LookAndFeel>();
+	private static final Vector<LookAndFeel> availableValues = new Vector<>();
 
 	public static LookAndFeel getDefaultLookAndFeel() {
 		for (LookAndFeel feel : availableValues()) {
@@ -77,8 +77,8 @@ public class LookAndFeel implements ChoiceList {
 	private final LookAndFeelInfo info;
 
 	/**
-     *
-     */
+	 *
+	 */
 	public LookAndFeel(LookAndFeelInfo info) {
 		this.info = info;
 	}
@@ -97,7 +97,7 @@ public class LookAndFeel implements ChoiceList {
 	 * @see org.openflexo.kvc.ChoiceList#getAvailableValues()
 	 */
 	@Override
-	public Vector getAvailableValues() {
+	public Vector<LookAndFeel> getAvailableValues() {
 		return availableValues;
 	}
 

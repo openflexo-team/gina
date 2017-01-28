@@ -203,7 +203,8 @@ public class GifDecoder {
 				int n = frameCount - 2;
 				if (n > 0) {
 					lastImage = getFrame(n - 1);
-				} else {
+				}
+				else {
 					lastImage = null;
 				}
 			}
@@ -218,7 +219,8 @@ public class GifDecoder {
 					if (transparency) {
 						c = new Color(0, 0, 0, 0); // assume background
 						// is transparent
-					} else {
+					}
+					else {
 						c = new Color(lastBgColor); // use given
 						// background color
 					}
@@ -240,16 +242,16 @@ public class GifDecoder {
 				if (iline >= ih) {
 					pass++;
 					switch (pass) {
-					case 2:
-						iline = 4;
-						break;
-					case 3:
-						iline = 2;
-						inc = 4;
-						break;
-					case 4:
-						iline = 1;
-						inc = 2;
+						case 2:
+							iline = 4;
+							break;
+						case 3:
+							iline = 2;
+							inc = 4;
+							break;
+						case 4:
+							iline = 1;
+							inc = 2;
 					}
 				}
 				line = iline;
@@ -317,7 +319,8 @@ public class GifDecoder {
 					status = STATUS_FORMAT_ERROR;
 				}
 			}
-		} else {
+		}
+		else {
 			status = STATUS_OPEN_ERROR;
 		}
 		try {
@@ -348,7 +351,8 @@ public class GifDecoder {
 					status = STATUS_FORMAT_ERROR;
 				}
 			}
-		} else {
+		}
+		else {
 			status = STATUS_OPEN_ERROR;
 		}
 		try {
@@ -372,7 +376,8 @@ public class GifDecoder {
 			if (name.indexOf("file:") >= 0 || name.indexOf(":/") > 0) {
 				URL url = new URL(name);
 				in = new BufferedInputStream(url.openStream());
-			} else {
+			}
+			else {
 				in = new BufferedInputStream(new FileInputStream(name));
 			}
 			status = read(in);
@@ -388,7 +393,8 @@ public class GifDecoder {
 	protected void decodeImageData() {
 		int NullCode = -1;
 		int npix = iw * ih;
-		int available, clear, code_mask, code_size, end_of_information, in_code, old_code, bits, code, count, i, datum, data_size, first, top, bi, pi;
+		int available, clear, code_mask, code_size, end_of_information, in_code, old_code, bits, code, count, i, datum, data_size, first,
+				top, bi, pi;
 		if (pixels == null || pixels.length < npix) {
 			pixels = new byte[npix]; // allocate new pixel array
 		}
@@ -503,7 +509,7 @@ public class GifDecoder {
 	protected void init() {
 		status = STATUS_OK;
 		frameCount = 0;
-		frames = new ArrayList<GifFrame>();
+		frames = new ArrayList<>();
 		gct = null;
 		lct = null;
 	}
@@ -566,7 +572,8 @@ public class GifDecoder {
 		}
 		if (n < nbytes) {
 			status = STATUS_FORMAT_ERROR;
-		} else {
+		}
+		else {
 			tab = new int[256]; // max size to avoid bounds checks
 			int i = 0;
 			int j = 0;
@@ -589,38 +596,39 @@ public class GifDecoder {
 		while (!(done || err())) {
 			int code = read();
 			switch (code) {
-			case 0x2C: // image separator
-				readImage();
-				break;
-			case 0x21: // extension
-				code = read();
-				switch (code) {
-				case 0xf9: // graphics control extension
-					readGraphicControlExt();
+				case 0x2C: // image separator
+					readImage();
 					break;
-				case 0xff: // application extension
-					readBlock();
-					String app = "";
-					for (int i = 0; i < 11; i++) {
-						app += (char) block[i];
-					}
-					if (app.equals("NETSCAPE2.0")) {
-						readNetscapeExt();
-					} else {
-						skip(); // don't care
+				case 0x21: // extension
+					code = read();
+					switch (code) {
+						case 0xf9: // graphics control extension
+							readGraphicControlExt();
+							break;
+						case 0xff: // application extension
+							readBlock();
+							String app = "";
+							for (int i = 0; i < 11; i++) {
+								app += (char) block[i];
+							}
+							if (app.equals("NETSCAPE2.0")) {
+								readNetscapeExt();
+							}
+							else {
+								skip(); // don't care
+							}
+							break;
+						default: // uninteresting extension
+							skip();
 					}
 					break;
-				default: // uninteresting extension
-					skip();
-				}
-				break;
-			case 0x3b: // terminator
-				done = true;
-				break;
-			case 0x00: // bad byte, but keep going and see what happens
-				break;
-			default:
-				status = STATUS_FORMAT_ERROR;
+				case 0x3b: // terminator
+					done = true;
+					break;
+				case 0x00: // bad byte, but keep going and see what happens
+					break;
+				default:
+					status = STATUS_FORMAT_ERROR;
 			}
 		}
 	}
@@ -677,7 +685,8 @@ public class GifDecoder {
 		if (lctFlag) {
 			lct = readColorTable(lctSize); // read table
 			act = lct; // make local table active
-		} else {
+		}
+		else {
 			act = gct; // make global table active
 			if (bgIndex == transIndex) {
 				bgColor = 0;

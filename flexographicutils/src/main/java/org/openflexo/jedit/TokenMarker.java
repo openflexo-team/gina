@@ -65,7 +65,8 @@ public abstract class TokenMarker {
 		LineInfo prev;
 		if (lineIndex == 0) {
 			prev = null;
-		} else {
+		}
+		else {
 			prev = lineInfo[lineIndex - 1];
 		}
 
@@ -262,7 +263,8 @@ public abstract class TokenMarker {
 	protected void ensureCapacity(int index) {
 		if (lineInfo == null) {
 			lineInfo = new LineInfo[index + 1];
-		} else if (lineInfo.length <= index) {
+		}
+		else if (lineInfo.length <= index) {
 			LineInfo[] lineInfoN = new LineInfo[(index + 1) * 2];
 			System.arraycopy(lineInfo, 0, lineInfoN, 0, lineInfo.length);
 			lineInfo = lineInfoN;
@@ -289,14 +291,17 @@ public abstract class TokenMarker {
 		if (firstToken == null) {
 			firstToken = new Token(length, id);
 			lastToken = firstToken;
-		} else if (lastToken == null) {
+		}
+		else if (lastToken == null) {
 			lastToken = firstToken;
 			firstToken.length = length;
 			firstToken.id = id;
-		} else if (lastToken.next == null) {
+		}
+		else if (lastToken.next == null) {
 			lastToken.next = new Token(length, id);
 			lastToken = lastToken.next;
-		} else {
+		}
+		else {
 			lastToken = lastToken.next;
 			lastToken.length = length;
 			lastToken.id = id;
@@ -336,45 +341,65 @@ public abstract class TokenMarker {
 	public static TokenMarker makeTokenMarker(TokenMarkerStyle tokenMarkerStyle) {
 		if (tokenMarkerStyle == TokenMarkerStyle.BatchFile) {
 			return new BatchFileTokenMarker();
-		} else if (tokenMarkerStyle == TokenMarkerStyle.C) {
+		}
+		else if (tokenMarkerStyle == TokenMarkerStyle.C) {
 			return new CTokenMarker();
-		} else if (tokenMarkerStyle == TokenMarkerStyle.CC) {
+		}
+		else if (tokenMarkerStyle == TokenMarkerStyle.CC) {
 			return new CCTokenMarker();
-		} else if (tokenMarkerStyle == TokenMarkerStyle.IDL) {
+		}
+		else if (tokenMarkerStyle == TokenMarkerStyle.IDL) {
 			return new IDLTokenMarker();
-		} else if (tokenMarkerStyle == TokenMarkerStyle.JavaScript) {
+		}
+		else if (tokenMarkerStyle == TokenMarkerStyle.JavaScript) {
 			return new JavaScriptTokenMarker();
-		} else if (tokenMarkerStyle == TokenMarkerStyle.Java) {
+		}
+		else if (tokenMarkerStyle == TokenMarkerStyle.Java) {
 			return new JavaTokenMarker();
-		} else if (tokenMarkerStyle == TokenMarkerStyle.Eiffel) {
+		}
+		else if (tokenMarkerStyle == TokenMarkerStyle.Eiffel) {
 			return new EiffelTokenMarker();
-		} else if (tokenMarkerStyle == TokenMarkerStyle.HTML) {
+		}
+		else if (tokenMarkerStyle == TokenMarkerStyle.HTML) {
 			return new HTMLTokenMarker();
-		} else if (tokenMarkerStyle == TokenMarkerStyle.Patch) {
+		}
+		else if (tokenMarkerStyle == TokenMarkerStyle.Patch) {
 			return new PatchTokenMarker();
-		} else if (tokenMarkerStyle == TokenMarkerStyle.Perl) {
+		}
+		else if (tokenMarkerStyle == TokenMarkerStyle.Perl) {
 			return new PerlTokenMarker();
-		} else if (tokenMarkerStyle == TokenMarkerStyle.PHP) {
+		}
+		else if (tokenMarkerStyle == TokenMarkerStyle.PHP) {
 			return new PHPTokenMarker();
-		} else if (tokenMarkerStyle == TokenMarkerStyle.Props) {
+		}
+		else if (tokenMarkerStyle == TokenMarkerStyle.Props) {
 			return new PropsTokenMarker();
-		} else if (tokenMarkerStyle == TokenMarkerStyle.Python) {
+		}
+		else if (tokenMarkerStyle == TokenMarkerStyle.Python) {
 			return new PythonTokenMarker();
-		} else if (tokenMarkerStyle == TokenMarkerStyle.ShellScript) {
+		}
+		else if (tokenMarkerStyle == TokenMarkerStyle.ShellScript) {
 			return new ShellScriptTokenMarker();
-		} else if (tokenMarkerStyle == TokenMarkerStyle.SQL) {
+		}
+		else if (tokenMarkerStyle == TokenMarkerStyle.SQL) {
 			return new SQLTokenMarker(null);
-		} else if (tokenMarkerStyle == TokenMarkerStyle.TSQL) {
+		}
+		else if (tokenMarkerStyle == TokenMarkerStyle.TSQL) {
 			return new TSQLTokenMarker();
-		} else if (tokenMarkerStyle == TokenMarkerStyle.TeX) {
+		}
+		else if (tokenMarkerStyle == TokenMarkerStyle.TeX) {
 			return new TeXTokenMarker();
-		} else if (tokenMarkerStyle == TokenMarkerStyle.WOD) {
+		}
+		else if (tokenMarkerStyle == TokenMarkerStyle.WOD) {
 			return new WODTokenMarker();
-		} else if (tokenMarkerStyle == TokenMarkerStyle.XML) {
+		}
+		else if (tokenMarkerStyle == TokenMarkerStyle.XML) {
 			return new XMLTokenMarker();
-		} else if (tokenMarkerStyle == TokenMarkerStyle.FML) {
+		}
+		else if (tokenMarkerStyle == TokenMarkerStyle.FML) {
 			return new FMLTokenMarker();
-		} else {
+		}
+		else {
 			return null;
 		}
 	}

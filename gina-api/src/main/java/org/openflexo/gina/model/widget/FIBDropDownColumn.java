@@ -119,7 +119,7 @@ public interface FIBDropDownColumn extends FIBTableColumn {
 		@Override
 		public DataBinding<List<?>> getList() {
 			if (list == null) {
-				list = new DataBinding<List<?>>(this, new TypeToken<List<?>>() {
+				list = new DataBinding<>(this, new TypeToken<List<?>>() {
 				}.getType(), DataBinding.BindingDefinitionType.GET);
 				list.setBindingName("list");
 			}
@@ -141,7 +141,7 @@ public interface FIBDropDownColumn extends FIBTableColumn {
 		@Override
 		public DataBinding<Object[]> getArray() {
 			if (array == null) {
-				array = new DataBinding<Object[]>(this, new TypeToken<Object[]>() {
+				array = new DataBinding<>(this, new TypeToken<Object[]>() {
 				}.getType(), DataBinding.BindingDefinitionType.GET);
 				array.setBindingName("array");
 			}

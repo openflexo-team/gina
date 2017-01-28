@@ -79,13 +79,14 @@ public class FlexoSwingUtils {
 	public static void syncRunInEDT(Runnable runnable) throws Exception {
 		if (!SwingUtilities.isEventDispatchThread()) {
 			SwingUtilities.invokeAndWait(runnable);
-		} else {
+		}
+		else {
 			runnable.run();
 		}
 	}
 
 	public static <V> V syncRunInEDT(Callable<V> callable) throws Exception {
-		RunnableCallable<V> runnable = new RunnableCallable<V>(callable);
+		RunnableCallable<V> runnable = new RunnableCallable<>(callable);
 		syncRunInEDT(runnable);
 		if (runnable.getException() != null) {
 			throw new InvocationTargetException(runnable.getException(), "Error while running callable");

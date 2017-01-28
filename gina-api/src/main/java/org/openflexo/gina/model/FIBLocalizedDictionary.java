@@ -135,16 +135,16 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 		private final Map<Language, Hashtable<String, String>> values;
 		private List<DynamicEntry> dynamicEntries = null;
 
-		private final WeakHashMap<Component, String> _storedLocalizedForComponents = new WeakHashMap<Component, String>();
-		private final WeakHashMap<JComponent, String> _storedLocalizedForComponentTooltips = new WeakHashMap<JComponent, String>();
-		private final WeakHashMap<TitledBorder, String> _storedLocalizedForBorders = new WeakHashMap<TitledBorder, String>();
-		private final WeakHashMap<TableColumn, String> _storedLocalizedForTableColumn = new WeakHashMap<TableColumn, String>();
+		private final WeakHashMap<Component, String> _storedLocalizedForComponents = new WeakHashMap<>();
+		private final WeakHashMap<JComponent, String> _storedLocalizedForComponentTooltips = new WeakHashMap<>();
+		private final WeakHashMap<TitledBorder, String> _storedLocalizedForBorders = new WeakHashMap<>();
+		private final WeakHashMap<TableColumn, String> _storedLocalizedForTableColumn = new WeakHashMap<>();
 
 		// private final boolean isSearchingNewEntries = false;
 
 		public FIBLocalizedDictionaryImpl() {
-			entries = new ArrayList<FIBLocalizedEntry>();
-			values = new HashMap<Language, Hashtable<String, String>>();
+			entries = new ArrayList<>();
+			values = new HashMap<>();
 			setParent(FlexoLocalization.getMainLocalizer());
 		}
 
@@ -209,7 +209,7 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 		private Hashtable<String, String> getDictForLang(Language lang) {
 			Hashtable<String, String> dict = values.get(lang);
 			if (dict == null) {
-				dict = new Hashtable<String, String>();
+				dict = new Hashtable<>();
 				values.put(lang, dict);
 			}
 			return dict;
@@ -622,7 +622,7 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 		// This method is really not efficient, but only called in the context of locales editor
 		// This issue is not really severe.
 		private Vector<String> buildAllKeys() {
-			Vector<String> returned = new Vector<String>();
+			Vector<String> returned = new Vector<>();
 			for (Language l : values.keySet()) {
 				for (String key : values.get(l).keySet()) {
 					if (!returned.contains(key)) {
@@ -638,7 +638,7 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 		@Override
 		public List<DynamicEntry> getEntries() {
 			if (dynamicEntries == null) {
-				dynamicEntries = new Vector<DynamicEntry>();
+				dynamicEntries = new Vector<>();
 				for (String key : buildAllKeys()) {
 					dynamicEntries.add(new DynamicEntry(key));
 				}

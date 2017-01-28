@@ -17,18 +17,15 @@ import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 /**
- * The EventManager manages all aspects of event recording.
- * It keeps a register of :
- * - all the listeners that should be notified
- * - all the registrable objects
- * - all the stack of events
+ * The EventManager manages all aspects of event recording. It keeps a register of : - all the listeners that should be notified - all the
+ * registrable objects - all the stack of events
  * 
  * It also manages locking for multi-threading operations
  * 
  * @author Alexandre
  */
 public class EventManager implements GinaEventListener {
-	private List<GinaEventListener> listeners = new ArrayList<GinaEventListener>();
+	private List<GinaEventListener> listeners = new ArrayList<>();
 
 	private Map<URID, Registrable> registry;
 	private Map<String, Integer> uridSequences;
@@ -42,15 +39,15 @@ public class EventManager implements GinaEventListener {
 	private long startTime;
 
 	public EventManager() {
-		this.registry = new HashMap<URID, Registrable>();
-		this.uridSequences = new HashMap<String, Integer>();
-		this.threadStackEvents = new HashMap<Long, ThreadStack>();
+		this.registry = new HashMap<>();
+		this.uridSequences = new HashMap<>();
+		this.threadStackEvents = new HashMap<>();
 
-		this.contexts = new LinkedList<GinaEventContext>();
+		this.contexts = new LinkedList<>();
 
 		this.globalLock = new ReentrantLock();
 		this.headLock = new ReentrantLock();
-		this.locks = new HashMap<Object, Pair<Lock, Integer>>();
+		this.locks = new HashMap<>();
 
 		factory = new GinaEventFactory();
 		factory.addModel(EventDescription.class);
@@ -300,15 +297,15 @@ public class EventManager implements GinaEventListener {
 
 		public ThreadStack(long threadId) {
 			super();
-			this.linkedTasks = new LinkedList<GinaTask>();
-			this.stackEvents = new Stack<GinaStackEvent>();
+			this.linkedTasks = new LinkedList<>();
+			this.stackEvents = new Stack<>();
 			this.previousStackEvents = null;
 			this.threadId = threadId;
 		}
 
 		public ThreadStack(long threadId, Stack<GinaStackEvent> stackEvents) {
 			super();
-			this.linkedTasks = new LinkedList<GinaTask>();
+			this.linkedTasks = new LinkedList<>();
 			this.threadId = threadId;
 			this.stackEvents = stackEvents;
 			this.previousStackEvents = null;

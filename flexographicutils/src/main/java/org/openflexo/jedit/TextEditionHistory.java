@@ -32,7 +32,7 @@ public class TextEditionHistory {
 	protected TextEditionHistory(JEditTextArea textArea) {
 		super();
 		_textArea = textArea;
-		list = new LinkedList<String>();
+		list = new LinkedList<>();
 		maxUndoLevels = MAX_UNDO_LEVELS;
 		index = -1;
 	}

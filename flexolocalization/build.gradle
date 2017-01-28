@@ -1,0 +1,6 @@
+dependencies {
+  compile flexoUtils()
+  compile connie()
+  compile pamela()
+  testCompile testUtils()
+}

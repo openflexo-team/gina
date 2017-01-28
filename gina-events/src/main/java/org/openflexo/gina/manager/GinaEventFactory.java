@@ -4,13 +4,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.openflexo.gina.event.GinaEvent;
+import org.openflexo.gina.event.GinaEvent.KIND;
 import org.openflexo.gina.event.SystemEvent;
 import org.openflexo.gina.event.UserInteraction;
-import org.openflexo.gina.event.GinaEvent.KIND;
 import org.openflexo.gina.event.description.ApplicationEventDescription;
 import org.openflexo.gina.event.description.EventDescription;
-import org.openflexo.gina.event.description.NotifyMethodEventDescription;
 import org.openflexo.gina.event.description.GinaTaskEventDescription;
+import org.openflexo.gina.event.description.NotifyMethodEventDescription;
 import org.openflexo.model.ModelContext;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
@@ -28,10 +28,10 @@ public class GinaEventFactory {
 
 	public GinaEventFactory() {
 		super();
-		
-		this.eventDescriptionModelClasses = new LinkedList<Class<?>>();
+
+		this.eventDescriptionModelClasses = new LinkedList<>();
 	}
-	
+
 	public void addModel(Class<?> cls) {
 		if (!this.eventDescriptionModelClasses.contains(cls))
 			this.eventDescriptionModelClasses.add(cls);
@@ -49,15 +49,14 @@ public class GinaEventFactory {
 		return factory;
 	}
 
-
 	public GinaEvent createEventFromDescription(EventDescription d, GinaEvent.KIND kind) {
 		return (GinaEvent) getModelFactory().newInstance(getEventClass(kind), d);
 	}
-	
+
 	public EventDescription createGenericEvent() {
 		return getModelFactory().newInstance(EventDescription.class);
 	}
-	
+
 	public EventDescription createNotifiyMethodEvent(String action, String methodClass, String methodName, String info) {
 		return getModelFactory().newInstance(NotifyMethodEventDescription.class, action, methodClass, methodName, info);
 	}
@@ -65,22 +64,21 @@ public class GinaEventFactory {
 	public GinaTaskEventDescription createTaskEvent(String action, String identifier) {
 		return getModelFactory().newInstance(GinaTaskEventDescription.class, action, identifier);
 	}
-	
-	public ApplicationEventDescription createApplicationEvent(String action,
-			String className) {
+
+	public ApplicationEventDescription createApplicationEvent(String action, String className) {
 		return getModelFactory().newInstance(ApplicationEventDescription.class, action, className);
 	}
-	
+
 	static public Class<?> getEventClass(KIND kind) {
-		switch(kind) {
-		case USER_INTERACTION:
-			return UserInteraction.class;
-		case SYSTEM_EVENT:
-			return SystemEvent.class;
-		case UNKNOWN:
-			break;
-		default:
-			break;
+		switch (kind) {
+			case USER_INTERACTION:
+				return UserInteraction.class;
+			case SYSTEM_EVENT:
+				return SystemEvent.class;
+			case UNKNOWN:
+				break;
+			default:
+				break;
 		}
 
 		return null;

@@ -60,7 +60,8 @@ public class MultiSplitLayoutTypeAdapterFactory implements TypeAdapterFactory {
 			TypeAdapter<List<Node>> collectionAdapter = gson.getAdapter(new TypeToken<List<Node>>() {
 			});
 			return (TypeAdapter<T>) new NodeAdapter(collectionAdapter);
-		} else if (List.class.isAssignableFrom(rawType)) {
+		}
+		else if (List.class.isAssignableFrom(rawType)) {
 			Type type2 = type.getType();
 			if (type2 instanceof ParameterizedType && ((ParameterizedType) type2).getActualTypeArguments().length == 1) {
 				Type type3 = ((ParameterizedType) type2).getActualTypeArguments()[0];

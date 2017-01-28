@@ -49,10 +49,10 @@ import javax.swing.JTabbedPane;
 
 import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
+import org.openflexo.icon.ImageIconResource;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
-import org.openflexo.toolbox.ImageIconResource;
 
 public class FIBEditorPalettes extends JTabbedPane {
 

@@ -202,7 +202,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 		public DataBinding<Resource> getDynamicComponentFile() {
 
 			if (dynamicComponentFile == null) {
-				dynamicComponentFile = new DataBinding<Resource>(this, Resource.class, DataBinding.BindingDefinitionType.GET);
+				dynamicComponentFile = new DataBinding<>(this, Resource.class, DataBinding.BindingDefinitionType.GET);
 				dynamicComponentFile.setBindingName("dynamicComponentFile");
 				// dynamicComponentFile.setCacheable(true);
 			}
@@ -270,7 +270,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 		public DataBinding<FIBController> getControllerFactory() {
 
 			if (controllerFactory == null) {
-				controllerFactory = new DataBinding<FIBController>(this, FIBController.class, DataBinding.BindingDefinitionType.GET);
+				controllerFactory = new DataBinding<>(this, FIBController.class, DataBinding.BindingDefinitionType.GET);
 				controllerFactory.setBindingName("controllerFactory");
 			}
 			return controllerFactory;
@@ -454,7 +454,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 			@Override
 			public DataBinding<Object> getVariable() {
 				if (variable == null) {
-					variable = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.GET_SET);
+					variable = new DataBinding<>(this, Object.class, DataBinding.BindingDefinitionType.GET_SET);
 				}
 				return variable;
 			}
@@ -481,7 +481,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 			@Override
 			public DataBinding<Object> getValue() {
 				if (value == null) {
-					value = new DataBinding<Object>(getOwner(), Object.class, DataBinding.BindingDefinitionType.GET);
+					value = new DataBinding<>(getOwner(), Object.class, DataBinding.BindingDefinitionType.GET);
 				}
 				return value;
 			}

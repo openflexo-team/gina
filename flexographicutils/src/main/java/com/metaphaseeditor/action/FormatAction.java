@@ -23,7 +23,6 @@
 package com.metaphaseeditor.action;
 
 import java.awt.event.ActionEvent;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.swing.JTextPane;
@@ -78,9 +77,7 @@ public class FormatAction extends StyledEditorKit.StyledTextAction {
 			newAttrs.addAttribute(StyleConstants.NameAttribute, htmlTag);
 		}
 		if (attributes != null) {
-			Iterator iterator = attributes.entrySet().iterator();
-			while (iterator.hasNext()) {
-				Map.Entry entry = (Map.Entry) iterator.next();
+			for (Map.Entry<String, String> entry : attributes.entrySet()) {
 				newAttrs.addAttribute(entry.getKey(), entry.getValue());
 			}
 		}

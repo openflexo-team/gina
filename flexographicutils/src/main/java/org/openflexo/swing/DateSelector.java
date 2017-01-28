@@ -167,7 +167,7 @@ public class DateSelector extends TextFieldCustomPopup<Date> {
 
 		private JButton nextMonth;
 
-		JComboBox monthComboBox;
+		JComboBox<String> monthComboBox;
 
 		JSpinner yearSpinner;
 
@@ -183,7 +183,7 @@ public class DateSelector extends TextFieldCustomPopup<Date> {
 			super();
 
 			// Create the month chooser as a comboBox
-			monthComboBox = new JComboBox(months);
+			monthComboBox = new JComboBox<>(months);
 			monthComboBox.setLightWeightPopupEnabled(false);
 			monthComboBox.addActionListener(new ActionListener() {
 				@Override
@@ -318,27 +318,27 @@ public class DateSelector extends TextFieldCustomPopup<Date> {
 			// today
 			// is
 			{
-			case Calendar.SUNDAY:
-				dayOfWeek = 0;
-				break;
-			case Calendar.MONDAY:
-				dayOfWeek = 1;
-				break;
-			case Calendar.TUESDAY:
-				dayOfWeek = 2;
-				break;
-			case Calendar.WEDNESDAY:
-				dayOfWeek = 3;
-				break;
-			case Calendar.THURSDAY:
-				dayOfWeek = 4;
-				break;
-			case Calendar.FRIDAY:
-				dayOfWeek = 5;
-				break;
-			case Calendar.SATURDAY:
-				dayOfWeek = 6;
-				break;
+				case Calendar.SUNDAY:
+					dayOfWeek = 0;
+					break;
+				case Calendar.MONDAY:
+					dayOfWeek = 1;
+					break;
+				case Calendar.TUESDAY:
+					dayOfWeek = 2;
+					break;
+				case Calendar.WEDNESDAY:
+					dayOfWeek = 3;
+					break;
+				case Calendar.THURSDAY:
+					dayOfWeek = 4;
+					break;
+				case Calendar.FRIDAY:
+					dayOfWeek = 5;
+					break;
+				case Calendar.SATURDAY:
+					dayOfWeek = 6;
+					break;
 			}
 
 			for (int i = 0; i < 7; i++) {
@@ -425,9 +425,11 @@ public class DateSelector extends TextFieldCustomPopup<Date> {
 			public void setDateStyle() {
 				if (selectedDay) {
 					setBackground(Color.GREEN);
-				} else if (busy) {
+				}
+				else if (busy) {
 					setBackground(Color.GRAY);
-				} else {
+				}
+				else {
 					setBackground(Color.YELLOW);
 				}
 			}

@@ -17,19 +17,16 @@ import org.openflexo.gina.event.description.ApplicationEventDescription;
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.event.strategies.CheckingStrategy;
 import org.openflexo.gina.event.strategies.RecordingStrategy;
-import org.openflexo.gina.manager.GinaEventListener;
-import org.openflexo.gina.manager.GinaStackEvent;
-import org.openflexo.gina.event.strategies.CheckingStrategy;
-import org.openflexo.gina.event.strategies.RecordingStrategy;
 import org.openflexo.gina.event.strategies.StandardRecordingStrategy;
 import org.openflexo.gina.event.strategies.StrictCheckingStrategy;
-import org.openflexo.replay.test.ReplayTestConfiguration;
+import org.openflexo.gina.manager.GinaEventListener;
+import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.ResourceLocator;
 
 /**
- * This represents a recording/replaying session.
- * It Manages the scenario data, the recording and the replay (through a RecordingStrategy and a CheckingStrategy).
+ * This represents a recording/replaying session. It Manages the scenario data, the recording and the replay (through a RecordingStrategy
+ * and a CheckingStrategy).
  * 
  * It is attached to 1 GinaReplayManager that will provide an interface to find widgets, FIB or other registered items.
  * 
@@ -47,7 +44,7 @@ public class GinaReplaySession implements GinaEventListener {
 	private RecordingStrategy recordingStrategy;
 	private CheckingStrategy checkingStrategy;
 
-	static private ReplayTestConfiguration nextTestConfiguration;
+	static private ReplayConfiguration nextTestConfiguration;
 
 	public GinaReplaySession(GinaReplayManager manager) {
 		this.delayBetweenNodes = 30;
@@ -66,7 +63,7 @@ public class GinaReplaySession implements GinaEventListener {
 		// strategies
 		this.recordingStrategy = new StandardRecordingStrategy(this);
 		this.checkingStrategy = new StrictCheckingStrategy(this);
-		
+
 		LOGGER.info("REC Gina Recorder is Up");
 	}
 
@@ -79,9 +76,9 @@ public class GinaReplaySession implements GinaEventListener {
 		if (this.recordingStrategy != null && isRecording()) {
 			this.recordingStrategy.eventPerformed(e, stack);
 			/**
-			 * TODO : currently the scenario is saved automatically to 'last-scenario'
-			 * should be more customizable
+			 * TODO : currently the scenario is saved automatically to 'last-scenario' should be more customizable
 			 */
+
 			File scenarioDir = ((FileResourceImpl) ResourceLocator.locateSourceCodeResource("scenarii")).getFile();
 			save(scenarioDir, "last-scenario");
 		}
@@ -260,7 +257,7 @@ public class GinaReplaySession implements GinaEventListener {
 		nextTestConfiguration = null;
 	}
 
-	public void start(ReplayTestConfiguration testConfiguration) {
+	public void start(ReplayConfiguration testConfiguration) {
 		if (testConfiguration == null) {
 			this.resumeRecording();
 		}
@@ -402,8 +399,8 @@ public class GinaReplaySession implements GinaEventListener {
 
 		return userOrigin;
 	}
-	
-	static public void setNextTestConfiguration(ReplayTestConfiguration testConfiguration) {
+
+	static public void setNextTestConfiguration(ReplayConfiguration testConfiguration) {
 		nextTestConfiguration = testConfiguration;
 	}
 }

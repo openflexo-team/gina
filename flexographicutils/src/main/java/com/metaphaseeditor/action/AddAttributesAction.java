@@ -54,7 +54,7 @@ public class AddAttributesAction extends StyledEditorKit.StyledTextAction {
 	private AttributeSet getNewAttributes(AttributeSet attributeSet) {
 		MutableAttributeSet newAttrs = new SimpleAttributeSet(attributeSet);
 		if (attributes != null) {
-			for (Map.Entry entry : attributes.entrySet())
+			for (Map.Entry<?, ?> entry : attributes.entrySet())
 				newAttrs.addAttribute(entry.getKey(), entry.getValue());
 		}
 		return newAttrs;
@@ -77,7 +77,7 @@ public class AddAttributesAction extends StyledEditorKit.StyledTextAction {
 				if (listElement.getName().equals("li")) {
 					StringBuffer attrBuffer = new StringBuffer();
 					if (attributes != null) {
-						for (Map.Entry entry : attributes.entrySet()) {
+						for (Map.Entry<?, ?> entry : attributes.entrySet()) {
 							attrBuffer.append(' ');
 							attrBuffer.append(entry.getKey());
 							attrBuffer.append("=\"");
@@ -87,7 +87,7 @@ public class AddAttributesAction extends StyledEditorKit.StyledTextAction {
 					}
 					// re-add the existing attributes to the list item
 					AttributeSet listElementAttrs = listElement.getAttributes();
-					Enumeration currentAttrEnum = listElementAttrs.getAttributeNames();
+					Enumeration<?> currentAttrEnum = listElementAttrs.getAttributeNames();
 					while (currentAttrEnum.hasMoreElements()) {
 						Object attrName = currentAttrEnum.nextElement();
 						if (!attributes.containsKey(attrName.toString())) {

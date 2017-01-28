@@ -472,7 +472,7 @@ public interface FIBTable extends FIBWidget {
 		@Override
 		public DataBinding<Object> getSelected() {
 			if (selected == null) {
-				selected = new DataBinding<Object>(this, getIteratorType(), DataBinding.BindingDefinitionType.GET_SET);
+				selected = new DataBinding<>(this, getIteratorType(), DataBinding.BindingDefinitionType.GET_SET);
 			}
 			return selected;
 		}
@@ -930,7 +930,7 @@ public interface FIBTable extends FIBWidget {
 				UIManager.setLookAndFeel(info.getClassName());
 
 				UIDefaults defaults = UIManager.getDefaults();
-				Enumeration newKeys = defaults.keys();
+				Enumeration<?> newKeys = defaults.keys();
 
 				while (newKeys.hasMoreElements()) {
 					Object obj = newKeys.nextElement();
@@ -1040,7 +1040,7 @@ public interface FIBTable extends FIBWidget {
 
 		@Override
 		public Collection<? extends FIBModelObject> getEmbeddedObjects() {
-			return new ChainedCollection<FIBModelObject>(getColumns(), getActions());
+			return new ChainedCollection<>(getColumns(), getActions());
 		}
 
 		@Override

@@ -112,7 +112,7 @@ public interface FIBHtmlEditorOption extends FIBModelObject {
 		public FIBHtmlEditorOptionImpl() {
 			isVisible = false;
 			index = -1;
-			subOptions = new Vector<String>();
+			subOptions = new Vector<>();
 		}
 
 		@Override
@@ -287,7 +287,7 @@ public interface FIBHtmlEditorOption extends FIBModelObject {
 
 		@Override
 		public List<FIBHtmlEditorOption> getSubOptions() {
-			ArrayList<FIBHtmlEditorOption> returned = new ArrayList<FIBHtmlEditorOption>();
+			ArrayList<FIBHtmlEditorOption> returned = new ArrayList<>();
 			if (editor != null) {
 				for (String s : subOptions) {
 					returned.add(editor.getOption(s));

@@ -46,7 +46,7 @@ public class ClearFormattingAction extends StyledEditorKit.StyledTextAction {
 	public void actionPerformed(ActionEvent ae) {
 		JTextPane textPane = editorPanel.getHtmlTextPane();
 		int internalTextLength;
-		Vector skipAttributesList = new Vector();
+		Vector<String> skipAttributesList = new Vector<>();
 		skipAttributesList.add(HTML.Attribute.SRC.toString());
 		skipAttributesList.add(HTML.Attribute.BORDER.toString());
 		skipAttributesList.add(HTML.Attribute.WIDTH.toString());
@@ -58,7 +58,7 @@ public class ClearFormattingAction extends StyledEditorKit.StyledTextAction {
 
 		// clear all paragraph attributes in selection
 		SimpleAttributeSet sasText = new SimpleAttributeSet(textPane.getParagraphAttributes());
-		for (Enumeration en = sasText.getAttributeNames(); en.hasMoreElements();) {
+		for (Enumeration<?> en = sasText.getAttributeNames(); en.hasMoreElements();) {
 			Object elm = en.nextElement();
 			sasText.removeAttribute(sasText.getAttribute(elm));
 		}
@@ -68,14 +68,15 @@ public class ClearFormattingAction extends StyledEditorKit.StyledTextAction {
 		sasText = null;
 		if (selText != null) {
 			internalTextLength = selText.length();
-		} else {
+		}
+		else {
 			internalTextLength = 0;
 		}
 
 		mainLoop: for (int i = caretOffset; i <= caretOffset + internalTextLength; i++) {
 			textPane.setCaretPosition(i);
 			sasText = new SimpleAttributeSet(textPane.getCharacterAttributes().copyAttributes());
-			Enumeration attributeNames = sasText.getAttributeNames();
+			Enumeration<?> attributeNames = sasText.getAttributeNames();
 			while (attributeNames.hasMoreElements()) {
 				Object entryKey = attributeNames.nextElement();
 				for (int j = 0; j < skipAttributesList.size(); j++) {

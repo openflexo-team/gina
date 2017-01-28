@@ -151,7 +151,7 @@ public class FIBBrowserType extends FIBWidgetType<FIBBrowser> {
 	@Override
 	public List<DynamicProperty> getDynamicProperties() {
 
-		List<DynamicProperty> returned = new ArrayList<DynamicProperty>();
+		List<DynamicProperty> returned = new ArrayList<>();
 		returned.addAll(super.getDynamicProperties());
 		returned.add(SELECTED);
 		returned.add(SELECTION);

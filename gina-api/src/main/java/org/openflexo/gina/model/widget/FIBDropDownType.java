@@ -129,7 +129,7 @@ public class FIBDropDownType extends FIBWidgetType<FIBDropDown> {
 		public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
 				throws TypeMismatchException, NullReferenceException {
 			if (target instanceof FIBDropDownWidget) {
-				((FIBDropDownWidget) target).setSelectedIndex((Integer) value);
+				((FIBDropDownWidget<?, ?>) target).setSelectedIndex((Integer) value);
 				return;
 			}
 			logger.warning("Unexpected target=" + target + " context=" + context);
@@ -149,7 +149,7 @@ public class FIBDropDownType extends FIBWidgetType<FIBDropDown> {
 	@Override
 	public List<DynamicProperty> getDynamicProperties() {
 
-		List<DynamicProperty> returned = new ArrayList<DynamicProperty>();
+		List<DynamicProperty> returned = new ArrayList<>();
 		returned.addAll(super.getDynamicProperties());
 		returned.add(SELECTED);
 		returned.add(SELECTED_INDEX);

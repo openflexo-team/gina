@@ -42,7 +42,6 @@ package org.openflexo.icon;
 import javax.swing.ImageIcon;
 
 import org.openflexo.rm.ResourceLocator;
-import org.openflexo.toolbox.ImageIconResource;
 
 /**
  * Utility class containing all icons used in context of utils

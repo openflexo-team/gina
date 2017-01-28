@@ -53,7 +53,6 @@ import java.util.regex.Pattern;
 import javax.swing.Icon;
 
 import org.openflexo.gina.utils.FIBIconLibrary;
-import org.openflexo.toolbox.ClassScope;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 /**
@@ -263,6 +262,12 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 			return null;
 		}
 
+		// Ignoring classes from gradle as they cause NoClassDefException
+		if (c.getName().startsWith("worker.org.gradle")) {
+			System.out.println("Ignored class: " + c);
+			return null;
+		}
+
 		if (c.getPackage() == null) {
 			LOGGER.warning("No package for class " + c);
 			return null;
@@ -271,7 +276,6 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		PackageInfo p = registerPackage(c.getPackage());
 
 		LOGGER.fine("Register class " + c);
-
 		if (!c.isMemberClass() && !c.isAnonymousClass() && !c.isLocalClass()) {
 			ClassInfo returned = p.classes.get(c);
 			if (returned == null) {

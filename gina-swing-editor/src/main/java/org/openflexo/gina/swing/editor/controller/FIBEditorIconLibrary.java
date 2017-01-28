@@ -42,8 +42,8 @@ package org.openflexo.gina.swing.editor.controller;
 import javax.swing.ImageIcon;
 
 import org.openflexo.icon.IconMarker;
+import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
-import org.openflexo.toolbox.ImageIconResource;
 
 /**
  * Provides graphical resources used in the context of FIB

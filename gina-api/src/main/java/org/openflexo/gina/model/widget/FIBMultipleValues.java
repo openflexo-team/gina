@@ -211,7 +211,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		@Override
 		public DataBinding<List<?>> getList() {
 			if (list == null) {
-				list = new DataBinding<List<?>>(this, new TypeToken<List<?>>() {
+				list = new DataBinding<>(this, new TypeToken<List<?>>() {
 				}.getType(), DataBinding.BindingDefinitionType.GET);
 			}
 			return list;
@@ -231,7 +231,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		@Override
 		public DataBinding<Object[]> getArray() {
 			if (array == null) {
-				array = new DataBinding<Object[]>(this, new GenericArrayTypeImpl(new WilcardTypeImpl(Object.class)) /* TypeToken<Object[]>() {
+				array = new DataBinding<>(this, new GenericArrayTypeImpl(new WilcardTypeImpl(Object.class)) /* TypeToken<Object[]>() {
 																													}.getType()*/,
 						DataBinding.BindingDefinitionType.GET);
 			}
@@ -324,7 +324,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 				return String.class;
 			}
 			if (iteratorClass == null) {
-				boolean isBeingCloned = isCreatedByCloning();
+				// Unused var boolean isBeingCloned = isCreatedByCloning();
 				if (!isCreatedByCloning() && getRootComponent() != null && !getRootComponent().isCreatedByCloning()
 						&& !getRootComponent().isDeserializing() && getData() != null && getData().isSet() && getData().isValid()) {
 					if (getData().getAnalyzedType() instanceof Class && ((Class) getData().getAnalyzedType()).isEnum()) {
@@ -420,7 +420,8 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 			}
 			else if (binding == getData()) {
 				if (getData() != null) {
-					Type accessedType = getData().getAnalyzedType();
+					// Unused var Type accessedType =
+					getData().getAnalyzedType();
 					/*if (accessedType instanceof Class && ((Class)accessedType).isEnum()) {
 						setIteratorClass((Class)accessedType);
 					}*/
@@ -549,7 +550,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 			if (!object.isHidden() && StringUtils.isEmpty(object.getStaticList()) && !object.getList().isSet() && !object.getArray().isSet()
 					&& !object.isEnumType()) {
 				GenerateDefaultStaticList fixProposal = new GenerateDefaultStaticList();
-				return new ValidationError<FIBMultipleValuesMustDefineValueRange, FIBMultipleValues>(this, object,
+				return new ValidationError<>(this, object,
 						"widget_does_not_define_any_values_range_(either_static_list_or_dynamic_list_or_array_or_enumeration)",
 						fixProposal);
 			}

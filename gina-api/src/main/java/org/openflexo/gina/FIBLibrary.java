@@ -115,7 +115,7 @@ public interface FIBLibrary extends FIBLibraryContainer {
 
 		public FIBLibraryImpl() {
 			super();
-			fibs = new Hashtable<Resource, FIBComponent>();
+			fibs = new Hashtable<>();
 			try {
 				fibModelFactory = new FIBModelFactory();
 			} catch (ModelDefinitionException e) {

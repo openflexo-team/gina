@@ -111,7 +111,7 @@ public class FlexoCollabsiblePanelGroup extends JScrollPane {
 	public FlexoCollabsiblePanelGroup() {
 		super();
 		mainPane = new JScrollablePanel(new VerticalLayout());
-		panels = new ArrayList<FlexoCollabsiblePanel>();
+		panels = new ArrayList<>();
 		openedPanel = null;
 		setViewportView(mainPane);
 		setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);

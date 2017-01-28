@@ -1,0 +1,6 @@
+dependencies {
+  compile project(':gina-api')
+  compile project(':gina-test')
+  testCompile testUtils()
+}
+

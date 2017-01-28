@@ -126,8 +126,7 @@ public interface FIBLocalizedEntry extends FIBModelObject {
 				if (entry.getLocalizedDictionary().getLocalizedEntries().indexOf(entry) != entry.getLocalizedDictionary()
 						.getLocalizedEntries().lastIndexOf(entry)) {
 					RemoveExtraReferences fixProposal = new RemoveExtraReferences(entry);
-					return new ValidationWarning<LocalizedEntryShouldNotBeRegisteredTwice, FIBLocalizedEntry>(this, entry,
-							"localized_entry_is_registered_twice", fixProposal);
+					return new ValidationWarning<>(this, entry, "localized_entry_is_registered_twice", fixProposal);
 				}
 			}
 			return null;
@@ -175,8 +174,7 @@ public interface FIBLocalizedEntry extends FIBModelObject {
 				// System.out.println("parentTranslation=" + parentTranslation);
 				if (parentTranslation != null && parentTranslation.equals(entry.getValue())) {
 					DeleteUnnecessaryTranslation fixProposal = new DeleteUnnecessaryTranslation(entry);
-					return new ValidationWarning<LocalizedEntryShouldNotRedefineParentTranslation, FIBLocalizedEntry>(this, entry,
-							"($validable):_unnecessary_parent_locale_redefinition", fixProposal);
+					return new ValidationWarning<>(this, entry, "($validable):_unnecessary_parent_locale_redefinition", fixProposal);
 				}
 			}
 			return null;

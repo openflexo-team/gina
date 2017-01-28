@@ -28,7 +28,7 @@ public class MetaphaseEditorConfiguration {
 	public Vector<MetaphaseEditorOption> options;
 
 	public MetaphaseEditorConfiguration() {
-		options = new Vector<MetaphaseEditorOption>();
+		options = new Vector<>();
 	}
 
 	public void addToOptions(MetaphaseEditorOption o) {

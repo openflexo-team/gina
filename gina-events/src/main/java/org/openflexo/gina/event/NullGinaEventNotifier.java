@@ -11,8 +11,8 @@ import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.gina.manager.Registrable;
 
 public abstract class NullGinaEventNotifier<D extends EventDescription> {
-	private List<GinaEventListener> ginaListeners = new ArrayList<GinaEventListener>();
-	
+	private List<GinaEventListener> ginaListeners = new ArrayList<>();
+
 	protected EventManager manager;
 	protected Registrable parent;
 
@@ -47,7 +47,7 @@ public abstract class NullGinaEventNotifier<D extends EventDescription> {
 			System.out.println("Attention : " + e.getMessage());
 		}
 
-		//this.findBranchAncestor();
+		// this.findBranchAncestor();
 
 		// create the event and the stack element
 		GinaStackEvent se = manager.pushStackEvent(d, this.computeClass(d));
@@ -57,7 +57,7 @@ public abstract class NullGinaEventNotifier<D extends EventDescription> {
 
 		return se;
 	}
-	
+
 	/*public void findBranchAncestor() {
 		StackTraceElement[] stack = Thread.currentThread().getStackTrace();
 		for(int i = 0; i < stack.length; ++i) {
@@ -67,7 +67,7 @@ public abstract class NullGinaEventNotifier<D extends EventDescription> {
 				System.out.println("Hi !" + trace.getMethodName());
 		}
 	}*/
-	
+
 	public GinaStackEvent notifyMethod() {
 		return notifyMethod(null);
 	}
@@ -80,10 +80,9 @@ public abstract class NullGinaEventNotifier<D extends EventDescription> {
 		// System.out.println("[Notify] " + trace.getMethodName() + " in class "
 		// + trace.getClassName());
 
-		EventDescription desc = manager.getFactory()
-				.createNotifiyMethodEvent(NotifyMethodEventDescription.NOTIFIED,
-						trace.getClassName(), trace.getMethodName(), info);
-		
+		EventDescription desc = manager.getFactory().createNotifiyMethodEvent(NotifyMethodEventDescription.NOTIFIED, trace.getClassName(),
+				trace.getMethodName(), info);
+
 		// create the event and the stack element
 		GinaStackEvent se = manager.pushStackEvent(desc, GinaEvent.KIND.UNKNOWN);
 

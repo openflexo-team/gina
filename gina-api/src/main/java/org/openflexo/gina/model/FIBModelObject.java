@@ -236,7 +236,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 		public final Collection<? extends Validable> getEmbeddedValidableObjects() {
 
 			List<?> embeddedObjects = getModelFactory().getEmbeddedObjects(this, EmbeddingType.CLOSURE);
-			List<Validable> returned = new ArrayList<Validable>();
+			List<Validable> returned = new ArrayList<>();
 			for (Object e : embeddedObjects) {
 				if (e instanceof Validable) {
 					returned.add((Validable) e);
@@ -354,7 +354,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 					return null; // No change
 				}
 				else {
-					return new FIBPropertyNotification<T>(property, oldValue, value);
+					return new FIBPropertyNotification<>(property, oldValue, value);
 				}
 			}
 			else {
@@ -362,7 +362,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 					return null; // No change
 				}
 				else {
-					return new FIBPropertyNotification<T>(property, oldValue, value);
+					return new FIBPropertyNotification<>(property, oldValue, value);
 				}
 			}
 		}
@@ -520,12 +520,10 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 					GenerateUniqueName fixProposal = new GenerateUniqueName();
 					ProblemIssue<FIBModelObjectShouldHaveAUniqueName, FIBModelObject> returned;
 					if (object instanceof FIBWidget && ((FIBWidget) object).getManageDynamicModel()) {
-						returned = new ValidationError<FIBModelObjectShouldHaveAUniqueName, FIBModelObject>(this, object,
-								"object_($object.toString)_has_duplicated_name", fixProposal);
+						returned = new ValidationError<>(this, object, "object_($object.toString)_has_duplicated_name", fixProposal);
 					}
 					else {
-						returned = new ValidationWarning<FIBModelObjectShouldHaveAUniqueName, FIBModelObject>(this, object,
-								"object_($object.toString)_has_duplicated_name", fixProposal);
+						returned = new ValidationWarning<>(this, object, "object_($object.toString)_has_duplicated_name", fixProposal);
 					}
 					returned.addToRelatedValidableObjects(allObjectsWithThatName);
 					return returned;
@@ -565,10 +563,10 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 		public ValidationIssue<BindingMustBeValid<C>, C> applyValidation(C object) {
 			if (getBinding(object) != null && getBinding(object).isSet()) {
 				if (!getBinding(object).isValid()) {
-					DeleteBinding<C> deleteBinding = new DeleteBinding<C>(this);
+					DeleteBinding<C> deleteBinding = new DeleteBinding<>(this);
 					// return new ValidationError<BindingMustBeValid<C>, C>(this, object, BindingMustBeValid.this.getRuleName() + " '"
 					// + getBinding(object) + "' reason: " + getBinding(object).invalidBindingReason(), deleteBinding);
-					return new InvalidBindingIssue<C>(this, object, deleteBinding);
+					return new InvalidBindingIssue<>(this, object, deleteBinding);
 				}
 			}
 			return null;
@@ -596,9 +594,9 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 		protected static class DeleteBinding<C extends FIBModelObject> extends FixProposal<BindingMustBeValid<C>, C> {
 
-			private final BindingMustBeValid rule;
+			private final BindingMustBeValid<C> rule;
 
-			public DeleteBinding(BindingMustBeValid rule) {
+			public DeleteBinding(BindingMustBeValid<C> rule) {
 				super("delete_this_binding");
 				this.rule = rule;
 			}

@@ -1,0 +1,7 @@
+dependencies {
+  compile connie()
+  compile project(':flexographicutils')
+  compile project(':gina-api')
+  compile project(':gina-core')
+  testCompile testUtils()
+}

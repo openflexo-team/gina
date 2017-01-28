@@ -213,12 +213,12 @@ public interface FIBHtmlEditor extends FIBWidget {
 
 		public FIBHtmlEditorImpl() {
 			super();
-			optionsInLine1 = new Vector<FIBHtmlEditorOption>();
-			optionsInLine2 = new Vector<FIBHtmlEditorOption>();
-			optionsInLine3 = new Vector<FIBHtmlEditorOption>();
-			firstLevelOptionsInLine1 = new Vector<FIBHtmlEditorOption>();
-			firstLevelOptionsInLine2 = new Vector<FIBHtmlEditorOption>();
-			firstLevelOptionsInLine3 = new Vector<FIBHtmlEditorOption>();
+			optionsInLine1 = new Vector<>();
+			optionsInLine2 = new Vector<>();
+			optionsInLine3 = new Vector<>();
+			firstLevelOptionsInLine1 = new Vector<>();
+			firstLevelOptionsInLine2 = new Vector<>();
+			firstLevelOptionsInLine3 = new Vector<>();
 
 			/*FIBHtmlEditorOption o1 =  getOption(MetaphaseEditorPanel.EDIT_PANEL_KEY);
 			o1.setIsVisible(true);
@@ -369,14 +369,14 @@ public interface FIBHtmlEditor extends FIBWidget {
 		@Override
 		public List<FIBHtmlEditorOption> getAvailableOptions() {
 			if (availableOptions == null && getModelFactory() != null) {
-				availableOptions = new ArrayList<FIBHtmlEditorOption>();
+				availableOptions = new ArrayList<>();
 				for (String s : option_keys) {
 					FIBHtmlEditorOption newOption = getModelFactory().newInstance(FIBHtmlEditorOption.class);
 					newOption.setName(s);
 					newOption.setEditor(this);
 					availableOptions.add(newOption);
 				}
-				visibleAndUnusedOptions = new ArrayList<FIBHtmlEditorOption>();
+				visibleAndUnusedOptions = new ArrayList<>();
 			}
 			return availableOptions;
 		}
@@ -455,7 +455,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 		}
 
 		public void addToOptionsInLine1(List<FIBHtmlEditorOption> options) {
-			Vector<FIBHtmlEditorOption> theOptions = new Vector<FIBHtmlEditorOption>();
+			Vector<FIBHtmlEditorOption> theOptions = new Vector<>();
 			theOptions.addAll(options);
 			for (FIBHtmlEditorOption o : theOptions) {
 				addToOptionsInLine1(o);
@@ -481,7 +481,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 		}
 
 		public void removeFromOptionsInLine1(List<FIBHtmlEditorOption> options) {
-			Vector<FIBHtmlEditorOption> theOptions = new Vector<FIBHtmlEditorOption>();
+			Vector<FIBHtmlEditorOption> theOptions = new Vector<>();
 			theOptions.addAll(options);
 			for (FIBHtmlEditorOption o : theOptions) {
 				removeFromOptionsInLine1(o);
@@ -526,7 +526,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 		}
 
 		public void addToOptionsInLine2(List<FIBHtmlEditorOption> options) {
-			Vector<FIBHtmlEditorOption> theOptions = new Vector<FIBHtmlEditorOption>();
+			Vector<FIBHtmlEditorOption> theOptions = new Vector<>();
 			theOptions.addAll(options);
 			for (FIBHtmlEditorOption o : theOptions) {
 				addToOptionsInLine2(o);
@@ -552,7 +552,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 		}
 
 		public void removeFromOptionsInLine2(List<FIBHtmlEditorOption> options) {
-			Vector<FIBHtmlEditorOption> theOptions = new Vector<FIBHtmlEditorOption>();
+			Vector<FIBHtmlEditorOption> theOptions = new Vector<>();
 			theOptions.addAll(options);
 			for (FIBHtmlEditorOption o : theOptions) {
 				removeFromOptionsInLine2(o);
@@ -597,7 +597,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 		}
 
 		public void addToOptionsInLine3(List<FIBHtmlEditorOption> options) {
-			Vector<FIBHtmlEditorOption> theOptions = new Vector<FIBHtmlEditorOption>();
+			Vector<FIBHtmlEditorOption> theOptions = new Vector<>();
 			theOptions.addAll(options);
 			for (FIBHtmlEditorOption o : theOptions) {
 				addToOptionsInLine3(o);
@@ -623,7 +623,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 		}
 
 		public void removeFromOptionsInLine3(List<FIBHtmlEditorOption> options) {
-			Vector<FIBHtmlEditorOption> theOptions = new Vector<FIBHtmlEditorOption>();
+			Vector<FIBHtmlEditorOption> theOptions = new Vector<>();
 			theOptions.addAll(options);
 			for (FIBHtmlEditorOption o : theOptions) {
 				removeFromOptionsInLine3(o);

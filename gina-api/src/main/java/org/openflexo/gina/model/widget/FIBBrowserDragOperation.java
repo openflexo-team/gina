@@ -116,7 +116,7 @@ public interface FIBBrowserDragOperation extends FIBModelObject {
 
 	public FIBBrowserDragOperationBindable getDragOperationBindable();
 
-	public static abstract class FIBBrowserDragOperationImpl extends FIBModelObjectImpl implements FIBBrowserDragOperation {
+	public static abstract class FIBBrowserDragOperationImpl extends FIBModelObject.FIBModelObjectImpl implements FIBBrowserDragOperation {
 
 		private static final Logger logger = Logger.getLogger(FIBBrowserElementChildren.class.getPackage().getName());
 

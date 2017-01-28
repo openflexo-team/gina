@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scenario id="0">
+  <InteractionCycle id="1">
+    <UserInteraction_UserInteraction id="2">
+      <ApplicationEvent id="3" delay="108" mainClass="java.lang.Thread" action="application-started" />
+    </UserInteraction_UserInteraction>
+  </InteractionCycle>
+  <InteractionCycle id="4">
+    <UserInteraction_UserInteraction id="5">
+      <TextEvent id="6" absoluteValue="Smith" delay="2053" widgetID="lastnameTextField" length="5" widgetClass="TextField" action="text-inserted" parentIdentifier="FIBPanel:WindowFIB*0" value="Smith" />
+    </UserInteraction_UserInteraction>
+  </InteractionCycle>
+  <InteractionCycle id="7">
+    <UserInteraction_UserInteraction id="8">
+      <TextEvent id="9" absoluteValue="Robert" delay="2057" widgetID="firstnameTextField" length="6" widgetClass="TextField" action="text-inserted" parentIdentifier="FIBPanel:WindowFIB*0" value="Robert" />
+    </UserInteraction_UserInteraction>
+  </InteractionCycle>
+  <InteractionCycle id="10">
+    <UserInteraction_UserInteraction id="11">
+      <GinaNotifyMethodEvent id="12" delay="2063" methodClass="org.openflexo.gina.manager.GinaPropertyChangeListener" methodName="propertyChange" action="method-notified" info="firstName" />
+    </UserInteraction_UserInteraction>
+    <SystemEvent_SystemEventNode id="13">
+      <SystemEventNode id="14">
+        <SystemEvent id="15">
+          <TextEvent id="16" absoluteValue="Alex" delay="2065" widgetID="firstnameTextField" length="6" widgetClass="TextField" action="text-removed" parentIdentifier="FIBPanel:WindowFIB*0" value="" />
+        </SystemEvent>
+      </SystemEventNode>
+      <SystemEventNode id="17">
+        <SystemEvent id="18">
+          <TextEvent id="19" absoluteValue="Alex" delay="2070" widgetID="firstnameTextField" length="4" widgetClass="TextField" action="text-inserted" parentIdentifier="FIBPanel:WindowFIB*0" value="Alex" />
+        </SystemEvent>
+      </SystemEventNode>
+    </SystemEvent_SystemEventNode>
+  </InteractionCycle>
+</Scenario>

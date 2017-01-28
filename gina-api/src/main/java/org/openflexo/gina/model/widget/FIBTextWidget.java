@@ -107,7 +107,7 @@ public abstract interface FIBTextWidget extends FIBWidget {
 		@Override
 		public DataBinding<Boolean> getEditable() {
 			if (editable == null) {
-				editable = new DataBinding<Boolean>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				editable = new DataBinding<>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
 			}
 			return editable;
 		}

@@ -29,8 +29,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import javax.swing.text.html.HTMLDocument;
 
+import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
-import org.openflexo.toolbox.ImageIconResource;
 
 /**
  * 
@@ -41,8 +41,6 @@ public class FindReplaceDialog extends javax.swing.JDialog {
 	private JTextPane htmlTextPane;
 	private int lastMatchPos = -1;
 	private boolean replacePerformed = false;
-	
-
 
 	/** Creates new form FindReplaceDialog */
 	public FindReplaceDialog(java.awt.Frame parent, boolean modal, JTextPane htmlTextPane) {
@@ -127,64 +125,40 @@ public class FindReplaceDialog extends javax.swing.JDialog {
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(
-						layout.createSequentialGroup()
-								.addContainerGap()
-								.addGroup(
-										layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-												.addComponent(matchCaseCheckBox)
-												.addGroup(
-														layout.createSequentialGroup()
-																.addGroup(
-																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING)
-																				.addComponent(replaceWithLabel).addComponent(findWhatLabel))
-																.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addGroup(
-																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING)
-																				.addComponent(findWhatTextField,
-																						javax.swing.GroupLayout.DEFAULT_SIZE, 313,
-																						Short.MAX_VALUE)
-																				.addComponent(replaceWithTextField,
-																						javax.swing.GroupLayout.DEFAULT_SIZE, 313,
-																						Short.MAX_VALUE)))
-												.addGroup(
-														javax.swing.GroupLayout.Alignment.TRAILING,
-														layout.createSequentialGroup().addComponent(findButton)
-																.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(replaceButton)
-																.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(replaceAllButton)
-																.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(closeButton))).addContainerGap()));
+		layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout
+						.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(matchCaseCheckBox)
+						.addGroup(layout.createSequentialGroup()
+								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+										.addComponent(replaceWithLabel).addComponent(findWhatLabel))
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+										.addComponent(findWhatTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
+										.addComponent(replaceWithTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)))
+						.addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+								layout.createSequentialGroup().addComponent(findButton)
+										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(replaceButton)
+										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(replaceAllButton)
+										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(closeButton)))
+						.addContainerGap()));
 
-		layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] { closeButton, findButton, replaceAllButton,
-				replaceButton });
+		layout.linkSize(javax.swing.SwingConstants.HORIZONTAL,
+				new java.awt.Component[] { closeButton, findButton, replaceAllButton, replaceButton });
 
-		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				layout.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(findWhatLabel)
-										.addComponent(findWhatTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(replaceWithLabel)
-										.addComponent(replaceWithTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-						.addComponent(matchCaseCheckBox)
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(closeButton)
-										.addComponent(replaceAllButton).addComponent(replaceButton).addComponent(findButton))
-						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout
+				.createSequentialGroup().addContainerGap()
+				.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(findWhatLabel).addComponent(
+						findWhatTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+						javax.swing.GroupLayout.PREFERRED_SIZE))
+				.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+				.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(replaceWithLabel)
+						.addComponent(replaceWithTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+								javax.swing.GroupLayout.PREFERRED_SIZE))
+				.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(matchCaseCheckBox)
+				.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+				.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(closeButton)
+						.addComponent(replaceAllButton).addComponent(replaceButton).addComponent(findButton))
+				.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
@@ -201,7 +175,8 @@ public class FindReplaceDialog extends javax.swing.JDialog {
 			String htmlText = htmlDocument.getText(0, htmlDocument.getLength());
 			if (matchCase) {
 				lastMatchPos = htmlText.indexOf(findWhat, lastMatchPos + 1);
-			} else {
+			}
+			else {
 				lastMatchPos = htmlText.toUpperCase().indexOf(findWhat.toUpperCase(), lastMatchPos + 1);
 			}
 
@@ -228,7 +203,8 @@ public class FindReplaceDialog extends javax.swing.JDialog {
 			findButton.setEnabled(true);
 			replaceButton.setEnabled(true);
 			replaceAllButton.setEnabled(true);
-		} else {
+		}
+		else {
 			findButton.setEnabled(false);
 			replaceButton.setEnabled(false);
 			replaceAllButton.setEnabled(false);
@@ -259,10 +235,12 @@ public class FindReplaceDialog extends javax.swing.JDialog {
 			replacePerformed = false;
 			findButtonActionPerformed(evt);
 			return;
-		} else if (lastMatchPos > -1) {
+		}
+		else if (lastMatchPos > -1) {
 			replaceSelection();
 			replacePerformed = true;
-		} else {
+		}
+		else {
 			JOptionPane.showMessageDialog(this, "The specified search text could not be found.");
 		}
 	}// GEN-LAST:event_replaceButtonActionPerformed

@@ -79,7 +79,7 @@ public interface FIBTabPanel extends FIBContainer {
 		}*/
 
 		public Vector<FIBTab> getTabs() {
-			Vector<FIBTab> returned = new Vector<FIBTab>();
+			Vector<FIBTab> returned = new Vector<>();
 			for (FIBComponent subComponent : getSubComponents()) {
 				if (subComponent instanceof FIBTab) {
 					returned.add((FIBTab) subComponent);

@@ -423,7 +423,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<String> getLabel() {
 			if (label == null) {
-				label = new DataBinding<String>(iteratorBindable, String.class, DataBinding.BindingDefinitionType.GET);
+				label = new DataBinding<>(iteratorBindable, String.class, DataBinding.BindingDefinitionType.GET);
 				label.setBindingName("label");
 			}
 			return label;
@@ -447,7 +447,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<Icon> getIcon() {
 			if (icon == null) {
-				icon = new DataBinding<Icon>(iteratorBindable, Icon.class, DataBinding.BindingDefinitionType.GET);
+				icon = new DataBinding<>(iteratorBindable, Icon.class, DataBinding.BindingDefinitionType.GET);
 				icon.setBindingName("icon");
 			}
 			return icon;
@@ -471,7 +471,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<String> getTooltip() {
 			if (tooltip == null) {
-				tooltip = new DataBinding<String>(iteratorBindable, String.class, DataBinding.BindingDefinitionType.GET);
+				tooltip = new DataBinding<>(iteratorBindable, String.class, DataBinding.BindingDefinitionType.GET);
 				tooltip.setBindingName("tooltip");
 			}
 			return tooltip;
@@ -491,7 +491,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<Boolean> getEnabled() {
 			if (enabled == null) {
-				enabled = new DataBinding<Boolean>(iteratorBindable, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				enabled = new DataBinding<>(iteratorBindable, Boolean.class, DataBinding.BindingDefinitionType.GET);
 				enabled.setBindingName("enabled");
 			}
 			return enabled;
@@ -511,7 +511,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<Boolean> getVisible() {
 			if (visible == null) {
-				visible = new DataBinding<Boolean>(iteratorBindable, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				visible = new DataBinding<>(iteratorBindable, Boolean.class, DataBinding.BindingDefinitionType.GET);
 				visible.setBindingName("visible");
 			}
 			return visible;
@@ -545,7 +545,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<String> getEditableLabel() {
 			if (editableLabel == null) {
-				editableLabel = new DataBinding<String>(iteratorBindable, String.class, DataBinding.BindingDefinitionType.GET_SET);
+				editableLabel = new DataBinding<>(iteratorBindable, String.class, DataBinding.BindingDefinitionType.GET_SET);
 			}
 			return editableLabel;
 		}
@@ -741,7 +741,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<Color> getSelectedDynamicColor() {
 			if (selectedDynamicColor == null) {
-				selectedDynamicColor = new DataBinding<Color>(iteratorBindable, Color.class, DataBinding.BindingDefinitionType.GET);
+				selectedDynamicColor = new DataBinding<>(iteratorBindable, Color.class, DataBinding.BindingDefinitionType.GET);
 			}
 			return selectedDynamicColor;
 		}
@@ -759,7 +759,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<Color> getNonSelectedDynamicColor() {
 			if (nonSelectedDynamicColor == null) {
-				nonSelectedDynamicColor = new DataBinding<Color>(iteratorBindable, Color.class, DataBinding.BindingDefinitionType.GET);
+				nonSelectedDynamicColor = new DataBinding<>(iteratorBindable, Color.class, DataBinding.BindingDefinitionType.GET);
 			}
 			return nonSelectedDynamicColor;
 		}

@@ -57,12 +57,12 @@ public class FIBBindingFactory extends JavaBindingFactory {
 
 	static final Logger logger = Logger.getLogger(FIBBindingFactory.class.getPackage().getName());
 
-	private final Map<BindingPathElement, Map<Object, SimplePathElement>> storedBindingPathElements = new HashMap<BindingPathElement, Map<Object, SimplePathElement>>();
+	private final Map<BindingPathElement, Map<Object, SimplePathElement>> storedBindingPathElements = new HashMap<>();
 
 	protected SimplePathElement getSimplePathElement(Object object, BindingPathElement parent) {
 		Map<Object, SimplePathElement> storedValues = storedBindingPathElements.get(parent);
 		if (storedValues == null) {
-			storedValues = new HashMap<Object, SimplePathElement>();
+			storedValues = new HashMap<>();
 			storedBindingPathElements.put(parent, storedValues);
 		}
 		SimplePathElement returned = storedValues.get(object);
@@ -75,7 +75,7 @@ public class FIBBindingFactory extends JavaBindingFactory {
 
 	protected SimplePathElement makeSimplePathElement(Object object, BindingPathElement parent) {
 		if (object instanceof FIBVariable) {
-			return new FIBVariablePathElement(parent, (FIBVariable) object);
+			return new FIBVariablePathElement(parent, (FIBVariable<?>) object);
 		}
 		logger.warning("Unexpected " + object + " for parent=" + parent);
 		return null;
@@ -88,8 +88,8 @@ public class FIBBindingFactory extends JavaBindingFactory {
 			Type pType = parent.getType();
 
 			if (pType instanceof FIBViewType) {
-				List<SimplePathElement> returned = new ArrayList<SimplePathElement>();
-				FIBComponent concept = ((FIBViewType) pType).getFIBComponent();
+				List<SimplePathElement> returned = new ArrayList<>();
+				FIBComponent concept = ((FIBViewType<?>) pType).getFIBComponent();
 
 				if (concept != null) {
 					for (FIBVariable<?> variable : concept.getVariables()) {
@@ -97,7 +97,7 @@ public class FIBBindingFactory extends JavaBindingFactory {
 					}
 				}
 
-				returned.addAll(((FIBViewType) pType).getAccessibleSimplePathElements(parent));
+				returned.addAll(((FIBViewType<?>) pType).getAccessibleSimplePathElements(parent));
 
 				return returned;
 			}

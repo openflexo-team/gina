@@ -11,16 +11,17 @@ import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.gina.manager.Registrable;
 
 /**
- * An GineEventNotifier is used to throw events using the method raise.
- * It requires an EventManager to send events to and a Registerable parent to identify the origin.
+ * An GineEventNotifier is used to throw events using the method raise. It requires an EventManager to send events to and a Registerable
+ * parent to identify the origin.
  * 
  * @author Alexandre
  *
- * @param <D> EventDescription root class
+ * @param <D>
+ *            EventDescription root class
  */
 public abstract class GinaEventNotifier<D extends EventDescription> {
-	private List<GinaEventListener> ginaListeners = new ArrayList<GinaEventListener>();
-	
+	private List<GinaEventListener> ginaListeners = new ArrayList<>();
+
 	protected EventManager manager;
 	protected Registrable parent;
 
@@ -30,7 +31,7 @@ public abstract class GinaEventNotifier<D extends EventDescription> {
 		if (this.manager != null)
 			this.addListener(this.manager);
 	}
-	
+
 	public void setManager(EventManager manager) {
 		if (this.manager != null)
 			this.removeListener(this.manager);
@@ -55,14 +56,14 @@ public abstract class GinaEventNotifier<D extends EventDescription> {
 	public void clearListeners() {
 		ginaListeners.clear();
 	}
-	
+
 	public GinaStackEvent raise(D d) {
 		return raise(d, null);
 	}
 
 	/**
-	 * This throw a GinaEvent to the EventManager and also create a stack of events to manage causality.
-	 * Please remember to call ginaStackEvent.end() before unreferencing it.
+	 * This throw a GinaEvent to the EventManager and also create a stack of events to manage causality. Please remember to call
+	 * ginaStackEvent.end() before unreferencing it.
 	 */
 	public GinaStackEvent raise(D d, Object o) {
 		if (this.manager == null)
@@ -75,7 +76,7 @@ public abstract class GinaEventNotifier<D extends EventDescription> {
 			System.out.println("Attention : " + e.getMessage());
 		}
 
-		//this.findBranchAncestor();
+		// this.findBranchAncestor();
 
 		// create the event and the stack element
 		GinaStackEvent se = manager.pushStackEvent(d, this.computeClass(d));
@@ -85,7 +86,7 @@ public abstract class GinaEventNotifier<D extends EventDescription> {
 
 		return se;
 	}
-	
+
 	/*public void findBranchAncestor() {
 		StackTraceElement[] stack = Thread.currentThread().getStackTrace();
 		for(int i = 0; i < stack.length; ++i) {
@@ -95,7 +96,7 @@ public abstract class GinaEventNotifier<D extends EventDescription> {
 				System.out.println("Hi !" + trace.getMethodName());
 		}
 	}*/
-	
+
 	/**
 	 * Used for debug, to notify something append in a method.
 	 */
@@ -111,10 +112,9 @@ public abstract class GinaEventNotifier<D extends EventDescription> {
 		// System.out.println("[Notify] " + trace.getMethodName() + " in class "
 		// + trace.getClassName());
 
-		EventDescription desc = manager.getFactory()
-				.createNotifiyMethodEvent(NotifyMethodEventDescription.NOTIFIED,
-						trace.getClassName(), trace.getMethodName(), info);
-		
+		EventDescription desc = manager.getFactory().createNotifiyMethodEvent(NotifyMethodEventDescription.NOTIFIED, trace.getClassName(),
+				trace.getMethodName(), info);
+
 		// create the event and the stack element
 		GinaStackEvent se = manager.pushStackEvent(desc, GinaEvent.KIND.UNKNOWN);
 
@@ -126,7 +126,9 @@ public abstract class GinaEventNotifier<D extends EventDescription> {
 
 	/**
 	 * This method is used to determine if an action is an User Interaction or a System Event.
-	 * @param d EventDescription
+	 * 
+	 * @param d
+	 *            EventDescription
 	 */
 	public abstract GinaEvent.KIND computeClass(D d);
 
