@@ -39,19 +39,8 @@
 
 package org.openflexo.gina.view.widget.browser.impl;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Logger;
-
-import javax.swing.Icon;
-
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
@@ -66,8 +55,16 @@ import org.openflexo.gina.view.widget.FIBBrowserWidget;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.ToolBox;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
+import javax.swing.*;
+import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingEvaluationContext, PropertyChangeListener {
 
@@ -124,7 +121,8 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 				// Please investigate this issue
 				return;
 			}
-			((FIBBrowserWidget) controller.viewForComponent(browserElementDefinition.getOwner())).updateBrowser();
+			FIBBrowserWidget owner = (FIBBrowserWidget) controller.viewForComponent(browserElementDefinition.getOwner());
+			if (owner != null) owner.updateBrowser();
 		}
 	}
 
