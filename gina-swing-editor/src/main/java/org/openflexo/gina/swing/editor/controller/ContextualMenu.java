@@ -39,19 +39,14 @@
 
 package org.openflexo.gina.swing.editor.controller;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.Hashtable;
 import java.util.logging.Logger;
-
-import javax.swing.JFrame;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
-
+import javax.swing.*;
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
@@ -81,9 +76,9 @@ import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.gina.model.widget.FIBLabel.Align;
 import org.openflexo.gina.model.widget.FIBReferencedComponent;
 import org.openflexo.gina.swing.editor.controller.EditorAction.ActionAvailability;
-import org.openflexo.gina.swing.editor.controller.EditorAction.ActionPerformer;
 import org.openflexo.gina.swing.utils.BindingSelector;
 import org.openflexo.gina.swing.utils.JFIBDialog;
+import org.openflexo.gina.swing.utils.JFIBDialogInspectorController;
 import org.openflexo.gina.swing.utils.JFIBPreferences;
 import org.openflexo.gina.swing.view.widget.JFIBReferencedComponentWidget;
 import org.openflexo.logging.FlexoLogger;
@@ -105,124 +100,71 @@ public class ContextualMenu {
 		actions = new Hashtable<EditorAction, PopupMenuItem>();
 		menu = new JPopupMenu();
 
-		addToActions(new EditorAction("Inspect", null, new ActionPerformer() {
-			@Override
-			public FIBModelObject performAction(FIBModelObject object) {
-				editorController.getEditor().getInspector().setVisible(true);
-				return object;
-			}
-		}, new ActionAvailability() {
-			@Override
-			public boolean isAvailableFor(FIBModelObject object) {
-				return object != null;
-			}
-		}));
-		addToActions(new EditorAction("Delete", FIBEditorIconLibrary.DELETE_ICON, new ActionPerformer() {
-			@Override
-			public FIBModelObject performAction(FIBModelObject object) {
-				if (object instanceof FIBComponent) {
-					FIBContainer parent = ((FIBComponent) object).getParent();
-					boolean deleteIt = JOptionPane.showConfirmDialog(frame,
-							object + ": really delete this component (undoable operation) ?", "information",
-							JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION;
-					if (deleteIt) {
-						logger.info("Removing object " + object + " from " + parent);
-						parent.removeFromSubComponents((FIBComponent) object);
-						object.delete();
-					}
-					return parent;
+		addToActions(new EditorAction("Inspect", null, object -> {
+			JFIBDialogInspectorController inspector = editorController.getEditor().getInspector();
+			if (inspector != null) inspector.setVisible(true);
+			return object;
+		}, object -> object != null));
+		addToActions(new EditorAction("Delete", FIBEditorIconLibrary.DELETE_ICON, object -> {
+			if (object instanceof FIBComponent) {
+				FIBContainer parent = ((FIBComponent) object).getParent();
+				boolean deleteIt = JOptionPane.showConfirmDialog(frame,
+						object + ": really delete this component (undoable operation) ?", "information",
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION;
+				if (deleteIt) {
+					logger.info("Removing object " + object + " from " + parent);
+					parent.removeFromSubComponents((FIBComponent) object);
+					object.delete();
 				}
-				return null;
-			}
-		}, new ActionAvailability() {
-			@Override
-			public boolean isAvailableFor(FIBModelObject object) {
-				return object instanceof FIBComponent;
-			}
-		}));
-
-		addToActions(new EditorAction("Wrap with panel", null, new ActionPerformer() {
-			@Override
-			public FIBModelObject performAction(FIBModelObject object) {
-				FIBComponent component = (FIBComponent) object;
-				FIBContainer parent = component.getParent();
-				parent.removeFromSubComponents(component);
-				FIBPanel newPanel = editorController.getFactory().newFIBPanel();
-				newPanel.setLayout(Layout.border);
-				newPanel.setBorder(Border.titled);
-				newPanel.finalizeDeserialization();
-				parent.addToSubComponents(newPanel, component.getConstraints());
-				newPanel.addToSubComponents(component, new BorderLayoutConstraints(BorderLayoutLocation.center));
 				return parent;
 			}
-		}, new ActionAvailability() {
-			@Override
-			public boolean isAvailableFor(FIBModelObject object) {
-				return object instanceof FIBComponent && ((FIBComponent) object).getParent() != null;
-			}
-		}));
+			return null;
+		}, object -> object instanceof FIBComponent));
 
-		addToActions(new EditorAction("Wrap with split panel", null, new ActionPerformer() {
-			@Override
-			public FIBModelObject performAction(FIBModelObject object) {
-				FIBComponent component = (FIBComponent) object;
-				FIBContainer parent = component.getParent();
-				parent.removeFromSubComponents(component);
-				FIBSplitPanel newPanel = editorController.getFactory().newFIBSplitPanel();
-				newPanel.makeDefaultHorizontalLayout();
-				parent.addToSubComponents(newPanel, component.getConstraints());
-				newPanel.addToSubComponents(component,
-						SplitLayoutConstraints.makeSplitLayoutConstraints(newPanel.getFirstEmptyPlaceHolder()));
-				return parent;
-			}
-		}, new ActionAvailability() {
-			@Override
-			public boolean isAvailableFor(FIBModelObject object) {
-				return object instanceof FIBComponent && ((FIBComponent) object).getParent() != null;
-			}
-		}));
+		ActionAvailability componentWithParent = object -> object instanceof FIBComponent && ((FIBComponent) object).getParent() != null;
+		addToActions(new EditorAction("Wrap with panel", null, object -> {
+			FIBComponent component = (FIBComponent) object;
+			FIBContainer parent = component.getParent();
+			parent.removeFromSubComponents(component);
+			FIBPanel newPanel = editorController.getFactory().newFIBPanel();
+			newPanel.setLayout(Layout.border);
+			newPanel.setBorder(Border.titled);
+			newPanel.finalizeDeserialization();
+			parent.addToSubComponents(newPanel, component.getConstraints());
+			newPanel.addToSubComponents(component, new BorderLayoutConstraints(BorderLayoutLocation.center));
+			return parent;
+		}, componentWithParent));
 
-		addToActions(new EditorAction("Make reusable component", null, new ActionPerformer() {
-			@Override
-			public FIBModelObject performAction(FIBModelObject object) {
-				FIBContainer component = (FIBContainer) object;
-				FIBContainer parent = component.getParent();
-				return makeReusableComponent(component, parent, frame);
-			}
-		}, new ActionAvailability() {
-			@Override
-			public boolean isAvailableFor(FIBModelObject object) {
-				return object instanceof FIBContainer && ((FIBContainer) object).getParent() != null;
-			}
-		}));
+		addToActions(new EditorAction("Wrap with split panel", null, object -> {
+			FIBComponent component = (FIBComponent) object;
+			FIBContainer parent = component.getParent();
+			parent.removeFromSubComponents(component);
+			FIBSplitPanel newPanel = editorController.getFactory().newFIBSplitPanel();
+			newPanel.makeDefaultHorizontalLayout();
+			parent.addToSubComponents(newPanel, component.getConstraints());
+			newPanel.addToSubComponents(component,
+					SplitLayoutConstraints.makeSplitLayoutConstraints(newPanel.getFirstEmptyPlaceHolder()));
+			return parent;
+		}, componentWithParent));
 
-		addToActions(new EditorAction("Open component", null, new ActionPerformer() {
-			@Override
-			public FIBModelObject performAction(FIBModelObject object) {
-				FIBReferencedComponent referencedComponent = (FIBReferencedComponent) object;
+		addToActions(new EditorAction("Make reusable component", null, object -> {
+			FIBContainer component = (FIBContainer) object;
+			FIBContainer parent = component.getParent();
+			return makeReusableComponent(component, parent, frame);
+		}, componentWithParent));
 
-				JFIBReferencedComponentWidget widgetView = (JFIBReferencedComponentWidget) editorController.getController()
-						.viewForComponent(referencedComponent);
+		addToActions(new EditorAction("Open component", null, object -> {
+			FIBReferencedComponent referencedComponent = (FIBReferencedComponent) object;
 
-				Object dataObject = widgetView.getValue();
-				// File componentFile = rl.retrieveResourceAsFile(widgetView.getComponentFile());
+			JFIBReferencedComponentWidget widgetView = (JFIBReferencedComponentWidget) editorController.getController()
+					.viewForComponent(referencedComponent);
 
-				// if (componentFile != null) {
-				// new FIBEmbeddedEditor(widgetView.getComponentFile(), dataObject);
-				/*} else {
-					logger.warning("Not found component file : " + componentFile);
-				}*/
+			Object dataObject = widgetView.getValue();
 
-				editorController.getEditor().loadFIB(widgetView.getComponentFile(), dataObject, frame);
+			editorController.getEditor().loadFIB(widgetView.getComponentFile(), dataObject, frame);
 
-				return referencedComponent;
-			}
-		}, new ActionAvailability() {
-			@Override
-			public boolean isAvailableFor(FIBModelObject object) {
-				return object instanceof FIBReferencedComponent;
-			}
-		}));
+			return referencedComponent;
+		}, object -> object instanceof FIBReferencedComponent));
 	}
 
 	public FIBModelObject makeReusableComponent(FIBContainer component, FIBContainer parent, JFrame frame) {

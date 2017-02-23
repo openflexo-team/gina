@@ -39,8 +39,7 @@
 
 package org.openflexo.gina.swing.editor.controller;
 
-import javax.swing.Icon;
-
+import javax.swing.*;
 import org.openflexo.gina.model.FIBModelObject;
 
 public class EditorAction {
@@ -58,12 +57,12 @@ public class EditorAction {
 		this.availability = availability;
 	}
 
-	public static abstract class ActionPerformer {
-		public abstract FIBModelObject performAction(FIBModelObject object);
+	public interface ActionPerformer {
+		FIBModelObject performAction(FIBModelObject object);
 	}
 
-	public static abstract class ActionAvailability {
-		public abstract boolean isAvailableFor(FIBModelObject object);
+	public interface ActionAvailability {
+		boolean isAvailableFor(FIBModelObject object);
 	}
 
 	public String getActionName() {
