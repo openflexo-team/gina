@@ -51,7 +51,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Logger;
-
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.manager.EventManager;
 import org.openflexo.gina.manager.Registrable;
@@ -371,7 +370,6 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 		else {
 			dataObject = anObject;
 		}
-		// setVariableValue(FIBComponent.DEFAULT_DATA_VARIABLE, anObject);
 	}
 
 	@Deprecated
@@ -505,20 +503,6 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 		FlexoLocalization.setCurrentLanguage(language);
 		getRootView().updateLanguage();
 	}
-
-	/*
-	 * public void searchNewLocalizationEntries() {
-	 * logger.fine("Search new localization entries"); Language currentLanguage
-	 * = FlexoLocalization.getCurrentLanguage();
-	 * getRootComponent().retrieveFIBLocalizedDictionary
-	 * ().beginSearchNewLocalizationEntries(); for (Language language :
-	 * Language.availableValues()) { switchToLanguage(language); }
-	 * getRootComponent
-	 * ().retrieveFIBLocalizedDictionary().endSearchNewLocalizationEntries();
-	 * getRootComponent().retrieveFIBLocalizedDictionary().refresh();
-	 * switchToLanguage(currentLanguage); // setChanged(); // notifyObservers();
-	 * }
-	 */
 
 	public void refreshLocalized() {
 		getRootComponent().retrieveFIBLocalizedDictionary().refresh();
@@ -803,13 +787,6 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 	}
 
 	public Resource getFIBPanelForObject(Object anObject) {
-
-		/*
-		 * System.out .println("Searching FIBPanel for " + anObject + (anObject
-		 * != null ? " class=" + anObject.getClass() + " returning " +
-		 * getFIBPanelForClass(anObject.getClass()) : ""));
-		 */
-
 		if (anObject != null) {
 			return getFIBPanelForClass(anObject.getClass());
 		}
@@ -824,16 +801,10 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 			}
 			if (key instanceof Class) {
 				Class<?> aClass = (Class<?>) key;
-				// System.out.println("Searching FIBPanel for " + aClass);
 				if (aClass.getAnnotation(org.openflexo.gina.annotation.FIBPanel.class) != null) {
-					// System.out.println("Found annotation " +
-					// aClass.getAnnotation(org.openflexo.gina.annotation.FIBPanel.class));
 					String fibPanelName = aClass.getAnnotation(org.openflexo.gina.annotation.FIBPanel.class).value();
 					Resource fibPanelResource = ResourceLocator.locateResource(fibPanelName);
-					// System.out.println("fibPanelResource=" +
-					// fibPanelResource);
 					if (fibPanelResource != null) {
-						// logger.info("Found " + fibPanel);
 						put(aClass, fibPanelResource);
 						return fibPanelResource;
 					}
@@ -845,14 +816,7 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 		}
 	};
 
-	/*
-	 * public static void main(String[] args) { FlexoFIBController newController
-	 * = new FlexoFIBController(null); System.out.println("Result: " +
-	 * newController.getFIBPanelForClass(DeclareFlexoRole.class)); }
-	 */
-
 	public Resource getFIBPanelForClass(Class<?> aClass) {
-
 		return TypeUtils.objectForClass(aClass, fibPanelsForClasses);
 	}
 
