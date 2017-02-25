@@ -41,12 +41,18 @@ package org.openflexo.gina.view.widget.browser.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Logger;
+import javax.swing.*;
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.exception.NotSettableContextException;
-import org.openflexo.connie.exception.NullReferenceException;
-import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBBrowserElement;
@@ -54,17 +60,6 @@ import org.openflexo.gina.model.widget.FIBBrowserElementChildren;
 import org.openflexo.gina.view.widget.FIBBrowserWidget;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.ToolBox;
-
-import javax.swing.*;
-import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Logger;
 
 public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingEvaluationContext, PropertyChangeListener {
 
@@ -177,12 +172,8 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			setIteratorObject(object);
 			try {
 				return browserElementDefinition.getLabel().getBindingValue(this);
-			} catch (TypeMismatchException e) {
+			} catch (Exception e) {
 				// System.out.println("While evaluating " + browserElementDefinition.getLabel());
-				e.printStackTrace();
-			} catch (NullReferenceException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
 				e.printStackTrace();
 			}
 		}
@@ -197,11 +188,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			setIteratorObject(object);
 			try {
 				return browserElementDefinition.getTooltip().getBindingValue(this);
-			} catch (TypeMismatchException e) {
-				e.printStackTrace();
-			} catch (NullReferenceException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -217,11 +204,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			Object returned = null;
 			try {
 				returned = browserElementDefinition.getIcon().getBindingValue(this);
-			} catch (TypeMismatchException e) {
-				e.printStackTrace();
-			} catch (NullReferenceException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			if (returned instanceof Icon) {
@@ -243,11 +226,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			Object enabledValue = null;
 			try {
 				enabledValue = browserElementDefinition.getEnabled().getBindingValue(this);
-			} catch (TypeMismatchException e) {
-				e.printStackTrace();
-			} catch (NullReferenceException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			if (enabledValue != null) {
@@ -275,13 +254,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 					return returned;
 				}
 				return true;
-			} catch (TypeMismatchException e) {
-				e.printStackTrace();
-				return true;
-			} catch (NullReferenceException e) {
-				e.printStackTrace();
-				return true;
-			} catch (InvocationTargetException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				return true;
 			}
@@ -298,29 +271,18 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 		List<Object> returned = new ArrayList<Object>();
 		for (FIBBrowserElementChildren children : browserElementDefinition.getChildren()) {
 			if (children.isMultipleAccess()) {
-				// System.out.println("add all children for "+browserElementDefinition.getName()+" children "+children.getName()+"
-				// data="+children.getData());
-				// System.out.println("Obtain "+getChildrenListFor(children, object));
 				List<?> childrenObjects = getChildrenListFor(children, object);
 				// Might be null if some visibility was declared
 				if (childrenObjects != null) {
 					returned.addAll(childrenObjects);
 				}
-				// System.out.println("For " + object + " of " + object.getClass().getSimpleName() + " children=" + children.getData()
-				// + " values=" + object);
 			}
 			else {
-				// System.out.println("add children for "+browserElementDefinition.getName()+" children "+children.getName()+"
-				// data="+children.getData());
-				// System.out.println("Obtain "+getChildrenFor(children, object));
-				// System.out.println("accessed type="+children.getAccessedType());
 				Object childrenObject = getChildrenFor(children, object);
 				// Might be null if some visibility was declared
 				if (childrenObject != null) {
 					returned.add(childrenObject);
 				}
-				// System.out.println("For " + object + " of " + object.getClass().getSimpleName() + " children=" + children.getData()
-				// + " value=" + childrenObject);
 			}
 		}
 		return returned;
@@ -332,15 +294,9 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			if (children.getVisible().isSet()) {
 				boolean visible;
 				try {
-					visible = children.getVisible().getBindingValue(this);
-				} catch (TypeMismatchException e) {
-					e.printStackTrace();
-					visible = true;
-				} catch (NullReferenceException e) {
-					e.printStackTrace();
-					visible = true;
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
+					Boolean bindingValue = children.getVisible().getBindingValue(this);
+					visible = bindingValue != null ? bindingValue : false;
+				} catch (Exception e) {
 					visible = true;
 				}
 				if (!visible) {
@@ -351,11 +307,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			Object result = null;
 			try {
 				result = children.getData().getBindingValue(this);
-			} catch (TypeMismatchException e) {
-				e.printStackTrace();
-			} catch (NullReferenceException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			if (children.getCast().isSet()) {
@@ -374,14 +326,9 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			if (children.getVisible().isSet()) {
 				boolean visible;
 				try {
-					visible = children.getVisible().getBindingValue(this);
-				} catch (TypeMismatchException e) {
-					e.printStackTrace();
-					visible = true;
-				} catch (NullReferenceException e) {
-					e.printStackTrace();
-					visible = true;
-				} catch (InvocationTargetException e) {
+					Boolean bindingValue = children.getVisible().getBindingValue(this);
+					visible = bindingValue != null ? bindingValue : false;
+				} catch (Exception e) {
 					e.printStackTrace();
 					visible = true;
 				}
@@ -393,11 +340,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			Object bindingValue = null;
 			try {
 				bindingValue = children.getData().getBindingValue(this);
-			} catch (TypeMismatchException e) {
-				e.printStackTrace();
-			} catch (NullReferenceException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			List<?> list = ToolBox.getListFromIterable(bindingValue);
@@ -438,11 +381,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			setIteratorObject(object);
 			try {
 				return browserElementDefinition.getEditableLabel().getBindingValue(this);
-			} catch (TypeMismatchException e) {
-				e.printStackTrace();
-			} catch (NullReferenceException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -454,13 +393,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			setIteratorObject(object);
 			try {
 				browserElementDefinition.getEditableLabel().setBindingValue(value, this);
-			} catch (TypeMismatchException e) {
-				e.printStackTrace();
-			} catch (NullReferenceException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-			} catch (NotSettableContextException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -501,20 +434,15 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			setIteratorObject(object);
 			try {
 				return browserElementDefinition.getDynamicFont().getBindingValue(this);
-			} catch (TypeMismatchException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
-			} catch (NullReferenceException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
+				return null;
 			}
+		} else if (getBrowserElement() != null) {
+			return getBrowserElement().retrieveValidFont();
+		} else {
 			return null;
 		}
-		if (getBrowserElement() != null) {
-			return getBrowserElement().retrieveValidFont();
-		}
-
-		return null;
 	}
 
 	public Color getSelectedColor(final Object object) {
@@ -522,16 +450,13 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			setIteratorObject(object);
 			try {
 				return browserElementDefinition.getSelectedDynamicColor().getBindingValue(this);
-			} catch (TypeMismatchException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
-			} catch (NullReferenceException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
+				return null;
 			}
+		} else {
 			return null;
 		}
-		return null;
 	}
 
 	public Color getNonSelectedColor(final Object object) {
@@ -539,16 +464,13 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			setIteratorObject(object);
 			try {
 				return browserElementDefinition.getNonSelectedDynamicColor().getBindingValue(this);
-			} catch (TypeMismatchException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
-			} catch (NullReferenceException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
+				return null;
 			}
+		} else {
 			return null;
 		}
-		return null;
 	}
 
 	public boolean isFiltered() {
@@ -556,7 +478,6 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 	}
 
 	public void setFiltered(boolean isFiltered) {
-		System.out.println("Element " + getBrowserElement().getName() + " filtered: " + isFiltered);
 		if (this.isFiltered != isFiltered) {
 			this.isFiltered = isFiltered;
 			// Later, try to implement a way to rebuild tree with same expanded nodes
@@ -580,11 +501,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 				Object result = null;
 				try {
 					result = children.getCast().getBindingValue(this);
-				} catch (TypeMismatchException e) {
-					e.printStackTrace();
-				} catch (NullReferenceException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				return result;
