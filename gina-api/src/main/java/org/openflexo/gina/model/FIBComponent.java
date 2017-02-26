@@ -39,8 +39,7 @@
 
 package org.openflexo.gina.model;
 
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,10 +47,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
-
-import javax.swing.ScrollPaneConstants;
+import javax.swing.*;
 import javax.swing.tree.TreeNode;
-
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
@@ -111,6 +108,7 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.Import;
 import org.openflexo.model.annotations.Imports;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.Modify;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
@@ -155,6 +153,7 @@ import org.openflexo.toolbox.StringUtils;
 		@Import(FIBCheckboxList.class), @Import(FIBDropDown.class), @Import(FIBList.class), @Import(FIBRadioButtonList.class),
 		@Import(FIBNumber.class), @Import(FIBReferencedComponent.class), @Import(FIBTable.class), @Import(FIBEditor.class),
 		@Import(FIBTextArea.class), @Import(FIBTextField.class), @Import(FIBEditorPane.class), @Import(FIBGraph.class) })
+@Modify(forward = FIBComponent.PARENT_KEY)
 public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBaseIdentifier {
 
 	public static enum VerticalScrollBarPolicy {
