@@ -39,23 +39,18 @@
 
 package org.openflexo.gina.swing.view.widget;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.FocusListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
-
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import javax.swing.JList;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-
+import javax.swing.*;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.model.widget.FIBList;
+import org.openflexo.gina.model.widget.FIBList.LayoutOrientation;
+import org.openflexo.gina.model.widget.SelectionMode;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.view.widget.impl.FIBListWidgetImpl;
@@ -200,8 +195,14 @@ public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T> implements
 				getTechnologyComponent().getSelectionModel().removeListSelectionListener(oldListModel);
 			}
 			oldListModel = aListModel;
-			getTechnologyComponent().setLayoutOrientation(getWidget().getLayoutOrientation().getSwingValue());
-			getTechnologyComponent().setSelectionMode(getWidget().getSelectionMode().getMode());
+			LayoutOrientation layoutOrientation = getWidget().getLayoutOrientation();
+			if (layoutOrientation != null) {
+				getTechnologyComponent().setLayoutOrientation(layoutOrientation.getSwingValue());
+			}
+			SelectionMode selectionMode = getWidget().getSelectionMode();
+			if (selectionMode != null) {
+				getTechnologyComponent().setSelectionMode(selectionMode.getMode());
+			}
 			if (getWidget().getVisibleRowCount() != null) {
 				getTechnologyComponent().setVisibleRowCount(getWidget().getVisibleRowCount());
 			}
