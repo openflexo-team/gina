@@ -48,6 +48,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.Collator;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
@@ -624,7 +625,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		if (key == null) {
 			return null;
 		}
-		for (Entry entry : getEntries()) {
+		for (Entry entry : new ArrayList<Entry>(getEntries())) {
 			if (key.equals(entry.key)) {
 				return entry;
 			}
