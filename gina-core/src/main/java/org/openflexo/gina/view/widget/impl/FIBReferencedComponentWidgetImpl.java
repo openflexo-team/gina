@@ -412,10 +412,24 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 
 		if (getReferencedComponentView() != null && embeddedFIBController.getRootComponent() instanceof FIBContainer) {
 
-			Type expectedDataType = ((FIBContainer) embeddedFIBController.getRootComponent().getRootComponent()).getDataType();
+			// Kept for future debug use
+			/*FIBModelFactory fibModelFactory;
+			try {
+				fibModelFactory = new FIBModelFactory();
+				System.out.println(fibModelFactory.stringRepresentation(embeddedFIBController.getRootComponent()));
+			} catch (ModelDefinitionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+
+			FIBContainer rootComponent = (FIBContainer) embeddedFIBController.getRootComponent();
+			Type expectedDataType = null; // ((FIBContainer) embeddedFIBController.getRootComponent().getRootComponent()).getDataType();
+			if (rootComponent.getVariables().size() > 0) {
+				expectedDataType = rootComponent.getVariables().get(0).getType();
+			}
 
 			// If value is of right type, we update the referenced widget
-			if ((getValue() == null) || (TypeUtils.isTypeAssignableFrom(expectedDataType, getValue().getClass()))) {
+			if (getValue() == null || TypeUtils.isOfType(getValue(), expectedDataType)) {
 
 				performAssignments();
 

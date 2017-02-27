@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Logger;
+
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.manager.EventManager;
 import org.openflexo.gina.manager.Registrable;
@@ -58,6 +59,7 @@ import org.openflexo.gina.manager.URID;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.FIBLocalizedDictionary;
+import org.openflexo.gina.model.FIBVariable;
 import org.openflexo.gina.model.FIBWidget;
 import org.openflexo.gina.model.listener.FIBMouseClickListener;
 import org.openflexo.gina.model.listener.FIBSelectionListener;
@@ -364,8 +366,8 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 
 	@Deprecated
 	public void setDataObject(Object anObject) {
-		if (getRootView() != null && getRootComponent().getVariable(FIBComponent.DEFAULT_DATA_VARIABLE) != null) {
-			getRootView().setVariableValue(getRootComponent().getVariable(FIBComponent.DEFAULT_DATA_VARIABLE), anObject);
+		if (getRootView() != null && getRootComponent().getVariables().size() > 0) {
+			getRootView().setVariableValue((FIBVariable) getRootComponent().getVariables().get(0), anObject);
 		}
 		else {
 			dataObject = anObject;
