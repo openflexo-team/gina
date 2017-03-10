@@ -140,7 +140,7 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 		});
 
 		final JMenu lafsItem = new JMenu(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("look_and_feel"));
-		final Vector<LAFMenuItem> lafsItems = new Vector<LAFMenuItem>();
+		final Vector<LAFMenuItem> lafsItems = new Vector<>();
 		for (final LookAndFeelInfo laf : UIManager.getInstalledLookAndFeels()) {
 			LAFMenuItem lafItem = new LAFMenuItem(laf);
 			lafsItems.add(lafItem);
@@ -150,16 +150,12 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 					try {
 						UIManager.setLookAndFeel(laf.getClassName());
 					} catch (ClassNotFoundException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					} catch (InstantiationException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					} catch (IllegalAccessException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					} catch (UnsupportedLookAndFeelException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					Window windows[] = frame.getOwnedWindows();

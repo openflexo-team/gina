@@ -169,7 +169,7 @@ public abstract class ComponentConstraints extends Hashtable<String, String> imp
 		put(key, value);
 	}
 
-	public <E extends Enum> E getEnumValue(String key, Class<E> enumType, E defaultValue) {
+	public <E extends Enum<E>> E getEnumValue(String key, Class<E> enumType, E defaultValue) {
 		String stringValue = get(key);
 		if (stringValue == null) {
 			ignoreNotif = true;
@@ -186,7 +186,7 @@ public abstract class ComponentConstraints extends Hashtable<String, String> imp
 		return defaultValue;
 	}
 
-	public void setEnumValue(String key, Enum value) {
+	public void setEnumValue(String key, Enum<?> value) {
 		put(key, value.name());
 	}
 

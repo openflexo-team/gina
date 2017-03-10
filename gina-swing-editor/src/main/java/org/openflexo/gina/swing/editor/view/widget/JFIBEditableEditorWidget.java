@@ -74,7 +74,7 @@ public class JFIBEditableEditorWidget extends JFIBEditorWidget implements FIBSwi
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBSwingEditableViewDelegate<FIBEditor, JEditTextArea>(this);
+		delegate = new FIBSwingEditableViewDelegate<>(this);
 	}
 
 	@Override

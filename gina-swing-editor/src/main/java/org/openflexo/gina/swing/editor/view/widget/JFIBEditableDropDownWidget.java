@@ -74,7 +74,7 @@ public class JFIBEditableDropDownWidget<T> extends JFIBDropDownWidget<T> impleme
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBSwingEditableViewDelegate<FIBDropDown, JDropDownPanel<T>>(this);
+		delegate = new FIBSwingEditableViewDelegate<>(this);
 	}
 
 	@Override

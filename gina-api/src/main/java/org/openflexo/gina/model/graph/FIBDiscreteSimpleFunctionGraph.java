@@ -121,7 +121,7 @@ public interface FIBDiscreteSimpleFunctionGraph extends FIBSimpleFunctionGraph {
 		@Override
 		public DataBinding<List<?>> getValues() {
 			if (values == null) {
-				values = new DataBinding<List<?>>(this, List.class, DataBinding.BindingDefinitionType.GET);
+				values = new DataBinding<>(this, List.class, DataBinding.BindingDefinitionType.GET);
 				values.setBindingName(VALUES_KEY);
 			}
 			return values;
@@ -143,7 +143,7 @@ public interface FIBDiscreteSimpleFunctionGraph extends FIBSimpleFunctionGraph {
 		@Override
 		public DataBinding<String> getLabels() {
 			if (labels == null) {
-				labels = new DataBinding<String>(parameterExpressionDelegate, String.class, DataBinding.BindingDefinitionType.GET);
+				labels = new DataBinding<>(parameterExpressionDelegate, String.class, DataBinding.BindingDefinitionType.GET);
 				labels.setBindingName(LABELS_KEY);
 			}
 			return labels;

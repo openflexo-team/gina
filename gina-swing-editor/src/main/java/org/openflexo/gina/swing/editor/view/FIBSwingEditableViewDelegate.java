@@ -46,7 +46,6 @@ import java.awt.Window;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
-import java.awt.dnd.DragGestureRecognizer;
 import java.awt.dnd.DragSource;
 import java.awt.dnd.DragSourceContext;
 import java.awt.dnd.DragSourceDragEvent;
@@ -109,8 +108,8 @@ public class FIBSwingEditableViewDelegate<M extends FIBComponent, J extends JCom
 		dgListener = new MoveDGListener();
 
 		if (!(view instanceof JFIBEditableSplitPanelView)) {
-			DragGestureRecognizer newDGR = dragSource.createDefaultDragGestureRecognizer(view.getDraggableComponent(), dragAction,
-					dgListener);
+			// Unused DragGestureRecognizer newDGR =
+			dragSource.createDefaultDragGestureRecognizer(view.getDraggableComponent(), dragAction, dgListener);
 		}
 
 	}

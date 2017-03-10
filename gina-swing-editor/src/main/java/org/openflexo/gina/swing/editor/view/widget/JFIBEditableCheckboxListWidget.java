@@ -75,7 +75,7 @@ public class JFIBEditableCheckboxListWidget<T> extends JFIBCheckboxListWidget<T>
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBSwingEditableViewDelegate<FIBCheckboxList, JCheckBoxListPanel<T>>(this);
+		delegate = new FIBSwingEditableViewDelegate<>(this);
 	}
 
 	@Override

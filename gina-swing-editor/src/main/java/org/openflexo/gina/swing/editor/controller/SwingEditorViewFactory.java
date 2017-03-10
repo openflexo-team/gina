@@ -177,7 +177,7 @@ public class SwingEditorViewFactory extends SwingViewFactory {
 
 	@Override
 	public FIBNumberWidgetImpl<? extends JComponent, ?> makeNumber(FIBNumber widget, FIBController controller) {
-		return new JFIBEditableNumberWidget(widget, fibEditorController);
+		return new JFIBEditableNumberWidget<>(widget, fibEditorController);
 	}
 
 	@Override
@@ -187,22 +187,22 @@ public class SwingEditorViewFactory extends SwingViewFactory {
 
 	@Override
 	public FIBCheckboxListWidgetImpl<? extends JComponent, ?> makeCheckboxList(FIBCheckboxList widget, FIBController controller) {
-		return new JFIBEditableCheckboxListWidget(widget, fibEditorController);
+		return new JFIBEditableCheckboxListWidget<>(widget, fibEditorController);
 	}
 
 	@Override
 	public FIBRadioButtonListWidgetImpl<? extends JComponent, ?> makeRadioButtonList(FIBRadioButtonList widget, FIBController controller) {
-		return new JFIBEditableRadioButtonListWidget(widget, fibEditorController);
+		return new JFIBEditableRadioButtonListWidget<>(widget, fibEditorController);
 	}
 
 	@Override
 	public FIBDropDownWidgetImpl<? extends JComponent, ?> makeDropDown(FIBDropDown widget, FIBController controller) {
-		return new JFIBEditableDropDownWidget(widget, fibEditorController);
+		return new JFIBEditableDropDownWidget<>(widget, fibEditorController);
 	}
 
 	@Override
 	public FIBListWidgetImpl<? extends JComponent, ?> makeList(FIBList widget, FIBController controller) {
-		return new JFIBEditableListWidget(widget, fibEditorController);
+		return new JFIBEditableListWidget<>(widget, fibEditorController);
 	}
 
 	@Override
@@ -217,12 +217,12 @@ public class SwingEditorViewFactory extends SwingViewFactory {
 
 	@Override
 	public FIBTableWidgetImpl<? extends JComponent, ?> makeTable(FIBTable widget, FIBController controller) {
-		return new JFIBEditableTableWidget(widget, fibEditorController);
+		return new JFIBEditableTableWidget<>(widget, fibEditorController);
 	}
 
 	@Override
 	public FIBBrowserWidgetImpl<? extends JComponent, ?> makeBrowser(FIBBrowser widget, FIBController controller) {
-		return new JFIBEditableBrowserWidget(widget, fibEditorController);
+		return new JFIBEditableBrowserWidget<>(widget, fibEditorController);
 	}
 
 	@Override
@@ -247,7 +247,7 @@ public class SwingEditorViewFactory extends SwingViewFactory {
 
 	@Override
 	public FIBCustomWidgetImpl<? extends JComponent, ?, ?> makeCustomWidget(FIBCustom widget, FIBController controller) {
-		return new JFIBEditableCustomWidget(widget, fibEditorController);
+		return new JFIBEditableCustomWidget<>(widget, fibEditorController);
 	}
 
 	@Override

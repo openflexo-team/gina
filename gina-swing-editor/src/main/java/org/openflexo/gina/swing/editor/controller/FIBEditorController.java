@@ -145,10 +145,8 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 						Object testData = fibContainer.getDataClass().newInstance();
 						editorPanel.updateWithDataObject(testData);
 					} catch (InstantiationException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (IllegalAccessException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -174,7 +172,7 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 		this.editedComponent = editedComponent;
 
 		this.controller = controller;
-		viewDelegates = new HashMap<FIBComponent, FIBSwingEditableViewDelegate<?, ?>>();
+		viewDelegates = new HashMap<>();
 		controller.setViewFactory(new SwingEditorViewFactory(this));
 
 		this.editor = editor;
@@ -336,7 +334,7 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 		return returned;
 	}
 
-	private final Map<FIBSwingEditableView<?, ?>, DropListener> dropListeners = new HashMap<FIBSwingEditableView<?, ?>, DropListener>();
+	private final Map<FIBSwingEditableView<?, ?>, DropListener> dropListeners = new HashMap<>();
 
 	private boolean isDragging = false;
 

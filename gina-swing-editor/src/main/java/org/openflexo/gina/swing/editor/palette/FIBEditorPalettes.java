@@ -125,11 +125,11 @@ public class FIBEditorPalettes extends JTabbedPane {
 		public String htmlText = "<html><b>Formatted text editor</b><br>Used to edit some <i>formatted</i> text</html>";
 
 		public AdvancedPaletteData() {
-			tableItems = new ArrayList<TableItem>();
+			tableItems = new ArrayList<>();
 			tableItems.add(new TableItem(ITEM3_ICON, "Item1", "data1"));
 			tableItems.add(new TableItem(ITEM3_ICON, "Item2", "data2"));
 			tableItems.add(new TableItem(ITEM3_ICON, "Item3", "data3"));
-			browserFolders = new ArrayList<BrowserFolder>();
+			browserFolders = new ArrayList<>();
 			List<BrowserItem> itemsInFolder1 = new ArrayList<>();
 			itemsInFolder1.add(new BrowserItem(ITEM2_ICON, "Item1"));
 			itemsInFolder1.add(new BrowserItem(ITEM2_ICON, "Item2"));

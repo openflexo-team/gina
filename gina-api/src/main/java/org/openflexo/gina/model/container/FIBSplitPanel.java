@@ -118,7 +118,7 @@ public interface FIBSplitPanel extends FIBContainer {
 		public static final String TOP = "top";
 		public static final String BOTTOM = "bottom";
 
-		private FIBSplit split;
+		private FIBSplit<?> split;
 
 		private FIBMultiSplitLayoutFactory splitLayoutFactory;
 
@@ -156,17 +156,17 @@ public interface FIBSplitPanel extends FIBContainer {
 		}
 
 		protected FIBRowSplit getDefaultHorizontalLayout() {
-			Leaf left = getSplitLayoutFactory().makeLeaf(findNextAvailableLeaf(LEFT));
+			Leaf<?> left = getSplitLayoutFactory().makeLeaf(findNextAvailableLeaf(LEFT));
 			left.setWeight(0.5);
-			Leaf right = getSplitLayoutFactory().makeLeaf(findNextAvailableLeaf(RIGHT));
+			Leaf<?> right = getSplitLayoutFactory().makeLeaf(findNextAvailableLeaf(RIGHT));
 			right.setWeight(0.5);
 			return getSplitLayoutFactory().makeRowSplit(left, getSplitLayoutFactory().makeDivider(), right);
 		}
 
 		protected FIBColSplit getDefaultVerticalLayout() {
-			Leaf left = getSplitLayoutFactory().makeLeaf(findNextAvailableLeaf(TOP));
+			Leaf<?> left = getSplitLayoutFactory().makeLeaf(findNextAvailableLeaf(TOP));
 			left.setWeight(0.5);
-			Leaf right = getSplitLayoutFactory().makeLeaf(findNextAvailableLeaf(BOTTOM));
+			Leaf<?> right = getSplitLayoutFactory().makeLeaf(findNextAvailableLeaf(BOTTOM));
 			right.setWeight(0.5);
 			return getSplitLayoutFactory().makeColSplit(left, getSplitLayoutFactory().makeDivider(), right);
 		}
@@ -183,7 +183,7 @@ public interface FIBSplitPanel extends FIBContainer {
 
 		@Override
 		public Divider addDivider(Split parent) {
-			Divider returned = getSplitLayoutFactory().makeDivider();
+			Divider<?> returned = getSplitLayoutFactory().makeDivider();
 			parent.addToChildren(returned);
 			notifySplitLayoutChange();
 			return returned;
@@ -191,7 +191,7 @@ public interface FIBSplitPanel extends FIBContainer {
 
 		@Override
 		public Leaf addLeaf(Split parent) {
-			Leaf returned = getSplitLayoutFactory().makeLeaf(findNextAvailableLeaf("leaf"));
+			Leaf<?> returned = getSplitLayoutFactory().makeLeaf(findNextAvailableLeaf("leaf"));
 			parent.addToChildren(returned);
 			notifySplitLayoutChange();
 			return returned;
@@ -199,7 +199,7 @@ public interface FIBSplitPanel extends FIBContainer {
 
 		@Override
 		public ColSplit addVerticalSplit(Split parent) {
-			ColSplit returned = getSplitLayoutFactory().makeColSplit();
+			ColSplit<?> returned = getSplitLayoutFactory().makeColSplit();
 			parent.addToChildren(returned);
 			notifySplitLayoutChange();
 			return returned;
@@ -207,7 +207,7 @@ public interface FIBSplitPanel extends FIBContainer {
 
 		@Override
 		public RowSplit addHorizontalSplit(Split parent) {
-			RowSplit returned = getSplitLayoutFactory().makeRowSplit();
+			RowSplit<?> returned = getSplitLayoutFactory().makeRowSplit();
 			parent.addToChildren(returned);
 			notifySplitLayoutChange();
 			return returned;
@@ -215,7 +215,7 @@ public interface FIBSplitPanel extends FIBContainer {
 
 		@Override
 		public ColSplit addDefaultVerticalSplit(Split parent) {
-			ColSplit returned = getDefaultVerticalLayout();
+			ColSplit<?> returned = getDefaultVerticalLayout();
 			parent.addToChildren(returned);
 			notifySplitLayoutChange();
 			return returned;
@@ -223,7 +223,7 @@ public interface FIBSplitPanel extends FIBContainer {
 
 		@Override
 		public RowSplit addDefaultHorizontalSplit(Split parent) {
-			RowSplit returned = getDefaultHorizontalLayout();
+			RowSplit<?> returned = getDefaultHorizontalLayout();
 			parent.addToChildren(returned);
 			notifySplitLayoutChange();
 			return returned;
@@ -240,7 +240,7 @@ public interface FIBSplitPanel extends FIBContainer {
 
 		@Override
 		public void notifySplitLayoutChange() {
-			FIBPropertyNotification<Split> notification = new FIBPropertyNotification<Split>(
+			FIBPropertyNotification<Split> notification = new FIBPropertyNotification<>(
 					(FIBProperty<Split>) FIBProperty.getFIBProperty(getClass(), SPLIT_KEY), null, split);
 			hasChanged(notification);
 		}
@@ -254,10 +254,10 @@ public interface FIBSplitPanel extends FIBContainer {
 
 		private void appendToLeaves(Node n, List<Leaf> returned) {
 			if (n instanceof Leaf) {
-				returned.add((Leaf) n);
+				returned.add((Leaf<?>) n);
 			}
 			else if (n instanceof FIBSplit) {
-				for (FIBNode n2 : ((FIBSplit<?>) n).getChildren()) {
+				for (FIBNode<?> n2 : ((FIBSplit<?>) n).getChildren()) {
 					appendToLeaves(n2, returned);
 				}
 			}
@@ -265,7 +265,7 @@ public interface FIBSplitPanel extends FIBContainer {
 
 		@Override
 		public Leaf getLeafNamed(String aName) {
-			for (Leaf l : getAllLeaves()) {
+			for (Leaf<?> l : getAllLeaves()) {
 				if (l.getName().equals(aName)) {
 					return l;
 				}

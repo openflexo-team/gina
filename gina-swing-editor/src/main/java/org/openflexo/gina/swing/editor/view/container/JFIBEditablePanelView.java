@@ -39,6 +39,15 @@
 
 package org.openflexo.gina.swing.editor.view.container;
 
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Logger;
+
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.model.container.layout.FIBLayoutManager;
@@ -57,12 +66,6 @@ import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.swing.view.container.layout.JAbsolutePositionningLayout;
 import org.openflexo.gina.swing.view.container.layout.JButtonLayout;
 import org.openflexo.logging.FlexoLogger;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Logger;
 
 public class JFIBEditablePanelView extends JFIBPanelView implements FIBSwingEditableContainerView<FIBPanel, JPanel> {
 
@@ -85,7 +88,7 @@ public class JFIBEditablePanelView extends JFIBPanelView implements FIBSwingEdit
 	public JFIBEditablePanelView(final FIBPanel model, FIBEditorController editorController) {
 		super(model, editorController.getController());
 		this.editorController = editorController;
-		delegate = new FIBSwingEditableContainerViewDelegate<FIBPanel, JPanel>(this);
+		delegate = new FIBSwingEditableContainerViewDelegate<>(this);
 	}
 
 	@Override

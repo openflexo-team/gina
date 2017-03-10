@@ -39,6 +39,17 @@
 
 package org.openflexo.gina.swing.editor.view.container.layout;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
+import javax.swing.Box;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.layout.GridLayoutConstraints;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
@@ -48,12 +59,6 @@ import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.swing.view.container.layout.JGridLayout;
 import org.openflexo.logging.FlexoLogger;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Swing implementation for grid layout editor
@@ -76,7 +81,7 @@ public class JEditableGridLayout extends JGridLayout implements JFIBEditableLayo
 	@Override
 	public List<PlaceHolder> makePlaceHolders(final Dimension preferredSize) {
 
-		List<PlaceHolder> returned = new ArrayList<PlaceHolder>();
+		List<PlaceHolder> returned = new ArrayList<>();
 
 		if (!getComponent().getProtectContent()) {
 
@@ -133,7 +138,8 @@ public class JEditableGridLayout extends JGridLayout implements JFIBEditableLayo
 					final int finalCol = col;
 
 					if (existingComponent == null) {
-						PlaceHolder newPlaceHolder = new PlaceHolder((FIBSwingEditableContainerView)getContainerView(), "<" + row + "><" + col + ">", bounds) {
+						PlaceHolder newPlaceHolder = new PlaceHolder((FIBSwingEditableContainerView<?, ?>) getContainerView(),
+								"<" + row + "><" + col + ">", bounds) {
 
 							@Override
 							public void insertComponent(FIBComponent newComponent, int oldIndex) {

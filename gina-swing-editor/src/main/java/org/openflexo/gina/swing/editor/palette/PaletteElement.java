@@ -113,7 +113,7 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 		this.dragSource = DragSource.getDefaultDragSource();
 		this.dsListener = new DSListener();
 
-		dgr = new Hashtable<JComponent, DragGestureRecognizer>();
+		dgr = new Hashtable<>();
 
 		if (view.getTechnologyComponent() != null) {
 			recursivelyRemoveFocusableProperty(view.getTechnologyComponent());

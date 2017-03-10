@@ -74,7 +74,7 @@ public class JFIBEditableNumberWidget<T extends Number> extends JFIBNumberWidget
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBSwingEditableViewDelegate<FIBNumber, NumberSelectorPanel<T>>(this);
+		delegate = new FIBSwingEditableViewDelegate<>(this);
 	}
 
 	@Override

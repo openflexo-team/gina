@@ -74,7 +74,7 @@ public class JFIBEditableImageWidget extends JFIBImageWidget implements FIBSwing
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBSwingEditableViewDelegate<FIBImage, JLabel>(this);
+		delegate = new FIBSwingEditableViewDelegate<>(this);
 	}
 
 	@Override

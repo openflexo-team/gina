@@ -206,7 +206,7 @@ public interface FIBButton extends FIBWidget {
 		public DataBinding<String> getDynamicLabel() {
 
 			if (dynamicLabel == null) {
-				dynamicLabel = new DataBinding<String>(this, String.class, DataBinding.BindingDefinitionType.GET);
+				dynamicLabel = new DataBinding<>(this, String.class, DataBinding.BindingDefinitionType.GET);
 				dynamicLabel.setBindingName("dynamicLabel");
 			}
 			return dynamicLabel;
@@ -275,7 +275,7 @@ public interface FIBButton extends FIBWidget {
 		}
 
 		@Override
-		public DataBinding getBinding(FIBButton object) {
+		public DataBinding<?> getBinding(FIBButton object) {
 			return object.getAction();
 		}
 

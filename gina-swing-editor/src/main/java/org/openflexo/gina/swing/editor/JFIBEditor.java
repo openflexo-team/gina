@@ -180,7 +180,7 @@ public class JFIBEditor extends JFrame implements InteractiveFIBEditor {
 			}
 		});
 
-		Split defaultLayout = getDefaultLayout();
+		Split<?> defaultLayout = getDefaultLayout();
 
 		MultiSplitLayout centerLayout = new MultiSplitLayout(true, MSL_FACTORY);
 		centerLayout.setLayoutMode(MultiSplitLayout.NO_MIN_SIZE_LAYOUT);
@@ -244,41 +244,41 @@ public class JFIBEditor extends JFrame implements InteractiveFIBEditor {
 	private static final Paint KNOB_PAINTER = new RadialGradientPaint(new Point((KNOB_SIZE - 1) / 2, (KNOB_SIZE - 1) / 2),
 			(KNOB_SIZE - 1) / 2, new float[] { 0.0f, 1.0f }, new Color[] { Color.GRAY, Color.LIGHT_GRAY });
 
-	private static Split getDefaultLayout() {
+	private static Split<?> getDefaultLayout() {
 		Split root = MSL_FACTORY.makeSplit();
 		root.setName("ROOT");
-		Split left = getVerticalSplit(LayoutPosition.TOP_LEFT, 0.5, LayoutPosition.BOTTOM_LEFT, 0.5);
+		Split<?> left = getVerticalSplit(LayoutPosition.TOP_LEFT, 0.5, LayoutPosition.BOTTOM_LEFT, 0.5);
 		left.setWeight(0.2);
 		left.setName(LayoutColumns.LEFT.name());
-		Node center = MSL_FACTORY.makeLeaf(LayoutPosition.CENTER.name());
+		Node<?> center = MSL_FACTORY.makeLeaf(LayoutPosition.CENTER.name());
 		center.setWeight(0.6);
 		center.setName(LayoutColumns.CENTER.name());
-		Split right = getVerticalSplit(LayoutPosition.TOP_RIGHT, 0.4, LayoutPosition.BOTTOM_RIGHT, 0.6);
+		Split<?> right = getVerticalSplit(LayoutPosition.TOP_RIGHT, 0.4, LayoutPosition.BOTTOM_RIGHT, 0.6);
 		right.setWeight(0.2);
 		right.setName(LayoutColumns.RIGHT.name());
 		root.setChildren(left, MSL_FACTORY.makeDivider(), center, MSL_FACTORY.makeDivider(), right);
 		return root;
 	}
 
-	private static Split getVerticalSplit(LayoutPosition position1, double weight1, LayoutPosition position2, double weight2) {
+	private static Split<?> getVerticalSplit(LayoutPosition position1, double weight1, LayoutPosition position2, double weight2) {
 		Split split = MSL_FACTORY.makeSplit();
 		split.setRowLayout(false);
-		Leaf l1 = MSL_FACTORY.makeLeaf(position1.name());
+		Leaf<?> l1 = MSL_FACTORY.makeLeaf(position1.name());
 		l1.setWeight(weight1);
-		Leaf l2 = MSL_FACTORY.makeLeaf(position2.name());
+		Leaf<?> l2 = MSL_FACTORY.makeLeaf(position2.name());
 		l2.setWeight(weight2);
 		split.setChildren(l1, MSL_FACTORY.makeDivider(), l2);
 		return split;
 	}
 
-	private static Split getVerticalSplit(LayoutPosition position1, LayoutPosition position2, LayoutPosition position3) {
+	private static Split<?> getVerticalSplit(LayoutPosition position1, LayoutPosition position2, LayoutPosition position3) {
 		Split split = MSL_FACTORY.makeSplit();
 		split.setRowLayout(false);
-		Leaf l1 = MSL_FACTORY.makeLeaf(position1.name());
+		Leaf<?> l1 = MSL_FACTORY.makeLeaf(position1.name());
 		l1.setWeight(0.2);
-		Leaf l2 = MSL_FACTORY.makeLeaf(position2.name());
+		Leaf<?> l2 = MSL_FACTORY.makeLeaf(position2.name());
 		l2.setWeight(0.6);
-		Leaf l3 = MSL_FACTORY.makeLeaf(position3.name());
+		Leaf<?> l3 = MSL_FACTORY.makeLeaf(position3.name());
 		l3.setWeight(0.2);
 		split.setChildren(l1, MSL_FACTORY.makeDivider(), l2, MSL_FACTORY.makeDivider(), l3);
 		return split;

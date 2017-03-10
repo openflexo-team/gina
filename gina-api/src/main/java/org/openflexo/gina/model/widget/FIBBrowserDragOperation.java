@@ -187,7 +187,7 @@ public interface FIBBrowserDragOperation extends FIBModelObject {
 		@Override
 		public DataBinding<Object> getAction() {
 			if (action == null) {
-				action = new DataBinding<Object>(getDragOperationBindable(), Object.class, DataBinding.BindingDefinitionType.GET);
+				action = new DataBinding<>(getDragOperationBindable(), Object.class, DataBinding.BindingDefinitionType.GET);
 			}
 			return action;
 		}
@@ -205,7 +205,7 @@ public interface FIBBrowserDragOperation extends FIBModelObject {
 		@Override
 		public DataBinding<Boolean> getIsAvailable() {
 			if (isAvailable == null) {
-				isAvailable = new DataBinding<Boolean>(getDragOperationBindable(), Boolean.class, DataBinding.BindingDefinitionType.GET);
+				isAvailable = new DataBinding<>(getDragOperationBindable(), Boolean.class, DataBinding.BindingDefinitionType.GET);
 			}
 			return isAvailable;
 		}

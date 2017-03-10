@@ -76,7 +76,7 @@ public class JFIBEditableCustomWidget<CC extends JComponent & FIBCustomComponent
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBSwingEditableViewDelegate<FIBCustom, JCustomComponentPanel<CC, T>>(this);
+		delegate = new FIBSwingEditableViewDelegate<>(this);
 	}
 
 	@Override

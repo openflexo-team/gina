@@ -74,7 +74,7 @@ public class JFIBEditableBrowserWidget<T> extends JFIBBrowserWidget<T> implement
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBSwingEditableViewDelegate<FIBBrowser, JTreePanel<T>>(this);
+		delegate = new FIBSwingEditableViewDelegate<>(this);
 	}
 
 	@Override

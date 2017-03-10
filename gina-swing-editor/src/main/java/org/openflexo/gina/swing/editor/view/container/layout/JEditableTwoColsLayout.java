@@ -39,6 +39,18 @@
 
 package org.openflexo.gina.swing.editor.view.container.layout;
 
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
+import javax.swing.Box;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoColsLayoutLocation;
@@ -49,12 +61,6 @@ import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.swing.view.container.layout.JTwoColsLayout;
 import org.openflexo.logging.FlexoLogger;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Swing implementation for edition of a TwoCols layout
@@ -120,7 +126,7 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 	@Override
 	public List<PlaceHolder> makePlaceHolders(final Dimension preferredSize) {
 
-		List<PlaceHolder> returned = new ArrayList<PlaceHolder>();
+		List<PlaceHolder> returned = new ArrayList<>();
 
 		if (!getComponent().getProtectContent()) {
 
@@ -355,7 +361,7 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 	private PlaceHolder makePlaceHolder(String text, final TwoColsLayoutConstraints leftConstraints, final int index, Component component,
 			int deltaX, int deltaY) {
 		Rectangle placeHolderBounds = makePlaceHolderBounds(component, deltaX, deltaY);
-		PlaceHolder returned = new PlaceHolder((FIBSwingEditableContainerView)getContainerView(), text, placeHolderBounds) {
+		PlaceHolder returned = new PlaceHolder((FIBSwingEditableContainerView<?, ?>) getContainerView(), text, placeHolderBounds) {
 			@Override
 			public void insertComponent(FIBComponent newComponent, int oldIndex) {
 				if (oldIndex > -1 && oldIndex < index) {

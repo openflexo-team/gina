@@ -39,6 +39,20 @@
 
 package org.openflexo.gina.swing.editor.view.container.layout;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
+import javax.swing.Box;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.layout.BorderLayoutConstraints;
 import org.openflexo.gina.model.container.layout.BorderLayoutConstraints.BorderLayoutLocation;
@@ -49,14 +63,6 @@ import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.swing.view.container.layout.JBorderLayout;
 import org.openflexo.logging.FlexoLogger;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Swing implementation for border layout editor
@@ -79,14 +85,14 @@ public class JEditableBorderLayout extends JBorderLayout implements JFIBEditable
 	@Override
 	public List<PlaceHolder> makePlaceHolders(final Dimension preferredSize) {
 
-		List<PlaceHolder> returned = new ArrayList<PlaceHolder>();
+		List<PlaceHolder> returned = new ArrayList<>();
 
 		if (!getComponent().getProtectContent()) {
 
 			BorderLayoutLocation[] placeholderLocations = { BorderLayoutLocation.north, BorderLayoutLocation.south,
 					BorderLayoutLocation.center, BorderLayoutLocation.east, BorderLayoutLocation.west };
-			Map<BorderLayoutLocation, FIBComponent> existingComponents = new HashMap<BorderLayoutLocation, FIBComponent>();
-			Map<BorderLayoutLocation, Component> phComponents = new HashMap<BorderLayoutLocation, Component>();
+			Map<BorderLayoutLocation, FIBComponent> existingComponents = new HashMap<>();
+			Map<BorderLayoutLocation, Component> phComponents = new HashMap<>();
 
 			JPanel panel = new JPanel(new BorderLayout());
 			panel.setPreferredSize(getContainerView().getResultingJComponent().getSize());
@@ -125,7 +131,8 @@ public class JEditableBorderLayout extends JBorderLayout implements JFIBEditable
 				Rectangle bounds = phComponents.get(l).getBounds();
 
 				if (existingComponent == null) {
-					PlaceHolder newPlaceHolder = new PlaceHolder((FIBSwingEditableContainerView)getContainerView(), "<" + l.getConstraint() + ">", bounds) {
+					PlaceHolder newPlaceHolder = new PlaceHolder((FIBSwingEditableContainerView<?, ?>) getContainerView(),
+							"<" + l.getConstraint() + ">", bounds) {
 						@Override
 						public void insertComponent(FIBComponent newComponent, int oldIndex) {
 							BorderLayoutConstraints blConstraints = new BorderLayoutConstraints(l);

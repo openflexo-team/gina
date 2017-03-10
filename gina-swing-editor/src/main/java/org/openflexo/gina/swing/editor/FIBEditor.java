@@ -121,7 +121,7 @@ public class FIBEditor {
 	private FIBEditorMenuBar menuBar;
 
 	// This map stores all editors (FIBEditorController - editor of an EditedFIBComponent) managed by this FIBEditor
-	private final Map<EditedFIBComponent, FIBEditorController> controllers = new HashMap<EditedFIBComponent, FIBEditorController>();
+	private final Map<EditedFIBComponent, FIBEditorController> controllers = new HashMap<>();
 
 	private FIBEditorController activeEditorController = null;
 
@@ -184,7 +184,7 @@ public class FIBEditor {
 		return activeEditorController.getEditedComponent();
 	}
 
-	private FlexoFileChooser getFileChooser(JFrame frame) {
+	private static FlexoFileChooser getFileChooser(JFrame frame) {
 		FlexoFileChooser fileChooser = new FlexoFileChooser(frame);
 		fileChooser.setFileFilter(new FileFilter() {
 
@@ -274,7 +274,7 @@ public class FIBEditor {
 		return mainPanel;
 	}
 
-	private void updateFrameTitle(JFrame frame) {
+	private static void updateFrameTitle(JFrame frame) {
 		frame.setTitle("Flexo Interface Builder Editor");
 	}
 
@@ -515,10 +515,8 @@ public class FIBEditor {
 				mainPanel.setTitleAt(mainPanel.getSelectedIndex(), editedFIB.getName());
 				updateFrameTitle(frame);
 			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (LocatorNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -545,10 +543,8 @@ public class FIBEditor {
 					Object testData = container.getDataClass().newInstance();
 					view.getController().setDataObject(testData);
 				} catch (InstantiationException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -577,7 +573,6 @@ public class FIBEditor {
 			try {
 				getValidationWindow(editedFIB, frame).validateAndDisplayReportForComponent(editedFIB.getFIBComponent());
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

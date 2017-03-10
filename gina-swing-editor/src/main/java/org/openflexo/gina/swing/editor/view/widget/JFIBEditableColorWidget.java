@@ -74,7 +74,7 @@ public class JFIBEditableColorWidget extends JFIBColorWidget implements FIBSwing
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBSwingEditableViewDelegate<FIBColor, ColorSelectorPanel>(this);
+		delegate = new FIBSwingEditableViewDelegate<>(this);
 	}
 
 	@Override

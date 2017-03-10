@@ -202,7 +202,7 @@ public interface FIBGraphFunction extends FIBModelObject {
 		@Override
 		public DataBinding<?> getExpression() {
 			if (expression == null) {
-				expression = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.GET);
+				expression = new DataBinding<>(this, Object.class, DataBinding.BindingDefinitionType.GET);
 				expression.setBindingName(getName());
 				expression.setMandatory(true);
 			}
@@ -212,7 +212,7 @@ public interface FIBGraphFunction extends FIBModelObject {
 		@Override
 		public void setExpression(DataBinding<?> expression) {
 			if (expression != null) {
-				this.expression = new DataBinding<Object>(expression.toString(), this, Object.class, DataBinding.BindingDefinitionType.GET);
+				this.expression = new DataBinding<>(expression.toString(), this, Object.class, DataBinding.BindingDefinitionType.GET);
 				this.expression.setBindingName(getName());
 				expression.setMandatory(true);
 			}

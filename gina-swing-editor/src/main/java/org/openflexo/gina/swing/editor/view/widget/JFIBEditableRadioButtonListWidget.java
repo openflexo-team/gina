@@ -75,7 +75,7 @@ public class JFIBEditableRadioButtonListWidget<T> extends JFIBRadioButtonListWid
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBSwingEditableViewDelegate<FIBRadioButtonList, JRadioButtonPanel<T>>(this);
+		delegate = new FIBSwingEditableViewDelegate<>(this);
 	}
 
 	@Override

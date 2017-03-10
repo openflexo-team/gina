@@ -74,7 +74,7 @@ public class JFIBEditableFontWidget extends JFIBFontWidget implements FIBSwingEd
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBSwingEditableViewDelegate<FIBFont, FontSelectorPanel>(this);
+		delegate = new FIBSwingEditableViewDelegate<>(this);
 	}
 
 	@Override
