@@ -485,7 +485,9 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			return getController();
 		}
 		if (variable instanceof FIBVariableBindingVariable) {
-			returned = getVariableValue(((FIBVariableBindingVariable) variable).getVariable());
+			FIBViewImpl<?, ?> variableView = (FIBViewImpl<?, ?>) getController()
+					.viewForComponent(((FIBVariableBindingVariable) variable).getVariable().getOwner());
+			returned = variableView.getVariableValue(((FIBVariableBindingVariable) variable).getVariable());
 			if (returned != null) {
 				return returned;
 			}
@@ -504,10 +506,13 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		return null;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void setValue(Object value, BindingVariable variable) {
 		if (variable instanceof FIBVariableBindingVariable) {
-			setVariableValue((FIBVariable) ((FIBVariableBindingVariable) variable).getVariable(), value);
+			FIBViewImpl variableView = (FIBViewImpl) getController()
+					.viewForComponent(((FIBVariableBindingVariable) variable).getVariable().getOwner());
+			variableView.setVariableValue(((FIBVariableBindingVariable) variable).getVariable(), value);
 		}
 		else if (getParentView() != null) {
 			getParentView().setValue(value, variable);
