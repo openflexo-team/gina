@@ -74,7 +74,7 @@ public class JFIBEditableListWidget<T> extends JFIBListWidget<T> implements FIBS
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBSwingEditableViewDelegate<FIBList, JList<T>>(this);
+		delegate = new FIBSwingEditableViewDelegate<>(this);
 	}
 
 	@Override

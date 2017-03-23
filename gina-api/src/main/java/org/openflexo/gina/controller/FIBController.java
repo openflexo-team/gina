@@ -315,7 +315,7 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 	public List<FIBView<?, ?>> getAllViews() {
 		List<FIBView<?, ?>> l = new ArrayList<>();
 		l.addAll(views.values());
-		for (FIBView<?, ?> v : new ArrayList<FIBView<?, ?>>(views.values())) {
+		for (FIBView<?, ?> v : new ArrayList<>(views.values())) {
 			if (v instanceof FIBReferencedComponentWidget) {
 				FIBReferencedComponentWidget<?> w = (FIBReferencedComponentWidget<?>) v;
 				if (w.getReferencedComponentView() != null) {
@@ -847,7 +847,7 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 		}
 
 		private Family makeFamily1() {
-			List<Person> children = new ArrayList<Person>();
+			List<Person> children = new ArrayList<>();
 			persons.add(martin = new Person("Martin", 173, 73.7));
 			persons.add(mary = new Person("Mary", 165, 57.0));
 			persons.add(john = new Person("John", 107, 26.3));
@@ -863,9 +863,9 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 			return new Family(martin, mary, children);
 		}
 
-		private Family makeFamily2() {
+		private static Family makeFamily2() {
 			Person tarzan, jane, cheeta;
-			List<Person> children = new ArrayList<Person>();
+			List<Person> children = new ArrayList<>();
 			tarzan = new Person("Tarzan", 187, 92.7);
 			jane = new Person("Jane", 175, 62.0);
 			cheeta = new Person("Cheeta", 88, 26.3);
@@ -873,9 +873,9 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 			return new Family(tarzan, jane, children);
 		}
 
-		private Family makeFamily3() {
+		private static Family makeFamily3() {
 			Person romeo, juliette, romeoJr1, romeoJr2, romeoJr3;
-			List<Person> children = new ArrayList<Person>();
+			List<Person> children = new ArrayList<>();
 			romeo = new Person("Romeo", 173, 82.7);
 			juliette = new Person("Juliette", 165, 52.0);
 			romeoJr1 = new Person("Romeo Jr 1", 97, 19.2);
@@ -887,9 +887,9 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 			return new Family(romeo, juliette, children);
 		}
 
-		private Family makeFamily4() {
+		private static Family makeFamily4() {
 			Person donald, daisy, riri, fifi, loulou;
-			List<Person> children = new ArrayList<Person>();
+			List<Person> children = new ArrayList<>();
 			donald = new Person("Donald", 135, 53.5);
 			daisy = new Person("Daisy", 123, 48.6);
 			riri = new Person("Riri", 74, 10.3);
@@ -901,9 +901,9 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 			return new Family(donald, daisy, children);
 		}
 
-		private Family makeFamily5() {
+		private static Family makeFamily5() {
 			Person adam, eve, cain, abel, seth;
-			List<Person> children = new ArrayList<Person>();
+			List<Person> children = new ArrayList<>();
 			adam = new Person("Adam", 178, 84.7);
 			eve = new Person("Eve", 168, 54.0);
 			cain = new Person("Cain", 130, 37.2);

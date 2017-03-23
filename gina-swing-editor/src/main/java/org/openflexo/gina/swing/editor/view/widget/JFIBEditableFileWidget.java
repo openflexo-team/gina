@@ -74,7 +74,7 @@ public class JFIBEditableFileWidget extends JFIBFileWidget implements FIBSwingEd
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBSwingEditableViewDelegate<FIBFile, FileSelectorPanel>(this);
+		delegate = new FIBSwingEditableViewDelegate<>(this);
 	}
 
 	@Override

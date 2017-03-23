@@ -232,7 +232,7 @@ public interface FIBBrowserElementChildren extends FIBModelObject {
 		@Override
 		public DataBinding<Object> getData() {
 			if (data == null) {
-				data = new DataBinding<Object>(getOwner() != null ? getOwner().getIteratorBindable() : null, Object.class,
+				data = new DataBinding<>(getOwner() != null ? getOwner().getIteratorBindable() : null, Object.class,
 						DataBinding.BindingDefinitionType.GET);
 			}
 			return data;
@@ -251,7 +251,7 @@ public interface FIBBrowserElementChildren extends FIBModelObject {
 		@Override
 		public DataBinding<Boolean> getVisible() {
 			if (visible == null) {
-				visible = new DataBinding<Boolean>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				visible = new DataBinding<>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
 			}
 			return visible;
 		}
@@ -269,7 +269,7 @@ public interface FIBBrowserElementChildren extends FIBModelObject {
 		@Override
 		public DataBinding<Object> getCast() {
 			if (cast == null) {
-				cast = new DataBinding<Object>(getChildBindable(), Object.class, DataBinding.BindingDefinitionType.GET);
+				cast = new DataBinding<>(getChildBindable(), Object.class, DataBinding.BindingDefinitionType.GET);
 			}
 			return cast;
 		}
@@ -363,7 +363,7 @@ public interface FIBBrowserElementChildren extends FIBModelObject {
 			return isSupportedListType(accessedType);
 		}
 
-		private boolean isSupportedListType(Type accessedType) {
+		private static boolean isSupportedListType(Type accessedType) {
 			return TypeUtils.isClassAncestorOf(Iterable.class, TypeUtils.getBaseClass(accessedType))
 					|| TypeUtils.isClassAncestorOf(Enumeration.class, TypeUtils.getBaseClass(accessedType));
 		}

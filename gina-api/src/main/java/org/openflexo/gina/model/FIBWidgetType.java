@@ -97,7 +97,7 @@ public class FIBWidgetType<W extends FIBWidget> extends FIBViewType<W> {
 		public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
 				throws TypeMismatchException, NullReferenceException {
 			if (target instanceof FIBWidgetView) {
-				((FIBWidgetView) target).setValue(value);
+				((FIBWidgetView<?, ?, Object>) target).setValue(value);
 				return;
 			}
 			logger.warning("Unexpected target=" + target + " context=" + context);

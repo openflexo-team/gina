@@ -104,7 +104,7 @@ public class JFIBEditableLabelWidget extends JFIBLabelWidget implements FIBSwing
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBSwingEditableViewDelegate<FIBLabel, JLabelPanel>(this);
+		delegate = new FIBSwingEditableViewDelegate<>(this);
 	}
 
 	@Override

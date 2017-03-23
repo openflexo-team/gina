@@ -74,7 +74,7 @@ public class JFIBEditableTextFieldWidget extends JFIBTextFieldWidget implements 
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBSwingEditableViewDelegate<FIBTextField, JTextField>(this);
+		delegate = new FIBSwingEditableViewDelegate<>(this);
 	}
 
 	@Override

@@ -73,7 +73,7 @@ public class JFIBEditableButtonWidget extends JFIBButtonWidget implements FIBSwi
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBSwingEditableViewDelegate<FIBButton, JButton>(this);
+		delegate = new FIBSwingEditableViewDelegate<>(this);
 	}
 
 	@Override

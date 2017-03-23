@@ -39,6 +39,17 @@
 
 package org.openflexo.gina.swing.editor.view.container.layout;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
+import javax.swing.Box;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBPanel.FlowLayoutAlignment;
 import org.openflexo.gina.model.container.layout.FlowLayoutConstraints;
@@ -49,12 +60,6 @@ import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.swing.view.container.layout.JFlowLayout;
 import org.openflexo.logging.FlexoLogger;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Swing implementation for edition of a flow layout
@@ -77,7 +82,7 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 	@Override
 	public List<PlaceHolder> makePlaceHolders(final Dimension preferredSize) {
 
-		List<PlaceHolder> returned = new ArrayList<PlaceHolder>();
+		List<PlaceHolder> returned = new ArrayList<>();
 
 		if (!getComponent().getProtectContent()) {
 
@@ -145,7 +150,8 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 				 * placeHolderBounds.width = placeHolderBounds.width +
 				 * placeHolderBounds.x; placeHolderBounds.x = 0; }
 				 */
-				PlaceHolder newPlaceHolder = new PlaceHolder((FIBSwingEditableContainerView)getContainerView(), "< flow item >", placeHolderBounds) {
+				PlaceHolder newPlaceHolder = new PlaceHolder((FIBSwingEditableContainerView<?, ?>) getContainerView(), "< flow item >",
+						placeHolderBounds) {
 					@Override
 					public void insertComponent(FIBComponent newComponent, int oldIndex) {
 						FlowLayoutConstraints flowConstraints = new FlowLayoutConstraints();
@@ -180,7 +186,8 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 			// Rectangle(phComponent.getBounds().x + deltaX,
 			// phComponent.getBounds().y
 			// + deltaY, phComponent.getWidth(), phComponent.getHeight());
-			PlaceHolder newPlaceHolder = new PlaceHolder((FIBSwingEditableContainerView)getContainerView(), "< flow item >", placeHolderBounds) {
+			PlaceHolder newPlaceHolder = new PlaceHolder((FIBSwingEditableContainerView<?, ?>) getContainerView(), "< flow item >",
+					placeHolderBounds) {
 				@Override
 				public void insertComponent(FIBComponent newComponent, int oldIndex) {
 					FlowLayoutConstraints flowConstraints = new FlowLayoutConstraints();

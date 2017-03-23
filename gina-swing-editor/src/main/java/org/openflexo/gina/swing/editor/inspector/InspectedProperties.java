@@ -95,7 +95,7 @@ public abstract class InspectedProperties<S extends KeyValueCoding> implements H
 		return controller;
 	}
 
-	protected Map<FIBProperty<?>, Object> storedPropertyValues = new HashMap<FIBProperty<?>, Object>();
+	protected Map<FIBProperty<?>, Object> storedPropertyValues = new HashMap<>();
 
 	/**
 	 * Return property value matching supplied parameter for current selection<br>
@@ -289,7 +289,7 @@ public abstract class InspectedProperties<S extends KeyValueCoding> implements H
 		return defaultValue;
 	}
 
-	private final List<S> inspectedStyles = new ArrayList<S>();
+	private final List<S> inspectedStyles = new ArrayList<>();
 
 	/**
 	 * Called to "tell" inspected style that the selection has changed and then resulting inspected style might be updated<br>

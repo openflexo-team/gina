@@ -39,6 +39,15 @@
 
 package org.openflexo.gina.swing.editor.view.container;
 
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
+import javax.swing.JComponent;
+
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBDivider;
 import org.openflexo.gina.model.container.FIBMultiSplitLayoutFactory.FIBLeaf;
@@ -55,12 +64,6 @@ import org.openflexo.gina.swing.view.container.JFIBSplitPanelView;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.swing.layout.JXMultiSplitPane;
 import org.openflexo.swing.layout.MultiSplitLayout.Node;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
 
 public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 		implements FIBSwingEditableContainerView<FIBSplitPanel, JXMultiSplitPane> {
@@ -132,11 +135,11 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 		}
 
 		boolean vertical = s instanceof FIBRowSplit;
-		int width = vertical ? current.width/size : current.width;
-		int height = vertical ? current.height : current.height/size;
+		int width = vertical ? current.width / size : current.width;
+		int height = vertical ? current.height : current.height / size;
 
 		int x = 0, y = 0;
-		for (FIBNode node : s.getChildren()) {
+		for (FIBNode<?> node : s.getChildren()) {
 			if (!(node instanceof FIBDivider)) {
 				Rectangle childSize = new Rectangle(x, y, width, height);
 				appendPlaceHolders(node, childSize, placeHolders);
@@ -150,15 +153,14 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 		}
 	}
 
-	private void appendPlaceHolders(Node n, Rectangle current, List<PlaceHolder> placeHolders) {
+	private void appendPlaceHolders(Node<?> n, Rectangle current, List<PlaceHolder> placeHolders) {
 		if (n instanceof FIBSplit) {
-			appendPlaceHolders((FIBSplit) n, current, placeHolders);
+			appendPlaceHolders((FIBSplit<?>) n, current, placeHolders);
 		}
 		else if (n instanceof FIBLeaf) {
 			appendPlaceHolder((FIBLeaf) n, current, placeHolders);
 		}
 	}
-
 
 	@Override
 	public FIBSwingEditableContainerViewDelegate<FIBSplitPanel, JXMultiSplitPane> getDelegate() {
@@ -169,7 +171,7 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 	public List<PlaceHolder> makePlaceHolders(Dimension preferredSize) {
 		List<PlaceHolder> result = new ArrayList<>();
 		Dimension size = getJComponent().getSize();
-		Rectangle origin = new Rectangle(0,0, size.width, size.height);
+		Rectangle origin = new Rectangle(0, 0, size.width, size.height);
 		appendPlaceHolders(this.getLayout().getModel(), origin, result);
 		return result;
 	}

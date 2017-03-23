@@ -39,14 +39,21 @@
 
 package org.openflexo.gina.swing.editor.view;
 
+import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.util.logging.Logger;
+
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.logging.FlexoLogger;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.logging.Logger;
-
-@SuppressWarnings("serial")
 public abstract class PlaceHolder {
 
 	static final Logger logger = FlexoLogger.getLogger(PlaceHolder.class.getPackage().getName());
@@ -117,7 +124,6 @@ public abstract class PlaceHolder {
 		AlphaComposite composite = AlphaComposite.getInstance(type, alpha);
 		g2.setComposite(composite);
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
 
 		g2.setColor(isVisible() ? Color.GREEN : Color.YELLOW);
 		g2.fillRoundRect(bounds.x + 1, bounds.y + 1, bounds.width - 2, bounds.height - 2, 15, 15);

@@ -255,11 +255,11 @@ public class FIBComponentBindingModel extends BindingModel implements PropertyCh
 
 	}
 
-	private final List<FIBComponent> knownChildren = new ArrayList<FIBComponent>();
+	private final List<FIBComponent> knownChildren = new ArrayList<>();
 
 	private void updateContentsListeners() {
 
-		List<FIBComponent> childrenNotToListenAnymore = new ArrayList<FIBComponent>();
+		List<FIBComponent> childrenNotToListenAnymore = new ArrayList<>();
 		childrenNotToListenAnymore.addAll(knownChildren);
 
 		if (component instanceof FIBContainer) {

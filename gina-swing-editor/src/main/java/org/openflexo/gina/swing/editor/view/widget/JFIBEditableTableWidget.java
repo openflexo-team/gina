@@ -74,7 +74,7 @@ public class JFIBEditableTableWidget<T> extends JFIBTableWidget<T> implements FI
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBSwingEditableViewDelegate<FIBTable, JTablePanel<T>>(this);
+		delegate = new FIBSwingEditableViewDelegate<>(this);
 	}
 
 	@Override

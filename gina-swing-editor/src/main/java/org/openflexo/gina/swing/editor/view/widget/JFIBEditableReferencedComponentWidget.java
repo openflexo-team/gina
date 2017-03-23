@@ -78,7 +78,7 @@ public class JFIBEditableReferencedComponentWidget extends JFIBReferencedCompone
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBSwingEditableViewDelegate<FIBReferencedComponent, JReferenceComponentPanel>(this);
+		delegate = new FIBSwingEditableViewDelegate<>(this);
 	}
 
 	@Override

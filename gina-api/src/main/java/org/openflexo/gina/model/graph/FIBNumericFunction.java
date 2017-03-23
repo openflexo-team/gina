@@ -173,7 +173,7 @@ public interface FIBNumericFunction extends FIBGraphFunction {
 		@Override
 		public DataBinding<? extends Number> getMinValue() {
 			if (minValue == null) {
-				minValue = new DataBinding<Number>(this, Number.class, DataBinding.BindingDefinitionType.GET);
+				minValue = new DataBinding<>(this, Number.class, DataBinding.BindingDefinitionType.GET);
 				minValue.setBindingName(MIN_VALUE_KEY);
 			}
 			return minValue;
@@ -194,7 +194,7 @@ public interface FIBNumericFunction extends FIBGraphFunction {
 		@Override
 		public DataBinding<? extends Number> getMaxValue() {
 			if (maxValue == null) {
-				maxValue = new DataBinding<Number>(this, Number.class, DataBinding.BindingDefinitionType.GET);
+				maxValue = new DataBinding<>(this, Number.class, DataBinding.BindingDefinitionType.GET);
 				maxValue.setBindingName(MAX_VALUE_KEY);
 			}
 			return maxValue;
@@ -215,7 +215,7 @@ public interface FIBNumericFunction extends FIBGraphFunction {
 		@Override
 		public DataBinding<? extends Number> getMinorTickSpacing() {
 			if (minorTickSpacing == null) {
-				minorTickSpacing = new DataBinding<Number>(this, Number.class, DataBinding.BindingDefinitionType.GET);
+				minorTickSpacing = new DataBinding<>(this, Number.class, DataBinding.BindingDefinitionType.GET);
 				minorTickSpacing.setBindingName(MINOR_TICK_SPACING_KEY);
 			}
 			return minorTickSpacing;
@@ -236,7 +236,7 @@ public interface FIBNumericFunction extends FIBGraphFunction {
 		@Override
 		public DataBinding<? extends Number> getMajorTickSpacing() {
 			if (majorTickSpacing == null) {
-				majorTickSpacing = new DataBinding<Number>(this, Number.class, DataBinding.BindingDefinitionType.GET);
+				majorTickSpacing = new DataBinding<>(this, Number.class, DataBinding.BindingDefinitionType.GET);
 				majorTickSpacing.setBindingName(MAJOR_TICK_SPACING_KEY);
 			}
 			return majorTickSpacing;
@@ -257,7 +257,7 @@ public interface FIBNumericFunction extends FIBGraphFunction {
 		@Override
 		public DataBinding<Integer> getStepsNumber() {
 			if (stepsNumber == null) {
-				stepsNumber = new DataBinding<Integer>(this, Integer.class, DataBinding.BindingDefinitionType.GET);
+				stepsNumber = new DataBinding<>(this, Integer.class, DataBinding.BindingDefinitionType.GET);
 				stepsNumber.setBindingName(STEPS_NUMBER_KEY);
 			}
 			return stepsNumber;

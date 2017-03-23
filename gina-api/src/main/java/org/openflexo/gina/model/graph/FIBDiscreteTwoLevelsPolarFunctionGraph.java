@@ -202,7 +202,7 @@ public interface FIBDiscreteTwoLevelsPolarFunctionGraph extends FIBDiscretePolar
 		@Override
 		public DataBinding<List<?>> getSecondaryValues() {
 			if (secondaryValues == null) {
-				secondaryValues = new DataBinding<List<?>>(secondaryParameterExpressionDelegate, List.class,
+				secondaryValues = new DataBinding<>(secondaryParameterExpressionDelegate, List.class,
 						DataBinding.BindingDefinitionType.GET);
 				secondaryValues.setBindingName(SECONDARY_VALUES_KEY);
 			}
@@ -225,7 +225,7 @@ public interface FIBDiscreteTwoLevelsPolarFunctionGraph extends FIBDiscretePolar
 		@Override
 		public DataBinding<Double> getSecondaryAngleExtent() {
 			if (secondaryAngleExtent == null) {
-				secondaryAngleExtent = new DataBinding<Double>(secondaryParameterExpressionDelegate, Double.class,
+				secondaryAngleExtent = new DataBinding<>(secondaryParameterExpressionDelegate, Double.class,
 						DataBinding.BindingDefinitionType.GET);
 				secondaryAngleExtent.setBindingName(SECONDARY_ANGLE_EXTENT_KEY);
 			}
@@ -247,7 +247,7 @@ public interface FIBDiscreteTwoLevelsPolarFunctionGraph extends FIBDiscretePolar
 		@Override
 		public DataBinding<String> getSecondaryLabels() {
 			if (secondaryLabels == null) {
-				secondaryLabels = new DataBinding<String>(secondaryParameterExpressionDelegate, String.class,
+				secondaryLabels = new DataBinding<>(secondaryParameterExpressionDelegate, String.class,
 						DataBinding.BindingDefinitionType.GET);
 				secondaryLabels.setBindingName(SECONDARY_LABELS_KEY);
 			}

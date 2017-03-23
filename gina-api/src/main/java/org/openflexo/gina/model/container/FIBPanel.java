@@ -795,7 +795,7 @@ public interface FIBPanel extends FIBContainer {
 		public DataBinding<Image> getDynamicBackgroundImage() {
 
 			if (dynamicBackgroundImage == null) {
-				dynamicBackgroundImage = new DataBinding<Image>(this, Image.class, DataBinding.BindingDefinitionType.GET);
+				dynamicBackgroundImage = new DataBinding<>(this, Image.class, DataBinding.BindingDefinitionType.GET);
 				dynamicBackgroundImage.setBindingName("dynamicBackgroundImage");
 			}
 			return dynamicBackgroundImage;

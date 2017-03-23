@@ -85,7 +85,7 @@ public class FIBViewType<F extends FIBComponent> implements CustomType {
 	@Override
 	public boolean isTypeAssignableFrom(Type aType, boolean permissive) {
 		if (aType instanceof FIBViewType) {
-			return getFIBComponent() == null || getFIBComponent() == ((FIBViewType) aType).getFIBComponent();
+			return getFIBComponent() == null || getFIBComponent() == ((FIBViewType<?>) aType).getFIBComponent();
 		}
 		return false;
 	}
@@ -146,7 +146,7 @@ public class FIBViewType<F extends FIBComponent> implements CustomType {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		FIBViewType other = (FIBViewType) obj;
+		FIBViewType<?> other = (FIBViewType<?>) obj;
 		if (fibComponent == null) {
 			if (other.fibComponent != null)
 				return false;

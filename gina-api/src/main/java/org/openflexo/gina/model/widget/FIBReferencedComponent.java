@@ -236,7 +236,7 @@ public interface FIBReferencedComponent extends FIBWidget {
 		public DataBinding<FIBComponent> getDynamicComponent() {
 
 			if (dynamicComponent == null) {
-				dynamicComponent = new DataBinding<FIBComponent>(this, FIBComponent.class, DataBinding.BindingDefinitionType.GET);
+				dynamicComponent = new DataBinding<>(this, FIBComponent.class, DataBinding.BindingDefinitionType.GET);
 				dynamicComponent.setBindingName("dynamicComponent");
 				// dynamicComponentFile.setCacheable(true);
 			}

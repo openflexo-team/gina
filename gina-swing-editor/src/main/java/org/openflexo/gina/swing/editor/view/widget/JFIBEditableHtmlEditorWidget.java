@@ -76,7 +76,7 @@ public class JFIBEditableHtmlEditorWidget extends JFIBHtmlEditorWidget
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBSwingEditableViewDelegate<FIBHtmlEditor, MetaphaseEditorPanel>(this);
+		delegate = new FIBSwingEditableViewDelegate<>(this);
 		model.getPropertyChangeSupport().addPropertyChangeListener(this);
 	}
 

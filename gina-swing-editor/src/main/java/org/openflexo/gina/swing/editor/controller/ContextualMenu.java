@@ -39,14 +39,19 @@
 
 package org.openflexo.gina.swing.editor.controller;
 
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.Hashtable;
 import java.util.logging.Logger;
-import javax.swing.*;
+
+import javax.swing.JFrame;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
@@ -97,20 +102,20 @@ public class ContextualMenu {
 
 	public ContextualMenu(FIBEditorController anEditorController, final JFrame frame) {
 		this.editorController = anEditorController;
-		actions = new Hashtable<EditorAction, PopupMenuItem>();
+		actions = new Hashtable<>();
 		menu = new JPopupMenu();
 
 		addToActions(new EditorAction("Inspect", null, object -> {
 			JFIBDialogInspectorController inspector = editorController.getEditor().getInspector();
-			if (inspector != null) inspector.setVisible(true);
+			if (inspector != null)
+				inspector.setVisible(true);
 			return object;
 		}, object -> object != null));
 		addToActions(new EditorAction("Delete", FIBEditorIconLibrary.DELETE_ICON, object -> {
 			if (object instanceof FIBComponent) {
 				FIBContainer parent = ((FIBComponent) object).getParent();
-				boolean deleteIt = JOptionPane.showConfirmDialog(frame,
-						object + ": really delete this component (undoable operation) ?", "information",
-						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION;
+				boolean deleteIt = JOptionPane.showConfirmDialog(frame, object + ": really delete this component (undoable operation) ?",
+						"information", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION;
 				if (deleteIt) {
 					logger.info("Removing object " + object + " from " + parent);
 					parent.removeFromSubComponents((FIBComponent) object);
@@ -142,8 +147,7 @@ public class ContextualMenu {
 			FIBSplitPanel newPanel = editorController.getFactory().newFIBSplitPanel();
 			newPanel.makeDefaultHorizontalLayout();
 			parent.addToSubComponents(newPanel, component.getConstraints());
-			newPanel.addToSubComponents(component,
-					SplitLayoutConstraints.makeSplitLayoutConstraints(newPanel.getFirstEmptyPlaceHolder()));
+			newPanel.addToSubComponents(component, SplitLayoutConstraints.makeSplitLayoutConstraints(newPanel.getFirstEmptyPlaceHolder()));
 			return parent;
 		}, componentWithParent));
 
@@ -185,16 +189,16 @@ public class ContextualMenu {
 		panel.addToSubComponents(dialogFactory.newFIBLabel("file"), new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false, false));
 		FIBFile fileWidget = dialogFactory.newFIBFile();
 		fileWidget.setMode(FileMode.SaveMode);
-		fileWidget.setData(new DataBinding("data.reusableComponentFile"));
+		fileWidget.setData(new DataBinding<>("data.reusableComponentFile"));
 		panel.addToSubComponents(fileWidget, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false));
 		panel.addToSubComponents(dialogFactory.newFIBLabel("data"), new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false, false));
 		FIBCustom dataWidget = dialogFactory.newFIBCustom();
 		dataWidget.setComponentClass(BindingSelector.class);
-		dataWidget.setData(new DataBinding("data.data"));
+		dataWidget.setData(new DataBinding<>("data.data"));
 		FIBCustom.FIBCustomAssignment assignment = dialogFactory.newInstance(FIBCustom.FIBCustomAssignment.class);
 		assignment.setOwner(dataWidget);
-		assignment.setVariable(new DataBinding<Object>("component.bindable"));
-		assignment.setValue(new DataBinding<Object>("data"));
+		assignment.setVariable(new DataBinding<>("component.bindable"));
+		assignment.setValue(new DataBinding<>("data"));
 		assignment.setMandatory(true);
 		;
 		dataWidget.addToAssignments(assignment);
@@ -204,15 +208,15 @@ public class ContextualMenu {
 		controlPanel.setFlowAlignment(FlowLayoutAlignment.CENTER);
 		FIBButton validateButton = dialogFactory.newFIBButton();
 		validateButton.setLabel("validate");
-		validateButton.setAction(new DataBinding<Object>("controller.validateAndDispose()"));
+		validateButton.setAction(new DataBinding<>("controller.validateAndDispose()"));
 		controlPanel.addToSubComponents(validateButton);
 		FIBButton cancelButton = dialogFactory.newFIBButton();
 		cancelButton.setLabel("cancel");
-		cancelButton.setAction(new DataBinding<Object>("controller.cancelAndDispose()"));
+		cancelButton.setAction(new DataBinding<>("controller.cancelAndDispose()"));
 		controlPanel.addToSubComponents(cancelButton);
 		panel.addToSubComponents(controlPanel, new TwoColsLayoutConstraints(TwoColsLayoutLocation.center, true, false));
 
-		JFIBDialog dialog = JFIBDialog.instanciateAndShowDialog(panel, params, frame, true);
+		JFIBDialog<?> dialog = JFIBDialog.instanciateAndShowDialog(panel, params, frame, true);
 
 		if (dialog.getStatus() == Status.VALIDATED) {
 			if (params.reusableComponentFile != null) {
@@ -268,7 +272,7 @@ public class ContextualMenu {
 	public static class MakeReusableComponentParameters extends DefaultBindable {
 		public String componentName;
 		public File reusableComponentFile;
-		public Class reusableComponentClass;
+		public Class<?> reusableComponentClass;
 		public DataBinding<Object> data;
 
 		private final FIBComponent contextComponent;
@@ -283,10 +287,10 @@ public class ContextualMenu {
 				reusableComponentFile = new File(JFIBPreferences.getLastDirectory(), "ReusableComponent.fib");
 			}
 			if (component.getData().isSet()) {
-				data = new DataBinding<Object>(component.getData().toString(), this, Object.class, BindingDefinitionType.GET);
+				data = new DataBinding<>(component.getData().toString(), this, Object.class, BindingDefinitionType.GET);
 			}
 			else {
-				data = new DataBinding<Object>(this, Object.class, BindingDefinitionType.GET);
+				data = new DataBinding<>(this, Object.class, BindingDefinitionType.GET);
 			}
 		}
 

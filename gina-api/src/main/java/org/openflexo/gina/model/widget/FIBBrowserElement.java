@@ -723,7 +723,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public DataBinding<Font> getDynamicFont() {
 			if (dynamicFont == null) {
-				dynamicFont = new DataBinding<Font>(iteratorBindable, Font.class, DataBinding.BindingDefinitionType.GET);
+				dynamicFont = new DataBinding<>(iteratorBindable, Font.class, DataBinding.BindingDefinitionType.GET);
 			}
 			return dynamicFont;
 		}

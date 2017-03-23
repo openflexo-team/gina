@@ -40,13 +40,12 @@
 package org.openflexo.gina.utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.model.FIBComponent;
@@ -73,7 +72,7 @@ public class InspectorGroup {
 
 	public InspectorGroup(Resource inspectorDirectory, FIBLibrary fibLibrary, LocalizedDelegate locales,
 			InspectorGroup... someInspectorGroups) {
-		inspectors = new HashMap<>();
+		inspectors = new LinkedHashMap<>();
 
 		try {
 			fibModelFactory = new FIBModelFactory(inspectorDirectory, FIBInspector.class);

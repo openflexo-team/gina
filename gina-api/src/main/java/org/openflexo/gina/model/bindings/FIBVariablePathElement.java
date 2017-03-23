@@ -104,7 +104,7 @@ public class FIBVariablePathElement extends SimplePathElement implements Propert
 		// System.out.println("j'evalue " + fibVariable + " pour " + target);
 		// System.out.println("il s'agit de " + fibVariable.getValue());
 		if (target instanceof FIBView) {
-			Object returned = ((FIBView) target).getVariableValue(fibVariable);
+			Object returned = ((FIBView<?, ?>) target).getVariableValue(fibVariable);
 			if (returned == null || TypeUtils.isTypeAssignableFrom(getType(), returned.getClass())) {
 				// System.out.println("Et je retourne");
 				return returned;

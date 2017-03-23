@@ -74,7 +74,7 @@ public class JFIBEditableTextAreaWidget extends JFIBTextAreaWidget implements FI
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
-		delegate = new FIBSwingEditableViewDelegate<FIBTextArea, JTextArea>(this);
+		delegate = new FIBSwingEditableViewDelegate<>(this);
 	}
 
 	@Override
