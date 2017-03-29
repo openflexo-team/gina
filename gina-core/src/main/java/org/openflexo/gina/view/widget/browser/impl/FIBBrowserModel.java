@@ -847,11 +847,6 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 		}
 
 		public void update(boolean recursively) {
-			SwingUtilities.invokeLater(() -> updateSync(recursively));
-		}
-
-		public void updateSync(boolean recursively) {
-
 			// System.out.println("Updating for " + getRepresentedObject());
 
 			loaded = true;
