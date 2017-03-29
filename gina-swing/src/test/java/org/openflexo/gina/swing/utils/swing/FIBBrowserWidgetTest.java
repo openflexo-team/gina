@@ -165,7 +165,6 @@ public class FIBBrowserWidgetTest extends FIBTestCase {
 		BrowserCell root = (BrowserCell) w.getBrowserModel().getRoot();
 
 		assertEquals(family, root.getUserObject());
-		root.updateSync(true);
 		assertEquals(5, root.getChildCount());
 		assertEquals(family.getChildren().get(0), ((BrowserCell) root.getChildAt(0)).getUserObject());
 		assertEquals(family.getChildren().get(1), ((BrowserCell) root.getChildAt(1)).getUserObject());
@@ -175,7 +174,6 @@ public class FIBBrowserWidgetTest extends FIBTestCase {
 
 		Person junior = family.createChild();
 
-		root.updateSync(true);
 		assertEquals(6, root.getChildCount());
 		assertEquals(junior, ((BrowserCell) root.getChildAt(5)).getUserObject());
 	}
