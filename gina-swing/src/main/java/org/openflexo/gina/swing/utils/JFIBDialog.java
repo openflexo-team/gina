@@ -97,12 +97,12 @@ public class JFIBDialog<T> extends JDialog {
 
 	public static <T> JFIBDialog<T> instanciateDialog(FIBComponent fibComponent, T data, Window frame, boolean modal,
 			LocalizedDelegate localizer) {
-		return new JFIBDialog<T>(fibComponent, data, frame, modal, localizer);
+		return new JFIBDialog<>(fibComponent, data, frame, modal, localizer);
 	}
 
 	public static <T> JFIBDialog<T> instanciateDialog(FIBComponent fibComponent, T data, Window frame, boolean modal,
 			FIBController controller) {
-		return new JFIBDialog<T>(fibComponent, data, frame, modal, controller);
+		return new JFIBDialog<>(fibComponent, data, frame, modal, controller);
 	}
 
 	public static <T> JFIBDialog<T> instanciateAndShowDialog(FIBComponent fibComponent, T data, Window frame, boolean modal) {

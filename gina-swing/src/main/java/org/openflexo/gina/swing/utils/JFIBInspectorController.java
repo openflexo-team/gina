@@ -99,7 +99,7 @@ public class JFIBInspectorController implements Observer {
 				}
 			}
 		};
-		inspectorViews = new Hashtable<FIBInspector, JFIBView<?, ?>>();
+		inspectorViews = new Hashtable<>();
 		this.localizer = localizer;
 
 		// GPO: Isn't there a bit too much panels here?

@@ -86,7 +86,7 @@ import org.openflexo.swing.ImageButton;
  * 
  * @author sylvain
  */
-public class JFIBBrowserWidgetFooter<T> extends FIBBrowserWidgetFooterImpl<JPanel, T>implements MouseListener, WindowListener {
+public class JFIBBrowserWidgetFooter<T> extends FIBBrowserWidgetFooterImpl<JPanel, T> implements MouseListener, WindowListener {
 
 	protected static final Logger logger = Logger.getLogger(JFIBBrowserWidgetFooter.class.getPackage().getName());
 
@@ -413,7 +413,7 @@ public class JFIBBrowserWidgetFooter<T> extends FIBBrowserWidgetFooterImpl<JPane
 		public void actionPerformed(ActionEvent e) {
 			FIBBrowserElement element = elementForObject(_widget.getSelected());
 			if (element != null) {
-				List<FIBBrowserActionListener<T>> listeners = new ArrayList<FIBBrowserActionListener<T>>();
+				List<FIBBrowserActionListener<T>> listeners = new ArrayList<>();
 				Map<FIBBrowserAction, FIBBrowserActionListener<T>> browserActions = actions.get(element);
 				if (browserActions != null && browserActions.size() > 0) {
 					for (Entry<FIBBrowserAction, FIBBrowserActionListener<T>> entry : browserActions.entrySet()) {

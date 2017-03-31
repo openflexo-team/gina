@@ -336,17 +336,17 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 		else {
 			switch (getWidget().getNumberType()) {
 				case ByteType:
-					return (NumberSelectorPanel) new ByteSelectorPanel((JFIBNumberWidget) this);
+					return (NumberSelectorPanel) new ByteSelectorPanel((JFIBNumberWidget<Byte>) this);
 				case ShortType:
-					return (NumberSelectorPanel) new ShortSelectorPanel((JFIBNumberWidget) this);
+					return (NumberSelectorPanel) new ShortSelectorPanel((JFIBNumberWidget<Short>) this);
 				case IntegerType:
-					return (NumberSelectorPanel) new IntegerSelectorPanel((JFIBNumberWidget) this);
+					return (NumberSelectorPanel) new IntegerSelectorPanel((JFIBNumberWidget<Integer>) this);
 				case LongType:
-					return (NumberSelectorPanel) new LongSelectorPanel((JFIBNumberWidget) this);
+					return (NumberSelectorPanel) new LongSelectorPanel((JFIBNumberWidget<Long>) this);
 				case FloatType:
-					return (NumberSelectorPanel) new FloatSelectorPanel((JFIBNumberWidget) this);
+					return (NumberSelectorPanel) new FloatSelectorPanel((JFIBNumberWidget<Float>) this);
 				case DoubleType:
-					return (NumberSelectorPanel) new DoubleSelectorPanel((JFIBNumberWidget) this);
+					return (NumberSelectorPanel) new DoubleSelectorPanel((JFIBNumberWidget<Double>) this);
 				default:
 					return null;
 			}

@@ -6,36 +6,29 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import org.openflexo.replay.GinaReplaySession;
-import org.openflexo.replay.InteractionCycle;
 import org.openflexo.gina.event.GinaEvent;
 import org.openflexo.gina.event.GinaEvent.KIND;
 import org.openflexo.gina.event.InvalidRecorderStateException;
 import org.openflexo.gina.event.SystemEvent;
 import org.openflexo.gina.event.UserInteraction;
-import org.openflexo.gina.event.GinaEvent.KIND;
-import org.openflexo.gina.event.description.FIBSelectionEventDescription;
-import org.openflexo.gina.event.description.item.DescriptionItem;
 import org.openflexo.gina.manager.GinaStackEvent;
+import org.openflexo.replay.GinaReplaySession;
+import org.openflexo.replay.InteractionCycle;
 
 /**
- * This class manage the way a replayed scenario should be checked.
- * The default behavior is :
- *   - expect any recorded user interaction and system response to be present
- *   - expect any of them to match exactly the recorded data
- *   - any additional system response will be ignored and will not cause any error
- *   
- * This class should be extended to adapt the behavior.
- * An example of behavior could be found in StrictCheckingStrategy.
+ * This class manage the way a replayed scenario should be checked. The default behavior is : - expect any recorded user interaction and
+ * system response to be present - expect any of them to match exactly the recorded data - any additional system response will be ignored
+ * and will not cause any error
  * 
- * Any event played or recorded will be stored here in order to find matching events between
- * recorded data and replayed ones.
+ * This class should be extended to adapt the behavior. An example of behavior could be found in StrictCheckingStrategy.
+ * 
+ * Any event played or recorded will be stored here in order to find matching events between recorded data and replayed ones.
  * 
  * @author Alexandre
  *
  */
 public abstract class CheckingStrategy {
-	
+
 	protected UserInteraction lastEventReplayed;
 	protected GinaReplaySession session;
 	protected Map<UserInteraction, List<SystemEvent>> replayEvents;
@@ -44,25 +37,26 @@ public abstract class CheckingStrategy {
 	public CheckingStrategy(GinaReplaySession session) {
 		super();
 		this.session = session;
-		this.replayEvents = new HashMap<UserInteraction, List<SystemEvent>>();
-		this.replayNodeToEvents = new HashMap<GinaEvent, UserInteraction>();
+		this.replayEvents = new HashMap<>();
+		this.replayNodeToEvents = new HashMap<>();
 	}
-	
+
 	/**
 	 * Records a played event
-	 * @param e Event played
+	 * 
+	 * @param e
+	 *            Event played
 	 */
 	public void eventPlayed(UserInteraction e) {
 		if (replayEvents.containsKey(e))
 			return;
-		//System.out.println("[Replay] : " + e);
+		// System.out.println("[Replay] : " + e);
 		replayEvents.put(e, new LinkedList<SystemEvent>());
 		lastEventReplayed = e;
 	}
-	
+
 	/**
-	 * Records a replayed event that can be a simulated user interaction or a system response to a
-	 * stimulus.
+	 * Records a replayed event that can be a simulated user interaction or a system response to a stimulus.
 	 * 
 	 * @param e
 	 * @param stack
@@ -75,54 +69,55 @@ public abstract class CheckingStrategy {
 			for (DescriptionItem di : fe.getValues())
 				System.out.println(di);
 		}*/
-		
-		GinaEvent origin = session.getEventOrigin(e, stack);
+
+		// Unused GinaEvent origin =
+		session.getEventOrigin(e, stack);
 		GinaEvent userOrigin = session.getEventUserOrigin(e, stack);
 
 		if (lastEventReplayed != null) {
-			//System.out.println("Replay : " + e + ", origin : " + origin + ", userOrigin : " + userOrigin);
+			// System.out.println("Replay : " + e + ", origin : " + origin + ", userOrigin : " + userOrigin);
 			replayNodeToEvents.put(e, lastEventReplayed);
 			lastEventReplayed = null;
 			return;
 		}
-		//System.out.println("Response : " + e + ", origin : " + origin + ", userOrigin : " + userOrigin);
+		// System.out.println("Response : " + e + ", origin : " + origin + ", userOrigin : " + userOrigin);
 
 		// add as event or state depending of its origin
 		if (e.getKind() != KIND.USER_INTERACTION && replayNodeToEvents.containsKey(userOrigin)) {
-			//System.out.println("State updated : " + e);
+			// System.out.println("State updated : " + e);
 			UserInteraction replayed = replayNodeToEvents.get(userOrigin);
 			if (replayEvents.containsKey(replayed)) {
-				//System.out.println("/// ADDED \\\\\\");
+				// System.out.println("/// ADDED \\\\\\");
 				replayEvents.get(replayed).add((SystemEvent) e);
 			}
 
-	/*	}
-	}
-
-	public void checkSystemEvents(InteractionCycle node) throws InvalidRecorderStateException {
-		// List<GinaEvent> l = new LinkedList<GinaEvent>();
-		// l.addAll(node.getSystemEventTree());
-		// l.add(node.getUserInteraction());
-
-		List<GinaEvent> l = new LinkedList<GinaEvent>();
-		if (!replayEvents.containsKey(node.getUserInteraction())) {
-			return;
-		}
-		l.addAll(replayEvents.get(node.getUserInteraction()));
-
-		System.out.println("1 : " + l);
-		// System.out.println("2 : " + l);
-
-		for (GinaEvent e : l) {
-			GinaEvent matching = findSystemEvent(l, e);
-
-			System.out.println("/// Found \\\\\\" + matching);
-
-			if (matching == null) {
-				throw new InvalidRecorderStateException("No matching state", e);
+			/*	}
 			}
-
-			// e.checkMatchingEvent(matching);*/
+			
+			public void checkSystemEvents(InteractionCycle node) throws InvalidRecorderStateException {
+				// List<GinaEvent> l = new LinkedList<GinaEvent>();
+				// l.addAll(node.getSystemEventTree());
+				// l.add(node.getUserInteraction());
+			
+				List<GinaEvent> l = new LinkedList<GinaEvent>();
+				if (!replayEvents.containsKey(node.getUserInteraction())) {
+					return;
+				}
+				l.addAll(replayEvents.get(node.getUserInteraction()));
+			
+				System.out.println("1 : " + l);
+				// System.out.println("2 : " + l);
+			
+				for (GinaEvent e : l) {
+					GinaEvent matching = findSystemEvent(l, e);
+			
+					System.out.println("/// Found \\\\\\" + matching);
+			
+					if (matching == null) {
+						throw new InvalidRecorderStateException("No matching state", e);
+					}
+			
+					// e.checkMatchingEvent(matching);*/
 		}
 	}
 
@@ -134,10 +129,9 @@ public abstract class CheckingStrategy {
 
 		return null;
 	}
-	
+
 	/**
-	 * Checks if an InteractionCycle has a valid system response.
-	 * This method should be override in order to adapt the strategy behavior.
+	 * Checks if an InteractionCycle has a valid system response. This method should be override in order to adapt the strategy behavior.
 	 * 
 	 * @param node
 	 * @throws InvalidRecorderStateException

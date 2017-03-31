@@ -131,7 +131,7 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 
 	@Override
 	protected JRadioButtonPanel<T> makeTechnologyComponent() {
-		return new JRadioButtonPanel<T>(this);
+		return new JRadioButtonPanel<>(this);
 	}
 
 	@Override

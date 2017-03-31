@@ -159,14 +159,14 @@ public class FIBLocalizedEditorController extends FIBController {
 
 	public List<LocalizedEntry> getMatchingEntries() {
 		if (matchingEntries == null) {
-			matchingEntries = new ArrayList<LocalizedEntry>();
+			matchingEntries = new ArrayList<>();
 		}
 		return matchingEntries;
 	}
 
 	protected List<LocalizedEntry> computeMatchingEntries(String text, SearchMode searchMode) {
 		// getDataObject().loadLocalizedDictionaries();
-		matchingEntries = new ArrayList<LocalizedEntry>();
+		matchingEntries = new ArrayList<>();
 		if (StringUtils.isNotEmpty(text)) {
 			for (LocalizedEntry e : getDataObject().getEntries()) {
 				switch (searchMode) {
@@ -230,7 +230,7 @@ public class FIBLocalizedEditorController extends FIBController {
 
 	private List<LocalizedEntry> computeIssuesEntries() {
 		// getDataObject().loadLocalizedDictionaries();
-		issuesEntries = new ArrayList<LocalizedEntry>();
+		issuesEntries = new ArrayList<>();
 		if (getDataObject() != null) {
 			for (LocalizedEntry e : getDataObject().getEntries()) {
 				if (e.hasInvalidValue()) {
@@ -307,8 +307,8 @@ public class FIBLocalizedEditorController extends FIBController {
 
 	public LocalizedEntry addEntry() {
 		LocalizedEntry returned = getDataObject().addEntry();
-		//LocalizedDelegate delegate = getDataObject();
-			// refresh();
+		// LocalizedDelegate delegate = getDataObject();
+		// refresh();
 		getPropertyChangeSupport().firePropertyChange("matchingEntries", null, getMatchingEntries());
 		getPropertyChangeSupport().firePropertyChange("issuesEntries", null, getIssuesEntries());
 		getDataObject().getPropertyChangeSupport().firePropertyChange("entries", null, getDataObject().getEntries());

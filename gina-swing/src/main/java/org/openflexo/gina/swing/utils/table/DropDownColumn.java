@@ -68,7 +68,7 @@ public abstract class DropDownColumn<D, T> extends AbstractColumn<D, T> implemen
 	public DropDownColumn(String title, int defaultWidth) {
 		super(title, defaultWidth, true);
 		_cellRenderer = new DropDownCellRenderer();
-		_cellEditor = new DropDownCellEditor(new JComboBox());
+		_cellEditor = new DropDownCellEditor(new JComboBox<>());
 	}
 
 	@Override
@@ -124,7 +124,8 @@ public abstract class DropDownColumn<D, T> extends AbstractColumn<D, T> implemen
 		 * @return the default table cell renderer
 		 */
 		@Override
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row,
+				int column) {
 			Component returned = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			if (returned instanceof JLabel) {
 				((JLabel) returned).setText(renderValue((T) value));
@@ -164,15 +165,16 @@ public abstract class DropDownColumn<D, T> extends AbstractColumn<D, T> implemen
 	protected class DropDownCellEditor extends DefaultCellEditor {
 		private Hashtable<Integer, DropDownComboBoxModel> _comboBoxModels;
 
-		private JComboBox comboBox;
+		private JComboBox<Object> comboBox;
 
-		public DropDownCellEditor(JComboBox aComboBox) {
+		public DropDownCellEditor(JComboBox<Object> aComboBox) {
 			super(aComboBox);
-			_comboBoxModels = new Hashtable<Integer, DropDownComboBoxModel>();
+			_comboBoxModels = new Hashtable<>();
 			comboBox = aComboBox;
 			comboBox.setRenderer(new DefaultListCellRenderer() {
 				@Override
-				public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+				public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+						boolean cellHasFocus) {
 					Component returned = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 					if (returned instanceof JLabel) {
 						((JLabel) returned).setText(renderValue((T) value));
@@ -199,24 +201,25 @@ public abstract class DropDownColumn<D, T> extends AbstractColumn<D, T> implemen
 			return _comboBoxModel;
 		}
 
-		protected class DropDownComboBoxModel extends DefaultComboBoxModel {
+		protected class DropDownComboBoxModel extends DefaultComboBoxModel<Object> {
 
 			protected DropDownComboBoxModel() {
 				super();
-				for (Enumeration en = getAvailableValues().elements(); en.hasMoreElements();) {
+				for (Enumeration<?> en = getAvailableValues().elements(); en.hasMoreElements();) {
 					addElement(en.nextElement());
 				}
 			}
 
 			protected DropDownComboBoxModel(D element) {
 				super();
-				Vector v = getAvailableValues(element);
+				Vector<?> v = getAvailableValues(element);
 				if (v != null) {
-					for (Enumeration en = v.elements(); en.hasMoreElements();) {
+					for (Enumeration<?> en = v.elements(); en.hasMoreElements();) {
 						addElement(en.nextElement());
 					}
-				} else {
-					for (Enumeration en = getAvailableValues().elements(); en.hasMoreElements();) {
+				}
+				else {
+					for (Enumeration<?> en = getAvailableValues().elements(); en.hasMoreElements();) {
 						addElement(en.nextElement());
 					}
 				}

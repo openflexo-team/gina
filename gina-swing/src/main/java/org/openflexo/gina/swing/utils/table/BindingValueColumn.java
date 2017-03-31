@@ -76,7 +76,7 @@ public abstract class BindingValueColumn<D> extends CustomColumn<D, DataBinding>
 	}
 
 	private void updateSelectorWith(BindingSelector selector, D rowObject, DataBinding<?> value) {
-		DataBinding oldBV = selector.getEditedObject();
+		DataBinding<?> oldBV = selector.getEditedObject();
 		// if (oldBV == null || !oldBV.equals(value)) {
 		if (oldBV != value) {
 			// logger.info("updateSelectorWith value=" + (value != null ? value + " (" + value.getBindingName() + ")" : "null"));
@@ -105,7 +105,7 @@ public abstract class BindingValueColumn<D> extends CustomColumn<D, DataBinding>
 	@Override
 	protected BindingSelector getViewSelector(D rowObject, DataBinding value) {
 		if (viewSelectors == null) {
-			viewSelectors = new HashMap<DataBinding, BindingSelector>();
+			viewSelectors = new HashMap<>();
 		}
 		BindingSelector returned = viewSelectors.get(value);
 		if (returned == null) {
@@ -122,7 +122,7 @@ public abstract class BindingValueColumn<D> extends CustomColumn<D, DataBinding>
 	@Override
 	protected BindingSelector getEditSelector(final D rowObject, DataBinding value) {
 		if (editSelectors == null) {
-			editSelectors = new HashMap<DataBinding, BindingSelector>();
+			editSelectors = new HashMap<>();
 		}
 		BindingSelector returned = editSelectors.get(value);
 		if (returned == null) {

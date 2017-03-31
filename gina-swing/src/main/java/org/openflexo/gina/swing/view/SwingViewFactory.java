@@ -199,7 +199,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 
 		else {
 
-			// We retrive the JComponent on which controls apply
+			// We retrieve the JComponent on which controls apply
 			JComponent dynamicJComponent = ((JFIBView) returned).getRenderingAdapter()
 					.getDynamicJComponent(returned.getTechnologyComponent());
 
@@ -279,7 +279,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 
 	@Override
 	public FIBNumberWidgetImpl<? extends JComponent, ?> makeNumber(FIBNumber widget, FIBController controller) {
-		return new JFIBNumberWidget(widget, controller);
+		return new JFIBNumberWidget<>(widget, controller);
 	}
 
 	@Override
@@ -289,22 +289,22 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 
 	@Override
 	public FIBCheckboxListWidgetImpl<? extends JComponent, ?> makeCheckboxList(FIBCheckboxList widget, FIBController controller) {
-		return new JFIBCheckboxListWidget(widget, controller);
+		return new JFIBCheckboxListWidget<>(widget, controller);
 	}
 
 	@Override
 	public FIBRadioButtonListWidgetImpl<? extends JComponent, ?> makeRadioButtonList(FIBRadioButtonList widget, FIBController controller) {
-		return new JFIBRadioButtonListWidget(widget, controller);
+		return new JFIBRadioButtonListWidget<>(widget, controller);
 	}
 
 	@Override
 	public FIBDropDownWidgetImpl<? extends JComponent, ?> makeDropDown(FIBDropDown widget, FIBController controller) {
-		return new JFIBDropDownWidget(widget, controller);
+		return new JFIBDropDownWidget<>(widget, controller);
 	}
 
 	@Override
 	public FIBListWidgetImpl<? extends JComponent, ?> makeList(FIBList widget, FIBController controller) {
-		return new JFIBListWidget(widget, controller);
+		return new JFIBListWidget<>(widget, controller);
 	}
 
 	@Override
@@ -319,12 +319,12 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 
 	@Override
 	public FIBTableWidgetImpl<? extends JComponent, ?> makeTable(FIBTable widget, FIBController controller) {
-		return new JFIBTableWidget(widget, controller);
+		return new JFIBTableWidget<>(widget, controller);
 	}
 
 	@Override
 	public FIBBrowserWidgetImpl<? extends JComponent, ?> makeBrowser(FIBBrowser widget, FIBController controller) {
-		return new JFIBBrowserWidget(widget, controller);
+		return new JFIBBrowserWidget<>(widget, controller);
 	}
 
 	@Override
@@ -349,7 +349,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 
 	@Override
 	public FIBCustomWidgetImpl<? extends JComponent, ?, ?> makeCustomWidget(FIBCustom widget, FIBController controller) {
-		return new JFIBCustomWidget(widget, controller);
+		return new JFIBCustomWidget<>(widget, controller);
 	}
 
 	@Override
@@ -382,7 +382,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 		}
 	}
 
-	private Window retrieveWindow(FIBController controller) {
+	private static Window retrieveWindow(FIBController controller) {
 		Component c = SwingUtilities.getRoot(((JFIBView<?, ?>) controller.getRootView()).getJComponent());
 		if (c instanceof Window) {
 			return (Window) c;

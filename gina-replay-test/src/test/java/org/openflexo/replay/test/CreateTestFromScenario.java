@@ -61,37 +61,32 @@ public class CreateTestFromScenario {
 		System.out.println("Creating " + className + " (" + output + ") from " + input + "...");
 
 		// Write file
-		PrintWriter writer;
-		try {
-			writer = new PrintWriter(output, "UTF-8");
+		try (PrintWriter writer = new PrintWriter(output, "UTF-8")) {
+			File template = ((FileResourceImpl) ResourceLocator.locateResource(templatePath)).getFile();
+			try (BufferedReader br = new BufferedReader(new FileReader(template))) {
+				String line;
+				try {
+					while ((line = br.readLine()) != null) {
+						line = line.replaceAll("%%RESOURCE_SCENARIO%%", this.input);
+						line = line.replaceAll("%%CLASS_NAME%%", className);
+						writer.println(line);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+					System.out.println("Can't read line");
+					return false;
+				}
+
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.out.println("Can't open " + this.input);
+				return false;
+			}
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
 			e.printStackTrace();
 			System.out.println("Can't open " + this.output);
 			return false;
 		}
-
-		BufferedReader br;
-		File template = ((FileResourceImpl) ResourceLocator.locateResource(templatePath)).getFile();
-		try {
-			br = new BufferedReader(new FileReader(template));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			System.out.println("Can't open " + this.input);
-			return false;
-		}
-		String line;
-		try {
-			while ((line = br.readLine()) != null) {
-				line = line.replaceAll("%%RESOURCE_SCENARIO%%", this.input);
-				line = line.replaceAll("%%CLASS_NAME%%", className);
-				writer.println(line);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("Can't read line");
-			return false;
-		}
-		writer.close();
 
 		System.out.println("Creating successful !");
 		System.out.println("Output : " + this.output);

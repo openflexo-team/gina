@@ -53,7 +53,6 @@ import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.StringTokenizer;
@@ -117,7 +116,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		implements FIBCustomComponent<DataBinding>, Observer, PropertyChangeListener {
 	static final Logger LOGGER = Logger.getLogger(BindingSelector.class.getPackage().getName());
 
-	private DataBinding _revertBindingValue;
+	private DataBinding<?> _revertBindingValue;
 
 	protected boolean _allowsBindingExpressions = true;
 	protected boolean _allowsCompoundBindings = true;
@@ -167,7 +166,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 
 	private Color defaultSelectedColor;
 
-	protected GinaEventNotifier GENotifier;
+	protected GinaEventNotifier<EventDescription> GENotifier;
 
 	public BindingSelector(DataBinding<?> editedObject) {
 		this(editedObject, -1);
@@ -176,7 +175,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 	public BindingSelector(DataBinding<?> editedObject, int cols) {
 		super(null, cols);
 
-		GENotifier = new GinaEventNotifier(null, null) {
+		GENotifier = new GinaEventNotifier<EventDescription>(null, null) {
 
 			@Override
 			public KIND computeClass(EventDescription e) {
@@ -286,8 +285,10 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 									if (input.indexOf(".") > -1) {
 										String pathIgnoringLastPart = input.substring(0, input.lastIndexOf("."));
 										if (isKeyPathValid(pathIgnoringLastPart)) {
-											String inexitingPart = input.substring(input.lastIndexOf(".") + 1);
-											Type hostType = selectorPanel.getEndingTypeForSubPath(pathIgnoringLastPart);
+											// Unused String inexitingPart =
+											input.substring(input.lastIndexOf(".") + 1);
+											// Unused Type hostType =
+											selectorPanel.getEndingTypeForSubPath(pathIgnoringLastPart);
 										}
 									}
 								}
@@ -400,7 +401,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		try {
 			isUpdatingModel = true;
 
-			DataBinding newEditedBinding = makeBindingFromString(textValue);
+			DataBinding<?> newEditedBinding = makeBindingFromString(textValue);
 
 			if (newEditedBinding != null) {
 				// logger.info("Decoding binding as " + newEditedBinding +
@@ -506,7 +507,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		 */
 	}
 
-	public void setEditedObject(DataBinding dataBinding, boolean updateBindingSelectionMode) {
+	public void setEditedObject(DataBinding<?> dataBinding, boolean updateBindingSelectionMode) {
 		// logger.info(">>>>>>>>>>>>>> setEditedObject() with "+object);
 		if (updateBindingSelectionMode) {
 			if (dataBinding != null) {
@@ -906,7 +907,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 					getLabel().setIcon(UtilsIconLibrary.OK_ICON);
 				}
 				else {
-					Bindable owner = editedObject.getOwner();
+					// Unused Bindable owner =
+					editedObject.getOwner();
 					LOGGER.info("Binding not valid: " + editedObject + " reason=" + editedObject.invalidBindingReason());
 					/*
 					 * if (editedObject.isBindingValue()) { BindingValue bv =
@@ -1200,7 +1202,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 
 		if (_selectorPanel != null) {
 			if (_selectorPanel instanceof BindingValueSelectorPanel) {
-				JList list = ((BindingValueSelectorPanel) _selectorPanel).listAtIndex(0);
+				JList<?> list = ((BindingValueSelectorPanel) _selectorPanel).listAtIndex(0);
 				if (list.getModel().getSize() == 1) {
 					list.setSelectedIndex(0);
 				}
@@ -1305,7 +1307,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		if (_selectorPanel != null) {
 			_selectorPanel.willApply();
 		}
-		DataBinding dataBinding = getEditedObject();
+		DataBinding<?> dataBinding = getEditedObject();
 		if (dataBinding != null) {
 			if (dataBinding.isValid()) {
 				/*
@@ -1366,7 +1368,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		if (getEditedObject().getDeclaredType() == null) {
 			return false;
 		}
-		Constant b = makeStaticBindingFromString(stringValue);
+		Constant<?> b = makeStaticBindingFromString(stringValue);
 		if (b == null) {
 			return false;
 		}
@@ -1393,7 +1395,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		return false;
 	}
 
-	private boolean isAcceptableAsBeginningOfBooleanStaticBindingValue(String stringValue) {
+	private static boolean isAcceptableAsBeginningOfBooleanStaticBindingValue(String stringValue) {
 		if (stringValue.length() > 0) {
 			if (stringValue.length() <= 4 && "true".substring(0, stringValue.length()).equalsIgnoreCase(stringValue)) {
 				return true;
@@ -1460,12 +1462,12 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		return false;
 	}
 
-	Constant makeStaticBindingFromString(String stringValue) {
+	Constant<?> makeStaticBindingFromString(String stringValue) {
 		Expression e;
 		try {
 			e = ExpressionParser.parse(stringValue);
 			if (e instanceof Constant) {
-				return (Constant) e;
+				return (Constant<?>) e;
 			}
 		} catch (ParseException e1) {
 			// e1.printStackTrace();
@@ -1473,9 +1475,9 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		return null;
 	}
 
-	DataBinding makeBindingFromString(String stringValue) {
+	DataBinding<?> makeBindingFromString(String stringValue) {
 
-		DataBinding<?> returned = new DataBinding<Object>(stringValue, getBindable(), getEditedObject().getDeclaredType(),
+		DataBinding<?> returned = new DataBinding<>(stringValue, getBindable(), getEditedObject().getDeclaredType(),
 				getEditedObject().getBindingDefinitionType());
 		returned.decode();
 		return returned;
@@ -1553,8 +1555,9 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 
 		Bindable testBindable = new TestBindable();
 
-		BindingFactory factory = new JavaBindingFactory();
-		DataBinding binding = new DataBinding<String>("aString.toString", testBindable, String.class,
+		// Unused BindingFactory factory =
+		new JavaBindingFactory();
+		DataBinding<String> binding = new DataBinding<>("aString.toString", testBindable, String.class,
 				DataBinding.BindingDefinitionType.GET);
 		// DataBinding binding = new DataBinding<String>(testBindable,
 		// Object.class, DataBinding.BindingDefinitionType.EXECUTE);

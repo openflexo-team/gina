@@ -69,7 +69,6 @@ import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTableAction.FIBAddAction;
 import org.openflexo.gina.model.widget.FIBTextFieldColumn;
 import org.openflexo.gina.sampleData.Family;
-import org.openflexo.gina.sampleData.Family.Gender;
 import org.openflexo.gina.sampleData.Person;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.gina.test.FIBTestCase;
@@ -111,7 +110,7 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 
 		browser = newFIBBrowser();
 		browser.setName("browser");
-		browser.setRoot(new DataBinding<Object>("data", browser, Object.class, BindingDefinitionType.GET));
+		browser.setRoot(new DataBinding<>("data", browser, Object.class, BindingDefinitionType.GET));
 		browser.setIteratorClass(Person.class);
 		browser.setBoundToSelectionManager(true);
 		browser.setManageDynamicModel(true);
@@ -202,12 +201,12 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 		FIBBrowserElement rootElement = newFIBBrowserElement();
 		rootElement.setName("family");
 		rootElement.setDataClass(Family.class);
-		rootElement.setLabel(new DataBinding<String>("\"My Family\"", browser, String.class, BindingDefinitionType.GET));
+		rootElement.setLabel(new DataBinding<>("\"My Family\"", browser, String.class, BindingDefinitionType.GET));
 		FIBBrowserElementChildren parents = newFIBBrowserElementChildren();
-		parents.setData(new DataBinding<Object>("family.parents", browser, Object.class, BindingDefinitionType.GET));
+		parents.setData(new DataBinding<>("family.parents", browser, Object.class, BindingDefinitionType.GET));
 		rootElement.addToChildren(parents);
 		FIBBrowserElementChildren children = newFIBBrowserElementChildren();
-		parents.setData(new DataBinding<Object>("family.children", browser, Object.class, BindingDefinitionType.GET));
+		parents.setData(new DataBinding<>("family.children", browser, Object.class, BindingDefinitionType.GET));
 		rootElement.addToChildren(children);
 
 		browser.addToElements(rootElement);
@@ -215,8 +214,7 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 		FIBBrowserElement personElement = newFIBBrowserElement();
 		personElement.setName("person");
 		personElement.setDataClass(Person.class);
-		personElement
-				.setLabel(new DataBinding<String>("\"My relative: \"+person.toString", browser, String.class, BindingDefinitionType.GET));
+		personElement.setLabel(new DataBinding<>("\"My relative: \"+person.toString", browser, String.class, BindingDefinitionType.GET));
 
 		org.openflexo.gina.model.widget.FIBBrowserAction.FIBAddAction addAction = factory
 				.newInstance(org.openflexo.gina.model.widget.FIBBrowserAction.FIBAddAction.class);
@@ -289,25 +287,25 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 		table.setManageDynamicModel(true);
 
 		FIBTextFieldColumn c1 = newFIBTextFieldColumn();
-		c1.setData(new DataBinding<String>("iterator.firstName", c1, String.class, BindingDefinitionType.GET_SET));
+		c1.setData(new DataBinding<>("iterator.firstName", c1, String.class, BindingDefinitionType.GET_SET));
 		table.addToColumns(c1);
 		FIBTextFieldColumn c2 = newFIBTextFieldColumn();
-		c2.setData(new DataBinding<String>("iterator.lastName", c2, String.class, BindingDefinitionType.GET_SET));
+		c2.setData(new DataBinding<>("iterator.lastName", c2, String.class, BindingDefinitionType.GET_SET));
 		table.addToColumns(c2);
 		FIBNumberColumn c3 = newFIBNumberColumn();
 		c3.setNumberType(NumberType.IntegerType);
-		c3.setData(new DataBinding<Integer>("iterator.age", c3, String.class, BindingDefinitionType.GET_SET));
+		c3.setData(new DataBinding<>("iterator.age", c3, String.class, BindingDefinitionType.GET_SET));
 		table.addToColumns(c3);
 		FIBDropDownColumn c4 = newFIBDropDownColumn();
-		c4.setData(new DataBinding<Gender>("iterator.gender", c4, String.class, BindingDefinitionType.GET_SET));
+		c4.setData(new DataBinding<>("iterator.gender", c4, String.class, BindingDefinitionType.GET_SET));
 		table.addToColumns(c4);
 		FIBLabelColumn c5 = newFIBLabelColumn();
-		c5.setData(new DataBinding<String>("iterator.toString", c5, String.class, BindingDefinitionType.GET));
+		c5.setData(new DataBinding<>("iterator.toString", c5, String.class, BindingDefinitionType.GET));
 		table.addToColumns(c5);
 
 		FIBAddAction action = factory.newInstance(FIBAddAction.class);
 		action.setName("action");
-		action.setMethod(new DataBinding<Object>("selected.toString"));
+		action.setMethod(new DataBinding<>("selected.toString"));
 		table.addToActions(action);
 
 		System.out.println("Table BM = " + table.getBindingModel());

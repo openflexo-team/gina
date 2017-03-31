@@ -277,7 +277,7 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 					if (cb.isSelected()) {
 						if (!containsObject(value)) {
 							if (selectedValues == null) {
-								selectedValues = new ArrayList<T>();
+								selectedValues = new ArrayList<>();
 							}
 							selectedValues.add(value);
 						}

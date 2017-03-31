@@ -362,7 +362,8 @@ public class GinaReplaySession implements GinaEventListener {
 	}
 
 	public GinaEvent getEventUserOrigin(GinaEvent e, Stack<GinaStackEvent> stack) {
-		GinaEvent origin = getEventOrigin(e, stack);
+		// Unused GinaEvent origin =
+		getEventOrigin(e, stack);
 		GinaEvent userOrigin = null;
 
 		if (stack.size() > 1) {

@@ -191,7 +191,7 @@ public class FIBCheckboxListWidgetTest extends FIBTestCase {
 	@TestOrder(3)
 	public void test3ModifyValueInModel() {
 
-		JFIBCheckboxListWidget w5 = (JFIBCheckboxListWidget) controller.viewForComponent(checkboxList5);
+		JFIBCheckboxListWidget<?> w5 = (JFIBCheckboxListWidget<?>) controller.viewForComponent(checkboxList5);
 
 		assertEquals(false, w5.getCheckboxAtIndex(0).isSelected());
 		assertEquals(false, w5.getCheckboxAtIndex(1).isSelected());
@@ -222,7 +222,7 @@ public class FIBCheckboxListWidgetTest extends FIBTestCase {
 	@Test
 	@TestOrder(4)
 	public void test4ModifyValueInWidget() {
-		JFIBCheckboxListWidget w5 = (JFIBCheckboxListWidget) controller.viewForComponent(checkboxList5);
+		JFIBCheckboxListWidget<?> w5 = (JFIBCheckboxListWidget<?>) controller.viewForComponent(checkboxList5);
 
 		w5.getCheckboxAtIndex(1).doClick();
 
@@ -248,7 +248,7 @@ public class FIBCheckboxListWidgetTest extends FIBTestCase {
 	@TestOrder(5)
 	public void test5ModifyListValueInModel() {
 
-		JFIBCheckboxListWidget w5 = (JFIBCheckboxListWidget) controller.viewForComponent(checkboxList5);
+		JFIBCheckboxListWidget<?> w5 = (JFIBCheckboxListWidget<?>) controller.viewForComponent(checkboxList5);
 
 		assertEquals(5, w5.getMultipleValueModel().getSize());
 

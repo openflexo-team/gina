@@ -133,7 +133,7 @@ class ConstantValuePanel extends JPanel {
 				final String TRUE = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("true");
 				final String FALSE = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("false");
 				String[] availableValues = { UNSELECTED, TRUE, FALSE };
-				selectValueCB = new JComboBox<String>(availableValues);
+				selectValueCB = new JComboBox<>(availableValues);
 				selectValueCB.setFont(SMALL_FONT);
 				selectValueCB.addActionListener(new ActionListener() {
 					@Override
@@ -264,7 +264,7 @@ class ConstantValuePanel extends JPanel {
 			final String DKV = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("enum");
 			final String NULL = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("null");
 			String[] availableValues = { SELECT, BOOLEAN, INTEGER, FLOAT, STRING, DATE, DURATION, DKV, NULL };
-			typeCB = new JComboBox<String>(availableValues);
+			typeCB = new JComboBox<>(availableValues);
 			typeCB.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -352,7 +352,7 @@ class ConstantValuePanel extends JPanel {
 
 	private EvaluationType kindOf(Type type) {
 		if (TypeUtils.isObject(type) && bindingValueSelectorPanel.bindingSelector.getEditedObject().isConstant()) {
-			return ((Constant) bindingValueSelectorPanel.bindingSelector.getEditedObject().getExpression()).getEvaluationType();
+			return ((Constant<?>) bindingValueSelectorPanel.bindingSelector.getEditedObject().getExpression()).getEvaluationType();
 		}
 		else {
 			return TypeUtils.kindOfType(type);

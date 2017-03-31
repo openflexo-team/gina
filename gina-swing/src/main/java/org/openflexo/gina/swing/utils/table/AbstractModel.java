@@ -77,8 +77,8 @@ public abstract class AbstractModel<M extends Observable, D> extends DefaultTabl
 	public AbstractModel(M model) {
 		super();
 		_model = model;
-		_columns = new Vector<AbstractColumn<D, ?>>();
-		_observedObjects = new Vector<D>();
+		_columns = new Vector<>();
+		_observedObjects = new Vector<>();
 	}
 
 	public M getModel() {
@@ -308,7 +308,7 @@ public abstract class AbstractModel<M extends Observable, D> extends DefaultTabl
 
 	@Override
 	public String getColumnName(int col) {
-		AbstractColumn column = columnAt(col);
+		AbstractColumn<?, ?> column = columnAt(col);
 		if (column != null) {
 			return column.getLocalizedTitle();
 		}
@@ -362,7 +362,7 @@ public abstract class AbstractModel<M extends Observable, D> extends DefaultTabl
 
 	@Override
 	public boolean isCellEditable(int row, int col) {
-		AbstractColumn column = columnAt(col);
+		AbstractColumn<D, ?> column = columnAt(col);
 		if (column != null) {
 			D object = elementAt(row);
 			return column.isCellEditableFor(object);
@@ -372,7 +372,7 @@ public abstract class AbstractModel<M extends Observable, D> extends DefaultTabl
 
 	@Override
 	public Object getValueAt(int row, int col) {
-		AbstractColumn column = columnAt(col);
+		AbstractColumn<D, ?> column = columnAt(col);
 		if (column != null) {
 			D object = elementAt(row);
 			return column.getValueFor(object);

@@ -103,19 +103,19 @@ public class FIBBrowserWidgetTest extends FIBTestCase {
 		component.setDataClass(Family.class);
 
 		browser = newFIBBrowser();
-		browser.setRoot(new DataBinding<Object>("data", browser, Object.class, BindingDefinitionType.GET));
+		browser.setRoot(new DataBinding<>("data", browser, Object.class, BindingDefinitionType.GET));
 		browser.setBoundToSelectionManager(true);
 		browser.setIteratorClass(Person.class);
 
 		FIBBrowserElement rootElement = newFIBBrowserElement();
 		rootElement.setName("family");
 		rootElement.setDataClass(Family.class);
-		rootElement.setLabel(new DataBinding<String>("\"My Family\"", browser, String.class, BindingDefinitionType.GET));
+		rootElement.setLabel(new DataBinding<>("\"My Family\"", browser, String.class, BindingDefinitionType.GET));
 		FIBBrowserElementChildren parents = newFIBBrowserElementChildren();
-		parents.setData(new DataBinding<Object>("family.parents", browser, Object.class, BindingDefinitionType.GET));
+		parents.setData(new DataBinding<>("family.parents", browser, Object.class, BindingDefinitionType.GET));
 		rootElement.addToChildren(parents);
 		FIBBrowserElementChildren children = newFIBBrowserElementChildren();
-		parents.setData(new DataBinding<Object>("family.children", browser, Object.class, BindingDefinitionType.GET));
+		parents.setData(new DataBinding<>("family.children", browser, Object.class, BindingDefinitionType.GET));
 		rootElement.addToChildren(children);
 
 		browser.addToElements(rootElement);
@@ -123,8 +123,7 @@ public class FIBBrowserWidgetTest extends FIBTestCase {
 		FIBBrowserElement personElement = newFIBBrowserElement();
 		personElement.setName("person");
 		personElement.setDataClass(Person.class);
-		personElement
-				.setLabel(new DataBinding<String>("\"My relative: \"+person.toString", browser, String.class, BindingDefinitionType.GET));
+		personElement.setLabel(new DataBinding<>("\"My relative: \"+person.toString", browser, String.class, BindingDefinitionType.GET));
 
 		browser.addToElements(personElement);
 		component.addToSubComponents(browser, new TwoColsLayoutConstraints(TwoColsLayoutLocation.center, true, true));
@@ -162,7 +161,7 @@ public class FIBBrowserWidgetTest extends FIBTestCase {
 	@TestOrder(3)
 	public void test3ModifyValueInModel() {
 
-		JFIBBrowserWidget w = (JFIBBrowserWidget) controller.viewForComponent(browser);
+		JFIBBrowserWidget<Person> w = (JFIBBrowserWidget<Person>) controller.viewForComponent(browser);
 
 		BrowserCell root = (BrowserCell) w.getBrowserModel().getRoot();
 
@@ -187,7 +186,7 @@ public class FIBBrowserWidgetTest extends FIBTestCase {
 	@TestOrder(4)
 	public void test4PerfomSomeTestsWithSelection() {
 
-		FIBBrowserWidget w = (FIBBrowserWidget) controller.viewForComponent(browser);
+		FIBBrowserWidget<?, Object> w = (FIBBrowserWidget<?, Object>) controller.viewForComponent(browser);
 
 		w.resetSelection();
 		w.addToSelection(family);
@@ -216,7 +215,7 @@ public class FIBBrowserWidgetTest extends FIBTestCase {
 		w.addToSelection(child2);
 		w.addToSelection(child4);
 
-		List<Person> expectedSelection = new ArrayList<Person>();
+		List<Person> expectedSelection = new ArrayList<>();
 		expectedSelection.add(child1);
 		expectedSelection.add(child2);
 		expectedSelection.add(child4);

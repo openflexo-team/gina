@@ -127,7 +127,7 @@ public class FIBBrowserWidgetSelectionTest2 extends FIBTestCase {
 
 		browser = newFIBBrowser();
 		browser.setName("browser");
-		browser.setRoot(new DataBinding<Object>("data", browser, Object.class, BindingDefinitionType.GET));
+		browser.setRoot(new DataBinding<>("data", browser, Object.class, BindingDefinitionType.GET));
 		browser.setIteratorClass(Person.class);
 		browser.setBoundToSelectionManager(true);
 		browser.setManageDynamicModel(true);
@@ -135,12 +135,12 @@ public class FIBBrowserWidgetSelectionTest2 extends FIBTestCase {
 		FIBBrowserElement rootElement = newFIBBrowserElement();
 		rootElement.setName("family");
 		rootElement.setDataClass(Family.class);
-		rootElement.setLabel(new DataBinding<String>("\"My Family\"", browser, String.class, BindingDefinitionType.GET));
+		rootElement.setLabel(new DataBinding<>("\"My Family\"", browser, String.class, BindingDefinitionType.GET));
 		FIBBrowserElementChildren parents = newFIBBrowserElementChildren();
-		parents.setData(new DataBinding<Object>("family.parents", browser, Object.class, BindingDefinitionType.GET));
+		parents.setData(new DataBinding<>("family.parents", browser, Object.class, BindingDefinitionType.GET));
 		rootElement.addToChildren(parents);
 		FIBBrowserElementChildren children = newFIBBrowserElementChildren();
-		parents.setData(new DataBinding<Object>("family.children", browser, Object.class, BindingDefinitionType.GET));
+		parents.setData(new DataBinding<>("family.children", browser, Object.class, BindingDefinitionType.GET));
 		rootElement.addToChildren(children);
 
 		browser.addToElements(rootElement);
@@ -273,7 +273,7 @@ public class FIBBrowserWidgetSelectionTest2 extends FIBTestCase {
 	@TestOrder(3)
 	public void test3SelectSomeValues() {
 
-		FIBBrowserWidget w = (FIBBrowserWidget) controller.viewForComponent(browser);
+		FIBBrowserWidget<?, Person> w = (FIBBrowserWidget<?, Person>) controller.viewForComponent(browser);
 		FIBPanelView<?, ?> details1 = (FIBPanelView<?, ?>) controller.viewForComponent(detailsPanel1);
 		FIBPanelView<?, ?> details2 = (FIBPanelView<?, ?>) controller.viewForComponent(detailsPanel2);
 

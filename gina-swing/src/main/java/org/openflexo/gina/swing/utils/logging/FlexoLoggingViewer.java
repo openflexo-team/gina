@@ -80,7 +80,7 @@ public class FlexoLoggingViewer implements HasPropertyChangeSupport {
 
 	private final PropertyChangeSupport _pcSupport;
 
-	public Vector<LoggingFilter> filters = new Vector<LoggingFilter>();
+	public Vector<LoggingFilter> filters = new Vector<>();
 	public String searchedText;
 
 	public boolean displayLogLevel = false;

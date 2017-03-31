@@ -158,7 +158,7 @@ public class ClassScope {
 			throw new IllegalArgumentException("null input: loaders");
 		}
 
-		final List<Class<?>> resultList = new LinkedList<Class<?>>();
+		final List<Class<?>> resultList = new LinkedList<>();
 
 		for (int l = 0; l < loaders.length; ++l) {
 			final ClassLoader loader = loaders[l];
@@ -191,7 +191,7 @@ public class ClassScope {
 
 		final Class<?>[] callContext = CALLER_RESOLVER.getClassContext();
 
-		final Set<ClassLoader> resultSet = new HashSet<ClassLoader>();
+		final Set<ClassLoader> resultSet = new HashSet<>();
 
 		for (int c = 2; c < callContext.length; ++c) {
 			getClassLoaderTree(callContext[c], resultSet);

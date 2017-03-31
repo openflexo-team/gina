@@ -46,8 +46,8 @@ import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.gina.model.widget.FIBButton;
 import org.openflexo.gina.model.widget.FIBLabel;
-import org.openflexo.gina.model.widget.FIBTextField;
 import org.openflexo.gina.model.widget.FIBLabel.Align;
+import org.openflexo.gina.model.widget.FIBTextField;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -116,13 +116,13 @@ public interface AskParametersComponent extends FIBPanel {
 
 			FIBButton validateButton = FACTORY.newFIBButton();
 			validateButton.setLabel("validate");
-			validateButton.setAction(new DataBinding<Object>("controller.validateAndDispose()", validateButton, Void.TYPE,
-					BindingDefinitionType.EXECUTE));
+			validateButton.setAction(
+					new DataBinding<>("controller.validateAndDispose()", validateButton, Void.TYPE, BindingDefinitionType.EXECUTE));
 
 			FIBButton cancelButton = FACTORY.newFIBButton();
 			cancelButton.setLabel("cancel");
-			cancelButton.setAction(new DataBinding<Object>("controller.cancelAndDispose()", validateButton, Void.TYPE,
-					BindingDefinitionType.EXECUTE));
+			cancelButton.setAction(
+					new DataBinding<>("controller.cancelAndDispose()", validateButton, Void.TYPE, BindingDefinitionType.EXECUTE));
 
 			controlPanel.addToSubComponents(validateButton);
 			controlPanel.addToSubComponents(cancelButton);

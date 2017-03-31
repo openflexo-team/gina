@@ -40,7 +40,7 @@ public class Tester {
 	@Parameters(name = "{index}: Node {0}")
 	public static Collection<TestParameter[]> data() {
 		init();
-		LinkedList<TestParameter[]> list = new LinkedList<TestParameter[]>();
+		LinkedList<TestParameter[]> list = new LinkedList<>();
 
 		int size = testConfiguration.getSession().getScenario().size();
 

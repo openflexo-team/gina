@@ -40,10 +40,8 @@
 package org.openflexo.gina.swing.view.widget;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.image.ImageObserver;
@@ -67,7 +65,7 @@ import org.openflexo.gina.view.widget.impl.FIBImageWidgetImpl;
  * 
  * @author sylvain
  */
-public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel>implements ImageObserver, JFIBView<FIBImage, JLabel> {
+public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel> implements ImageObserver, JFIBView<FIBImage, JLabel> {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBImageWidget.class.getPackage().getName());
 
@@ -77,7 +75,7 @@ public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel>implements ImageO
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingImageRenderingAdapter extends SwingRenderingAdapter<JLabel>implements ImageRenderingAdapter<JLabel> {
+	public static class SwingImageRenderingAdapter extends SwingRenderingAdapter<JLabel> implements ImageRenderingAdapter<JLabel> {
 
 		@Override
 		public Image getImage(JLabel component, FIBImageWidget<JLabel> widget) {
@@ -165,7 +163,7 @@ public class JFIBImageWidget extends FIBImageWidgetImpl<JLabel>implements ImageO
 
 			@Override
 			public void componentResized(ComponentEvent e) {
-				Rectangle b = (e.getSource() != null ? ((Component) e.getSource()).getBounds() : null);
+				// Unused Rectangle b = (e.getSource() != null ? ((Component) e.getSource()).getBounds() : null);
 				// size = b.getSize();
 				updateImageSizeAdjustment();
 

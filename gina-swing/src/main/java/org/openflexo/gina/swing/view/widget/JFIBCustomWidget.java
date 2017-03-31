@@ -64,7 +64,7 @@ import org.openflexo.gina.view.widget.impl.FIBCustomWidgetImpl;
  * 
  */
 public class JFIBCustomWidget<CC extends JComponent & FIBCustomComponent<T>, T>
-		extends FIBCustomWidgetImpl<JCustomComponentPanel<CC, T>, CC, T>implements JFIBView<FIBCustom, JCustomComponentPanel<CC, T>> {
+		extends FIBCustomWidgetImpl<JCustomComponentPanel<CC, T>, CC, T> implements JFIBView<FIBCustom, JCustomComponentPanel<CC, T>> {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBCustomWidget.class.getPackage().getName());
 
@@ -128,7 +128,7 @@ public class JFIBCustomWidget<CC extends JComponent & FIBCustomComponent<T>, T>
 
 	@Override
 	protected JCustomComponentPanel<CC, T> makeTechnologyComponent() {
-		return new JCustomComponentPanel<CC, T>(this);
+		return new JCustomComponentPanel<>(this);
 	}
 
 	@Override

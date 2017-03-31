@@ -40,7 +40,6 @@
 package org.openflexo.gina.swing.view.container;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -85,7 +84,7 @@ import org.openflexo.toolbox.StringUtils;
  * 
  * @author sylvain
  */
-public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent>implements ImageObserver, JFIBView<FIBPanel, JPanel> {
+public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> implements ImageObserver, JFIBView<FIBPanel, JPanel> {
 
 	private static final Logger logger = Logger.getLogger(JFIBPanelView.class.getPackage().getName());
 
@@ -189,16 +188,13 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent>implement
 						getComponent().retrieveValidFont(), getComponent().retrieveValidForegroundColor()));
 				break;
 			case rounded3d:
-				getTechnologyComponent()
-						.setBorder(new RoundedBorder(
-								StringUtils.isNotEmpty(getComponent().getBorderTitle()) ? getLocalized(getComponent().getBorderTitle())
-										: null,
-								getComponent().getBorderTop() != null ? getComponent().getBorderTop() : 0,
-								getComponent().getBorderLeft() != null ? getComponent().getBorderLeft() : 0,
-								getComponent().getBorderBottom() != null ? getComponent().getBorderBottom() : 0,
-								getComponent().getBorderRight() != null ? getComponent().getBorderRight() : 0,
-								getComponent().getTitleFont(), getComponent().retrieveValidForegroundColor(),
-								getComponent().getDarkLevel()));
+				getTechnologyComponent().setBorder(new RoundedBorder(
+						StringUtils.isNotEmpty(getComponent().getBorderTitle()) ? getLocalized(getComponent().getBorderTitle()) : null,
+						getComponent().getBorderTop() != null ? getComponent().getBorderTop() : 0,
+						getComponent().getBorderLeft() != null ? getComponent().getBorderLeft() : 0,
+						getComponent().getBorderBottom() != null ? getComponent().getBorderBottom() : 0,
+						getComponent().getBorderRight() != null ? getComponent().getBorderRight() : 0, getComponent().getTitleFont(),
+						getComponent().retrieveValidForegroundColor(), getComponent().getDarkLevel()));
 				break;
 			default:
 				break;
@@ -329,7 +325,7 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent>implement
 
 			@Override
 			public void componentResized(ComponentEvent e) {
-				Rectangle b = (e.getSource() != null ? ((Component) e.getSource()).getBounds() : null);
+				// Unused Rectangle b = (e.getSource() != null ? ((Component) e.getSource()).getBounds() : null);
 				// size = b.getSize();
 				updateBackgroundImageSizeAdjustment();
 

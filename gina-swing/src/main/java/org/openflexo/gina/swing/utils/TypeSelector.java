@@ -161,11 +161,11 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 		setRevertValue(editedObject);
 		setFocusable(true);
 		pcSupport = new PropertyChangeSupport(this);
-		choices = new ArrayList<Object>();
+		choices = new ArrayList<>();
 
-		genericParameters = new ArrayList<GenericParameter>();
-		upperBounds = new ArrayList<GenericBound>();
-		lowerBounds = new ArrayList<GenericBound>();
+		genericParameters = new ArrayList<>();
+		upperBounds = new ArrayList<>();
+		lowerBounds = new ArrayList<>();
 
 		updateChoices();
 		if (editedObject == null) {
@@ -510,7 +510,7 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 			genericParameters.clear();
 		}
 		else {
-			List<GenericParameter> genericParametersToRemove = new ArrayList<GenericParameter>(genericParameters);
+			List<GenericParameter> genericParametersToRemove = new ArrayList<>(genericParameters);
 			for (TypeVariable<?> tv : baseClass.getTypeParameters()) {
 				GenericParameter foundGenericParameter = null;
 				for (GenericParameter gp : genericParameters) {

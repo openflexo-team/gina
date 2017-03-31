@@ -590,7 +590,7 @@ public class TestBindingModel extends FIBTestCase {
 		assertEquals("Robert", tf2.getValue());
 		JFIBCheckBoxWidget cb = (JFIBCheckBoxWidget) controller.viewForWidget(checkbox);
 		assertEquals(true, cb.getValue());
-		JFIBNumberWidget<?> nb = (JFIBNumberWidget) controller.viewForWidget(number);
+		JFIBNumberWidget<?> nb = (JFIBNumberWidget<?>) controller.viewForWidget(number);
 		assertEquals(39, nb.getValue());
 
 		/*System.out.println("Panel2: ");

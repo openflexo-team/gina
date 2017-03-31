@@ -18,9 +18,8 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 
 /**
- * This class represents a cycle of interaction (user and system) :
- *  - It starts by 1 UserInteraction
- *  - It is followed by 1 or many SystemEvent, in response of the previous UserInteraction
+ * This class represents a cycle of interaction (user and system) : - It starts by 1 UserInteraction - It is followed by 1 or many
+ * SystemEvent, in response of the previous UserInteraction
  * 
  * @author Alexandre
  */
@@ -81,7 +80,7 @@ public interface InteractionCycle extends ScenarioNode {
 
 		@Override
 		public List<GinaEvent> getNonUserInteractionsByKind(String namespace) {
-			List<GinaEvent> l = new LinkedList<GinaEvent>();
+			List<GinaEvent> l = new LinkedList<>();
 
 			/*for(SystemEvent e : getSystemEvents())
 				if (e.getDescription().getNamespace() == namespace)

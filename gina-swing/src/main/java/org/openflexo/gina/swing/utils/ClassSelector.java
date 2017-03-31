@@ -72,8 +72,7 @@ import org.openflexo.swing.VerticalLayout;
  * @author sguerin
  * 
  */
-public class ClassSelector extends TextFieldCustomPopup<Class>implements FIBCustomComponent<Class> {
-	@SuppressWarnings("hiding")
+public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCustomComponent<Class> {
 	static final Logger LOGGER = Logger.getLogger(ClassSelector.class.getPackage().getName());
 
 	public static Resource FIB_FILE_NAME = ResourceLocator.getResourceLocator().locateResource("Fib/ClassSelector.fib");
@@ -82,7 +81,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class>implements FIBCust
 
 	protected ClassSelectorDetailsPanel _selectorPanel;
 
-	public ClassSelector(Class editedObject) {
+	public ClassSelector(Class<?> editedObject) {
 		super(editedObject);
 		setRevertValue(editedObject);
 		setFocusable(true);
@@ -128,7 +127,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class>implements FIBCust
 		return _selectorPanel;
 	}
 
-	protected ClassSelectorDetailsPanel makeCustomPanel(Class editedObject) {
+	protected ClassSelectorDetailsPanel makeCustomPanel(Class<?> editedObject) {
 		return new ClassSelectorDetailsPanel(editedObject);
 	}
 
@@ -146,7 +145,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class>implements FIBCust
 		private CustomFIBController controller;
 		private ClassEditor classEditor;
 
-		protected ClassSelectorDetailsPanel(Class aClass) {
+		protected ClassSelectorDetailsPanel(Class<?> aClass) {
 			super();
 
 			fibComponent = ApplicationFIBLibraryImpl.instance().retrieveFIBComponent(FIB_FILE_NAME, true);

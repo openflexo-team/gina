@@ -136,8 +136,8 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		ignoredPatterns.add(new IgnoredPattern("javassist.*"));
 		ignoredPatterns.add(new IgnoredPattern("org.jdom2.*"));
 
-		instances = new ArrayList<LoadedClassesInfo>();
-		registeredClassesForName = new Hashtable<String, List<ClassInfo>>();
+		instances = new ArrayList<>();
+		registeredClassesForName = new Hashtable<>();
 		packages = new Hashtable<Package, PackageInfo>() {
 			@Override
 			public synchronized PackageInfo put(Package key, PackageInfo value) {
@@ -171,20 +171,20 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 	}
 
 	/**
-	 * Explicitely search in all loaded classes if
+	 * Explicitly search in all loaded classes if
 	 */
 	public List<Class<?>> search(String partialClassName) {
 		// LOGGER.info("*************** Searching class " + partialClassName);
-		List<Class<?>> foundClasses = new ArrayList<Class<?>>();
+		List<Class<?>> foundClasses = new ArrayList<>();
 		try {
-			Class foundClass = Class.forName(partialClassName);
+			Class<?> foundClass = Class.forName(partialClassName);
 			foundClasses.add(foundClass);
 			LOGGER.info("Found class " + foundClass);
 		} catch (ClassNotFoundException e) {
 		}
 		for (PackageInfo packageInfo : getPackages()) {
 			try {
-				Class foundClass = Class.forName(packageInfo.getPackageName() + "." + partialClassName);
+				Class<?> foundClass = Class.forName(packageInfo.getPackageName() + "." + partialClassName);
 				foundClasses.add(foundClass);
 				LOGGER.info("Found class " + foundClass);
 			} catch (ClassNotFoundException e) {
@@ -199,7 +199,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		return foundClasses;
 	}
 
-	private boolean isFiltered(Class aClass) {
+	private boolean isFiltered(Class<?> aClass) {
 		for (IgnoredPattern ignoredPattern : ignoredPatterns) {
 			if (ignoredPattern.match(aClass.getName())) {
 				return true;
@@ -229,7 +229,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 	public List<PackageInfo> getPackages() {
 		if (needsReordering) {
-			packageList = new ArrayList<PackageInfo>();
+			packageList = new ArrayList<>();
 			for (Package p : packages.keySet()) {
 				packageList.add(packages.get(p));
 			}
@@ -252,11 +252,11 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		return returned;
 	}
 
-	public ClassInfo getClass(Class c) {
+	public ClassInfo getClass(Class<?> c) {
 		return registerClass(c);
 	}
 
-	public ClassInfo registerClass(Class c) {
+	public ClassInfo registerClass(Class<?> c) {
 		if (c == null) {
 			LOGGER.warning("Null class " + c);
 			return null;
@@ -306,9 +306,9 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 	public class PackageInfo implements HasPropertyChangeSupport {
 		private String packageName;
-		private final Hashtable<Class, ClassInfo> classes = new Hashtable<Class, ClassInfo>() {
+		private final Hashtable<Class<?>, ClassInfo> classes = new Hashtable<Class<?>, ClassInfo>() {
 			@Override
-			public synchronized ClassInfo put(Class key, ClassInfo value) {
+			public synchronized ClassInfo put(Class<?> key, ClassInfo value) {
 				ClassInfo returned = super.put(key, value);
 				needsReordering = true;
 				pcSupport.firePropertyChange("classes", null, null);
@@ -341,8 +341,8 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 		public List<ClassInfo> getClasses() {
 			if (needsReordering) {
-				classesList = new ArrayList<ClassInfo>();
-				for (Class c : classes.keySet()) {
+				classesList = new ArrayList<>();
+				for (Class<?> c : classes.keySet()) {
 					classesList.add(classes.get(c));
 				}
 				Collections.sort(classesList, new Comparator<ClassInfo>() {
@@ -386,15 +386,15 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 	}
 
 	public class ClassInfo implements HasPropertyChangeSupport {
-		private final Class clazz;
+		private final Class<?> clazz;
 		public String className;
 		public String displayableName;
 		public String packageName;
 		public String fullQualifiedName;
 
-		private final Hashtable<Class, ClassInfo> memberClasses = new Hashtable<Class, ClassInfo>() {
+		private final Hashtable<Class<?>, ClassInfo> memberClasses = new Hashtable<Class<?>, ClassInfo>() {
 			@Override
-			public synchronized ClassInfo put(Class key, ClassInfo value) {
+			public synchronized ClassInfo put(Class<?> key, ClassInfo value) {
 				ClassInfo returned = super.put(key, value);
 				needsReordering = true;
 				pcSupport.firePropertyChange("memberClasses", null, null);
@@ -405,7 +405,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		private boolean needsReordering = true;
 		private final PropertyChangeSupport pcSupport;
 
-		public ClassInfo(Class aClass) {
+		public ClassInfo(Class<?> aClass) {
 			pcSupport = new PropertyChangeSupport(this);
 			List<ClassInfo> listOfClassesWithThatName = registeredClassesForName.get(aClass.getSimpleName());
 			if (listOfClassesWithThatName == null) {
@@ -431,7 +431,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 			LOGGER.fine("Instanciate new ClassInfo for " + aClass);
 		}
 
-		public Class getClazz() {
+		public Class<?> getClazz() {
 			return clazz;
 		}
 
@@ -445,7 +445,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 			return null;
 		}
 
-		protected ClassInfo declareMember(Class c) {
+		protected ClassInfo declareMember(Class<?> c) {
 			ClassInfo returned = memberClasses.get(c);
 			if (returned == null) {
 				memberClasses.put(c, returned = new ClassInfo(c));
@@ -457,8 +457,8 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 		public List<ClassInfo> getMemberClasses() {
 			if (needsReordering) {
-				memberClassesList = new ArrayList<ClassInfo>();
-				for (Class c : memberClasses.keySet()) {
+				memberClassesList = new ArrayList<>();
+				for (Class<?> c : memberClasses.keySet()) {
 					memberClassesList.add(memberClasses.get(c));
 				}
 				Collections.sort(memberClassesList, new Comparator<ClassInfo>() {
@@ -472,7 +472,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 			return memberClassesList;
 		}
 
-		public Class getRepresentedClass() {
+		public Class<?> getRepresentedClass() {
 			return clazz;
 		}
 

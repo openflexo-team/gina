@@ -61,13 +61,13 @@ import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.gina.model.widget.FIBDropDownColumn;
 import org.openflexo.gina.model.widget.FIBLabelColumn;
+import org.openflexo.gina.model.widget.FIBNumber.NumberType;
 import org.openflexo.gina.model.widget.FIBNumberColumn;
 import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTextFieldColumn;
-import org.openflexo.gina.model.widget.FIBNumber.NumberType;
 import org.openflexo.gina.sampleData.Family;
-import org.openflexo.gina.sampleData.Person;
 import org.openflexo.gina.sampleData.Family.Gender;
+import org.openflexo.gina.sampleData.Person;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.gina.swing.view.widget.JFIBTableWidget;
 import org.openflexo.gina.test.FIBTestCase;
@@ -179,7 +179,8 @@ public class FIBTableWidgetTest extends FIBTestCase {
 		assertEquals(Gender.Female, w.getTableModel().getValueAt(4, 3));
 		assertEquals("Roger Rabbit aged 12 (Female)", w.getTableModel().getValueAt(4, 4));
 
-		Person junior = family.createChild();
+		// Unused Person junior =
+		family.createChild();
 
 		assertEquals(6, w.getTechnologyComponent().getJTable().getModel().getRowCount());
 		assertEquals("John Jr", w.getTableModel().getValueAt(5, 0));
@@ -235,7 +236,7 @@ public class FIBTableWidgetTest extends FIBTestCase {
 		w.getTechnologyComponent().getJTable().getSelectionModel().addSelectionInterval(1, 2);
 		w.getTechnologyComponent().getJTable().getSelectionModel().addSelectionInterval(4, 4);
 
-		List<Person> expectedSelection = new ArrayList<Person>();
+		List<Person> expectedSelection = new ArrayList<>();
 		expectedSelection.add(family.getChildren().get(1));
 		expectedSelection.add(family.getChildren().get(2));
 		expectedSelection.add(family.getChildren().get(4));

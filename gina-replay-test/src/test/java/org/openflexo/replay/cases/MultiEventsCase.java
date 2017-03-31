@@ -59,12 +59,11 @@ public class MultiEventsCase extends Case {
 		labelOk.setLabel("Prenium :");
 
 		FIBTextField textFieldFirstname = GraphicalContextDelegate.getFactory().newInstance(FIBTextField.class);
-		textFieldFirstname
-				.setData(new DataBinding<String>("data.firstName", textFieldFirstname, String.class, BindingDefinitionType.GET_SET));
+		textFieldFirstname.setData(new DataBinding<>("data.firstName", textFieldFirstname, String.class, BindingDefinitionType.GET_SET));
 		textFieldFirstname.setName("firstnameTextField");
 
 		FIBTextField textFieldLastname = GraphicalContextDelegate.getFactory().newInstance(FIBTextField.class);
-		textFieldLastname.setData(new DataBinding<String>("data.lastName", textFieldLastname, String.class, BindingDefinitionType.GET_SET));
+		textFieldLastname.setData(new DataBinding<>("data.lastName", textFieldLastname, String.class, BindingDefinitionType.GET_SET));
 		textFieldLastname.setName("lastnameTextField");
 
 		FIBCheckBox okCheckBox = GraphicalContextDelegate.getFactory().newInstance(FIBCheckBox.class);
@@ -83,19 +82,19 @@ public class MultiEventsCase extends Case {
 
 		FIBButton buttonOpen = GraphicalContextDelegate.getFactory().newInstance(FIBButton.class);
 		buttonOpen.setLabel("Open a copy of " + w.getLetter());
-		buttonOpen.setAction(new DataBinding<Object>("controller.openCopy('" + w.getLetter() + "')"));
+		buttonOpen.setAction(new DataBinding<>("controller.openCopy('" + w.getLetter() + "')"));
 		buttonOpen.setName("openButton");
 
 		FIBButton buttonCopy = GraphicalContextDelegate.getFactory().newInstance(FIBButton.class);
 		buttonCopy.setLabel("Copy To " + (w.getLetter() == 'A' ? 'B' : 'A'));
-		buttonCopy.setEnable(new DataBinding<Boolean>("(data.firstName!='')&&(data.lastName!='')", buttonOpen, Boolean.class,
-				BindingDefinitionType.EXECUTE));
-		buttonCopy.setAction(new DataBinding<Object>("controller.copyTo('" + (w.getLetter() == 'A' ? 'B' : 'A') + "')"));
+		buttonCopy.setEnable(
+				new DataBinding<>("(data.firstName!='')&&(data.lastName!='')", buttonOpen, Boolean.class, BindingDefinitionType.EXECUTE));
+		buttonCopy.setAction(new DataBinding<>("controller.copyTo('" + (w.getLetter() == 'A' ? 'B' : 'A') + "')"));
 		buttonCopy.setName("copyButton");
 
 		FIBButton buttonTask = GraphicalContextDelegate.getFactory().newInstance(FIBButton.class);
 		buttonTask.setLabel("Start count task");
-		buttonTask.setAction(new DataBinding<Object>("controller.startTask()"));
+		buttonTask.setAction(new DataBinding<>("controller.startTask()"));
 		buttonTask.setName("taskButton");
 
 		w.getComponent().addToSubComponents(labelFirstname, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, true, false));

@@ -39,7 +39,14 @@
 
 package org.openflexo.gina.swing.view.widget;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureEvent;
@@ -67,7 +74,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
-import javax.swing.*;
+
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
+import javax.swing.KeyStroke;
+import javax.swing.ToolTipManager;
+import javax.swing.UIManager;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
@@ -78,6 +92,7 @@ import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
+
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.exception.NullReferenceException;
@@ -196,7 +211,7 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 
 	@Override
 	public JFIBBrowserWidgetFooter<T> makeFooter() {
-		JFIBBrowserWidgetFooter<T> returned = new JFIBBrowserWidgetFooter<T>(this);
+		JFIBBrowserWidgetFooter<T> returned = new JFIBBrowserWidgetFooter<>(this);
 		getTechnologyComponent().add(returned.getFooterComponent(), BorderLayout.SOUTH);
 		return returned;
 	}
@@ -305,7 +320,7 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 			}
 
 			TreePath scrollTo = null;
-			List<TreePath> treePathsAsList = new ArrayList<TreePath>();
+			List<TreePath> treePathsAsList = new ArrayList<>();
 
 			for (T object : objects) {
 				Collection<BrowserCell> cells = getBrowserModel().getBrowserCell(object);
@@ -441,7 +456,7 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 			jTree.addFocusListener(widget);
 			jTree.setEditable(true);
 			jTree.setScrollsOnExpand(true);
-			FIBBrowserCellRenderer renderer = new FIBBrowserCellRenderer(widget);
+			FIBBrowserCellRenderer<?> renderer = new FIBBrowserCellRenderer<>(widget);
 			jTree.setCellRenderer(renderer);
 			jTree.setCellEditor(new FIBBrowserCellEditor(jTree, renderer));
 			ToolTipManager.sharedInstance().registerComponent(jTree);
@@ -451,8 +466,8 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 			jTree.setRootVisible(widget.getBrowser().getRootVisible());
 			jTree.setShowsRootHandles(widget.getBrowser().getShowRootsHandle());
 
-			// If a double-click action is set, desactivate tree
-			// expanding/collabsing with double-click
+			// If a double-click action is set, deactivate tree
+			// expanding/collapsing with double-click
 			if (widget.getBrowser().getDoubleClickAction().isSet()) {
 				jTree.setToggleClickCount(-1);
 			}
@@ -605,7 +620,8 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 				/* First argument:  Component to associate the target with
 				 * Second argument: DropTargetListener 
 				 */
-				DropTarget dropTarget = new DropTarget(this, this);
+				// Unused DropTarget dropTarget =
+				new DropTarget(this, this);
 			}
 
 		}
@@ -701,10 +717,12 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 				return;
 			}
 
-			BrowserCell newParent = (BrowserCell) destinationPath.getLastPathComponent();
+			// Unused BrowserCell newParent = (BrowserCell)
+			destinationPath.getLastPathComponent();
 
 			// get old parent node
-			BrowserCell oldParent = getSelectedBrowserCell().getParent();
+			// Unused BrowserCell oldParent =
+			getSelectedBrowserCell().getParent();
 
 			int action = e.getDropAction();
 			boolean copyAction = (action == DnDConstants.ACTION_COPY);

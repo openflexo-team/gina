@@ -65,7 +65,6 @@ import org.openflexo.toolbox.StringUtils;
  * 
  */
 public class ClassEditor extends PropertyChangedSupportDefaultImplementation {
-	@SuppressWarnings("hiding")
 	static final Logger LOGGER = Logger.getLogger(ClassEditor.class.getPackage().getName());
 
 	public static Resource FIB_FILE_NAME = ResourceLocator.getResourceLocator().locateResource("Fib/ClassEditor.fib");
@@ -74,7 +73,7 @@ public class ClassEditor extends PropertyChangedSupportDefaultImplementation {
 
 	private String filteredClassName = "";
 	private boolean searchMode = false;
-	public Vector<ClassInfo> matchingClasses = new Vector<ClassInfo>();
+	public Vector<ClassInfo> matchingClasses = new Vector<>();
 
 	public ClassEditor() {
 		loadedClassesInfo = LoadedClassesInfo.getInstance();
@@ -196,7 +195,7 @@ public class ClassEditor extends PropertyChangedSupportDefaultImplementation {
 		}*/
 
 		List<Class<?>> foundClasses = loadedClassesInfo.search(filteredClassName);
-		for (Class c : foundClasses) {
+		for (Class<?> c : foundClasses) {
 			loadedClassesInfo.registerClass(c);
 		}
 	}
@@ -223,7 +222,7 @@ public class ClassEditor extends PropertyChangedSupportDefaultImplementation {
 				else {
 					simpleName = patternString;
 				}
-				List<ClassInfo> exactMatches = new ArrayList<ClassInfo>();
+				List<ClassInfo> exactMatches = new ArrayList<>();
 				if (loadedClassesInfo.getRegisteredClassesForName().get(simpleName) != null) {
 					exactMatches = loadedClassesInfo.getRegisteredClassesForName().get(simpleName);
 					matchingClasses.addAll(exactMatches);

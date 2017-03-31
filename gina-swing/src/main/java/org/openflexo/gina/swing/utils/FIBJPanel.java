@@ -102,7 +102,7 @@ public abstract class FIBJPanel<T> extends JPanel implements FIBCustomComponent<
 		JComponent resultingJComponent = fibView.getResultingJComponent();
 		add(resultingJComponent, BorderLayout.CENTER);
 
-		applyCancelListener = new Vector<ApplyCancelListener>();
+		applyCancelListener = new Vector<>();
 	}
 
 	public FIBJPanel(Resource fibFileName, T editedObject, FIBLibrary fibLibrary, LocalizedDelegate parentLocalizer) {

@@ -119,7 +119,8 @@ public class DurationSelector extends TextFieldCustomPopup<Duration> implements 
 	public String renderedString(Duration editedObject) {
 		if (editedObject != null) {
 			return getLocalizedStringRepresentation(editedObject);
-		} else {
+		}
+		else {
 			return EMPTY_STRING;
 		}
 	}
@@ -134,7 +135,7 @@ public class DurationSelector extends TextFieldCustomPopup<Duration> implements 
 	protected class DurationChooserPanel extends ResizablePanel {
 		ButtonsControlPanel controlPanel;
 		JSpinner valueChooser;
-		JComboBox unitChooser;
+		JComboBox<DurationUnit> unitChooser;
 
 		private Dimension defaultDimension = new Dimension(320, 90);
 
@@ -148,7 +149,7 @@ public class DurationSelector extends TextFieldCustomPopup<Duration> implements 
 		protected DurationChooserPanel(Duration aDuration) {
 			super();
 
-			unitChooser = new JComboBox(Duration.DurationUnit.values());
+			unitChooser = new JComboBox<>(Duration.DurationUnit.values());
 			unitChooser.setSelectedItem(DurationUnit.DAYS);
 			unitChooser.addActionListener(new ActionListener() {
 				@Override
@@ -156,7 +157,8 @@ public class DurationSelector extends TextFieldCustomPopup<Duration> implements 
 					if (e.getSource() == unitChooser) {
 						if (getEditedObject() == null) {
 							setEditedObject(new Duration((Integer) valueChooser.getValue(), (DurationUnit) unitChooser.getSelectedItem()));
-						} else {
+						}
+						else {
 							getEditedObject().setUnit((DurationUnit) unitChooser.getSelectedItem());
 						}
 					}
@@ -165,7 +167,8 @@ public class DurationSelector extends TextFieldCustomPopup<Duration> implements 
 			});
 			unitChooser.setRenderer(new DefaultListCellRenderer() {
 				@Override
-				public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+				public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+						boolean cellHasFocus) {
 					Component returned = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 					if (returned != null && returned instanceof JLabel && value != null) {
 						boolean isMultiple = getEditedObject() != null ? getEditedObject().getValue() > 1 : false;
@@ -186,7 +189,8 @@ public class DurationSelector extends TextFieldCustomPopup<Duration> implements 
 					if (e.getSource() == valueChooser) {
 						if (getEditedObject() == null) {
 							setEditedObject(new Duration((Integer) valueChooser.getValue(), (DurationUnit) unitChooser.getSelectedItem()));
-						} else {
+						}
+						else {
 							getEditedObject().setValue((Integer) valueChooser.getValue());
 						}
 					}
@@ -282,7 +286,8 @@ public class DurationSelector extends TextFieldCustomPopup<Duration> implements 
 	public void setEditedObject(Duration object) {
 		if (object != null && object.getValue() == 0) {
 			super.setEditedObject(null);
-		} else {
+		}
+		else {
 			super.setEditedObject(object);
 		}
 

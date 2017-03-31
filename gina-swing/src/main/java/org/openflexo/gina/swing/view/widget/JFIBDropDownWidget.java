@@ -148,7 +148,7 @@ public class JFIBDropDownWidget<T> extends FIBDropDownWidgetImpl<JDropDownPanel<
 			addFocusListener(widget);
 
 			widget.multipleValueModel = null;
-			jComboBox = new JComboBox<T>(widget.getListModel());
+			jComboBox = new JComboBox<>(widget.getListModel());
 			jComboBox.setFont(widget.getFont());
 			jComboBox.setRenderer(widget.getListCellRenderer());
 			jComboBox.addActionListener(new ActionListener() {
@@ -195,7 +195,7 @@ public class JFIBDropDownWidget<T> extends FIBDropDownWidgetImpl<JDropDownPanel<
 
 	@Override
 	protected JDropDownPanel<T> makeTechnologyComponent() {
-		return new JDropDownPanel(this);
+		return new JDropDownPanel<>(this);
 	}
 
 	/*@Override

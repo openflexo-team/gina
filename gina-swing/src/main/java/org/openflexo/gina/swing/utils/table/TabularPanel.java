@@ -100,7 +100,7 @@ public class TabularPanel extends JPanel implements TableModelListener, ListSele
 		_table = new FlexoJTable(model);
 		// _table.setPreferredSize(new Dimension(model.getTotalPreferredWidth(),100));
 
-		_selectedObjects = new Vector<Object>();
+		_selectedObjects = new Vector<>();
 		_selectedObjectsNeedsRecomputing = false;
 
 		// _table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
@@ -182,7 +182,7 @@ public class TabularPanel extends JPanel implements TableModelListener, ListSele
 						}
 
 						if (_model.columnAt(col) instanceof ToggleIconColumn) {
-							ToggleIconColumn toggleIconColumn = (ToggleIconColumn) _model.columnAt(col);
+							ToggleIconColumn<?> toggleIconColumn = (ToggleIconColumn<?>) _model.columnAt(col);
 							toggleIconColumn.toogleValue(row);
 						}
 					}
@@ -219,7 +219,7 @@ public class TabularPanel extends JPanel implements TableModelListener, ListSele
 
 	}
 
-	public AbstractModel getModel() {
+	public AbstractModel<?, ?> getModel() {
 		return _model;
 	}
 
@@ -266,7 +266,7 @@ public class TabularPanel extends JPanel implements TableModelListener, ListSele
 		return getSelectedObjects().contains(object);
 	}
 
-	public Vector getObjects() {
+	public Vector<?> getObjects() {
 		return getSelectedObjects();
 	}
 
@@ -299,7 +299,7 @@ public class TabularPanel extends JPanel implements TableModelListener, ListSele
 	@Override
 	public void tableChanged(TableModelEvent e) {
 		if (e instanceof AbstractModel.ModelObjectHasChanged) {
-			AbstractModel.ModelObjectHasChanged event = (AbstractModel.ModelObjectHasChanged) e;
+			AbstractModel<?, ?>.ModelObjectHasChanged event = (AbstractModel<?, ?>.ModelObjectHasChanged) e;
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine("Model has changed from " + event.getOldModel() + " to " + event.getNewModel());
 			}
@@ -311,14 +311,14 @@ public class TabularPanel extends JPanel implements TableModelListener, ListSele
 			}
 		}
 		else if (e instanceof AbstractModel.SelectObjectEvent) {
-			AbstractModel.SelectObjectEvent event = (AbstractModel.SelectObjectEvent) e;
+			AbstractModel<?, ?>.SelectObjectEvent event = (AbstractModel<?, ?>.SelectObjectEvent) e;
 			selectObject(event.getSelectedObject());
 		}
 		else if (e instanceof AbstractModel.RowMoveForObjectEvent) {
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine("Reselect object, and then the edited cell");
 			}
-			AbstractModel.RowMoveForObjectEvent event = (AbstractModel.RowMoveForObjectEvent) e;
+			AbstractModel<?, ?>.RowMoveForObjectEvent event = (AbstractModel<?, ?>.RowMoveForObjectEvent) e;
 			selectObject(event.getEditedObject());
 			_table.setEditingColumn(event.getColumn());
 			_table.setEditingRow(event.getNewRow());

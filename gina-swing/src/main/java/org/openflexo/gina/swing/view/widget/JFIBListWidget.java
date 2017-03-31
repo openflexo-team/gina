@@ -39,11 +39,18 @@
 
 package org.openflexo.gina.swing.view.widget;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.event.FocusListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
-import javax.swing.*;
+
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.controller.FIBController;
@@ -151,7 +158,7 @@ public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T> implements
 	@Override
 	protected JList<T> makeTechnologyComponent() {
 
-		JList<T> list = new JList<T>();
+		JList<T> list = new JList<>();
 		list.setCellRenderer(getListCellRenderer());
 		list.setSelectionMode(getWidget().getSelectionMode().getMode());
 		if (getWidget().getVisibleRowCount() != null) {

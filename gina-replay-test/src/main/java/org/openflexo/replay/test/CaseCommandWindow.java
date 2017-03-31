@@ -57,7 +57,7 @@ public class CaseCommandWindow {
 
 		FIBButton buttonPlay = GraphicalContextDelegate.getFactory().newInstance(FIBButton.class);
 		buttonPlay.setLabel("Save the Scenario");
-		buttonPlay.setAction(new DataBinding<Object>("controller.save()"));
+		buttonPlay.setAction(new DataBinding<>("controller.save()"));
 		buttonPlay.setName("saveButton");
 		component.addToSubComponents(buttonPlay, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, true, false));
 

@@ -49,7 +49,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 import javax.swing.UIManager;
-import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.SimpleAttributeSet;
@@ -228,13 +227,15 @@ public class JFIBEditorPaneWidget extends FIBEditorPaneWidgetImpl<JEditorPane>
 		// panel.setOpaque(false);
 		// panel.add(editorPane, BorderLayout.CENTER);
 		validateOnReturn = getComponent().isValidateOnReturn();
-		Border border;
+		// Unused Border border;
 		if (!ToolBox.isMacOSLaf()) {
-			border = BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
+			// border =
+			BorderFactory.createEmptyBorder(TOP_COMPENSATING_BORDER, LEFT_COMPENSATING_BORDER, BOTTOM_COMPENSATING_BORDER,
 					RIGHT_COMPENSATING_BORDER);
 		}
 		else {
-			border = BorderFactory.createEmptyBorder(2, 3, 2, 3);
+			// border =
+			BorderFactory.createEmptyBorder(2, 3, 2, 3);
 		}
 		// panel.setBorder(border);
 		editorPane.setEditable(!isReadOnly());

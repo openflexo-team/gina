@@ -41,13 +41,12 @@ public class ConcurrentTasksSameThreadCase extends Case {
 		labelFirstname.setLabel("Firstname :");
 
 		FIBTextField textFieldFirstname = GraphicalContextDelegate.getFactory().newInstance(FIBTextField.class);
-		textFieldFirstname
-				.setData(new DataBinding<String>("data.firstName", textFieldFirstname, String.class, BindingDefinitionType.GET_SET));
+		textFieldFirstname.setData(new DataBinding<>("data.firstName", textFieldFirstname, String.class, BindingDefinitionType.GET_SET));
 		textFieldFirstname.setName("firstnameTextField");
 
 		FIBButton buttonTask = GraphicalContextDelegate.getFactory().newInstance(FIBButton.class);
 		buttonTask.setLabel("Start count task");
-		buttonTask.setAction(new DataBinding<Object>("controller.startTask()"));
+		buttonTask.setAction(new DataBinding<>("controller.startTask()"));
 		buttonTask.setName("taskButton");
 
 		w.getComponent().addToSubComponents(labelFirstname, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, true, false));

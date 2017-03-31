@@ -144,7 +144,7 @@ public class JFIBPreferences {
 	}
 
 	public static List<File> getLastFiles() {
-		List<File> list = new ArrayList<File>();
+		List<File> list = new ArrayList<>();
 		for (int i = 0; i < getLastFileCount(); i++) {
 			File file = getPreferredFile(LAST_FILE + i, null);
 			if (file != null) {

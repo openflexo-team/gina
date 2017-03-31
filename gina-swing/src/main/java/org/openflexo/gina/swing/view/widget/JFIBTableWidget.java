@@ -197,7 +197,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 	@Override
 	public void tableChanged(TableModelEvent e) {
 		if (e instanceof FIBTableModel.ModelObjectHasChanged) {
-			FIBTableModel.ModelObjectHasChanged event = (FIBTableModel.ModelObjectHasChanged) e;
+			FIBTableModel<?>.ModelObjectHasChanged event = (FIBTableModel<?>.ModelObjectHasChanged) e;
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine("Model has changed from " + event.getOldValues() + " to " + event.getNewValues());
 			}
@@ -206,7 +206,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine("Reselect object, and then the edited cell");
 			}
-			FIBTableModel.RowMoveForObjectEvent event = (FIBTableModel.RowMoveForObjectEvent) e;
+			FIBTableModel<?>.RowMoveForObjectEvent event = (FIBTableModel<?>.RowMoveForObjectEvent) e;
 			getListSelectionModel().removeListSelectionListener(this);
 			getListSelectionModel().addSelectionInterval(event.getNewRow(), event.getNewRow());
 			getListSelectionModel().addListSelectionListener(this);
@@ -268,7 +268,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 
 	@Override
 	public JFIBTableWidgetFooter<T> makeFooter() {
-		JFIBTableWidgetFooter<T> returned = new JFIBTableWidgetFooter<T>(this);
+		JFIBTableWidgetFooter<T> returned = new JFIBTableWidgetFooter<>(this);
 		getTechnologyComponent().add(returned.getFooterComponent(), BorderLayout.SOUTH);
 		return returned;
 	}
@@ -315,7 +315,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 		T newSelectedObject = getTableModel().elementAt(leadIndex);
 
 		List<T> oldSelection = selection;
-		List<T> newSelection = new ArrayList<T>();
+		List<T> newSelection = new ArrayList<>();
 		for (i = getListSelectionModel().getMinSelectionIndex(); i <= getListSelectionModel().getMaxSelectionIndex(); i++) {
 			if (getListSelectionModel().isSelectedIndex(i)) {
 				newSelection.add(getTableModel().elementAt(getTechnologyComponent().getJTable().convertRowIndexToModel(i)));

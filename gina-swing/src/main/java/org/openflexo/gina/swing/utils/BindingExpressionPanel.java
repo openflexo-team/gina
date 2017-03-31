@@ -217,7 +217,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 
 	private boolean avoidLoop = false;
 
-	public void setEditedExpression(DataBinding bindingExpression) {
+	public void setEditedExpression(DataBinding<?> bindingExpression) {
 		if (avoidLoop) {
 			return;
 		}
@@ -333,7 +333,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 		}
 	}
 
-	private boolean expressionIsUndefined(Expression expression) {
+	private static boolean expressionIsUndefined(Expression expression) {
 		return expression instanceof BindingValue && ((BindingValue) expression).getBindingVariable() == null;
 	}
 
@@ -590,7 +590,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 		repaint();
 	}
 
-	protected void fireEditedExpressionChanged(DataBinding expression) {
+	protected void fireEditedExpressionChanged(DataBinding<?> expression) {
 		// Override if required
 	}
 
@@ -644,7 +644,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 				LOGGER.fine("Build new ExpressionInnerPanel with " + (expression != null ? expression.toString() : "null"));
 			}
 			_representedExpression = expression;
-			innerDataBinding = new DataBinding<Object>(dataBinding.getOwner(), Object.class, DataBinding.BindingDefinitionType.GET);
+			innerDataBinding = new DataBinding<>(dataBinding.getOwner(), Object.class, DataBinding.BindingDefinitionType.GET);
 			innerDataBinding.setExpression(_representedExpression);
 			update();
 			// addFocusListeners();

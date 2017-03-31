@@ -152,7 +152,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 	private final Map<BindingPathElement, Hashtable<Type, BindingColumnListModel>> _listModels;
 
-	private final Vector<FilteredJList> _lists;
+	private final Vector<FilteredJList<?>> _lists;
 
 	protected int defaultVisibleColCount = 3;
 
@@ -168,9 +168,9 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 	protected BindingValueSelectorPanel(BindingSelector bindingSelector) {
 		super();
 		this.bindingSelector = bindingSelector;
-		_listModels = new Hashtable<BindingPathElement, Hashtable<Type, BindingColumnListModel>>();
+		_listModels = new Hashtable<>();
 		_rootBindingColumnListModel = null;
-		_lists = new Vector<FilteredJList>();
+		_lists = new Vector<>();
 	}
 
 	@Override
@@ -179,7 +179,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			_methodCallBindingsModel.delete();
 			_methodCallBindingsModel = null;
 		}
-		for (JList list : _lists) {
+		for (JList<?> list : _lists) {
 			list.removeListSelectionListener(this);
 			list.setModel(null);
 		}
@@ -191,7 +191,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 	public int getIndexOfList(BindingColumnListModel model) {
 		for (int i = 0; i < _lists.size(); i++) {
-			FilteredJList l = _lists.get(i);
+			FilteredJList<?> l = _lists.get(i);
 			if (l.getModel() == model) {
 				return i;
 			}
@@ -199,8 +199,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		return -1;
 	}
 
-	public Class getAccessedEntity() {
-		Class reply = null;
+	public Class<?> getAccessedEntity() {
+		Class<?> reply = null;
 		int i = 1;
 		BindingColumnElement last = null;
 		while (listAtIndex(i) != null && listAtIndex(i).getSelectedValue() != null) {
@@ -243,7 +243,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 	}
 
 	Vector<BindingColumnElement> findElementsMatching(BindingColumnListModel listModel, String subPartialPath) {
-		Vector<BindingColumnElement> returned = new Vector<BindingColumnElement>();
+		Vector<BindingColumnElement> returned = new Vector<>();
 		for (int i = 0; i < listModel.getUnfilteredSize(); i++) {
 			if (listModel.getUnfilteredElementAt(i).getLabel().startsWith(subPartialPath)) {
 				returned.add(listModel.getUnfilteredElementAt(i));
@@ -252,7 +252,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		return returned;
 	}
 
-	BindingColumnElement findElementEquals(ListModel listModel, String subPartialPath) {
+	BindingColumnElement findElementEquals(ListModel<?> listModel, String subPartialPath) {
 		for (int i = 0; i < listModel.getSize(); i++) {
 			if (listModel.getElementAt(i) instanceof BindingColumnElement) {
 				if (((BindingColumnElement) listModel.getElementAt(i)).getLabel() != null
@@ -652,7 +652,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		setEditStaticValue(false);
 
 		update();
-		FilteredJList firstList = listAtIndex(0);
+		FilteredJList<?> firstList = listAtIndex(0);
 		if (firstList != null && firstList.getModel().getSize() == 1) {
 			firstList.setSelectedIndex(0);
 		}
@@ -697,7 +697,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		return true;
 	}
 
-	protected class FilteredJList extends JList {
+	protected class FilteredJList<T> extends JList<T> {
 		public FilteredJList() {
 			super(new EmptyColumnListModel());
 		}
@@ -715,7 +715,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		}
 
 		@Override
-		public void setModel(ListModel model) {
+		public void setModel(ListModel<T> model) {
 			if (model != null && !(model instanceof BindingColumnListModel)) {
 				new Exception("Oops, this model is " + model).printStackTrace();
 			}
@@ -737,8 +737,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		}
 	}
 
-	protected JList makeNewJList() {
-		FilteredJList newList = new FilteredJList();
+	protected JList<String> makeNewJList() {
+		FilteredJList<String> newList = new FilteredJList<>();
 
 		TypeResolver typeResolver = new TypeResolver(newList);
 
@@ -766,7 +766,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				}
 				else if (e.getClickCount() == 1) {
 					// Trying to update MethodCall Panel
-					JList list = (JList) e.getSource();
+					JList<?> list = (JList<?>) e.getSource();
 					int index = _lists.indexOf(list);
 					if (LOGGER.isLoggable(Level.FINE)) {
 						LOGGER.fine("Click on index " + index);
@@ -804,7 +804,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					if (!ensureBindingValueExists()) {
 						return;
 					}
-					DataBinding dataBinding = bindingSelector.getEditedObject();
+					DataBinding<?> dataBinding = bindingSelector.getEditedObject();
 					if (dataBinding.isBindingValue()) {
 						int i = _lists.indexOf(e.getSource());
 						if (i > -1 && i < _lists.size() && listAtIndex(i + 1) != null
@@ -823,7 +823,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					if (!ensureBindingValueExists()) {
 						return;
 					}
-					DataBinding dataBinding = bindingSelector.getEditedObject();
+					DataBinding<?> dataBinding = bindingSelector.getEditedObject();
 					if (dataBinding.isBindingValue()) {
 						int i = _lists.indexOf(e.getSource()) - 1;
 						if (((BindingValue) dataBinding.getExpression()).getBindingPath().size() > i && i > -1 && i < _lists.size()) {
@@ -883,7 +883,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				_selectedPathElementIndex = -1;
 			}
 			if (_selectedPathElementIndex > -1 && bindingValue != null) {
-				JList list = _lists.get(_selectedPathElementIndex);
+				JList<?> list = _lists.get(_selectedPathElementIndex);
 				int newSelectedIndex = list.getSelectedIndex();
 				if (newSelectedIndex > 0) {
 					BindingColumnElement selectedValue = (BindingColumnElement) list.getSelectedValue();
@@ -903,7 +903,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		}
 	}
 
-	protected void deleteJList(JList list) {
+	protected void deleteJList(JList<?> list) {
 		_lists.remove(list);
 		Component[] scrollPanes = browserPanel.getComponents();
 		for (int i = 0; i < scrollPanes.length; i++) {
@@ -918,7 +918,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		repaint();
 	}
 
-	protected FilteredJList listAtIndex(int index) {
+	protected FilteredJList<?> listAtIndex(int index) {
 		if (index >= 0 && index < _lists.size()) {
 			return _lists.elementAt(index);
 		}
@@ -963,19 +963,19 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		}
 		int currentSize = getVisibleColsCount();
 		for (int i = lastVisibleList + 1; i < currentSize; i++) {
-			JList toRemove = listAtIndex(getVisibleColsCount() - 1);
+			JList<?> toRemove = listAtIndex(getVisibleColsCount() - 1);
 			deleteJList(toRemove);
 		}
 		// Sets model to null for visible but unused lists
 		for (int i = lastUpdatedList + 1; i < getVisibleColsCount(); i++) {
-			JList list = listAtIndex(i);
+			JList<?> list = listAtIndex(i);
 			list.setModel(EMPTY_MODEL);
 		}
 	}
 
 	@Override
 	protected void update() {
-		DataBinding binding = bindingSelector.getEditedObject();
+		DataBinding<?> binding = bindingSelector.getEditedObject();
 		if (LOGGER.isLoggable(Level.FINE)) {
 			LOGGER.fine("update with " + binding);
 		}
@@ -1013,7 +1013,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				for (int i = 0; i < bindingValue.getBindingPath().size(); i++) {
 					BindingPathElement pathElement = bindingValue.getBindingPath().get(i);
 					if (i + 2 == getVisibleColsCount()) {
-						final JList l = makeNewJList();
+						final JList<?> l = makeNewJList();
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
 							public void run() {
@@ -1107,12 +1107,12 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		}
 		int currentSize = getVisibleColsCount();
 		for (int i = lastVisibleList + 1; i < currentSize; i++) {
-			JList toRemove = listAtIndex(getVisibleColsCount() - 1);
+			JList<?> toRemove = listAtIndex(getVisibleColsCount() - 1);
 			deleteJList(toRemove);
 		}
 		// Sets model to null for visible but unused lists
 		for (int i = lastUpdatedList + 1; i < getVisibleColsCount(); i++) {
-			JList list = listAtIndex(i);
+			JList<?> list = listAtIndex(i);
 			list.setModel(EMPTY_MODEL);
 		}
 
@@ -1204,7 +1204,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		// if (TypeUtils.isResolved(element.getType())) {
 		Hashtable<Type, BindingColumnListModel> h = _listModels.get(element);
 		if (h == null) {
-			h = new Hashtable<Type, BindingColumnListModel>();
+			h = new Hashtable<>();
 			_listModels.put(element, h);
 		}
 		BindingColumnListModel returned = h.get(resultingType);
@@ -1504,7 +1504,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		private boolean isFiltered(BindingColumnElement columnElement) {
 			// Class resultingTypeBaseClass =
 			// TypeUtils.getBaseClass(columnElement.getResultingType());
-			Type resultingType = columnElement.getResultingType();
+			// Unused Type resultingType =
+			columnElement.getResultingType();
 
 			if (columnElement.getElement() != null && columnElement.getElement() instanceof BindingVariable) {
 				BindingVariable bv = (BindingVariable) columnElement.getElement();
@@ -1513,7 +1514,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				}
 			}
 			else if (columnElement.getElement() != null) {
-				DataBinding binding = bindingSelector.getEditedObject();
+				DataBinding<?> binding = bindingSelector.getEditedObject();
 				if (binding != null && binding.isBindingValue()) {
 					BindingValue bindingValue = (BindingValue) binding.getExpression();
 					if (bindingValue.isValid()
@@ -1630,9 +1631,9 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine("Build NormalBindingColumnListModel for " + element + " base class=" + TypeUtils.getBaseClass(_type));
 			}
-			_accessibleProperties = new Vector<BindingPathElement>();
-			_accessibleMethods = new Vector<BindingPathElement>();
-			_elements = new Vector<BindingColumnElement>();
+			_accessibleProperties = new Vector<>();
+			_accessibleMethods = new Vector<>();
+			_elements = new Vector<>();
 			updatePathElements();
 			if (element instanceof HasPropertyChangeSupport && ((HasPropertyChangeSupport) element).getPropertyChangeSupport() != null) {
 				((HasPropertyChangeSupport) element).getPropertyChangeSupport().addPropertyChangeListener(this);
@@ -1736,7 +1737,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		RootBindingColumnListModel(BindingModel bindingModel) {
 			super();
 			_myBindingModel = bindingModel;
-			_elements = new Vector<BindingColumnElement>();
+			_elements = new Vector<>();
 			bindingModel.getPropertyChangeSupport().addPropertyChangeListener(this);
 			updateBindingVariables();
 		}
@@ -1748,7 +1749,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				updateBindingVariables();
 			}
 			else if (evt.getSource() instanceof BindingVariable) {
-				BindingVariable bv = (BindingVariable) evt.getSource();
+				// Unused BindingVariable bv = (BindingVariable)
+				evt.getSource();
 				// System.out.println("-------> YES, j'ai vu que la variable: " + bv + " a ete modifiee: " + evt);
 			}
 		}
@@ -1759,7 +1761,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			updateBindingVariables();
 		}
 
-		private final List<BindingVariable> observedBindingVariables = new ArrayList<BindingVariable>();
+		private final List<BindingVariable> observedBindingVariables = new ArrayList<>();
 
 		private void updateBindingVariables() {
 			// System.out.println("*** updateBindingVariables() called in " + this);
@@ -1803,9 +1805,9 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 	protected class TypeResolver extends MouseAdapter implements MouseMotionListener {
 
-		private final JList list;
+		private final JList<?> list;
 
-		protected TypeResolver(JList aList) {
+		protected TypeResolver(JList<?> aList) {
 			currentFocused = null;
 			list = aList;
 		}
@@ -1852,7 +1854,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		}
 
 		@Override
-		public Component getListCellRendererComponent(JList list, Object bce, int index, boolean isSelected, boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList<?> list, Object bce, int index, boolean isSelected, boolean cellHasFocus) {
 			JComponent returned = (JComponent) super.getListCellRendererComponent(list, bce, index, isSelected, cellHasFocus);
 			if (returned instanceof JLabel) {
 				JLabel label = (JLabel) returned;
@@ -1863,7 +1865,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					BindingColumnElement columnElement = (BindingColumnElement) bce;
 					// Class resultingTypeBaseClass =
 					// TypeUtils.getBaseClass(columnElement.getResultingType());
-					Type resultingType = columnElement.getResultingType();
+					// Unused Type resultingType =
+					columnElement.getResultingType();
 					label.setText(columnElement.getLabel());
 					// if (!(columnElement.getElement() instanceof FinalBindingPathElement)) {
 					returned = getIconLabelComponent(label, FIBIconLibrary.ARROW_RIGHT_ICON);
@@ -1875,7 +1878,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 						label.setForeground(Color.GRAY);
 					}
 
-					DataBinding binding = bindingSelector.getEditedObject();
+					DataBinding<?> binding = bindingSelector.getEditedObject();
 					if (binding != null && binding.isBindingValue()) {
 						BindingValue bindingValue = (BindingValue) binding.getExpression();
 						// System.out.println("bindingValue=" + bindingValue + " valid=" + isValid());
@@ -1942,7 +1945,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			return;
 		}
 
-		DataBinding dataBinding = bindingSelector.getEditedObject();
+		DataBinding<?> dataBinding = bindingSelector.getEditedObject();
 
 		if (dataBinding == null) {
 			LOGGER.warning("dataBinding should not be null");
@@ -1964,7 +1967,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			}*/
 		}
 
-		JList list = (JList) e.getSource();
+		JList<?> list = (JList<?>) e.getSource();
 		int index = _lists.indexOf(list);
 		_selectedPathElementIndex = index;
 		if (index < 0) {
@@ -1989,7 +1992,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 	}
 
-	private boolean hasBindingPathForm(String textValue) {
+	private static boolean hasBindingPathForm(String textValue) {
 		if (textValue.length() == 0) {
 			return false;
 		}
@@ -2128,7 +2131,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		String commonBeginningPath = null;
 		Vector<BindingColumnElement> matchingElements = null;
 
-		protected CompletionInfo(FilteredJList list, String subPartialPath, String fullPath) {
+		protected CompletionInfo(FilteredJList<?> list, String subPartialPath, String fullPath) {
 			validPath = fullPath.substring(0, fullPath.lastIndexOf(".") + 1);
 			completionInitPath = subPartialPath;
 			matchingElements = findElementsMatching(list.getModel(), subPartialPath);
@@ -2194,7 +2197,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			index = StringUtils.countMatches(bindingSelector.getTextField().getText(), ".");
 		}
 
-		FilteredJList list = listAtIndex(index);
+		FilteredJList<?> list = listAtIndex(index);
 		if (list != null) {
 			int currentSelected = list.getSelectedIndex();
 			if (currentSelected > -1) {
@@ -2262,7 +2265,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			index = StringUtils.countMatches(bindingSelector.getTextField().getText(), ".");
 		}
 
-		FilteredJList list = listAtIndex(index);
+		FilteredJList<?> list = listAtIndex(index);
 
 		int currentSelected = list.getSelectedIndex();
 		if (currentSelected > 0) {
@@ -2284,7 +2287,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			index = StringUtils.countMatches(bindingSelector.getTextField().getText(), ".");
 		}
 
-		FilteredJList list = listAtIndex(index);
+		FilteredJList<?> list = listAtIndex(index);
 
 		int currentSelected = list.getSelectedIndex();
 		list.removeListSelectionListener(this);
@@ -2332,7 +2335,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		}
 		BindingColumnListModel listModel = listAtIndex(dotCount).getModel();
 		String subPartialPath = inputText.substring(inputText.lastIndexOf(".") + 1);
-		Vector<Integer> pathElementIndex = new Vector<Integer>();
+		Vector<Integer> pathElementIndex = new Vector<>();
 		;
 		BindingColumnElement pathElement = findElementMatching(listModel, subPartialPath, pathElementIndex);
 		return pathElement != null;
@@ -2373,17 +2376,17 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		return (BindingValue) bindingSelector.getEditedObject().getExpression();
 	}
 
-	protected void valueSelected(int index, JList list) {
+	protected void valueSelected(int index, JList<?> list) {
 
-		DataBinding binding = bindingSelector.getEditedObject();
+		DataBinding<?> binding = bindingSelector.getEditedObject();
 
-		boolean bindingRecreated = false;
+		// Unused boolean bindingRecreated = false;
 
 		if (!binding.isBindingValue()) {
 
 			bindingSelector.editionMode = EditionMode.NORMAL_BINDING;
 			binding.setExpression(bindingSelector.makeBinding()); // Should create a BindingValue instance !!!
-			bindingRecreated = true;
+			// Unused bindingRecreated = true;
 			if (!binding.isBindingValue()) {
 				LOGGER.severe("Should never happen: valueSelected() called for a non-BindingValue instance !");
 				return;

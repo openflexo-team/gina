@@ -88,7 +88,7 @@ public class FIBValidationController extends FIBController {
 
 	public ImageIcon iconFor(Object validationObject) {
 		if (validationObject instanceof ValidationError) {
-			if (((ValidationError) validationObject).isFixable()) {
+			if (((ValidationError<?, ?>) validationObject).isFixable()) {
 				return FIBUtilsIconLibrary.FIXABLE_ERROR_ICON;
 			}
 			else {
@@ -96,7 +96,7 @@ public class FIBValidationController extends FIBController {
 			}
 		}
 		else if (validationObject instanceof ValidationWarning) {
-			if (((ValidationWarning) validationObject).isFixable()) {
+			if (((ValidationWarning<?, ?>) validationObject).isFixable()) {
 				return FIBUtilsIconLibrary.FIXABLE_WARNING_ICON;
 			}
 			else {
@@ -135,18 +135,18 @@ public class FIBValidationController extends FIBController {
 			fixIssue(fixProposal);
 		}
 		else {
-			for (ValidationIssue<?, ?> issue : new ArrayList<ValidationIssue<?, ?>>(issues)) {
+			for (ValidationIssue<?, ?> issue : new ArrayList<>(issues)) {
 				if (issue instanceof ProblemIssue) {
 					FixProposal<?, ?> proposal = null;
 					if (fixProposal != null && fixProposal.getProblemIssue() == issue) {
 						proposal = fixProposal;
 					}
 					else {
-						List<FixProposal> proposals = ((ProblemIssue) issue).getFixProposals();
+						List<FixProposal<?, ?>> proposals = ((ProblemIssue) issue).getFixProposals();
 						if (proposals.size() > 0) {
 							proposal = proposals.get(0);
 							if (proposals.size() > 1) {
-								List<FixProposal> availableProposals = ((ProblemIssue) issue).getFixProposals(fixProposal.getClass());
+								List<FixProposal<?, ?>> availableProposals = ((ProblemIssue) issue).getFixProposals(fixProposal.getClass());
 								if (availableProposals.size() > 0) {
 									proposal = availableProposals.get(0);
 								}

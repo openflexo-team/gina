@@ -113,7 +113,7 @@ public class FIBBrowserWidgetSelectionTest extends FIBTestCase {
 
 		browser = newFIBBrowser();
 		browser.setName("browser");
-		browser.setRoot(new DataBinding<Object>("data", browser, Object.class, BindingDefinitionType.GET));
+		browser.setRoot(new DataBinding<>("data", browser, Object.class, BindingDefinitionType.GET));
 		browser.setIteratorClass(Person.class);
 		browser.setBoundToSelectionManager(true);
 		browser.setManageDynamicModel(true);
@@ -123,10 +123,10 @@ public class FIBBrowserWidgetSelectionTest extends FIBTestCase {
 		rootElement.setDataClass(Family.class);
 		rootElement.setLabel(new DataBinding<String>("\"My Family\"", browser, String.class, BindingDefinitionType.GET));
 		FIBBrowserElementChildren parents = newFIBBrowserElementChildren();
-		parents.setData(new DataBinding<Object>("family.parents", browser, Object.class, BindingDefinitionType.GET));
+		parents.setData(new DataBinding<>("family.parents", browser, Object.class, BindingDefinitionType.GET));
 		rootElement.addToChildren(parents);
 		FIBBrowserElementChildren children = newFIBBrowserElementChildren();
-		parents.setData(new DataBinding<Object>("family.children", browser, Object.class, BindingDefinitionType.GET));
+		parents.setData(new DataBinding<>("family.children", browser, Object.class, BindingDefinitionType.GET));
 		rootElement.addToChildren(children);
 
 		browser.addToElements(rootElement);
@@ -145,20 +145,19 @@ public class FIBBrowserWidgetSelectionTest extends FIBTestCase {
 		firstNameLabel = newFIBLabel("first_name");
 		detailsPanel.addToSubComponents(firstNameLabel, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false, false));
 		firstNameTF = newFIBTextField();
-		firstNameTF
-				.setData(new DataBinding<String>("browser.selected.firstName", firstNameTF, String.class, BindingDefinitionType.GET_SET));
+		firstNameTF.setData(new DataBinding<>("browser.selected.firstName", firstNameTF, String.class, BindingDefinitionType.GET_SET));
 		detailsPanel.addToSubComponents(firstNameTF, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
 
 		lastNameLabel = newFIBLabel("last_name");
 		detailsPanel.addToSubComponents(lastNameLabel, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false, false));
 		lastNameTF = newFIBTextField();
-		lastNameTF.setData(new DataBinding<String>("browser.selected.lastName", lastNameTF, String.class, BindingDefinitionType.GET_SET));
+		lastNameTF.setData(new DataBinding<>("browser.selected.lastName", lastNameTF, String.class, BindingDefinitionType.GET_SET));
 		detailsPanel.addToSubComponents(lastNameTF, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
 
 		fullNameLabel = newFIBLabel("full_name");
 		detailsPanel.addToSubComponents(fullNameLabel, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false, false));
 		fullNameTF = newFIBTextField();
-		fullNameTF.setData(new DataBinding<String>("browser.selected.firstName + ' ' + browser.selected.lastName", fullNameTF, String.class,
+		fullNameTF.setData(new DataBinding<>("browser.selected.firstName + ' ' + browser.selected.lastName", fullNameTF, String.class,
 				BindingDefinitionType.GET));
 		detailsPanel.addToSubComponents(fullNameTF, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
 
@@ -206,7 +205,7 @@ public class FIBBrowserWidgetSelectionTest extends FIBTestCase {
 
 		log("test3SelectEditAndCheckValues()");
 
-		FIBBrowserWidget w = (FIBBrowserWidget) controller.viewForComponent(browser);
+		FIBBrowserWidget<?, Person> w = (FIBBrowserWidget<?, Person>) controller.viewForComponent(browser);
 
 		w.resetSelection();
 		w.addToSelection(family.getBiggestChild());
@@ -235,7 +234,7 @@ public class FIBBrowserWidgetSelectionTest extends FIBTestCase {
 
 		log("test4SelectMultipleValues()");
 
-		FIBBrowserWidget w = (FIBBrowserWidget) controller.viewForComponent(browser);
+		FIBBrowserWidget<?, Person> w = (FIBBrowserWidget<?, Person>) controller.viewForComponent(browser);
 
 		w.resetSelection();
 		w.addToSelection(family.getChildren().get(1));

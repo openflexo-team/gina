@@ -62,8 +62,8 @@ import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoCol
 import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.gina.model.widget.FIBList;
 import org.openflexo.gina.sampleData.Family;
-import org.openflexo.gina.sampleData.Person;
 import org.openflexo.gina.sampleData.Family.Gender;
+import org.openflexo.gina.sampleData.Person;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.gina.swing.view.widget.JFIBListWidget;
 import org.openflexo.gina.test.FIBTestCase;
@@ -288,7 +288,7 @@ public class FIBListWidgetTest extends FIBTestCase {
 		w7.getTechnologyComponent().getSelectionModel().addSelectionInterval(1, 2);
 		w7.getTechnologyComponent().getSelectionModel().addSelectionInterval(4, 4);
 
-		List<Person> expectedSelection = new ArrayList<Person>();
+		List<Person> expectedSelection = new ArrayList<>();
 		expectedSelection.add(family.getChildren().get(1));
 		expectedSelection.add(family.getChildren().get(2));
 		expectedSelection.add(family.getChildren().get(4));
