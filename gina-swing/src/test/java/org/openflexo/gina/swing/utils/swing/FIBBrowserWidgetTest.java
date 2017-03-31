@@ -38,14 +38,9 @@
 
 package org.openflexo.gina.swing.utils.swing;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -73,6 +68,9 @@ import org.openflexo.gina.view.widget.browser.impl.FIBBrowserModel.BrowserCell;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
+
+
+import static org.junit.Assert.*;
 
 /**
  * Test the structural and behavioural features of {@link FIBBrowserWidget} widget
