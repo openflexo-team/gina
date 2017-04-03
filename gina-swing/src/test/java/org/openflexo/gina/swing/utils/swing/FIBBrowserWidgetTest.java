@@ -236,6 +236,11 @@ public class FIBBrowserWidgetTest extends FIBTestCase {
 	@BeforeClass
 	public static void initGUI() {
 		gcDelegate = new SwingGraphicalContextDelegate(FIBBrowserWidgetTest.class.getSimpleName());
+
+		// Default behaviour is to update browser cells asynchronously in event-dispatch-thread
+		// But in this test environment, we need to "force" the update to be done synchronously
+		FIBBrowserModel.UPDATE_BROWSER_SYNCHRONOUSLY = true;
+
 	}
 
 	@AfterClass
