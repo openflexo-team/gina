@@ -39,9 +39,6 @@
 
 package org.openflexo.gina.view.widget.browser.impl;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -65,11 +62,14 @@ import java.util.Set;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*;
+
+import javax.swing.Icon;
+import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
+
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
@@ -82,6 +82,10 @@ import org.openflexo.gina.model.widget.FIBBrowserElementChildren;
 import org.openflexo.gina.view.widget.FIBBrowserWidget;
 import org.openflexo.toolbox.StringUtils;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
+
 public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBBrowserModel.class.getPackage().getName());
@@ -91,6 +95,11 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 	private final Multimap<Object, BrowserCell> contents;
 
 	private final FIBBrowserWidget widget;
+
+	// Hacking zone:
+	// Default behaviour is to update browser cells asynchronously in event-dispatch-thread
+	// But in test environment, we may need to "force" the update to be done synchrounously
+	public static boolean UPDATE_BROWSER_SYNCHRONOUSLY = false;
 
 	/**
 	 * Stores controls: key is the JButton and value the PropertyListActionListener
@@ -847,9 +856,10 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 		}
 
 		public void update(boolean recursively) {
-			if (SwingUtilities.isEventDispatchThread()) {
+			if (SwingUtilities.isEventDispatchThread() || UPDATE_BROWSER_SYNCHRONOUSLY) {
 				update(recursively);
-			} else {
+			}
+			else {
 				SwingUtilities.invokeLater(() -> updateSync(recursively));
 			}
 		}
