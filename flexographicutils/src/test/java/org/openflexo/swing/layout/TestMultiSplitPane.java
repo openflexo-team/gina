@@ -79,7 +79,7 @@ public class TestMultiSplitPane {
 	protected void initUI() {
 
 		MultiSplitLayoutFactory factory = new MultiSplitLayoutFactory.DefaultMultiSplitLayoutFactory();
-		Split root = getDefaultLayout(factory);
+		Split<?> root = getDefaultLayout(factory);
 		final MultiSplitLayout layout = new MultiSplitLayout(factory);
 		layout.setLayoutByWeight(false);
 		layout.setFloatingDividers(false);
@@ -113,16 +113,16 @@ public class TestMultiSplitPane {
 		frame.setVisible(true);
 	}
 
-	protected Split getDefaultLayout(MultiSplitLayoutFactory factory) {
+	protected Split<?> getDefaultLayout(MultiSplitLayoutFactory factory) {
 		Split root = factory.makeSplit();
 		root.setName("ROOT");
-		Split left = getVerticalSplit(LEFT, 0.5, 0.5, factory);
+		Split<?> left = getVerticalSplit(LEFT, 0.5, 0.5, factory);
 		left.setWeight(0);
 		left.setName(LEFT);
-		Split center = getVerticalSplit(CENTER, 0.8, 0.2, factory);
+		Split<?> center = getVerticalSplit(CENTER, 0.8, 0.2, factory);
 		center.setWeight(1.0);
 		center.setName(CENTER);
-		Split right = getVerticalSplit(RIGHT, 0.5, 0.5, factory);
+		Split<?> right = getVerticalSplit(RIGHT, 0.5, 0.5, factory);
 		right.setWeight(0);
 		right.setName(RIGHT);
 		root.setChildren(left, factory.makeDivider(), center, factory.makeDivider(), right);
@@ -143,32 +143,28 @@ public class TestMultiSplitPane {
 		});
 	}
 
-	public Split getVerticalSplit(String name, double topWeight, double bottomWeight, MultiSplitLayoutFactory factory) {
+	public Split<?> getVerticalSplit(String name, double topWeight, double bottomWeight, MultiSplitLayoutFactory factory) {
 		Split split = factory.makeSplit();
 		split.setRowLayout(false);
-		Leaf top = factory.makeLeaf(name + TOP);
+		Leaf<?> top = factory.makeLeaf(name + TOP);
 		top.setWeight(topWeight);
-		Leaf bottom = factory.makeLeaf(name + BOTTOM);
+		Leaf<?> bottom = factory.makeLeaf(name + BOTTOM);
 		bottom.setWeight(bottomWeight);
 		split.setChildren(top, factory.makeDivider(), bottom);
 		return split;
 	}
 
 	protected void restoreLayout(MultiSplitLayout layout, Node defaultModel) {
-		Node model = defaultModel;
+		Node<?> model = defaultModel;
 		try {
 			model = getGson().fromJson(new InputStreamReader(new FileInputStream(getLayoutFile()), "UTF-8"), Split.class);
 		} catch (JsonSyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonIOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		layout.setModel(model);
@@ -182,20 +178,16 @@ public class TestMultiSplitPane {
 			fos = new FileOutputStream(getLayoutFile());
 			fos.write(json.getBytes("UTF-8"));
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			if (fos != null) {
 				try {
 					fos.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

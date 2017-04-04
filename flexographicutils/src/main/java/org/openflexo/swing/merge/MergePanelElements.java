@@ -954,14 +954,14 @@ public class MergePanelElements implements Observer {
 		}
 	}
 
-	public JList getFilteredChangeList() {
+	public JList<?> getFilteredChangeList() {
 		return _changeListPanel.filteredChangeList();
 	}
 
 	public class FilterChangeList extends JPanel {
 
 		private Vector<MergeChange.ChangeCategory> selectedCategories;
-		JList _filteredList;
+		JList<Object> _filteredList;
 
 		public FilterChangeList(String noChangeLabel) {
 			super(new BorderLayout());
@@ -983,7 +983,7 @@ public class MergePanelElements implements Observer {
 				_filteredList.setVisibleRowCount(5);
 				_filteredList.setCellRenderer(new DefaultListCellRenderer() {
 					@Override
-					public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+					public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 							boolean cellHasFocus) {
 						JLabel returned = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 						returned.setIcon(iconForChange((MergeChange) value));
@@ -1025,7 +1025,7 @@ public class MergePanelElements implements Observer {
 			}
 			else {
 				Object[] obj = { noChangeLabel };
-				_filteredList = new JList(obj);
+				_filteredList = new JList<>(obj);
 				_filteredList.setEnabled(false);
 			}
 
@@ -1053,7 +1053,7 @@ public class MergePanelElements implements Observer {
 		// selectedCategories.remove(category);
 		// refreshList();
 		// }
-		public JList filteredChangeList() {
+		public JList<?> filteredChangeList() {
 			return _filteredList;
 		}
 

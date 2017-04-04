@@ -56,7 +56,7 @@ public class DefaultMergePanel extends JLayeredPane {
 
 	private MergePanelElements mergePanelElements;
 	private Merge _merge;
-	JList changesList;
+	JList<?> changesList;
 	ComparePanel comparePanel;
 
 	public DefaultMergePanel(Merge merge, TokenMarkerStyle style) {

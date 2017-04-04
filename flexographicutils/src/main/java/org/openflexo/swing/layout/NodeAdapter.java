@@ -89,11 +89,11 @@ public class NodeAdapter extends TypeAdapter<Node> {
 		this.listAdapter = collectionAdapter;
 	}
 
-	private String toString(Rectangle rect) {
+	private static String toString(Rectangle rect) {
 		return "[" + rect.x + "," + rect.y + "," + rect.width + "," + rect.height + "]";
 	}
 
-	private Rectangle fromString(String string) {
+	private static Rectangle fromString(String string) {
 		StringTokenizer tokenizer = new StringTokenizer(string, "[],");
 		Rectangle rect = new Rectangle();
 		rect.x = Integer.valueOf(tokenizer.nextToken());
@@ -124,8 +124,9 @@ public class NodeAdapter extends TypeAdapter<Node> {
 			out.value(split.isRowLayout());
 			out.name("children");
 			listAdapter.write(out, split.getChildren());
-		} else if (value instanceof Leaf) {
-			name = ((Leaf) value).getName();
+		}
+		else if (value instanceof Leaf) {
+			name = ((Leaf<?>) value).getName();
 		}
 		if (name != null) {
 			out.name("name");
@@ -143,7 +144,7 @@ public class NodeAdapter extends TypeAdapter<Node> {
 		in.beginObject();
 		String name = in.nextName();
 		NodeAdapter.Types t = Types.valueOf(in.nextString());
-		Node node;
+		Node<?> node;
 		try {
 			node = t.getType().newInstance();
 		} catch (InstantiationException e) {
@@ -158,26 +159,32 @@ public class NodeAdapter extends TypeAdapter<Node> {
 			if (name.equals("weight")) {
 				double weight = in.nextDouble();
 				node.setWeight(weight);
-			} else if (name.equals("visible")) {
+			}
+			else if (name.equals("visible")) {
 				boolean visible = in.nextBoolean();
 				node.setVisible(visible);
-			} else if (name.equals("bounds")) {
+			}
+			else if (name.equals("bounds")) {
 				Rectangle bounds = fromString(in.nextString());
 				node.setBounds(bounds);
-			} else if (name.equals("rowLayout")) {
-				Split split = (Split) node;
+			}
+			else if (name.equals("rowLayout")) {
+				Split<?> split = (Split<?>) node;
 				boolean rowLayout = in.nextBoolean();
 				split.setRowLayout(rowLayout);
-			} else if (name.equals("children")) {
+			}
+			else if (name.equals("children")) {
 				Split split = (Split) node;
 				List<Node> children = listAdapter.read(in);
 				split.setChildren(children);
-			} else if (name.equals("name")) {
+			}
+			else if (name.equals("name")) {
 				String nameValue = in.nextString();
 				if (node instanceof Leaf) {
-					((Leaf) node).setName(nameValue);
-				} else if (node instanceof Split) {
-					((Split) node).setName(nameValue);
+					((Leaf<?>) node).setName(nameValue);
+				}
+				else if (node instanceof Split) {
+					((Split<?>) node).setName(nameValue);
 				}
 			}
 		}
