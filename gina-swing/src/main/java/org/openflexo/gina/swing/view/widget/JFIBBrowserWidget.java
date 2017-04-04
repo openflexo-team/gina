@@ -586,6 +586,12 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 		private DragSource dragSource = null;
 		private DragSourceContext dragSourceContext = null;
 
+		/** The browser cell beeing currently dragged */
+		private BrowserCell draggedBrowserCell;
+
+		/** The browser cell destination of the drop: the one on we target */
+		private BrowserCell targetBrowserCell;
+
 		private static final Image DROP_OK_IMAGE = FIBIconLibrary.DROP_OK_CURSOR.getImage();
 		private static final Image DROP_KO_IMAGE = FIBIconLibrary.DROP_KO_CURSOR.getImage();
 
@@ -822,8 +828,8 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 				return false;
 			}
 
-			draggedBrowserCell = (BrowserCell) destination.getLastPathComponent();
-			targetBrowserCell = (BrowserCell) dropper.getLastPathComponent();
+			draggedBrowserCell = (BrowserCell) dropper.getLastPathComponent();
+			targetBrowserCell = (BrowserCell) destination.getLastPathComponent();
 
 			for (FIBBrowserDragOperation op : draggedBrowserCell.getBrowserElement().getDragOperations()) {
 				Boolean applicable = false;
@@ -883,8 +889,8 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 				return false;
 			}
 
-			draggedBrowserCell = (BrowserCell) destination.getLastPathComponent();
-			targetBrowserCell = (BrowserCell) dropper.getLastPathComponent();
+			draggedBrowserCell = (BrowserCell) dropper.getLastPathComponent();
+			targetBrowserCell = (BrowserCell) destination.getLastPathComponent();
 
 			for (FIBBrowserDragOperation op : draggedBrowserCell.getBrowserElement().getDragOperations()) {
 				boolean applicable = false;
@@ -909,15 +915,14 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 			return false;
 		}
 
-		private BrowserCell draggedBrowserCell;
-		private BrowserCell targetBrowserCell;
-
 		@Override
 		public Object getValue(BindingVariable variable) {
 			if (variable.getVariableName().equals("dragged")) {
+				// System.out.println("dragged is" + draggedBrowserCell.getRepresentedObject());
 				return draggedBrowserCell.getRepresentedObject();
 			}
 			else if (variable.getVariableName().equals("target")) {
+				// System.out.println(" target is " + draggedBrowserCell.getRepresentedObject());
 				return targetBrowserCell.getRepresentedObject();
 			}
 			else {

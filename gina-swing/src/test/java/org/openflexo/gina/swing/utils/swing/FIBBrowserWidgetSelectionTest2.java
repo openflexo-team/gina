@@ -72,6 +72,7 @@ import org.openflexo.gina.test.FIBTestCase;
 import org.openflexo.gina.test.SwingGraphicalContextDelegate;
 import org.openflexo.gina.view.container.FIBPanelView;
 import org.openflexo.gina.view.widget.FIBBrowserWidget;
+import org.openflexo.gina.view.widget.browser.impl.FIBBrowserModel;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
@@ -300,6 +301,10 @@ public class FIBBrowserWidgetSelectionTest2 extends FIBTestCase {
 	@BeforeClass
 	public static void initGUI() {
 		gcDelegate = new SwingGraphicalContextDelegate(FIBBrowserWidgetSelectionTest2.class.getSimpleName());
+
+		// Default behaviour is to update browser cells asynchronously in event-dispatch-thread
+		// But in this test environment, we need to "force" the update to be done synchronously
+		FIBBrowserModel.UPDATE_BROWSER_SYNCHRONOUSLY = true;
 	}
 
 	@AfterClass

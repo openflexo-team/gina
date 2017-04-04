@@ -38,9 +38,14 @@
 
 package org.openflexo.gina.swing.utils.swing;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -64,13 +69,11 @@ import org.openflexo.gina.swing.view.widget.JFIBBrowserWidget;
 import org.openflexo.gina.test.FIBTestCase;
 import org.openflexo.gina.test.SwingGraphicalContextDelegate;
 import org.openflexo.gina.view.widget.FIBBrowserWidget;
+import org.openflexo.gina.view.widget.browser.impl.FIBBrowserModel;
 import org.openflexo.gina.view.widget.browser.impl.FIBBrowserModel.BrowserCell;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-
-
-import static org.junit.Assert.*;
 
 /**
  * Test the structural and behavioural features of {@link FIBBrowserWidget} widget
@@ -95,6 +98,10 @@ public class FIBBrowserWidgetTest extends FIBTestCase {
 	@Test
 	@TestOrder(1)
 	public void test1CreateComponent() {
+
+		// Default behaviour is to update browser cells asynchronously in event-dispatch-thread
+		// But in this test environment, we need to "force" the update to be done synchrounously
+		FIBBrowserModel.UPDATE_BROWSER_SYNCHRONOUSLY = true;
 
 		component = newFIBPanel();
 		component.setLayout(Layout.twocols);
@@ -228,6 +235,11 @@ public class FIBBrowserWidgetTest extends FIBTestCase {
 	@BeforeClass
 	public static void initGUI() {
 		gcDelegate = new SwingGraphicalContextDelegate(FIBBrowserWidgetTest.class.getSimpleName());
+
+		// Default behaviour is to update browser cells asynchronously in event-dispatch-thread
+		// But in this test environment, we need to "force" the update to be done synchronously
+		FIBBrowserModel.UPDATE_BROWSER_SYNCHRONOUSLY = true;
+
 	}
 
 	@AfterClass
