@@ -284,6 +284,9 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 	}
 
 	public <M extends FIBComponent> FIBView<M, ?> viewForComponent(M component) {
+		if (component == null) {
+			return null;
+		}
 		return (FIBView<M, ?>) views.get(component);
 	}
 

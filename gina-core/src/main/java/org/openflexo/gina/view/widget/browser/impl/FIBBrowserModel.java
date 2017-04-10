@@ -855,16 +855,22 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			isDeleted = true;
 		}
 
+		private boolean updateRequested = false;
+
 		public void update(boolean recursively) {
 			if (SwingUtilities.isEventDispatchThread() || UPDATE_BROWSER_SYNCHRONOUSLY) {
 				updateSync(recursively);
 			}
-			else {
+			else if (!updateRequested) {
+				updateRequested = true;
 				SwingUtilities.invokeLater(() -> updateSync(recursively));
 			}
 		}
 
 		private void updateSync(boolean recursively) {
+
+			updateRequested = false;
+
 			loaded = true;
 
 			// During exploration of all exhaustive contents, in order not no enter in an infinite loop
