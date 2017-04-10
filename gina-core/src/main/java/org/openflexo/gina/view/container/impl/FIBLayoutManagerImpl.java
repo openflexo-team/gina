@@ -71,7 +71,7 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 
 	public FIBLayoutManagerImpl(FIBContainerViewImpl<?, C, C2> containerView) {
 		this.containerView = containerView;
-		constraints = new HashMap<FIBView<?, C2>, CC>();
+		constraints = new HashMap<>();
 	}
 
 	public FIBContainerViewImpl<?, C, C2> getContainerView() {

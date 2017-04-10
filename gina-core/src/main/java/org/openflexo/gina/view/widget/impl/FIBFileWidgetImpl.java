@@ -55,7 +55,7 @@ import org.openflexo.gina.view.widget.FIBFileWidget;
  *
  * @author sylvain
  */
-public abstract class FIBFileWidgetImpl<C> extends FIBWidgetViewImpl<FIBFile, C, File>implements FIBFileWidget<C> {
+public abstract class FIBFileWidgetImpl<C> extends FIBWidgetViewImpl<FIBFile, C, File> implements FIBFileWidget<C> {
 
 	static final Logger LOGGER = Logger.getLogger(FIBFileWidgetImpl.class.getPackage().getName());
 
@@ -85,7 +85,7 @@ public abstract class FIBFileWidgetImpl<C> extends FIBWidgetViewImpl<FIBFile, C,
 
 	@Override
 	public FileWidgetRenderingAdapter<C> getRenderingAdapter() {
-		return (FileWidgetRenderingAdapter) super.getRenderingAdapter();
+		return (FileWidgetRenderingAdapter<C>) super.getRenderingAdapter();
 	}
 
 	@Override

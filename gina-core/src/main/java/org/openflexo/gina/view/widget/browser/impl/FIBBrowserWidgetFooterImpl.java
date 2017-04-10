@@ -97,18 +97,18 @@ public abstract class FIBBrowserWidgetFooterImpl<C, T> implements FIBBrowserWidg
 
 	@Override
 	public void initializeActions(FIBBrowserWidget<?, T> widget) {
-		_addActions = new LinkedHashMap<FIBBrowserElement, Map<FIBBrowserAction, FIBBrowserActionListener<T>>>();
-		_removeActions = new LinkedHashMap<FIBBrowserElement, Map<FIBBrowserAction, FIBBrowserActionListener<T>>>();
-		_otherActions = new LinkedHashMap<FIBBrowserElement, Map<FIBBrowserAction, FIBBrowserActionListener<T>>>();
+		_addActions = new LinkedHashMap<>();
+		_removeActions = new LinkedHashMap<>();
+		_otherActions = new LinkedHashMap<>();
 
 		for (FIBBrowserElement element : widget.getComponent().getElements()) {
 
-			Map<FIBBrowserAction, FIBBrowserActionListener<T>> addActions = new LinkedHashMap<FIBBrowserAction, FIBBrowserActionListener<T>>();
-			Map<FIBBrowserAction, FIBBrowserActionListener<T>> removeActions = new LinkedHashMap<FIBBrowserAction, FIBBrowserActionListener<T>>();
-			Map<FIBBrowserAction, FIBBrowserActionListener<T>> otherActions = new LinkedHashMap<FIBBrowserAction, FIBBrowserActionListener<T>>();
+			Map<FIBBrowserAction, FIBBrowserActionListener<T>> addActions = new LinkedHashMap<>();
+			Map<FIBBrowserAction, FIBBrowserActionListener<T>> removeActions = new LinkedHashMap<>();
+			Map<FIBBrowserAction, FIBBrowserActionListener<T>> otherActions = new LinkedHashMap<>();
 
 			for (FIBBrowserAction plAction : element.getActions()) {
-				FIBBrowserActionListener<T> plActionListener = new FIBBrowserActionListener<T>(_widget, plAction);
+				FIBBrowserActionListener<T> plActionListener = new FIBBrowserActionListener<>(_widget, plAction);
 				if (plActionListener.isAddAction()) {
 					addActions.put(plAction, plActionListener);
 				}
@@ -133,9 +133,9 @@ public abstract class FIBBrowserWidgetFooterImpl<C, T> implements FIBBrowserWidg
 		Map<FIBBrowserAction, FIBBrowserActionListener<T>> removeActions = _removeActions.get(element);
 		Map<FIBBrowserAction, FIBBrowserActionListener<T>> otherActions = _otherActions.get(element);
 
-		List<FIBBrowserAction> addActionsToRemove = new ArrayList<FIBBrowserAction>(addActions.keySet());
-		List<FIBBrowserAction> removeActionsToRemove = new ArrayList<FIBBrowserAction>(removeActions.keySet());
-		List<FIBBrowserAction> otherActionsToRemove = new ArrayList<FIBBrowserAction>(otherActions.keySet());
+		List<FIBBrowserAction> addActionsToRemove = new ArrayList<>(addActions.keySet());
+		List<FIBBrowserAction> removeActionsToRemove = new ArrayList<>(removeActions.keySet());
+		List<FIBBrowserAction> otherActionsToRemove = new ArrayList<>(otherActions.keySet());
 
 		for (FIBBrowserAction plAction : element.getActions()) {
 			if (plAction.getActionType() == ActionType.Add) {
@@ -144,7 +144,7 @@ public abstract class FIBBrowserWidgetFooterImpl<C, T> implements FIBBrowserWidg
 					addActionsToRemove.remove(plAction);
 				}
 				else {
-					plActionListener = new FIBBrowserActionListener<T>(_widget, plAction);
+					plActionListener = new FIBBrowserActionListener<>(_widget, plAction);
 					addActions.put(plAction, plActionListener);
 				}
 			}
@@ -154,7 +154,7 @@ public abstract class FIBBrowserWidgetFooterImpl<C, T> implements FIBBrowserWidg
 					removeActionsToRemove.remove(plAction);
 				}
 				else {
-					plActionListener = new FIBBrowserActionListener<T>(_widget, plAction);
+					plActionListener = new FIBBrowserActionListener<>(_widget, plAction);
 					removeActions.put(plAction, plActionListener);
 				}
 			}
@@ -164,19 +164,19 @@ public abstract class FIBBrowserWidgetFooterImpl<C, T> implements FIBBrowserWidg
 					otherActionsToRemove.remove(plAction);
 				}
 				else {
-					plActionListener = new FIBBrowserActionListener<T>(_widget, plAction);
+					plActionListener = new FIBBrowserActionListener<>(_widget, plAction);
 					otherActions.put(plAction, plActionListener);
 				}
 			}
 		}
 
-		for (FIBBrowserAction a : new ArrayList<FIBBrowserAction>(addActionsToRemove)) {
+		for (FIBBrowserAction a : new ArrayList<>(addActionsToRemove)) {
 			addActions.remove(a);
 		}
-		for (FIBBrowserAction a : new ArrayList<FIBBrowserAction>(removeActionsToRemove)) {
+		for (FIBBrowserAction a : new ArrayList<>(removeActionsToRemove)) {
 			removeActions.remove(a);
 		}
-		for (FIBBrowserAction a : new ArrayList<FIBBrowserAction>(otherActionsToRemove)) {
+		for (FIBBrowserAction a : new ArrayList<>(otherActionsToRemove)) {
 			otherActions.remove(a);
 		}
 

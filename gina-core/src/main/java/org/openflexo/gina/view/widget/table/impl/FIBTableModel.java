@@ -96,17 +96,17 @@ public class FIBTableModel<T> extends AbstractTableModel {
 	 */
 	// private Hashtable<JButton,PropertyListActionListener> _controls;
 
-	public FIBTableModel(FIBTable fibTable, FIBTableWidget widget, FIBController controller) {
+	public FIBTableModel(FIBTable fibTable, FIBTableWidget<?, T> widget, FIBController controller) {
 		super();
 		_fibTable = fibTable;
 		_widget = widget;
 		_values = null;
-		_columns = new ArrayList<AbstractColumn<T, ?>>();
+		_columns = new ArrayList<>();
 		for (FIBTableColumn column : fibTable.getColumns()) {
 			addToColumns(buildTableColumn(column, controller));
 		}
 
-		_rowObjectModificationTrackers = new Hashtable<Object, RowObjectModificationTracker>();
+		_rowObjectModificationTrackers = new Hashtable<>();
 
 	}
 
@@ -132,7 +132,7 @@ public class FIBTableModel<T> extends AbstractTableModel {
 			}
 		}
 
-		for (AbstractColumn c : _columns) {
+		for (AbstractColumn<T, ?> c : _columns) {
 			c.delete();
 		}
 
@@ -147,7 +147,7 @@ public class FIBTableModel<T> extends AbstractTableModel {
 		_fibTable = null;
 	}
 
-	public FIBTableWidget getWidget() {
+	public FIBTableWidget<?, T> getWidget() {
 		return _widget;
 	}
 
@@ -166,9 +166,9 @@ public class FIBTableModel<T> extends AbstractTableModel {
 		}
 
 		List<T> oldValues = _values;
-		_values = new ArrayList<T>();
-		List<T> removedValues = new ArrayList<T>();
-		List<T> addedValues = new ArrayList<T>();
+		_values = new ArrayList<>();
+		List<T> removedValues = new ArrayList<>();
+		List<T> addedValues = new ArrayList<>();
 		if (oldValues != null) {
 			removedValues.addAll(oldValues);
 		}
@@ -511,28 +511,28 @@ public class FIBTableModel<T> extends AbstractTableModel {
 
 	private AbstractColumn<T, ?> buildTableColumn(FIBTableColumn column, FIBController controller) {
 		if (column instanceof FIBLabelColumn) {
-			return new LabelColumn<T>((FIBLabelColumn) column, this, controller);
+			return new LabelColumn<>((FIBLabelColumn) column, this, controller);
 		}
 		else if (column instanceof FIBTextFieldColumn) {
-			return new TextFieldColumn<T>((FIBTextFieldColumn) column, this, controller);
+			return new TextFieldColumn<>((FIBTextFieldColumn) column, this, controller);
 		}
 		else if (column instanceof FIBCheckBoxColumn) {
-			return new CheckBoxColumn<T>((FIBCheckBoxColumn) column, this, controller);
+			return new CheckBoxColumn<>((FIBCheckBoxColumn) column, this, controller);
 		}
 		else if (column instanceof FIBDropDownColumn) {
-			return new DropDownColumn<T, Object>((FIBDropDownColumn) column, this, controller);
+			return new DropDownColumn<>((FIBDropDownColumn) column, this, controller);
 		}
 		else if (column instanceof FIBIconColumn) {
-			return new IconColumn<T>((FIBIconColumn) column, this, controller);
+			return new IconColumn<>((FIBIconColumn) column, this, controller);
 		}
 		else if (column instanceof FIBNumberColumn) {
-			return new NumberColumn<T>((FIBNumberColumn) column, this, controller);
+			return new NumberColumn<>((FIBNumberColumn) column, this, controller);
 		}
 		else if (column instanceof FIBCustomColumn) {
-			return new CustomColumn<T, Object>((FIBCustomColumn) column, this, controller);
+			return new CustomColumn<>((FIBCustomColumn) column, this, controller);
 		}
 		else if (column instanceof FIBButtonColumn) {
-			return new ButtonColumn<T, Object>((FIBButtonColumn) column, this, controller);
+			return new ButtonColumn<>((FIBButtonColumn) column, this, controller);
 		}
 		return null;
 

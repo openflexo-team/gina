@@ -88,7 +88,7 @@ public class LoadedClassesInfo extends Observable {
 	private final Hashtable<String, Vector<ClassInfo>> classesForName;
 
 	private LoadedClassesInfo() {
-		classesForName = new Hashtable<String, Vector<ClassInfo>>();
+		classesForName = new Hashtable<>();
 		packages = Collections.synchronizedMap(new HashMap<Package, PackageInfo>() {
 			@Override
 			public synchronized PackageInfo put(Package key, PackageInfo value) {
@@ -113,7 +113,7 @@ public class LoadedClassesInfo extends Observable {
 
 	public List<PackageInfo> getPackages() {
 		if (needsReordering) {
-			packageList = new Vector<PackageInfo>();
+			packageList = new Vector<>();
 			for (Package p : packages.keySet()) {
 				packageList.add(packages.get(p));
 			}
@@ -136,7 +136,7 @@ public class LoadedClassesInfo extends Observable {
 		return returned;
 	}
 
-	private ClassInfo registerClass(Class c) {
+	private ClassInfo registerClass(Class<?> c) {
 		PackageInfo p = registerPackage(c.getPackage());
 
 		logger.fine("Register class " + c);
@@ -184,8 +184,8 @@ public class LoadedClassesInfo extends Observable {
 
 		public List<ClassInfo> getClasses() {
 			if (needsReordering) {
-				classesList = new Vector<ClassInfo>();
-				for (Class c : classes.keySet()) {
+				classesList = new Vector<>();
+				for (Class<?> c : classes.keySet()) {
 					classesList.add(classes.get(c));
 				}
 				Collections.sort(classesList, new Comparator<ClassInfo>() {
@@ -230,7 +230,7 @@ public class LoadedClassesInfo extends Observable {
 	}
 
 	public class ClassInfo extends Observable {
-		private final Class clazz;
+		private final Class<?> clazz;
 		public String className;
 		public String packageName;
 		public String fullQualifiedName;
@@ -248,10 +248,10 @@ public class LoadedClassesInfo extends Observable {
 		private Vector<ClassInfo> memberClassesList;
 		private boolean needsReordering = true;
 
-		public ClassInfo(Class aClass) {
+		public ClassInfo(Class<?> aClass) {
 			Vector<ClassInfo> listOfClassesWithThatName = classesForName.get(aClass.getSimpleName());
 			if (listOfClassesWithThatName == null) {
-				classesForName.put(aClass.getSimpleName(), listOfClassesWithThatName = new Vector<ClassInfo>());
+				classesForName.put(aClass.getSimpleName(), listOfClassesWithThatName = new Vector<>());
 			}
 			listOfClassesWithThatName.add(this);
 			className = aClass.getSimpleName();
@@ -263,7 +263,7 @@ public class LoadedClassesInfo extends Observable {
 			logger.fine("Instanciate new ClassInfo for " + aClass);
 		}
 
-		private ClassInfo declareMember(Class c) {
+		private ClassInfo declareMember(Class<?> c) {
 			ClassInfo returned = memberClasses.get(c);
 			if (returned == null) {
 				memberClasses.put(c, returned = new ClassInfo(c));
@@ -275,7 +275,7 @@ public class LoadedClassesInfo extends Observable {
 
 		public List<ClassInfo> getMemberClasses() {
 			if (needsReordering) {
-				memberClassesList = new Vector<ClassInfo>();
+				memberClassesList = new Vector<>();
 				for (Class<?> c : memberClasses.keySet()) {
 					memberClassesList.add(memberClasses.get(c));
 				}
@@ -350,7 +350,7 @@ public class LoadedClassesInfo extends Observable {
 				patternString = "." + filteredClassName;
 			}
 			try {
-				Vector<ClassInfo> exactMatches = new Vector<ClassInfo>();
+				Vector<ClassInfo> exactMatches = new Vector<>();
 				if (classesForName.get(filteredClassName) != null) {
 					exactMatches = classesForName.get(filteredClassName);
 					matchingClasses.addAll(exactMatches);
@@ -383,7 +383,7 @@ public class LoadedClassesInfo extends Observable {
 
 	}
 
-	public Vector<ClassInfo> matchingClasses = new Vector<ClassInfo>();
+	public Vector<ClassInfo> matchingClasses = new Vector<>();
 
 	private ClassInfo selectedClassInfo;
 

@@ -76,7 +76,7 @@ import org.openflexo.toolbox.ToolBox;
  * @author sguerin
  * 
  */
-public class CustomColumn<T, V> extends AbstractColumn<T, V>implements EditableColumn<T, V>, ApplyCancelListener {
+public class CustomColumn<T, V> extends AbstractColumn<T, V> implements EditableColumn<T, V>, ApplyCancelListener {
 	private static final Logger logger = Logger.getLogger(CustomColumn.class.getPackage().getName());
 
 	private final FIBCustomColumn _customColumn;
@@ -116,7 +116,7 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V>implements EditableC
 		if (customComponentClass == null) {
 			return null;
 		}
-		Class[] types = new Class[1];
+		Class<?>[] types = new Class[1];
 		types[0] = dataClass;
 		try {
 			Constructor<FIBCustomComponent<V>> constructor = null;

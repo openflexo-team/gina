@@ -59,7 +59,6 @@ import org.openflexo.gina.view.widget.impl.FIBTableWidgetFooter;
  * 
  * @author sylvain
  */
-@SuppressWarnings("serial")
 public abstract class FIBTableWidgetFooterImpl<C, T> implements FIBTableWidgetFooter<C, T> {
 
 	protected static final Logger LOGGER = Logger.getLogger(FIBTableWidgetFooterImpl.class.getPackage().getName());
@@ -107,7 +106,7 @@ public abstract class FIBTableWidgetFooterImpl<C, T> implements FIBTableWidgetFo
 			FIBTableActionListener<T> actionListener = removeActions.get(action);
 			int index = -1;
 			if (tableWidget.getSelected() != null && tableWidget.getValue() instanceof List) {
-				index = ((List) tableWidget.getValue()).indexOf(tableWidget.getSelected());
+				index = ((List<T>) tableWidget.getValue()).indexOf(tableWidget.getSelected());
 			}
 
 			if (tableWidget.getSelection() != null && tableWidget.getSelection().size() > 1) {
@@ -152,15 +151,15 @@ public abstract class FIBTableWidgetFooterImpl<C, T> implements FIBTableWidgetFo
 
 	@Override
 	public void initializeActions(FIBTableWidget<?, T> tableWidget) {
-		addActions = new Hashtable<FIBTableAction, FIBTableActionListener<T>>();
-		removeActions = new Hashtable<FIBTableAction, FIBTableActionListener<T>>();
-		otherActions = new Hashtable<FIBTableAction, FIBTableActionListener<T>>();
-		sortedAddKeys = new ArrayList<FIBTableAction>();
-		sortedRemoveKeys = new ArrayList<FIBTableAction>();
-		sortedOtherKeys = new ArrayList<FIBTableAction>();
+		addActions = new Hashtable<>();
+		removeActions = new Hashtable<>();
+		otherActions = new Hashtable<>();
+		sortedAddKeys = new ArrayList<>();
+		sortedRemoveKeys = new ArrayList<>();
+		sortedOtherKeys = new ArrayList<>();
 
 		for (FIBTableAction plAction : tableWidget.getComponent().getActions()) {
-			FIBTableActionListener<T> plActionListener = new FIBTableActionListener<T>(plAction, tableWidget);
+			FIBTableActionListener<T> plActionListener = new FIBTableActionListener<>(plAction, tableWidget);
 			if (plActionListener.isAddAction()) {
 				addActions.put(plAction, plActionListener);
 				sortedAddKeys.add(plAction);

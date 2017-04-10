@@ -98,7 +98,7 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 
 		_footer = makeFooter();
 
-		selection = new ArrayList<T>();
+		selection = new ArrayList<>();
 
 		// buildBrowser();
 
@@ -273,7 +273,7 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 	@Override
 	protected void performUpdate() {
 
-		Object wasSelected = getSelected();
+		// Unused Object wasSelected = getSelected();
 
 		super.performUpdate();
 
@@ -615,12 +615,12 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		GinaStackEvent stack = GENotifier.raise(FIBEventFactory.getInstance().createMouseEvent("selected"));
 
 		if (selection == null) {
-			selection = new ArrayList<T>();
+			selection = new ArrayList<>();
 		}
 
-		List<T> oldSelection = new ArrayList<T>(selection);
+		List<T> oldSelection = new ArrayList<>(selection);
 		T newSelectedObject;
-		List<T> newSelection = new ArrayList<T>(selection);
+		List<T> newSelection = new ArrayList<>(selection);
 
 		if (e.getNewLeadSelectionPath() == null || e.getNewLeadSelectionPath().getLastPathComponent() == null) {
 			newSelectedObject = null;

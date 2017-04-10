@@ -38,7 +38,6 @@
 
 package org.openflexo.gina.swing.utils.table;
 
-
 /**
  * Please comment this class
  * 
@@ -57,7 +56,7 @@ public abstract class CheckColumn<D> extends AbstractColumn<D, Boolean> implemen
 	}
 
 	@Override
-	public Class getValueClass() {
+	public Class<Boolean> getValueClass() {
 		return Boolean.class;
 	}
 

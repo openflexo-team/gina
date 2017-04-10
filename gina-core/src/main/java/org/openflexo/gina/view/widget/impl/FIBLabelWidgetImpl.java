@@ -66,7 +66,7 @@ public abstract class FIBLabelWidgetImpl<C> extends FIBWidgetViewImpl<FIBLabel, 
 
 	@Override
 	public LabelRenderingAdapter<C> getRenderingAdapter() {
-		return (LabelRenderingAdapter) super.getRenderingAdapter();
+		return (LabelRenderingAdapter<C>) super.getRenderingAdapter();
 	}
 
 	@Override

@@ -533,7 +533,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		}
 
 		if (getWidget().getValueTransform() != null && getWidget().getValueTransform().isValid()) {
-			T old = aValue;
+			// Unused T old = aValue;
 			try {
 				aValue = (T) getWidget().getValueTransform().getBindingValue(getValueBindingContext(aValue));
 			} catch (TypeMismatchException e) {
@@ -708,7 +708,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 				// when they are not visible
 				((FIBViewImpl<?, ?>) v).updateVisibility();
 				if (v.isComponentVisible()) {
-					((FIBViewImpl) v).performUpdate();
+					((FIBViewImpl<?, ?>) v).performUpdate();
 				}
 			}
 			else {

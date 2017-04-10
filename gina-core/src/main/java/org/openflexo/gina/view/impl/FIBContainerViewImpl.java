@@ -83,7 +83,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	public FIBContainerViewImpl(M model, FIBController controller, ContainerRenderingAdapter<C, C2> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
 
-		subViewsMap = new Hashtable<FIBComponent, FIBViewImpl<?, C2>>();
+		subViewsMap = new Hashtable<>();
 
 		technologyComponent = makeTechnologyComponent();
 
@@ -113,7 +113,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 			return;
 		}
 		if (subViewsMap != null) {
-			for (FIBViewImpl<?, C2> v : new ArrayList<FIBViewImpl<?, C2>>(subViewsMap.values())) {
+			for (FIBViewImpl<?, C2> v : new ArrayList<>(subViewsMap.values())) {
 				v.delete();
 			}
 			subViewsMap.clear();
@@ -123,20 +123,20 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	}
 
 	/**
-	 * Called when the component view explicitely change its visibility state from INVISIBLE to VISIBLE
+	 * Called when the component view explicitly change its visibility state from INVISIBLE to VISIBLE
 	 */
 	@Override
 	protected void componentBecomesVisible() {
 
 		// When a container becomes visible, we have to update all contained components, because they
-		// were disactivated
+		// were deactivated
 
 		// System.out.println("************ BEGIN Component " + getComponent() + " becomes VISIBLE !!!!!!");
 		super.componentBecomesVisible();
 
 		// Then iterate on all children, and update them
 		if (subViewsMap != null) {
-			for (FIBView v : new ArrayList<FIBView>(subViewsMap.values())) {
+			for (FIBView<?, C2> v : new ArrayList<>(subViewsMap.values())) {
 				if (!v.isDeleted()) {
 					// System.out.println("Updating " + v.getComponent());
 					v.update();
@@ -147,7 +147,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	}
 
 	/**
-	 * Called when the component view explicitely change its visibility state from VISIBLE to INVISIBLE
+	 * Called when the component view explicitly change its visibility state from VISIBLE to INVISIBLE
 	 */
 	@Override
 	protected void componentBecomesInvisible() {
@@ -155,10 +155,10 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		super.componentBecomesInvisible();
 		// Then iterate on all children, and update them
 		if (subViewsMap != null) {
-			for (FIBView v : new ArrayList<FIBView>(subViewsMap.values())) {
+			for (FIBView<?, C2> v : new ArrayList<>(subViewsMap.values())) {
 				if (!v.isDeleted()) {
 					// System.out.println("Updating " + v.getComponent());
-					((FIBViewImpl) v).componentBecomesInvisible();
+					((FIBViewImpl<?, C2>) v).componentBecomesInvisible();
 				}
 			}
 		}
@@ -172,7 +172,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	}
 
 	private void internallyBuildChildComponents() {
-		Vector<FIBComponent> allSubComponents = new Vector<FIBComponent>();
+		Vector<FIBComponent> allSubComponents = new Vector<>();
 		allSubComponents.addAll(getNotHiddenSubComponents());
 
 		for (FIBComponent subComponent : allSubComponents) {
@@ -221,7 +221,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 
 	private void performUpdateSubViews() {
 		if (subViewsMap != null) {
-			for (FIBView v : new ArrayList<FIBView>(subViewsMap.values())) {
+			for (FIBView<?, C2> v : new ArrayList<>(subViewsMap.values())) {
 				if (!v.isDeleted() /*&& v.isViewVisible()*/) {
 					v.update();
 				}
@@ -268,7 +268,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 
 	@Override
 	public void updateLanguage() {
-		for (FIBView v : subViewsMap.values()) {
+		for (FIBView<?, C2> v : subViewsMap.values()) {
 			// if
 			// (!"True".equals(v.getComponent().getParameter(FIBContainer.INHERITED)))
 			v.updateLanguage();
@@ -318,7 +318,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	 * @return
 	 */
 	public List<FIBComponent> getNotHiddenSubComponents() {
-		List<FIBComponent> returned = new ArrayList<FIBComponent>();
+		List<FIBComponent> returned = new ArrayList<>();
 		for (FIBComponent subComponent : getComponent().getSubComponents()) {
 			if (!subComponent.isHidden()) {
 				// if (subComponent.getParameter("hidden") == null || subComponent.getParameter("hidden").equalsIgnoreCase("false")) {
@@ -386,7 +386,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	@Override
 	protected <T> void fireVariableChanged(FIBVariable<T> variable, T oldValue, T newValue) {
 		super.fireVariableChanged(variable, oldValue, newValue);
-		ArrayList<FIBView<?, ?>> subviews = new ArrayList<FIBView<?, ?>>(getSubViews());
+		ArrayList<FIBView<?, ?>> subviews = new ArrayList<>(getSubViews());
 		for (FIBView<?, ?> child : subviews) {
 			((FIBViewImpl<?, ?>) child).fireVariableChanged(variable, oldValue, newValue);
 		}

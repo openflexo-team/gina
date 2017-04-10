@@ -228,7 +228,7 @@ public class TestFIBBrowser2 extends GinaSwingEditorTestCase {
 			super();
 			this.name = aName;
 			this.mainClass = mainClass;
-			this.otherClasses = new Vector<TestClass>();
+			this.otherClasses = new Vector<>();
 			for (TestClass c : otherClasses) {
 				this.otherClasses.add(c);
 			}
@@ -267,7 +267,7 @@ public class TestFIBBrowser2 extends GinaSwingEditorTestCase {
 		public Vector<TestMethod> methods;
 
 		public TestClass(String aName) {
-			methods = new Vector<TestMethod>();
+			methods = new Vector<>();
 			this.name = aName;
 		}
 

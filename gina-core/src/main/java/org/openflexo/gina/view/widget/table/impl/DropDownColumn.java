@@ -46,7 +46,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -78,7 +77,7 @@ public class DropDownColumn<T, V> extends AbstractColumn<T, V> implements Editab
 	public DropDownColumn(FIBDropDownColumn columnModel, FIBTableModel<T> tableModel, FIBController controller) {
 		super(columnModel, tableModel, controller);
 		_cellRenderer = new DropDownCellRenderer();
-		_cellEditor = new DropDownCellEditor(new JComboBox());
+		_cellEditor = new DropDownCellEditor(new JComboBox<V>());
 	}
 
 	@Override
@@ -142,7 +141,8 @@ public class DropDownColumn<T, V> extends AbstractColumn<T, V> implements Editab
 		}
 
 		@Override
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row,
+				int column) {
 			Component returned = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			if (returned instanceof JLabel) {
 				((JLabel) returned).setText(renderValue((T) value));
@@ -164,7 +164,7 @@ public class DropDownColumn<T, V> extends AbstractColumn<T, V> implements Editab
 	protected List<V> getAvailableValues(T object) {
 
 		if (getColumnModel().getStaticList() != null) {
-			Vector<String> list = new Vector<String>();
+			Vector<String> list = new Vector<>();
 			StringTokenizer st = new StringTokenizer(getColumnModel().getStaticList(), ",");
 			while (st.hasMoreTokens()) {
 				list.add(st.nextToken());
@@ -206,7 +206,7 @@ public class DropDownColumn<T, V> extends AbstractColumn<T, V> implements Editab
 			}
 			try {
 				V[] array = accessedArray;
-				List<V> list = new ArrayList<V>();
+				List<V> list = new ArrayList<>();
 				for (int i = 0; i < array.length; i++) {
 					list.add(array[i]);
 				}
@@ -220,7 +220,7 @@ public class DropDownColumn<T, V> extends AbstractColumn<T, V> implements Editab
 			Type type = getColumnModel().getData().getAnalyzedType();
 			if (type instanceof Class && ((Class<V>) type).isEnum()) {
 				V[] array = ((Class<V>) type).getEnumConstants();
-				List<V> list = new ArrayList<V>();
+				List<V> list = new ArrayList<>();
 				for (int i = 0; i < array.length; i++) {
 					list.add(array[i]);
 				}
@@ -245,16 +245,17 @@ public class DropDownColumn<T, V> extends AbstractColumn<T, V> implements Editab
 	protected class DropDownCellEditor extends DefaultCellEditor {
 		private Hashtable<Integer, DropDownComboBoxModel> _comboBoxModels;
 
-		private JComboBox comboBox;
+		private JComboBox<V> comboBox;
 
-		public DropDownCellEditor(JComboBox aComboBox) {
+		public DropDownCellEditor(JComboBox<V> aComboBox) {
 			super(aComboBox);
 			aComboBox.setFont(getFont());
-			_comboBoxModels = new Hashtable<Integer, DropDownComboBoxModel>();
+			_comboBoxModels = new Hashtable<>();
 			comboBox = aComboBox;
 			comboBox.setRenderer(new DefaultListCellRenderer() {
 				@Override
-				public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+				public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+						boolean cellHasFocus) {
 					Component returned = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 					if (returned instanceof JLabel) {
 						((JLabel) returned).setText(renderValue((T) value));
@@ -288,16 +289,14 @@ public class DropDownColumn<T, V> extends AbstractColumn<T, V> implements Editab
 			return _comboBoxModel;
 		}
 
-		protected class DropDownComboBoxModel extends DefaultComboBoxModel {
+		protected class DropDownComboBoxModel extends DefaultComboBoxModel<V> {
 
 			protected DropDownComboBoxModel(T element) {
 				super();
 				List<V> v = getAvailableValues(element);
 				if (v != null) {
-					for (Iterator<V> it = v.iterator(); it.hasNext();) {
-						V next = it.next();
-						addElement(next);
-					}
+					for (V elt : v)
+						addElement(elt);
 				}
 			}
 		}

@@ -75,9 +75,9 @@ import org.openflexo.swing.VerticalLayout;
 public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCustomComponent<Class> {
 	static final Logger LOGGER = Logger.getLogger(ClassSelector.class.getPackage().getName());
 
-	public static Resource FIB_FILE_NAME = ResourceLocator.getResourceLocator().locateResource("Fib/ClassSelector.fib");
+	public static Resource FIB_FILE_NAME = ResourceLocator.locateResource("Fib/ClassSelector.fib");
 
-	private Class _revertValue;
+	private Class<?> _revertValue;
 
 	protected ClassSelectorDetailsPanel _selectorPanel;
 

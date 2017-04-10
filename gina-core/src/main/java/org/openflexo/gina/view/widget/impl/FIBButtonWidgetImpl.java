@@ -80,7 +80,7 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 
 	@Override
 	public ButtonWidgetRenderingAdapter<C> getRenderingAdapter() {
-		return (ButtonWidgetRenderingAdapter) super.getRenderingAdapter();
+		return (ButtonWidgetRenderingAdapter<C>) super.getRenderingAdapter();
 	}
 
 	@Override

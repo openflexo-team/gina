@@ -55,14 +55,14 @@ import org.openflexo.gina.view.widget.browser.impl.FIBBrowserModel.BrowserCell;
 
 public class FIBBrowserCellEditor extends DefaultTreeCellEditor {
 
-	public FIBBrowserCellEditor(JTree tree, FIBBrowserCellRenderer renderer) {
+	public FIBBrowserCellEditor(JTree tree, FIBBrowserCellRenderer<?> renderer) {
 		super(tree, renderer);
 	}
 
 	@Override
 	public Component getTreeCellEditorComponent(JTree arg0, Object element, boolean _selected, boolean expanded, boolean leaf, int row) {
-		String editingName = ((BrowserCell) element).getBrowserElementType().getEditableLabelFor(
-				((BrowserCell) element).getRepresentedObject());
+		String editingName = ((BrowserCell) element).getBrowserElementType()
+				.getEditableLabelFor(((BrowserCell) element).getRepresentedObject());
 		Icon customIcon = getRenderer().getIcon(((BrowserCell) element).getRepresentedObject());
 		if (customIcon != null) {
 			getRenderer().setClosedIcon(customIcon);
@@ -92,8 +92,8 @@ public class FIBBrowserCellEditor extends DefaultTreeCellEditor {
 		return false;
 	}
 
-	protected FIBBrowserCellRenderer getRenderer() {
-		return (FIBBrowserCellRenderer) renderer;
+	protected FIBBrowserCellRenderer<?> getRenderer() {
+		return (FIBBrowserCellRenderer<?>) renderer;
 	}
 
 }

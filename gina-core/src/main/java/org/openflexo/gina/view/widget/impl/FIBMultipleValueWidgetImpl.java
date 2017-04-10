@@ -180,7 +180,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 		T newValue = super.updateData();
 		if (getWidget().getData() != null && getWidget().getData().isSet() && getWidget().getData().isValid()) {
 			Type type = getWidget().getData().getAnalyzedType();
-			if (type instanceof Class && ((Class) type).isEnum()) {
+			if (type instanceof Class && ((Class<?>) type).isEnum()) {
 				updateMultipleValues();
 			}
 		}
@@ -201,7 +201,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 	}
 
 	@SuppressWarnings("serial")
-	public class FIBMultipleValueModelImpl extends AbstractListModel<I>implements FIBMultipleValueModel<I> {
+	public class FIBMultipleValueModelImpl extends AbstractListModel<I> implements FIBMultipleValueModel<I> {
 		private List<I> list = null;
 		private I[] array = null;
 
@@ -229,7 +229,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 																										* null
 																										*/) {
 
-				Object accessedList = null;
+				List<?> accessedList = null;
 				try {
 					accessedList = getWidget().getList().getBindingValue(getBindingEvaluationContext());
 				} catch (TypeMismatchException e) {
@@ -240,7 +240,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 					e.printStackTrace();
 				}
 				if (accessedList instanceof List) {
-					list = (List) accessedList;
+					list = (List<I>) accessedList;
 				}
 
 			}
@@ -304,8 +304,8 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 				 * binding.isBindingValid(); }
 				 */
 				Type type = getWidget().getData().getAnalyzedType();
-				if (type instanceof Class && ((Class) type).isEnum()) {
-					array = (I[]) ((Class) type).getEnumConstants();
+				if (type instanceof Class && ((Class<?>) type).isEnum()) {
+					array = (I[]) ((Class<?>) type).getEnumConstants();
 				}
 			}
 
@@ -314,7 +314,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 			}
 
 			if (list == null && array == null && StringUtils.isNotEmpty(getWidget().getStaticList())) {
-				list = new ArrayList<I>();
+				list = new ArrayList<>();
 				StringTokenizer st = new StringTokenizer(getWidget().getStaticList(), ",");
 				while (st.hasMoreTokens()) {
 					list.add((I) st.nextToken());
@@ -411,7 +411,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 		}
 
 		protected ArrayList<Object> toArrayList() {
-			ArrayList<Object> returned = new ArrayList<Object>();
+			ArrayList<Object> returned = new ArrayList<>();
 			for (int i = 0; i < getSize(); i++) {
 				returned.add(getElementAt(i));
 			}
@@ -435,7 +435,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 		private Dimension nullDimesion;
 
 		@Override
-		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 			FIBMultipleValueCellRenderer label = (FIBMultipleValueCellRenderer) super.getListCellRendererComponent(list, value, index,
 					isSelected, cellHasFocus);
 			if (value != null && nullDimesion == null) {
@@ -597,7 +597,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 	public void updateLanguage() {
 		super.updateLanguage();
 		if (getComponent().getLocalize()) {
-			FIBMultipleValueModel mvModel = getMultipleValueModel();
+			FIBMultipleValueModel<?> mvModel = getMultipleValueModel();
 			for (int i = 0; i < mvModel.getSize(); i++) {
 				/* String s = */getStringRepresentation(mvModel.getElementAt(i));
 				// getLocalized(s);

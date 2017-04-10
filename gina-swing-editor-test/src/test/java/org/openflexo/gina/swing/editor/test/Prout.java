@@ -47,7 +47,7 @@ public class Prout {
 
 	public Prout(String aName) {
 		name = aName;
-		totoList = new Vector<Toto>();
+		totoList = new Vector<>();
 		totoList.add(new Toto("youp", "une description pour youp"));
 		totoList.add(new Toto("la", "une description pour la"));
 		totoList.add(new Toto("boum", "une description pour boum"));

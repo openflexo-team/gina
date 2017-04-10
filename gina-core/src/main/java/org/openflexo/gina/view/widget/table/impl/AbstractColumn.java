@@ -324,7 +324,7 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 	 */
 	protected TableCellRenderer getDefaultTableCellRenderer() {
 		if (_defaultTableCellRenderer == null) {
-			_defaultTableCellRenderer = new FIBTableCellRenderer<T, V>(this);
+			_defaultTableCellRenderer = new FIBTableCellRenderer<>(this);
 		}
 		return _defaultTableCellRenderer;
 	}

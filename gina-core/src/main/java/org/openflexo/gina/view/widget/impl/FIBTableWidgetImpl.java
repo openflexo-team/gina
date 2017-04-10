@@ -76,7 +76,7 @@ import org.openflexo.gina.view.widget.table.impl.FIBTableModel;
  * 
  * @author sylvain
  */
-public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTable, C, Collection<T>>implements FIBTableWidget<C, T> {
+public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTable, C, Collection<T>> implements FIBTableWidget<C, T> {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBTableWidgetImpl.class.getPackage().getName());
 
@@ -191,7 +191,7 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 
 	public FIBTableModel<T> getTableModel() {
 		if (_tableModel == null) {
-			_tableModel = new FIBTableModel<T>(getTable(), this, getController());
+			_tableModel = new FIBTableModel<>(getTable(), this, getController());
 		}
 		return _tableModel;
 	}
@@ -521,9 +521,9 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 				return o1.hashCode() - o2.hashCode();
 			}
 		};
-		List<Object> sortedL1 = new ArrayList<Object>(l1);
+		List<Object> sortedL1 = new ArrayList<>(l1);
 		Collections.sort(sortedL1, comparator);
-		List<Object> sortedL2 = new ArrayList<Object>(l2);
+		List<Object> sortedL2 = new ArrayList<>(l2);
 		Collections.sort(sortedL2, comparator);
 		for (int i = 0; i < sortedL1.size(); i++) {
 			if (sortedL1.get(i) == null) {

@@ -352,7 +352,7 @@ public abstract class AbstractModel<M extends Observable, D> extends DefaultTabl
 	}
 
 	@Override
-	public Class getColumnClass(int col) {
+	public Class<?> getColumnClass(int col) {
 		AbstractColumn<?, ?> column = columnAt(col);
 		if (column != null) {
 			return column.getValueClass();

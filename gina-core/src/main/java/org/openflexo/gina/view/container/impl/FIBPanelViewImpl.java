@@ -44,16 +44,10 @@ import java.beans.PropertyChangeEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
-import org.openflexo.connie.BindingVariable;
-import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingValueChangeListener;
-import org.openflexo.connie.binding.Function.FunctionArgument;
-import org.openflexo.connie.binding.JavaMethodPathElement;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.connie.expr.BindingValue;
 import org.openflexo.gina.controller.FIBController;
-import org.openflexo.gina.model.FIBVariable;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.model.container.FIBTab;
@@ -73,7 +67,7 @@ import org.openflexo.swing.ImageUtils;
  * 
  * @author sylvain
  */
-public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPanel, C, C2>implements FIBPanelView<C, C2> {
+public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPanel, C, C2> implements FIBPanelView<C, C2> {
 
 	private static final Logger logger = Logger.getLogger(FIBPanelViewImpl.class.getPackage().getName());
 

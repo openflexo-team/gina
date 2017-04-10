@@ -91,7 +91,7 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 		super(model, controller, RenderingAdapter);
 
 		// We need here to "listen" all assignment values that may change
-		assignmentValueBindingValueChangeListeners = new ArrayList<BindingValueChangeListener<?>>();
+		assignmentValueBindingValueChangeListeners = new ArrayList<>();
 		// listenAssignmentValuesChange();
 
 	}
@@ -139,7 +139,7 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 			LOGGER.warning("Could not instanciate custom component : no component class found");
 			return null;
 		}
-		Class[] types = new Class[1];
+		Class<?>[] types = new Class[1];
 		types[0] = dataClass;
 		try {
 			boolean found = false;

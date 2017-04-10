@@ -67,7 +67,7 @@ import org.openflexo.toolbox.StringUtils;
 public class ClassEditor extends PropertyChangedSupportDefaultImplementation {
 	static final Logger LOGGER = Logger.getLogger(ClassEditor.class.getPackage().getName());
 
-	public static Resource FIB_FILE_NAME = ResourceLocator.getResourceLocator().locateResource("Fib/ClassEditor.fib");
+	public static Resource FIB_FILE_NAME = ResourceLocator.locateResource("Fib/ClassEditor.fib");
 
 	private LoadedClassesInfo loadedClassesInfo;
 

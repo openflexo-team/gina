@@ -218,7 +218,7 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 		public FIBListModel() {
 			super();
 			selectedObject = null;
-			selection = new ArrayList<T>();
+			selection = new ArrayList<>();
 		}
 
 		public T getSelectedObject() {
@@ -264,7 +264,7 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 			selectedObject = getElementAt(leadIndex);
 
 			List<T> oldSelection = selection;
-			List<T> newSelection = new ArrayList<T>();
+			List<T> newSelection = new ArrayList<>();
 			for (i = getListSelectionModel().getMinSelectionIndex(); i <= getListSelectionModel().getMaxSelectionIndex(); i++) {
 				if (getListSelectionModel().isSelectedIndex(i)) {
 					newSelection.add(getElementAt(i));
@@ -410,7 +410,7 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 		}
 
 		@Override
-		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 			FIBListCellRenderer label = (FIBListCellRenderer) super.getListCellRendererComponent(list, value, index, isSelected,
 					cellHasFocus);
 			// ((JComponent)label).setPreferredSize(new Dimension(label.getWidth(),getWidget().getRowHeight()));

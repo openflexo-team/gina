@@ -66,7 +66,7 @@ public class TestComponentEDITOR extends GinaSwingEditorTestCase {
 			name = "name";
 			description = "description";
 			index = 1;
-			someFoo = new Vector<Foo>();
+			someFoo = new Vector<>();
 			someFoo.add(new Foo("i", 7));
 			someFoo.add(new Foo("am", 2));
 			someFoo.add(new Foo("the", 9));
@@ -83,7 +83,7 @@ public class TestComponentEDITOR extends GinaSwingEditorTestCase {
 		public Foo(String name, int index) {
 			fooName = name;
 			fooIndex = index;
-			someFoo2 = new Vector<Foo2>();
+			someFoo2 = new Vector<>();
 			for (int i = 0; i < index; i++) {
 				someFoo2.add(new Foo2(fooName + "_foo2_number_" + i, i));
 			}

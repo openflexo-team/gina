@@ -60,7 +60,7 @@ import org.openflexo.swing.ImageUtils;
  * 
  * @author sylvain
  */
-public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, C, Image>implements FIBImageWidget<C> {
+public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, C, Image> implements FIBImageWidget<C> {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBImageWidgetImpl.class.getPackage().getName());
 
@@ -93,7 +93,7 @@ public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, 
 
 	@Override
 	public ImageRenderingAdapter<C> getRenderingAdapter() {
-		return (ImageRenderingAdapter) super.getRenderingAdapter();
+		return (ImageRenderingAdapter<C>) super.getRenderingAdapter();
 	}
 
 	/*@Override

@@ -57,7 +57,7 @@ public class Coucou extends Observable {
 	public Coucou() {
 		name = "coucou";
 		description = "une description qui decrit ce que c'est";
-		prouts = new Vector<Prout>();
+		prouts = new Vector<>();
 		createNewProut();
 	}
 

@@ -117,7 +117,7 @@ public class TestList extends GinaSwingEditorTestCase {
 		public UserList(User... someUsers) {
 			super();
 			pcSupport = new PropertyChangeSupport(this);
-			users = new Vector<User>();
+			users = new Vector<>();
 			for (User u : someUsers) {
 				addUser(u);
 			}

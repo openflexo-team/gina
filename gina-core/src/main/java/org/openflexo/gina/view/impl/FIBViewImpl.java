@@ -118,8 +118,8 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 		model.getPropertyChangeSupport().addPropertyChangeListener(this);
 
-		variables = new HashMap<String, Object>();
-		variableListeners = new HashMap<String, BindingValueChangeListener<?>>();
+		variables = new HashMap<>();
+		variableListeners = new HashMap<>();
 
 		// VERY IMPORTANT: we do it now and not later during update scheme because otherwise, we do not have any
 		// chance to be notified of a visibility change !!!
@@ -295,18 +295,13 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 				setVariableValue(variable, newValue);
 
 			} catch (TypeMismatchException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 		}
-
 	}
 
 	@SuppressWarnings("unchecked")
@@ -670,10 +665,10 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		 * Object.class, BindingDefinitionType.GET);
 		 * System.out.println("EditionActionBrowser.selected=" +
 		 * binding2.getBindingValue(getBindingEvaluationContext())); } catch
-		 * (TypeMismatchException e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); } catch (NullReferenceException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); } catch
-		 * (InvocationTargetException e) { // TODO Auto-generated catch block
+		 * (TypeMismatchException e) { 
+		 * e.printStackTrace(); } catch (NullReferenceException e) { 
+		 * e.printStackTrace(); } catch
+		 * (InvocationTargetException e) { 
 		 * e.printStackTrace(); } }
 		 */
 

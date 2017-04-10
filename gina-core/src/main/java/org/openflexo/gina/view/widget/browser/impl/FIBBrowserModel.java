@@ -106,19 +106,19 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 	 */
 	// private Hashtable<JButton,PropertyListActionListener> _controls;
 
-	public FIBBrowserModel(FIBBrowser fibBrowser, FIBBrowserWidget widget, FIBController controller) {
+	public FIBBrowserModel(FIBBrowser fibBrowser, FIBBrowserWidget<?, ?> widget, FIBController controller) {
 		super(null);
 		contents = Multimaps.synchronizedMultimap(ArrayListMultimap.<Object, BrowserCell> create());
 		_fibBrowser = fibBrowser;
 		this.widget = widget;
-		_elementTypes = new Hashtable<FIBBrowserElement, FIBBrowserElementType>();
+		_elementTypes = new Hashtable<>();
 		for (FIBBrowserElement browserElement : fibBrowser.getElements()) {
 			addToElementTypes(browserElement, buildBrowserElementType(browserElement, controller));
 		}
 
 	}
 
-	public FIBBrowserWidget getWidget() {
+	public FIBBrowserWidget<Object, TreePath> getWidget() {
 		return widget;
 	}
 
@@ -132,11 +132,11 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 		_fibBrowser = null;
 	}
 
-	public FIBBrowserElement elementForClass(Class aClass) {
+	public FIBBrowserElement elementForClass(Class<?> aClass) {
 		return _fibBrowser.elementForClass(aClass);
 	}
 
-	public FIBBrowserElementType elementTypeForClass(Class aClass) {
+	public FIBBrowserElementType elementTypeForClass(Class<?> aClass) {
 		FIBBrowserElement element = elementForClass(aClass);
 
 		if (element != null) {
@@ -294,7 +294,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 	/**
 	 * This set is used during exploration of all exhaustive contents, in order not no enter in an infinite loop
 	 */
-	private final Set<Object> computedExhaustiveContents = new HashSet<Object>();
+	private final Set<Object> computedExhaustiveContents = new HashSet<>();
 
 	/**
 	 * Flag indicating is exhaustive contents (obtained after deep-browsing) is up-to-date
@@ -304,7 +304,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 	private BrowserCell retrieveBrowserCell(Object representedObject, BrowserCell parent) {
 		/*System.out.println("retrieveBrowserCell for " + representedObject + " parent="
 				+ (parent != null ? parent.getRepresentedObject() : "null"));*/
-		ArrayList<BrowserCell> cells = new ArrayList<FIBBrowserModel.BrowserCell>(contents.get(representedObject));
+		ArrayList<BrowserCell> cells = new ArrayList<>(contents.get(representedObject));
 		// Collection<BrowserCell> cells = contents.get(representedObject);
 		if (cells != null) {
 			for (BrowserCell cell : cells) {
@@ -410,7 +410,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 				childrenDataBindingValueChangeListeners.clear();
 			}
 			else {
-				childrenDataBindingValueChangeListeners = new HashMap<FIBBrowserElementChildren, BindingValueChangeListener<?>>();
+				childrenDataBindingValueChangeListeners = new HashMap<>();
 			}
 			// This is really important to this now
 			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
@@ -445,7 +445,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 							};
 						}
 						else {
-							l = new BrowserCellBindingValueChangeListener<Object>(children.getData(), browserElementType);
+							l = new BrowserCellBindingValueChangeListener<>(children.getData(), browserElementType);
 						}
 						childrenDataBindingValueChangeListeners.put(children, l);
 					}
@@ -462,7 +462,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 				childrenCastBindingValueChangeListeners.clear();
 			}
 			else {
-				childrenCastBindingValueChangeListeners = new HashMap<FIBBrowserElementChildren, BindingValueChangeListener<?>>();
+				childrenCastBindingValueChangeListeners = new HashMap<>();
 			}
 			// This is really important to this now
 			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
@@ -470,7 +470,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			if (browserElementType.getBrowserElement() != null) {
 				for (final FIBBrowserElementChildren children : browserElementType.getBrowserElement().getChildren()) {
 					if (children.getCast().isValid()) {
-						BindingValueChangeListener<?> l = new BrowserCellBindingValueChangeListener<Object>(children.getCast(),
+						BindingValueChangeListener<?> l = new BrowserCellBindingValueChangeListener<>(children.getCast(),
 								/* browserElementType */
 								// Instead of using browserElementType and to avoid to share it between multiple
 								// BindingValueListChangeListener
@@ -493,7 +493,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 				childrenVisibleBindingValueChangeListeners.clear();
 			}
 			else {
-				childrenVisibleBindingValueChangeListeners = new HashMap<FIBBrowserElementChildren, BindingValueChangeListener<Boolean>>();
+				childrenVisibleBindingValueChangeListeners = new HashMap<>();
 			}
 
 			// This is really important to this now
@@ -503,7 +503,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			if (browserElementType.getBrowserElement() != null) {
 				for (final FIBBrowserElementChildren children : browserElementType.getBrowserElement().getChildren()) {
 					if (children.getVisible().isValid()) {
-						BindingValueChangeListener<Boolean> l = new BrowserCellBindingValueChangeListener<Boolean>(children.getVisible(),
+						BindingValueChangeListener<Boolean> l = new BrowserCellBindingValueChangeListener<>(children.getVisible(),
 								/* browserElementType */
 								// Instead of using browserElementType and to avoid to share it between multiple
 								// BindingValueListChangeListener
@@ -529,7 +529,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getLabel().isValid()) {
 
-				labelBindingValueChangeListener = new BrowserCellBindingValueChangeListener<String>(
+				labelBindingValueChangeListener = new BrowserCellBindingValueChangeListener<>(
 						browserElementType.getBrowserElement().getLabel(), /* browserElementType */
 						// Instead of using browserElementType and to avoid to share it between multiple
 						// BindingValueListChangeListener
@@ -550,7 +550,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
 			browserElementType.getIconFor(representedObject);
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getIcon().isValid()) {
-				iconBindingValueChangeListener = new BrowserCellBindingValueChangeListener<Icon>(
+				iconBindingValueChangeListener = new BrowserCellBindingValueChangeListener<>(
 						browserElementType.getBrowserElement().getIcon(), /* browserElementType */
 						// Instead of using browserElementType and to avoid to share it between multiple
 						// BindingValueListChangeListener
@@ -570,7 +570,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
 			browserElementType.getTooltipFor(representedObject);
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getTooltip().isValid()) {
-				tooltipBindingValueChangeListener = new BrowserCellBindingValueChangeListener<String>(
+				tooltipBindingValueChangeListener = new BrowserCellBindingValueChangeListener<>(
 						browserElementType.getBrowserElement().getTooltip(), /* browserElementType */
 						// Instead of using browserElementType and to avoid to share it between multiple
 						// BindingValueListChangeListener
@@ -590,7 +590,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
 			browserElementType.isEnabled(representedObject);
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getEnabled().isValid()) {
-				enabledBindingValueChangeListener = new BrowserCellBindingValueChangeListener<Boolean>(
+				enabledBindingValueChangeListener = new BrowserCellBindingValueChangeListener<>(
 						browserElementType.getBrowserElement().getEnabled(), /* browserElementType */
 						// Instead of using browserElementType and to avoid to share it between multiple
 						// BindingValueListChangeListener
@@ -610,7 +610,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
 			browserElementType.isVisible(representedObject);
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getVisible().isValid()) {
-				visibleBindingValueChangeListener = new BrowserCellBindingValueChangeListener<Boolean>(
+				visibleBindingValueChangeListener = new BrowserCellBindingValueChangeListener<>(
 						browserElementType.getBrowserElement().getVisible(), /* browserElementType */
 						// Instead of using browserElementType and to avoid to share it between multiple
 						// BindingValueListChangeListener
@@ -827,7 +827,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			}
 
 			if (children != null) {
-				for (Object c : new ArrayList(children)) {
+				for (Object c : new ArrayList<>(children)) {
 					if (c instanceof BrowserCell) {
 						((BrowserCell) c).delete();
 					}
@@ -908,8 +908,8 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 				if (children.size() == 1 && children.firstElement() instanceof LoadingCell) {
 					removeAllChildren();
 				}
-				oldChildren = new ArrayList<BrowserCell>(children);
-				removedChildren = new ArrayList<BrowserCell>(children);
+				oldChildren = new ArrayList<>(children);
+				removedChildren = new ArrayList<>(children);
 			}
 
 			final List<?> newChildrenObjects = /*(isEnabled ?*/browserElementType
@@ -917,11 +917,11 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			int index = 0;
 
 			if (!newChildrenObjects.isEmpty()) {
-				newChildren = new ArrayList<BrowserCell>();
+				newChildren = new ArrayList<>();
 
 				// Optimization : do not need to create list if no children to update
 				if (recursively) {
-					cellsToForceUpdate = new ArrayList<BrowserCell>();
+					cellsToForceUpdate = new ArrayList<>();
 				}
 
 				for (Object o : newChildrenObjects) {
@@ -947,7 +947,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 								else {
 									newChildren.add(cell);
 									if (children == null) {
-										children = new Vector();
+										children = new Vector<>();
 									}
 									children.insertElementAt(cell, index);
 									index++;

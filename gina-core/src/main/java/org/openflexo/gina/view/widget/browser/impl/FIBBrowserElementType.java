@@ -39,9 +39,8 @@
 
 package org.openflexo.gina.view.widget.browser.impl;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -49,7 +48,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
-import javax.swing.*;
+
+import javax.swing.Icon;
+
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
@@ -60,6 +61,9 @@ import org.openflexo.gina.model.widget.FIBBrowserElementChildren;
 import org.openflexo.gina.view.widget.FIBBrowserWidget;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.ToolBox;
+
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 
 public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingEvaluationContext, PropertyChangeListener {
 
@@ -116,8 +120,9 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 				// Please investigate this issue
 				return;
 			}
-			FIBBrowserWidget owner = (FIBBrowserWidget) controller.viewForComponent(browserElementDefinition.getOwner());
-			if (owner != null) owner.updateBrowser();
+			FIBBrowserWidget<?, ?> owner = (FIBBrowserWidget<?, ?>) controller.viewForComponent(browserElementDefinition.getOwner());
+			if (owner != null)
+				owner.updateBrowser();
 		}
 	}
 
@@ -150,7 +155,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 		if (browserElementDefinition == null) {
 			return null;
 		}
-		List<DataBinding<?>> returned = new ArrayList<DataBinding<?>>();
+		List<DataBinding<?>> returned = new ArrayList<>();
 		returned.add(browserElementDefinition.getLabel());
 		returned.add(browserElementDefinition.getIcon());
 		returned.add(browserElementDefinition.getTooltip());
@@ -268,7 +273,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 		if (browserElementDefinition == null) {
 			return Collections.EMPTY_LIST;
 		}
-		List<Object> returned = new ArrayList<Object>();
+		List<Object> returned = new ArrayList<>();
 		for (FIBBrowserElementChildren children : browserElementDefinition.getChildren()) {
 			if (children.isMultipleAccess()) {
 				List<?> childrenObjects = getChildrenListFor(children, object);
@@ -355,7 +360,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 					// The list contains null
 					// We have to consider only non-null instances of elements, but we must avoid to destroy initial list:
 					// This is the reason for what we have to clone the list while avoiding null elements
-					returned = new ArrayList<Object>();
+					returned = new ArrayList<>();
 					for (Object o : list) {
 						if (o != null) {
 							returned.add(o);
@@ -438,9 +443,11 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 				e.printStackTrace();
 				return null;
 			}
-		} else if (getBrowserElement() != null) {
+		}
+		else if (getBrowserElement() != null) {
 			return getBrowserElement().retrieveValidFont();
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
@@ -454,7 +461,8 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 				e.printStackTrace();
 				return null;
 			}
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
@@ -468,7 +476,8 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 				e.printStackTrace();
 				return null;
 			}
-		} else {
+		}
+		else {
 			return null;
 		}
 	}

@@ -60,7 +60,7 @@ import org.openflexo.swing.CustomPopup.ApplyCancelListener;
  * 
  * @author sylvain
  */
-public abstract class FIBFontWidgetImpl<C> extends FIBWidgetViewImpl<FIBFont, C, Font>implements FIBFontWidget<C>, ApplyCancelListener {
+public abstract class FIBFontWidgetImpl<C> extends FIBWidgetViewImpl<FIBFont, C, Font> implements FIBFontWidget<C>, ApplyCancelListener {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBFontWidgetImpl.class.getPackage().getName());
 
@@ -80,7 +80,7 @@ public abstract class FIBFontWidgetImpl<C> extends FIBWidgetViewImpl<FIBFont, C,
 
 	@Override
 	public FontWidgetRenderingAdapter<C> getRenderingAdapter() {
-		return (FontWidgetRenderingAdapter) super.getRenderingAdapter();
+		return (FontWidgetRenderingAdapter<C>) super.getRenderingAdapter();
 	}
 
 	protected final void updateCheckboxVisibility() {

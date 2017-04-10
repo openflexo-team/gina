@@ -62,7 +62,7 @@ public abstract class StringColumn<D> extends AbstractColumn<D, String> {
 	}
 
 	@Override
-	public Class getValueClass() {
+	public Class<String> getValueClass() {
 		return String.class;
 	}
 

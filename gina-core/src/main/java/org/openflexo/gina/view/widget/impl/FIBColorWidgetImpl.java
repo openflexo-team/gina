@@ -78,7 +78,7 @@ public abstract class FIBColorWidgetImpl<C> extends FIBWidgetViewImpl<FIBColor, 
 
 	@Override
 	public ColorWidgetRenderingAdapter<C> getRenderingAdapter() {
-		return (ColorWidgetRenderingAdapter) super.getRenderingAdapter();
+		return (ColorWidgetRenderingAdapter<C>) super.getRenderingAdapter();
 	}
 
 	protected final void updateCheckboxVisibility() {

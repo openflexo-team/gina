@@ -46,6 +46,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.model.FIBComponent;
@@ -109,7 +110,7 @@ public class InspectorGroup {
 		}
 
 		// We first identify all parents
-		for (FIBInspector inspector : new ArrayList<FIBInspector>(inspectors.values())) {
+		for (FIBInspector inspector : new ArrayList<>(inspectors.values())) {
 			inspector.identifySuperInspectors(this, parentInspectorGroups);
 		}
 
@@ -177,7 +178,7 @@ public class InspectorGroup {
 	 * @return
 	 */
 	public List<FIBInspector> inspectorsForClass(Class<?> aClass) {
-		List<FIBInspector> returned = new ArrayList<FIBInspector>();
+		List<FIBInspector> returned = new ArrayList<>();
 		for (FIBInspector inspector : getInspectors().values()) {
 			if (inspector.getDataClass().isAssignableFrom(aClass)) {
 				if (!returned.contains(inspector)) {

@@ -140,7 +140,7 @@ public interface FIBInspector extends FIBPanel {
 
 			superInspectors.clear();
 
-			List<Class<?>> parentClasses = new ArrayList<Class<?>>();
+			List<Class<?>> parentClasses = new ArrayList<>();
 
 			for (FIBInspector inspector : inspectorGroup.getAllAccessiblesInspectors()) {
 				if (!inspector.getInspectedClass().equals(getInspectedClass())
