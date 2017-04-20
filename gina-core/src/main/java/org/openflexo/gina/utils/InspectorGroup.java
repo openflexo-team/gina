@@ -197,6 +197,8 @@ public class InspectorGroup {
 	}
 
 	private void visitSuperInspectors(InspectorGroup inspectorGroup, List<FIBInspector> inspectorList) {
+		// TODO: sometimes throws a ConcurrentModificationException
+		// Please investigate on this
 		inspectorList.addAll(inspectorGroup.getInspectors().values());
 		// System.out.println("visitSuperInspectors in " + this + " inspectorGroup=" + inspectorGroup + " parent=" +
 		for (InspectorGroup parentInspectorGroup : inspectorGroup.parentInspectorGroups) {
