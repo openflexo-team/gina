@@ -164,11 +164,11 @@ public abstract class FIBDropDownWidgetImpl<C, T> extends FIBMultipleValueWidget
 			return selectedItem;
 		}
 
-		@Override
+		/*@Override
 		public int hashCode() {
 			return selectedItem == null ? 0 : selectedItem.hashCode();
 		}
-
+		
 		@Override
 		public boolean equals(Object object) {
 			if (object instanceof FIBDropDownWidgetImpl.MyComboBoxModel) {
@@ -177,7 +177,7 @@ public abstract class FIBDropDownWidgetImpl<C, T> extends FIBMultipleValueWidget
 				}
 			}
 			return super.equals(object);
-		}
+		}*/
 
 	}
 
