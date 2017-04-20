@@ -565,7 +565,9 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 
 	protected void updateMultipleValues() {
 		((FIBMultipleValueModelImpl) getMultipleValueModel()).update();
-		clearMultipleValueModel();
+		// Sylvain: i think this is not necessary
+		// TODO: investigate on this
+		// clearMultipleValueModel();
 		proceedToListModelUpdate();
 	}
 
