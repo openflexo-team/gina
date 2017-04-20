@@ -198,16 +198,6 @@ public class JFIBDropDownWidget<T> extends FIBDropDownWidgetImpl<JDropDownPanel<
 		return new JDropDownPanel<>(this);
 	}
 
-	/*@Override
-	public T updateData() {
-		T newValue = super.updateData();
-		if (newValue == null && getWidget().getAutoSelectFirstRow() && getListModel().getSize() > 0) {
-			getTechnologyComponent().jComboBox.setSelectedIndex(0);
-			newValue = getListModel().getElementAt(0);
-		}
-		return newValue;
-	}*/
-
 	private boolean isUpdatingListModel = false;
 
 	@Override
@@ -217,10 +207,14 @@ public class JFIBDropDownWidget<T> extends FIBDropDownWidgetImpl<JDropDownPanel<
 		}
 		if (getTechnologyComponent() != null) {
 			isUpdatingListModel = true;
-			getTechnologyComponent().jComboBox.setModel(getListModel());
-			if (/*!isUpdating() &&*/ !isDeleted() && getTechnologyComponent() != null) {
+			if (getTechnologyComponent().jComboBox.getModel() != getListModel()) {
+				// getTechnologyComponent().jComboBox.setModel(new DefaultComboBoxModel<>());
+				getTechnologyComponent().jComboBox.setModel(getListModel());
+			}
+			if (!isDeleted() && getTechnologyComponent() != null) {
 				updateData();
 			}
+			// getTechnologyComponent().jComboBox.updateUI();
 			isUpdatingListModel = false;
 		}
 	}
