@@ -480,8 +480,12 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			return getController();
 		}
 		if (variable instanceof FIBVariableBindingVariable) {
-			FIBViewImpl<?, ?> variableView = (FIBViewImpl<?, ?>) getController()
-					.viewForComponent(((FIBVariableBindingVariable) variable).getVariable().getOwner());
+			FIBComponent owner = ((FIBVariableBindingVariable) variable).getVariable().getOwner();
+			FIBView<?, ?> variableView = getController().viewForComponent(owner);
+			if (variableView == null) {
+				// Try with the root view
+				variableView = getController().getRootView();
+			}
 			if (variableView != null) {
 				returned = variableView.getVariableValue(((FIBVariableBindingVariable) variable).getVariable());
 			}
