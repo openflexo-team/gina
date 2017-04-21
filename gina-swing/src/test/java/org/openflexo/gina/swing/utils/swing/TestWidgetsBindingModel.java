@@ -111,7 +111,7 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 		browser = newFIBBrowser();
 		browser.setName("browser");
 		browser.setRoot(new DataBinding<>("data", browser, Object.class, BindingDefinitionType.GET));
-		browser.setIteratorClass(Person.class);
+		browser.setIteratorType(Person.class);
 		browser.setBoundToSelectionManager(true);
 		browser.setManageDynamicModel(true);
 
@@ -200,7 +200,7 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 
 		FIBBrowserElement rootElement = newFIBBrowserElement();
 		rootElement.setName("family");
-		rootElement.setDataClass(Family.class);
+		rootElement.setDataType(Family.class);
 		rootElement.setLabel(new DataBinding<>("\"My Family\"", browser, String.class, BindingDefinitionType.GET));
 		FIBBrowserElementChildren parents = newFIBBrowserElementChildren();
 		parents.setData(new DataBinding<>("family.parents", browser, Object.class, BindingDefinitionType.GET));
@@ -213,7 +213,7 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 
 		FIBBrowserElement personElement = newFIBBrowserElement();
 		personElement.setName("person");
-		personElement.setDataClass(Person.class);
+		personElement.setDataType(Person.class);
 		personElement.setLabel(new DataBinding<>("\"My relative: \"+person.toString", browser, String.class, BindingDefinitionType.GET));
 
 		org.openflexo.gina.model.widget.FIBBrowserAction.FIBAddAction addAction = factory

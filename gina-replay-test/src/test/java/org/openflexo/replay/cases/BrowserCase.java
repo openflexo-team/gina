@@ -55,12 +55,12 @@ public class BrowserCase extends Case {
 		browser = GraphicalContextDelegate.getFactory().newInstance(FIBBrowser.class);
 		browser.setRoot(new DataBinding<>("data", browser, Object.class, BindingDefinitionType.GET));
 		browser.setBoundToSelectionManager(true);
-		browser.setIteratorClass(Person.class);
+		browser.setIteratorType(Person.class);
 		browser.setName("browser");
 
 		FIBBrowserElement rootElement = GraphicalContextDelegate.getFactory().newInstance(FIBBrowserElement.class);
 		rootElement.setName("family");
-		rootElement.setDataClass(Family.class);
+		rootElement.setDataType(Family.class);
 		rootElement.setLabel(new DataBinding<>("\"My Family\"", browser, String.class, BindingDefinitionType.GET));
 		FIBBrowserElementChildren parents = GraphicalContextDelegate.getFactory().newInstance(FIBBrowserElementChildren.class);
 		parents.setData(new DataBinding<>("family.parents", browser, Object.class, BindingDefinitionType.GET));
@@ -73,7 +73,7 @@ public class BrowserCase extends Case {
 
 		FIBBrowserElement personElement = GraphicalContextDelegate.getFactory().newInstance(FIBBrowserElement.class);
 		personElement.setName("person");
-		personElement.setDataClass(Person.class);
+		personElement.setDataType(Person.class);
 		personElement
 				.setLabel(new DataBinding<String>("\"My relative: \"+person.toString", browser, String.class, BindingDefinitionType.GET));
 

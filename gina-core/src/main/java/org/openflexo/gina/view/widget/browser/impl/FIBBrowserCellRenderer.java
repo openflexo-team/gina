@@ -42,12 +42,17 @@
 
 package org.openflexo.gina.view.widget.browser.impl;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+
+import javax.swing.Icon;
+import javax.swing.JLabel;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultTreeCellRenderer;
+
 import org.openflexo.gina.view.widget.browser.impl.FIBBrowserModel.BrowserCell;
 import org.openflexo.gina.view.widget.impl.FIBBrowserWidgetImpl;
-
-import javax.swing.*;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import java.awt.*;
 
 @SuppressWarnings("serial")
 public class FIBBrowserCellRenderer<T> extends DefaultTreeCellRenderer {
@@ -109,7 +114,8 @@ public class FIBBrowserCellRenderer<T> extends DefaultTreeCellRenderer {
 					if (widget.getWidget().getBackgroundSelectionColor() != null) {
 						setBackgroundSelectionColor(widget.getWidget().getBackgroundSelectionColor());
 					}
-				} else {
+				}
+				else {
 					if (widget.getWidget().getTextNonSelectionColor() != null) {
 						setTextSelectionColor(widget.getWidget().getTextNonSelectionColor());
 					}
@@ -125,7 +131,8 @@ public class FIBBrowserCellRenderer<T> extends DefaultTreeCellRenderer {
 					if (widget.getWidget() != null && widget.getWidget().getTextNonSelectionColor() != null) {
 						setTextNonSelectionColor(widget.getWidget().getTextNonSelectionColor());
 					}
-				} else {
+				}
+				else {
 					setEnabled(false);
 				}
 			}
@@ -140,7 +147,8 @@ public class FIBBrowserCellRenderer<T> extends DefaultTreeCellRenderer {
 				if (color != null) {
 					returned.setForeground(color);
 				}
-			} else {
+			}
+			else {
 				Color color = getNonSelectedColor(representedObject);
 				if (color != null) {
 					returned.setForeground(color);
@@ -169,7 +177,7 @@ public class FIBBrowserCellRenderer<T> extends DefaultTreeCellRenderer {
 
 	private FIBBrowserElementType getElementType(Object object) {
 		if (widget != null && widget.getBrowserModel() != null && object != null) {
-			return widget.getBrowserModel().elementTypeForClass(object.getClass());
+			return widget.getBrowserModel().elementTypeForObject(object);
 		}
 		return null;
 	}

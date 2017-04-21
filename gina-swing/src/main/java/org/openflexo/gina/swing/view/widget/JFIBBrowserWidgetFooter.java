@@ -405,7 +405,7 @@ public class JFIBBrowserWidgetFooter<T> extends FIBBrowserWidgetFooterImpl<JPane
 				return null;
 			}
 			else {
-				return _widget.getComponent().elementForClass(object.getClass());
+				return _widget.getComponent().elementForObject(object);
 			}
 		}
 

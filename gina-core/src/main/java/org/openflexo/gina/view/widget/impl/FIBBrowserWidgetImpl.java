@@ -56,6 +56,7 @@ import org.openflexo.connie.binding.BindingValueListChangeListener;
 import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.event.description.FIBEventFactory;
 import org.openflexo.gina.manager.GinaStackEvent;
@@ -630,8 +631,8 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 			for (TreePath tp : e.getPaths()) {
 				if (tp.getLastPathComponent() instanceof BrowserCell) {
 					T obj = (T) ((BrowserCell) tp.getLastPathComponent()).getRepresentedObject();
-					if (obj != null && (getBrowser().getIteratorClass() == null
-							|| getBrowser().getIteratorClass().isAssignableFrom(obj.getClass()))) {
+					if (obj != null
+							&& (getBrowser().getIteratorType() == null || TypeUtils.isOfType(obj, getBrowser().getIteratorType()))) {
 						if (e.isAddedPath(tp)) {
 							if (!newSelection.contains(obj)) {
 								newSelection.add(obj);
@@ -656,8 +657,7 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		if (newSelectedObject == null) {
 			setSelected(null);
 		}
-		else if (getBrowser().getIteratorClass() == null
-				|| getBrowser().getIteratorClass().isAssignableFrom(newSelectedObject.getClass())) {
+		else if (getBrowser().getIteratorType() == null || TypeUtils.isOfType(newSelectedObject, getBrowser().getIteratorType())) {
 			setSelected(newSelectedObject);
 		}
 		else {

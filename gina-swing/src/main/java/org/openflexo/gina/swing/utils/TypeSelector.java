@@ -72,6 +72,8 @@ import org.openflexo.connie.type.PrimitiveType;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.connie.type.WilcardTypeImpl;
 import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
+import org.openflexo.gina.controller.CustomTypeEditor;
+import org.openflexo.gina.controller.CustomTypeEditorProvider;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.widget.FIBCustom;
@@ -183,6 +185,8 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 	@CustomComponentParameter(name = "customTypeManager", type = CustomComponentParameter.Type.OPTIONAL)
 	public void setCustomTypeManager(CustomTypeManager customTypeManager) {
 
+		System.out.println("******************> setCustomTypeManager with " + customTypeManager);
+
 		if (customTypeManager != this.customTypeManager) {
 			CustomTypeManager oldValue = this.customTypeManager;
 			this.customTypeManager = customTypeManager;
@@ -196,6 +200,9 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 	}
 
 	public void setCustomTypeEditorProvider(CustomTypeEditorProvider customTypeEditorProvider) {
+
+		System.out.println("******************> setCustomTypeEditorProvider with " + customTypeEditorProvider);
+
 		if ((customTypeEditorProvider == null && this.customTypeEditorProvider != null)
 				|| (customTypeEditorProvider != null && !customTypeEditorProvider.equals(this.customTypeEditorProvider))) {
 			CustomTypeEditorProvider oldValue = this.customTypeEditorProvider;
@@ -224,18 +231,18 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 		// Then the technology specific types
 		if (getCustomTypeManager() != null) {
 			for (Class<? extends CustomType> customType : getCustomTypeManager().getCustomTypeFactories().keySet()) {
-				// System.out.println("Found type " + customType);
+				System.out.println("Found type " + customType);
 				choices.add(customType);
 				CustomTypeFactory<?> specificFactory = getCustomTypeManager().getCustomTypeFactories().get(customType);
 				if (specificFactory != null) {
-					// System.out.println("Found specific factory : " + specificFactory);
+					System.out.println("Found specific factory : " + specificFactory);
 					customTypeFactories.put(customType, specificFactory);
 				}
-				// System.out.println("Factory " + specificFactory);
+				System.out.println("Factory " + specificFactory);
 				if (getCustomTypeEditorProvider() != null) {
 					CustomTypeEditor<?> specificEditor = getCustomTypeEditorProvider().getCustomTypeEditor(customType);
 					if (specificEditor != null) {
-						// System.out.println("Found specific editor : " + specificEditor);
+						System.out.println("Found specific editor : " + specificEditor);
 						customTypeEditors.put(customType, specificEditor);
 					}
 				}

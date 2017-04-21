@@ -132,18 +132,18 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 		_fibBrowser = null;
 	}
 
-	public FIBBrowserElement elementForClass(Class<?> aClass) {
-		return _fibBrowser.elementForClass(aClass);
+	public FIBBrowserElement elementForObject(Object anObject) {
+		return _fibBrowser.elementForObject(anObject);
 	}
 
-	public FIBBrowserElementType elementTypeForClass(Class<?> aClass) {
-		FIBBrowserElement element = elementForClass(aClass);
+	public FIBBrowserElementType elementTypeForObject(Object anObject) {
+		FIBBrowserElement element = elementForObject(anObject);
 
 		if (element != null) {
 			return _elementTypes.get(element);
 		}
 		else {
-			LOGGER.warning("Could not find element for class " + aClass);
+			LOGGER.warning("Could not find element for type " + anObject);
 			/*System.out.println("Available=");
 			for (FIBBrowserElement e : _fibBrowser.getElements()) {
 				System.out.println("> " + e.getName() + " for " + e.getDataClass());
@@ -351,7 +351,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			setParent(father);
 			setAllowsChildren(true);
 			setUserObject(representedObject);
-			browserElementType = elementTypeForClass(representedObject.getClass());
+			browserElementType = elementTypeForObject(representedObject);
 
 			dynamicBindingEvaluationContext = new DynamicBindingEvaluationContextForBrowserCell();
 
@@ -933,7 +933,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 				for (Object o : newChildrenObjects) {
 					Object ro = getRepresentedObject();
 					if (o != null && o != ro) {
-						FIBBrowserElementType childElementType = elementTypeForClass(o.getClass());
+						FIBBrowserElementType childElementType = elementTypeForObject(o);
 						BrowserCell cell = retrieveBrowserCell(o, this);
 						if (childElementType != null && childElementType.isVisible(o)) {
 							if (isVisible && cell == null) { // Creates cell when necessary

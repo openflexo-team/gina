@@ -39,7 +39,8 @@
 
 package org.openflexo.gina.model;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,14 +48,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
-import javax.swing.*;
+
+import javax.swing.ScrollPaneConstants;
 import javax.swing.tree.TreeNode;
+
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingDefinition;
+import org.openflexo.connie.type.CustomTypeManager;
 import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
 import org.openflexo.gina.FIBLibrary;
+import org.openflexo.gina.controller.CustomTypeEditorProvider;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.manager.HasBaseIdentifier;
 import org.openflexo.gina.model.bindings.FIBComponentBindingModel;
@@ -279,6 +284,11 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	@PropertyIdentifier(type = FIBVariable.class, cardinality = Cardinality.LIST)
 	public static final String VARIABLES_KEY = "variables";
 
+	@PropertyIdentifier(type = CustomTypeManager.class)
+	public static final String CUSTOM_TYPE_MANAGER_KEY = "customTypeManager";
+	@PropertyIdentifier(type = CustomTypeEditorProvider.class)
+	public static final String CUSTOM_TYPE_EDITOR_PROVIDER_KEY = "customTypeEditorProvider";
+
 	public static final String DYNAMIC_ACCESS_TYPE_KEY = "dynamicAccessType";
 
 	public static final String DEFAULT_DATA_VARIABLE = "data";
@@ -452,6 +462,18 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 	@Setter(LOCALIZED_DICTIONARY_KEY)
 	public void setLocalizedDictionary(FIBLocalizedDictionary localizedDictionary);
+
+	@Getter(value = CUSTOM_TYPE_MANAGER_KEY, ignoreType = true)
+	public CustomTypeManager getCustomTypeManager();
+
+	@Setter(CUSTOM_TYPE_MANAGER_KEY)
+	public void setCustomTypeManager(CustomTypeManager customTypeManager);
+
+	@Getter(value = CUSTOM_TYPE_EDITOR_PROVIDER_KEY, ignoreType = true)
+	public CustomTypeEditorProvider getCustomTypeEditorProvider();
+
+	@Setter(CUSTOM_TYPE_EDITOR_PROVIDER_KEY)
+	public void setCustomTypeEditorProvider(CustomTypeEditorProvider customTypeEditorProvider);
 
 	public boolean isRootComponent();
 

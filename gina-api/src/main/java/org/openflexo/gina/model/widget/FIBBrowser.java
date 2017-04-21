@@ -41,6 +41,7 @@ package org.openflexo.gina.model.widget;
 
 import java.awt.Color;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.List;
@@ -77,8 +78,8 @@ public interface FIBBrowser extends FIBWidget {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String ROOT_KEY = "root";
-	@PropertyIdentifier(type = Class.class)
-	public static final String ITERATOR_CLASS_KEY = "iteratorClass";
+	@PropertyIdentifier(type = Type.class)
+	public static final String ITERATOR_TYPE_KEY = "iteratorType";
 	@PropertyIdentifier(type = Integer.class)
 	public static final String VISIBLE_ROW_COUNT_KEY = "visibleRowCount";
 	@PropertyIdentifier(type = Integer.class)
@@ -123,12 +124,12 @@ public interface FIBBrowser extends FIBWidget {
 	@Setter(ROOT_KEY)
 	public void setRoot(DataBinding<Object> root);
 
-	@Getter(value = ITERATOR_CLASS_KEY)
+	@Getter(value = ITERATOR_TYPE_KEY, isStringConvertable = true)
 	@XMLAttribute(xmlTag = "iteratorClassName")
-	public Class getIteratorClass();
+	public Type getIteratorType();
 
-	@Setter(ITERATOR_CLASS_KEY)
-	public void setIteratorClass(Class iteratorClass);
+	@Setter(ITERATOR_TYPE_KEY)
+	public void setIteratorType(Type iteratorType);
 
 	@Getter(value = VISIBLE_ROW_COUNT_KEY)
 	@XMLAttribute
@@ -267,7 +268,9 @@ public interface FIBBrowser extends FIBWidget {
 	@Setter(BORDER_SELECTION_COLOR_KEY)
 	public void setBorderSelectionColor(Color borderSelectionColor);
 
-	public FIBBrowserElement elementForClass(Class<?> aClass);
+	public FIBBrowserElement elementForObject(Object anObject);
+
+	public FIBBrowserElement elementForType(Type aType);
 
 	@Deprecated
 	public FIBBrowserElement createElement();
@@ -308,9 +311,9 @@ public interface FIBBrowser extends FIBWidget {
 		private Color backgroundNonSelectionColor;
 		private Color borderSelectionColor;
 
-		private Class<?> iteratorClass;
+		private Type iteratorType;
 
-		private final Hashtable<Class<?>, FIBBrowserElement> elementsForClasses;
+		private final Hashtable<Class<?>, List<FIBBrowserElement>> elementsForClasses;
 
 		public FIBBrowserImpl() {
 			elementsForClasses = new Hashtable<>();
@@ -347,7 +350,7 @@ public interface FIBBrowser extends FIBWidget {
 		@Override
 		public DataBinding<Object> getSelected() {
 			if (selected == null) {
-				selected = new DataBinding<>(this, getIteratorClass(), DataBinding.BindingDefinitionType.GET_SET);
+				selected = new DataBinding<>(this, getIteratorType(), DataBinding.BindingDefinitionType.GET_SET);
 			}
 			return selected;
 		}
@@ -356,7 +359,7 @@ public interface FIBBrowser extends FIBWidget {
 		public void setSelected(DataBinding<Object> selected) {
 			if (selected != null) {
 				selected.setOwner(this);
-				selected.setDeclaredType(getIteratorClass());
+				selected.setDeclaredType(getIteratorType());
 				selected.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET_SET);
 			}
 			this.selected = selected;
@@ -411,34 +414,27 @@ public interface FIBBrowser extends FIBWidget {
 		}
 
 		@Override
-		public Class getIteratorClass() {
-			if (iteratorClass == null) {
-				iteratorClass = Object.class;
+		public Type getIteratorType() {
+			if (iteratorType == null) {
+				iteratorType = Object.class;
 			}
-			return iteratorClass;
+			return iteratorType;
 
 		}
 
 		@Override
-		public void setIteratorClass(Class iteratorClass) {
-			FIBPropertyNotification<Class> notification = requireChange(ITERATOR_CLASS_KEY, iteratorClass);
+		public void setIteratorType(Type iteratorType) {
+			FIBPropertyNotification<Type> notification = requireChange(ITERATOR_TYPE_KEY, iteratorType);
 			if (notification != null) {
-				this.iteratorClass = iteratorClass;
+				this.iteratorType = iteratorType;
 				hasChanged(notification);
 			}
 		}
 
 		@Override
 		public Type getDefaultDataType() {
-			return getIteratorClass();
+			return getIteratorType();
 		}
-
-		/*
-		 * @Override public Type getDynamicAccessType() { Type[] args = new
-		 * Type[2]; args[0] = new WilcardTypeImpl(Object.class); args[1] =
-		 * getIteratorClass(); return new
-		 * ParameterizedTypeImpl(FIBBrowserWidget.class, args); }
-		 */
 
 		@Override
 		public boolean getManageDynamicModel() {
@@ -590,15 +586,54 @@ public interface FIBBrowser extends FIBWidget {
 		protected void updateElementsForClasses() {
 			elementsForClasses.clear();
 			for (FIBBrowserElement e : getElements()) {
-				if (e.getDataClass() instanceof Class) {
-					elementsForClasses.put(e.getDataClass(), e);
+				Class<?> baseClass = TypeUtils.getBaseClass(e.getDataType());
+				List<FIBBrowserElement> l = elementsForClasses.get(baseClass);
+				if (l == null) {
+					l = new ArrayList<>();
+					elementsForClasses.put(baseClass, l);
 				}
+				l.add(e);
 			}
 		}
 
 		@Override
-		public FIBBrowserElement elementForClass(Class<?> aClass) {
-			return TypeUtils.objectForClass(aClass, elementsForClasses);
+		public FIBBrowserElement elementForObject(Object anObject) {
+
+			List<FIBBrowserElement> elementsForClass = TypeUtils.objectForClass(anObject.getClass(), elementsForClasses);
+
+			if (elementsForClass.size() == 1) {
+				return elementsForClass.get(0);
+			}
+			else {
+				// If not a class, return first matching element
+				// TODO: this could be optimized
+				for (FIBBrowserElement e : elementsForClass) {
+					if (TypeUtils.isOfType(anObject, e.getDataType())) {
+						return e;
+					}
+				}
+				return null;
+			}
+		}
+
+		@Override
+		public FIBBrowserElement elementForType(Type aType) {
+
+			List<FIBBrowserElement> elementsForClass = TypeUtils.objectForClass(TypeUtils.getBaseClass(aType), elementsForClasses);
+
+			if (elementsForClass.size() == 1) {
+				return elementsForClass.get(0);
+			}
+			else {
+				// If not a class, return first matching element
+				// TODO: this could be optimized
+				for (FIBBrowserElement e : elementsForClass) {
+					if (TypeUtils.isTypeAssignableFrom(e.getDataType(), aType)) {
+						return e;
+					}
+				}
+				return null;
+			}
 		}
 
 		@Override

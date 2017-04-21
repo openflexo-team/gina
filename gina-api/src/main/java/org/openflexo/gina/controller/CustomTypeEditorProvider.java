@@ -36,38 +36,24 @@
  * 
  */
 
-package org.openflexo.gina.swing.utils;
+package org.openflexo.gina.controller;
 
 import org.openflexo.connie.type.CustomType;
-import org.openflexo.gina.controller.FIBController;
-import org.openflexo.rm.Resource;
 
 /**
- * Represent editor suitable to edit a given CustomTypeClass, in the context of the {@link TypeSelector}
+ * A CustomTypeEditorProvider is responsible of providing custom type editors (UI) to the {@link TypeSelector}
  * 
  * @author sylvain
  *
  */
-public interface CustomTypeEditor<T extends CustomType> {
-
-	public String getPresentationName();
+public interface CustomTypeEditorProvider {
 
 	/**
-	 * Return class of custom type beeing handled by this editor
+	 * Return editor for supplied custom type
 	 * 
+	 * @param typeClass
 	 * @return
 	 */
-	public Class<T> getCustomType();
-
-	public Resource getFIBComponentResource();
-
-	public T getEditedType();
-
-	/**
-	 * Factory for a FIBController managing component given by {@link #getEditor()} method
-	 * 
-	 * @return
-	 */
-	public FIBController makeFIBController();
+	public <T extends CustomType> CustomTypeEditor<T> getCustomTypeEditor(Class<T> typeClass);
 
 }

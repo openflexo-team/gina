@@ -115,13 +115,13 @@ public class FIBBrowserWidgetSelectionTest extends FIBTestCase {
 		browser = newFIBBrowser();
 		browser.setName("browser");
 		browser.setRoot(new DataBinding<>("data", browser, Object.class, BindingDefinitionType.GET));
-		browser.setIteratorClass(Person.class);
+		browser.setIteratorType(Person.class);
 		browser.setBoundToSelectionManager(true);
 		browser.setManageDynamicModel(true);
 
 		FIBBrowserElement rootElement = newFIBBrowserElement();
 		rootElement.setName("family");
-		rootElement.setDataClass(Family.class);
+		rootElement.setDataType(Family.class);
 		rootElement.setLabel(new DataBinding<String>("\"My Family\"", browser, String.class, BindingDefinitionType.GET));
 		FIBBrowserElementChildren parents = newFIBBrowserElementChildren();
 		parents.setData(new DataBinding<>("family.parents", browser, Object.class, BindingDefinitionType.GET));
@@ -134,7 +134,7 @@ public class FIBBrowserWidgetSelectionTest extends FIBTestCase {
 
 		FIBBrowserElement personElement = newFIBBrowserElement();
 		personElement.setName("person");
-		personElement.setDataClass(Person.class);
+		personElement.setDataType(Person.class);
 		personElement
 				.setLabel(new DataBinding<String>("\"My relative: \"+person.toString", browser, String.class, BindingDefinitionType.GET));
 

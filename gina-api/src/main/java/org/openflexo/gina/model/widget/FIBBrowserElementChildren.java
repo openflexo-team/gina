@@ -320,7 +320,7 @@ public interface FIBBrowserElementChildren extends FIBModelObject {
 			if (getBaseClass() == null) {
 				return null;
 			}
-			FIBBrowserElement e = getBrowser().elementForClass(getBaseClass());
+			FIBBrowserElement e = getBrowser().elementForType(getBaseClass());
 			if (e != null) {
 				return e.getImageIcon();
 			}

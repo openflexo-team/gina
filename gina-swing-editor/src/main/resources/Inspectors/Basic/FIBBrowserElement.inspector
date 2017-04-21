@@ -7,11 +7,16 @@
 	<TextField index="1" data="data.name"
 		constraints="twocols(expandHorizontally=true;location=right)"
 		localize="true" columns="15" />
-	<Label index="2" label="class_name" constraints="twocols(location=left)"
+	<Label index="2" label="data_type" constraints="twocols(location=left)"
 		localize="true" />
-	<Custom index="3" componentClassName="org.openflexo.gina.swing.utils.ClassSelector"
-		localize="true" manageDynamicModel="true" data="data.dataClass"
-		constraints="twocols(expandHorizontally=true;location=right)" />
+	<Custom index="3" componentClassName="org.openflexo.gina.swing.utils.TypeSelector"
+		localize="true" manageDynamicModel="true" data="data.dataType"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment mandatory="true" variable="component.customTypeManager" 
+		value="data.owner.rootComponent.customTypeManager" />
+		<Assignment mandatory="true" variable="component.customTypeEditorProvider" 
+		value="data.owner.rootComponent.customTypeEditorProvider"/>
+	</Custom>
 	<Label index="4" label="label" constraints="twocols(location=left)"
 		localize="true" />
 	<Custom index="5" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
@@ -78,8 +83,8 @@
 	</Panel>
 	<Label index="22" label="use_specific_font" constraints="twocols(location=left)"
 		localize="true" />
-	<Panel index="23" layout="flow" hGap="0" vGap="0" flowAlignment="LEADING" name="SpecificFontPanel"
-		titleFont="SansSerif,0,11" darkLevel="0"
+	<Panel index="23" layout="flow" hGap="0" vGap="0" flowAlignment="LEADING"
+		name="SpecificFontPanel" titleFont="SansSerif,0,11" darkLevel="0"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<CheckBox selected="false" data="data.hasSpecificFont"
 			constraints="flow()" localize="true" />

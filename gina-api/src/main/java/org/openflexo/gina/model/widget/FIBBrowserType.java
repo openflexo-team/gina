@@ -70,7 +70,7 @@ public class FIBBrowserType extends FIBWidgetType<FIBBrowser> {
 
 		@Override
 		public Type getType() {
-			return getFIBComponent().getIteratorClass();
+			return getFIBComponent().getIteratorType();
 		}
 
 		@Override
@@ -108,7 +108,7 @@ public class FIBBrowserType extends FIBWidgetType<FIBBrowser> {
 
 		@Override
 		public Type getType() {
-			return new ParameterizedTypeImpl(List.class, getFIBComponent().getIteratorClass());
+			return new ParameterizedTypeImpl(List.class, getFIBComponent().getIteratorType());
 		}
 
 		@Override

@@ -521,7 +521,10 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 				}
 			}
 
-			returned.setSelectionMode(widget.getTable().getSelectionMode().getMode());
+			if (widget.getTable().getSelectionMode() != null) {
+				returned.setSelectionMode(widget.getTable().getSelectionMode().getMode());
+			}
+
 			// jTable.getTableHeader().setReorderingAllowed(false);
 
 			returned.getSelectionModel().addListSelectionListener(widget);

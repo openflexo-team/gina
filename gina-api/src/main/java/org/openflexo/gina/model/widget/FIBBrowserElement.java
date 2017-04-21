@@ -91,8 +91,8 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 	@PropertyIdentifier(type = FIBBrowser.class)
 	public static final String OWNER_KEY = "owner";
-	@PropertyIdentifier(type = Class.class)
-	public static final String DATA_CLASS_KEY = "dataClass";
+	@PropertyIdentifier(type = Type.class)
+	public static final String DATA_TYPE_KEY = "dataType";
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String LABEL_KEY = "label";
 	@PropertyIdentifier(type = DataBinding.class)
@@ -137,12 +137,12 @@ public interface FIBBrowserElement extends FIBModelObject {
 	@Setter(OWNER_KEY)
 	public void setOwner(FIBBrowser browser);
 
-	@Getter(DATA_CLASS_KEY)
+	@Getter(value = DATA_TYPE_KEY, isStringConvertable = true)
 	@XMLAttribute(xmlTag = "dataClassName")
-	public Class<?> getDataClass();
+	public Type getDataType();
 
-	@Setter(DATA_CLASS_KEY)
-	public void setDataClass(Class<?> dataClass);
+	@Setter(DATA_TYPE_KEY)
+	public void setDataType(Type aType);
 
 	@Getter(LABEL_KEY)
 	@XMLAttribute
@@ -619,7 +619,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 		@Override
 		public void finalizeBrowserDeserialization() {
-			logger.fine("finalizeBrowserDeserialization() for FIBBrowserElement " + getDataClass());
+			logger.fine("finalizeBrowserDeserialization() for FIBBrowserElement " + getDataType());
 			if (label != null) {
 				label.decode();
 			}
@@ -670,7 +670,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		private void createActionBindingModel() {
 			actionBindingModel = new BindingModel(getBindingModel());
 
-			BindingVariable selectedVariable = new BindingVariable("selected", getDataClass());
+			BindingVariable selectedVariable = new BindingVariable("selected", getDataType());
 			selectedVariable.setCacheable(false);
 			actionBindingModel.addToBindingVariables(selectedVariable);
 			// System.out.println("dataClass="+getDataClass()+" dataClassName="+dataClassName);
@@ -841,7 +841,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 				iteratorBindingModel.addToBindingVariables(new BindingVariable("object", Object.class) {
 					@Override
 					public Type getType() {
-						return getDataClass();
+						return getDataType();
 					}
 
 					@Override
@@ -879,18 +879,18 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}
 
 		@Override
-		public Class<?> getDataClass() {
-			Class<?> returned = (Class<?>) performSuperGetter(DATA_CLASS_KEY);
+		public Type getDataType() {
+			Type returned = (Type) performSuperGetter(DATA_TYPE_KEY);
 			if (returned == null && getOwner() != null) {
-				return getOwner().getIteratorClass();
+				return getOwner().getIteratorType();
 			}
 			return returned;
 		}
 
 		@Override
-		public void setDataClass(Class<?> dataClass) {
+		public void setDataType(Type aType) {
 			// System.out.println("For browser element " + getName() + " set data class " + dataClass);
-			performSuperSetter(DATA_CLASS_KEY, dataClass);
+			performSuperSetter(DATA_TYPE_KEY, aType);
 			/*FIBPropertyNotification<Class> notification = requireChange(DATA_CLASS_KEY, dataClass);
 			if (notification != null) {
 				this.dataClass = dataClass;
@@ -1044,7 +1044,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 
 		@Override
 		public String toString() {
-			return "FIBBrowserElement(name=" + getName() + ",type=" + getDataClass() + ")";
+			return "FIBBrowserElement(name=" + getName() + ",type=" + getDataType() + ")";
 		}
 
 		@Override

@@ -285,7 +285,7 @@ public interface FIBBrowserDragOperation extends FIBModelObject {
 					@Override
 					public Type getType() {
 						if (getOwner() != null) {
-							return getOwner().getDataClass();
+							return getOwner().getDataType();
 						}
 						return Object.class;
 					}
@@ -294,7 +294,7 @@ public interface FIBBrowserDragOperation extends FIBModelObject {
 					@Override
 					public Type getType() {
 						if (getTargetElement() != null) {
-							return getTargetElement().getDataClass();
+							return getTargetElement().getDataType();
 						}
 						return Object.class;
 					}
