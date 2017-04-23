@@ -69,7 +69,7 @@ public class FIBDropDownType extends FIBWidgetType<FIBDropDown> {
 
 		@Override
 		public Type getType() {
-			return getFIBComponent().getIteratorClass();
+			return getFIBComponent().getIteratorType();
 		}
 
 		@Override

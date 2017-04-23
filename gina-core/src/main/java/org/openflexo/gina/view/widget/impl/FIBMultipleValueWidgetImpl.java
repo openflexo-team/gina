@@ -309,8 +309,9 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 				}
 			}
 
-			if (list == null && array == null && getWidget().getIteratorClass() != null && getWidget().getIteratorClass().isEnum()) {
-				array = (I[]) getWidget().getIteratorClass().getEnumConstants();
+			if (list == null && array == null && getWidget().getIteratorType() instanceof Class
+					&& ((Class<?>) getWidget().getIteratorType()).isEnum()) {
+				array = (I[]) ((Class<?>) getWidget().getIteratorType()).getEnumConstants();
 			}
 
 			if (list == null && array == null && StringUtils.isNotEmpty(getWidget().getStaticList())) {

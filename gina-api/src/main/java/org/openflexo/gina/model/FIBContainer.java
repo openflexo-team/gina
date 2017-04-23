@@ -183,6 +183,9 @@ public abstract interface FIBContainer extends FIBComponent {
 	@Deprecated
 	public Type getDataType();
 
+	@Deprecated
+	public void setDataType(Type dataType);
+
 	public static abstract class FIBContainerImpl extends FIBComponentImpl implements FIBContainer {
 
 		private static final Logger logger = Logger.getLogger(FIBContainer.class.getPackage().getName());
@@ -821,6 +824,14 @@ public abstract interface FIBContainer extends FIBComponent {
 		public void setDataClass(Class<?> dataClass) {
 			isSettingDataClass = true;
 			getDefaultDataVariable(true).setType(dataClass);
+			isSettingDataClass = false;
+		}
+
+		@Override
+		@Deprecated
+		public void setDataType(Type dataType) {
+			isSettingDataClass = true;
+			getDefaultDataVariable(true).setType(dataType);
 			isSettingDataClass = false;
 		}
 

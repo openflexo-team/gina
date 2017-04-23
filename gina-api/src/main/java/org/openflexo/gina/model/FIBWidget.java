@@ -789,7 +789,7 @@ public abstract interface FIBWidget extends FIBComponent {
 			@Override
 			public String toString() {
 				if (FIBWidgetImpl.this instanceof FIBDropDown) {
-					return "FIBFormatter[" + FIBWidgetImpl.this + "] iteratorClass=" + ((FIBDropDown) FIBWidgetImpl.this).getIteratorClass()
+					return "FIBFormatter[" + FIBWidgetImpl.this + "] iteratorType=" + ((FIBDropDown) FIBWidgetImpl.this).getIteratorType()
 							+ " dataType=" + ((FIBDropDown) FIBWidgetImpl.this).getDataType() + " obtained from "
 							+ ((FIBDropDown) FIBWidgetImpl.this).getDescription();
 				}
@@ -854,7 +854,7 @@ public abstract interface FIBWidget extends FIBComponent {
 			public String toString() {
 				if (FIBWidgetImpl.this instanceof FIBDropDown) {
 					return "FIBValueBindable[" + FIBWidgetImpl.this + "] iteratorClass="
-							+ ((FIBDropDown) FIBWidgetImpl.this).getIteratorClass() + " dataType="
+							+ ((FIBDropDown) FIBWidgetImpl.this).getIteratorType() + " dataType="
 							+ ((FIBDropDown) FIBWidgetImpl.this).getDataType() + " obtained from "
 							+ ((FIBDropDown) FIBWidgetImpl.this).getDescription();
 				}

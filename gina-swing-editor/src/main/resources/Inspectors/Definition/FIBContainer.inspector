@@ -13,11 +13,15 @@
 		verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED">
 		<TextFieldColumn data="iterator.name" title="name"
 			columnWidth="20" resizable="true" displayTitle="true" name="name" />
-		<!-- <CustomColumn componentClassName="org.openflexo.gina.swing.utils.TypeSelector" 
-			customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.type" 
-			format="" title="type" columnWidth="100" resizable="true" displayTitle="true" 
-			name="type"> <ColumnAssignment variable="component.serviceManager" value="controller.serviceManager" 
-			/> </CustomColumn> -->
+		<CustomColumn componentClassName="org.openflexo.gina.swing.utils.TypeSelector"
+			customRendering="false" disableTerminateEditOnFocusLost="false"
+			data="iterator.type" format="" title="type" columnWidth="100"
+			resizable="true" displayTitle="true" name="type">
+			<ColumnAssignment mandatory="true"
+				variable="component.customTypeManager" value="data.rootComponent.customTypeManager" />
+			<ColumnAssignment mandatory="true"
+				variable="component.customTypeEditorProvider" value="data.rootComponent.customTypeEditorProvider" />
+		</CustomColumn>
 		<CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 			customRendering="false" disableTerminateEditOnFocusLost="false"
 			data="iterator.value" title="Value" columnWidth="40" resizable="true"

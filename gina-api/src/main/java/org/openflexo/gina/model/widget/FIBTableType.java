@@ -74,7 +74,7 @@ public class FIBTableType extends FIBWidgetType<FIBTable> {
 			if (returned != null) {
 				return returned;
 			}
-			return getFIBComponent().getIteratorClass();
+			return getFIBComponent().getIteratorType();
 		}
 
 		@Override
@@ -150,7 +150,7 @@ public class FIBTableType extends FIBWidgetType<FIBTable> {
 
 		@Override
 		public Type getType() {
-			return new ParameterizedTypeImpl(List.class, getFIBComponent().getIteratorClass());
+			return new ParameterizedTypeImpl(List.class, getFIBComponent().getIteratorType());
 		}
 
 		@Override

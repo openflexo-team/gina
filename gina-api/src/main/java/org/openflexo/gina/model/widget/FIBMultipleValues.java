@@ -85,8 +85,8 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 	public static final String SHOW_ICON_KEY = "showIcon";
 	@PropertyIdentifier(type = Boolean.class)
 	public static final String SHOW_TEXT_KEY = "showText";
-	@PropertyIdentifier(type = Class.class)
-	public static final String ITERATOR_CLASS_KEY = "iteratorClass";
+	@PropertyIdentifier(type = Type.class)
+	public static final String ITERATOR_TYPE_KEY = "iteratorType";
 	@PropertyIdentifier(type = boolean.class)
 	public static final String AUTO_SELECT_FIRST_ROW_KEY = "autoSelectFirstRow";
 
@@ -99,7 +99,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 
 	@Getter(value = LIST_KEY)
 	@XMLAttribute
-	@CloningStrategy(value = StrategyType.REFERENCE, cloneAfterProperty = ITERATOR_CLASS_KEY)
+	@CloningStrategy(value = StrategyType.REFERENCE, cloneAfterProperty = ITERATOR_TYPE_KEY)
 	public DataBinding<List<?>> getList();
 
 	@Setter(LIST_KEY)
@@ -107,7 +107,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 
 	@Getter(value = ARRAY_KEY)
 	@XMLAttribute
-	@CloningStrategy(value = StrategyType.REFERENCE, cloneAfterProperty = ITERATOR_CLASS_KEY)
+	@CloningStrategy(value = StrategyType.REFERENCE, cloneAfterProperty = ITERATOR_TYPE_KEY)
 	public DataBinding<Object[]> getArray();
 
 	@Setter(ARRAY_KEY)
@@ -127,12 +127,12 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 	@Setter(SHOW_TEXT_KEY)
 	public void setShowText(Boolean showText);
 
-	@Getter(value = ITERATOR_CLASS_KEY)
+	@Getter(value = ITERATOR_TYPE_KEY, isStringConvertable = true)
 	@XMLAttribute(xmlTag = "iteratorClassName")
-	public Class getIteratorClass();
+	public Type getIteratorType();
 
-	@Setter(ITERATOR_CLASS_KEY)
-	public void setIteratorClass(Class iteratorClass);
+	@Setter(ITERATOR_TYPE_KEY)
+	public void setIteratorType(Type iteratorType);
 
 	@Getter(value = AUTO_SELECT_FIRST_ROW_KEY, defaultValue = "false")
 	@XMLAttribute
@@ -284,7 +284,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 					return true;
 				}
 			}*/
-			if (getIteratorClass() != null && getIteratorClass().isEnum()) {
+			if (getIteratorType() instanceof Class && ((Class<?>) getIteratorType()).isEnum()) {
 				return true;
 			}
 			return false;
@@ -292,6 +292,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 
 		private Type iteratorType;
 
+		/*@Override
 		public Type getIteratorType() {
 			Class<?> iteratorClass = getIteratorClass();
 			if (iteratorClass.getTypeParameters().length > 0) {
@@ -301,13 +302,22 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 				return iteratorType;
 			}
 			return iteratorClass;
-		}
+		}*/
 
 		public Type getInferedIteratorType() {
 			// Attempt to infer iterator type
 			// System.out.println("getList()=" + getList());
 			// System.out.println("getList().isValid()=" + getList().isValid());
 			// System.out.println("getList().invalidBindingReason()=" + getList().invalidBindingReason());
+			if (isStaticList()) {
+				return String.class;
+			}
+			if (getData() != null) {
+				Type type = getData().getAnalyzedType();
+				if (type instanceof Class && ((Class<?>) type).isEnum()) {
+					return type;
+				}
+			}
 			if (getList() != null && getList().isSet() && getList().isValid()) {
 				Type accessedType = getList().getAnalyzedType();
 				// System.out.println("accessed type=" + accessedType);
@@ -319,7 +329,45 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		}
 
 		@Override
-		public Class getIteratorClass() {
+		public Type getIteratorType() {
+
+			if (iteratorType == null) {
+				Type infered = getInferedIteratorType();
+				if (infered != null) {
+					return infered;
+				}
+				return Object.class;
+			}
+			return iteratorType;
+		}
+
+		/*@Override
+		public Type getInferedIteratorType() {
+			if (isStaticList()) {
+				return String.class;
+			}
+			// Attempt to infer iterator type
+			if (getData() != null && getData().isSet() && getData().isValid()) {
+				Type accessedType = getData().getAnalyzedType();
+				if (accessedType instanceof ParameterizedType && ((ParameterizedType) accessedType).getActualTypeArguments().length > 0) {
+					return ((ParameterizedType) accessedType).getActualTypeArguments()[0];
+				}
+			}
+			return null;
+		}*/
+
+		@Override
+		public void setIteratorType(Type iteratorType) {
+			FIBPropertyNotification<Type> notification = requireChange(ITERATOR_TYPE_KEY, iteratorType);
+			if (notification != null) {
+				LIST_BINDING_TYPE = null;
+				ARRAY_BINDING_TYPE = null;
+				this.iteratorType = iteratorType;
+				hasChanged(notification);
+			}
+		}
+
+		/*public Type getIteratorType() {
 			if (isStaticList()) {
 				return String.class;
 			}
@@ -335,18 +383,18 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 				return Object.class;
 			}
 			return iteratorClass;
-		}
+		}*/
 
-		@Override
-		public void setIteratorClass(Class iteratorClass) {
-			FIBPropertyNotification<Class> notification = requireChange(ITERATOR_CLASS_KEY, iteratorClass);
+		/*@Override
+		public void setIteratorType(Class iteratorClass) {
+			FIBPropertyNotification<Class> notification = requireChange(ITERATOR_TYPE_KEY, iteratorClass);
 			if (notification != null) {
 				LIST_BINDING_TYPE = null;
 				ARRAY_BINDING_TYPE = null;
 				this.iteratorClass = iteratorClass;
 				hasChanged(notification);
 			}
-		}
+		}*/
 
 		@Override
 		public Type getDataType() {
@@ -400,9 +448,9 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 					Type accessedType = getList().getAnalyzedType();
 					if (accessedType instanceof ParameterizedType
 							&& ((ParameterizedType) accessedType).getActualTypeArguments().length > 0) {
-						Class newIteratorClass = TypeUtils.getBaseClass(((ParameterizedType) accessedType).getActualTypeArguments()[0]);
-						if (getIteratorClass() == null || !TypeUtils.isClassAncestorOf(newIteratorClass, getIteratorClass())) {
-							setIteratorClass(newIteratorClass);
+						Type newIteratorType = ((ParameterizedType) accessedType).getActualTypeArguments()[0];
+						if (!TypeUtils.isTypeAssignableFrom(getIteratorType(), newIteratorType)) {
+							setIteratorType(newIteratorType);
 						}
 					}
 				}
@@ -411,9 +459,9 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 				if (getArray() != null) {
 					Type accessedType = getArray().getAnalyzedType();
 					if (accessedType instanceof GenericArrayType) {
-						Class newIteratorClass = TypeUtils.getBaseClass(((GenericArrayType) accessedType).getGenericComponentType());
-						if (getIteratorClass() == null || !TypeUtils.isClassAncestorOf(newIteratorClass, getIteratorClass())) {
-							setIteratorClass(newIteratorClass);
+						Type newIteratorType = ((GenericArrayType) accessedType).getGenericComponentType();
+						if (!TypeUtils.isTypeAssignableFrom(getIteratorType(), newIteratorType)) {
+							setIteratorType(newIteratorType);
 						}
 					}
 				}
@@ -422,11 +470,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 				if (getData() != null) {
 					// Unused var Type accessedType =
 					getData().getAnalyzedType();
-					/*if (accessedType instanceof Class && ((Class)accessedType).isEnum()) {
-						setIteratorClass((Class)accessedType);
-					}*/
-					getPropertyChangeSupport().firePropertyChange(ITERATOR_CLASS_KEY, null, getIteratorClass());
-					getPropertyChangeSupport().firePropertyChange("iteratorType", null, getIteratorType());
+					getPropertyChangeSupport().firePropertyChange(ITERATOR_TYPE_KEY, null, getIteratorType());
 				}
 			}
 			else if (binding == getFormat()) {

@@ -69,7 +69,7 @@ public class FIBRadioButtonListType extends FIBWidgetType<FIBRadioButtonList> {
 
 		@Override
 		public Type getType() {
-			return getFIBComponent().getIteratorClass();
+			return getFIBComponent().getIteratorType();
 		}
 
 		@Override

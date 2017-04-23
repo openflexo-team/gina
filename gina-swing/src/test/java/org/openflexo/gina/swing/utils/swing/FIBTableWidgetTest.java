@@ -107,7 +107,7 @@ public class FIBTableWidgetTest extends FIBTestCase {
 		table = newFIBTable();
 		table.setData(new DataBinding<List<?>>("data.children", table, List.class, BindingDefinitionType.GET));
 		table.setAutoSelectFirstRow(true);
-		table.setIteratorClass(Person.class);
+		table.setIteratorType(Person.class);
 		table.setBoundToSelectionManager(true);
 
 		FIBTextFieldColumn c1 = newFIBTextFieldColumn();

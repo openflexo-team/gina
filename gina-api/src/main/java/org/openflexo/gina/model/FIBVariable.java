@@ -105,9 +105,9 @@ public interface FIBVariable<T> extends FIBModelObject {
 	@Setter(TYPE_KEY)
 	public void setType(Type type);
 
-	public Class<T> getTypeClass();
-
-	public void setTypeClass(Class<T> typeClass);
+	/*public Class<T> getTypeClass();
+	
+	public void setTypeClass(Class<T> typeClass);*/
 
 	@Getter(value = MANDATORY_KEY, defaultValue = "false")
 	@XMLAttribute
@@ -159,11 +159,11 @@ public interface FIBVariable<T> extends FIBModelObject {
 					return;
 				}
 			}
-			Class<T> oldTypeClass = getTypeClass();
+			// Class<T> oldTypeClass = getTypeClass();
 			Type oldType = variableType;
 			variableType = type;
 			getPropertyChangeSupport().firePropertyChange(TYPE_KEY, oldType, variableType);
-			getPropertyChangeSupport().firePropertyChange("typeClass", oldTypeClass, getTypeClass());
+			// getPropertyChangeSupport().firePropertyChange("typeClass", oldTypeClass, getTypeClass());
 		}
 
 		@Override
@@ -251,15 +251,15 @@ public interface FIBVariable<T> extends FIBModelObject {
 			return getName() + "/" + TypeUtils.fullQualifiedRepresentation(getType());
 		}
 
-		@Override
+		/*@Override
 		public Class<T> getTypeClass() {
 			return (Class<T>) TypeUtils.getBaseClass(getType());
 		}
-
+		
 		@Override
 		public void setTypeClass(Class<T> typeClass) {
 			setType(typeClass);
-		}
+		}*/
 
 		@Override
 		public void setOwner(FIBComponent ownerComponent) {

@@ -65,13 +65,13 @@ import org.openflexo.gina.model.widget.FIBDropDownColumn;
 import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.gina.model.widget.FIBLabelColumn;
 import org.openflexo.gina.model.widget.FIBNumber.NumberType;
-import org.openflexo.gina.sampleData.Family;
-import org.openflexo.gina.sampleData.Person;
-import org.openflexo.gina.sampleData.Family.Gender;
 import org.openflexo.gina.model.widget.FIBNumberColumn;
 import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTextField;
 import org.openflexo.gina.model.widget.FIBTextFieldColumn;
+import org.openflexo.gina.sampleData.Family;
+import org.openflexo.gina.sampleData.Family.Gender;
+import org.openflexo.gina.sampleData.Person;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.gina.swing.view.widget.JFIBTableWidget;
 import org.openflexo.gina.test.FIBTestCase;
@@ -133,7 +133,7 @@ public class FIBTableWidgetSelectionTest2 extends FIBTestCase {
 		table.setName("table");
 		table.setData(new DataBinding<List<?>>("data.children", table, List.class, BindingDefinitionType.GET));
 		table.setAutoSelectFirstRow(true);
-		table.setIteratorClass(Person.class);
+		table.setIteratorType(Person.class);
 		table.setBoundToSelectionManager(true);
 		table.setManageDynamicModel(true);
 

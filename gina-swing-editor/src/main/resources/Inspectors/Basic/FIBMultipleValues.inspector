@@ -20,11 +20,16 @@
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data" />
 	</Custom>
-	<Label index="46" label="iterator_class" constraints="twocols(location=left)"
+	<Label index="46" label="iterator_type" constraints="twocols(location=left)"
 		localize="true" name="IteratorClassCB" />
-	<Custom index="47" componentClassName="org.openflexo.gina.swing.utils.ClassSelector"
-		localize="true" manageDynamicModel="true" data="data.iteratorClass"
-		name="IteratorClassSelector" constraints="twocols(expandHorizontally=true;location=right)" />
+	<Custom index="47" componentClassName="org.openflexo.gina.swing.utils.TypeSelector"
+		localize="true" manageDynamicModel="true" data="data.iteratorType"
+		name="IteratorTypeSelector" constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment mandatory="true" variable="component.customTypeManager"
+			value="data.rootComponent.customTypeManager" />
+		<Assignment mandatory="true" variable="component.customTypeEditorProvider"
+			value="data.rootComponent.customTypeEditorProvider" />
+	</Custom>
 	<CheckBox index="48" selected="false" data="data.autoSelectFirstRow"
 		name="SelectFirstRowCB" constraints="twocols(location=left)" localize="true" />
 	<Label index="49" label="select_first_row" constraints="twocols(location=right)"

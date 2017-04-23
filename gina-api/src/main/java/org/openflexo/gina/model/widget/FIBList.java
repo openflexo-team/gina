@@ -198,7 +198,7 @@ public interface FIBList extends FIBMultipleValues {
 
 		public BindingDefinition getSelectedBindingDefinition() {
 			if (SELECTED == null) {
-				SELECTED = new BindingDefinition("selected", getIteratorClass(), DataBinding.BindingDefinitionType.GET_SET, false);
+				SELECTED = new BindingDefinition("selected", getIteratorType(), DataBinding.BindingDefinitionType.GET_SET, false);
 			}
 			return SELECTED;
 		}

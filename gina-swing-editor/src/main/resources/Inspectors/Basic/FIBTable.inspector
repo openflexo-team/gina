@@ -4,9 +4,14 @@
 	<Label index="2" label="iterator_class"
 		constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=left)"
 		localize="true" />
-	<Custom index="3" componentClassName="org.openflexo.gina.swing.utils.ClassSelector"
-		localize="true" manageDynamicModel="true" data="data.iteratorClass"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" />
+	<Custom index="3" componentClassName="org.openflexo.gina.swing.utils.TypeSelector"
+		localize="true" manageDynamicModel="true" data="data.iteratorType"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" >
+		<Assignment mandatory="true" variable="component.customTypeManager"
+			value="data.rootComponent.customTypeManager" />
+		<Assignment mandatory="true" variable="component.customTypeEditorProvider"
+			value="data.rootComponent.customTypeEditorProvider" />
+		</Custom>
 	<Label index="4" label="visible_row_count"
 		constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=left)"
 		localize="true" />

@@ -55,7 +55,6 @@ import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.connie.type.ParameterizedTypeImpl;
-import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.connie.type.WilcardTypeImpl;
 import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.model.FIBPropertyNotification;
@@ -86,8 +85,8 @@ public interface FIBTable extends FIBWidget {
 
 	public static final String ITERATOR_NAME = "iterator";
 
-	@PropertyIdentifier(type = Class.class)
-	public static final String ITERATOR_CLASS_KEY = "iteratorClass";
+	@PropertyIdentifier(type = Type.class)
+	public static final String ITERATOR_TYPE_KEY = "iteratorType";
 	@PropertyIdentifier(type = Integer.class)
 	public static final String VISIBLE_ROW_COUNT_KEY = "visibleRowCount";
 	@PropertyIdentifier(type = Integer.class)
@@ -119,12 +118,12 @@ public interface FIBTable extends FIBWidget {
 	@PropertyIdentifier(type = Color.class)
 	public static final String BACKGROUND_NON_SELECTION_COLOR_KEY = "backgroundNonSelectionColor";
 
-	@Getter(value = ITERATOR_CLASS_KEY)
+	@Getter(value = ITERATOR_TYPE_KEY, isStringConvertable = true)
 	@XMLAttribute(xmlTag = "iteratorClassName")
-	public Class getIteratorClass();
+	public Type getIteratorType();
 
-	@Setter(ITERATOR_CLASS_KEY)
-	public void setIteratorClass(Class iteratorClass);
+	@Setter(ITERATOR_TYPE_KEY)
+	public void setIteratorType(Type iteratorType);
 
 	@Getter(value = VISIBLE_ROW_COUNT_KEY)
 	@XMLAttribute
@@ -337,7 +336,7 @@ public interface FIBTable extends FIBWidget {
 
 		private SelectionMode selectionMode = SelectionMode.MultipleIntervalSelection;
 
-		private Class iteratorClass;
+		private Type iteratorType;
 
 		// private List<FIBTableColumn> columns;
 		// private List<FIBTableAction> actions;
@@ -431,10 +430,7 @@ public interface FIBTable extends FIBWidget {
 		private void createTableBindingModel() {
 			tableBindingModel = new BindingModel(getBindingModel());
 
-			Type inferedIteratorType = getInferedIteratorType();
-
-			BindingVariable iteratorVariable = new BindingVariable(ITERATOR_NAME,
-					inferedIteratorType != null ? inferedIteratorType : getIteratorType());
+			BindingVariable iteratorVariable = new BindingVariable(ITERATOR_NAME, getIteratorType());
 			iteratorVariable.setCacheable(false);
 
 			tableBindingModel.addToBindingVariables(iteratorVariable);
@@ -520,30 +516,17 @@ public interface FIBTable extends FIBWidget {
 			}
 		}
 
-		/*
-		 * public boolean hasDynamicKeyValueProperty(String name) { if
-		 * (name.equals("selected")) return getDataClass() != null; return
-		 * false; }
-		 * 
-		 * private DynamicKeyValueProperty SELECTED_DKVP;
-		 * 
-		 * public DynamicKeyValueProperty getDynamicKeyValueProperty(String
-		 * name) { if (name.equals("selected")) { if (SELECTED_DKVP == null)
-		 * SELECTED_DKVP = new DynamicKeyValueProperty("selected", getClass(),
-		 * getDataClass()); return SELECTED_DKVP; } return null; }
-		 */
-
-		private Type iteratorType;
-
+		@Override
 		public Type getIteratorType() {
-			Class<?> iteratorClass = getIteratorClass();
-			if (iteratorClass.getTypeParameters().length > 0) {
-				if (iteratorType == null) {
-					iteratorType = TypeUtils.makeInferedType(iteratorClass);
+
+			if (iteratorType == null) {
+				Type infered = getInferedIteratorType();
+				if (infered != null) {
+					return infered;
 				}
-				return iteratorType;
+				return Object.class;
 			}
-			return iteratorClass;
+			return iteratorType;
 		}
 
 		@Override
@@ -559,19 +542,10 @@ public interface FIBTable extends FIBWidget {
 		}
 
 		@Override
-		public Class getIteratorClass() {
-			if (iteratorClass == null) {
-				iteratorClass = Object.class;
-			}
-			return iteratorClass;
-
-		}
-
-		@Override
-		public void setIteratorClass(Class iteratorClass) {
-			FIBPropertyNotification<Class> notification = requireChange(ITERATOR_CLASS_KEY, iteratorClass);
+		public void setIteratorType(Type iteratorType) {
+			FIBPropertyNotification<Type> notification = requireChange(ITERATOR_TYPE_KEY, iteratorType);
 			if (notification != null) {
-				this.iteratorClass = iteratorClass;
+				this.iteratorType = iteratorType;
 				createTableBindingModel();
 				createActionBindingModel();
 				hasChanged(notification);
@@ -581,16 +555,9 @@ public interface FIBTable extends FIBWidget {
 		@Override
 		public Type getDefaultDataType() {
 			Type[] args = new Type[1];
-			args[0] = new WilcardTypeImpl(getIteratorClass());
+			args[0] = new WilcardTypeImpl(getIteratorType());
 			return new ParameterizedTypeImpl(Collection.class, args);
 		}
-
-		/*
-		 * @Override public Type getDynamicAccessType() { // Type[] args = new
-		 * Type[2]; // args[0] = getDataType(); // args[1] = getIteratorType();
-		 * return new ParameterizedTypeImpl(FIBTableWidget.class, new Type[] {
-		 * Object.class, getIteratorType() }); }
-		 */
 
 		@Override
 		public boolean getManageDynamicModel() {
@@ -602,8 +569,9 @@ public interface FIBTable extends FIBWidget {
 			logger.fine("notifyBindingChanged with " + binding);
 			super.notifiedBindingChanged(binding);
 			if (binding == getData() && getData() != null) {
+				getPropertyChangeSupport().firePropertyChange(ITERATOR_TYPE_KEY, null, getIteratorType());
 				if (tableBindingModel != null) {
-					tableBindingModel.getBindingVariableAt(0).setType(getInferedIteratorType());
+					tableBindingModel.getBindingVariableAt(0).setType(getIteratorType());
 				}
 			}
 		}
@@ -614,7 +582,7 @@ public interface FIBTable extends FIBWidget {
 		 * public void setIteratorClassName(String iteratorClassName) {
 		 * FIBPropertyNotification<String> notification = requireChange(
 		 * Parameters.iteratorClassName, iteratorClassName); if (notification !=
-		 * null) { this.iteratorClassName = iteratorClassName; iteratorClass =
+		 * null) { this.iteratorClassName = iteratorClassName; iteratorType =
 		 * null; createTableBindingModel(); hasChanged(notification); } }
 		 */
 
