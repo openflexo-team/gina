@@ -57,7 +57,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
-import org.jdesktop.swingx.JXTable;
 import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -67,19 +66,20 @@ import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
+import org.openflexo.gina.swing.view.widget.JFDTablePanel.JFDTable;
 import org.openflexo.gina.view.widget.impl.FIBTableWidgetFooter;
 import org.openflexo.gina.view.widget.impl.FIBTableWidgetImpl;
 import org.openflexo.gina.view.widget.table.impl.FIBTableModel;
 
 /**
- * Widget allowing to display/edit a list of values
+ * Flat-design implementation of FIBTable
  * 
  * @author sguerin
  */
-public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
-		implements TableModelListener, ListSelectionListener, FocusListener, JFIBView<FIBTable, JTablePanel<T>> {
+public class JFDFIBTableWidget<T> extends FIBTableWidgetImpl<JFDTablePanel<T>, T>
+		implements TableModelListener, ListSelectionListener, FocusListener, JFIBView<FIBTable, JFDTablePanel<T>> {
 
-	private static final Logger LOGGER = Logger.getLogger(JFIBTableWidget.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(JFDFIBTableWidget.class.getPackage().getName());
 
 	/**
 	 * A {@link RenderingAdapter} implementation dedicated for Swing JTable<br>
@@ -87,72 +87,72 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingTableRenderingAdapter<T> extends SwingRenderingAdapter<JTablePanel<T>>
-			implements TableRenderingAdapter<JTablePanel<T>, T> {
+	public static class SwingTableRenderingAdapter<T> extends SwingRenderingAdapter<JFDTablePanel<T>>
+			implements TableRenderingAdapter<JFDTablePanel<T>, T> {
 
 		@Override
-		public int getVisibleRowCount(JTablePanel<T> component) {
+		public int getVisibleRowCount(JFDTablePanel<T> component) {
 			return component.getJTable().getVisibleRowCount();
 		}
 
 		@Override
-		public void setVisibleRowCount(JTablePanel<T> component, int visibleRowCount) {
+		public void setVisibleRowCount(JFDTablePanel<T> component, int visibleRowCount) {
 			component.getJTable().setVisibleRowCount(visibleRowCount);
 		}
 
 		@Override
-		public int getRowHeight(JTablePanel<T> component) {
+		public int getRowHeight(JFDTablePanel<T> component) {
 			return component.getJTable().getRowHeight();
 		}
 
 		@Override
-		public void setRowHeight(JTablePanel<T> component, int rowHeight) {
+		public void setRowHeight(JFDTablePanel<T> component, int rowHeight) {
 			component.getJTable().setRowHeight(rowHeight);
 		}
 
 		@Override
-		public ListSelectionModel getListSelectionModel(JTablePanel<T> component) {
+		public ListSelectionModel getListSelectionModel(JFDTablePanel<T> component) {
 			return component.getJTable().getSelectionModel();
 		}
 
 		@Override
-		public boolean isEditing(JTablePanel<T> component) {
+		public boolean isEditing(JFDTablePanel<T> component) {
 			return component.getJTable().isEditing();
 		}
 
 		@Override
-		public int getEditingRow(JTablePanel<T> component) {
+		public int getEditingRow(JFDTablePanel<T> component) {
 			return component.getJTable().getEditingRow();
 		}
 
 		@Override
-		public int getEditingColumn(JTablePanel<T> component) {
+		public int getEditingColumn(JFDTablePanel<T> component) {
 			return component.getJTable().getEditingColumn();
 		}
 
 		@Override
-		public void cancelCellEditing(JTablePanel<T> component) {
+		public void cancelCellEditing(JFDTablePanel<T> component) {
 			component.getJTable().getCellEditor().cancelCellEditing();
 		}
 
 		@Override
-		public Color getDefaultForegroundColor(JTablePanel<T> component) {
+		public Color getDefaultForegroundColor(JFDTablePanel<T> component) {
 			return UIManager.getColor("Table.foreground");
 		}
 
 		@Override
-		public Color getDefaultBackgroundColor(JTablePanel<T> component) {
+		public Color getDefaultBackgroundColor(JFDTablePanel<T> component) {
 			return UIManager.getColor("Table.background");
 		}
 
 		@Override
-		public JXTable getDynamicJComponent(JTablePanel<T> technologyComponent) {
+		public JFDTable<T> getDynamicJComponent(JFDTablePanel<T> technologyComponent) {
 			return technologyComponent.getJTable();
 		}
 
 	}
 
-	public JFIBTableWidget(FIBTable fibTable, FIBController controller) {
+	public JFDFIBTableWidget(FIBTable fibTable, FIBController controller) {
 		super(fibTable, controller, new SwingTableRenderingAdapter<T>());
 
 		getTableModel().addTableModelListener(this);
@@ -196,10 +196,10 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 			getListSelectionModel().removeListSelectionListener(this);
 			getListSelectionModel().addSelectionInterval(event.getNewRow(), event.getNewRow());
 			getListSelectionModel().addListSelectionListener(this);
-			getTechnologyComponent().getJTable()
+			/*getTechnologyComponent().getJTable()
 					.setEditingColumn(getTechnologyComponent().getJTable().convertColumnIndexToView(event.getColumn()));
 			getTechnologyComponent().getJTable()
-					.setEditingRow(getTechnologyComponent().getJTable().convertRowIndexToView(event.getNewRow()));
+					.setEditingRow(getTechnologyComponent().getJTable().convertRowIndexToView(event.getNewRow()));*/
 		}
 	}
 
@@ -238,8 +238,8 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 	}
 
 	@Override
-	protected JTablePanel<T> makeTechnologyComponent() {
-		return new JTablePanel<>(this);
+	protected JFDTablePanel<T> makeTechnologyComponent() {
+		return new JFDTablePanel<>(this);
 	}
 
 	@Override
@@ -262,7 +262,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 	@Override
 	public FIBTableWidgetFooter<?, T> removeFooter() {
 		FIBTableWidgetFooter<?, T> returned = getFooter();
-		if (returned != null) {
+		if (getTechnologyComponent() != null && returned != null) {
 			getTechnologyComponent().remove((JComponent) returned.getFooterComponent());
 		}
 		return returned;

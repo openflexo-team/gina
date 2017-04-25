@@ -95,6 +95,11 @@ public class FIBIconLibrary {
 	public static final ImageIcon ROUND_PANEL_BORDER_LEFT = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/GUI/RoundPanelBorderLeft.png"));
 
+	// Flat-design icons
+	public static final ImageIcon ADD_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/GUI/Add.png"));
+	public static final ImageIcon DELETE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/GUI/Delete.png"));
+	public static final ImageIcon EDIT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/GUI/Edit.png"));
+
 	// Icons used in ClassSelector
 	public static final ImageIcon JAVA_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ClassSelector/Java.png"));
 	public static final ImageIcon PACKAGE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ClassSelector/Package.gif"));

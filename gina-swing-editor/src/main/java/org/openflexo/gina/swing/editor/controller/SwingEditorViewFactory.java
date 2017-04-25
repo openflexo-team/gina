@@ -69,6 +69,7 @@ import org.openflexo.gina.swing.editor.view.container.JFIBEditablePanelView;
 import org.openflexo.gina.swing.editor.view.container.JFIBEditableSplitPanelView;
 import org.openflexo.gina.swing.editor.view.container.JFIBEditableTabPanelView;
 import org.openflexo.gina.swing.editor.view.container.JFIBEditableTabView;
+import org.openflexo.gina.swing.editor.view.widget.JFDFIBEditableTableWidget;
 import org.openflexo.gina.swing.editor.view.widget.JFIBEditableBrowserWidget;
 import org.openflexo.gina.swing.editor.view.widget.JFIBEditableButtonWidget;
 import org.openflexo.gina.swing.editor.view.widget.JFIBEditableCheckboxListWidget;
@@ -217,6 +218,16 @@ public class SwingEditorViewFactory extends SwingViewFactory {
 
 	@Override
 	public FIBTableWidgetImpl<? extends JComponent, ?> makeTable(FIBTable widget, FIBController controller) {
+		if (widget.getLookAndFeel() != null) {
+			System.out.println(">>>>>>>>>>>>>> Nouvelle table avec " + widget.getLookAndFeel());
+			switch (widget.getLookAndFeel()) {
+				case Classic:
+					return new JFIBEditableTableWidget<>(widget, fibEditorController);
+				case FlatDesign:
+					System.out.println("Flat design !!!");
+					return new JFDFIBEditableTableWidget<>(widget, fibEditorController);
+			}
+		}
 		return new JFIBEditableTableWidget<>(widget, fibEditorController);
 	}
 

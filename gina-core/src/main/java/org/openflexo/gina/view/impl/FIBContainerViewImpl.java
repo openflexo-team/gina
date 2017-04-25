@@ -176,6 +176,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		allSubComponents.addAll(getNotHiddenSubComponents());
 
 		for (FIBComponent subComponent : allSubComponents) {
+
 			FIBViewImpl<?, C2> subView = (FIBViewImpl<?, C2>) getController().viewForComponent(subComponent);
 			if (subView == null) {
 				subView = (FIBViewImpl<?, C2>) getController().buildView(subComponent, false);
@@ -291,8 +292,14 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	 * return returned; }
 	 */
 
-	protected void registerViewForComponent(FIBViewImpl<?, C2> view, FIBComponent component) {
+	public void registerViewForComponent(FIBViewImpl<?, C2> view, FIBComponent component) {
 		subViewsMap.put(component, view);
+	}
+
+	public void unregisterViewForComponent(FIBViewImpl<?, C2> view, FIBComponent component) {
+		getController().unregisterView(view);
+		System.out.println("Hop, il me reste " + getController().viewForComponent(component));
+		subViewsMap.remove(component);
 	}
 
 	public Map<FIBComponent, FIBViewImpl<?, C2>> getSubViewsMap() {

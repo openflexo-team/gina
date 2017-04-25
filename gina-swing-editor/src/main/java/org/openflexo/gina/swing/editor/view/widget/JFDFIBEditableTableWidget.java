@@ -47,16 +47,16 @@ import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate;
-import org.openflexo.gina.swing.view.widget.JFIBTableWidget;
-import org.openflexo.gina.swing.view.widget.JTablePanel;
+import org.openflexo.gina.swing.view.widget.JFDFIBTableWidget;
+import org.openflexo.gina.swing.view.widget.JFDTablePanel;
 import org.openflexo.logging.FlexoLogger;
 
-public class JFIBEditableTableWidget<T> extends JFIBTableWidget<T> implements FIBSwingEditableView<FIBTable, JTablePanel<T>> {
+public class JFDFIBEditableTableWidget<T> extends JFDFIBTableWidget<T> implements FIBSwingEditableView<FIBTable, JFDTablePanel<T>> {
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableTableWidget.class.getPackage().getName());
+	private static final Logger logger = FlexoLogger.getLogger(JFDFIBEditableTableWidget.class.getPackage().getName());
 
-	private final FIBSwingEditableViewDelegate<FIBTable, JTablePanel<T>> delegate;
+	private final FIBSwingEditableViewDelegate<FIBTable, JFDTablePanel<T>> delegate;
 
 	private final FIBEditorController editorController;
 
@@ -70,7 +70,7 @@ public class JFIBEditableTableWidget<T> extends JFIBTableWidget<T> implements FI
 		return editorController;
 	}
 
-	public JFIBEditableTableWidget(FIBTable model, FIBEditorController editorController) {
+	public JFDFIBEditableTableWidget(FIBTable model, FIBEditorController editorController) {
 		super(model, editorController.getController());
 		this.editorController = editorController;
 
@@ -84,7 +84,7 @@ public class JFIBEditableTableWidget<T> extends JFIBTableWidget<T> implements FI
 	}
 
 	@Override
-	public FIBSwingEditableViewDelegate<FIBTable, JTablePanel<T>> getDelegate() {
+	public FIBSwingEditableViewDelegate<FIBTable, JFDTablePanel<T>> getDelegate() {
 		return delegate;
 	}
 

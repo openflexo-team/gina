@@ -85,6 +85,12 @@ public interface FIBTable extends FIBWidget {
 
 	public static final String ITERATOR_NAME = "iterator";
 
+	public enum TableLookAndFeel {
+		Classic, FlatDesign
+	}
+
+	@PropertyIdentifier(type = TableLookAndFeel.class)
+	public static final String LOOK_AND_FEEL_KEY = "lookAndFeel";
 	@PropertyIdentifier(type = Type.class)
 	public static final String ITERATOR_TYPE_KEY = "iteratorType";
 	@PropertyIdentifier(type = Integer.class)
@@ -97,6 +103,8 @@ public interface FIBTable extends FIBWidget {
 	public static final String CREATE_NEW_ROW_ON_CLICK_KEY = "createNewRowOnClick";
 	@PropertyIdentifier(type = boolean.class)
 	public static final String BOUND_TO_SELECTION_MANAGER_KEY = "boundToSelectionManager";
+	@PropertyIdentifier(type = boolean.class)
+	public static final String SHOW_HEADER_KEY = "showHeader";
 	@PropertyIdentifier(type = boolean.class)
 	public static final String SHOW_FOOTER_KEY = "showFooter";
 	@PropertyIdentifier(type = SelectionMode.class)
@@ -117,6 +125,13 @@ public interface FIBTable extends FIBWidget {
 	public static final String BACKGROUND_SECONDARY_SELECTION_COLOR_KEY = "backgroundSecondarySelectionColor";
 	@PropertyIdentifier(type = Color.class)
 	public static final String BACKGROUND_NON_SELECTION_COLOR_KEY = "backgroundNonSelectionColor";
+
+	@Getter(LOOK_AND_FEEL_KEY)
+	@XMLAttribute
+	public TableLookAndFeel getLookAndFeel();
+
+	@Setter(LOOK_AND_FEEL_KEY)
+	public void setLookAndFeel(TableLookAndFeel laf);
 
 	@Getter(value = ITERATOR_TYPE_KEY, isStringConvertable = true)
 	@XMLAttribute(xmlTag = "iteratorClassName")
@@ -159,6 +174,13 @@ public interface FIBTable extends FIBWidget {
 
 	@Setter(BOUND_TO_SELECTION_MANAGER_KEY)
 	public void setBoundToSelectionManager(boolean boundToSelectionManager);
+
+	@Getter(value = SHOW_HEADER_KEY, defaultValue = "true")
+	@XMLAttribute
+	public boolean getShowHeader();
+
+	@Setter(SHOW_HEADER_KEY)
+	public void setShowHeader(boolean showHeader);
 
 	@Getter(value = SHOW_FOOTER_KEY, defaultValue = "false")
 	@XMLAttribute
@@ -358,6 +380,12 @@ public interface FIBTable extends FIBWidget {
 		@Override
 		public String getBaseName() {
 			return "Table";
+		}
+
+		@Override
+		public void setLookAndFeel(TableLookAndFeel laf) {
+			System.out.println("Nouveau laf: " + laf);
+			performSuperSetter(LOOK_AND_FEEL_KEY, laf);
 		}
 
 		/*@Override

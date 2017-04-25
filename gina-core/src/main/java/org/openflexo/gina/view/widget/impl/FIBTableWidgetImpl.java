@@ -64,6 +64,7 @@ import org.openflexo.gina.event.description.item.DescriptionIntegerItem;
 import org.openflexo.gina.event.description.item.DescriptionItem;
 import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTableAction;
+import org.openflexo.gina.view.impl.FIBContainerViewImpl;
 import org.openflexo.gina.view.impl.FIBWidgetViewImpl;
 import org.openflexo.gina.view.widget.FIBTableWidget;
 import org.openflexo.gina.view.widget.table.impl.FIBTableModel;
@@ -85,7 +86,7 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 
 	private FIBTableModel<T> _tableModel;
 
-	protected final FIBTableWidgetFooter<?, T> footer;
+	protected FIBTableWidgetFooter<?, T> footer;
 
 	protected List<T> selection;
 	protected T selectedObject;
@@ -101,7 +102,17 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 			column.getPropertyChangeSupport().addPropertyChangeListener(this);
 		}*/
 
-		footer = makeFooter();
+		updateFooter();
+	}
+
+	private void updateFooter() {
+		if (getComponent().getShowFooter()) {
+			footer = makeFooter();
+		}
+		else {
+			removeFooter();
+			footer = null;
+		}
 	}
 
 	@Override
@@ -119,6 +130,8 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 	}
 
 	public abstract FIBTableWidgetFooter<?, T> makeFooter();
+
+	public abstract FIBTableWidgetFooter<?, T> removeFooter();
 
 	@Override
 	public TableRenderingAdapter<C, T> getRenderingAdapter() {
@@ -544,6 +557,15 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 				|| (evt.getPropertyName().equals(FIBTable.VISIBLE_ROW_COUNT_KEY))
 				|| (evt.getPropertyName().equals(FIBTable.SHOW_FOOTER_KEY))) {
 			updateTable();
+		}
+
+		if (evt.getPropertyName().equals(FIBTable.SHOW_FOOTER_KEY)) {
+			updateFooter();
+		}
+
+		if (evt.getPropertyName().equals(FIBTable.LOOK_AND_FEEL_KEY)) {
+			((FIBContainerViewImpl) getParentView()).unregisterViewForComponent(this, getComponent());
+			getParentView().changeLayout();
 		}
 
 		super.propertyChange(evt);

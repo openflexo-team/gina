@@ -280,10 +280,11 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 	}
 
 	public void unregisterView(FIBView<?, ?> view) {
+		System.out.println("On supprime " + view.getComponent());
 		views.remove(view.getComponent());
 	}
 
-	public <M extends FIBComponent> FIBView<M, ?> viewForComponent(M component) {
+	public final <M extends FIBComponent> FIBView<M, ?> viewForComponent(M component) {
 		if (component == null) {
 			return null;
 		}

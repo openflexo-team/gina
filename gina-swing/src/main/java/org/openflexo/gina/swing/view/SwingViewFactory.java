@@ -90,6 +90,7 @@ import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.swing.view.container.JFIBSplitPanelView;
 import org.openflexo.gina.swing.view.container.JFIBTabPanelView;
 import org.openflexo.gina.swing.view.container.JFIBTabView;
+import org.openflexo.gina.swing.view.widget.JFDFIBTableWidget;
 import org.openflexo.gina.swing.view.widget.JFIBBrowserWidget;
 import org.openflexo.gina.swing.view.widget.JFIBButtonWidget;
 import org.openflexo.gina.swing.view.widget.JFIBCheckBoxWidget;
@@ -319,6 +320,16 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 
 	@Override
 	public FIBTableWidgetImpl<? extends JComponent, ?> makeTable(FIBTable widget, FIBController controller) {
+		if (widget.getLookAndFeel() != null) {
+			System.out.println(">>>>>>>>>>>>>> Nouvelle table avec " + widget.getLookAndFeel());
+			switch (widget.getLookAndFeel()) {
+				case Classic:
+					return new JFIBTableWidget<>(widget, controller);
+				case FlatDesign:
+					System.out.println("Flat design !!!");
+					return new JFDFIBTableWidget<>(widget, controller);
+			}
+		}
 		return new JFIBTableWidget<>(widget, controller);
 	}
 
