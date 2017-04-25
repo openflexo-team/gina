@@ -185,7 +185,7 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 	@CustomComponentParameter(name = "customTypeManager", type = CustomComponentParameter.Type.OPTIONAL)
 	public void setCustomTypeManager(CustomTypeManager customTypeManager) {
 
-		System.out.println("******************> setCustomTypeManager with " + customTypeManager);
+		// System.out.println("******************> setCustomTypeManager with " + customTypeManager);
 
 		if (customTypeManager != this.customTypeManager) {
 			CustomTypeManager oldValue = this.customTypeManager;
@@ -200,8 +200,6 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 	}
 
 	public void setCustomTypeEditorProvider(CustomTypeEditorProvider customTypeEditorProvider) {
-
-		System.out.println("******************> setCustomTypeEditorProvider with " + customTypeEditorProvider);
 
 		if ((customTypeEditorProvider == null && this.customTypeEditorProvider != null)
 				|| (customTypeEditorProvider != null && !customTypeEditorProvider.equals(this.customTypeEditorProvider))) {
