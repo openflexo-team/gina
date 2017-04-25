@@ -601,19 +601,21 @@ public interface FIBBrowser extends FIBWidget {
 
 			List<FIBBrowserElement> elementsForClass = TypeUtils.objectForClass(anObject.getClass(), elementsForClasses);
 
-			if (elementsForClass.size() == 1) {
-				return elementsForClass.get(0);
-			}
-			else {
-				// If not a class, return first matching element
-				// TODO: this could be optimized
-				for (FIBBrowserElement e : elementsForClass) {
-					if (TypeUtils.isOfType(anObject, e.getDataType())) {
-						return e;
+			if (elementsForClass != null) {
+				if (elementsForClass.size() == 1) {
+					return elementsForClass.get(0);
+				}
+				else {
+					// If not a class, return first matching element
+					// TODO: this could be optimized
+					for (FIBBrowserElement e : elementsForClass) {
+						if (TypeUtils.isOfType(anObject, e.getDataType())) {
+							return e;
+						}
 					}
 				}
-				return null;
 			}
+			return null;
 		}
 
 		@Override
