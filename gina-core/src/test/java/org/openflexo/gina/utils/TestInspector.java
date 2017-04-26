@@ -70,8 +70,7 @@ public class TestInspector extends FIBTestCase {
 	@Test
 	@TestOrder(1)
 	public void testInstantiateInspectorGroup() {
-		inspectorGroup = new InspectorGroup(ResourceLocator.locateResource("TestInspector"), ApplicationFIBLibraryImpl.instance(), null,
-				null);
+		inspectorGroup = new InspectorGroup(ResourceLocator.locateResource("TestInspector"), ApplicationFIBLibraryImpl.instance(), null);
 		assertNotNull(inspectorGroup);
 	}
 
