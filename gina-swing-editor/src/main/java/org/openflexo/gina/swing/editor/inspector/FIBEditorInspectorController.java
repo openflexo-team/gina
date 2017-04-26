@@ -75,7 +75,7 @@ public class FIBEditorInspectorController implements Observer {
 
 	private final FlexoCollabsiblePanelGroup panelGroup;
 
-	private static final FIBLibrary INSPECTORS_FIB_LIBRARY = FIBLibraryImpl.createInstance();
+	private static final FIBLibrary INSPECTORS_FIB_LIBRARY = FIBLibraryImpl.createInstance(null);
 
 	public FIBEditorInspectorController() {
 

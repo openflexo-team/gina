@@ -67,7 +67,7 @@ public class TestFIBEditorBrowser {
 	@Test
 	public void test1InstanciateWidget() throws ModelDefinitionException, InterruptedException {
 
-		factory = new FIBModelFactory();
+		factory = new FIBModelFactory(null);
 		component = factory.newInstance(FIBPanel.class);
 
 		FIBEditorBrowser browser = new FIBEditorBrowser(component, null);
@@ -83,7 +83,7 @@ public class TestFIBEditorBrowser {
 	@Test
 	public void test2AddSubComponents() throws ModelDefinitionException {
 
-		factory = new FIBModelFactory();
+		factory = new FIBModelFactory(null);
 		component = factory.newInstance(FIBPanel.class);
 
 		FIBLabel newLabel = factory.newFIBLabel("Hello world");

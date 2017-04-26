@@ -76,7 +76,7 @@ public class InspectorGroup {
 		inspectors = new LinkedHashMap<>();
 
 		try {
-			fibModelFactory = new FIBModelFactory(inspectorDirectory, FIBInspector.class);
+			fibModelFactory = new FIBModelFactory(inspectorDirectory, fibLibrary.getCustomTypeManager(), FIBInspector.class);
 		} catch (ModelDefinitionException e) {
 			logger.log(Level.SEVERE, "FIBModel is incorrect", e);
 		}

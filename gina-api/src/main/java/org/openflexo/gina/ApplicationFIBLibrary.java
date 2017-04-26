@@ -41,8 +41,11 @@ package org.openflexo.gina;
 
 import java.util.logging.Logger;
 
+import org.openflexo.connie.type.CustomTypeManager;
+import org.openflexo.gina.model.FIBModelFactory;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 
 /**
  * {@link ApplicationFIBLibrary} is the FIBLibrary that is used in the application.<br>
@@ -59,21 +62,39 @@ public interface ApplicationFIBLibrary extends FIBLibrary {
 
 		static final Logger LOGGER = Logger.getLogger(ApplicationFIBLibrary.class.getPackage().getName());
 
-		private static ApplicationFIBLibrary instance;
+		private static ApplicationFIBLibraryImpl instance;
 
-		/*public ApplicationFIBLibraryImpl() {
+		public ApplicationFIBLibraryImpl() {
 			super();
-			instance = this;
-		}*/
+		}
 
-		public static ApplicationFIBLibrary createInstance() {
-			instance = FOLDER_FACTORY.newInstance(ApplicationFIBLibrary.class);
+		public static ApplicationFIBLibrary createInstance(CustomTypeManager customTypeManager) {
+
+			if (customTypeManager == null) {
+				LOGGER.warning("ApplicationFIBLibrary created with a null customTypeManager. Please investigate");
+				Thread.dumpStack();
+			}
+			instance = (ApplicationFIBLibraryImpl) FOLDER_FACTORY.newInstance(ApplicationFIBLibrary.class);
+			instance.setCustomTypeManager(customTypeManager);
+			try {
+				instance.fibModelFactory = new FIBModelFactory(customTypeManager);
+			} catch (ModelDefinitionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return instance;
 		}
 
 		public static ApplicationFIBLibrary instance() {
 			if (instance == null) {
-				createInstance();
+				createInstance(null);
+			}
+			return instance;
+		}
+
+		public static ApplicationFIBLibrary instance(CustomTypeManager customTypeManager) {
+			if (instance == null) {
+				createInstance(customTypeManager);
 			}
 			return instance;
 		}

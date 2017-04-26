@@ -174,7 +174,7 @@ public class ContextualMenu {
 	public FIBModelObject makeReusableComponent(FIBContainer component, FIBContainer parent, JFrame frame) {
 		FIBModelFactory dialogFactory = null;
 		try {
-			dialogFactory = new FIBModelFactory();
+			dialogFactory = new FIBModelFactory(null);
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();
 			return null;

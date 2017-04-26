@@ -229,18 +229,18 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 		// Then the technology specific types
 		if (getCustomTypeManager() != null) {
 			for (Class<? extends CustomType> customType : getCustomTypeManager().getCustomTypeFactories().keySet()) {
-				System.out.println("Found type " + customType);
+				// System.out.println("Found type " + customType);
 				choices.add(customType);
 				CustomTypeFactory<?> specificFactory = getCustomTypeManager().getCustomTypeFactories().get(customType);
 				if (specificFactory != null) {
-					System.out.println("Found specific factory : " + specificFactory);
+					// System.out.println("Found specific factory : " + specificFactory);
 					customTypeFactories.put(customType, specificFactory);
 				}
-				System.out.println("Factory " + specificFactory);
+				// System.out.println("Factory " + specificFactory);
 				if (getCustomTypeEditorProvider() != null) {
 					CustomTypeEditor<?> specificEditor = getCustomTypeEditorProvider().getCustomTypeEditor(customType);
 					if (specificEditor != null) {
-						System.out.println("Found specific editor : " + specificEditor);
+						// System.out.println("Found specific editor : " + specificEditor);
 						customTypeEditors.put(customType, specificEditor);
 					}
 				}

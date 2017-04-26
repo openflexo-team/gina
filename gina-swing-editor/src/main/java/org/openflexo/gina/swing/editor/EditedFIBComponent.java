@@ -127,7 +127,7 @@ public class EditedFIBComponent extends PropertyChangedSupportDefaultImplementat
 
 		if (sourceResource != null) {
 			try {
-				fibFactory = new FIBModelFactory(sourceResource.getContainer());
+				fibFactory = new FIBModelFactory(sourceResource.getContainer(), null);
 			} catch (ModelDefinitionException e) {
 				e.printStackTrace();
 				return;

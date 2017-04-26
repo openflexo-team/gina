@@ -65,7 +65,7 @@ public class FIBModelFactoryTest {
 	@Test
 	@TestOrder(1)
 	public void instanciateFIBModelFactory() throws ModelDefinitionException {
-		factory = new FIBModelFactory();
+		factory = new FIBModelFactory(null);
 	}
 
 	@Test

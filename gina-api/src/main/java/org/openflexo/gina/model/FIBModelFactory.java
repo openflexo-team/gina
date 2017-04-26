@@ -38,7 +38,10 @@
 
 package org.openflexo.gina.model;
 
+import java.lang.reflect.Type;
+
 import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.type.CustomTypeManager;
 import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
@@ -79,8 +82,6 @@ import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.rm.Resource;
 
-import java.lang.reflect.Type;
-
 /**
  * {@link ModelFactory} used to handle FIB models<br>
  * One instance is declared for the {@link FIBLibrary}
@@ -94,18 +95,19 @@ public class FIBModelFactory extends ModelFactory {
 
 	private final RelativePathResourceConverter relativePathResourceConverter;
 
-	public FIBModelFactory(Class<?>... additionalClasses) throws ModelDefinitionException {
-		this(null, additionalClasses);
+	public FIBModelFactory(CustomTypeManager customTypeManager, Class<?>... additionalClasses) throws ModelDefinitionException {
+		this(null, customTypeManager, additionalClasses);
 	}
 
-	public FIBModelFactory(Resource containerResource, Class<?>... additionalClasses) throws ModelDefinitionException {
+	public FIBModelFactory(Resource containerResource, CustomTypeManager customTypeManager, Class<?>... additionalClasses)
+			throws ModelDefinitionException {
 		super(ModelContextLibrary.getCompoundModelContext(FIBComponent.class, additionalClasses));
 		relativePathResourceConverter = new RelativePathResourceConverter(null);
 		relativePathResourceConverter.setContainerResource(containerResource);
 
 		addConverter(new DataBindingConverter());
 		addConverter(new ComponentConstraintsConverter());
-		addConverter(new TypeConverter(null));
+		addConverter(new TypeConverter(customTypeManager != null ? customTypeManager.getCustomTypeFactories() : null));
 		addConverter(relativePathResourceConverter);
 		validationModel = new FIBValidationModel(this);
 	}

@@ -83,7 +83,7 @@ public class FIBEditorPalette extends JPanel {
 	public static final Cursor dropKO = ToolBox.getPLATFORM() == ToolBox.MACOS
 			? Toolkit.getDefaultToolkit().createCustomCursor(DROP_KO_IMAGE, new Point(16, 16), "Drop KO") : DragSource.DefaultMoveNoDrop;
 
-	private static FIBLibrary PALETTE_FIB_LIBRARY = FIBLibraryImpl.createInstance();
+	private static FIBLibrary PALETTE_FIB_LIBRARY = FIBLibraryImpl.createInstance(null);
 
 	private final Resource dir;
 	private final FIBEditorPalettes palettes;

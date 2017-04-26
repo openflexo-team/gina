@@ -69,7 +69,7 @@ public abstract class FIBInspectorTestCase extends GenericFIBTestCase {
 
 	static {
 		try {
-			INSPECTOR_FACTORY = new FIBModelFactory(FIBInspector.class);
+			INSPECTOR_FACTORY = new FIBModelFactory(null, FIBInspector.class);
 		} catch (ModelDefinitionException e1) {
 			e1.printStackTrace();
 		}

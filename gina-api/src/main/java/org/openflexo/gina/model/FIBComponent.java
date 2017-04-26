@@ -1242,6 +1242,16 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		}
 
 		@Override
+		public CustomTypeManager getCustomTypeManager() {
+			if (isRootComponent()) {
+				return (CustomTypeManager) performSuperGetter(CUSTOM_TYPE_MANAGER_KEY);
+			}
+			else {
+				return getRootComponent().getCustomTypeManager();
+			}
+		}
+
+		@Override
 		public Class<? extends FIBController> getControllerClass() {
 			// Fixed MODULES-304
 			if (!isRootComponent() && isSerializing()) {

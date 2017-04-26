@@ -80,7 +80,7 @@ public abstract class FIBTestCase {
 	@BeforeClass
 	public static void setUpClass() {
 		try {
-			factory = new FIBModelFactory();
+			factory = new FIBModelFactory(null);
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();
 		}

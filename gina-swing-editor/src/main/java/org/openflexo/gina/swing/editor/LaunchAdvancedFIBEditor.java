@@ -114,7 +114,7 @@ public class LaunchAdvancedFIBEditor {
 				e.printStackTrace();
 			}
 
-			final FIBEditor editor = new FIBEditor(FIBLibraryImpl.createInstance()) {
+			final FIBEditor editor = new FIBEditor(FIBLibraryImpl.createInstance(null)) {
 				@Override
 				public boolean activate(FIBEditorController editorController) {
 					if (super.activate(editorController)) {

@@ -55,6 +55,7 @@ import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
 import org.jdom2.JDOMException;
 import org.openflexo.connie.BindingFactory;
+import org.openflexo.connie.type.CustomTypeManager;
 import org.openflexo.gina.FIBFolder.FIBFolderImpl;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelFactory;
@@ -100,28 +101,33 @@ public interface FIBLibrary extends FIBLibraryContainer {
 
 	public String stringRepresentation(FIBComponent object);
 
+	public CustomTypeManager getCustomTypeManager();
+
 	public static abstract class FIBLibraryImpl extends FIBLibraryContainerImpl implements FIBLibrary {
 
 		private static final Logger LOGGER = Logger.getLogger(FIBLibrary.class.getPackage().getName());
 
-		public static FIBLibrary createInstance() {
-			return FOLDER_FACTORY.newInstance(FIBLibrary.class);
+		public static FIBLibrary createInstance(CustomTypeManager customTypeManager) {
+			FIBLibraryImpl returned = (FIBLibraryImpl) FOLDER_FACTORY.newInstance(FIBLibrary.class);
+			returned.setCustomTypeManager(customTypeManager);
+			try {
+				returned.fibModelFactory = new FIBModelFactory(customTypeManager);
+			} catch (ModelDefinitionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return returned;
 		}
 
 		// This map stores FIBComponent related to their source resource
 		private final Map<Resource, FIBComponent> fibs;
 		private final BindingFactory bindingFactory = new FIBBindingFactory();
-		private FIBModelFactory fibModelFactory;
+		protected FIBModelFactory fibModelFactory;
+		private CustomTypeManager customTypeManager;
 
 		public FIBLibraryImpl() {
 			super();
 			fibs = new Hashtable<>();
-			try {
-				fibModelFactory = new FIBModelFactory();
-			} catch (ModelDefinitionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 
 		@Override
@@ -132,6 +138,15 @@ public interface FIBLibrary extends FIBLibraryContainer {
 		@Override
 		public BindingFactory getBindingFactory() {
 			return bindingFactory;
+		}
+
+		@Override
+		public CustomTypeManager getCustomTypeManager() {
+			return customTypeManager;
+		}
+
+		protected void setCustomTypeManager(CustomTypeManager customTypeManager) {
+			this.customTypeManager = customTypeManager;
 		}
 
 		@Override
@@ -296,14 +311,7 @@ public interface FIBLibrary extends FIBLibraryContainer {
 			if (!useCache || fibs.get(sourceResource) == null) {
 
 				try {
-					FIBModelFactory factory = new FIBModelFactory(fibResource.getContainer());
-					/*if (fibResource instanceof FileResourceImpl) {
-						factory = new FIBModelFactory(((FileResourceImpl) fibResource).getFile().getParentFile());
-					}
-					else {
-						factory = new FIBModelFactory();
-					}*/
-
+					FIBModelFactory factory = new FIBModelFactory(fibResource.getContainer(), getCustomTypeManager());
 					FIBComponent component = (FIBComponent) factory.deserialize(inputStream);
 					component.setLastModified(new Date());
 					component.setResource(fibResource);
@@ -377,7 +385,7 @@ public interface FIBLibrary extends FIBLibraryContainer {
 		public void saveComponentToStream(FIBComponent component, Resource resourceToSave, OutputStream stream) {
 
 			try {
-				FIBModelFactory factory = new FIBModelFactory(resourceToSave.getContainer());
+				FIBModelFactory factory = new FIBModelFactory(resourceToSave.getContainer(), component.getCustomTypeManager());
 
 				factory.serialize(component, stream);
 				LOGGER.info("Succeeded to save: " + resourceToSave);

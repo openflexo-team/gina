@@ -75,7 +75,7 @@ public interface AskParametersComponent extends FIBPanel {
 
 		static {
 			try {
-				FACTORY = new FIBModelFactory(AskParametersComponent.class);
+				FACTORY = new FIBModelFactory(null, AskParametersComponent.class);
 			} catch (ModelDefinitionException e1) {
 				e1.printStackTrace();
 			}

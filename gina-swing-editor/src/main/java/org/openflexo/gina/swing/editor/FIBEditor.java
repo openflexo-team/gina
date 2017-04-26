@@ -420,7 +420,7 @@ public class FIBEditor {
 		FIBModelFactory factory = null;
 
 		try {
-			factory = new FIBModelFactory();
+			factory = new FIBModelFactory(null);
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();
 			return null;
