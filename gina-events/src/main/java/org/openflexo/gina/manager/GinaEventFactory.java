@@ -2,7 +2,6 @@ package org.openflexo.gina.manager;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import org.openflexo.gina.event.GinaEvent;
 import org.openflexo.gina.event.GinaEvent.KIND;
 import org.openflexo.gina.event.SystemEvent;
@@ -40,7 +39,7 @@ public class GinaEventFactory {
 	public ModelFactory getModelFactory() {
 		if (factory == null) {
 			try {
-				context = new ModelContext(this.eventDescriptionModelClasses.toArray(new Class[this.eventDescriptionModelClasses.size()]));
+				context = new ModelContext(this.eventDescriptionModelClasses);
 				factory = new ModelFactory(context);
 			} catch (ModelDefinitionException e) {
 				e.printStackTrace();

@@ -1,7 +1,7 @@
 package org.openflexo.gina.event.description;
 
-import javax.swing.ListSelectionModel;
-
+import java.util.Arrays;
+import javax.swing.*;
 import org.openflexo.gina.event.GinaEvent;
 import org.openflexo.gina.event.description.item.DescriptionIntegerItem;
 import org.openflexo.gina.event.description.item.DescriptionItem;
@@ -31,7 +31,7 @@ public class FIBEventFactory {
 	public ModelFactory getModelFactory() {
 		if (factory == null) {
 			try {
-				context = new ModelContext(GinaEvent.class, EventDescription.class, DescriptionItem.class, FIBEventDescription.class);
+				context = new ModelContext(Arrays.asList(GinaEvent.class, EventDescription.class, DescriptionItem.class, FIBEventDescription.class));
 				factory = new ModelFactory(context);
 			} catch (ModelDefinitionException e) {
 				e.printStackTrace();
