@@ -456,7 +456,9 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 		}
 		// TODO: re-implement this properly and check that all listeners are
 		// properly removed.
-		getFooter().delete();
+		if (getFooter() != null) {
+			getFooter().delete();
+		}
 		deleteTable();
 		super.delete();
 	}
