@@ -45,6 +45,7 @@ import java.io.File;
 import java.util.logging.Logger;
 
 import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
+import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.model.validation.ValidationError;
 import org.openflexo.model.validation.ValidationReport;
@@ -66,13 +67,21 @@ public abstract class GenericFIBTestCase {
 		validateFIB(ResourceLocator.locateResource(fibRelativePath));
 	}
 
+	public FIBLibrary getFIBLibrary() {
+		return ApplicationFIBLibraryImpl.instance();
+	}
+
+	protected void initFIBComponent(FIBComponent component) {
+	}
+
 	public void validateFIB(Resource fibFile) {
 		try {
 			System.out.println("Validating fib file " + fibFile);
-			FIBComponent component = ApplicationFIBLibraryImpl.instance().retrieveFIBComponent(fibFile);
+			FIBComponent component = getFIBLibrary().retrieveFIBComponent(fibFile);
 			if (component == null) {
 				fail("Component not found: " + fibFile.getURI());
 			}
+			initFIBComponent(component);
 			ValidationReport validationReport = component.validate();
 			for (ValidationError<?, ?> error : validationReport.getErrors()) {
 				logger.severe("FIBComponent validation error: Object: " + error.getValidable() + " message: "
