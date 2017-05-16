@@ -779,7 +779,7 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 			TreePath destinationPath = getPathForLocation(cursorLocationBis.x, cursorLocationBis.y);
 
 			// if destination path is okay accept drop...
-			if (isDroppable(destinationPath, selectedTreePath)) {
+			if (isDroppable(selectedTreePath, destinationPath)) {
 				// System.out.println("C'est bien ca");
 				e.acceptDrag(DnDConstants.ACTION_MOVE);
 				setCursor(/*Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR)*/dropOK);
@@ -828,25 +828,34 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 				return false;
 			}
 
+			System.out.println("Est ce que c'est droppable ????");
+
 			draggedBrowserCell = (BrowserCell) dropper.getLastPathComponent();
 			targetBrowserCell = (BrowserCell) destination.getLastPathComponent();
 
+			System.out.println("dragged=" + draggedBrowserCell.getRepresentedObject());
+			System.out.println("target=" + targetBrowserCell.getRepresentedObject());
+
 			for (FIBBrowserDragOperation op : draggedBrowserCell.getBrowserElement().getDragOperations()) {
 				Boolean applicable = false;
-				try {
-					applicable = op.getIsAvailable().getBindingValue(this);
-				} catch (TypeMismatchException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NullReferenceException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				if (applicable != null && applicable) {
-					return true;
+				if (targetBrowserCell.getBrowserElement() == op.getTargetElement()) {
+					try {
+						System.out.println("on regarde pour " + op);
+						applicable = op.getIsAvailable().getBindingValue(this);
+					} catch (TypeMismatchException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NullReferenceException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if (applicable != null && applicable) {
+						System.out.println(">>>>>>>> Et oui on le retourne");
+						return true;
+					}
 				}
 			}
 
