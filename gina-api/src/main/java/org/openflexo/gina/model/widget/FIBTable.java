@@ -384,7 +384,7 @@ public interface FIBTable extends FIBWidget {
 
 		@Override
 		public void setLookAndFeel(TableLookAndFeel laf) {
-			System.out.println("Nouveau laf: " + laf);
+			// System.out.println("Nouveau laf: " + laf);
 			performSuperSetter(LOOK_AND_FEEL_KEY, laf);
 		}
 
