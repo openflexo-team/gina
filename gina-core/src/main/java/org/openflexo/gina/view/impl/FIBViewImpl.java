@@ -496,7 +496,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		if (variable instanceof FIBChildBindingVariable) {
 			FIBView<?, ?> view = getController().viewForComponent(((FIBChildBindingVariable) variable).getComponent());
 			if (view == null) {
-				LOGGER.warning("Could not access component view for " + ((FIBChildBindingVariable) variable).getComponent());
+				LOGGER.fine("Could not access component view for " + ((FIBChildBindingVariable) variable).getComponent());
 			}
 			return view;
 		}
