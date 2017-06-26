@@ -321,7 +321,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 	@Override
 	public FIBTableWidgetImpl<? extends JComponent, ?> makeTable(FIBTable widget, FIBController controller) {
 		if (widget.getLookAndFeel() != null) {
-			System.out.println(">>>>>>>>>>>>>> Nouvelle table avec " + widget.getLookAndFeel());
+			// System.out.println(">>>>>>>>>>>>>> Nouvelle table avec " + widget.getLookAndFeel());
 			switch (widget.getLookAndFeel()) {
 				case Classic:
 					return new JFIBTableWidget<>(widget, controller);
