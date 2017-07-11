@@ -62,6 +62,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -492,6 +493,14 @@ public class DateSelector extends TextFieldCustomPopup<Date> {
 	// Override if required
 	public String localizedForKeyAndButton(String key, JButton component) {
 		return key;
+	}
+
+	public static void main(String[] args) {
+		JFrame frame = new JFrame();
+		frame.getContentPane().setLayout(new BorderLayout());
+		frame.getContentPane().add(new DateSelector(), BorderLayout.CENTER);
+		frame.validate();
+		frame.setVisible(true);
 	}
 
 }
