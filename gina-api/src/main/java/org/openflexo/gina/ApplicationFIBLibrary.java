@@ -39,8 +39,11 @@
 
 package org.openflexo.gina;
 
+import java.util.Map;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.type.CustomType;
+import org.openflexo.connie.type.CustomTypeFactory;
 import org.openflexo.connie.type.CustomTypeManager;
 import org.openflexo.gina.model.FIBModelFactory;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -87,7 +90,13 @@ public interface ApplicationFIBLibrary extends FIBLibrary {
 
 		public static ApplicationFIBLibrary instance() {
 			if (instance == null) {
-				createInstance(null);
+				createInstance(new CustomTypeManager() {
+
+					@Override
+					public Map<Class<? extends CustomType>, CustomTypeFactory<?>> getCustomTypeFactories() {
+						return null;
+					}
+				});
 			}
 			return instance;
 		}
