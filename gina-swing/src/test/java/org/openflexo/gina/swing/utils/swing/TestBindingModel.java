@@ -466,19 +466,19 @@ public class TestBindingModel extends FIBTestCase {
 		assertEquals(7, panel1.getBindingModel().getBindingVariablesCount());
 
 		System.out.println("BM for panel2: " + panel2.getBindingModel());
-		assertEquals(11, panel2.getBindingModel().getBindingVariablesCount());
+		assertEquals(8, panel2.getBindingModel().getBindingVariablesCount());
 
 		System.out.println("BM for textfield1: " + textfield1.getBindingModel());
 		assertEquals(8, textfield1.getBindingModel().getBindingVariablesCount());
 
 		System.out.println("BM for textfield2: " + textfield2.getBindingModel());
-		assertEquals(12, textfield2.getBindingModel().getBindingVariablesCount());
+		assertEquals(9, textfield2.getBindingModel().getBindingVariablesCount());
 
 		System.out.println("BM for checkbox: " + checkbox.getBindingModel());
-		assertEquals(12, checkbox.getBindingModel().getBindingVariablesCount());
+		assertEquals(9, checkbox.getBindingModel().getBindingVariablesCount());
 
 		System.out.println("BM for number: " + number.getBindingModel());
-		assertEquals(12, number.getBindingModel().getBindingVariablesCount());
+		assertEquals(9, number.getBindingModel().getBindingVariablesCount());
 
 		// The bindings should remain valid
 		assertTrue(textfield2.getData().isValid());
@@ -502,7 +502,7 @@ public class TestBindingModel extends FIBTestCase {
 		assertEquals("(person.firstName = \"Robert\")", checkbox.getData().toString());
 		assertEquals("person.age", number.getData().toString());
 
-		FIBVariable<Person> personVariable = (FIBVariable<Person>) panel2.getVariable("person");
+		FIBVariable<Person> personVariable = panel2.getVariable("person");
 		assertNotNull(personVariable);
 		personVariable.setValue(new DataBinding<Person>("data.father"));
 

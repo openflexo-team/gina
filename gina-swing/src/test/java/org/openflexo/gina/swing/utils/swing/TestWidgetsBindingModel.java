@@ -225,14 +225,14 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 		browser.addToElements(personElement);
 		assertTrue(browser.getRoot().isValid());
 
-		assertEquals(8, addAction.getBindingModel().getBindingVariablesCount());
+		assertEquals(7, addAction.getBindingModel().getBindingVariablesCount());
 
 		org.openflexo.gina.model.widget.FIBBrowserAction.FIBAddAction addAction2 = factory
 				.newInstance(org.openflexo.gina.model.widget.FIBBrowserAction.FIBAddAction.class);
 		personElement.addToActions(addAction2);
 
 		System.out.println("AddAction2 BM=" + addAction2.getBindingModel());
-		assertEquals(8, addAction2.getBindingModel().getBindingVariablesCount());
+		assertEquals(7, addAction2.getBindingModel().getBindingVariablesCount());
 
 		System.out.println("Person Element BM = " + personElement.getBindingModel());
 
@@ -325,13 +325,12 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 		assertNotNull(c1.getBindingModel().bindingVariableNamed("controller"));
 		assertNotNull(c1.getBindingModel().bindingVariableNamed("iterator"));
 
-		assertEquals(6, action.getBindingModel().getBindingVariablesCount());
+		assertEquals(5, action.getBindingModel().getBindingVariablesCount());
 		assertNotNull(action.getBindingModel().bindingVariableNamed("value"));
 		assertNotNull(action.getBindingModel().bindingVariableNamed("selected"));
 		assertNotNull(action.getBindingModel().bindingVariableNamed("selectedIndex"));
 		assertNotNull(action.getBindingModel().bindingVariableNamed("selection"));
 		assertNotNull(action.getBindingModel().bindingVariableNamed("controller"));
-		assertNotNull(action.getBindingModel().bindingVariableNamed("selected"));
 
 		component.addToSubComponents(table, new BorderLayoutConstraints(BorderLayoutLocation.center));
 
@@ -350,7 +349,7 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 
 		System.out.println("action BM = " + action.getBindingModel());
 
-		assertEquals(9, action.getBindingModel().getBindingVariablesCount());
+		assertEquals(8, action.getBindingModel().getBindingVariablesCount());
 		assertNotNull(action.getBindingModel().bindingVariableNamed("value"));
 		assertNotNull(action.getBindingModel().bindingVariableNamed("selected"));
 		assertNotNull(action.getBindingModel().bindingVariableNamed("selectedIndex"));
