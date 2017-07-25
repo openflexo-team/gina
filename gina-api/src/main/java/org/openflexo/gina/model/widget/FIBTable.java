@@ -557,16 +557,24 @@ public interface FIBTable extends FIBWidget {
 			return iteratorType;
 		}
 
+		private boolean isComputingInferedIteratorType = false;
+
 		@Override
 		public Type getInferedIteratorType() {
 			// Attempt to infer iterator type
-			if (getData() != null && getData().isSet() && getData().isValid()) {
-				Type accessedType = getData().getAnalyzedType();
-				if (accessedType instanceof ParameterizedType && ((ParameterizedType) accessedType).getActualTypeArguments().length > 0) {
-					return ((ParameterizedType) accessedType).getActualTypeArguments()[0];
+			if (!isComputingInferedIteratorType && getData() != null) {
+				isComputingInferedIteratorType = true;
+				if (getData().isSet() && getData().isValid()) {
+					Type accessedType = getData().getAnalyzedType();
+					if (accessedType instanceof ParameterizedType
+							&& ((ParameterizedType) accessedType).getActualTypeArguments().length > 0) {
+						isComputingInferedIteratorType = false;
+						return ((ParameterizedType) accessedType).getActualTypeArguments()[0];
+					}
 				}
+				isComputingInferedIteratorType = false;
 			}
-			return null;
+			return Object.class;
 		}
 
 		@Override
