@@ -205,6 +205,15 @@ public class JFDTablePanel<T> extends JPanel {
 				System.out.println(">>>>>>>>>> OK le model change pour celui la");
 			}
 
+			Thread.dumpStack();
+
+			System.out.println("model=" + getModel());
+			if (widget.getTableModel().getValues() != null) {
+				for (T value : widget.getTableModel().getValues()) {
+					System.out.println("On affiche la valeur " + value);
+				}
+			}
+
 			System.out.println(
 					/*"col=" + e.getColumn() +*/ " firstRow=" + e.getFirstRow() + " lastRow=" + e.getLastRow() + " type=" + e.getType());
 
@@ -492,6 +501,8 @@ public class JFDTablePanel<T> extends JPanel {
 					add(titleLabel, c);
 				}
 			}
+
+			System.out.println("Et la faut dessiner les valeurs " + widget.getTableModel().getValues());
 
 			if (widget.getTableModel().getValues() != null) {
 				for (T value : widget.getTableModel().getValues()) {
