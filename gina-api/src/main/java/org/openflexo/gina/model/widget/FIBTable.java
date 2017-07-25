@@ -182,7 +182,7 @@ public interface FIBTable extends FIBWidget {
 	@Setter(SHOW_HEADER_KEY)
 	public void setShowHeader(boolean showHeader);
 
-	@Getter(value = SHOW_FOOTER_KEY, defaultValue = "false")
+	@Getter(value = SHOW_FOOTER_KEY, defaultValue = "true")
 	@XMLAttribute
 	public boolean getShowFooter();
 
