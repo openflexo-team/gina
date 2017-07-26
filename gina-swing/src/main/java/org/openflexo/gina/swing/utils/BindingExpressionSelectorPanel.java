@@ -203,18 +203,6 @@ public class BindingExpressionSelectorPanel extends AbstractBindingSelectorPanel
 			BindingSelector.LOGGER.fine("update() called for BindingExpressionSelectorPanel");
 		}
 
-		System.out.println("On met a jour le BindingExpressionSelectorPanel avec " + bindingSelector.getEditedObject());
-
-		/*if (_bindingSelector.getEditedObject() != null && !(_bindingSelector.getEditedObject() instanceof BindingExpression)) {
-			BindingSelector.logger.warning("update() called in BindingExpressionSelectorPanel with object of type "
-					+ _bindingSelector.getEditedObject().getClass().getSimpleName());
-			return;
-		}
-		
-		BindingExpression bindingExpression = (BindingExpression) _bindingSelector.getEditedObject();
-		
-		_expressionPanel.setEditedExpression(bindingExpression);*/
-
 		_expressionPanel.setEditedExpression(bindingSelector.getEditedObject());
 
 		updateStatus(bindingSelector.getEditedObject());
@@ -223,10 +211,6 @@ public class BindingExpressionSelectorPanel extends AbstractBindingSelectorPanel
 
 	@Override
 	protected void updateStatus(DataBinding<?> bindingExpression) {
-
-		System.out.println("bindingExpression=" + bindingExpression);
-		System.out.println("Status du apply: " + bindingExpression.isValid());
-		System.out.println("Status du apply2: " + bindingExpression.isValid(true));
 
 		boolean isValid = bindingExpression.isValid(true);
 
@@ -246,11 +230,6 @@ public class BindingExpressionSelectorPanel extends AbstractBindingSelectorPanel
 	protected void fireBindableChanged() {
 		update();
 	}
-
-	/*	@Override
-		protected void fireBindingDefinitionChanged() {
-			update();
-		}*/
 
 	@Override
 	protected void willApply() {
