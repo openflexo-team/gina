@@ -90,9 +90,11 @@ import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.binding.Function;
+import org.openflexo.connie.binding.Function.FunctionArgument;
 import org.openflexo.connie.binding.FunctionPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.expr.BindingValue;
@@ -2372,6 +2374,25 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		while (listAtIndex(i) != null && listAtIndex(i).getSelectedValue() != null) {
 			last = (BindingColumnElement) listAtIndex(i).getSelectedValue();
 			// System.out.println("Selecting " + last.getElement());
+
+			if (last.getElement() instanceof FunctionPathElement) {
+				for (FunctionArgument arg : ((FunctionPathElement) last.getElement()).getArguments()) {
+					DataBinding<?> argValue = ((FunctionPathElement) last.getElement()).getParameter(arg);
+					if (argValue == null) {
+						if (TypeUtils.isNumber(arg.getArgumentType())) {
+							argValue = new DataBinding<Object>("0", bindingSelector.getBindable(), arg.getArgumentType(),
+									BindingDefinitionType.GET);
+						}
+						else {
+							argValue = new DataBinding<Object>("null", bindingSelector.getBindable(), arg.getArgumentType(),
+									BindingDefinitionType.GET);
+						}
+						((FunctionPathElement) last.getElement()).setParameter(arg, argValue);
+					}
+					// System.out.println("> ARG " + arg + " = " + ((FunctionPathElement) last.getElement()).getParameter(arg));
+				}
+			}
+
 			((BindingValue) bindingSelector.getEditedObject().getExpression()).setBindingPathElementAtIndex(last.getElement(), i - 1);
 			i++;
 		}
@@ -2440,9 +2461,20 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					bindingSelector.disconnect();
 					Function function = ((FunctionPathElement) selectedValue.getElement()).getFunction();
 					LOGGER.info("Selecting function " + function);
+					List<DataBinding<?>> args = new ArrayList<>();
+					for (FunctionArgument arg : function.getArguments()) {
+						if (TypeUtils.isNumber(arg.getArgumentType())) {
+							args.add(new DataBinding<Object>("0", bindingSelector.getBindable(), arg.getArgumentType(),
+									BindingDefinitionType.GET));
+						}
+						else {
+							args.add(new DataBinding<Object>("null", bindingSelector.getBindable(), arg.getArgumentType(),
+									BindingDefinitionType.GET));
+						}
+					}
 					FunctionPathElement newFunctionPathElement = bindingSelector.getBindable().getBindingFactory().makeFunctionPathElement(
 							currentElement != null ? currentElement.getParent() : bindingValue.getLastBindingPathElement(), function,
-							new ArrayList<DataBinding<?>>());
+							args);
 
 					if (newFunctionPathElement != null) {
 						// TODO: we need to handle here generic FunctionPathElement and not only JavaMethodPathElement
