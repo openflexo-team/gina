@@ -38,6 +38,7 @@
 
 package org.openflexo.gina.swing.utils;
 
+import org.openflexo.connie.DataBinding;
 import org.openflexo.swing.CustomPopup.ResizablePanel;
 
 /**
@@ -78,5 +79,7 @@ public abstract class AbstractBindingSelectorPanel extends ResizablePanel {
 	protected abstract void willApply();
 
 	protected abstract void delete();
+
+	protected abstract void updateStatus(DataBinding<?> binding);
 
 }

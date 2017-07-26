@@ -1071,6 +1071,11 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			}
 		}
 
+		updateStatus(binding);
+	}
+
+	@Override
+	protected void updateStatus(DataBinding<?> binding) {
 		// Set connect button state
 		connectButton.setEnabled(binding != null && binding.isValid());
 		/*if (!binding.isBindingValid()) {

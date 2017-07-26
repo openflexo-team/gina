@@ -142,11 +142,11 @@ public class BindingExpressionSelectorPanel extends AbstractBindingSelectorPanel
 
 		_expressionPanel = new BindingExpressionPanel(bindingSelector.getEditedObject()) {
 			@Override
-			protected void fireEditedExpressionChanged(DataBinding expression) {
+			protected void fireEditedExpressionChanged(DataBinding<?> expression) {
 				// Called when the binding represented by the panel has changed
 				super.fireEditedExpressionChanged(expression);
 				bindingSelector.fireEditedObjectChanged();
-				updateApplyButtonStatus();
+				updateStatus(expression);
 
 			}
 		};
@@ -203,6 +203,8 @@ public class BindingExpressionSelectorPanel extends AbstractBindingSelectorPanel
 			BindingSelector.LOGGER.fine("update() called for BindingExpressionSelectorPanel");
 		}
 
+		System.out.println("On met a jour le BindingExpressionSelectorPanel avec " + bindingSelector.getEditedObject());
+
 		/*if (_bindingSelector.getEditedObject() != null && !(_bindingSelector.getEditedObject() instanceof BindingExpression)) {
 			BindingSelector.logger.warning("update() called in BindingExpressionSelectorPanel with object of type "
 					+ _bindingSelector.getEditedObject().getClass().getSimpleName());
@@ -215,22 +217,22 @@ public class BindingExpressionSelectorPanel extends AbstractBindingSelectorPanel
 
 		_expressionPanel.setEditedExpression(bindingSelector.getEditedObject());
 
-		updateApplyButtonStatus();
+		updateStatus(bindingSelector.getEditedObject());
 
 	}
 
-	void updateApplyButtonStatus() {
-		/*if (_bindingSelector.getEditedObject() != null && !(_bindingSelector.getEditedObject() instanceof BindingExpression)) {
-			BindingSelector.logger.warning("updateApplyButtonStatus() called in BindingExpressionSelectorPanel with object of type "
-					+ _bindingSelector.getEditedObject().getClass().getSimpleName());
-			return;
-		}*/
+	@Override
+	protected void updateStatus(DataBinding<?> bindingExpression) {
 
-		DataBinding<?> bindingExpression = bindingSelector.getEditedObject();
+		System.out.println("bindingExpression=" + bindingExpression);
+		System.out.println("Status du apply: " + bindingExpression.isValid());
+		System.out.println("Status du apply2: " + bindingExpression.isValid(true));
+
+		boolean isValid = bindingExpression.isValid(true);
 
 		// Update apply button state
-		_applyButton.setEnabled(bindingExpression != null && bindingExpression.isValid());
-		if (bindingExpression != null && bindingExpression.isValid()) {
+		_applyButton.setEnabled(bindingExpression != null && isValid);
+		if (bindingExpression != null && isValid) {
 			if (ToolBox.isMacOSLaf()) {
 				_applyButton.setSelected(true);
 			}
