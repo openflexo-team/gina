@@ -139,5 +139,10 @@ public abstract interface FIBTextWidget extends FIBWidget {
 			return returned;
 		}
 
+		@Override
+		public boolean isFocusable() {
+			return true;
+		}
+
 	}
 }

@@ -432,6 +432,11 @@ public interface FIBCustom extends FIBWidget {
 			return getAssignments();
 		}
 
+		@Override
+		public boolean isFocusable() {
+			return true;
+		}
+
 	}
 
 	@ModelEntity

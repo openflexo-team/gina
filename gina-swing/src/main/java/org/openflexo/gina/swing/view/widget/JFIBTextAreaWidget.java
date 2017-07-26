@@ -40,6 +40,7 @@
 package org.openflexo.gina.swing.view.widget;
 
 import java.awt.Color;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -176,6 +177,9 @@ public class JFIBTextAreaWidget extends FIBTextAreaWidgetImpl<JTextArea> impleme
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		textArea.setEnabled(true);
+
+		textArea.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+		textArea.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
 
 		Border border;
 		if (!ToolBox.isMacOSLaf()) {

@@ -117,5 +117,11 @@ public interface FIBCheckBox extends FIBWidget {
 				hasChanged(notification);
 			}
 		}
+
+		@Override
+		public boolean isFocusable() {
+			return true;
+		}
+
 	}
 }

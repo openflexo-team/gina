@@ -259,5 +259,10 @@ public interface FIBFile extends FIBWidget {
 			retriever.foundLocalized(getTitle());
 		}
 
+		@Override
+		public boolean isFocusable() {
+			return true;
+		}
+
 	}
 }

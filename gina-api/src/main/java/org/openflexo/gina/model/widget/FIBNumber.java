@@ -408,5 +408,10 @@ public interface FIBNumber extends FIBWidget {
 			setMaxValue(maxValueAsInteger);
 		}
 
+		@Override
+		public boolean isFocusable() {
+			return true;
+		}
+
 	}
 }

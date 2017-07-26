@@ -659,5 +659,10 @@ public interface FIBHtmlEditor extends FIBWidget {
 			// notifyObservers();
 		}
 
+		@Override
+		public boolean isFocusable() {
+			return true;
+		}
+
 	}
 }

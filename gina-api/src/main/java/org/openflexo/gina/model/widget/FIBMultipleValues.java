@@ -579,6 +579,11 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 			}*/
 		}
 
+		@Override
+		public boolean isFocusable() {
+			return true;
+		}
+
 	}
 
 	@DefineValidationRule

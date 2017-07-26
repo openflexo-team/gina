@@ -248,6 +248,13 @@ public abstract interface FIBWidget extends FIBComponent {
 
 	public Type getDefaultDataType();
 
+	/**
+	 * Return boolean indicating if this widget is focusable (used in traversal policy computation)
+	 * 
+	 * @return
+	 */
+	public boolean isFocusable();
+
 	public static abstract class FIBWidgetImpl extends FIBComponentImpl implements FIBWidget {
 
 		/*
@@ -1114,6 +1121,11 @@ public abstract interface FIBWidget extends FIBComponent {
 			// If a binding changed its value, then notify related property (asserting binding name has been set to property name)
 			getPropertyChangeSupport().firePropertyChange(binding.getBindingName() != null ? binding.getBindingName() : "UnknownBinding",
 					null, binding);
+		}
+
+		@Override
+		public boolean isFocusable() {
+			return false;
 		}
 
 	}

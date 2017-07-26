@@ -266,6 +266,12 @@ public interface FIBButton extends FIBWidget {
 			super.searchLocalized(retriever);
 			retriever.foundLocalized(getLabel());
 		}
+
+		@Override
+		public boolean isFocusable() {
+			return true;
+		}
+
 	}
 
 	@DefineValidationRule

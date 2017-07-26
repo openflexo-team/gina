@@ -117,5 +117,10 @@ public interface FIBFont extends FIBWidget {
 			return returned;
 		}
 
+		@Override
+		public boolean isFocusable() {
+			return true;
+		}
+
 	}
 }
