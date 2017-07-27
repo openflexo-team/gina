@@ -258,7 +258,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 	public ClassInfo registerClass(Class<?> c) {
 		if (c == null) {
-			LOGGER.warning("Null class " + c);
+			// LOGGER.warning("Null class " + c);
 			return null;
 		}
 
