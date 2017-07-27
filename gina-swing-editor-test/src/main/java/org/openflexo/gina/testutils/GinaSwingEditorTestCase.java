@@ -38,12 +38,15 @@
 
 package org.openflexo.gina.testutils;
 
+import java.awt.BorderLayout;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.logging.Level;
 
-import javax.swing.JSplitPane;
+import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
@@ -54,21 +57,32 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.openflexo.gina.FIBLibrary.FIBLibraryImpl;
 import org.openflexo.gina.swing.editor.FIBEditor;
+import org.openflexo.gina.swing.editor.LaunchAdvancedFIBEditor;
+import org.openflexo.gina.swing.editor.MainPanel;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.palette.FIBEditorPalettesDialog;
-import org.openflexo.gina.swing.utils.JFIBDialogInspectorController;
+import org.openflexo.gina.swing.editor.inspector.FIBEditorInspectorController;
+import org.openflexo.gina.swing.editor.palette.FIBEditorPalettes;
+import org.openflexo.gina.swing.editor.widget.FIBLibraryBrowser;
+import org.openflexo.gina.swing.utils.JFIBPreferences;
 import org.openflexo.gina.test.SwingGraphicalContextDelegate;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.logging.FlexoLoggingManager;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.swing.ComponentBoundSaver;
+import org.openflexo.swing.layout.JXMultiSplitPane;
+import org.openflexo.swing.layout.JXMultiSplitPane.DividerPainter;
+import org.openflexo.swing.layout.MultiSplitLayout;
+import org.openflexo.swing.layout.MultiSplitLayout.Divider;
+import org.openflexo.swing.layout.MultiSplitLayout.Split;
 import org.openflexo.toolbox.ToolBox;
 
-public class GinaSwingEditorTestCase {
+public class GinaSwingEditorTestCase extends LaunchAdvancedFIBEditor {
 
 	protected static SwingGraphicalContextDelegate gcDelegate;
 
-	private static JSplitPane splitPane;
+	private static JXMultiSplitPane centerPanel;
+	// private static JSplitPane splitPane;
 
 	@BeforeClass
 	public static void setupClass()
@@ -121,9 +135,9 @@ public class GinaSwingEditorTestCase {
 			@Override
 			public boolean activate(FIBEditorController editorController) {
 				if (super.activate(editorController)) {
-					splitPane.setLeftComponent(editorController.getEditorBrowser());
-					splitPane.revalidate();
-					splitPane.repaint();
+					centerPanel.add(editorController.getEditorBrowser(), LayoutPosition.BOTTOM_LEFT.name());
+					centerPanel.revalidate();
+					centerPanel.repaint();
 					return true;
 				}
 				return false;
@@ -132,39 +146,110 @@ public class GinaSwingEditorTestCase {
 			@Override
 			public boolean disactivate(FIBEditorController editorController) {
 				if (super.disactivate(editorController)) {
-					splitPane.setLeftComponent(null);
-					splitPane.revalidate();
-					splitPane.repaint();
+					centerPanel.remove(editorController.getEditorBrowser());
+					centerPanel.revalidate();
+					centerPanel.repaint();
 					return true;
 				}
 				return false;
 			}
 		};
 
-		gcDelegate.getFrame().setTitle("Flexo Interface Builder Editor");
+		JFrame frame = new JFrame();
 
-		gcDelegate.getFrame().setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		gcDelegate.getFrame().addWindowListener(new WindowAdapter() {
+		frame.setBounds(JFIBPreferences.getFrameBounds());
+
+		new ComponentBoundSaver(frame) {
+
+			@Override
+			public void saveBounds(Rectangle bounds) {
+				JFIBPreferences.setFrameBounds(bounds);
+			}
+		};
+
+		frame.setTitle("Flexo Interface Builder Editor");
+
+		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				editor.quit();
 			}
 		});
 
-		editor.makeMenuBar(gcDelegate.getFrame());
+		editor.makeMenuBar(frame);
 
-		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, null, editor.makeMainPanel());
+		Split<?> defaultLayout = getDefaultLayout();
 
+		MultiSplitLayout centerLayout = new MultiSplitLayout(true, MSL_FACTORY);
+		centerLayout.setLayoutMode(MultiSplitLayout.NO_MIN_SIZE_LAYOUT);
+		centerLayout.setModel(defaultLayout);
+
+		centerPanel = new JXMultiSplitPane(centerLayout);
+		centerPanel.setDividerSize(DIVIDER_SIZE);
+		centerPanel.setDividerPainter(new DividerPainter() {
+
+			@Override
+			protected void doPaint(Graphics2D g, Divider divider, int width, int height) {
+				if (!divider.isVisible()) {
+					return;
+				}
+				if (divider.isVertical()) {
+					int x = (width - KNOB_SIZE) / 2;
+					int y = (height - DIVIDER_KNOB_SIZE) / 2;
+					for (int i = 0; i < 3; i++) {
+						Graphics2D graph = (Graphics2D) g.create(x, y + i * (KNOB_SIZE + KNOB_SPACE), KNOB_SIZE + 1, KNOB_SIZE + 1);
+						graph.setPaint(KNOB_PAINTER);
+						graph.fillOval(0, 0, KNOB_SIZE, KNOB_SIZE);
+					}
+				}
+				else {
+					int x = (width - DIVIDER_KNOB_SIZE) / 2;
+					int y = (height - KNOB_SIZE) / 2;
+					for (int i = 0; i < 3; i++) {
+						Graphics2D graph = (Graphics2D) g.create(x + i * (KNOB_SIZE + KNOB_SPACE), y, KNOB_SIZE + 1, KNOB_SIZE + 1);
+						graph.setPaint(KNOB_PAINTER);
+						graph.fillOval(0, 0, KNOB_SIZE, KNOB_SIZE);
+					}
+				}
+
+			}
+		});
+
+		frame.getContentPane().setLayout(new BorderLayout());
+		frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
+
+		FIBLibraryBrowser libraryBrowser = new FIBLibraryBrowser(editor.getFIBLibrary());
+		FIBEditorPalettes palette = editor.makePalette();
+		FIBEditorInspectorController inspectors = editor.makeInspectors();
+
+		// JFIBDialogInspectorController inspector = editor.makeInspector(frame);
+		// inspector.setVisible(true);
+
+		MainPanel mainPanel = editor.makeMainPanel();
+
+		centerPanel.add(libraryBrowser, LayoutPosition.TOP_LEFT.name());
+		centerPanel.add(mainPanel, LayoutPosition.CENTER.name());
+		centerPanel.add(palette, LayoutPosition.TOP_RIGHT.name());
+		centerPanel.add(inspectors.getPanelGroup(), LayoutPosition.BOTTOM_RIGHT.name());
+
+		// frame.validate();
+		// frame.setVisible(true);
+
+		// gcDelegate.getFrame().setTitle("Flexo Interface Builder Editor");
+
+		/*splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, null, editor.makeMainPanel());
+		
 		JFIBDialogInspectorController inspector = editor.makeInspector(gcDelegate.getFrame());
 		inspector.setVisible(true);
-
+		
 		FIBEditorPalettesDialog paletteDialog = editor.makePaletteDialog(gcDelegate.getFrame());
-		paletteDialog.setVisible(true);
+		paletteDialog.setVisible(true);*/
 
 		Resource fib = ResourceLocator.locateSourceCodeResource(fibResource);
 		FIBEditorController controller = editor.loadFIB(fib, data, gcDelegate.getFrame());
 
-		gcDelegate.addTab(title, splitPane);
+		gcDelegate.addTab(title, centerPanel);
 
 		return editor;
 	}

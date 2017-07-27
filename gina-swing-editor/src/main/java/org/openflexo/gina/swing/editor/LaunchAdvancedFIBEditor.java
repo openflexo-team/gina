@@ -82,7 +82,7 @@ public class LaunchAdvancedFIBEditor {
 
 	private static final Logger logger = FlexoLogger.getLogger(LaunchAdvancedFIBEditor.class.getPackage().getName());
 
-	private static final MultiSplitLayoutFactory MSL_FACTORY = new MultiSplitLayoutFactory.DefaultMultiSplitLayoutFactory();
+	protected static final MultiSplitLayoutFactory MSL_FACTORY = new MultiSplitLayoutFactory.DefaultMultiSplitLayoutFactory();
 
 	private static JXMultiSplitPane centerPanel;
 
@@ -239,15 +239,15 @@ public class LaunchAdvancedFIBEditor {
 		LEFT, CENTER, RIGHT;
 	}
 
-	private static final int KNOB_SIZE = 5;
-	private static final int KNOB_SPACE = 2;
-	private static final int DIVIDER_SIZE = KNOB_SIZE + 2 * KNOB_SPACE;
-	private static final int DIVIDER_KNOB_SIZE = 3 * KNOB_SIZE + 2 * KNOB_SPACE;
+	protected static final int KNOB_SIZE = 5;
+	protected static final int KNOB_SPACE = 2;
+	protected static final int DIVIDER_SIZE = KNOB_SIZE + 2 * KNOB_SPACE;
+	protected static final int DIVIDER_KNOB_SIZE = 3 * KNOB_SIZE + 2 * KNOB_SPACE;
 
-	private static final Paint KNOB_PAINTER = new RadialGradientPaint(new Point((KNOB_SIZE - 1) / 2, (KNOB_SIZE - 1) / 2),
+	protected static final Paint KNOB_PAINTER = new RadialGradientPaint(new Point((KNOB_SIZE - 1) / 2, (KNOB_SIZE - 1) / 2),
 			(KNOB_SIZE - 1) / 2, new float[] { 0.0f, 1.0f }, new Color[] { Color.GRAY, Color.LIGHT_GRAY });
 
-	private static Split<?> getDefaultLayout() {
+	protected static Split<?> getDefaultLayout() {
 		Split root = MSL_FACTORY.makeSplit();
 		root.setName("ROOT");
 		Split<?> left = getVerticalSplit(LayoutPosition.TOP_LEFT, 0.5, LayoutPosition.BOTTOM_LEFT, 0.5);
@@ -263,7 +263,7 @@ public class LaunchAdvancedFIBEditor {
 		return root;
 	}
 
-	private static Split<?> getVerticalSplit(LayoutPosition position1, double weight1, LayoutPosition position2, double weight2) {
+	protected static Split<?> getVerticalSplit(LayoutPosition position1, double weight1, LayoutPosition position2, double weight2) {
 		Split split = MSL_FACTORY.makeSplit();
 		split.setRowLayout(false);
 		Leaf<?> l1 = MSL_FACTORY.makeLeaf(position1.name());
@@ -274,7 +274,7 @@ public class LaunchAdvancedFIBEditor {
 		return split;
 	}
 
-	private static Split<?> getVerticalSplit(LayoutPosition position1, LayoutPosition position2, LayoutPosition position3) {
+	protected static Split<?> getVerticalSplit(LayoutPosition position1, LayoutPosition position2, LayoutPosition position3) {
 		Split split = MSL_FACTORY.makeSplit();
 		split.setRowLayout(false);
 		Leaf<?> l1 = MSL_FACTORY.makeLeaf(position1.name());
