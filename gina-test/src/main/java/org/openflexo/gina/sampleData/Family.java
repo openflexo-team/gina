@@ -122,13 +122,16 @@ public class Family extends SampleData {
 		if (person == null) {
 			return null;
 		}
+
+		Resource returned = null;
+
 		if (person.getGender() == Gender.Male) {
-			return ResourceLocator.locateResource("TestFIB/TestMalePerson.fib");
+			returned = ResourceLocator.locateResource("TestFIB/TestMalePerson.fib");
 		}
 		else if (person.getGender() == Gender.Female) {
-			return ResourceLocator.locateResource("TestFIB/TestFemalePerson.fib");
+			returned = ResourceLocator.locateResource("TestFIB/TestFemalePerson.fib");
 		}
-		return null;
+		return returned;
 	}
 
 	public Person getFather() {
