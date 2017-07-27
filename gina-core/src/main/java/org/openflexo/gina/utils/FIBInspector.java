@@ -111,7 +111,11 @@ public interface FIBInspector extends FIBPanel {
 		private boolean isMerged = false;
 
 		private FIBInspector unmergedComponent;
-		private final List<FIBInspector> superInspectors = new ArrayList<>();
+		private List<FIBInspector> superInspectors = null;
+		private final List<Class<?>> superInspectorClasses = new ArrayList<>();
+
+		private InspectorGroup inspectorGroup;
+		private List<InspectorGroup> parentInspectorGroups;
 
 		private LocalizedDelegate locales = null;
 
@@ -138,7 +142,10 @@ public interface FIBInspector extends FIBPanel {
 		@Override
 		public void identifySuperInspectors(InspectorGroup inspectorGroup, List<InspectorGroup> parentInspectorGroups) {
 
-			superInspectors.clear();
+			this.inspectorGroup = inspectorGroup;
+			this.parentInspectorGroups = parentInspectorGroups;
+
+			superInspectorClasses.clear();
 
 			List<Class<?>> parentClasses = new ArrayList<>();
 
@@ -151,20 +158,8 @@ public interface FIBInspector extends FIBPanel {
 
 			TypeUtils.reduceToMostSpecializedClasses(parentClasses);
 
-			// System.out.println("OK, donc pour " + getInspectedClass() + " j'ai comme parent " + parentClasses);
-
 			for (Class<?> inspectorClass : parentClasses) {
-				superInspectors.add(inspectorGroup.inspectorForClass(inspectorClass));
-				// System.out.println("inspector " + inspectorGroup.inspectorForClass(inspectorClass).getInspectedClass());
-			}
-
-			for (InspectorGroup parentInspectorGroup : parentInspectorGroups) {
-				if (parentInspectorGroup != null) {
-					FIBInspector parentInspector = parentInspectorGroup.inspectorForClass(getInspectedClass());
-					if (parentInspector != null) {
-						superInspectors.add(parentInspector);
-					}
-				}
+				superInspectorClasses.add(inspectorClass);
 			}
 
 			// TODO: reinit current with container found in unmergedComponent
@@ -182,6 +177,20 @@ public interface FIBInspector extends FIBPanel {
 
 		@Override
 		public List<FIBInspector> getSuperInspectors() {
+			if (superInspectors == null) {
+				superInspectors = new ArrayList<>();
+				for (Class<?> superInspectorClass : superInspectorClasses) {
+					superInspectors.add(inspectorGroup.inspectorForClass(superInspectorClass));
+				}
+				for (InspectorGroup parentInspectorGroup : parentInspectorGroups) {
+					if (parentInspectorGroup != null) {
+						FIBInspector parentInspector = parentInspectorGroup.inspectorForClass(getInspectedClass());
+						if (parentInspector != null) {
+							superInspectors.add(parentInspector);
+						}
+					}
+				}
+			}
 			return superInspectors;
 		}
 
@@ -192,9 +201,13 @@ public interface FIBInspector extends FIBPanel {
 				return;
 			}
 
+			if (getSuperInspectors() == null) {
+				return;
+			}
+
 			// unmergedComponent = (FIBInspector) cloneObject();
 
-			for (FIBInspector superInspector : new ArrayList<>(superInspectors)) {
+			for (FIBInspector superInspector : new ArrayList<>(getSuperInspectors())) {
 				if (superInspector != null) {
 					superInspector.mergeWithParentInspectors();
 					appendSuperInspector(superInspector);
