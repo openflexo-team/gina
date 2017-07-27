@@ -133,8 +133,8 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 
 				@Override
 				public void bindingValueChanged(Object source, Resource newValue) {
-					//System.out.println(" bindingValueChanged() detected for dynamicComponentFile="
-					//		+ getComponent().getDynamicComponentFile() + " with newValue=" + newValue + " source=" + source);
+					// System.out.println(" bindingValueChanged() detected for dynamicComponentFile="
+					// + getComponent().getDynamicComponentFile() + " with newValue=" + newValue + " source=" + source);
 					updateComponent();
 					// updateReferencedComponentView();
 				}
@@ -290,7 +290,7 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 			// BUT....
 			// Meanwhile the referenced component changed too. It will be notified a little bit later.
 			// So we return yet, and let the updateComponent() handle the new data value
-			
+
 			return null;
 		}
 
@@ -405,7 +405,7 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 			return;
 		}
 
-		logger.info("************ updateReferencedComponentView() called in FIBReferencedComponentWidget");
+		// logger.info("************ updateReferencedComponentView() called in FIBReferencedComponentWidget");
 
 		// Kept for future debug use
 		/*if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("EditionActionWidget")) {
