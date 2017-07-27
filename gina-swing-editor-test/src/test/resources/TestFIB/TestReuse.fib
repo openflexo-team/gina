@@ -40,7 +40,7 @@
 	<TextField index="1" data="LaBelleTable.selected.toString"
 		constraints="border(index=1;location=north)" localize="true"  columns="6"
 		text="TextField" readOnly="true" />
-	<FIBReferencedComponent componentFile="TestFIB/TestPerson.fib"
+	<FIBReferencedComponent componentFile="TestPerson.fib"
 		 localize="true"  index="1" data="LaBelleTable.selected"
 		constraints="border(location=east)" />
 	<LocalizedDictionary />
