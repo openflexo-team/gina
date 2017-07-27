@@ -146,6 +146,7 @@ public class JFIBReferencedComponentWidget extends FIBReferencedComponentWidgetI
 		}
 		else {
 			// Found in the cache
+			returned.showView();
 		}
 		return returned;
 	}
@@ -204,7 +205,8 @@ public class JFIBReferencedComponentWidget extends FIBReferencedComponentWidgetI
 			}
 
 			if (widget.getReferencedComponent() == null) {
-				invalidComponentlabel.setText("< Reference component >");
+				// No need to write anything
+				invalidComponentlabel.setText(""/*"< Reference component >"*/);
 				add(invalidComponentlabel, BorderLayout.CENTER);
 				setBorder(BorderFactory.createEtchedBorder());
 			}
