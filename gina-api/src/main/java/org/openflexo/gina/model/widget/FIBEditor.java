@@ -52,7 +52,7 @@ import org.openflexo.model.annotations.XMLElement;
 @XMLElement(xmlTag = "Editor")
 public interface FIBEditor extends FIBTextWidget {
 
-	public static enum FIBTokenMarkerStyle {
+	public static enum SyntaxStyle {
 		None,
 		BatchFile,
 		C,
@@ -78,8 +78,8 @@ public interface FIBEditor extends FIBTextWidget {
 
 	@PropertyIdentifier(type = Integer.class)
 	public static final String ROWS_KEY = "rows";
-	@PropertyIdentifier(type = FIBTokenMarkerStyle.class)
-	public static final String TOKEN_MARKER_STYLE_KEY = "tokenMarkerStyle";
+	@PropertyIdentifier(type = SyntaxStyle.class)
+	public static final String SYNTAX_STYLE_KEY = "syntaxStyle";
 
 	@Getter(value = ROWS_KEY)
 	@XMLAttribute
@@ -88,17 +88,17 @@ public interface FIBEditor extends FIBTextWidget {
 	@Setter(ROWS_KEY)
 	public void setRows(Integer rows);
 
-	@Getter(value = TOKEN_MARKER_STYLE_KEY)
+	@Getter(value = SYNTAX_STYLE_KEY)
 	@XMLAttribute
-	public FIBTokenMarkerStyle getTokenMarkerStyle();
+	public SyntaxStyle getSyntaxStyle();
 
-	@Setter(TOKEN_MARKER_STYLE_KEY)
-	public void setTokenMarkerStyle(FIBTokenMarkerStyle tokenMarkerStyle);
+	@Setter(SYNTAX_STYLE_KEY)
+	public void setSyntaxStyle(SyntaxStyle tokenMarkerStyle);
 
 	public static abstract class FIBEditorImpl extends FIBTextWidgetImpl implements FIBEditor {
 
 		private Integer rows = null;
-		private FIBTokenMarkerStyle tokenMarkerStyle = FIBTokenMarkerStyle.None;
+		private SyntaxStyle tokenMarkerStyle = SyntaxStyle.None;
 
 		public FIBEditorImpl() {
 		}
@@ -131,14 +131,14 @@ public interface FIBEditor extends FIBTextWidget {
 		}
 
 		@Override
-		public FIBTokenMarkerStyle getTokenMarkerStyle() {
+		public SyntaxStyle getSyntaxStyle() {
 			return tokenMarkerStyle;
 		}
 
 		@Override
-		public void setTokenMarkerStyle(FIBTokenMarkerStyle tokenMarkerStyle) {
+		public void setSyntaxStyle(SyntaxStyle tokenMarkerStyle) {
 			// System.out.println("setTokenMarkerStyle with " + tokenMarkerStyle);
-			FIBPropertyNotification<FIBTokenMarkerStyle> notification = requireChange(TOKEN_MARKER_STYLE_KEY, tokenMarkerStyle);
+			FIBPropertyNotification<SyntaxStyle> notification = requireChange(SYNTAX_STYLE_KEY, tokenMarkerStyle);
 			if (notification != null) {
 				this.tokenMarkerStyle = tokenMarkerStyle;
 				hasChanged(notification);

@@ -43,20 +43,20 @@ import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 
+import org.fife.ui.rtextarea.RTextScrollPane;
 import org.openflexo.gina.model.widget.FIBEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate;
 import org.openflexo.gina.swing.view.widget.JFIBEditorWidget;
-import org.openflexo.jedit.JEditTextArea;
 import org.openflexo.logging.FlexoLogger;
 
-public class JFIBEditableEditorWidget extends JFIBEditorWidget implements FIBSwingEditableView<FIBEditor, JEditTextArea> {
+public class JFIBEditableEditorWidget extends JFIBEditorWidget implements FIBSwingEditableView<FIBEditor, RTextScrollPane> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = FlexoLogger.getLogger(JFIBEditableEditorWidget.class.getPackage().getName());
 
-	private final FIBSwingEditableViewDelegate<FIBEditor, JEditTextArea> delegate;
+	private final FIBSwingEditableViewDelegate<FIBEditor, RTextScrollPane> delegate;
 
 	private final FIBEditorController editorController;
 
@@ -84,7 +84,7 @@ public class JFIBEditableEditorWidget extends JFIBEditorWidget implements FIBSwi
 	}
 
 	@Override
-	public FIBSwingEditableViewDelegate<FIBEditor, JEditTextArea> getDelegate() {
+	public FIBSwingEditableViewDelegate<FIBEditor, RTextScrollPane> getDelegate() {
 		return delegate;
 	}
 }

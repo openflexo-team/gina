@@ -47,18 +47,19 @@ import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
-import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rtextarea.RTextScrollPane;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBEditor;
+import org.openflexo.gina.model.widget.FIBEditor.SyntaxStyle;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.view.widget.impl.FIBEditorWidgetImpl;
-import org.openflexo.jedit.JEditTextArea;
-import org.openflexo.jedit.TokenMarker;
 import org.openflexo.toolbox.ToolBox;
 
 /**
@@ -66,7 +67,7 @@ import org.openflexo.toolbox.ToolBox;
  * 
  * @author bmangez,sguerin
  */
-public class JFIBEditorWidget extends FIBEditorWidgetImpl<JEditTextArea> implements FocusListener, JFIBView<FIBEditor, JEditTextArea> {
+public class JFIBEditorWidget extends FIBEditorWidgetImpl<RTextScrollPane> implements FocusListener, JFIBView<FIBEditor, RTextScrollPane> {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBEditorWidget.class.getPackage().getName());
 
@@ -77,77 +78,115 @@ public class JFIBEditorWidget extends FIBEditorWidgetImpl<JEditTextArea> impleme
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingEditorWidgetRenderingAdapter extends SwingRenderingAdapter<JEditTextArea>
-			implements EditorWidgetRenderingAdapter<JEditTextArea> {
+	public static class SwingEditorWidgetRenderingAdapter extends SwingRenderingAdapter<RTextScrollPane>
+			implements EditorWidgetRenderingAdapter<RTextScrollPane> {
 
 		@Override
-		public int getColumns(JEditTextArea component) {
-			return component.getColumns();
+		public int getColumns(RTextScrollPane component) {
+			return component.getTextArea().getColumns();
 		}
 
 		@Override
-		public void setColumns(JEditTextArea component, int columns) {
-			component.setColumns(columns);
+		public void setColumns(RTextScrollPane component, int columns) {
+			component.getTextArea().setColumns(columns);
 		}
 
 		@Override
-		public int getRows(JEditTextArea component) {
-			return component.getRows();
+		public int getRows(RTextScrollPane component) {
+			return component.getTextArea().getRows();
 		}
 
 		@Override
-		public void setRows(JEditTextArea component, int rows) {
-			component.setRows(rows);
+		public void setRows(RTextScrollPane component, int rows) {
+			component.getTextArea().setRows(rows);
 		}
 
 		@Override
-		public String getText(JEditTextArea component) {
-			return component.getText();
+		public String getText(RTextScrollPane component) {
+			return component.getTextArea().getText();
 		}
 
 		@Override
-		public void setText(JEditTextArea component, String aText) {
-			component.setText(aText);
+		public void setText(RTextScrollPane component, String aText) {
+			component.getTextArea().setText(aText);
 		}
 
 		@Override
-		public boolean isEditable(JEditTextArea component) {
-			return component.isEditable();
+		public boolean isEditable(RTextScrollPane component) {
+			return component.getTextArea().isEditable();
 		}
 
 		@Override
-		public void setEditable(JEditTextArea component, boolean editable) {
-			component.setEditable(editable);
+		public void setEditable(RTextScrollPane component, boolean editable) {
+			component.getTextArea().setEditable(editable);
 		}
 
 		@Override
-		public int getCaretPosition(JEditTextArea component) {
-			return component.getCaretPosition();
+		public int getCaretPosition(RTextScrollPane component) {
+			return component.getTextArea().getCaretPosition();
 		}
 
 		@Override
-		public void setCaretPosition(JEditTextArea component, int caretPosition) {
-			component.setCaretPosition(caretPosition);
+		public void setCaretPosition(RTextScrollPane component, int caretPosition) {
+			component.getTextArea().setCaretPosition(caretPosition);
 		}
 
 		@Override
-		public TokenMarker getTokenMarker(JEditTextArea component) {
-			return component.getTokenMarker();
+		public SyntaxStyle getSyntaxStyle(RTextScrollPane component) {
+			return getSyntaxStyle(((RSyntaxTextArea) component.getTextArea()).getSyntaxEditingStyle());
 		}
 
 		@Override
-		public void setTokenMarker(JEditTextArea component, TokenMarker tokenMarker) {
-			component.setTokenMarker(tokenMarker);
+		public void setSyntaxStyle(RTextScrollPane component, SyntaxStyle syntaxStyle) {
+			((RSyntaxTextArea) component.getTextArea()).setSyntaxEditingStyle(getSyntaxEditingStyle(syntaxStyle));
 		}
 
 		@Override
-		public Color getDefaultForegroundColor(JEditTextArea component) {
-			return UIManager.getColor("Panel.foreground");
+		public Color getDefaultForegroundColor(RTextScrollPane component) {
+			return component.getTextArea().getForeground();
+			// return UIManager.getColor("Panel.foreground");
 		}
 
 		@Override
-		public Color getDefaultBackgroundColor(JEditTextArea component) {
-			return UIManager.getColor("Panel.background");
+		public Color getDefaultBackgroundColor(RTextScrollPane component) {
+			return component.getTextArea().getBackground();
+			// return UIManager.getColor("Panel.background");
+		}
+
+		private String getSyntaxEditingStyle(SyntaxStyle syntaxStyle) {
+			if (syntaxStyle == null) {
+				return null;
+			}
+			switch (syntaxStyle) {
+				case Java:
+					return SyntaxConstants.SYNTAX_STYLE_JAVA;
+				case XML:
+					return SyntaxConstants.SYNTAX_STYLE_XML;
+				case HTML:
+					return SyntaxConstants.SYNTAX_STYLE_HTML;
+				case JavaScript:
+					return SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT;
+				// TODO: others
+				default:
+					return null;
+			}
+		}
+
+		private SyntaxStyle getSyntaxStyle(String syntaxEditingStyle) {
+			if (syntaxEditingStyle.equals(SyntaxConstants.SYNTAX_STYLE_JAVA)) {
+				return SyntaxStyle.Java;
+			}
+			else if (syntaxEditingStyle.equals(SyntaxConstants.SYNTAX_STYLE_XML)) {
+				return SyntaxStyle.XML;
+			}
+			else if (syntaxEditingStyle.equals(SyntaxConstants.SYNTAX_STYLE_HTML)) {
+				return SyntaxStyle.HTML;
+			}
+			else if (syntaxEditingStyle.equals(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT)) {
+				return SyntaxStyle.JavaScript;
+			}
+			// TODO: others
+			return null;
 		}
 
 	}
@@ -177,8 +216,8 @@ public class JFIBEditorWidget extends FIBEditorWidgetImpl<JEditTextArea> impleme
 	}
 
 	@Override
-	protected JEditTextArea makeTechnologyComponent() {
-		JEditTextArea textArea = new JEditTextArea();
+	protected RTextScrollPane makeTechnologyComponent() {
+		RSyntaxTextArea textArea = new RSyntaxTextArea();
 		if (getWidget().getColumns() != null && getWidget().getColumns() > 0) {
 			textArea.setColumns(getWidget().getColumns());
 		}
@@ -244,7 +283,10 @@ public class JFIBEditorWidget extends FIBEditorWidgetImpl<JEditTextArea> impleme
 
 		textArea.setCaretPosition(0);
 
-		return textArea;
+		// Always enable code folding
+		textArea.setCodeFoldingEnabled(true);
+
+		return new RTextScrollPane(textArea);
 	}
 
 }

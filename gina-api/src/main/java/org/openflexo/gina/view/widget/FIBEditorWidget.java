@@ -40,9 +40,9 @@
 package org.openflexo.gina.view.widget;
 
 import org.openflexo.gina.model.widget.FIBEditor;
+import org.openflexo.gina.model.widget.FIBEditor.SyntaxStyle;
 import org.openflexo.gina.view.FIBWidgetView;
 import org.openflexo.gina.view.widget.FIBGenericTextWidget.GenericTextRenderingAdapter;
-import org.openflexo.jedit.TokenMarker;
 
 /**
  * Represents a widget able to edit a Text (more than one line) object using a syntax-aware and syntax-colored editor (eg code editor)
@@ -74,9 +74,9 @@ public interface FIBEditorWidget<C> extends FIBWidgetView<FIBEditor, C, String> 
 
 		public void setRows(C component, int rows);
 
-		public TokenMarker getTokenMarker(C component);
+		public SyntaxStyle getSyntaxStyle(C component);
 
-		public void setTokenMarker(C component, TokenMarker tokenMarker);
+		public void setSyntaxStyle(C component, SyntaxStyle syntaxStyle);
 
 	}
 

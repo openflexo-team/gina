@@ -44,30 +44,8 @@ import java.util.logging.Logger;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBEditor;
-import org.openflexo.gina.model.widget.FIBEditor.FIBTokenMarkerStyle;
 import org.openflexo.gina.view.impl.FIBWidgetViewImpl;
 import org.openflexo.gina.view.widget.FIBEditorWidget;
-import org.openflexo.jedit.BatchFileTokenMarker;
-import org.openflexo.jedit.CCTokenMarker;
-import org.openflexo.jedit.CTokenMarker;
-import org.openflexo.jedit.EiffelTokenMarker;
-import org.openflexo.jedit.FMLTokenMarker;
-import org.openflexo.jedit.HTMLTokenMarker;
-import org.openflexo.jedit.IDLTokenMarker;
-import org.openflexo.jedit.JavaScriptTokenMarker;
-import org.openflexo.jedit.JavaTokenMarker;
-import org.openflexo.jedit.PHPTokenMarker;
-import org.openflexo.jedit.PatchTokenMarker;
-import org.openflexo.jedit.PerlTokenMarker;
-import org.openflexo.jedit.PropsTokenMarker;
-import org.openflexo.jedit.PythonTokenMarker;
-import org.openflexo.jedit.SQLTokenMarker;
-import org.openflexo.jedit.ShellScriptTokenMarker;
-import org.openflexo.jedit.TSQLTokenMarker;
-import org.openflexo.jedit.TeXTokenMarker;
-import org.openflexo.jedit.TokenMarker;
-import org.openflexo.jedit.WODTokenMarker;
-import org.openflexo.jedit.XMLTokenMarker;
 
 /**
  * Represents a widget able to edit a Text (more than one line) object using a syntax-colored editor (eg code editor)
@@ -77,7 +55,7 @@ import org.openflexo.jedit.XMLTokenMarker;
  * 
  * @author sylvain
  */
-public abstract class FIBEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBEditor, C, String>implements FIBEditorWidget<C> {
+public abstract class FIBEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBEditor, C, String> implements FIBEditorWidget<C> {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBEditorWidgetImpl.class.getPackage().getName());
 
@@ -175,81 +153,15 @@ public abstract class FIBEditorWidgetImpl<C> extends FIBWidgetViewImpl<FIBEditor
 	}
 
 	final public void updateTokenMarkerStyle() {
-		if (getWidget().getTokenMarkerStyle() != null) {
-			getRenderingAdapter().setTokenMarker(getTechnologyComponent(), makeTokenMarker(getWidget().getTokenMarkerStyle()));
-		}
-	}
-
-	public static TokenMarker makeTokenMarker(FIBTokenMarkerStyle tokenMarkerStyle) {
-		if (tokenMarkerStyle == FIBTokenMarkerStyle.BatchFile) {
-			return new BatchFileTokenMarker();
-		}
-		else if (tokenMarkerStyle == FIBTokenMarkerStyle.C) {
-			return new CTokenMarker();
-		}
-		else if (tokenMarkerStyle == FIBTokenMarkerStyle.CC) {
-			return new CCTokenMarker();
-		}
-		else if (tokenMarkerStyle == FIBTokenMarkerStyle.IDL) {
-			return new IDLTokenMarker();
-		}
-		else if (tokenMarkerStyle == FIBTokenMarkerStyle.JavaScript) {
-			return new JavaScriptTokenMarker();
-		}
-		else if (tokenMarkerStyle == FIBTokenMarkerStyle.Java) {
-			return new JavaTokenMarker();
-		}
-		else if (tokenMarkerStyle == FIBTokenMarkerStyle.Eiffel) {
-			return new EiffelTokenMarker();
-		}
-		else if (tokenMarkerStyle == FIBTokenMarkerStyle.HTML) {
-			return new HTMLTokenMarker();
-		}
-		else if (tokenMarkerStyle == FIBTokenMarkerStyle.Patch) {
-			return new PatchTokenMarker();
-		}
-		else if (tokenMarkerStyle == FIBTokenMarkerStyle.Perl) {
-			return new PerlTokenMarker();
-		}
-		else if (tokenMarkerStyle == FIBTokenMarkerStyle.PHP) {
-			return new PHPTokenMarker();
-		}
-		else if (tokenMarkerStyle == FIBTokenMarkerStyle.Props) {
-			return new PropsTokenMarker();
-		}
-		else if (tokenMarkerStyle == FIBTokenMarkerStyle.Python) {
-			return new PythonTokenMarker();
-		}
-		else if (tokenMarkerStyle == FIBTokenMarkerStyle.ShellScript) {
-			return new ShellScriptTokenMarker();
-		}
-		else if (tokenMarkerStyle == FIBTokenMarkerStyle.SQL) {
-			return new SQLTokenMarker(null);
-		}
-		else if (tokenMarkerStyle == FIBTokenMarkerStyle.TSQL) {
-			return new TSQLTokenMarker();
-		}
-		else if (tokenMarkerStyle == FIBTokenMarkerStyle.TeX) {
-			return new TeXTokenMarker();
-		}
-		else if (tokenMarkerStyle == FIBTokenMarkerStyle.WOD) {
-			return new WODTokenMarker();
-		}
-		else if (tokenMarkerStyle == FIBTokenMarkerStyle.XML) {
-			return new XMLTokenMarker();
-		}
-		else if (tokenMarkerStyle == FIBTokenMarkerStyle.FML) {
-			return new FMLTokenMarker();
-		}
-		else {
-			return null;
+		if (getWidget().getSyntaxStyle() != null) {
+			getRenderingAdapter().setSyntaxStyle(getTechnologyComponent(), getWidget().getSyntaxStyle());
 		}
 	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 
-		if (evt.getPropertyName().equals(FIBEditor.TOKEN_MARKER_STYLE_KEY)) {
+		if (evt.getPropertyName().equals(FIBEditor.SYNTAX_STYLE_KEY)) {
 			updateTokenMarkerStyle();
 		}
 
