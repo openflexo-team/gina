@@ -504,6 +504,18 @@ public class TabbedPane<J> {
 			}
 		}
 
+		public void hideTab(J tab) {
+			if (headerComponents.get(tab) != null) {
+				headerComponents.get(tab).setVisible(false);
+			}
+		}
+
+		public void showTab(J tab) {
+			if (headerComponents.get(tab) != null) {
+				headerComponents.get(tab).setVisible(true);
+			}
+		}
+
 		public void addTab(J tab) {
 			headerComponents.put(tab, new TabHeader(tab));
 			doLayout();
@@ -603,7 +615,14 @@ public class TabbedPane<J> {
 		return tabs.contains(tab);
 	}
 
+	public List<J> getTabs() {
+		return tabs;
+	}
+
 	public void addTab(J tab) {
+
+		System.out.println(">>>>>>>>>>>>> On ajoute le tab " + tab);
+
 		if (tab != null && useTabBody && !JComponent.class.isAssignableFrom(tab.getClass())) {
 			throw new IllegalArgumentException("Tab must be an instanceof JComponent but received a " + tab.getClass().getName());
 		}
@@ -614,6 +633,14 @@ public class TabbedPane<J> {
 				selectTab(tab);
 			}
 		}
+	}
+
+	public void hideTab(J tab) {
+		tabHeaders.hideTab(tab);
+	}
+
+	public void showTab(J tab) {
+		tabHeaders.showTab(tab);
 	}
 
 	public void removeTab(J tab) {
