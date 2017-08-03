@@ -201,7 +201,8 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 					label.setIcon(widget.getIconRepresentation(object));
 				}
 
-				c.insets = new Insets(2, 5, 5, 5);
+				// c.insets = new Insets(2, 5, 5, 5);
+				c.insets = new Insets(0, 0, 0, 0);
 				c.fill = GridBagConstraints.BOTH;
 				c.anchor = GridBagConstraints.WEST;
 				c.weightx = 1.0; // 2.0;
