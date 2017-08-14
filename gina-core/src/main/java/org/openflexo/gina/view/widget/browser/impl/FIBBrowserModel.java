@@ -858,8 +858,15 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 		private boolean updateRequested = false;
 
 		public void update(boolean recursively) {
+			if (isUpdating) {
+				return;
+			}
+
 			if (SwingUtilities.isEventDispatchThread() || UPDATE_BROWSER_SYNCHRONOUSLY) {
-				updateSync(recursively);
+				if (!updateRequested) {
+					updateRequested = true;
+					updateSync(recursively);
+				}
 			}
 			else if (!updateRequested) {
 				updateRequested = true;
@@ -867,166 +874,243 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 			}
 		}
 
+		private boolean isUpdating;
+
 		private void updateSync(boolean recursively) {
 
-			updateRequested = false;
+			/*if (getParent() != null) {
+				System.out.println("updateSync for " + getRepresentedObject() + " parent=" + getParent().getRepresentedObject()
+						+ " isUpdating=" + getParent().isUpdating);
+			}*/
 
-			loaded = true;
+			try {
 
-			// During exploration of all exhaustive contents, in order not no enter in an infinite loop
-			if (recursively) {
-				computedExhaustiveContents.add(getRepresentedObject());
-			}
+				isUpdating = true;
+				loaded = true;
 
-			// logger.info("**************** update() " + this);
-			if (browserElementType == null) {
-				LOGGER.warning("No element type registered for " + getRepresentedObject());
-				return;
-			}
-
-			// Special case for cells that were declared as invisible
-			// When becomes visible, must tells to parent to update
-			if (!isVisible) {
-				if (browserElementType.isVisible(getRepresentedObject())) {
-					LOGGER.fine("Cell " + this + " becomes visible");
-
-					// should not update recursively, or else it will crash....
-					isVisible = true;
-					// getParent().update(recursively);
-					getParent().update(false);
-				}
-			}
-
-			// / Only updates children if Node is Expanded
-
-			boolean isExpanded = widget.getRenderingAdapter().isExpanded(widget.getTechnologyComponent(), this.getTreePath());
-
-			List<BrowserCell> oldChildren = null;
-			List<BrowserCell> removedChildren = null;
-			List<BrowserCell> newChildren = null;
-			List<BrowserCell> cellsToForceUpdate = null;
-
-			if (children == null) {
-				oldChildren = Collections.emptyList();
-				removedChildren = Collections.emptyList();
-			}
-			else {
-				if (children.size() == 1 && children.firstElement() instanceof LoadingCell) {
-					removeAllChildren();
-				}
-				oldChildren = new ArrayList<>(children);
-				removedChildren = new ArrayList<>(children);
-			}
-
-			final List<?> newChildrenObjects = /*(isEnabled ?*/browserElementType
-					.getChildrenFor(getRepresentedObject()) /*: new Vector())*/;
-			int index = 0;
-
-			if (!newChildrenObjects.isEmpty()) {
-				newChildren = new ArrayList<>();
-
-				// Optimization : do not need to create list if no children to update
+				// During exploration of all exhaustive contents, in order not no enter in an infinite loop
 				if (recursively) {
-					cellsToForceUpdate = new ArrayList<>();
+					computedExhaustiveContents.add(getRepresentedObject());
 				}
 
-				for (Object o : newChildrenObjects) {
-					Object ro = getRepresentedObject();
-					if (o != null && o != ro) {
-						FIBBrowserElementType childElementType = elementTypeForObject(o);
-						BrowserCell cell = retrieveBrowserCell(o, this);
-						if (childElementType != null && childElementType.isVisible(o)) {
-							if (isVisible && cell == null) { // Creates cell when necessary
-								cell = new BrowserCell(o, this);
-								contents.put(o, cell);
-							}
-							if (cell != null) {
-								if (children != null && children.contains(cell)) {
+				// logger.info("**************** update() " + this);
+				if (browserElementType == null) {
+					LOGGER.warning("No element type registered for " + getRepresentedObject());
+					return;
+				}
 
-									// OK, child still here
-									removedChildren.remove(cell);
-									if (recursively) {
-										cellsToForceUpdate.add(cell);
-									}
-									index = children.indexOf(cell) + 1;
+				// Special case for cells that were declared as invisible
+				// When becomes visible, must tells to parent to update
+				if (!isVisible) {
+					if (browserElementType.isVisible(getRepresentedObject())) {
+						LOGGER.fine("Cell " + this + " becomes visible");
+
+						// should not update recursively, or else it will crash....
+						isVisible = true;
+						// getParent().update(recursively);
+						getParent().update(false);
+					}
+				}
+
+				// / Only updates children if Node is Expanded
+
+				boolean isExpanded = widget.getRenderingAdapter().isExpanded(widget.getTechnologyComponent(), this.getTreePath());
+
+				List<BrowserCell> oldChildren = null;
+				List<BrowserCell> removedChildren = null;
+				List<BrowserCell> newChildren = null;
+				List<BrowserCell> cellsToForceUpdate = null;
+
+				if (children == null) {
+					oldChildren = Collections.emptyList();
+					removedChildren = Collections.emptyList();
+				}
+				else {
+					if (children.size() == 1 && children.firstElement() instanceof LoadingCell) {
+						removeAllChildren();
+					}
+					oldChildren = new ArrayList<>(children);
+					removedChildren = new ArrayList<>(children);
+				}
+
+				final List<?> newChildrenObjects = /*(isEnabled ?*/browserElementType
+						.getChildrenFor(getRepresentedObject()) /*: new Vector())*/;
+				int index = 0;
+
+				if (!newChildrenObjects.isEmpty()) {
+					newChildren = new ArrayList<>();
+
+					// Optimization : do not need to create list if no children to update
+					if (recursively) {
+						cellsToForceUpdate = new ArrayList<>();
+					}
+
+					for (Object o : newChildrenObjects) {
+						Object ro = getRepresentedObject();
+						if (o != null && o != ro) {
+							FIBBrowserElementType childElementType = elementTypeForObject(o);
+							BrowserCell cell = retrieveBrowserCell(o, this);
+							if (childElementType != null && childElementType.isVisible(o)) {
+								if (isVisible && cell == null) { // Creates cell when necessary
+									cell = new BrowserCell(o, this);
+									contents.put(o, cell);
 								}
-								else {
-									newChildren.add(cell);
-									if (children == null) {
-										children = new Vector<>();
-									}
-									children.insertElementAt(cell, index);
-									index++;
+								if (cell != null) {
+									if (children != null && children.contains(cell)) {
 
-									// In order not to enter in possibly infinite loop, force update contents of this cell
-									// only if cell not loaded and if represented object was not already registered
-									if (recursively && !cell.isLoaded()
-											&& !computedExhaustiveContents.contains(cell.getRepresentedObject())) {
-										// Do it at the end
-										cellsToForceUpdate.add(cell);
-										// cell.update(true);
+										// OK, child still here
+										removedChildren.remove(cell);
+										if (recursively) {
+											cellsToForceUpdate.add(cell);
+										}
+										index = children.indexOf(cell) + 1;
+									}
+									else {
+										newChildren.add(cell);
+										if (children == null) {
+											children = new Vector<>();
+										}
+										children.insertElementAt(cell, index);
+										index++;
+
+										// In order not to enter in possibly infinite loop, force update contents of this cell
+										// only if cell not loaded and if represented object was not already registered
+										if (recursively && !cell.isLoaded()
+												&& !computedExhaustiveContents.contains(cell.getRepresentedObject())) {
+											// Do it at the end
+											cellsToForceUpdate.add(cell);
+											// cell.update(true);
+										}
 									}
 								}
-							}
 
-						}
-						else if (cell != null) {
-							cell.isVisible = false;
+							}
+							else if (cell != null) {
+								cell.isVisible = false;
+							}
 						}
 					}
 				}
-			}
-			else {
-				newChildren = Collections.emptyList();
-			}
+				else {
+					newChildren = Collections.emptyList();
+				}
 
-			for (BrowserCell c : removedChildren) {
+				for (BrowserCell c : removedChildren) {
+					if (children != null) {
+						children.remove(c);
+					}
+					c.delete();
+				}
+
+				boolean requireSorting = false;
 				if (children != null) {
-					children.remove(c);
-				}
-				c.delete();
-			}
-
-			boolean requireSorting = false;
-			if (children != null) {
-				for (int i = 0; i < children.size() - 1; i++) {
-					BrowserCell c1 = (BrowserCell) children.elementAt(i);
-					BrowserCell c2 = (BrowserCell) children.elementAt(i + 1);
-					if (c1 != null && c2 != null && newChildrenObjects
-							.indexOf(c1.getRepresentedObject()) != newChildrenObjects.indexOf(c2.getRepresentedObject()) - 1) {
-						requireSorting = true;
+					for (int i = 0; i < children.size() - 1; i++) {
+						BrowserCell c1 = (BrowserCell) children.elementAt(i);
+						BrowserCell c2 = (BrowserCell) children.elementAt(i + 1);
+						if (c1 != null && c2 != null && newChildrenObjects
+								.indexOf(c1.getRepresentedObject()) != newChildrenObjects.indexOf(c2.getRepresentedObject()) - 1) {
+							requireSorting = true;
+						}
 					}
 				}
-			}
 
-			if (requireSorting) {
-				if (LOGGER.isLoggable(Level.FINE)) {
-					LOGGER.fine("Detected sorting required");
-				}
-				// Sort children according to supplied list
-				Collections.sort(children, new Comparator<BrowserCell>() {
-					@Override
-					public int compare(BrowserCell o1, BrowserCell o2) {
-						return newChildrenObjects.indexOf(o1.getRepresentedObject())
-								- newChildrenObjects.indexOf(o2.getRepresentedObject());
+				if (requireSorting) {
+					if (LOGGER.isLoggable(Level.FINE)) {
+						LOGGER.fine("Detected sorting required");
 					}
-				});
-			}
+					// Sort children according to supplied list
+					Collections.sort(children, new Comparator<BrowserCell>() {
+						@Override
+						public int compare(BrowserCell o1, BrowserCell o2) {
+							return newChildrenObjects.indexOf(o1.getRepresentedObject())
+									- newChildrenObjects.indexOf(o2.getRepresentedObject());
+						}
+					});
+				}
 
-			// System.out.println("removedChildren ["+removedChildren.size()+"] "+removedChildren);
-			// System.out.println("newChildren ["+newChildren.size()+"] "+newChildren);
-			// System.out.println("children ["+children.size()+"] "+children);
+				// System.out.println("removedChildren ["+removedChildren.size()+"] "+removedChildren);
+				// System.out.println("newChildren ["+newChildren.size()+"] "+newChildren);
+				// System.out.println("children ["+children.size()+"] "+children);
 
-			boolean structureChanged = false;
+				boolean structureChanged = false;
 
-			if (removedChildren.size() > 0 || newChildren.size() > 0) {
-				structureChanged = true;
-				exhaustiveContentsIsUpToDate = false;
-				if (oldChildren.size() == 0) {
-					// Special case, i don't undertand why (SGU)
-					// OK, issue seems to be MacOS only but workaround works on all platforms.
-					// To observe the issue, load WKF module on a project that imports other projects
-					// Imported workflow tree is not correctly initiated after reload of project.
+				if (removedChildren.size() > 0 || newChildren.size() > 0) {
+					structureChanged = true;
+					exhaustiveContentsIsUpToDate = false;
+					if (oldChildren.size() == 0) {
+						// Special case, i don't undertand why (SGU)
+						// OK, issue seems to be MacOS only but workaround works on all platforms.
+						// To observe the issue, load WKF module on a project that imports other projects
+						// Imported workflow tree is not correctly initiated after reload of project.
+						try {
+							nodeStructureChanged(this);
+						} catch (Exception e) {
+							// Might happen when a structural modification will call parent's nodeChanged()
+							// An Exception might be raised here
+							// We should investigate further, but since no real consequences are raised here, we just ignore exception
+							e.printStackTrace();
+							LOGGER.warning("Unexpected " + e.getClass().getSimpleName()
+									+ " when refreshing browser, no severity but please investigate");
+						}
+					}
+					else {
+						if (removedChildren.size() > 0) {
+							int[] childIndices = new int[removedChildren.size()];
+							Object[] removedChildrenObjects = new Object[removedChildren.size()];
+							for (int i = 0; i < removedChildren.size(); i++) {
+								childIndices[i] = oldChildren.indexOf(removedChildren.get(i));
+								removedChildrenObjects[i] = removedChildren.get(i);
+							}
+							try {
+								nodesWereRemoved(this, childIndices, removedChildrenObjects);
+							} catch (Exception e) {
+								e.printStackTrace();
+								LOGGER.warning("Unexpected exception: " + e);
+							}
+						}
+						if (newChildren.size() > 0) {
+							int[] childIndices = new int[newChildren.size()];
+							for (int i = 0; i < newChildren.size(); i++) {
+								childIndices[i] = children.indexOf(newChildren.get(i));
+							}
+							try {
+								nodesWereInserted(this, childIndices);
+							} catch (EmptyStackException e) {
+								// TODO: please investigate
+								LOGGER.warning("Unexpected exception: " + e);
+							} catch (Exception e) {
+								e.printStackTrace();
+								LOGGER.warning("Unexpected exception: " + e);
+							}
+						}
+					}
+				}
+
+				try {
+					nodeChanged(this);
+				} catch (ArrayIndexOutOfBoundsException e) {
+					// Might happen when a structural modification will call parent's nodeChanged()
+					// An ArrayIndexOutOfBoundsException might be raised here
+					// We should investigate further, but since no real consequences are raised here, we just ignore exception
+					// e.printStackTrace();
+					LOGGER.warning("Unexpected ArrayIndexOutOfBoundsException when refreshing browser, no severity but please investigate");
+					e.printStackTrace(System.out);
+					nodeStructureChanged(this);
+				} catch (NullPointerException e) {
+					// Might happen when a structural modification will call parent's nodeChanged()
+					// An NullPointerException might be raised here
+					// We should investigate further, but since no real consequences are raised here, we just ignore exception
+					// e.printStackTrace();
+					LOGGER.warning("Unexpected NullPointerException when refreshing browser, no severity but please investigate");
+				}
+
+				if (requireSorting) {
+
+					/*Object wasSelected = widget.getSelectedObject();
+					if (logger.isLoggable(Level.FINE)) {
+						logger.fine("Will reselect " + wasSelected);
+					}*/
+
 					try {
 						nodeStructureChanged(this);
 					} catch (Exception e) {
@@ -1037,98 +1121,33 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 						LOGGER.warning("Unexpected " + e.getClass().getSimpleName()
 								+ " when refreshing browser, no severity but please investigate");
 					}
+
+					/*if (wasSelected != null) {
+						widget.resetSelection();
+						widget.addToSelection(wasSelected);
+					}*/
+
 				}
-				else {
-					if (removedChildren.size() > 0) {
-						int[] childIndices = new int[removedChildren.size()];
-						Object[] removedChildrenObjects = new Object[removedChildren.size()];
-						for (int i = 0; i < removedChildren.size(); i++) {
-							childIndices[i] = oldChildren.indexOf(removedChildren.get(i));
-							removedChildrenObjects[i] = removedChildren.get(i);
-						}
-						try {
-							nodesWereRemoved(this, childIndices, removedChildrenObjects);
-						} catch (Exception e) {
-							e.printStackTrace();
-							LOGGER.warning("Unexpected exception: " + e);
-						}
-					}
-					if (newChildren.size() > 0) {
-						int[] childIndices = new int[newChildren.size()];
-						for (int i = 0; i < newChildren.size(); i++) {
-							childIndices[i] = children.indexOf(newChildren.get(i));
-						}
-						try {
-							nodesWereInserted(this, childIndices);
-						} catch (EmptyStackException e) {
-							// TODO: please investigate
-							LOGGER.warning("Unexpected exception: " + e);
-						} catch (Exception e) {
-							e.printStackTrace();
-							LOGGER.warning("Unexpected exception: " + e);
-						}
-					}
-				}
-			}
 
-			try {
-				nodeChanged(this);
-			} catch (ArrayIndexOutOfBoundsException e) {
-				// Might happen when a structural modification will call parent's nodeChanged()
-				// An ArrayIndexOutOfBoundsException might be raised here
-				// We should investigate further, but since no real consequences are raised here, we just ignore exception
-				// e.printStackTrace();
-				LOGGER.warning("Unexpected ArrayIndexOutOfBoundsException when refreshing browser, no severity but please investigate");
-				e.printStackTrace(System.out);
-				nodeStructureChanged(this);
-			} catch (NullPointerException e) {
-				// Might happen when a structural modification will call parent's nodeChanged()
-				// An NullPointerException might be raised here
-				// We should investigate further, but since no real consequences are raised here, we just ignore exception
-				// e.printStackTrace();
-				LOGGER.warning("Unexpected NullPointerException when refreshing browser, no severity but please investigate");
-			}
-
-			if (requireSorting) {
-
-				/*Object wasSelected = widget.getSelectedObject();
-				if (logger.isLoggable(Level.FINE)) {
-					logger.fine("Will reselect " + wasSelected);
+				/*if (wasSelected) {
+					widget.addToSelection(representedObject);
 				}*/
 
-				try {
-					nodeStructureChanged(this);
-				} catch (Exception e) {
-					// Might happen when a structural modification will call parent's nodeChanged()
-					// An Exception might be raised here
-					// We should investigate further, but since no real consequences are raised here, we just ignore exception
-					e.printStackTrace();
-					LOGGER.warning(
-							"Unexpected " + e.getClass().getSimpleName() + " when refreshing browser, no severity but please investigate");
+				// dependingObjects.refreshObserving(browserElementType);
+
+				if (cellsToForceUpdate != null) {
+					for (BrowserCell cell : cellsToForceUpdate) {
+						if (cell != this) // prevent multiple update of same cell
+							// Update recursively only if node is Expanded or if recursively called, otherwise only the children are
+							// updated
+							cell.update(isExpanded || recursively);
+					}
 				}
 
-				/*if (wasSelected != null) {
-					widget.resetSelection();
-					widget.addToSelection(wasSelected);
-				}*/
-
+			} finally {
+				updateRequested = false;
+				isUpdating = false;
 			}
-
-			/*if (wasSelected) {
-				widget.addToSelection(representedObject);
-			}*/
-
-			// dependingObjects.refreshObserving(browserElementType);
-
-			if (cellsToForceUpdate != null) {
-				for (BrowserCell cell : cellsToForceUpdate) {
-					if (cell != this) // prevent multiple update of same cell
-						// Update recursively only if node is Expanded or if recursively called, otherwise only the children are
-						// updated
-						cell.update(isExpanded || recursively);
-				}
-			}
-
 		}
 
 		/*@Override
@@ -1151,7 +1170,10 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 		}*/
 
 		public FIBBrowserElement getBrowserElement() {
-			return browserElementType.getBrowserElement();
+			if (browserElementType != null) {
+				return browserElementType.getBrowserElement();
+			}
+			return null;
 		}
 
 		public FIBBrowserElementType getBrowserElementType() {
