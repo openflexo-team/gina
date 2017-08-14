@@ -11,7 +11,7 @@
 		constraints="twocols()" localize="true" />
 	<Label index="6" label="markers_style" constraints="twocols(location=left)"
 		localize="true" />
-	<DropDown index="7" data="data.tokenMarkerStyle" constraints="twocols(location=right)"
+	<DropDown index="7" data="data.syntaxStyle" constraints="twocols(location=right)"
 		localize="true" iteratorClassName="java.lang.Object"
 		autoSelectFirstRow="false" />
 	<Parameter name="title" value="Editor" />
