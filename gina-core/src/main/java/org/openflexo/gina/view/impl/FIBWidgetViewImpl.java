@@ -213,7 +213,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		DataBinding<T> data = (DataBinding<T>) getComponent().getData();
 
 		if (data != null && data.isValid()) {
-			dataBindingValueChangeListener = new BindingValueChangeListener<T>((DataBinding<T>) data, getBindingEvaluationContext()) {
+			dataBindingValueChangeListener = new BindingValueChangeListener<T>(data, getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
 					// System.out.println(" **** bindingValueChanged() detected for data=" + getComponent().getData() + " with newValue="
