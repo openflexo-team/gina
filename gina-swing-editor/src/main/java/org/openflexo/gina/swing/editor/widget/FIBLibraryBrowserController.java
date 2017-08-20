@@ -43,6 +43,7 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.connie.annotations.NotificationUnsafe;
 import org.openflexo.gina.ApplicationFIBLibrary;
 import org.openflexo.gina.FIBFolder;
 import org.openflexo.gina.FIBLibrary;
@@ -83,6 +84,7 @@ public class FIBLibraryBrowserController extends FIBController /*implements Obse
 		}
 	}
 
+	@NotificationUnsafe
 	public ImageIcon iconFor(Object object) {
 		if (object == null) {
 			return null;
@@ -100,6 +102,7 @@ public class FIBLibraryBrowserController extends FIBController /*implements Obse
 
 	}
 
+	@NotificationUnsafe
 	public String textFor(Object object) {
 		if (object == null) {
 			return null;
