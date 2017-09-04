@@ -781,7 +781,9 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 
 		public void delete() {
 
-			LOGGER.fine("Delete BrowserCell for " + getRepresentedObject());
+			if (LOGGER.isLoggable(Level.FINE)) {
+				LOGGER.fine("Delete BrowserCell for " + getRepresentedObject());
+			}
 
 			if (childrenDataBindingValueChangeListeners != null) {
 				for (BindingValueChangeListener<?> l : childrenDataBindingValueChangeListeners.values()) {
