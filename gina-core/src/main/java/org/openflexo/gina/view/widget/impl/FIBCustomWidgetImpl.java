@@ -263,9 +263,13 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 							value = valueDB.getBindingValue(getBindingEvaluationContext());
 							// System.out.println("value=" + value);
 							if (variableDB.isValid()) {
-								// System.out.println("Assignment " + variableDB + " set value with " + value);
+								// System.out.println("Assign " + Integer.toHexString(assign.hashCode()) + " assignment " + variableDB
+								// + " set value with " + value);
 								variableDB.setBindingValue(value, this);
 							}
+						} catch (InvalidKeyValuePropertyException e) {
+							LOGGER.warning("Unexpected InvalidKeyValuePropertyException while performing assignation: " + variableDB + "="
+									+ valueDB + " message: " + e.getMessage());
 						} catch (TypeMismatchException e) {
 							e.printStackTrace();
 						} catch (NullReferenceException e) {
@@ -348,9 +352,12 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 	@Override
 	public T updateData() {
 
-		/*if (!isComponentVisible()) {
-			return false;
-		}*/
+		T newValue = getValue();
+
+		if (equals(getRepresentedValue(), newValue)) {
+			// Same value, do not continue
+			return newValue;
+		}
 
 		if (!isViewVisible()) {
 			return super.updateData();
@@ -358,15 +365,9 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 
 		if (getCustomComponent() != null) {
 
-			// performAssignments();
-
-			T newValue = null;
-
 			try {
 				newValue = super.updateData();
-				// if (val != null) {
 				getCustomComponent().setEditedObject(newValue);
-				// }
 			} catch (ClassCastException e) {
 				getCustomComponent().setEditedObject(null);
 				LOGGER.warning("Unexpected ClassCastException in " + getTechnologyComponent() + ": " + e.getMessage());
@@ -375,7 +376,6 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 
 			// Perform assignement AFTER the edited value was set !!!
 			// Tried to to it before raised to severe issues
-
 			performAssignments();
 
 			try {
@@ -390,8 +390,6 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 
 		}
 		return null;
-		// }
-		// return false;
 	}
 
 	@Override
