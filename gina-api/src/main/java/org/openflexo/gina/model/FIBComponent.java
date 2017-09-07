@@ -1265,7 +1265,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			}
 			String className = getControllerClassName();
 
-			if (controllerClass == null && className != null && StringUtils.isNotEmpty(className)) {
+			if (controllerClass == null && className != null && StringUtils.isNotEmpty(className)
+					&& !className.equals("org.openflexo.gina.controller.FIBController")) {
 				try {
 					controllerClass = (Class<? extends FIBController>) Class.forName(className);
 					getPropertyChangeSupport().firePropertyChange(CONTROLLER_CLASS_KEY, null, controllerClass);
