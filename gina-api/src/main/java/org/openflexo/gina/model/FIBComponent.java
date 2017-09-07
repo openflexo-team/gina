@@ -247,6 +247,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	public static final String INDEX_KEY = "index";
 	@PropertyIdentifier(type = Class.class)
 	public static final String CONTROLLER_CLASS_KEY = "controllerClass";
+	@PropertyIdentifier(type = String.class)
+	public static final String CONTROLLER_CLASS_NAME_KEY = "controllerClassName";
 	@PropertyIdentifier(type = ComponentConstraints.class)
 	public static final String CONSTRAINTS_KEY = "constraints";
 	@PropertyIdentifier(type = DataBinding.class)
@@ -317,11 +319,11 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	@Setter(INDEX_KEY)
 	public void setIndex(Integer index);
 
-	@Getter(value = "controllerClassName")
+	@Getter(value = CONTROLLER_CLASS_NAME_KEY)
 	@XMLAttribute
 	String getControllerClassName();
 
-	@Setter("controllerClassName")
+	@Setter(CONTROLLER_CLASS_NAME_KEY)
 	void setControllerClassName(String controllerClassName);
 
 	@Getter(value = CONTROLLER_CLASS_KEY)
@@ -1287,6 +1289,13 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				// updateControllerBindingVariable();
 				hasChanged(notification);
 			}
+		}
+
+		@Override
+		public void setControllerClassName(String controllerClassName) {
+			performSuperSetter(CONTROLLER_CLASS_NAME_KEY, controllerClassName);
+			// Following statement is really important: we need to set controller class NOW !!!
+			getControllerClass();
 		}
 
 		@Override
