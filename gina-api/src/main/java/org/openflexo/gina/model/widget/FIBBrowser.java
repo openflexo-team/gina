@@ -212,7 +212,7 @@ public interface FIBBrowser extends FIBWidget {
 	@Setter(SHOW_FOOTER_KEY)
 	public void setShowFooter(boolean showFooter);
 
-	@Getter(value = ROOT_VISIBLE_KEY, defaultValue = "false")
+	@Getter(value = ROOT_VISIBLE_KEY, defaultValue = "true")
 	@XMLAttribute
 	public boolean getRootVisible();
 
