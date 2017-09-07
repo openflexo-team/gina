@@ -317,8 +317,14 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	@Setter(INDEX_KEY)
 	public void setIndex(Integer index);
 
+	@Getter(value = "controllerClassName")
+	@XMLAttribute
+	String getControllerClassName();
+
+	@Setter("controllerClassName")
+	void setControllerClassName(String controllerClassName);
+
 	@Getter(value = CONTROLLER_CLASS_KEY)
-	@XMLAttribute(xmlTag = "controllerClassName")
 	public Class<? extends FIBController> getControllerClass();
 
 	@Setter(CONTROLLER_CLASS_KEY)
@@ -1257,10 +1263,17 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			if (!isRootComponent() && isSerializing()) {
 				return null;
 			}
-			if (controllerClass == null) {
-				return FIBController.class;
+			String className = getControllerClassName();
+
+			if (controllerClass == null && className != null && StringUtils.isNotEmpty(className)) {
+				try {
+					controllerClass = (Class<? extends FIBController>) Class.forName(className);
+					getPropertyChangeSupport().firePropertyChange(CONTROLLER_CLASS_KEY, null, controllerClass);
+				} catch (ClassNotFoundException e) {
+					controllerClass = null;
+				}
 			}
-			return controllerClass;
+			return controllerClass != null ? controllerClass : FIBController.class;
 		}
 
 		@Override
@@ -1269,6 +1282,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			FIBPropertyNotification<Class> notification = requireChange(CONTROLLER_CLASS_KEY, (Class) controllerClass);
 			if (notification != null) {
 				this.controllerClass = controllerClass;
+				setControllerClassName(controllerClass != null ? controllerClass.getName() : null);
 				// updateControllerBindingVariable();
 				hasChanged(notification);
 			}
