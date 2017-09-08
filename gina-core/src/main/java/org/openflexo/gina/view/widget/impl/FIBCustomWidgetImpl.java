@@ -352,18 +352,20 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 	@Override
 	public T updateData() {
 
-		T newValue = getValue();
-
+		/*T newValue = getValue();
+		
 		if (equals(getRepresentedValue(), newValue)) {
 			// Same value, do not continue
 			return newValue;
-		}
+		}*/
 
 		if (!isViewVisible()) {
 			return super.updateData();
 		}
 
 		if (getCustomComponent() != null) {
+
+			T newValue = null;
 
 			try {
 				newValue = super.updateData();
