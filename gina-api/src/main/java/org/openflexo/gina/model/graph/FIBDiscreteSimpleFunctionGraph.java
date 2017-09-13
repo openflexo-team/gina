@@ -166,18 +166,34 @@ public interface FIBDiscreteSimpleFunctionGraph extends FIBSimpleFunctionGraph {
 			if (getValues() != null && getValues().isSet() && getValues().isValid()) {
 				Type accessedType = getValues().getAnalyzedType();
 				if (accessedType instanceof ParameterizedType && ((ParameterizedType) accessedType).getActualTypeArguments().length > 0) {
-					return ((ParameterizedType) accessedType).getActualTypeArguments()[0];
+					Type returned = ((ParameterizedType) accessedType).getActualTypeArguments()[0];
+					if (parameterBindingVariable != null) {
+						parameterBindingVariable.setType(returned);
+					}
+					return returned;
 				}
 			}
 			return Object.class;
 		}
 
 		@Override
-		public void notifiedBindingChanged(DataBinding<?> binding) {
-			super.notifiedBindingChanged(binding);
-			if (binding == values) {
+		public void notifiedBindingChanged(DataBinding<?> dataBinding) {
+			super.notifiedBindingChanged(dataBinding);
+			if (dataBinding == values) {
 				if (parameterBindingVariable != null) {
-					System.out.println("Changing type to " + getParameterType());
+					// System.out.println("Changing type to " + getParameterType());
+					parameterBindingVariable.setType(getParameterType());
+				}
+			}
+		}
+
+		@Override
+		public void notifiedBindingDecoded(DataBinding<?> dataBinding) {
+			// System.out.println("Hop, on vient de decoder " + dataBinding);
+			super.notifiedBindingDecoded(dataBinding);
+			if (dataBinding == values) {
+					if (parameterBindingVariable != null) {
+					// System.out.println("On vient de decoder " + dataBinding + " Changing type to " + getParameterType());
 					parameterBindingVariable.setType(getParameterType());
 				}
 			}
