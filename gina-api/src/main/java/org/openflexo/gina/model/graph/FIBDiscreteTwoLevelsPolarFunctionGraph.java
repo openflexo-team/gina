@@ -162,6 +162,7 @@ public interface FIBDiscreteTwoLevelsPolarFunctionGraph extends FIBDiscretePolar
 		protected BindingModel createSecondaryGraphBindingModel() {
 			secondaryGraphBindingModel = new BindingModel(getGraphBindingModel());
 			secondaryParameterBindingVariable = new BindingVariable(getSecondaryParameterName(), getSecondaryParameterType());
+			secondaryParameterBindingVariable.setCacheable(false);
 			secondaryGraphBindingModel.addToBindingVariables(secondaryParameterBindingVariable);
 			return secondaryGraphBindingModel;
 		}
