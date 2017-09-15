@@ -510,7 +510,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			// " NullReferenceException: " + e.getMessage());
 			return null;
 		} catch (InvocationTargetException e) {
-			LOGGER.warning("Widget " + getWidget() + " InvocationTargetException: " + e.getMessage());
+			// LOGGER.warning("Widget " + getWidget() + " InvocationTargetException: " + e.getMessage());
 			return null;
 		}
 
