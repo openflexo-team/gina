@@ -11,6 +11,3 @@ buildscript {
 
 apply plugin: 'org.openflexo.buildconfig'
 allprojects { version = "2.1-SNAPSHOT" }
-task test() {
-    dependsOn subprojects.test
-}
