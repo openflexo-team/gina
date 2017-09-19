@@ -53,7 +53,6 @@ import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.CachingStrategy;
 import org.openflexo.connie.DefaultBindable;
-import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBComponent.LocalizationEntryRetriever;
 import org.openflexo.gina.model.FIBModelObject;
@@ -239,23 +238,6 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 
 		private static final Logger logger = Logger.getLogger(FIBTableColumn.class.getPackage().getName());
 
-		@Deprecated
-		private static BindingDefinition DATA = new BindingDefinition("data", Object.class, DataBinding.BindingDefinitionType.GET, false);
-		@Deprecated
-		private static BindingDefinition TOOLTIP = new BindingDefinition("tooltip", String.class, DataBinding.BindingDefinitionType.GET,
-				false);
-		@Deprecated
-		private static BindingDefinition FORMAT = new BindingDefinition("format", String.class, DataBinding.BindingDefinitionType.GET,
-				false);
-		@Deprecated
-		private static BindingDefinition COLOR = new BindingDefinition("color", Color.class, DataBinding.BindingDefinitionType.GET, false);
-		@Deprecated
-		private static BindingDefinition BG_COLOR = new BindingDefinition("bgColor", Color.class, DataBinding.BindingDefinitionType.GET,
-				false);
-		@Deprecated
-		private static BindingDefinition VALUE_CHANGED_ACTION = new BindingDefinition("valueChangedAction", Void.class,
-				DataBinding.BindingDefinitionType.EXECUTE, false);
-
 		private DataBinding<?> data;
 		private DataBinding<String> format;
 		private DataBinding<Icon> icon;
@@ -275,30 +257,6 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 
 		public FIBTableColumnImpl() {
 			formatter = new FIBFormatter();
-		}
-
-		public BindingDefinition getDataBindingDefinition() {
-			return DATA;
-		}
-
-		public BindingDefinition getTooltipBindingDefinition() {
-			return TOOLTIP;
-		}
-
-		public BindingDefinition getFormatBindingDefinition() {
-			return FORMAT;
-		}
-
-		public BindingDefinition getColorBindingDefinition() {
-			return COLOR;
-		}
-
-		public BindingDefinition getBgColorBindingDefinition() {
-			return BG_COLOR;
-		}
-
-		public BindingDefinition getValueChangedActionBindingDefinition() {
-			return VALUE_CHANGED_ACTION;
 		}
 
 		@Override

@@ -43,7 +43,6 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.gina.model.FIBWidget;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -94,10 +93,6 @@ public abstract interface FIBTextWidget extends FIBWidget {
 	public void setEditable(DataBinding<Boolean> editable);
 
 	public static abstract class FIBTextWidgetImpl extends FIBWidgetImpl implements FIBTextWidget {
-
-		@Deprecated
-		public static BindingDefinition EDITABLE = new BindingDefinition("editable", Boolean.class, DataBinding.BindingDefinitionType.GET,
-				false);
 
 		// private boolean validateOnReturn = false;
 		// private String text = null;

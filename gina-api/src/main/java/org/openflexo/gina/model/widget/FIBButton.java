@@ -44,7 +44,6 @@ import java.lang.reflect.Type;
 import javax.swing.Icon;
 
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.gina.model.FIBWidget;
 import org.openflexo.model.annotations.DefineValidationRule;
@@ -121,13 +120,6 @@ public interface FIBButton extends FIBWidget {
 	public void setIsDefault(Boolean isDefault);
 
 	public static abstract class FIBButtonImpl extends FIBWidgetImpl implements FIBButton {
-
-		@Deprecated
-		public static BindingDefinition BUTTON_ICON = new BindingDefinition("buttonIcon", Icon.class, DataBinding.BindingDefinitionType.GET,
-				false);
-		@Deprecated
-		public static BindingDefinition ACTION = new BindingDefinition("action", Object.class, DataBinding.BindingDefinitionType.EXECUTE,
-				false);
 
 		private DataBinding<Object> action;
 		private ButtonType buttonType = ButtonType.Trigger;

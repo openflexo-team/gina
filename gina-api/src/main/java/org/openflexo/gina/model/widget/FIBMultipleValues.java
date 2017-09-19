@@ -47,7 +47,7 @@ import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingDefinition;
+import org.openflexo.connie.DataBindingFactory;
 import org.openflexo.connie.type.GenericArrayTypeImpl;
 import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.connie.type.TypeUtils;
@@ -150,32 +150,6 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 
 		private static final Logger logger = Logger.getLogger(FIBMultipleValues.class.getPackage().getName());
 
-		@Deprecated
-		public BindingDefinition LIST = new BindingDefinition("list",
-				new ParameterizedTypeImpl(List.class, new WilcardTypeImpl(Object.class)), DataBinding.BindingDefinitionType.GET, false) {
-			@Override
-			public Type getType() {
-				return getListBindingType();
-			}
-		};
-		@Deprecated
-		public BindingDefinition ARRAY = new BindingDefinition("array", new GenericArrayTypeImpl(new WilcardTypeImpl(Object.class)),
-				DataBinding.BindingDefinitionType.GET, false) {
-			@Override
-			public Type getType() {
-				return getArrayBindingType();
-			}
-		};
-
-		/*@Deprecated
-		private final BindingDefinition DATA = new BindingDefinition("data", Object.class, DataBinding.BindingDefinitionType.GET_SET,
-				false) {
-			@Override
-			public Type getType() {
-				return getDataType();
-			};
-		};*/
-
 		private String staticList;
 
 		private DataBinding<List<?>> list;
@@ -211,8 +185,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		@Override
 		public DataBinding<List<?>> getList() {
 			if (list == null) {
-				list = new DataBinding<>(this, new TypeToken<List<?>>() {
-				}.getType(), DataBinding.BindingDefinitionType.GET);
+				list = DataBindingFactory.makeListBinding(this);
 			}
 			return list;
 		}

@@ -43,7 +43,6 @@ import java.awt.Color;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -193,15 +192,6 @@ public interface FIBList extends FIBMultipleValues {
 	public static abstract class FIBListImpl extends FIBMultipleValuesImpl implements FIBList {
 
 		private static final Logger logger = Logger.getLogger(FIBList.class.getPackage().getName());
-
-		private BindingDefinition SELECTED;
-
-		public BindingDefinition getSelectedBindingDefinition() {
-			if (SELECTED == null) {
-				SELECTED = new BindingDefinition("selected", getIteratorType(), DataBinding.BindingDefinitionType.GET_SET, false);
-			}
-			return SELECTED;
-		}
 
 		private DataBinding<Object> selected;
 

@@ -43,7 +43,6 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.gina.model.FIBComponent.LocalizationEntryRetriever;
 import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.model.annotations.CloningStrategy;
@@ -112,13 +111,6 @@ public abstract interface FIBTableAction extends FIBModelObject {
 
 		private DataBinding<Object> method;
 		private DataBinding<Boolean> isAvailable;
-
-		@Deprecated
-		public static BindingDefinition METHOD = new BindingDefinition("method", Object.class, DataBinding.BindingDefinitionType.EXECUTE,
-				false);
-		@Deprecated
-		public static BindingDefinition IS_AVAILABLE = new BindingDefinition("isAvailable", Boolean.class,
-				DataBinding.BindingDefinitionType.GET, false);
 
 		@Override
 		public FIBTable getComponent() {

@@ -44,10 +44,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingDefinition;
-import org.openflexo.connie.type.GenericArrayTypeImpl;
-import org.openflexo.connie.type.ParameterizedTypeImpl;
-import org.openflexo.connie.type.WilcardTypeImpl;
+import org.openflexo.connie.DataBindingFactory;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -101,13 +98,6 @@ public interface FIBDropDownColumn extends FIBTableColumn {
 
 		private static final Logger logger = Logger.getLogger(FIBMultipleValues.class.getPackage().getName());
 
-		@Deprecated
-		public static BindingDefinition LIST = new BindingDefinition("list",
-				new ParameterizedTypeImpl(List.class, new WilcardTypeImpl(Object.class)), DataBinding.BindingDefinitionType.GET, false);
-		@Deprecated
-		public static BindingDefinition ARRAY = new BindingDefinition("array", new GenericArrayTypeImpl(new WilcardTypeImpl(Object.class)),
-				DataBinding.BindingDefinitionType.GET, false);
-
 		public String staticList;
 
 		private DataBinding<List<?>> list;
@@ -119,9 +109,7 @@ public interface FIBDropDownColumn extends FIBTableColumn {
 		@Override
 		public DataBinding<List<?>> getList() {
 			if (list == null) {
-				list = new DataBinding<>(this, new TypeToken<List<?>>() {
-				}.getType(), DataBinding.BindingDefinitionType.GET);
-				list.setBindingName("list");
+				list = DataBindingFactory.makeListBinding(this);
 			}
 			return list;
 		}
@@ -141,9 +129,7 @@ public interface FIBDropDownColumn extends FIBTableColumn {
 		@Override
 		public DataBinding<Object[]> getArray() {
 			if (array == null) {
-				array = new DataBinding<>(this, new TypeToken<Object[]>() {
-				}.getType(), DataBinding.BindingDefinitionType.GET);
-				array.setBindingName("array");
+				array = DataBindingFactory.makeArrayBinding(this);
 			}
 			return array;
 		}

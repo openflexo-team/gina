@@ -57,7 +57,6 @@ import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DefaultBindable;
-import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBComponent.LocalizationEntryRetriever;
 import org.openflexo.gina.model.FIBModelObject;
@@ -342,26 +341,6 @@ public interface FIBBrowserElement extends FIBModelObject {
 	public static abstract class FIBBrowserElementImpl extends FIBModelObjectImpl implements FIBBrowserElement {
 
 		private static final Logger logger = Logger.getLogger(FIBBrowserElement.class.getPackage().getName());
-
-		@Deprecated
-		public static BindingDefinition LABEL = new BindingDefinition("label", String.class, DataBinding.BindingDefinitionType.GET, false);
-		@Deprecated
-		public static BindingDefinition ICON = new BindingDefinition("icon", Icon.class, DataBinding.BindingDefinitionType.GET, false);
-		@Deprecated
-		public static BindingDefinition TOOLTIP = new BindingDefinition("tooltip", String.class, DataBinding.BindingDefinitionType.GET,
-				false);
-		@Deprecated
-		public static BindingDefinition ENABLED = new BindingDefinition("enabled", Boolean.class, DataBinding.BindingDefinitionType.GET,
-				false);
-		@Deprecated
-		public static BindingDefinition VISIBLE = new BindingDefinition("visible", Boolean.class, DataBinding.BindingDefinitionType.GET,
-				false);
-		@Deprecated
-		public static BindingDefinition EDITABLE_LABEL = new BindingDefinition("editableLabel", String.class,
-				DataBinding.BindingDefinitionType.GET_SET, false);
-		@Deprecated
-		public static BindingDefinition DYNAMIC_FONT = new BindingDefinition("dynamicFont", Font.class,
-				DataBinding.BindingDefinitionType.GET, false);
 
 		// private Class dataClass;
 

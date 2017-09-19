@@ -418,10 +418,6 @@ public interface FIBReferencedComponent extends FIBWidget {
 		public void revalidateBindings();
 
 		public static abstract class FIBReferenceAssignmentImpl extends FIBModelObjectImpl implements FIBReferenceAssignment {
-
-			@Deprecated
-			public static BindingDefinition VARIABLE = new BindingDefinition("variable", Object.class,
-					DataBinding.BindingDefinitionType.GET_SET, true);
 			@Deprecated
 			public BindingDefinition VALUE = new BindingDefinition("value", Object.class, DataBinding.BindingDefinitionType.GET, true);
 

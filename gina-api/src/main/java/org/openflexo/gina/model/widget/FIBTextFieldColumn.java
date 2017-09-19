@@ -42,7 +42,6 @@ package org.openflexo.gina.model.widget;
 import java.lang.reflect.Type;
 
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -67,10 +66,6 @@ public interface FIBTextFieldColumn extends FIBTableColumn {
 	public void setIsEditable(DataBinding<Boolean> isEditable);
 
 	public static abstract class FIBTextFieldColumnImpl extends FIBTableColumnImpl implements FIBTextFieldColumn {
-
-		@Deprecated
-		public static final BindingDefinition IS_EDITABLE = new BindingDefinition("isEditable", Boolean.class,
-				DataBinding.BindingDefinitionType.GET, false);
 
 		private DataBinding<Boolean> isEditable;
 

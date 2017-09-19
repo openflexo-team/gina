@@ -53,7 +53,6 @@ import javax.swing.UIManager;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.connie.type.WilcardTypeImpl;
 import org.openflexo.gina.model.FIBModelObject;
@@ -335,17 +334,6 @@ public interface FIBTable extends FIBWidget {
 	public static abstract class FIBTableImpl extends FIBWidgetImpl implements FIBTable {
 
 		private static final Logger logger = Logger.getLogger(FIBTable.class.getPackage().getName());
-
-		@Deprecated
-		private BindingDefinition SELECTED;
-
-		@Deprecated
-		public BindingDefinition getSelectedBindingDefinition() {
-			if (SELECTED == null) {
-				SELECTED = new BindingDefinition("selected", getIteratorType(), DataBinding.BindingDefinitionType.GET_SET, false);
-			}
-			return SELECTED;
-		}
 
 		private DataBinding<Object> selected;
 

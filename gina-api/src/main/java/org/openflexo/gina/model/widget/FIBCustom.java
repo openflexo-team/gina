@@ -487,9 +487,6 @@ public interface FIBCustom extends FIBWidget {
 
 		public static abstract class FIBCustomAssignmentImpl extends FIBModelObjectImpl implements FIBCustomAssignment {
 			@Deprecated
-			public static BindingDefinition VARIABLE = new BindingDefinition("variable", Object.class,
-					DataBinding.BindingDefinitionType.GET_SET, true);
-			@Deprecated
 			public BindingDefinition VALUE = new BindingDefinition("value", Object.class, DataBinding.BindingDefinitionType.GET, true);
 
 			private DataBinding<?> variable;

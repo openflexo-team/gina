@@ -52,7 +52,6 @@ import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DefaultBindable;
-import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelObject;
@@ -131,14 +130,6 @@ public interface FIBBrowserElementChildren extends FIBModelObject {
 		private DataBinding<Boolean> visible;
 		private DataBinding<Object> cast;
 		private FIBChildBindable childBindable;
-
-		@Deprecated
-		public static BindingDefinition DATA = new BindingDefinition("data", Object.class, DataBinding.BindingDefinitionType.GET, false);
-		@Deprecated
-		public static BindingDefinition VISIBLE = new BindingDefinition("visible", Boolean.class, DataBinding.BindingDefinitionType.GET,
-				false);
-		@Deprecated
-		public static BindingDefinition CAST = new BindingDefinition("cast", Object.class, DataBinding.BindingDefinitionType.GET, false);
 
 		@Override
 		public String getPresentationName() {

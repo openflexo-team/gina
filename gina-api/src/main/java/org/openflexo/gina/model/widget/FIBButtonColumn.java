@@ -41,11 +41,7 @@ package org.openflexo.gina.model.widget;
 
 import java.lang.reflect.Type;
 
-import javax.swing.Icon;
-
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.DataBinding.BindingDefinitionType;
-import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -80,14 +76,6 @@ public interface FIBButtonColumn extends FIBTableColumn {
 
 	public static abstract class FIBButtonColumnImpl extends FIBTableColumnImpl implements FIBButtonColumn {
 
-		@Deprecated
-		public static BindingDefinition BUTTON_ICON = new BindingDefinition("buttonIcon", Icon.class, DataBinding.BindingDefinitionType.GET,
-				false);
-		@Deprecated
-		public static BindingDefinition ACTION = new BindingDefinition("action", Object.class, DataBinding.BindingDefinitionType.EXECUTE,
-				false);
-		private static BindingDefinition ENABLED = new BindingDefinition("enabled", Boolean.class, BindingDefinitionType.GET, false);
-
 		private DataBinding<Object> action;
 		private DataBinding<Boolean> enabled;
 
@@ -111,10 +99,6 @@ public interface FIBButtonColumn extends FIBTableColumn {
 			this.action = action;
 		}
 
-		public BindingDefinition getActionBindingDefinition() {
-			return ACTION;
-		}
-
 		@Override
 		public DataBinding<Boolean> getEnabled() {
 			if (enabled == null) {
@@ -131,10 +115,6 @@ public interface FIBButtonColumn extends FIBTableColumn {
 				enabled.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 			}
 			this.enabled = enabled;
-		}
-
-		public BindingDefinition getEnabledBindingDefinition() {
-			return ENABLED;
 		}
 
 		/*

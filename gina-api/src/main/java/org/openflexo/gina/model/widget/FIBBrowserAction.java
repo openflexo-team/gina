@@ -48,8 +48,6 @@ import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.DataBinding.BindingDefinitionType;
-import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.model.FIBComponent;
@@ -125,12 +123,6 @@ public abstract interface FIBBrowserAction extends FIBModelObject {
 		private DataBinding<Boolean> isAvailable;
 
 		private BindingModel actionBindingModel;
-
-		@Deprecated
-		public static BindingDefinition METHOD = new BindingDefinition("method", Object.class, BindingDefinitionType.EXECUTE, false);
-		@Deprecated
-		public static BindingDefinition IS_AVAILABLE = new BindingDefinition("isAvailable", Boolean.class, BindingDefinitionType.EXECUTE,
-				false);
 
 		@Override
 		public FIBComponent getComponent() {

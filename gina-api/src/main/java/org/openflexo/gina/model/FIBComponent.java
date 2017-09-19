@@ -55,7 +55,6 @@ import javax.swing.tree.TreeNode;
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.connie.type.CustomTypeManager;
 import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
 import org.openflexo.gina.FIBLibrary;
@@ -654,10 +653,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		private BindingFactory bindingFactory;
 		public static Color DISABLED_COLOR = Color.GRAY;
-
-		@Deprecated
-		public static BindingDefinition VISIBLE = new BindingDefinition("visible", Boolean.class, DataBinding.BindingDefinitionType.GET,
-				false);
 
 		private Resource definitionFile;
 
