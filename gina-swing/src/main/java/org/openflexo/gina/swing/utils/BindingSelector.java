@@ -554,8 +554,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 				newEditionMode = EditionMode.STATIC_BINDING;
 			}
 			else if (newDataBinding.isBindingValue()) {
-				if (((BindingValue) newDataBinding.getExpression()).isCompoundBinding()
-						|| newDataBinding.getBindingDefinitionType() == DataBinding.BindingDefinitionType.EXECUTE) {
+				if (((BindingValue) newDataBinding.getExpression()).isCompoundBinding() || newDataBinding.isExecutable()) {
 					newEditionMode = EditionMode.COMPOUND_BINDING;
 				}
 				else if (oldEditionMode != EditionMode.NORMAL_BINDING && oldEditionMode != EditionMode.COMPOUND_BINDING) {
@@ -696,8 +695,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 	}
 
 	public boolean areBindingExpressionsAllowed() {
-		if (getEditedObject() != null && (getEditedObject().isSettable()
-				|| getEditedObject().getBindingDefinitionType() == DataBinding.BindingDefinitionType.EXECUTE)) {
+		DataBinding<?> db = getEditedObject();
+		if (db != null && (db.isSettable() || db.isExecutable())) {
 			return false;
 		}
 		return _allowsBindingExpressions;
@@ -1486,8 +1485,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 
 	DataBinding<?> makeBindingFromString(String stringValue) {
 
-		DataBinding<?> returned = new DataBinding<>(stringValue, getBindable(), getEditedObject().getDeclaredType(),
-				getEditedObject().getBindingDefinitionType());
+		DataBinding<?> returned = new DataBinding<>(stringValue, getBindable(), getEditedObject());
 		returned.decode();
 		return returned;
 

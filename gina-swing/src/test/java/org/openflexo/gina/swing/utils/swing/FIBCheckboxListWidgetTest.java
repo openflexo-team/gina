@@ -53,6 +53,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
+import org.openflexo.connie.DataBindingFactory;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
@@ -69,8 +70,6 @@ import org.openflexo.gina.test.SwingGraphicalContextDelegate;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-
-import com.google.common.reflect.TypeToken;
 
 /**
  * Test the structural and behavioural features of FIBCheckboxList widget
@@ -134,8 +133,7 @@ public class FIBCheckboxListWidgetTest extends FIBTestCase {
 		checkboxListLabel4 = newFIBLabel("dynamic_array");
 		component.addToSubComponents(checkboxListLabel4, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false, false));
 		checkboxList4 = newFIBCheckboxList();
-		checkboxList4.setArray(new DataBinding<Object[]>("data.parents", checkboxList4, new TypeToken<Object[]>() {
-		}.getType(), BindingDefinitionType.GET));
+		checkboxList4.setArray(DataBindingFactory.makeArrayBinding(checkboxList4, "data.parents"));
 		checkboxList4.setAutoSelectFirstRow(true);
 		component.addToSubComponents(checkboxList4, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
 		assertTrue(checkboxList4.getArray().isValid());

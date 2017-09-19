@@ -52,6 +52,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
+import org.openflexo.connie.DataBindingFactory;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
@@ -60,8 +61,8 @@ import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoCol
 import org.openflexo.gina.model.widget.FIBDropDown;
 import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.gina.sampleData.Family;
-import org.openflexo.gina.sampleData.Person;
 import org.openflexo.gina.sampleData.Family.Gender;
+import org.openflexo.gina.sampleData.Person;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.gina.swing.view.widget.JFIBDropDownWidget;
 import org.openflexo.gina.test.FIBTestCase;
@@ -69,8 +70,6 @@ import org.openflexo.gina.test.SwingGraphicalContextDelegate;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-
-import com.google.common.reflect.TypeToken;
 
 /**
  * Test the structural and behavioural features of FIBDropDown widget
@@ -112,66 +111,51 @@ public class FIBDropDownWidgetTest extends FIBTestCase {
 		component.setDataClass(Family.class);
 
 		dropDownLabel1 = newFIBLabel("static_list_auto_select");
-		component.addToSubComponents(dropDownLabel1, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false,
-				false));
+		component.addToSubComponents(dropDownLabel1, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false, false));
 		dropDown1 = newFIBDropDown();
 		dropDown1.setStaticList("value1,value2,value3");
 		dropDown1.setAutoSelectFirstRow(true);
-		component
-				.addToSubComponents(dropDown1, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
+		component.addToSubComponents(dropDown1, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
 
 		dropDownLabel2 = newFIBLabel("static_list_no_auto_select");
-		component.addToSubComponents(dropDownLabel2, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false,
-				false));
+		component.addToSubComponents(dropDownLabel2, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false, false));
 		dropDown2 = newFIBDropDown();
 		dropDown2.setStaticList("value1,value2,value3");
 		dropDown2.setAutoSelectFirstRow(false);
-		component
-				.addToSubComponents(dropDown2, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
+		component.addToSubComponents(dropDown2, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
 
 		dropDownLabel3 = newFIBLabel("dynamic_list");
-		component.addToSubComponents(dropDownLabel3, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false,
-				false));
+		component.addToSubComponents(dropDownLabel3, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false, false));
 		dropDown3 = newFIBDropDown();
 		dropDown3.setList(new DataBinding<List<?>>("data.children", dropDown3, List.class, BindingDefinitionType.GET));
 		dropDown3.setAutoSelectFirstRow(true);
-		component
-				.addToSubComponents(dropDown3, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
+		component.addToSubComponents(dropDown3, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
 		assertTrue(dropDown3.getList().isValid());
 
 		dropDownLabel4 = newFIBLabel("dynamic_array");
-		component.addToSubComponents(dropDownLabel4, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false,
-				false));
+		component.addToSubComponents(dropDownLabel4, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false, false));
 		dropDown4 = newFIBDropDown();
-		dropDown4.setArray(new DataBinding<Object[]>("data.parents", dropDown4, new TypeToken<Object[]>() {
-		}.getType(), BindingDefinitionType.GET));
+		dropDown4.setArray(DataBindingFactory.makeArrayBinding(dropDown4, "data.parents"));
 		dropDown4.setAutoSelectFirstRow(true);
-		component
-				.addToSubComponents(dropDown4, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
+		component.addToSubComponents(dropDown4, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
 		assertTrue(dropDown4.getArray().isValid());
 
 		dropDownLabel5 = newFIBLabel("dynamic_list_bound_to_data");
-		component.addToSubComponents(dropDownLabel5, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false,
-				false));
+		component.addToSubComponents(dropDownLabel5, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false, false));
 		dropDown5 = newFIBDropDown();
-		dropDown5.setData(new DataBinding<Person>("data.biggestChild", dropDown5, Person.class,
-				BindingDefinitionType.GET_SET));
+		dropDown5.setData(new DataBinding<Person>("data.biggestChild", dropDown5, Person.class, BindingDefinitionType.GET_SET));
 		dropDown5.setList(new DataBinding<List<?>>("data.children", dropDown5, List.class, BindingDefinitionType.GET));
 		dropDown5.setAutoSelectFirstRow(true);
-		component
-				.addToSubComponents(dropDown5, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
+		component.addToSubComponents(dropDown5, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
 		assertTrue(dropDown5.getData().isValid());
 		assertTrue(dropDown5.getList().isValid());
 
 		dropDownLabel6 = newFIBLabel("enum");
-		component.addToSubComponents(dropDownLabel6, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false,
-				false));
+		component.addToSubComponents(dropDownLabel6, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false, false));
 		dropDown6 = newFIBDropDown();
-		dropDown6.setData(new DataBinding<Gender>("data.father.gender", dropDown6, Gender.class,
-				BindingDefinitionType.GET_SET));
+		dropDown6.setData(new DataBinding<Gender>("data.father.gender", dropDown6, Gender.class, BindingDefinitionType.GET_SET));
 		dropDown6.setAutoSelectFirstRow(true);
-		component
-				.addToSubComponents(dropDown6, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
+		component.addToSubComponents(dropDown6, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
 		assertTrue(dropDown6.getData().isValid());
 
 		// dropDown1.setData(new DataBinding<String>("data.father.firstName",
@@ -188,8 +172,7 @@ public class FIBDropDownWidgetTest extends FIBTestCase {
 	@Test
 	@TestOrder(2)
 	public void test2InstanciateComponent() {
-		controller = FIBController.instanciateController(component, SwingViewFactory.INSTANCE,
-				FlexoLocalization.getMainLocalizer());
+		controller = FIBController.instanciateController(component, SwingViewFactory.INSTANCE, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);
 		family = new Family();
 		controller.setDataObject(family);
