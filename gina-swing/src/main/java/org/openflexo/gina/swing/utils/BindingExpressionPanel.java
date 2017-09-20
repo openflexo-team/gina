@@ -79,7 +79,6 @@ import org.openflexo.connie.expr.BooleanUnaryOperator;
 import org.openflexo.connie.expr.ConditionalExpression;
 import org.openflexo.connie.expr.Constant;
 import org.openflexo.connie.expr.DefaultExpressionPrettyPrinter;
-import org.openflexo.connie.expr.EvaluationType;
 import org.openflexo.connie.expr.Expression;
 import org.openflexo.connie.expr.Operator;
 import org.openflexo.connie.expr.OperatorNotSupportedException;
@@ -87,7 +86,6 @@ import org.openflexo.connie.expr.SymbolicConstant;
 import org.openflexo.connie.expr.UnaryOperator;
 import org.openflexo.connie.expr.UnaryOperatorExpression;
 import org.openflexo.connie.pp.ExpressionPrettyPrinter;
-import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.gina.utils.FIBIconLibrary;
 import org.openflexo.swing.MouseOverButton;
@@ -291,30 +289,6 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 		}
 		else {
 			try {
-				EvaluationType evaluationType = dataBinding.getExpression().getEvaluationType();
-
-				if (dataBinding != null && dataBinding.getBindingDefinition() != null
-						&& dataBinding.getBindingDefinition().getType() != null) {
-					EvaluationType wantedEvaluationType = TypeUtils.kindOfType(dataBinding.getBindingDefinition().getType());
-					if (wantedEvaluationType == EvaluationType.LITERAL || evaluationType == wantedEvaluationType
-							|| wantedEvaluationType == EvaluationType.ARITHMETIC_FLOAT
-									&& evaluationType == EvaluationType.ARITHMETIC_INTEGER) {
-						status = ExpressionParsingStatus.VALID;
-						message = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey(VALID_EXPRESSION) + " : "
-								+ evaluationType.getLocalizedName();
-					}
-					else {
-						status = ExpressionParsingStatus.SYNTAXICALLY_VALID;
-						message = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKeyWithParams(VALID_EXPRESSION_BUT_MISMATCH_TYPE,
-								evaluationType.getLocalizedName(), wantedEvaluationType.getLocalizedName());
-					}
-				}
-				else {
-					status = ExpressionParsingStatus.VALID;
-					message = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey(VALID_EXPRESSION) + " : "
-							+ evaluationType.getLocalizedName();
-				}
-
 				if (evaluationPanel != null && evaluationTA != null && evaluationPanel.isVisible() && dataBinding != null) {
 					Expression evaluatedExpression = dataBinding.getExpression().evaluate();
 					if (evaluatedExpression != null) {
