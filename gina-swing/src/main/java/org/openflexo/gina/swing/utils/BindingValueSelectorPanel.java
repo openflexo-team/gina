@@ -91,7 +91,6 @@ import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
-import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.binding.Function;
 import org.openflexo.connie.binding.Function.FunctionArgument;
@@ -353,18 +352,6 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 						return value.getOwner();
 					}
 					return null;
-				}
-
-				@Override
-				public BindingDefinition getBindingDefinitionFor(DataBinding<?> value, Function.FunctionArgument rowObject) {
-					if (value != null) {
-						return value.getBindingDefinition();
-					}
-					return null;
-					/*if (rowObject != null) {
-						return getFunctionPathElement().getParameter(rowObject).getBindingDefinition();
-					}
-					return null;*/
 				}
 
 				@Override
@@ -2473,8 +2460,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 						}
 					}
 					FunctionPathElement newFunctionPathElement = bindingSelector.getBindable().getBindingFactory().makeFunctionPathElement(
-							currentElement != null ? currentElement.getParent() : bindingValue.getLastBindingPathElement(), function,
-							args);
+							currentElement != null ? currentElement.getParent() : bindingValue.getLastBindingPathElement(), function, args);
 
 					if (newFunctionPathElement != null) {
 						// TODO: we need to handle here generic FunctionPathElement and not only JavaMethodPathElement

@@ -45,7 +45,6 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.Bindable;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.gina.swing.utils.BindingSelector;
 
 /**
@@ -92,15 +91,12 @@ public abstract class BindingValueColumn<D> extends CustomColumn<D, DataBinding>
 			selector.setBindable(getBindableFor(value, rowObject));
 			// selector.setBindingDefinition(getBindingDefinitionFor(value, rowObject));
 			if (LOGGER.isLoggable(Level.FINE)) {
-				LOGGER.fine("Selector: " + selector.toString() + " rowObject=" + rowObject + "" + " binding=" + value
-						+ " with BindingDefinition " + getBindingDefinitionFor(value, rowObject));
+				LOGGER.fine("Selector: " + selector.toString() + " rowObject=" + rowObject + "" + " binding=" + value);
 			}
 		}
 	}
 
 	public abstract Bindable getBindableFor(DataBinding<?> value, D rowObject);
-
-	public abstract BindingDefinition getBindingDefinitionFor(DataBinding<?> value, D rowObject);
 
 	@Override
 	protected BindingSelector getViewSelector(D rowObject, DataBinding value) {

@@ -50,7 +50,6 @@ import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.model.FIBPropertyNotification;
@@ -315,9 +314,6 @@ public interface FIBCustomColumn extends FIBTableColumn {
 		public void finalizeDeserialization();
 
 		public static abstract class FIBCustomAssignmentImpl extends FIBModelObjectImpl implements FIBCustomAssignment {
-			@Deprecated
-			public BindingDefinition VALUE = new BindingDefinition("value", Object.class, DataBinding.BindingDefinitionType.GET, true);
-
 			private DataBinding<Object> variable;
 			private DataBinding<Object> value;
 
@@ -374,12 +370,6 @@ public interface FIBCustomColumn extends FIBTableColumn {
 				if (getBindingFactory() != null) {
 					if (getOwner() != null && variable != null) {
 						variable.decode();
-					}
-					if (variable != null && variable.isValid()) {
-						VALUE.setType(variable.getAnalyzedType());
-						if (value != null) {
-							value.setBindingDefinition(VALUE);
-						}
 					}
 				}
 			}

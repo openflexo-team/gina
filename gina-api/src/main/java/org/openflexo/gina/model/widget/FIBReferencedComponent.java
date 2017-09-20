@@ -47,7 +47,6 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelObject;
@@ -418,9 +417,6 @@ public interface FIBReferencedComponent extends FIBWidget {
 		public void revalidateBindings();
 
 		public static abstract class FIBReferenceAssignmentImpl extends FIBModelObjectImpl implements FIBReferenceAssignment {
-			@Deprecated
-			public BindingDefinition VALUE = new BindingDefinition("value", Object.class, DataBinding.BindingDefinitionType.GET, true);
-
 			private DataBinding<Object> variable;
 			private DataBinding<Object> value;
 
@@ -465,12 +461,6 @@ public interface FIBReferencedComponent extends FIBWidget {
 				this.variable = variable;
 				if (getOwner() != null && variable != null) {
 					variable.decode();
-				}
-				if (variable != null && variable.isValid()) {
-					VALUE.setType(variable.getAnalyzedType());
-					if (value != null) {
-						value.setBindingDefinition(VALUE);
-					}
 				}
 			}
 
