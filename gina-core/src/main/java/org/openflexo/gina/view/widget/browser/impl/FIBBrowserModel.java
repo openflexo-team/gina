@@ -398,7 +398,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 		private BindingValueChangeListener<Boolean> enabledBindingValueChangeListener;
 		private BindingValueChangeListener<Boolean> visibleBindingValueChangeListener;
 		private Map<FIBBrowserElementChildren, BindingValueChangeListener<?>> childrenDataBindingValueChangeListeners;
-		private Map<FIBBrowserElementChildren, BindingValueChangeListener<?>> childrenCastBindingValueChangeListeners;
+		// private Map<FIBBrowserElementChildren, BindingValueChangeListener<?>> childrenCastBindingValueChangeListeners;
 		private Map<FIBBrowserElementChildren, BindingValueChangeListener<Boolean>> childrenVisibleBindingValueChangeListeners;
 
 		private void listenChildrenDataBindingValueChange(final Object representedObject) {
@@ -454,7 +454,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 		}
 
 		private void listenChildrenCastBindingValueChange(Object representedObject) {
-			if (childrenCastBindingValueChangeListeners != null) {
+			/*if (childrenCastBindingValueChangeListeners != null) {
 				for (BindingValueChangeListener<?> l : childrenCastBindingValueChangeListeners.values()) {
 					l.stopObserving();
 					l.delete();
@@ -471,7 +471,6 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 				for (final FIBBrowserElementChildren children : browserElementType.getBrowserElement().getChildren()) {
 					if (children.getCast().isValid()) {
 						BindingValueChangeListener<?> l = new BrowserCellBindingValueChangeListener<>(children.getCast(),
-								/* browserElementType */
 								// Instead of using browserElementType and to avoid to share it between multiple
 								// BindingValueListChangeListener
 								// using the same BindingEvaluationContext, we have to use here a proper instance of a
@@ -481,7 +480,7 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 						childrenCastBindingValueChangeListeners.put(children, l);
 					}
 				}
-			}
+			}*/
 		}
 
 		private void listenChildrenVisibleBindingValueChange(Object representedObject) {
@@ -792,13 +791,13 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 				}
 				childrenDataBindingValueChangeListeners.clear();
 			}
-			if (childrenCastBindingValueChangeListeners != null) {
+			/*if (childrenCastBindingValueChangeListeners != null) {
 				for (BindingValueChangeListener<?> l : childrenCastBindingValueChangeListeners.values()) {
 					l.stopObserving();
 					l.delete();
 				}
 				childrenCastBindingValueChangeListeners.clear();
-			}
+			}*/
 			if (childrenVisibleBindingValueChangeListeners != null) {
 				for (BindingValueChangeListener<?> l : childrenVisibleBindingValueChangeListeners.values()) {
 					l.stopObserving();

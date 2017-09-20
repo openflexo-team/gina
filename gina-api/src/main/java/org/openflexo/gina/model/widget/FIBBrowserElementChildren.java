@@ -150,7 +150,7 @@ public interface FIBBrowserElementChildren extends FIBModelObject {
 			private BindingModel childBindingModel = null;
 
 			private void updateBindingModel() {
-				childBindingModel.setBaseBindingModel(FIBBrowserElementChildrenImpl.this.getBindingModel());
+				childBindingModel.setBaseBindingModel(getOwner().getIteratorBindable().getBindingModel());
 			}
 
 			@Override
@@ -167,7 +167,8 @@ public interface FIBBrowserElementChildren extends FIBModelObject {
 			}
 
 			private void createChildBindingModel() {
-				childBindingModel = new BindingModel(FIBBrowserElementChildrenImpl.this.getBindingModel());
+				childBindingModel = new BindingModel(getOwner() != null && getOwner().getIteratorBindable() != null
+						? getOwner().getIteratorBindable().getBindingModel() : null);
 				childBindingModel.addToBindingVariables(new BindingVariable("child", Object.class) {
 					@Override
 					public Type getType() {
@@ -225,6 +226,9 @@ public interface FIBBrowserElementChildren extends FIBModelObject {
 			if (data == null) {
 				data = new DataBinding<>(getOwner() != null ? getOwner().getIteratorBindable() : null, Object.class,
 						DataBinding.BindingDefinitionType.GET);
+			}
+			if (data.getOwner() == null && getOwner() != null) {
+				data.setOwner(getOwner().getIteratorBindable());
 			}
 			return data;
 		}
@@ -334,7 +338,7 @@ public interface FIBBrowserElementChildren extends FIBModelObject {
 
 		@Override
 		public Type getAccessedType() {
-			if (data != null && data.isSet()) {
+			if (data != null && data.isSet() && data.isValid()) {
 				return data.getAnalyzedType();
 			}
 			return null;

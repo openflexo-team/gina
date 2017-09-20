@@ -12,21 +12,21 @@
 	<Custom index="5" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 		localize="true" manageDynamicModel="true" data="data.data"
 		constraints="twocols(expandHorizontally=true;location=right)">
-		<Assignment variable="component.bindable" value="data.owner.iteratorBindable" />
+		<!--  <Assignment variable="component.bindable" value="data.owner.iteratorBindable" /> -->
 	</Custom>
 	<Label index="4" label="visible" constraints="twocols(location=left)"
 		localize="true" />
 	<Custom index="5" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 		localize="true" manageDynamicModel="true" data="data.visible"
 		constraints="twocols(expandHorizontally=true;location=right)">
-		<Assignment variable="component.bindable" value="data.owner.iteratorBindable" />
+		<!--  <Assignment variable="component.bindable" value="data.owner.iteratorBindable" /> -->
 	</Custom>
 	<Label index="4" label="cast" constraints="twocols(location=left)"
 		localize="true" />
 	<Custom index="5" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 		localize="true" manageDynamicModel="true" data="data.cast"
 		constraints="twocols(expandHorizontally=true;location=right)">
-		<Assignment variable="component.bindable" value="data.owner.iteratorBindable" />
+		<!--  <Assignment variable="component.bindable" value="data.owner.iteratorBindable" /> -->
 	</Custom>
 
 	<Parameter name="title" value="Browser element" />
