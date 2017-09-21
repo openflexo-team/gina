@@ -233,7 +233,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 		 * 
 		 */
 		@Override
-		public final Collection<? extends Validable> getEmbeddedValidableObjects() {
+		public final Collection<Validable> getEmbeddedValidableObjects() {
 
 			List<?> embeddedObjects = getModelFactory().getEmbeddedObjects(this, EmbeddingType.CLOSURE);
 			List<Validable> returned = new ArrayList<>();
