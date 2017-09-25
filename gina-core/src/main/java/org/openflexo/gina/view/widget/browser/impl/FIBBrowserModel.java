@@ -68,6 +68,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import org.openflexo.connie.BindingEvaluationContext;
@@ -931,8 +932,8 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 					if (children.size() == 1 && children.firstElement() instanceof LoadingCell) {
 						removeAllChildren();
 					}
-					oldChildren = new ArrayList<>(children);
-					removedChildren = new ArrayList<>(children);
+					oldChildren = new ArrayList(children);
+					removedChildren = new ArrayList(children);
 				}
 
 				final List<?> newChildrenObjects = /*(isEnabled ?*/browserElementType
@@ -1021,11 +1022,12 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 						LOGGER.fine("Detected sorting required");
 					}
 					// Sort children according to supplied list
-					Collections.sort(children, new Comparator<BrowserCell>() {
+					Collections.sort(children, new Comparator<TreeNode>() {
 						@Override
-						public int compare(BrowserCell o1, BrowserCell o2) {
-							return newChildrenObjects.indexOf(o1.getRepresentedObject())
-									- newChildrenObjects.indexOf(o2.getRepresentedObject());
+						public int compare(TreeNode o1, TreeNode o2) {
+							Object obj1 = ((BrowserCell) o1).getRepresentedObject();
+							Object obj2 = ((BrowserCell) o2).getRepresentedObject();
+							return newChildrenObjects.indexOf(obj1) - newChildrenObjects.indexOf(obj2);
 						}
 					});
 				}
