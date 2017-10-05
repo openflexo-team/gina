@@ -93,7 +93,7 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 
 	private BindingValueChangeListener<T> selectedBindingValueChangeListener;
 
-	private BindingValueListChangeListener<T, List<T>> listenerToDataAsListValue;
+	private BindingValueListChangeListener<T, Collection<T>> listenerToDataAsListValue;
 
 	public FIBTableWidgetImpl(FIBTable fibTable, FIBController controller, TableRenderingAdapter<C, T> RenderingAdapter) {
 		super(fibTable, controller, RenderingAdapter);
@@ -144,11 +144,11 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 			listenerToDataAsListValue.delete();
 		}
 		if (getComponent().getData() != null && getComponent().getData().isValid()) {
-			listenerToDataAsListValue = new BindingValueListChangeListener<T, List<T>>(((DataBinding) getComponent().getData()),
+			listenerToDataAsListValue = new BindingValueListChangeListener<T, Collection<T>>(((DataBinding) getComponent().getData()),
 					getBindingEvaluationContext()) {
 
 				@Override
-				public void bindingValueChanged(Object source, List<T> newValue) {
+				public void bindingValueChanged(Object source, Collection<T> newValue) {
 					// System.out.println(" bindingValueChanged() detected for data list="
 					// + getComponent().getEnable() + " with newValue="
 					// + newValue + " source=" + source);
