@@ -89,7 +89,7 @@
 			iteratorClassName="org.openflexo.model.validation.ValidationReport$ReportMode"
 			showIcon="false" />
 		<Label id="53" manageDynamicModel="false" useScrollBar="false"
-			data="(((data.errorsCount.toString + &quot; errors, &quot;) + data.warningsCount.toString) + &quot; warnings&quot;)"
+			data="(((data.getAllErrors().size.toString + &quot; errors, &quot;) + data.getAllWarnings().size.toString) + &quot; warnings&quot;)"
 			controllerClassName="org.openflexo.gina.controller.FIBController"
 			localize="false" font="Lucida Grande,2,10" align="right"
 			constraints="border(location=south)" label="" readOnly="false" />
