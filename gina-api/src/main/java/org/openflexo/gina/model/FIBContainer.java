@@ -186,6 +186,10 @@ public abstract interface FIBContainer extends FIBComponent {
 	@Deprecated
 	public void setDataType(Type dataType);
 
+	public void addToSubComponentsNoNotification(FIBComponent aComponent, ComponentConstraints someConstraints);
+
+	public void fireSubComponentsChanged();
+
 	public static abstract class FIBContainerImpl extends FIBComponentImpl implements FIBContainer {
 
 		private static final Logger logger = Logger.getLogger(FIBContainer.class.getPackage().getName());
@@ -268,6 +272,37 @@ public abstract interface FIBContainer extends FIBComponent {
 		}
 
 		@Override
+		public final void addToSubComponentsNoNotification(FIBComponent aComponent, ComponentConstraints someConstraints) {
+
+			// TODO: i dont't like this code, we might do it without all these
+			// hacks
+			if (someConstraints != null && aComponent.getConstraints() != null) {
+				aComponent.getConstraints().ignoreNotif = true;
+				aComponent.getConstraints().putAll(someConstraints);
+				aComponent.getConstraints().ignoreNotif = false;
+			}
+			if (aComponent.getConstraints() == null) {
+				aComponent.setConstraints(someConstraints);
+			}
+
+			performSuperAdder(SUB_COMPONENTS_KEY, aComponent);
+
+		}
+
+		@Override
+		public void fireSubComponentsChanged() {
+			reorderComponents();
+
+			if (hasTemporarySize()) {
+				// No more need for temporary size
+				clearTemporarySize();
+			}
+
+			getPropertyChangeSupport().firePropertyChange(SUB_COMPONENTS_KEY, null, getSubComponents());
+
+		}
+
+		@Override
 		public final void addToSubComponents(FIBComponent aComponent, ComponentConstraints someConstraints, int subComponentIndex) {
 
 			// TODO: i dont't like this code, we might do it without all these
@@ -290,11 +325,6 @@ public abstract interface FIBContainer extends FIBComponent {
 			if (deserializationPerformed) {
 				reorderComponents();
 			}
-			/*
-			 * if (aComponent instanceof FIBWidget && ((FIBWidget)
-			 * aComponent).getManageDynamicModel()) { if
-			 * (deserializationPerformed) { updateBindingModel(); } }
-			 */
 
 			if (hasTemporarySize()) {
 				// No more need for temporary size
