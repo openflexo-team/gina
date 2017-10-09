@@ -888,12 +888,12 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 					return currentLanguageDict.getProperty(key);
 				}
 				else {
-					return getParent().localizedForKeyAndLanguage(key, language, true);
+					return getParent().localizedForKeyAndLanguage(key, language, createsNewEntryInFirstEditableParent);
 				}
 			}
 			else {
 				// parent is null
-				if (handleNewEntry(key, language)) {
+				if (createsNewEntryInFirstEditableParent && handleNewEntry(key, language)) {
 					addEntry(key);
 					return currentLanguageDict.getProperty(key);
 				}
