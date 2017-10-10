@@ -40,6 +40,7 @@ package org.openflexo.gina.swing.utils.validation;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -125,13 +126,13 @@ public class FIBValidationController extends FIBController {
 		}
 	}
 
-	public void fixAllIssues(List<ValidationIssue<?, ?>> issues) {
+	public void fixAllIssues(Collection<ValidationIssue<?, ?>> issues) {
 		fixIssues(issues, null);
 	}
 
-	public void fixIssues(List<ValidationIssue<?, ?>> issues, FixProposal<?, ?> fixProposal) {
+	public void fixIssues(Collection<ValidationIssue<?, ?>> issues, FixProposal<?, ?> fixProposal) {
 
-		if (issues.size() == 1 && fixProposal != null && fixProposal.getProblemIssue() == issues.get(0)) {
+		if (issues.size() == 1 && fixProposal != null && fixProposal.getProblemIssue() == issues.iterator().next()) {
 			fixIssue(fixProposal);
 		}
 		else {

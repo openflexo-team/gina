@@ -84,7 +84,9 @@ public abstract class FIBInspectorTestCase extends GenericFIBTestCase {
 			}
 			ValidationReport validationReport = component.validate();
 			for (ValidationError<?, ?> error : validationReport.getAllErrors()) {
-				logger.severe("FIBComponent validation error: Object: " + error.getValidable() + " message: " + error.getMessage());
+				logger.severe("FIBComponent validation error: Object: " + error.getValidable() + " message: "
+						+ validationReport.getValidationModel().localizedIssueMessage(error) + " detais="
+						+ validationReport.getValidationModel().localizedIssueDetailedInformations(error));
 			}
 			assertEquals(0, validationReport.getErrorsCount());
 		} catch (InterruptedException e) {

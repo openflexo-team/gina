@@ -88,6 +88,10 @@ public interface FIBHtmlEditor extends FIBWidget {
 	@Remover(OPTIONS_IN_LINE1_KEY)
 	public void removeFromOptionsInLine1(FIBHtmlEditorOption aOptionsInLine1);
 
+	public void addToOptionsInLine1(List<FIBHtmlEditorOption> someOptionsInLine1);
+
+	public void removeFromOptionsInLine1(List<FIBHtmlEditorOption> options);
+
 	@Getter(value = OPTIONS_IN_LINE2_KEY, cardinality = Cardinality.LIST, inverse = FIBHtmlEditorOption.EDITOR_KEY)
 	@CloningStrategy(StrategyType.CLONE)
 	@XMLElement(context = "Line2")
@@ -102,6 +106,10 @@ public interface FIBHtmlEditor extends FIBWidget {
 	@Remover(OPTIONS_IN_LINE2_KEY)
 	public void removeFromOptionsInLine2(FIBHtmlEditorOption aOptionsInLine2);
 
+	public void addToOptionsInLine2(List<FIBHtmlEditorOption> someOptionsInLine2);
+
+	public void removeFromOptionsInLine2(List<FIBHtmlEditorOption> options);
+
 	@Getter(value = OPTIONS_IN_LINE3_KEY, cardinality = Cardinality.LIST, inverse = FIBHtmlEditorOption.EDITOR_KEY)
 	@CloningStrategy(StrategyType.CLONE)
 	@XMLElement(context = "Line3")
@@ -115,6 +123,10 @@ public interface FIBHtmlEditor extends FIBWidget {
 
 	@Remover(OPTIONS_IN_LINE3_KEY)
 	public void removeFromOptionsInLine3(FIBHtmlEditorOption aOptionsInLine3);
+
+	public void addToOptionsInLine3(List<FIBHtmlEditorOption> someOptionsInLine3);
+
+	public void removeFromOptionsInLine3(List<FIBHtmlEditorOption> options);
 
 	public FIBHtmlEditorOption getOption(String key);
 
@@ -454,6 +466,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 			}
 		}
 
+		@Override
 		public void addToOptionsInLine1(List<FIBHtmlEditorOption> options) {
 			Vector<FIBHtmlEditorOption> theOptions = new Vector<>();
 			theOptions.addAll(options);
@@ -480,6 +493,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 			}
 		}
 
+		@Override
 		public void removeFromOptionsInLine1(List<FIBHtmlEditorOption> options) {
 			Vector<FIBHtmlEditorOption> theOptions = new Vector<>();
 			theOptions.addAll(options);
@@ -525,6 +539,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 			}
 		}
 
+		@Override
 		public void addToOptionsInLine2(List<FIBHtmlEditorOption> options) {
 			Vector<FIBHtmlEditorOption> theOptions = new Vector<>();
 			theOptions.addAll(options);
@@ -551,6 +566,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 			}
 		}
 
+		@Override
 		public void removeFromOptionsInLine2(List<FIBHtmlEditorOption> options) {
 			Vector<FIBHtmlEditorOption> theOptions = new Vector<>();
 			theOptions.addAll(options);
@@ -596,6 +612,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 			}
 		}
 
+		@Override
 		public void addToOptionsInLine3(List<FIBHtmlEditorOption> options) {
 			Vector<FIBHtmlEditorOption> theOptions = new Vector<>();
 			theOptions.addAll(options);
@@ -622,6 +639,7 @@ public interface FIBHtmlEditor extends FIBWidget {
 			}
 		}
 
+		@Override
 		public void removeFromOptionsInLine3(List<FIBHtmlEditorOption> options) {
 			Vector<FIBHtmlEditorOption> theOptions = new Vector<>();
 			theOptions.addAll(options);

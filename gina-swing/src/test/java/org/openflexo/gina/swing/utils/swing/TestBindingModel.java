@@ -321,6 +321,8 @@ public class TestBindingModel extends FIBTestCase {
 		assertFalse(checkbox.getData().isValid());
 		assertFalse(number.getData().isValid());
 
+		System.out.println("Attention je mets a jour le nom de la variable");
+
 		personVariable.setName("person");
 
 		System.out.println("BindingModel for panel2 =" + panel2.getBindingModel());
@@ -338,6 +340,10 @@ public class TestBindingModel extends FIBTestCase {
 		assertEquals(Person.class, panel2.getBindingModel().bindingVariableNamed("person").getType());
 
 		// Bindings should now be valid
+
+		System.out.println("textfield2.getData()=" + textfield2.getData());
+		System.out.println("valid=" + textfield2.getData().isValid());
+		System.out.println("BM=" + textfield2.getData().getOwner().getBindingModel());
 
 		assertTrue(textfield2.getData().isValid());
 		assertTrue(checkbox.getData().isValid());
