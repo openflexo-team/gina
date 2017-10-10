@@ -107,10 +107,10 @@ public interface FIBDiscreteSimpleFunctionGraph extends FIBSimpleFunctionGraph {
 		public void revalidateBindings() {
 			super.revalidateBindings();
 			if (values != null) {
-				values.revalidate();
+				values.forceRevalidate();
 			}
 			if (labels != null) {
-				labels.revalidate();
+				labels.forceRevalidate();
 			}
 		}
 

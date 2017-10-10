@@ -472,40 +472,40 @@ public abstract interface FIBWidget extends FIBComponent {
 		public void revalidateBindings() {
 			super.revalidateBindings();
 			if (data != null) {
-				data.revalidate();
+				data.forceRevalidate();
 			}
 			if (enable != null) {
-				enable.revalidate();
+				enable.forceRevalidate();
 			}
 			if (format != null) {
-				format.revalidate();
+				format.forceRevalidate();
 			}
 			if (icon != null) {
-				icon.revalidate();
+				icon.forceRevalidate();
 			}
 			if (tooltip != null) {
-				tooltip.revalidate();
+				tooltip.forceRevalidate();
 			}
 			if (clickAction != null) {
-				clickAction.revalidate();
+				clickAction.forceRevalidate();
 			}
 			if (doubleClickAction != null) {
-				doubleClickAction.revalidate();
+				doubleClickAction.forceRevalidate();
 			}
 			if (rightClickAction != null) {
-				rightClickAction.revalidate();
+				rightClickAction.forceRevalidate();
 			}
 			if (enterPressedAction != null) {
-				enterPressedAction.revalidate();
+				enterPressedAction.forceRevalidate();
 			}
 			if (valueChangedAction != null) {
-				valueChangedAction.revalidate();
+				valueChangedAction.forceRevalidate();
 			}
 			if (valueTransform != null) {
-				valueTransform.revalidate();
+				valueTransform.forceRevalidate();
 			}
 			if (valueValidator != null) {
-				valueValidator.revalidate();
+				valueValidator.forceRevalidate();
 			}
 
 		}

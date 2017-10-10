@@ -574,22 +574,22 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public void revalidateBindings() {
 			if (label != null) {
-				label.revalidate();
+				label.forceRevalidate();
 			}
 			if (icon != null) {
-				icon.revalidate();
+				icon.forceRevalidate();
 			}
 			if (tooltip != null) {
-				tooltip.revalidate();
+				tooltip.forceRevalidate();
 			}
 			if (enabled != null) {
-				enabled.revalidate();
+				enabled.forceRevalidate();
 			}
 			if (visible != null) {
-				visible.revalidate();
+				visible.forceRevalidate();
 			}
 			if (editableLabel != null) {
-				editableLabel.revalidate();
+				editableLabel.forceRevalidate();
 			}
 			for (FIBBrowserElementChildren c : getChildren()) {
 				c.revalidateBindings();

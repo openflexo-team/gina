@@ -390,10 +390,10 @@ public interface FIBBrowser extends FIBWidget {
 				element.revalidateBindings();
 			}
 			if (selected != null) {
-				selected.revalidate();
+				selected.forceRevalidate();
 			}
 			if (selection != null) {
-				selection.revalidate();
+				selection.forceRevalidate();
 			}
 		}
 

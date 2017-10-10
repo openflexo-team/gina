@@ -132,6 +132,7 @@ public class FIBComponentBindingModel extends BindingModel implements PropertyCh
 				// The FIBComponent changes it's parent component
 				setBaseBindingModel(component.getParent() != null ? component.getParent().getBindingModel() : null);
 				updateControllerVariable();
+				updateVariables();
 			}
 			else if (evt.getPropertyName().equals(FIBComponent.VARIABLES_KEY)) {
 				// Variable were modified

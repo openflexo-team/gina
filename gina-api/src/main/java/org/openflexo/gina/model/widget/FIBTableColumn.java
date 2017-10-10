@@ -294,10 +294,10 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		@Override
 		public void revalidateBindings() {
 			if (data != null) {
-				data.revalidate();
+				data.forceRevalidate();
 			}
 			if (tooltip != null) {
-				tooltip.revalidate();
+				tooltip.forceRevalidate();
 			}
 		}
 

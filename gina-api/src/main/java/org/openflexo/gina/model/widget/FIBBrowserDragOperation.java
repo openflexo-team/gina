@@ -232,11 +232,11 @@ public interface FIBBrowserDragOperation extends FIBModelObject {
 		public void revalidateBindings() {
 			if (action != null) {
 				action.setOwner(getOwner().getIteratorBindable());
-				action.revalidate();
+				action.forceRevalidate();
 			}
 			if (isAvailable != null) {
 				isAvailable.setOwner(getOwner().getIteratorBindable());
-				isAvailable.revalidate();
+				isAvailable.forceRevalidate();
 			}
 		}
 

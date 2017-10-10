@@ -511,7 +511,7 @@ public interface FIBTable extends FIBWidget {
 				column.revalidateBindings();
 			}
 			if (selected != null) {
-				selected.revalidate();
+				selected.forceRevalidate();
 			}
 		}
 

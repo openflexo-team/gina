@@ -220,7 +220,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 					// Little hook used to automatically apply a valid value
 					// which has generally been edited
 					// By typing text in text field
-					if (getEditedObject() != null && getEditedObject().isValid(true)) {
+					if (getEditedObject() != null && getEditedObject().forceRevalidate()) {
 						try {
 							apply();
 						} catch (InvalidKeyValuePropertyException e) {
@@ -276,7 +276,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 										&& selectorPanel.isKeyPathFromPanelValid()) {
 									getEditedObject().setExpression(selectorPanel.makeBindingValueFromPanel());
 									fireEditedObjectChanged();
-									if (getEditedObject().isValid(true)) {
+									if (getEditedObject().forceRevalidate()) {
 										apply();
 									}
 								}
@@ -406,7 +406,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 			// System.out.println("Decoding binding as " + newEditedBinding + " valid=" + newEditedBinding.isValid());
 
 			if (newEditedBinding != null) {
-				if (newEditedBinding.isValid(true)) {
+				if (newEditedBinding.forceRevalidate()) {
 					if (LOGGER.isLoggable(Level.FINE)) {
 						LOGGER.fine("Decoded as VALID binding: " + newEditedBinding);
 					}
@@ -495,7 +495,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		}
 
 		setEditedObject(dataBinding, true);
-		if (dataBinding != null && dataBinding.isValid(true)) {
+		if (dataBinding != null && dataBinding.forceRevalidate()) {
 			isConnected = true;
 		}
 
@@ -528,7 +528,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		}
 		super.setEditedObject(dataBinding);
 
-		if (getEditedObject() != null && getEditedObject().isValid(true)) {
+		if (getEditedObject() != null && getEditedObject().forceRevalidate()) {
 			getTextField().setForeground(defaultForeground);
 			getTextField().setSelectedTextColor(defaultSelectedColor);
 		}
@@ -623,7 +623,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 	}
 
 	public void connect() {
-		if (getEditedObject().isValid(true)) {
+		if (getEditedObject().forceRevalidate()) {
 			// logger.info("Is connected = TRUE");
 			isConnected = true;
 		}
@@ -654,7 +654,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 
 	@Override
 	public void fireEditedObjectChanged() {
-		if (getEditedObject() == null || !getEditedObject().isValid(true)) {
+		if (getEditedObject() == null || !getEditedObject().forceRevalidate()) {
 			disconnect();
 		}
 		updateCustomPanel(getEditedObject());
@@ -910,7 +910,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		}
 		if (editedObject != null) {
 			if (editedObject.isSet()) {
-				if (editedObject.isValid(true)) {
+				if (editedObject.forceRevalidate()) {
 					getLabel().setVisible(true);
 					getLabel().setIcon(UtilsIconLibrary.OK_ICON);
 				}
@@ -1317,7 +1317,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		}
 		DataBinding<?> dataBinding = getEditedObject();
 		if (dataBinding != null) {
-			if (dataBinding.isValid(true)) {
+			if (dataBinding.forceRevalidate()) {
 				/*
 				 * if (bindingValue instanceof BindingValue) { ((BindingValue)
 				 * bindingValue).connect(); }
@@ -1346,7 +1346,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		GinaStackEvent stackElement = GENotifier.notifyMethod();
 
 		if (_revertBindingValue != null) {
-			if (_revertBindingValue.getOwner() != null && _revertBindingValue.isValid(true)) {
+			if (_revertBindingValue.getOwner() != null && _revertBindingValue.forceRevalidate()) {
 				setEditedObject(_revertBindingValue);
 			}
 		}

@@ -253,7 +253,7 @@ public interface FIBList extends FIBMultipleValues {
 		public void revalidateBindings() {
 			super.revalidateBindings();
 			if (selected != null) {
-				selected.revalidate();
+				selected.forceRevalidate();
 			}
 		}
 

@@ -272,7 +272,7 @@ public interface FIBVariable<T> extends FIBModelObject {
 		@Override
 		public void revalidateBindings() {
 			if (value != null) {
-				value.revalidate();
+				value.forceRevalidate();
 			}
 		}
 

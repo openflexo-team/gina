@@ -285,11 +285,11 @@ public interface FIBBrowserElementChildren extends FIBModelObject {
 		public void revalidateBindings() {
 			if (data != null) {
 				data.setOwner(getOwner().getIteratorBindable());
-				data.revalidate();
+				data.forceRevalidate();
 			}
 			if (visible != null) {
 				visible.setOwner(getOwner().getIteratorBindable());
-				visible.revalidate();
+				visible.forceRevalidate();
 			}
 		}
 

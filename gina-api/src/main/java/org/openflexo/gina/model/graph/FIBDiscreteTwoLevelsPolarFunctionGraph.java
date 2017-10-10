@@ -179,16 +179,16 @@ public interface FIBDiscreteTwoLevelsPolarFunctionGraph extends FIBDiscretePolar
 		public void revalidateBindings() {
 			super.revalidateBindings();
 			if (secondaryValues != null) {
-				secondaryValues.revalidate();
+				secondaryValues.forceRevalidate();
 				if (secondaryParameterBindingVariable != null) {
 					secondaryParameterBindingVariable.setType(getSecondaryParameterType());
 				}
 			}
 			if (secondaryLabels != null) {
-				secondaryLabels.revalidate();
+				secondaryLabels.forceRevalidate();
 			}
 			if (secondaryAngleExtent != null) {
-				secondaryAngleExtent.revalidate();
+				secondaryAngleExtent.forceRevalidate();
 			}
 		}
 

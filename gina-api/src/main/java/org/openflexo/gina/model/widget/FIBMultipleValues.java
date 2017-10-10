@@ -225,10 +225,10 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		@Override
 		public void revalidateBindings() {
 			if (list != null) {
-				list.revalidate();
+				list.forceRevalidate();
 			}
 			if (array != null) {
-				array.revalidate();
+				array.forceRevalidate();
 			}
 			super.revalidateBindings();
 		}

@@ -177,19 +177,19 @@ public interface FIBContinuousSimpleFunctionGraph extends FIBSimpleFunctionGraph
 		public void revalidateBindings() {
 			super.revalidateBindings();
 			if (minValue != null) {
-				minValue.revalidate();
+				minValue.forceRevalidate();
 			}
 			if (maxValue != null) {
-				maxValue.revalidate();
+				maxValue.forceRevalidate();
 			}
 			if (minorTickSpacing != null) {
-				minorTickSpacing.revalidate();
+				minorTickSpacing.forceRevalidate();
 			}
 			if (majorTickSpacing != null) {
-				majorTickSpacing.revalidate();
+				majorTickSpacing.forceRevalidate();
 			}
 			if (stepsNumber != null) {
-				stepsNumber.revalidate();
+				stepsNumber.forceRevalidate();
 			}
 		}
 

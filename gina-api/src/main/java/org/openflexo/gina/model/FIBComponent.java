@@ -1122,7 +1122,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				v.revalidateBindings();
 			}
 			if (visible != null) {
-				visible.revalidate();
+				visible.forceRevalidate();
 			}
 		}
 

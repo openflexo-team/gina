@@ -291,7 +291,7 @@ public interface FIBGraphFunction extends FIBModelObject {
 		@Override
 		public void revalidateBindings() {
 			if (expression != null) {
-				expression.revalidate();
+				expression.forceRevalidate();
 			}
 		}
 

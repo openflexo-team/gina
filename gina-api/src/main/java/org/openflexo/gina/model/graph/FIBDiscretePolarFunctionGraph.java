@@ -116,16 +116,16 @@ public interface FIBDiscretePolarFunctionGraph extends FIBPolarFunctionGraph {
 		@Override
 		public void revalidateBindings() {
 			if (values != null) {
-				values.revalidate();
+				values.forceRevalidate();
 				if (parameterBindingVariable != null) {
 					parameterBindingVariable.setType(getParameterType());
 				}
 			}
 			if (labels != null) {
-				labels.revalidate();
+				labels.forceRevalidate();
 			}
 			if (angleExtent != null) {
-				angleExtent.revalidate();
+				angleExtent.forceRevalidate();
 			}
 			super.revalidateBindings();
 		}

@@ -488,11 +488,11 @@ public interface FIBReferencedComponent extends FIBWidget {
 			@Override
 			public void revalidateBindings() {
 				if (variable != null) {
-					variable.revalidate();
+					variable.forceRevalidate();
 				}
 				if (value != null) {
 					value.setOwner(getOwner());
-					value.revalidate();
+					value.forceRevalidate();
 				}
 			}
 
