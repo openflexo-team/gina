@@ -290,7 +290,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 		else {
 			try {
 				if (evaluationPanel != null && evaluationTA != null && evaluationPanel.isVisible() && dataBinding != null) {
-					Expression evaluatedExpression = dataBinding.getExpression().evaluate();
+					Expression evaluatedExpression = dataBinding.getExpression().evaluate(null);
 					if (evaluatedExpression != null) {
 						evaluationTA.setText(evaluatedExpression.toString());
 					}
