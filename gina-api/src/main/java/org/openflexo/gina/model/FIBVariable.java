@@ -187,38 +187,13 @@ public interface FIBVariable<T> extends FIBModelObject {
 
 		@Override
 		public void setValue(DataBinding<T> value) {
+
 			if (value != null) {
-				this.value = new DataBinding<T>(value.toString(), getOwner(), Object.class, DataBinding.BindingDefinitionType.GET) {
-					@Override
-					public void notifyBindingChanged(Expression oldValue, Expression newValue) {
-						super.notifyBindingChanged(oldValue, newValue);
-						if (isSet() && isValid()) {
-							setType(getAnalyzedType());
-						}
-						// getPropertyChangeSupport().firePropertyChange(TYPE_KEY, null, getType());
-						// getPropertyChangeSupport().firePropertyChange("typeClass", null, getTypeClass());
-					}
-				};
-				this.value.setBindingName(getName());
-				// updateDynamicAccessBindingVariable();
+				getValue().setUnparsedBinding(value.getUnparsedBinding());
 			}
 			else {
 				this.value = null;
 			}
-
-			/*(Type) performSuperGetter(TYPE_KEY);
-			if (returned != null) {
-				return returned;
-			}
-			return Object.class*/
-
-			/*System.out.println("On me dit de faire un setType() suite a un setValue() with " + value);
-			System.out.println("isBeingCloned=" + isBeingCloned());
-			System.out.println("isCreatedByCloning=" + isCreatedByCloning());*/
-
-			/*if (!isCreatedByCloning()) {
-				getBindingVariable().setType(getType());
-			}*/
 		}
 
 		// private BindingVariable bindingVariable;

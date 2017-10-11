@@ -1206,6 +1206,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		public DataBinding<Boolean> getVisible() {
 			if (visible == null) {
 				visible = new DataBinding<>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				visible.setBindingName(VISIBLE_KEY);
 			}
 			return visible;
 		}
@@ -1213,8 +1214,10 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		@Override
 		public void setVisible(DataBinding<Boolean> visible) {
 			if (visible != null) {
-				visible = new DataBinding<>(visible.toString(), this, Boolean.class, DataBinding.BindingDefinitionType.GET);
-				visible.setBindingName("data");
+				visible.setOwner(this);
+				visible.setDeclaredType(Boolean.class);
+				visible.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				visible.setBindingName(VISIBLE_KEY);
 			}
 			this.visible = visible;
 		}
