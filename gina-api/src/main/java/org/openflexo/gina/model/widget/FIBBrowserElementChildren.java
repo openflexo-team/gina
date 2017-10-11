@@ -150,7 +150,9 @@ public interface FIBBrowserElementChildren extends FIBModelObject {
 			private BindingModel childBindingModel = null;
 
 			private void updateBindingModel() {
-				childBindingModel.setBaseBindingModel(FIBBrowserElementChildrenImpl.this.getBindingModel());
+				if (childBindingModel != null) {
+					childBindingModel.setBaseBindingModel(FIBBrowserElementChildrenImpl.this.getBindingModel());
+				}
 			}
 
 			@Override
