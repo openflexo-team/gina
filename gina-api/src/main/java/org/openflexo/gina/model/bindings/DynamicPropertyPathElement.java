@@ -83,17 +83,22 @@ public class DynamicPropertyPathElement<W extends FIBWidget> extends SimplePathE
 			setType(dynamicProperty.getType());
 			lastKnownType = getType();
 		}
+	}
+
+	@Override
+	public void activate() {
+		super.activate();
 		if (widget != null && widget.getPropertyChangeSupport() != null) {
 			widget.getPropertyChangeSupport().addPropertyChangeListener(this);
 		}
 	}
 
 	@Override
-	public void delete() {
+	public void desactivate() {
 		if (widget != null && widget.getPropertyChangeSupport() != null) {
 			widget.getPropertyChangeSupport().removePropertyChangeListener(this);
 		}
-		super.delete();
+		super.desactivate();
 	}
 
 	public W getWidget() {

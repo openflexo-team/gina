@@ -63,6 +63,11 @@ public class FIBVariableBindingVariable extends BindingVariable implements Prope
 	public FIBVariableBindingVariable(FIBVariable<?> variable) {
 		super(variable.getName(), variable.getType(), true);
 		this.variable = variable;
+	}
+
+	@Override
+	public void activate() {
+		super.activate();
 		if (variable != null) {
 			lastKnownType = variable.getType();
 		}
@@ -72,13 +77,11 @@ public class FIBVariableBindingVariable extends BindingVariable implements Prope
 	}
 
 	@Override
-	public void delete() {
+	public void desactivate() {
 		if (variable != null && variable.getPropertyChangeSupport() != null) {
-			if (variable.getPropertyChangeSupport() != null) {
-				variable.getPropertyChangeSupport().removePropertyChangeListener(this);
-			}
+			variable.getPropertyChangeSupport().removePropertyChangeListener(this);
 		}
-		super.delete();
+		super.desactivate();
 	}
 
 	@Override
@@ -88,7 +91,6 @@ public class FIBVariableBindingVariable extends BindingVariable implements Prope
 
 	private boolean typeIsBeingFetched = false;
 
-	
 	// TODO: investigate on this
 	// sgu : i commented out the fix of xtof while i do not understand what was to be fixed
 	@Override

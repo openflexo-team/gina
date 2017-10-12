@@ -62,6 +62,11 @@ public class FIBChildBindingVariable extends BindingVariable implements Property
 	public FIBChildBindingVariable(FIBComponent component) {
 		super(component.getName(), component.getDynamicAccessType(), true);
 		this.component = component;
+	}
+
+	@Override
+	public void activate() {
+		super.activate();
 		if (component != null) {
 			lastKnownType = component.getDynamicAccessType();
 		}
@@ -71,14 +76,13 @@ public class FIBChildBindingVariable extends BindingVariable implements Property
 	}
 
 	@Override
-	public void delete() {
-		// Thread.dumpStack();
+	public void desactivate() {
 		if (component != null && component.getPropertyChangeSupport() != null) {
 			if (component.getPropertyChangeSupport() != null) {
 				component.getPropertyChangeSupport().removePropertyChangeListener(this);
 			}
 		}
-		super.delete();
+		super.desactivate();
 	}
 
 	@Override

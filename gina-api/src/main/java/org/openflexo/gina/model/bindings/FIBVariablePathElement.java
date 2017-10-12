@@ -67,17 +67,22 @@ public class FIBVariablePathElement extends SimplePathElement implements Propert
 		if (fibVariable != null) {
 			lastKnownType = fibVariable.getType();
 		}
+	}
+
+	@Override
+	public void activate() {
+		super.activate();
 		if (fibVariable != null && fibVariable.getPropertyChangeSupport() != null) {
 			fibVariable.getPropertyChangeSupport().addPropertyChangeListener(this);
 		}
 	}
 
 	@Override
-	public void delete() {
+	public void desactivate() {
 		if (fibVariable != null && fibVariable.getPropertyChangeSupport() != null) {
 			fibVariable.getPropertyChangeSupport().removePropertyChangeListener(this);
 		}
-		super.delete();
+		super.desactivate();
 	}
 
 	public FIBVariable<?> getFIBVariable() {
