@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingModel;
-import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -60,7 +60,7 @@ public class FIBVariablePathElement extends SimplePathElement implements Propert
 	private Type lastKnownType = null;
 	private final FIBVariable<?> fibVariable;
 
-	public FIBVariablePathElement(BindingPathElement parent, FIBVariable<?> fibVariable) {
+	public FIBVariablePathElement(IBindingPathElement parent, FIBVariable<?> fibVariable) {
 		super(parent, fibVariable.getName(), fibVariable.getType());
 
 		this.fibVariable = fibVariable;

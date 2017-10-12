@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingEvaluationContext;
-import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.InvocationTargetTransformException;
 import org.openflexo.connie.exception.NullReferenceException;
@@ -157,7 +157,7 @@ public class FIBViewType<F extends FIBComponent> implements CustomType {
 		return true;
 	}
 
-	public List<? extends SimplePathElement> getAccessibleSimplePathElements(BindingPathElement parent) {
+	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement parent) {
 		return Collections.emptyList();
 	}
 

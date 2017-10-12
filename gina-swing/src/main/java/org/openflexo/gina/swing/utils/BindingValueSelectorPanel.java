@@ -95,6 +95,7 @@ import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.binding.Function;
 import org.openflexo.connie.binding.Function.FunctionArgument;
 import org.openflexo.connie.binding.FunctionPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.expr.BindingValue;
 import org.openflexo.connie.type.TypeUtils;
@@ -151,7 +152,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 	protected JButton createsButton;
 
-	private final Map<BindingPathElement, Hashtable<Type, BindingColumnListModel>> _listModels;
+	private final Map<IBindingPathElement, Hashtable<Type, BindingColumnListModel>> _listModels;
 
 	private final Vector<FilteredJList<?>> _lists;
 
@@ -799,8 +800,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 						if (i > -1 && i < _lists.size() && listAtIndex(i + 1) != null
 								&& listAtIndex(i + 1).getModel().getElementAt(0) != null
 								&& listAtIndex(i + 1).getModel().getElementAt(0).getElement() instanceof BindingPathElement) {
-							((BindingValue) dataBinding.getExpression())
-									.setBindingPathElementAtIndex(listAtIndex(i + 1).getModel().getElementAt(0).getElement(), i);
+							((BindingValue) dataBinding.getExpression()).setBindingPathElementAtIndex(
+									(BindingPathElement) listAtIndex(i + 1).getModel().getElementAt(0).getElement(), i);
 							bindingSelector.setEditedObject(dataBinding);
 							bindingSelector.fireEditedObjectChanged();
 							listAtIndex(i + 1).requestFocusInWindow();
@@ -1188,7 +1189,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 	// getColumnListModel(type);
 	// }
 
-	protected BindingColumnListModel getColumnListModel(BindingPathElement element, Type resultingType) {
+	protected BindingColumnListModel getColumnListModel(IBindingPathElement element, Type resultingType) {
 		if (element == null) {
 			return EMPTY_MODEL;
 		}
@@ -1212,15 +1213,15 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		}*/
 	}
 
-	protected BindingColumnListModel makeColumnListModel(BindingPathElement element, Type resultingType) {
+	protected BindingColumnListModel makeColumnListModel(IBindingPathElement element, Type resultingType) {
 		return new NormalBindingColumnListModel(element, resultingType);
 	}
 
 	protected class BindingColumnElement {
-		private BindingPathElement _element;
+		private IBindingPathElement _element;
 		private Type _resultingType;
 
-		protected BindingColumnElement(BindingPathElement element, Type resultingType) {
+		protected BindingColumnElement(IBindingPathElement element, Type resultingType) {
 			_element = element;
 			_resultingType = resultingType;
 			if (resultingType == null) {
@@ -1233,7 +1234,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			_resultingType = null;
 		}
 
-		public BindingPathElement getElement() {
+		public IBindingPathElement getElement() {
 			return _element;
 		}
 
@@ -1370,7 +1371,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			fireContentsChanged(this, 0, getUnfilteredSize() - 1);
 		}
 
-		public BindingColumnElement getElementFor(BindingPathElement element) {
+		public BindingColumnElement getElementFor(IBindingPathElement element) {
 			// logger.info("getElementFor() " + element + " of " + element.getClass());
 			/*if (element instanceof MethodCall) {
 				element = ((MethodCall) element).getMethodDefinition();
@@ -1613,12 +1614,12 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 	private class NormalBindingColumnListModel extends BindingColumnListModel implements PropertyChangeListener {
 		private final Type _type;
-		private final BindingPathElement _element;
+		private final IBindingPathElement _element;
 		private final Vector<BindingPathElement> _accessibleProperties;
 		private final Vector<BindingPathElement> _accessibleMethods;
 		private final Vector<BindingColumnElement> _elements;
 
-		NormalBindingColumnListModel(BindingPathElement element, Type resultingType) {
+		NormalBindingColumnListModel(IBindingPathElement element, Type resultingType) {
 			super();
 			_element = element;
 			_type = resultingType;
@@ -2380,11 +2381,13 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				}
 			}
 
-			((BindingValue) bindingSelector.getEditedObject().getExpression()).setBindingPathElementAtIndex(last.getElement(), i - 1);
+			((BindingValue) bindingSelector.getEditedObject().getExpression())
+					.setBindingPathElementAtIndex((BindingPathElement) last.getElement(), i - 1);
 			i++;
 		}
 		if (last != null) {
-			((BindingValue) bindingSelector.getEditedObject().getExpression()).removeBindingPathElementAfter(last.getElement());
+			((BindingValue) bindingSelector.getEditedObject().getExpression())
+					.removeBindingPathElementAfter((BindingPathElement) last.getElement());
 		}
 		return (BindingValue) bindingSelector.getEditedObject().getExpression();
 	}
@@ -2431,7 +2434,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				// FIXED invalid type object comparison
 				if (selectedValue.getElement() != bindingValue.getBindingPathElementAtIndex(index - 1)) {
 					bindingSelector.disconnect();
-					bindingValue.setBindingPathElementAtIndex(selectedValue.getElement(), index - 1);
+					bindingValue.setBindingPathElementAtIndex((BindingPathElement) selectedValue.getElement(), index - 1);
 					binding.setExpression(bindingValue);
 					bindingSelector.fireEditedObjectChanged();
 				}

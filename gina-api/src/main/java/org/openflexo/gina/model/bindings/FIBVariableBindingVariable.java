@@ -63,11 +63,6 @@ public class FIBVariableBindingVariable extends BindingVariable implements Prope
 	public FIBVariableBindingVariable(FIBVariable<?> variable) {
 		super(variable.getName(), variable.getType(), true);
 		this.variable = variable;
-	}
-
-	@Override
-	public void activate() {
-		super.activate();
 		if (variable != null) {
 			lastKnownType = variable.getType();
 		}
@@ -77,11 +72,11 @@ public class FIBVariableBindingVariable extends BindingVariable implements Prope
 	}
 
 	@Override
-	public void desactivate() {
+	public void delete() {
 		if (variable != null && variable.getPropertyChangeSupport() != null) {
 			variable.getPropertyChangeSupport().removePropertyChangeListener(this);
 		}
-		super.desactivate();
+		super.delete();
 	}
 
 	@Override

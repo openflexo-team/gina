@@ -66,22 +66,17 @@ public class DynamicPropertyBindingVariable extends BindingVariable implements P
 		if (dynamicProperty != null) {
 			lastKnownType = dynamicProperty.getType();
 		}
-	}
-
-	@Override
-	public void activate() {
-		super.activate();
 		if (dynamicProperty != null && dynamicProperty.getPropertyChangeSupport() != null) {
 			dynamicProperty.getPropertyChangeSupport().addPropertyChangeListener(this);
 		}
 	}
 
 	@Override
-	public void desactivate() {
+	public void delete() {
 		if (dynamicProperty != null && dynamicProperty.getPropertyChangeSupport() != null) {
 			dynamicProperty.getPropertyChangeSupport().removePropertyChangeListener(this);
 		}
-		super.desactivate();
+		super.delete();
 	}
 
 	@Override

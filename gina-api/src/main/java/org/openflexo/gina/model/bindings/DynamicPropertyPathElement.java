@@ -46,6 +46,7 @@ import java.util.logging.Logger;
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.InvocationTargetTransformException;
 import org.openflexo.connie.exception.NullReferenceException;
@@ -74,7 +75,7 @@ public class DynamicPropertyPathElement<W extends FIBWidget> extends SimplePathE
 	private final W widget;
 	private final DynamicProperty dynamicProperty;
 
-	public DynamicPropertyPathElement(BindingPathElement parent, W widget, DynamicProperty dynamicProperty) {
+	public DynamicPropertyPathElement(IBindingPathElement parent, W widget, DynamicProperty dynamicProperty) {
 		super(parent, "", Object.class);
 		this.dynamicProperty = dynamicProperty;
 		this.widget = widget;

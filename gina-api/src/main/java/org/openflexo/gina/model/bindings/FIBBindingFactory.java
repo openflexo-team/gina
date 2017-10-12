@@ -46,7 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.java.JavaBindingFactory;
 import org.openflexo.gina.model.FIBComponent;
@@ -57,9 +57,9 @@ public class FIBBindingFactory extends JavaBindingFactory {
 
 	static final Logger logger = Logger.getLogger(FIBBindingFactory.class.getPackage().getName());
 
-	private final Map<BindingPathElement, Map<Object, SimplePathElement>> storedBindingPathElements = new HashMap<>();
+	private final Map<IBindingPathElement, Map<Object, SimplePathElement>> storedBindingPathElements = new HashMap<>();
 
-	protected SimplePathElement getSimplePathElement(Object object, BindingPathElement parent) {
+	protected SimplePathElement getSimplePathElement(Object object, IBindingPathElement parent) {
 		Map<Object, SimplePathElement> storedValues = storedBindingPathElements.get(parent);
 		if (storedValues == null) {
 			storedValues = new HashMap<>();
@@ -73,7 +73,7 @@ public class FIBBindingFactory extends JavaBindingFactory {
 		return returned;
 	}
 
-	protected SimplePathElement makeSimplePathElement(Object object, BindingPathElement parent) {
+	protected SimplePathElement makeSimplePathElement(Object object, IBindingPathElement parent) {
 		if (object instanceof FIBVariable) {
 			return new FIBVariablePathElement(parent, (FIBVariable<?>) object);
 		}
@@ -82,7 +82,7 @@ public class FIBBindingFactory extends JavaBindingFactory {
 	}
 
 	@Override
-	public List<? extends SimplePathElement> getAccessibleSimplePathElements(BindingPathElement parent) {
+	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement parent) {
 
 		if (parent != null) {
 			Type pType = parent.getType();
@@ -112,7 +112,7 @@ public class FIBBindingFactory extends JavaBindingFactory {
 	}
 
 	@Override
-	public SimplePathElement makeSimplePathElement(BindingPathElement parent, String propertyName) {
+	public SimplePathElement makeSimplePathElement(IBindingPathElement parent, String propertyName) {
 		// We want to avoid code duplication, so iterate on all accessible simple path element and choose the right one
 		SimplePathElement returned = null;
 		List<? extends SimplePathElement> accessibleSimplePathElements = getAccessibleSimplePathElements(parent);

@@ -47,7 +47,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingEvaluationContext;
-import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.model.bindings.DynamicPropertyPathElement;
@@ -65,7 +65,7 @@ public class FIBWidgetType<W extends FIBWidget> extends FIBViewType<W> {
 
 	protected static final Logger logger = FlexoLogger.getLogger(FIBWidgetType.class.getPackage().getName());
 
-	protected final Map<BindingPathElement, List<DynamicPropertyPathElement<? super W>>> pathElements;
+	protected final Map<IBindingPathElement, List<DynamicPropertyPathElement<? super W>>> pathElements;
 
 	public final DynamicProperty VALUE = new DynamicProperty() {
 		@Override
@@ -116,7 +116,7 @@ public class FIBWidgetType<W extends FIBWidget> extends FIBViewType<W> {
 	}
 
 	@Override
-	public List<DynamicPropertyPathElement<? super W>> getAccessibleSimplePathElements(BindingPathElement parent) {
+	public List<DynamicPropertyPathElement<? super W>> getAccessibleSimplePathElements(IBindingPathElement parent) {
 
 		if (parent != null && parent.getType() instanceof FIBWidgetType) {
 
