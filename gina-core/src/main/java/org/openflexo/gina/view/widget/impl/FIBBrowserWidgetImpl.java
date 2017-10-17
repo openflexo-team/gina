@@ -341,7 +341,7 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		} catch (TypeMismatchException e) {
 			e.printStackTrace();
 		} catch (NullReferenceException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		}
@@ -460,7 +460,7 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				e.printStackTrace();
+				// e.printStackTrace();
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
 			}
