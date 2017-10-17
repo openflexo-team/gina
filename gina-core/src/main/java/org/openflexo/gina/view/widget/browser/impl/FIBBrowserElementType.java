@@ -54,6 +54,7 @@ import javax.swing.Icon;
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBBrowserElement;
@@ -345,6 +346,8 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			Object bindingValue = null;
 			try {
 				bindingValue = children.getData().getBindingValue(this);
+			} catch (NullReferenceException e) {
+				// Silently escape
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
