@@ -160,6 +160,7 @@ public class FIBTableActionListener<T> implements ActionListener, BindingEvaluat
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
+				e.getCause().printStackTrace();
 			}
 
 			if (tableWidget != null) {
