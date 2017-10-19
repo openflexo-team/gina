@@ -125,15 +125,26 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 			listBindingValueChangeListener.stopObserving();
 			listBindingValueChangeListener.delete();
 		}
-		if (getComponent().getList() != null && getComponent().getList().isValid()) {
+
+		// TODO: investigate on this bug and workaround
+		// Binding should be notified and we should not force revalidate
+		if (getComponent().getList() != null && getComponent().getList().isSet() && !getComponent().getList().isValid()) {
+			String invalidBindingReason = getComponent().getList().invalidBindingReason();
+			getComponent().getList().forceRevalidate();
+			LOGGER.warning("binding was not valid: " + getComponent().getList() + " reason: " + invalidBindingReason);
+			if (getComponent().getList().isValid()) {
+				LOGGER.warning("Binding has been force revalidated and is now valid. Please investigate.");
+			}
+		}
+
+		if (getComponent().getList() != null && getComponent().getList().forceRevalidate()) {
 			listBindingValueChangeListener = new BindingValueListChangeListener<Object, List<Object>>(
 					((DataBinding) getComponent().getList()), getBindingEvaluationContext()) {
 
 				@Override
 				public void bindingValueChanged(Object source, List<Object> newValue) {
-					// System.out.println(" bindingValueChanged() detected for list=" + getComponent().getList() + " with newValue=" +
-					// newValue
-					// + " source=" + source);
+					//System.out.println(" bindingValueChanged() detected for list=" + getComponent().getList() + " with newValue=" + newValue
+					//		+ " source=" + source);
 					updateMultipleValues();
 				}
 			};
