@@ -178,6 +178,8 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			setIteratorObject(object);
 			try {
 				return browserElementDefinition.getLabel().getBindingValue(this);
+			} catch (NullReferenceException e) {
+				// Silently escape
 			} catch (Exception e) {
 				// System.out.println("While evaluating " + browserElementDefinition.getLabel());
 				e.printStackTrace();
