@@ -19,6 +19,7 @@ import org.openflexo.gina.model.widget.FIBCheckBox;
 import org.openflexo.gina.model.widget.FIBCheckboxList;
 import org.openflexo.gina.model.widget.FIBColor;
 import org.openflexo.gina.model.widget.FIBCustom;
+import org.openflexo.gina.model.widget.FIBDate;
 import org.openflexo.gina.model.widget.FIBDropDown;
 import org.openflexo.gina.model.widget.FIBEditor;
 import org.openflexo.gina.model.widget.FIBEditorPane;
@@ -51,6 +52,7 @@ import org.openflexo.gina.view.widget.impl.FIBCheckBoxWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBCheckboxListWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBColorWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBCustomWidgetImpl;
+import org.openflexo.gina.view.widget.impl.FIBDateWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBDropDownWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBEditorPaneWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBEditorWidgetImpl;
@@ -218,6 +220,9 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 		if (fibWidget instanceof FIBFont) {
 			return (FIBWidgetView<F, ? extends C, ?>) makeFont((FIBFont) fibWidget, controller);
 		}
+		if (fibWidget instanceof FIBDate) {
+			return (FIBWidgetView<F, ? extends C, ?>) makeDate((FIBDate) fibWidget, controller);
+		}
 		if (fibWidget instanceof FIBFile) {
 			return (FIBWidgetView<F, ? extends C, ?>) makeFile((FIBFile) fibWidget, controller);
 		}
@@ -280,6 +285,8 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 	public abstract FIBColorWidgetImpl<? extends C> makeColor(FIBColor widget, FIBController controller);
 
 	public abstract FIBFontWidgetImpl<? extends C> makeFont(FIBFont widget, FIBController controller);
+
+	public abstract FIBDateWidgetImpl<? extends C> makeDate(FIBDate widget, FIBController controller);
 
 	public abstract FIBFileWidgetImpl<? extends C> makeFile(FIBFile widget, FIBController controller);
 

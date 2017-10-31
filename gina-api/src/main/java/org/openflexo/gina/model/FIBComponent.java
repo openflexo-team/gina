@@ -83,6 +83,7 @@ import org.openflexo.gina.model.widget.FIBCheckBox;
 import org.openflexo.gina.model.widget.FIBCheckboxList;
 import org.openflexo.gina.model.widget.FIBColor;
 import org.openflexo.gina.model.widget.FIBCustom;
+import org.openflexo.gina.model.widget.FIBDate;
 import org.openflexo.gina.model.widget.FIBDropDown;
 import org.openflexo.gina.model.widget.FIBEditor;
 import org.openflexo.gina.model.widget.FIBEditorPane;
@@ -153,10 +154,11 @@ import org.openflexo.toolbox.StringUtils;
 @ImplementationClass(FIBComponent.FIBComponentImpl.class)
 @Imports({ @Import(FIBPanel.class), @Import(FIBTab.class), @Import(FIBSplitPanel.class), @Import(FIBTabPanel.class),
 		@Import(FIBBrowser.class), @Import(FIBButton.class), @Import(FIBCheckBox.class), @Import(FIBColor.class), @Import(FIBCustom.class),
-		@Import(FIBFile.class), @Import(FIBFont.class), @Import(FIBHtmlEditor.class), @Import(FIBImage.class), @Import(FIBLabel.class),
-		@Import(FIBCheckboxList.class), @Import(FIBDropDown.class), @Import(FIBList.class), @Import(FIBRadioButtonList.class),
-		@Import(FIBNumber.class), @Import(FIBReferencedComponent.class), @Import(FIBTable.class), @Import(FIBEditor.class),
-		@Import(FIBTextArea.class), @Import(FIBTextField.class), @Import(FIBEditorPane.class), @Import(FIBGraph.class) })
+		@Import(FIBFile.class), @Import(FIBFont.class), @Import(FIBDate.class), @Import(FIBHtmlEditor.class), @Import(FIBImage.class),
+		@Import(FIBLabel.class), @Import(FIBCheckboxList.class), @Import(FIBDropDown.class), @Import(FIBList.class),
+		@Import(FIBRadioButtonList.class), @Import(FIBNumber.class), @Import(FIBReferencedComponent.class), @Import(FIBTable.class),
+		@Import(FIBEditor.class), @Import(FIBTextArea.class), @Import(FIBTextField.class), @Import(FIBEditorPane.class),
+		@Import(FIBGraph.class) })
 @Modify(forward = FIBComponent.PARENT_KEY)
 public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBaseIdentifier {
 

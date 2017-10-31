@@ -51,6 +51,7 @@ import org.openflexo.gina.model.widget.FIBCheckBox;
 import org.openflexo.gina.model.widget.FIBCheckboxList;
 import org.openflexo.gina.model.widget.FIBColor;
 import org.openflexo.gina.model.widget.FIBCustom;
+import org.openflexo.gina.model.widget.FIBDate;
 import org.openflexo.gina.model.widget.FIBDropDown;
 import org.openflexo.gina.model.widget.FIBEditor;
 import org.openflexo.gina.model.widget.FIBFile;
@@ -76,6 +77,7 @@ import org.openflexo.gina.swing.editor.view.widget.JFIBEditableCheckboxListWidge
 import org.openflexo.gina.swing.editor.view.widget.JFIBEditableCheckboxWidget;
 import org.openflexo.gina.swing.editor.view.widget.JFIBEditableColorWidget;
 import org.openflexo.gina.swing.editor.view.widget.JFIBEditableCustomWidget;
+import org.openflexo.gina.swing.editor.view.widget.JFIBEditableDateWidget;
 import org.openflexo.gina.swing.editor.view.widget.JFIBEditableDropDownWidget;
 import org.openflexo.gina.swing.editor.view.widget.JFIBEditableEditorWidget;
 import org.openflexo.gina.swing.editor.view.widget.JFIBEditableFileWidget;
@@ -103,6 +105,7 @@ import org.openflexo.gina.view.widget.impl.FIBCheckBoxWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBCheckboxListWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBColorWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBCustomWidgetImpl;
+import org.openflexo.gina.view.widget.impl.FIBDateWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBDropDownWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBEditorWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBFileWidgetImpl;
@@ -244,6 +247,11 @@ public class SwingEditorViewFactory extends SwingViewFactory {
 	@Override
 	public FIBFontWidgetImpl<? extends JComponent> makeFont(FIBFont widget, FIBController controller) {
 		return new JFIBEditableFontWidget(widget, fibEditorController);
+	}
+
+	@Override
+	public FIBDateWidgetImpl<? extends JComponent> makeDate(FIBDate widget, FIBController controller) {
+		return new JFIBEditableDateWidget(widget, fibEditorController);
 	}
 
 	@Override
