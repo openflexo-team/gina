@@ -707,8 +707,13 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 				// We want to avoid to update components that depends on me,
 				// when they are not visible
 				((FIBViewImpl<?, ?>) v).updateVisibility();
-				if (v.isComponentVisible()) {
-					((FIBViewImpl<?, ?>) v).performUpdate();
+				try {
+					if (v.isComponentVisible()) {
+						((FIBViewImpl<?, ?>) v).performUpdate();
+					}
+				} catch (NullReferenceException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 			else {

@@ -45,6 +45,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.container.FIBTab;
 import org.openflexo.gina.view.FIBView;
@@ -83,12 +84,17 @@ public class JFIBTabView extends JFIBPanelView implements FIBTabView<JPanel, JCo
 			if (isViewVisible() && resultingJComponent.getParent() == null) {
 				int newIndex = 0;
 				for (FIBView<?, ?> v : getParentView().getSubViews()) {
-					if (v instanceof JFIBTabView && v.isComponentVisible()) {
-						JComponent childResultingJComponent = ((JFIBTabView) v).getResultingJComponent();
-						FIBTab tab = ((JFIBTabView) v).getComponent();
-						if (getComponent().getParent().getIndex(getComponent()) > tab.getParent().getIndex(tab)) {
-							newIndex = parentResultingJComponent.indexOfComponent(childResultingJComponent) + 1;
+					try {
+						if (v instanceof JFIBTabView && v.isComponentVisible()) {
+							JComponent childResultingJComponent = ((JFIBTabView) v).getResultingJComponent();
+							FIBTab tab = ((JFIBTabView) v).getComponent();
+							if (getComponent().getParent().getIndex(getComponent()) > tab.getParent().getIndex(tab)) {
+								newIndex = parentResultingJComponent.indexOfComponent(childResultingJComponent) + 1;
+							}
 						}
+					} catch (NullReferenceException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
 				}
 
@@ -98,7 +104,8 @@ public class JFIBTabView extends JFIBPanelView implements FIBTabView<JPanel, JCo
 				if (wasSelected) {
 					parentResultingJComponent.setSelectedComponent(resultingJComponent);
 				}
-			} else if (!isViewVisible() && resultingJComponent.getParent() != null) {
+			}
+			else if (!isViewVisible() && resultingJComponent.getParent() != null) {
 				wasSelected = parentResultingJComponent.getSelectedComponent() == resultingJComponent;
 				parentResultingJComponent.remove(resultingJComponent);
 				logger.fine("********** Removing component " + getComponent().getTitle());

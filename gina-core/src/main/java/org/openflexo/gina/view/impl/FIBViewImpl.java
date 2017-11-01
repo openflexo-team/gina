@@ -138,10 +138,6 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 		getComponent().getPropertyChangeSupport().removePropertyChangeListener(this);
 
-		/*if (visibleBindingValueChangeListener != null) {
-			visibleBindingValueChangeListener.stopObserving();
-			visibleBindingValueChangeListener.delete();
-		}*/
 		componentBecomesInvisible();
 
 		stopListenVisibleValueChange();
@@ -181,14 +177,6 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	 * Called when the component view explicitely change its visibility state from INVISIBLE to VISIBLE
 	 */
 	protected void componentBecomesVisible() {
-
-		/*if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("GridBagConstraints")) {
-			System.out.println("************ Component " + getComponent() + " becomes VISIBLE !!!!!!");
-		}
-		
-		if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("TwoColsConstraints")) {
-			System.out.println("************ Component " + getComponent() + " becomes VISIBLE !!!!!!");
-		}*/
 
 		// System.out.println("************ Component " + getComponent() + " becomes VISIBLE !!!!!!");
 
@@ -250,40 +238,10 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			stopListenVariableValueChange(variable);
 		}
 
-		/*if (getComponent().getName() != null && getComponent().getName().equals("BorderConstraints")) {
-			System.out.println("On se met a ecouter la variable " + variable.getName() + " qui vaut " + variable.getValue());
-		}*/
-
-		/*if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("GridBagConstraints")) {
-			System.out.println("On se met a ecouter la variable " + variable.getName() + " qui vaut " + variable.getValue() + " valid="
-					+ variable.getValue().isValid());
-			System.out.println("reason=" + variable.getValue().invalidBindingReason());
-		}
-		
-		if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("TwoColsConstraints")) {
-			System.out.println("On se met a ecouter la variable " + variable.getName() + " qui vaut " + variable.getValue() + " valid="
-					+ variable.getValue().isValid());
-			System.out.println("reason=" + variable.getValue().invalidBindingReason());
-		}*/
-
 		if (variable.getValue() != null && variable.getValue().isValid()) {
 			dataBindingValueChangeListener = new BindingValueChangeListener<T>(variable.getValue(), getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
-					/*if (getComponent() != null && getComponent().getName() != null
-							&& getComponent().getName().equals("GridBagConstraints")) {
-						System.out.println("************ On detecte un changement de la valeur de " + variable);
-						System.out.println(" bindingValueChanged() detected for data=" + variable.getValue() + " with newValue=" + newValue
-								+ " source=" + source);
-					}
-					if (getComponent() != null && getComponent().getName() != null
-							&& getComponent().getName().equals("TwoColsConstraints")) {
-						System.out.println("************ On detecte un changement de la valeur de " + variable);
-						System.out.println(" bindingValueChanged() detected for data=" + variable.getValue() + " with newValue=" + newValue
-								+ " source=" + source);
-					}*/
-					// System.out.println(" !!!!!!!!!!!!!!! bindingValueChanged() detected for data=" + variable.getValue()
-					// + " with newValue=" + newValue + " source=" + source);
 					setVariableValue(variable, newValue);
 				}
 			};
@@ -306,10 +264,6 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	@SuppressWarnings("unchecked")
 	private <T> void stopListenVariableValueChange(final FIBVariable<T> variable) {
-
-		/*if (getComponent().getName() != null && getComponent().getName().equals("BorderConstraints")) {
-			System.out.println("On n'ecoute plus la variable " + variable.getName() + " qui vaut " + variable.getValue());
-		}*/
 
 		BindingValueChangeListener<T> dataBindingValueChangeListener = (BindingValueChangeListener<T>) variableListeners.get(variable);
 
@@ -369,8 +323,12 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			variables.put(variable.getName(), value);
 			// Fixed DIANA-23
 			// Caution: modifications subject to regression: please report any regression
-			if (isComponentVisible()) {
-				fireVariableChanged(variable, oldValue, value);
+			try {
+				if (isComponentVisible()) {
+					fireVariableChanged(variable, oldValue, value);
+				}
+			} catch (NullReferenceException e) {
+				// In this case, do nothing
 			}
 		}
 	}
@@ -390,13 +348,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, Boolean newValue) {
-					/*if (getComponent().getName() != null && (getComponent().getName().equals("ControllerClassLabel")
-							|| getComponent().getName().equals("ControllerClassSelector"))) {
-						System.out.println("In component " + getComponent() + " bindingValueChanged() detected for visible="
-								+ getComponent().getVisible() + " with newValue=" + newValue + " source=" + source);
-					}*/
 					updateVisibility();
-					// refreshObserving();
 				}
 
 				@Override
@@ -405,13 +357,6 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 				}
 
 			};
-			/*
-			 * if (getComponent().getVisible().toString().equals(
-			 * "EnableMultipleLayoutsCheckBox.data")) {
-			 * System.out.println("******** ok je l'ai");
-			 * System.out.println(visibleBindingValueChangeListener.toString());
-			 * }
-			 */
 		}
 	}
 
@@ -532,8 +477,6 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		return component;
 	}
 
-	// public abstract void updateDataObject(Object anObject);
-
 	@Override
 	public abstract void updateLanguage();
 
@@ -630,51 +573,15 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	}
 
 	/**
-	 * This method is called to update view representing a FIBComponent.<br>
-	 * Callers are all the components that have been updated during current update loop. If the callers contains the component itself, does
-	 * nothing and return.
+	 * Computes and return visibility status for component, according to the component hierarchy (this component must be present in a
+	 * hierarchy of components where all components are visible), and the eventual "visible" binding declared in this component<br>
 	 * 
-	 * @param callers
-	 *            all the components that have been previously updated during current update loop
-	 * @return a flag indicating if component has been updated
+	 * @return
+	 * @throws NullReferenceException
+	 *             if computed expression leads to a NullReferenceException
 	 */
-	/*
-	 * public boolean update(List<FIBComponent> callers) { if
-	 * (callers.contains(getComponent())) { return false; } updateVisibility();
-	 * return true; }
-	 */
-
-	// @Deprecated
-	// protected abstract boolean checkValidDataPath();
-
 	@Override
-	public final boolean isComponentVisible() {
-		/*
-		 * if (getComponent().getName() != null &&
-		 * getComponent().getName().equals("DropSchemePanel")) {
-		 * System.out.println("Bon, je me demande si c'est visible");
-		 * System.out.println("getComponent().getVisible()=" +
-		 * getComponent().getVisible()); System.out.println("valid=" +
-		 * getComponent().getVisible().isValid());
-		 * System.out.println("getBindingEvaluationContext=" +
-		 * getBindingEvaluationContext()); try { System.out.println("result=" +
-		 * getComponent
-		 * ().getVisible().getBindingValue(getBindingEvaluationContext()));
-		 * DataBinding<Object> binding1 = new DataBinding<Object>("data",
-		 * getComponent(), Object.class, BindingDefinitionType.GET);
-		 * System.out.println("data=" +
-		 * binding1.getBindingValue(getBindingEvaluationContext()));
-		 * DataBinding<Object> binding2 = new
-		 * DataBinding<Object>("EditionActionBrowser.selected", getComponent(),
-		 * Object.class, BindingDefinitionType.GET);
-		 * System.out.println("EditionActionBrowser.selected=" +
-		 * binding2.getBindingValue(getBindingEvaluationContext())); } catch
-		 * (TypeMismatchException e) { 
-		 * e.printStackTrace(); } catch (NullReferenceException e) { 
-		 * e.printStackTrace(); } catch
-		 * (InvocationTargetException e) { 
-		 * e.printStackTrace(); } }
-		 */
+	public final boolean isComponentVisible() throws NullReferenceException {
 
 		if (getParentView() != null && !getParentView().isComponentVisible()) {
 			return false;
@@ -691,9 +598,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 				LOGGER.warning("Unable to evaluate " + getComponent().getVisible());
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				// NullReferenceException is allowed, in this case, default
-				// visibility is true
-				componentVisible = true;
+				throw e;
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
 				componentVisible = true;
@@ -703,23 +608,36 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	}
 
 	protected void updateVisibility() {
-		if (isComponentVisible() != visible) {
-			visible = !visible;
-			getRenderingAdapter().setVisible(getTechnologyComponent(), visible);
-			setVisible(visible);
-			if (visible) {
-				componentBecomesVisible();
-			}
-			else {
-				componentBecomesInvisible();
-			}
+		try {
+			// We would like to catch here NullReferenceException while computing visibility status
+			// What we don't want is to get a visible status from false to true, just because a visible binding
+			// was not evaluable because of a NullRereferenceException
+			// If this happen, juste escape this method without changing status
 
-			if (getParentView() != null) {
-				getParentView().invalidateAndUpdateLayoutLater();
-				// getParentView().revalidateAndRepaint();
-			}
+			boolean newVisibilityStatus = isComponentVisible();
 
+			if (newVisibilityStatus != visible) {
+				visible = !visible;
+				getRenderingAdapter().setVisible(getTechnologyComponent(), visible);
+				setVisible(visible);
+
+				if (visible) {
+					componentBecomesVisible();
+				}
+				else {
+					componentBecomesInvisible();
+				}
+
+				if (getParentView() != null) {
+					getParentView().invalidateAndUpdateLayoutLater();
+					// getParentView().revalidateAndRepaint();
+				}
+
+			}
+		} catch (NullReferenceException e1) {
+			// do nothing
 		}
+
 	}
 
 	public Object getDefaultData() {
@@ -760,19 +678,6 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	public void languageChanged(Language language) {
 		updateLanguage();
 	}
-
-	/*@Override
-	public void updateGraphicalProperties() {
-		if (getTechnologyComponent() == null) {
-			return;
-		}
-		updatePreferredSize();
-		updateMaximumSize();
-		updateMinimumSize();
-		updateOpacity();
-		updateBackgroundColor();
-		updateForegroundColor();
-	}*/
 
 	protected void updateOpacity() {
 		if (getComponent() == null) {
@@ -898,13 +803,6 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	@Override
 	public void setEmbeddingComponent(FIBReferencedComponentWidget<C> embeddingComponent) {
-		/*
-		 * if (getComponent() != null && getComponent().getName() != null &&
-		 * getComponent().getName().equals("DropSchemePanel")) {
-		 * System.out.println
-		 * ("Set emmbedding component for DropSchemePanel with " +
-		 * embeddingComponent); }
-		 */
 		this.embeddingComponent = embeddingComponent;
 	}
 
@@ -931,8 +829,6 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			if (getParentView() != null) {
 				getParentView().updateLayout();
 			}
-			// FIBEditorController controller = getEditorController();
-			// controller.notifyFocusedAndSelectedObject();
 		}
 		else if (evt.getPropertyName().equals(FIBComponent.MIN_WIDTH_KEY) || evt.getPropertyName().equals(FIBComponent.MIN_HEIGHT_KEY)
 				|| evt.getPropertyName().equals(FIBComponent.DEFINE_MIN_DIMENSIONS)) {
@@ -969,28 +865,5 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		}
 
 	}
-
-	/*public static void main(String[] args) throws Exception
-	{
-	  List<String> colorKeys = new ArrayList<String>();
-	  Set<Entry<Object, Object>> entries = UIManager.getLookAndFeelDefaults().entrySet();
-	  for (Entry entry : entries)
-	  {
-	    if (entry.getValue() instanceof Color)
-	    {
-	      colorKeys.add((String) entry.getKey());
-	    }
-	  }
-	
-	  // sort the color keys
-	  Collections.sort(colorKeys);
-	
-	  // print the color keys
-	  for (String colorKey : colorKeys)
-	  {
-	    System.out.println(colorKey);
-	  }
-	
-	}*/
 
 }

@@ -47,6 +47,7 @@ import java.beans.PropertyChangeListener;
 
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.binding.SettableBindingEvaluationContext;
+import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBVariable;
@@ -149,7 +150,15 @@ public interface FIBView<M extends FIBComponent, C>
 	 */
 	public boolean update();
 
-	public boolean isComponentVisible();
+	/**
+	 * Computes and return visibility status for component, according to the component hierarchy (this component must be present in a
+	 * hierarchy of components where all components are visible), and the eventual "visible" binding declared in this component<br>
+	 * 
+	 * @return
+	 * @throws NullReferenceException
+	 *             if computed expression leads to a NullReferenceException
+	 */
+	public boolean isComponentVisible() throws NullReferenceException;
 
 	/**
 	 * When called, means that the view is displayed again<br>
