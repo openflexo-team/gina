@@ -618,7 +618,6 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 			if (newVisibilityStatus != visible) {
 				visible = !visible;
-				getRenderingAdapter().setVisible(getTechnologyComponent(), visible);
 				setVisible(visible);
 
 				if (visible) {
@@ -627,6 +626,9 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 				else {
 					componentBecomesInvisible();
 				}
+
+				// Render visibility status now
+				getRenderingAdapter().setVisible(getTechnologyComponent(), visible);
 
 				if (getParentView() != null) {
 					getParentView().invalidateAndUpdateLayoutLater();
