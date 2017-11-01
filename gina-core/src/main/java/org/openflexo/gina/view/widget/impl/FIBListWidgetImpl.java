@@ -107,7 +107,7 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 
 	public void updateRowHeight() {
 		if (getWidget().getRowHeight() != null && getWidget().getRowHeight() > 0) {
-			getRenderingAdapter().setRowHeight(getTechnologyComponent(), getWidget().getVisibleRowCount());
+			getRenderingAdapter().setRowHeight(getTechnologyComponent(), getWidget().getRowHeight());
 		}
 	}
 
