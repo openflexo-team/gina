@@ -851,7 +851,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				e.printStackTrace();
+				// e.printStackTrace();
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
 			}
