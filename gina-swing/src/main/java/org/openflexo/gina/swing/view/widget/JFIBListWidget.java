@@ -242,26 +242,28 @@ public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T> implements
 					&& getWidget().getAutoSelectFirstRow() && getTechnologyComponent().getModel().getSize() > 0) {
 				objectToSelect = getTechnologyComponent().getModel().getElementAt(0);
 			}
-			if (objectToSelect != null) {
-				for (int i = 0; i < getTechnologyComponent().getModel().getSize(); i++) {
-					if (getTechnologyComponent().getModel().getElementAt(i) == objectToSelect) {
-						final int index = i;
-						SwingUtilities.invokeLater(new Runnable() {
-							@Override
-							public void run() {
-								getTechnologyComponent().setSelectedIndex(index);
-							}
-						});
-					}
+			performSelect(objectToSelect);
+		}
+	}
+
+	@Override
+	protected void performSelect(Object objectToSelect) {
+		if (objectToSelect != null) {
+			for (int i = 0; i < getTechnologyComponent().getModel().getSize(); i++) {
+				if (getTechnologyComponent().getModel().getElementAt(i) == objectToSelect) {
+					final int index = i;
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							getTechnologyComponent().setSelectedIndex(index);
+						}
+					});
 				}
 			}
 		}
-		/*
-		 * if (getWidget().getAutoSelectFirstRow() && _list.getModel().getSize()
-		 * > 0) { SwingUtilities.invokeLater(new Runnable() {
-		 * 
-		 * @Override public void run() { _list.setSelectedIndex(0); } }); }
-		 */
+		else {
+			getTechnologyComponent().clearSelection();
+		}
 	}
 
 }

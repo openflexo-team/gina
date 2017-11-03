@@ -52,6 +52,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.openflexo.connie.binding.BindingValueChangeListener;
 import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -75,6 +76,8 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 
 	private List<T> selection;
 
+	private BindingValueChangeListener<Object> selectedBindingValueChangeListener;
+
 	public FIBListWidgetImpl(FIBList model, FIBController controller, ListRenderingAdapter<C, T> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
 
@@ -92,6 +95,48 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 		updateVisibleRowCount();
 		updateRowHeight();
 		// updateFont();
+	}
+
+	@Override
+	protected void componentBecomesVisible() {
+		super.componentBecomesVisible();
+		listenSelectedValueChange();
+	}
+
+	@Override
+	protected void componentBecomesInvisible() {
+		super.componentBecomesInvisible();
+		stopListenSelectedValueChange();
+	}
+
+	private void listenSelectedValueChange() {
+		if (selectedBindingValueChangeListener != null) {
+			selectedBindingValueChangeListener.stopObserving();
+			selectedBindingValueChangeListener.delete();
+		}
+
+		if (getComponent().getSelected() != null && getComponent().getSelected().forceRevalidate()) {
+			selectedBindingValueChangeListener = new BindingValueChangeListener<Object>(getComponent().getSelected(),
+					getBindingEvaluationContext(), true) {
+
+				@Override
+				public void bindingValueChanged(Object source, Object newValue) {
+					// System.out.println(" bindingValueChanged() detected for list=" + getComponent().getList() + " with newValue=" +
+					// newValue
+					// + " source=" + source);
+					updateSelected();
+				}
+			};
+		}
+
+	}
+
+	private void stopListenSelectedValueChange() {
+		if (selectedBindingValueChangeListener != null) {
+			selectedBindingValueChangeListener.stopObserving();
+			selectedBindingValueChangeListener.delete();
+			selectedBindingValueChangeListener = null;
+		}
 	}
 
 	@Override
@@ -142,6 +187,28 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 		// return false;
 
 		return newValue;
+	}
+
+	protected abstract void performSelect(Object objectToSelect);
+
+	public void updateSelected() {
+		if (getComponent().getSelected() != null && getComponent().getSelected().isValid()) {
+			Object objectToSelect;
+			try {
+				objectToSelect = getComponent().getSelected().getBindingValue(getBindingEvaluationContext());
+				performSelect(objectToSelect);
+
+			} catch (TypeMismatchException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NullReferenceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private boolean modelUpdating = false;
