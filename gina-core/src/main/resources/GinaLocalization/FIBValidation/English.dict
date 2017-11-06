@@ -24,4 +24,5 @@ remove_duplicated_references=Remove duplicated references
 remove_extra_dictionary=Remove extra dictionary
 remove_unnecessary_translation=Remove unnecessary translation
 widget_($validable.toString)_declares_managing_dynamic_model_but_does_not_have_a_name=Widget ($validable.toString) declares managing dynamic model but does not have a name
+widget_does_not_define_any_values_range_(either_static_list_or_dynamic_list_or_array_or_enumeration)=Widget does not define any values range (either static list or dynamic list or array or enumeration)
 widgets_declaring_managing_dynamic_model_should_have_a_name_description=Widgets declaring managing dynamic model should have a name description
