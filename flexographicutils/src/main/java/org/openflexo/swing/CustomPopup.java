@@ -914,7 +914,7 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 		closePopup();
 	}
 
-	public void addApplyCancelListener(ApplyCancelListener l) {
+	public final void addApplyCancelListener(ApplyCancelListener l) {
 		applyCancelListener.add(l);
 	}
 

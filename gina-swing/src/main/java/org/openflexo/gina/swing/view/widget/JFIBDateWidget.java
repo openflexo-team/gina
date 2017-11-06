@@ -42,19 +42,15 @@ package org.openflexo.gina.swing.view.widget;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
 import java.util.Date;
 import java.util.logging.Logger;
 
-import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
-import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.gina.model.widget.FIBDate;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
@@ -93,35 +89,35 @@ public class JFIBDateWidget extends FIBDateWidgetImpl<DateSelectorPanel> impleme
 			component.selector.setEditedObject(aDate);
 		}
 
-		@Override
+		/*@Override
 		public boolean isCheckboxVisible(DateSelectorPanel component) {
 			return component.checkBox.isVisible();
 		}
-
+		
 		@Override
 		public void setCheckboxVisible(DateSelectorPanel component, boolean visible) {
 			component.checkBox.setVisible(visible);
 		}
-
+		
 		@Override
 		public boolean isCheckboxSelected(DateSelectorPanel component) {
 			return component.checkBox.isSelected();
 		}
-
+		
 		@Override
 		public void setCheckboxSelected(DateSelectorPanel component, boolean selected) {
 			component.checkBox.setSelected(selected);
 		}
-
+		
 		@Override
 		public boolean isCheckboxEnabled(DateSelectorPanel component) {
 			return component.checkBox.isEnabled();
 		}
-
+		
 		@Override
 		public void setCheckboxEnabled(DateSelectorPanel component, boolean enabled) {
 			component.checkBox.setEnabled(enabled);
-		}
+		}*/
 
 		@Override
 		public Color getDefaultForegroundColor(DateSelectorPanel component) {
@@ -138,7 +134,7 @@ public class JFIBDateWidget extends FIBDateWidgetImpl<DateSelectorPanel> impleme
 	public static SwingDateWidgetRenderingAdapter RENDERING_TECHNOLOGY_ADAPTER = new SwingDateWidgetRenderingAdapter();
 
 	public static class DateSelectorPanel extends JPanel {
-		private final JCheckBox checkBox;
+		// private final JCheckBox checkBox;
 		protected DateSelector selector;
 		private final JFIBDateWidget widget;
 
@@ -150,26 +146,26 @@ public class JFIBDateWidget extends FIBDateWidgetImpl<DateSelectorPanel> impleme
 			selector.addFocusListener(widget);
 			// Fixed bug where Date selector widget was always disabled
 			selector.setEnabled(true);
-			checkBox = new JCheckBox();
-			checkBox.setHorizontalTextPosition(JCheckBox.LEADING);
+			// checkBox = new JCheckBox();
+			// checkBox.setHorizontalTextPosition(JCheckBox.LEADING);
 
 			// checkBox.setText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey(widget.getComponent().getAllowsNullText(), checkBox));
-			checkBox.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedTooltipForKey("undefined_value", checkBox));
+			// checkBox.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedTooltipForKey("undefined_value", checkBox));
 
-			checkBox.addActionListener(new ActionListener() {
-
+			/*checkBox.addActionListener(new ActionListener() {
+			
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					selector.setEnabled(checkBox.isSelected());
-					DateSelectorPanel.this.widget.fontChanged(); // updateModelFromWidget();
+					DateSelectorPanel.this.widget.dateChanged(); // updateModelFromWidget();
 				}
-			});
+			});*/
 			setOpaque(false);
 			GridBagConstraints gbc = new GridBagConstraints();
 			gbc.fill = GridBagConstraints.NONE;
 			gbc.weightx = 0;
 			gbc.anchor = GridBagConstraints.LINE_START;
-			add(checkBox, gbc);
+			// add(checkBox, gbc);
 			gbc.fill = GridBagConstraints.HORIZONTAL;
 			gbc.weightx = 1.0;
 			add(selector, gbc);
@@ -182,8 +178,8 @@ public class JFIBDateWidget extends FIBDateWidgetImpl<DateSelectorPanel> impleme
 		}
 
 		public void updateLanguage() {
-			checkBox.setText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("undefined_value", checkBox));
-			checkBox.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedTooltipForKey("undefined_value", checkBox));
+			// checkBox.setText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("undefined_value", checkBox));
+			// checkBox.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedTooltipForKey("undefined_value", checkBox));
 		}
 
 	}

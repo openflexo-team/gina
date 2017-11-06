@@ -48,7 +48,6 @@ import org.openflexo.gina.event.description.FIBEventFactory;
 import org.openflexo.gina.event.description.FIBValueEventDescription;
 import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.gina.model.widget.FIBDate;
-import org.openflexo.gina.model.widget.FIBFont;
 import org.openflexo.gina.view.impl.FIBWidgetViewImpl;
 import org.openflexo.gina.view.widget.FIBDateWidget;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
@@ -75,7 +74,7 @@ public abstract class FIBDateWidgetImpl<C> extends FIBWidgetViewImpl<FIBDate, C,
 	@Override
 	protected void performUpdate() {
 		super.performUpdate();
-		updateCheckboxVisibility();
+		// updateCheckboxVisibility();
 		// updateWidgetFromModel();
 	}
 
@@ -84,23 +83,23 @@ public abstract class FIBDateWidgetImpl<C> extends FIBWidgetViewImpl<FIBDate, C,
 		return (DateWidgetRenderingAdapter<C>) super.getRenderingAdapter();
 	}
 
-	protected final void updateCheckboxVisibility() {
+	/*protected final void updateCheckboxVisibility() {
 		getRenderingAdapter().setCheckboxVisible(getTechnologyComponent(), getWidget().getAllowsNull());
-	}
+	}*/
 
 	@Override
 	public Date updateData() {
 		Date newFont = super.updateData();
 		Date editedObject = getSelectedDate();
-		if (!getRenderingAdapter().isCheckboxSelected(getTechnologyComponent())) {
+		/*if (!getRenderingAdapter().isCheckboxSelected(getTechnologyComponent())) {
 			editedObject = null;
-		}
+		}*/
 		if (notEquals(newFont, editedObject)) {
 			// widgetUpdating = true;
 			// try {
-			getRenderingAdapter().setCheckboxSelected(getTechnologyComponent(), newFont != null);
+			/*getRenderingAdapter().setCheckboxSelected(getTechnologyComponent(), newFont != null);
 			getRenderingAdapter().setCheckboxEnabled(getTechnologyComponent(),
-					(newFont != null || !getWidget().getAllowsNull()) && isEnabled());
+					(newFont != null || !getWidget().getAllowsNull()) && isEnabled());*/
 			setSelectedDate(newFont);
 			// } finally {
 			// widgetUpdating = false;
@@ -111,17 +110,26 @@ public abstract class FIBDateWidgetImpl<C> extends FIBWidgetViewImpl<FIBDate, C,
 		return newFont;
 	}
 
-	protected boolean fontChanged() {
+	protected boolean dateChanged() {
 		Date editedObject = null;
-		if (getRenderingAdapter().isCheckboxSelected(getTechnologyComponent())) {
-			editedObject = getSelectedDate();
-		}
+		// if (getRenderingAdapter().isCheckboxSelected(getTechnologyComponent())) {
+		editedObject = getSelectedDate();
+		// }
+
+		System.out.println("Date changed with " + getSelectedDate());
+
+		System.out.println("pour le moment " + getValue());
+		System.out.println("isReadOnly " + isReadOnly());
+
 		if (notEquals(getValue(), editedObject)) {
 			if (isReadOnly()) {
 				return false;
 			}
 			// modelUpdating = true;
 			// try {
+
+			System.out.println("et hop on set la value");
+
 			setValue(editedObject);
 			// } finally {
 			// modelUpdating = false;
@@ -144,7 +152,7 @@ public abstract class FIBDateWidgetImpl<C> extends FIBWidgetViewImpl<FIBDate, C,
 		GinaStackEvent stack = GENotifier
 				.raise(FIBEventFactory.getInstance().createValueEvent(FIBValueEventDescription.CHANGED, getValue()));
 
-		fontChanged();
+		dateChanged();
 		// updateModelFromWidget();
 
 		stack.end();
@@ -157,9 +165,9 @@ public abstract class FIBDateWidgetImpl<C> extends FIBWidgetViewImpl<FIBDate, C,
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals(FIBFont.ALLOWS_NULL_KEY)) {
+		/*if (evt.getPropertyName().equals(FIBFont.ALLOWS_NULL_KEY)) {
 			updateCheckboxVisibility();
-		}
+		}*/
 		super.propertyChange(evt);
 	}
 }

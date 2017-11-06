@@ -60,6 +60,7 @@ import org.openflexo.gina.model.widget.FIBCheckBox;
 import org.openflexo.gina.model.widget.FIBCheckboxList;
 import org.openflexo.gina.model.widget.FIBCustom;
 import org.openflexo.gina.model.widget.FIBCustom.FIBCustomAssignment;
+import org.openflexo.gina.model.widget.FIBDate;
 import org.openflexo.gina.model.widget.FIBDropDown;
 import org.openflexo.gina.model.widget.FIBDropDownColumn;
 import org.openflexo.gina.model.widget.FIBFile;
@@ -216,6 +217,10 @@ public class FIBModelFactory extends ModelFactory {
 
 	public FIBTextArea newFIBTextArea() {
 		return newInstance(FIBTextArea.class);
+	}
+
+	public FIBDate newFIBDate() {
+		return newInstance(FIBDate.class);
 	}
 
 	public FIBSplitPanel newFIBSplitPanel() {

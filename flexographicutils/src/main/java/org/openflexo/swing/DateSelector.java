@@ -611,6 +611,7 @@ public class DateSelector extends TextFieldCustomPopup<Date> {
 
 	@Override
 	public void apply() {
+		System.out.println("On fait apply dans DateSelector avec " + getEditedObject());
 		setRevertValue(getEditedObject());
 		closePopup();
 		super.apply();
