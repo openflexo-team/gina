@@ -224,7 +224,7 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 		return false;
 	}
 
-	public abstract Class<V> getValueClass();
+	public abstract Class<? extends V> getValueClass();
 
 	@SuppressWarnings("unchecked")
 	public synchronized V getValueFor(final T object /*, BindingEvaluationContext evaluationContext*/) {

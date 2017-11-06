@@ -40,6 +40,7 @@
 package org.openflexo.gina.view.widget.table.impl;
 
 import java.awt.Component;
+import java.util.logging.Logger;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.InputVerifier;
@@ -50,6 +51,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
+import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBNumberColumn;
 
@@ -60,6 +62,8 @@ import org.openflexo.gina.model.widget.FIBNumberColumn;
  * 
  */
 public class NumberColumn<T> extends AbstractColumn<T, Number> implements EditableColumn<T, Number> {
+
+	private static final Logger logger = Logger.getLogger(NumberColumn.class.getPackage().getName());
 
 	private DefaultCellEditor editor;
 
@@ -73,7 +77,27 @@ public class NumberColumn<T> extends AbstractColumn<T, Number> implements Editab
 	}
 
 	@Override
-	public Class<Number> getValueClass() {
+	public synchronized Number getValueFor(T object) {
+		Number returned = super.getValueFor(object);
+		if (getColumnModel() != null && getColumnModel().getNumberType() != null) {
+			if (returned.getClass().equals(getColumnModel().getNumberType().getType())) {
+				return returned;
+			}
+			Object castedObject = TypeUtils.castTo(returned, getColumnModel().getNumberType().getType());
+			if (castedObject instanceof Number) {
+				return (Number) castedObject;
+			}
+			logger.warning("Unexpected value: " + returned);
+		}
+		return returned;
+	}
+
+	@Override
+	public Class<? extends Number> getValueClass() {
+		if (getColumnModel() != null && getColumnModel().getNumberType() != null) {
+			return getColumnModel().getNumberType().getType();
+		}
+
 		return Number.class;
 	}
 
@@ -121,9 +145,11 @@ public class NumberColumn<T> extends AbstractColumn<T, Number> implements Editab
 							return true;
 						}
 					});
+
 					if (value != null) {
 						textfield.setText(((Number) value).toString());
-					} else {
+					}
+					else {
 						textfield.setText("");
 					}
 					SwingUtilities.invokeLater(new Runnable() {
@@ -147,20 +173,20 @@ public class NumberColumn<T> extends AbstractColumn<T, Number> implements Editab
 				private Number getValue(String value) {
 					try {
 						switch (getColumnModel().getNumberType()) {
-						case ByteType:
-							return Byte.parseByte(value);
-						case ShortType:
-							return Short.parseShort(value);
-						case IntegerType:
-							return Integer.parseInt(value);
-						case LongType:
-							return Long.parseLong(value);
-						case FloatType:
-							return Float.parseFloat(value);
-						case DoubleType:
-							return Double.parseDouble(value);
-						default:
-							return null;
+							case ByteType:
+								return Byte.parseByte(value);
+							case ShortType:
+								return Short.parseShort(value);
+							case IntegerType:
+								return Integer.parseInt(value);
+							case LongType:
+								return Long.parseLong(value);
+							case FloatType:
+								return Float.parseFloat(value);
+							case DoubleType:
+								return Double.parseDouble(value);
+							default:
+								return null;
 						}
 					} catch (NumberFormatException e) {
 						e.printStackTrace();

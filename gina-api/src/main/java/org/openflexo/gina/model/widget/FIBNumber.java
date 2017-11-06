@@ -57,7 +57,44 @@ import org.openflexo.model.annotations.XMLElement;
 public interface FIBNumber extends FIBWidget {
 
 	public static enum NumberType {
-		ByteType, ShortType, IntegerType, LongType, FloatType, DoubleType;
+		ByteType {
+			@Override
+			public Class<Byte> getType() {
+				return Byte.class;
+			}
+		},
+		ShortType {
+			@Override
+			public Class<Short> getType() {
+				return Short.class;
+			}
+		},
+		IntegerType {
+			@Override
+			public Class<Integer> getType() {
+				return Integer.class;
+			}
+		},
+		LongType {
+			@Override
+			public Class<Long> getType() {
+				return Long.class;
+			}
+		},
+		FloatType {
+			@Override
+			public Class<Float> getType() {
+				return Float.class;
+			}
+		},
+		DoubleType {
+			@Override
+			public Class<Double> getType() {
+				return Double.class;
+			}
+		};
+
+		public abstract Class<? extends Number> getType();
 	}
 
 	@PropertyIdentifier(type = boolean.class)
