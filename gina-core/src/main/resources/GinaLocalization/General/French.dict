@@ -140,6 +140,7 @@ controller_factory=controller_factory
 create_new_row_on_click=create_new_row_on_click
 dark_level=dark_level
 data=data
+data_type=data_type
 date=date
 deep_exploration_support=deep_exploration_support
 default_text=default_text

@@ -140,6 +140,7 @@ controller_factory=Controller factory
 create_new_row_on_click=Create new row on click
 dark_level=Dark level
 data=Data
+data_type=Data type
 date=Date
 deep_exploration_support=Deep exploration support
 default_text=Default text
