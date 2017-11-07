@@ -291,6 +291,7 @@ north_east=North east
 north_west=North west
 null=Null
 number=Number
+number_format=Number format
 object_type=Object type
 ok=Ok
 opaque=Opaque
