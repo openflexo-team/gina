@@ -55,6 +55,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JSpinner.DefaultEditor;
+import javax.swing.JSpinner.NumberEditor;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -71,6 +72,7 @@ import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.swing.view.widget.JFIBNumberWidget.NumberSelectorPanel;
 import org.openflexo.gina.view.widget.impl.FIBNumberWidgetImpl;
+import org.openflexo.toolbox.StringUtils;
 import org.openflexo.toolbox.ToolBox;
 
 /**
@@ -188,10 +190,17 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 			});
 			SpinnerNumberModel valueModel = makeSpinnerModel();
 			valueChooser = new JSpinner(valueModel);
-			valueChooser.setEditor(new JSpinner.NumberEditor(valueChooser /*
-																			* ,
-																			* "#.##"
-																			*/));
+
+			NumberEditor numberEditor;
+			if (getDecimalFormatPattern() != null) {
+				numberEditor = new JSpinner.NumberEditor(valueChooser, getDecimalFormatPattern());
+			}
+			else {
+				numberEditor = new JSpinner.NumberEditor(valueChooser);
+			}
+
+			valueChooser.setEditor(numberEditor);
+
 			switch (widget.getWidget().getNumberType()) {
 				case DoubleType:
 					valueChooser.setValue(widget.getDefaultValue().doubleValue());
@@ -262,6 +271,13 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 						RIGHT_COMPENSATING_BORDER));
 			}
 
+		}
+
+		protected String getDecimalFormatPattern() {
+			if (StringUtils.isNotEmpty(widget.getComponent().getNumberFormat())) {
+				return widget.getComponent().getNumberFormat();
+			}
+			return null;
 		}
 
 		public void updateLanguage() {

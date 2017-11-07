@@ -109,6 +109,8 @@ public interface FIBNumber extends FIBWidget {
 	public static final String INCREMENT_KEY = "increment";
 	@PropertyIdentifier(type = NumberType.class)
 	public static final String NUMBER_TYPE_KEY = "numberType";
+	@PropertyIdentifier(type = String.class)
+	public static final String NUMBER_FORMAT_KEY = "numberFormat";
 	@PropertyIdentifier(type = Integer.class)
 	public static final String COLUMNS_KEY = "columns";
 
@@ -153,6 +155,36 @@ public interface FIBNumber extends FIBWidget {
 
 	@Setter(NUMBER_TYPE_KEY)
 	public void setNumberType(NumberType numberType);
+
+	/**
+	 * Returns number format for that column, eg "###0.000" or "##.00"
+	 * 
+	 * @return
+	 */
+	@Getter(value = NUMBER_FORMAT_KEY)
+	@XMLAttribute
+	public String getNumberFormat();
+
+	/**
+	 * Sets number format for that column, eg "###0.000" or "##.00"
+	 * 
+	 * Symbol Meaning
+	 * <ul>
+	 * <li>0 a digit</li>
+	 * <li># a digit, zero shows as absent</li>
+	 * <li>. placeholder for decimal separator</li>
+	 * <li>, placeholder for grouping separator.</li>
+	 * <li>E separates mantissa and exponent for exponential formats.</li>
+	 * <li>- default negative prefix.</li>
+	 * <li>% multiply by 100 and show as percentage</li>
+	 * <li>X any other characters can be used in the prefix or suffix</li>
+	 * <li>' used to quote special characters in a prefix or suffix.</li>
+	 * </ul>
+	 * 
+	 * @param numberFormat
+	 */
+	@Setter(NUMBER_FORMAT_KEY)
+	public void setNumberFormat(String numberFormat);
 
 	@Getter(value = COLUMNS_KEY)
 	@XMLAttribute
