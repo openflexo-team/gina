@@ -157,6 +157,11 @@ public class TestFIBEditorInspectors extends FIBInspectorTestCase {
 	}
 
 	@Test
+	public void testFIBDropDownColumnBasicInspector() {
+		validateFIB("Inspectors/Basic/FIBDropDownColumn.inspector");
+	}
+
+	@Test
 	public void testFIBEditorBasicInspector() {
 		validateFIB("Inspectors/Basic/FIBEditor.inspector");
 	}
@@ -204,6 +209,11 @@ public class TestFIBEditorInspectors extends FIBInspectorTestCase {
 	@Test
 	public void testFIBNumberBasicInspector() {
 		validateFIB("Inspectors/Basic/FIBNumber.inspector");
+	}
+
+	@Test
+	public void testFIBNumberColumnBasicInspector() {
+		validateFIB("Inspectors/Basic/FIBNumberColumn.inspector");
 	}
 
 	@Test

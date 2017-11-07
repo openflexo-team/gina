@@ -40,6 +40,9 @@
 package org.openflexo.gina.view.widget.table.impl;
 
 import java.awt.Component;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.logging.Logger;
 
 import javax.swing.DefaultCellEditor;
@@ -51,6 +54,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBNumberColumn;
@@ -79,7 +83,7 @@ public class NumberColumn<T> extends AbstractColumn<T, Number> implements Editab
 	@Override
 	public synchronized Number getValueFor(T object) {
 		Number returned = super.getValueFor(object);
-		if (getColumnModel() != null && getColumnModel().getNumberType() != null) {
+		if (returned != null && getColumnModel() != null && getColumnModel().getNumberType() != null) {
 			if (returned.getClass().equals(getColumnModel().getNumberType().getType())) {
 				return returned;
 			}
@@ -127,6 +131,20 @@ public class NumberColumn<T> extends AbstractColumn<T, Number> implements Editab
 	}
 
 	@Override
+	public String getStringRepresentation(Object value) {
+		if (value != null && StringUtils.isNotEmpty(getColumnModel().getNumberFormat())) {
+			DecimalFormat decimalFormat = new DecimalFormat(getColumnModel().getNumberFormat());
+			try {
+				return decimalFormat.format(value);
+			} catch (IllegalArgumentException e) {
+				logger.warning("Could not format as a " + getColumnModel().getNumberType() + ": " + value + " of "
+						+ (value != null ? value.getClass() : null) + " given by evaluation of " + getColumnModel().getData());
+			}
+		}
+		return super.getStringRepresentation(value);
+	}
+
+	@Override
 	public TableCellEditor getCellEditor() {
 		if (editor == null) {
 			editor = new DefaultCellEditor(new JTextField()) {
@@ -147,7 +165,7 @@ public class NumberColumn<T> extends AbstractColumn<T, Number> implements Editab
 					});
 
 					if (value != null) {
-						textfield.setText(((Number) value).toString());
+						textfield.setText(getStringRepresentation(value));
 					}
 					else {
 						textfield.setText("");
@@ -197,4 +215,46 @@ public class NumberColumn<T> extends AbstractColumn<T, Number> implements Editab
 		}
 		return editor;
 	}
+
+	public static void main(String args[]) {
+
+		// get format for default locale
+
+		System.out.println("NumberFormat-1:");
+		NumberFormat nf1 = NumberFormat.getInstance();
+		System.out.println(nf1.format(1234.56789));
+		System.out.println(nf1.format(1f / 3));
+		System.out.println(nf1.format(1000));
+
+		// get format for German locale
+
+		System.out.println("NumberFormat-2:");
+		NumberFormat nf2 = NumberFormat.getInstance(Locale.GERMAN);
+		System.out.println(nf2.format(1234.56789));
+		System.out.println(nf2.format(1f / 3));
+		System.out.println(nf2.format(1000));
+
+		System.out.println("DecimalFormat-1:");
+		DecimalFormat df1 = new DecimalFormat("####.000");
+		System.out.println(df1.format(1234.56));
+		System.out.println(df1.format(1234.56789));
+		System.out.println(df1.format(1f / 3));
+		System.out.println(df1.format(1000));
+
+		System.out.println("DecimalFormat-2:");
+		DecimalFormat df2 = new DecimalFormat("##.00");
+		System.out.println(df2.format(1234.56));
+		System.out.println(df2.format(1234.56789));
+		System.out.println(df2.format(1f / 3));
+		System.out.println(df2.format(1000));
+
+		System.out.println("DecimalFormat-3:");
+		DecimalFormat df3 = new DecimalFormat("####0.00");
+		System.out.println(df3.format(1234.56));
+		System.out.println(df3.format(1234.56789));
+		System.out.println(df3.format(1f / 3));
+		System.out.println(df3.format(1000));
+
+	}
+
 }

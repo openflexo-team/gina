@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBNumberColumn" name="Inspector">
+	<Parameter name="title" value="Number column" />
+	
+		<Label index="4" label="type" constraints="twocols(location=left)"
+		localize="true" />
+	<DropDown index="5" data="data.numberType" constraints="twocols(location=right)"
+		localize="true" iteratorClassName="org.openflexo.gina.model.widget.FIBNumber$NumberType"
+		autoSelectFirstRow="false" />
+	
+		<Label index="6" label="number_format" constraints="twocols(location=left)"
+		localize="true" />
+	<TextField index="7" data="data.numberFormat"
+		constraints="twocols(expandHorizontally=true;location=right)"
+		localize="true" columns="15" />
+	
+</Inspector>
