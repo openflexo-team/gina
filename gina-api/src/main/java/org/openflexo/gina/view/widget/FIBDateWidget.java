@@ -71,6 +71,10 @@ public interface FIBDateWidget<C> extends FIBWidgetView<FIBDate, C, Date> {
 
 		public void setSelectedDate(C component, Date aDate);
 
+		public int getColumns(C component);
+
+		public void setColumns(C component, int columns);
+
 		/*public boolean isCheckboxVisible(C component);
 		
 		public void setCheckboxVisible(C component, boolean visible);

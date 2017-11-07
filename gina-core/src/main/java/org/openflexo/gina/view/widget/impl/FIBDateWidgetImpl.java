@@ -48,6 +48,7 @@ import org.openflexo.gina.event.description.FIBEventFactory;
 import org.openflexo.gina.event.description.FIBValueEventDescription;
 import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.gina.model.widget.FIBDate;
+import org.openflexo.gina.model.widget.FIBNumber;
 import org.openflexo.gina.view.impl.FIBWidgetViewImpl;
 import org.openflexo.gina.view.widget.FIBDateWidget;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
@@ -75,7 +76,7 @@ public abstract class FIBDateWidgetImpl<C> extends FIBWidgetViewImpl<FIBDate, C,
 	protected void performUpdate() {
 		super.performUpdate();
 		// updateCheckboxVisibility();
-		// updateWidgetFromModel();
+		updateColumns();
 	}
 
 	@Override
@@ -167,7 +168,20 @@ public abstract class FIBDateWidgetImpl<C> extends FIBWidgetViewImpl<FIBDate, C,
 	public void propertyChange(PropertyChangeEvent evt) {
 		/*if (evt.getPropertyName().equals(FIBFont.ALLOWS_NULL_KEY)) {
 			updateCheckboxVisibility();
-		}*/
+		}
+		else*/ if (evt.getPropertyName().equals(FIBNumber.COLUMNS_KEY)) {
+			updateColumns();
+		}
 		super.propertyChange(evt);
 	}
+
+	public void updateColumns() {
+		if (getComponent().getColumns() != null) {
+			getRenderingAdapter().setColumns(getTechnologyComponent(), getComponent().getColumns());
+		}
+		else {
+			getRenderingAdapter().setColumns(getTechnologyComponent(), 0);
+		}
+	}
+
 }

@@ -64,6 +64,8 @@ public interface FIBDate extends FIBWidget {
 
 	@PropertyIdentifier(type = boolean.class)
 	public static final String ALLOWS_NULL_KEY = "allowsNull";
+	@PropertyIdentifier(type = Integer.class)
+	public static final String COLUMNS_KEY = "columns";
 
 	@Getter(value = ALLOWS_NULL_KEY, defaultValue = "false")
 	@XMLAttribute
@@ -71,6 +73,13 @@ public interface FIBDate extends FIBWidget {
 
 	@Setter(ALLOWS_NULL_KEY)
 	public void setAllowsNull(boolean allowsNull);
+
+	@Getter(value = COLUMNS_KEY)
+	@XMLAttribute
+	public Integer getColumns();
+
+	@Setter(COLUMNS_KEY)
+	public void setColumns(Integer columns);
 
 	public static abstract class FIBDateImpl extends FIBWidgetImpl implements FIBDate {
 

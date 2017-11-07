@@ -89,6 +89,18 @@ public class JFIBDateWidget extends FIBDateWidgetImpl<DateSelectorPanel> impleme
 			component.selector.setEditedObject(aDate);
 		}
 
+		@Override
+		public int getColumns(DateSelectorPanel component) {
+			return component.selector.getTextField().getColumns();
+		}
+
+		@Override
+		public void setColumns(DateSelectorPanel component, int columns) {
+			component.selector.getTextField().setColumns(columns);
+			component.revalidate();
+			component.repaint();
+		}
+
 		/*@Override
 		public boolean isCheckboxVisible(DateSelectorPanel component) {
 			return component.checkBox.isVisible();
