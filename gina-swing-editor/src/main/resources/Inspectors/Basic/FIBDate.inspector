@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBDate" name="Inspector">
+
+	<Label index="4" label="columns" constraints="twocols(location=left)"
+		localize="true" />
+	<Number index="5" numberType="IntegerType" data="data.columns" columns="5"
+		constraints="twocols(location=right)" localize="true" />
+
+	<Parameter name="title" value="Date" />
+</Inspector>

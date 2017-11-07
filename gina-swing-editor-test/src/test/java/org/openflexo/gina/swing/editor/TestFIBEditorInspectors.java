@@ -137,6 +137,11 @@ public class TestFIBEditorInspectors extends FIBInspectorTestCase {
 	}
 
 	@Test
+	public void testFIBDateBasicInspector() {
+		validateFIB("Inspectors/Basic/FIBDate.inspector");
+	}
+
+	@Test
 	public void testFIBDiscretePolarFunctionGraphBasicInspector() {
 		validateFIB("Inspectors/Basic/FIBDiscretePolarFunctionGraph.inspector");
 	}
