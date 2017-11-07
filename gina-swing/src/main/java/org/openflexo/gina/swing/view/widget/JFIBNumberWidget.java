@@ -113,6 +113,10 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 		@Override
 		public void setColumns(NumberSelectorPanel<T> component, int columns) {
 			component.getTextField().setColumns(columns);
+			if (component.getParent() != null) {
+				component.getParent().revalidate();
+				component.getParent().repaint();
+			}
 		}
 
 		@Override

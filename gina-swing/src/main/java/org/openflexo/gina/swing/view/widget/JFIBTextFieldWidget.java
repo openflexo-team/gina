@@ -90,6 +90,10 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField> impl
 		@Override
 		public void setColumns(JTextField component, int columns) {
 			component.setColumns(columns);
+			if (component.getParent() != null) {
+				component.getParent().revalidate();
+				component.getParent().repaint();
+			}
 		}
 
 		@Override

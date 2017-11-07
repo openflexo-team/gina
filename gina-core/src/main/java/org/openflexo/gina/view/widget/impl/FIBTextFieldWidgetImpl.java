@@ -39,9 +39,11 @@
 
 package org.openflexo.gina.view.widget.impl;
 
+import java.beans.PropertyChangeEvent;
 import java.util.logging.Logger;
 
 import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.widget.FIBNumber;
 import org.openflexo.gina.model.widget.FIBTextField;
 import org.openflexo.gina.view.widget.FIBTextFieldWidget;
 
@@ -50,7 +52,7 @@ import org.openflexo.gina.view.widget.FIBTextFieldWidget;
  * 
  * @author sylvain
  */
-public abstract class FIBTextFieldWidgetImpl<C> extends FIBGenericTextWidgetImpl<FIBTextField, C>implements FIBTextFieldWidget<C> {
+public abstract class FIBTextFieldWidgetImpl<C> extends FIBGenericTextWidgetImpl<FIBTextField, C> implements FIBTextFieldWidget<C> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(FIBTextFieldWidgetImpl.class.getPackage().getName());
@@ -79,6 +81,14 @@ public abstract class FIBTextFieldWidgetImpl<C> extends FIBGenericTextWidgetImpl
 
 	public int getDefaultColumns() {
 		return DEFAULT_COLUMNS;
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getPropertyName().equals(FIBNumber.COLUMNS_KEY)) {
+			updateColumns();
+		}
+		super.propertyChange(evt);
 	}
 
 }
