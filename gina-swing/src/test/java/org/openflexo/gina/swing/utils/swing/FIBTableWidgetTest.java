@@ -166,7 +166,7 @@ public class FIBTableWidgetTest extends FIBTestCase {
 		assertEquals(5, w.getTechnologyComponent().getJTable().getModel().getRowCount());
 		assertEquals("Jacky3", w.getTableModel().getValueAt(4, 0));
 		assertEquals("Smith", w.getTableModel().getValueAt(4, 1));
-		assertEquals((long) 4, w.getTableModel().getValueAt(4, 2));
+		assertEquals(4, w.getTableModel().getValueAt(4, 2));
 		assertEquals(Gender.Male, w.getTableModel().getValueAt(4, 3));
 		assertEquals("Jacky3 Smith aged 4 (Male)", w.getTableModel().getValueAt(4, 4));
 		family.getBiggestChild().setFirstName("Roger");
@@ -175,7 +175,7 @@ public class FIBTableWidgetTest extends FIBTestCase {
 		family.getBiggestChild().setGender(Gender.Female);
 		assertEquals("Roger", w.getTableModel().getValueAt(4, 0));
 		assertEquals("Rabbit", w.getTableModel().getValueAt(4, 1));
-		assertEquals((long) 12, w.getTableModel().getValueAt(4, 2));
+		assertEquals(12, w.getTableModel().getValueAt(4, 2));
 		assertEquals(Gender.Female, w.getTableModel().getValueAt(4, 3));
 		assertEquals("Roger Rabbit aged 12 (Female)", w.getTableModel().getValueAt(4, 4));
 
@@ -185,7 +185,7 @@ public class FIBTableWidgetTest extends FIBTestCase {
 		assertEquals(6, w.getTechnologyComponent().getJTable().getModel().getRowCount());
 		assertEquals("John Jr", w.getTableModel().getValueAt(5, 0));
 		assertEquals("Smith", w.getTableModel().getValueAt(5, 1));
-		assertEquals((long) 0, w.getTableModel().getValueAt(5, 2));
+		assertEquals(0, w.getTableModel().getValueAt(5, 2));
 		assertEquals(Gender.Male, w.getTableModel().getValueAt(5, 3));
 		assertEquals("John Jr Smith aged 0 (Male)", w.getTableModel().getValueAt(5, 4));
 	}
