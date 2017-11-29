@@ -58,7 +58,7 @@ import org.openflexo.gina.view.widget.FIBNumberWidget;
  *
  * @author sylvain
  */
-public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidgetViewImpl<FIBNumber, C, T>implements FIBNumberWidget<C, T> {
+public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidgetViewImpl<FIBNumber, C, T> implements FIBNumberWidget<C, T> {
 
 	static final Logger logger = Logger.getLogger(FIBNumberWidgetImpl.class.getPackage().getName());
 
@@ -138,9 +138,9 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 	}
 
 	public T getDefaultValue() {
-		if (getWidget().getMinValue() != null) {
+		/*if (getWidget().getMinValue() != null) {
 			return (T) getWidget().getMinValue();
-		}
+		}*/
 		if (getWidget().getNumberType() == null) {
 			return null;
 		}
