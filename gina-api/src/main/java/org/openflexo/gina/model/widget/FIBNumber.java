@@ -348,6 +348,9 @@ public interface FIBNumber extends FIBWidget {
 
 		@Override
 		public Type getDefaultDataType() {
+			if (numberType == null) {
+				return Number.class;
+			}
 			switch (numberType) {
 				case ByteType:
 					return Byte.class;
