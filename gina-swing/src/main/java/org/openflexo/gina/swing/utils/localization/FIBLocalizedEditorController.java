@@ -306,7 +306,14 @@ public class FIBLocalizedEditorController extends FIBController {
 	}
 
 	public LocalizedEntry addEntry() {
-		LocalizedEntry returned = getDataObject().addEntry();
+
+		String key = FIBController.askForString(FlexoLocalization.getMainLocalizer().localizedForKey("please_enter_key_to_add"));
+
+		if (StringUtils.isEmpty(key)) {
+			return null;
+		}
+
+		LocalizedEntry returned = getDataObject().addEntry(key);
 		// LocalizedDelegate delegate = getDataObject();
 		// refresh();
 		getPropertyChangeSupport().firePropertyChange("matchingEntries", null, getMatchingEntries());

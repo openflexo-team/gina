@@ -182,7 +182,7 @@ public interface LocalizedDelegate extends HasPropertyChangeSupport {
 
 	public void updateGUILocalized();
 
-	public LocalizedEntry addEntry();
+	public LocalizedEntry addEntry(String key);
 
 	/**
 	 * Represents a localized entry<br>

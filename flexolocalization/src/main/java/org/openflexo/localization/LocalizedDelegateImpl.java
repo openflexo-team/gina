@@ -293,8 +293,8 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		return true;
 	}
 
+	@Override
 	public Entry addEntry(String key) {
-		System.out.println("Adding " + key + " in " + this);
 		// Add in all dictionaries, when required
 		for (Language language : Language.availableValues()) {
 			addEntryInDictionary(language, key, key, false);
@@ -303,10 +303,11 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		// setChanged();
 		// notifyObservers();
 		Entry returned = getEntry(key);
-		System.out.println("Added entry " + returned + " " + returned.getKey() + " english=" + returned.getEnglish());
+		// System.out.println("Added entry " + returned + " " + returned.getKey() + " english=" + returned.getEnglish());
 		searchTranslation(returned);
 		getPropertyChangeSupport().firePropertyChange("entries", null, getEntries());
 		if (automaticSaving) {
+			Thread.dumpStack();
 			logger.info("************** Save because added: " + key + " in " + this);
 			save();
 		}
@@ -314,6 +315,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	}
 
 	public void removeEntry(String key) {
+		// System.out.println("remove entry " + key);
 		Entry entryToRemove = getEntry(key);
 		if (entryToRemove != null) {
 			// Remove from all dictionaries
@@ -387,6 +389,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		private static final String DELETED_PROPERTY = "deleted";
 		private String key;
 		private final PropertyChangeSupport pcSupport;
+		private boolean isDeleted = false;
 
 		public Entry(String aKey) {
 			key = aKey;
@@ -400,6 +403,9 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 		@Override
 		public String getEnglish() {
+			if (isDeleted) {
+				return null;
+			}
 			String localized = localizedForKeyAndLanguage(key, Language.ENGLISH);
 			return localized != null ? localized : key;
 			// return localizedForKeyAndLanguage(key, Language.ENGLISH);
@@ -415,6 +421,9 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 		@Override
 		public String getFrench() {
+			if (isDeleted) {
+				return null;
+			}
 			String localized = localizedForKeyAndLanguage(key, Language.FRENCH);
 			return localized != null ? localized : key;
 			// return localizedForKeyAndLanguage(key, Language.FRENCH);
@@ -430,6 +439,9 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 		@Override
 		public String getDutch() {
+			if (isDeleted) {
+				return null;
+			}
 			String localized = localizedForKeyAndLanguage(key, Language.DUTCH);
 			return localized != null ? localized : key;
 			// return localizedForKeyAndLanguage(key, Language.DUTCH);
@@ -446,6 +458,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		@Override
 		public void delete() {
 			removeEntry(key);
+			isDeleted = true;
 			pcSupport.firePropertyChange(DELETED_PROPERTY, false, true);
 		}
 
@@ -497,6 +510,9 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		}
 
 		public boolean isValueValid(String aKey, String aValue) {
+			if (isDeleted) {
+				return false;
+			}
 			if (aValue == null || aValue.length() == 0) {
 				return false;
 			} // null or empty value is not valid
@@ -511,6 +527,9 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 		@Override
 		public boolean getIsHTML() {
+			if (isDeleted) {
+				return false;
+			}
 			return getFrench().startsWith("<html>") || getEnglish().startsWith("<html>") || getDutch().startsWith("<html>");
 		}
 
@@ -692,14 +711,6 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		entries = null;
 		setChanged();
 		notifyObservers();
-	}
-
-	@Override
-	public Entry addEntry() {
-		addEntry("key");
-		Entry returned = getEntry("key");
-		getPropertyChangeSupport().firePropertyChange("entries", null, getEntries());
-		return returned;
 	}
 
 	public void deleteEntry(Entry entry) {

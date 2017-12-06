@@ -39,6 +39,11 @@
 
 package org.openflexo.gina.controller;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.HeadlessException;
+import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeSupport;
 import java.lang.reflect.Constructor;
@@ -51,6 +56,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Logger;
+
+import javax.swing.Icon;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.manager.EventManager;
@@ -962,6 +971,57 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 
 		}
 
+	}
+
+	public static String askForString(String msg) throws HeadlessException {
+		return showInputDialog(msg, FlexoLocalization.getMainLocalizer().localizedForKey("information"), JOptionPane.QUESTION_MESSAGE);
+	}
+
+	private static String showInputDialog(Object message, String title, int messageType) throws HeadlessException {
+		Window activeWindow = javax.swing.FocusManager.getCurrentManager().getActiveWindow();
+		return (String) showInputDialog(activeWindow, message, title, messageType, null, null, null);
+	}
+
+	private static Object showInputDialog(Component parentComponent, Object message, String title, int messageType, Icon icon,
+			Object[] selectionValues, Object initialSelectionValue) throws HeadlessException {
+		Object[] availableOptions = new Object[] { FlexoLocalization.getMainLocalizer().localizedForKey("OK"),
+				FlexoLocalization.getMainLocalizer().localizedForKey("cancel") };
+		JOptionPane pane = new JOptionPane(message, messageType, JOptionPane.OK_CANCEL_OPTION, icon, availableOptions, availableOptions[0]);
+		pane.setWantsInput(true);
+		pane.setSelectionValues(selectionValues);
+		pane.setInitialSelectionValue(initialSelectionValue);
+		// pane.setComponentOrientation((parentComponent == null ? FlexoFrame.getActiveFrame() :
+		// parentComponent).getComponentOrientation());
+		pane.setMessageType(messageType);
+		JDialog dialog = pane.createDialog(parentComponent, title);
+		pane.selectInitialValue();
+
+		dialog.validate();
+		dialog.pack();
+		if (parentComponent == null) {
+			Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+			dialog.setLocation((dim.width - dialog.getSize().width) / 2, (dim.height - dialog.getSize().height) / 2);
+		}
+
+		dialog.setVisible(true);
+		dialog.dispose();
+
+		Object val = pane.getValue();
+
+		for (int counter = 0, maxCounter = availableOptions.length; counter < maxCounter; counter++) {
+			if (availableOptions[counter].equals(val)) {
+				if (counter == 1) {
+					return null;
+				}
+			}
+
+		}
+
+		Object value = pane.getInputValue();
+		if (value == JOptionPane.UNINITIALIZED_VALUE) {
+			return null;
+		}
+		return value;
 	}
 
 }

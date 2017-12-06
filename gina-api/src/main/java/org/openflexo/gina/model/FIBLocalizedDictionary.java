@@ -672,6 +672,7 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 			getPropertyChangeSupport().firePropertyChange(ENTRIES_KEY, null, getEntries());
 		}
 
+		@Override
 		public DynamicEntry addEntry(String key) {
 
 			DynamicEntry newDynamicEntry = new DynamicEntry(key);
@@ -684,11 +685,6 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 			});
 			searchTranslation(newDynamicEntry);
 			return null;
-		}
-
-		@Override
-		public DynamicEntry addEntry() {
-			return addEntry("new_entry");
 		}
 
 		public void deleteEntry(DynamicEntry entry) {
