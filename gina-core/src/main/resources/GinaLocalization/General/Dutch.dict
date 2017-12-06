@@ -337,6 +337,7 @@ secondary_angle_extent=Secondary angle extent
 secondary_labels=Secondary labels
 secondary_values=Secondary values
 select=Select
+select_a_file=Select a file
 select_a_value=Select a value
 select_first_row=Select first row
 selected=Selected
