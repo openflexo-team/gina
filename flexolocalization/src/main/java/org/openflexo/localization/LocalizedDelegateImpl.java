@@ -307,8 +307,8 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		searchTranslation(returned);
 		getPropertyChangeSupport().firePropertyChange("entries", null, getEntries());
 		if (automaticSaving) {
-			Thread.dumpStack();
 			logger.info("************** Save because added: " + key + " in " + this);
+			Thread.dumpStack();
 			save();
 		}
 		return returned;

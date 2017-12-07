@@ -43,7 +43,6 @@ import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.localization.LocalizedDelegateImpl;
 
@@ -63,7 +62,7 @@ public class LocalizedEditor extends JDialog {
 
 	public LocalizedEditor(JFrame frame, String title, LocalizedDelegate localizedToEdit, LocalizedDelegate editorLocalized,
 			boolean displaySave, boolean displaySearchLocalized) {
-		super(frame, editorLocalized.localizedForKeyAndLanguage(title, FlexoLocalization.getCurrentLanguage()), false);
+		super(frame, title, false);
 		localizedPanel = new LocalizedPanel(localizedToEdit, editorLocalized, displaySave, displaySearchLocalized) {
 			@Override
 			public void save() {
