@@ -217,6 +217,11 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 					rb.setSelected(true);
 					// rb.doClick();
 					selectedValue = widget.getValue();
+
+					widget.selectionChanged();
+					widget.setSelected(selectedValue);
+					widget.setSelectedIndex(getSelectedIndex());
+
 				}
 			}
 			revalidate();
