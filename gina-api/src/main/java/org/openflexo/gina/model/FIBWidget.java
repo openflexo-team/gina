@@ -1104,7 +1104,9 @@ public abstract interface FIBWidget extends FIBComponent {
 
 		@Override
 		public void searchLocalized(LocalizationEntryRetriever retriever) {
-			retriever.foundLocalized(getTooltipText());
+			if (retriever != null) {
+				retriever.foundLocalized(getTooltipText());
+			}
 		}
 
 		@Override
