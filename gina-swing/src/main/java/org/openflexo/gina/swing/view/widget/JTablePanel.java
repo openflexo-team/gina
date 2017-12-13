@@ -69,6 +69,13 @@ public class JTablePanel<T> extends JPanel {
 		returned.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 		returned.addFocusListener(widget);
 
+		if (!widget.getComponent().getShowHeader()) {
+
+			System.out.println("Attention, je ne veux pas afficher de header !!!");
+
+			returned.setTableHeader(null);
+		}
+
 		for (int i = 0; i < widget.getTableModel().getColumnCount(); i++) {
 			TableColumn col = returned.getColumnModel().getColumn(i);
 			// FlexoLocalization.localizedForKey(getController().getLocalizer(),getTableModel().columnAt(i).getTitle());

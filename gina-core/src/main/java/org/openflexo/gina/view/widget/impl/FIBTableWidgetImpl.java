@@ -113,6 +113,11 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 			removeFooter();
 			footer = null;
 		}
+		updateTable();
+	}
+
+	private void updateHeader() {
+		updateTable();
 	}
 
 	@Override
@@ -556,13 +561,16 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 
 		if ((evt.getPropertyName().equals(FIBTable.COLUMNS_KEY)) || (evt.getPropertyName().equals(FIBTable.CREATE_NEW_ROW_ON_CLICK_KEY))
 				|| (evt.getPropertyName().equals(FIBTable.ITERATOR_TYPE_KEY)) || (evt.getPropertyName().equals(FIBTable.ROW_HEIGHT_KEY))
-				|| (evt.getPropertyName().equals(FIBTable.VISIBLE_ROW_COUNT_KEY))
-				|| (evt.getPropertyName().equals(FIBTable.SHOW_FOOTER_KEY))) {
+				|| (evt.getPropertyName().equals(FIBTable.VISIBLE_ROW_COUNT_KEY))) {
 			updateTable();
 		}
 
 		if (evt.getPropertyName().equals(FIBTable.SHOW_FOOTER_KEY)) {
 			updateFooter();
+		}
+
+		if (evt.getPropertyName().equals(FIBTable.SHOW_HEADER_KEY)) {
+			updateHeader();
 		}
 
 		if (getParentView() instanceof FIBContainerViewImpl && evt.getPropertyName().equals(FIBTable.LOOK_AND_FEEL_KEY)) {
