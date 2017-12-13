@@ -370,6 +370,7 @@ selection=Selection
 selectionMode=SelectionMode
 show_evaluation=Show evaluation
 show_footer=Show footer
+show_header=Show header
 show_icon=Show icon
 show_more_operators=Show more operators
 show_roots_handle=Show roots handle
