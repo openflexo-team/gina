@@ -75,6 +75,8 @@ public class InspectorGroup {
 			InspectorGroup... someInspectorGroups) {
 		inspectors = new LinkedHashMap<>();
 
+		logger.info("Loading inspector group" + inspectorDirectory);
+
 		try {
 			fibModelFactory = new FIBModelFactory(inspectorDirectory, fibLibrary.getCustomTypeManager(), FIBInspector.class);
 		} catch (ModelDefinitionException e) {
@@ -88,7 +90,7 @@ public class InspectorGroup {
 
 		for (Resource f : inspectorDirectory.getContents(Pattern.compile(".*[.]inspector"), true)) {
 			// System.out.println("Read "+f.getAbsolutePath());
-			logger.info("Loading " + f.getURI());
+			logger.fine("Loading " + f.getURI());
 			FIBComponent component = fibLibrary.retrieveFIBComponent(f, false, fibModelFactory);
 			if (component instanceof FIBInspector) {
 				FIBInspector inspector = (FIBInspector) component;
