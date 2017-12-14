@@ -690,7 +690,8 @@ public class TabbedPane<J> {
 			return;
 		}
 		if (tab != null && !tabs.contains(tab)) {
-			throw new IllegalArgumentException("Tab must be added to the content pane first.");
+			// throw new IllegalArgumentException("Tab must be added to the content pane first.");
+			return;
 		}
 		if (useTabBody && selectedTab != null) {
 			tabBody.remove((JComponent) selectedTab);
