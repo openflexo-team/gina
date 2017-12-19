@@ -75,7 +75,10 @@ public class JFlowLayout extends FIBLayoutManagerImpl<JPanel, JComponent, FlowLa
 	}
 
 	protected FlowLayout makeFlowLayout() {
-		return new FlowLayout(getComponent().getFlowAlignment().getAlign(), getComponent().getHGap(), getComponent().getVGap());
+		if (getComponent() != null && getComponent().getFlowAlignment() != null) {
+			return new FlowLayout(getComponent().getFlowAlignment().getAlign(), getComponent().getHGap(), getComponent().getVGap());
+		}
+		return null;
 	}
 
 	@Override
