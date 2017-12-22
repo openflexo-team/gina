@@ -52,6 +52,7 @@ import java.util.logging.Logger;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.tree.TreeNode;
 
+import org.openflexo.connie.Bindable;
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
@@ -1840,6 +1841,11 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		@Override
 		public void setBindingFactory(BindingFactory bindingFactory) {
 			this.bindingFactory = bindingFactory;
+			notifyBindingFactoryChanged();
+		}
+
+		protected void notifyBindingFactoryChanged() {
+			getPropertyChangeSupport().firePropertyChange(Bindable.BINDING_FACTORY_PROPERTY, null, bindingFactory);
 		}
 
 		@Override

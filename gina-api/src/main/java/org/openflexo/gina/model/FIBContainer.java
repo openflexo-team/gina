@@ -244,6 +244,14 @@ public abstract interface FIBContainer extends FIBComponent {
 		}
 
 		@Override
+		protected void notifyBindingFactoryChanged() {
+			for (FIBComponent child : getSubComponents()) {
+				((FIBComponentImpl) child).notifyBindingFactoryChanged();
+			}
+			super.notifyBindingFactoryChanged();
+		}
+
+		@Override
 		public void insertToSubComponentsAtIndex(FIBComponent aSubComponent, int index) {
 			addToSubComponents(aSubComponent, null, index);
 		}
