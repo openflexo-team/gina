@@ -1179,7 +1179,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				}
 			}
 			else {
-				LOGGER.warning("Trying to test dependency against a NULL Fib Component");
+				LOGGER.warning("Trying to test dependency against a NULL Fib Component in " + getResource());
 			}
 		}
 
