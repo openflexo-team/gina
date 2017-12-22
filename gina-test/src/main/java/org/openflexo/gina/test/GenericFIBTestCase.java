@@ -38,7 +38,6 @@
 
 package org.openflexo.gina.test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -88,7 +87,10 @@ public abstract class GenericFIBTestCase {
 						+ validationReport.getValidationModel().localizedIssueMessage(error) + " detais="
 						+ validationReport.getValidationModel().localizedIssueDetailedInformations(error));
 			}
-			assertEquals(0, validationReport.getErrorsCount());
+			if (validationReport.getErrorsCount() > 0) {
+				fail("Validation failed for FIB: " + fibFile);
+			}
+			// assertEquals(0, validationReport.getErrorsCount());
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 			fail("Interrupted FIB validation");
