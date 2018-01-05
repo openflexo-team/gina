@@ -406,13 +406,16 @@ public class TabbedPane<J> {
 						if (!moveToPopup) {
 							if (!selectedHeaderDone) {
 								if (tab != selectedTab) {
-									if (i + 2 == tabs.size()) { // in this case, we only need to put the current tab and the selected tab
-										moveToPopup = availableWidth
-												- (tabHeader.getPreferredSize().width + selectedHeader.getPreferredSize().width) < 0;
-									}
-									else {
-										moveToPopup = availableWidth - (tabHeader.getPreferredSize().width
-												+ selectedHeader.getPreferredSize().width + extraTabsButton.getWidth()) < 0;
+									if (tabHeader != null && selectedHeader != null) {
+										if (i + 2 == tabs.size()) { // in this case, we only need to put the current tab and the selected
+																	// tab
+											moveToPopup = availableWidth
+													- (tabHeader.getPreferredSize().width + selectedHeader.getPreferredSize().width) < 0;
+										}
+										else {
+											moveToPopup = availableWidth - (tabHeader.getPreferredSize().width
+													+ selectedHeader.getPreferredSize().width + extraTabsButton.getWidth()) < 0;
+										}
 									}
 								}
 								if (moveToPopup) {
