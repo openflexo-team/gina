@@ -96,6 +96,7 @@ public class JFIBDropDownWidget<T> extends FIBDropDownWidgetImpl<JDropDownPanel<
 		@Override
 		public void setSelectedItem(JDropDownPanel<T> component, T item) {
 			component.jComboBox.setSelectedItem(item);
+			component.jComboBox.updateUI();
 		}
 
 		@Override
@@ -106,6 +107,7 @@ public class JFIBDropDownWidget<T> extends FIBDropDownWidgetImpl<JDropDownPanel<
 		@Override
 		public void setSelectedIndex(JDropDownPanel<T> component, int index) {
 			component.jComboBox.setSelectedIndex(index);
+			component.jComboBox.updateUI();
 		}
 
 		@Override
