@@ -83,6 +83,7 @@ import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
+import org.openflexo.toolbox.PropertyChangedSupportDefaultImplementation;
 import org.openflexo.toolbox.StringUtils;
 
 /**
@@ -843,7 +844,7 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 		return sampleData;
 	}
 
-	public static class SampleData {
+	public static class SampleData extends PropertyChangedSupportDefaultImplementation {
 		public List<Family> families;
 		public List<Person> persons;
 		public Person martin, mary, john, martinJr1, martinJr2, martinJr3, martinJr4;
@@ -927,10 +928,26 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 			return new Family(adam, eve, children);
 		}
 
-		public static class Person {
-			public String name;
-			public int size;
-			public double weight;
+		private int personId = 2;
+
+		public Person addPerson() {
+			Person newPerson = new Person("Person" + personId, 170, 60);
+			personId++;
+			persons.add(newPerson);
+			getPropertyChangeSupport().firePropertyChange("persons", null, newPerson);
+			return newPerson;
+		}
+
+		public Person deletePerson(Person person) {
+			persons.remove(person);
+			getPropertyChangeSupport().firePropertyChange("persons", person, null);
+			return person;
+		}
+
+		public static class Person extends PropertyChangedSupportDefaultImplementation {
+			private String name;
+			private int size;
+			private double weight;
 
 			public Person(String name, int size, double weight) {
 				super();
@@ -949,6 +966,47 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 					return true;
 				}*/
 				return true;
+			}
+
+			@Override
+			public String toString() {
+				return name;
+			}
+
+			public String getName() {
+				return name;
+			}
+
+			public void setName(String name) {
+				if ((name == null && this.name != null) || (name != null && !name.equals(this.name))) {
+					String oldValue = this.name;
+					this.name = name;
+					getPropertyChangeSupport().firePropertyChange("name", oldValue, name);
+				}
+			}
+
+			public int getSize() {
+				return size;
+			}
+
+			public void setSize(int size) {
+				if (this.size != size) {
+					int oldValue = this.size;
+					this.size = size;
+					getPropertyChangeSupport().firePropertyChange("size", oldValue, size);
+				}
+			}
+
+			public double getWeight() {
+				return weight;
+			}
+
+			public void setWeight(double weight) {
+				if (this.weight != weight) {
+					double oldValue = this.weight;
+					this.weight = weight;
+					getPropertyChangeSupport().firePropertyChange("weight", oldValue, weight);
+				}
 			}
 		}
 
