@@ -815,12 +815,13 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
 			}
-			if (getWidget().getLocalize() && returned != null) {
+			// We don't want to localize the values
+			/*if (getWidget().getLocalize() && returned != null) {
 				return getLocalized(returned);
 			}
-			else {
-				return returned;
-			}
+			else {*/
+			return returned;
+			// }
 		}
 		if (value instanceof Enum) {
 			String returned = value != null ? ((Enum<?>) value).name() : null;
