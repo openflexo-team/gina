@@ -196,7 +196,11 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 	public <F extends FIBWidget> FIBWidgetView<F, ? extends JComponent, ?> makeWidget(final F fibWidget, FIBController controller) {
 		final FIBWidgetView<F, ? extends JComponent, ?> returned = super.makeWidget(fibWidget, controller);
 
-		if (returned.getTechnologyComponent() == null) {
+		if (returned == null) {
+			System.out.println("For fibWidget " + fibWidget + " returned=" + returned);
+		}
+
+		else if (returned.getTechnologyComponent() == null) {
 			System.out.println(
 					"For fibWidget " + fibWidget + " returned=" + returned + " technologyComponent=" + returned.getTechnologyComponent());
 		}
