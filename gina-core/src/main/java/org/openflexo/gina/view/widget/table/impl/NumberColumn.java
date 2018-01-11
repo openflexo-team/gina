@@ -190,26 +190,35 @@ public class NumberColumn<T> extends AbstractColumn<T, Number> implements Editab
 
 				private Number getValue(String value) {
 					try {
-						switch (getColumnModel().getNumberType()) {
-							case ByteType:
-								return Byte.parseByte(value);
-							case ShortType:
-								return Short.parseShort(value);
-							case IntegerType:
-								return Integer.parseInt(value);
-							case LongType:
-								return Long.parseLong(value);
-							case FloatType:
-								return Float.parseFloat(value);
-							case DoubleType:
-								return Double.parseDouble(value);
-							default:
-								return null;
-						}
+						return _getValue(value);
 					} catch (NumberFormatException e) {
-						e.printStackTrace();
+						// Attempt with a comma instead of dot
+						try {
+							return _getValue(value.replace(",", "."));
+						} catch (NumberFormatException e2) {
+							e.printStackTrace();
+							return null;
+						}
 					}
-					return null;
+				}
+
+				private Number _getValue(String value) throws NumberFormatException {
+					switch (getColumnModel().getNumberType()) {
+						case ByteType:
+							return Byte.parseByte(value);
+						case ShortType:
+							return Short.parseShort(value);
+						case IntegerType:
+							return Integer.parseInt(value);
+						case LongType:
+							return Long.parseLong(value);
+						case FloatType:
+							return Float.parseFloat(value);
+						case DoubleType:
+							return Double.parseDouble(value);
+						default:
+							return null;
+					}
 				}
 			};
 		}
