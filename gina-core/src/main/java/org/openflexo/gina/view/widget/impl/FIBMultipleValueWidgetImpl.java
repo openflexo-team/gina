@@ -143,8 +143,9 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 
 				@Override
 				public void bindingValueChanged(Object source, List<Object> newValue) {
-					//System.out.println(" bindingValueChanged() detected for list=" + getComponent().getList() + " with newValue=" + newValue
-					//		+ " source=" + source);
+					// System.out.println(" bindingValueChanged() detected for list=" + getComponent().getList() + " with newValue=" +
+					// newValue
+					// + " source=" + source);
 					updateMultipleValues();
 				}
 			};
@@ -448,8 +449,24 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 
 		@Override
 		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-			FIBMultipleValueCellRenderer label = (FIBMultipleValueCellRenderer) super.getListCellRendererComponent(list, value, index,
-					isSelected, cellHasFocus);
+			FIBMultipleValueCellRenderer label;
+			try {
+				label = (FIBMultipleValueCellRenderer) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+			} catch (NullPointerException e) {
+				/* Happen sometimes while evaluating
+				 * 
+				 * Exception java.lang.NullPointerException:
+				 * at javax.swing.DefaultListCellRenderer.getListCellRendererComponent(DefaultListCellRenderer.java:120)
+				 * at org.openflexo.gina.view.widget.impl.FIBMultipleValueWidgetImpl$FIBMultipleValueCellRenderer.getListCellRendererComponent(FIBMultipleValueWidgetImpl.java:451)
+				 * at javax.swing.plaf.basic.BasicComboBoxUI.getDisplaySize(BasicComboBoxUI.java:1366)
+				 * at javax.swing.plaf.basic.BasicComboBoxUI.getMinimumSize(BasicComboBoxUI.java:934)
+				 * at com.apple.laf.AquaComboBoxUI.getMinimumSize(AquaComboBoxUI.java:568)
+				 * at javax.swing.plaf.basic.BasicComboBoxUI.getPreferredSize(BasicComboBoxUI.java:923)
+				 * at javax.swing.JComponent.getPreferredSize(JComponent.java:1662)
+				 * 
+				 */
+				label = new FIBMultipleValueCellRenderer();
+			}
 			if (value != null && nullDimesion == null) {
 				nullDimesion = ((JComponent) getListCellRendererComponent(list, null, -1, false, false)).getPreferredSize();
 			}
