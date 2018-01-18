@@ -70,9 +70,6 @@ public class JTablePanel<T> extends JPanel {
 		returned.addFocusListener(widget);
 
 		if (!widget.getComponent().getShowHeader()) {
-
-			System.out.println("Attention, je ne veux pas afficher de header !!!");
-
 			returned.setTableHeader(null);
 		}
 
