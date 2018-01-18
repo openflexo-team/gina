@@ -272,12 +272,19 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 				// retrieve all contents
 				// To be able to unfold required folders to select searched
 				// value
-				// System.out.println("Explore whole contents");
 				getBrowserModel().recursivelyExploreModelToRetrieveContents();
 			}
 
 			Collection<BrowserCell> cells = getBrowserModel().getBrowserCell(object);
-			// logger.info("Select " + cells);
+
+			if (cells == null || cells.size() == 0) {
+				LOGGER.warning("POTENTIAL PERFS ISSUE HERE: Not found object " + object + " perform explore whole contents");
+				// TODO: implements a method which explicitely search 'object'
+				getBrowserModel().recursivelyExploreModelToRetrieveContents();
+				cells = getBrowserModel().getBrowserCell(object);
+			}
+
+			System.out.println("Select " + cells);
 			getTreeSelectionModel().clearSelection();
 			if (cells != null) {
 				TreePath scrollTo = null;
