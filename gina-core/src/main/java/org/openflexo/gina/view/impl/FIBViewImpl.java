@@ -199,13 +199,6 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	 */
 	protected void componentBecomesInvisible() {
 
-		if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("GridBagConstraints")) {
-			System.out.println("************ Component " + getComponent() + " becomes INVISIBLE !!!!!!");
-		}
-		if (getComponent() != null && getComponent().getName() != null && getComponent().getName().equals("TwoColsConstraints")) {
-			System.out.println("************ Component " + getComponent() + " becomes INVISIBLE !!!!!!");
-		}
-
 		// System.out.println("************ Component " + getComponent() + " becomes INVISIBLE !!!!!!");
 
 		// Don't listen anymore to component variables
@@ -348,6 +341,24 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, Boolean newValue) {
+					if (newValue != null && newValue) {
+						// Handle the case where the component becomes visible AND has some variables
+						// In this case, we have to update values of variables first
+						for (FIBVariable variable : getComponent().getVariables()) {
+							try {
+								Object newVariableValue = variable.getValue().getBindingValue(getBindingEvaluationContext());
+								setVariableValue(variable, newVariableValue);
+
+							} catch (TypeMismatchException e) {
+								e.printStackTrace();
+							} catch (NullReferenceException e) {
+								e.printStackTrace();
+							} catch (InvocationTargetException e) {
+								e.printStackTrace();
+							}
+
+						}
+					}
 					updateVisibility();
 				}
 
@@ -590,6 +601,9 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		boolean componentVisible = true;
 		if (getComponent().getVisible() != null && getComponent().getVisible().isSet()) {
 			try {
+				/*if (getComponent().getName() != null && getComponent().getName().contains("Background")) {
+					System.out.println("je regarde si le composant " + getComponent().getName() + " est visible");
+				}*/
 				Boolean isVisible = getComponent().getVisible().getBindingValue(getBindingEvaluationContext());
 				if (isVisible != null) {
 					componentVisible = isVisible;
@@ -600,7 +614,6 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			} catch (NullReferenceException e) {
 				throw e;
 			} catch (InvocationTargetException e) {
-				e.printStackTrace();
 				componentVisible = true;
 			}
 		}
