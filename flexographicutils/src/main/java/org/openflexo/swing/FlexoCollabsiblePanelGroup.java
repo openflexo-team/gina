@@ -131,9 +131,28 @@ public class FlexoCollabsiblePanelGroup extends JScrollPane {
 		addContents(collabsiblePanel);
 	}
 
+	public void insertContentsAtIndex(final String title, JComponent contents, int index) {
+		FlexoCollabsiblePanel collabsiblePanel = new FlexoCollabsiblePanel(title, contents) {
+			@Override
+			public void setCollapsed(boolean val) {
+				if (!val) {
+					setOpenedPanel(this);
+				}
+				super.setCollapsed(val);
+			}
+		};
+		insertContentsAtIndex(collabsiblePanel, index);
+	}
+
 	public void addContents(FlexoCollabsiblePanel collabsiblePanel) {
 		panels.add(collabsiblePanel);
 		mainPane.add(collabsiblePanel);
+		setOpenedPanel(collabsiblePanel);
+	}
+
+	public void insertContentsAtIndex(FlexoCollabsiblePanel collabsiblePanel, int index) {
+		panels.set(index, collabsiblePanel);
+		mainPane.add(collabsiblePanel, index);
 		setOpenedPanel(collabsiblePanel);
 	}
 
