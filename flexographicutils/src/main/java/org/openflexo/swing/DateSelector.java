@@ -48,7 +48,6 @@ import java.awt.AlphaComposite;
  */
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Composite;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -566,7 +565,7 @@ public class DateSelector extends TextFieldCustomPopup<Date> {
 					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 					float alpha = 0.4f;
 					int type = AlphaComposite.SRC_OVER;
-					Composite oldComposite = g2.getComposite();
+					// Unused Composite oldComposite = g2.getComposite();
 					AlphaComposite composite = AlphaComposite.getInstance(type, alpha);
 					g2.setComposite(composite);
 					g2.drawImage(SELECTED_DATE_ICON.getImage(), (getSize().width - 25) / 2 + 1, (getSize().height - 25) / 2 - 1, null);

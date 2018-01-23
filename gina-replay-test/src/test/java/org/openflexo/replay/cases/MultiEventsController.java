@@ -13,7 +13,7 @@ public class MultiEventsController extends FIBController {
 	public void openCopy(String windowLetter) {
 		// System.out.println("openCopy");
 
-		final char letter = windowLetter.charAt(0);
+		// Unused final char letter = windowLetter.charAt(0);
 
 		/*MultiEventsCase.getTaskManager().scheduleExecution(new GinaTaskTemp("Open Window") {
 		

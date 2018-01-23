@@ -158,7 +158,7 @@ public class SyntaxUtilities {
 		Font defaultFont = gfx.getFont();
 		Color defaultColor = gfx.getColor();
 
-		int offset = 0;
+		// Unused int offset = 0;
 		for (;;) {
 			byte id = tokens.id;
 			if (id == Token.END) {
@@ -173,14 +173,15 @@ public class SyntaxUtilities {
 				if (!defaultFont.equals(gfx.getFont())) {
 					gfx.setFont(defaultFont);
 				}
-			} else {
+			}
+			else {
 				styles[id].setGraphicsFlags(gfx, defaultFont);
 			}
 
 			line.count = length;
 			x = Utilities.drawTabbedText(line, x, y, gfx, expander, 0);
 			line.offset += length;
-			offset += length;
+			// Unused offset += length;
 
 			tokens = tokens.next;
 		}

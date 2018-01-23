@@ -72,7 +72,8 @@ public class TestFIBEditor {
 	public static FIBEditor instanciateFIBEdition(String title, Resource fibResource, Object data) {
 		FIBEditor editor = getInstance();
 		Resource fib = ResourceLocator.locateSourceCodeResource(fibResource);
-		FIBEditorController controller = editor.loadFIB(fib, data, frame);
+		// Unused FIBEditorController controller =
+		editor.loadFIB(fib, data, frame);
 		return editor;
 	}
 

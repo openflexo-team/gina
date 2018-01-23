@@ -1036,10 +1036,10 @@ public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
 				// System.out.println("newChildren ["+newChildren.size()+"] "+newChildren);
 				// System.out.println("children ["+children.size()+"] "+children);
 
-				boolean structureChanged = false;
+				// Unused boolean structureChanged = false;
 
 				if (removedChildren.size() > 0 || newChildren.size() > 0) {
-					structureChanged = true;
+					// Unused structureChanged = true;
 					exhaustiveContentsIsUpToDate = false;
 					if (oldChildren.size() == 0) {
 						// Special case, i don't undertand why (SGU)

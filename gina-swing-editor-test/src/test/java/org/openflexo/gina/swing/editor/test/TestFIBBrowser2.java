@@ -63,7 +63,7 @@ public class TestFIBBrowser2 extends GinaSwingEditorTestCase {
 		final TestMethod method23 = new TestMethod("method3");
 		final TestClass class2 = new TestClass("Class2", method21, method22, method23);
 		final TestMethod method31 = new TestMethod("method1");
-		final TestMethod method32 = new TestMethod("method2Disabled");
+		// Unused final TestMethod method32 = new TestMethod("method2Disabled");
 		final TestClass class3 = new TestClass("Class3Disabled", method31);
 		final TestMethod method51 = new TestMethod("method1");
 		final TestClass class5 = new TestClass("Class5Invisible", method51);

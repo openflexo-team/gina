@@ -269,9 +269,9 @@ public class JFDTablePanel<T> extends JPanel {
 				return;
 			}
 
-			int modelColumn = e.getColumn();
-			int start = e.getFirstRow();
-			int end = e.getLastRow();
+			// Unused int modelColumn = e.getColumn();
+			// Unused int start = e.getFirstRow();
+			// Unused int end = e.getLastRow();
 
 			/*Rectangle dirtyRegion;
 			if (modelColumn == TableModelEvent.ALL_COLUMNS) {

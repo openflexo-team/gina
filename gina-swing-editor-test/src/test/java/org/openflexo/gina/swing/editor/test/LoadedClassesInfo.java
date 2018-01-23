@@ -38,7 +38,6 @@
 
 package org.openflexo.gina.swing.editor.test;
 
-import java.net.URL;
 import java.text.Collator;
 import java.util.Collections;
 import java.util.Comparator;
@@ -105,8 +104,8 @@ public class LoadedClassesInfo extends Observable {
 		final Class<?>[] classes = ClassScope.getLoadedClasses(loaders);
 		for (Class<?> cls : classes) {
 			registerClass(cls);
-			String className = cls.getName();
-			URL classLocation = ClassScope.getClassLocation(cls);
+			// Unused String className = cls.getName();
+			// Unused URL classLocation = ClassScope.getClassLocation(cls);
 			// System.out.println("Registered class: " + className + " from " +classLocation);
 		}
 	}

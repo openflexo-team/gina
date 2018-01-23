@@ -596,21 +596,21 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 
 		if (e.getNewLeadSelectionPath() != null && e.getNewLeadSelectionPath().getLastPathComponent() != null
 				&& e.getNewLeadSelectionPath().getLastPathComponent() instanceof BrowserCell) {
-			for (TreePath tp : e.getPaths()) {
-				// System.out.println("PATH : " + tp.getPath());
-				/*
-				 * if (tp.getLastPathComponent() instanceof BrowserCell) {
-				 * BrowserCell cell = (BrowserCell) tp.getLastPathComponent();
-				 * system.out.println(cell.); }
-				 */
+			// Unused for (TreePath tp : e.getPaths()) {
+			// System.out.println("PATH : " + tp.getPath());
+			/*
+			 * if (tp.getLastPathComponent() instanceof BrowserCell) {
+			 * BrowserCell cell = (BrowserCell) tp.getLastPathComponent();
+			 * system.out.println(cell.); }
+			 */
 
-				/*
-				 * for (Object to : tp.getPath()) { if (to instanceof
-				 * BrowserCell) { BrowserCell cell = (BrowserCell) to;
-				 * 
-				 * System.out.println(); } }
-				 */
-			}
+			/*
+			 * for (Object to : tp.getPath()) { if (to instanceof
+			 * BrowserCell) { BrowserCell cell = (BrowserCell) to;
+			 * 
+			 * System.out.println(); } }
+			 */
+			// Unused }
 		}
 
 		GinaStackEvent stack = GENotifier.raise(FIBEventFactory.getInstance().createMouseEvent("selected"));
