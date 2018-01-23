@@ -217,7 +217,7 @@ public class DateSelector extends TextFieldCustomPopup<Date> {
 		private JPanel dayButtons;
 
 		void update() {
-			yearSpinner.setValue(new Integer(getCalendar().get(Calendar.YEAR)));
+			yearSpinner.setValue(Integer.valueOf(getCalendar().get(Calendar.YEAR)));
 			monthComboBox.setSelectedIndex(getCalendar().get(Calendar.MONTH));
 			rebuildDayButtons();
 		}

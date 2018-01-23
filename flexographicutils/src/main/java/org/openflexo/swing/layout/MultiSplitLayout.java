@@ -480,7 +480,7 @@ public class MultiSplitLayout implements LayoutManager, Serializable {
 		}
 		int oldDividerSize = this.dividerSize;
 		this.dividerSize = dividerSize;
-		firePCS("dividerSize", new Integer(oldDividerSize), new Integer(dividerSize));
+		firePCS("dividerSize", Integer.valueOf(oldDividerSize), Integer.valueOf(dividerSize));
 	}
 
 	/**

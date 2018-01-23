@@ -147,9 +147,9 @@ public abstract class FIBNumberWidgetImpl<C, T extends Number> extends FIBWidget
 		else {
 			switch (getWidget().getNumberType()) {
 				case ByteType:
-					return (T) (new Byte((byte) 0));
+					return (T) (Byte.valueOf((byte) 0));
 				case ShortType:
-					return (T) (new Short((short) 0));
+					return (T) (Short.valueOf((short) 0));
 				case IntegerType:
 					return (T) Integer.valueOf(0);
 				case LongType:

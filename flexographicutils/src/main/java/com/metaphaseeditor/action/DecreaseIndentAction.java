@@ -58,24 +58,25 @@ public class DecreaseIndentAction extends HTMLEditorKit.StyledTextAction {
 		MutableAttributeSet sas = new SimpleAttributeSet(htmlTextPane.getParagraphAttributes());
 		currentIndent = null;
 		if (sas.getAttribute(CSS.Attribute.MARGIN_LEFT) != null) {
-			currentIndent = new Float(sas.getAttribute(CSS.Attribute.MARGIN_LEFT).toString());
+			currentIndent = Float.valueOf(sas.getAttribute(CSS.Attribute.MARGIN_LEFT).toString());
 		}
 
 		if (currentIndent != null) {
 			newIndent = currentIndent.intValue() - 30;
-			currentIndent = new Float(newIndent);
+			currentIndent = Float.valueOf(newIndent);
 			// enforce min size of 0
 			if (newIndent < 0) {
 				newIndent = 0;
-				currentIndent = new Float(newIndent);
+				currentIndent = Float.valueOf(newIndent);
 			}
 			// if indent size = 0, remove attribute for clearer code
 			if (newIndent == 0) {
 				sas.removeAttribute(CSS.Attribute.MARGIN_LEFT);
 				setParagraphAttributes(htmlTextPane, sas, true);
-			} else {
+			}
+			else {
 				sas.removeAttribute(CSS.Attribute.MARGIN_LEFT);
-				sas.addAttribute(StyleConstants.LeftIndent, new Float(newIndent));
+				sas.addAttribute(StyleConstants.LeftIndent, Float.valueOf(newIndent));
 				setParagraphAttributes(htmlTextPane, sas, true);
 			}
 		}

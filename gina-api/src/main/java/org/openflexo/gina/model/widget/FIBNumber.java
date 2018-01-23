@@ -312,22 +312,22 @@ public interface FIBNumber extends FIBWidget {
 			if (increment == null) {
 				switch (numberType) {
 					case ByteType:
-						increment = new Byte((byte) 1);
+						increment = Byte.valueOf((byte) 1);
 						break;
 					case ShortType:
-						increment = new Short((short) 1);
+						increment = Short.valueOf((short) 1);
 						break;
 					case IntegerType:
-						increment = new Integer(1);
+						increment = Integer.valueOf(1);
 						break;
 					case LongType:
-						increment = new Long(1);
+						increment = Long.valueOf(1);
 						break;
 					case FloatType:
-						increment = new Float(1);
+						increment = Float.valueOf(1);
 						break;
 					case DoubleType:
-						increment = new Double(1);
+						increment = Double.valueOf(1);
 						break;
 					default:
 						break;
