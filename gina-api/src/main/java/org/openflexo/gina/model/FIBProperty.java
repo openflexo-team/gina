@@ -209,7 +209,7 @@ public class FIBProperty<T> {
 			return (T) new Character('a');
 		}
 		if (type.equals(Boolean.TYPE)) {
-			return (T) new Boolean(false);
+			return (T) Boolean.FALSE;
 		}
 		return null;
 	}

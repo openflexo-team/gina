@@ -501,7 +501,7 @@ public class MultiSplitLayout implements LayoutManager, Serializable {
 	public void setFloatingDividers(boolean floatingDividers) {
 		boolean oldFloatingDividers = this.floatingDividers;
 		this.floatingDividers = floatingDividers;
-		firePCS("floatingDividers", new Boolean(oldFloatingDividers), new Boolean(floatingDividers));
+		firePCS("floatingDividers", Boolean.valueOf(oldFloatingDividers), Boolean.valueOf(floatingDividers));
 	}
 
 	/**
@@ -522,7 +522,7 @@ public class MultiSplitLayout implements LayoutManager, Serializable {
 	public void setRemoveDividers(boolean removeDividers) {
 		boolean oldRemoveDividers = this.removeDividers;
 		this.removeDividers = removeDividers;
-		firePCS("removeDividers", new Boolean(oldRemoveDividers), new Boolean(removeDividers));
+		firePCS("removeDividers", Boolean.valueOf(oldRemoveDividers), Boolean.valueOf(removeDividers));
 	}
 
 	/**
