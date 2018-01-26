@@ -135,6 +135,7 @@ public interface FIBVariable<T> extends FIBModelObject {
 		}*/
 
 		private Type variableType = null;
+		private Type analyzedVariableType = null;
 
 		@Override
 		public Type getType() {
@@ -142,11 +143,14 @@ public interface FIBVariable<T> extends FIBModelObject {
 			if (variableType == null && !isCreatedByCloning() && getOwner() != null && getOwner().getRootComponent() != null
 					&& !getOwner().getRootComponent().isDeserializing() && !getOwner().getRootComponent().isCreatedByCloning()
 					&& getValue() != null && getValue().isSet() && getValue().isValid()) {
-				variableType = getValue().getAnalyzedType();
+				analyzedVariableType = getValue().getAnalyzedType();
 			}
 			// Type returned = (Type) performSuperGetter(TYPE_KEY);
 			if (variableType != null) {
 				return variableType;
+			}
+			if (analyzedVariableType != null) {
+				return analyzedVariableType;
 			}
 			return Object.class;
 		}
@@ -154,7 +158,8 @@ public interface FIBVariable<T> extends FIBModelObject {
 		@Override
 		public void setType(Type type) {
 			if (getValue() != null && getValue().isSet() && getValue().isValid()) {
-				if (!TypeUtils.isTypeAssignableFrom(getValue().getAnalyzedType(), type, true)) {
+				if (!TypeUtils.isTypeAssignableFrom(getValue().getAnalyzedType(), type, true)
+						&& !TypeUtils.isTypeAssignableFrom(type, getValue().getAnalyzedType(), true)) {
 					// supplied type is not compatible with analysed type as infered from value binding, abort
 					return;
 				}
