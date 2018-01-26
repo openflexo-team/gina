@@ -344,6 +344,7 @@ preferred=preferred
 protect_content_against_modifications=protect_content_against_modifications
 px=px
 raised=raised
+re-layout=re-layout
 read_only_component=read_only_component
 relative=relative
 remainder=remainder
