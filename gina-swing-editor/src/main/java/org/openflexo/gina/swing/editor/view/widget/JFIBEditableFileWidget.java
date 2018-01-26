@@ -78,7 +78,7 @@ public class JFIBEditableFileWidget extends JFIBFileWidget implements FIBSwingEd
 	}
 
 	@Override
-	public void delete() {
+	public synchronized void delete() {
 		delegate.delete();
 		super.delete();
 	}

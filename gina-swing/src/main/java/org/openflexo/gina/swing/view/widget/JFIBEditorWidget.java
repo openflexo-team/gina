@@ -153,7 +153,7 @@ public class JFIBEditorWidget extends FIBEditorWidgetImpl<RTextScrollPane> imple
 			// return UIManager.getColor("Panel.background");
 		}
 
-		private String getSyntaxEditingStyle(SyntaxStyle syntaxStyle) {
+		private static String getSyntaxEditingStyle(SyntaxStyle syntaxStyle) {
 			if (syntaxStyle == null) {
 				return null;
 			}
@@ -172,7 +172,7 @@ public class JFIBEditorWidget extends FIBEditorWidgetImpl<RTextScrollPane> imple
 			}
 		}
 
-		private SyntaxStyle getSyntaxStyle(String syntaxEditingStyle) {
+		private static SyntaxStyle getSyntaxStyle(String syntaxEditingStyle) {
 			if (syntaxEditingStyle.equals(SyntaxConstants.SYNTAX_STYLE_JAVA)) {
 				return SyntaxStyle.Java;
 			}

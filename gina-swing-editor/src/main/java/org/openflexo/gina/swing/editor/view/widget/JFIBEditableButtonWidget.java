@@ -77,7 +77,7 @@ public class JFIBEditableButtonWidget extends JFIBButtonWidget implements FIBSwi
 	}
 
 	@Override
-	public void delete() {
+	public synchronized void delete() {
 		delegate.delete();
 		super.delete();
 	}

@@ -81,7 +81,7 @@ public class JFIBEditableHtmlEditorWidget extends JFIBHtmlEditorWidget
 	}
 
 	@Override
-	public void delete() {
+	public synchronized void delete() {
 		delegate.delete();
 		getComponent().getPropertyChangeSupport().removePropertyChangeListener(this);
 		super.delete();

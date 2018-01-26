@@ -78,7 +78,7 @@ public class JFIBEditableListWidget<T> extends JFIBListWidget<T> implements FIBS
 	}
 
 	@Override
-	public void delete() {
+	public synchronized void delete() {
 		delegate.delete();
 		super.delete();
 	}

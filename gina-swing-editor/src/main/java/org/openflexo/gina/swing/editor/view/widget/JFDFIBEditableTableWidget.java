@@ -78,7 +78,7 @@ public class JFDFIBEditableTableWidget<T> extends JFDFIBTableWidget<T> implement
 	}
 
 	@Override
-	public void delete() {
+	public synchronized void delete() {
 		delegate.delete();
 		super.delete();
 	}

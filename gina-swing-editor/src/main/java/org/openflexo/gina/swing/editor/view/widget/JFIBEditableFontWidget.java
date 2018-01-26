@@ -78,7 +78,7 @@ public class JFIBEditableFontWidget extends JFIBFontWidget implements FIBSwingEd
 	}
 
 	@Override
-	public void delete() {
+	public synchronized void delete() {
 		delegate.delete();
 		super.delete();
 	}

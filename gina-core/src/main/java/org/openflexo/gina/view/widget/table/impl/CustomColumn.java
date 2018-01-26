@@ -204,11 +204,9 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V> implements Editable
 				else {
 					c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 				}
-				Color fg = null;
-				Color bg = null;
 				if (isSelected) {
-					c.setForeground(fg == null ? table.getSelectionForeground() : fg);
-					c.setBackground(bg == null ? table.getSelectionBackground() : bg);
+					c.setForeground(table.getSelectionForeground());
+					c.setBackground(table.getSelectionBackground());
 				}
 				else {
 					c.setForeground(table.getForeground());
