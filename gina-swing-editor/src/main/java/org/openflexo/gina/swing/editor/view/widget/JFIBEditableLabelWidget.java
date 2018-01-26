@@ -113,7 +113,7 @@ public class JFIBEditableLabelWidget extends JFIBLabelWidget implements FIBSwing
 	}
 
 	@Override
-	public void delete() {
+	public synchronized void delete() {
 		delegate.delete();
 		super.delete();
 	}

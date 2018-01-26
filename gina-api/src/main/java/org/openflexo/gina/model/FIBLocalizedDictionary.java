@@ -777,19 +777,19 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 			}
 		}
 
-		private String automaticEnglishTranslation(String key) {
+		private static String automaticEnglishTranslation(String key) {
 			String englishTranslation = key.toString();
 			englishTranslation = englishTranslation.replace("_", " ");
 			englishTranslation = englishTranslation.substring(0, 1).toUpperCase() + englishTranslation.substring(1);
 			return englishTranslation;
 		}
 
-		private String automaticDutchTranslation(String key) {
+		private static String automaticDutchTranslation(String key) {
 			return key;
 			// return automaticEnglishTranslation(key);
 		}
 
-		private String automaticFrenchTranslation(String key) {
+		private static String automaticFrenchTranslation(String key) {
 			return key;
 			// return automaticEnglishTranslation(key);
 		}

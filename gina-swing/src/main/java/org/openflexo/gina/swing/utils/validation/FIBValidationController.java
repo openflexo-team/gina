@@ -174,7 +174,7 @@ public class FIBValidationController extends FIBController {
 
 		System.out.println("disableRule " + rule);
 
-		if (getDataObject() instanceof ValidationReport) {
+		if (getDataObject() != null) {
 			rule.setIsEnabled(false);
 			ValidationReport report = getDataObject();
 			List<ValidationIssue<?, ?>> issuesToRemove = report.issuesRegarding(rule);

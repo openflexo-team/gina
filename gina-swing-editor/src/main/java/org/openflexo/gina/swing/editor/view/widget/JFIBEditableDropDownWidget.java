@@ -78,7 +78,7 @@ public class JFIBEditableDropDownWidget<T> extends JFIBDropDownWidget<T> impleme
 	}
 
 	@Override
-	public void delete() {
+	public synchronized void delete() {
 		delegate.delete();
 		super.delete();
 	}

@@ -78,7 +78,7 @@ public class JFIBEditableTextFieldWidget extends JFIBTextFieldWidget implements 
 	}
 
 	@Override
-	public void delete() {
+	public synchronized void delete() {
 		delegate.delete();
 		super.delete();
 	}

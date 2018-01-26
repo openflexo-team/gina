@@ -78,7 +78,7 @@ public class JFIBEditableImageWidget extends JFIBImageWidget implements FIBSwing
 	}
 
 	@Override
-	public void delete() {
+	public synchronized void delete() {
 		delegate.delete();
 		super.delete();
 	}

@@ -78,7 +78,7 @@ public class JFIBEditableTextAreaWidget extends JFIBTextAreaWidget implements FI
 	}
 
 	@Override
-	public void delete() {
+	public synchronized void delete() {
 		delegate.delete();
 		super.delete();
 	}

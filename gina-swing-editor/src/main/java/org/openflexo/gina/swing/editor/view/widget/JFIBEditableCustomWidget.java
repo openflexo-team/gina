@@ -80,7 +80,7 @@ public class JFIBEditableCustomWidget<CC extends JComponent & FIBCustomComponent
 	}
 
 	@Override
-	public void delete() {
+	public synchronized void delete() {
 		delegate.delete();
 		super.delete();
 	}

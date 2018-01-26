@@ -79,7 +79,7 @@ public class JFIBEditableCheckboxListWidget<T> extends JFIBCheckboxListWidget<T>
 	}
 
 	@Override
-	public void delete() {
+	public synchronized void delete() {
 		delegate.delete();
 		super.delete();
 	}

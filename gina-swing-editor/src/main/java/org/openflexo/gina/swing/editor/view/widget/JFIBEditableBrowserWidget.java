@@ -78,7 +78,7 @@ public class JFIBEditableBrowserWidget<T> extends JFIBBrowserWidget<T> implement
 	}
 
 	@Override
-	public void delete() {
+	public synchronized void delete() {
 		delegate.delete();
 		super.delete();
 	}

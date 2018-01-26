@@ -79,7 +79,7 @@ public class JFIBEditableRadioButtonListWidget<T> extends JFIBRadioButtonListWid
 	}
 
 	@Override
-	public void delete() {
+	public synchronized void delete() {
 		delegate.delete();
 		super.delete();
 	}

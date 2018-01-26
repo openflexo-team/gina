@@ -228,7 +228,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 	}
 
 	@Deprecated
-	private BindingColumnElement findElementMatching(ListModel listModel, String subPartialPath, Vector<Integer> pathElementIndex) {
+	private static BindingColumnElement findElementMatching(ListModel listModel, String subPartialPath, Vector<Integer> pathElementIndex) {
 		for (int i = 0; i < listModel.getSize(); i++) {
 			if (listModel.getElementAt(i) instanceof BindingColumnElement
 					&& ((BindingColumnElement) listModel.getElementAt(i)).getLabel().startsWith(subPartialPath)) {

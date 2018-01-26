@@ -82,7 +82,7 @@ public class JFIBEditableReferencedComponentWidget extends JFIBReferencedCompone
 	}
 
 	@Override
-	public void delete() {
+	public synchronized void delete() {
 		delegate.delete();
 		super.delete();
 	}
