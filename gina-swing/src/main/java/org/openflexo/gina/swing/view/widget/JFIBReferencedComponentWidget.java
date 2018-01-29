@@ -50,6 +50,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.widget.FIBReferencedComponent;
@@ -206,7 +207,8 @@ public class JFIBReferencedComponentWidget extends FIBReferencedComponentWidgetI
 
 			if (widget.getReferencedComponent() == null) {
 				// No need to write anything
-				invalidComponentlabel.setText(""/*"< Reference component >"*/);
+				invalidComponentlabel.setText(StringUtils.isEmpty(widget.getComponent().getInvalidComponentLabel()) ? ""
+						: widget.getComponent().getInvalidComponentLabel());
 				add(invalidComponentlabel, BorderLayout.CENTER);
 				setBorder(BorderFactory.createEtchedBorder());
 			}

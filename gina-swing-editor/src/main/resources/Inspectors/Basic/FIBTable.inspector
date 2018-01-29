@@ -46,10 +46,16 @@
 	<Label index="13" label="create_new_row_on_click"
 		constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
 		localize="true" />
-	<CheckBox index="14" selected="false" data="data.showFooter"
+	<CheckBox index="14" selected="false" data="data.showHeader"
 		constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=left)"
 		localize="true" />
-	<Label index="15" label="show_footer"
+	<Label index="15" label="show_header"
+		constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+		localize="true" />
+	<CheckBox index="16" selected="false" data="data.showFooter"
+		constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=left)"
+		localize="true" />
+	<Label index="17" label="show_footer"
 		constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
 		localize="true" />
 	<LocalizedDictionary />

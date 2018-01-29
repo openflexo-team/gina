@@ -84,6 +84,8 @@ public interface FIBReferencedComponent extends FIBWidget {
 	public static final String CONTROLLER_FACTORY_KEY = "controllerFactory";
 	@PropertyIdentifier(type = Vector.class)
 	public static final String ASSIGNMENTS_KEY = "assignments";
+	@PropertyIdentifier(type = String.class)
+	public static final String INVALID_COMPONENT_LABEL_KEY = "invalidComponentLabel";
 
 	@Getter(value = COMPONENT_FILE_KEY, isStringConvertable = true)
 	@XMLAttribute
@@ -135,6 +137,13 @@ public interface FIBReferencedComponent extends FIBWidget {
 	public FIBReferenceAssignment createAssignment();
 
 	public FIBReferenceAssignment deleteAssignment(FIBReferenceAssignment assignment);
+
+	@Getter(INVALID_COMPONENT_LABEL_KEY)
+	@XMLAttribute
+	public String getInvalidComponentLabel();
+
+	@Setter(INVALID_COMPONENT_LABEL_KEY)
+	public void setInvalidComponentLabel(String invalidComponentLabel);
 
 	public static abstract class FIBReferencedComponentImpl extends FIBWidgetImpl implements FIBReferencedComponent {
 
