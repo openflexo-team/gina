@@ -1,0 +1,11 @@
+dependencies {
+  compile connie()
+  compile project(':flexographicutils')
+  compile project(':gina-api')
+  compile project(':gina-core')
+  compile project(':gina-swing')
+  testCompile testUtils()
+}
+tasks.withType(Test) {
+	jvmArgs += ["-Djava.awt.headless=true"]
+}
