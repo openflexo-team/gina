@@ -26,3 +26,6 @@ if (JavaVersion.current().isJava9Compatible()) {
     }
 }  
 
+tasks.withType(Test) {
+	jvmArgs += ["-Djava.awt.headless=true"]
+}
