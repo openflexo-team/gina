@@ -46,6 +46,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.gina.view.FIBContainerView;
+import org.openflexo.gina.view.container.FIBIterationView;
 import org.openflexo.gina.view.impl.FIBWidgetViewImpl;
 import org.openflexo.gina.view.widget.FIBLabelWidget;
 
@@ -163,7 +164,9 @@ public abstract class FIBLabelWidgetImpl<C> extends FIBWidgetViewImpl<FIBLabel, 
 		}
 		if (evt.getPropertyName().equals(FIBLabel.LABEL_KEY)) {
 			updateLabel();
-			relayoutParentBecauseLabelChanged();
+			if (!(getParentView() instanceof FIBIterationView)) {
+				relayoutParentBecauseLabelChanged();
+			}
 		}
 
 		super.propertyChange(evt);

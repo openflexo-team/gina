@@ -42,23 +42,38 @@ package org.openflexo.gina.view.container.impl;
 import java.awt.Image;
 import java.beans.PropertyChangeEvent;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.BindingVariable;
+import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingValueChangeListener;
+import org.openflexo.connie.binding.BindingValueListChangeListener;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.container.FIBIteration;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.model.container.FIBTab;
 import org.openflexo.gina.model.container.layout.FIBLayoutManager;
-import org.openflexo.gina.view.container.FIBPanelView;
+import org.openflexo.gina.view.FIBContainerView;
+import org.openflexo.gina.view.FIBView;
+import org.openflexo.gina.view.container.FIBIterationView;
 import org.openflexo.gina.view.impl.FIBContainerViewImpl;
+import org.openflexo.gina.view.impl.FIBViewImpl;
 import org.openflexo.rm.Resource;
 import org.openflexo.swing.ImageUtils;
 
 /**
- * Base implementation for a basic panel, as a container of some children component, with a given layout, and a border
+ * Base implementation for an enumeration
  * 
  * @param <C>
  *            type of technology-specific component this view manage
@@ -67,15 +82,17 @@ import org.openflexo.swing.ImageUtils;
  * 
  * @author sylvain
  */
-public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPanel, C, C2> implements FIBPanelView<C, C2> {
+public abstract class FIBIterationViewImpl<C, C2> extends FIBContainerViewImpl<FIBIteration, C, C2> implements FIBIterationView<C, C2> {
 
-	private static final Logger logger = Logger.getLogger(FIBPanelViewImpl.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(FIBIterationViewImpl.class.getPackage().getName());
 
 	private FIBLayoutManager<C, C2, ?> layoutManager;
 
 	private BindingValueChangeListener<Image> dynamicBackgroundImageBindingValueChangeListener;
 
-	public FIBPanelViewImpl(FIBPanel model, FIBController controller, PanelRenderingAdapter<C, C2> renderingAdapter) {
+	private BindingValueListChangeListener<Object, List<Object>> listBindingValueChangeListener;
+
+	public FIBIterationViewImpl(FIBIteration model, FIBController controller, IterationRenderingAdapter<C, C2> renderingAdapter) {
 		super(model, controller, renderingAdapter);
 		layoutManager = makeFIBLayoutManager(model.getLayout());
 		layoutManager.setLayoutManager(getTechnologyComponent());
@@ -83,15 +100,256 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 	}
 
 	@Override
+	public synchronized void delete() {
+		if (listBindingValueChangeListener != null) {
+			listBindingValueChangeListener.stopObserving();
+			listBindingValueChangeListener.delete();
+		}
+		super.delete();
+	}
+
+	public class IteratedContentsImpl<I> implements IteratedContents<I> {
+		private final I iteratedValue;
+		protected Map<FIBComponent, FIBViewImpl<?, C2>> subViewsMap;
+
+		public IteratedContentsImpl(I iteratedValue) {
+			this.iteratedValue = iteratedValue;
+			subViewsMap = new HashMap<>();
+		}
+
+		@Override
+		public Object getValue(BindingVariable variable) {
+			if (variable.getVariableName().equals(FIBIteration.ITERATOR_NAME)) {
+				return getIteratedValue();
+			}
+			return FIBIterationViewImpl.this.getValue(variable);
+		}
+
+		@Override
+		public I getIteratedValue() {
+			return iteratedValue;
+		}
+
+		@Override
+		public Map<FIBComponent, FIBViewImpl<?, C2>> getSubViewsMap() {
+			return subViewsMap;
+		}
+
+		@Override
+		public boolean containsView(FIBView<?, ?> view) {
+			for (FIBViewImpl<?, C2> fibViewImpl : subViewsMap.values()) {
+				if (fibViewImpl == view) {
+					return true;
+				}
+				if (fibViewImpl instanceof FIBContainerView) {
+					if (((FIBContainerView) fibViewImpl).containsView(view)) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+	}
+
+	protected Map<Object, IteratedContents<?>> iteratedSubViewsMap = new LinkedHashMap<>();
+
+	private Map<FIBView<?, ?>, IteratedContents<?>> iteratedContentsMap = new HashMap<>();
+
+	@Override
+	public IteratedContents<?> getIteratedContents(FIBView<?, ?> view) {
+		IteratedContents<?> returned = iteratedContentsMap.get(view);
+		if (returned == null) {
+			for (IteratedContents<?> contents : getIteratedSubViewsMap().values()) {
+				if (contents.containsView(view)) {
+					returned = contents;
+					iteratedContentsMap.put(view, contents);
+					break;
+				}
+			}
+		}
+		return returned;
+	}
+
+	@Override
+	public Map<Object, IteratedContents<?>> getIteratedSubViewsMap() {
+		return iteratedSubViewsMap;
+	}
+
+	protected boolean handleIteration() {
+		return true;
+	}
+
+	@Override
+	protected void buildSubComponents() {
+
+		if (!handleIteration()) {
+			// In Edit mode, return super (don't execute the iteration)
+			super.buildSubComponents();
+			return;
+		}
+
+		iteratedContentsMap.clear();
+		iteratedSubViewsMap.clear();
+
+		List<?> accessedList = null;
+		try {
+			accessedList = getComponent().getList().getBindingValue(getBindingEvaluationContext());
+		} catch (TypeMismatchException e) {
+			e.printStackTrace();
+		} catch (NullReferenceException e) {
+			// e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("On recalcule toute l'iteration !!!!!!!!!!!!!");
+
+		if (accessedList != null) {
+			for (Object iteratedValue : accessedList) {
+				internallyBuildChildComponents(iteratedValue);
+			}
+		}
+
+		addSubComponentsAndDoLayout();
+		performUpdateSubViews();
+	}
+
+	private <I> IteratedContents<I> internallyBuildChildComponents(I iteratedValue) {
+
+		IteratedContents<I> returned = (IteratedContents<I>) iteratedSubViewsMap.get(iteratedValue);
+
+		if (returned == null) {
+			returned = new IteratedContentsImpl<I>(iteratedValue);
+			iteratedSubViewsMap.put(iteratedValue, returned);
+		}
+
+		Vector<FIBComponent> allSubComponents = new Vector<>();
+		allSubComponents.addAll(getNotHiddenSubComponents());
+
+		for (FIBComponent subComponent : allSubComponents) {
+
+			FIBViewImpl<?, C2> subView = (FIBViewImpl<?, C2>) returned.getSubViewsMap().get(subComponent);
+			if (subView == null) {
+				subView = (FIBViewImpl<?, C2>) getController().buildView(subComponent, false);
+				registerViewForComponent(subView, subComponent, iteratedValue);
+			}
+		}
+
+		return returned;
+	}
+
+	public <I> void registerViewForComponent(FIBViewImpl<?, C2> view, FIBComponent component, I iteratedValue) {
+		IteratedContents<I> returned = (IteratedContents<I>) iteratedSubViewsMap.get(iteratedValue);
+		if (returned != null) {
+			((Map) returned.getSubViewsMap()).put(component, view);
+		}
+		// subViewsMap.put(component, view);
+		subViewsList.add(view);
+	}
+
+	public <I> void unregisterViewForComponent(FIBViewImpl<?, C2> view, FIBComponent component, I iteratedValue) {
+		IteratedContents<I> returned = (IteratedContents<I>) iteratedSubViewsMap.get(iteratedValue);
+		if (returned != null) {
+			((Map) returned.getSubViewsMap()).remove(component);
+		}
+		subViewsList.remove(view);
+	}
+
+	private void performUpdateSubViews() {
+		for (IteratedContents<?> contents : iteratedSubViewsMap.values()) {
+			for (FIBView<?, ?> v : new ArrayList<>(contents.getSubViewsMap().values())) {
+				if (!v.isDeleted() /*&& v.isViewVisible()*/) {
+					v.update();
+				}
+			}
+		}
+	}
+
+	private List<FIBViewImpl<?, C2>> subViewsList = new ArrayList<>();
+
+	@Override
+	public Collection<FIBViewImpl<?, C2>> getSubViews() {
+
+		if (!handleIteration()) {
+			return super.getSubViews();
+		}
+
+		return subViewsList;
+	}
+
+	@Override
+	public FIBIteration getComponent() {
+		return super.getComponent();
+	}
+
+	private void listenListValueChange() {
+		if (listBindingValueChangeListener != null) {
+			listBindingValueChangeListener.stopObserving();
+			listBindingValueChangeListener.delete();
+		}
+
+		// TODO: investigate on this bug and workaround
+		// Binding should be notified and we should not force revalidate
+		if (getComponent().getList() != null && getComponent().getList().isSet() && !getComponent().getList().isValid()) {
+			String invalidBindingReason = getComponent().getList().invalidBindingReason();
+			getComponent().getList().forceRevalidate();
+			logger.warning("binding was not valid: " + getComponent().getList() + " reason: " + invalidBindingReason);
+			if (getComponent().getList().isValid()) {
+				logger.warning("Binding has been force revalidated and is now valid. Please investigate.");
+			}
+		}
+
+		if (getComponent().getList() != null && getComponent().getList().forceRevalidate()) {
+			listBindingValueChangeListener = new BindingValueListChangeListener<Object, List<Object>>(
+					((DataBinding) getComponent().getList()), getBindingEvaluationContext()) {
+
+				@Override
+				public void bindingValueChanged(Object source, List<Object> newValue) {
+					// System.out.println(" bindingValueChanged() detected for list=" + getComponent().getList() + " with newValue=" +
+					// newValue
+					// + " source=" + source);
+					updateIteration();
+				}
+			};
+		}
+	}
+
+	private void stopListenListValueChange() {
+		if (listBindingValueChangeListener != null) {
+			listBindingValueChangeListener.stopObserving();
+			listBindingValueChangeListener.delete();
+			listBindingValueChangeListener = null;
+		}
+	}
+
+	protected void updateIteration() {
+
+		List<?> accessedList = null;
+		try {
+			accessedList = getComponent().getList().getBindingValue(getBindingEvaluationContext());
+		} catch (TypeMismatchException e) {
+			e.printStackTrace();
+		} catch (NullReferenceException e) {
+			// e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Hop, faudrait iterer sur " + accessedList);
+
+	}
+
+	@Override
 	protected void componentBecomesVisible() {
 		super.componentBecomesVisible();
 		listenDynamicBackgroundImageValueChange();
+		listenListValueChange();
 	}
 
 	@Override
 	protected void componentBecomesInvisible() {
 		super.componentBecomesInvisible();
 		stopListenDynamicBackgroundImageValueChange();
+		stopListenListValueChange();
 	}
 
 	private void listenDynamicBackgroundImageValueChange() {
@@ -134,8 +392,8 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 	}
 
 	@Override
-	public PanelRenderingAdapter<C, C2> getRenderingAdapter() {
-		return (PanelRenderingAdapter<C, C2>) super.getRenderingAdapter();
+	public IterationRenderingAdapter<C, C2> getRenderingAdapter() {
+		return (IterationRenderingAdapter<C, C2>) super.getRenderingAdapter();
 	}
 
 	public abstract FIBLayoutManager<C, C2, ?> makeFIBLayoutManager(Layout layoutType);
@@ -145,7 +403,8 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 		try {
 			getLayoutManager().doLayout();
 		} catch (ClassCastException e) {
-			logger.warning("Unexpected ClassCastException during ");
+			logger.warning("Unexpected ClassCastException during doLayout: " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -205,14 +464,6 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 	 * Remove all components present in this container
 	 */
 	protected abstract void clearContainer();
-
-	// @Override
-	// protected abstract void retrieveContainedJComponentsAndConstraints();
-
-	@Override
-	public void delete() {
-		super.delete();
-	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
@@ -307,12 +558,5 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 	}
 
 	protected abstract void updateBackgroundImageDefaultSize(Image image);
-
-	/*protected void relayoutParentBecauseBackgroundImageChanged() {
-		FIBContainerView<?, ?, ?> parentView = getParentView();
-		if (parentView != null) {
-			parentView.updateLayout();
-		}
-	}*/
 
 }

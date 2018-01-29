@@ -61,6 +61,7 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.FIBMouseEvent;
 import org.openflexo.gina.model.FIBWidget;
+import org.openflexo.gina.model.container.FIBIteration;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBSplitPanel;
 import org.openflexo.gina.model.container.FIBTab;
@@ -87,6 +88,7 @@ import org.openflexo.gina.model.widget.FIBReferencedComponent;
 import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTextArea;
 import org.openflexo.gina.model.widget.FIBTextField;
+import org.openflexo.gina.swing.view.container.JFIBIterationView;
 import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.swing.view.container.JFIBSplitPanelView;
 import org.openflexo.gina.swing.view.container.JFIBTabPanelView;
@@ -118,6 +120,7 @@ import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.FIBWidgetView;
 import org.openflexo.gina.view.GinaViewFactory;
+import org.openflexo.gina.view.container.FIBIterationView;
 import org.openflexo.gina.view.container.FIBPanelView;
 import org.openflexo.gina.view.container.FIBSplitPanelView;
 import org.openflexo.gina.view.container.FIBTabPanelView;
@@ -193,8 +196,9 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <F extends FIBWidget> FIBWidgetView<F, ? extends JComponent, ?> makeWidget(final F fibWidget, FIBController controller) {
-		final FIBWidgetView<F, ? extends JComponent, ?> returned = super.makeWidget(fibWidget, controller);
+	public <F extends FIBWidget> FIBWidgetView<F, ? extends JComponent, ?> makeWidget(final F fibWidget, FIBController controller,
+			boolean updateNow) {
+		final FIBWidgetView<F, ? extends JComponent, ?> returned = super.makeWidget(fibWidget, controller, updateNow);
 
 		if (returned == null) {
 			System.out.println("For fibWidget " + fibWidget + " returned=" + returned);
@@ -258,6 +262,12 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 	public FIBSplitPanelView<? extends JComponent, ? extends JComponent> makeSplitPanelView(FIBSplitPanel container,
 			FIBController controller) {
 		return new JFIBSplitPanelView(container, controller);
+	}
+
+	@Override
+	public FIBIterationView<? extends JComponent, ? extends JComponent> makeIterationView(FIBIteration iteration,
+			FIBController controller) {
+		return new JFIBIterationView(iteration, controller);
 	}
 
 	@Override

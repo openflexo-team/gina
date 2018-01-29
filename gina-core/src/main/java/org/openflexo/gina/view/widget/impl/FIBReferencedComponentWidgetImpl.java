@@ -343,7 +343,7 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 
 			if (loaded instanceof FIBWidget) {
 				referencedComponentView = (FIBWidgetView) embeddedFIBController.getViewFactory().makeWidget((FIBWidget) loaded,
-						embeddedFIBController);
+						embeddedFIBController, true);
 				referencedComponentView.setEmbeddingComponent(this);
 			}
 			else if (loaded instanceof FIBContainer) {

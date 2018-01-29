@@ -45,9 +45,9 @@ import javax.swing.JPanel;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.layout.ButtonLayoutConstraints;
 import org.openflexo.gina.swing.view.JFIBView;
-import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.container.impl.FIBLayoutManagerImpl;
+import org.openflexo.gina.view.impl.FIBContainerViewImpl;
 import org.openflexo.swing.ButtonLayout;
 
 /**
@@ -57,7 +57,7 @@ import org.openflexo.swing.ButtonLayout;
  */
 public class JButtonLayout extends FIBLayoutManagerImpl<JPanel, JComponent, ButtonLayoutConstraints> {
 
-	public JButtonLayout(JFIBPanelView panelView) {
+	public JButtonLayout(FIBContainerViewImpl<?, JPanel, JComponent> panelView) {
 		super(panelView);
 	}
 
@@ -69,8 +69,8 @@ public class JButtonLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Butt
 	@Override
 	public void setLayoutManager(JPanel container) {
 
-		container.setLayout(new ButtonLayout(getComponent().getFlowAlignment() != null ? getComponent()
-				.getFlowAlignment().getAlign() : -1, getComponent().getHGap() != null ? getComponent().getHGap() : 5));
+		container.setLayout(new ButtonLayout(getComponent().getFlowAlignment() != null ? getComponent().getFlowAlignment().getAlign() : -1,
+				getComponent().getHGap() != null ? getComponent().getHGap() : 5));
 	}
 
 	@Override

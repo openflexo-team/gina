@@ -41,6 +41,7 @@ package org.openflexo.gina.swing.editor.controller;
 import javax.swing.JComponent;
 
 import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.container.FIBIteration;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBSplitPanel;
 import org.openflexo.gina.model.container.FIBTab;
@@ -66,6 +67,7 @@ import org.openflexo.gina.model.widget.FIBReferencedComponent;
 import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTextArea;
 import org.openflexo.gina.model.widget.FIBTextField;
+import org.openflexo.gina.swing.editor.view.container.JFIBEditableIterationView;
 import org.openflexo.gina.swing.editor.view.container.JFIBEditablePanelView;
 import org.openflexo.gina.swing.editor.view.container.JFIBEditableSplitPanelView;
 import org.openflexo.gina.swing.editor.view.container.JFIBEditableTabPanelView;
@@ -93,6 +95,7 @@ import org.openflexo.gina.swing.editor.view.widget.JFIBEditableTableWidget;
 import org.openflexo.gina.swing.editor.view.widget.JFIBEditableTextAreaWidget;
 import org.openflexo.gina.swing.editor.view.widget.JFIBEditableTextFieldWidget;
 import org.openflexo.gina.swing.view.SwingViewFactory;
+import org.openflexo.gina.view.container.FIBIterationView;
 import org.openflexo.gina.view.container.FIBPanelView;
 import org.openflexo.gina.view.container.FIBSplitPanelView;
 import org.openflexo.gina.view.container.FIBTabPanelView;
@@ -146,6 +149,12 @@ public class SwingEditorViewFactory extends SwingViewFactory {
 	@Override
 	public FIBPanelView<? extends JComponent, ? extends JComponent> makePanelView(FIBPanel container, FIBController controller) {
 		return new JFIBEditablePanelView(container, fibEditorController);
+	}
+
+	@Override
+	public FIBIterationView<? extends JComponent, ? extends JComponent> makeIterationView(FIBIteration iteration,
+			FIBController controller) {
+		return new JFIBEditableIterationView(iteration, fibEditorController);
 	}
 
 	@Override

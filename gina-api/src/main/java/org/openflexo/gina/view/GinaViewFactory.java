@@ -72,7 +72,7 @@ public interface GinaViewFactory<C> {
 	 * @param controller
 	 * @return
 	 */
-	public <F extends FIBWidget> FIBWidgetView<F, ? extends C, ?> makeWidget(F fibWidget, FIBController controller);
+	public <F extends FIBWidget> FIBWidgetView<F, ? extends C, ?> makeWidget(F fibWidget, FIBController controller, boolean updateNow);
 
 	public void show(FIBController controller);
 

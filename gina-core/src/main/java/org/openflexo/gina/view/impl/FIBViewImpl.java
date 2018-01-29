@@ -61,6 +61,8 @@ import org.openflexo.gina.model.bindings.FIBComponentBindingModel;
 import org.openflexo.gina.model.bindings.FIBVariableBindingVariable;
 import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.FIBView;
+import org.openflexo.gina.view.container.FIBIterationView;
+import org.openflexo.gina.view.container.FIBIterationView.IteratedContents;
 import org.openflexo.gina.view.widget.FIBReferencedComponentWidget;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
@@ -423,6 +425,17 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 		if (getEmbeddingComponent() != null) {
 			return getEmbeddingComponent().getEmbeddedBindingEvaluationContext();
+		}
+
+		FIBContainerView<?, ?, ?> current = getParentView();
+		while (current != null) {
+			if (current instanceof FIBIterationView) {
+				IteratedContents<?> iteratedContents = ((FIBIterationView) current).getIteratedContents(this);
+				if (iteratedContents != null) {
+					return iteratedContents;
+				}
+			}
+			current = current.getParentView();
 		}
 
 		return this;

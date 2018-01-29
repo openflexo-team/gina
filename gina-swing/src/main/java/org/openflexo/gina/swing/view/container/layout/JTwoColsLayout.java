@@ -54,9 +54,9 @@ import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints.TwoColsLayoutLocation;
 import org.openflexo.gina.swing.view.JFIBView;
-import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.container.impl.FIBLayoutManagerImpl;
+import org.openflexo.gina.view.impl.FIBContainerViewImpl;
 
 /**
  * Swing implementation for 2-cols layout
@@ -65,7 +65,7 @@ import org.openflexo.gina.view.container.impl.FIBLayoutManagerImpl;
  */
 public class JTwoColsLayout extends FIBLayoutManagerImpl<JPanel, JComponent, TwoColsLayoutConstraints> {
 
-	public JTwoColsLayout(JFIBPanelView panelView) {
+	public JTwoColsLayout(FIBContainerViewImpl<?, JPanel, JComponent> panelView) {
 		super(panelView);
 	}
 
