@@ -101,7 +101,7 @@ public class MultiSpanCellTableModel extends DefaultTableModel {
 	}
 
 	@Override
-	public void addColumn(Object columnName, Vector<?> columnData) {
+	public void addColumn(Object columnName, Vector columnData) {
 		if (columnName == null)
 			throw new IllegalArgumentException("addColumn() - null parameter");
 		columnIdentifiers.addElement(columnName);
@@ -124,7 +124,7 @@ public class MultiSpanCellTableModel extends DefaultTableModel {
 	}
 
 	@Override
-	public void addRow(Vector<?> rowData) {
+	public void addRow(Vector rowData) {
 		Vector<?> newData = null;
 		if (rowData == null) {
 			newData = new Vector<>(getColumnCount());
@@ -141,7 +141,7 @@ public class MultiSpanCellTableModel extends DefaultTableModel {
 	}
 
 	@Override
-	public void insertRow(int row, Vector<?> rowData) {
+	public void insertRow(int row, Vector rowData) {
 		if (rowData == null) {
 			rowData = new Vector<>(getColumnCount());
 		}
