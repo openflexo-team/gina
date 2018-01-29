@@ -46,8 +46,6 @@ import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.gina.FIBInspector;
-import org.openflexo.gina.InspectorGroup;
 import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBWidget;

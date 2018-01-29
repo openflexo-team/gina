@@ -49,9 +49,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.openflexo.gina.FIBInspector;
 import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.swing.view.container.JFIBTabPanelView;
+import org.openflexo.gina.utils.FIBInspector;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.rm.Resource;
 import org.openflexo.swing.ComponentBoundSaver;

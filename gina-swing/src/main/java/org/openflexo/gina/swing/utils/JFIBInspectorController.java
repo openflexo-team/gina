@@ -50,13 +50,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import org.openflexo.gina.FIBInspector;
 import org.openflexo.gina.FIBLibrary;
-import org.openflexo.gina.InspectorGroup;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingViewFactory;
+import org.openflexo.gina.utils.FIBInspector;
+import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.rm.Resource;
