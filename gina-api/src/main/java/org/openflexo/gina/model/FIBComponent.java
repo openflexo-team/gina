@@ -1880,7 +1880,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		public Iterator<FIBComponent> subComponentIterator() {
 			Vector<FIBComponent> allSubComponents = retrieveAllSubComponents();
 			if (allSubComponents == null) {
-				return new Iterator<>() {
+				return new Iterator<FIBComponent>() {
 					@Override
 					public boolean hasNext() {
 						return false;
