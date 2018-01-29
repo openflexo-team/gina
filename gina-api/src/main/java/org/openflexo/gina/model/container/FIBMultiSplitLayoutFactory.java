@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.gina.model.container;
 
 import java.util.List;
@@ -127,7 +126,7 @@ public class FIBMultiSplitLayoutFactory implements MultiSplitLayoutFactory {
 	}
 
 	/**
-	 * Models a single vertical/horiztonal divider.
+	 * Models a single vertical/horizontal divider.
 	 */
 	@ModelEntity
 	@ImplementationClass(FIBDivider.FIBDividerImpl.class)
@@ -135,8 +134,8 @@ public class FIBMultiSplitLayoutFactory implements MultiSplitLayoutFactory {
 	public static interface FIBDivider<N extends FIBDivider<N>> extends FIBNode<N>, Divider<N> {
 
 		@SuppressWarnings("serial")
-		public static abstract class FIBDividerImpl<N extends FIBDivider<N>> extends MultiSplitLayout.DefaultDivider<N> implements
-				FIBDivider<N> {
+		public static abstract class FIBDividerImpl<N extends FIBDivider<N>> extends MultiSplitLayout.DefaultDivider<N>
+				implements FIBDivider<N> {
 
 		}
 	}

@@ -39,7 +39,7 @@
 package org.openflexo.gina.swing.editor;
 
 import org.junit.Test;
-import org.openflexo.gina.testutils.FIBInspectorTestCase;
+import org.openflexo.gina.test.FIBInspectorTestCase;
 import org.openflexo.rm.ResourceLocator;
 
 /**

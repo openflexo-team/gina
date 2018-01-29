@@ -51,7 +51,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.Type;
@@ -1612,7 +1611,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 	}
 
-	private class NormalBindingColumnListModel extends BindingColumnListModel implements PropertyChangeListener {
+	private class NormalBindingColumnListModel extends BindingColumnListModel {
 		private final Type _type;
 		private final IBindingPathElement _element;
 		private final Vector<BindingPathElement> _accessibleProperties;
@@ -1798,7 +1797,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 	}
 
-	protected class TypeResolver extends MouseAdapter implements MouseMotionListener {
+	protected class TypeResolver extends MouseAdapter {
 
 		private final JList<?> list;
 
@@ -2368,11 +2367,11 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					DataBinding<?> argValue = ((FunctionPathElement) last.getElement()).getParameter(arg);
 					if (argValue == null) {
 						if (TypeUtils.isNumber(arg.getArgumentType())) {
-							argValue = new DataBinding<Object>("0", bindingSelector.getBindable(), arg.getArgumentType(),
+							argValue = new DataBinding<>("0", bindingSelector.getBindable(), arg.getArgumentType(),
 									BindingDefinitionType.GET);
 						}
 						else {
-							argValue = new DataBinding<Object>("null", bindingSelector.getBindable(), arg.getArgumentType(),
+							argValue = new DataBinding<>("null", bindingSelector.getBindable(), arg.getArgumentType(),
 									BindingDefinitionType.GET);
 						}
 						((FunctionPathElement) last.getElement()).setParameter(arg, argValue);
@@ -2454,11 +2453,11 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					List<DataBinding<?>> args = new ArrayList<>();
 					for (FunctionArgument arg : function.getArguments()) {
 						if (TypeUtils.isNumber(arg.getArgumentType())) {
-							args.add(new DataBinding<Object>("0", bindingSelector.getBindable(), arg.getArgumentType(),
+							args.add(new DataBinding<>("0", bindingSelector.getBindable(), arg.getArgumentType(),
 									BindingDefinitionType.GET));
 						}
 						else {
-							args.add(new DataBinding<Object>("null", bindingSelector.getBindable(), arg.getArgumentType(),
+							args.add(new DataBinding<>("null", bindingSelector.getBindable(), arg.getArgumentType(),
 									BindingDefinitionType.GET));
 						}
 					}

@@ -1,7 +1,7 @@
 dependencies {
-  compile project(':gina-api')
+  compile project(':gina-swing-editor')
   compile project(':gina-test')
-  testCompile testUtils()
+  compile group: 'junit', name: 'junit', version: '4.+'
 }
 tasks.withType(Test) {
 	jvmArgs += ["-Djava.awt.headless=true"]

@@ -39,7 +39,6 @@
 package org.openflexo.gina.model.bindings;
 
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,7 +66,7 @@ import org.openflexo.toolbox.StringUtils;
  * @author sylvain
  * 
  */
-public class FIBComponentBindingModel extends BindingModel implements PropertyChangeListener {
+public class FIBComponentBindingModel extends BindingModel {
 
 	private final FIBComponent component;
 

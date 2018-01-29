@@ -8,7 +8,7 @@ import org.openflexo.gina.event.GinaEventNotifier;
 import org.openflexo.gina.event.description.NotifyMethodEventDescription;
 
 public class GinaPropertyChangeListener implements PropertyChangeListener, Registrable {
-	
+
 	private GinaEventNotifier<NotifyMethodEventDescription> GENotifier;
 
 	public GinaPropertyChangeListener(EventManager manager) {
@@ -21,16 +21,16 @@ public class GinaPropertyChangeListener implements PropertyChangeListener, Regis
 
 			@Override
 			public void setIdentity(NotifyMethodEventDescription d, Object o) {
-				
+
 			}
-			
+
 		};
 	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		GENotifier.notifyMethod(evt.getPropertyName());
-		
+
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class GinaPropertyChangeListener implements PropertyChangeListener, Regis
 	@Override
 	public void setURID(URID urid) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class GinaPropertyChangeListener implements PropertyChangeListener, Regis
 	@Override
 	public void setEventManager(EventManager manager) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

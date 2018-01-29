@@ -80,7 +80,6 @@ import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.toolbox.HTMLUtils;
-import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.StringUtils;
 
 @ModelEntity
@@ -445,7 +444,7 @@ public interface FIBLocalizedDictionary extends FIBModelObject, LocalizedDelegat
 			// return false;
 		}
 
-		public class DynamicEntry implements LocalizedEntry, HasPropertyChangeSupport {
+		public class DynamicEntry implements LocalizedEntry {
 
 			private String key;
 			private final PropertyChangeSupport pcSupport;

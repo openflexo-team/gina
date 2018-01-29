@@ -155,7 +155,7 @@ public interface FIBDependancy extends FIBModelObject {
 				if (dependancy.getOwner().getExplicitDependancies().indexOf(dependancy) != dependancy.getOwner().getExplicitDependancies()
 						.lastIndexOf(dependancy)) {
 					RemoveExtraReferences fixProposal = new RemoveExtraReferences(dependancy);
-					return new ValidationWarning<DependancyShouldNotBeRegisteredTwice, FIBDependancy>(this, dependancy,
+					return new ValidationWarning<>(this, dependancy,
 							"dependancy_to_($validable.toString)_is_registered_twice", fixProposal);
 				}
 			}
