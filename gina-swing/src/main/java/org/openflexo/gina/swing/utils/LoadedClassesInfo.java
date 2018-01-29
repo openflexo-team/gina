@@ -138,7 +138,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 		instances = new ArrayList<>();
 		registeredClassesForName = new Hashtable<>();
-		packages = new Hashtable<>() {
+		packages = new Hashtable<Package, PackageInfo>() {
 			@Override
 			public synchronized PackageInfo put(Package key, PackageInfo value) {
 				PackageInfo returned = super.put(key, value);

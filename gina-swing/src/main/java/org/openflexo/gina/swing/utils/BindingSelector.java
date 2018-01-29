@@ -175,7 +175,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 	public BindingSelector(DataBinding<?> editedObject, int cols) {
 		super(null, cols);
 
-		GENotifier = new GinaEventNotifier<>(null, null) {
+		GENotifier = new GinaEventNotifier<EventDescription>(null, null) {
 
 			@Override
 			public KIND computeClass(EventDescription e) {

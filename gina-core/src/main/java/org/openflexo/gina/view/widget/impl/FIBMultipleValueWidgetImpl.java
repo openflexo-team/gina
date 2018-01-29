@@ -166,7 +166,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 			arrayBindingValueChangeListener.delete();
 		}
 		if (getComponent().getArray() != null && getComponent().getArray().isValid()) {
-			arrayBindingValueChangeListener = new BindingValueArrayChangeListener<>(getComponent().getArray(),
+			arrayBindingValueChangeListener = new BindingValueArrayChangeListener<Object>(getComponent().getArray(),
 					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, Object[] newValue) {

@@ -177,7 +177,7 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 			selectedBindingValueChangeListener.delete();
 		}
 		if (getComponent().getSelected() != null && getComponent().getSelected().isValid()) {
-			selectedBindingValueChangeListener = new BindingValueChangeListener<>((DataBinding<T>) getComponent().getSelected(),
+			selectedBindingValueChangeListener = new BindingValueChangeListener<T>((DataBinding<T>) getComponent().getSelected(),
 					getBindingEvaluationContext()) {
 
 				@Override
@@ -532,7 +532,7 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 		if (l1.size() != l2.size()) {
 			return false;
 		}
-		Comparator<Object> comparator = new Comparator<>() {
+		Comparator<Object> comparator = new Comparator<Object>() {
 			@Override
 			public int compare(Object o1, Object o2) {
 				if (o1 == null || o2 == null) {

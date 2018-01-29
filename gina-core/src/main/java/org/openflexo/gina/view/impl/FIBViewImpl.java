@@ -232,7 +232,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		}
 
 		if (variable.getValue() != null && variable.getValue().isValid()) {
-			dataBindingValueChangeListener = new BindingValueChangeListener<>(variable.getValue(), getBindingEvaluationContext()) {
+			dataBindingValueChangeListener = new BindingValueChangeListener<T>(variable.getValue(), getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
 					setVariableValue(variable, newValue);
@@ -337,7 +337,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			visibleBindingValueChangeListener.delete();
 		}
 		if (getComponent().getVisible() != null && getComponent().getVisible().isValid()) {
-			visibleBindingValueChangeListener = new BindingValueChangeListener<>(getComponent().getVisible(),
+			visibleBindingValueChangeListener = new BindingValueChangeListener<Boolean>(getComponent().getVisible(),
 					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, Boolean newValue) {

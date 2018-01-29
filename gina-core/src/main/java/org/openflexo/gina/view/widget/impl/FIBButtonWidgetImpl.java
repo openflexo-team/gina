@@ -110,7 +110,7 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 			dynamicLabelBindingValueChangeListener.delete();
 		}
 		if (getComponent().getDynamicLabel() != null && getComponent().getDynamicLabel().isValid()) {
-			dynamicLabelBindingValueChangeListener = new BindingValueChangeListener<>(getComponent().getDynamicLabel(),
+			dynamicLabelBindingValueChangeListener = new BindingValueChangeListener<String>(getComponent().getDynamicLabel(),
 					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, String newValue) {
@@ -137,7 +137,7 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 			buttonIconBindingValueChangeListener.delete();
 		}
 		if (getComponent().getButtonIcon() != null && getComponent().getButtonIcon().isValid()) {
-			buttonIconBindingValueChangeListener = new BindingValueChangeListener<>(getComponent().getButtonIcon(),
+			buttonIconBindingValueChangeListener = new BindingValueChangeListener<Icon>(getComponent().getButtonIcon(),
 					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, Icon newValue) {

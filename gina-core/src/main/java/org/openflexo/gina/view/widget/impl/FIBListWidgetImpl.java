@@ -116,7 +116,7 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 		}
 
 		if (getComponent().getSelected() != null && getComponent().getSelected().forceRevalidate()) {
-			selectedBindingValueChangeListener = new BindingValueChangeListener<>(getComponent().getSelected(),
+			selectedBindingValueChangeListener = new BindingValueChangeListener<Object>(getComponent().getSelected(),
 					getBindingEvaluationContext(), true) {
 
 				@Override

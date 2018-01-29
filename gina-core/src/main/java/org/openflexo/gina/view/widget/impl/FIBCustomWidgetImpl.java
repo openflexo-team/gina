@@ -296,7 +296,7 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 	 */
 	private <T2> BindingValueChangeListener<T2> makeAssignmentValueBindingValueChangeListener(final DataBinding<?> variableDB,
 			final DataBinding<T2> valueDB) {
-		return new BindingValueChangeListener<>(valueDB, getBindingEvaluationContext()) {
+		return new BindingValueChangeListener<T2>(valueDB, getBindingEvaluationContext()) {
 			@Override
 			public void bindingValueChanged(Object source, T2 newValue) {
 				// System.out.println(" bindingValueChanged() detected for assignment value =" + valueDB + " with newValue=" + newValue);

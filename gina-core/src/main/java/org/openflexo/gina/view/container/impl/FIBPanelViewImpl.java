@@ -100,7 +100,7 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 			dynamicBackgroundImageBindingValueChangeListener.delete();
 		}
 		if (getComponent().getDynamicBackgroundImage() != null && getComponent().getDynamicBackgroundImage().isValid()) {
-			dynamicBackgroundImageBindingValueChangeListener = new BindingValueChangeListener<>(
+			dynamicBackgroundImageBindingValueChangeListener = new BindingValueChangeListener<Image>(
 					getComponent().getDynamicBackgroundImage(), getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, Image newValue) {
