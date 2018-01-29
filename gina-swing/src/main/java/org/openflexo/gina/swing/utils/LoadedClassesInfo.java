@@ -306,7 +306,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 	public class PackageInfo implements HasPropertyChangeSupport {
 		private String packageName;
-		private final Hashtable<Class<?>, ClassInfo> classes = new Hashtable<>() {
+		private final Hashtable<Class<?>, ClassInfo> classes = new Hashtable<Class<?>, ClassInfo>() {
 			@Override
 			public synchronized ClassInfo put(Class<?> key, ClassInfo value) {
 				ClassInfo returned = super.put(key, value);
@@ -392,7 +392,7 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		public String packageName;
 		public String fullQualifiedName;
 
-		private final Hashtable<Class<?>, ClassInfo> memberClasses = new Hashtable<>() {
+		private final Hashtable<Class<?>, ClassInfo> memberClasses = new Hashtable<Class<?>, ClassInfo>() {
 			@Override
 			public synchronized ClassInfo put(Class<?> key, ClassInfo value) {
 				ClassInfo returned = super.put(key, value);
