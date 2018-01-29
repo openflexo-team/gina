@@ -63,6 +63,7 @@ import org.openflexo.gina.controller.CustomTypeEditorProvider;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.manager.HasBaseIdentifier;
 import org.openflexo.gina.model.bindings.FIBComponentBindingModel;
+import org.openflexo.gina.model.container.FIBIteration;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBSplitPanel;
 import org.openflexo.gina.model.container.FIBTab;
@@ -153,13 +154,13 @@ import org.openflexo.toolbox.StringUtils;
  */
 @ModelEntity(isAbstract = true)
 @ImplementationClass(FIBComponent.FIBComponentImpl.class)
-@Imports({ @Import(FIBPanel.class), @Import(FIBTab.class), @Import(FIBSplitPanel.class), @Import(FIBTabPanel.class),
-		@Import(FIBBrowser.class), @Import(FIBButton.class), @Import(FIBCheckBox.class), @Import(FIBColor.class), @Import(FIBCustom.class),
-		@Import(FIBFile.class), @Import(FIBFont.class), @Import(FIBDate.class), @Import(FIBHtmlEditor.class), @Import(FIBImage.class),
-		@Import(FIBLabel.class), @Import(FIBCheckboxList.class), @Import(FIBDropDown.class), @Import(FIBList.class),
-		@Import(FIBRadioButtonList.class), @Import(FIBNumber.class), @Import(FIBReferencedComponent.class), @Import(FIBTable.class),
-		@Import(FIBEditor.class), @Import(FIBTextArea.class), @Import(FIBTextField.class), @Import(FIBEditorPane.class),
-		@Import(FIBGraph.class) })
+@Imports({ @Import(FIBPanel.class), @Import(FIBIteration.class), @Import(FIBTab.class), @Import(FIBSplitPanel.class),
+		@Import(FIBTabPanel.class), @Import(FIBBrowser.class), @Import(FIBButton.class), @Import(FIBCheckBox.class),
+		@Import(FIBColor.class), @Import(FIBCustom.class), @Import(FIBFile.class), @Import(FIBFont.class), @Import(FIBDate.class),
+		@Import(FIBHtmlEditor.class), @Import(FIBImage.class), @Import(FIBLabel.class), @Import(FIBCheckboxList.class),
+		@Import(FIBDropDown.class), @Import(FIBList.class), @Import(FIBRadioButtonList.class), @Import(FIBNumber.class),
+		@Import(FIBReferencedComponent.class), @Import(FIBTable.class), @Import(FIBEditor.class), @Import(FIBTextArea.class),
+		@Import(FIBTextField.class), @Import(FIBEditorPane.class), @Import(FIBGraph.class) })
 @Modify(forward = FIBComponent.PARENT_KEY)
 public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBaseIdentifier {
 

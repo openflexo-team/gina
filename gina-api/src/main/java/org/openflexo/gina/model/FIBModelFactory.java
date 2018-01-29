@@ -43,6 +43,7 @@ import java.lang.reflect.Type;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.type.CustomTypeManager;
 import org.openflexo.gina.FIBLibrary;
+import org.openflexo.gina.model.container.FIBIteration;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.model.container.FIBSplitPanel;
@@ -142,6 +143,11 @@ public class FIBModelFactory extends ModelFactory {
 	public FIBPanel newFIBPanel() {
 		FIBPanel returned = newInstance(FIBPanel.class);
 		returned.setLayout(Layout.border);
+		return returned;
+	}
+
+	public FIBIteration newFIBIteration() {
+		FIBIteration returned = newInstance(FIBIteration.class);
 		return returned;
 	}
 

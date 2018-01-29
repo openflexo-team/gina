@@ -402,7 +402,7 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 			return (FIBView<M, ?>) getViewFactory().makeContainer((FIBContainer) fibComponent, this, updateNow);
 		}
 		else if (fibComponent instanceof FIBWidget) {
-			return (FIBView<M, ?>) getViewFactory().makeWidget((FIBWidget) fibComponent, this);
+			return (FIBView<M, ?>) getViewFactory().makeWidget((FIBWidget) fibComponent, this, updateNow);
 		}
 		return null;
 	}

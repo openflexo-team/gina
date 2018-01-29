@@ -56,8 +56,8 @@ import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.editor.view.container.JFIBEditablePanelView;
 import org.openflexo.gina.swing.view.JFIBView;
-import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.swing.view.container.layout.JGridLayout;
+import org.openflexo.gina.view.impl.FIBContainerViewImpl;
 import org.openflexo.logging.FlexoLogger;
 
 /**
@@ -69,14 +69,14 @@ public class JEditableGridLayout extends JGridLayout implements JFIBEditableLayo
 
 	private static final Logger logger = FlexoLogger.getLogger(JFIBEditablePanelView.class.getPackage().getName());
 
-	public JEditableGridLayout(JFIBPanelView panelView) {
+	public JEditableGridLayout(FIBContainerViewImpl<?, JPanel, JComponent> panelView) {
 		super(panelView);
 	}
 
-	@Override
+	/*@Override
 	public JFIBPanelView getContainerView() {
 		return (JFIBPanelView) super.getContainerView();
-	}
+	}*/
 
 	@Override
 	public List<PlaceHolder> makePlaceHolders(final Dimension preferredSize) {
@@ -94,8 +94,8 @@ public class JEditableGridLayout extends JGridLayout implements JFIBEditableLayo
 			Component[][] phComponents = new Component[getComponent().getCols()][getComponent().getRows()];
 
 			JPanel panel = new JPanel(makeGridLayout());
-			panel.setPreferredSize(getContainerView().getResultingJComponent().getSize());
-			panel.setSize(getContainerView().getResultingJComponent().getSize());
+			panel.setPreferredSize(((JFIBView<?, ?>) getContainerView()).getResultingJComponent().getSize());
+			panel.setSize(((JFIBView<?, ?>) getContainerView()).getResultingJComponent().getSize());
 
 			for (int row = 0; row < getComponent().getRows(); row++) {
 				for (int col = 0; col < getComponent().getCols(); col++) {

@@ -60,8 +60,8 @@ import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.editor.view.container.JFIBEditablePanelView;
 import org.openflexo.gina.swing.view.JFIBView;
-import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.swing.view.container.layout.JBorderLayout;
+import org.openflexo.gina.view.impl.FIBContainerViewImpl;
 import org.openflexo.logging.FlexoLogger;
 
 /**
@@ -73,14 +73,14 @@ public class JEditableBorderLayout extends JBorderLayout implements JFIBEditable
 
 	private static final Logger logger = FlexoLogger.getLogger(JFIBEditablePanelView.class.getPackage().getName());
 
-	public JEditableBorderLayout(JFIBPanelView panelView) {
+	public JEditableBorderLayout(FIBContainerViewImpl<?, JPanel, JComponent> panelView) {
 		super(panelView);
 	}
 
-	@Override
+	/*@Override
 	public JFIBPanelView getContainerView() {
 		return (JFIBPanelView) super.getContainerView();
-	}
+	}*/
 
 	@Override
 	public List<PlaceHolder> makePlaceHolders(final Dimension preferredSize) {
@@ -95,8 +95,8 @@ public class JEditableBorderLayout extends JBorderLayout implements JFIBEditable
 			Map<BorderLayoutLocation, Component> phComponents = new HashMap<>();
 
 			JPanel panel = new JPanel(new BorderLayout());
-			panel.setPreferredSize(getContainerView().getResultingJComponent().getSize());
-			panel.setSize(getContainerView().getResultingJComponent().getSize());
+			panel.setPreferredSize(((JFIBView<?, ?>) getContainerView()).getResultingJComponent().getSize());
+			panel.setSize(((JFIBView<?, ?>) getContainerView()).getResultingJComponent().getSize());
 
 			for (final BorderLayoutLocation l : placeholderLocations) {
 				FIBComponent foundComponent = null;

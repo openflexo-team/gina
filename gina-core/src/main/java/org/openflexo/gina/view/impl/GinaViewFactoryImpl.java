@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.FIBWidget;
+import org.openflexo.gina.model.container.FIBIteration;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBSplitPanel;
 import org.openflexo.gina.model.container.FIBTab;
@@ -40,6 +41,7 @@ import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.FIBWidgetView;
 import org.openflexo.gina.view.GinaViewFactory;
 import org.openflexo.gina.view.GinaViewFactoryExtension;
+import org.openflexo.gina.view.container.FIBIterationView;
 import org.openflexo.gina.view.container.FIBPanelView;
 import org.openflexo.gina.view.container.FIBSplitPanelView;
 import org.openflexo.gina.view.container.FIBTabPanelView;
@@ -136,6 +138,9 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 		if (fibContainer instanceof FIBTab) {
 			return (FIBContainerView<F, ? extends C, ? extends C>) makeTabView((FIBTab) fibContainer, controller);
 		}
+		else if (fibContainer instanceof FIBIteration) {
+			return (FIBContainerView<F, ? extends C, ? extends C>) makeIterationView((FIBIteration) fibContainer, controller);
+		}
 		else if (fibContainer instanceof FIBPanel) {
 			return (FIBContainerView<F, ? extends C, ? extends C>) makePanelView((FIBPanel) fibContainer, controller);
 		}
@@ -151,7 +156,7 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <F extends FIBWidget> FIBWidgetView<F, ? extends C, ?> makeWidget(F fibWidget, FIBController controller) {
+	public <F extends FIBWidget> FIBWidgetView<F, ? extends C, ?> makeWidget(F fibWidget, FIBController controller, boolean updateNow) {
 		FIBWidgetView<F, ? extends C, ?> returned = null;
 		for (GinaViewFactoryExtension extension : extensions) {
 			if (extension.handleWidget(fibWidget)) {
@@ -165,7 +170,9 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 			returned = buildWidget(fibWidget, controller);
 		}
 		if (returned != null) {
-			returned.update();
+			if (updateNow) {
+				returned.update();
+			}
 		}
 		else {
 			LOGGER.warning("Could not build widget view for " + fibWidget);
@@ -251,6 +258,8 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 	public abstract FIBTabPanelView<? extends C, ? extends C> makeTabPanelView(FIBTabPanel container, FIBController controller);
 
 	public abstract FIBSplitPanelView<? extends C, ? extends C> makeSplitPanelView(FIBSplitPanel container, FIBController controller);
+
+	public abstract FIBIterationView<? extends C, ? extends C> makeIterationView(FIBIteration iteration, FIBController controller);
 
 	public abstract FIBLabelWidget<? extends C> makeLabel(FIBLabel widget, FIBController controller);
 

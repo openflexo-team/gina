@@ -37,49 +37,57 @@
  * 
  */
 
-package org.openflexo.gina.swing.view.container.layout;
+package org.openflexo.gina.view.container;
 
-import javax.swing.BoxLayout;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
+import java.awt.Image;
+import java.util.Map;
 
-import org.openflexo.gina.model.container.FIBPanel;
-import org.openflexo.gina.model.container.layout.BoxLayoutConstraints;
-import org.openflexo.gina.swing.view.JFIBView;
+import org.openflexo.connie.BindingEvaluationContext;
+import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.container.FIBIteration;
+import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.FIBView;
-import org.openflexo.gina.view.container.impl.FIBLayoutManagerImpl;
-import org.openflexo.gina.view.impl.FIBContainerViewImpl;
 
 /**
- * Swing implementation for box layout
+ * Represents an iteration
+ * 
+ * @param <C>
+ *            type of technology-specific component this view manage
+ * @param <C2>
+ *            type of technology-specific component this view contains
  * 
  * @author sylvain
  */
-public class JBoxLayout extends FIBLayoutManagerImpl<JPanel, JComponent, BoxLayoutConstraints> {
-
-	public JBoxLayout(FIBContainerViewImpl<?, JPanel, JComponent> panelView) {
-		super(panelView);
-	}
+public interface FIBIterationView<C, C2> extends FIBContainerView<FIBIteration, C, C2> {
 
 	@Override
-	public FIBPanel getComponent() {
-		return (FIBPanel) super.getComponent();
+	public IterationRenderingAdapter<C, C2> getRenderingAdapter();
+
+	public IteratedContents<?> getIteratedContents(FIBView<?, ?> view);
+
+	public Map<Object, IteratedContents<?>> getIteratedSubViewsMap();
+
+	public interface IteratedContents<I> extends BindingEvaluationContext {
+		public I getIteratedValue();
+
+		public Map<FIBComponent, ? extends FIBView<?, ?>> getSubViewsMap();
+
+		public boolean containsView(FIBView<?, ?> view);
 	}
 
-	@Override
-	public void setLayoutManager(JPanel container) {
-		container.setLayout(makeBoxLayout(container));
+	/**
+	 * Specification of an adapter for a given rendering technology (eg Swing)
+	 * 
+	 * @author sylvain
+	 *
+	 * @param <C>
+	 */
+	public static interface IterationRenderingAdapter<C, C2> extends ContainerRenderingAdapter<C, C2> {
+
+		public Image getBackgroundImage(C component, FIBIterationView<C, C2> panelView);
+
+		public void setBackgroundImage(C component, Image anImage, FIBIterationView<C, C2> panelView);
+
 	}
 
-	protected BoxLayout makeBoxLayout(JPanel container) {
-		return new BoxLayout(container, getComponent().getBoxLayoutAxis().getAxis());
-	}
-
-	@Override
-	protected void performAddChild(FIBView<?, JComponent> childView, BoxLayoutConstraints constraints) {
-		JComponent addedJComponent = ((JFIBView<?, ?>) childView).getResultingJComponent();
-		addedJComponent.setAlignmentX(constraints.getAlignmentX());
-		addedJComponent.setAlignmentY(constraints.getAlignmentY());
-		getContainerView().getTechnologyComponent().add(addedJComponent);
-	}
 }

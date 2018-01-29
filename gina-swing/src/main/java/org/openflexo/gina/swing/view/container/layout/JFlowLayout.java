@@ -47,9 +47,9 @@ import javax.swing.JPanel;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.layout.FlowLayoutConstraints;
 import org.openflexo.gina.swing.view.JFIBView;
-import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.container.impl.FIBLayoutManagerImpl;
+import org.openflexo.gina.view.impl.FIBContainerViewImpl;
 
 /**
  * Swing implementation for flow layout
@@ -58,7 +58,7 @@ import org.openflexo.gina.view.container.impl.FIBLayoutManagerImpl;
  */
 public class JFlowLayout extends FIBLayoutManagerImpl<JPanel, JComponent, FlowLayoutConstraints> {
 
-	public JFlowLayout(JFIBPanelView panelView) {
+	public JFlowLayout(FIBContainerViewImpl<?, JPanel, JComponent> panelView) {
 		super(panelView);
 	}
 

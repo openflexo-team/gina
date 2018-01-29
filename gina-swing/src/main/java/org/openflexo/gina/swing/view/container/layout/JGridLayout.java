@@ -48,9 +48,9 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.layout.GridLayoutConstraints;
 import org.openflexo.gina.swing.view.JFIBView;
-import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.container.impl.FIBLayoutManagerImpl;
+import org.openflexo.gina.view.impl.FIBContainerViewImpl;
 
 /**
  * Swing implementation for grid layout
@@ -59,7 +59,7 @@ import org.openflexo.gina.view.container.impl.FIBLayoutManagerImpl;
  */
 public class JGridLayout extends FIBLayoutManagerImpl<JPanel, JComponent, GridLayoutConstraints> {
 
-	public JGridLayout(JFIBPanelView panelView) {
+	public JGridLayout(FIBContainerViewImpl<?, JPanel, JComponent> panelView) {
 		super(panelView);
 	}
 

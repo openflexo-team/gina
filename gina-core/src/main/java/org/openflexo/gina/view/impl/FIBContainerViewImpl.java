@@ -164,7 +164,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		}
 	}
 
-	protected final void buildSubComponents() {
+	protected void buildSubComponents() {
 		subViewsMap.clear();
 		internallyBuildChildComponents();
 		addSubComponentsAndDoLayout();
@@ -172,6 +172,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	}
 
 	private void internallyBuildChildComponents() {
+
 		Vector<FIBComponent> allSubComponents = new Vector<>();
 		allSubComponents.addAll(getNotHiddenSubComponents());
 
@@ -230,67 +231,12 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		}
 	}
 
-	/*
-	 * @Override public void updateDataObject(final Object dataObject) {
-	 * update(new Vector<FIBComponent>()); if (isComponentVisible()) { for
-	 * (FIBViewImpl v : new ArrayList<FIBViewImpl>(subViews.values())) {
-	 * v.updateDataObject(dataObject); } } updateDataDynamicValue(); }
-	 */
-
-	/*
-	 * private void updateDataDynamicValue() { setData(getValue()); }
-	 */
-
-	/*
-	 * private void updateDataDynamicValue() { if (getDynamicModel() != null &&
-	 * getComponent().getData().isSet() && getComponent().getData().isValid()) {
-	 * logger.fine("Container: " + getComponent() + " value data for " +
-	 * getDynamicModel() + " is " + getValue()); Object newDataValue =
-	 * getValue(); if (getDynamicModel().getData() != getValue()) {
-	 * getDynamicModel().setData(getValue()); notifyDynamicModelChanged(); } } }
-	 */
-
-	/*@Deprecated
-	@Override
-	protected boolean checkValidDataPath() {
-		if (getParentView() instanceof FIBViewImpl && !((FIBViewImpl) getParentView()).checkValidDataPath()) {
-			return false;
-		}
-		if (getComponent().getDataType() != null) {
-			Object value = getValue();
-			if (value != null && !TypeUtils.isTypeAssignableFrom(getComponent().getDataType(), value.getClass(), true)) {
-				// logger.fine("INVALID data path for component "+getComponent());
-				// logger.fine("Value is "+getValue().getClass()+" while expected type is "+getComponent().getDataType());
-				return false;
-			}
-		}
-		return true;
-	}*/
-
 	@Override
 	public void updateLanguage() {
 		for (FIBView<?, C2> v : subViewsMap.values()) {
-			// if
-			// (!"True".equals(v.getComponent().getParameter(FIBContainer.INHERITED)))
 			v.updateLanguage();
 		}
 	}
-
-	/**
-	 * This method is called to update view representing a FIBComponent.<br>
-	 * Callers are all the components that have been updated during current update loop. If the callers contains the component itself, does
-	 * nothing and return.
-	 * 
-	 * @param callers
-	 *            all the components that have been previously updated during current update loop
-	 * @return a flag indicating if component has been updated
-	 */
-	/*
-	 * @Override public boolean update(List<FIBComponent> callers) { boolean
-	 * returned = super.update(callers); updateDataDynamicValue();
-	 * 
-	 * return returned; }
-	 */
 
 	public void registerViewForComponent(FIBViewImpl<?, C2> view, FIBComponent component) {
 		subViewsMap.put(component, view);
@@ -298,7 +244,6 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 
 	public void unregisterViewForComponent(FIBViewImpl<?, C2> view, FIBComponent component) {
 		getController().unregisterView(view);
-		System.out.println("Hop, il me reste " + getController().viewForComponent(component));
 		subViewsMap.remove(component);
 	}
 
@@ -311,13 +256,26 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		return subViewsMap.values();
 	}
 
-	/*@Override
-	protected void hiddenComponentBecomesVisible() {
-		super.hiddenComponentBecomesVisible();
-		for (FIBViewImpl<?, C2> view : subViewsMap.values()) {
-			view.updateVisibility();
+	/**
+	 * Recursive call to know if a view is contained inside this container
+	 * 
+	 * @param view
+	 * @return
+	 */
+	@Override
+	public boolean containsView(FIBView<?, C2> view) {
+		for (FIBViewImpl<?, C2> fibViewImpl : subViewsMap.values()) {
+			if (fibViewImpl == view) {
+				return true;
+			}
+			else if (fibViewImpl instanceof FIBContainerView) {
+				if (((FIBContainerView) fibViewImpl).containsView(view)) {
+					return true;
+				}
+			}
 		}
-	}*/
+		return false;
+	}
 
 	/**
 	 * Return all sub-components that are not declared as to be hidden in inheritance hierarchy

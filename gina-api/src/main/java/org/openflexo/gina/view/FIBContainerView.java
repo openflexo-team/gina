@@ -63,6 +63,14 @@ public interface FIBContainerView<M extends FIBContainer, C, C2> extends FIBView
 
 	public Collection<? extends FIBView<?, C2>> getSubViews();
 
+	/**
+	 * Recursive call to know if a view is contained inside this container
+	 * 
+	 * @param view
+	 * @return
+	 */
+	public boolean containsView(FIBView<?, C2> view);
+
 	public void changeLayout();
 
 	public void updateLayout();

@@ -51,9 +51,9 @@ import javax.swing.JPanel;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.layout.GridBagLayoutConstraints;
 import org.openflexo.gina.swing.view.JFIBView;
-import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.container.impl.FIBLayoutManagerImpl;
+import org.openflexo.gina.view.impl.FIBContainerViewImpl;
 
 /**
  * Swing implementation for grid bag layout
@@ -62,7 +62,7 @@ import org.openflexo.gina.view.container.impl.FIBLayoutManagerImpl;
  */
 public class JGridBagLayout extends FIBLayoutManagerImpl<JPanel, JComponent, GridBagLayoutConstraints> {
 
-	public JGridBagLayout(JFIBPanelView panelView) {
+	public JGridBagLayout(FIBContainerViewImpl<?, JPanel, JComponent> panelView) {
 		super(panelView);
 	}
 

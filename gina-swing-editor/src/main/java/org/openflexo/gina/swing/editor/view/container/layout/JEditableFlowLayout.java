@@ -57,8 +57,8 @@ import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.editor.view.container.JFIBEditablePanelView;
 import org.openflexo.gina.swing.view.JFIBView;
-import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.swing.view.container.layout.JFlowLayout;
+import org.openflexo.gina.view.impl.FIBContainerViewImpl;
 import org.openflexo.logging.FlexoLogger;
 
 /**
@@ -70,14 +70,14 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 
 	private static final Logger logger = FlexoLogger.getLogger(JFIBEditablePanelView.class.getPackage().getName());
 
-	public JEditableFlowLayout(JFIBPanelView panelView) {
+	public JEditableFlowLayout(FIBContainerViewImpl<?, JPanel, JComponent> panelView) {
 		super(panelView);
 	}
 
-	@Override
+	/*@Override
 	public JFIBPanelView getContainerView() {
 		return (JFIBPanelView) super.getContainerView();
-	}
+	}*/
 
 	@Override
 	public List<PlaceHolder> makePlaceHolders(final Dimension preferredSize) {
@@ -87,8 +87,8 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 		if (!getComponent().getProtectContent()) {
 
 			JPanel panel = new JPanel(makeFlowLayout());
-			panel.setPreferredSize(getContainerView().getResultingJComponent().getSize());
-			panel.setSize(getContainerView().getResultingJComponent().getSize());
+			panel.setPreferredSize(((JFIBView<?, ?>) getContainerView()).getResultingJComponent().getSize());
+			panel.setSize(((JFIBView<?, ?>) getContainerView()).getResultingJComponent().getSize());
 
 			final Dimension placeHolderSize = new Dimension(30, 20);
 			int deltaX = 0;
@@ -213,11 +213,11 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 			placeHolderBounds.height = placeHolderBounds.height + placeHolderBounds.y;
 			placeHolderBounds.y = 0;
 		}
-		if (placeHolderBounds.x + placeHolderBounds.width > getContainerView().getResultingJComponent().getWidth()) {
-			placeHolderBounds.width = getContainerView().getResultingJComponent().getWidth() - placeHolderBounds.x;
+		if (placeHolderBounds.x + placeHolderBounds.width > ((JFIBView<?, ?>) getContainerView()).getResultingJComponent().getWidth()) {
+			placeHolderBounds.width = ((JFIBView<?, ?>) getContainerView()).getResultingJComponent().getWidth() - placeHolderBounds.x;
 		}
-		if (placeHolderBounds.y + placeHolderBounds.height > getContainerView().getResultingJComponent().getHeight()) {
-			placeHolderBounds.height = getContainerView().getResultingJComponent().getHeight() - placeHolderBounds.y;
+		if (placeHolderBounds.y + placeHolderBounds.height > ((JFIBView<?, ?>) getContainerView()).getResultingJComponent().getHeight()) {
+			placeHolderBounds.height = ((JFIBView<?, ?>) getContainerView()).getResultingJComponent().getHeight() - placeHolderBounds.y;
 		}
 		return placeHolderBounds;
 	}

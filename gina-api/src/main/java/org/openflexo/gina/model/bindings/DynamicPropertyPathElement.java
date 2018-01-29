@@ -51,8 +51,8 @@ import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.InvocationTargetTransformException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBViewType.DynamicProperty;
-import org.openflexo.gina.model.FIBWidget;
 import org.openflexo.gina.model.FIBWidgetType;
 
 /**
@@ -67,7 +67,7 @@ import org.openflexo.gina.model.FIBWidgetType;
  * @author sylvain
  *
  */
-public class DynamicPropertyPathElement<W extends FIBWidget> extends SimplePathElement implements PropertyChangeListener {
+public class DynamicPropertyPathElement<W extends FIBComponent> extends SimplePathElement implements PropertyChangeListener {
 
 	private static final Logger logger = Logger.getLogger(DynamicPropertyPathElement.class.getPackage().getName());
 
@@ -85,6 +85,11 @@ public class DynamicPropertyPathElement<W extends FIBWidget> extends SimplePathE
 			lastKnownType = getType();
 		}
 	}
+
+	/*@Override
+	public boolean isNotificationSafe() {
+		return false;
+	}*/
 
 	@Override
 	public void activate() {
