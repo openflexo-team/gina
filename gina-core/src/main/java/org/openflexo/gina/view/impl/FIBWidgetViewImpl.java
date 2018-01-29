@@ -137,7 +137,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 		technologyComponent = makeTechnologyComponent();
 
-		GENotifier = new GinaEventNotifier<FIBEventDescription>(this.getController().getEventManager(), this.getController()) {
+		GENotifier = new GinaEventNotifier<>(this.getController().getEventManager(), this.getController()) {
 
 			@Override
 			public KIND computeClass(FIBEventDescription e) {
@@ -213,7 +213,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		DataBinding<T> data = (DataBinding<T>) getComponent().getData();
 
 		if (data != null && data.isValid()) {
-			dataBindingValueChangeListener = new BindingValueChangeListener<T>(data, getBindingEvaluationContext()) {
+			dataBindingValueChangeListener = new BindingValueChangeListener<>(data, getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
 					// System.out.println(" **** bindingValueChanged() detected for data=" + getComponent().getData() + " with newValue="
@@ -238,7 +238,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			enableBindingValueChangeListener.delete();
 		}
 		if (getComponent().getEnable() != null && getComponent().getEnable().isValid()) {
-			enableBindingValueChangeListener = new BindingValueChangeListener<Boolean>(getComponent().getEnable(),
+			enableBindingValueChangeListener = new BindingValueChangeListener<>(getComponent().getEnable(),
 					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, Boolean newValue) {

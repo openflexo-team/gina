@@ -67,7 +67,6 @@ import javax.swing.Icon;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
@@ -87,7 +86,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 
-public class FIBBrowserModel extends DefaultTreeModel implements TreeModel {
+public class FIBBrowserModel extends DefaultTreeModel {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBBrowserModel.class.getPackage().getName());
 

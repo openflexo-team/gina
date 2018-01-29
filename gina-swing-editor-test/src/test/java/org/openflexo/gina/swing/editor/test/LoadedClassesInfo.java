@@ -162,7 +162,7 @@ public class LoadedClassesInfo extends Observable {
 
 	public class PackageInfo extends Observable {
 		public String packageName;
-		private final Hashtable<Class, ClassInfo> classes = new Hashtable<Class, ClassInfo>() {
+		private final Hashtable<Class, ClassInfo> classes = new Hashtable<>() {
 			@Override
 			public synchronized ClassInfo put(Class key, ClassInfo value) {
 				ClassInfo returned = super.put(key, value);
@@ -234,7 +234,7 @@ public class LoadedClassesInfo extends Observable {
 		public String packageName;
 		public String fullQualifiedName;
 
-		private final Hashtable<Class, ClassInfo> memberClasses = new Hashtable<Class, ClassInfo>() {
+		private final Hashtable<Class, ClassInfo> memberClasses = new Hashtable<>() {
 			@Override
 			public synchronized ClassInfo put(Class key, ClassInfo value) {
 				ClassInfo returned = super.put(key, value);

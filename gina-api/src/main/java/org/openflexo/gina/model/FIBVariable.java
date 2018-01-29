@@ -169,7 +169,7 @@ public interface FIBVariable<T> extends FIBModelObject {
 		@Override
 		public DataBinding<T> getValue() {
 			if (value == null) {
-				value = new DataBinding<T>(getOwner(), Object.class, DataBinding.BindingDefinitionType.GET) {
+				value = new DataBinding<>(getOwner(), Object.class, DataBinding.BindingDefinitionType.GET) {
 					@Override
 					public void notifyBindingChanged(Expression oldValue, Expression newValue) {
 						super.notifyBindingChanged(oldValue, newValue);

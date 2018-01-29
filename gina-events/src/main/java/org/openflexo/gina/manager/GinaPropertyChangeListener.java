@@ -12,7 +12,7 @@ public class GinaPropertyChangeListener implements PropertyChangeListener, Regis
 	private GinaEventNotifier<NotifyMethodEventDescription> GENotifier;
 
 	public GinaPropertyChangeListener(EventManager manager) {
-		GENotifier = new GinaEventNotifier<NotifyMethodEventDescription>(manager, this) {
+		GENotifier = new GinaEventNotifier<>(manager, this) {
 
 			@Override
 			public KIND computeClass(NotifyMethodEventDescription d) {

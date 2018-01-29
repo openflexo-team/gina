@@ -128,7 +128,7 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 			dynamicComponentFileBindingValueChangeListener.delete();
 		}
 		if (getComponent().getDynamicComponentFile() != null && getComponent().getDynamicComponentFile().isValid()) {
-			dynamicComponentFileBindingValueChangeListener = new BindingValueChangeListener<Resource>(
+			dynamicComponentFileBindingValueChangeListener = new BindingValueChangeListener<>(
 					getComponent().getDynamicComponentFile(), getBindingEvaluationContext()) {
 
 				@Override
@@ -156,7 +156,7 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 			dynamicComponentBindingValueChangeListener.delete();
 		}
 		if (getComponent().getDynamicComponent() != null && getComponent().getDynamicComponent().isValid()) {
-			dynamicComponentBindingValueChangeListener = new BindingValueChangeListener<FIBComponent>(getComponent().getDynamicComponent(),
+			dynamicComponentBindingValueChangeListener = new BindingValueChangeListener<>(getComponent().getDynamicComponent(),
 					getBindingEvaluationContext()) {
 
 				@Override

@@ -808,7 +808,7 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 		return null;
 	}
 
-	private final Map<Class<?>, Resource> fibPanelsForClasses = new HashMap<Class<?>, Resource>() {
+	private final Map<Class<?>, Resource> fibPanelsForClasses = new HashMap<>() {
 		@Override
 		public Resource get(Object key) {
 			if (containsKey(key)) {

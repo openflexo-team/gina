@@ -76,8 +76,7 @@ public class JFIBEditableLabelWidget extends JFIBLabelWidget implements FIBSwing
 	 * @author sylvain
 	 * 
 	 */
-	public static class EditableSwingLabelRenderingAdapter extends SwingLabelRenderingAdapter
-			implements LabelRenderingAdapter<JLabelPanel> {
+	public static class EditableSwingLabelRenderingAdapter extends SwingLabelRenderingAdapter {
 
 		@Override
 		public String getText(JLabelPanel component) {

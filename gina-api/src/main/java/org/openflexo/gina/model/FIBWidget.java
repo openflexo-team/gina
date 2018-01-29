@@ -644,7 +644,7 @@ public abstract interface FIBWidget extends FIBComponent {
 		@Override
 		public DataBinding<Object> getValueTransform() {
 			if (valueTransform == null) {
-				valueTransform = new DataBinding<Object>(valueBindable, getDataType(), BindingDefinitionType.GET) {
+				valueTransform = new DataBinding<>(valueBindable, getDataType(), BindingDefinitionType.GET) {
 					@Override
 					public Type getDeclaredType() {
 						return getDataType();

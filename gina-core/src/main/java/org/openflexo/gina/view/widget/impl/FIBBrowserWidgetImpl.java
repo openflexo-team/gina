@@ -137,7 +137,7 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 			selectedBindingValueChangeListener.delete();
 		}
 		if (getComponent().getSelected() != null && getComponent().getSelected().isValid()) {
-			selectedBindingValueChangeListener = new BindingValueChangeListener<T>((DataBinding<T>) getComponent().getSelected(),
+			selectedBindingValueChangeListener = new BindingValueChangeListener<>((DataBinding<T>) getComponent().getSelected(),
 					getBindingEvaluationContext()) {
 
 				@Override
@@ -197,7 +197,7 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 
 		if (getComponent().getRoot() != null && getComponent().getRoot().isValid()) {
 
-			rootBindingValueChangeListener = new BindingValueChangeListener<Object>(getComponent().getRoot(),
+			rootBindingValueChangeListener = new BindingValueChangeListener<>(getComponent().getRoot(),
 					getBindingEvaluationContext()) {
 
 				@Override
