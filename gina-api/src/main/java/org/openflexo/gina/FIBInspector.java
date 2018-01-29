@@ -37,7 +37,7 @@
  * 
  */
 
-package org.openflexo.gina.utils;
+package org.openflexo.gina;
 
 import java.util.ArrayList;
 import java.util.List;

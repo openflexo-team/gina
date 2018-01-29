@@ -37,7 +37,7 @@
  * 
  */
 
-package org.openflexo.gina.utils;
+package org.openflexo.gina;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -48,7 +48,6 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import org.openflexo.connie.type.TypeUtils;
-import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelFactory;
 import org.openflexo.localization.LocalizedDelegate;
