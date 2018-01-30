@@ -111,7 +111,12 @@ public class JEditableBorderLayout extends JBorderLayout implements JFIBEditable
 				if (foundComponent != null) {
 					existingComponents.put(l, foundComponent);
 					JFIBView<?, ?> childView = (JFIBView<?, ?>) getContainerView().getSubViewsMap().get(foundComponent);
-					phComponent = Box.createRigidArea(childView.getResultingJComponent().getSize());
+					if (childView.getResultingJComponent() != null) {
+						phComponent = Box.createRigidArea(childView.getResultingJComponent().getSize());
+					}
+					else {
+						phComponent = Box.createRigidArea(new Dimension(20, 20));
+					}
 				}
 				else {
 					phComponent = new JPanel() {

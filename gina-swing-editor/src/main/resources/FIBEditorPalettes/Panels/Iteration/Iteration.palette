@@ -1,5 +1,5 @@
-<Iteration border="rounded3d" layout="border" width="80" height="60" borderTop="2" borderRight="2" borderBottom="2" borderLeft="2">
+<Panel border="rounded3d" layout="border" width="80" height="60" borderTop="2" borderRight="2" borderBottom="2" borderLeft="2">
     <Label name="Label" font="SansSerif,2,10" align="center" constraints="border(location=center)" label="iteration" />
 	<Parameter name="x" value="10"/>
 	<Parameter name="y" value="170"/>
-</Iteration>
+</Panel>

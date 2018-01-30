@@ -1,6 +1,6 @@
 /**
  * 
- * Copyright (c) 2013-2015, Openflexo
+ * Copyright (c) 2013-2014, Openflexo
  * Copyright (c) 2011-2012, AgileBirds
  * 
  * This file is part of Gina-core, a component of the software infrastructure 
@@ -37,57 +37,40 @@
  * 
  */
 
-package org.openflexo.gina.view.container;
+package org.openflexo.gina.view;
 
-import java.awt.Image;
-import java.util.Map;
+import java.util.Collection;
 
-import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.gina.model.FIBComponent;
-import org.openflexo.gina.model.container.FIBIteration;
-import org.openflexo.gina.view.FIBContainerView;
-import org.openflexo.gina.view.FIBView;
+import org.openflexo.gina.model.FIBOperator;
 
 /**
- * Represents an iteration
+ * Represent the "view" associated with a {@link FIBOperator} in a given rendering engine environment (eg Swing)<br>
+ * A {@link FIBOperatorView} allows to access run-time (execution) context of underlying operator
  * 
- * @param <C>
- *            type of technology-specific component this view manage
- * @param <C2>
- *            type of technology-specific component this view contains
+ * A default implementation is provided in this library, see {@link FIBOperatorViewImpl}
  * 
  * @author sylvain
+ *
+ * @param <M>
+ *            type of {@link FIBComponent} this view represents
+ * @param <C>
+ *            type of technology-specific component
+ * @param <C2>
+ *            type of technology-specific component beeing contained by this view
  */
-public interface FIBIterationView<C, C2> extends FIBContainerView<FIBIteration, C, C2> {
+public interface FIBOperatorView<M extends FIBOperator, C, C2> extends FIBContainerView<M, C, C2> {
 
 	@Override
-	public IterationRenderingAdapter<C, C2> getRenderingAdapter();
-
-	public IteratedContents<?> getIteratedContents(FIBView<?, ?> view);
-
-	public Map<Object, IteratedContents<?>> getIteratedSubViewsMap();
-
-	public interface IteratedContents<I> extends BindingEvaluationContext {
-		public I getIteratedValue();
-
-		public Map<FIBComponent, ? extends FIBView<?, ?>> getSubViewsMap();
-
-		public boolean containsView(FIBView<?, ?> view);
-	}
+	public Collection<? extends FIBView<?, C2>> getSubViews();
 
 	/**
-	 * Specification of an adapter for a given rendering technology (eg Swing)
+	 * Recursive call to know if a view is contained inside this operator
 	 * 
-	 * @author sylvain
-	 *
-	 * @param <C>
+	 * @param view
+	 * @return
 	 */
-	public static interface IterationRenderingAdapter<C, C2> extends ContainerRenderingAdapter<C, C2> {
-
-		public Image getBackgroundImage(C component, FIBIterationView<C, C2> panelView);
-
-		public void setBackgroundImage(C component, Image anImage, FIBIterationView<C, C2> panelView);
-
-	}
+	@Override
+	public boolean containsView(FIBView<?, C2> view);
 
 }

@@ -40,50 +40,71 @@
 package org.openflexo.gina.swing.view.container;
 
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.image.ImageObserver;
 import java.util.logging.Logger;
 
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JViewport;
-import javax.swing.Scrollable;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.border.TitledBorder;
 
 import org.openflexo.gina.controller.FIBController;
-import org.openflexo.gina.model.container.FIBIteration;
-import org.openflexo.gina.model.container.FIBPanel.Layout;
-import org.openflexo.gina.model.container.layout.FIBLayoutManager;
+import org.openflexo.gina.model.operator.FIBIteration;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
-import org.openflexo.gina.swing.view.container.layout.JAbsolutePositionningLayout;
-import org.openflexo.gina.swing.view.container.layout.JBorderLayout;
-import org.openflexo.gina.swing.view.container.layout.JBoxLayout;
-import org.openflexo.gina.swing.view.container.layout.JButtonLayout;
-import org.openflexo.gina.swing.view.container.layout.JFlowLayout;
-import org.openflexo.gina.swing.view.container.layout.JGridBagLayout;
-import org.openflexo.gina.swing.view.container.layout.JGridLayout;
-import org.openflexo.gina.swing.view.container.layout.JTwoColsLayout;
-import org.openflexo.gina.view.container.FIBIterationView;
-import org.openflexo.gina.view.container.impl.FIBIterationViewImpl;
-import org.openflexo.toolbox.StringUtils;
+import org.openflexo.gina.view.operator.impl.FIBIterationViewImpl;
 
-public class JFIBIterationView extends FIBIterationViewImpl<JPanel, JComponent> implements ImageObserver, JFIBView<FIBIteration, JPanel> {
+public class JFIBIterationView extends FIBIterationViewImpl<JPanel, JComponent> implements JFIBView<FIBIteration, JPanel> {
 
 	private static final Logger logger = Logger.getLogger(JFIBIterationView.class.getPackage().getName());
 
 	public JFIBIterationView(FIBIteration model, FIBController controller) {
-		super(model, controller, new SwingIterationRenderingAdapter());
+		super(model, controller);
+	}
+
+	@Override
+	protected void performUpdate() {
+		// TODO Auto-generated method stub
+		super.performUpdate();
+	}
+
+	@Override
+	protected JPanel makeTechnologyComponent() {
+		return null;
+	}
+
+	protected void paintAdditionalInfo(Graphics g) {
+	}
+
+	@Override
+	protected void clearContainer() {
+		// getJComponent().removeAll();
+	}
+
+	@Override
+	public void changeLayout() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void revalidateAndRepaint() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public JComponent getJComponent() {
+		return null;
+	}
+
+	@Override
+	public JComponent getResultingJComponent() {
+		return null;
+	}
+
+	@Override
+	public SwingIterationRenderingAdapter getRenderingAdapter() {
+		return null;
 	}
 
 	/**
@@ -93,7 +114,7 @@ public class JFIBIterationView extends FIBIterationViewImpl<JPanel, JComponent> 
 	 * 
 	 */
 	public static class SwingIterationRenderingAdapter extends SwingRenderingAdapter<JPanel>
-			implements IterationRenderingAdapter<JPanel, JComponent> {
+			implements ContainerRenderingAdapter<JPanel, JComponent> {
 
 		@Override
 		public Color getDefaultForegroundColor(JPanel component) {
@@ -105,227 +126,28 @@ public class JFIBIterationView extends FIBIterationViewImpl<JPanel, JComponent> 
 			return UIManager.getColor("Panel.background");
 		}
 
-		@Override
-		public Image getBackgroundImage(JPanel component, FIBIterationView<JPanel, JComponent> panelView) {
-			return ((JFIBIterationView) panelView).backgroundImage;
-		}
-
-		@Override
-		public void setBackgroundImage(JPanel component, Image anImage, FIBIterationView<JPanel, JComponent> panelView) {
-			if (anImage != null) {
-				Image scaledImage = ((JFIBIterationView) panelView).makeScaledImage(anImage);
-				((JFIBIterationView) panelView).backgroundImage = scaledImage;
-			}
-			else {
-				((JFIBIterationView) panelView).backgroundImage = null;
-			}
-			revalidateAndRepaint(component);
-		}
-
 	}
 
-	private Image backgroundImage = null;
-
-	@Override
-	protected void performUpdate() {
+	/*@Override
+	public ContainerRenderingAdapter<JPanel, JComponent> getRenderingAdapter() {
 		// TODO Auto-generated method stub
-		super.performUpdate();
-	}
+		return null;
+	}*/
 
-	@Override
-	public SwingIterationRenderingAdapter getRenderingAdapter() {
-		return (SwingIterationRenderingAdapter) super.getRenderingAdapter();
-	}
+	/*@Override
+	public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+		// TODO Auto-generated method stub
+		return false;
+	}*/
 
-	@Override
-	public JComponent getJComponent() {
-		return getRenderingAdapter().getJComponent(getTechnologyComponent());
-	}
-
-	@Override
-	public JComponent getResultingJComponent() {
-		return getRenderingAdapter().getResultingJComponent(this);
-	}
-
-	@Override
-	public void updateBorder() {
-		if (getComponent() == null) {
-			System.out.println("QUI fait un updateBorder() sans composant ????  deleted=" + isDeleted());
-			return;
-		}
-		switch (getComponent().getBorder()) {
-			case empty:
-				getTechnologyComponent().setBorder(
-						BorderFactory.createEmptyBorder(getComponent().getBorderTop() != null ? getComponent().getBorderTop() : 0,
-								getComponent().getBorderLeft() != null ? getComponent().getBorderLeft() : 0,
-								getComponent().getBorderBottom() != null ? getComponent().getBorderBottom() : 0,
-								getComponent().getBorderRight() != null ? getComponent().getBorderRight() : 0));
-				break;
-			case etched:
-				getTechnologyComponent().setBorder(BorderFactory.createEtchedBorder());
-				break;
-			case line:
-				getTechnologyComponent().setBorder(BorderFactory
-						.createLineBorder(getComponent().getBorderColor() != null ? getComponent().getBorderColor() : Color.black));
-				break;
-			case lowered:
-				getTechnologyComponent().setBorder(BorderFactory.createLoweredBevelBorder());
-				break;
-			case raised:
-				getTechnologyComponent().setBorder(BorderFactory.createRaisedBevelBorder());
-				break;
-			case titled:
-				getTechnologyComponent().setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
-						getLocalized(getComponent().getBorderTitle()), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION,
-						getComponent().retrieveValidFont(), getComponent().retrieveValidForegroundColor()));
-				break;
-			case rounded3d:
-				getTechnologyComponent().setBorder(new RoundedBorder(
-						StringUtils.isNotEmpty(getComponent().getBorderTitle()) ? getLocalized(getComponent().getBorderTitle()) : null,
-						getComponent().getBorderTop() != null ? getComponent().getBorderTop() : 0,
-						getComponent().getBorderLeft() != null ? getComponent().getBorderLeft() : 0,
-						getComponent().getBorderBottom() != null ? getComponent().getBorderBottom() : 0,
-						getComponent().getBorderRight() != null ? getComponent().getBorderRight() : 0, getComponent().getTitleFont(),
-						getComponent().retrieveValidForegroundColor(), getComponent().getDarkLevel()));
-				break;
-			default:
-				break;
-		}
-	}
-
-	@Override
-	protected JPanel makeTechnologyComponent() {
-		class ScrollablePanel extends JPanel implements Scrollable {
-
-			@Override
-			public Dimension getPreferredScrollableViewportSize() {
-				return getPreferredSize();
-			}
-
-			@Override
-			public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
-				switch (orientation) {
-					case SwingConstants.VERTICAL:
-						return visibleRect.height / 10;
-					case SwingConstants.HORIZONTAL:
-						return visibleRect.width / 10;
-					default:
-						throw new IllegalArgumentException("Invalid orientation: " + orientation);
-				}
-			}
-
-			@Override
-			public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
-				switch (orientation) {
-					case SwingConstants.VERTICAL:
-						return visibleRect.height;
-					case SwingConstants.HORIZONTAL:
-						return visibleRect.width;
-					default:
-						throw new IllegalArgumentException("Invalid orientation: " + orientation);
-				}
-			}
-
-			@Override
-			public boolean getScrollableTracksViewportWidth() {
-				Container parent = getParent();
-				try {
-					if (parent instanceof JViewport && getPreferredSize() != null && JFIBIterationView.this.getComponent() != null) {
-
-						return parent.getWidth() > getPreferredSize().width && JFIBIterationView.this.getComponent().isTrackViewPortWidth();
-					}
-					if (JFIBIterationView.this.getComponent() != null) {
-						return JFIBIterationView.this.getComponent().isTrackViewPortWidth();
-					}
-				} catch (NullPointerException e) {
-					// TODO: remove debug
-					System.out.println("parent=" + parent);
-					System.out.println("getPreferredSize()=" + getPreferredSize());
-					System.out.println("FIBPanelView.this.getComponent()=" + JFIBIterationView.this.getComponent());
-				}
-				return false;
-			}
-
-			@Override
-			public boolean getScrollableTracksViewportHeight() {
-				Container parent = getParent();
-				try {
-					if (parent instanceof JViewport && getPreferredSize() != null && JFIBIterationView.this.getComponent() != null) {
-						return parent.getHeight() > getPreferredSize().height
-								&& JFIBIterationView.this.getComponent().isTrackViewPortHeight();
-					}
-					if (JFIBIterationView.this.getComponent() != null) {
-						return JFIBIterationView.this.getComponent().isTrackViewPortHeight();
-					}
-				} catch (NullPointerException e) {
-					// TODO: remove debug
-					System.out.println("parent=" + parent);
-					System.out.println("getPreferredSize()=" + getPreferredSize());
-					System.out.println("FIBPanelView.this.getComponent()=" + JFIBIterationView.this.getComponent());
-				}
-				return false;
-			}
-
-			@Override
-			protected void paintComponent(Graphics g) {
-				if (backgroundImage != null) {
-					// TODO: handle align and valign !!!
-					g.drawImage(backgroundImage, 0, 0, backgroundImage.getWidth(null), backgroundImage.getHeight(null), this);
-				}
-				super.paintComponent(g);
-				// g.drawImage(img, 0, 0, getWidth(), getHeight(), this);
-			}
-
-		}
-
-		ScrollablePanel panel = new ScrollablePanel() {
-			@Override
-			public void paint(Graphics g) {
-				super.paint(g);
-				paintAdditionalInfo(g);
-			}
-		};
-		panel.setOpaque(false);
-
-		panel.addComponentListener(new ComponentListener() {
-
-			@Override
-			public void componentShown(ComponentEvent e) {
-			}
-
-			@Override
-			public void componentResized(ComponentEvent e) {
-				updateBackgroundImageSizeAdjustment();
-			}
-
-			@Override
-			public void componentMoved(ComponentEvent e) {
-			}
-
-			@Override
-			public void componentHidden(ComponentEvent e) {
-			}
-		});
-
-		return panel;
-	}
-
-	protected void paintAdditionalInfo(Graphics g) {
-	}
-
-	@Override
-	protected void clearContainer() {
-		getJComponent().removeAll();
-	}
-
-	@Override
-	protected void addSubComponentsAndDoLayout() {
+	/*@Override
+	public void addSubComponentsAndDoLayout() {
 		super.addSubComponentsAndDoLayout();
 		getTechnologyComponent().revalidate();
 		getTechnologyComponent().repaint();
-	}
+	}*/
 
-	@Override
+	/*@Override
 	public FIBLayoutManager<JPanel, JComponent, ?> makeFIBLayoutManager(Layout layoutType) {
 		if (layoutType == null) {
 			return new JAbsolutePositionningLayout(this);
@@ -350,15 +172,15 @@ public class JFIBIterationView extends FIBIterationViewImpl<JPanel, JComponent> 
 			default:
 				return new JAbsolutePositionningLayout(this);
 		}
-	}
+	}*/
 
-	@Override
+	/*@Override
 	public void revalidateAndRepaint() {
 		getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
 	}
-
+	
 	private boolean imageIsAsynchronouslyBuilding = false;
-
+	
 	private Image makeScaledImage(Image image) {
 		if (image == null) {
 			return null;
@@ -433,9 +255,9 @@ public class JFIBIterationView extends FIBIterationViewImpl<JPanel, JComponent> 
 		}
 		return null;
 	}
-
+	
 	private boolean computeImageLater = false;
-
+	
 	@Override
 	protected void updateBackgroundImageDefaultSize(Image image) {
 		if (getComponent() == null || image == null) {
@@ -447,9 +269,9 @@ public class JFIBIterationView extends FIBIterationViewImpl<JPanel, JComponent> 
 		if (getComponent().getImageHeight() == null) {
 			getComponent().setImageHeight(image.getHeight(this));
 		}
-
+	
 	}
-
+	
 	@Override
 	public synchronized boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
 		updateBackgroundImageDefaultSize(img);
@@ -460,6 +282,6 @@ public class JFIBIterationView extends FIBIterationViewImpl<JPanel, JComponent> 
 			update();
 		}
 		return false;
-	}
+	}*/
 
 }

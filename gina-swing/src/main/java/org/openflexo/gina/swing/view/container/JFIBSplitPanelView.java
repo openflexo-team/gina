@@ -39,6 +39,14 @@
 
 package org.openflexo.gina.swing.view.container;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.util.logging.Logger;
+
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBSplitPanel;
@@ -49,10 +57,6 @@ import org.openflexo.gina.view.container.impl.FIBSplitPanelViewImpl;
 import org.openflexo.swing.layout.JXMultiSplitPane;
 import org.openflexo.swing.layout.KnobDividerPainter;
 import org.openflexo.swing.layout.MultiSplitLayout;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.logging.Logger;
 
 /**
  * Swing implementation of a panel split into a given policy, with adjustable sliders<br>
@@ -174,7 +178,7 @@ public class JFIBSplitPanelView extends FIBSplitPanelViewImpl<JXMultiSplitPane, 
 	}
 
 	@Override
-	protected void addSubComponentsAndDoLayout() {
+	public void addSubComponentsAndDoLayout() {
 		for (FIBComponent c : getComponent().getSubComponents()) {
 			JFIBView<?, JComponent> subComponentView = (JFIBView<?, JComponent>) getSubViewsMap().get(c);
 			if (c.getConstraints() instanceof SplitLayoutConstraints) {

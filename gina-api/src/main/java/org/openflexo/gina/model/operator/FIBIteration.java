@@ -37,7 +37,7 @@
  * 
  */
 
-package org.openflexo.gina.model.container;
+package org.openflexo.gina.model.operator;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -48,6 +48,7 @@ import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBindingFactory;
+import org.openflexo.gina.model.FIBOperator;
 import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -62,7 +63,7 @@ import org.openflexo.model.annotations.XMLElement;
 import com.google.common.reflect.TypeToken;
 
 /**
- * Represents an iteration of a given list of objects
+ * Represents an iteration over a given list of objects
  *
  * @author sylvain
  *
@@ -70,7 +71,7 @@ import com.google.common.reflect.TypeToken;
 @ModelEntity
 @ImplementationClass(FIBIteration.FIBIterationImpl.class)
 @XMLElement(xmlTag = "Iteration")
-public interface FIBIteration extends FIBPanel {
+public interface FIBIteration extends FIBOperator {
 
 	public static final String ITERATOR_NAME = "iterator";
 
@@ -98,7 +99,7 @@ public interface FIBIteration extends FIBPanel {
 
 	public Type getInferedIteratorType();
 
-	public static abstract class FIBIterationImpl extends FIBPanelImpl implements FIBIteration {
+	public static abstract class FIBIterationImpl extends FIBOperatorImpl implements FIBIteration {
 
 		private static final Logger logger = Logger.getLogger(FIBIteration.class.getPackage().getName());
 

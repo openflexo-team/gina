@@ -141,7 +141,7 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 	public abstract FIBLayoutManager<C, C2, ?> makeFIBLayoutManager(Layout layoutType);
 
 	@Override
-	protected void addSubComponentsAndDoLayout() {
+	public void addSubComponentsAndDoLayout() {
 		try {
 			getLayoutManager().doLayout();
 		} catch (ClassCastException e) {

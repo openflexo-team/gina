@@ -36,7 +36,7 @@
  * 
  */
 
-package org.openflexo.gina.model.container;
+package org.openflexo.gina.model.operator;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -46,11 +46,11 @@ import java.util.logging.Logger;
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.gina.model.FIBContainerType;
+import org.openflexo.gina.model.FIBOperatorType;
 import org.openflexo.gina.model.FIBWidgetType;
 import org.openflexo.gina.model.widget.FIBTable;
-import org.openflexo.gina.view.container.FIBIterationView;
-import org.openflexo.gina.view.container.FIBIterationView.IteratedContents;
+import org.openflexo.gina.view.operator.FIBIterationView;
+import org.openflexo.gina.view.operator.FIBIterationView.IteratedContents;
 import org.openflexo.gina.view.widget.FIBTableWidget;
 import org.openflexo.logging.FlexoLogger;
 
@@ -61,7 +61,7 @@ import org.openflexo.logging.FlexoLogger;
  * @author sylvain
  * 
  */
-public class FIBIterationType extends FIBContainerType<FIBIteration> {
+public class FIBIterationType extends FIBOperatorType<FIBIteration> {
 
 	protected static final Logger logger = FlexoLogger.getLogger(FIBIterationType.class.getPackage().getName());
 

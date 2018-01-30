@@ -37,54 +37,39 @@
  * 
  */
 
-package org.openflexo.gina.swing.view.container.layout;
+package org.openflexo.gina.view.operator;
 
-import java.awt.BorderLayout;
+import java.util.Map;
 
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-
-import org.openflexo.gina.model.container.FIBPanel;
-import org.openflexo.gina.model.container.layout.BorderLayoutConstraints;
-import org.openflexo.gina.swing.view.JFIBView;
+import org.openflexo.connie.BindingEvaluationContext;
+import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.operator.FIBIteration;
+import org.openflexo.gina.view.FIBOperatorView;
 import org.openflexo.gina.view.FIBView;
-import org.openflexo.gina.view.container.impl.FIBLayoutManagerImpl;
-import org.openflexo.gina.view.impl.FIBContainerViewImpl;
 
 /**
- * Swing implementation for border layout
+ * Represents run-time context of an iteration<br>
+ * Contains a map of {@link IteratedContents} storing components associated to an object instance
+ * 
+ * @param <C>
+ *            type of technology-specific component this view manage
+ * @param <C2>
+ *            type of technology-specific component this view contains
  * 
  * @author sylvain
  */
-public class JBorderLayout extends FIBLayoutManagerImpl<JPanel, JComponent, BorderLayoutConstraints> {
+public interface FIBIterationView<C, C2> extends FIBOperatorView<FIBIteration, C, C2> {
 
-	public JBorderLayout(FIBContainerViewImpl<?, JPanel, JComponent> panelView) {
-		super(panelView);
+	public IteratedContents<?> getIteratedContents(FIBView<?, ?> view);
+
+	public Map<Object, IteratedContents<?>> getIteratedSubViewsMap();
+
+	public interface IteratedContents<I> extends BindingEvaluationContext {
+		public I getIteratedValue();
+
+		public Map<FIBComponent, ? extends FIBView<?, ?>> getSubViewsMap();
+
+		public boolean containsView(FIBView<?, ?> view);
 	}
 
-	@Override
-	public FIBPanel getComponent() {
-		return (FIBPanel) super.getComponent();
-	}
-
-	@Override
-	public void setLayoutManager(JPanel container) {
-		container.setLayout(new BorderLayout());
-	}
-
-	@Override
-	public void doLayout() {
-		super.doLayout();
-		getContainerView().getTechnologyComponent().revalidate();
-		getContainerView().getTechnologyComponent().repaint();
-	}
-
-	@Override
-	protected void performAddChild(FIBView<?, JComponent> childView, BorderLayoutConstraints constraints) {
-
-		if (((JFIBView<?, ?>) childView).getResultingJComponent() != null) {
-			getContainerView().getTechnologyComponent().add(((JFIBView<?, ?>) childView).getResultingJComponent(),
-					constraints.getLocation().getConstraint());
-		}
-	}
 }

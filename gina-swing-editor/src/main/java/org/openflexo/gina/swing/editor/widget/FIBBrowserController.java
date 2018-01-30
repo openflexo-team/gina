@@ -53,6 +53,8 @@ import org.openflexo.gina.model.graph.FIBDiscreteFunction;
 import org.openflexo.gina.model.graph.FIBGraph;
 import org.openflexo.gina.model.graph.FIBGraphFunction;
 import org.openflexo.gina.model.graph.FIBNumericFunction;
+import org.openflexo.gina.model.operator.FIBConditional;
+import org.openflexo.gina.model.operator.FIBIteration;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBBrowserAction;
 import org.openflexo.gina.model.widget.FIBBrowserDragOperation;
@@ -156,6 +158,12 @@ public class FIBBrowserController extends FIBController /*implements Observer*/ 
 		}
 		else if (element instanceof FIBSplitPanel) {
 			return FIBEditorIconLibrary.SPLIT_PANEL_ICON;
+		}
+		else if (element instanceof FIBIteration) {
+			return FIBEditorIconLibrary.ITERATION_ICON;
+		}
+		else if (element instanceof FIBConditional) {
+			return FIBEditorIconLibrary.CONDITIONAL_ICON;
 		}
 		else if (element instanceof FIBCheckBox) {
 			return FIBEditorIconLibrary.CHECKBOX_ICON;

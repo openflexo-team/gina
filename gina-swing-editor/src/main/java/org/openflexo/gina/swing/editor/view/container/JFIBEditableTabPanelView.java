@@ -39,6 +39,18 @@
 
 package org.openflexo.gina.swing.editor.view.container;
 
+import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Logger;
+
+import javax.swing.DefaultSingleSelectionModel;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.model.container.FIBTab;
 import org.openflexo.gina.model.container.FIBTabPanel;
@@ -48,14 +60,6 @@ import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerViewDelegat
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.view.container.JFIBTabPanelView;
 import org.openflexo.logging.FlexoLogger;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Logger;
 
 public class JFIBEditableTabPanelView extends JFIBTabPanelView implements FIBSwingEditableContainerView<FIBTabPanel, JTabbedPane> {
 
@@ -98,7 +102,7 @@ public class JFIBEditableTabPanelView extends JFIBTabPanelView implements FIBSwi
 	}
 
 	@Override
-	protected void addSubComponentsAndDoLayout() {
+	public void addSubComponentsAndDoLayout() {
 		super.addSubComponentsAndDoLayout();
 		getJComponent().addTab("+", new JPanel());
 		getJComponent().setModel(new DefaultSingleSelectionModel() {

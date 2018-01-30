@@ -194,34 +194,6 @@ public abstract interface FIBContainer extends FIBComponent {
 
 		private static final Logger logger = Logger.getLogger(FIBContainer.class.getPackage().getName());
 
-		// private Vector<FIBComponent> subComponents;
-
-		public FIBContainerImpl() {
-			// subComponents = new Vector<FIBComponent>();
-		}
-
-		/*
-		 * public Class getDataClass() { // This was added to return a class
-		 * when data is defined if (super.getDataClass() == null && getData() !=
-		 * null && getData().isValid()) { return
-		 * TypeUtils.getBaseClass(getData().getBinding().getAccessedType()); }
-		 * return super.getDataClass(); }
-		 */
-
-		/*@Override
-		public final void setParent(FIBContainer parent) {
-			Map<FIBComponent, BindingModel> oldBindingModelMap = new HashMap<>();
-			for (FIBComponent c : retrieveAllSubComponents()) {
-				oldBindingModelMap.put(c, c.getBindingModel());
-			}
-			super.setParent(parent);
-			for (FIBComponent c : retrieveAllSubComponents()) {
-				if (c instanceof FIBComponentImpl) {
-					((FIBComponentImpl) c).bindingModelMightChange(oldBindingModelMap.get(c));
-				}
-			}
-		}*/
-
 		/**
 		 * Return a recursive list of all components beeing embedded in this container
 		 * 
@@ -804,12 +776,6 @@ public abstract interface FIBContainer extends FIBComponent {
 		public Collection<? extends FIBModelObject> getEmbeddedObjects() {
 			return getSubComponents();
 		}
-
-		/*
-		 * @Override public void notifiedBindingChanged(DataBinding<?> binding)
-		 * { super.notifiedBindingChanged(binding); if (binding == getData()) {
-		 * logger.info("notified data changed"); } }
-		 */
 
 		@Deprecated
 		private FIBVariable<?> getDefaultDataVariable(boolean createWhenNonExistant) {

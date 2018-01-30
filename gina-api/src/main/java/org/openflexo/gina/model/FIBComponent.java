@@ -63,7 +63,6 @@ import org.openflexo.gina.controller.CustomTypeEditorProvider;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.manager.HasBaseIdentifier;
 import org.openflexo.gina.model.bindings.FIBComponentBindingModel;
-import org.openflexo.gina.model.container.FIBIteration;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBSplitPanel;
 import org.openflexo.gina.model.container.FIBTab;
@@ -79,6 +78,7 @@ import org.openflexo.gina.model.container.layout.NoneLayoutConstraints;
 import org.openflexo.gina.model.container.layout.SplitLayoutConstraints;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
 import org.openflexo.gina.model.graph.FIBGraph;
+import org.openflexo.gina.model.operator.FIBIteration;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBButton;
 import org.openflexo.gina.model.widget.FIBCheckBox;
@@ -132,10 +132,11 @@ import org.openflexo.toolbox.StringUtils;
  * Represent a component in GINA model<br>
  * This is the base interface for any piece of graphical user interface which might be composed.<br>
  * 
- * They are mainly two kinds of components:
+ * They are mainly three kinds of components:
  * <ul>
  * <li>the containers, which contains other components (containers or widgets), with some layout, see {@link FIBContainer}</li>
  * <li>the widgets, that are atomic piece of GUI, and representing a particular data, see {@link FIBWidget}</li>
+ * <li>the operators, that are control structure</li>
  * </ul>
  * 
  * The {@link FIBComponent} interface provides:
@@ -154,7 +155,7 @@ import org.openflexo.toolbox.StringUtils;
  */
 @ModelEntity(isAbstract = true)
 @ImplementationClass(FIBComponent.FIBComponentImpl.class)
-@Imports({ @Import(FIBPanel.class), @Import(FIBIteration.class), @Import(FIBTab.class), @Import(FIBSplitPanel.class),
+@Imports({ @Import(FIBIteration.class), @Import(FIBPanel.class), @Import(FIBTab.class), @Import(FIBSplitPanel.class),
 		@Import(FIBTabPanel.class), @Import(FIBBrowser.class), @Import(FIBButton.class), @Import(FIBCheckBox.class),
 		@Import(FIBColor.class), @Import(FIBCustom.class), @Import(FIBFile.class), @Import(FIBFont.class), @Import(FIBDate.class),
 		@Import(FIBHtmlEditor.class), @Import(FIBImage.class), @Import(FIBLabel.class), @Import(FIBCheckboxList.class),

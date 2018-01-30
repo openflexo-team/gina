@@ -1,6 +1,6 @@
 /**
  * 
- * Copyright (c) 2013-2015, Openflexo
+ * Copyright (c) 2013-2014, Openflexo
  * Copyright (c) 2011-2012, AgileBirds
  * 
  * This file is part of Gina-core, a component of the software infrastructure 
@@ -37,54 +37,23 @@
  * 
  */
 
-package org.openflexo.gina.swing.view.container.layout;
+package org.openflexo.gina.model.operator;
 
-import java.awt.BorderLayout;
-
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-
-import org.openflexo.gina.model.container.FIBPanel;
-import org.openflexo.gina.model.container.layout.BorderLayoutConstraints;
-import org.openflexo.gina.swing.view.JFIBView;
-import org.openflexo.gina.view.FIBView;
-import org.openflexo.gina.view.container.impl.FIBLayoutManagerImpl;
-import org.openflexo.gina.view.impl.FIBContainerViewImpl;
+import org.openflexo.gina.model.FIBOperator;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.ModelEntity;
 
 /**
- * Swing implementation for border layout
+ * Represent a conditional operator in GINA model
  * 
  * @author sylvain
+ *
  */
-public class JBorderLayout extends FIBLayoutManagerImpl<JPanel, JComponent, BorderLayoutConstraints> {
+@ModelEntity(isAbstract = true)
+@ImplementationClass(FIBOperator.FIBOperatorImpl.class)
+public abstract interface FIBConditional extends FIBOperator {
 
-	public JBorderLayout(FIBContainerViewImpl<?, JPanel, JComponent> panelView) {
-		super(panelView);
-	}
+	public static abstract class FIBConditionalImpl extends FIBOperatorImpl implements FIBConditional {
 
-	@Override
-	public FIBPanel getComponent() {
-		return (FIBPanel) super.getComponent();
-	}
-
-	@Override
-	public void setLayoutManager(JPanel container) {
-		container.setLayout(new BorderLayout());
-	}
-
-	@Override
-	public void doLayout() {
-		super.doLayout();
-		getContainerView().getTechnologyComponent().revalidate();
-		getContainerView().getTechnologyComponent().repaint();
-	}
-
-	@Override
-	protected void performAddChild(FIBView<?, JComponent> childView, BorderLayoutConstraints constraints) {
-
-		if (((JFIBView<?, ?>) childView).getResultingJComponent() != null) {
-			getContainerView().getTechnologyComponent().add(((JFIBView<?, ?>) childView).getResultingJComponent(),
-					constraints.getLocation().getConstraint());
-		}
 	}
 }

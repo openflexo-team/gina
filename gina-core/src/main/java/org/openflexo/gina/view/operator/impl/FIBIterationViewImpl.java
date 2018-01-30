@@ -37,9 +37,8 @@
  * 
  */
 
-package org.openflexo.gina.view.container.impl;
+package org.openflexo.gina.view.operator.impl;
 
-import java.awt.Image;
 import java.beans.PropertyChangeEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -53,24 +52,19 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingValueChangeListener;
 import org.openflexo.connie.binding.BindingValueListChangeListener;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
-import org.openflexo.gina.model.container.FIBIteration;
-import org.openflexo.gina.model.container.FIBPanel;
-import org.openflexo.gina.model.container.FIBPanel.Layout;
-import org.openflexo.gina.model.container.FIBTab;
-import org.openflexo.gina.model.container.layout.FIBLayoutManager;
+import org.openflexo.gina.model.operator.FIBIteration;
 import org.openflexo.gina.view.FIBContainerView;
+import org.openflexo.gina.view.FIBOperatorView;
 import org.openflexo.gina.view.FIBView;
-import org.openflexo.gina.view.container.FIBIterationView;
 import org.openflexo.gina.view.impl.FIBContainerViewImpl;
+import org.openflexo.gina.view.impl.FIBOperatorViewImpl;
 import org.openflexo.gina.view.impl.FIBViewImpl;
-import org.openflexo.rm.Resource;
-import org.openflexo.swing.ImageUtils;
+import org.openflexo.gina.view.operator.FIBIterationView;
 
 /**
  * Base implementation for an enumeration
@@ -82,20 +76,14 @@ import org.openflexo.swing.ImageUtils;
  * 
  * @author sylvain
  */
-public abstract class FIBIterationViewImpl<C, C2> extends FIBContainerViewImpl<FIBIteration, C, C2> implements FIBIterationView<C, C2> {
+public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FIBIteration, C, C2> implements FIBIterationView<C, C2> {
 
 	private static final Logger logger = Logger.getLogger(FIBIterationViewImpl.class.getPackage().getName());
 
-	private FIBLayoutManager<C, C2, ?> layoutManager;
-
-	private BindingValueChangeListener<Image> dynamicBackgroundImageBindingValueChangeListener;
-
 	private BindingValueListChangeListener<Object, List<Object>> listBindingValueChangeListener;
 
-	public FIBIterationViewImpl(FIBIteration model, FIBController controller, IterationRenderingAdapter<C, C2> renderingAdapter) {
-		super(model, controller, renderingAdapter);
-		layoutManager = makeFIBLayoutManager(model.getLayout());
-		layoutManager.setLayoutManager(getTechnologyComponent());
+	public FIBIterationViewImpl(FIBIteration model, FIBController controller) {
+		super(model, controller);
 		buildSubComponents();
 	}
 
@@ -341,78 +329,43 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBContainerViewImpl<F
 	@Override
 	protected void componentBecomesVisible() {
 		super.componentBecomesVisible();
-		listenDynamicBackgroundImageValueChange();
 		listenListValueChange();
 	}
 
 	@Override
 	protected void componentBecomesInvisible() {
 		super.componentBecomesInvisible();
-		stopListenDynamicBackgroundImageValueChange();
 		stopListenListValueChange();
-	}
-
-	private void listenDynamicBackgroundImageValueChange() {
-		if (dynamicBackgroundImageBindingValueChangeListener != null) {
-			dynamicBackgroundImageBindingValueChangeListener.stopObserving();
-			dynamicBackgroundImageBindingValueChangeListener.delete();
-		}
-		if (getComponent().getDynamicBackgroundImage() != null && getComponent().getDynamicBackgroundImage().isValid()) {
-			dynamicBackgroundImageBindingValueChangeListener = new BindingValueChangeListener<Image>(
-					getComponent().getDynamicBackgroundImage(), getBindingEvaluationContext()) {
-				@Override
-				public void bindingValueChanged(Object source, Image newValue) {
-					System.out.println(" bindingValueChanged() detected for dynamicBackgroundImage="
-							+ getComponent().getDynamicBackgroundImage() + " with newValue=" + newValue + " source=" + source);
-					performUpdateBackgroundImage(newValue);
-				}
-			};
-		}
-	}
-
-	private void stopListenDynamicBackgroundImageValueChange() {
-		if (dynamicBackgroundImageBindingValueChangeListener != null) {
-			dynamicBackgroundImageBindingValueChangeListener.stopObserving();
-			dynamicBackgroundImageBindingValueChangeListener.delete();
-			dynamicBackgroundImageBindingValueChangeListener = null;
-		}
 	}
 
 	@Override
 	protected void performUpdate() {
 		super.performUpdate();
-		updateBorder();
-		if (getComponent().getDynamicBackgroundImage().isSet() && getComponent().getDynamicBackgroundImage().isValid()) {
-			updateDynamicBackgroundImage();
-		}
-		else {
-			updateBackgroundImageFile();
-		}
-		updateBackgroundImageSizeAdjustment();
 	}
 
 	@Override
-	public IterationRenderingAdapter<C, C2> getRenderingAdapter() {
-		return (IterationRenderingAdapter<C, C2>) super.getRenderingAdapter();
-	}
-
-	public abstract FIBLayoutManager<C, C2, ?> makeFIBLayoutManager(Layout layoutType);
-
-	@Override
-	protected void addSubComponentsAndDoLayout() {
-		try {
-			getLayoutManager().doLayout();
-		} catch (ClassCastException e) {
-			logger.warning("Unexpected ClassCastException during doLayout: " + e.getMessage());
-			e.printStackTrace();
+	public void addSubComponentsAndDoLayout() {
+		FIBContainerView<?, ?, ?> containerView = getContainerView();
+		if (containerView instanceof FIBContainerViewImpl) {
+			((FIBContainerViewImpl<?, ?, ?>) containerView).addSubComponentsAndDoLayout();
 		}
 	}
 
-	public FIBLayoutManager<C, C2, ?> getLayoutManager() {
-		return layoutManager;
+	/**
+	 * Returns the first parent view which is not an operator view
+	 * 
+	 * @return
+	 */
+	public FIBContainerView<?, ?, ?> getContainerView() {
+		FIBContainerView<?, ?, ?> current = getParentView();
+		while (current != null) {
+			if (!(current instanceof FIBOperatorView)) {
+				return current;
+			}
+			current = current.getParentView();
+		}
+		return null;
 	}
-
-	public abstract void updateBorder();
 
 	@Override
 	public void updateLanguage() {
@@ -420,26 +373,26 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBContainerViewImpl<F
 		update();
 	}
 
-	@Override
+	/*@Override
 	public void changeLayout() {
 		logger.info("relayout panel " + getComponent());
-
+	
 		// TODO: please reimplement this and make it more efficient !!!!
-
+	
 		clearContainer();
-
+	
 		if (layoutManager != null) {
 			layoutManager.delete();
 		}
 		layoutManager = null;
-
+	
 		layoutManager = makeFIBLayoutManager(getComponent().getLayout());
 		getLayoutManager().setLayoutManager(getTechnologyComponent());
-
+	
 		buildSubComponents();
 		// updateDataObject(getDataObject());
 		update();
-	}
+	}*/
 
 	@Override
 	public void updateLayout() {
@@ -453,7 +406,7 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBContainerViewImpl<F
 
 		clearContainer();
 
-		getLayoutManager().setLayoutManager(getTechnologyComponent());
+		// getLayoutManager().setLayoutManager(getTechnologyComponent());
 		buildSubComponents();
 
 		// updateDataObject(getDataObject());
@@ -470,93 +423,7 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBContainerViewImpl<F
 		if (isDeleted()) {
 			return;
 		}
-		if (evt.getPropertyName().equals(FIBPanel.BORDER_KEY) || evt.getPropertyName().equals(FIBPanel.BORDER_COLOR_KEY)
-				|| evt.getPropertyName().equals(FIBPanel.BORDER_TITLE_KEY) || evt.getPropertyName().equals(FIBPanel.BORDER_TOP_KEY)
-				|| evt.getPropertyName().equals(FIBPanel.BORDER_LEFT_KEY) || evt.getPropertyName().equals(FIBPanel.BORDER_RIGHT_KEY)
-				|| evt.getPropertyName().equals(FIBPanel.BORDER_BOTTOM_KEY) || evt.getPropertyName().equals(FIBPanel.TITLE_FONT_KEY)
-				|| evt.getPropertyName().equals(FIBPanel.DARK_LEVEL_KEY)) {
-			updateBorder();
-		}
-		if (evt.getPropertyName().equals(FIBPanel.LAYOUT_KEY)) {
-			changeLayout();
-		}
-		if (evt.getPropertyName().equals(FIBPanel.FLOW_ALIGNMENT_KEY) || evt.getPropertyName().equals(FIBPanel.BOX_LAYOUT_AXIS_KEY)
-				|| evt.getPropertyName().equals(FIBPanel.V_GAP_KEY) || evt.getPropertyName().equals(FIBPanel.H_GAP_KEY)
-				|| evt.getPropertyName().equals(FIBPanel.ROWS_KEY) || evt.getPropertyName().equals(FIBPanel.COLS_KEY)
-				|| evt.getPropertyName().equals(FIBPanel.PROTECT_CONTENT_KEY)) {
-			updateLayout();
-		}
-		if (getComponent() instanceof FIBTab && evt.getPropertyName().equals(FIBTab.TITLE_KEY)) {
-			// Arghlll how do we update titles on this.
-		}
-
-		if (evt.getPropertyName().equals(FIBPanel.IMAGE_FILE_KEY)) {
-			updateBackgroundImageFile();
-			// relayoutParentBecauseBackgroundImageChanged();
-		}
-		else if (evt.getPropertyName().equals(FIBPanel.DYNAMIC_BACKGROUND_IMAGE_KEY)) {
-			updateDynamicBackgroundImage();
-			// relayoutParentBecauseBackgroundImageChanged();
-		}
-		else if ((evt.getPropertyName().equals(FIBPanel.SIZE_ADJUSTMENT_KEY)) || (evt.getPropertyName().equals(FIBPanel.IMAGE_HEIGHT_KEY))
-				|| (evt.getPropertyName().equals(FIBPanel.IMAGE_WIDTH_KEY))) {
-			updateBackgroundImageSizeAdjustment();
-			// relayoutParentBecauseBackgroundImageChanged();
-		}
-
 		super.propertyChange(evt);
 	}
-
-	private Image originalBackgroundImage;
-	private Resource loadedImageResource = null;
-
-	protected void updateBackgroundImageSizeAdjustment() {
-		// System.out.println("originalImage = " + originalImage);
-		if (originalBackgroundImage != null) {
-			updateBackgroundImageDefaultSize(originalBackgroundImage);
-			getRenderingAdapter().setBackgroundImage(getTechnologyComponent(), originalBackgroundImage, this);
-		}
-	}
-
-	private void performUpdateBackgroundImage(Image newImage) {
-		originalBackgroundImage = newImage;
-		updateBackgroundImageDefaultSize(originalBackgroundImage);
-		getRenderingAdapter().setBackgroundImage(getTechnologyComponent(), originalBackgroundImage, this);
-	}
-
-	protected void updateDynamicBackgroundImage() {
-		if (getComponent().getDynamicBackgroundImage().isSet() && getComponent().getDynamicBackgroundImage().isValid()) {
-			try {
-				Image image = getComponent().getDynamicBackgroundImage().getBindingValue(getBindingEvaluationContext());
-				if (notEquals(image, originalBackgroundImage)) {
-					performUpdateBackgroundImage(image);
-				}
-			} catch (TypeMismatchException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NullReferenceException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-
-	protected void updateBackgroundImageFile() {
-		if (notEquals(getComponent().getImageFile(), loadedImageResource)) {
-			if (getComponent().getImageFile() != null) {
-				loadedImageResource = getComponent().getImageFile();
-				performUpdateBackgroundImage(ImageUtils.loadImageFromResource(getComponent().getImageFile()));
-			}
-			else {
-				originalBackgroundImage = null;
-				loadedImageResource = null;
-			}
-		}
-	}
-
-	protected abstract void updateBackgroundImageDefaultSize(Image image);
 
 }

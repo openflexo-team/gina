@@ -186,7 +186,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		}
 	}
 
-	protected abstract void addSubComponentsAndDoLayout();
+	public abstract void addSubComponentsAndDoLayout();
 
 	/**
 	 * Return technology component for supplied FIBComponent<br>

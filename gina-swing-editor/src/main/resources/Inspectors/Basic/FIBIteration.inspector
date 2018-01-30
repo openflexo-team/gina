@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
-	dataClassName="org.openflexo.gina.model.container.FIBIteration" name="Inspector">
+	dataClassName="org.openflexo.gina.model.operator.FIBIteration" name="Inspector">
 	<Label index="42" label="list" constraints="twocols(location=left)"
 		localize="true" name="ListLabel" />
 	<Custom index="43" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"

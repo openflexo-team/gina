@@ -1,6 +1,6 @@
 /**
  * 
- * Copyright (c) 2013-2015, Openflexo
+ * Copyright (c) 2013-2014, Openflexo
  * Copyright (c) 2011-2012, AgileBirds
  * 
  * This file is part of Gina-core, a component of the software infrastructure 
@@ -37,54 +37,37 @@
  * 
  */
 
-package org.openflexo.gina.swing.view.container.layout;
+package org.openflexo.gina.view.impl;
 
-import java.awt.BorderLayout;
+import java.util.logging.Logger;
 
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-
-import org.openflexo.gina.model.container.FIBPanel;
-import org.openflexo.gina.model.container.layout.BorderLayoutConstraints;
-import org.openflexo.gina.swing.view.JFIBView;
-import org.openflexo.gina.view.FIBView;
-import org.openflexo.gina.view.container.impl.FIBLayoutManagerImpl;
-import org.openflexo.gina.view.impl.FIBContainerViewImpl;
+import org.openflexo.connie.binding.SettableBindingEvaluationContext;
+import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.FIBOperator;
+import org.openflexo.gina.view.FIBOperatorView;
 
 /**
- * Swing implementation for border layout
+ * Default generic (and abstract) implementation for a "view" associated with a {@link FIBOperator} in a given rendering engine environment
+ * (eg Swing)<br>
+ * A {@link FIBOperatorView} allows to access run-time (execution) context of underlying operator
  * 
  * @author sylvain
+ *
+ * @param <M>
+ *            type of {@link FIBOperator} this view represents
+ * @param <C>
+ *            type of technology-specific component
+ * @param <C2>
+ *            type of technology-specific component beeing contained by this view
  */
-public class JBorderLayout extends FIBLayoutManagerImpl<JPanel, JComponent, BorderLayoutConstraints> {
+public abstract class FIBOperatorViewImpl<M extends FIBOperator, C, C2> extends FIBContainerViewImpl<M, C, C2>
+		implements FIBOperatorView<M, C, C2>, SettableBindingEvaluationContext {
 
-	public JBorderLayout(FIBContainerViewImpl<?, JPanel, JComponent> panelView) {
-		super(panelView);
+	@SuppressWarnings("unused")
+	private static final Logger LOGGER = Logger.getLogger(FIBOperatorViewImpl.class.getPackage().getName());
+
+	public FIBOperatorViewImpl(M model, FIBController controller) {
+		super(model, controller, null);
 	}
 
-	@Override
-	public FIBPanel getComponent() {
-		return (FIBPanel) super.getComponent();
-	}
-
-	@Override
-	public void setLayoutManager(JPanel container) {
-		container.setLayout(new BorderLayout());
-	}
-
-	@Override
-	public void doLayout() {
-		super.doLayout();
-		getContainerView().getTechnologyComponent().revalidate();
-		getContainerView().getTechnologyComponent().repaint();
-	}
-
-	@Override
-	protected void performAddChild(FIBView<?, JComponent> childView, BorderLayoutConstraints constraints) {
-
-		if (((JFIBView<?, ?>) childView).getResultingJComponent() != null) {
-			getContainerView().getTechnologyComponent().add(((JFIBView<?, ?>) childView).getResultingJComponent(),
-					constraints.getLocation().getConstraint());
-		}
-	}
 }

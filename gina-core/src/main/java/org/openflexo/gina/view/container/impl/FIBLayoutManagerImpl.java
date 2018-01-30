@@ -50,8 +50,9 @@ import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.container.layout.ComponentConstraints;
 import org.openflexo.gina.model.container.layout.FIBLayoutManager;
 import org.openflexo.gina.view.FIBView;
-import org.openflexo.gina.view.container.FIBIterationView.IteratedContents;
 import org.openflexo.gina.view.impl.FIBContainerViewImpl;
+import org.openflexo.gina.view.operator.FIBIterationView.IteratedContents;
+import org.openflexo.gina.view.operator.impl.FIBIterationViewImpl;
 
 /**
  * Represents a layout manager working in a {@link FIBContainer}
@@ -132,8 +133,10 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 					FIBView<?, C2> subComponentView = (FIBView<?, C2>) iteratedContents.getSubViewsMap().get(c);
 					if (subComponentView != null) {
 						performAddChild(subComponentView, (CC) c.getConstraints());
-						subComponentView.getRenderingAdapter().setVisible(subComponentView.getTechnologyComponent(),
-								subComponentView.isViewVisible());
+						if (subComponentView.getRenderingAdapter() != null) {
+							subComponentView.getRenderingAdapter().setVisible(subComponentView.getTechnologyComponent(),
+									subComponentView.isViewVisible());
+						}
 					}
 				}
 			}
@@ -145,8 +148,10 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 				FIBView<?, C2> subComponentView = getSubComponentView(c);
 				if (subComponentView != null) {
 					performAddChild(subComponentView, (CC) c.getConstraints());
-					subComponentView.getRenderingAdapter().setVisible(subComponentView.getTechnologyComponent(),
-							subComponentView.isViewVisible());
+					if (subComponentView.getRenderingAdapter() != null) {
+						subComponentView.getRenderingAdapter().setVisible(subComponentView.getTechnologyComponent(),
+								subComponentView.isViewVisible());
+					}
 				}
 			}
 		}
@@ -156,8 +161,10 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 			FIBView<?, C2> subComponentView = getSubComponentView(c);
 			if (subComponentView != null) {
 				performAddChild(subComponentView, (CC) /*subComponentView.getComponent()*/c.getConstraints());
-				subComponentView.getRenderingAdapter().setVisible(subComponentView.getTechnologyComponent(),
-						subComponentView.isViewVisible());
+				if (subComponentView.getRenderingAdapter() != null) {
+					subComponentView.getRenderingAdapter().setVisible(subComponentView.getTechnologyComponent(),
+							subComponentView.isViewVisible());
+				}
 			}
 		}
 

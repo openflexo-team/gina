@@ -41,30 +41,20 @@ package org.openflexo.gina.swing.editor.view.container;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import org.openflexo.gina.model.container.FIBIteration;
-import org.openflexo.gina.model.container.FIBPanel.Layout;
-import org.openflexo.gina.model.container.layout.FIBLayoutManager;
+import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.operator.FIBIteration;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerViewDelegate;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
-import org.openflexo.gina.swing.editor.view.container.layout.JEditableBorderLayout;
-import org.openflexo.gina.swing.editor.view.container.layout.JEditableBoxLayout;
-import org.openflexo.gina.swing.editor.view.container.layout.JEditableFlowLayout;
-import org.openflexo.gina.swing.editor.view.container.layout.JEditableGridBagLayout;
-import org.openflexo.gina.swing.editor.view.container.layout.JEditableGridLayout;
-import org.openflexo.gina.swing.editor.view.container.layout.JEditableTwoColsLayout;
-import org.openflexo.gina.swing.editor.view.container.layout.JFIBEditableLayoutManager;
 import org.openflexo.gina.swing.view.container.JFIBIterationView;
-import org.openflexo.gina.swing.view.container.layout.JAbsolutePositionningLayout;
-import org.openflexo.gina.swing.view.container.layout.JButtonLayout;
 import org.openflexo.logging.FlexoLogger;
 
 public class JFIBEditableIterationView extends JFIBIterationView implements FIBSwingEditableContainerView<FIBIteration, JPanel> {
@@ -117,7 +107,7 @@ public class JFIBEditableIterationView extends JFIBIterationView implements FIBS
 		}
 	}
 
-	@Override
+	/*@Override
 	public FIBLayoutManager<JPanel, JComponent, ?> makeFIBLayoutManager(Layout layoutType) {
 		if (layoutType == null) {
 			return super.makeFIBLayoutManager(layoutType);
@@ -142,14 +132,27 @@ public class JFIBEditableIterationView extends JFIBIterationView implements FIBS
 			default:
 				return super.makeFIBLayoutManager(layoutType);
 		}
-
-	}
+	
+	}*/
 
 	@Override
 	public List<PlaceHolder> makePlaceHolders(Dimension preferredSize) {
-		if (getLayoutManager() instanceof JFIBEditableLayoutManager) {
-			return ((JFIBEditableLayoutManager<JPanel, JComponent, ?>) getLayoutManager()).makePlaceHolders(preferredSize);
-		}
-		return Collections.emptyList();
+
+		List<PlaceHolder> returned = new ArrayList<>();
+		returned.add(new PlaceHolder(this, "Prout") {
+
+			@Override
+			public void insertComponent(FIBComponent newComponent, int originalIndex) {
+				System.out.println("Prout prout prout");
+			}
+
+		});
+
+		/*if (getLayoutManager() instanceof JFIBEditableLayoutManager) {
+			returned.addAll(((JFIBEditableLayoutManager<JPanel, JComponent, ?>) getLayoutManager()).makePlaceHolders(preferredSize));
+		}*/
+		return returned;
+		// return Collections.emptyList();
 	}
+
 }

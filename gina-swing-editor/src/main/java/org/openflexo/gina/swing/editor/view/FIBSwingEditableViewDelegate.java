@@ -93,13 +93,11 @@ public class FIBSwingEditableViewDelegate<M extends FIBComponent, J extends JCom
 
 		JComponent jComponent = view.getJComponent();
 
-		jComponent.setFocusable(true);
-		jComponent.setRequestFocusEnabled(true);
-
-		recursivelyAddListenersTo(jComponent);
-
-		// view.getJComponent().addMouseListener(this);
-		// view.getJComponent().addFocusListener(this);
+		if (jComponent != null) {
+			jComponent.setFocusable(true);
+			jComponent.setRequestFocusEnabled(true);
+			recursivelyAddListenersTo(jComponent);
+		}
 
 		view.getEditorController().registerViewDelegate(this);
 

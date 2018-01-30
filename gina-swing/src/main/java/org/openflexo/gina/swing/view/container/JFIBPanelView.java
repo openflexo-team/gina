@@ -443,7 +443,7 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> implemen
 	 */
 
 	@Override
-	protected void addSubComponentsAndDoLayout() {
+	public void addSubComponentsAndDoLayout() {
 		super.addSubComponentsAndDoLayout();
 		getTechnologyComponent().revalidate();
 		getTechnologyComponent().repaint();

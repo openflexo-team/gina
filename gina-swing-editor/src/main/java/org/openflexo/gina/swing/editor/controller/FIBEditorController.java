@@ -407,7 +407,7 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 		private void paintFocusedAndSelected(Graphics g) {
 			FIBSwingEditableViewDelegate<?, ?> focused = viewDelegates.get(getFocusedObject());
 			FIBSwingEditableViewDelegate<?, ?> selected = viewDelegates.get(getSelectedObject());
-			if (focused != null && focused != selected) {
+			if (focused != null && focused != selected && focused.getResultingJComponent() != null) {
 				Point origin = SwingUtilities.convertPoint(focused.getResultingJComponent(), new Point(), this);
 				// Graphics componentGraphics = g.create(origin.x, origin.y,
 				// focused.getJComponent().getWidth(), focused
@@ -431,7 +431,7 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 				// .getWidth(), focused.getJComponent().getHeight());
 				// componentGraphics.dispose();
 			}
-			if (selected != null) {
+			if (selected != null && selected.getResultingJComponent() != null) {
 				Point origin = SwingUtilities.convertPoint(selected.getResultingJComponent(), new Point(), this);
 				// Graphics componentGraphics = g.create(origin.x, origin.y,
 				// selected.getJComponent().getWidth(), selected

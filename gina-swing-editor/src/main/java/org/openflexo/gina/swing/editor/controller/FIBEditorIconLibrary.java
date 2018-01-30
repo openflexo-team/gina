@@ -89,6 +89,9 @@ public class FIBEditorIconLibrary {
 	public static final ImageIcon GRAPH_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Small_BIRT.gif"));
 	public static final ImageIcon GRAPH_FUNCTION_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/FunctionIcon.png"));
 
+	public static final ImageIcon ITERATION_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/IterationIcon.png"));
+	public static final ImageIcon CONDITIONAL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ConditionalIcon.png"));
+
 	public static final IconMarker DELETE = new IconMarker(
 			new ImageIconResource(ResourceLocator.locateResource("Icons/Markers/Delete.png")), 8, 8);
 	public static final IconMarker DUPLICATE = new IconMarker(
