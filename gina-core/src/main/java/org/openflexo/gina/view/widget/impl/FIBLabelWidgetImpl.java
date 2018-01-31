@@ -126,6 +126,20 @@ public abstract class FIBLabelWidgetImpl<C> extends FIBWidgetViewImpl<FIBLabel, 
 	}
 
 	@Override
+	public String getValue() {
+
+		String returned = super.getValue();
+
+		// When computed value is null, return static label value
+		if (returned == null) {
+			if (getComponent().getLabel() != null) {
+				return getComponent().getLabel();
+			}
+		}
+		return returned;
+	}
+
+	@Override
 	public String updateData() {
 
 		if (getWidget().getData() != null && getWidget().getData().isSet() && getWidget().getData().isValid()) {

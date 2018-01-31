@@ -39,23 +39,29 @@
 
 package org.openflexo.gina.swing.editor.view.container;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.model.operator.FIBIteration;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
+import org.openflexo.gina.swing.editor.controller.FIBEditorIconLibrary;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerViewDelegate;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.view.container.JFIBIterationView;
 import org.openflexo.logging.FlexoLogger;
+import org.openflexo.toolbox.StringUtils;
 
 public class JFIBEditableIterationView extends JFIBIterationView implements FIBSwingEditableContainerView<FIBIteration, JPanel> {
 
@@ -82,9 +88,45 @@ public class JFIBEditableIterationView extends JFIBIterationView implements FIBS
 	}
 
 	@Override
-	protected boolean handleIteration() {
+	public boolean handleIteration() {
 		// In edit mode, we don't want to have to iterate
 		return false;
+	}
+
+	private JLabel iterationInfoLabel;
+
+	@Override
+	protected JPanel makeTechnologyComponent() {
+		if (getComponent().getSubComponents().size() == 0) {
+			System.out.println("Bon, je cree mon tch component ? " + getComponent().getName());
+			JPanel returned = new JPanel(new BorderLayout());
+			returned.add(iterationInfoLabel = new JLabel(FIBEditorIconLibrary.ITERATION_ICON));
+			iterationInfoLabel.setText(StringUtils.isNotEmpty(getComponent().getName()) ? getComponent().getName() : "Iteration");
+			returned.add(iterationInfoLabel, BorderLayout.CENTER);
+			// returned.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE));
+			return returned;
+		}
+		else {
+			return null;
+		}
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getPropertyName().equals(FIBModelObject.NAME_KEY)) {
+			iterationInfoLabel.setText(StringUtils.isNotEmpty(getComponent().getName()) ? getComponent().getName() : "Iteration");
+		}
+		super.propertyChange(evt);
+	}
+
+	@Override
+	public JComponent getJComponent() {
+		return getTechnologyComponent();
+	}
+
+	@Override
+	public JComponent getResultingJComponent() {
+		return getTechnologyComponent();
 	}
 
 	@Override
@@ -139,11 +181,12 @@ public class JFIBEditableIterationView extends JFIBIterationView implements FIBS
 	public List<PlaceHolder> makePlaceHolders(Dimension preferredSize) {
 
 		List<PlaceHolder> returned = new ArrayList<>();
-		returned.add(new PlaceHolder(this, "Prout") {
+		returned.add(new PlaceHolder(this, getComponent().getName() != null ? getComponent().getName() : "Iteration") {
 
 			@Override
 			public void insertComponent(FIBComponent newComponent, int originalIndex) {
-				System.out.println("Prout prout prout");
+				System.out.println("Adding inside iteration");
+				getComponent().addToSubComponents(newComponent);
 			}
 
 		});

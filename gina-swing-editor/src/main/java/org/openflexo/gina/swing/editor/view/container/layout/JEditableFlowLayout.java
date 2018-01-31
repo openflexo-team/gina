@@ -58,7 +58,10 @@ import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.editor.view.container.JFIBEditablePanelView;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.container.layout.JFlowLayout;
+import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.impl.FIBContainerViewImpl;
+import org.openflexo.gina.view.impl.FIBViewImpl;
+import org.openflexo.gina.view.operator.FIBIterationView;
 import org.openflexo.logging.FlexoLogger;
 
 /**
@@ -78,6 +81,23 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 	public JFIBPanelView getContainerView() {
 		return (JFIBPanelView) super.getContainerView();
 	}*/
+
+	public List<JFIBView<?, ?>> getFlattenedContents() {
+
+		List<JFIBView<?, ?>> list = new ArrayList<>();
+		for (FIBViewImpl<?, JComponent> subView : getContainerView().getSubViews()) {
+			if (subView instanceof FIBIterationView) {
+				for (FIBView<?, ?> childView : ((FIBIterationView<?, ?>) subView).getSubViews()) {
+					list.add((JFIBView<?, ?>) childView);
+				}
+			}
+			else {
+				list.add((JFIBView<?, ?>) subView);
+			}
+		}
+		return list;
+
+	}
 
 	@Override
 	public List<PlaceHolder> makePlaceHolders(final Dimension preferredSize) {
@@ -117,11 +137,13 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 
 			// Before each component, we will add an empty panel to compute
 			// placeholder location
-			for (int i = 0; i < getComponent().getSubComponents().size(); i++) {
+
+			List<JFIBView<?, ?>> flattenedContents = getFlattenedContents();
+
+			for (int i = 0; i < flattenedContents.size(); i++) {
 				panel.removeAll();
 				for (int j = 0; j < i; j++) {
-					FIBComponent c = getComponent().getSubComponents().get(j);
-					JFIBView<?, ?> childView = (JFIBView<?, ?>) getContainerView().getSubViewsMap().get(c);
+					JFIBView<?, ?> childView = flattenedContents.get(j);
 					panel.add(Box.createRigidArea(childView.getResultingJComponent().getSize()));
 				}
 				JComponent phComponent = new JPanel() {
@@ -131,25 +153,15 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 					}
 				};
 				panel.add(phComponent);
-				for (int j = i; j < getComponent().getSubComponents().size(); j++) {
-					FIBComponent c = getComponent().getSubComponents().get(j);
-					JFIBView<?, ?> childView = (JFIBView<?, ?>) getContainerView().getSubViewsMap().get(c);
+				for (int j = i; j < flattenedContents.size(); j++) {
+					JFIBView<?, ?> childView = flattenedContents.get(j);
 					panel.add(Box.createRigidArea(childView.getResultingJComponent().getSize()));
 				}
 				panel.doLayout();
-				// System.out.println("OK placeholder i=" + i + ", bounds=" +
-				// phComponent.getBounds());
+
 				final int insertionIndex = i;
 
 				Rectangle placeHolderBounds = makePlaceHolderBounds(phComponent, deltaX, deltaY);
-				/*
-				 * Rectangle placeHolderBounds = new
-				 * Rectangle(phComponent.getBounds().x + deltaX,
-				 * phComponent.getBounds().y + deltaY, phComponent.getWidth(),
-				 * phComponent.getHeight()); if (placeHolderBounds.x < 0) {
-				 * placeHolderBounds.width = placeHolderBounds.width +
-				 * placeHolderBounds.x; placeHolderBounds.x = 0; }
-				 */
 				PlaceHolder newPlaceHolder = new PlaceHolder((FIBSwingEditableContainerView<?, ?>) getContainerView(), "< flow item >",
 						placeHolderBounds) {
 					@Override
@@ -165,9 +177,7 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 
 			// Then add a placeholder at the end
 			panel.removeAll();
-			for (int i = 0; i < getComponent().getSubComponents().size(); i++) {
-				FIBComponent c = getComponent().getSubComponents().get(i);
-				JFIBView<?, ?> childView = (JFIBView<?, ?>) getContainerView().getSubViewsMap().get(c);
+			for (JFIBView<?, ?> childView : flattenedContents) {
 				panel.add(Box.createRigidArea(childView.getResultingJComponent().getSize()));
 			}
 			JComponent phComponent = new JPanel() {

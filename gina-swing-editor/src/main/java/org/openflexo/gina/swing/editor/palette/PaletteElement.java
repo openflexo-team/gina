@@ -193,8 +193,8 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 	@Override
 	public boolean elementDragged(FIBDropTarget target, DropListener dropListener, Point pt) {
 
-		// System.out.println("elementDragged(), dl=" +
-		// dropListener.getEditableView());
+		System.out.println("elementDragged(), dl=" + dropListener.getEditableView());
+		System.out.println("target=" + target);
 
 		PlaceHolder ph = target.getPlaceHolder(dropListener, pt);
 

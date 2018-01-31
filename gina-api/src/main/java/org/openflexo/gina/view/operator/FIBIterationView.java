@@ -64,6 +64,8 @@ public interface FIBIterationView<C, C2> extends FIBOperatorView<FIBIteration, C
 
 	public Map<Object, IteratedContents<?>> getIteratedSubViewsMap();
 
+	public boolean handleIteration();
+
 	public interface IteratedContents<I> extends BindingEvaluationContext {
 		public I getIteratedValue();
 

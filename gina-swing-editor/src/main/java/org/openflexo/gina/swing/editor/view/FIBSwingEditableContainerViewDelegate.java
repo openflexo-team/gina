@@ -39,12 +39,13 @@
 
 package org.openflexo.gina.swing.editor.view;
 
-import org.openflexo.gina.model.FIBContainer;
-import org.openflexo.logging.FlexoLogger;
-
-import javax.swing.*;
 import java.util.List;
 import java.util.logging.Logger;
+
+import javax.swing.JComponent;
+
+import org.openflexo.gina.model.FIBContainer;
+import org.openflexo.logging.FlexoLogger;
 
 public class FIBSwingEditableContainerViewDelegate<M extends FIBContainer, J extends JComponent>
 		extends FIBSwingEditableViewDelegate<M, J> {
@@ -77,7 +78,9 @@ public class FIBSwingEditableContainerViewDelegate<M extends FIBContainer, J ext
 				ph.setVisible(false);
 			}
 		}
-		getView().getResultingJComponent().repaint();
+		if (getView().getResultingJComponent() != null) {
+			getView().getResultingJComponent().repaint();
+		}
 	}
 
 	public void deletePlaceHolders() {

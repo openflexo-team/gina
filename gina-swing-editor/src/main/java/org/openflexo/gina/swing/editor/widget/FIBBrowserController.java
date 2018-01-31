@@ -147,7 +147,13 @@ public class FIBBrowserController extends FIBController /*implements Observer*/ 
 		if (element == null) {
 			return null;
 		}
-		if (element instanceof FIBComponent && ((FIBComponent) element).isRootComponent()) {
+		if (element instanceof FIBIteration) {
+			return FIBEditorIconLibrary.ITERATION_ICON;
+		}
+		else if (element instanceof FIBConditional) {
+			return FIBEditorIconLibrary.CONDITIONAL_ICON;
+		}
+		else if (element instanceof FIBComponent && ((FIBComponent) element).isRootComponent()) {
 			return FIBEditorIconLibrary.ROOT_COMPONENT_ICON;
 		}
 		else if (element instanceof FIBTabPanel) {
@@ -158,12 +164,6 @@ public class FIBBrowserController extends FIBController /*implements Observer*/ 
 		}
 		else if (element instanceof FIBSplitPanel) {
 			return FIBEditorIconLibrary.SPLIT_PANEL_ICON;
-		}
-		else if (element instanceof FIBIteration) {
-			return FIBEditorIconLibrary.ITERATION_ICON;
-		}
-		else if (element instanceof FIBConditional) {
-			return FIBEditorIconLibrary.CONDITIONAL_ICON;
 		}
 		else if (element instanceof FIBCheckBox) {
 			return FIBEditorIconLibrary.CHECKBOX_ICON;

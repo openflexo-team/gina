@@ -576,13 +576,15 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	 */
 	protected void performUpdate() {
 
-		updatePreferredSize();
-		updateMaximumSize();
-		updateMinimumSize();
-		updateOpacity();
-		updateBackgroundColor();
-		updateForegroundColor();
-		updateFont();
+		if (getRenderingAdapter() != null) {
+			updatePreferredSize();
+			updateMaximumSize();
+			updateMinimumSize();
+			updateOpacity();
+			updateBackgroundColor();
+			updateForegroundColor();
+			updateFont();
+		}
 
 		// IMPORTANT (Sylvain):
 		// I commented out following statement which seems to me unnecessary
@@ -654,7 +656,9 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 				}
 
 				// Render visibility status now
-				getRenderingAdapter().setVisible(getTechnologyComponent(), visible);
+				if (getRenderingAdapter() != null) {
+					getRenderingAdapter().setVisible(getTechnologyComponent(), visible);
+				}
 
 				if (getParentView() != null) {
 					getParentView().invalidateAndUpdateLayoutLater();
@@ -739,7 +743,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			else {
 				// System.out.println("Clear de la prefered size pour " +
 				// getComponent());
-				if (getTechnologyComponent() != null) {
+				if (getTechnologyComponent() != null && getRenderingAdapter() != null) {
 					getRenderingAdapter().setPreferredSize(getTechnologyComponent(), null);
 				}
 			}

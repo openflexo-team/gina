@@ -76,7 +76,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 
 	private static final Logger LOGGER = Logger.getLogger(FIBContainerViewImpl.class.getPackage().getName());
 
-	private final C technologyComponent;
+	private C technologyComponent;
 
 	protected Map<FIBComponent, FIBViewImpl<?, C2>> subViewsMap;
 
@@ -88,6 +88,10 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		technologyComponent = makeTechnologyComponent();
 
 		// update();
+	}
+
+	protected void rebuildTechnologyComponent() {
+		technologyComponent = makeTechnologyComponent();
 	}
 
 	@Override
@@ -307,7 +311,9 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 				v.updateFont();
 			}
 		}
-		getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
+		if (getRenderingAdapter() != null) {
+			getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
+		}
 	}
 
 	@Override

@@ -57,6 +57,7 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.operator.FIBIteration;
 import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.FIBOperatorView;
@@ -163,7 +164,8 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 		return iteratedSubViewsMap;
 	}
 
-	protected boolean handleIteration() {
+	@Override
+	public boolean handleIteration() {
 		return true;
 	}
 
@@ -338,10 +340,19 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 		stopListenListValueChange();
 	}
 
-	@Override
+	/*@Override
 	protected void performUpdate() {
-		super.performUpdate();
-	}
+		if (getRenderingAdapter() != null) {
+			super.performUpdate();
+		}
+		else {
+			performUpdateSubViews();
+			if (layoutIsInvalid) {
+				updateLayout();
+				layoutIsInvalid = false;
+			}
+		}
+	}*/
 
 	@Override
 	public void addSubComponentsAndDoLayout() {
@@ -423,6 +434,12 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 		if (isDeleted()) {
 			return;
 		}
+		if (evt.getPropertyName().equals(FIBContainer.SUB_COMPONENTS_KEY)) {
+			System.out.println("Zut les sub-component changent, faut refaire tout l'iteration");
+			rebuildTechnologyComponent();
+			getContainerView().updateLayout();
+		}
+
 		super.propertyChange(evt);
 	}
 
