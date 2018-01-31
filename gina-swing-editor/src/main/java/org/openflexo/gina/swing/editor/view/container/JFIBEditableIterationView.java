@@ -43,21 +43,20 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.beans.PropertyChangeEvent;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.model.operator.FIBIteration;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.controller.FIBEditorIconLibrary;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerViewDelegate;
+import org.openflexo.gina.swing.editor.view.OperatorDecorator;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.view.container.JFIBIterationView;
 import org.openflexo.logging.FlexoLogger;
@@ -98,12 +97,11 @@ public class JFIBEditableIterationView extends JFIBIterationView implements FIBS
 	@Override
 	protected JPanel makeTechnologyComponent() {
 		if (getComponent().getSubComponents().size() == 0) {
-			System.out.println("Bon, je cree mon tch component ? " + getComponent().getName());
 			JPanel returned = new JPanel(new BorderLayout());
-			returned.add(iterationInfoLabel = new JLabel(FIBEditorIconLibrary.ITERATION_ICON));
-			iterationInfoLabel.setText(StringUtils.isNotEmpty(getComponent().getName()) ? getComponent().getName() : "Iteration");
+			returned.add(iterationInfoLabel = new JLabel(
+					(StringUtils.isNotEmpty(getComponent().getName()) ? getComponent().getName() : "Iteration")));
 			returned.add(iterationInfoLabel, BorderLayout.CENTER);
-			// returned.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE));
+			returned.setBorder(BorderFactory.createEmptyBorder(0, 18, 0, 0));
 			return returned;
 		}
 		else {
@@ -177,25 +175,34 @@ public class JFIBEditableIterationView extends JFIBIterationView implements FIBS
 	
 	}*/
 
-	@Override
+	/*@Override
 	public List<PlaceHolder> makePlaceHolders(Dimension preferredSize) {
-
+	
 		List<PlaceHolder> returned = new ArrayList<>();
 		returned.add(new PlaceHolder(this, getComponent().getName() != null ? getComponent().getName() : "Iteration") {
-
+	
 			@Override
 			public void insertComponent(FIBComponent newComponent, int originalIndex) {
 				System.out.println("Adding inside iteration");
 				getComponent().addToSubComponents(newComponent);
 			}
-
+	
 		});
-
-		/*if (getLayoutManager() instanceof JFIBEditableLayoutManager) {
-			returned.addAll(((JFIBEditableLayoutManager<JPanel, JComponent, ?>) getLayoutManager()).makePlaceHolders(preferredSize));
-		}*/
+	
 		return returned;
 		// return Collections.emptyList();
+	}*/
+
+	@Override
+	public List<PlaceHolder> makePlaceHolders(Dimension preferredSize) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<OperatorDecorator> makeOperatorDecorators() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

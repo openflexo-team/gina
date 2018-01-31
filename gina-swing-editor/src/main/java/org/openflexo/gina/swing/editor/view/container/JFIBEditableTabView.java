@@ -39,12 +39,26 @@
 
 package org.openflexo.gina.swing.editor.view.container;
 
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Logger;
+
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+
+import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBTab;
 import org.openflexo.gina.model.container.layout.FIBLayoutManager;
+import org.openflexo.gina.model.operator.FIBIteration;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerViewDelegate;
+import org.openflexo.gina.swing.editor.view.OperatorDecorator;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.editor.view.container.layout.JEditableBorderLayout;
 import org.openflexo.gina.swing.editor.view.container.layout.JEditableBoxLayout;
@@ -53,16 +67,13 @@ import org.openflexo.gina.swing.editor.view.container.layout.JEditableGridBagLay
 import org.openflexo.gina.swing.editor.view.container.layout.JEditableGridLayout;
 import org.openflexo.gina.swing.editor.view.container.layout.JEditableTwoColsLayout;
 import org.openflexo.gina.swing.editor.view.container.layout.JFIBEditableLayoutManager;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.container.JFIBTabView;
 import org.openflexo.gina.swing.view.container.layout.JAbsolutePositionningLayout;
 import org.openflexo.gina.swing.view.container.layout.JButtonLayout;
+import org.openflexo.gina.view.FIBView;
+import org.openflexo.gina.view.operator.FIBIterationView;
 import org.openflexo.logging.FlexoLogger;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Logger;
 
 public class JFIBEditableTabView extends JFIBTabView implements FIBSwingEditableContainerView<FIBPanel, JPanel> {
 
@@ -142,6 +153,30 @@ public class JFIBEditableTabView extends JFIBTabView implements FIBSwingEditable
 			return ((JFIBEditableLayoutManager<JPanel, JComponent, ?>) getLayoutManager()).makePlaceHolders(preferredSize);
 		}
 		return Collections.emptyList();
+	}
+
+	@Override
+	public List<OperatorDecorator> makeOperatorDecorators() {
+		List<OperatorDecorator> returned = new ArrayList<>();
+		for (FIBComponent subComponent : getComponent().getSubComponents()) {
+			if (subComponent instanceof FIBIteration) {
+				Rectangle bounds = null;
+				FIBIterationView<?, ?> iterationView = (FIBIterationView<?, ?>) getSubViewsMap().get(subComponent);
+				for (FIBView<?, ?> jfibView : iterationView.getSubViews()) {
+					Rectangle contentsBounds = ((JFIBView<?, ?>) jfibView).getResultingJComponent().getBounds();
+					if (bounds == null) {
+						bounds = contentsBounds;
+					}
+					else {
+						bounds = bounds.union(contentsBounds);
+					}
+				}
+				OperatorDecorator newIterationDecorator = new OperatorDecorator(this, (FIBIteration) subComponent, bounds);
+
+				returned.add(newIterationDecorator);
+			}
+		}
+		return returned;
 	}
 
 }

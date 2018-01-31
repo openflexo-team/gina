@@ -57,6 +57,7 @@ import org.openflexo.gina.model.container.FIBTabPanel;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerViewDelegate;
+import org.openflexo.gina.swing.editor.view.OperatorDecorator;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.view.container.JFIBTabPanelView;
 import org.openflexo.logging.FlexoLogger;
@@ -131,6 +132,11 @@ public class JFIBEditableTabPanelView extends JFIBTabPanelView implements FIBSwi
 
 	@Override
 	public List<PlaceHolder> makePlaceHolders(Dimension preferredSize) {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public List<OperatorDecorator> makeOperatorDecorators() {
 		return Collections.emptyList();
 	}
 

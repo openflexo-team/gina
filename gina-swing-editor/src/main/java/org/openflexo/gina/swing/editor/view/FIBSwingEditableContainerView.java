@@ -39,12 +39,13 @@
 
 package org.openflexo.gina.swing.editor.view;
 
+import java.awt.Dimension;
+import java.util.List;
+
+import javax.swing.JComponent;
+
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.view.FIBView;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.List;
 
 /**
  * Represent a {@link FIBView} with editing features
@@ -60,4 +61,11 @@ public interface FIBSwingEditableContainerView<M extends FIBContainer, J extends
 	FIBSwingEditableContainerViewDelegate<M, J> getDelegate();
 
 	List<PlaceHolder> makePlaceHolders(Dimension preferredSize);
+
+	/**
+	 * Make decorators for operators
+	 * 
+	 * @return
+	 */
+	List<OperatorDecorator> makeOperatorDecorators();
 }

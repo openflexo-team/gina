@@ -110,6 +110,9 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 	 * subComponent.getConstraints()); } }
 	 */
 
+	public void addBorder(FIBView<?, ?> view, int top, int left, int bottom, int right) {
+	}
+
 	@Override
 	public void doLayout() {
 
@@ -124,25 +127,6 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 		}
 
 		// Then we add the components
-
-		// Special case for iteration
-		/*if (containerView instanceof FIBIterationViewImpl) {
-			for (IteratedContents iteratedContents : ((FIBIterationViewImpl<?, ?>) containerView).getIteratedSubViewsMap().values()) {
-				for (FIBComponent c : getContainerView().getComponent().getSubComponents()) {
-					FIBView<?, C2> subComponentView = (FIBView<?, C2>) iteratedContents.getSubViewsMap().get(c);
-					if (subComponentView != null) {
-						performAddChild(subComponentView, (CC) c.getConstraints());
-						if (subComponentView.getRenderingAdapter() != null) {
-							subComponentView.getRenderingAdapter().setVisible(subComponentView.getTechnologyComponent(),
-									subComponentView.isViewVisible());
-						}
-					}
-				}
-			}
-		
-		}
-		else {
-			// Normal case*/
 
 		for (FIBComponent c : getContainerView().getComponent().getSubComponents()) {
 			FIBView<?, C2> subComponentView = getSubComponentView(c);
@@ -163,9 +147,15 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 						}
 						else {
 							// Iteration is not empty, represent contents of iteration
+							boolean isFirst = true;
 							for (FIBView<?, ?> fibView : ((FIBIterationView<?, ?>) subComponentView).getSubViews()) {
 								// System.out.println("Represent " + fibView + " with " + fibView.getComponent().getConstraints());
 								performAddChild((FIBView<?, C2>) fibView, (CC) fibView.getComponent().getConstraints());
+								if (isFirst) {
+									addBorder(fibView, 0, 18, 0, 0);
+
+								}
+								isFirst = false;
 							}
 						}
 					}

@@ -66,6 +66,7 @@ import javax.swing.SwingUtilities;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.palette.DraggedFIBComponent;
 import org.openflexo.gina.swing.editor.palette.DropListener;
@@ -220,15 +221,21 @@ public class FIBSwingEditableViewDelegate<M extends FIBComponent, J extends JCom
 		// getController().setSelectedObject(null);
 	}
 
+	public FIBModelObject getLastSelectedObject() {
+		return getFIBComponent();
+	}
+
 	@Override
 	public void focusGained(FocusEvent e) {
-		getEditorController().setSelectedObject(getFIBComponent());
+		System.out.println(
+				"focus gained in " + getFIBComponent() + " last selected=" + getLastSelectedObject() + " component=" + getFIBComponent());
+		getEditorController().setSelectedObject(getLastSelectedObject());
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		if (!getEditorController().isDragging()) {
-			getEditorController().setFocusedObject(getFIBComponent());
+			getEditorController().setFocusedObject(getLastSelectedObject());
 		}
 	}
 

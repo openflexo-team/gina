@@ -43,6 +43,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -59,6 +60,7 @@ import org.openflexo.gina.model.container.layout.SplitLayoutConstraints;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerViewDelegate;
+import org.openflexo.gina.swing.editor.view.OperatorDecorator;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.view.container.JFIBSplitPanelView;
 import org.openflexo.logging.FlexoLogger;
@@ -174,6 +176,11 @@ public class JFIBEditableSplitPanelView extends JFIBSplitPanelView
 		Rectangle origin = new Rectangle(0, 0, size.width, size.height);
 		appendPlaceHolders(this.getLayout().getModel(), origin, result);
 		return result;
+	}
+
+	@Override
+	public List<OperatorDecorator> makeOperatorDecorators() {
+		return Collections.emptyList();
 	}
 
 }

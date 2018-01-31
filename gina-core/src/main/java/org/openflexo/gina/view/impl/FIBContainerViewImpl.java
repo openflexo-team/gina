@@ -43,6 +43,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -83,7 +84,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	public FIBContainerViewImpl(M model, FIBController controller, ContainerRenderingAdapter<C, C2> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
 
-		subViewsMap = new Hashtable<>();
+		subViewsMap = new LinkedHashMap<>();
 
 		technologyComponent = makeTechnologyComponent();
 

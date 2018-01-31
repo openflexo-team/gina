@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -242,7 +243,15 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 			// System.out.println("Inserting component at index " + index);
 			getComponent().insertToSubComponentsAtIndex(subComponent, index);
 		}
-
 	}
 
+	@Override
+	public void addBorder(FIBView<?, ?> view, int top, int left, int bottom, int right) {
+		if (view instanceof JFIBView) {
+			// ((JFIBView) view).getResultingJComponent().setBorder(BorderFactory.createCompoundBorder(
+			// BorderFactory.createEmptyBorder(top, left, bottom, right), ((JFIBView) view).getResultingJComponent().getBorder()));
+			((JFIBView) view).getResultingJComponent().setBorder(BorderFactory.createEmptyBorder(top, left, bottom, right));
+		}
+		super.addBorder(view, top, left, bottom, right);
+	}
 }

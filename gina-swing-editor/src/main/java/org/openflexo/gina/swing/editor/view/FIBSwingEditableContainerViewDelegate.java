@@ -39,12 +39,14 @@
 
 package org.openflexo.gina.swing.editor.view;
 
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 
 import org.openflexo.gina.model.FIBContainer;
+import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.logging.FlexoLogger;
 
 public class FIBSwingEditableContainerViewDelegate<M extends FIBContainer, J extends JComponent>
@@ -53,6 +55,7 @@ public class FIBSwingEditableContainerViewDelegate<M extends FIBContainer, J ext
 	static final Logger logger = FlexoLogger.getLogger(FIBSwingEditableContainerViewDelegate.class.getPackage().getName());
 
 	private List<PlaceHolder> placeholders;
+	private List<OperatorDecorator> operatorDecorators = null;
 
 	public FIBSwingEditableContainerViewDelegate(FIBSwingEditableContainerView<M, J> view) {
 		super(view);
@@ -85,5 +88,48 @@ public class FIBSwingEditableContainerViewDelegate<M extends FIBContainer, J ext
 
 	public void deletePlaceHolders() {
 		this.placeholders = null;
+	}
+
+	public List<OperatorDecorator> getOperatorDecorators() {
+		if (operatorDecorators == null) {
+			operatorDecorators = getView().makeOperatorDecorators();
+		}
+		return operatorDecorators;
+	}
+
+	public void updateOperatorDecorators() {
+		operatorDecorators = null;
+	}
+
+	private FIBModelObject lastSelectedObject = null;
+
+	@Override
+	public FIBModelObject getLastSelectedObject() {
+		if (lastSelectedObject != null) {
+			return lastSelectedObject;
+		}
+		else {
+			return getFIBComponent();
+		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// System.out.println("Tiens je clique dans FIBSwingEditableViewDelegate");
+		// System.out.println("je clique a " + e.getX() + "," + e.getY());
+		if (operatorDecorators != null) {
+			for (OperatorDecorator d : operatorDecorators) {
+				// System.out.println(d.getOperator().getName() + " ? " + d.getBounds());
+				if (d.getBounds().contains(e.getX(), e.getY())) {
+					lastSelectedObject = d.getOperator();
+					getEditorController().setSelectedObject(d.getOperator());
+					return;
+				}
+				else {
+					lastSelectedObject = null;
+				}
+			}
+		}
+		super.mouseClicked(e);
 	}
 }

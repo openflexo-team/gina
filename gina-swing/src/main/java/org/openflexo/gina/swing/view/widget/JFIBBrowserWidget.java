@@ -284,7 +284,6 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 				cells = getBrowserModel().getBrowserCell(object);
 			}
 
-			System.out.println("Select " + cells);
 			getTreeSelectionModel().clearSelection();
 			if (cells != null) {
 				TreePath scrollTo = null;
