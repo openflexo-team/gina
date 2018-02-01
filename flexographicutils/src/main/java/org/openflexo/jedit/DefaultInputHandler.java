@@ -99,7 +99,7 @@ public class DefaultInputHandler extends InputHandler {
 
 		addKeyBinding("A+UP", MOVE_LINE_UP);
 		addKeyBinding("A+DOWN", MOVE_LINE_DOWN);
-		if (ToolBox.getPLATFORM() == ToolBox.MACOS) {
+		if (ToolBox.isMacOS()) {
 			addKeyBinding("M+C", COPY);
 			addKeyBinding("M+c", COPY);
 			addKeyBinding("M+X", CUT);

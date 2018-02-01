@@ -48,12 +48,9 @@ import org.openflexo.toolbox.ToolBox;
  * 
  */
 public class FontCst {
-	public static final Font CODE_FONT = ToolBox.getPLATFORM() == ToolBox.WINDOWS ? new Font("Serif", Font.PLAIN, 12)
-			: new Font("Monaco", Font.PLAIN, 11);
+	public static final Font CODE_FONT = ToolBox.isWindows() ? new Font("Serif", Font.PLAIN, 12) : new Font("Monaco", Font.PLAIN, 11);
 
-	public static final Font JAVA_CODE_FONT = ToolBox.getPLATFORM() == ToolBox.WINDOWS ? new Font("Serif", Font.PLAIN, 12)
-			: new Font("Monaco", Font.PLAIN, 11);
+	public static final Font JAVA_CODE_FONT = ToolBox.isWindows() ? new Font("Serif", Font.PLAIN, 12) : new Font("Monaco", Font.PLAIN, 11);
 
-	public static final Font TEXT_FONT = ToolBox.getPLATFORM() == ToolBox.WINDOWS ? new Font("SansSerif", Font.PLAIN, 12)
-			: new Font("Monaco", Font.PLAIN, 11);
+	public static final Font TEXT_FONT = ToolBox.isWindows() ? new Font("SansSerif", Font.PLAIN, 12) : new Font("Monaco", Font.PLAIN, 11);
 }

@@ -140,7 +140,7 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 	public CustomPopup(T editedObject) {
 		super(new BorderLayout());
 		_editedObject = editedObject;
-		if (ToolBox.getPLATFORM() != ToolBox.MACOS) {
+		if (!ToolBox.isMacOS()) {
 			_downButton = new ImageButton(UtilsIconLibrary.CUSTOM_POPUP_BUTTON);
 		}
 		else {
@@ -154,7 +154,7 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			_downButton.setBorder(border);
 		}*/
 		setOpaque(false);
-		if (ToolBox.getPLATFORM() != ToolBox.MACOS) {
+		if (!ToolBox.isMacOS()) {
 			setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
 		}
 		_frontComponent = buildFrontComponent();
@@ -690,7 +690,7 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			_popup.setLocation(position);
 			_popup.pack();
 			_popup.setVisible(true);
-			if (ToolBox.getPLATFORM() != ToolBox.MACOS) {
+			if (!ToolBox.isMacOS()) {
 				_downButton.setIcon(UtilsIconLibrary.CUSTOM_POPUP_OPEN_BUTTON);
 			}
 
@@ -768,7 +768,7 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			return;
 		}
 		_popup.setVisible(false);
-		if (ToolBox.getPLATFORM() != ToolBox.MACOS) {
+		if (ToolBox.isMacOS()) {
 			_downButton.setIcon(UtilsIconLibrary.CUSTOM_POPUP_BUTTON);
 		}
 		if (notifyObjectChanged) {
