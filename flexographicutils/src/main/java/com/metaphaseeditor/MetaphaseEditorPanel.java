@@ -104,7 +104,6 @@ import javax.swing.undo.UndoManager;
 import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.swing.layout.WrapLayout;
-import org.openflexo.toolbox.HTMLUtils;
 
 import com.metaphaseeditor.action.AddAttributesAction;
 import com.metaphaseeditor.action.ClearFormattingAction;
@@ -1917,6 +1916,10 @@ public class MetaphaseEditorPanel extends JPanel {
 		}
 	}
 
+	private static String toHexString(Color color) {
+		return String.format("%1$02X%2$02X%3$02X", color.getRed(), color.getGreen(), color.getBlue());
+	}
+
 	class BackgroundColorAction extends StyledEditorKit.StyledTextAction {
 		private Color color;
 
@@ -1929,7 +1932,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		public void actionPerformed(ActionEvent ae) {
 			JEditorPane editor = getEditor(ae);
 			// Add span Tag
-			String htmlStyle = "background-color: #" + HTMLUtils.toHexString(color);
+			String htmlStyle = "background-color: #" + toHexString(color);
 			SimpleAttributeSet attr = new SimpleAttributeSet();
 			attr.addAttribute(HTML.Attribute.STYLE, htmlStyle);
 			MutableAttributeSet outerAttr = new SimpleAttributeSet();
