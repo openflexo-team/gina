@@ -46,6 +46,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.JLabel;
@@ -53,6 +54,8 @@ import javax.swing.SwingConstants;
 
 import org.openflexo.gina.model.FIBOperator;
 import org.openflexo.gina.swing.editor.controller.FIBEditorIconLibrary;
+import org.openflexo.gina.swing.view.JFIBView;
+import org.openflexo.gina.view.FIBView;
 import org.openflexo.logging.FlexoLogger;
 
 public class OperatorDecorator {
@@ -60,21 +63,35 @@ public class OperatorDecorator {
 	static final Logger logger = FlexoLogger.getLogger(OperatorDecorator.class.getPackage().getName());
 
 	private final FIBSwingEditableContainerView<?, ?> view;
-	private final Rectangle bounds;
+	private final List<FIBView<?, ?>> subViews;
 	private final FIBOperator operator;
 
-	public OperatorDecorator(FIBSwingEditableContainerView<?, ?> view, FIBOperator operator, Rectangle bounds) {
+	public OperatorDecorator(FIBSwingEditableContainerView<?, ?> view, FIBOperator operator, List<FIBView<?, ?>> subViews) {
 		this.view = view;
 		this.operator = operator;
 		JLabel label = new JLabel(operator.getName());
 		label.setForeground(Color.DARK_GRAY);
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setVerticalAlignment(SwingConstants.CENTER);
-		this.bounds = new Rectangle(bounds.x - 4, bounds.y - 4, bounds.width + 8, bounds.height + 8);
+		this.subViews = subViews;
+	}
+
+	public List<FIBView<?, ?>> getSubViews() {
+		return subViews;
 	}
 
 	public Rectangle getBounds() {
-		return bounds;
+		Rectangle bounds = null;
+		for (FIBView<?, ?> jfibView : getSubViews()) {
+			Rectangle contentsBounds = ((JFIBView<?, ?>) jfibView).getResultingJComponent().getBounds();
+			if (bounds == null) {
+				bounds = contentsBounds;
+			}
+			else {
+				bounds = bounds.union(contentsBounds);
+			}
+		}
+		return new Rectangle(bounds.x - 4, bounds.y - 4, bounds.width + 8, bounds.height + 8);
 	}
 
 	public FIBOperator getOperator() {
@@ -93,6 +110,8 @@ public class OperatorDecorator {
 	public void paint(Graphics g) {
 
 		Graphics2D g2 = (Graphics2D) g;
+
+		Rectangle bounds = getBounds();
 
 		g2.drawImage(FIBEditorIconLibrary.ITERATION_ICON.getImage(), bounds.x + 4, bounds.y + bounds.height / 2 - 8, null);
 

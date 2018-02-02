@@ -41,7 +41,6 @@ package org.openflexo.gina.swing.editor.view.container;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -68,7 +67,6 @@ import org.openflexo.gina.swing.editor.view.container.layout.JEditableGridBagLay
 import org.openflexo.gina.swing.editor.view.container.layout.JEditableGridLayout;
 import org.openflexo.gina.swing.editor.view.container.layout.JEditableTwoColsLayout;
 import org.openflexo.gina.swing.editor.view.container.layout.JFIBEditableLayoutManager;
-import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.container.JFIBPanelView;
 import org.openflexo.gina.swing.view.container.layout.JAbsolutePositionningLayout;
 import org.openflexo.gina.swing.view.container.layout.JButtonLayout;
@@ -166,28 +164,17 @@ public class JFIBEditablePanelView extends JFIBPanelView implements FIBSwingEdit
 		List<OperatorDecorator> returned = new ArrayList<>();
 		for (FIBComponent subComponent : getComponent().getSubComponents()) {
 			if (subComponent instanceof FIBIteration) {
-				Rectangle bounds = null;
+				List<FIBView<?, ?>> subViews = new ArrayList<>();
+
 				FIBIterationView<?, ?> iterationView = (FIBIterationView<?, ?>) getSubViewsMap().get(subComponent);
 				if (iterationView.getComponent().getSubComponents().size() > 0) {
-					for (FIBView<?, ?> jfibView : iterationView.getSubViews()) {
-						Rectangle contentsBounds = ((JFIBView<?, ?>) jfibView).getResultingJComponent().getBounds();
-						if (bounds == null) {
-							bounds = contentsBounds;
-						}
-						else {
-							bounds = bounds.union(contentsBounds);
-						}
-					}
+					subViews.addAll(iterationView.getSubViews());
 				}
 				else {
-					System.out.println("Tiens une iteration avec rien dedans");
-					System.out.println("Sauf: " + iterationView.getTechnologyComponent());
-					bounds = ((JFIBView) iterationView).getResultingJComponent().getBounds();
+					subViews.add(iterationView);
 				}
-				if (bounds != null) {
-					OperatorDecorator newIterationDecorator = new OperatorDecorator(this, (FIBIteration) subComponent, bounds);
-					returned.add(newIterationDecorator);
-				}
+				OperatorDecorator newIterationDecorator = new OperatorDecorator(this, (FIBIteration) subComponent, subViews);
+				returned.add(newIterationDecorator);
 			}
 		}
 		return returned;
