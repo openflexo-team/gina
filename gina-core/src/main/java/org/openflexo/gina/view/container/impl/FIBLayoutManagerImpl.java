@@ -41,6 +41,7 @@ package org.openflexo.gina.view.container.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -51,6 +52,7 @@ import org.openflexo.gina.model.container.layout.ComponentConstraints;
 import org.openflexo.gina.model.container.layout.FIBLayoutManager;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.impl.FIBContainerViewImpl;
+import org.openflexo.gina.view.impl.FIBViewImpl;
 import org.openflexo.gina.view.operator.FIBIterationView;
 
 /**
@@ -152,70 +154,23 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 				}
 			}
 		}
-		// }
-
-		// for (FIBView<?, C2> subComponentView : new ArrayList<>(getContainerView().getSubViews())) {
-		/*for (FIBComponent c : getContainerView().getComponent().getSubComponents()) {
-			FIBView<?, C2> subComponentView = getSubComponentView(c);
-			if (subComponentView != null) {
-				performAddChild(subComponentView, (CC)c.getConstraints());
-				if (subComponentView.getRenderingAdapter() != null) {
-					subComponentView.getRenderingAdapter().setVisible(subComponentView.getTechnologyComponent(),
-							subComponentView.isViewVisible());
-				}
-			}
-		}*/
 
 		getContainerView().getRenderingAdapter().revalidateAndRepaint(getContainerView().getTechnologyComponent());
 	}
 
 	protected abstract void performAddChild(FIBView<?, C2> childView, CC constraints);
 
-	/*
-	 * public void registerComponentWithConstraints(C2 component, Object
-	 * constraint) { registerComponentWithConstraints(component, constraint,
-	 * -1); }
-	 */
-
-	protected void registerComponentWithConstraints(FIBView<?, C2> subComponentView, CC constraint/*
-																									* ,
-																									* int
-																									* index
-																									*/) {
+	protected void registerComponentWithConstraints(FIBView<?, C2> subComponentView, CC constraint) {
 		logger.fine("Register component: " + subComponentView.getComponent() + " constraint=" + constraint);
-		/*
-		 * if (index < 0 || index > subComponents.size()) { index =
-		 * subComponents.size(); } subComponents.add(index, component);
-		 */
 		if (constraint != null) {
 			constraints.put(subComponentView, constraint);
 		}
 	}
 
-	/*
-	 * public void registerComponentWithConstraints(C2 component, int index) {
-	 * registerComponentWithConstraints(component, null, index); }
-	 * 
-	 * public void registerComponentWithConstraints(C2 component) {
-	 * registerComponentWithConstraints(component, null, -1); }
-	 */
-
 	@Override
 	public Map<FIBView<?, C2>, CC> getConstraints() {
 		return constraints;
 	}
-
-	/*
-	 * protected void registerComponentWithConstraints(JComponent component, int
-	 * index) { logger.fine("Register component: "+component+" index="+index);
-	 * subComponents.insertElementAt(component,index); }
-	 * 
-	 * protected void registerComponentWithConstraints(JComponent component,
-	 * Object constraint, int index) {
-	 * logger.fine("Register component: "+component+" index="+index);
-	 * subComponents.insertElementAt(component,index); if (constraint != null)
-	 * constraints.put(component,constraint); }
-	 */
 
 	@Override
 	public FIBView<?, C2> getSubComponentView(FIBComponent component) {
@@ -223,6 +178,21 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 		return getContainerView().getSubViewsMap().get(component);
 	}
 
-	// protected abstract C2 makeEmptyPanel();
+	public List<FIBView<?, C2>> getFlattenedContents() {
+
+		List<FIBView<?, C2>> list = new ArrayList<>();
+		for (FIBViewImpl<?, C2> subView : getContainerView().getSubViews()) {
+			if (subView instanceof FIBIterationView) {
+				for (FIBView<?, C2> childView : ((FIBIterationView<?, C2>) subView).getSubViews()) {
+					list.add(childView);
+				}
+			}
+			else {
+				list.add(subView);
+			}
+		}
+		return list;
+
+	}
 
 }
