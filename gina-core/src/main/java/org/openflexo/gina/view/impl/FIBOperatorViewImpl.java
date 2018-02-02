@@ -44,6 +44,7 @@ import java.util.logging.Logger;
 import org.openflexo.connie.binding.SettableBindingEvaluationContext;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBOperator;
+import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.FIBOperatorView;
 
 /**
@@ -68,6 +69,23 @@ public abstract class FIBOperatorViewImpl<M extends FIBOperator, C, C2> extends 
 
 	public FIBOperatorViewImpl(M model, FIBController controller) {
 		super(model, controller, null);
+	}
+
+	/**
+	 * Returns the first parent view which is not an operator view
+	 * 
+	 * @return
+	 */
+	@Override
+	public final FIBContainerView<?, ?, ?> getConcreteContainerView() {
+		FIBContainerView<?, ?, ?> current = getParentView();
+		while (current != null) {
+			if (!(current instanceof FIBOperatorView)) {
+				return current;
+			}
+			current = current.getParentView();
+		}
+		return null;
 	}
 
 }

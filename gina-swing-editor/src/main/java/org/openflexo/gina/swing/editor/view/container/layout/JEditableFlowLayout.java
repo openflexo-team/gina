@@ -46,7 +46,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -55,6 +54,7 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBPanel.FlowLayoutAlignment;
 import org.openflexo.gina.model.container.layout.FlowLayoutConstraints;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.editor.view.container.JFIBEditablePanelView;
 import org.openflexo.gina.swing.view.JFIBView;
@@ -246,12 +246,9 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 	}
 
 	@Override
-	public void addBorder(FIBView<?, ?> view, int top, int left, int bottom, int right) {
-		if (view instanceof JFIBView) {
-			// ((JFIBView) view).getResultingJComponent().setBorder(BorderFactory.createCompoundBorder(
-			// BorderFactory.createEmptyBorder(top, left, bottom, right), ((JFIBView) view).getResultingJComponent().getBorder()));
-			((JFIBView) view).getResultingJComponent().setBorder(BorderFactory.createEmptyBorder(top, left, bottom, right));
+	public void setOperatorContentsStart(FIBView<?, ?> view) {
+		if (view instanceof FIBSwingEditableView) {
+			((FIBSwingEditableView<?, ?>) view).setOperatorContentsStart(true);
 		}
-		super.addBorder(view, top, left, bottom, right);
 	}
 }

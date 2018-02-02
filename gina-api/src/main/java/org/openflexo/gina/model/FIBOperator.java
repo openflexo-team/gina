@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.model;
 
+import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 
@@ -52,7 +53,39 @@ import org.openflexo.model.annotations.ModelEntity;
 @ImplementationClass(FIBOperator.FIBOperatorImpl.class)
 public abstract interface FIBOperator extends FIBContainer {
 
+	/**
+	 * Returns the first parent which is not an operator
+	 * 
+	 * @return
+	 */
+	public FIBContainer getConcreteContainer();
+
 	public static abstract class FIBOperatorImpl extends FIBContainerImpl implements FIBOperator {
+
+		/**
+		 * Returns the first parent view which is not an operator view
+		 * 
+		 * @return
+		 */
+		@Override
+		public final FIBContainer getConcreteContainer() {
+			FIBContainer current = getParent();
+			while (current != null) {
+				if (!(current instanceof FIBOperator)) {
+					return current;
+				}
+				current = current.getParent();
+			}
+			return null;
+		}
+
+		@Override
+		public Layout getLayout() {
+			if (getConcreteContainer() != null) {
+				return getConcreteContainer().getLayout();
+			}
+			return super.getLayout();
+		}
 
 	}
 }

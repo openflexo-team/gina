@@ -57,10 +57,12 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.layout.BorderLayoutConstraints;
 import org.openflexo.gina.model.container.layout.BorderLayoutConstraints.BorderLayoutLocation;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.editor.view.container.JFIBEditablePanelView;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.container.layout.JBorderLayout;
+import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.impl.FIBContainerViewImpl;
 import org.openflexo.logging.FlexoLogger;
 
@@ -153,6 +155,13 @@ public class JEditableBorderLayout extends JBorderLayout implements JFIBEditable
 		}
 
 		return returned;
+	}
+
+	@Override
+	public void setOperatorContentsStart(FIBView<?, ?> view) {
+		if (view instanceof FIBSwingEditableView) {
+			((FIBSwingEditableView<?, ?>) view).setOperatorContentsStart(true);
+		}
 	}
 
 }

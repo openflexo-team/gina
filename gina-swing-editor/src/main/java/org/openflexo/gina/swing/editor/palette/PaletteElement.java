@@ -60,19 +60,26 @@ import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
+import org.openflexo.gina.model.FIBOperator;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
 import org.openflexo.gina.model.container.FIBTab;
 import org.openflexo.gina.model.container.FIBTabPanel;
 import org.openflexo.gina.model.container.layout.ComponentConstraints;
 import org.openflexo.gina.swing.editor.FIBEditor;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableViewDelegate.FIBDropTarget;
+import org.openflexo.gina.swing.editor.view.OperatorDecorator;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
+import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingViewFactory;
+import org.openflexo.gina.view.FIBContainerView;
+import org.openflexo.gina.view.FIBOperatorView;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.logging.FlexoLogger;
 
@@ -193,19 +200,52 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 	@Override
 	public boolean elementDragged(FIBDropTarget target, DropListener dropListener, Point pt) {
 
-		System.out.println("elementDragged(), dl=" + dropListener.getEditableView());
-		System.out.println("target=" + target);
+		// System.out.println("elementDragged(), dl=" + dropListener.getEditableView());
+		// System.out.println("target=" + target);
 
 		PlaceHolder ph = target.getPlaceHolder(dropListener, pt);
 
+		/*System.out.println("ph=" + ph);
+		System.out.println("modelComponent=" + modelComponent);
+		System.out.println("target.getFIBComponent()=" + target.getFIBComponent());*/
+
+		FIBOperator targetOperator = null;
+
 		boolean isTabInsertion = modelComponent instanceof FIBPanel && target.getFIBComponent() instanceof FIBTabPanel;
-		if (!isTabInsertion && ph == null) {
-			boolean deleteIt = JOptionPane.showConfirmDialog(target.getFrame(),
+		boolean componentInsertionInOperator = target.getFIBComponent() instanceof FIBOperator;
+		if (componentInsertionInOperator) {
+			targetOperator = (FIBOperator) target.getFIBComponent();
+		}
+
+		//System.out.println("editable view = " + target.getEditableView());
+		//System.out.println("delegate = " + target.getEditableView().getDelegate());
+		// System.out.println("les operators = " + target.getEditableView().getDelegate());
+
+		if (!isTabInsertion && !componentInsertionInOperator && ph == null) {
+			// May be this is is an operator area ???
+
+			//System.out.println("target.getEditableView().getParentView()=" + target.getEditableView().getParentView());
+			FIBContainerView<?, ?, ?> parentView = target.getEditableView().getParentView();
+			if (parentView instanceof FIBOperatorView) {
+				parentView = ((FIBOperatorView) parentView).getConcreteContainerView();
+			}
+			if (parentView instanceof FIBSwingEditableContainerView) {
+				Point ptInParent = SwingUtilities.convertPoint(target.getEditableView().getResultingJComponent(), pt,
+						((JFIBView) parentView).getResultingJComponent());
+				// Point ptInParent = new Point(pt.x + target.getEditableView().getResultingJComponent().getBounds().x,
+				// pt.y + target.getEditableView().getResultingJComponent().getBounds().y);
+				OperatorDecorator d = ((FIBSwingEditableContainerView) parentView).getDelegate().getOperatorDecorator(ptInParent);
+				if (d != null) {
+						componentInsertionInOperator = true;
+					targetOperator = d.getOperator();
+				}
+			}
+			/*boolean deleteIt = JOptionPane.showConfirmDialog(target.getFrame(),
 					target.getFIBComponent() + ": really delete this component (undoable operation) ?", "information",
 					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION;
 			if (!deleteIt) {
 				return false;
-			}
+			}*/
 		}
 
 		FIBComponent newComponent = (FIBComponent) modelComponent.cloneObject();
@@ -223,7 +263,66 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 		 * System.out.println(newComponent.getFactory().
 		 * stringRepresentation(newComponent)); Thread.dumpStack();
 		 */
+
 		try {
+			FIBComponent targetComponent = target.getFIBComponent();
+			FIBContainer containerComponent = targetComponent.getParent();
+
+			if (componentInsertionInOperator) {
+				// Handle component insertion in operator
+				//System.out.println("Tiens on met un nouveau " + newComponent + " dans l'operateur " + targetOperator);
+				targetOperator.addToSubComponents(newComponent, targetOperator.getConstraints());
+				return true;
+			}
+			else if (isTabInsertion) {
+				// Handle tab insertion
+				if (targetComponent instanceof FIBTab && !(newComponent instanceof FIBPanel)) {
+					return false;
+				}
+				if (containerComponent == null) {
+					return false;
+				}
+				FIBTab newTabComponent = containerComponent.getModelFactory().newFIBTab();
+				newTabComponent.setLayout(Layout.border);
+				newTabComponent.setTitle("NewTab");
+				newTabComponent.finalizeDeserialization();
+				((FIBTabPanel) targetComponent).addToSubComponents(newTabComponent);
+				return true;
+			}
+			else if (ph != null) {
+				// Component inserted in placeholder
+				System.out.println("On insere dans le PH " + ph);
+				ph.willDelete();
+				ph.insertComponent(newComponent, -1);
+				ph.hasDeleted();
+				return true;
+			}
+			else {
+				// Normal case, we replace targetComponent by newComponent
+				if (containerComponent == null) {
+					return false;
+				}
+				boolean deleteIt = JOptionPane.showConfirmDialog(target.getFrame(),
+						target.getFIBComponent() + ": really delete this component (undoable operation) ?", "information",
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION;
+				if (!deleteIt) {
+					return false;
+				}
+				ComponentConstraints constraints = targetComponent.getConstraints();
+				containerComponent.removeFromSubComponents(targetComponent);
+				// WAS:
+				// containerComponent.removeFromSubComponentsNoNotification(targetComponent);
+				// WAS: No notification, we will do it later, to avoid
+				// reindexing
+				targetComponent.delete();
+				containerComponent.addToSubComponents(newComponent, constraints);
+				return true;
+			}
+		} finally {
+			dropListener.getEditableView().getEditorController().setSelectedObject(newComponent);
+		}
+
+		/*try {
 			try {
 				if (!isTabInsertion && ph != null) {
 					ph.willDelete();
@@ -231,22 +330,22 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 					ph.hasDeleted();
 					return true;
 				}
-
+		
 				else {
 					FIBComponent targetComponent = target.getFIBComponent();
 					FIBContainer containerComponent = targetComponent.getParent();
-
+		
 					if (containerComponent == null) {
 						return false;
 					}
-
+		
 					if (targetComponent instanceof FIBTab && !(newComponent instanceof FIBPanel)) {
 						return false;
 					}
-
+		
 					if (isTabInsertion) {
 						// Special case where a new tab is added to a FIBTabPanel
-
+		
 						FIBTab newTabComponent = containerComponent.getModelFactory().newFIBTab();
 						newTabComponent.setLayout(Layout.border);
 						newTabComponent.setTitle("NewTab");
@@ -274,7 +373,7 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 			}
 		} finally {
 			dropListener.getEditableView().getEditorController().setSelectedObject(newComponent);
-		}
+		}*/
 	}
 
 	/**

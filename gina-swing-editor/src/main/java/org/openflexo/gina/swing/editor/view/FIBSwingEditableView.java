@@ -39,7 +39,9 @@
 
 package org.openflexo.gina.swing.editor.view;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.border.CompoundBorder;
 
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
@@ -56,6 +58,8 @@ import org.openflexo.gina.view.FIBView;
  */
 public interface FIBSwingEditableView<M extends FIBComponent, J extends JComponent> extends JFIBView<M, J> {
 
+	public static final int OPERATOR_ICON_SPACE = 18;
+
 	public abstract FIBEditorController getEditorController();
 
 	// public abstract boolean hasValue();
@@ -68,4 +72,42 @@ public interface FIBSwingEditableView<M extends FIBComponent, J extends JCompone
 	 * @return
 	 */
 	public JComponent getDraggableComponent();
+
+	/**
+	 * Return boolean indicating that in EDIT mode, this view is the first view on an operator<br>
+	 * Usefull to rendering features (give extra space to render operator icon)
+	 * 
+	 * @return
+	 */
+	public boolean isOperatorContentsStart();
+
+	/**
+	 * Sets boolean indicating that in EDIT mode, this view is the first view on an operator<br>
+	 * Usefull to rendering features (give extra space to render operator icon)
+	 * 
+	 * @param flag
+	 */
+	public void setOperatorContentsStart(boolean flag);
+
+	public static void updateOperatorContentsStart(FIBSwingEditableView<?, ?> view, boolean flag) {
+		if (flag) {
+			if (view.getResultingJComponent().getBorder() == null) {
+				view.getResultingJComponent().setBorder(BorderFactory.createEmptyBorder(0, OPERATOR_ICON_SPACE, 0, 0));
+			}
+			else {
+				view.getResultingJComponent().setBorder(BorderFactory.createCompoundBorder(
+						BorderFactory.createEmptyBorder(0, OPERATOR_ICON_SPACE, 0, 0), view.getResultingJComponent().getBorder()));
+			}
+		}
+		else {
+			if (view.getResultingJComponent().getBorder() instanceof CompoundBorder) {
+				view.getResultingJComponent().setBorder(((CompoundBorder) view.getResultingJComponent().getBorder()).getInsideBorder());
+			}
+			else {
+				view.getResultingJComponent().setBorder(null);
+			}
+
+		}
+	}
+
 }

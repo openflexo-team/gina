@@ -412,8 +412,17 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 				// Graphics componentGraphics = g.create(origin.x, origin.y,
 				// focused.getJComponent().getWidth(), focused
 				// .getJComponent().getHeight());
-				Rectangle bounds = new Rectangle(origin.x, origin.y, focused.getResultingJComponent().getWidth() - 1,
-						focused.getJComponent().getHeight() - 1);
+				Rectangle bounds = null;
+				if (focused.getView().isOperatorContentsStart()) {
+					bounds = new Rectangle(origin.x + FIBSwingEditableView.OPERATOR_ICON_SPACE, origin.y,
+							focused.getResultingJComponent().getWidth() - FIBSwingEditableView.OPERATOR_ICON_SPACE - 1,
+							focused.getJComponent().getHeight() - 1);
+				}
+				else {
+					bounds = new Rectangle(origin.x, origin.y, focused.getResultingJComponent().getWidth() - 1,
+							focused.getJComponent().getHeight() - 1);
+				}
+
 				Graphics2D g2 = (Graphics2D) g;
 
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -437,8 +446,16 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 				// selected.getJComponent().getWidth(), selected
 				// .getJComponent().getHeight());
 
-				Rectangle bounds = new Rectangle(origin.x, origin.y, selected.getResultingJComponent().getWidth() - 1,
-						selected.getJComponent().getHeight() - 1);
+				Rectangle bounds;
+				if (selected.getView().isOperatorContentsStart()) {
+					bounds = new Rectangle(origin.x + FIBSwingEditableView.OPERATOR_ICON_SPACE, origin.y,
+							selected.getResultingJComponent().getWidth() - FIBSwingEditableView.OPERATOR_ICON_SPACE - 1,
+							selected.getJComponent().getHeight() - 1);
+				}
+				else {
+					bounds = new Rectangle(origin.x, origin.y, selected.getResultingJComponent().getWidth() - 1,
+							selected.getJComponent().getHeight() - 1);
+				}
 				Graphics2D g2 = (Graphics2D) g;
 
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

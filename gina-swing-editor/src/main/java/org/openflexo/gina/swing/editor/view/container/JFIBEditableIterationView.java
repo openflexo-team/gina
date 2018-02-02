@@ -56,6 +56,7 @@ import org.openflexo.gina.model.operator.FIBIteration;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerViewDelegate;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
 import org.openflexo.gina.swing.editor.view.OperatorDecorator;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.view.container.JFIBIterationView;
@@ -101,7 +102,7 @@ public class JFIBEditableIterationView extends JFIBIterationView implements FIBS
 			returned.add(iterationInfoLabel = new JLabel(
 					(StringUtils.isNotEmpty(getComponent().getName()) ? getComponent().getName() : "Iteration")));
 			returned.add(iterationInfoLabel, BorderLayout.CENTER);
-			returned.setBorder(BorderFactory.createEmptyBorder(0, 18, 0, 0));
+			returned.setBorder(BorderFactory.createEmptyBorder(0, FIBSwingEditableView.OPERATOR_ICON_SPACE, 0, 0));
 			return returned;
 		}
 		else {
@@ -203,6 +204,24 @@ public class JFIBEditableIterationView extends JFIBIterationView implements FIBS
 	public List<OperatorDecorator> makeOperatorDecorators() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	private boolean operatorContentsStart = false;
+
+	// TODO: avoid code duplication in FIBSwingEditableView
+	@Override
+	public boolean isOperatorContentsStart() {
+		return operatorContentsStart;
+	}
+
+	// TODO: avoid code duplication in FIBSwingEditableView
+	@Override
+	public void setOperatorContentsStart(boolean operatorContentsStart) {
+		if (operatorContentsStart != this.operatorContentsStart) {
+			this.operatorContentsStart = operatorContentsStart;
+			FIBSwingEditableView.updateOperatorContentsStart(this, operatorContentsStart);
+			getPropertyChangeSupport().firePropertyChange("operatorContentsStart", !operatorContentsStart, operatorContentsStart);
+		}
 	}
 
 }

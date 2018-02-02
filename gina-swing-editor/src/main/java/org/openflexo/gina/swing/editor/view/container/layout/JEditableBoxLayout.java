@@ -54,10 +54,12 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBPanel.BoxLayoutAxis;
 import org.openflexo.gina.model.container.layout.BoxLayoutConstraints;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.editor.view.container.JFIBEditablePanelView;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.container.layout.JBoxLayout;
+import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.impl.FIBContainerViewImpl;
 import org.openflexo.logging.FlexoLogger;
 
@@ -244,6 +246,13 @@ public class JEditableBoxLayout extends JBoxLayout implements JFIBEditableLayout
 			getComponent().insertToSubComponentsAtIndex(subComponent, index);
 		}
 
+	}
+
+	@Override
+	public void setOperatorContentsStart(FIBView<?, ?> view) {
+		if (view instanceof FIBSwingEditableView) {
+			((FIBSwingEditableView<?, ?>) view).setOperatorContentsStart(true);
+		}
 	}
 
 }

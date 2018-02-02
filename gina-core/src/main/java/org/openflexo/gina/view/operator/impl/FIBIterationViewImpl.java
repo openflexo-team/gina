@@ -60,7 +60,6 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.operator.FIBIteration;
 import org.openflexo.gina.view.FIBContainerView;
-import org.openflexo.gina.view.FIBOperatorView;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.impl.FIBContainerViewImpl;
 import org.openflexo.gina.view.impl.FIBOperatorViewImpl;
@@ -356,26 +355,10 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 
 	@Override
 	public void addSubComponentsAndDoLayout() {
-		FIBContainerView<?, ?, ?> containerView = getContainerView();
+		FIBContainerView<?, ?, ?> containerView = getConcreteContainerView();
 		if (containerView instanceof FIBContainerViewImpl) {
 			((FIBContainerViewImpl<?, ?, ?>) containerView).addSubComponentsAndDoLayout();
 		}
-	}
-
-	/**
-	 * Returns the first parent view which is not an operator view
-	 * 
-	 * @return
-	 */
-	public FIBContainerView<?, ?, ?> getContainerView() {
-		FIBContainerView<?, ?, ?> current = getParentView();
-		while (current != null) {
-			if (!(current instanceof FIBOperatorView)) {
-				return current;
-			}
-			current = current.getParentView();
-		}
-		return null;
 	}
 
 	@Override
@@ -435,9 +418,9 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 			return;
 		}
 		if (evt.getPropertyName().equals(FIBContainer.SUB_COMPONENTS_KEY)) {
-			System.out.println("Zut les sub-component changent, faut refaire tout l'iteration");
+			// System.out.println("Rebuild whole iteration");
 			rebuildTechnologyComponent();
-			getContainerView().updateLayout();
+			getConcreteContainerView().updateLayout();
 		}
 
 		super.propertyChange(evt);

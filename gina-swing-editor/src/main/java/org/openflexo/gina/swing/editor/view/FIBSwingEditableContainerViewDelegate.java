@@ -39,6 +39,7 @@
 
 package org.openflexo.gina.swing.editor.view;
 
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.logging.Logger;
@@ -115,21 +116,28 @@ public class FIBSwingEditableContainerViewDelegate<M extends FIBContainer, J ext
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// System.out.println("Tiens je clique dans FIBSwingEditableViewDelegate");
-		// System.out.println("je clique a " + e.getX() + "," + e.getY());
+		OperatorDecorator d = getOperatorDecorator(e.getPoint());
+		if (d != null) {
+			lastSelectedObject = d.getOperator();
+			getEditorController().setSelectedObject(d.getOperator());
+			return;
+		}
+		else {
+			lastSelectedObject = null;
+		}
+
+		super.mouseClicked(e);
+	}
+
+	public OperatorDecorator getOperatorDecorator(Point location) {
 		if (operatorDecorators != null) {
 			for (OperatorDecorator d : operatorDecorators) {
-				// System.out.println(d.getOperator().getName() + " ? " + d.getBounds());
-				if (d.getBounds().contains(e.getX(), e.getY())) {
-					lastSelectedObject = d.getOperator();
-					getEditorController().setSelectedObject(d.getOperator());
-					return;
-				}
-				else {
-					lastSelectedObject = null;
+				//System.out.println(" > " + d.getOperator().getName() + " ? " + d.getBounds());
+				if (d.getBounds().contains(location)) {
+					return d;
 				}
 			}
 		}
-		super.mouseClicked(e);
+		return null;
 	}
 }

@@ -61,6 +61,13 @@ import org.openflexo.gina.model.FIBOperator;
  */
 public interface FIBOperatorView<M extends FIBOperator, C, C2> extends FIBContainerView<M, C, C2> {
 
+	/**
+	 * Returns the first parent view which is not an operator view
+	 * 
+	 * @return
+	 */
+	public FIBContainerView<?, ?, ?> getConcreteContainerView();
+
 	@Override
 	public Collection<? extends FIBView<?, C2>> getSubViews();
 

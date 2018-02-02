@@ -62,4 +62,5 @@ public interface JFIBView<M extends FIBComponent, J extends JComponent> extends 
 	public JComponent getJComponent();
 
 	public JComponent getResultingJComponent();
+
 }

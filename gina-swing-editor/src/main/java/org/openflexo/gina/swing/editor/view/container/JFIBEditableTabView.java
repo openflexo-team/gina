@@ -58,6 +58,7 @@ import org.openflexo.gina.model.operator.FIBIteration;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerViewDelegate;
+import org.openflexo.gina.swing.editor.view.FIBSwingEditableView;
 import org.openflexo.gina.swing.editor.view.OperatorDecorator;
 import org.openflexo.gina.swing.editor.view.PlaceHolder;
 import org.openflexo.gina.swing.editor.view.container.layout.JEditableBorderLayout;
@@ -177,6 +178,24 @@ public class JFIBEditableTabView extends JFIBTabView implements FIBSwingEditable
 			}
 		}
 		return returned;
+	}
+
+	private boolean operatorContentsStart = false;
+
+	// TODO: avoid code duplication in FIBSwingEditableView
+	@Override
+	public boolean isOperatorContentsStart() {
+		return operatorContentsStart;
+	}
+
+	// TODO: avoid code duplication in FIBSwingEditableView
+	@Override
+	public void setOperatorContentsStart(boolean operatorContentsStart) {
+		if (operatorContentsStart != this.operatorContentsStart) {
+			this.operatorContentsStart = operatorContentsStart;
+			FIBSwingEditableView.updateOperatorContentsStart(this, operatorContentsStart);
+			getPropertyChangeSupport().firePropertyChange("operatorContentsStart", !operatorContentsStart, operatorContentsStart);
+		}
 	}
 
 }

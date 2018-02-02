@@ -94,23 +94,7 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 		containerView = null;
 	}
 
-	/*
-	 * @Override public void retrieveContainedJComponentsAndConstraints() {
-	 * Vector<FIBComponent> allSubComponents = new Vector<FIBComponent>();
-	 * allSubComponents.addAll(getContainerView().getNotHiddenSubComponents());
-	 * 
-	 * for (FIBComponent subComponent : allSubComponents) { FIBViewImpl<?, C2>
-	 * subView = (FIBViewImpl<?, C2>)
-	 * getController().viewForComponent(subComponent); if (subView == null) {
-	 * subView = (FIBViewImpl<?, C2>) getController().buildView(subComponent); }
-	 * // FIBViewImpl subView = getController().buildView(c);
-	 * getContainerView().registerViewForComponent(subView, subComponent);
-	 * 
-	 * // registerComponentWithConstraints(subView.getTechnologyComponent(), //
-	 * subComponent.getConstraints()); } }
-	 */
-
-	public void addBorder(FIBView<?, ?> view, int top, int left, int bottom, int right) {
+	public void setOperatorContentsStart(FIBView<?, ?> view) {
 	}
 
 	@Override
@@ -152,8 +136,7 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 								// System.out.println("Represent " + fibView + " with " + fibView.getComponent().getConstraints());
 								performAddChild((FIBView<?, C2>) fibView, (CC) fibView.getComponent().getConstraints());
 								if (isFirst) {
-									addBorder(fibView, 0, 18, 0, 0);
-
+									setOperatorContentsStart(fibView);
 								}
 								isFirst = false;
 							}

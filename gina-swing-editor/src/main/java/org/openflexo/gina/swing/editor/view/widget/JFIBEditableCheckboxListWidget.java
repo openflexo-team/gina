@@ -89,4 +89,22 @@ public class JFIBEditableCheckboxListWidget<T> extends JFIBCheckboxListWidget<T>
 		return delegate;
 	}
 
+	private boolean operatorContentsStart = false;
+
+	// TODO: avoid code duplication in FIBSwingEditableView
+	@Override
+	public boolean isOperatorContentsStart() {
+		return operatorContentsStart;
+	}
+
+	// TODO: avoid code duplication in FIBSwingEditableView
+	@Override
+	public void setOperatorContentsStart(boolean operatorContentsStart) {
+		if (operatorContentsStart != this.operatorContentsStart) {
+			this.operatorContentsStart = operatorContentsStart;
+			FIBSwingEditableView.updateOperatorContentsStart(this, operatorContentsStart);
+			getPropertyChangeSupport().firePropertyChange("operatorContentsStart", !operatorContentsStart, operatorContentsStart);
+		}
+	}
+
 }

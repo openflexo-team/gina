@@ -290,7 +290,9 @@ public class DropListener implements DropTargetListener {
 			getContainerDelegate().getPlaceholders().get(0).setVisible(true);
 		}
 
-		editableView.getResultingJComponent().repaint();
+		if (editableView.getResultingJComponent() != null) {
+			editableView.getResultingJComponent().repaint();
+		}
 
 		return focusedPH;
 	}
