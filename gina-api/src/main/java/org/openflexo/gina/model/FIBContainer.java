@@ -258,7 +258,7 @@ public abstract interface FIBContainer extends FIBComponent {
 			// hacks
 			if (someConstraints != null && aComponent.getConstraints() != null) {
 				aComponent.getConstraints().ignoreNotif = true;
-				aComponent.getConstraints().putAll(someConstraints);
+				aComponent.getConstraints().setsWith(someConstraints);
 				aComponent.getConstraints().ignoreNotif = false;
 			}
 			if (aComponent.getConstraints() == null) {
@@ -289,7 +289,7 @@ public abstract interface FIBContainer extends FIBComponent {
 			// hacks
 			if (someConstraints != null && aComponent.getConstraints() != null) {
 				aComponent.getConstraints().ignoreNotif = true;
-				aComponent.getConstraints().putAll(someConstraints);
+				aComponent.getConstraints().setsWith(someConstraints);
 				aComponent.getConstraints().ignoreNotif = false;
 			}
 			if (aComponent.getConstraints() == null) {

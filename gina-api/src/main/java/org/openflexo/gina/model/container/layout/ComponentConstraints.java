@@ -39,11 +39,12 @@
 
 package org.openflexo.gina.model.container.layout;
 
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
@@ -51,7 +52,7 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBProperty;
 import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
-import org.openflexo.toolbox.HasPropertyChangeSupport;
+import org.openflexo.toolbox.PropertyChangedSupportDefaultImplementation;
 
 /**
  * This abstraction represent the constraints configuration of a component inside a container declaring a particular layout.<br>
@@ -61,37 +62,14 @@ import org.openflexo.toolbox.HasPropertyChangeSupport;
  *
  */
 @SuppressWarnings("serial")
-public abstract class ComponentConstraints extends Hashtable<String, String> implements HasPropertyChangeSupport {
+public abstract class ComponentConstraints extends PropertyChangedSupportDefaultImplementation {
 
 	static final Logger LOGGER = Logger.getLogger(FIBComponent.class.getPackage().getName());
 
 	private static final String INDEX = "index";
-
 	public boolean ignoreNotif = false;
-
-	public String getStringRepresentation() {
-		StringBuilder returned = new StringBuilder();
-		returned.append(getType().name()).append("(");
-		boolean isFirst = true;
-		List<String> keys = new ArrayList<>(keySet());
-		Collections.sort(keys);
-		for (String key : keys) {
-			String v = get(key);
-			returned.append(isFirst ? "" : ";").append(key).append("=").append(v);
-			isFirst = false;
-		}
-		returned.append(")");
-		return returned.toString();
-	}
-
+	private Map<String, String> values;
 	private FIBComponent component;
-
-	private PropertyChangeSupport pcSupport;
-
-	public ComponentConstraints() {
-		super();
-		pcSupport = new PropertyChangeSupport(this);
-	}
 
 	protected ComponentConstraints(String someConstraints) {
 		this();
@@ -123,21 +101,22 @@ public abstract class ComponentConstraints extends Hashtable<String, String> imp
 		component = someConstraints.component;
 	}
 
-	@Override
-	public PropertyChangeSupport getPropertyChangeSupport() {
-		return pcSupport;
+	public ComponentConstraints() {
+		super();
+		values = new Hashtable<>();
 	}
 
-	@Override
-	public String getDeletedProperty() {
-		// TODO Auto-generated method stub
-		return null;
+	public String get(String key) {
+		return values.get(key);
 	}
 
-	@Override
-	public synchronized String put(String key, String value) {
+	public Collection<String> keySet() {
+		return values.keySet();
+	}
+
+	public String put(String key, String value) {
 		String oldValue = get(key);
-		String returned = super.put(key, value);
+		String returned = values.put(key, value);
 
 		if (component != null && !ignoreNotif) {
 			FIBPropertyNotification<ComponentConstraints> notification = new FIBPropertyNotification<>(
@@ -149,6 +128,25 @@ public abstract class ComponentConstraints extends Hashtable<String, String> imp
 		getPropertyChangeSupport().firePropertyChange(key, oldValue, value);
 
 		return returned;
+	}
+
+	public void setsWith(ComponentConstraints someConstraints) {
+		values.putAll(someConstraints.values);
+	}
+
+	public String getStringRepresentation() {
+		StringBuilder returned = new StringBuilder();
+		returned.append(getType().name()).append("(");
+		boolean isFirst = true;
+		List<String> keys = new ArrayList<>(keySet());
+		Collections.sort(keys);
+		for (String key : keys) {
+			String v = get(key);
+			returned.append(isFirst ? "" : ";").append(key).append("=").append(v);
+			isFirst = false;
+		}
+		returned.append(")");
+		return returned.toString();
 	}
 
 	protected abstract Layout getType();
