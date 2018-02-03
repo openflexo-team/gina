@@ -217,14 +217,14 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 			targetOperator = (FIBOperator) target.getFIBComponent();
 		}
 
-		//System.out.println("editable view = " + target.getEditableView());
-		//System.out.println("delegate = " + target.getEditableView().getDelegate());
+		// System.out.println("editable view = " + target.getEditableView());
+		// System.out.println("delegate = " + target.getEditableView().getDelegate());
 		// System.out.println("les operators = " + target.getEditableView().getDelegate());
 
 		if (!isTabInsertion && !componentInsertionInOperator && ph == null) {
 			// May be this is is an operator area ???
 
-			//System.out.println("target.getEditableView().getParentView()=" + target.getEditableView().getParentView());
+			// System.out.println("target.getEditableView().getParentView()=" + target.getEditableView().getParentView());
 			FIBContainerView<?, ?, ?> parentView = target.getEditableView().getParentView();
 			if (parentView instanceof FIBOperatorView) {
 				parentView = ((FIBOperatorView) parentView).getConcreteContainerView();
@@ -236,7 +236,7 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 				// pt.y + target.getEditableView().getResultingJComponent().getBounds().y);
 				OperatorDecorator d = ((FIBSwingEditableContainerView) parentView).getDelegate().getOperatorDecorator(ptInParent);
 				if (d != null) {
-						componentInsertionInOperator = true;
+					componentInsertionInOperator = true;
 					targetOperator = d.getOperator();
 				}
 			}
@@ -270,8 +270,9 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 
 			if (componentInsertionInOperator) {
 				// Handle component insertion in operator
-				//System.out.println("Tiens on met un nouveau " + newComponent + " dans l'operateur " + targetOperator);
+				System.out.println("Tiens on met un nouveau " + newComponent + " dans l'operateur " + targetOperator);
 				targetOperator.addToSubComponents(newComponent, targetOperator.getConstraints());
+				System.out.println("Done");
 				return true;
 			}
 			else if (isTabInsertion) {

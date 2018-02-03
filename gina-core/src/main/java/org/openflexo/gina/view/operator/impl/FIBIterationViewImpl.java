@@ -389,7 +389,15 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 	}*/
 
 	@Override
+	public void changeLayout() {
+		if (getConcreteContainerView() != null) {
+			getConcreteContainerView().changeLayout();
+		}
+	}
+
+	@Override
 	public void updateLayout() {
+
 		// logger.info("relayout panel (caution !!! this is really costly !)" + getComponent());
 
 		if (isDeleted()) {
@@ -403,14 +411,17 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 		// getLayoutManager().setLayoutManager(getTechnologyComponent());
 		buildSubComponents();
 
-		// updateDataObject(getDataObject());
-		// update();
+		if (getConcreteContainerView() != null) {
+			getConcreteContainerView().updateLayout();
+		}
 	}
 
 	/**
 	 * Remove all components present in this container
 	 */
-	protected abstract void clearContainer();
+	protected void clearContainer() {
+		// getJComponent().removeAll();
+	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {

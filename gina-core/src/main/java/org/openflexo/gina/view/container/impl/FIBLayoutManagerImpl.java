@@ -50,6 +50,7 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.container.layout.ComponentConstraints;
 import org.openflexo.gina.model.container.layout.FIBLayoutManager;
+import org.openflexo.gina.view.FIBOperatorView;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.impl.FIBContainerViewImpl;
 import org.openflexo.gina.view.impl.FIBViewImpl;
@@ -114,11 +115,13 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 
 		// Then we add the components
 
+		System.out.println("On se refait le layout");
+
 		for (FIBComponent c : getContainerView().getComponent().getSubComponents()) {
 			FIBView<?, C2> subComponentView = getSubComponentView(c);
 			if (subComponentView != null) {
 				if (subComponentView instanceof FIBIterationView) {
-					// System.out.println("Represent iteration " + subComponentView.getComponent().getName());
+					System.out.println("Represent iteration " + subComponentView.getComponent().getName());
 					if (((FIBIterationView<?, ?>) subComponentView).handleIteration()) {
 						// We execute the iteration, represent results
 						for (FIBView<?, ?> fibView : ((FIBIterationView<?, ?>) subComponentView).getSubViews()) {
@@ -126,6 +129,8 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 						}
 					}
 					else {
+						System.out
+								.println("subComponents=" + ((FIBIterationView<?, ?>) subComponentView).getComponent().getSubComponents());
 						// We represent the iteration in Edit mode
 						if (((FIBIterationView<?, ?>) subComponentView).getComponent().getSubComponents().size() == 0) {
 							// Iteration is empty, represent it
@@ -133,6 +138,9 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 						}
 						else {
 							// Iteration is not empty, represent contents of iteration
+							System.out.println("subViews=" + ((FIBIterationView<?, ?>) subComponentView).getSubViews());
+							subComponentView.update();
+							System.out.println("subViews=" + ((FIBIterationView<?, ?>) subComponentView).getSubViews());
 							boolean isFirst = true;
 							for (FIBView<?, ?> fibView : ((FIBIterationView<?, ?>) subComponentView).getSubViews()) {
 								// System.out.println("Represent " + fibView + " with " + fibView.getComponent().getConstraints());
@@ -182,8 +190,8 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 
 		List<FIBView<?, C2>> list = new ArrayList<>();
 		for (FIBViewImpl<?, C2> subView : getContainerView().getSubViews()) {
-			if (subView instanceof FIBIterationView) {
-				for (FIBView<?, C2> childView : ((FIBIterationView<?, C2>) subView).getSubViews()) {
+			if (subView instanceof FIBOperatorView) {
+				for (FIBView<?, C2> childView : ((FIBOperatorView<?, ?, C2>) subView).getSubViews()) {
 					list.add(childView);
 				}
 			}

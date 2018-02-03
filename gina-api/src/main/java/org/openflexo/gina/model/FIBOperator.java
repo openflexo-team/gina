@@ -40,6 +40,7 @@
 package org.openflexo.gina.model;
 
 import org.openflexo.gina.model.container.FIBPanel.Layout;
+import org.openflexo.gina.model.container.layout.ComponentConstraints;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 
@@ -85,6 +86,16 @@ public abstract interface FIBOperator extends FIBContainer {
 				return getConcreteContainer().getLayout();
 			}
 			return super.getLayout();
+		}
+
+		@Override
+		public ComponentConstraints getConstraints() {
+			return null;
+		}
+
+		@Override
+		public boolean isOperator() {
+			return true;
 		}
 
 	}

@@ -76,17 +76,6 @@ public class JFIBIterationView extends FIBIterationViewImpl<JPanel, JComponent> 
 	}
 
 	@Override
-	protected void clearContainer() {
-		// getJComponent().removeAll();
-	}
-
-	@Override
-	public void changeLayout() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void revalidateAndRepaint() {
 		// TODO Auto-generated method stub
 

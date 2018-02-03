@@ -44,6 +44,7 @@ import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.JComponent;
@@ -158,9 +159,15 @@ public class JTwoColsLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Two
 	public void doLayout() {
 		lastAddedChild = null;
 		super.doLayout();
-		if (getContainerView().getComponent().getSubComponents().size() > 0) {
-			FIBComponent lastComponent = getContainerView().getComponent().getSubComponents()
-					.get(getContainerView().getComponent().getSubComponents().size() - 1);
+
+		List<FIBView<?, JComponent>> flattenedContents = getFlattenedContents();
+
+		if (flattenedContents.size() > 0) {
+			FIBView<?, JComponent> lastComponentView = flattenedContents.get(flattenedContents.size() - 1);
+			FIBComponent lastComponent = lastComponentView.getComponent();
+			// if (getContainerView().getComponent().getSubComponents().size() > 0) {
+			// FIBComponent lastComponent = getContainerView().getComponent().getSubComponents()
+			// .get(getContainerView().getComponent().getSubComponents().size() - 1);
 			if (lastComponent.getConstraints() instanceof TwoColsLayoutConstraints) {
 				TwoColsLayoutConstraints contraints = (TwoColsLayoutConstraints) lastComponent.getConstraints();
 				if (contraints.getLocation() == TwoColsLayoutLocation.left) {

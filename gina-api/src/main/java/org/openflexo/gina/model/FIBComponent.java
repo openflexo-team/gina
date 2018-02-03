@@ -652,6 +652,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	@Override
 	public FIBComponentBindingModel getBindingModel();
 
+	public boolean isOperator();
+
 	public static abstract class FIBComponentImpl extends FIBModelObjectImpl implements FIBComponent {
 
 		private static final Logger LOGGER = Logger.getLogger(FIBComponent.class.getPackage().getName());

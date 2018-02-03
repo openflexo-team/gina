@@ -85,9 +85,14 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 
 	private void fillInContainerWithSubComponents(Container panel, int fromIndex, int toIndex, boolean addGlueWhenRequiredAtTheEnd) {
 		FIBComponent lastAddedChild = null;
+
+		List<FIBView<?, JComponent>> flattenedContents = getFlattenedContents();
+
 		for (int j = fromIndex; j < toIndex; j++) {
-			FIBComponent c = getComponent().getSubComponents().get(j);
-			JFIBView<?, ?> childView = (JFIBView<?, ?>) getContainerView().getSubViewsMap().get(c);
+			JFIBView<?, ?> childView = (JFIBView<?, ?>) flattenedContents.get(j);
+			FIBComponent c = childView.getComponent();
+			// FIBComponent c = getComponent().getSubComponents().get(j);
+			// JFIBView<?, ?> childView = (JFIBView<?, ?>) getContainerView().getSubViewsMap().get(c);
 			if (c.getConstraints() instanceof TwoColsLayoutConstraints) {
 				TwoColsLayoutConstraints contraints = (TwoColsLayoutConstraints) c.getConstraints();
 				if (lastAddedChild != null && lastAddedChild.getConstraints() instanceof TwoColsLayoutConstraints
@@ -138,8 +143,15 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 
 			List<List<FIBComponent>> rows = new ArrayList<>();
 			List<FIBComponent> currentRow = null;
+
+			List<FIBView<?, JComponent>> flattenedContents = getFlattenedContents();
+
 			for (int i = 0; i < getComponent().getSubComponents().size(); i++) {
-				FIBComponent c = getComponent().getSubComponents().get(i);
+
+				JFIBView<?, ?> childView = (JFIBView<?, ?>) flattenedContents.get(i);
+				FIBComponent c = childView.getComponent();
+
+				// FIBComponent c = getComponent().getSubComponents().get(i);
 				if (c.getConstraints() instanceof TwoColsLayoutConstraints) {
 					TwoColsLayoutConstraints contraints = (TwoColsLayoutConstraints) c.getConstraints();
 

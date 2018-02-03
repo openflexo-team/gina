@@ -165,13 +165,15 @@ public class JFIBEditablePanelView extends JFIBPanelView implements FIBSwingEdit
 		for (FIBComponent subComponent : getComponent().getSubComponents()) {
 			if (subComponent instanceof FIBIteration) {
 				List<FIBView<?, ?>> subViews = new ArrayList<>();
-
 				FIBIterationView<?, ?> iterationView = (FIBIterationView<?, ?>) getSubViewsMap().get(subComponent);
+				System.out.println("iterationView=" + iterationView);
 				if (iterationView.getComponent().getSubComponents().size() > 0) {
 					subViews.addAll(iterationView.getSubViews());
+					System.out.println("hop: " + iterationView.getSubViews());
 				}
 				else {
 					subViews.add(iterationView);
+					System.out.println("hop2: " + iterationView);
 				}
 				OperatorDecorator newIterationDecorator = new OperatorDecorator(this, (FIBIteration) subComponent, subViews);
 				returned.add(newIterationDecorator);

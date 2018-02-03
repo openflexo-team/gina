@@ -74,6 +74,11 @@ public class OperatorDecorator {
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setVerticalAlignment(SwingConstants.CENTER);
 		this.subViews = subViews;
+
+		if (subViews == null || subViews.size() == 0) {
+			System.out.println("Pas normal ca");
+			Thread.dumpStack();
+		}
 	}
 
 	public List<FIBView<?, ?>> getSubViews() {
@@ -91,7 +96,10 @@ public class OperatorDecorator {
 				bounds = bounds.union(contentsBounds);
 			}
 		}
-		return new Rectangle(bounds.x - 4, bounds.y - 4, bounds.width + 8, bounds.height + 8);
+		if (bounds != null) {
+			return new Rectangle(bounds.x - 4, bounds.y - 4, bounds.width + 8, bounds.height + 8);
+		}
+		return null;
 	}
 
 	public FIBOperator getOperator() {
@@ -112,6 +120,9 @@ public class OperatorDecorator {
 		Graphics2D g2 = (Graphics2D) g;
 
 		Rectangle bounds = getBounds();
+		if (bounds == null) {
+			return;
+		}
 
 		g2.drawImage(FIBEditorIconLibrary.ITERATION_ICON.getImage(), bounds.x + 4, bounds.y + bounds.height / 2 - 8, null);
 

@@ -881,5 +881,10 @@ public abstract interface FIBContainer extends FIBComponent {
 			}
 		}
 
+		@Override
+		public boolean isOperator() {
+			return false;
+		}
+
 	}
 }
