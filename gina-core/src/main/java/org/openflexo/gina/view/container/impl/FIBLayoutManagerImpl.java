@@ -115,13 +115,11 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 
 		// Then we add the components
 
-		System.out.println("On se refait le layout");
-
 		for (FIBComponent c : getContainerView().getComponent().getSubComponents()) {
 			FIBView<?, C2> subComponentView = getSubComponentView(c);
 			if (subComponentView != null) {
 				if (subComponentView instanceof FIBIterationView) {
-					System.out.println("Represent iteration " + subComponentView.getComponent().getName());
+					//System.out.println("Represent iteration " + subComponentView.getComponent().getName());
 					if (((FIBIterationView<?, ?>) subComponentView).handleIteration()) {
 						// We execute the iteration, represent results
 						for (FIBView<?, ?> fibView : ((FIBIterationView<?, ?>) subComponentView).getSubViews()) {
@@ -129,8 +127,8 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 						}
 					}
 					else {
-						System.out
-								.println("subComponents=" + ((FIBIterationView<?, ?>) subComponentView).getComponent().getSubComponents());
+						//System.out
+						//		.println("subComponents=" + ((FIBIterationView<?, ?>) subComponentView).getComponent().getSubComponents());
 						// We represent the iteration in Edit mode
 						if (((FIBIterationView<?, ?>) subComponentView).getComponent().getSubComponents().size() == 0) {
 							// Iteration is empty, represent it
@@ -138,9 +136,8 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 						}
 						else {
 							// Iteration is not empty, represent contents of iteration
-							System.out.println("subViews=" + ((FIBIterationView<?, ?>) subComponentView).getSubViews());
-							subComponentView.update();
-							System.out.println("subViews=" + ((FIBIterationView<?, ?>) subComponentView).getSubViews());
+							//System.out.println("subViews=" + ((FIBIterationView<?, ?>) subComponentView).getSubViews());
+							//subComponentView.update();
 							boolean isFirst = true;
 							for (FIBView<?, ?> fibView : ((FIBIterationView<?, ?>) subComponentView).getSubViews()) {
 								// System.out.println("Represent " + fibView + " with " + fibView.getComponent().getConstraints());
