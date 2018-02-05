@@ -64,6 +64,7 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.FIBModelFactory;
 import org.openflexo.gina.model.FIBModelObject;
+import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.gina.model.FIBValidationModel;
 import org.openflexo.gina.model.FIBValidationReport;
 import org.openflexo.gina.swing.editor.EditedFIBComponent;
@@ -166,7 +167,7 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 
 	public FIBEditorController(EditedFIBComponent editedComponent, Object dataObject, FIBEditor editor, JFrame frame) {
 		this(editedComponent, dataObject, editor, FIBController.instanciateController(editedComponent.getFIBComponent(),
-				SwingEditorViewFactory.INSTANCE, FIBEditor.EDITOR_LOCALIZATION), frame);
+				SwingEditorViewFactory.INSTANCE, FIBModelObjectImpl.READ_ONLY_GINA_LOCALIZATION), frame);
 	}
 
 	public FIBEditorController(EditedFIBComponent editedComponent, Object dataObject, FIBEditor editor, FIBController controller,

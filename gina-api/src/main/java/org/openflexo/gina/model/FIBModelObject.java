@@ -164,47 +164,13 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 		public static final String DELETED_PROPERTY = "Deleted";
 
 		// Locales for GINA
-		// (based on deprecated resources, to be removed)
 		public static LocalizedDelegate GINA_LOCALIZATION = new LocalizedDelegateImpl(
-				ResourceLocator.locateResource("GinaLocalization/General"),
-				/*new LocalizedDelegateImpl(ResourceLocator.locateResource("FlexoLocalization/Deprecated"), null, false, false)*/null, true,
-				true);
-
-		/*static {
-			ResourceLocator rl = ResourceLocator.getResourceLocator();
-			Resource generalLocalizedDelegate = ResourceLocator.locateResource("Localized");
-			Resource fibLocalizedDelegate = ResourceLocator.locateResource("FIBLocalized");
-		
-			if (fibLocalizedDelegate != null) {
-				if (generalLocalizedDelegate != null) {
-					LOCALIZATION = FlexoLocalization.getLocalizedDelegate(fibLocalizedDelegate,
-							FlexoLocalization.getLocalizedDelegate(generalLocalizedDelegate, null, false, false), true, true);
-				}
-				else {
-					LOCALIZATION = FlexoLocalization.getLocalizedDelegate(fibLocalizedDelegate, null, true, true);
-				}
-			}
-			else {
-				if (generalLocalizedDelegate != null) {
-					LOCALIZATION = FlexoLocalization.getLocalizedDelegate(generalLocalizedDelegate, null, true, true);
-				}
-				else {
-					LOCALIZATION = FlexoLocalization.getLocalizedDelegate(generalLocalizedDelegate, null, false, false);
-				}
-			}
-		}*/
-
-		// private String name;
-		// private String description;
-		// private boolean isDeleted = false;
-
-		// private final List<FIBParameter> parameters = new Vector<FIBParameter>();
-
-		// private final PropertyChangeSupport pcSupport;
+				ResourceLocator.locateResource("GinaLocalization/General"), null, true, true);
+		public static LocalizedDelegate READ_ONLY_GINA_LOCALIZATION = new LocalizedDelegateImpl(
+				ResourceLocator.locateResource("GinaLocalization/General"), null, false, false);
 
 		public FIBModelObjectImpl() {
 			super();
-			// pcSupport = new PropertyChangeSupport(this);
 		}
 
 		@Override
