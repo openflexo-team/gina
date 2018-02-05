@@ -195,7 +195,7 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField> impl
 
 				if (!validateOnReturn && !isUpdating()) {
 					try {
-						if (ToolBox.getPLATFORM() == ToolBox.MACOS) {
+						if (ToolBox.isMacOS()) {
 							if (e.getLength() == 1) {
 								char c = getTechnologyComponent().getText().charAt(e.getOffset());
 								if (c == '´' || c == 'ˆ' || c == '˜' || c == '`' || c == '¨') {

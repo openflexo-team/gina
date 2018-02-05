@@ -199,7 +199,7 @@ class ConstantValuePanel extends JPanel {
 						if (!ConstantValuePanel.this.bindingValueSelectorPanel.connectButton.isEnabled()
 								&& bindingValueSelectorPanel.bindingSelector.isAcceptableStaticBindingValue(enterValueTF.getText())) {
 							ConstantValuePanel.this.bindingValueSelectorPanel.connectButton.setEnabled(true);
-							if (ToolBox.getPLATFORM() == ToolBox.MACOS) {
+							if (ToolBox.isMacOS()) {
 								ConstantValuePanel.this.bindingValueSelectorPanel.connectButton.setSelected(true);
 							}
 						}
@@ -230,7 +230,7 @@ class ConstantValuePanel extends JPanel {
 						if (!ConstantValuePanel.this.bindingValueSelectorPanel.connectButton.isEnabled()
 								&& enterValueTF.getText().length() > 0) {
 							ConstantValuePanel.this.bindingValueSelectorPanel.connectButton.setEnabled(true);
-							if (ToolBox.getPLATFORM() == ToolBox.MACOS) {
+							if (ToolBox.isMacOS()) {
 								ConstantValuePanel.this.bindingValueSelectorPanel.connectButton.setSelected(true);
 							}
 						}

@@ -2547,7 +2547,7 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 			((JDialog) searchDialog).getRootPane().setDefaultButton(searchPanel.getDefaultButton());
 		}
 		searchDialog.setMinimumSize(searchDialog.getSize());
-		if (ToolBox.getPLATFORM() == ToolBox.MACOS) {
+		if (ToolBox.isMacOS()) {
 			searchDialog.setResizable(false);
 		}
 	}

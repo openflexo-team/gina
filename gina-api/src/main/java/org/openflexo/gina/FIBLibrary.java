@@ -235,10 +235,7 @@ public interface FIBLibrary extends FIBLibraryContainer {
 					LOGGER.fine("Load " + fibResource.getURI());
 				}
 
-				InputStream fis = null;
-
-				try {
-					fis = fibResource.openInputStream();
+				try (InputStream fis = fibResource.openInputStream()) {
 					FIBComponent component = (FIBComponent) factory.deserialize(fis);
 					component.setLastModified(fibResource.getLastUpdate());
 					component.setResource(fibResource);
@@ -264,10 +261,6 @@ public interface FIBLibrary extends FIBLibraryContainer {
 				} catch (Exception e) {
 					e.printStackTrace();
 					LOGGER.warning("Unhandled Exception");
-				} finally {
-					if (fis != null) {
-						IOUtils.closeQuietly(fis);
-					}
 				}
 			}
 			return fibComponent;
@@ -295,11 +288,11 @@ public interface FIBLibrary extends FIBLibraryContainer {
 
 		@Override
 		public FIBComponent retrieveFIBComponent(Resource fibResourceLocation, boolean useCache) {
-			InputStream inputStream = fibResourceLocation.openInputStream();
-			try {
+			try (InputStream inputStream = fibResourceLocation.openInputStream()) {
 				return retrieveFIBComponent(fibResourceLocation, inputStream, useCache);
-			} finally {
-				IOUtils.closeQuietly(inputStream);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
 			}
 		}
 
@@ -362,10 +355,7 @@ public interface FIBLibrary extends FIBLibraryContainer {
 		@Override
 		public boolean save(FIBComponent component, Resource resourceToSave) {
 			LOGGER.info("Save to resourceToSave " + resourceToSave);
-
-			OutputStream out = null;
-			try {
-				out = resourceToSave.openOutputStream();
+			try (OutputStream out = resourceToSave.openOutputStream()) {
 				if (out != null) {
 					saveComponentToStream(component, resourceToSave, out);
 				}
@@ -375,8 +365,6 @@ public interface FIBLibrary extends FIBLibraryContainer {
 				return true;
 			} catch (Exception e) {
 				e.printStackTrace();
-			} finally {
-				IOUtils.closeQuietly(out);
 			}
 			return false;
 		}

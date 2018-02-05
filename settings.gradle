@@ -5,9 +5,7 @@ include 'flexolocalization',
 	'gina-test',
 	'gina-core',
 	'gina-swing',
-	'gina-swing-test-headless',
 	'gina-replay',
 	'gina-replay-test',
 	'gina-swing-editor',
-	'gina-swing-editor-test',
-	'gina-swing-editor-test-headless'
+	'gina-swing-editor-test'
