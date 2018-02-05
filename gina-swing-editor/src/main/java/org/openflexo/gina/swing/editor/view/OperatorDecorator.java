@@ -55,6 +55,7 @@ import javax.swing.SwingConstants;
 import org.openflexo.gina.model.FIBOperator;
 import org.openflexo.gina.swing.editor.controller.FIBEditorIconLibrary;
 import org.openflexo.gina.swing.view.JFIBView;
+import org.openflexo.gina.view.FIBOperatorView;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.logging.FlexoLogger;
 
@@ -62,13 +63,16 @@ public class OperatorDecorator {
 
 	static final Logger logger = FlexoLogger.getLogger(OperatorDecorator.class.getPackage().getName());
 
-	private final FIBSwingEditableContainerView<?, ?> view;
+	private final FIBSwingEditableContainerView<?, ?> containerView;
+	private final FIBOperatorView<?, ?, ?> operatorView;
 	private final List<FIBView<?, ?>> subViews;
 	private final FIBOperator operator;
 
-	public OperatorDecorator(FIBSwingEditableContainerView<?, ?> view, FIBOperator operator, List<FIBView<?, ?>> subViews) {
-		this.view = view;
-		this.operator = operator;
+	public OperatorDecorator(FIBSwingEditableContainerView<?, ?> containerView, FIBOperatorView<?, ?, ?> operatorView,
+			List<FIBView<?, ?>> subViews) {
+		this.containerView = containerView;
+		this.operatorView = operatorView;
+		this.operator = operatorView.getComponent();
 		JLabel label = new JLabel(operator.getName());
 		label.setForeground(Color.DARK_GRAY);
 		label.setHorizontalAlignment(SwingConstants.CENTER);
@@ -106,8 +110,12 @@ public class OperatorDecorator {
 		return operator;
 	}
 
-	public FIBSwingEditableContainerView<?, ?> getView() {
-		return view;
+	public FIBSwingEditableContainerView<?, ?> getContainerView() {
+		return containerView;
+	}
+
+	public FIBOperatorView<?, ?, ?> getOperatorView() {
+		return operatorView;
 	}
 
 	@Override
@@ -124,7 +132,7 @@ public class OperatorDecorator {
 			return;
 		}
 
-		g2.drawImage(FIBEditorIconLibrary.ITERATION_ICON.getImage(), bounds.x + 4, bounds.y + bounds.height / 2 - 8, null);
+		g2.drawImage(FIBEditorIconLibrary.ITERATION_ICON.getImage(), bounds.x + 4, bounds.y + 4 /*bounds.height / 2 - 8*/, null);
 
 		float alpha = 0.1f;
 		int type = AlphaComposite.SRC_OVER;

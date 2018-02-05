@@ -87,4 +87,10 @@ public class JBorderLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Bord
 					constraints.getLocation().getConstraint());
 		}
 	}
+
+	@Override
+	public BorderLayoutConstraints makeDefaultConstraints() {
+		return new BorderLayoutConstraints();
+	}
+
 }

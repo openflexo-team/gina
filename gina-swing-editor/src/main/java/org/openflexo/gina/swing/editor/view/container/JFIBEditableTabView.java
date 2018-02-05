@@ -168,7 +168,7 @@ public class JFIBEditableTabView extends JFIBTabView implements FIBSwingEditable
 				else {
 					subViews.add(iterationView);
 				}
-				OperatorDecorator newIterationDecorator = new OperatorDecorator(this, (FIBIteration) subComponent, subViews);
+				OperatorDecorator newIterationDecorator = new OperatorDecorator(this, iterationView, subViews);
 				returned.add(newIterationDecorator);
 			}
 		}

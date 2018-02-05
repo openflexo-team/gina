@@ -50,6 +50,7 @@ import javax.swing.UIManager;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBSplitPanel;
+import org.openflexo.gina.model.container.layout.FIBLayoutManager;
 import org.openflexo.gina.model.container.layout.SplitLayoutConstraints;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
@@ -141,6 +142,12 @@ public class JFIBSplitPanelView extends FIBSplitPanelViewImpl<JXMultiSplitPane, 
 
 	public MultiSplitLayout getLayout() {
 		return layout;
+	}
+
+	@Override
+	public FIBLayoutManager<JXMultiSplitPane, JComponent, ?> getLayoutManager() {
+		// TODO
+		return null;
 	}
 
 	protected void paintAdditionalInfo(Graphics g) {

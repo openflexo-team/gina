@@ -77,4 +77,10 @@ public class JButtonLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Butt
 	protected void performAddChild(FIBView<?, JComponent> childView, ButtonLayoutConstraints constraints) {
 		getContainerView().getTechnologyComponent().add(((JFIBView<?, ?>) childView).getResultingJComponent());
 	}
+
+	@Override
+	public ButtonLayoutConstraints makeDefaultConstraints() {
+		return new ButtonLayoutConstraints();
+	}
+
 }

@@ -43,6 +43,7 @@ import java.util.Collection;
 
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
+import org.openflexo.gina.model.container.layout.FIBLayoutManager;
 
 /**
  * Represent the "view" associated with a {@link FIBContainer} in a given rendering engine environment (eg Swing)<br>
@@ -70,6 +71,8 @@ public interface FIBContainerView<M extends FIBContainer, C, C2> extends FIBView
 	 * @return
 	 */
 	public boolean containsView(FIBView<?, C2> view);
+
+	public FIBLayoutManager<C, C2, ?> getLayoutManager();
 
 	public void changeLayout();
 

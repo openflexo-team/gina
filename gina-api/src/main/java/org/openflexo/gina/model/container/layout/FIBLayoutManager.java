@@ -49,11 +49,9 @@ import org.openflexo.gina.view.FIBView;
  * Represents a layout manager working in a {@link FIBContainer}
  * 
  * @param <C>
- *            type of technology-specific container this layout manager is
- *            managing
+ *            type of technology-specific container this layout manager is managing
  * @param <C2>
- *            type of technology-specific contents this layout manager is
- *            layouting
+ *            type of technology-specific contents this layout manager is layouting
  * @param <CC>
  *            type of component constraints
  *
@@ -70,5 +68,7 @@ public interface FIBLayoutManager<C, C2, CC extends ComponentConstraints> {
 	public FIBView<?, C2> getSubComponentView(FIBComponent component);
 
 	public void delete();
+
+	public abstract CC makeDefaultConstraints();
 
 }

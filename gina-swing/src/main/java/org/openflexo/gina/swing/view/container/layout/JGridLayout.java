@@ -130,4 +130,9 @@ public class JGridLayout extends FIBLayoutManagerImpl<JPanel, JComponent, GridLa
 		return returned;
 	}
 
+	@Override
+	public GridLayoutConstraints makeDefaultConstraints() {
+		return new GridLayoutConstraints();
+	}
+
 }

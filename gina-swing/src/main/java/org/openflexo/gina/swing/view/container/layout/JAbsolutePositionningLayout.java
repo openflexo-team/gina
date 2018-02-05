@@ -71,4 +71,9 @@ public class JAbsolutePositionningLayout extends FIBLayoutManagerImpl<JPanel, JC
 		addedJComponent.setSize(addedJComponent.getPreferredSize());
 		getContainerView().getTechnologyComponent().add(addedJComponent);
 	}
+
+	@Override
+	public NoneLayoutConstraints makeDefaultConstraints() {
+		return new NoneLayoutConstraints();
+	}
 }

@@ -44,6 +44,7 @@ import java.util.logging.Logger;
 import org.openflexo.connie.binding.SettableBindingEvaluationContext;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBOperator;
+import org.openflexo.gina.model.container.layout.FIBLayoutManager;
 import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.FIBOperatorView;
 
@@ -84,6 +85,14 @@ public abstract class FIBOperatorViewImpl<M extends FIBOperator, C, C2> extends 
 				return current;
 			}
 			current = current.getParentView();
+		}
+		return null;
+	}
+
+	@Override
+	public FIBLayoutManager<C, C2, ?> getLayoutManager() {
+		if (getConcreteContainerView() != null) {
+			return (FIBLayoutManager<C, C2, ?>) getConcreteContainerView().getLayoutManager();
 		}
 		return null;
 	}

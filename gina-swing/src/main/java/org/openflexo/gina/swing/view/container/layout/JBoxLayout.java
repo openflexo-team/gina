@@ -82,4 +82,9 @@ public class JBoxLayout extends FIBLayoutManagerImpl<JPanel, JComponent, BoxLayo
 		addedJComponent.setAlignmentY(constraints.getAlignmentY());
 		getContainerView().getTechnologyComponent().add(addedJComponent);
 	}
+
+	@Override
+	public BoxLayoutConstraints makeDefaultConstraints() {
+		return new BoxLayoutConstraints();
+	}
 }

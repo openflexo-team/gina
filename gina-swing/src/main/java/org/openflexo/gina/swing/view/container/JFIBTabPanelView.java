@@ -56,6 +56,7 @@ import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBTab;
 import org.openflexo.gina.model.container.FIBTabPanel;
+import org.openflexo.gina.model.container.layout.FIBLayoutManager;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
 import org.openflexo.gina.view.FIBView;
@@ -167,6 +168,11 @@ public class JFIBTabPanelView extends FIBTabPanelViewImpl<JTabbedPane, JComponen
 			}
 		}
 		getTechnologyComponent().revalidate();
+	}
+
+	@Override
+	public FIBLayoutManager<JTabbedPane, JComponent, ?> getLayoutManager() {
+		return null;
 	}
 
 	@Override

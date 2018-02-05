@@ -184,4 +184,9 @@ public class JTwoColsLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Two
 				new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false));*/
 
 	}
+
+	@Override
+	public TwoColsLayoutConstraints makeDefaultConstraints() {
+		return new TwoColsLayoutConstraints();
+	}
 }

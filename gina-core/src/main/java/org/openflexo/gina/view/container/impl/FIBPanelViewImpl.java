@@ -149,6 +149,7 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 		}
 	}
 
+	@Override
 	public FIBLayoutManager<C, C2, ?> getLayoutManager() {
 		return layoutManager;
 	}

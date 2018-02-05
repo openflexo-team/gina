@@ -79,4 +79,9 @@ public class JSplitLayout extends FIBLayoutManagerImpl<JXMultiSplitPane, JCompon
 		getContainerView().getTechnologyComponent().add(addedJComponent, splitLayoutConstraints.getSplitIdentifier());
 
 	}
+
+	@Override
+	public SplitLayoutConstraints makeDefaultConstraints() {
+		return new SplitLayoutConstraints();
+	}
 }

@@ -2,7 +2,8 @@
 <Panel id="0" align="left" borderTop="0" borderLeft="0" trackViewPortHeight="true" trackViewPortWidth="true" borderBottom="0" border="empty" sizeAdjustment="OriginalSize" layout="twocols" borderRight="0">
   <Label id="1" label="Nom" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="Label" />
   <Label id="2" label="Poids" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" name="Label2" />
-  <Iteration id="3" iteratorClassName="java.lang.Object" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center)" name="FIBIteration">
-    <Label id="4" label="label" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" name="Label3" />
+  <Iteration id="3" iteratorClassName="org.openflexo.gina.controller.FIBController$SampleData$Person" list="controller.sampleData.persons" name="FIBIteration">
+    <Label id="4" label="label" align="left" data="FIBIteration.iterator.name" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="Label3" />
+    <Label id="5" label="label" align="left" data="(&quot;pese &quot; + FIBIteration.iterator.weight)" constraints="twocols(expandHorizontally=false;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" name="Label4" />
   </Iteration>
 </Panel>
