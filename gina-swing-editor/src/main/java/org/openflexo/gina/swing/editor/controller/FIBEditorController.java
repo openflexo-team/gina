@@ -281,7 +281,7 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 
 	public void setSelectedObject(FIBModelObject aComponent) {
 		if (aComponent != selectedObject) {
-			System.out.println("setSelectedObject from " + selectedObject + " to " + aComponent);
+			// System.out.println("setSelectedObject from " + selectedObject + " to " + aComponent);
 			FIBModelObject oldValue = selectedObject;
 			SelectedObjectChange change = new SelectedObjectChange(oldValue, aComponent);
 			selectedObject = aComponent;

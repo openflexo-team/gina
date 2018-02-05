@@ -118,6 +118,18 @@ public class SwingEditorFIBController<T> extends FIBController implements Proper
 	}
 
 	protected ImageIcon retrieveIconForObject(Object object) {
+
+		if (object instanceof FIBModelObject) {
+			FIBValidationReport report = getValidationReport((FIBModelObject) object);
+			if (report != null) {
+				if (!observedReports.contains(report)) {
+					report.getPropertyChangeSupport().addPropertyChangeListener(this);
+					// System.out.println("Observing " + report);
+					observedReports.add(report);
+				}
+			}
+		}
+
 		if (object instanceof ValidationError) {
 			if (((ValidationError<?, ?>) object).isFixable()) {
 				return FIBUtilsIconLibrary.FIXABLE_ERROR_ICON;
@@ -139,16 +151,6 @@ public class SwingEditorFIBController<T> extends FIBController implements Proper
 		}
 		else if (object instanceof FixProposal) {
 			return FIBUtilsIconLibrary.FIX_PROPOSAL_ICON;
-		}
-
-		if (object instanceof FIBModelObject) {
-			FIBValidationReport report = getValidationReport((FIBModelObject) object);
-			if (report != null) {
-				if (!observedReports.contains(report)) {
-					report.getPropertyChangeSupport().addPropertyChangeListener(this);
-					observedReports.add(report);
-				}
-			}
 		}
 
 		if (object instanceof FIBFolder) {

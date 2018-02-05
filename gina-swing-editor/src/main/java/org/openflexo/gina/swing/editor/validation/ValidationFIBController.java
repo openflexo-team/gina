@@ -208,13 +208,17 @@ public class ValidationFIBController extends ComponentSwingEditorFIBController {
 
 	public void showIssue(ValidationIssue<?, ?> issue) {
 		if (issue != null) {
-			Validable objectToSelect = issue.getValidable();
-			// getFlexoController().selectAndFocusObject((FlexoObject) objectToSelect);
+			// System.out.println("select issue " + issue);
+			if (issue.getValidable() instanceof FIBModelObject) {
+				getEditorController().setSelectedObject((FIBModelObject) issue.getValidable());
+			}
 		}
 	}
 
 	public void fixIssue(ValidationIssue<?, ?> issue) {
-		System.out.println("fixIssue " + issue);
+
+		// TODO
+		System.out.println("TODO: fixIssue " + issue);
 		if (issue instanceof ProblemIssue) {
 			/*VirtualModel vmToRevalidate = null;
 			if (issue.getValidationReport().getRootObject() instanceof VirtualModel) {
@@ -237,13 +241,11 @@ public class ValidationFIBController extends ComponentSwingEditorFIBController {
 
 	public void revalidate(FIBComponent component) {
 		System.out.println("Tiens, faudrait revalider " + component);
-		/*if (getServiceManager() != null) {
-			FMLTechnologyAdapterController tac = getServiceManager().getTechnologyAdapterControllerService()
-					.getTechnologyAdapterController(FMLTechnologyAdapterController.class);
-			FMLValidationReport virtualModelReport = (FMLValidationReport) tac.getValidationReport(virtualModel);
-			RevalidationTask validationTask = new RevalidationTask(virtualModelReport);
-			getServiceManager().getTaskManager().scheduleExecution(validationTask);
-		}*/
+		try {
+			getValidationReport(getDataObject()).revalidate();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

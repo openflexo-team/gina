@@ -103,19 +103,11 @@ public class ComponentSwingEditorFIBController extends SwingEditorFIBController<
 	}
 
 	public FIBEditorController getEditorController() {
-		if (editorController == null) {
-			System.out.println("Tiens, je cherche l'editor controller");
-			System.out.println("DataObject=" + getDataObject());
-		}
 		return editorController;
 	}
 
 	public void setEditorController(FIBEditorController editorController) {
 		this.editorController = editorController;
-		/*if (editorController != null) {
-			editorController.addObserver(this);
-		}*/
-
 		getPropertyChangeSupport().firePropertyChange("editorController", null, editorController);
 		getPropertyChangeSupport().firePropertyChange("selectedObject", null, getSelectedObject());
 		getPropertyChangeSupport().firePropertyChange("selectedComponent", null, getSelectedComponent());
