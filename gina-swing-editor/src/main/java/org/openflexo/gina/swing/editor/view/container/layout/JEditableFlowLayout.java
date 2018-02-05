@@ -109,7 +109,7 @@ public class JEditableFlowLayout extends JFlowLayout implements JFIBEditableLayo
 			panel.setPreferredSize(((JFIBView<?, ?>) getContainerView()).getResultingJComponent().getSize());
 			panel.setSize(((JFIBView<?, ?>) getContainerView()).getResultingJComponent().getSize());
 
-			final Dimension placeHolderSize = new Dimension(30, 20);
+			final Dimension placeHolderSize = preferredSize; // new Dimension(30, 20);
 			int deltaX = 0;
 			int deltaY = 0;
 
