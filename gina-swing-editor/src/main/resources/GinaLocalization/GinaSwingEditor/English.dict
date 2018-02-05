@@ -187,6 +187,7 @@ uri=Uri
 use_scrollbar=Use scrollbar
 validate_component=Validate component
 validate_on_return=Validate on return
+validation_report_for=Validation report for
 value=Value
 value_changed=Value changed
 value_transform=Value transform
