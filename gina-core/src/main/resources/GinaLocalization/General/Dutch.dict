@@ -2,6 +2,7 @@
 <<=<<
 >=>
 >>=>>
+API=API
 AdjustDimensions=AdjustDimensions
 AdjustHeight=AdjustHeight
 AdjustWidth=AdjustWidth
@@ -148,6 +149,7 @@ component_validation=Component validation
 conditional=Conditional
 connect=Connect
 contents=Contents
+controller=Controller
 controller_class=Controller class
 controller_factory=Controller factory
 create_new_row_on_click=Create new row on click
