@@ -37,14 +37,18 @@
  */
 package org.openflexo.gina.swing.editor;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController.FIBEditorPanel;
+import org.openflexo.gina.swing.editor.validation.ValidationPanel;
+import org.openflexo.model.validation.ValidationIssue;
 
 /**
  * A {@link JTabbedPane} that represents all {@link EditedFIBComponent} of an editor<br>
@@ -54,19 +58,35 @@ import org.openflexo.gina.swing.editor.controller.FIBEditorController.FIBEditorP
  *
  */
 @SuppressWarnings("serial")
-public class MainPanel extends JTabbedPane implements ChangeListener {
+public class MainPanel extends JPanel implements ChangeListener {
 
 	private FIBEditor editor;
 
+	private JTabbedPane tabbedPane;
+	private ValidationPanel validationPanel;
+
 	public MainPanel(FIBEditor editor) {
-		super();
+		super(new BorderLayout());
 		this.editor = editor;
-		addChangeListener(this);
+		tabbedPane = new JTabbedPane();
+		add(tabbedPane, BorderLayout.CENTER);
+		validationPanel = new ValidationPanel(null, editor.getFIBLibrary(), FIBEditor.EDITOR_LOCALIZATION) {
+			@Override
+			protected void performSelect(ValidationIssue<?, ?> validationIssue) {
+				System.out.println("Tiens, faudrait selectionner " + validationIssue);
+			}
+		};
+		add(validationPanel, BorderLayout.SOUTH);
+		tabbedPane.addChangeListener(this);
+	}
+
+	public JTabbedPane getTabbedPane() {
+		return tabbedPane;
 	}
 
 	public FIBEditorController getFocusedEditedComponent() {
-		int index = getSelectedIndex();
-		Component componentAtSelectedIndex = getComponentAt(index);
+		int index = tabbedPane.getSelectedIndex();
+		Component componentAtSelectedIndex = tabbedPane.getComponentAt(index);
 		if (componentAtSelectedIndex instanceof FIBEditorPanel) {
 			return ((FIBEditorPanel) componentAtSelectedIndex).getEditorController();
 		}
@@ -74,22 +94,22 @@ public class MainPanel extends JTabbedPane implements ChangeListener {
 	}
 
 	public void newEditedComponent(FIBEditorController controller) {
-		add(controller.getEditorPanel(), controller.getEditedComponent().getName());
+		tabbedPane.add(controller.getEditorPanel(), controller.getEditedComponent().getName());
 		revalidate();
-		setSelectedIndex(getComponentCount() - 1);
+		tabbedPane.setSelectedIndex(tabbedPane.getComponentCount() - 1);
 	}
 
 	public void focusOnEditedComponent(FIBEditorController controller) {
 		int newIndex = indexOfEditorController(controller);
-		if (newIndex != getSelectedIndex()) {
+		if (newIndex != tabbedPane.getSelectedIndex()) {
 			System.out.println("Changing for new index: " + newIndex);
-			setSelectedIndex(newIndex);
+			tabbedPane.setSelectedIndex(newIndex);
 		}
 	}
 
 	private int indexOfEditorController(FIBEditorController controller) {
-		for (int i = 0; i < getComponentCount(); i++) {
-			Component componentAtSelectedIndex = getComponentAt(i);
+		for (int i = 0; i < tabbedPane.getComponentCount(); i++) {
+			Component componentAtSelectedIndex = tabbedPane.getComponentAt(i);
 			if (componentAtSelectedIndex instanceof FIBEditorPanel) {
 				if (((FIBEditorPanel) componentAtSelectedIndex).getEditorController() == controller) {
 					return i;
@@ -103,5 +123,6 @@ public class MainPanel extends JTabbedPane implements ChangeListener {
 	public void stateChanged(ChangeEvent e) {
 		FIBEditor.logger.info("Change for " + e);
 		editor.activate(getFocusedEditedComponent());
+		validationPanel.setEditorController(getFocusedEditedComponent());
 	}
 }

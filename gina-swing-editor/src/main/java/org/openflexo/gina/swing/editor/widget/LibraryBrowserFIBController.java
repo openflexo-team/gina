@@ -41,27 +41,21 @@ package org.openflexo.gina.swing.editor.widget;
 import java.awt.event.MouseEvent;
 import java.util.logging.Logger;
 
-import javax.swing.ImageIcon;
-
 import org.openflexo.connie.annotations.NotificationUnsafe;
 import org.openflexo.gina.ApplicationFIBLibrary;
-import org.openflexo.gina.FIBFolder;
 import org.openflexo.gina.FIBLibrary;
-import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
-import org.openflexo.gina.swing.editor.controller.FIBEditorIconLibrary;
-import org.openflexo.gina.swing.view.SwingViewFactory;
-import org.openflexo.gina.utils.FIBIconLibrary;
+import org.openflexo.gina.swing.editor.SwingEditorFIBController;
 import org.openflexo.rm.Resource;
 
-public class FIBLibraryBrowserController extends FIBController /*implements Observer*/ {
+public class LibraryBrowserFIBController extends SwingEditorFIBController<FIBLibrary> {
 
-	private static final Logger logger = Logger.getLogger(FIBLibraryBrowserController.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(LibraryBrowserFIBController.class.getPackage().getName());
 
 	private FIBLibraryBrowser fibLibraryBrowser;
 
-	public FIBLibraryBrowserController(FIBComponent rootComponent) {
-		super(rootComponent, SwingViewFactory.INSTANCE);
+	public LibraryBrowserFIBController(FIBComponent rootComponent) {
+		super(rootComponent);
 	}
 
 	public Resource getSelectedComponentResource() {
@@ -82,24 +76,6 @@ public class FIBLibraryBrowserController extends FIBController /*implements Obse
 		if (fibLibraryBrowser != null) {
 			fibLibraryBrowser.doubleClickOnComponentResource(selectedComponentResource);
 		}
-	}
-
-	@NotificationUnsafe
-	public ImageIcon iconFor(Object object) {
-		if (object == null) {
-			return null;
-		}
-		if (object instanceof FIBFolder) {
-			return FIBIconLibrary.FOLDER_ICON;
-		}
-		else if (object instanceof FIBLibrary) {
-			return FIBIconLibrary.FOLDER_ICON;
-		}
-		else if (object instanceof Resource) {
-			return FIBEditorIconLibrary.ROOT_COMPONENT_ICON;
-		}
-		return null;
-
 	}
 
 	@NotificationUnsafe

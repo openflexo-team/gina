@@ -69,6 +69,7 @@ import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.inspector.FIBEditorInspectorController;
 import org.openflexo.gina.swing.editor.palette.FIBEditorPalettes;
 import org.openflexo.gina.swing.editor.palette.FIBEditorPalettesDialog;
+import org.openflexo.gina.swing.editor.validation.ComponentValidationWindow;
 import org.openflexo.gina.swing.utils.FIBEditorLoadingProgress;
 import org.openflexo.gina.swing.utils.JFIBDialogInspectorController;
 import org.openflexo.gina.swing.utils.JFIBPreferences;
@@ -512,7 +513,7 @@ public class FIBEditor {
 			JFIBPreferences.setLastFile(file);
 			try {
 				editedFIB.saveAs(new FileResourceImpl(resourceLocator, file));
-				mainPanel.setTitleAt(mainPanel.getSelectedIndex(), editedFIB.getName());
+				mainPanel.getTabbedPane().setTitleAt(mainPanel.getTabbedPane().getSelectedIndex(), editedFIB.getName());
 				updateFrameTitle(frame);
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
@@ -641,6 +642,15 @@ public class FIBEditor {
 			return true;
 		}
 		return false;
+	}
+
+	public EditedFIBComponent getEditedFIBComponent(FIBComponent component) {
+		for (EditedFIBComponent editedFIB : editedComponents) {
+			if (editedFIB.getFIBComponent() == component) {
+				return editedFIB;
+			}
+		}
+		return null;
 	}
 
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Panel id="0" darkLevel="0" useScrollBar="false" protectContent="false"
 	height="650" name="main" layout="gridbag"
-	controllerClassName="org.openflexo.gina.swing.utils.validation.FIBValidationController"
+	controllerClassName="org.openflexo.gina.swing.editor.validation.ValidationFIBController"
 	border="empty" trackViewPortWidth="true" width="600"
 	dataClassName="org.openflexo.model.validation.ValidationReport"
 	titleFont="SansSerif,0,13" trackViewPortHeight="true">
@@ -89,7 +89,7 @@
 			iteratorClassName="org.openflexo.model.validation.ValidationReport$ReportMode"
 			showIcon="false" />
 		<Label id="53" manageDynamicModel="false" useScrollBar="false"
-			data="(((data.getAllErrors().size.toString + &quot; errors, &quot;) + data.getAllWarnings().size.toString) + &quot; warnings&quot;)"
+			data="'prout'+(((data.getAllErrors().size.toString + &quot; errors, &quot;) + data.getAllWarnings().size.toString) + &quot; warnings&quot;)"
 			controllerClassName="org.openflexo.gina.controller.FIBController"
 			localize="false" font="Lucida Grande,2,10" align="right"
 			constraints="border(location=south)" label="" readOnly="false" />
@@ -117,7 +117,7 @@
 				selected="controller.selectedValidationIssue" autoSelectFirstRow="false"
 				name="IssuesTable" textNonSelectionColor="0,0,0" readOnly="false"
 				backgroundSecondarySelectionColor="173,215,255">
-				<IconColumn id="57" data="controller.iconFor(iterator)"
+				<IconColumn id="57" data="controller.iconForObject(iterator)"
 					displayTitle="false" title="icon" name="icon" columnWidth="20"
 					resizable="false" />
 				<LabelColumn id="58"
@@ -157,7 +157,7 @@
 					autoSelectFirstRow="true" name="FixProposalTable"
 					textNonSelectionColor="0,0,0" readOnly="false"
 					backgroundSecondarySelectionColor="173,215,255">
-					<IconColumn id="63" data="controller.iconFor(iterator)"
+					<IconColumn id="63" data="controller.iconForObject(iterator)"
 						displayTitle="false" title="icon" name="icon" columnWidth="20"
 						resizable="false" />
 					<LabelColumn id="64"

@@ -111,4 +111,14 @@ public class FIBValidationModel extends ValidationModel {
 		return localized;
 	}
 
+	@Override
+	public FIBValidationReport validate(Validable object) throws InterruptedException {
+		if (object instanceof FIBComponent) {
+			return new FIBValidationReport(this, (FIBComponent) object);
+		}
+		else {
+			return null;
+		}
+	}
+
 }

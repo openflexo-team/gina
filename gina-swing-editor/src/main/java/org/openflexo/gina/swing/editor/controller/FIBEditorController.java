@@ -64,6 +64,8 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.FIBModelFactory;
 import org.openflexo.gina.model.FIBModelObject;
+import org.openflexo.gina.model.FIBValidationModel;
+import org.openflexo.gina.model.FIBValidationReport;
 import org.openflexo.gina.swing.editor.EditedFIBComponent;
 import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.palette.DropListener;
@@ -81,7 +83,7 @@ import org.openflexo.model.undo.UndoManager;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 /**
- * This is a controller managing the edition of an {@link EditedFIBComponent}<br>
+ * This is a controller managing the edition of a {@link EditedFIBComponent}<br>
  * 
  * Swing view to be used is given by {@link #getEditorPanel()} method.
  * 
@@ -115,6 +117,8 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 	private final Map<FIBComponent, FIBSwingEditableViewDelegate<?, ?>> viewDelegates;
 
 	private final PropertyChangeSupport pcSupport;
+
+	private FIBValidationReport validationReport;
 
 	public FIBEditorController(EditedFIBComponent editedComponent, FIBEditor editor, JFrame frame) {
 		this(editedComponent, null, editor, frame);
@@ -276,7 +280,7 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 
 	public void setSelectedObject(FIBModelObject aComponent) {
 		if (aComponent != selectedObject) {
-			// System.out.println("setSelectedObject from " + selectedObject + " to " + aComponent);
+			System.out.println("setSelectedObject from " + selectedObject + " to " + aComponent);
 			FIBModelObject oldValue = selectedObject;
 			SelectedObjectChange change = new SelectedObjectChange(oldValue, aComponent);
 			selectedObject = aComponent;
@@ -374,6 +378,22 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 		return null;
 	}
 
+	public FIBValidationReport getValidationReport() {
+		if (validationReport == null) {
+			try {
+				validationReport = getValidationModel().validate(getFIBComponent());
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return validationReport;
+	}
+
+	public FIBValidationModel getValidationModel() {
+		return getFIBComponent().getModelFactory().getValidationModel();
+	}
+
 	@SuppressWarnings("serial")
 	public class FIBEditorPanel extends JPanel {
 
@@ -383,7 +403,7 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 			super(new BorderLayout());
 
 			fibPanel = (JFIBView<?, ?>) controller.buildView();
-			add(fibPanel.getJComponent());
+			add(fibPanel.getJComponent(), BorderLayout.CENTER);
 		}
 
 		public FIBEditorController getEditorController() {

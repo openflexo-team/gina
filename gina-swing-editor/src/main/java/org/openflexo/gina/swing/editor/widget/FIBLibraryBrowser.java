@@ -67,15 +67,15 @@ public class FIBLibraryBrowser extends FIBJPanel<FIBLibrary> {
 	}
 
 	@Override
-	protected FIBLibraryBrowserController makeFIBController(FIBComponent fibComponent, LocalizedDelegate parentLocalizer) {
-		FIBLibraryBrowserController returned = new FIBLibraryBrowserController(fibComponent);
+	protected LibraryBrowserFIBController makeFIBController(FIBComponent fibComponent, LocalizedDelegate parentLocalizer) {
+		LibraryBrowserFIBController returned = new LibraryBrowserFIBController(fibComponent);
 		returned.setFIBLibraryBrowser(this);
 		return returned;
 	}
 
 	@Override
-	public FIBLibraryBrowserController getController() {
-		return (FIBLibraryBrowserController) super.getController();
+	public LibraryBrowserFIBController getController() {
+		return (LibraryBrowserFIBController) super.getController();
 	}
 
 	@Override

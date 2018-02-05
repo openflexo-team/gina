@@ -40,53 +40,34 @@ package org.openflexo.gina.swing.editor.widget;
 
 import java.util.logging.Logger;
 
-import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
 import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.swing.editor.ComponentSwingEditorFIBController;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.utils.FIBJPanel;
-import org.openflexo.localization.FlexoLocalization;
-import org.openflexo.localization.LocalizedDelegate;
-import org.openflexo.rm.Resource;
-import org.openflexo.rm.ResourceLocator;
+import org.openflexo.gina.view.GinaViewFactory;
 
-/**
- * Browser for FIBEditor elements
- * 
- * @author sylvain
- * 
- */
-@SuppressWarnings("serial")
-public class FIBEditorBrowser extends FIBJPanel<FIBComponent> {
+public class BrowserFIBController extends ComponentSwingEditorFIBController {
 
-	protected static final Logger logger = Logger.getLogger(FIBEditorBrowser.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(BrowserFIBController.class.getPackage().getName());
 
-	public static Resource FIB_FILE = ResourceLocator.locateResource("Fib/Browser.fib");
+	private String searchedLabel;
 
-	private final FIBEditorController editorController;
-
-	public FIBEditorBrowser(FIBComponent fibComponent, FIBEditorController editorController) {
-		super(FIB_FILE, fibComponent, ApplicationFIBLibraryImpl.instance(), FlexoLocalization.getMainLocalizer());
-		this.editorController = editorController;
-		getController().setEditorController(editorController);
+	public BrowserFIBController(FIBComponent rootComponent, GinaViewFactory<?> viewFactory) {
+		super(rootComponent, viewFactory);
 	}
 
-	@Override
-	protected BrowserFIBController makeFIBController(FIBComponent browserComponent, LocalizedDelegate parentLocalizer) {
-		return new BrowserFIBController(browserComponent, editorController);
+	public BrowserFIBController(FIBComponent rootComponent, FIBEditorController editorController) {
+		super(rootComponent, editorController);
 	}
 
-	@Override
-	public BrowserFIBController getController() {
-		return (BrowserFIBController) super.getController();
+	public String getSearchedLabel() {
+		return searchedLabel;
 	}
 
-	@Override
-	public Class<FIBComponent> getRepresentedType() {
-		return FIBComponent.class;
+	public void setSearchedLabel(String searchedLabel) {
+		this.searchedLabel = searchedLabel;
 	}
 
-	@Override
-	public void delete() {
+	public void search() {
+		System.out.println("Searching " + getSearchedLabel());
 	}
-
 }

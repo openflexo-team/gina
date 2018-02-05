@@ -36,11 +36,13 @@
  * 
  */
 
-package org.openflexo.gina.swing.utils.validation;
+package org.openflexo.gina.swing.editor.validation;
 
 import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.utils.FIBJPanel;
+import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.validation.Validable;
 import org.openflexo.model.validation.ValidationIssue;
@@ -50,17 +52,19 @@ import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 
 @SuppressWarnings("serial")
-public abstract class ValidationPanel extends FIBJPanel<ValidationReport> {
+public abstract class ValidationPanel extends FIBJPanel<FIBComponent> {
 
 	public static Resource VALIDATION_PANEL_FIB = ResourceLocator.locateResource("Fib/ValidationPanel.fib");
 
-	public ValidationPanel(ValidationReport validationReport, FIBLibrary fibLibrary, LocalizedDelegate parentLocalizer) {
-		super(fibLibrary.retrieveFIBComponent(VALIDATION_PANEL_FIB, true), validationReport, parentLocalizer);
+	public ValidationPanel(FIBEditorController editorController, FIBLibrary fibLibrary, LocalizedDelegate parentLocalizer) {
+		super(fibLibrary.retrieveFIBComponent(VALIDATION_PANEL_FIB, true),
+				editorController != null ? editorController.getFIBComponent() : null, parentLocalizer);
+		getController().setEditorController(editorController);
 	}
 
 	@Override
-	protected FIBValidationController makeFIBController(FIBComponent fibComponent, LocalizedDelegate parentLocalizer) {
-		return new FIBValidationController(fibComponent) {
+	protected ValidationFIBController makeFIBController(FIBComponent fibComponent, LocalizedDelegate parentLocalizer) {
+		return new ValidationFIBController(fibComponent, SwingViewFactory.INSTANCE) {
 			@Override
 			protected void performSelect(ValidationIssue<?, ?> validationIssue) {
 				ValidationPanel.this.performSelect(validationIssue);
@@ -68,9 +72,14 @@ public abstract class ValidationPanel extends FIBJPanel<ValidationReport> {
 		};
 	}
 
+	public void setEditorController(FIBEditorController editorController) {
+		getController().setEditorController(editorController);
+		setEditedObject(editorController.getFIBComponent());
+	}
+
 	@Override
-	public FIBValidationController getController() {
-		return (FIBValidationController) super.getController();
+	public ValidationFIBController getController() {
+		return (ValidationFIBController) super.getController();
 	}
 
 	protected abstract void performSelect(ValidationIssue<?, ?> validationIssue);
@@ -87,8 +96,8 @@ public abstract class ValidationPanel extends FIBJPanel<ValidationReport> {
 	}
 
 	@Override
-	public Class<ValidationReport> getRepresentedType() {
-		return ValidationReport.class;
+	public Class<FIBComponent> getRepresentedType() {
+		return FIBComponent.class;
 	}
 
 	@Override

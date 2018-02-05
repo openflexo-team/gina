@@ -38,6 +38,7 @@
 
 package org.openflexo.gina.swing.utils;
 
+import org.openflexo.icon.IconMarker;
 import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
 
@@ -64,5 +65,10 @@ public class FIBUtilsIconLibrary {
 			ResourceLocator.locateResource("Icons/Validation/UnfixableWarning.gif"));
 	public static final ImageIconResource VALIDATED_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/Validation/Validated.gif"));
+
+	public static final IconMarker WARNING = new IconMarker(
+			new ImageIconResource(ResourceLocator.locateResource("Icons/Markers/Warning.gif")), 0, 9);
+	public static final IconMarker ERROR = new IconMarker(new ImageIconResource(ResourceLocator.locateResource("Icons/Markers/Error.gif")),
+			0, 9);
 
 }

@@ -1978,8 +1978,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		@Override
 		public ValidationIssue<RootComponentShouldHaveDataClass, FIBComponent> applyValidation(FIBComponent object) {
 			if (object.isRootComponent() && object.getVariables().size() == 0) {
-				return new ValidationWarning<>(this, object,
-						"component_($object.toString)_is_declared_as_root_but_does_not_declare_any_variables");
+				return new ValidationWarning<>(this, object, "component_is_declared_as_root_but_does_not_declare_any_variables");
 			}
 			return null;
 		}

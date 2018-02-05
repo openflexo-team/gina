@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Panel id="0" darkLevel="0" useScrollBar="false" protectContent="false"
 	height="200" name="main" layout="border"
-	controllerClassName="org.openflexo.gina.swing.editor.widget.FIBBrowserController"
+	controllerClassName="org.openflexo.gina.swing.editor.widget.BrowserFIBController"
 	border="empty" trackViewPortWidth="true" width="300"
 	dataClassName="org.openflexo.gina.model.FIBComponent" titleFont="Lucida Grande,0,13"
 	trackViewPortHeight="true">
@@ -13,7 +13,7 @@
 		constraints="border(location=center;x=0;y=0)" iteratorClassName="org.openflexo.gina.model.FIBModelObject"
 		useScrollBar="false" selected="controller.editorController.selectedObject"
 		name="ComponentBrowser" rootVisible="true" readOnly="false">
-		<BrowserElement icon="controller.iconFor(table)"
+		<BrowserElement icon="controller.iconForObject(table)"
 			filtered="false" label="table.presentationName" defaultVisible="true"
 			dataClassName="org.openflexo.gina.model.widget.FIBTable" name="table"
 			isEditable="true" editableLabel="table.name">
@@ -42,7 +42,7 @@
 			<BrowserAddAction method="controller.createCustomAction(selected)"
 				name="new_custom_action" />
 		</BrowserElement>
-		<BrowserElement icon="controller.iconFor(browser)"
+		<BrowserElement icon="controller.iconForObject(browser)"
 			filtered="false" label="browser.presentationName" defaultVisible="true"
 			dataClassName="org.openflexo.gina.model.widget.FIBBrowser" name="browser"
 			isEditable="true" editableLabel="browser.name">
@@ -50,7 +50,7 @@
 			<BrowserAddAction name="new_element"
 				method="controller.createElement(selected)" />
 		</BrowserElement>
-		<BrowserElement icon="controller.iconFor(graph)"
+		<BrowserElement icon="controller.iconForObject(graph)"
 			filtered="false" label="graph.presentationName" defaultVisible="true"
 			dataClassName="org.openflexo.gina.model.graph.FIBGraph" name="graph"
 			isEditable="true" editableLabel="graph.name">
@@ -60,17 +60,17 @@
 			<BrowserAddAction name="add_discrete_function"
 				method="controller.createDiscreteFunction(selected)" />
 		</BrowserElement>
-		<BrowserElement id="3" icon="controller.iconFor(container)"
+		<BrowserElement id="3" icon="controller.iconForObject(container)"
 			filtered="false" label="container.presentationName" defaultVisible="true"
 			dataClassName="org.openflexo.gina.model.FIBContainer" name="container"
 			isEditable="true" editableLabel="container.name">
 			<Children id="4" name="children" data="container.subComponents" />
 		</BrowserElement>
-		<BrowserElement id="2" icon="controller.iconFor(element)"
+		<BrowserElement id="2" icon="controller.iconForObject(element)"
 			filtered="false" label="element.presentationName" defaultVisible="true"
 			dataClassName="org.openflexo.gina.model.FIBComponent" name="element"
 			isEditable="true" editableLabel="element.name" />
-		<BrowserElement icon="controller.iconFor(column)"
+		<BrowserElement icon="controller.iconForObject(column)"
 			filtered="false" label="column.presentationName" defaultVisible="true"
 			dataClassName="org.openflexo.gina.model.widget.FIBTableColumn" name="column"
 			isEditable="true" editableLabel="column.name">
@@ -85,14 +85,14 @@
 			<BrowserRemoveAction name="remove_column"
 				method="controller.deleteColumn(selected)" />
 		</BrowserElement>
-		<BrowserElement icon="controller.iconFor(action)"
+		<BrowserElement icon="controller.iconForObject(action)"
 			filtered="false" label="action.presentationName" defaultVisible="true"
 			dataClassName="org.openflexo.gina.model.widget.FIBTableAction" name="action"
 			isEditable="true" editableLabel="action.name">
 			<BrowserRemoveAction name="remove_action"
 				method="controller.deleteAction(selected)" />
 		</BrowserElement>
-		<BrowserElement icon="controller.iconFor(element)"
+		<BrowserElement icon="controller.iconForObject(element)"
 			filtered="false" label="element.presentationName" defaultVisible="true"
 			dataClassName="org.openflexo.gina.model.widget.FIBBrowserElement" name="element"
 			isEditable="true" editableLabel="element.name">
@@ -107,35 +107,35 @@
  			<BrowserRemoveAction name="remove_element"
 				method="controller.deleteElement(selected)" />
 		</BrowserElement>
-		<BrowserElement icon="controller.iconFor(children)"
+		<BrowserElement icon="controller.iconForObject(children)"
 			filtered="false" label="children.presentationName" defaultVisible="true"
 			dataClassName="org.openflexo.gina.model.widget.FIBBrowserElementChildren" name="children"
 			isEditable="true" editableLabel="children.name">
 			<BrowserRemoveAction name="remove_children"
 				method="controller.deleteChildren(selected)" />
 		</BrowserElement>
-		<BrowserElement icon="controller.iconFor(action)"
+		<BrowserElement icon="controller.iconForObject(action)"
 			filtered="false" label="action.presentationName" defaultVisible="true"
 			dataClassName="org.openflexo.gina.model.widget.FIBBrowserAction" name="action"
 			isEditable="true" editableLabel="action.name">
 			<BrowserRemoveAction name="remove_action"
 				method="controller.deleteBrowserAction(selected)" />
 		</BrowserElement>
-		<BrowserElement icon="controller.iconFor(operation)"
+		<BrowserElement icon="controller.iconForObject(operation)"
 			filtered="false" label="operation.presentationName" defaultVisible="true"
 			dataClassName="org.openflexo.gina.model.widget.FIBBrowserDragOperation" name="operation"
 			isEditable="true" editableLabel="operation.name">
 			<BrowserRemoveAction name="remove_drag_operation"
 				method="controller.deleteBrowserDragOperation(selected)" />
 		</BrowserElement>
-		<BrowserElement icon="controller.iconFor(element)"
+		<BrowserElement icon="controller.iconForObject(element)"
 			filtered="false" label="element.presentationName" defaultVisible="true"
 			dataClassName="org.openflexo.gina.model.graph.FIBGraphFunction" name="element"
 			isEditable="true" editableLabel="element.name">
 			<BrowserRemoveAction name="remove_function"
 				method="controller.deleteFunction(selected)" />
 		</BrowserElement>
-		<BrowserElement icon="controller.iconFor(element)"
+		<BrowserElement icon="controller.iconForObject(element)"
 			filtered="false" label="element.presentationName" defaultVisible="true"
 			dataClassName="org.openflexo.gina.model.FIBModelObject" name="element"
 			isEditable="true" editableLabel="element.name" />

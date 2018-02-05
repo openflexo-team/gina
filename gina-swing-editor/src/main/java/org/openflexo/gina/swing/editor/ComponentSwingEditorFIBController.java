@@ -36,79 +36,77 @@
  * 
  */
 
-package org.openflexo.gina.swing.editor.widget;
+package org.openflexo.gina.swing.editor;
 
 import java.awt.event.MouseEvent;
 import java.util.logging.Logger;
 
-import javax.swing.ImageIcon;
-
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelObject;
-import org.openflexo.gina.model.container.FIBPanel;
-import org.openflexo.gina.model.container.FIBSplitPanel;
-import org.openflexo.gina.model.container.FIBTabPanel;
+import org.openflexo.gina.model.FIBValidationReport;
 import org.openflexo.gina.model.graph.FIBDiscreteFunction;
 import org.openflexo.gina.model.graph.FIBGraph;
 import org.openflexo.gina.model.graph.FIBGraphFunction;
 import org.openflexo.gina.model.graph.FIBNumericFunction;
-import org.openflexo.gina.model.operator.FIBConditional;
-import org.openflexo.gina.model.operator.FIBIteration;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBBrowserAction;
 import org.openflexo.gina.model.widget.FIBBrowserDragOperation;
 import org.openflexo.gina.model.widget.FIBBrowserElement;
 import org.openflexo.gina.model.widget.FIBBrowserElementChildren;
-import org.openflexo.gina.model.widget.FIBButton;
 import org.openflexo.gina.model.widget.FIBButtonColumn;
-import org.openflexo.gina.model.widget.FIBCheckBox;
 import org.openflexo.gina.model.widget.FIBCheckBoxColumn;
-import org.openflexo.gina.model.widget.FIBCustom;
 import org.openflexo.gina.model.widget.FIBCustomColumn;
-import org.openflexo.gina.model.widget.FIBDropDown;
 import org.openflexo.gina.model.widget.FIBDropDownColumn;
 import org.openflexo.gina.model.widget.FIBIconColumn;
-import org.openflexo.gina.model.widget.FIBImage;
-import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.gina.model.widget.FIBLabelColumn;
-import org.openflexo.gina.model.widget.FIBNumber;
 import org.openflexo.gina.model.widget.FIBNumberColumn;
-import org.openflexo.gina.model.widget.FIBRadioButtonList;
-import org.openflexo.gina.model.widget.FIBReferencedComponent;
 import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTableAction;
-import org.openflexo.gina.model.widget.FIBTableAction.ActionType;
 import org.openflexo.gina.model.widget.FIBTableAction.FIBAddAction;
 import org.openflexo.gina.model.widget.FIBTableAction.FIBCustomAction;
 import org.openflexo.gina.model.widget.FIBTableAction.FIBRemoveAction;
 import org.openflexo.gina.model.widget.FIBTableColumn;
-import org.openflexo.gina.model.widget.FIBTextArea;
-import org.openflexo.gina.model.widget.FIBTextField;
 import org.openflexo.gina.model.widget.FIBTextFieldColumn;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.editor.controller.FIBEditorIconLibrary;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.gina.view.GinaViewFactory;
-import org.openflexo.icon.IconFactory;
 import org.openflexo.model.ModelEntity;
 import org.openflexo.toolbox.StringUtils;
 
-public class FIBBrowserController extends FIBController /*implements Observer*/ {
+/**
+ * A {@link FIBController} used in GINA SwingEditor, and addressing a single {@link FIBComponent}
+ * 
+ * @author sylvain
+ *
+ * @param <T>
+ *            type of data object beeing managed by this controller
+ */
+public class ComponentSwingEditorFIBController extends SwingEditorFIBController<FIBComponent> {
 
-	private static final Logger logger = Logger.getLogger(FIBBrowserController.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(ComponentSwingEditorFIBController.class.getPackage().getName());
 
 	private FIBEditorController editorController;
 
-	private String searchedLabel;
+	public ComponentSwingEditorFIBController(FIBComponent rootComponent) {
+		super(rootComponent);
+	}
 
-	public FIBBrowserController(FIBComponent rootComponent, FIBEditorController editorController) {
+	public ComponentSwingEditorFIBController(FIBComponent rootComponent, GinaViewFactory<?> viewFactory) {
+		super(rootComponent);
+	}
+
+	public ComponentSwingEditorFIBController(FIBComponent rootComponent, FIBEditorController editorController) {
 		this(rootComponent, SwingViewFactory.INSTANCE);
 		setEditorController(editorController);
 	}
 
 	public FIBEditorController getEditorController() {
+		if (editorController == null) {
+			System.out.println("Tiens, je cherche l'editor controller");
+			System.out.println("DataObject=" + getDataObject());
+		}
 		return editorController;
 	}
 
@@ -119,129 +117,49 @@ public class FIBBrowserController extends FIBController /*implements Observer*/ 
 		}*/
 
 		getPropertyChangeSupport().firePropertyChange("editorController", null, editorController);
+		getPropertyChangeSupport().firePropertyChange("selectedObject", null, getSelectedObject());
+		getPropertyChangeSupport().firePropertyChange("selectedComponent", null, getSelectedComponent());
 	}
 
-	public FIBBrowserController(FIBComponent rootComponent, GinaViewFactory<?> viewFactory) {
-		super(rootComponent, viewFactory);
+	@Override
+	public FIBValidationReport getValidationReport(FIBModelObject object) {
+		if (getEditorController() != null) {
+			return getEditorController().getValidationReport();
+		}
+		return null;
+	}
+
+	@Override
+	public FIBModelObject getSelectedObject() {
+		if (editorController != null) {
+			return editorController.getSelectedObject();
+		}
+		return super.getSelectedObject();
+	}
+
+	@Override
+	public void setSelectedObject(FIBModelObject selectedObject) {
+		if (editorController != null) {
+			if (editorController.getSelectedObject() != selectedObject) {
+				Object oldValue = editorController.getSelectedObject();
+				editorController.setSelectedObject(selectedObject);
+				getPropertyChangeSupport().firePropertyChange("selectedObject", oldValue, selectedObject);
+			}
+		}
+		else {
+			super.setSelectedObject(selectedObject);
+		}
 	}
 
 	public FIBComponent getSelectedComponent() {
-		if (editorController != null) {
-			return editorController.getSelectedObject().getComponent();
+		if (getSelectedObject() != null) {
+			return getSelectedObject().getComponent();
 		}
 		return null;
 	}
 
 	public void setSelectedComponent(FIBComponent selectedComponent) {
-		logger.info(">>>>setSelectedComponent with " + selectedComponent + " editorController=" + editorController);
-		if (editorController != null) {
-			if (editorController.getSelectedObject() != selectedComponent) {
-				Object oldValue = editorController.getSelectedObject();
-				editorController.setSelectedObject(selectedComponent);
-				getPropertyChangeSupport().firePropertyChange("selectedComponent", oldValue, selectedComponent);
-			}
-		}
-	}
-
-	public ImageIcon iconFor(FIBModelObject element) {
-		if (element == null) {
-			return null;
-		}
-		if (element instanceof FIBIteration) {
-			return FIBEditorIconLibrary.ITERATION_ICON;
-		}
-		else if (element instanceof FIBConditional) {
-			return FIBEditorIconLibrary.CONDITIONAL_ICON;
-		}
-		else if (element instanceof FIBComponent && ((FIBComponent) element).isRootComponent()) {
-			return FIBEditorIconLibrary.ROOT_COMPONENT_ICON;
-		}
-		else if (element instanceof FIBTabPanel) {
-			return FIBEditorIconLibrary.TABS_ICON;
-		}
-		else if (element instanceof FIBPanel) {
-			return FIBEditorIconLibrary.PANEL_ICON;
-		}
-		else if (element instanceof FIBSplitPanel) {
-			return FIBEditorIconLibrary.SPLIT_PANEL_ICON;
-		}
-		else if (element instanceof FIBCheckBox) {
-			return FIBEditorIconLibrary.CHECKBOX_ICON;
-		}
-		else if (element instanceof FIBLabel) {
-			return FIBEditorIconLibrary.LABEL_ICON;
-		}
-		else if (element instanceof FIBTable) {
-			return FIBEditorIconLibrary.TABLE_ICON;
-		}
-		else if (element instanceof FIBBrowser) {
-			return FIBEditorIconLibrary.BROWSER_ICON;
-		}
-		else if (element instanceof FIBTextArea) {
-			return FIBEditorIconLibrary.TEXTAREA_ICON;
-		}
-		else if (element instanceof FIBTextField) {
-			return FIBEditorIconLibrary.TEXTFIELD_ICON;
-		}
-		else if (element instanceof FIBImage) {
-			return FIBEditorIconLibrary.IMAGE_ICON;
-		}
-		else if (element instanceof FIBNumber) {
-			return FIBEditorIconLibrary.NUMBER_ICON;
-		}
-		else if (element instanceof FIBDropDown) {
-			return FIBEditorIconLibrary.DROPDOWN_ICON;
-		}
-		else if (element instanceof FIBRadioButtonList) {
-			return FIBEditorIconLibrary.RADIOBUTTON_ICON;
-		}
-		else if (element instanceof FIBButton) {
-			return FIBEditorIconLibrary.BUTTON_ICON;
-		}
-		else if (element instanceof FIBCustom) {
-			return FIBEditorIconLibrary.CUSTOM_ICON;
-		}
-		else if (element instanceof FIBReferencedComponent) {
-			return FIBEditorIconLibrary.REFERENCE_COMPONENT_ICON;
-		}
-		else if (element instanceof FIBGraph) {
-			return FIBEditorIconLibrary.GRAPH_ICON;
-		}
-		else if (element instanceof FIBGraphFunction) {
-			return FIBEditorIconLibrary.GRAPH_FUNCTION_ICON;
-		}
-		else if (element instanceof FIBTableColumn) {
-			return FIBEditorIconLibrary.TABLE_COLUMN_ICON;
-		}
-		else if (element instanceof FIBTableAction) {
-			if (((FIBTableAction) element).getActionType() == ActionType.Add) {
-				return IconFactory.getImageIcon(FIBEditorIconLibrary.TABLE_ACTION_ICON, FIBEditorIconLibrary.DUPLICATE);
-			}
-			if (((FIBTableAction) element).getActionType() == ActionType.Delete) {
-				return IconFactory.getImageIcon(FIBEditorIconLibrary.TABLE_ACTION_ICON, FIBEditorIconLibrary.DELETE);
-			}
-			return FIBEditorIconLibrary.TABLE_ACTION_ICON;
-		}
-		else if (element instanceof FIBBrowserElement) {
-			return FIBEditorIconLibrary.BROWSER_ELEMENT_ICON;
-		}
-		else if (element instanceof FIBBrowserElementChildren) {
-			return FIBEditorIconLibrary.BROWSER_ELEMENT_CHILDREN_ICON;
-		}
-		else if (element instanceof FIBBrowserAction) {
-			if (((FIBBrowserAction) element).getActionType() == org.openflexo.gina.model.widget.FIBBrowserAction.ActionType.Add) {
-				return IconFactory.getImageIcon(FIBEditorIconLibrary.BROWSER_ELEMENT_ACTION_ICON, FIBEditorIconLibrary.DUPLICATE);
-			}
-			if (((FIBBrowserAction) element).getActionType() == org.openflexo.gina.model.widget.FIBBrowserAction.ActionType.Delete) {
-				return IconFactory.getImageIcon(FIBEditorIconLibrary.BROWSER_ELEMENT_ACTION_ICON, FIBEditorIconLibrary.DELETE);
-			}
-			return FIBEditorIconLibrary.BROWSER_ELEMENT_ACTION_ICON;
-		}
-		else if (element instanceof FIBBrowserDragOperation) {
-			return FIBEditorIconLibrary.DRAG_OPERATION_ICON;
-		}
-		return null;
-
+		setSelectedObject(selectedComponent);
 	}
 
 	public String textFor(FIBComponent component) {
@@ -260,19 +178,8 @@ public class FIBBrowserController extends FIBController /*implements Observer*/ 
 	}
 
 	public void rightClick(FIBModelObject component, MouseEvent event) {
+		System.out.println("rightClick with " + component + " event=" + event);
 		editorController.getContextualMenu().displayPopupMenu(component, ((JFIBView<?, ?>) getRootView()).getJComponent(), event);
-	}
-
-	public String getSearchedLabel() {
-		return searchedLabel;
-	}
-
-	public void setSearchedLabel(String searchedLabel) {
-		this.searchedLabel = searchedLabel;
-	}
-
-	public void search() {
-		System.out.println("Searching " + getSearchedLabel());
 	}
 
 	public FIBBrowserElement createElement(FIBBrowser browser) {
