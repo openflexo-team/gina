@@ -42,7 +42,6 @@ package org.openflexo.gina.swing.editor.view;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureEvent;
@@ -202,7 +201,7 @@ public class FIBSwingEditableViewDelegate<M extends FIBComponent, J extends JCom
 	public void mouseClicked(MouseEvent e) {
 		if (getView().isOperatorContentsStart()) {
 			Point p = SwingUtilities.convertPoint((Component) e.getSource(), e.getPoint(), view.getResultingJComponent());
-			if ((new Rectangle(0, 0, FIBSwingEditableView.OPERATOR_ICON_SPACE, FIBSwingEditableView.OPERATOR_ICON_SPACE)).contains(p)) {
+			if (p.x >= 0 && p.x < FIBSwingEditableView.OPERATOR_ICON_SPACE) {
 				getEditorController().setSelectedObject(getFIBComponent().getParent());
 				return;
 			}
@@ -236,8 +235,8 @@ public class FIBSwingEditableViewDelegate<M extends FIBComponent, J extends JCom
 
 	@Override
 	public void focusGained(FocusEvent e) {
-		//System.out.println(
-		//		"focus gained in " + getFIBComponent() + " last selected=" + getLastSelectedObject() + " component=" + getFIBComponent());
+		// System.out.println(
+		// "focus gained in " + getFIBComponent() + " last selected=" + getLastSelectedObject() + " component=" + getFIBComponent());
 		getEditorController().setSelectedObject(getLastSelectedObject());
 	}
 
