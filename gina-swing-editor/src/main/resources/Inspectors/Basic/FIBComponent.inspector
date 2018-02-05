@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
 	dataClassName="org.openflexo.gina.model.FIBComponent" name="Inspector">
-	<Label index="30" label="controller_class" constraints="twocols(location=left)"
+	<Label name="NameLabel" index="-2" label="name" constraints="twocols(location=left;insetsTop=5)"
+		localize="true" />
+	<TextField name="NameTF" index="-1" data="data.name"
+		constraints="twocols(expandHorizontally=true;location=right;insetsTop=5;insetsRight=10)"
+		localize="true" columns="15" />
+	<Label index="30" label="controller" constraints="twocols(location=left)"
 		visible="data.isRootComponent" localize="true"  name="ControllerClassLabel"/>
 	<Custom index="31" componentClassName="org.openflexo.gina.swing.utils.ClassSelector"
 		localize="true" manageDynamicModel="true" data="data.controllerClass"

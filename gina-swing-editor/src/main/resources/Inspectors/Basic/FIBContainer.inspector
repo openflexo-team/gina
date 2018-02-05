@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
 	dataClassName="org.openflexo.gina.model.FIBContainer" name="Inspector">
-	<Label index="10" label="variables" constraints="twocols(location=left)"
-		name="variablesLabel" localize="true" />
-	<Table index="11" iteratorClassName="org.openflexo.gina.model.FIBVariable"
+	<Label index="10" label="API" constraints="twocols(location=left)"
+		name="variablesLabel" localize="true" visible="!(data.isOperator)"/>
+	<Table index="11" iteratorClassName="org.openflexo.gina.model.FIBVariable" visible="!(data.isOperator)"
 		visibleRowCount="3" rowHeight="20" autoSelectFirstRow="true"
 		createNewRowOnClick="false" boundToSelectionManager="false"
 		showFooter="true" selectionMode="MultipleIntervalSelection" localize="true"

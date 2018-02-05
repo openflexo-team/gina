@@ -65,7 +65,6 @@ public class FIBEditorInspectorController implements Observer {
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(FIBEditorInspectorController.class.getPackage().getName());
 
-	JFIBInspectorController definitionInspector;
 	JFIBInspectorController basicInspector;
 	JFIBInspectorController containerInspector;
 	JFIBInspectorController controlsInspector;
@@ -78,9 +77,6 @@ public class FIBEditorInspectorController implements Observer {
 	private static final FIBLibrary INSPECTORS_FIB_LIBRARY = FIBLibraryImpl.createInstance(null);
 
 	public FIBEditorInspectorController() {
-
-		definitionInspector = new JFIBInspectorController(ResourceLocator.locateResource("Inspectors/Definition"), INSPECTORS_FIB_LIBRARY,
-				FIBModelObjectImpl.GINA_LOCALIZATION);
 
 		basicInspector = new JFIBInspectorController(ResourceLocator.locateResource("Inspectors/Basic"), INSPECTORS_FIB_LIBRARY,
 				FIBModelObjectImpl.GINA_LOCALIZATION);
@@ -101,7 +97,6 @@ public class FIBEditorInspectorController implements Observer {
 				FIBModelObjectImpl.GINA_LOCALIZATION);
 
 		panelGroup = new FlexoCollabsiblePanelGroup();
-		panelGroup.addContents("Definition", definitionInspector.getRootPane());
 		panelGroup.addContents("Basic", basicInspector.getRootPane());
 		panelGroup.addContents("Container", containerInspector.getRootPane());
 		panelGroup.addContents("Controls", controlsInspector.getRootPane());
@@ -136,7 +131,6 @@ public class FIBEditorInspectorController implements Observer {
 	}
 
 	public void inspectObject(Object object) {
-		definitionInspector.inspectObject(object);
 		basicInspector.inspectObject(object);
 		containerInspector.inspectObject(object);
 		controlsInspector.inspectObject(object);
