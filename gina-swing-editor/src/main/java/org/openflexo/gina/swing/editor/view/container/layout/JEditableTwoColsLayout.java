@@ -78,11 +78,6 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 		super(panelView);
 	}
 
-	/*@Override
-	public JFIBPanelView getContainerView() {
-		return (JFIBPanelView) super.getContainerView();
-	}*/
-
 	private void fillInContainerWithSubComponents(Container panel, int fromIndex, int toIndex, boolean addGlueWhenRequiredAtTheEnd) {
 		FIBComponent lastAddedChild = null;
 
@@ -91,8 +86,6 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 		for (int j = fromIndex; j < toIndex; j++) {
 			JFIBView<?, ?> childView = (JFIBView<?, ?>) flattenedContents.get(j);
 			FIBComponent c = childView.getComponent();
-			// FIBComponent c = getComponent().getSubComponents().get(j);
-			// JFIBView<?, ?> childView = (JFIBView<?, ?>) getContainerView().getSubViewsMap().get(c);
 			if (c.getConstraints() instanceof TwoColsLayoutConstraints) {
 				TwoColsLayoutConstraints contraints = (TwoColsLayoutConstraints) c.getConstraints();
 				if (lastAddedChild != null && lastAddedChild.getConstraints() instanceof TwoColsLayoutConstraints
@@ -146,12 +139,11 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 
 			List<FIBView<?, JComponent>> flattenedContents = getFlattenedContents();
 
-			for (int i = 0; i < /*getComponent().getSubComponents()*/getFlattenedContents().size(); i++) {
+			for (int i = 0; i < getFlattenedContents().size(); i++) {
 
 				JFIBView<?, ?> childView = (JFIBView<?, ?>) flattenedContents.get(i);
 				FIBComponent c = childView.getComponent();
 
-				// FIBComponent c = getComponent().getSubComponents().get(i);
 				if (c.getConstraints() instanceof TwoColsLayoutConstraints) {
 					TwoColsLayoutConstraints contraints = (TwoColsLayoutConstraints) c.getConstraints();
 
@@ -286,9 +278,8 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 
 						System.out.println("Right component is missing");
 
-						JFIBView<?, ?> childView = existingComponent/*(JFIBView<?, ?>) getContainerView().getSubViewsMap().get(existingComponent)*/;
-						_addChildToContainerWithConstraints(Box.createRigidArea(childView.getResultingJComponent().getSize()), panel,
-								presentConstraint);
+						_addChildToContainerWithConstraints(Box.createRigidArea(existingComponent.getResultingJComponent().getSize()),
+								panel, presentConstraint);
 
 						lastInsertedElementIndex++;
 
@@ -312,9 +303,8 @@ public class JEditableTwoColsLayout extends JTwoColsLayout
 						leftPHComponent = Box.createRigidArea(preferredSize);
 						_addChildToContainerWithConstraints(leftPHComponent, panel, leftConstraints);
 
-						JFIBView<?, ?> childView = existingComponent/*(JFIBView<?, ?>) getContainerView().getSubViewsMap().get(existingComponent)*/;
-						_addChildToContainerWithConstraints(Box.createRigidArea(childView.getResultingJComponent().getSize()), panel,
-								presentConstraint);
+						_addChildToContainerWithConstraints(Box.createRigidArea(existingComponent.getResultingJComponent().getSize()),
+								panel, presentConstraint);
 
 						// Put other components
 						fillInContainerWithSubComponents(panel, lastInsertedElementIndex + 1, flattenedContents.size(), false);
