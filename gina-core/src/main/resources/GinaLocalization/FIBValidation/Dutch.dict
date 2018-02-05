@@ -11,6 +11,7 @@ binding_'($binding.bindingName)'_is_not_valid\:\ ($binding)=Binding '($binding.b
 binding_'($binding.expression)'_is_not_valid\:\ ($binding)=Binding '($binding.expression)' is not valid\: ($binding)
 component_($object.toString)_has_a_localized_dictionary_but_is_not_root_component=Component ($object.toString) has a localized dictionary but is not root component
 component_($validable)_has_a_localized_dictionary_but_is_not_root_component=Component ($validable) has a localized dictionary but is not root component
+component_is_declared_as_root_but_does_not_declare_any_variables=component_is_declared_as_root_but_does_not_declare_any_variables
 consistency_check_ok=Consistency check ok
 delete_this_binding=Delete this binding
 dependancy_should_not_be_registered_twice_description=Dependancy should not be registered twice description
