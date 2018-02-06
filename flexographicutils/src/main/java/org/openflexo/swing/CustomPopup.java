@@ -768,7 +768,7 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			return;
 		}
 		_popup.setVisible(false);
-		if (ToolBox.isMacOS()) {
+		if (!ToolBox.isMacOS()) {
 			_downButton.setIcon(UtilsIconLibrary.CUSTOM_POPUP_BUTTON);
 		}
 		if (notifyObjectChanged) {
