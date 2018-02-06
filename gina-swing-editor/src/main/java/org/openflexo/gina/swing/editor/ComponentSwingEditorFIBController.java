@@ -38,12 +38,13 @@
 
 package org.openflexo.gina.swing.editor;
 
-import java.awt.event.MouseEvent;
+import java.awt.Component;
 import java.util.logging.Logger;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelObject;
+import org.openflexo.gina.model.FIBMouseEvent;
 import org.openflexo.gina.model.FIBValidationReport;
 import org.openflexo.gina.model.graph.FIBDiscreteFunction;
 import org.openflexo.gina.model.graph.FIBGraph;
@@ -69,7 +70,6 @@ import org.openflexo.gina.model.widget.FIBTableAction.FIBRemoveAction;
 import org.openflexo.gina.model.widget.FIBTableColumn;
 import org.openflexo.gina.model.widget.FIBTextFieldColumn;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.gina.view.GinaViewFactory;
 import org.openflexo.model.ModelEntity;
@@ -169,9 +169,10 @@ public class ComponentSwingEditorFIBController extends SwingEditorFIBController<
 		}
 	}
 
-	public void rightClick(FIBModelObject component, MouseEvent event) {
+	public void rightClick(FIBModelObject component, FIBMouseEvent event) {
 		System.out.println("rightClick with " + component + " event=" + event);
-		editorController.getContextualMenu().displayPopupMenu(component, ((JFIBView<?, ?>) getRootView()).getJComponent(), event);
+		editorController.getContextualMenu().displayPopupMenu(component,
+				/*((JFIBView<?, ?>) getRootView()).getJComponent()*/(Component) event.getSource(), event.getPoint());
 	}
 
 	public FIBBrowserElement createElement(FIBBrowser browser) {

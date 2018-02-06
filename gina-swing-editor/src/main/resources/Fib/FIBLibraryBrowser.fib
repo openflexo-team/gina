@@ -8,7 +8,7 @@
 	<Browser id="1" deepExploration="true" showFooter="true" rowHeight="18" 
 		showRootsHandle="true" manageDynamicModel="true" root="data"
 		selectionMode="DiscontiguousTreeSelection"
-		rightClickAction="controller.rightClick(LibraryBrowser.selected,controller.mouseEvent)"
+		rightClickAction="controller.rightClick(LibraryBrowser.selected,event)"
 		doubleClickAction="controller.doubleClickOnComponentResource(LibraryBrowser.selected)"
 		boundToSelectionManager="true" localize="true"
 		constraints="border(location=center;x=0;y=0)" iteratorClassName="org.openflexo.rm.Resource"

@@ -220,7 +220,8 @@ public class FIBSwingEditableViewDelegate<M extends FIBComponent, J extends JCom
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3) {
-			getEditorController().getContextualMenu().displayPopupMenu(getFIBComponent(), getJComponent(), e);
+			getEditorController().getContextualMenu().displayPopupMenu(getFIBComponent(), /*getJComponent()*/(Component) e.getSource(),
+					e.getPoint());
 		}
 	}
 

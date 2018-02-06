@@ -67,6 +67,7 @@ import org.openflexo.gina.swing.utils.JFIBPreferences;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.logging.FlexoLoggingManager;
+import org.openflexo.rm.Resource;
 import org.openflexo.swing.ComponentBoundSaver;
 import org.openflexo.swing.layout.JXMultiSplitPane;
 import org.openflexo.swing.layout.JXMultiSplitPane.DividerPainter;
@@ -202,7 +203,15 @@ public class LaunchAdvancedFIBEditor {
 			frame.getContentPane().setLayout(new BorderLayout());
 			frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
 
-			FIBLibraryBrowser libraryBrowser = new FIBLibraryBrowser(editor.getFIBLibrary());
+			FIBLibraryBrowser libraryBrowser = new FIBLibraryBrowser(editor.getFIBLibrary()) {
+				@Override
+				public void doubleClickOnComponentResource(Resource selectedComponentResource) {
+					System.out.println("doubleClickOnComponentResource " + selectedComponentResource);
+					if (selectedComponentResource != null) {
+						editor.openFIBComponent(selectedComponentResource, null, null, frame);
+					}
+				}
+			};
 			FIBEditorPalettes palette = editor.makePalette();
 			FIBEditorInspectorController inspectors = editor.makeInspectors();
 
