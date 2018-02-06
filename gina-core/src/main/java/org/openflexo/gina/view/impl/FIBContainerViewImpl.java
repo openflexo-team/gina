@@ -42,7 +42,6 @@ package org.openflexo.gina.view.impl;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -304,7 +303,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 
 	@Override
 	public synchronized void updateFont() {
-		if (getFont() != null) {
+		if (getFont() != null && getRenderingAdapter() != null) {
 			getRenderingAdapter().setFont(getTechnologyComponent(), getFont());
 		}
 		if (subViewsMap != null) {
