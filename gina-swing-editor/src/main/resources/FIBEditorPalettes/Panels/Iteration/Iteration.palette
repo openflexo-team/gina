@@ -1,4 +1,4 @@
 <Image imageFile="IterationPaletteElement.png">
-	<Parameter name="x" value="10"/>
-	<Parameter name="y" value="160"/>
+	<Parameter name="x" value="13"/>
+	<Parameter name="y" value="165"/>
 </Image>
