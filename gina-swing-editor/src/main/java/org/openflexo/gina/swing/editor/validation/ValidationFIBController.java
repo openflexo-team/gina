@@ -89,7 +89,6 @@ public class ValidationFIBController extends ComponentSwingEditorFIBController {
 	@Override
 	public FIBModelObject getSelectedObject() {
 		FIBModelObject returned = super.getSelectedObject();
-		System.out.println("getSelectedObject() ? " + returned);
 		if (returned == null) {
 			return getDataObject();
 		}
