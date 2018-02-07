@@ -654,6 +654,13 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 	public boolean isOperator();
 
+	/**
+	 * Returns the first parent which is not an operator
+	 * 
+	 * @return
+	 */
+	public FIBContainer getConcreteContainer();
+
 	public static abstract class FIBComponentImpl extends FIBModelObjectImpl implements FIBComponent {
 
 		private static final Logger LOGGER = Logger.getLogger(FIBComponent.class.getPackage().getName());
@@ -692,6 +699,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		private Class<? extends FIBController> controllerClass;
 
 		private FIBContainer parent;
+
+		private ComponentConstraints constraints;
 
 		protected FIBComponentBindingModel bindingModel = null;
 		// protected BindingVariable dataBindingVariable;
@@ -818,7 +827,22 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			return true;
 		}
 
-		private ComponentConstraints constraints;
+		/**
+		 * Returns the first parent view which is not an operator view
+		 * 
+		 * @return
+		 */
+		@Override
+		public final FIBContainer getConcreteContainer() {
+			FIBContainer current = getParent();
+			while (current != null) {
+				if (!(current instanceof FIBOperator)) {
+					return current;
+				}
+				current = current.getParent();
+			}
+			return null;
+		}
 
 		@Override
 		public ComponentConstraints getConstraints() {
@@ -850,9 +874,10 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		}
 
 		private ComponentConstraints _normalizeConstraintsWhenRequired(ComponentConstraints someConstraints) {
-			if (getParent() instanceof FIBSplitPanel) {
+			if (getConcreteContainer() instanceof FIBSplitPanel) {
 				if (someConstraints == null) {
-					SplitLayoutConstraints returned = new SplitLayoutConstraints(((FIBSplitPanel) getParent()).getFirstEmptyPlaceHolder());
+					SplitLayoutConstraints returned = new SplitLayoutConstraints(
+							((FIBSplitPanel) getConcreteContainer()).getFirstEmptyPlaceHolder());
 					returned.setComponent(this);
 					return returned;
 				}
@@ -862,11 +887,11 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				someConstraints.setComponent(this);
 				return someConstraints;
 			}
-			else if (getParent() instanceof FIBPanel) {
+			else if (getConcreteContainer() instanceof FIBPanel) {
 				// Init to default value when relevant but null
 				if (someConstraints == null) {
 					ComponentConstraints returned;
-					switch (((FIBPanel) getParent()).getLayout()) {
+					switch (((FIBPanel) getConcreteContainer()).getLayout()) {
 						case none:
 							returned = new NoneLayoutConstraints();
 							break;
@@ -899,7 +924,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 					return returned;
 				}
 				// Mutate to right type when necessary
-				switch (((FIBPanel) getParent()).getLayout()) {
+				switch (((FIBPanel) getConcreteContainer()).getLayout()) {
 					case none:
 						if (!(someConstraints instanceof NoneLayoutConstraints)) {
 							return new NoneLayoutConstraints(someConstraints);

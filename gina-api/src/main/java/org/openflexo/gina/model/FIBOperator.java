@@ -54,31 +54,7 @@ import org.openflexo.model.annotations.ModelEntity;
 @ImplementationClass(FIBOperator.FIBOperatorImpl.class)
 public abstract interface FIBOperator extends FIBContainer {
 
-	/**
-	 * Returns the first parent which is not an operator
-	 * 
-	 * @return
-	 */
-	public FIBContainer getConcreteContainer();
-
 	public static abstract class FIBOperatorImpl extends FIBContainerImpl implements FIBOperator {
-
-		/**
-		 * Returns the first parent view which is not an operator view
-		 * 
-		 * @return
-		 */
-		@Override
-		public final FIBContainer getConcreteContainer() {
-			FIBContainer current = getParent();
-			while (current != null) {
-				if (!(current instanceof FIBOperator)) {
-					return current;
-				}
-				current = current.getParent();
-			}
-			return null;
-		}
 
 		@Override
 		public Layout getLayout() {
@@ -96,6 +72,16 @@ public abstract interface FIBOperator extends FIBContainer {
 		@Override
 		public boolean isOperator() {
 			return true;
+		}
+
+		@Override
+		public void normalizeConstraintsWhenRequired() {
+			// Here we MUST mutate layout constraints for all children, otherwise ClassCastException will arise
+			for (FIBComponent child : getSubComponents()) {
+				System.out.println("OPERATOR: child with constraints " + child.getConstraints());
+				child.normalizeConstraintsWhenRequired();
+				System.out.println("OPERATOR: child with constraints " + child.getConstraints());
+			}
 		}
 
 	}
