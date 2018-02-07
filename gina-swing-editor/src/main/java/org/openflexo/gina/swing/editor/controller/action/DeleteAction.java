@@ -43,10 +43,12 @@ import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.FIBModelObject;
+import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.controller.FIBEditorIconLibrary;
 import org.openflexo.logging.FlexoLogger;
@@ -56,7 +58,12 @@ public class DeleteAction extends AbstractEditorActionImpl {
 	private static final Logger logger = FlexoLogger.getLogger(DeleteAction.class.getPackage().getName());
 
 	public DeleteAction(FIBEditorController anEditorController, final JFrame frame) {
-		super("Delete", FIBEditorIconLibrary.DELETE_ICON, anEditorController, frame);
+		super("delete", FIBEditorIconLibrary.DELETE_ICON, anEditorController, frame);
+	}
+
+	@Override
+	public KeyStroke getShortcut() {
+		return KeyStroke.getKeyStroke(FIBEditor.DELETE_KEY_CODE, 0);
 	}
 
 	@Override

@@ -48,7 +48,7 @@ import org.openflexo.gina.swing.view.widget.JFIBReferencedComponentWidget;
 public class OpenComponent extends AbstractEditorActionImpl {
 
 	public OpenComponent(FIBEditorController anEditorController) {
-		super("Inspect", FIBEditorIconLibrary.INSPECT_ICON, anEditorController);
+		super("open_component", FIBEditorIconLibrary.INSPECT_ICON, anEditorController);
 	}
 
 	@Override

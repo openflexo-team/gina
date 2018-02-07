@@ -39,6 +39,8 @@
 
 package org.openflexo.gina.swing.editor;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -89,6 +91,7 @@ import org.openflexo.rm.FileSystemResourceLocatorImpl;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.swing.FlexoFileChooser;
+import org.openflexo.toolbox.ToolBox;
 
 /**
  * This class provides a generic framework for managing {@link FIBComponent} edition<br>
@@ -105,6 +108,11 @@ public class FIBEditor {
 			ResourceLocator.locateResource("GinaLocalization/GinaSwingEditor"), FIBModelObjectImpl.GINA_LOCALIZATION, true, true);
 
 	public static Resource COMPONENT_LOCALIZATION_FIB = ResourceLocator.locateResource("Fib/LocalizedPanel.fib");
+
+	public static final int META_MASK = ToolBox.isMacOS() ? InputEvent.META_MASK : InputEvent.CTRL_MASK;
+	public static final int MULTI_SELECTION_MASK = ToolBox.isMacOS() ? InputEvent.META_DOWN_MASK : InputEvent.CTRL_DOWN_MASK;
+	public static final int DELETE_KEY_CODE = ToolBox.isMacOS() ? KeyEvent.VK_BACK_SPACE : KeyEvent.VK_DELETE;
+	public static final int BACKSPACE_DELETE_KEY_CODE = ToolBox.isMacOS() ? KeyEvent.VK_DELETE : KeyEvent.VK_BACK_SPACE;
 
 	private FIBEditorPalettes palette;
 	private JFIBDialogInspectorController inspector;

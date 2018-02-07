@@ -46,7 +46,7 @@ import org.openflexo.gina.swing.editor.controller.FIBEditorIconLibrary;
 public class RedoAction extends AbstractEditorActionImpl {
 
 	public RedoAction(FIBEditorController anEditorController) {
-		super("Redo", FIBEditorIconLibrary.REDO_ICON, anEditorController);
+		super("redo", FIBEditorIconLibrary.REDO_ICON, anEditorController);
 	}
 
 	@Override

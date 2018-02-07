@@ -39,7 +39,12 @@
 
 package org.openflexo.gina.swing.editor.controller.action;
 
+import java.awt.event.KeyEvent;
+
+import javax.swing.KeyStroke;
+
 import org.openflexo.gina.model.FIBModelObject;
+import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.controller.FIBEditorIconLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -47,8 +52,15 @@ import org.openflexo.model.exceptions.ModelExecutionException;
 
 public class CutAction extends AbstractEditorActionImpl {
 
+	public static KeyStroke ACCELERATOR = KeyStroke.getKeyStroke(KeyEvent.VK_X, FIBEditor.META_MASK);
+
 	public CutAction(FIBEditorController anEditorController) {
-		super("Cut", FIBEditorIconLibrary.CUT_ICON, anEditorController);
+		super("cut", FIBEditorIconLibrary.CUT_ICON, anEditorController);
+	}
+
+	@Override
+	public KeyStroke getShortcut() {
+		return ACCELERATOR;
 	}
 
 	@Override

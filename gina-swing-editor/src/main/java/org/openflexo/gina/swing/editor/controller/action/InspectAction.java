@@ -47,7 +47,7 @@ import org.openflexo.gina.swing.utils.JFIBDialogInspectorController;
 public class InspectAction extends AbstractEditorActionImpl {
 
 	public InspectAction(FIBEditorController anEditorController) {
-		super("Inspect", FIBEditorIconLibrary.INSPECT_ICON, anEditorController);
+		super("inspect", FIBEditorIconLibrary.INSPECT_ICON, anEditorController);
 	}
 
 	@Override

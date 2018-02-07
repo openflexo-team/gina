@@ -56,7 +56,7 @@ public class WrapWithSplitPanelAction extends AbstractEditorActionImpl {
 	private static final Logger logger = FlexoLogger.getLogger(WrapWithSplitPanelAction.class.getPackage().getName());
 
 	public WrapWithSplitPanelAction(FIBEditorController anEditorController) {
-		super("Wrap with split panel", IconFactory.getImageIcon(FIBEditorIconLibrary.SPLIT_PANEL_ICON, FIBEditorIconLibrary.DUPLICATE),
+		super("wrap_with_split_panel", IconFactory.getImageIcon(FIBEditorIconLibrary.SPLIT_PANEL_ICON, FIBEditorIconLibrary.DUPLICATE),
 				anEditorController);
 	}
 

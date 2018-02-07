@@ -46,7 +46,7 @@ import org.openflexo.gina.swing.editor.controller.FIBEditorIconLibrary;
 public class UndoAction extends AbstractEditorActionImpl {
 
 	public UndoAction(FIBEditorController anEditorController) {
-		super("Undo", FIBEditorIconLibrary.UNDO_ICON, anEditorController);
+		super("undo", FIBEditorIconLibrary.UNDO_ICON, anEditorController);
 	}
 
 	@Override

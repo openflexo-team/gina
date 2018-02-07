@@ -40,6 +40,7 @@
 package org.openflexo.gina.swing.editor.controller.action;
 
 import javax.swing.Icon;
+import javax.swing.KeyStroke;
 
 import org.openflexo.gina.model.FIBModelObject;
 
@@ -48,6 +49,8 @@ public interface EditorAction {
 	public String getActionName();
 
 	public Icon getActionIcon();
+
+	public KeyStroke getShortcut();
 
 	public FIBModelObject performAction(FIBModelObject object);
 

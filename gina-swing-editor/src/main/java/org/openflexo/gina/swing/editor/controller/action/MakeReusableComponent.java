@@ -83,7 +83,7 @@ public class MakeReusableComponent extends AbstractEditorActionImpl {
 	private static final Logger logger = FlexoLogger.getLogger(MakeReusableComponent.class.getPackage().getName());
 
 	public MakeReusableComponent(FIBEditorController anEditorController, JFrame frame) {
-		super("Make component", IconFactory.getImageIcon(FIBEditorIconLibrary.PANEL_ICON, FIBEditorIconLibrary.DUPLICATE),
+		super("make_reusable_component", IconFactory.getImageIcon(FIBEditorIconLibrary.PANEL_ICON, FIBEditorIconLibrary.DUPLICATE),
 				anEditorController, frame);
 	}
 

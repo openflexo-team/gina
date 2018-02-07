@@ -39,7 +39,12 @@
 
 package org.openflexo.gina.swing.editor.controller.action;
 
+import java.awt.event.KeyEvent;
+
+import javax.swing.KeyStroke;
+
 import org.openflexo.gina.model.FIBModelObject;
+import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.controller.FIBEditorIconLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -47,8 +52,15 @@ import org.openflexo.model.exceptions.ModelExecutionException;
 
 public class PasteAction extends AbstractEditorActionImpl {
 
+	public static KeyStroke ACCELERATOR = KeyStroke.getKeyStroke(KeyEvent.VK_V, FIBEditor.META_MASK);
+
 	public PasteAction(FIBEditorController anEditorController) {
-		super("Paste", FIBEditorIconLibrary.PASTE_ICON, anEditorController);
+		super("paste", FIBEditorIconLibrary.PASTE_ICON, anEditorController);
+	}
+
+	@Override
+	public KeyStroke getShortcut() {
+		return ACCELERATOR;
 	}
 
 	@Override

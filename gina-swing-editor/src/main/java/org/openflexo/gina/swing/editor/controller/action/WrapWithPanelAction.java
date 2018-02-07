@@ -59,7 +59,7 @@ public class WrapWithPanelAction extends AbstractEditorActionImpl {
 	private static final Logger logger = FlexoLogger.getLogger(WrapWithPanelAction.class.getPackage().getName());
 
 	public WrapWithPanelAction(FIBEditorController anEditorController) {
-		super("Wrap with panel", IconFactory.getImageIcon(FIBEditorIconLibrary.PANEL_ICON, FIBEditorIconLibrary.DUPLICATE),
+		super("wrap_with_panel", IconFactory.getImageIcon(FIBEditorIconLibrary.PANEL_ICON, FIBEditorIconLibrary.DUPLICATE),
 				anEditorController);
 	}
 

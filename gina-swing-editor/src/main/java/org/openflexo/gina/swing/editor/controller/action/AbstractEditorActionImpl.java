@@ -41,7 +41,9 @@ package org.openflexo.gina.swing.editor.controller.action;
 
 import javax.swing.Icon;
 import javax.swing.JFrame;
+import javax.swing.KeyStroke;
 
+import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 
 public abstract class AbstractEditorActionImpl implements EditorAction {
@@ -53,7 +55,7 @@ public abstract class AbstractEditorActionImpl implements EditorAction {
 
 	public AbstractEditorActionImpl(String actionName, Icon actionIcon, FIBEditorController anEditorController) {
 		super();
-		this.actionName = actionName;
+		this.actionName = FIBEditor.EDITOR_LOCALIZATION.localizedForKey(actionName);
 		this.actionIcon = actionIcon;
 		this.editorController = anEditorController;
 	}
@@ -80,4 +82,10 @@ public abstract class AbstractEditorActionImpl implements EditorAction {
 	public JFrame getFrame() {
 		return frame;
 	}
+
+	@Override
+	public KeyStroke getShortcut() {
+		return null;
+	}
+
 }
