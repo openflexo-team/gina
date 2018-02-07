@@ -40,7 +40,6 @@
 package org.openflexo.gina.model;
 
 import org.openflexo.gina.model.container.FIBPanel.Layout;
-import org.openflexo.gina.model.container.layout.ComponentConstraints;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 
@@ -64,10 +63,10 @@ public abstract interface FIBOperator extends FIBContainer {
 			return super.getLayout();
 		}
 
-		@Override
+		/*@Override
 		public ComponentConstraints getConstraints() {
 			return null;
-		}
+		}*/
 
 		@Override
 		public boolean isOperator() {
@@ -78,9 +77,9 @@ public abstract interface FIBOperator extends FIBContainer {
 		public void normalizeConstraintsWhenRequired() {
 			// Here we MUST mutate layout constraints for all children, otherwise ClassCastException will arise
 			for (FIBComponent child : getSubComponents()) {
-				System.out.println("OPERATOR: child with constraints " + child.getConstraints());
+				// System.out.println("OPERATOR: child with constraints " + child.getConstraints());
 				child.normalizeConstraintsWhenRequired();
-				System.out.println("OPERATOR: child with constraints " + child.getConstraints());
+				// System.out.println("OPERATOR: child with constraints " + child.getConstraints());
 			}
 		}
 

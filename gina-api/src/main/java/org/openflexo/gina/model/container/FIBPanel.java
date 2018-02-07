@@ -487,9 +487,9 @@ public interface FIBPanel extends FIBContainer {
 
 				// Here we MUST mutate layout constraints for all children, otherwise ClassCastException will arise
 				for (FIBComponent child : getSubComponents()) {
-					System.out.println("PANEL: child with constraints " + child.getConstraints());
+					// System.out.println("PANEL: child with constraints " + child.getConstraints());
 					child.normalizeConstraintsWhenRequired();
-					System.out.println("PANEL: child with constraints " + child.getConstraints());
+					// System.out.println("PANEL: child with constraints " + child.getConstraints());
 				}
 
 				hasChanged(notification);
