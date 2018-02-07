@@ -65,6 +65,7 @@ import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PastingPoint;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
@@ -94,6 +95,7 @@ public abstract interface FIBContainer extends FIBComponent {
 	public void setSubComponents(List<FIBComponent> subComponents);
 
 	@Adder(SUB_COMPONENTS_KEY)
+	@PastingPoint
 	public void addToSubComponents(FIBComponent aSubComponent);
 
 	public void insertToSubComponentsAtIndex(FIBComponent aSubComponent, int index);

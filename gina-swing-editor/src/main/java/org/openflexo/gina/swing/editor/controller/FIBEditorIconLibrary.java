@@ -57,6 +57,12 @@ public class FIBEditorIconLibrary {
 	public static final ImageIcon DELETE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Actions/Delete.gif"));
 	public static final ImageIcon HELP_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Actions/Help.gif"));
 	public static final ImageIcon REFRESH_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Actions/Refresh.gif"));
+	public static final ImageIcon INSPECT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Actions/Inspect.gif"));
+	public static final ImageIcon COPY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Actions/Copy.gif"));
+	public static final ImageIcon CUT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Actions/Cut.gif"));
+	public static final ImageIcon PASTE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Actions/Paste.gif"));
+	public static final ImageIcon UNDO_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Actions/Undo.gif"));
+	public static final ImageIcon REDO_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Actions/Redo.gif"));
 
 	public static final ImageIcon ROLE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/SmallRole.gif"));
 	public static final ImageIcon ROOT_COMPONENT_ICON = new ImageIconResource(

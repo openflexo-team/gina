@@ -73,6 +73,7 @@ import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PastingPoint;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
@@ -248,6 +249,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 	public void setChildren(List<FIBBrowserElementChildren> children);
 
 	@Adder(CHILDREN_KEY)
+	@PastingPoint
 	public void addToChildren(FIBBrowserElementChildren aChildren);
 
 	@Remover(CHILDREN_KEY)
@@ -263,6 +265,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 	public void setActions(List<FIBBrowserAction> actions);
 
 	@Adder(ACTIONS_KEY)
+	@PastingPoint
 	public void addToActions(FIBBrowserAction anAction);
 
 	@Remover(ACTIONS_KEY)
@@ -278,6 +281,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 	public void setDragOperations(List<FIBBrowserDragOperation> actions);
 
 	@Adder(DRAG_OPERATIONS_KEY)
+	@PastingPoint
 	public void addToDragOperations(FIBBrowserDragOperation anAction);
 
 	@Remover(DRAG_OPERATIONS_KEY)

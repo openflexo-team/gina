@@ -37,47 +37,38 @@
  * 
  */
 
-package org.openflexo.gina.swing.editor.controller;
+package org.openflexo.gina.swing.editor.controller.action;
 
-import javax.swing.*;
 import org.openflexo.gina.model.FIBModelObject;
+import org.openflexo.gina.model.widget.FIBReferencedComponent;
+import org.openflexo.gina.swing.editor.controller.FIBEditorController;
+import org.openflexo.gina.swing.editor.controller.FIBEditorIconLibrary;
+import org.openflexo.gina.swing.view.widget.JFIBReferencedComponentWidget;
 
-public class EditorAction {
+public class OpenComponent extends AbstractEditorActionImpl {
 
-	private String actionName;
-	private Icon actionIcon;
-	private ActionPerformer performer;
-	private ActionAvailability availability;
-
-	public EditorAction(String actionName, Icon actionIcon, ActionPerformer performer, ActionAvailability availability) {
-		super();
-		this.actionName = actionName;
-		this.actionIcon = actionIcon;
-		this.performer = performer;
-		this.availability = availability;
+	public OpenComponent(FIBEditorController anEditorController) {
+		super("Inspect", FIBEditorIconLibrary.INSPECT_ICON, anEditorController);
 	}
 
-	public interface ActionPerformer {
-		FIBModelObject performAction(FIBModelObject object);
+	@Override
+	public boolean isEnabledFor(FIBModelObject object) {
+		return object instanceof FIBReferencedComponent;
 	}
 
-	public interface ActionAvailability {
-		boolean isAvailableFor(FIBModelObject object);
+	@Override
+	public boolean isVisibleFor(FIBModelObject object) {
+		return object instanceof FIBReferencedComponent;
 	}
 
-	public String getActionName() {
-		return actionName;
+	@Override
+	public FIBModelObject performAction(FIBModelObject object) {
+		FIBReferencedComponent referencedComponent = (FIBReferencedComponent) object;
+		JFIBReferencedComponentWidget widgetView = (JFIBReferencedComponentWidget) getEditorController().getController()
+				.viewForComponent(referencedComponent);
+		Object dataObject = widgetView.getValue();
+		getEditorController().getEditor().loadFIB(widgetView.getComponentFile(), dataObject, getFrame());
+		return referencedComponent;
 	}
 
-	public Icon getActionIcon() {
-		return actionIcon;
-	}
-
-	public ActionPerformer getPerformer() {
-		return performer;
-	}
-
-	public ActionAvailability getAvailability() {
-		return availability;
-	}
 }

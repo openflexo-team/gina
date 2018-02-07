@@ -65,6 +65,7 @@ import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PastingPoint;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
@@ -197,6 +198,7 @@ public interface FIBBrowser extends FIBWidget {
 	public void setElements(List<FIBBrowserElement> elements);
 
 	@Adder(ELEMENTS_KEY)
+	@PastingPoint
 	public void addToElements(FIBBrowserElement aElement);
 
 	@Remover(ELEMENTS_KEY)

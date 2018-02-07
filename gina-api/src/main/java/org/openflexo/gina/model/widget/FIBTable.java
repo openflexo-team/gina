@@ -70,6 +70,7 @@ import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PastingPoint;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
@@ -212,6 +213,7 @@ public interface FIBTable extends FIBWidget {
 	public void setColumns(List<FIBTableColumn> columns);
 
 	@Adder(COLUMNS_KEY)
+	@PastingPoint
 	public void addToColumns(FIBTableColumn aColumn);
 
 	@Remover(COLUMNS_KEY)
@@ -227,6 +229,7 @@ public interface FIBTable extends FIBWidget {
 	public void setActions(List<FIBTableAction> actions);
 
 	@Adder(ACTIONS_KEY)
+	@PastingPoint
 	public void addToActions(FIBTableAction aAction);
 
 	@Remover(ACTIONS_KEY)

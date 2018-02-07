@@ -82,6 +82,7 @@ import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.localization.LocalizedDelegateImpl;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.model.factory.Clipboard;
 import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.FileSystemResourceLocatorImpl;
@@ -127,6 +128,9 @@ public class FIBEditor {
 	private FIBEditorController activeEditorController = null;
 
 	private final FIBEditorLoadingProgress progress;
+
+	// Clipboard shared by all components opened in this FIBEditor
+	private Clipboard clipboard;
 
 	public FIBEditor(FIBLibrary fibLibrary) {
 		this(fibLibrary, null);
@@ -651,6 +655,24 @@ public class FIBEditor {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Get clipboard shared by all components opened in this FIBEditor
+	 * 
+	 * @return
+	 */
+	public Clipboard getClipboard() {
+		return clipboard;
+	}
+
+	/**
+	 * Sets clipboard shared by all components opened in this FIBEditor
+	 * 
+	 * @param clipboard
+	 */
+	public void setClipboard(Clipboard clipboard) {
+		this.clipboard = clipboard;
 	}
 
 }
