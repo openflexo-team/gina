@@ -86,10 +86,10 @@ public class DynamicPropertyPathElement<W extends FIBComponent> extends SimplePa
 		}
 	}
 
-	/*@Override
+	@Override
 	public boolean isNotificationSafe() {
 		return false;
-	}*/
+	}
 
 	@Override
 	public void activate() {

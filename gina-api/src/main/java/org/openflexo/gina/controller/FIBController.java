@@ -1027,6 +1027,10 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 				persons.addAll(children);
 			}
 
+			@Override
+			public String toString() {
+				return "Family:" + father;
+			}
 		}
 
 	}

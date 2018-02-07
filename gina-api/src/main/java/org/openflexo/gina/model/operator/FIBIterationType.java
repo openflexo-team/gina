@@ -92,7 +92,7 @@ public class FIBIterationType extends FIBOperatorType<FIBIteration> {
 				return ((IteratedContents) context).getIteratedValue();
 			}
 			// Happen when the iteration is beeing building
-			// logger.warning("Unexpected target=" + target + " context=" + context);
+			logger.warning("Unexpected target=" + target + " context=" + context);
 			return null;
 		}
 

@@ -62,12 +62,6 @@ public class JFIBIterationView extends FIBIterationViewImpl<JPanel, JComponent> 
 	}
 
 	@Override
-	protected void performUpdate() {
-		// TODO Auto-generated method stub
-		super.performUpdate();
-	}
-
-	@Override
 	protected JPanel makeTechnologyComponent() {
 		return null;
 	}

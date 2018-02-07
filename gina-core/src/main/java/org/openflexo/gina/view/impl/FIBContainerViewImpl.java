@@ -168,11 +168,15 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		}
 	}
 
-	protected void buildSubComponents() {
+	public void buildSubComponents() {
 		subViewsMap.clear();
 		internallyBuildChildComponents();
 		addSubComponentsAndDoLayout();
 		performUpdateSubViews();
+	}
+
+	protected FIBView<?, C2> viewForComponent(FIBComponent subComponent) {
+		return subViewsMap.get(subComponent);
 	}
 
 	private void internallyBuildChildComponents() {
@@ -182,7 +186,8 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 
 		for (FIBComponent subComponent : allSubComponents) {
 
-			FIBViewImpl<?, C2> subView = (FIBViewImpl<?, C2>) getController().viewForComponent(subComponent);
+			// FIBViewImpl<?, C2> subView = (FIBViewImpl<?, C2>) getController().viewForComponent(subComponent);
+			FIBViewImpl<?, C2> subView = (FIBViewImpl<?, C2>) viewForComponent(subComponent);
 			if (subView == null) {
 				subView = (FIBViewImpl<?, C2>) getController().buildView(subComponent, false);
 			}
@@ -225,7 +230,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		}
 	}
 
-	private void performUpdateSubViews() {
+	protected void performUpdateSubViews() {
 		if (subViewsMap != null) {
 			for (FIBView<?, C2> v : new ArrayList<>(subViewsMap.values())) {
 				if (!v.isDeleted() /*&& v.isViewVisible()*/) {

@@ -62,7 +62,7 @@ import org.openflexo.gina.view.widget.impl.FIBLabelWidgetImpl;
  * 
  * @author sylvain
  */
-public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel>implements JFIBView<FIBLabel, JLabelPanel> {
+public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel> implements JFIBView<FIBLabel, JLabelPanel> {
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(JFIBLabelWidget.class.getPackage().getName());
 
@@ -73,7 +73,8 @@ public class JFIBLabelWidget extends FIBLabelWidgetImpl<JLabelPanel>implements J
 	 * @author sylvain
 	 * 
 	 */
-	public static class SwingLabelRenderingAdapter extends SwingRenderingAdapter<JLabelPanel>implements LabelRenderingAdapter<JLabelPanel> {
+	public static class SwingLabelRenderingAdapter extends SwingRenderingAdapter<JLabelPanel>
+			implements LabelRenderingAdapter<JLabelPanel> {
 
 		// private boolean isLayouted = false;
 
