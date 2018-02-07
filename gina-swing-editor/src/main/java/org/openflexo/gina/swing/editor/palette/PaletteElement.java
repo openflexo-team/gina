@@ -275,11 +275,9 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 			if (componentInsertionInOperator) {
 				// Handle component insertion in operator
 				System.out.println("Insert " + newComponent + " in operator " + targetOperator);
-				ComponentConstraints constraints = targetOperator.getConstraints();
-				if (constraints == null) {
-					constraints = operatorView.getConcreteContainerView().getLayoutManager().makeDefaultConstraints();
-				}
-				System.out.println("using constraints=" + targetOperator.getConstraints());
+				ComponentConstraints constraints = constraints = operatorView.getConcreteContainerView().getLayoutManager()
+						.makeDefaultConstraints();
+				//System.out.println("using constraints=" + targetOperator.getConstraints());
 				targetOperator.addToSubComponents(newComponent, constraints);
 				return true;
 			}
