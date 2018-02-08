@@ -551,6 +551,10 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			return false;
 		}
 
+		if (isUpdating) {
+			return false;
+		}
+
 		isUpdating = true;
 
 		updateVisibility();
