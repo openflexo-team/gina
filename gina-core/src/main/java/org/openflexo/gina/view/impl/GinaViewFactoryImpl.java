@@ -140,19 +140,19 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 			RuntimeContext context) {
 
 		if (fibContainer instanceof FIBTab) {
-			return (FIBContainerView<F, ? extends C, ? extends C>) makeTabView((FIBTab) fibContainer, controller);
+			return (FIBContainerView<F, ? extends C, ? extends C>) makeTabView((FIBTab) fibContainer, controller, context);
 		}
 		else if (fibContainer instanceof FIBIteration) {
 			return (FIBContainerView<F, ? extends C, ? extends C>) makeIterationView((FIBIteration) fibContainer, controller, context);
 		}
 		else if (fibContainer instanceof FIBPanel) {
-			return (FIBContainerView<F, ? extends C, ? extends C>) makePanelView((FIBPanel) fibContainer, controller);
+			return (FIBContainerView<F, ? extends C, ? extends C>) makePanelView((FIBPanel) fibContainer, controller, context);
 		}
 		else if (fibContainer instanceof FIBTabPanel) {
-			return (FIBContainerView<F, ? extends C, ? extends C>) makeTabPanelView((FIBTabPanel) fibContainer, controller);
+			return (FIBContainerView<F, ? extends C, ? extends C>) makeTabPanelView((FIBTabPanel) fibContainer, controller, context);
 		}
 		else if (fibContainer instanceof FIBSplitPanel) {
-			return (FIBContainerView<F, ? extends C, ? extends C>) makeSplitPanelView((FIBSplitPanel) fibContainer, controller);
+			return (FIBContainerView<F, ? extends C, ? extends C>) makeSplitPanelView((FIBSplitPanel) fibContainer, controller, context);
 		}
 
 		return null;
@@ -173,7 +173,7 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 			}
 		}
 		if (returned == null) {
-			returned = buildWidget(fibWidget, controller);
+			returned = buildWidget(fibWidget, controller, context);
 			returned.setRuntimeContext(context);
 		}
 		if (returned != null) {
@@ -188,130 +188,141 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 	}
 
 	@SuppressWarnings("unchecked")
-	private <F extends FIBWidget> FIBWidgetView<F, ? extends C, ?> buildWidget(F fibWidget, FIBController controller) {
+	private <F extends FIBWidget> FIBWidgetView<F, ? extends C, ?> buildWidget(F fibWidget, FIBController controller,
+			RuntimeContext context) {
 		if (fibWidget instanceof FIBLabel) {
-			return (FIBWidgetView<F, ? extends C, ?>) makeLabel((FIBLabel) fibWidget, controller);
+			return (FIBWidgetView<F, ? extends C, ?>) makeLabel((FIBLabel) fibWidget, controller, context);
 		}
 		if (fibWidget instanceof FIBTextField) {
-			return (FIBWidgetView<F, ? extends C, ?>) makeTextField((FIBTextField) fibWidget, controller);
+			return (FIBWidgetView<F, ? extends C, ?>) makeTextField((FIBTextField) fibWidget, controller, context);
 		}
 		if (fibWidget instanceof FIBTextArea) {
-			return (FIBWidgetView<F, ? extends C, ?>) makeTextArea((FIBTextArea) fibWidget, controller);
+			return (FIBWidgetView<F, ? extends C, ?>) makeTextArea((FIBTextArea) fibWidget, controller, context);
 		}
 		if (fibWidget instanceof FIBEditorPane) {
-			return (FIBWidgetView<F, ? extends C, ?>) makeEditorPane((FIBEditorPane) fibWidget, controller);
+			return (FIBWidgetView<F, ? extends C, ?>) makeEditorPane((FIBEditorPane) fibWidget, controller, context);
 		}
 		if (fibWidget instanceof FIBImage) {
-			return (FIBWidgetView<F, ? extends C, ?>) makeImage((FIBImage) fibWidget, controller);
+			return (FIBWidgetView<F, ? extends C, ?>) makeImage((FIBImage) fibWidget, controller, context);
 		}
 		if (fibWidget instanceof FIBNumber) {
-			return (FIBWidgetView<F, ? extends C, ?>) makeNumber((FIBNumber) fibWidget, controller);
+			return (FIBWidgetView<F, ? extends C, ?>) makeNumber((FIBNumber) fibWidget, controller, context);
 		}
 		if (fibWidget instanceof FIBCheckBox) {
-			return (FIBWidgetView<F, ? extends C, ?>) makeCheckbox((FIBCheckBox) fibWidget, controller);
+			return (FIBWidgetView<F, ? extends C, ?>) makeCheckbox((FIBCheckBox) fibWidget, controller, context);
 		}
 		if (fibWidget instanceof FIBDropDown) {
-			return (FIBWidgetView<F, ? extends C, ?>) makeDropDown((FIBDropDown) fibWidget, controller);
+			return (FIBWidgetView<F, ? extends C, ?>) makeDropDown((FIBDropDown) fibWidget, controller, context);
 		}
 		if (fibWidget instanceof FIBList) {
-			return (FIBWidgetView<F, ? extends C, ?>) makeList((FIBList) fibWidget, controller);
+			return (FIBWidgetView<F, ? extends C, ?>) makeList((FIBList) fibWidget, controller, context);
 		}
 		if (fibWidget instanceof FIBEditor) {
-			return (FIBWidgetView<F, ? extends C, ?>) makeEditor((FIBEditor) fibWidget, controller);
+			return (FIBWidgetView<F, ? extends C, ?>) makeEditor((FIBEditor) fibWidget, controller, context);
 		}
 		if (fibWidget instanceof FIBHtmlEditor) {
-			return (FIBWidgetView<F, ? extends C, ?>) makeHtmlEditor((FIBHtmlEditor) fibWidget, controller);
+			return (FIBWidgetView<F, ? extends C, ?>) makeHtmlEditor((FIBHtmlEditor) fibWidget, controller, context);
 		}
 		if (fibWidget instanceof FIBTable) {
-			return (FIBWidgetView<F, ? extends C, ?>) makeTable((FIBTable) fibWidget, controller);
+			return (FIBWidgetView<F, ? extends C, ?>) makeTable((FIBTable) fibWidget, controller, context);
 		}
 		if (fibWidget instanceof FIBBrowser) {
-			return (FIBWidgetView<F, ? extends C, ?>) makeBrowser((FIBBrowser) fibWidget, controller);
+			return (FIBWidgetView<F, ? extends C, ?>) makeBrowser((FIBBrowser) fibWidget, controller, context);
 		}
 		if (fibWidget instanceof FIBColor) {
-			return (FIBWidgetView<F, ? extends C, ?>) makeColor((FIBColor) fibWidget, controller);
+			return (FIBWidgetView<F, ? extends C, ?>) makeColor((FIBColor) fibWidget, controller, context);
 		}
 		if (fibWidget instanceof FIBFont) {
-			return (FIBWidgetView<F, ? extends C, ?>) makeFont((FIBFont) fibWidget, controller);
+			return (FIBWidgetView<F, ? extends C, ?>) makeFont((FIBFont) fibWidget, controller, context);
 		}
 		if (fibWidget instanceof FIBDate) {
-			return (FIBWidgetView<F, ? extends C, ?>) makeDate((FIBDate) fibWidget, controller);
+			return (FIBWidgetView<F, ? extends C, ?>) makeDate((FIBDate) fibWidget, controller, context);
 		}
 		if (fibWidget instanceof FIBFile) {
-			return (FIBWidgetView<F, ? extends C, ?>) makeFile((FIBFile) fibWidget, controller);
+			return (FIBWidgetView<F, ? extends C, ?>) makeFile((FIBFile) fibWidget, controller, context);
 		}
 		if (fibWidget instanceof FIBButton) {
-			return (FIBWidgetView<F, ? extends C, ?>) makeButton((FIBButton) fibWidget, controller);
+			return (FIBWidgetView<F, ? extends C, ?>) makeButton((FIBButton) fibWidget, controller, context);
 		}
 		if (fibWidget instanceof FIBRadioButtonList) {
-			return (FIBWidgetView<F, ? extends C, ?>) makeRadioButtonList((FIBRadioButtonList) fibWidget, controller);
+			return (FIBWidgetView<F, ? extends C, ?>) makeRadioButtonList((FIBRadioButtonList) fibWidget, controller, context);
 		}
 		if (fibWidget instanceof FIBCheckboxList) {
-			return (FIBWidgetView<F, ? extends C, ?>) makeCheckboxList((FIBCheckboxList) fibWidget, controller);
+			return (FIBWidgetView<F, ? extends C, ?>) makeCheckboxList((FIBCheckboxList) fibWidget, controller, context);
 		}
 		if (fibWidget instanceof FIBCustom) {
-			return (FIBWidgetView<F, ? extends C, ?>) makeCustomWidget((FIBCustom) fibWidget, controller);
+			return (FIBWidgetView<F, ? extends C, ?>) makeCustomWidget((FIBCustom) fibWidget, controller, context);
 		}
 		if (fibWidget instanceof FIBReferencedComponent) {
-			return (FIBWidgetView<F, ? extends C, ?>) makeReferencedComponentWidget((FIBReferencedComponent) fibWidget, controller);
+			return (FIBWidgetView<F, ? extends C, ?>) makeReferencedComponentWidget((FIBReferencedComponent) fibWidget, controller,
+					context);
 		}
 		return null;
 	}
 
-	public abstract FIBTabView<? extends C, ? extends C> makeTabView(FIBTab container, FIBController controller);
+	public abstract FIBTabView<? extends C, ? extends C> makeTabView(FIBTab container, FIBController controller, RuntimeContext context);
 
-	public abstract FIBPanelView<? extends C, ? extends C> makePanelView(FIBPanel container, FIBController controller);
+	public abstract FIBPanelView<? extends C, ? extends C> makePanelView(FIBPanel container, FIBController controller,
+			RuntimeContext context);
 
-	public abstract FIBTabPanelView<? extends C, ? extends C> makeTabPanelView(FIBTabPanel container, FIBController controller);
+	public abstract FIBTabPanelView<? extends C, ? extends C> makeTabPanelView(FIBTabPanel container, FIBController controller,
+			RuntimeContext context);
 
-	public abstract FIBSplitPanelView<? extends C, ? extends C> makeSplitPanelView(FIBSplitPanel container, FIBController controller);
+	public abstract FIBSplitPanelView<? extends C, ? extends C> makeSplitPanelView(FIBSplitPanel container, FIBController controller,
+			RuntimeContext context);
 
 	public abstract FIBIterationView<? extends C, ? extends C> makeIterationView(FIBIteration iteration, FIBController controller,
 			RuntimeContext context);
 
-	public abstract FIBLabelWidget<? extends C> makeLabel(FIBLabel widget, FIBController controller);
+	public abstract FIBLabelWidget<? extends C> makeLabel(FIBLabel widget, FIBController controller, RuntimeContext context);
 
-	public abstract FIBTextFieldWidget<? extends C> makeTextField(FIBTextField widget, FIBController controller);
+	public abstract FIBTextFieldWidget<? extends C> makeTextField(FIBTextField widget, FIBController controller, RuntimeContext context);
 
-	public abstract FIBTextAreaWidgetImpl<? extends C> makeTextArea(FIBTextArea widget, FIBController controller);
+	public abstract FIBTextAreaWidgetImpl<? extends C> makeTextArea(FIBTextArea widget, FIBController controller, RuntimeContext context);
 
-	public abstract FIBEditorPaneWidgetImpl<? extends C> makeEditorPane(FIBEditorPane widget, FIBController controller);
+	public abstract FIBEditorPaneWidgetImpl<? extends C> makeEditorPane(FIBEditorPane widget, FIBController controller,
+			RuntimeContext context);
 
-	public abstract FIBImageWidgetImpl<? extends C> makeImage(FIBImage widget, FIBController controller);
+	public abstract FIBImageWidgetImpl<? extends C> makeImage(FIBImage widget, FIBController controller, RuntimeContext context);
 
-	public abstract FIBNumberWidgetImpl<? extends C, ?> makeNumber(FIBNumber widget, FIBController controller);
+	public abstract FIBNumberWidgetImpl<? extends C, ?> makeNumber(FIBNumber widget, FIBController controller, RuntimeContext context);
 
-	public abstract FIBCheckBoxWidgetImpl<? extends C> makeCheckbox(FIBCheckBox widget, FIBController controller);
+	public abstract FIBCheckBoxWidgetImpl<? extends C> makeCheckbox(FIBCheckBox widget, FIBController controller, RuntimeContext context);
 
-	public abstract FIBCheckboxListWidgetImpl<? extends C, ?> makeCheckboxList(FIBCheckboxList widget, FIBController controller);
+	public abstract FIBCheckboxListWidgetImpl<? extends C, ?> makeCheckboxList(FIBCheckboxList widget, FIBController controller,
+			RuntimeContext context);
 
-	public abstract FIBRadioButtonListWidgetImpl<? extends C, ?> makeRadioButtonList(FIBRadioButtonList widget, FIBController controller);
+	public abstract FIBRadioButtonListWidgetImpl<? extends C, ?> makeRadioButtonList(FIBRadioButtonList widget, FIBController controller,
+			RuntimeContext context);
 
-	public abstract FIBDropDownWidgetImpl<? extends C, ?> makeDropDown(FIBDropDown widget, FIBController controller);
+	public abstract FIBDropDownWidgetImpl<? extends C, ?> makeDropDown(FIBDropDown widget, FIBController controller,
+			RuntimeContext context);
 
-	public abstract FIBListWidgetImpl<? extends C, ?> makeList(FIBList widget, FIBController controller);
+	public abstract FIBListWidgetImpl<? extends C, ?> makeList(FIBList widget, FIBController controller, RuntimeContext context);
 
-	public abstract FIBEditorWidgetImpl<? extends C> makeEditor(FIBEditor widget, FIBController controller);
+	public abstract FIBEditorWidgetImpl<? extends C> makeEditor(FIBEditor widget, FIBController controller, RuntimeContext context);
 
-	public abstract FIBHtmlEditorWidgetImpl<? extends C> makeHtmlEditor(FIBHtmlEditor widget, FIBController controller);
+	public abstract FIBHtmlEditorWidgetImpl<? extends C> makeHtmlEditor(FIBHtmlEditor widget, FIBController controller,
+			RuntimeContext context);
 
-	public abstract FIBTableWidgetImpl<? extends C, ?> makeTable(FIBTable widget, FIBController controller);
+	public abstract FIBTableWidgetImpl<? extends C, ?> makeTable(FIBTable widget, FIBController controller, RuntimeContext context);
 
-	public abstract FIBBrowserWidgetImpl<? extends C, ?> makeBrowser(FIBBrowser widget, FIBController controller);
+	public abstract FIBBrowserWidgetImpl<? extends C, ?> makeBrowser(FIBBrowser widget, FIBController controller, RuntimeContext context);
 
-	public abstract FIBColorWidgetImpl<? extends C> makeColor(FIBColor widget, FIBController controller);
+	public abstract FIBColorWidgetImpl<? extends C> makeColor(FIBColor widget, FIBController controller, RuntimeContext context);
 
-	public abstract FIBFontWidgetImpl<? extends C> makeFont(FIBFont widget, FIBController controller);
+	public abstract FIBFontWidgetImpl<? extends C> makeFont(FIBFont widget, FIBController controller, RuntimeContext context);
 
-	public abstract FIBDateWidgetImpl<? extends C> makeDate(FIBDate widget, FIBController controller);
+	public abstract FIBDateWidgetImpl<? extends C> makeDate(FIBDate widget, FIBController controller, RuntimeContext context);
 
-	public abstract FIBFileWidgetImpl<? extends C> makeFile(FIBFile widget, FIBController controller);
+	public abstract FIBFileWidgetImpl<? extends C> makeFile(FIBFile widget, FIBController controller, RuntimeContext context);
 
-	public abstract FIBButtonWidgetImpl<? extends C> makeButton(FIBButton widget, FIBController controller);
+	public abstract FIBButtonWidgetImpl<? extends C> makeButton(FIBButton widget, FIBController controller, RuntimeContext context);
 
-	public abstract FIBCustomWidgetImpl<? extends C, ?, ?> makeCustomWidget(FIBCustom widget, FIBController controller);
+	public abstract FIBCustomWidgetImpl<? extends C, ?, ?> makeCustomWidget(FIBCustom widget, FIBController controller,
+			RuntimeContext context);
 
 	public abstract FIBReferencedComponentWidgetImpl<? extends C> makeReferencedComponentWidget(FIBReferencedComponent widget,
-			FIBController controller);
+			FIBController controller, RuntimeContext context);
 
 }

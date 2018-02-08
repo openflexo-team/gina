@@ -122,6 +122,11 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 		}
 
 		@Override
+		public FIBController getFIBController() {
+			return getController();
+		}
+
+		@Override
 		public Map<FIBComponent, FIBViewImpl<?, C2>> getSubViewsMap() {
 			return subViewsMap;
 		}

@@ -40,6 +40,7 @@
 package org.openflexo.gina.model.bindings;
 
 import org.openflexo.connie.BindingEvaluationContext;
+import org.openflexo.gina.controller.FIBController;
 
 /**
  * This API represents GINA component run-time context
@@ -48,4 +49,10 @@ import org.openflexo.connie.BindingEvaluationContext;
  */
 public interface RuntimeContext extends BindingEvaluationContext {
 
+	/**
+	 * Return the {@link FIBController} managing component where this run-time context is defined
+	 * 
+	 * @return
+	 */
+	public FIBController getFIBController();
 }

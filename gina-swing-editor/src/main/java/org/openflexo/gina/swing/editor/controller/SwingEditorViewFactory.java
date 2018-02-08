@@ -143,12 +143,14 @@ public class SwingEditorViewFactory extends SwingViewFactory {
 	}
 
 	@Override
-	public FIBTabView<? extends JComponent, ? extends JComponent> makeTabView(FIBTab container, FIBController controller) {
+	public FIBTabView<? extends JComponent, ? extends JComponent> makeTabView(FIBTab container, FIBController controller,
+			RuntimeContext context) {
 		return new JFIBEditableTabView(container, fibEditorController);
 	}
 
 	@Override
-	public FIBPanelView<? extends JComponent, ? extends JComponent> makePanelView(FIBPanel container, FIBController controller) {
+	public FIBPanelView<? extends JComponent, ? extends JComponent> makePanelView(FIBPanel container, FIBController controller,
+			RuntimeContext context) {
 		return new JFIBEditablePanelView(container, fibEditorController);
 	}
 
@@ -159,78 +161,83 @@ public class SwingEditorViewFactory extends SwingViewFactory {
 	}
 
 	@Override
-	public FIBTabPanelView<? extends JComponent, ? extends JComponent> makeTabPanelView(FIBTabPanel container, FIBController controller) {
+	public FIBTabPanelView<? extends JComponent, ? extends JComponent> makeTabPanelView(FIBTabPanel container, FIBController controller,
+			RuntimeContext context) {
 		return new JFIBEditableTabPanelView(container, fibEditorController);
 	}
 
 	@Override
 	public FIBSplitPanelView<? extends JComponent, ? extends JComponent> makeSplitPanelView(FIBSplitPanel container,
-			FIBController controller) {
+			FIBController controller, RuntimeContext context) {
 		return new JFIBEditableSplitPanelView(container, fibEditorController);
 	}
 
 	@Override
-	public FIBLabelWidget<? extends JComponent> makeLabel(FIBLabel widget, FIBController controller) {
+	public FIBLabelWidget<? extends JComponent> makeLabel(FIBLabel widget, FIBController controller, RuntimeContext context) {
 		return new JFIBEditableLabelWidget(widget, fibEditorController);
 	}
 
 	@Override
-	public FIBTextFieldWidget<? extends JComponent> makeTextField(FIBTextField widget, FIBController controller) {
+	public FIBTextFieldWidget<? extends JComponent> makeTextField(FIBTextField widget, FIBController controller, RuntimeContext context) {
 		return new JFIBEditableTextFieldWidget(widget, fibEditorController);
 	}
 
 	@Override
-	public FIBTextAreaWidgetImpl<? extends JComponent> makeTextArea(FIBTextArea widget, FIBController controller) {
+	public FIBTextAreaWidgetImpl<? extends JComponent> makeTextArea(FIBTextArea widget, FIBController controller, RuntimeContext context) {
 		return new JFIBEditableTextAreaWidget(widget, fibEditorController);
 	}
 
 	@Override
-	public FIBImageWidgetImpl<? extends JComponent> makeImage(FIBImage widget, FIBController controller) {
+	public FIBImageWidgetImpl<? extends JComponent> makeImage(FIBImage widget, FIBController controller, RuntimeContext context) {
 		return new JFIBEditableImageWidget(widget, fibEditorController);
 	}
 
 	@Override
-	public FIBNumberWidgetImpl<? extends JComponent, ?> makeNumber(FIBNumber widget, FIBController controller) {
+	public FIBNumberWidgetImpl<? extends JComponent, ?> makeNumber(FIBNumber widget, FIBController controller, RuntimeContext context) {
 		return new JFIBEditableNumberWidget<>(widget, fibEditorController);
 	}
 
 	@Override
-	public FIBCheckBoxWidgetImpl<? extends JComponent> makeCheckbox(FIBCheckBox widget, FIBController controller) {
+	public FIBCheckBoxWidgetImpl<? extends JComponent> makeCheckbox(FIBCheckBox widget, FIBController controller, RuntimeContext context) {
 		return new JFIBEditableCheckboxWidget(widget, fibEditorController);
 	}
 
 	@Override
-	public FIBCheckboxListWidgetImpl<? extends JComponent, ?> makeCheckboxList(FIBCheckboxList widget, FIBController controller) {
+	public FIBCheckboxListWidgetImpl<? extends JComponent, ?> makeCheckboxList(FIBCheckboxList widget, FIBController controller,
+			RuntimeContext context) {
 		return new JFIBEditableCheckboxListWidget<>(widget, fibEditorController);
 	}
 
 	@Override
-	public FIBRadioButtonListWidgetImpl<? extends JComponent, ?> makeRadioButtonList(FIBRadioButtonList widget, FIBController controller) {
+	public FIBRadioButtonListWidgetImpl<? extends JComponent, ?> makeRadioButtonList(FIBRadioButtonList widget, FIBController controller,
+			RuntimeContext context) {
 		return new JFIBEditableRadioButtonListWidget<>(widget, fibEditorController);
 	}
 
 	@Override
-	public FIBDropDownWidgetImpl<? extends JComponent, ?> makeDropDown(FIBDropDown widget, FIBController controller) {
+	public FIBDropDownWidgetImpl<? extends JComponent, ?> makeDropDown(FIBDropDown widget, FIBController controller,
+			RuntimeContext context) {
 		return new JFIBEditableDropDownWidget<>(widget, fibEditorController);
 	}
 
 	@Override
-	public FIBListWidgetImpl<? extends JComponent, ?> makeList(FIBList widget, FIBController controller) {
+	public FIBListWidgetImpl<? extends JComponent, ?> makeList(FIBList widget, FIBController controller, RuntimeContext context) {
 		return new JFIBEditableListWidget<>(widget, fibEditorController);
 	}
 
 	@Override
-	public FIBEditorWidgetImpl<? extends JComponent> makeEditor(FIBEditor widget, FIBController controller) {
+	public FIBEditorWidgetImpl<? extends JComponent> makeEditor(FIBEditor widget, FIBController controller, RuntimeContext context) {
 		return new JFIBEditableEditorWidget(widget, fibEditorController);
 	}
 
 	@Override
-	public FIBHtmlEditorWidgetImpl<? extends JComponent> makeHtmlEditor(FIBHtmlEditor widget, FIBController controller) {
+	public FIBHtmlEditorWidgetImpl<? extends JComponent> makeHtmlEditor(FIBHtmlEditor widget, FIBController controller,
+			RuntimeContext context) {
 		return new JFIBEditableHtmlEditorWidget(widget, fibEditorController);
 	}
 
 	@Override
-	public FIBTableWidgetImpl<? extends JComponent, ?> makeTable(FIBTable widget, FIBController controller) {
+	public FIBTableWidgetImpl<? extends JComponent, ?> makeTable(FIBTable widget, FIBController controller, RuntimeContext context) {
 		if (widget.getLookAndFeel() != null) {
 			System.out.println(">>>>>>>>>>>>>> Nouvelle table avec " + widget.getLookAndFeel());
 			switch (widget.getLookAndFeel()) {
@@ -245,43 +252,44 @@ public class SwingEditorViewFactory extends SwingViewFactory {
 	}
 
 	@Override
-	public FIBBrowserWidgetImpl<? extends JComponent, ?> makeBrowser(FIBBrowser widget, FIBController controller) {
+	public FIBBrowserWidgetImpl<? extends JComponent, ?> makeBrowser(FIBBrowser widget, FIBController controller, RuntimeContext context) {
 		return new JFIBEditableBrowserWidget<>(widget, fibEditorController);
 	}
 
 	@Override
-	public FIBColorWidgetImpl<? extends JComponent> makeColor(FIBColor widget, FIBController controller) {
+	public FIBColorWidgetImpl<? extends JComponent> makeColor(FIBColor widget, FIBController controller, RuntimeContext context) {
 		return new JFIBEditableColorWidget(widget, fibEditorController);
 	}
 
 	@Override
-	public FIBFontWidgetImpl<? extends JComponent> makeFont(FIBFont widget, FIBController controller) {
+	public FIBFontWidgetImpl<? extends JComponent> makeFont(FIBFont widget, FIBController controller, RuntimeContext context) {
 		return new JFIBEditableFontWidget(widget, fibEditorController);
 	}
 
 	@Override
-	public FIBDateWidgetImpl<? extends JComponent> makeDate(FIBDate widget, FIBController controller) {
+	public FIBDateWidgetImpl<? extends JComponent> makeDate(FIBDate widget, FIBController controller, RuntimeContext context) {
 		return new JFIBEditableDateWidget(widget, fibEditorController);
 	}
 
 	@Override
-	public FIBFileWidgetImpl<? extends JComponent> makeFile(FIBFile widget, FIBController controller) {
+	public FIBFileWidgetImpl<? extends JComponent> makeFile(FIBFile widget, FIBController controller, RuntimeContext context) {
 		return new JFIBEditableFileWidget(widget, fibEditorController);
 	}
 
 	@Override
-	public FIBButtonWidgetImpl<? extends JComponent> makeButton(FIBButton widget, FIBController controller) {
+	public FIBButtonWidgetImpl<? extends JComponent> makeButton(FIBButton widget, FIBController controller, RuntimeContext context) {
 		return new JFIBEditableButtonWidget(widget, fibEditorController);
 	}
 
 	@Override
-	public FIBCustomWidgetImpl<? extends JComponent, ?, ?> makeCustomWidget(FIBCustom widget, FIBController controller) {
+	public FIBCustomWidgetImpl<? extends JComponent, ?, ?> makeCustomWidget(FIBCustom widget, FIBController controller,
+			RuntimeContext context) {
 		return new JFIBEditableCustomWidget<>(widget, fibEditorController);
 	}
 
 	@Override
 	public FIBReferencedComponentWidgetImpl<? extends JComponent> makeReferencedComponentWidget(FIBReferencedComponent widget,
-			FIBController controller) {
+			FIBController controller, RuntimeContext context) {
 		return new JFIBEditableReferencedComponentWidget(widget, fibEditorController);
 	}
 
