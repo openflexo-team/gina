@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Panel id="0" align="left" borderTop="0" borderLeft="0" trackViewPortHeight="true" trackViewPortWidth="true" borderBottom="0" border="empty" sizeAdjustment="OriginalSize" layout="twocols" borderRight="0">
-  <Iteration id="1" iteratorClassName="org.openflexo.gina.controller.FIBController$SampleData$Family" list="controller.sampleData.families" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center)" name="FamilyIterator">
+  <Iteration id="1" iterator="family" iteratorClassName="org.openflexo.gina.controller.FIBController$SampleData$Family" list="controller.sampleData.families" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center)" name="FamilyIterator">
     <Panel id="2" align="left" borderTop="0" flowAlignment="LEADING" borderLeft="0" trackViewPortHeight="true" trackViewPortWidth="true" borderBottom="0" border="etched" sizeAdjustment="OriginalSize" layout="flow" vGap="5" borderRight="0" hGap="5" constraints="twocols(expandHorizontally=false;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center)" name="FamilyPanel">
-      <Label id="3" label="Famille " align="left" data="(&quot;Famille de &quot; + FamilyIterator.iterator.father.name)" constraints="flow()" name="FamilyLabel" />
+      <Label id="3" label="Famille " align="left" data="(&quot;Famille de &quot; + family.father.name)" constraints="flow()" name="FamilyLabel" />
     </Panel>
   </Iteration>
 </Panel>
