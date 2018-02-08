@@ -861,6 +861,20 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 			families.add(makeFamily5());
 		}
 
+		public Family addNewFamily() {
+			Person father, mother, child;
+			List<Person> children = new ArrayList<>();
+			persons.add(father = new Person("Father", 173, 73.7));
+			persons.add(mother = new Person("Mother", 165, 57.0));
+			persons.add(child = new Person("Child", 107, 26.3));
+			children.add(child);
+			Family returned = new Family(father, mother, children);
+			families.add(returned);
+			System.out.println("New family created: " + returned);
+			getPropertyChangeSupport().firePropertyChange("families", null, returned);
+			return returned;
+		}
+
 		private Family makeFamily1() {
 			List<Person> children = new ArrayList<>();
 			persons.add(martin = new Person("Martin", 173, 73.7));
@@ -1012,7 +1026,7 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 			}
 		}
 
-		public static class Family {
+		public static class Family extends PropertyChangedSupportDefaultImplementation {
 			public Person father;
 			public Person mother;
 			public List<Person> children;
@@ -1027,6 +1041,23 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 				persons.add(father);
 				persons.add(mother);
 				persons.addAll(children);
+			}
+
+			private int personId = 2;
+
+			public Person addPerson() {
+				System.out.println("New person created in " + this);
+				Person newPerson = new Person("Person" + personId, 170, 60);
+				personId++;
+				persons.add(newPerson);
+				getPropertyChangeSupport().firePropertyChange("persons", null, newPerson);
+				return newPerson;
+			}
+
+			public Person deletePerson(Person person) {
+				persons.remove(person);
+				getPropertyChangeSupport().firePropertyChange("persons", person, null);
+				return person;
 			}
 
 			@Override
