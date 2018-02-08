@@ -8,6 +8,11 @@
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data" />
 	</Custom>
+	<Label name="IteratorNameLabel" index="44" label="iterator_name"
+		constraints="twocols(location=left)" />
+	<TextField name="IteratorNameTF" data="data.iteratorName"
+		index="45" constraints="twocols(location=right;expandHorizontally=true)"
+		columns="15" />
 	<Label index="46" label="iterator_type" constraints="twocols(location=left)"
 		localize="true" name="IteratorClassCB" />
 	<Custom index="47" componentClassName="org.openflexo.gina.swing.utils.TypeSelector"

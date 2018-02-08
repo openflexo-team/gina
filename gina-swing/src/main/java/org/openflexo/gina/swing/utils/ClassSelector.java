@@ -150,7 +150,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 
 			fibComponent = ApplicationFIBLibraryImpl.instance().retrieveFIBComponent(FIB_FILE_NAME, true);
 			controller = new CustomFIBController(fibComponent, SwingViewFactory.INSTANCE);
-			fibView = (JFIBView<?, ?>) controller.buildView(fibComponent, true);
+			fibView = (JFIBView<?, ?>) controller.buildView(fibComponent, null, true);
 
 			classEditor = new ClassEditor(aClass);
 

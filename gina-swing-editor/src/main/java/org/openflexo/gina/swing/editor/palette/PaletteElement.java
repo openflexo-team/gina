@@ -108,7 +108,7 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 		int x = Integer.parseInt(representationComponent.getParameter("x"));
 		int y = Integer.parseInt(representationComponent.getParameter("y"));
 
-		view = FIBController.makeView(representationComponent, SwingViewFactory.INSTANCE, FIBEditor.EDITOR_LOCALIZATION, true);
+		view = FIBController.makeView(representationComponent, SwingViewFactory.INSTANCE, FIBEditor.EDITOR_LOCALIZATION, null, true);
 		view.getController().setVariableValue("paletteData", dataObject);
 
 		if (view.getTechnologyComponent() != null) {
@@ -277,7 +277,7 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 				System.out.println("Insert " + newComponent + " in operator " + targetOperator);
 				ComponentConstraints constraints = constraints = operatorView.getConcreteContainerView().getLayoutManager()
 						.makeDefaultConstraints();
-				//System.out.println("using constraints=" + targetOperator.getConstraints());
+				// System.out.println("using constraints=" + targetOperator.getConstraints());
 				targetOperator.addToSubComponents(newComponent, constraints);
 				return true;
 			}

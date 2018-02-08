@@ -41,6 +41,7 @@ package org.openflexo.gina.view;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.FIBWidget;
+import org.openflexo.gina.model.bindings.RuntimeContext;
 
 /**
  * Extension for {@link GinaViewFactory}
@@ -73,7 +74,8 @@ public interface GinaViewFactoryExtension {
 	 * @param updateNow
 	 * @return
 	 */
-	public <F extends FIBContainer> FIBContainerView<F, ?, ?> makeContainer(F fibContainer, FIBController controller, boolean updateNow);
+	public <F extends FIBContainer> FIBContainerView<F, ?, ?> makeContainer(F fibContainer, FIBController controller,
+			RuntimeContext context, boolean updateNow);
 
 	/**
 	 * Return true if this extension manages supplied widget
@@ -90,6 +92,6 @@ public interface GinaViewFactoryExtension {
 	 * @param controller
 	 * @return
 	 */
-	public <W extends FIBWidget> FIBWidgetView<W, ?, ?> makeWidget(W fibWidget, FIBController controller);
+	public <W extends FIBWidget> FIBWidgetView<W, ?, ?> makeWidget(W fibWidget, FIBController controller, RuntimeContext context);
 
 }

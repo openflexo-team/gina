@@ -649,8 +649,18 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 	public void revalidateBindings();
 
+	/**
+	 * This is the {@link BindingModel} used in this FIBComponent
+	 */
 	@Override
 	public FIBComponentBindingModel getBindingModel();
+
+	/**
+	 * BindingModel exposed to all sub-components
+	 * 
+	 * @return
+	 */
+	public FIBComponentBindingModel getInferedBindingModel();
 
 	public boolean isOperator();
 
@@ -1014,10 +1024,19 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			if (bindingModel == null && !bindingModelIsBeeingCreating) {
 				// createBindingModel();
 				bindingModelIsBeeingCreating = true;
-				bindingModel = new FIBComponentBindingModel(this);
+				bindingModel = makeBindingModel();
 				bindingModelIsBeeingCreating = false;
 			}
 			return bindingModel;
+		}
+
+		protected FIBComponentBindingModel makeBindingModel() {
+			return new FIBComponentBindingModel(this);
+		}
+
+		@Override
+		public FIBComponentBindingModel getInferedBindingModel() {
+			return getBindingModel();
 		}
 
 		/**

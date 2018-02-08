@@ -48,6 +48,7 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.bindings.RuntimeContext;
 import org.openflexo.gina.model.operator.FIBIteration;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingRenderingAdapter;
@@ -55,10 +56,11 @@ import org.openflexo.gina.view.operator.impl.FIBIterationViewImpl;
 
 public class JFIBIterationView extends FIBIterationViewImpl<JPanel, JComponent> implements JFIBView<FIBIteration, JPanel> {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(JFIBIterationView.class.getPackage().getName());
 
-	public JFIBIterationView(FIBIteration model, FIBController controller) {
-		super(model, controller);
+	public JFIBIterationView(FIBIteration model, FIBController controller, RuntimeContext context) {
+		super(model, controller, context);
 	}
 
 	@Override

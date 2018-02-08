@@ -44,12 +44,11 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.connie.BindingModel;
-import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBindingFactory;
 import org.openflexo.gina.model.FIBOperator;
 import org.openflexo.gina.model.FIBPropertyNotification;
+import org.openflexo.gina.model.bindings.FIBIterationBindingModel;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter;
@@ -73,8 +72,10 @@ import com.google.common.reflect.TypeToken;
 @XMLElement(xmlTag = "Iteration")
 public interface FIBIteration extends FIBOperator {
 
-	public static final String ITERATOR_NAME = "iterator";
+	public static final String DEFAULT_ITERATOR_NAME = "iterator";
 
+	@PropertyIdentifier(type = String.class)
+	public static final String ITERATOR_NAME_KEY = "iterator";
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String LIST_KEY = "list";
 	@PropertyIdentifier(type = Type.class)
@@ -95,7 +96,14 @@ public interface FIBIteration extends FIBOperator {
 	@Setter(ITERATOR_TYPE_KEY)
 	public void setIteratorType(Type iteratorType);
 
-	public BindingModel getIterationBindingModel();
+	@Getter(value = ITERATOR_NAME_KEY)
+	@XMLAttribute
+	public String getIteratorName();
+
+	@Setter(ITERATOR_NAME_KEY)
+	public void setIteratorName(String iteratorName);
+
+	// public BindingModel getIterationBindingModel();
 
 	public Type getInferedIteratorType();
 
@@ -105,7 +113,16 @@ public interface FIBIteration extends FIBOperator {
 
 		private Type iteratorType;
 		private DataBinding<List<?>> list;
-		private BindingModel iterationBindingModel;
+		private FIBIterationBindingModel iterationBindingModel;
+
+		@Override
+		public String getIteratorName() {
+			String returned = (String) performSuperGetter(ITERATOR_NAME_KEY);
+			if (returned == null) {
+				return DEFAULT_ITERATOR_NAME;
+			}
+			return returned;
+		}
 
 		@Override
 		public DataBinding<List<?>> getList() {
@@ -198,7 +215,7 @@ public interface FIBIteration extends FIBOperator {
 		}
 
 		@Override
-		public BindingModel getIterationBindingModel() {
+		public FIBIterationBindingModel getInferedBindingModel() {
 			if (iterationBindingModel == null) {
 				createIterationBindingModel();
 			}
@@ -206,12 +223,12 @@ public interface FIBIteration extends FIBOperator {
 		}
 
 		private void createIterationBindingModel() {
-			iterationBindingModel = new BindingModel(getBindingModel());
+			iterationBindingModel = new FIBIterationBindingModel(this);
 
-			BindingVariable iteratorVariable = new BindingVariable(ITERATOR_NAME, getIteratorType());
-			iteratorVariable.setCacheable(false);
+			// BindingVariable iteratorVariable = new BindingVariable(getIteratorName(), getIteratorType());
+			// iteratorVariable.setCacheable(false);
 
-			iterationBindingModel.addToBindingVariables(iteratorVariable);
+			// iterationBindingModel.addToBindingVariables(iteratorVariable);
 			// System.out.println("dataClass="+getDataClass()+" dataClassName="+dataClassName);
 		}
 

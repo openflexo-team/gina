@@ -37,49 +37,15 @@
  * 
  */
 
-package org.openflexo.gina.view.operator;
+package org.openflexo.gina.model.bindings;
 
-import java.util.Map;
-
-import org.openflexo.gina.model.FIBComponent;
-import org.openflexo.gina.model.bindings.RuntimeContext;
-import org.openflexo.gina.model.operator.FIBIteration;
-import org.openflexo.gina.view.FIBOperatorView;
-import org.openflexo.gina.view.FIBView;
+import org.openflexo.connie.BindingEvaluationContext;
 
 /**
- * Represents run-time context of an iteration<br>
- * Contains a map of {@link IteratedContents} storing components associated to an object instance
- * 
- * @param <C>
- *            type of technology-specific component this view manage
- * @param <C2>
- *            type of technology-specific component this view contains
+ * This API represents GINA component run-time context
  * 
  * @author sylvain
  */
-public interface FIBIterationView<C, C2> extends FIBOperatorView<FIBIteration, C, C2> {
-
-	public IteratedContents<?> getIteratedContents(FIBView<?, ?> view);
-
-	public Map<Object, IteratedContents<?>> getIteratedSubViewsMap();
-
-	public boolean handleIteration();
-
-	/**
-	 * Run-time context of {@link FIBIteration}<br>
-	 * This context allows to access iterated value
-	 * 
-	 * @author sylvain
-	 *
-	 * @param <I>
-	 */
-	public interface IteratedContents<I> extends RuntimeContext {
-		public I getIteratedValue();
-
-		public Map<FIBComponent, ? extends FIBView<?, ?>> getSubViewsMap();
-
-		public boolean containsView(FIBView<?, ?> view);
-	}
+public interface RuntimeContext extends BindingEvaluationContext {
 
 }

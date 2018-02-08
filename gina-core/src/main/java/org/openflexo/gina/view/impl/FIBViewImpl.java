@@ -59,6 +59,7 @@ import org.openflexo.gina.model.FIBVariable;
 import org.openflexo.gina.model.bindings.FIBChildBindingVariable;
 import org.openflexo.gina.model.bindings.FIBComponentBindingModel;
 import org.openflexo.gina.model.bindings.FIBVariableBindingVariable;
+import org.openflexo.gina.model.bindings.RuntimeContext;
 import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.operator.FIBIterationView;
@@ -469,10 +470,16 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			}
 			return view;
 		}
+
+		if (getRuntimeContext() != null) {
+			return getRuntimeContext().getValue(variable);
+		}
+
 		FIBContainerView<?, ?, ?> pView = getParentView();
 		if (pView != null) {
 			return pView.getValue(variable);
 		}
+
 		return null;
 	}
 
@@ -676,14 +683,22 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		return null;
 	}
 
+	private FIBContainerView<?, ?, ?> parentView;
+
 	@Override
 	public FIBContainerView<?, ?, ?> getParentView() {
-		if (getComponent() != null) {
+		/*if (getComponent() != null) {
 			if (getComponent().getParent() != null) {
 				return (FIBContainerView<?, ?, ?>) getController().viewForComponent(getComponent().getParent());
 			}
 		}
-		return null;
+		return null;*/
+		return parentView;
+	}
+
+	@Override
+	public void setParentView(FIBContainerView<?, ?, ?> parentView) {
+		this.parentView = parentView;
 	}
 
 	@Override
@@ -896,6 +911,26 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			updateOpacity();
 		}
 
+	}
+
+	private RuntimeContext runtimeContext;
+
+	@Override
+	public RuntimeContext getRuntimeContext() {
+		if (runtimeContext == null && getParentView() instanceof FIBViewImpl) {
+			return ((FIBViewImpl) getParentView()).getRuntimeContext();
+		}
+		return runtimeContext;
+	}
+
+	@Override
+	public void setRuntimeContext(RuntimeContext runtimeContext) {
+		if ((runtimeContext == null && this.runtimeContext != null)
+				|| (runtimeContext != null && !runtimeContext.equals(this.runtimeContext))) {
+			RuntimeContext oldValue = this.runtimeContext;
+			this.runtimeContext = runtimeContext;
+			getPropertyChangeSupport().firePropertyChange("iteratedContents", oldValue, runtimeContext);
+		}
 	}
 
 }

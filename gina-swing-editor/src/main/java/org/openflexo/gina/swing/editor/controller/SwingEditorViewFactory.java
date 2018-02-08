@@ -41,6 +41,7 @@ package org.openflexo.gina.swing.editor.controller;
 import javax.swing.JComponent;
 
 import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.bindings.RuntimeContext;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBSplitPanel;
 import org.openflexo.gina.model.container.FIBTab;
@@ -152,9 +153,9 @@ public class SwingEditorViewFactory extends SwingViewFactory {
 	}
 
 	@Override
-	public FIBIterationView<? extends JComponent, ? extends JComponent> makeIterationView(FIBIteration iteration,
-			FIBController controller) {
-		return new JFIBEditableIterationView(iteration, fibEditorController);
+	public FIBIterationView<? extends JComponent, ? extends JComponent> makeIterationView(FIBIteration iteration, FIBController controller,
+			RuntimeContext context) {
+		return new JFIBEditableIterationView(iteration, fibEditorController, context);
 	}
 
 	@Override

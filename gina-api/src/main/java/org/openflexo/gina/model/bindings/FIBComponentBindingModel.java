@@ -86,7 +86,7 @@ public class FIBComponentBindingModel extends BindingModel {
 	 * @param flexoConcept
 	 */
 	public FIBComponentBindingModel(final FIBComponent component) {
-		this(component.getParent() != null ? component.getParent().getBindingModel() : null, component);
+		this(component.getParent() != null ? component.getParent().getInferedBindingModel() : null, component);
 	}
 
 	/**
@@ -129,7 +129,7 @@ public class FIBComponentBindingModel extends BindingModel {
 		if (evt.getSource() == component) {
 			if (evt.getPropertyName().equals(FIBComponent.PARENT_KEY)) {
 				// The FIBComponent changes it's parent component
-				setBaseBindingModel(component.getParent() != null ? component.getParent().getBindingModel() : null);
+				setBaseBindingModel(component.getParent() != null ? component.getParent().getInferedBindingModel() : null);
 				updateControllerVariable();
 				updateVariables();
 			}

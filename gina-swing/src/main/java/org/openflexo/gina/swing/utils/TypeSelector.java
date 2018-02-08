@@ -737,7 +737,7 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 
 			fibComponent = ApplicationFIBLibraryImpl.instance().retrieveFIBComponent(FIB_FILE_NAME, true);
 			controller = new CustomFIBController(fibComponent);
-			fibView = (JFIBView<?, ?>) controller.buildView(fibComponent, true);
+			fibView = (JFIBView<?, ?>) controller.buildView(fibComponent, null, true);
 
 			controller.setDataObject(TypeSelector.this);
 

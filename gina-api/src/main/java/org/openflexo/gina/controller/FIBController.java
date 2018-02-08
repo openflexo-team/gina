@@ -70,12 +70,14 @@ import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.FIBLocalizedDictionary;
 import org.openflexo.gina.model.FIBVariable;
 import org.openflexo.gina.model.FIBWidget;
+import org.openflexo.gina.model.bindings.RuntimeContext;
 import org.openflexo.gina.model.listener.FIBMouseClickListener;
 import org.openflexo.gina.model.listener.FIBSelectionListener;
 import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.FIBWidgetView;
 import org.openflexo.gina.view.GinaViewFactory;
+import org.openflexo.gina.view.operator.FIBIterationView.IteratedContents;
 import org.openflexo.gina.view.widget.FIBReferencedComponentWidget;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
@@ -153,13 +155,13 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 	}
 
 	public static <F extends FIBComponent, C> FIBView<F, ? extends C> makeView(F fibComponent, GinaViewFactory<C> viewFactory,
-			LocalizedDelegate parentLocalizer, boolean updateNow) {
-		return makeView(fibComponent, viewFactory, instanciateController(fibComponent, viewFactory, parentLocalizer), updateNow);
+			LocalizedDelegate parentLocalizer, IteratedContents<?> context, boolean updateNow) {
+		return makeView(fibComponent, viewFactory, instanciateController(fibComponent, viewFactory, parentLocalizer), context, updateNow);
 	}
 
 	public static <F extends FIBComponent, C> FIBView<F, ? extends C> makeView(F fibComponent, GinaViewFactory<C> viewFactory,
-			FIBController controller, boolean updateNow) {
-		return (FIBView<F, ? extends C>) controller.buildView(fibComponent, updateNow);
+			FIBController controller, IteratedContents<?> context, boolean updateNow) {
+		return (FIBView<F, ? extends C>) controller.buildView(fibComponent, context, updateNow);
 	}
 
 	private final FIBComponent rootComponent;
@@ -266,7 +268,7 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 	}
 
 	public FIBView<FIBComponent, ?> buildView() {
-		FIBView<FIBComponent, ?> returned = buildView(rootComponent, true);
+		FIBView<FIBComponent, ?> returned = buildView(rootComponent, null, true);
 		// If data object was previously set, set the value to the root view
 		if (dataObject != null) {
 			setDataObject(dataObject);
@@ -397,12 +399,12 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 		setDataObject(anObject);
 	}
 
-	public final <M extends FIBComponent> FIBView<M, ?> buildView(M fibComponent, boolean updateNow) {
+	public final <M extends FIBComponent> FIBView<M, ?> buildView(M fibComponent, RuntimeContext context, boolean updateNow) {
 		if (fibComponent instanceof FIBContainer) {
-			return (FIBView<M, ?>) getViewFactory().makeContainer((FIBContainer) fibComponent, this, updateNow);
+			return (FIBView<M, ?>) getViewFactory().makeContainer((FIBContainer) fibComponent, this, context, updateNow);
 		}
 		else if (fibComponent instanceof FIBWidget) {
-			return (FIBView<M, ?>) getViewFactory().makeWidget((FIBWidget) fibComponent, this, updateNow);
+			return (FIBView<M, ?>) getViewFactory().makeWidget((FIBWidget) fibComponent, this, context, updateNow);
 		}
 		return null;
 	}

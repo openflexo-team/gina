@@ -124,7 +124,7 @@ public class JFIBInspectorController implements Observer {
 		JFIBView<?, ?> inspectorView = inspectorViews.get(inspector);
 		if (inspectorView == null) {
 			inspector.mergeWithParentInspectors();
-			inspectorView = (JFIBView<?, ?>) FIBController.makeView(inspector, SwingViewFactory.INSTANCE, localizer, true);
+			inspectorView = (JFIBView<?, ?>) FIBController.makeView(inspector, SwingViewFactory.INSTANCE, localizer, null, true);
 			FlexoLocalization.addToLocalizationListeners(inspectorView);
 			inspectorViews.put(inspector, inspectorView);
 		}

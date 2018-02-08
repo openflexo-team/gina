@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.FIBWidget;
+import org.openflexo.gina.model.bindings.RuntimeContext;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBSplitPanel;
 import org.openflexo.gina.model.container.FIBTab;
@@ -112,18 +113,21 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 
 	@Override
 	public <F extends FIBContainer> FIBContainerView<F, ? extends C, ? extends C> makeContainer(F fibContainer, FIBController controller,
-			boolean updateNow) {
+			RuntimeContext context, boolean updateNow) {
 		FIBContainerView<F, ? extends C, ? extends C> returned = null;
 		for (GinaViewFactoryExtension extension : extensions) {
 			if (extension.handleContainer(fibContainer)) {
-				returned = (FIBContainerView<F, ? extends C, ? extends C>) extension.makeContainer(fibContainer, controller, updateNow);
+				returned = (FIBContainerView<F, ? extends C, ? extends C>) extension.makeContainer(fibContainer, controller, context,
+						updateNow);
 				if (returned != null) {
+					returned.setRuntimeContext(context);
 					break;
 				}
 			}
 		}
 		if (returned == null) {
-			returned = buildContainer(fibContainer, controller);
+			returned = buildContainer(fibContainer, controller, context);
+			returned.setRuntimeContext(context);
 		}
 		if (returned != null && updateNow) {
 			// returned.updateGraphicalProperties();
@@ -132,14 +136,14 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 		return returned;
 	}
 
-	private <F extends FIBContainer> FIBContainerView<F, ? extends C, ? extends C> buildContainer(F fibContainer,
-			FIBController controller) {
+	private <F extends FIBContainer> FIBContainerView<F, ? extends C, ? extends C> buildContainer(F fibContainer, FIBController controller,
+			RuntimeContext context) {
 
 		if (fibContainer instanceof FIBTab) {
 			return (FIBContainerView<F, ? extends C, ? extends C>) makeTabView((FIBTab) fibContainer, controller);
 		}
 		else if (fibContainer instanceof FIBIteration) {
-			return (FIBContainerView<F, ? extends C, ? extends C>) makeIterationView((FIBIteration) fibContainer, controller);
+			return (FIBContainerView<F, ? extends C, ? extends C>) makeIterationView((FIBIteration) fibContainer, controller, context);
 		}
 		else if (fibContainer instanceof FIBPanel) {
 			return (FIBContainerView<F, ? extends C, ? extends C>) makePanelView((FIBPanel) fibContainer, controller);
@@ -156,18 +160,21 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <F extends FIBWidget> FIBWidgetView<F, ? extends C, ?> makeWidget(F fibWidget, FIBController controller, boolean updateNow) {
+	public <F extends FIBWidget> FIBWidgetView<F, ? extends C, ?> makeWidget(F fibWidget, FIBController controller, RuntimeContext context,
+			boolean updateNow) {
 		FIBWidgetView<F, ? extends C, ?> returned = null;
 		for (GinaViewFactoryExtension extension : extensions) {
 			if (extension.handleWidget(fibWidget)) {
-				returned = (FIBWidgetView<F, ? extends C, ?>) extension.makeWidget(fibWidget, controller);
+				returned = (FIBWidgetView<F, ? extends C, ?>) extension.makeWidget(fibWidget, controller, context);
 				if (returned != null) {
+					returned.setRuntimeContext(context);
 					break;
 				}
 			}
 		}
 		if (returned == null) {
 			returned = buildWidget(fibWidget, controller);
+			returned.setRuntimeContext(context);
 		}
 		if (returned != null) {
 			if (updateNow) {
@@ -259,7 +266,8 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 
 	public abstract FIBSplitPanelView<? extends C, ? extends C> makeSplitPanelView(FIBSplitPanel container, FIBController controller);
 
-	public abstract FIBIterationView<? extends C, ? extends C> makeIterationView(FIBIteration iteration, FIBController controller);
+	public abstract FIBIterationView<? extends C, ? extends C> makeIterationView(FIBIteration iteration, FIBController controller,
+			RuntimeContext context);
 
 	public abstract FIBLabelWidget<? extends C> makeLabel(FIBLabel widget, FIBController controller);
 

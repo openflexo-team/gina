@@ -61,6 +61,7 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.FIBMouseEvent;
 import org.openflexo.gina.model.FIBWidget;
+import org.openflexo.gina.model.bindings.RuntimeContext;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBSplitPanel;
 import org.openflexo.gina.model.container.FIBTab;
@@ -176,9 +177,10 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 
 	@Override
 	public final <F extends FIBContainer> FIBContainerView<F, ? extends JComponent, ? extends JComponent> makeContainer(F fibContainer,
-			FIBController controller, boolean updateNow) {
+			FIBController controller, RuntimeContext context, boolean updateNow) {
 		// System.out.println("Make container view for " + fibContainer);
-		FIBContainerView<F, ? extends JComponent, ? extends JComponent> returned = super.makeContainer(fibContainer, controller, updateNow);
+		FIBContainerView<F, ? extends JComponent, ? extends JComponent> returned = super.makeContainer(fibContainer, controller, context,
+				updateNow);
 		if (returned != null && fibContainer.isRootComponent()) {
 			if (returned instanceof FIBContainerView && allowsFIBEdition()) {
 				EditorLauncher editorLauncher = new EditorLauncher(controller, fibContainer);
@@ -197,8 +199,8 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <F extends FIBWidget> FIBWidgetView<F, ? extends JComponent, ?> makeWidget(final F fibWidget, FIBController controller,
-			boolean updateNow) {
-		final FIBWidgetView<F, ? extends JComponent, ?> returned = super.makeWidget(fibWidget, controller, updateNow);
+			RuntimeContext context, boolean updateNow) {
+		final FIBWidgetView<F, ? extends JComponent, ?> returned = super.makeWidget(fibWidget, controller, context, updateNow);
 
 		if (returned == null) {
 			System.out.println("For fibWidget " + fibWidget + " returned=" + returned);
@@ -265,9 +267,9 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 	}
 
 	@Override
-	public FIBIterationView<? extends JComponent, ? extends JComponent> makeIterationView(FIBIteration iteration,
-			FIBController controller) {
-		return new JFIBIterationView(iteration, controller);
+	public FIBIterationView<? extends JComponent, ? extends JComponent> makeIterationView(FIBIteration iteration, FIBController controller,
+			RuntimeContext context) {
+		return new JFIBIterationView(iteration, controller, context);
 	}
 
 	@Override

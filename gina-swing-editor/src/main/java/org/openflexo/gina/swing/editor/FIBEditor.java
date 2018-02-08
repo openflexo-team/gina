@@ -541,7 +541,7 @@ public class FIBEditor {
 
 	public void testFIB(EditedFIBComponent editedFIB, JFrame frame) {
 		JFIBView<?, ? extends JComponent> view = (JFIBView<?, ? extends JComponent>) FIBController.makeView(editedFIB.getFIBComponent(),
-				SwingViewFactory.INSTANCE, EDITOR_LOCALIZATION, true);
+				SwingViewFactory.INSTANCE, EDITOR_LOCALIZATION, null, true);
 
 		if (editedFIB.getDataObject() != null) {
 			view.getController().setDataObject(editedFIB.getDataObject());

@@ -38,19 +38,14 @@
 
 package org.openflexo.gina.model.operator;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.connie.BindingEvaluationContext;
-import org.openflexo.connie.exception.NullReferenceException;
-import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.model.FIBOperatorType;
 import org.openflexo.gina.model.FIBWidgetType;
 import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.view.operator.FIBIterationView;
-import org.openflexo.gina.view.operator.FIBIterationView.IteratedContents;
 import org.openflexo.gina.view.widget.FIBTableWidget;
 import org.openflexo.logging.FlexoLogger;
 
@@ -65,12 +60,12 @@ public class FIBIterationType extends FIBOperatorType<FIBIteration> {
 
 	protected static final Logger logger = FlexoLogger.getLogger(FIBIterationType.class.getPackage().getName());
 
-	public final DynamicProperty ITERATOR = new DynamicProperty() {
+	/*public final DynamicProperty ITERATOR = new DynamicProperty() {
 		@Override
 		public String getName() {
 			return "iterator";
 		}
-
+	
 		@Override
 		public Type getType() {
 			Type returned = getFIBComponent().getInferedIteratorType();
@@ -79,12 +74,12 @@ public class FIBIterationType extends FIBOperatorType<FIBIteration> {
 			}
 			return getFIBComponent().getIteratorType();
 		}
-
+	
 		@Override
 		public String getTooltip() {
 			return "iterator";
 		}
-
+	
 		@Override
 		public Object getBindingValue(Object target, BindingEvaluationContext context)
 				throws TypeMismatchException, NullReferenceException {
@@ -95,14 +90,14 @@ public class FIBIterationType extends FIBOperatorType<FIBIteration> {
 			logger.warning("Unexpected target=" + target + " context=" + context);
 			return null;
 		}
-
+	
 		@Override
 		public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
 				throws TypeMismatchException, NullReferenceException {
 			logger.warning("Unexpected target=" + target + " context=" + context);
 		}
-
-	};
+	
+	};*/
 
 	public FIBIterationType(FIBIteration anIteration) {
 		super(anIteration);
@@ -118,7 +113,7 @@ public class FIBIterationType extends FIBOperatorType<FIBIteration> {
 
 		List<DynamicProperty> returned = new ArrayList<>();
 		returned.addAll(super.getDynamicProperties());
-		returned.add(ITERATOR);
+		// returned.add(ITERATOR);
 		return returned;
 	}
 

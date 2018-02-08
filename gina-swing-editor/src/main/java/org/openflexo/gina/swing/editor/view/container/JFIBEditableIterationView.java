@@ -52,6 +52,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.openflexo.gina.model.FIBModelObject;
+import org.openflexo.gina.model.bindings.RuntimeContext;
 import org.openflexo.gina.model.operator.FIBIteration;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.view.FIBSwingEditableContainerView;
@@ -81,8 +82,8 @@ public class JFIBEditableIterationView extends JFIBIterationView implements FIBS
 		return editorController;
 	}
 
-	public JFIBEditableIterationView(final FIBIteration model, FIBEditorController editorController) {
-		super(model, editorController.getController());
+	public JFIBEditableIterationView(final FIBIteration model, FIBEditorController editorController, RuntimeContext context) {
+		super(model, editorController.getController(), context);
 		this.editorController = editorController;
 		delegate = new FIBSwingEditableContainerViewDelegate<>(this);
 	}

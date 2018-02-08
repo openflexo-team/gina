@@ -51,6 +51,7 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBVariable;
+import org.openflexo.gina.model.bindings.RuntimeContext;
 import org.openflexo.gina.view.widget.FIBReferencedComponentWidget;
 import org.openflexo.localization.Language;
 import org.openflexo.localization.LocalizationListener;
@@ -174,6 +175,8 @@ public interface FIBView<M extends FIBComponent, C>
 
 	public FIBContainerView<?, ?, ?> getParentView();
 
+	public void setParentView(FIBContainerView<?, ?, ?> parentView);
+
 	public Font getFont();
 
 	public void updateFont();
@@ -200,6 +203,20 @@ public interface FIBView<M extends FIBComponent, C>
 	public RenderingAdapter<C> getRenderingAdapter();
 
 	public boolean isDeleted();
+
+	/**
+	 * Return runtime-context where this view "lives"
+	 * 
+	 * @return
+	 */
+	public RuntimeContext getRuntimeContext();
+
+	/**
+	 * Sets runtime-context where this view "lives"
+	 * 
+	 * @param context
+	 */
+	public void setRuntimeContext(RuntimeContext context);
 
 	/**
 	 * Specification of an adapter for a given rendering technology (eg Swing)

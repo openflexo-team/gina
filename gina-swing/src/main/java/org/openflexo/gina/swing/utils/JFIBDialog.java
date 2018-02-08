@@ -189,7 +189,7 @@ public class JFIBDialog<T> extends JDialog {
 			}
 		}, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-		view = (JFIBView<?, ?>) FIBController.makeView(fibComponent, SwingViewFactory.INSTANCE, controller, true);
+		view = (JFIBView<?, ?>) FIBController.makeView(fibComponent, SwingViewFactory.INSTANCE, controller, null, true);
 		JComponent resultingJComponent = view.getResultingJComponent();
 		getContentPane().add(resultingJComponent);
 		List<FIBButton> def = fibComponent.getDefaultButtons();

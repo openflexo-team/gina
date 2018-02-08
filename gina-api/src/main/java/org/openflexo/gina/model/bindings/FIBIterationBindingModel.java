@@ -1,8 +1,8 @@
 /**
  * 
- * Copyright (c) 2014, Openflexo
+ * Copyright (c) 2014-2015, Openflexo
  * 
- * This file is part of Diana-core, a component of the software infrastructure 
+ * This file is part of Flexo-foundation, a component of the software infrastructure 
  * developed at Openflexo.
  * 
  * 
@@ -36,50 +36,44 @@
  * 
  */
 
-package org.openflexo.gina.view;
+package org.openflexo.gina.model.bindings;
 
-import org.openflexo.gina.controller.FIBController;
-import org.openflexo.gina.model.FIBContainer;
-import org.openflexo.gina.model.FIBWidget;
-import org.openflexo.gina.model.bindings.RuntimeContext;
+import java.beans.PropertyChangeEvent;
+
+import org.openflexo.connie.BindingModel;
+import org.openflexo.gina.model.operator.FIBIteration;
 
 /**
- * Represent the view factory for a given technology (eg. Swing)
+ * This is the {@link BindingModel} exposed by a {@link FIBIteration}<br>
  * 
  * @author sylvain
  * 
- * @param <C>
- *            base minimal class of components build by this tool factory (eg JComponent for Swing)
  */
-public interface GinaViewFactory<C> {
+public class FIBIterationBindingModel extends FIBComponentBindingModel {
 
-	public boolean allowsFIBEdition();
+	private final IteratorBindingVariable iteratorBindingVariable;
 
-	/**
-	 * Build and return a new view (instance of {@link FIBContainerView}) for supplied {@link FIBContainer} and controller
-	 * 
-	 * @param fibContainer
-	 * @param controller
-	 * @param updateNow
-	 * @return
-	 */
-	public <F extends FIBContainer> FIBContainerView<F, ? extends C, ? extends C> makeContainer(F fibContainer, FIBController controller,
-			RuntimeContext context, boolean updateNow);
+	public FIBIterationBindingModel(FIBIteration iteration) {
+		super(iteration);
+		iteratorBindingVariable = new IteratorBindingVariable(iteration);
+		iteratorBindingVariable.setCacheable(false);
+		addToBindingVariables(iteratorBindingVariable);
+	}
 
 	/**
-	 * Build and return a new view (instance of {@link FIBWidgetView}) for supplied {@link FIBWidget} and controller
-	 * 
-	 * @param fibWidget
-	 * @param controller
-	 * @return
+	 * Delete this {@link BindingModel}
 	 */
-	public <F extends FIBWidget> FIBWidgetView<F, ? extends C, ?> makeWidget(F fibWidget, FIBController controller, RuntimeContext context,
-			boolean updateNow);
+	@Override
+	public void delete() {
+		super.delete();
+	}
 
-	public void show(FIBController controller);
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		super.propertyChange(evt);
+	}
 
-	public void hide(FIBController controller);
-
-	public void disposeWindow(FIBController controller);
-
+	public IteratorBindingVariable getIteratorBindingVariable() {
+		return iteratorBindingVariable;
+	}
 }
