@@ -220,13 +220,23 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		return null;
 	}
 
+	private boolean isPerformingUpdate = false;
+
 	@Override
 	protected void performUpdate() {
-		super.performUpdate();
-		performUpdateSubViews();
-		if (layoutIsInvalid) {
-			updateLayout();
-			layoutIsInvalid = false;
+		if (isPerformingUpdate) {
+			return;
+		}
+		try {
+			isPerformingUpdate = true;
+			super.performUpdate();
+			performUpdateSubViews();
+			if (layoutIsInvalid) {
+				updateLayout();
+				layoutIsInvalid = false;
+			}
+		} finally {
+			isPerformingUpdate = false;
 		}
 	}
 
