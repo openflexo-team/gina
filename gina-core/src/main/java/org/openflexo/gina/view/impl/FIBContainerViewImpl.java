@@ -192,6 +192,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 				subView = (FIBViewImpl<?, C2>) getController().buildView(subComponent, getRuntimeContext(), false);
 			}
 			registerViewForComponent(subView, subComponent);
+			subView.update();
 		}
 	}
 
