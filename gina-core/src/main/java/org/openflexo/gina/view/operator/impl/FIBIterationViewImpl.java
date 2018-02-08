@@ -264,6 +264,8 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 					((FIBContainerViewImpl) subView).buildSubComponents();
 				}
 				registerViewForComponent(subView, subComponent, iteratedValue);
+				// TODO: is this necessary ?
+				// subView.update();
 			}
 		}
 
