@@ -193,7 +193,10 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 		// Update properties of current component
 		// (do not call update() otherwise a new verification of visibility will be done)
-		performUpdate();
+		// If technology component is null (may happen for iteration for example), skip this
+		if (getTechnologyComponent() != null) {
+			performUpdate();
+		}
 
 	}
 
@@ -542,10 +545,6 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	@Override
 	public final boolean update() {
 
-		if (getTechnologyComponent() == null) {
-			return false;
-		}
-
 		if (isDeleted()) {
 			System.out.println("update() called for a deleted component view !!!");
 			return false;
@@ -562,6 +561,11 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		if (!isViewVisible()) {
 			isUpdating = false;
 			return true;
+		}
+
+		// Even if technology component is null, update visibility before to escape
+		if (getTechnologyComponent() == null) {
+			return false;
 		}
 
 		performUpdate();
