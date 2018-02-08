@@ -363,17 +363,9 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 
 	protected void updateIteration() {
 
-		List<?> accessedList = null;
-		try {
-			accessedList = getComponent().getList().getBindingValue(getBindingEvaluationContext());
-		} catch (TypeMismatchException e) {
-			e.printStackTrace();
-		} catch (NullReferenceException e) {
-			// e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		}
-		System.out.println("Hop, faudrait iterer sur " + accessedList);
+		// TODO: perf issue
+		// Better whould be to recompute the list, update iteration and update layout accordingly
+		updateLayout();
 
 	}
 
