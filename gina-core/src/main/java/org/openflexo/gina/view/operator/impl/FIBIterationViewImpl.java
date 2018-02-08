@@ -66,7 +66,6 @@ import org.openflexo.gina.view.impl.FIBContainerViewImpl;
 import org.openflexo.gina.view.impl.FIBOperatorViewImpl;
 import org.openflexo.gina.view.impl.FIBViewImpl;
 import org.openflexo.gina.view.operator.FIBIterationView;
-import org.openflexo.toolbox.StringUtils;
 
 /**
  * Base implementation for an enumeration
@@ -204,70 +203,35 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 			e.printStackTrace();
 		}
 
-		if (getComponent().getList().toString().equals("family.persons")) {
-			if (accessedList == null) {
-				System.out.println("Bizarre ca, j'ai rien dans la liste pour " + getComponent().getList());
-				System.out.println("binding: " + getComponent().getList());
-				System.out.println("valid: " + getComponent().getList().isValid());
-				System.out.println("reason: " + getComponent().getList().invalidBindingReason());
-				System.out.println("BEC=" + getBindingEvaluationContext());
-
-				if (getBindingEvaluationContext() instanceof FIBViewImpl) {
-					System.out.println("parent: " + ((FIBViewImpl) getBindingEvaluationContext()).getParentView());
-					System.out.println("it-contents: " + ((FIBViewImpl) getBindingEvaluationContext()).getRuntimeContext());
-				}
-
-				if (getBindingEvaluationContext() == this) {
-					System.out.println("Tiens c'est moi");
-					System.out.println("mes iterated contents = " + getRuntimeContext());
-					debug();
-					// getValue(variable)
-					Thread.dumpStack();
-				}
-
-			}
-		}
-
-		System.out.println(
-				"Recomputing whole iteration for " + getComponent() + " accessedList=" + accessedList + " for " + getComponent().getList());
-
-		/*if (getComponent().getName().equals("PersonIterator")) {
-			Thread.dumpStack();
-		}*/
+		// System.out.println(
+		// "Recomputing whole iteration for " + getComponent() + " accessedList=" + accessedList + " for " + getComponent().getList());
 
 		if (accessedList != null) {
 			for (Object iteratedValue : accessedList) {
-				System.out.println("> On itere pour " + iteratedValue + " dans " + getComponent());
+				// System.out.println("> On itere pour " + iteratedValue + " dans " + getComponent());
 				internallyBuildChildComponents(iteratedValue);
 			}
-		}
-
-		System.out.println("DONE Recomputing whole iteration for " + getComponent());
-
-		if (getComponent().getName().equals("FamilyIterator")) {
-			System.out.println("On vient de calculer l'iteration, qu'y-a-t-il dans le component " + this);
-			debug();
 		}
 
 		addSubComponentsAndDoLayout();
 		performUpdateSubViews();
 	}
 
-	private void debug() {
+	/*private void debug() {
 		for (Object iterator : iteratedSubViewsMap.keySet()) {
 			System.out.println(" ************** " + iterator);
 			IteratedContents<?> contents = iteratedSubViewsMap.get(iterator);
 			debug(contents);
 		}
 	}
-
+	
 	private void debug(IteratedContents<?> contents) {
 		for (FIBComponent component : contents.getSubViewsMap().keySet()) {
 			System.out.println(" > " + component + " -> ");
 			debug(contents.getSubViewsMap().get(component), 2);
 		}
 	}
-
+	
 	private void debug(FIBView<?, ?> view, int indent) {
 		System.out.println(StringUtils.buildWhiteSpaceIndentation(indent) + "> " + view + " " + view.getParentView() + " "
 				+ ((FIBViewImpl) view).getRuntimeContext());
@@ -276,11 +240,11 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 				debug(v, indent + 2);
 			}
 		}
-	}
+	}*/
 
 	private <I> IteratedContents<I> internallyBuildChildComponents(I iteratedValue) {
 
-		System.out.println("internallyBuildChildComponents for " + iteratedValue);
+		// System.out.println("internallyBuildChildComponents for " + iteratedValue);
 
 		IteratedContents<I> context = (IteratedContents<I>) iteratedSubViewsMap.get(iteratedValue);
 
@@ -295,14 +259,11 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 		for (FIBComponent subComponent : allSubComponents) {
 			FIBViewImpl<?, C2> subView = (FIBViewImpl<?, C2>) context.getSubViewsMap().get(subComponent);
 			if (subView == null) {
-				System.out.println("Faut reconstruire la vue pour " + subComponent + " et " + iteratedValue);
 				subView = (FIBViewImpl<?, C2>) getController().buildView(subComponent, context, false);
 				if (subView instanceof FIBContainerView) {
 					((FIBContainerViewImpl) subView).buildSubComponents();
 				}
 				registerViewForComponent(subView, subComponent, iteratedValue);
-				// subView.update();
-				System.out.println("DONE Faut reconstruire la vue pour " + subComponent);
 			}
 		}
 
@@ -316,24 +277,9 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 		}
 		// subViewsMap.put(component, view);
 
-		System.out.println("--------------------> La vue " + view + " s'appuie sur " + returned);
 		view.setRuntimeContext(returned);
 
 		subViewsList.add(view);
-	}
-
-	@Override
-	public Object getValue(BindingVariable variable) {
-		System.out.println(variable.getVariableName() + " et " + getComponent().getIteratorName());
-		if (getRuntimeContext() != null) {
-			System.out.println("ca y est j'ai un iteratedContents " + getRuntimeContext());
-		}
-		if (variable.getVariableName().equals(getComponent().getIteratorName())) {
-			System.out.println("?????????? tiens ce serait pas " + getRuntimeContext());
-		}
-
-		// TODO Auto-generated method stub
-		return super.getValue(variable);
 	}
 
 	public <I> void unregisterViewForComponent(FIBViewImpl<?, C2> view, FIBComponent component, I iteratedValue) {
@@ -346,26 +292,9 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 
 	@Override
 	protected void performUpdateSubViews() {
-		System.out.println("Bon, faut mettre a jour le contenu de l'iteration " + getComponent());
-
-		List<?> accessedList = null;
-		try {
-			accessedList = getComponent().getList().getBindingValue(getBindingEvaluationContext());
-		} catch (TypeMismatchException e) {
-			e.printStackTrace();
-		} catch (NullReferenceException e) {
-			// e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		}
-
-		System.out.println("################# Eh dis donc, j'ai " + accessedList + " pour " + getComponent().getList() + " dans " + this);
-
 		for (IteratedContents<?> contents : iteratedSubViewsMap.values()) {
-			System.out.println("Bon, pour " + contents.getIteratedValue());
 			for (FIBView<?, ?> v : new ArrayList<>(contents.getSubViewsMap().values())) {
 				if (!v.isDeleted() /*&& v.isViewVisible()*/) {
-					System.out.println("Mise a jour de " + v);
 					v.update();
 				}
 			}
