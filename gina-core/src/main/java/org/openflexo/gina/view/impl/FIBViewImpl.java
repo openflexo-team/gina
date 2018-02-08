@@ -254,7 +254,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				e.printStackTrace();
+				// e.printStackTrace();
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
 			}
