@@ -63,6 +63,10 @@ import org.openflexo.gina.swing.editor.controller.action.DeleteAction;
 import org.openflexo.gina.swing.editor.controller.action.EditorAction;
 import org.openflexo.gina.swing.editor.controller.action.InspectAction;
 import org.openflexo.gina.swing.editor.controller.action.MakeReusableComponent;
+import org.openflexo.gina.swing.editor.controller.action.MoveDown;
+import org.openflexo.gina.swing.editor.controller.action.MoveToBottom;
+import org.openflexo.gina.swing.editor.controller.action.MoveToTop;
+import org.openflexo.gina.swing.editor.controller.action.MoveUp;
 import org.openflexo.gina.swing.editor.controller.action.OpenComponent;
 import org.openflexo.gina.swing.editor.controller.action.PasteAction;
 import org.openflexo.gina.swing.editor.controller.action.WrapWithPanelAction;
@@ -100,8 +104,12 @@ public class ContextualMenu {
 		menu.add(wrapWith);
 		addToActions(new WrapWithPanelAction(editorController), wrapWith);
 		addToActions(new WrapWithSplitPanelAction(editorController), wrapWith);
-		JMenu moveTo = new JMenu(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("move_to"));
+		JMenu moveTo = new JMenu(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("move"));
 		menu.add(moveTo);
+		addToActions(new MoveToTop(editorController), moveTo);
+		addToActions(new MoveUp(editorController), moveTo);
+		addToActions(new MoveDown(editorController), moveTo);
+		addToActions(new MoveToBottom(editorController), moveTo);
 		addToActions(new MakeReusableComponent(editorController, frame));
 		addToActions(new OpenComponent(editorController));
 
