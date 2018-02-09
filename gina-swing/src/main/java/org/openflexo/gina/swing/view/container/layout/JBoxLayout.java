@@ -39,6 +39,9 @@
 
 package org.openflexo.gina.swing.view.container.layout;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -71,6 +74,11 @@ public class JBoxLayout extends FIBLayoutManagerImpl<JPanel, JComponent, BoxLayo
 		container.setLayout(makeBoxLayout(container));
 	}
 
+	@Override
+	public List<JComponent> getExistingComponents() {
+		return (List) Arrays.asList(getContainerView().getTechnologyComponent().getComponents());
+	}
+
 	protected BoxLayout makeBoxLayout(JPanel container) {
 		return new BoxLayout(container, getComponent().getBoxLayoutAxis().getAxis());
 	}
@@ -81,6 +89,11 @@ public class JBoxLayout extends FIBLayoutManagerImpl<JPanel, JComponent, BoxLayo
 		addedJComponent.setAlignmentX(constraints.getAlignmentX());
 		addedJComponent.setAlignmentY(constraints.getAlignmentY());
 		getContainerView().getTechnologyComponent().add(addedJComponent);
+	}
+
+	@Override
+	protected void performRemoveChild(JComponent componentToRemove) {
+		getContainerView().getTechnologyComponent().remove(componentToRemove);
 	}
 
 	@Override

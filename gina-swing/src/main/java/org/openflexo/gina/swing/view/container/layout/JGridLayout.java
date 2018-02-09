@@ -40,6 +40,8 @@
 package org.openflexo.gina.swing.view.container.layout;
 
 import java.awt.GridLayout;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -73,6 +75,11 @@ public class JGridLayout extends FIBLayoutManagerImpl<JPanel, JComponent, GridLa
 		container.setLayout(makeGridLayout());
 	}
 
+	@Override
+	public List<JComponent> getExistingComponents() {
+		return (List) Arrays.asList(getContainerView().getTechnologyComponent().getComponents());
+	}
+
 	protected GridLayout makeGridLayout() {
 		return new GridLayout(getComponent().getRows(), getComponent().getCols(), getComponent().getHGap(), getComponent().getVGap());
 	}
@@ -94,6 +101,11 @@ public class JGridLayout extends FIBLayoutManagerImpl<JPanel, JComponent, GridLa
 	protected void performAddChild(FIBView<?, JComponent> childView, GridLayoutConstraints constraints) {
 		// Not applicable, doLayout() has been overriden and this method is not
 		// used with overriden scheme
+	}
+
+	@Override
+	protected void performRemoveChild(JComponent componentToRemove) {
+		getContainerView().getTechnologyComponent().remove(componentToRemove);
 	}
 
 	protected FIBComponent getChildComponent(int col, int row) {

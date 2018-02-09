@@ -39,6 +39,9 @@
 
 package org.openflexo.gina.swing.view.container.layout;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
@@ -74,8 +77,18 @@ public class JButtonLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Butt
 	}
 
 	@Override
+	public List<JComponent> getExistingComponents() {
+		return (List) Arrays.asList(getContainerView().getTechnologyComponent().getComponents());
+	}
+
+	@Override
 	protected void performAddChild(FIBView<?, JComponent> childView, ButtonLayoutConstraints constraints) {
 		getContainerView().getTechnologyComponent().add(((JFIBView<?, ?>) childView).getResultingJComponent());
+	}
+
+	@Override
+	protected void performRemoveChild(JComponent componentToRemove) {
+		getContainerView().getTechnologyComponent().remove(componentToRemove);
 	}
 
 	@Override

@@ -100,6 +100,8 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 	public void setOperatorContentsStart(FIBView<?, ?> view) {
 	}
 
+	public abstract List<C2> getExistingComponents();
+
 	@Override
 	public void doLayout() {
 
@@ -115,33 +117,38 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 
 		// Then we add the components
 
+		List<C2> componentsToRemove = new ArrayList<>(getExistingComponents());
+
 		for (FIBComponent c : getContainerView().getComponent().getSubComponents()) {
 			FIBView<?, C2> subComponentView = getSubComponentView(c);
 			if (subComponentView != null) {
 				if (subComponentView instanceof FIBIterationView) {
-					//System.out.println("Represent iteration " + subComponentView.getComponent().getName());
+					// System.out.println("Represent iteration " + subComponentView.getComponent().getName());
 					if (((FIBIterationView<?, ?>) subComponentView).handleIteration()) {
 						// We execute the iteration, represent results
 						for (FIBView<?, ?> fibView : ((FIBIterationView<?, ?>) subComponentView).getSubViews()) {
 							performAddChild((FIBView<?, C2>) fibView, (CC) fibView.getComponent().getConstraints());
+							componentsToRemove.remove(fibView.getTechnologyComponent());
 						}
 					}
 					else {
-						//System.out
-						//		.println("subComponents=" + ((FIBIterationView<?, ?>) subComponentView).getComponent().getSubComponents());
+						// System.out
+						// .println("subComponents=" + ((FIBIterationView<?, ?>) subComponentView).getComponent().getSubComponents());
 						// We represent the iteration in Edit mode
 						if (((FIBIterationView<?, ?>) subComponentView).getComponent().getSubComponents().size() == 0) {
 							// Iteration is empty, represent it
 							performAddChild(subComponentView, (CC) c.getConstraints());
+							componentsToRemove.remove(subComponentView.getTechnologyComponent());
 						}
 						else {
 							// Iteration is not empty, represent contents of iteration
-							//System.out.println("subViews=" + ((FIBIterationView<?, ?>) subComponentView).getSubViews());
-							//subComponentView.update();
+							// System.out.println("subViews=" + ((FIBIterationView<?, ?>) subComponentView).getSubViews());
+							// subComponentView.update();
 							boolean isFirst = true;
 							for (FIBView<?, ?> fibView : ((FIBIterationView<?, ?>) subComponentView).getSubViews()) {
 								// System.out.println("Represent " + fibView + " with " + fibView.getComponent().getConstraints());
 								performAddChild((FIBView<?, C2>) fibView, (CC) fibView.getComponent().getConstraints());
+								componentsToRemove.remove(fibView.getTechnologyComponent());
 								if (isFirst) {
 									setOperatorContentsStart(fibView);
 								}
@@ -151,6 +158,7 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 					}
 				}
 				else {
+					componentsToRemove.remove(subComponentView.getTechnologyComponent());
 					performAddChild(subComponentView, (CC) c.getConstraints());
 				}
 				if (subComponentView.getRenderingAdapter() != null) {
@@ -160,10 +168,16 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 			}
 		}
 
+		for (C2 toRemove : componentsToRemove) {
+			performRemoveChild(toRemove);
+		}
+
 		getContainerView().getRenderingAdapter().revalidateAndRepaint(getContainerView().getTechnologyComponent());
 	}
 
 	protected abstract void performAddChild(FIBView<?, C2> childView, CC constraints);
+
+	protected abstract void performRemoveChild(C2 componentToRemove);
 
 	protected void registerComponentWithConstraints(FIBView<?, C2> subComponentView, CC constraint) {
 		logger.fine("Register component: " + subComponentView.getComponent() + " constraint=" + constraint);

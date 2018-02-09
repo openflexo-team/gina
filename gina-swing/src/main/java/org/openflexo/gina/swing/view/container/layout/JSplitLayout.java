@@ -40,6 +40,8 @@
 package org.openflexo.gina.swing.view.container.layout;
 
 import java.awt.GridBagLayout;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JComponent;
 
@@ -73,11 +75,21 @@ public class JSplitLayout extends FIBLayoutManagerImpl<JXMultiSplitPane, JCompon
 	}
 
 	@Override
+	public List<JComponent> getExistingComponents() {
+		return (List) Arrays.asList(getContainerView().getTechnologyComponent().getComponents());
+	}
+
+	@Override
 	protected void performAddChild(FIBView<?, JComponent> childView, SplitLayoutConstraints splitLayoutConstraints) {
 
 		JComponent addedJComponent = ((JFIBView<?, ?>) childView).getResultingJComponent();
 		getContainerView().getTechnologyComponent().add(addedJComponent, splitLayoutConstraints.getSplitIdentifier());
 
+	}
+
+	@Override
+	protected void performRemoveChild(JComponent componentToRemove) {
+		getContainerView().getTechnologyComponent().remove(componentToRemove);
 	}
 
 	@Override

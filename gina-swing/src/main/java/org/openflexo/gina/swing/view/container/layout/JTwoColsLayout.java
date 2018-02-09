@@ -44,6 +44,7 @@ import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.Box;
@@ -78,6 +79,11 @@ public class JTwoColsLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Two
 	@Override
 	public void setLayoutManager(JPanel container) {
 		container.setLayout(makeTwoColsLayout());
+	}
+
+	@Override
+	public List<JComponent> getExistingComponents() {
+		return (List) Arrays.asList(getContainerView().getTechnologyComponent().getComponents());
 	}
 
 	protected GridBagLayout makeTwoColsLayout() {
@@ -153,6 +159,11 @@ public class JTwoColsLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Two
 
 		lastAddedChild = childView.getComponent();
 
+	}
+
+	@Override
+	protected void performRemoveChild(JComponent componentToRemove) {
+		getContainerView().getTechnologyComponent().remove(componentToRemove);
 	}
 
 	@Override

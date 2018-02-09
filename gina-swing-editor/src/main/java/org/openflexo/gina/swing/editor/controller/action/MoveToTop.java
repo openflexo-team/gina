@@ -52,7 +52,6 @@ public class MoveToTop extends AbstractEditorActionImpl {
 
 	@Override
 	public boolean isEnabledFor(FIBModelObject object) {
-		System.out.println("Hop pour " + object);
 		return object instanceof FIBComponent && ((FIBComponent) object).getParent() != null
 				&& ((FIBComponent) object).getParent().getSubComponents().indexOf(object) > 0;
 	}

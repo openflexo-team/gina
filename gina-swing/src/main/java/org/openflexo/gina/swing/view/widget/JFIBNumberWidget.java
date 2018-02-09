@@ -176,6 +176,9 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 			super(new GridBagLayout());
 			this.widget = aWidget;
 
+			System.out.println("Hop: new NumberSelectorPanel");
+			// Thread.dumpStack();
+
 			setOpaque(false);
 			checkBox = new JCheckBox();
 			checkBox.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("undefined_value", checkBox));

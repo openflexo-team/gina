@@ -39,6 +39,9 @@
 
 package org.openflexo.gina.swing.view.container.layout;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
@@ -65,11 +68,21 @@ public class JAbsolutePositionningLayout extends FIBLayoutManagerImpl<JPanel, JC
 	}
 
 	@Override
+	public List<JComponent> getExistingComponents() {
+		return (List) Arrays.asList(getContainerView().getTechnologyComponent().getComponents());
+	}
+
+	@Override
 	protected void performAddChild(FIBView<?, JComponent> childView, NoneLayoutConstraints constraints) {
 		JComponent addedJComponent = ((JFIBView<?, ?>) childView).getResultingJComponent();
 		addedJComponent.setLocation(constraints.getX(), constraints.getY());
 		addedJComponent.setSize(addedJComponent.getPreferredSize());
 		getContainerView().getTechnologyComponent().add(addedJComponent);
+	}
+
+	@Override
+	protected void performRemoveChild(JComponent componentToRemove) {
+		getContainerView().getTechnologyComponent().remove(componentToRemove);
 	}
 
 	@Override

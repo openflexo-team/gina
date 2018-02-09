@@ -183,23 +183,33 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 		update();
 	}
 
-	@Override
+	/*@Override
 	public void updateLayout() {
 		// logger.info("relayout panel (caution !!! this is really costly !)" + getComponent());
-
+	
+		System.out.println("Et hop, on reconstruit tout le FIBPanel");
+		//if (true)
+		//	return;
+	
 		if (isDeleted()) {
 			return;
 		}
-
+	
 		// TODO: please reimplement this and make it more efficient !!!!
-
+	
 		clearContainer();
-
+	
 		getLayoutManager().setLayoutManager(getTechnologyComponent());
 		buildSubComponents();
+	
+	}*/
 
-		// updateDataObject(getDataObject());
-		// update();
+	@Override
+	public void updateLayout() {
+		if (isDeleted()) {
+			return;
+		}
+		updateSubComponents();
 	}
 
 	/**

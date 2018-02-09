@@ -40,6 +40,8 @@
 package org.openflexo.gina.swing.view.container.layout;
 
 import java.awt.FlowLayout;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -74,6 +76,11 @@ public class JFlowLayout extends FIBLayoutManagerImpl<JPanel, JComponent, FlowLa
 
 	}
 
+	@Override
+	public List<JComponent> getExistingComponents() {
+		return (List) Arrays.asList(getContainerView().getTechnologyComponent().getComponents());
+	}
+
 	protected FlowLayout makeFlowLayout() {
 		if (getComponent() != null && getComponent().getFlowAlignment() != null) {
 			return new FlowLayout(getComponent().getFlowAlignment().getAlign(), getComponent().getHGap(), getComponent().getVGap());
@@ -84,6 +91,11 @@ public class JFlowLayout extends FIBLayoutManagerImpl<JPanel, JComponent, FlowLa
 	@Override
 	protected void performAddChild(FIBView<?, JComponent> childView, FlowLayoutConstraints constraints) {
 		getContainerView().getTechnologyComponent().add(((JFIBView<?, ?>) childView).getResultingJComponent());
+	}
+
+	@Override
+	protected void performRemoveChild(JComponent componentToRemove) {
+		getContainerView().getTechnologyComponent().remove(componentToRemove);
 	}
 
 	@Override

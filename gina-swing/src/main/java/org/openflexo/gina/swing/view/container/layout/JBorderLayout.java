@@ -40,6 +40,8 @@
 package org.openflexo.gina.swing.view.container.layout;
 
 import java.awt.BorderLayout;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -73,6 +75,11 @@ public class JBorderLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Bord
 	}
 
 	@Override
+	public List<JComponent> getExistingComponents() {
+		return (List) Arrays.asList(getContainerView().getTechnologyComponent().getComponents());
+	}
+
+	@Override
 	public void doLayout() {
 		super.doLayout();
 		getContainerView().getTechnologyComponent().revalidate();
@@ -86,6 +93,11 @@ public class JBorderLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Bord
 			getContainerView().getTechnologyComponent().add(((JFIBView<?, ?>) childView).getResultingJComponent(),
 					constraints.getLocation().getConstraint());
 		}
+	}
+
+	@Override
+	protected void performRemoveChild(JComponent componentToRemove) {
+		getContainerView().getTechnologyComponent().remove(componentToRemove);
 	}
 
 	@Override

@@ -44,6 +44,8 @@ import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -76,6 +78,11 @@ public class JGridBagLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Gri
 		container.setLayout(makeGridBagLayout());
 	}
 
+	@Override
+	public List<JComponent> getExistingComponents() {
+		return (List) Arrays.asList(getContainerView().getTechnologyComponent().getComponents());
+	}
+
 	protected GridBagLayout makeGridBagLayout() {
 		return new GridBagLayout();
 	}
@@ -86,6 +93,11 @@ public class JGridBagLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Gri
 		JComponent addedJComponent = ((JFIBView<?, ?>) childView).getResultingJComponent();
 		_addChildToContainerWithConstraints(addedJComponent, getContainerView().getTechnologyComponent(), gridBagConstraints);
 
+	}
+
+	@Override
+	protected void performRemoveChild(JComponent componentToRemove) {
+		getContainerView().getTechnologyComponent().remove(componentToRemove);
 	}
 
 	protected void _addChildToContainerWithConstraints(Component child, Container container, GridBagLayoutConstraints gridBagConstraints) {

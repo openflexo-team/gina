@@ -175,6 +175,16 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 		performUpdateSubViews();
 	}
 
+	public void updateSubComponents() {
+		List<FIBView<?, C2>> newViews = internallyUpdateChildComponents();
+		addSubComponentsAndDoLayout();
+		for (FIBView<?, C2> v : newViews) {
+			if (!v.isDeleted() /*&& v.isViewVisible()*/) {
+				v.update();
+			}
+		}
+	}
+
 	protected FIBView<?, C2> viewForComponent(FIBComponent subComponent) {
 		return subViewsMap.get(subComponent);
 	}
@@ -194,6 +204,34 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 			registerViewForComponent(subView, subComponent);
 			subView.update();
 		}
+	}
+
+	private List<FIBView<?, C2>> internallyUpdateChildComponents() {
+
+		List<FIBView<?, C2>> returned = new ArrayList<>();
+		Vector<FIBComponent> allSubComponents = new Vector<>();
+		allSubComponents.addAll(getNotHiddenSubComponents());
+
+		Collection<FIBViewImpl<?, C2>> subViewsToDelete = new ArrayList<>(getSubViews());
+
+		for (FIBComponent subComponent : allSubComponents) {
+			FIBViewImpl<?, C2> subView = (FIBViewImpl<?, C2>) viewForComponent(subComponent);
+			if (subView == null) {
+				subView = (FIBViewImpl<?, C2>) getController().buildView(subComponent, getRuntimeContext(), false);
+				registerViewForComponent(subView, subComponent);
+				subView.update();
+				returned.add(subView);
+			}
+			else {
+				subViewsToDelete.remove(subView);
+			}
+		}
+
+		for (FIBViewImpl<?, C2> toDelete : subViewsToDelete) {
+			unregisterViewForComponent(toDelete, toDelete.getComponent());
+		}
+
+		return returned;
 	}
 
 	public abstract void addSubComponentsAndDoLayout();
