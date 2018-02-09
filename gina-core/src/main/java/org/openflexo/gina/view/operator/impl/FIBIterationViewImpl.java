@@ -217,6 +217,63 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 		performUpdateSubViews();
 	}
 
+	@Override
+	public void updateSubComponents() {
+
+		if (!handleIteration()) {
+			// In Edit mode, return super (don't execute the iteration)
+			super.updateSubComponents();
+			return;
+		}
+
+		List<IteratedContents<?>> addedIteratedValues = new ArrayList<>();
+		List<?> iteratedValuesToRemove = new ArrayList<>(iteratedSubViewsMap.keySet());
+
+		List<?> accessedList = null;
+		try {
+			accessedList = getComponent().getList().getBindingValue(getBindingEvaluationContext());
+		} catch (TypeMismatchException e) {
+			e.printStackTrace();
+		} catch (NullReferenceException e) {
+			// e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+
+		// System.out.println(
+		// "Recomputing whole iteration for " + getComponent() + " accessedList=" + accessedList + " for " + getComponent().getList());
+
+		if (accessedList != null) {
+			for (Object iteratedValue : accessedList) {
+				if (iteratedSubViewsMap.containsKey(iteratedValue)) {
+					// This value already exists, nice !
+					// Maybe update ???
+					iteratedValuesToRemove.remove(iteratedValue);
+				}
+				else {
+					// System.out.println("> On itere pour " + iteratedValue + " dans " + getComponent());
+					IteratedContents<?> newContents = internallyBuildChildComponents(iteratedValue);
+					addedIteratedValues.add(newContents);
+				}
+			}
+		}
+
+		for (Object iteratedValue : iteratedValuesToRemove) {
+			internallyRemoveChildComponents(iteratedValue);
+		}
+
+		// addSubComponentsAndDoLayout();
+
+		for (IteratedContents<?> contents : addedIteratedValues) {
+			for (FIBView<?, ?> v : new ArrayList<>(contents.getSubViewsMap().values())) {
+				if (!v.isDeleted() /*&& v.isViewVisible()*/) {
+					v.update();
+				}
+			}
+		}
+
+	}
+
 	/*private void debug() {
 		for (Object iterator : iteratedSubViewsMap.keySet()) {
 			System.out.println(" ************** " + iterator);
@@ -268,6 +325,21 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 				// subView.update();
 			}
 		}
+
+		return context;
+	}
+
+	private <I> IteratedContents<I> internallyRemoveChildComponents(I iteratedValue) {
+
+		IteratedContents<I> context = (IteratedContents<I>) iteratedSubViewsMap.get(iteratedValue);
+
+		for (FIBView<?, ?> fibView : context.getSubViewsMap().values()) {
+			unregisterViewForComponent((FIBViewImpl<?, C2>) fibView, fibView.getComponent(), context.getIteratedValue());
+		}
+		context.getSubViewsMap().clear();
+
+		iteratedSubViewsMap.remove(iteratedValue);
+		iteratedContentsMap.clear();
 
 		return context;
 	}
@@ -440,18 +512,14 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 	@Override
 	public void updateLayout() {
 
-		// logger.info("relayout panel (caution !!! this is really costly !)" + getComponent());
-
 		if (isDeleted()) {
 			return;
 		}
 
-		// TODO: please reimplement this and make it more efficient !!!!
+		// clearContainer();
+		// buildSubComponents();
 
-		clearContainer();
-
-		// getLayoutManager().setLayoutManager(getTechnologyComponent());
-		buildSubComponents();
+		updateSubComponents();
 
 		if (getConcreteContainerView() != null) {
 			getConcreteContainerView().updateLayout();

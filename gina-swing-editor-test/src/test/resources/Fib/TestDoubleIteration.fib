@@ -6,7 +6,9 @@
       <Iteration id="4" iterator="person" iteratorClassName="org.openflexo.gina.controller.FIBController$SampleData$Person" list="family.persons" constraints="flow()" name="PersonIterator">
         <Label id="5" label="person_name" align="left" data="person.name" constraints="flow()" name="PersonLabel" />
       </Iteration>
-      <Button id="6" buttonType="Trigger" action="family.addPerson" label="add_person" constraints="flow()" name="Button" />
+      <Button id="6" buttonType="Trigger" action="family.addPerson" label="Add person" constraints="flow()" name="Button" />
+      <Button id="7" buttonType="Trigger" action="family.deletePerson(family.persons.get(0))" label="Remove first" enable="(family.persons.size() &gt; 0)" constraints="flow()" name="Button2" />
+      <Button id="8" buttonType="Trigger" action="family.deletePerson(family.persons.get((family.persons.size() - 1)))" label="Remove last" enable="(family.persons.size() &gt; 0)" constraints="flow()" name="Button3" />
     </Panel>
   </Iteration>
 </Panel>
