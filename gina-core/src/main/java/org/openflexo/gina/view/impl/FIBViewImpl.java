@@ -629,7 +629,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		}
 
 		boolean componentVisible = true;
-		if (getComponent().getVisible() != null && getComponent().getVisible().isSet()) {
+		if (getComponent() != null && getComponent().getVisible() != null && getComponent().getVisible().isSet()) {
 			try {
 				/*if (getComponent().getName() != null && getComponent().getName().contains("Background")) {
 					System.out.println("je regarde si le composant " + getComponent().getName() + " est visible");
