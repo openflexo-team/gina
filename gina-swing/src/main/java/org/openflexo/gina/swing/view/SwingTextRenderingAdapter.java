@@ -60,7 +60,12 @@ public abstract class SwingTextRenderingAdapter<J extends JTextComponent> extend
 
 	@Override
 	public void setText(J component, String aText) {
-		component.setText(aText);
+		if (aText == null && component.getText() != null) {
+			component.setText("");
+		}
+		else if (aText != null && !aText.equals(component.getText())) {
+			component.setText(aText);
+		}
 	}
 
 	@Override
