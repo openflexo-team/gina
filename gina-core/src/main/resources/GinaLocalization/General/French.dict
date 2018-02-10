@@ -187,13 +187,7 @@ dynamic_font=dynamic_font
 dynamic_image=dynamic_image
 dynamic_label=dynamic_label
 dynamic_model=dynamic_model
-e=e
 east=east
-el=el
-ele=ele
-elem=elem
-eleme=eleme
-elemen=elemen
 element=element
 element_name=element_name
 email=email
@@ -260,6 +254,7 @@ image_height=image_height
 image_width=image_width
 increment=increment
 index=index
+insets=insets
 integer=integer
 invalid_binding=invalid_binding
 is_available=is_available
@@ -451,3 +446,5 @@ west=west
 widget=widget
 width=width
 x=x
+x\==x\=
+y\==y\=
