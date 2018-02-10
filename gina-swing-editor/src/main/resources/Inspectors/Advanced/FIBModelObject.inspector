@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Inspector layout="twocols" darkLevel="0"
-	dataClassName="org.openflexo.gina.model.FIBModelObject" name="Inspector">
-	<Label label="description" index="100" constraints="twocols(location=left)"
-		localize="true" font="SansSerif,0,11"/>
-	<TextArea index="101" data="data.description" columns="15"
+	dataClassName="org.openflexo.gina.model.FIBModelObject" name="AdvancedInspector">
+	<Label label="description2" index="100" constraints="twocols(location=left)"
+		localize="true" font="SansSerif,0,11" name="DescriptionLabel"/>
+	<TextArea index="101" data="data.description" columns="15" name="DescriptionTextArea"
 		constraints="twocols(expandHorizontally=true;expandVertically=true;location=right;insetsRight=10)"
 		useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
 		verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" localize="true" />
 	<Label label="parameters" index="104" constraints="twocols(location=left)"
-		localize="true" font="SansSerif,0,11" />
+		localize="true" font="SansSerif,0,11" name="ParametersLabel"/>
 	<Table iteratorClassName="org.openflexo.gina.model.FIBParameter"
 		index="105" visibleRowCount="2" rowHeight="20" autoSelectFirstRow="false"
 		createNewRowOnClick="false" boundToSelectionManager="false"

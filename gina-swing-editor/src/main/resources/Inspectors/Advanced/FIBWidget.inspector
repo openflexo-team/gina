@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
-	dataClassName="org.openflexo.gina.model.FIBWidget" name="Inspector">
+	dataClassName="org.openflexo.gina.model.FIBWidget" name="AdvancedInspector">
 	<CheckBox index="0" selected="false" data="data.localize"
 		constraints="twocols(location=left)" localize="true" />
 	<Label index="1" label="localize_component"
