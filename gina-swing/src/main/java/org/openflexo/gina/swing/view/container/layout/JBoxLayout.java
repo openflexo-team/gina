@@ -84,6 +84,12 @@ public class JBoxLayout extends FIBLayoutManagerImpl<JPanel, JComponent, BoxLayo
 	}
 
 	@Override
+	public void doLayout() {
+		getContainerView().getTechnologyComponent().removeAll();
+		super.doLayout();
+	}
+
+	@Override
 	protected void performAddChild(FIBView<?, JComponent> childView, BoxLayoutConstraints constraints) {
 		JComponent addedJComponent = ((JFIBView<?, ?>) childView).getResultingJComponent();
 		addedJComponent.setAlignmentX(constraints.getAlignmentX());

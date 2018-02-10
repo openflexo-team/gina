@@ -81,6 +81,7 @@ public class JBorderLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Bord
 
 	@Override
 	public void doLayout() {
+		getContainerView().getTechnologyComponent().removeAll();
 		super.doLayout();
 		getContainerView().getTechnologyComponent().revalidate();
 		getContainerView().getTechnologyComponent().repaint();

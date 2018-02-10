@@ -122,6 +122,7 @@ public class JGridBagLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Gri
 
 	@Override
 	public void doLayout() {
+		getContainerView().getTechnologyComponent().removeAll();
 		super.doLayout();
 		getContainerView().getRenderingAdapter().revalidateAndRepaint(getContainerView().getTechnologyComponent());
 	}

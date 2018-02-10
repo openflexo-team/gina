@@ -210,6 +210,11 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 			return;
 		}
 		updateSubComponents();
+
+		// clearContainer();
+		// getLayoutManager().setLayoutManager(getTechnologyComponent());
+		// buildSubComponents();
+
 	}
 
 	/**

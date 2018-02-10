@@ -82,6 +82,12 @@ public class JButtonLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Butt
 	}
 
 	@Override
+	public void doLayout() {
+		getContainerView().getTechnologyComponent().removeAll();
+		super.doLayout();
+	}
+
+	@Override
 	protected void performAddChild(FIBView<?, JComponent> childView, ButtonLayoutConstraints constraints) {
 		getContainerView().getTechnologyComponent().add(((JFIBView<?, ?>) childView).getResultingJComponent());
 	}

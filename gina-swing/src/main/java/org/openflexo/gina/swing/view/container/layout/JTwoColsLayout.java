@@ -169,6 +169,9 @@ public class JTwoColsLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Two
 	@Override
 	public void doLayout() {
 		lastAddedChild = null;
+
+		getContainerView().getTechnologyComponent().removeAll();
+
 		super.doLayout();
 
 		List<FIBView<?, JComponent>> flattenedContents = getFlattenedContents();

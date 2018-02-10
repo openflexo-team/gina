@@ -86,6 +86,7 @@ public class JGridLayout extends FIBLayoutManagerImpl<JPanel, JComponent, GridLa
 
 	@Override
 	public void doLayout() {
+		getContainerView().getTechnologyComponent().removeAll();
 		for (FIBView<?, JComponent> subComponentView : getContainerView().getSubViews()) {
 			registerComponentWithConstraints(subComponentView, (GridLayoutConstraints) subComponentView.getComponent().getConstraints());
 		}

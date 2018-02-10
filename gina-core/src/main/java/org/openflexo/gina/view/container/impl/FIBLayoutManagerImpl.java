@@ -102,6 +102,17 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 
 	public abstract List<C2> getExistingComponents();
 
+	/**
+	 * Compare required layout (by exploring subViews as defined in container view) with current displayed subviews<br>
+	 * If there is a difference, return true
+	 * 
+	 * @return
+	 */
+	public boolean isLayoutValid() {
+		List<C2> existingComponents = getExistingComponents();
+		return false;
+	}
+
 	@Override
 	public void doLayout() {
 
