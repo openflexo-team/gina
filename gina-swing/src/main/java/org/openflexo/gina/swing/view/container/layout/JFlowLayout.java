@@ -89,9 +89,13 @@ public class JFlowLayout extends FIBLayoutManagerImpl<JPanel, JComponent, FlowLa
 	}
 
 	@Override
-	public void doLayout() {
+	public void clearContainer() {
 		getContainerView().getTechnologyComponent().removeAll();
-		super.doLayout();
+	}
+
+	@Override
+	public JComponent getComponentToAdd(FIBView<?, JComponent> view) {
+		return ((JFIBView<?, ?>) view).getResultingJComponent();
 	}
 
 	@Override

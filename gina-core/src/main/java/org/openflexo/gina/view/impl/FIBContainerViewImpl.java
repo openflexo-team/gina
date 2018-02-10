@@ -184,12 +184,6 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 			}
 		}
 
-		if ("AdvancedInspector".equals(getComponent().getName())) {
-			System.out.println("Juste apres update de advanced inspector:");
-			for (FIBView<?, C2> v : getSubViews()) {
-				System.out.println(" > " + v + " component=" + v.getComponent());
-			}
-		}
 	}
 
 	protected FIBView<?, C2> viewForComponent(FIBComponent subComponent) {

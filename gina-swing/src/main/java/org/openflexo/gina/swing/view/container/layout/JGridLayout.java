@@ -85,8 +85,24 @@ public class JGridLayout extends FIBLayoutManagerImpl<JPanel, JComponent, GridLa
 	}
 
 	@Override
-	public void doLayout() {
+	public void clearContainer() {
 		getContainerView().getTechnologyComponent().removeAll();
+	}
+
+	@Override
+	public JComponent getComponentToAdd(FIBView<?, JComponent> view) {
+		return ((JFIBView<?, ?>) view).getResultingJComponent();
+	}
+
+	@Override
+	public boolean doLayout() {
+
+		if (isLayoutValid()) {
+			return false;
+		}
+
+		clearContainer();
+
 		for (FIBView<?, JComponent> subComponentView : getContainerView().getSubViews()) {
 			registerComponentWithConstraints(subComponentView, (GridLayoutConstraints) subComponentView.getComponent().getConstraints());
 		}
@@ -96,6 +112,8 @@ public class JGridLayout extends FIBLayoutManagerImpl<JPanel, JComponent, GridLa
 				getContainerView().getTechnologyComponent().add(getChildJComponent(j, i));
 			}
 		}
+
+		return true;
 	}
 
 	@Override

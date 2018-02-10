@@ -121,11 +121,21 @@ public class JGridBagLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Gri
 	}
 
 	@Override
+	public void clearContainer() {
+		getContainerView().getTechnologyComponent().removeAll();
+	}
+
+	@Override
+	public JComponent getComponentToAdd(FIBView<?, JComponent> view) {
+		return ((JFIBView<?, ?>) view).getResultingJComponent();
+	}
+
+	/*@Override
 	public void doLayout() {
 		getContainerView().getTechnologyComponent().removeAll();
 		super.doLayout();
 		getContainerView().getRenderingAdapter().revalidateAndRepaint(getContainerView().getTechnologyComponent());
-	}
+	}*/
 
 	@Override
 	public GridBagLayoutConstraints makeDefaultConstraints() {

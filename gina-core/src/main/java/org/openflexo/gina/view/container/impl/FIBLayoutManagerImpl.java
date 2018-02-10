@@ -78,10 +78,12 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 		constraints = new HashMap<>();
 	}
 
+	@Override
 	public final FIBContainerViewImpl<?, C, C2> getContainerView() {
 		return containerView;
 	}
 
+	@Override
 	public FIBContainer getComponent() {
 		return containerView.getComponent();
 	}
@@ -104,23 +106,57 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 
 	/**
 	 * Compare required layout (by exploring subViews as defined in container view) with current displayed subviews<br>
-	 * If there is a difference, return true
+	 * If there is a difference, return false
 	 * 
 	 * @return
 	 */
 	public boolean isLayoutValid() {
 		List<C2> existingComponents = getExistingComponents();
-		return false;
+		List<FIBView<?, C2>> componentsToDisplay = getFlattenedContents();
+
+		if (existingComponents.size() != componentsToDisplay.size()) {
+			// Not the same number of components: better is to relayout
+			return false;
+		}
+
+		for (int i = 0; i < existingComponents.size(); i++) {
+			C2 expectedComponent = getComponentToAdd(componentsToDisplay.get(i));
+			C2 existingComponent = existingComponents.get(i);
+			if (expectedComponent != existingComponent) {
+				return false;
+			}
+			// Check that the constraints are correct
+			// TODO !
+		}
+
+		return true;
 	}
 
+	public abstract C2 getComponentToAdd(FIBView<?, C2> view);
+
+	public abstract void clearContainer();
+
+	/**
+	 * Perform layout for related container<br>
+	 * This is an update method: if layout is valid according to required layout, just return
+	 * 
+	 * @return false if component is already valid
+	 */
 	@Override
-	public void doLayout() {
+	public boolean doLayout() {
 
 		// TODO: we should check that type of constraints matches new layout if
 		// this results from a layout type change
 
 		// We perform here a first pass to set constraints for each sub
 		// component view
+
+		if (isLayoutValid()) {
+			// No need to update
+			return false;
+		}
+
+		clearContainer();
 
 		for (FIBView<?, C2> subComponentView : new ArrayList<>(getContainerView().getSubViews())) {
 			registerComponentWithConstraints(subComponentView, (CC) subComponentView.getComponent().getConstraints());
@@ -184,6 +220,8 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 		}
 
 		getContainerView().getRenderingAdapter().revalidateAndRepaint(getContainerView().getTechnologyComponent());
+
+		return true;
 	}
 
 	protected abstract void performAddChild(FIBView<?, C2> childView, CC constraints);
@@ -191,7 +229,7 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 	protected abstract void performRemoveChild(C2 componentToRemove);
 
 	protected void registerComponentWithConstraints(FIBView<?, C2> subComponentView, CC constraint) {
-		logger.fine("Register component: " + subComponentView.getComponent() + " constraint=" + constraint);
+		// logger.fine("Register component: " + subComponentView.getComponent() + " constraint=" + constraint);
 		if (constraint != null) {
 			constraints.put(subComponentView, constraint);
 		}
@@ -213,8 +251,13 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 		List<FIBView<?, C2>> list = new ArrayList<>();
 		for (FIBViewImpl<?, C2> subView : getContainerView().getSubViews()) {
 			if (subView instanceof FIBOperatorView) {
-				for (FIBView<?, C2> childView : ((FIBOperatorView<?, ?, C2>) subView).getSubViews()) {
-					list.add(childView);
+				if (((FIBOperatorView<?, ?, C2>) subView).getSubViews().size() > 0) {
+					for (FIBView<?, C2> childView : ((FIBOperatorView<?, ?, C2>) subView).getSubViews()) {
+						list.add(childView);
+					}
+				}
+				else {
+					list.add(subView);
 				}
 			}
 			else {

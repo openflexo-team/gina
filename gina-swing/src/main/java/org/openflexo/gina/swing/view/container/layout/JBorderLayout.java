@@ -80,12 +80,22 @@ public class JBorderLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Bord
 	}
 
 	@Override
+	public void clearContainer() {
+		getContainerView().getTechnologyComponent().removeAll();
+	}
+
+	@Override
+	public JComponent getComponentToAdd(FIBView<?, JComponent> view) {
+		return ((JFIBView<?, ?>) view).getResultingJComponent();
+	}
+
+	/*@Override
 	public void doLayout() {
 		getContainerView().getTechnologyComponent().removeAll();
 		super.doLayout();
 		getContainerView().getTechnologyComponent().revalidate();
 		getContainerView().getTechnologyComponent().repaint();
-	}
+	}*/
 
 	@Override
 	protected void performAddChild(FIBView<?, JComponent> childView, BorderLayoutConstraints constraints) {

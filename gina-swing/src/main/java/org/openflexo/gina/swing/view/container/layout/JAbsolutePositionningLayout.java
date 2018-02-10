@@ -68,6 +68,16 @@ public class JAbsolutePositionningLayout extends FIBLayoutManagerImpl<JPanel, JC
 	}
 
 	@Override
+	public void clearContainer() {
+		getContainerView().getTechnologyComponent().removeAll();
+	}
+
+	@Override
+	public JComponent getComponentToAdd(FIBView<?, JComponent> view) {
+		return ((JFIBView<?, ?>) view).getResultingJComponent();
+	}
+
+	@Override
 	public List<JComponent> getExistingComponents() {
 		return (List) Arrays.asList(getContainerView().getTechnologyComponent().getComponents());
 	}

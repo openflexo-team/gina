@@ -84,9 +84,13 @@ public class JBoxLayout extends FIBLayoutManagerImpl<JPanel, JComponent, BoxLayo
 	}
 
 	@Override
-	public void doLayout() {
+	public void clearContainer() {
 		getContainerView().getTechnologyComponent().removeAll();
-		super.doLayout();
+	}
+
+	@Override
+	public JComponent getComponentToAdd(FIBView<?, JComponent> view) {
+		return ((JFIBView<?, ?>) view).getResultingJComponent();
 	}
 
 	@Override

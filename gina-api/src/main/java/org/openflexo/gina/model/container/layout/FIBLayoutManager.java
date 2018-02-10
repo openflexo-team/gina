@@ -43,6 +43,7 @@ import java.util.Map;
 
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
+import org.openflexo.gina.view.FIBContainerView;
 import org.openflexo.gina.view.FIBView;
 
 /**
@@ -59,9 +60,29 @@ import org.openflexo.gina.view.FIBView;
  */
 public interface FIBLayoutManager<C, C2, CC extends ComponentConstraints> {
 
-	public void setLayoutManager(C container);
+	/**
+	 * Return component beeing layouted by this layout manager
+	 * 
+	 * @return
+	 */
+	public FIBContainer getComponent();
 
-	public void doLayout();
+	/**
+	 * Return view of component beeing layouted by this layout manager
+	 * 
+	 * @return
+	 */
+	public FIBContainerView<?, C, C2> getContainerView();
+
+	/**
+	 * Perform layout for related container<br>
+	 * This is an update method: if layout is valid according to required layout, just return
+	 * 
+	 * @return false if component is already valid
+	 */
+	public boolean doLayout();
+
+	public void setLayoutManager(C container);
 
 	public Map<FIBView<?, C2>, CC> getConstraints();
 

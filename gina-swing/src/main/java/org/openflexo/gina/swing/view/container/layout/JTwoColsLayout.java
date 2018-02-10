@@ -167,10 +167,24 @@ public class JTwoColsLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Two
 	}
 
 	@Override
-	public void doLayout() {
-		lastAddedChild = null;
-
+	public void clearContainer() {
 		getContainerView().getTechnologyComponent().removeAll();
+	}
+
+	@Override
+	public JComponent getComponentToAdd(FIBView<?, JComponent> view) {
+		return ((JFIBView<?, ?>) view).getResultingJComponent();
+	}
+
+	@Override
+	public boolean doLayout() {
+
+		if (isLayoutValid()) {
+			// No need to update, it's already
+			return false;
+		}
+
+		lastAddedChild = null;
 
 		super.doLayout();
 
@@ -196,6 +210,8 @@ public class JTwoColsLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Two
 		/*Component glue = Box.createHorizontalGlue();
 		_addChildToContainerWithConstraints(glue, getContainerView().getTechnologyComponent(),
 				new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false));*/
+
+		return true;
 
 	}
 

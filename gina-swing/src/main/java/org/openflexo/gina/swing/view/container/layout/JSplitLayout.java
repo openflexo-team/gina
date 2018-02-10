@@ -80,9 +80,13 @@ public class JSplitLayout extends FIBLayoutManagerImpl<JXMultiSplitPane, JCompon
 	}
 
 	@Override
-	public void doLayout() {
+	public void clearContainer() {
 		getContainerView().getTechnologyComponent().removeAll();
-		super.doLayout();
+	}
+
+	@Override
+	public JComponent getComponentToAdd(FIBView<?, JComponent> view) {
+		return ((JFIBView<?, ?>) view).getResultingJComponent();
 	}
 
 	@Override
