@@ -41,6 +41,7 @@ package org.openflexo.gina.swing.editor.widget;
 import java.util.logging.Logger;
 
 import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.swing.editor.ComponentSwingEditorFIBController;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.view.GinaViewFactory;
@@ -70,4 +71,16 @@ public class BrowserFIBController extends ComponentSwingEditorFIBController {
 	public void search() {
 		System.out.println("Searching " + getSearchedLabel());
 	}
+
+	public void moveComponent(FIBComponent component, FIBContainer container) {
+		// System.out.println("On veut bouger l'objet " + component + " dans " + target);
+		component.getParent().removeFromSubComponents(component);
+		container.addToSubComponents(component);
+	}
+
+	public boolean canMoveComponent(FIBComponent component, FIBContainer container) {
+		// System.out.println("on peut bouger " + component + " dans " + target + " ?");
+		return component != null && component.getParent() != container;
+	}
+
 }
