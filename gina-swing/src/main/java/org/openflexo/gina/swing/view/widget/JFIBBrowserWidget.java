@@ -602,8 +602,7 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 		private static final Image DROP_KO_IMAGE = FIBIconLibrary.DROP_KO_CURSOR.getImage();
 
 		public static Cursor dropOK = ToolBox.isMacOS()
-				? Toolkit.getDefaultToolkit().createCustomCursor(DROP_OK_IMAGE, new Point(16, 16), "Drop OK")
-				: DragSource.DefaultMoveDrop;
+				? Toolkit.getDefaultToolkit().createCustomCursor(DROP_OK_IMAGE, new Point(16, 16), "Drop OK") : DragSource.DefaultMoveDrop;
 		public static Cursor dropKO = ToolBox.isMacOS()
 				? Toolkit.getDefaultToolkit().createCustomCursor(DROP_KO_IMAGE, new Point(16, 16), "Drop KO")
 				: DragSource.DefaultMoveNoDrop;
@@ -835,19 +834,22 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 				return false;
 			}
 
-			System.out.println("Est ce que c'est droppable ????");
+			// System.out.println("isDroppable() ?");
 
 			draggedBrowserCell = (BrowserCell) dropper.getLastPathComponent();
 			targetBrowserCell = (BrowserCell) destination.getLastPathComponent();
 
-			System.out.println("dragged=" + draggedBrowserCell.getRepresentedObject());
-			System.out.println("target=" + targetBrowserCell.getRepresentedObject());
+			// System.out.println("dragged=" + draggedBrowserCell.getRepresentedObject());
+			// System.out.println("target=" + targetBrowserCell.getRepresentedObject());
+			// System.out.println("browser el = " + draggedBrowserCell.getBrowserElement());
 
 			for (FIBBrowserDragOperation op : draggedBrowserCell.getBrowserElement().getDragOperations()) {
+				// System.out.println("op=" + op);
+				// System.out.println("targetBrowserCell.getBrowserElement()=" + targetBrowserCell.getBrowserElement());
+				// System.out.println("op.getTargetElement()=" + op.getTargetElement());
 				Boolean applicable = false;
 				if (targetBrowserCell.getBrowserElement() == op.getTargetElement()) {
 					try {
-						System.out.println("on regarde pour " + op);
 						applicable = op.getIsAvailable().getBindingValue(this);
 					} catch (TypeMismatchException e) {
 						// TODO Auto-generated catch block
@@ -860,43 +862,13 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 						e.printStackTrace();
 					}
 					if (applicable != null && applicable) {
-						System.out.println(">>>>>>>> Et oui on le retourne");
+						// Yes! looked up move gesture
 						return true;
 					}
 				}
 			}
 
 			return false;
-			/*if (dropperCell.getRepresentedObject().getClass().getName().contains("Person")
-			&& destinationCell.getRepresentedObject().getClass().getName().contains("Family")) {
-			System.out.println("Oui c'est bien ca");
-			return true;
-			}*/
-
-			// Typical Tests for dropping
-
-			// Test 1.
-			/*boolean destinationPathIsNull = destination == null;
-			if (destinationPathIsNull)
-			return "Invalid drop location.";
-			
-			// Test 2.
-			PersonNode node = (PersonNode) destination.getLastPathComponent();
-			if (!node.getAllowsChildren())
-			return "This node does not allow children";
-			
-			if (destination.equals(dropper))
-			return "Destination cannot be same as source";
-			
-			// Test 3.
-			if (dropper.isDescendant(destination))
-			return "Destination node cannot be a descendant.";
-			
-			// Test 4.
-			if (dropper.getParentPath().equals(destination))
-			return "Destination node cannot be a parent.";
-			
-			return null;*/
 		}
 
 		private boolean performDrop(TreePath dropper, TreePath destination) {
