@@ -73,13 +73,11 @@ public class BrowserFIBController extends ComponentSwingEditorFIBController {
 	}
 
 	public void moveComponent(FIBComponent component, FIBContainer container) {
-		// System.out.println("On veut bouger l'objet " + component + " dans " + target);
 		component.getParent().removeFromSubComponents(component);
 		container.addToSubComponents(component);
 	}
 
 	public boolean canMoveComponent(FIBComponent component, FIBContainer container) {
-		// System.out.println("on peut bouger " + component + " dans " + target + " ?");
 		return component != null && component.getParent() != container;
 	}
 

@@ -842,6 +842,7 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 			// System.out.println("dragged=" + draggedBrowserCell.getRepresentedObject());
 			// System.out.println("target=" + targetBrowserCell.getRepresentedObject());
 			// System.out.println("browser el = " + draggedBrowserCell.getBrowserElement());
+			// System.out.println("drag ops = " + draggedBrowserCell.getBrowserElement().getDragOperations());
 
 			for (FIBBrowserDragOperation op : draggedBrowserCell.getBrowserElement().getDragOperations()) {
 				// System.out.println("op=" + op);
@@ -850,6 +851,9 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 				Boolean applicable = false;
 				if (targetBrowserCell.getBrowserElement() == op.getTargetElement()) {
 					try {
+						// System.out.println("****** On se demande: " + op.getIsAvailable());
+						// System.out.println("valide ? " + op.getIsAvailable().isValid());
+						// System.out.println("reason ? " + op.getIsAvailable().invalidBindingReason());
 						applicable = op.getIsAvailable().getBindingValue(this);
 					} catch (TypeMismatchException e) {
 						// TODO Auto-generated catch block
@@ -882,21 +886,23 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 
 			for (FIBBrowserDragOperation op : draggedBrowserCell.getBrowserElement().getDragOperations()) {
 				boolean applicable = false;
-				try {
-					applicable = op.getIsAvailable().getBindingValue(this);
-					if (applicable) {
-						op.getAction().execute(this);
-						return true;
+				if (targetBrowserCell.getBrowserElement() == op.getTargetElement()) {
+					try {
+						applicable = op.getIsAvailable().getBindingValue(this);
+						if (applicable) {
+							op.getAction().execute(this);
+							return true;
+						}
+					} catch (TypeMismatchException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NullReferenceException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-				} catch (TypeMismatchException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NullReferenceException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
 			}
 
