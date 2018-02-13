@@ -115,6 +115,8 @@ public abstract interface FIBBrowserAction extends FIBModelObject {
 
 	public void searchLocalized(LocalizationEntryRetriever retriever);
 
+	public boolean isSerializable();
+
 	public static abstract class FIBBrowserActionImpl extends FIBModelObjectImpl implements FIBBrowserAction {
 
 		private static final Logger logger = Logger.getLogger(FIBBrowserAction.class.getPackage().getName());
@@ -250,6 +252,10 @@ public abstract interface FIBBrowserAction extends FIBModelObject {
 			return getName();
 		}
 
+		@Override
+		public boolean isSerializable() {
+			return true;
+		}
 	}
 
 	@ModelEntity

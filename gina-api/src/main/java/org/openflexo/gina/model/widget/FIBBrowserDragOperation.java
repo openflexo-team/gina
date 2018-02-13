@@ -290,6 +290,7 @@ public interface FIBBrowserDragOperation extends FIBModelObject {
 						return Object.class;
 					}
 				});
+				draggedBindingVariable.setCacheable(false);
 				dragOperationBindingModel.addToBindingVariables(targetBindingVariable = new BindingVariable("target", Object.class) {
 					@Override
 					public Type getType() {
@@ -299,6 +300,7 @@ public interface FIBBrowserDragOperation extends FIBModelObject {
 						return Object.class;
 					}
 				});
+				targetBindingVariable.setCacheable(false);
 			}
 
 			public FIBComponent getComponent() {

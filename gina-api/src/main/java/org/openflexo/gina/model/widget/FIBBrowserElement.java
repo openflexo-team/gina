@@ -44,6 +44,7 @@ import java.awt.Font;
 import java.io.File;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
@@ -1045,6 +1046,24 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public String getPresentationName() {
 			return getName();
+		}
+
+		/**
+		 * Override PAMELA behaviour by excluding FIBBrowserAction which are not serializable
+		 */
+		@Override
+		public List<FIBBrowserAction> getActions() {
+			List<FIBBrowserAction> actions = (List<FIBBrowserAction>) performSuperGetter(ACTIONS_KEY);
+			if (isSerializing()) {
+				List<FIBBrowserAction> returned = new ArrayList<>();
+				for (FIBBrowserAction action : actions) {
+					if (action.isSerializable()) {
+						returned.add(action);
+					}
+				}
+				return returned;
+			}
+			return actions;
 		}
 	}
 
