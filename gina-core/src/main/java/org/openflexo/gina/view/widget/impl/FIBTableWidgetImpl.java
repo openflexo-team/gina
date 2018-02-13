@@ -575,7 +575,9 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 
 		if (getParentView() instanceof FIBContainerViewImpl && evt.getPropertyName().equals(FIBTable.LOOK_AND_FEEL_KEY)) {
 			((FIBContainerViewImpl) getParentView()).unregisterViewForComponent(this, getComponent());
-			getParentView().changeLayout();
+			if (getParentView() != null) {
+				getParentView().changeLayout();
+			}
 		}
 
 		super.propertyChange(evt);
