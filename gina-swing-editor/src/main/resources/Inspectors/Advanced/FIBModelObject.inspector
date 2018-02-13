@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Inspector layout="twocols" darkLevel="0"
 	dataClassName="org.openflexo.gina.model.FIBModelObject" name="AdvancedInspector">
-	<Label label="description2" index="100" constraints="twocols(location=left)"
+	<Label label="description" index="100" constraints="twocols(location=left)"
 		localize="true" font="SansSerif,0,11" name="DescriptionLabel"/>
 	<TextArea index="101" data="data.description" columns="15" name="DescriptionTextArea"
 		constraints="twocols(expandHorizontally=true;expandVertically=true;location=right;insetsRight=10)"
