@@ -75,6 +75,7 @@ public class BrowserFIBController extends ComponentSwingEditorFIBController {
 	public void moveComponent(FIBComponent component, FIBContainer container) {
 		component.getParent().removeFromSubComponents(component);
 		container.addToSubComponents(component);
+		component.translateNameWhenRequired();
 	}
 
 	public boolean canMoveComponent(FIBComponent component, FIBContainer container) {

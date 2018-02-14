@@ -38,13 +38,13 @@
 
 package org.openflexo.gina.swing.editor.widget;
 
-import java.awt.event.MouseEvent;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.annotations.NotificationUnsafe;
 import org.openflexo.gina.ApplicationFIBLibrary;
 import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.FIBMouseEvent;
 import org.openflexo.gina.swing.editor.SwingEditorFIBController;
 import org.openflexo.rm.Resource;
 
@@ -100,8 +100,10 @@ public class LibraryBrowserFIBController extends SwingEditorFIBController<FIBLib
 
 	}
 
-	public void rightClick(FIBComponent component, MouseEvent event) {
-		// editorController.getContextualMenu().displayPopupMenu(component, ((JFIBView<?, ?>) getRootView()).getJComponent(), event);
+	public void rightClick(Resource resource, FIBMouseEvent event) {
+		System.out.println("rightClick with " + resource + " event=" + event);
+		// editorController.getContextualMenu().displayPopupMenu(component,
+		// /*((JFIBView<?, ?>) getRootView()).getJComponent()*/(Component) event.getSource(), event.getPoint());
 	}
 
 	public FIBLibraryBrowser getFIBLibraryBrowser() {

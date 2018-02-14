@@ -412,7 +412,11 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 		@Override
 		public String getBaseName() {
-			return getModelFactory().getModelEntityForInstance(this).getImplementedInterface().getSimpleName();
+			String returned = getModelFactory().getModelEntityForInstance(this).getImplementedInterface().getSimpleName();
+			if (returned.startsWith("FIB")) {
+				return returned.substring(3, returned.length());
+			}
+			return returned;
 		}
 
 		public boolean isNameUsedInHierarchy(String aName) {

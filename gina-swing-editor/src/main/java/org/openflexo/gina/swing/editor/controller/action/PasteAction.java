@@ -43,6 +43,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
+import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
@@ -78,6 +79,25 @@ public class PasteAction extends AbstractEditorActionImpl {
 		System.out.println("Paste");
 		try {
 			object.getComponent().getModelFactory().paste(getEditorController().getEditor().getClipboard(), object);
+			/*if (getEditorController().getEditor().getClipboard().isSingleObject()) {
+				Object c = getEditorController().getEditor().getClipboard().getSingleContents();
+				if (c instanceof FIBComponent) {
+					((FIBComponent) c).translateNameWhenRequired();
+				}
+			}
+			else {
+				for (Object c : getEditorController().getEditor().getClipboard().getMultipleContents()) {
+					if (c instanceof FIBComponent) {
+						((FIBComponent) c).translateNameWhenRequired();
+					}
+				}
+			}*/
+			for (Object c : getEditorController().getEditor().getClipboard().getLastReferenceContents()) {
+				System.out.println("On paste " + c);
+				if (c instanceof FIBComponent) {
+					((FIBComponent) c).translateNameWhenRequired();
+				}
+			}
 		} catch (ModelExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

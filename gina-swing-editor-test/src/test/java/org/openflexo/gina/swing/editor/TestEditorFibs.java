@@ -54,4 +54,24 @@ public class TestEditorFibs extends GenericFIBTestCase {
 		validateFIB("Fib/Browser.fib");
 	}
 
+	@Test
+	public void testValidationPanel() {
+		validateFIB("Fib/ValidationPanel.fib");
+	}
+
+	@Test
+	public void testFIBLibraryBrowser() {
+		validateFIB("Fib/FIBLibraryBrowser.fib");
+	}
+
+	@Test
+	public void testValidationDialog() {
+		validateFIB("Fib/ValidationDialog.fib");
+	}
+
+	@Test
+	public void testFixIssuePanel() {
+		validateFIB("Fib/FixIssuePanel.fib");
+	}
+
 }

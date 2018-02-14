@@ -279,6 +279,7 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 						.makeDefaultConstraints();
 				// System.out.println("using constraints=" + targetOperator.getConstraints());
 				targetOperator.addToSubComponents(newComponent, constraints);
+				newComponent.translateNameWhenRequired();
 				return true;
 			}
 			else if (isTabInsertion) {
@@ -294,6 +295,7 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 				newTabComponent.setTitle("NewTab");
 				newTabComponent.finalizeDeserialization();
 				((FIBTabPanel) targetComponent).addToSubComponents(newTabComponent);
+				newTabComponent.translateNameWhenRequired();
 				return true;
 			}
 			else if (ph != null) {
@@ -301,6 +303,7 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 				System.out.println("Insert in placeholder " + ph);
 				ph.willDelete();
 				ph.insertComponent(newComponent, -1);
+				newComponent.translateNameWhenRequired();
 				ph.hasDeleted();
 				return true;
 			}
@@ -323,6 +326,7 @@ public class PaletteElement implements FIBDraggable /* implements Transferable *
 				// reindexing
 				targetComponent.delete();
 				containerComponent.addToSubComponents(newComponent, constraints);
+				newComponent.translateNameWhenRequired();
 				return true;
 			}
 		} finally {

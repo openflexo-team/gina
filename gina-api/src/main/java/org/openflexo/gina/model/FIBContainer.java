@@ -888,5 +888,65 @@ public abstract interface FIBContainer extends FIBComponent {
 			return false;
 		}
 
+		/**
+		 * Return first found component named as supplied<br>
+		 * Recursive lookup method for contained FIBComponent
+		 * 
+		 * @param name
+		 * @return
+		 */
+		// TODO: move to FIBContainer
+		@Override
+		public FIBComponent getComponentNamed(String name) {
+
+			FIBComponent returned = super.getComponentNamed(name);
+
+			if (returned == null) {
+				for (FIBComponent c : getSubComponents()) {
+					returned = c.getComponentNamed(name);
+					if (returned != null) {
+						return returned;
+					}
+				}
+			}
+
+			return returned;
+		}
+
+		/**
+		 * Return list of components named as supplied<br>
+		 * Note that this is not a normal situation
+		 * 
+		 * @param name
+		 * @return
+		 */
+		@Override
+		public List<FIBComponent> getComponentsNamed(String name) {
+			List<FIBComponent> result = new ArrayList<>();
+			FIBComponent returned = super.getComponentNamed(name);
+			if (returned != null) {
+				result.add(returned);
+			}
+			for (FIBComponent c : getSubComponents()) {
+				result.addAll(c.getComponentsNamed(name));
+			}
+			return result;
+		}
+
+		/**
+		 * Assume that component name may not be unique<br>
+		 * Translate name to a unique name in the scope of declared root component<br>
+		 * Apply translating scheme to sub-components
+		 * 
+		 * @param component
+		 */
+		@Override
+		public void translateNameWhenRequired() {
+			super.translateNameWhenRequired();
+			for (FIBComponent child : getSubComponents()) {
+				child.translateNameWhenRequired();
+			}
+		}
+
 	}
 }

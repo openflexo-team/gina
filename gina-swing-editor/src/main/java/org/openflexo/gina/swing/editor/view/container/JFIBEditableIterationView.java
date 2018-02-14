@@ -114,7 +114,9 @@ public class JFIBEditableIterationView extends JFIBIterationView implements FIBS
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equals(FIBModelObject.NAME_KEY)) {
-			iterationInfoLabel.setText(StringUtils.isNotEmpty(getComponent().getName()) ? getComponent().getName() : "Iteration");
+			if (iterationInfoLabel != null) {
+				iterationInfoLabel.setText(StringUtils.isNotEmpty(getComponent().getName()) ? getComponent().getName() : "Iteration");
+			}
 		}
 		super.propertyChange(evt);
 	}

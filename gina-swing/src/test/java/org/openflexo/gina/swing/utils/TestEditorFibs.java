@@ -74,9 +74,4 @@ public class TestEditorFibs extends GenericFIBTestCase {
 		validateFIB("Fib/TypeSelector.fib");
 	}
 
-	@Test
-	public void testValidationPanel() {
-		validateFIB("Fib/ValidationPanel.fib");
-	}
-
 }

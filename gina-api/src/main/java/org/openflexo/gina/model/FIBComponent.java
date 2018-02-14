@@ -43,6 +43,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -497,12 +498,22 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	public Type getDynamicAccessType();
 
 	/**
+	 * Return first found component named as supplied<br>
 	 * Recursive lookup method for contained FIBComponent
 	 * 
 	 * @param name
 	 * @return
 	 */
 	public FIBComponent getComponentNamed(String name);
+
+	/**
+	 * Return list of components named as supplied<br>
+	 * Note that this is not a normal situation
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public List<FIBComponent> getComponentsNamed(String name);
 
 	public Font retrieveValidFont();
 
@@ -671,6 +682,21 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	 */
 	public FIBContainer getConcreteContainer();
 
+	/**
+	 * Return default name for this component<br>
+	 * 
+	 * @return
+	 */
+	public String getDefaultName();
+
+	/**
+	 * Assume that component name may not be unique<br>
+	 * Translate name to a unique name in the scope of declared root component
+	 * 
+	 * @param component
+	 */
+	public void translateNameWhenRequired();
+
 	public static abstract class FIBComponentImpl extends FIBModelObjectImpl implements FIBComponent {
 
 		private static final Logger LOGGER = Logger.getLogger(FIBComponent.class.getPackage().getName());
@@ -724,6 +750,76 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			explicitDependancies = new Vector<>();
 			mayDepends = new Vector<>();
 			mayAlters = new Vector<>();
+		}
+
+		@Override
+		public String getName() {
+			String returned = (String) performSuperGetter(NAME_KEY);
+			if (returned == null || StringUtils.isEmpty(returned)) {
+				return getDefaultName();
+			}
+			return returned;
+		}
+
+		private String defaultName = null;
+		private FIBComponent rootComponentForWhichWasSetDefaultName;
+
+		@Override
+		public String getDefaultName() {
+			if (isComputingDefaultName) {
+				return defaultName;
+			}
+			if (defaultName == null || (getRootComponent() != rootComponentForWhichWasSetDefaultName)) {
+				defaultName = computeDefaultName();
+			}
+			return defaultName;
+		}
+
+		private boolean isComputingDefaultName = false;
+
+		private String computeDefaultName() {
+			isComputingDefaultName = true;
+			try {
+				defaultName = getBaseName();
+				int i = 2;
+				while (getRootComponent().getComponentsNamed(defaultName).size() > 1) {
+					defaultName = getBaseName() + i;
+					i++;
+				}
+				rootComponentForWhichWasSetDefaultName = getRootComponent();
+				return defaultName;
+			} finally {
+				isComputingDefaultName = false;
+			}
+		}
+
+		/**
+		 * Assume that component name may not be unique<br>
+		 * Translate name to a unique name in the scope of declared root component
+		 * 
+		 * @param component
+		 */
+		@Override
+		public void translateNameWhenRequired() {
+			// System.out.println("translating name for " + this + " with " + getName());
+			if (getRootComponent().getComponentsNamed(getName()).size() > 1) {
+				String baseName;
+				int i;
+				if (getName().charAt(getName().length() - 1) >= '0' && getName().charAt(getName().length() - 1) <= '9') {
+					i = Integer.parseInt(getName().substring(getName().length() - 1));
+					baseName = getName().substring(0, getName().length() - 1);
+				}
+				else {
+					i = 2;
+					baseName = getName();
+				}
+				String current = baseName;
+				while (getRootComponent().getComponentNamed(current) != null) {
+					current = baseName + i;
+					i++;
+				}
+				setName(current);
+			}
 		}
 
 		@Override
@@ -1961,18 +2057,35 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			return returned;
 		}
 
+		/**
+		 * Return first found component named as supplied<br>
+		 * Recursive lookup method for contained FIBComponent
+		 * 
+		 * @param name
+		 * @return
+		 */
 		// TODO: move to FIBContainer
 		@Override
 		public FIBComponent getComponentNamed(String name) {
 			if (StringUtils.isNotEmpty(this.getName()) && this.getName().equals(name)) {
 				return this;
 			}
-			for (FIBComponent c : retrieveAllSubComponents()) {
-				if (StringUtils.isNotEmpty(c.getName()) && c.getName().equals(name)) {
-					return c;
-				}
-			}
 			return null;
+		}
+
+		/**
+		 * Return list of components named as supplied<br>
+		 * Note that this is not a normal situation
+		 * 
+		 * @param name
+		 * @return
+		 */
+		@Override
+		public List<FIBComponent> getComponentsNamed(String name) {
+			if (StringUtils.isNotEmpty(this.getName()) && this.getName().equals(name)) {
+				return Collections.singletonList(this);
+			}
+			return Collections.emptyList();
 		}
 
 		/**
@@ -2009,6 +2122,36 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				org.openflexo.model.ModelEntity<?> e = getModelFactory().getModelEntityForInstance(this);
 				return "<" + e.getImplementedInterface().getSimpleName() + ">";
 			}
+		}
+
+	}
+
+	@DefineValidationRule
+	public static class ComponentNameMustBeUnique extends ValidationRule<ComponentNameMustBeUnique, FIBComponent> {
+		public ComponentNameMustBeUnique() {
+			super(FIBModelObject.class, "component_name_must_be_unique");
+		}
+
+		@Override
+		public ValidationIssue<ComponentNameMustBeUnique, FIBComponent> applyValidation(FIBComponent object) {
+			if (object.getRootComponent().getComponentsNamed(object.getName()).size() > 1) {
+				ChangeComponentName fixProposal = new ChangeComponentName();
+				return new ValidationWarning<>(this, object, "name_of_component_($validable)_is_duplicated", fixProposal);
+			}
+			return null;
+		}
+
+	}
+
+	public static class ChangeComponentName extends FixProposal<ComponentNameMustBeUnique, FIBComponent> {
+
+		public ChangeComponentName() {
+			super("change_component_name");
+		}
+
+		@Override
+		protected void fixAction() {
+			getValidable().translateNameWhenRequired();
 		}
 
 	}
