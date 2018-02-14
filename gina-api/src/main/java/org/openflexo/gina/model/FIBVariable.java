@@ -53,6 +53,7 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
+import org.openflexo.model.annotations.XMLElement;
 
 /**
  * A {@link FIBVariable} allows to define an accessible and named value in a {@link FIBComponent}<br>
@@ -71,6 +72,7 @@ import org.openflexo.model.annotations.XMLAttribute;
  */
 @ModelEntity
 @ImplementationClass(FIBVariable.FIBVariableImpl.class)
+@XMLElement
 public interface FIBVariable<T> extends FIBModelObject {
 
 	@PropertyIdentifier(type = FIBComponent.class)
