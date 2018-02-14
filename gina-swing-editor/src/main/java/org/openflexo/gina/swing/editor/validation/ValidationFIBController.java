@@ -215,26 +215,24 @@ public class ValidationFIBController extends ComponentSwingEditorFIBController {
 	}
 
 	public void fixIssue(ValidationIssue<?, ?> issue) {
-
-		// TODO
-		System.out.println("TODO: fixIssue " + issue);
 		if (issue instanceof ProblemIssue) {
-			/*VirtualModel vmToRevalidate = null;
-			if (issue.getValidationReport().getRootObject() instanceof VirtualModel) {
-				vmToRevalidate = (VirtualModel) issue.getValidationReport().getRootObject();
+
+			FIBComponent componentToRevalidate = null;
+			if (issue.getValidationReport().getRootObject() instanceof FIBComponent) {
+				componentToRevalidate = (FIBComponent) issue.getValidationReport().getRootObject();
 			}
-			IssueFixing fixing = new IssueFixing((ProblemIssue<?, ?>) issue, getFlexoController());
-			FixIssueDialog dialog = new FixIssueDialog(fixing, getFlexoController());
+			IssueFixing fixing = new IssueFixing((ProblemIssue<?, ?>) issue, getEditorController());
+			FixIssueDialog dialog = new FixIssueDialog(fixing, getEditorController());
 			dialog.showDialog();
 			if (dialog.getStatus() == Status.VALIDATED) {
 				fixing.fix();
-				if (vmToRevalidate != null) {
-					revalidate(vmToRevalidate);
+				if (componentToRevalidate != null) {
+					revalidate(componentToRevalidate);
 				}
 			}
 			else if (dialog.getStatus() == Status.NO) {
 				fixing.ignore();
-			}*/
+			}
 		}
 	}
 
