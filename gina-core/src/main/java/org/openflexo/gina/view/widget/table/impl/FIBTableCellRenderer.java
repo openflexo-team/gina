@@ -69,7 +69,7 @@ public class FIBTableCellRenderer<T, V> extends DefaultTableCellRenderer {
 	}
 
 	public void delete() {
-		//System.out.println("delete FIBTableCellRenderer");
+		// System.out.println("delete FIBTableCellRenderer");
 	}
 
 	@Override
@@ -144,8 +144,8 @@ public class FIBTableCellRenderer<T, V> extends DefaultTableCellRenderer {
 					}
 				}
 				else {
-					if (getTable().getTextNonSelectionColor() != null) {
-						setForeground(getTable().getTextNonSelectionColor());
+					if (getTable().getTextSecondarySelectionColor() != null) {
+						setForeground(getTable().getTextSecondarySelectionColor());
 					}
 					if (getTable().getBackgroundSecondarySelectionColor() != null) {
 						setBackground(getTable().getBackgroundSecondarySelectionColor());

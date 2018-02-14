@@ -118,6 +118,8 @@ public interface FIBTable extends FIBWidget {
 	@PropertyIdentifier(type = Color.class)
 	public static final String TEXT_SELECTION_COLOR_KEY = "textSelectionColor";
 	@PropertyIdentifier(type = Color.class)
+	public static final String TEXT_SECONDARY_SELECTION_COLOR_KEY = "textSecondarySelectionColor";
+	@PropertyIdentifier(type = Color.class)
 	public static final String TEXT_NON_SELECTION_COLOR_KEY = "textNonSelectionColor";
 	@PropertyIdentifier(type = Color.class)
 	public static final String BACKGROUND_SELECTION_COLOR_KEY = "backgroundSelectionColor";
@@ -242,6 +244,13 @@ public interface FIBTable extends FIBWidget {
 	@Setter(TEXT_SELECTION_COLOR_KEY)
 	public void setTextSelectionColor(Color textSelectionColor);
 
+	@Getter(value = TEXT_SECONDARY_SELECTION_COLOR_KEY)
+	@XMLAttribute
+	public Color getTextSecondarySelectionColor();
+
+	@Setter(TEXT_SECONDARY_SELECTION_COLOR_KEY)
+	public void setTextSecondarySelectionColor(Color textSelectionColor);
+
 	@Getter(value = TEXT_NON_SELECTION_COLOR_KEY)
 	@XMLAttribute
 	public Color getTextNonSelectionColor();
@@ -358,6 +367,7 @@ public interface FIBTable extends FIBWidget {
 		private BindingModel actionBindingModel;
 
 		private Color textSelectionColor;
+		private Color textSecondarySelectionColor;
 		private Color textNonSelectionColor;
 		private Color backgroundSelectionColor;
 		private Color backgroundSecondarySelectionColor;
@@ -938,7 +948,7 @@ public interface FIBTable extends FIBWidget {
 		@Override
 		public Color getTextSelectionColor() {
 			if (textSelectionColor == null) {
-				return UIManager.getLookAndFeelDefaults().getColor("Table[Enabled+Selected].textForeground");
+				return UIManager.getLookAndFeelDefaults().getColor("Table.selectionForeground");
 			}
 			return textSelectionColor;
 		}
@@ -953,9 +963,27 @@ public interface FIBTable extends FIBWidget {
 		}
 
 		@Override
+		public Color getTextSecondarySelectionColor() {
+			if (textSecondarySelectionColor == null) {
+				return UIManager.getLookAndFeelDefaults().getColor("Table.selectionInactiveForeground");
+				// return Color.RED;
+			}
+			return textSelectionColor;
+		}
+
+		@Override
+		public void setTextSecondarySelectionColor(Color textSelectionColor) {
+			FIBPropertyNotification<Color> notification = requireChange(TEXT_SECONDARY_SELECTION_COLOR_KEY, textSelectionColor);
+			if (notification != null) {
+				this.textSecondarySelectionColor = textSelectionColor;
+				hasChanged(notification);
+			}
+		}
+
+		@Override
 		public Color getTextNonSelectionColor() {
 			if (textNonSelectionColor == null) {
-				return UIManager.getLookAndFeelDefaults().getColor("Table.textForeground");
+				return UIManager.getLookAndFeelDefaults().getColor("Table.foreground");
 			}
 			return textNonSelectionColor;
 		}
@@ -972,7 +1000,7 @@ public interface FIBTable extends FIBWidget {
 		@Override
 		public Color getBackgroundSelectionColor() {
 			if (backgroundSelectionColor == null) {
-				return UIManager.getLookAndFeelDefaults().getColor("Table[Enabled+Selected].textBackground");
+				return UIManager.getLookAndFeelDefaults().getColor("Table.selectionBackground");
 			}
 			return backgroundSelectionColor;
 		}
@@ -989,7 +1017,7 @@ public interface FIBTable extends FIBWidget {
 		@Override
 		public Color getBackgroundSecondarySelectionColor() {
 			if (backgroundSecondarySelectionColor == null) {
-				return new Color(178, 215, 255);
+				return UIManager.getLookAndFeelDefaults().getColor("Table.selectionInactiveBackground"); // new Color(178, 215, 255);
 			}
 			return backgroundSecondarySelectionColor;
 		}
