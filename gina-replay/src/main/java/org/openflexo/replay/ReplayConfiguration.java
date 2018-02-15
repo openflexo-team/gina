@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.apache.commons.io.IOUtils;
 import org.openflexo.gina.event.GinaEvent;
 import org.openflexo.gina.event.description.ApplicationEventDescription;
 import org.openflexo.gina.event.description.EventDescription;
@@ -136,17 +135,12 @@ public class ReplayConfiguration {
 	}
 
 	private void deserializeScenario(File file) {
-		FileInputStream in = null;
-		try {
-			in = new FileInputStream(file);
-
+		try (FileInputStream in = new FileInputStream(file)) {
 			scenarioBase = (Scenario) factory.getModelFactory().deserialize(in);
 
 		} catch (Exception e) {
 			scenarioToLoad = null;
 			e.printStackTrace();
-		} finally {
-			IOUtils.closeQuietly(in);
 		}
 	}
 

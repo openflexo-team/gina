@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 
-import org.apache.commons.io.IOUtils;
 import org.openflexo.gina.event.GinaEvent;
 import org.openflexo.gina.event.GinaEvent.KIND;
 import org.openflexo.gina.event.InvalidRecorderStateException;
@@ -141,8 +140,7 @@ public class GinaReplaySession implements GinaEventListener {
 		if (delayBetweenNodes > 0)
 			try {
 				Thread.sleep(delayBetweenNodes);
-			} catch (InterruptedException e2) {
-			}
+			} catch (InterruptedException e2) {}
 
 		return true;
 	}
@@ -168,8 +166,7 @@ public class GinaReplaySession implements GinaEventListener {
 				try {
 					e1.printStackTrace();
 					Thread.sleep(50);
-				} catch (InterruptedException e2) {
-				}
+				} catch (InterruptedException e2) {}
 			}
 		}
 
@@ -213,8 +210,7 @@ public class GinaReplaySession implements GinaEventListener {
 		for (int time = duration; time > 0; time -= step) {
 			try {
 				Thread.sleep(step);
-			} catch (InterruptedException e) {
-			}
+			} catch (InterruptedException e) {}
 
 			try {
 				checkSystemEvents(node);
@@ -223,14 +219,12 @@ public class GinaReplaySession implements GinaEventListener {
 				if (time != duration)
 					LOGGER.warning("PLAY : needed multiple attempts to check non user interactions for node " + node);
 				return true;
-			} catch (InvalidRecorderStateException e) {
-			}
+			} catch (InvalidRecorderStateException e) {}
 		}
 
 		try {
 			Thread.sleep(step);
-		} catch (InterruptedException e) {
-		}
+		} catch (InterruptedException e) {}
 
 		LOGGER.warning("PLAY : Non User Interaction error");
 		return false;
@@ -290,33 +284,23 @@ public class GinaReplaySession implements GinaEventListener {
 	}
 
 	public boolean save(File dir, String filename) {
-		FileOutputStream out = null;
-		try {
-			out = new FileOutputStream(new File(dir, filename));
-
+		try (FileOutputStream out = new FileOutputStream(new File(dir, filename))) {
 			manager.getModelFactory().serialize(scenario, out);
 
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			IOUtils.closeQuietly(out);
 		}
 		return false;
 	}
 
 	public boolean load(File file) {
-		FileInputStream in = null;
-		try {
-			in = new FileInputStream(file);
-
+		try (FileInputStream in = new FileInputStream(file)) {
 			scenario = (Scenario) manager.getModelFactory().deserialize(in);
 
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			IOUtils.closeQuietly(in);
 		}
 		return false;
 	}
