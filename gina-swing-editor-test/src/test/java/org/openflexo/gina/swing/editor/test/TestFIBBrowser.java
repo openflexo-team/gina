@@ -41,8 +41,6 @@ package org.openflexo.gina.swing.editor.test;
 import java.util.Observable;
 import java.util.Vector;
 
-import javax.swing.UnsupportedLookAndFeelException;
-
 import org.junit.Test;
 import org.openflexo.gina.testutils.GinaSwingEditorTestCase;
 import org.openflexo.rm.ResourceLocator;
@@ -50,9 +48,7 @@ import org.openflexo.rm.ResourceLocator;
 public class TestFIBBrowser extends GinaSwingEditorTestCase {
 
 	@Test
-	public void testComponent()
-			throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-
+	public void testComponent() {
 		final TestClass mainClass = new TestClass("Main");
 		final TestMethod method11 = new TestMethod("method1");
 		final TestMethod method12 = new TestMethod("method2");

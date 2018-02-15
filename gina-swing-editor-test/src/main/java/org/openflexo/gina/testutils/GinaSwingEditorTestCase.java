@@ -43,7 +43,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 import java.util.logging.Level;
 
 import javax.swing.JFrame;
@@ -101,9 +100,6 @@ public class GinaSwingEditorTestCase extends LaunchAdvancedFIBEditor {
 		} catch (SecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 
 		initGUI();
@@ -128,8 +124,7 @@ public class GinaSwingEditorTestCase extends LaunchAdvancedFIBEditor {
 		gcDelegate.tearDown();
 	}
 
-	public FIBEditor instanciateFIBEdition(String title, Resource fibResource, Object data)
-			throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+	public FIBEditor instanciateFIBEdition(String title, Resource fibResource, Object data) {
 
 		final FIBEditor editor = new FIBEditor(FIBLibraryImpl.createInstance(null)) {
 			@Override
