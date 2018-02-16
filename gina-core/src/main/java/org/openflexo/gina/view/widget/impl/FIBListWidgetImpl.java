@@ -57,7 +57,6 @@ import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.controller.FIBController;
-import org.openflexo.gina.controller.FIBSelectable;
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.event.description.FIBEventFactory;
 import org.openflexo.gina.event.description.FIBSelectionEventDescription;
@@ -67,8 +66,7 @@ import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.gina.model.widget.FIBList;
 import org.openflexo.gina.view.widget.FIBListWidget;
 
-public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl<FIBList, C, T, T>
-		implements FIBListWidget<C, T>, FIBSelectable<T> {
+public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl<FIBList, C, T, T> implements FIBListWidget<C, T> {
 
 	static final Logger LOGGER = Logger.getLogger(FIBListWidgetImpl.class.getPackage().getName());
 

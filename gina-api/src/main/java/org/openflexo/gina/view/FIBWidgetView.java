@@ -39,8 +39,6 @@
 
 package org.openflexo.gina.view;
 
-import java.beans.PropertyChangeListener;
-
 import javax.swing.Icon;
 
 import org.openflexo.connie.DataBinding;
@@ -70,7 +68,7 @@ import org.openflexo.gina.model.FIBWidget;
  *            type of data beeing represented by this view
  */
 public interface FIBWidgetView<M extends FIBWidget, C, T>
-		extends FIBView<M, C>, PropertyChangeListener, GenericEventPerformer<FIBEventDescription>, HasEventNotifier<FIBEventDescription> {
+		extends FIBView<M, C>, GenericEventPerformer<FIBEventDescription>, HasEventNotifier<FIBEventDescription> {
 
 	/**
 	 * Return the value represented by the widget<br>

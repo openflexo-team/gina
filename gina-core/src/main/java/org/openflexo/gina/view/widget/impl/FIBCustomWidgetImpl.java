@@ -47,7 +47,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingValueChangeListener;
@@ -77,7 +76,7 @@ import org.openflexo.swing.CustomPopup.ApplyCancelListener;
  * 
  */
 public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T> extends FIBWidgetViewImpl<FIBCustom, C, T>
-		implements FIBCustomWidget<C, CC, T>, ApplyCancelListener, BindingEvaluationContext {
+		implements FIBCustomWidget<C, CC, T>, ApplyCancelListener {
 
 	private static final Logger LOGGER = Logger.getLogger(FIBCustomWidgetImpl.class.getPackage().getName());
 

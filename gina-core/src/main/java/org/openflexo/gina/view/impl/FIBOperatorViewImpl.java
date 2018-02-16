@@ -41,7 +41,6 @@ package org.openflexo.gina.view.impl;
 
 import java.util.logging.Logger;
 
-import org.openflexo.connie.binding.SettableBindingEvaluationContext;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBOperator;
 import org.openflexo.gina.model.container.layout.FIBLayoutManager;
@@ -63,7 +62,7 @@ import org.openflexo.gina.view.FIBOperatorView;
  *            type of technology-specific component beeing contained by this view
  */
 public abstract class FIBOperatorViewImpl<M extends FIBOperator, C, C2> extends FIBContainerViewImpl<M, C, C2>
-		implements FIBOperatorView<M, C, C2>, SettableBindingEvaluationContext {
+		implements FIBOperatorView<M, C, C2> {
 
 	@SuppressWarnings("unused")
 	private static final Logger LOGGER = Logger.getLogger(FIBOperatorViewImpl.class.getPackage().getName());
