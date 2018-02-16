@@ -504,6 +504,8 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 
 		private Object child;
 
+		private boolean bindingWasForceRevalidated = false;
+
 		private CastFunction(FIBBrowserElementChildren children) {
 			this.children = children;
 		}
@@ -512,6 +514,12 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 		public synchronized Object apply(Object arg0) {
 			child = arg0;
 			try {
+
+				// Quick and dirty hack: please fix this
+				if (!children.getCast().isValid() && !bindingWasForceRevalidated) {
+					children.getCast().forceRevalidate();
+					bindingWasForceRevalidated = true;
+				}
 				Object result = null;
 				try {
 					result = children.getCast().getBindingValue(this);
