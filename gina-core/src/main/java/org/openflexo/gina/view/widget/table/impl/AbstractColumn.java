@@ -45,6 +45,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.lang.reflect.InvocationTargetException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -62,6 +64,9 @@ import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTableColumn;
 import org.openflexo.gina.view.widget.FIBTableWidget;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.localization.LocalizedDelegateImpl;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 /**
@@ -97,6 +102,11 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 	private final ColumnDynamicFormatter formatter;
 
 	private final PropertyChangeSupport pcSupport;
+
+	public static LocalizedDelegate DATE_LOCALIZATION = new LocalizedDelegateImpl(
+			ResourceLocator.locateResource("Localization/DateSelector"), null, true, true);
+
+	private SimpleDateFormat dateFormatter;
 
 	public AbstractColumn(FIBTableColumn columnModel, FIBTableModel<T> tableModel, FIBController controller) {
 		super();
@@ -438,6 +448,7 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 	}
 
 	public String getStringRepresentation(final Object value) {
+
 		if (value == null) {
 			return "";
 		}
@@ -453,6 +464,16 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 				e.printStackTrace();
 			}
 		}
+
+		if (value instanceof Date) {
+
+			if (dateFormatter == null) {
+				dateFormatter = new SimpleDateFormat();
+			}
+			dateFormatter.applyPattern(DATE_LOCALIZATION.localizedForKey("MMMM d, yyyy"));
+			return dateFormatter.format((Date) value);
+		}
+
 		return value.toString();
 	}
 
