@@ -46,6 +46,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.layout.BoxLayoutConstraints;
 import org.openflexo.gina.swing.view.JFIBView;
@@ -110,4 +111,19 @@ public class JBoxLayout extends FIBLayoutManagerImpl<JPanel, JComponent, BoxLayo
 	public BoxLayoutConstraints makeDefaultConstraints() {
 		return new BoxLayoutConstraints();
 	}
+
+	/**
+	 * Indicates if currently active supplied view representing supplied component actually respect layout constraints<br>
+	 * If no, return false and indicates that a relayouting in required for the container
+	 * 
+	 * @param view
+	 * @param component
+	 * @return
+	 */
+	@Override
+	public boolean checkConstraints(JComponent view, FIBComponent component) {
+		// TODO
+		return true;
+	}
+
 }

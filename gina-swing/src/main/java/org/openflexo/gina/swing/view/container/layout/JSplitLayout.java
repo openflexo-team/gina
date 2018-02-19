@@ -45,6 +45,7 @@ import java.util.List;
 
 import javax.swing.JComponent;
 
+import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.layout.SplitLayoutConstraints;
 import org.openflexo.gina.swing.view.JFIBView;
@@ -106,4 +107,19 @@ public class JSplitLayout extends FIBLayoutManagerImpl<JXMultiSplitPane, JCompon
 	public SplitLayoutConstraints makeDefaultConstraints() {
 		return new SplitLayoutConstraints();
 	}
+
+	/**
+	 * Indicates if currently active supplied view representing supplied component actually respect layout constraints<br>
+	 * If no, return false and indicates that a relayouting in required for the container
+	 * 
+	 * @param view
+	 * @param component
+	 * @return
+	 */
+	@Override
+	public boolean checkConstraints(JComponent view, FIBComponent component) {
+		// TODO
+		return true;
+	}
+
 }

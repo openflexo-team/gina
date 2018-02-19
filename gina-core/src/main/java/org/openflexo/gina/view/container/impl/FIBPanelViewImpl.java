@@ -205,11 +205,19 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 	}*/
 
 	@Override
-	public void updateLayout() {
+	public void updateLayout(boolean force) {
 		if (isDeleted()) {
 			return;
 		}
-		updateSubComponents();
+
+		if (force) {
+			clearContainer();
+			getLayoutManager().setLayoutManager(getTechnologyComponent());
+			buildSubComponents();
+		}
+		else {
+			updateSubComponents();
+		}
 
 		// clearContainer();
 		// getLayoutManager().setLayoutManager(getTechnologyComponent());
@@ -249,7 +257,7 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 				|| evt.getPropertyName().equals(FIBPanel.V_GAP_KEY) || evt.getPropertyName().equals(FIBPanel.H_GAP_KEY)
 				|| evt.getPropertyName().equals(FIBPanel.ROWS_KEY) || evt.getPropertyName().equals(FIBPanel.COLS_KEY)
 				|| evt.getPropertyName().equals(FIBPanel.PROTECT_CONTENT_KEY)) {
-			updateLayout();
+			updateLayout(true);
 		}
 		if (getComponent() instanceof FIBTab && evt.getPropertyName().equals(FIBTab.TITLE_KEY)) {
 			// Arghlll how do we update titles on this.

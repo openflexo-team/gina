@@ -156,7 +156,7 @@ public abstract class FIBLabelWidgetImpl<C> extends FIBWidgetViewImpl<FIBLabel, 
 	public final void relayoutParentBecauseLabelChanged() {
 		FIBContainerView<?, ?, ?> parentView = getParentView();
 		if (parentView != null) {
-			parentView.updateLayout();
+			parentView.updateLayout(false);
 		}
 		/*FIBEditorController controller = getEditorController();
 		if (controller != null) {

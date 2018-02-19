@@ -126,11 +126,23 @@ public abstract class FIBLayoutManagerImpl<C, C2, CC extends ComponentConstraint
 				return false;
 			}
 			// Check that the constraints are correct
-			// TODO !
+			if (!checkConstraints(existingComponent, componentsToDisplay.get(i).getComponent())) {
+				return false;
+			}
 		}
 
 		return true;
 	}
+
+	/**
+	 * Indicates if currently active supplied view representing supplied component actually respect layout constraints<br>
+	 * If no, return false and indicates that a relayouting in required for the container
+	 * 
+	 * @param view
+	 * @param component
+	 * @return
+	 */
+	public abstract boolean checkConstraints(C2 view, FIBComponent component);
 
 	public abstract C2 getComponentToAdd(FIBView<?, C2> view);
 

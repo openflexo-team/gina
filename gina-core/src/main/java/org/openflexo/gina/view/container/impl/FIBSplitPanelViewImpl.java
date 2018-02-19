@@ -48,8 +48,7 @@ import org.openflexo.gina.view.container.FIBSplitPanelView;
 import org.openflexo.gina.view.impl.FIBContainerViewImpl;
 
 /**
- * Base implementation of a panel split into a given policy, with adjustable
- * sliders
+ * Base implementation of a panel split into a given policy, with adjustable sliders
  * 
  * @param <C>
  *            type of technology-specific component this view manage
@@ -58,13 +57,11 @@ import org.openflexo.gina.view.impl.FIBContainerViewImpl;
  * 
  * @author sylvain
  */
-public abstract class FIBSplitPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBSplitPanel, C, C2> implements
-		FIBSplitPanelView<C, C2> {
+public abstract class FIBSplitPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBSplitPanel, C, C2> implements FIBSplitPanelView<C, C2> {
 
 	private static final Logger logger = Logger.getLogger(FIBSplitPanelViewImpl.class.getPackage().getName());
 
-	public FIBSplitPanelViewImpl(FIBSplitPanel model, FIBController controller,
-			SplitPanelRenderingAdapter<C, C2> renderingAdapter) {
+	public FIBSplitPanelViewImpl(FIBSplitPanel model, FIBController controller, SplitPanelRenderingAdapter<C, C2> renderingAdapter) {
 		super(model, controller, renderingAdapter);
 		buildSubComponents();
 	}
@@ -101,7 +98,7 @@ public abstract class FIBSplitPanelViewImpl<C, C2> extends FIBContainerViewImpl<
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equals(FIBSplitPanel.SPLIT_KEY)) {
-			updateLayout();
+			updateLayout(true);
 		}
 		super.propertyChange(evt);
 	}

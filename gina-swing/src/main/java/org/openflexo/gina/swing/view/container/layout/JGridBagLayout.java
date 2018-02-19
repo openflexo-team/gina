@@ -50,6 +50,7 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.layout.GridBagLayoutConstraints;
 import org.openflexo.gina.swing.view.JFIBView;
@@ -100,7 +101,7 @@ public class JGridBagLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Gri
 		getContainerView().getTechnologyComponent().remove(componentToRemove);
 	}
 
-	protected void _addChildToContainerWithConstraints(Component child, Container container, GridBagLayoutConstraints gridBagConstraints) {
+	private GridBagConstraints getGridBagConstraints(GridBagLayoutConstraints gridBagConstraints) {
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = gridBagConstraints.getGridX();
@@ -115,6 +116,12 @@ public class JGridBagLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Gri
 				gridBagConstraints.getInsetsRight());
 		c.ipadx = gridBagConstraints.getPadX();
 		c.ipady = gridBagConstraints.getPadY();
+		return c;
+	}
+
+	protected void _addChildToContainerWithConstraints(Component child, Container container, GridBagLayoutConstraints gridBagConstraints) {
+
+		GridBagConstraints c = getGridBagConstraints(gridBagConstraints);
 
 		container.add(child, c);
 
@@ -141,4 +148,16 @@ public class JGridBagLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Gri
 	public GridBagLayoutConstraints makeDefaultConstraints() {
 		return new GridBagLayoutConstraints();
 	}
+
+	@Override
+	public boolean checkConstraints(JComponent view, FIBComponent component) {
+		GridBagLayout gbl = (GridBagLayout) view.getParent().getLayout();
+		GridBagConstraints actualConstraints = gbl.getConstraints(view);
+		GridBagLayoutConstraints requiredConstraints = (GridBagLayoutConstraints) component.getConstraints();
+		// System.out.println("On compare: " + actualConstraints);
+		// System.out.println("Avec: " + getGridBagConstraints(requiredConstraints));
+		// System.out.println("Faut que ca change: " + !actualConstraints.equals(getGridBagConstraints(requiredConstraints)));
+		return actualConstraints.equals(getGridBagConstraints(requiredConstraints));
+	}
+
 }
