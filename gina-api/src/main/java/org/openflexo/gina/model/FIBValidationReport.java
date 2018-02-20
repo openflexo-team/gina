@@ -63,7 +63,7 @@ public class FIBValidationReport extends ValidationReport {
 
 	private FIBComponent fibComponent;
 
-	public FIBValidationReport(ValidationModel validationModel, FIBComponent fibComponent) throws InterruptedException {
+	public FIBValidationReport(ValidationModel validationModel, FIBComponent fibComponent) {
 		super(validationModel, fibComponent);
 		this.fibComponent = fibComponent;
 	}
@@ -95,7 +95,7 @@ public class FIBValidationReport extends ValidationReport {
 		return infoIssuesRegarding(object);
 	}
 
-	private <C extends FIBModelObject> void reanalyzeBinding(ValidationIssue<? extends BindingMustBeValid<C>, C> issue) {
+	private static <C extends FIBModelObject> void reanalyzeBinding(ValidationIssue<? extends BindingMustBeValid<C>, C> issue) {
 		DataBinding<?> db = issue.getCause().getBinding(issue.getValidable());
 		db.markedAsToBeReanalized();
 	}

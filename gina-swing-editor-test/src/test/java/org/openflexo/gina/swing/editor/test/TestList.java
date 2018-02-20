@@ -42,7 +42,6 @@ import java.beans.PropertyChangeSupport;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import org.junit.Test;
 import org.openflexo.gina.swing.editor.controller.FIBEditorIconLibrary;
@@ -53,9 +52,7 @@ import org.openflexo.toolbox.HasPropertyChangeSupport;
 public class TestList extends GinaSwingEditorTestCase {
 
 	@Test
-	public void testComponent()
-			throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-
+	public void testComponent() {
 		final User user1 = new User("John", "Doe", "john.doe@yahoo.com");
 		final User user2 = new User("Thomas", "Smith", "thomas.smith@google.com");
 		final User user3 = new User("Sarah", "Martins", "smartin@free.com");

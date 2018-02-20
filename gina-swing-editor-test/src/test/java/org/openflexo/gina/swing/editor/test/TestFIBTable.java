@@ -41,8 +41,6 @@ package org.openflexo.gina.swing.editor.test;
 import java.beans.PropertyChangeSupport;
 import java.util.Vector;
 
-import javax.swing.UnsupportedLookAndFeelException;
-
 import org.junit.Test;
 import org.openflexo.gina.testutils.GinaSwingEditorTestCase;
 import org.openflexo.rm.ResourceLocator;
@@ -51,9 +49,7 @@ import org.openflexo.toolbox.HasPropertyChangeSupport;
 public class TestFIBTable extends GinaSwingEditorTestCase {
 
 	@Test
-	public void testComponent()
-			throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-
+	public void testComponent() {
 		final User user1 = new User("John", "Doe", "john.doe@yahoo.com");
 		final User user2 = new User("Thomas", "Smith", "thomas.smith@google.com");
 		final User user3 = new User("Sarah", "Martins", "smartin@free.com");

@@ -43,7 +43,6 @@ import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.localization.LocalizedDelegateImpl;
-import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.validation.Validable;
 import org.openflexo.model.validation.ValidationModel;
 import org.openflexo.rm.Resource;
@@ -61,7 +60,7 @@ public class FIBValidationModel extends ValidationModel {
 	public static LocalizedDelegate VALIDATION_LOCALIZATION = new LocalizedDelegateImpl(fibValidationLocalizedDelegate,
 			FIBModelObjectImpl.GINA_LOCALIZATION, true, true);
 
-	public FIBValidationModel(FIBModelFactory fibModelFactory) throws ModelDefinitionException {
+	public FIBValidationModel(FIBModelFactory fibModelFactory) {
 		super(fibModelFactory.getModelContext());
 	}
 

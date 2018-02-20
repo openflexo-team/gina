@@ -38,8 +38,6 @@
 
 package org.openflexo.gina.swing.editor.test;
 
-import javax.swing.UnsupportedLookAndFeelException;
-
 import org.junit.Test;
 import org.openflexo.gina.sampleData.Family;
 import org.openflexo.gina.testutils.GinaSwingEditorTestCase;
@@ -48,9 +46,7 @@ import org.openflexo.rm.ResourceLocator;
 public class TestEditor extends GinaSwingEditorTestCase {
 
 	@Test
-	public void testComponent()
-			throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-
+	public void testComponent() {
 		instanciateFIBEdition("TestTable", ResourceLocator.locateSourceCodeResource("TestFIB/TestTable.fib"), new Family());
 	}
 

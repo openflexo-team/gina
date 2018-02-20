@@ -42,7 +42,6 @@ package org.openflexo.gina.swing.editor;
 import java.awt.Rectangle;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -93,9 +92,6 @@ public class LaunchBasicFIBEditor {
 				FlexoLoggingManager.initialize(-1, true, null, Level.INFO, null);
 				FlexoLocalization.initWith(FIBEditor.EDITOR_LOCALIZATION);
 			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

@@ -38,8 +38,6 @@
 
 package org.openflexo.gina.swing.editor.test;
 
-import javax.swing.UnsupportedLookAndFeelException;
-
 import org.junit.Test;
 import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.utils.localization.LocalizedPanel;
@@ -48,9 +46,7 @@ import org.openflexo.gina.testutils.GinaSwingEditorTestCase;
 public class LocalizedEditorEDITOR extends GinaSwingEditorTestCase {
 
 	@Test
-	public void testLocalizedEditor()
-			throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-
+	public void testLocalizedEditor() {
 		instanciateFIBEdition("LocalizedEditor", LocalizedPanel.lOCALIZED_PANEL_FIB, FIBEditor.EDITOR_LOCALIZATION);
 	}
 
