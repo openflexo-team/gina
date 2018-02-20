@@ -256,7 +256,7 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 					if (!variableDB.isValid()) {
 						LOGGER.warning("Assignment variable not valid: " + variableDB + " reason: " + variableDB.invalidBindingReason());
 					}
-					if (valueDB != null && valueDB.isValid()) {
+					if (valueDB.isValid()) {
 						Object value = null;
 						try {
 							value = valueDB.getBindingValue(getBindingEvaluationContext());

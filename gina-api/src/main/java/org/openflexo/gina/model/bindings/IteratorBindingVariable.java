@@ -61,10 +61,8 @@ public class IteratorBindingVariable extends BindingVariable implements Property
 	public IteratorBindingVariable(FIBIteration iteration) {
 		super(iteration.getIteratorName(), iteration.getIteratorType(), true);
 		this.iteration = iteration;
-		if (iteration != null) {
-			lastKnownType = iteration.getIteratorType();
-		}
-		if (iteration != null && iteration.getPropertyChangeSupport() != null) {
+		lastKnownType = iteration.getIteratorType();
+		if (iteration.getPropertyChangeSupport() != null) {
 			iteration.getPropertyChangeSupport().addPropertyChangeListener(this);
 		}
 	}

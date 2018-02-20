@@ -64,9 +64,7 @@ public class FIBVariablePathElement extends SimplePathElement implements Propert
 		super(parent, fibVariable.getName(), fibVariable.getType());
 
 		this.fibVariable = fibVariable;
-		if (fibVariable != null) {
-			lastKnownType = fibVariable.getType();
-		}
+		lastKnownType = fibVariable.getType();
 	}
 
 	@Override

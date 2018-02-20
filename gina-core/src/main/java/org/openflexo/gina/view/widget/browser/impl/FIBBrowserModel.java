@@ -306,11 +306,9 @@ public class FIBBrowserModel extends DefaultTreeModel {
 				+ (parent != null ? parent.getRepresentedObject() : "null"));*/
 		ArrayList<BrowserCell> cells = new ArrayList<>(contents.get(representedObject));
 		// Collection<BrowserCell> cells = contents.get(representedObject);
-		if (cells != null) {
-			for (BrowserCell cell : cells) {
-				if (cell.getParent() == parent) {
-					return cell;
-				}
+		for (BrowserCell cell : cells) {
+			if (cell.getParent() == parent) {
+				return cell;
 			}
 		}
 		return null; // Do not create it if not needed!

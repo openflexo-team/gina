@@ -63,10 +63,8 @@ public class FIBVariableBindingVariable extends BindingVariable implements Prope
 	public FIBVariableBindingVariable(FIBVariable<?> variable) {
 		super(variable.getName(), variable.getType(), true);
 		this.variable = variable;
-		if (variable != null) {
-			lastKnownType = variable.getType();
-		}
-		if (variable != null && variable.getPropertyChangeSupport() != null) {
+		lastKnownType = variable.getType();
+		if (variable.getPropertyChangeSupport() != null) {
 			variable.getPropertyChangeSupport().addPropertyChangeListener(this);
 		}
 	}

@@ -306,7 +306,7 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 		IteratedContents<I> context = (IteratedContents<I>) iteratedSubViewsMap.get(iteratedValue);
 
 		if (context == null) {
-			context = new IteratedContentsImpl<I>(iteratedValue);
+			context = new IteratedContentsImpl<>(iteratedValue);
 			iteratedSubViewsMap.put(iteratedValue, context);
 		}
 

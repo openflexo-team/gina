@@ -63,10 +63,8 @@ public class DynamicPropertyBindingVariable extends BindingVariable implements P
 	public DynamicPropertyBindingVariable(DynamicProperty dynamicProperty) {
 		super(dynamicProperty.getName(), dynamicProperty.getType(), true);
 		this.dynamicProperty = dynamicProperty;
-		if (dynamicProperty != null) {
-			lastKnownType = dynamicProperty.getType();
-		}
-		if (dynamicProperty != null && dynamicProperty.getPropertyChangeSupport() != null) {
+		lastKnownType = dynamicProperty.getType();
+		if (dynamicProperty.getPropertyChangeSupport() != null) {
 			dynamicProperty.getPropertyChangeSupport().addPropertyChangeListener(this);
 		}
 	}

@@ -137,8 +137,8 @@ public class NumberColumn<T> extends AbstractColumn<T, Number> implements Editab
 			try {
 				return decimalFormat.format(value);
 			} catch (IllegalArgumentException e) {
-				logger.warning("Could not format as a " + getColumnModel().getNumberType() + ": " + value + " of "
-						+ (value != null ? value.getClass() : null) + " given by evaluation of " + getColumnModel().getData());
+				logger.warning("Could not format as a " + getColumnModel().getNumberType() + ": " + value + " of " + value.getClass()
+						+ " given by evaluation of " + getColumnModel().getData());
 			}
 		}
 		return super.getStringRepresentation(value);
