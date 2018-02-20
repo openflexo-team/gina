@@ -176,7 +176,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	public void updateSubComponents() {
 		List<FIBView<?, C2>> newViews = internallyUpdateChildComponents();
 		addSubComponentsAndDoLayout();
-		for (FIBView<?, C2> v : newViews) {
+		for (FIBView<?, C2> v : getSubViews()) {
 			if (!v.isDeleted() /*&& v.isViewVisible()*/) {
 				v.update();
 			}
@@ -270,7 +270,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 			super.performUpdate();
 			performUpdateSubViews();
 			if (layoutIsInvalid) {
-				updateLayout();
+				updateLayout(false);
 				layoutIsInvalid = false;
 			}
 		} finally {
@@ -372,7 +372,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 	}
 
 	@Override
-	public abstract void updateLayout();
+	public abstract void updateLayout(boolean force);
 
 	private boolean layoutIsInvalid = false;
 
@@ -403,7 +403,7 @@ public abstract class FIBContainerViewImpl<M extends FIBContainer, C, C2> extend
 					System.out.println(newComponent.getFIBLibrary().stringRepresentation(newComponent));
 				}
 			}*/
-			updateLayout();
+			updateLayout(true);
 		}
 
 		super.propertyChange(evt);

@@ -161,11 +161,11 @@ public class JFIBSplitPanelView extends FIBSplitPanelViewImpl<JXMultiSplitPane, 
 	@Override
 	public void changeLayout() {
 		// TODO is it enough ???
-		updateLayout();
+		updateLayout(false);
 	}
 
 	@Override
-	public synchronized void updateLayout() {
+	public synchronized void updateLayout(boolean force) {
 		layout.setModel(getComponent().getSplit());
 		clearContainer();
 		buildSubComponents();

@@ -46,6 +46,7 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.layout.FlowLayoutConstraints;
 import org.openflexo.gina.swing.view.JFIBView;
@@ -112,4 +113,12 @@ public class JFlowLayout extends FIBLayoutManagerImpl<JPanel, JComponent, FlowLa
 	public FlowLayoutConstraints makeDefaultConstraints() {
 		return new FlowLayoutConstraints();
 	}
+
+	@Override
+	public boolean checkConstraints(JComponent view, FIBComponent component) {
+		FlowLayout gbl = (FlowLayout) view.getParent().getLayout();
+		FlowLayoutConstraints requiredConstraints = (FlowLayoutConstraints) component.getConstraints();
+		return true;
+	}
+
 }

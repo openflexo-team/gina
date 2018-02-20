@@ -199,7 +199,7 @@ public abstract class FIBImageWidgetImpl<C> extends FIBWidgetViewImpl<FIBImage, 
 	protected void relayoutParentBecauseImageChanged() {
 		FIBContainerView<?, ?, ?> parentView = getParentView();
 		if (parentView != null) {
-			parentView.updateLayout();
+			parentView.updateLayout(false);
 		}
 		// FIBEditorController controller = getEditorController();
 		// controller.notifyFocusedAndSelectedObject();

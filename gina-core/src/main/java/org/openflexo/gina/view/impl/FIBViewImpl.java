@@ -882,28 +882,28 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 				|| evt.getPropertyName().equals(FIBComponent.HORIZONTAL_SCROLLBAR_POLICY_KEY)
 				|| evt.getPropertyName().equals(FIBComponent.VERTICAL_SCROLLBAR_POLICY_KEY)) {
 			if (getParentView() != null) {
-				getParentView().updateLayout();
+				getParentView().updateLayout(false);
 			}
 		}
 		else if (evt.getPropertyName().equals(FIBComponent.MIN_WIDTH_KEY) || evt.getPropertyName().equals(FIBComponent.MIN_HEIGHT_KEY)
 				|| evt.getPropertyName().equals(FIBComponent.DEFINE_MIN_DIMENSIONS)) {
 			updateMinimumSize();
 			if (getParentView() != null) {
-				getParentView().updateLayout();
+				getParentView().updateLayout(false);
 			}
 		}
 		else if (evt.getPropertyName().equals(FIBComponent.WIDTH_KEY) || evt.getPropertyName().equals(FIBComponent.HEIGHT_KEY)
 				|| evt.getPropertyName().equals(FIBComponent.DEFINE_PREFERRED_DIMENSIONS)) {
 			updatePreferredSize();
 			if (getParentView() != null) {
-				getParentView().updateLayout();
+				getParentView().updateLayout(false);
 			}
 		}
 		else if (evt.getPropertyName().equals(FIBComponent.MAX_WIDTH_KEY) || evt.getPropertyName().equals(FIBComponent.MAX_HEIGHT_KEY)
 				|| evt.getPropertyName().equals(FIBComponent.DEFINE_MAX_DIMENSIONS)) {
 			updateMaximumSize();
 			if (getParentView() != null) {
-				getParentView().updateLayout();
+				getParentView().updateLayout(false);
 			}
 		}
 		else if (evt.getPropertyName().equals(FIBComponent.FONT_KEY)) {

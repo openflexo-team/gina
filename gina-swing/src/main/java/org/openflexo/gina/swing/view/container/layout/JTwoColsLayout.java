@@ -90,7 +90,7 @@ public class JTwoColsLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Two
 		return new GridBagLayout();
 	}
 
-	protected void _addChildToContainerWithConstraints(Component child, Container container, TwoColsLayoutConstraints twoColsConstraints) {
+	private GridBagConstraints getGridBagConstraints(TwoColsLayoutConstraints twoColsConstraints) {
 		GridBagConstraints c = new GridBagConstraints();
 		// c.insets = new Insets(3, 3, 3, 3);
 		// System.out.println("twoColsConstraints=" + twoColsConstraints);
@@ -124,7 +124,11 @@ public class JTwoColsLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Two
 			c.weightx = 1.0; // 2.0;
 			c.gridwidth = GridBagConstraints.REMAINDER;
 		}
+		return c;
+	}
 
+	protected void _addChildToContainerWithConstraints(Component child, Container container, TwoColsLayoutConstraints twoColsConstraints) {
+		GridBagConstraints c = getGridBagConstraints(twoColsConstraints);
 		container.add(child, c);
 
 	}
@@ -219,4 +223,16 @@ public class JTwoColsLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Two
 	public TwoColsLayoutConstraints makeDefaultConstraints() {
 		return new TwoColsLayoutConstraints();
 	}
+
+	@Override
+	public boolean checkConstraints(JComponent view, FIBComponent component) {
+		GridBagLayout gbl = (GridBagLayout) view.getParent().getLayout();
+		GridBagConstraints actualConstraints = gbl.getConstraints(view);
+		TwoColsLayoutConstraints requiredConstraints = (TwoColsLayoutConstraints) component.getConstraints();
+		//System.out.println("On compare: " + actualConstraints);
+		//System.out.println("Avec: " + getGridBagConstraints(requiredConstraints));
+		//System.out.println("Faut que ca change: " + !actualConstraints.equals(getGridBagConstraints(requiredConstraints)));
+		return actualConstraints.equals(getGridBagConstraints(requiredConstraints));
+	}
+
 }

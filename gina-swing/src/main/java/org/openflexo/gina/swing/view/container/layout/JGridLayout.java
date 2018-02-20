@@ -166,4 +166,18 @@ public class JGridLayout extends FIBLayoutManagerImpl<JPanel, JComponent, GridLa
 		return new GridLayoutConstraints();
 	}
 
+	/**
+	 * Indicates if currently active supplied view representing supplied component actually respect layout constraints<br>
+	 * If no, return false and indicates that a relayouting in required for the container
+	 * 
+	 * @param view
+	 * @param component
+	 * @return
+	 */
+	@Override
+	public boolean checkConstraints(JComponent view, FIBComponent component) {
+		// TODO
+		return true;
+	}
+
 }

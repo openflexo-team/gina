@@ -437,7 +437,7 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 
 		// TODO: perf issue
 		// Better whould be to recompute the list, update iteration and update layout accordingly
-		updateLayout();
+		updateLayout(false);
 
 	}
 
@@ -510,7 +510,7 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 	}
 
 	@Override
-	public void updateLayout() {
+	public void updateLayout(boolean force) {
 
 		if (isDeleted()) {
 			return;
@@ -522,7 +522,7 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 		updateSubComponents();
 
 		if (getConcreteContainerView() != null) {
-			getConcreteContainerView().updateLayout();
+			getConcreteContainerView().updateLayout(force);
 		}
 	}
 
@@ -541,7 +541,7 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 		if (evt.getPropertyName().equals(FIBContainer.SUB_COMPONENTS_KEY)) {
 			// System.out.println("Rebuild whole iteration");
 			rebuildTechnologyComponent();
-			getConcreteContainerView().updateLayout();
+			getConcreteContainerView().updateLayout(true);
 		}
 
 		super.propertyChange(evt);

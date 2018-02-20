@@ -76,7 +76,7 @@ public interface FIBContainerView<M extends FIBContainer, C, C2> extends FIBView
 
 	public void changeLayout();
 
-	public void updateLayout();
+	public void updateLayout(boolean force);
 
 	public void invalidateAndUpdateLayoutLater();
 

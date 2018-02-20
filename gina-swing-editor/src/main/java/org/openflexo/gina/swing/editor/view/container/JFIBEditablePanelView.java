@@ -180,9 +180,9 @@ public class JFIBEditablePanelView extends JFIBPanelView implements FIBSwingEdit
 	}
 
 	@Override
-	public void updateLayout() {
+	public void updateLayout(boolean force) {
 		delegate.updateOperatorDecorators();
-		super.updateLayout();
+		super.updateLayout(force);
 	}
 
 	@Override

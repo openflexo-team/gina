@@ -45,6 +45,7 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.layout.ButtonLayoutConstraints;
 import org.openflexo.gina.swing.view.JFIBView;
@@ -104,6 +105,20 @@ public class JButtonLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Butt
 	@Override
 	public ButtonLayoutConstraints makeDefaultConstraints() {
 		return new ButtonLayoutConstraints();
+	}
+
+	/**
+	 * Indicates if currently active supplied view representing supplied component actually respect layout constraints<br>
+	 * If no, return false and indicates that a relayouting in required for the container
+	 * 
+	 * @param view
+	 * @param component
+	 * @return
+	 */
+	@Override
+	public boolean checkConstraints(JComponent view, FIBComponent component) {
+		// TODO
+		return true;
 	}
 
 }

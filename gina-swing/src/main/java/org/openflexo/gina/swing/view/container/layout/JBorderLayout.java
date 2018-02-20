@@ -46,6 +46,7 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.layout.BorderLayoutConstraints;
 import org.openflexo.gina.swing.view.JFIBView;
@@ -114,6 +115,14 @@ public class JBorderLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Bord
 	@Override
 	public BorderLayoutConstraints makeDefaultConstraints() {
 		return new BorderLayoutConstraints();
+	}
+
+	@Override
+	public boolean checkConstraints(JComponent view, FIBComponent component) {
+		BorderLayout bl = (BorderLayout) view.getParent().getLayout();
+		// System.out.println("require change: "
+		// + !((BorderLayoutConstraints) component.getConstraints()).getLocation().getConstraint().equals(bl.getConstraints(view)));
+		return ((BorderLayoutConstraints) component.getConstraints()).getLocation().getConstraint().equals(bl.getConstraints(view));
 	}
 
 }
