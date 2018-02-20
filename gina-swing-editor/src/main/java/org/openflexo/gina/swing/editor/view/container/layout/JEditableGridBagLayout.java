@@ -112,13 +112,15 @@ public class JEditableGridBagLayout extends JGridBagLayout
 				deltaY = 0;
 			}
 
+			List<FIBView<?, JComponent>> flattenedContents = getFlattenedContents();
+
 			// Before each component, we will add an empty panel to compute
 			// placeholder location
-			for (int i = 0; i < getComponent().getSubComponents().size(); i++) {
+			for (int i = 0; i < flattenedContents.size(); i++) {
 				panel.removeAll();
 				for (int j = 0; j < i; j++) {
-					FIBComponent c = getComponent().getSubComponents().get(j);
-					JFIBView<?, ?> childView = (JFIBView<?, ?>) getContainerView().getSubViewsMap().get(c);
+					JFIBView<?, ?> childView = (JFIBView<?, ?>) flattenedContents.get(j);
+					FIBComponent c = childView.getComponent();
 					Component child = Box.createRigidArea(childView.getResultingJComponent().getSize());
 					_addChildToContainerWithConstraints(child, panel, (GridBagLayoutConstraints) c.getConstraints());
 					// panel.add(Box.createRigidArea(childView.getResultingJComponent().getSize()));
@@ -133,9 +135,9 @@ public class JEditableGridBagLayout extends JGridBagLayout
 				// phComponent.setAlignmentY(0.5f);
 				// panel.add(phComponent);
 				_addChildToContainerWithConstraints(phComponent, panel, new GridBagLayoutConstraints());
-				for (int j = i; j < getComponent().getSubComponents().size(); j++) {
-					FIBComponent c = getComponent().getSubComponents().get(j);
-					JFIBView<?, ?> childView = (JFIBView<?, ?>) getContainerView().getSubViewsMap().get(c);
+				for (int j = i; j < flattenedContents.size(); j++) {
+					JFIBView<?, ?> childView = (JFIBView<?, ?>) flattenedContents.get(j);
+					FIBComponent c = childView.getComponent();
 					Component child = Box.createRigidArea(childView.getResultingJComponent().getSize());
 					_addChildToContainerWithConstraints(child, panel, (GridBagLayoutConstraints) c.getConstraints());
 					// panel.add(Box.createRigidArea(childView.getResultingJComponent().getSize()));
@@ -170,9 +172,9 @@ public class JEditableGridBagLayout extends JGridBagLayout
 
 			// Then add a placeholder at the end
 			panel.removeAll();
-			for (int i = 0; i < getComponent().getSubComponents().size(); i++) {
-				FIBComponent c = getComponent().getSubComponents().get(i);
-				JFIBView<?, ?> childView = (JFIBView<?, ?>) getContainerView().getSubViewsMap().get(c);
+			for (int i = 0; i < flattenedContents.size(); i++) {
+				JFIBView<?, ?> childView = (JFIBView<?, ?>) flattenedContents.get(i);
+				FIBComponent c = childView.getComponent();
 				Component child = Box.createRigidArea(childView.getResultingJComponent().getSize());
 				_addChildToContainerWithConstraints(child, panel, (GridBagLayoutConstraints) c.getConstraints());
 				// panel.add(Box.createRigidArea(childView.getResultingJComponent().getSize()));
