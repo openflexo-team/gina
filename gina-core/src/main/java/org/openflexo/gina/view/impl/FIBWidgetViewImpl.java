@@ -210,6 +210,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			dataBindingValueChangeListener.delete();
 		}
 
+		@SuppressWarnings("unchecked")
 		DataBinding<T> data = (DataBinding<T>) getComponent().getData();
 
 		if (data != null && data.isValid()) {
@@ -578,8 +579,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 		representedValue = aValue;
 
-		if (getWidget().getData() == null || getWidget().getData().isUnset()) {
-		}
+		if (getWidget().getData() == null || getWidget().getData().isUnset()) {}
 		else {
 			try {
 				/*System.out.println("On tente un set " + getWidget().getData() + " avec " + aValue);
@@ -824,13 +824,11 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			// }
 		}
 		if (value instanceof Enum) {
-			String returned = value != null ? ((Enum<?>) value).name() : null;
+			String returned = ((Enum<?>) value).name();
 			if (getWidget().getLocalize() && returned != null) {
 				return getLocalized(returned);
 			}
-			else {
-				return returned;
-			}
+			return returned;
 		}
 		if (value instanceof String) {
 			if (getWidget().getLocalize()) {
@@ -1006,9 +1004,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			if (variable.getVariableName().equals(VALUE)) {
 				return value;
 			}
-			else {
-				return getBindingEvaluationContext().getValue(variable);
-			}
+			return getBindingEvaluationContext().getValue(variable);
 		}
 	}
 
@@ -1027,9 +1023,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			if (variable.getVariableName().equals(OBJECT)) {
 				return value;
 			}
-			else {
-				return getBindingEvaluationContext().getValue(variable);
-			}
+			return getBindingEvaluationContext().getValue(variable);
 		}
 	}
 

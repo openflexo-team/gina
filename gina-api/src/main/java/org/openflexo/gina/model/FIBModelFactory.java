@@ -132,8 +132,9 @@ public class FIBModelFactory extends ModelFactory {
 		return returned;
 	}
 
-	public FIBVariable<?> newFIBVariable(FIBComponent component, String name, DataBinding<?> value) {
-		FIBVariable returned = newInstance(FIBVariable.class);
+	public <T> FIBVariable<T> newFIBVariable(FIBComponent component, String name, DataBinding<T> value) {
+		@SuppressWarnings("unchecked")
+		FIBVariable<T> returned = newInstance(FIBVariable.class);
 		returned.setName(name);
 		returned.setValue(value);
 		component.addToVariables(returned);

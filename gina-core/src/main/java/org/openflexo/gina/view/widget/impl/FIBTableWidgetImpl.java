@@ -171,6 +171,7 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void listenSelectedValueChange() {
 		if (selectedBindingValueChangeListener != null) {
 			selectedBindingValueChangeListener.stopObserving();

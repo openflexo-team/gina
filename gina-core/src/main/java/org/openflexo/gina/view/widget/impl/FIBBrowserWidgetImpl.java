@@ -131,6 +131,7 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		return (BrowserRenderingAdapter<C, T>) super.getRenderingAdapter();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void listenSelectedValueChange() {
 		if (selectedBindingValueChangeListener != null) {
 			selectedBindingValueChangeListener.stopObserving();
@@ -160,6 +161,7 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void listenSelectionValueChange() {
 
 		if (selectionBindingValueChangeListener != null) {

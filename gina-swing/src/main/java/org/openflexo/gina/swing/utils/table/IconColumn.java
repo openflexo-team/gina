@@ -63,7 +63,7 @@ public abstract class IconColumn<D> extends AbstractColumn<D, Icon> {
 	}
 
 	@Override
-	public Class getValueClass() {
+	public Class<Icon> getValueClass() {
 		return Icon.class;
 	}
 
@@ -119,7 +119,8 @@ public abstract class IconColumn<D> extends AbstractColumn<D, Icon> {
 		 * @return the default table cell renderer
 		 */
 		@Override
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row,
+				int column) {
 			Component returned = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			((JLabel) returned).setText(null);
 			((JLabel) returned).setIcon((Icon) value);

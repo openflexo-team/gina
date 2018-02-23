@@ -106,13 +106,13 @@ public class TableSorter extends AbstractTableModel {
 
 	private static final Directive EMPTY_DIRECTIVE = new Directive(-1, NOT_SORTED);
 
-	public static final Comparator COMPARABLE_COMPARATOR = new Comparator() {
+	public static final Comparator<Comparable> COMPARABLE_COMPARATOR = new Comparator<Comparable>() {
 		@Override
-		public int compare(Object o1, Object o2) {
-			return ((Comparable) o1).compareTo(o2);
+		public int compare(Comparable o1, Comparable o2) {
+			return o1.compareTo(o2);
 		}
 	};
-	public static final Comparator LEXICAL_COMPARATOR = new Comparator() {
+	public static final Comparator<Object> LEXICAL_COMPARATOR = new Comparator<Object>() {
 		@Override
 		public int compare(Object o1, Object o2) {
 			return o1.toString().compareTo(o2.toString());
@@ -246,8 +246,8 @@ public class TableSorter extends AbstractTableModel {
 	}
 
 	protected Comparator getComparator(int column) {
-		Class columnType = tableModel.getColumnClass(column);
-		Comparator comparator = columnComparators.get(columnType);
+		Class<?> columnType = tableModel.getColumnClass(column);
+		Comparator<?> comparator = columnComparators.get(columnType);
 		if (comparator != null) {
 			return comparator;
 		}
@@ -305,7 +305,7 @@ public class TableSorter extends AbstractTableModel {
 	}
 
 	@Override
-	public Class getColumnClass(int column) {
+	public Class<?> getColumnClass(int column) {
 		return tableModel.getColumnClass(column);
 	}
 
@@ -326,7 +326,7 @@ public class TableSorter extends AbstractTableModel {
 
 	// Helper classes
 
-	private class Row implements Comparable {
+	private class Row implements Comparable<Row> {
 		int modelIndex;
 
 		public Row(int index) {
@@ -334,9 +334,9 @@ public class TableSorter extends AbstractTableModel {
 		}
 
 		@Override
-		public int compareTo(Object o) {
+		public int compareTo(Row o) {
 			int row1 = modelIndex;
-			int row2 = ((Row) o).modelIndex;
+			int row2 = o.modelIndex;
 
 			for (Iterator<?> it = sortingColumns.iterator(); it.hasNext();) {
 				Directive directive = (Directive) it.next();

@@ -49,7 +49,6 @@ import java.util.logging.Logger;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBindingFactory;
 import org.openflexo.connie.type.GenericArrayTypeImpl;
-import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.connie.type.WilcardTypeImpl;
 import org.openflexo.gina.model.FIBPropertyNotification;
@@ -155,7 +154,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		private DataBinding<List<?>> list;
 		private DataBinding<Object[]> array;
 
-		private Class iteratorClass;
+		private Class<?> iteratorClass;
 
 		private boolean showIcon = false;
 		private boolean showText = true;
@@ -165,23 +164,24 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		public FIBMultipleValuesImpl() {
 		}
 
+		/* unused 
 		private Type LIST_BINDING_TYPE;
 		private Type ARRAY_BINDING_TYPE;
-
+		
 		private Type getListBindingType() {
 			if (LIST_BINDING_TYPE == null) {
 				LIST_BINDING_TYPE = new ParameterizedTypeImpl(List.class, new WilcardTypeImpl(getIteratorType()));
 			}
 			return LIST_BINDING_TYPE;
 		}
-
+		
 		private Type getArrayBindingType() {
 			if (ARRAY_BINDING_TYPE == null) {
 				ARRAY_BINDING_TYPE = new GenericArrayTypeImpl(new WilcardTypeImpl(getIteratorType()));
 			}
 			return ARRAY_BINDING_TYPE;
 		}
-
+		*/
 		@Override
 		public DataBinding<List<?>> getList() {
 			if (list == null) {
@@ -194,8 +194,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		public void setList(DataBinding<List<?>> list) {
 			if (list != null) {
 				list.setOwner(this);
-				list.setDeclaredType(new TypeToken<List<?>>() {
-				}.getType());
+				list.setDeclaredType(new TypeToken<List<?>>() {}.getType());
 				list.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 			}
 			this.list = list;
@@ -333,8 +332,8 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		public void setIteratorType(Type iteratorType) {
 			FIBPropertyNotification<Type> notification = requireChange(ITERATOR_TYPE_KEY, iteratorType);
 			if (notification != null) {
-				LIST_BINDING_TYPE = null;
-				ARRAY_BINDING_TYPE = null;
+				// Unused LIST_BINDING_TYPE = null;
+				// Unused ARRAY_BINDING_TYPE = null;
 				this.iteratorType = iteratorType;
 				hasChanged(notification);
 			}
@@ -461,8 +460,8 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 			FIBPropertyNotification<String> notification = requireChange(STATIC_LIST_KEY, staticList);
 			if (notification != null) {
 				this.staticList = staticList;
-				LIST_BINDING_TYPE = null;
-				ARRAY_BINDING_TYPE = null;
+				// Unused LIST_BINDING_TYPE = null;
+				// Unused ARRAY_BINDING_TYPE = null;
 				// logger.info("FIBMultiple: setStaticList with " + staticList);
 				hasChanged(notification);
 			}
@@ -600,7 +599,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		}
 
 		@Override
-		public DataBinding getBinding(FIBMultipleValues object) {
+		public DataBinding<?> getBinding(FIBMultipleValues object) {
 			return object.getList();
 		}
 
@@ -613,7 +612,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		}
 
 		@Override
-		public DataBinding getBinding(FIBMultipleValues object) {
+		public DataBinding<?> getBinding(FIBMultipleValues object) {
 			return object.getArray();
 		}
 

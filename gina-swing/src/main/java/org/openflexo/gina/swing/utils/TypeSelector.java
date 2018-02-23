@@ -367,7 +367,7 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 		return (choice instanceof Class);
 	}
 
-	public CustomTypeFactory<?> getCurrentCustomTypeFactory() {
+	private CustomTypeFactory<?> getCurrentCustomTypeFactory() {
 		if (isCustomType()) {
 			return customTypeFactories.get(choice);
 		}

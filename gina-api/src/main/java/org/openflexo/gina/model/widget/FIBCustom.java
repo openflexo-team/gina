@@ -178,7 +178,7 @@ public interface FIBCustom extends FIBWidget {
 
 		private Class<?> componentClass;
 		private Class<?> dataClassForComponent;
-		private final Class<?> defaultDataClass = null;
+		// Unused private final Class<?> defaultDataClass = null;
 
 		private List<FIBCustomAssignment> assignments;
 
