@@ -348,37 +348,37 @@ public class TestFIBEditorInspectors extends FIBInspectorTestCase {
 
 	@Test
 	public void testFIBBrowserActionDefinitionInspector() {
-		validateFIB("Inspectors/Definition/FIBBrowserAction.inspector");
+		validateFIB("Inspectors/Basic/FIBBrowserAction.inspector");
 	}
 
 	@Test
 	public void testFIBBrowserElementDefinitionInspector() {
-		validateFIB("Inspectors/Definition/FIBBrowserElement.inspector");
+		validateFIB("Inspectors/Basic/FIBBrowserElement.inspector");
 	}
 
 	@Test
 	public void testFIBComponentDefinitionInspector() {
-		validateFIB("Inspectors/Definition/FIBComponent.inspector");
+		validateFIB("Inspectors/Basic/FIBComponent.inspector");
 	}
 
 	@Test
 	public void testFIBContainerDefinitionInspector() {
-		validateFIB("Inspectors/Definition/FIBContainer.inspector");
+		validateFIB("Inspectors/Basic/FIBContainer.inspector");
 	}
 
 	@Test
 	public void testFIBModelObjectDefinitionInspector() {
-		validateFIB("Inspectors/Definition/FIBModelObject.inspector");
+		validateFIB("Inspectors/Advanced/FIBModelObject.inspector");
 	}
 
 	@Test
 	public void testFIBTableActionDefinitionInspector() {
-		validateFIB("Inspectors/Definition/FIBTableAction.inspector");
+		validateFIB("Inspectors/Basic/FIBTableAction.inspector");
 	}
 
 	@Test
 	public void testFIBTableColumnDefinitionInspector() {
-		validateFIB("Inspectors/Definition/FIBTableColumn.inspector");
+		validateFIB("Inspectors/Basic/FIBTableColumn.inspector");
 	}
 
 	@Test
