@@ -38,6 +38,7 @@
 
 package org.openflexo.gina.test;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -63,7 +64,9 @@ public abstract class GenericFIBTestCase {
 	static final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
 	public void validateFIB(String fibRelativePath) {
-		validateFIB(ResourceLocator.locateResource(fibRelativePath));
+		Resource resource = ResourceLocator.locateResource(fibRelativePath);
+		assertNotNull("Resource " + fibRelativePath + " not found", resource);
+		validateFIB(resource);
 	}
 
 	public FIBLibrary getFIBLibrary() {
