@@ -142,14 +142,12 @@ public class FIBBrowserModel extends DefaultTreeModel {
 		if (element != null) {
 			return _elementTypes.get(element);
 		}
-		else {
-			LOGGER.warning("Could not find element for type " + anObject);
-			/*System.out.println("Available=");
-			for (FIBBrowserElement e : _fibBrowser.getElements()) {
-				System.out.println("> " + e.getName() + " for " + e.getDataClass());
-			}*/
-			return null;
-		}
+		LOGGER.warning("Could not find element for type " + anObject);
+		/*System.out.println("Available=");
+		for (FIBBrowserElement e : _fibBrowser.getElements()) {
+			System.out.println("> " + e.getName() + " for " + e.getDataClass());
+		}*/
+		return null;
 	}
 
 	public FIBBrowser getBrowser() {
@@ -916,8 +914,8 @@ public class FIBBrowserModel extends DefaultTreeModel {
 
 				boolean isExpanded = widget.getRenderingAdapter().isExpanded(widget.getTechnologyComponent(), this.getTreePath());
 
-				List<BrowserCell> oldChildren = null;
-				List<BrowserCell> removedChildren = null;
+				List<TreeNode> oldChildren = null;
+				List<TreeNode> removedChildren = null;
 				List<BrowserCell> newChildren = null;
 				List<BrowserCell> cellsToForceUpdate = null;
 
@@ -929,8 +927,8 @@ public class FIBBrowserModel extends DefaultTreeModel {
 					if (children.size() == 1 && children.firstElement() instanceof LoadingCell) {
 						removeAllChildren();
 					}
-					oldChildren = new ArrayList(children);
-					removedChildren = new ArrayList(children);
+					oldChildren = new ArrayList<>(children);
+					removedChildren = new ArrayList<>(children);
 				}
 
 				final List<?> newChildrenObjects = /*(isEnabled ?*/browserElementType
@@ -995,11 +993,12 @@ public class FIBBrowserModel extends DefaultTreeModel {
 					newChildren = Collections.emptyList();
 				}
 
-				for (BrowserCell c : removedChildren) {
+				for (TreeNode c : removedChildren) {
 					if (children != null) {
 						children.remove(c);
 					}
-					c.delete();
+					if (c instanceof BrowserCell)
+						((BrowserCell) c).delete();
 				}
 
 				boolean requireSorting = false;
@@ -1198,8 +1197,7 @@ public class FIBBrowserModel extends DefaultTreeModel {
 			if (df.equals(BROWSER_CELL_FLAVOR)) {
 				return new TransferedBrowserCell();
 			}
-			else
-				throw new UnsupportedFlavorException(df);
+			throw new UnsupportedFlavorException(df);
 		}
 
 		/** implements Transferable interface */
