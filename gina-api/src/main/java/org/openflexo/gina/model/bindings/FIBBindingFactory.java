@@ -131,4 +131,10 @@ public class FIBBindingFactory extends JavaBindingFactory {
 		return returned;
 	}
 
+	@Override
+	public void clear() {
+		super.clear();
+		storedBindingPathElements.clear();
+	}
+
 }
