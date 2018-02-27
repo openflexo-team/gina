@@ -54,7 +54,6 @@ import java.util.logging.Logger;
 
 import org.apache.commons.io.IOUtils;
 import org.jdom2.JDOMException;
-import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.type.CustomTypeManager;
 import org.openflexo.gina.FIBFolder.FIBFolderImpl;
 import org.openflexo.gina.model.FIBComponent;
@@ -83,7 +82,7 @@ public interface FIBLibrary extends FIBLibraryContainer {
 
 	public FIBModelFactory getFIBModelFactory();
 
-	public BindingFactory getBindingFactory();
+	public FIBBindingFactory getBindingFactory();
 
 	public boolean componentIsLoaded(Resource fibResourcePath);
 
@@ -121,7 +120,7 @@ public interface FIBLibrary extends FIBLibraryContainer {
 
 		// This map stores FIBComponent related to their source resource
 		private final Map<Resource, FIBComponent> fibs;
-		private final BindingFactory bindingFactory = new FIBBindingFactory();
+		private final FIBBindingFactory bindingFactory = new FIBBindingFactory();
 		protected FIBModelFactory fibModelFactory;
 		private CustomTypeManager customTypeManager;
 
@@ -136,7 +135,7 @@ public interface FIBLibrary extends FIBLibraryContainer {
 		}
 
 		@Override
-		public BindingFactory getBindingFactory() {
+		public FIBBindingFactory getBindingFactory() {
 			return bindingFactory;
 		}
 
