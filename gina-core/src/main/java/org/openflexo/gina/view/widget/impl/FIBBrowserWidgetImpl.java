@@ -478,10 +478,10 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		 * getComponent().getSelection().isValid() + " reason=" +
 		 * getComponent().getSelection().invalidBindingReason()); }
 		 */
-
-		if (getComponent() != null && getComponent().getSelection() != null && getComponent().getSelection().isValid()) {
+		DataBinding<List> selection = getComponent().getSelection();
+		if (getComponent() != null && selection != null && selection.isValid()) {
 			try {
-				List<T> newSelection = getComponent().getSelection().getBindingValue(getBindingEvaluationContext());
+				List<T> newSelection = selection.getBindingValue(getBindingEvaluationContext());
 				performSelect(newSelection, force);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();

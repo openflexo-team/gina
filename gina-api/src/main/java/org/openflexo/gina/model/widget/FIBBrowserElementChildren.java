@@ -341,9 +341,7 @@ public interface FIBBrowserElementChildren extends FIBModelObject {
 			if (isMultipleAccess()) {
 				return TypeUtils.getBaseClass(((ParameterizedType) accessedType).getActualTypeArguments()[0]);
 			}
-			else {
-				return TypeUtils.getBaseClass(getAccessedType());
-			}
+			return TypeUtils.getBaseClass(getAccessedType());
 		}
 
 		@Override
