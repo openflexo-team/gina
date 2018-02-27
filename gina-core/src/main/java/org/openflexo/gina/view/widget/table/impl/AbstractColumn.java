@@ -91,7 +91,7 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 	// private FIBTableModel fibTableModel;
 	private FIBTableColumn columnModel;
 
-	private String tooltipKey;
+	// Unused private String tooltipKey;
 
 	private FIBTableCellRenderer<T, V> _defaultTableCellRenderer;
 
@@ -169,7 +169,7 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 					|| (evt.getPropertyName().equals(FIBTableColumn.RESIZABLE_KEY))
 					|| (evt.getPropertyName().equals(FIBTableColumn.TITLE_KEY))) {
 				if (columnModel != null && columnModel.getOwner() != null && controller.viewForComponent(columnModel.getOwner()) != null) {
-					((FIBTableWidget) controller.viewForComponent(columnModel.getOwner())).updateTable();
+					((FIBTableWidget<?, ?>) controller.viewForComponent(columnModel.getOwner())).updateTable();
 				}
 			}
 		}
@@ -185,10 +185,8 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 			return getController().getLocalizerForComponent(getColumnModel().getOwner()).localizedForKeyAndLanguage(key,
 					FlexoLocalization.getCurrentLanguage(), true);
 		}
-		else {
-			logger.warning("Controller not defined");
-			return key;
-		}
+		logger.warning("Controller not defined");
+		return key;
 	}
 
 	public FIBTableModel<T> getTableModel() {
@@ -293,13 +291,10 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 		if (variable.getVariableName().equals(FIBTable.ITERATOR_NAME)) {
 			return iteratorObject;
 		}
-		else {
-			if ((tableModel != null) && (tableModel.getWidget() != null)
-					&& (tableModel.getWidget().getBindingEvaluationContext() != null)) {
-				return tableModel.getWidget().getBindingEvaluationContext().getValue(variable);
-			}
-			return null;
+		if ((tableModel != null) && (tableModel.getWidget() != null) && (tableModel.getWidget().getBindingEvaluationContext() != null)) {
+			return tableModel.getWidget().getBindingEvaluationContext().getValue(variable);
 		}
+		return null;
 	}
 
 	/*private BindingEvaluationContext bindingEvaluationContext;
@@ -435,10 +430,11 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 
 	}
 
+	/* Unused
 	public void setTooltipKey(String tooltipKey) {
 		this.tooltipKey = tooltipKey;
 	}
-
+	*/
 	public FIBTableColumn getColumnModel() {
 		return columnModel;
 	}
@@ -526,11 +522,7 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 			if (variable.getVariableName().equals(OBJECT)) {
 				return value;
 			}
-			else {
-				return AbstractColumn.this.getValue(variable);
-			}
+			return AbstractColumn.this.getValue(variable);
 		}
-
 	}
-
 }
