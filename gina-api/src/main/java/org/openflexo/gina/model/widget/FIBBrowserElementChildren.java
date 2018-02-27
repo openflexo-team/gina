@@ -82,7 +82,7 @@ public interface FIBBrowserElementChildren extends FIBModelObject {
 	public FIBBrowserElement getOwner();
 
 	@Setter(OWNER_KEY)
-	public void setOwner(FIBBrowserElement customColumn);
+	public void setOwner(FIBBrowserElement browserElement);
 
 	@Getter(value = DATA_KEY)
 	@XMLAttribute
@@ -223,6 +223,17 @@ public interface FIBBrowserElementChildren extends FIBModelObject {
 		}
 
 		@Override
+		public void setOwner(FIBBrowserElement browserElement) {
+			performSuperSetter(OWNER_KEY, browserElement);
+			if (data != null) {
+				data.setOwner(browserElement.getIteratorBindable());
+			}
+			if (visible != null) {
+				visible.setOwner(browserElement.getIteratorBindable());
+			}
+		}
+
+		@Override
 		public DataBinding<Object> getData() {
 			if (data == null) {
 				data = new DataBinding<>(getOwner() != null ? getOwner().getIteratorBindable() : null, Object.class,
@@ -244,7 +255,8 @@ public interface FIBBrowserElementChildren extends FIBModelObject {
 		@Override
 		public DataBinding<Boolean> getVisible() {
 			if (visible == null) {
-				visible = new DataBinding<>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
+				visible = new DataBinding<>(getOwner() != null ? getOwner().getIteratorBindable() : null, Boolean.class,
+						DataBinding.BindingDefinitionType.GET);
 			}
 			return visible;
 		}
