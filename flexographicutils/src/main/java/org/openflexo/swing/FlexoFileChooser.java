@@ -78,44 +78,16 @@ public class FlexoFileChooser {
 	 *
 	 */
 	public static JFileChooser getFileChooser(String location) {
-		JFileChooser chooser;
-		if (ToolBox.fileChooserRequiresFix()) {
-			chooser = new JFileChooser(location) {
-
-				@Override
-				public int showDialog(Component parent, String approveButtonText) throws HeadlessException {
-					ToolBox.fixFileChooser();
-					try {
-						int r = super.showDialog(parent, approveButtonText);
-						return r;
-					} finally {
-						ToolBox.undoFixFileChooser();
-					}
+		return new JFileChooser(location) {
+			@Override
+			public Icon getIcon(File f) {
+				Icon returned = ToolBox.getIconFileChooserWithFix(f, getFileView());
+				if (returned == null) {
+					returned = super.getIcon(f);
 				}
-
-				@Override
-				public Icon getIcon(File f) {
-					Icon returned = ToolBox.getIconFileChooserWithFix(f, getFileView());
-					if (returned == null) {
-						returned = super.getIcon(f);
-					}
-					return returned;
-				}
-			};
-		}
-		else {
-			chooser = new JFileChooser(location) {
-				@Override
-				public Icon getIcon(File f) {
-					Icon returned = ToolBox.getIconFileChooserWithFix(f, getFileView());
-					if (returned == null) {
-						returned = super.getIcon(f);
-					}
-					return returned;
-				}
-			};
-		}
-		return chooser;
+				return returned;
+			}
+		};
 	}
 
 	private FileDialog _fileDialog;
