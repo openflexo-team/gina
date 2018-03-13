@@ -221,7 +221,7 @@ public class ValidationFIBController extends ComponentSwingEditorFIBController {
 			if (issue.getValidationReport().getRootObject() instanceof FIBComponent) {
 				componentToRevalidate = (FIBComponent) issue.getValidationReport().getRootObject();
 			}
-			IssueFixing fixing = new IssueFixing((ProblemIssue<?, ?>) issue, getEditorController());
+			IssueFixing<?, ?> fixing = new IssueFixing<>((ProblemIssue<?, ?>) issue, getEditorController());
 			FixIssueDialog dialog = new FixIssueDialog(fixing, getEditorController());
 			dialog.showDialog();
 			if (dialog.getStatus() == Status.VALIDATED) {
