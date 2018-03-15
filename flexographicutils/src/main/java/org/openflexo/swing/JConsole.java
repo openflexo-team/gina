@@ -110,17 +110,7 @@ public class JConsole extends JEditTextArea {
 
 	void refresh() {
 		if (!SwingUtilities.isEventDispatchThread() && getRefreshOnlyInSwingEventDispatchingThread()) {
-			SwingUtilities.invokeLater(new Runnable() {
-				/**
-				 * Overrides run
-				 * 
-				 * @see java.lang.Runnable#run()
-				 */
-				@Override
-				public void run() {
-					JConsole.this.refresh();
-				}
-			});
+			SwingUtilities.invokeLater(() -> JConsole.this.refresh());
 			return;
 		}
 		setCaretPosition(getDocument().getLength());

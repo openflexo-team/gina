@@ -69,12 +69,7 @@ public class GlassPaneWrapper extends JPanel {
 	@Override
 	public void addNotify() {
 		super.addNotify();
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				repaint();
-			}
-		});
+		SwingUtilities.invokeLater(() -> repaint());
 	}
 
 	@Override

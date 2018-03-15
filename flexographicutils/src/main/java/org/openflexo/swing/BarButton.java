@@ -122,32 +122,30 @@ public class BarButton extends JButton {
 		if (ToolBox.isMacOSLaf()) {
 			if (b) {
 				setBackground(defaultBackgroundColor.darker());
-			} else {
+			}
+			else {
 				setBackground(defaultBackgroundColor);
 			}
-		} else {
+		}
+		else {
 			super.setSelected(b);
 		}
 		setContentAreaFilled(b);
 	}
 
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-				JFrame frame = new JFrame();
-				JMenuBar panel = new JMenuBar();
-				panel.setBackground(UIManager.getDefaults().getColor("ToolBar.floatingForeground"));
-				frame.add(panel);
-				for (int i = 0; i < 10; i++) {
-					BarButton bar = new BarButton(UtilsIconLibrary.UK_FLAG);
-					bar.setSelected(i == 1);
-					panel.add(bar);
-				}
-				frame.pack();
-				frame.setVisible(true);
+		SwingUtilities.invokeLater(() -> {
+			JFrame frame = new JFrame();
+			JMenuBar panel = new JMenuBar();
+			panel.setBackground(UIManager.getDefaults().getColor("ToolBar.floatingForeground"));
+			frame.add(panel);
+			for (int i = 0; i < 10; i++) {
+				BarButton bar = new BarButton(UtilsIconLibrary.UK_FLAG);
+				bar.setSelected(i == 1);
+				panel.add(bar);
 			}
+			frame.pack();
+			frame.setVisible(true);
 		});
 	}
 

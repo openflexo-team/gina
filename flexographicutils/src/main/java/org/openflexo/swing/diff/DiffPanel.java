@@ -305,12 +305,7 @@ public class DiffPanel extends JLayeredPane {
 		validate();
 		if (_report.getChanges().size() > 0) {
 			// selectChange(_report.getChanges().firstElement());
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					changesList.setSelectedIndex(0);
-				}
-			});
+			SwingUtilities.invokeLater(() -> changesList.setSelectedIndex(0));
 		}
 	}
 

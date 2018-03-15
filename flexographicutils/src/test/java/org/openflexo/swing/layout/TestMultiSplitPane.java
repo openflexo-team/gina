@@ -214,13 +214,6 @@ public class TestMultiSplitPane {
 			}
 		}*/
 
-		SwingUtilities.invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-				new TestMultiSplitPane().initUI();
-			}
-		});
+		SwingUtilities.invokeLater(() -> new TestMultiSplitPane().initUI());
 	}
-
 }

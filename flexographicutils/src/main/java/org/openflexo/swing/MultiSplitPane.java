@@ -471,14 +471,11 @@ public class MultiSplitPane extends JPanel {
 	}
 
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					initTestUI();
-				} catch (ModelDefinitionException e) {
-					e.printStackTrace();
-				}
+		SwingUtilities.invokeLater(() -> {
+			try {
+				initTestUI();
+			} catch (ModelDefinitionException e) {
+				e.printStackTrace();
 			}
 		});
 	}

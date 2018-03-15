@@ -122,13 +122,10 @@ public class ButtonsControlPanel extends JPanel {
 	}
 
 	public void requestFocusInFirstButton() {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				Component button = getFocusTraversalPolicy().getFirstComponent(ButtonsControlPanel.this);
-				if (button != null) {
-					button.requestFocusInWindow();
-				}
+		SwingUtilities.invokeLater(() -> {
+			Component button = getFocusTraversalPolicy().getFirstComponent(ButtonsControlPanel.this);
+			if (button != null) {
+				button.requestFocusInWindow();
 			}
 		});
 	}
