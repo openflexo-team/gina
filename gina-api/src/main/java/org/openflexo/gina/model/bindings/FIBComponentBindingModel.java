@@ -263,7 +263,7 @@ public class FIBComponentBindingModel extends BindingModel {
 		childrenNotToListenAnymore.addAll(knownChildren);
 
 		if (component instanceof FIBContainer) {
-			for (FIBComponent p : ((FIBContainer) component).getSubComponents()) {
+			for (FIBComponent p : new ArrayList<>(((FIBContainer) component).getSubComponents())) {
 				if (childrenNotToListenAnymore.contains(p)) {
 					childrenNotToListenAnymore.remove(p);
 				}

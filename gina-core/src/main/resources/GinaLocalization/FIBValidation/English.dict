@@ -2,6 +2,8 @@
 'click_action'_binding_is_not_valid='click action' binding is not valid
 'click_action'_binding_is_not_valid_description='click action' binding is not valid description
 'data'_binding_is_not_valid_description='data' binding is not valid description
+'method'_binding_is_not_valid='method' binding is not valid
+'method'_binding_is_not_valid_description='method' binding is not valid description
 'value'_binding_is_not_valid='value' binding is not valid
 'value'_binding_is_not_valid_description='value' binding is not valid description
 'value_change_acion'_binding_is_not_valid_description='value change action' binding is not valid description
