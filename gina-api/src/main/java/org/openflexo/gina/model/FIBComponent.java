@@ -1399,11 +1399,10 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			if (isRootComponent()) {
 				return (CustomTypeManager) performSuperGetter(CUSTOM_TYPE_MANAGER_KEY);
 			}
-			else {
-				return getRootComponent().getCustomTypeManager();
-			}
+			return getRootComponent().getCustomTypeManager();
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public Class<? extends FIBController> getControllerClass() {
 			// Fixed MODULES-304
@@ -1427,7 +1426,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		@Override
 		public void setControllerClass(Class<? extends FIBController> controllerClass) {
 
-			FIBPropertyNotification<Class> notification = requireChange(CONTROLLER_CLASS_KEY, (Class) controllerClass);
+			FIBPropertyNotification<Class<?>> notification = requireChange(CONTROLLER_CLASS_KEY, (Class<?>) controllerClass);
 			if (notification != null) {
 				this.controllerClass = controllerClass;
 				setControllerClassName(controllerClass != null ? controllerClass.getName() : null);
@@ -1460,9 +1459,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				if (!isRootComponent() && hasValidHierarchy()) {
 					return getParent().retrieveValidFont();
 				}
-				else {
-					return null; // Use system default
-				}
+				return null; // Use system default
 			}
 
 			return getFont();
@@ -1731,9 +1728,10 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			// updateDynamicAccessBindingVariable();
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public void addToParameters(FIBParameter p) {
-			// Little hask to recover previously created fib
+			// Little hack to recover previously created fib
 			if (p.getName().equals("controllerClassName")) {
 				try {
 					Class<?> myControllerClass = Class.forName(p.getValue());
@@ -2040,9 +2038,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 					}
 				};
 			}
-			else {
-				return allSubComponents.iterator();
-			}
+			return allSubComponents.iterator();
 		}
 
 		// TODO: move to FIBContainer
@@ -2118,10 +2114,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			/*else if (getIdentifier() != null) {
 				return getIdentifier() + " (" + e.getImplementedInterface().getSimpleName() + ")";
 			}*/
-			else {
-				org.openflexo.model.ModelEntity<?> e = getModelFactory().getModelEntityForInstance(this);
-				return "<" + e.getImplementedInterface().getSimpleName() + ">";
-			}
+			org.openflexo.model.ModelEntity<?> e = getModelFactory().getModelEntityForInstance(this);
+			return "<" + e.getImplementedInterface().getSimpleName() + ">";
 		}
 
 	}

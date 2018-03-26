@@ -39,7 +39,6 @@
 package org.openflexo.swing.msct;
 
 import java.awt.Dimension;
-import java.util.Enumeration;
 import java.util.Vector;
 
 import javax.swing.event.TableModelEvent;
@@ -106,14 +105,14 @@ public class MultiSpanCellTableModel extends DefaultTableModel {
 			throw new IllegalArgumentException("addColumn() - null parameter");
 		columnIdentifiers.addElement(columnName);
 		int index = 0;
-		Enumeration<Vector> eeration = dataVector.elements();
-		while (eeration.hasMoreElements()) {
+		for (Object o : dataVector) {
+			Vector v = (Vector) o;
 			Object value;
 			if ((columnData != null) && (index < columnData.size()))
 				value = columnData.elementAt(index);
 			else
 				value = null;
-			eeration.nextElement().addElement(value);
+			v.addElement(value);
 			index++;
 		}
 

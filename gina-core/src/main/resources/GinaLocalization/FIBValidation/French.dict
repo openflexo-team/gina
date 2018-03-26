@@ -2,6 +2,8 @@
 'click_action'_binding_is_not_valid='click_action'_binding_is_not_valid
 'click_action'_binding_is_not_valid_description='click_action'_binding_is_not_valid_description
 'data'_binding_is_not_valid_description='data'_binding_is_not_valid_description
+'method'_binding_is_not_valid='method'_binding_is_not_valid
+'method'_binding_is_not_valid_description='method'_binding_is_not_valid_description
 'value'_binding_is_not_valid='value'_binding_is_not_valid
 'value'_binding_is_not_valid_description='value'_binding_is_not_valid_description
 'value_change_acion'_binding_is_not_valid_description='value_change_acion'_binding_is_not_valid_description

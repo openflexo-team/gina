@@ -83,26 +83,18 @@ public abstract class ComponentBoundSaver implements ComponentListener {
 			return;
 		}
 
-		boundsSaver = new Thread(new Runnable() {
-			/**
-			 * Overrides run
-			 * 
-			 * @see java.lang.Runnable#run()
-			 */
-			@Override
-			public void run() {
-				boolean go = true;
-				while (go) {
-					try {
-						go = false;
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						go = true;// interruption is used to reset sleep.
-					}
+		boundsSaver = new Thread(() -> {
+			boolean go = true;
+			while (go) {
+				try {
+					go = false;
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					go = true;// interruption is used to reset sleep.
 				}
-				saveBounds(component.getBounds());
-				boundsSaver = null;
 			}
+			saveBounds(component.getBounds());
+			boundsSaver = null;
 		});
 		boundsSaver.start();
 	}

@@ -124,15 +124,11 @@ public abstract class TextFieldCustomPopup<T> extends CustomPopup<T> {
 			return;
 		}
 
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				_isProgrammaticalySet = true;
-				_textField.setText(renderedString(getEditedObject()));
-				_isProgrammaticalySet = false;
-			}
+		SwingUtilities.invokeLater(() -> {
+			_isProgrammaticalySet = true;
+			_textField.setText(renderedString(getEditedObject()));
+			_isProgrammaticalySet = false;
 		});
-
 	}
 
 	public abstract String renderedString(T editedObject);

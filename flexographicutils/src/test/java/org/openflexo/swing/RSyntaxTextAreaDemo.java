@@ -32,12 +32,6 @@ public class RSyntaxTextAreaDemo extends JFrame {
 
 	public static void main(String[] args) {
 		// Start all Swing applications on the EDT.
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				new RSyntaxTextAreaDemo().setVisible(true);
-			}
-		});
+		SwingUtilities.invokeLater(() -> new RSyntaxTextAreaDemo().setVisible(true));
 	}
-
 }

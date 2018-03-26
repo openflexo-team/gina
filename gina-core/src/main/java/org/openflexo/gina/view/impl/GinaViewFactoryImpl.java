@@ -129,7 +129,7 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 			returned = buildContainer(fibContainer, controller, context);
 			returned.setRuntimeContext(context);
 		}
-		if (returned != null && updateNow) {
+		if (updateNow) {
 			// returned.updateGraphicalProperties();
 			returned.update();
 		}
@@ -176,14 +176,10 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 			returned = buildWidget(fibWidget, controller, context);
 			returned.setRuntimeContext(context);
 		}
-		if (returned != null) {
-			if (updateNow) {
-				returned.update();
-			}
+		if (updateNow) {
+			returned.update();
 		}
-		else {
-			LOGGER.warning("Could not build widget view for " + fibWidget);
-		}
+		LOGGER.warning("Could not build widget view for " + fibWidget);
 		return returned;
 	}
 

@@ -101,8 +101,7 @@ public class JGridBagLayout extends FIBLayoutManagerImpl<JPanel, JComponent, Gri
 		getContainerView().getTechnologyComponent().remove(componentToRemove);
 	}
 
-	private GridBagConstraints getGridBagConstraints(GridBagLayoutConstraints gridBagConstraints) {
-
+	private static GridBagConstraints getGridBagConstraints(GridBagLayoutConstraints gridBagConstraints) {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = gridBagConstraints.getGridX();
 		c.gridy = gridBagConstraints.getGridY();

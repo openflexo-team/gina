@@ -355,15 +355,21 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 	}
 
 	public Object getVariableValue(String variableName) {
-		if (getRootView() != null && getRootComponent().getVariable(variableName) != null) {
-			return getRootView().getVariableValue(getRootComponent().getVariable(variableName));
+		FIBView<?, ?> rootView = getRootView();
+		if (rootView != null) {
+			FIBVariable<?> v = getRootComponent().getVariable(variableName);
+			if (v != null)
+				return rootView.getVariableValue(v);
 		}
 		return null;
 	}
 
 	public void setVariableValue(String variableName, Object aValue) {
-		if (getRootView() != null && getRootComponent().getVariable(variableName) != null) {
-			getRootView().setVariableValue(getRootComponent().getVariable(variableName), aValue);
+		FIBView<?, ?> rootView = getRootView();
+		if (rootView != null) {
+			FIBVariable<Object> v = getRootComponent().getVariable(variableName);
+			if (v != null)
+				rootView.setVariableValue(v, aValue);
 		}
 	}
 
@@ -661,8 +667,8 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 
 			for (FIBView<?, ?> v : getAllViews()) {
 				if (v instanceof FIBWidgetView && v instanceof FIBSelectable && v != getSelectionLeader()
-						&& ((FIBSelectable) v).synchronizedWithSelection()) {
-					FIBSelectable<Object> selectableComponent = (FIBSelectable) ((FIBWidgetView<?, ?, ?>) v);
+						&& ((FIBSelectable<?>) v).synchronizedWithSelection()) {
+					FIBSelectable<Object> selectableComponent = (FIBSelectable) v;
 					for (Object o : objectsToAddToSelection) {
 						if (selectableComponent.mayRepresent(o)) {
 							selectableComponent.objectAddedToSelection(o);
@@ -691,7 +697,7 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 		LOGGER.fine("FIBController: objectAddedToSelection(): " + o);
 
 		for (FIBView<?, ?> v : getViews()) {
-			if (v instanceof FIBWidgetView && v instanceof FIBSelectable && ((FIBSelectable) v).synchronizedWithSelection()) {
+			if (v instanceof FIBWidgetView && v instanceof FIBSelectable && ((FIBSelectable<?>) v).synchronizedWithSelection()) {
 				FIBSelectable<Object> selectableComponent = (FIBSelectable) v;
 				if (selectableComponent.mayRepresent(o)) {
 					selectableComponent.objectAddedToSelection(o);
@@ -714,7 +720,7 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 
 		LOGGER.fine("FIBController: objectRemovedFromSelection(): " + o);
 		for (FIBView<?, ?> v : getViews()) {
-			if (v instanceof FIBWidgetView && v instanceof FIBSelectable && ((FIBSelectable) v).synchronizedWithSelection()) {
+			if (v instanceof FIBWidgetView && v instanceof FIBSelectable && ((FIBSelectable<?>) v).synchronizedWithSelection()) {
 				FIBSelectable<Object> selectableComponent = (FIBSelectable) v;
 				if (selectableComponent.mayRepresent(o)) {
 					selectableComponent.objectRemovedFromSelection(o);
@@ -726,7 +732,7 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 	public void selectionCleared() {
 		LOGGER.fine("FIBController: selectionCleared()");
 		for (FIBView<?, ?> v : getViews()) {
-			if (v instanceof FIBWidgetView && v instanceof FIBSelectable && ((FIBSelectable) v).synchronizedWithSelection()) {
+			if (v instanceof FIBWidgetView && v instanceof FIBSelectable && ((FIBSelectable<?>) v).synchronizedWithSelection()) {
 				FIBSelectable<Object> selectableComponent = (FIBSelectable) v;
 				selectableComponent.selectionResetted();
 			}

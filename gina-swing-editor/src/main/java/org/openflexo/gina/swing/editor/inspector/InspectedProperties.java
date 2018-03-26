@@ -368,7 +368,6 @@ public abstract class InspectedProperties<S extends KeyValueCoding> implements H
 		pcSupport.firePropertyChange(p.getName(), oldValue, newValue);
 		// System.out.println("fired changed property " + p + " from " + oldValue + " to " + newValue);
 		// setChanged();
-		// notifyObservers(new FGEAttributeNotification<T>(p, oldValue, newValue));
 	}
 
 	protected <T> void forceFireChangedProperty(FIBProperty<T> p) {
@@ -381,7 +380,6 @@ public abstract class InspectedProperties<S extends KeyValueCoding> implements H
 		else { // otherwise, we force it
 			pcSupport.firePropertyChange(p.getName(), null, newValue);
 			// setChanged();
-			// notifyObservers(new FGEAttributeNotification<T>(p, null, newValue));
 		}
 
 	}

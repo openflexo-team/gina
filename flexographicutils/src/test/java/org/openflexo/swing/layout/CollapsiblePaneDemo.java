@@ -74,18 +74,15 @@ public class CollapsiblePaneDemo extends JPanel {
 	 * main method allows us to run as a standalone demo.
 	 */
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				JFrame frame = new JFrame("CollapsiblePaneDemo");
+		SwingUtilities.invokeLater(() -> {
+			JFrame frame = new JFrame("CollapsiblePaneDemo");
 
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.getContentPane().add(new CollapsiblePaneDemo());
-				frame.setPreferredSize(new Dimension(800, 600));
-				frame.pack();
-				frame.setLocationRelativeTo(null);
-				frame.setVisible(true);
-			}
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.getContentPane().add(new CollapsiblePaneDemo());
+			frame.setPreferredSize(new Dimension(800, 600));
+			frame.pack();
+			frame.setLocationRelativeTo(null);
+			frame.setVisible(true);
 		});
 	}
 

@@ -497,34 +497,31 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 		@Override
 		public void windowDeactivated(final WindowEvent e) {
 			// If this window is deactivated, it means that another window has been activated
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					if (_popup == null) {
-						return;
-					}
-					Window oppositeWindow = e.getOppositeWindow();
-					if (!(oppositeWindow instanceof CustomPopup.CustomJPopupMenu) && oppositeWindow != null
-							&& oppositeWindow.getOwner() instanceof CustomPopup.CustomJPopupMenu) {
-						oppositeWindow = oppositeWindow.getOwner();
-					}
-					if (oppositeWindow != _popup) {
-						if (_popup.isChildOf(oppositeWindow)) {
-							CustomPopup.CustomJPopupMenu w = _popup;
-							while (w != null && w != oppositeWindow) {
-								w.getCustomPopup().pointerLeavesPopup();
-								w = w.getParentPopupMenu();
-							}
+			SwingUtilities.invokeLater(() -> {
+				if (_popup == null) {
+					return;
+				}
+				Window oppositeWindow = e.getOppositeWindow();
+				if (!(oppositeWindow instanceof CustomPopup.CustomJPopupMenu) && oppositeWindow != null
+						&& oppositeWindow.getOwner() instanceof CustomPopup.CustomJPopupMenu) {
+					oppositeWindow = oppositeWindow.getOwner();
+				}
+				if (oppositeWindow != _popup) {
+					if (_popup.isChildOf(oppositeWindow)) {
+						CustomPopup.CustomJPopupMenu w = _popup;
+						while (w != null && w != oppositeWindow) {
+							w.getCustomPopup().pointerLeavesPopup();
+							w = w.getParentPopupMenu();
 						}
-						else if (oppositeWindow != parentWindow
-								|| FocusManager.getCurrentManager().getFocusOwner() != null && !_frontComponent.hasFocus()) {
-							// This test is used to detect the case of the lost of focus is performed
-							// Because a child popup gained the focus: in this case, nothing should be performed
-							if (oppositeWindow != null) {
-								if (!(oppositeWindow instanceof CustomPopup.CustomJPopupMenu)
-										|| !((CustomPopup.CustomJPopupMenu) oppositeWindow).isChildOf(_popup)) {
-									pointerLeavesPopup();
-								}
+					}
+					else if (oppositeWindow != parentWindow
+							|| FocusManager.getCurrentManager().getFocusOwner() != null && !_frontComponent.hasFocus()) {
+						// This test is used to detect the case of the lost of focus is performed
+						// Because a child popup gained the focus: in this case, nothing should be performed
+						if (oppositeWindow != null) {
+							if (!(oppositeWindow instanceof CustomPopup.CustomJPopupMenu)
+									|| !((CustomPopup.CustomJPopupMenu) oppositeWindow).isChildOf(_popup)) {
+								pointerLeavesPopup();
 							}
 						}
 					}
@@ -637,23 +634,13 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			addPopupClosers(getWindow(this));
 			closersAdded = true;
 		}
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				if (!_frontComponent.hasFocus()) {
-					_frontComponent.grabFocus();
-				}
-				SwingUtilities.invokeLater(new Runnable() {
-
-					@Override
-					public void run() {
-						if (inspectorWindowListener != null) {
-							inspectorWindowListener.startListening();
-						}
-
-					}
-				});
-			}
+		SwingUtilities.invokeLater(() -> {
+			if (!_frontComponent.hasFocus())
+				_frontComponent.grabFocus();
+			SwingUtilities.invokeLater(() -> {
+				if (inspectorWindowListener != null)
+					inspectorWindowListener.startListening();
+			});
 		});
 		if (isShowing()) {
 			Point p = _downButton.getLocationOnScreen(); // This can have negative x or y if the secondary screen is on the right ir or on

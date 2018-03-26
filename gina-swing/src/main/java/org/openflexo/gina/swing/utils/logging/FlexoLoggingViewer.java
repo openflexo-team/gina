@@ -68,8 +68,6 @@ import org.openflexo.toolbox.StringUtils;
 
 public class FlexoLoggingViewer implements HasPropertyChangeSupport {
 
-	public static ResourceLocator rl = ResourceLocator.getResourceLocator();
-
 	static final Logger LOGGER = Logger.getLogger(FlexoLoggingViewer.class.getPackage().getName());
 
 	public static final Resource LOGGING_VIEWER_FIB_NAME = ResourceLocator.locateResource("Fib/LoggingViewer.fib");
@@ -208,7 +206,7 @@ public class FlexoLoggingViewer implements HasPropertyChangeSupport {
 			 */
 		}
 		if (configurationFile != null) {
-			return rl.retrieveResourceAsFile(configurationFile);
+			return ResourceLocator.retrieveResourceAsFile(configurationFile);
 		}
 		return null;
 	}

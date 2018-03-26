@@ -52,7 +52,6 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.io.IOUtils;
 import org.jdom2.JDOMException;
 import org.openflexo.connie.type.CustomTypeManager;
 import org.openflexo.gina.FIBFolder.FIBFolderImpl;
@@ -344,7 +343,9 @@ public interface FIBLibrary extends FIBLibraryContainer {
 					LOGGER.warning("Unhandled Exception");
 				} finally {
 					if (inputStream != null) {
-						IOUtils.closeQuietly(inputStream);
+						try {
+							inputStream.close();
+						} catch (IOException e) {}
 					}
 				}
 			}
@@ -380,7 +381,9 @@ public interface FIBLibrary extends FIBLibraryContainer {
 				LOGGER.warning("Failed to save: " + resourceToSave + " unexpected exception: " + e.getMessage());
 				e.printStackTrace();
 			} finally {
-				IOUtils.closeQuietly(stream);
+				try {
+					stream.close();
+				} catch (IOException e) {}
 			}
 		}
 

@@ -312,7 +312,6 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				}
 			});
 			addToColumns(new BindingValueColumn<Function.FunctionArgument>("value", 250, true) {
-
 				@Override
 				public DataBinding getValue(Function.FunctionArgument arg) {
 					return getFunctionPathElement().getParameter(arg);
@@ -384,9 +383,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			if (row >= 0 && row < getRowCount()) {
 				return getFunctionPathElement().getFunction().getArguments().get(row);
 			}
-			else {
-				return null;
-			}
+			return null;
 		}
 
 		@Override
@@ -719,10 +716,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			if (super.getModel() instanceof BindingColumnListModel) {
 				return (BindingColumnListModel) super.getModel();
 			}
-			else {
-				new Exception("Oops, got a " + super.getModel()).printStackTrace();
-				return null;
-			}
+			new Exception("Oops, got a " + super.getModel()).printStackTrace();
+			return null;
 		}
 	}
 
@@ -1262,9 +1257,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			if (getResultingType() == null) {
 				return FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("no_type");
 			}
-			else {
-				return TypeUtils.simpleRepresentation(getResultingType());
-			}
+			return TypeUtils.simpleRepresentation(getResultingType());
 		}
 
 		public String getTooltipText() {
@@ -1358,9 +1351,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				}
 				return _element.equals(bce._element) && _resultingType.equals(bce._resultingType);
 			}
-			else {
-				return super.equals(obj);
-			}
+			return super.equals(obj);
 		}
 
 	}
@@ -1520,8 +1511,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 						if (TypeUtils.isResolved(columnElement.getResultingType()) && bindingSelector.getBindable() != null) {
 							// if (columnElement.getElement().getAccessibleBindingPathElements().size() > 0) {
 							if (bindingSelector.getBindable().getBindingFactory()
-									.getAccessibleSimplePathElements(columnElement.getElement()).size() > 0) {
-							}
+									.getAccessibleSimplePathElements(columnElement.getElement()).size() > 0) {}
 							else {
 								if (!TypeUtils.isTypeAssignableFrom(binding.getDeclaredType(), columnElement.getResultingType(), true)) {
 									return true;
