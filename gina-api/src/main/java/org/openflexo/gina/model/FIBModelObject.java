@@ -147,7 +147,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 	 */
 	public FIBComponent getComponent();
 
-	public void notify(FIBModelNotification notification);
+	public void notify(FIBModelNotification<?> notification);
 
 	public void deleteParameter(FIBParameter p);
 
@@ -200,7 +200,6 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 		 */
 		@Override
 		public final Collection<Validable> getEmbeddedValidableObjects() {
-
 			List<?> embeddedObjects = getModelFactory().getEmbeddedObjects(this, EmbeddingType.CLOSURE);
 			List<Validable> returned = new ArrayList<>();
 			for (Object e : embeddedObjects) {
@@ -316,29 +315,21 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 			}
 			T oldValue = (T) objectForKey(key);
 			if (oldValue == null) {
-				if (value == null) {
+				if (value == null)
 					return null; // No change
-				}
-				else {
-					return new FIBPropertyNotification<>(property, oldValue, value);
-				}
+				return new FIBPropertyNotification<>(property, oldValue, value);
 			}
-			else {
-				if (oldValue.equals(value)) {
-					return null; // No change
-				}
-				else {
-					return new FIBPropertyNotification<>(property, oldValue, value);
-				}
-			}
+			if (oldValue.equals(value))
+				return null; // No change
+			return new FIBPropertyNotification<>(property, oldValue, value);
 		}
 
 		@Override
-		public void notify(FIBModelNotification notification) {
+		public void notify(FIBModelNotification<?> notification) {
 			hasChanged(notification);
 		}
 
-		protected void hasChanged(FIBModelNotification notification) {
+		protected void hasChanged(FIBModelNotification<?> notification) {
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine("Change attribute " + notification.getAttributeName() + " for object " + this + " was: "
 						+ notification.oldValue() + " is now: " + notification.newValue());
@@ -363,9 +354,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 			if (o1 == null) {
 				return o2 == null;
 			}
-			else {
-				return o1.equals(o2);
-			}
+			return o1.equals(o2);
 		}
 
 		public static boolean notEquals(Object o1, Object o2) {
@@ -466,13 +455,10 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 				if (getName() != null) {
 					return getName() + " (" + e.getImplementedInterface().getSimpleName() + ")";
 				}
-				else {
-					return "<" + e.getImplementedInterface().getSimpleName() + ">";
-				}
+				return "<" + e.getImplementedInterface().getSimpleName() + ">";
 			}
 			return "<" + getClass().getSimpleName() + ">";
 		}
-
 	}
 
 	public static class FIBModelObjectShouldHaveAUniqueName extends ValidationRule<FIBModelObjectShouldHaveAUniqueName, FIBModelObject> {
@@ -544,7 +530,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 		public static class InvalidBindingIssue<C extends FIBModelObject> extends ValidationError<BindingMustBeValid<C>, C> {
 
-			public InvalidBindingIssue(BindingMustBeValid<C> rule, C anObject, FixProposal<BindingMustBeValid<C>, C>... fixProposals) {
+			public InvalidBindingIssue(BindingMustBeValid<C> rule, C anObject, FixProposal<BindingMustBeValid<C>, C> fixProposals) {
 				super(rule, anObject, "binding_'($binding.bindingName)'_is_not_valid: ($binding)", fixProposals);
 			}
 
