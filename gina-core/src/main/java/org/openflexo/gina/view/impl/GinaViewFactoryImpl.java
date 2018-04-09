@@ -179,7 +179,6 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 		if (updateNow) {
 			returned.update();
 		}
-		LOGGER.warning("Could not build widget view for " + fibWidget);
 		return returned;
 	}
 

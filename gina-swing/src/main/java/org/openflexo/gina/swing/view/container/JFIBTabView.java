@@ -99,7 +99,7 @@ public class JFIBTabView extends JFIBPanelView implements FIBTabView<JPanel, JCo
 
 				logger.fine("********** Adding component " + getComponent().getTitle() + " at index " + newIndex);
 
-				parentResultingJComponent.add(resultingJComponent, getLocalized(getComponent().getTitle()), newIndex);
+				parentResultingJComponent.add(resultingJComponent, /*getLocalized(*/getComponent().getTitle()/*)*/, newIndex);
 				if (wasSelected) {
 					parentResultingJComponent.setSelectedComponent(resultingJComponent);
 				}
