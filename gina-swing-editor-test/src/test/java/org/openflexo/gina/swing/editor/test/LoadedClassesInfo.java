@@ -405,7 +405,6 @@ public class LoadedClassesInfo extends Observable {
 		try {
 			Class.forName("org.openflexo.gina.TestFIBBrowser");
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		//updateClasses();

@@ -393,7 +393,6 @@ public class JFDTablePanel<T> extends JPanel {
 
 		@Override
 		public void columnSelectionChanged(ListSelectionEvent e) {
-			// TODO Auto-generated method stub
 		}
 
 		/**
@@ -537,47 +536,38 @@ public class JFDTablePanel<T> extends JPanel {
 		}
 
 		public int getVisibleRowCount() {
-			// TODO Auto-generated method stub
 			return 0;
 		}
 
 		public void setVisibleRowCount(int visibleRowCount) {
-			// TODO Auto-generated method stub
 
 		}
 
 		public int getRowHeight() {
-			// TODO Auto-generated method stub
 			return 0;
 		}
 
 		public void setRowHeight(int rowHeight) {
-			// TODO Auto-generated method stub
 
 		}
 
 		public ListSelectionModel getSelectionModel() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		public boolean isEditing() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 		public int getEditingRow() {
-			// TODO Auto-generated method stub
 			return 0;
 		}
 
 		public int getEditingColumn() {
-			// TODO Auto-generated method stub
 			return 0;
 		}
 
 		public TableCellEditor getCellEditor() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 

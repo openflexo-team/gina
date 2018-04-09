@@ -127,7 +127,6 @@ public class TestList extends GinaSwingEditorTestCase {
 
 		@Override
 		public String getDeletedProperty() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
@@ -179,7 +178,6 @@ public class TestList extends GinaSwingEditorTestCase {
 
 		@Override
 		public String getDeletedProperty() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 

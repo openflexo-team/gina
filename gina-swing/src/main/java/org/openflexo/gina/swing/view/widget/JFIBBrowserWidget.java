@@ -565,7 +565,6 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 
 				@Override
 				public void treeNodesChanged(TreeModelEvent e) {
-					// TODO Auto-generated method stub
 
 				}
 			});
@@ -856,13 +855,10 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 						// System.out.println("reason ? " + op.getIsAvailable().invalidBindingReason());
 						applicable = op.getIsAvailable().getBindingValue(this);
 					} catch (TypeMismatchException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (NullReferenceException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (InvocationTargetException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					if (applicable != null && applicable) {
@@ -894,13 +890,10 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 							return true;
 						}
 					} catch (TypeMismatchException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (NullReferenceException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (InvocationTargetException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}

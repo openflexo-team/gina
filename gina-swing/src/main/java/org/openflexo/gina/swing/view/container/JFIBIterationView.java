@@ -73,7 +73,6 @@ public class JFIBIterationView extends FIBIterationViewImpl<JPanel, JComponent> 
 
 	@Override
 	public void revalidateAndRepaint() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -115,13 +114,11 @@ public class JFIBIterationView extends FIBIterationViewImpl<JPanel, JComponent> 
 
 	/*@Override
 	public ContainerRenderingAdapter<JPanel, JComponent> getRenderingAdapter() {
-		// TODO Auto-generated method stub
 		return null;
 	}*/
 
 	/*@Override
 	public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
-		// TODO Auto-generated method stub
 		return false;
 	}*/
 

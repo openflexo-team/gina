@@ -712,7 +712,6 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 						((FIBViewImpl<?, ?>) v).performUpdate();
 					}
 				} catch (NullReferenceException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

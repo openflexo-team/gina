@@ -150,10 +150,8 @@ public class MetaphaseEditor extends JComponent {
 						try {
 							configuration.addToOptions(new MetaphaseEditorOption((String) field.get(null), i++, 1));
 						} catch (IllegalArgumentException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						} catch (IllegalAccessException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}

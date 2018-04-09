@@ -213,7 +213,6 @@ public class FIBSwingEditableViewDelegate<M extends FIBComponent, J extends JCom
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 

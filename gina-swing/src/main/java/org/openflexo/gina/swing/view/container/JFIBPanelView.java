@@ -136,7 +136,6 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> implemen
 
 	@Override
 	protected void performUpdate() {
-		// TODO Auto-generated method stub
 		super.performUpdate();
 	}
 

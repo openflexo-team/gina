@@ -99,13 +99,10 @@ public class PasteAction extends AbstractEditorActionImpl {
 				}
 			}
 		} catch (ModelExecutionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ModelDefinitionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return object;

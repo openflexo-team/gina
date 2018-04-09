@@ -111,7 +111,6 @@ public interface FIBLibrary extends FIBLibraryContainer {
 			try {
 				returned.fibModelFactory = new FIBModelFactory(customTypeManager);
 			} catch (ModelDefinitionException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return returned;
@@ -242,19 +241,14 @@ public interface FIBLibrary extends FIBLibraryContainer {
 					notifyLoaded(component, sourceResource);
 					return component;
 				} catch (ModelDefinitionException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (JDOMException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (InvalidDataException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (Exception e) {
 					e.printStackTrace();

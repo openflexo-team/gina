@@ -368,8 +368,8 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 		 * getWidget().getArray().getBindingValue(getBindingEvaluationContext
 		 * ()); } catch (TypeMismatchException e) { e.printStackTrace(); } catch
 		 * (NullReferenceException e) { e.printStackTrace(); } catch
-		 * (InvocationTargetException e) { e.printStackTrace(); } // TODO: you
-		 * can do better return true; }
+		 * (InvocationTargetException e) { e.printStackTrace(); } 
+		 *  return true; }
 		 * 
 		 * else if (getWidget().getData() != null &&
 		 * getWidget().getData().isValid() && getDataObject() != null) { Type

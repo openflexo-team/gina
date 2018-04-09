@@ -98,7 +98,6 @@ public class GinaSwingEditorTestCase extends LaunchAdvancedFIBEditor {
 			FlexoLoggingManager.initialize(-1, true, null, Level.INFO, null);
 			FlexoLocalization.initWith(FIBEditor.EDITOR_LOCALIZATION);
 		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

@@ -159,37 +159,31 @@ public class BindingExpressionSelectorPanel extends AbstractBindingSelectorPanel
 
 	@Override
 	protected void processTabPressed() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	protected void processBackspace() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	protected void processDelete() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	protected void processDownPressed() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	protected void processEnterPressed() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	protected void processUpPressed() {
-		// TODO Auto-generated method stub
 
 	}
 

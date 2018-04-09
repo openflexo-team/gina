@@ -396,20 +396,15 @@ public interface FIBCustom extends FIBWidget {
 							customComponent = (FIBCustomComponent<?>) constructor.newInstance(args);
 							break;
 						} catch (IllegalArgumentException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 							logger.warning("While trying to instanciate " + componentClass + " with null");
 						} catch (InstantiationException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						} catch (IllegalAccessException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						} catch (InvocationTargetException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						} catch (ClassCastException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}

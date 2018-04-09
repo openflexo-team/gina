@@ -345,7 +345,6 @@ public abstract class SwingRenderingAdapter<J extends JComponent> implements Ren
 
 	@Override
 	public boolean newFocusedComponentIsDescendingFrom(J component, FocusEvent event) {
-		// TODO Auto-generated method stub
 		return event.getOppositeComponent() != null
 				&& SwingUtilities.isDescendingFrom(event.getOppositeComponent(), getJComponent(component));
 	}

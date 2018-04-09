@@ -79,13 +79,10 @@ public class CutAction extends AbstractEditorActionImpl {
 		try {
 			getEditorController().getEditor().setClipboard(object.getComponent().getModelFactory().cut(object));
 		} catch (ModelExecutionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ModelDefinitionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

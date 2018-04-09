@@ -240,7 +240,6 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField> impl
 
 							@Override
 							public void run() {
-								// TODO Auto-generated method stub
 
 								((JDialog) w).getRootPane().getDefaultButton().doClick();
 							}

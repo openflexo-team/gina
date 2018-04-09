@@ -373,7 +373,6 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		 * System
 		 * .out.println("focus owner = "+c.hashCode()+" "+c.getClass().getSimpleName
 		 * ()+" is "+c); try { sleep(3000); } catch (InterruptedException e1) {
-		 * // TODO Auto-generated catch block e1.printStackTrace(); } } }
 		 * }).start();
 		 */
 

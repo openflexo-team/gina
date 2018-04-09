@@ -384,7 +384,6 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 			try {
 				validationReport = getValidationModel().validate(getFIBComponent());
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

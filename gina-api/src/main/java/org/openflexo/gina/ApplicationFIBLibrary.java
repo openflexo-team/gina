@@ -82,7 +82,6 @@ public interface ApplicationFIBLibrary extends FIBLibrary {
 			try {
 				instance.fibModelFactory = new FIBModelFactory(customTypeManager);
 			} catch (ModelDefinitionException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return instance;
