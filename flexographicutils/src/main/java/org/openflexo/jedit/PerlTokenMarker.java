@@ -67,7 +67,8 @@ public class PerlTokenMarker extends TokenMarker {
 			if (str != null && str.length() == line.count && SyntaxUtilities.regionMatches(false, line, offset, str)) {
 				addToken(line.count, token);
 				return Token.NULL;
-			} else {
+			}
+			else {
 				addToken(line.count, token);
 				lineInfo[lineIndex].obj = str;
 				return token;
@@ -85,311 +86,323 @@ public class PerlTokenMarker extends TokenMarker {
 			}
 
 			switch (token) {
-			case Token.NULL:
-				switch (c) {
-				case '#':
-					if (doKeyword(line, i, c)) {
-						break;
-					}
-					if (backslash) {
-						backslash = false;
-					} else {
-						addToken(i - lastOffset, token);
-						addToken(length - i, Token.COMMENT1);
-						lastOffset = lastKeyword = length;
-						break loop;
-					}
-					break;
-				case '=':
-					backslash = false;
-					if (i == offset) {
-						token = Token.COMMENT2;
-						addToken(length - i, token);
-						lastOffset = lastKeyword = length;
-						break loop;
-					} else {
-						doKeyword(line, i, c);
-					}
-					break;
-				case '$':
-				case '&':
-				case '%':
-				case '@':
-					backslash = false;
-					if (doKeyword(line, i, c)) {
-						break;
-					}
-					if (length - i > 1) {
-						if (c == '&' && (array[i1] == '&' || Character.isWhitespace(array[i1]))) {
-							i++;
-						} else {
-							addToken(i - lastOffset, token);
-							lastOffset = lastKeyword = i;
-							token = Token.KEYWORD2;
-						}
-					}
-					break;
-				case '"':
-					if (doKeyword(line, i, c)) {
-						break;
-					}
-					if (backslash) {
-						backslash = false;
-					} else {
-						addToken(i - lastOffset, token);
-						token = Token.LITERAL1;
-						lineInfo[lineIndex].obj = null;
-						lastOffset = lastKeyword = i;
-					}
-					break;
-				case '\'':
-					if (backslash) {
-						backslash = false;
-					} else {
-						int oldLastKeyword = lastKeyword;
-						if (doKeyword(line, i, c)) {
-							break;
-						}
-						if (i != oldLastKeyword) {
-							break;
-						}
-						addToken(i - lastOffset, token);
-						token = Token.LITERAL2;
-						lastOffset = lastKeyword = i;
-					}
-					break;
-				case '`':
-					if (doKeyword(line, i, c)) {
-						break;
-					}
-					if (backslash) {
-						backslash = false;
-					} else {
-						addToken(i - lastOffset, token);
-						token = Token.OPERATOR;
-						lastOffset = lastKeyword = i;
-					}
-					break;
-				case '<':
-					if (doKeyword(line, i, c)) {
-						break;
-					}
-					if (backslash) {
-						backslash = false;
-					} else {
-						if (length - i > 2 && array[i1] == '<' && !Character.isWhitespace(array[i + 2])) {
-							addToken(i - lastOffset, token);
-							lastOffset = lastKeyword = i;
-							token = Token.LITERAL1;
-							int len = length - (i + 2);
-							if (array[length - 1] == ';') {
-								len--;
+				case Token.NULL:
+					switch (c) {
+						case '#':
+							if (doKeyword(line, i, c)) {
+								break;
 							}
-							lineInfo[lineIndex].obj = createReadinString(array, i + 2, len);
-						}
-					}
-					break;
-				case ':':
-					backslash = false;
-					if (doKeyword(line, i, c)) {
-						break;
-					}
-					// Doesn't pick up all labels,
-					// but at least doesn't mess up
-					// XXX::YYY
-					if (lastKeyword != 0) {
-						break;
-					}
-					addToken(i1 - lastOffset, Token.LABEL);
-					lastOffset = lastKeyword = i1;
-					break;
-				case '-':
-					backslash = false;
-					if (doKeyword(line, i, c)) {
-						break;
-					}
-					if (i != lastKeyword || length - i <= 1) {
-						break;
-					}
-					switch (array[i1]) {
-					case 'r':
-					case 'w':
-					case 'x':
-					case 'o':
-					case 'R':
-					case 'W':
-					case 'X':
-					case 'O':
-					case 'e':
-					case 'z':
-					case 's':
-					case 'f':
-					case 'd':
-					case 'l':
-					case 'p':
-					case 'S':
-					case 'b':
-					case 'c':
-					case 't':
-					case 'u':
-					case 'g':
-					case 'k':
-					case 'T':
-					case 'B':
-					case 'M':
-					case 'A':
-					case 'C':
-						addToken(i - lastOffset, token);
-						addToken(2, Token.KEYWORD3);
-						lastOffset = lastKeyword = i + 2;
-						i++;
-					}
-					break;
-				case '/':
-				case '?':
-					if (doKeyword(line, i, c)) {
-						break;
-					}
-					if (length - i > 1) {
-						backslash = false;
-						char ch = array[i1];
-						if (Character.isWhitespace(ch)) {
+							if (backslash) {
+								backslash = false;
+							}
+							else {
+								addToken(i - lastOffset, token);
+								addToken(length - i, Token.COMMENT1);
+								lastOffset = lastKeyword = length;
+								break loop;
+							}
 							break;
-						}
-						matchChar = c;
-						matchSpacesAllowed = false;
-						addToken(i - lastOffset, token);
-						token = S_ONE;
-						lastOffset = lastKeyword = i;
+						case '=':
+							backslash = false;
+							if (i == offset) {
+								token = Token.COMMENT2;
+								addToken(length - i, token);
+								lastOffset = lastKeyword = length;
+								break loop;
+							}
+							else {
+								doKeyword(line, i, c);
+							}
+							break;
+						case '$':
+						case '&':
+						case '%':
+						case '@':
+							backslash = false;
+							if (doKeyword(line, i, c)) {
+								break;
+							}
+							if (length - i > 1) {
+								if (c == '&' && (array[i1] == '&' || Character.isWhitespace(array[i1]))) {
+									i++;
+								}
+								else {
+									addToken(i - lastOffset, token);
+									lastOffset = lastKeyword = i;
+									token = Token.KEYWORD2;
+								}
+							}
+							break;
+						case '"':
+							if (doKeyword(line, i, c)) {
+								break;
+							}
+							if (backslash) {
+								backslash = false;
+							}
+							else {
+								addToken(i - lastOffset, token);
+								token = Token.LITERAL1;
+								lineInfo[lineIndex].obj = null;
+								lastOffset = lastKeyword = i;
+							}
+							break;
+						case '\'':
+							if (backslash) {
+								backslash = false;
+							}
+							else {
+								int oldLastKeyword = lastKeyword;
+								if (doKeyword(line, i, c)) {
+									break;
+								}
+								if (i != oldLastKeyword) {
+									break;
+								}
+								addToken(i - lastOffset, token);
+								token = Token.LITERAL2;
+								lastOffset = lastKeyword = i;
+							}
+							break;
+						case '`':
+							if (doKeyword(line, i, c)) {
+								break;
+							}
+							if (backslash) {
+								backslash = false;
+							}
+							else {
+								addToken(i - lastOffset, token);
+								token = Token.OPERATOR;
+								lastOffset = lastKeyword = i;
+							}
+							break;
+						case '<':
+							if (doKeyword(line, i, c)) {
+								break;
+							}
+							if (backslash) {
+								backslash = false;
+							}
+							else {
+								if (length - i > 2 && array[i1] == '<' && !Character.isWhitespace(array[i + 2])) {
+									addToken(i - lastOffset, token);
+									lastOffset = lastKeyword = i;
+									token = Token.LITERAL1;
+									int len = length - (i + 2);
+									if (array[length - 1] == ';') {
+										len--;
+									}
+									lineInfo[lineIndex].obj = createReadinString(array, i + 2, len);
+								}
+							}
+							break;
+						case ':':
+							backslash = false;
+							if (doKeyword(line, i, c)) {
+								break;
+							}
+							// Doesn't pick up all labels, but at least doesn't mess up
+							if (lastKeyword != 0) {
+								break;
+							}
+							addToken(i1 - lastOffset, Token.LABEL);
+							lastOffset = lastKeyword = i1;
+							break;
+						case '-':
+							backslash = false;
+							if (doKeyword(line, i, c)) {
+								break;
+							}
+							if (i != lastKeyword || length - i <= 1) {
+								break;
+							}
+							switch (array[i1]) {
+								case 'r':
+								case 'w':
+								case 'x':
+								case 'o':
+								case 'R':
+								case 'W':
+								case 'X':
+								case 'O':
+								case 'e':
+								case 'z':
+								case 's':
+								case 'f':
+								case 'd':
+								case 'l':
+								case 'p':
+								case 'S':
+								case 'b':
+								case 'c':
+								case 't':
+								case 'u':
+								case 'g':
+								case 'k':
+								case 'T':
+								case 'B':
+								case 'M':
+								case 'A':
+								case 'C':
+									addToken(i - lastOffset, token);
+									addToken(2, Token.KEYWORD3);
+									lastOffset = lastKeyword = i + 2;
+									i++;
+							}
+							break;
+						case '/':
+						case '?':
+							if (doKeyword(line, i, c)) {
+								break;
+							}
+							if (length - i > 1) {
+								backslash = false;
+								char ch = array[i1];
+								if (Character.isWhitespace(ch)) {
+									break;
+								}
+								matchChar = c;
+								matchSpacesAllowed = false;
+								addToken(i - lastOffset, token);
+								token = S_ONE;
+								lastOffset = lastKeyword = i;
+							}
+							break;
+						default:
+							backslash = false;
+							if (!Character.isLetterOrDigit(c) && c != '_') {
+								doKeyword(line, i, c);
+							}
+							break;
 					}
 					break;
-				default:
+				case Token.KEYWORD2:
+					backslash = false;
+					// This test checks for an end-of-variable
+					// condition
+					if (!Character.isLetterOrDigit(c) && c != '_' && c != '#' && c != '\'' && c != ':' && c != '&') {
+						// If this is the first character
+						// of the variable name ($'aaa)
+						// ignore it
+						if (i != offset && array[i - 1] == '$') {
+							addToken(i1 - lastOffset, token);
+							lastOffset = lastKeyword = i1;
+						}
+						// Otherwise, end of variable...
+						else {
+							addToken(i - lastOffset, token);
+							lastOffset = lastKeyword = i;
+							// Wind back so that stuff
+							// like $hello$fred is picked
+							// up
+							i--;
+							token = Token.NULL;
+						}
+					}
+					break;
+				case S_ONE:
+				case S_TWO:
+					if (backslash) {
+						backslash = false;
+					}
+					else {
+						if (matchChar == '\0') {
+							if (Character.isWhitespace(matchChar) && !matchSpacesAllowed) {
+								break;
+							}
+							else {
+								matchChar = c;
+							}
+						}
+						else {
+							switch (matchChar) {
+								case '(':
+									matchChar = ')';
+									matchCharBracket = true;
+									break;
+								case '[':
+									matchChar = ']';
+									matchCharBracket = true;
+									break;
+								case '{':
+									matchChar = '}';
+									matchCharBracket = true;
+									break;
+								case '<':
+									matchChar = '>';
+									matchCharBracket = true;
+									break;
+								default:
+									matchCharBracket = false;
+									break;
+							}
+							if (c != matchChar) {
+								break;
+							}
+							if (token == S_TWO) {
+								token = S_ONE;
+								if (matchCharBracket) {
+									matchChar = '\0';
+								}
+							}
+							else {
+								token = S_END;
+								addToken(i1 - lastOffset, Token.LITERAL2);
+								lastOffset = lastKeyword = i1;
+							}
+						}
+					}
+					break;
+				case S_END:
 					backslash = false;
 					if (!Character.isLetterOrDigit(c) && c != '_') {
 						doKeyword(line, i, c);
 					}
 					break;
-				}
-				break;
-			case Token.KEYWORD2:
-				backslash = false;
-				// This test checks for an end-of-variable
-				// condition
-				if (!Character.isLetterOrDigit(c) && c != '_' && c != '#' && c != '\'' && c != ':' && c != '&') {
-					// If this is the first character
-					// of the variable name ($'aaa)
-					// ignore it
-					if (i != offset && array[i - 1] == '$') {
+				case Token.COMMENT2:
+					backslash = false;
+					if (i == offset) {
+						addToken(line.count, token);
+						if (length - i > 3 && SyntaxUtilities.regionMatches(false, line, offset, "=cut")) {
+							token = Token.NULL;
+						}
+						lastOffset = lastKeyword = length;
+						break loop;
+					}
+					break;
+				case Token.LITERAL1:
+					if (backslash) {
+						backslash = false;
+					}
+					else if (c == '"') {
 						addToken(i1 - lastOffset, token);
+						token = Token.NULL;
 						lastOffset = lastKeyword = i1;
 					}
-					// Otherwise, end of variable...
-					else {
-						addToken(i - lastOffset, token);
-						lastOffset = lastKeyword = i;
-						// Wind back so that stuff
-						// like $hello$fred is picked
-						// up
-						i--;
+					break;
+				case Token.LITERAL2:
+					if (backslash) {
+						backslash = false;
+					}
+					else if (c == '\'') {
+						addToken(i1 - lastOffset, Token.LITERAL1);
 						token = Token.NULL;
+						lastOffset = lastKeyword = i1;
 					}
-				}
-				break;
-			case S_ONE:
-			case S_TWO:
-				if (backslash) {
-					backslash = false;
-				} else {
-					if (matchChar == '\0') {
-						if (Character.isWhitespace(matchChar) && !matchSpacesAllowed) {
-							break;
-						} else {
-							matchChar = c;
-						}
-					} else {
-						switch (matchChar) {
-						case '(':
-							matchChar = ')';
-							matchCharBracket = true;
-							break;
-						case '[':
-							matchChar = ']';
-							matchCharBracket = true;
-							break;
-						case '{':
-							matchChar = '}';
-							matchCharBracket = true;
-							break;
-						case '<':
-							matchChar = '>';
-							matchCharBracket = true;
-							break;
-						default:
-							matchCharBracket = false;
-							break;
-						}
-						if (c != matchChar) {
-							break;
-						}
-						if (token == S_TWO) {
-							token = S_ONE;
-							if (matchCharBracket) {
-								matchChar = '\0';
-							}
-						} else {
-							token = S_END;
-							addToken(i1 - lastOffset, Token.LITERAL2);
-							lastOffset = lastKeyword = i1;
-						}
+					break;
+				case Token.OPERATOR:
+					if (backslash) {
+						backslash = false;
 					}
-				}
-				break;
-			case S_END:
-				backslash = false;
-				if (!Character.isLetterOrDigit(c) && c != '_') {
-					doKeyword(line, i, c);
-				}
-				break;
-			case Token.COMMENT2:
-				backslash = false;
-				if (i == offset) {
-					addToken(line.count, token);
-					if (length - i > 3 && SyntaxUtilities.regionMatches(false, line, offset, "=cut")) {
+					else if (c == '`') {
+						addToken(i1 - lastOffset, token);
 						token = Token.NULL;
+						lastOffset = lastKeyword = i1;
 					}
-					lastOffset = lastKeyword = length;
-					break loop;
-				}
-				break;
-			case Token.LITERAL1:
-				if (backslash) {
-					backslash = false;
-				} else if (c == '"') {
-					addToken(i1 - lastOffset, token);
-					token = Token.NULL;
-					lastOffset = lastKeyword = i1;
-				}
-				break;
-			case Token.LITERAL2:
-				if (backslash) {
-					backslash = false;
-				} else if (c == '\'') {
-					addToken(i1 - lastOffset, Token.LITERAL1);
-					token = Token.NULL;
-					lastOffset = lastKeyword = i1;
-				}
-				break;
-			case Token.OPERATOR:
-				if (backslash) {
-					backslash = false;
-				} else if (c == '`') {
-					addToken(i1 - lastOffset, token);
-					token = Token.NULL;
-					lastOffset = lastKeyword = i1;
-				}
-				break;
-			default:
-				throw new InternalError("Invalid state: " + token);
+					break;
+				default:
+					throw new InternalError("Invalid state: " + token);
 			}
 		}
 
@@ -398,25 +411,25 @@ public class PerlTokenMarker extends TokenMarker {
 		}
 
 		switch (token) {
-		case Token.KEYWORD2:
-			addToken(length - lastOffset, token);
-			token = Token.NULL;
-			break;
-		case Token.LITERAL2:
-			addToken(length - lastOffset, Token.LITERAL1);
-			break;
-		case S_END:
-			addToken(length - lastOffset, Token.LITERAL2);
-			token = Token.NULL;
-			break;
-		case S_ONE:
-		case S_TWO:
-			addToken(length - lastOffset, Token.INVALID); // XXX
-			token = Token.NULL;
-			break;
-		default:
-			addToken(length - lastOffset, token);
-			break;
+			case Token.KEYWORD2:
+				addToken(length - lastOffset, token);
+				token = Token.NULL;
+				break;
+			case Token.LITERAL2:
+				addToken(length - lastOffset, Token.LITERAL1);
+				break;
+			case S_END:
+				addToken(length - lastOffset, Token.LITERAL2);
+				token = Token.NULL;
+				break;
+			case S_ONE:
+			case S_TWO:
+				addToken(length - lastOffset, Token.INVALID); // XXX
+				token = Token.NULL;
+				break;
+			default:
+				addToken(length - lastOffset, token);
+				break;
 		}
 		return token;
 	}
@@ -452,13 +465,15 @@ public class PerlTokenMarker extends TokenMarker {
 			lastKeyword = i1;
 			if (Character.isWhitespace(c)) {
 				matchChar = '\0';
-			} else {
+			}
+			else {
 				matchChar = c;
 			}
 			matchSpacesAllowed = true;
 			token = id;
 			return true;
-		} else if (id != Token.NULL) {
+		}
+		else if (id != Token.NULL) {
 			if (lastKeyword != lastOffset) {
 				addToken(lastKeyword - lastOffset, Token.NULL);
 			}
