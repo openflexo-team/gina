@@ -166,6 +166,7 @@ public class JFIBInspectorController implements Observer {
 		if (currentInspectorView != null) {
 			currentInspectorView.hideView();
 		}
+		currentInspectedObject = null;
 		currentInspector = null;
 		currentInspectorView = null;
 		rootPane.removeAll();
