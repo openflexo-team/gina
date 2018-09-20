@@ -126,6 +126,7 @@ public class GinaSwingEditorTestCase extends LaunchAdvancedFIBEditor {
 
 	public FIBEditor instanciateFIBEdition(String title, Resource fibResource, Object data) {
 
+		System.err.println("instanciateFIBEdition for " + fibResource);
 		final FIBEditor editor = new FIBEditor(FIBLibraryImpl.createInstance(null)) {
 			@Override
 			public boolean activate(FIBEditorController editorController) {
