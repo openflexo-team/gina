@@ -20,6 +20,11 @@
 		<!-- Declare dependancies for gina -->
 		<dependency>
 			<groupId>org.openflexo</groupId>
+			<artifactId>gina-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+ 		<dependency>
+			<groupId>org.openflexo</groupId>
 			<artifactId>gina-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
