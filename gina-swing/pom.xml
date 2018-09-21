@@ -32,9 +32,7 @@
         </dependency>
         <dependency>
             <groupId>org.openflexo</groupId>
-            <artifactId>flexoutils</artifactId>
-            <classifier>tests</classifier>
-            <scope>test</scope>
+            <artifactId>testutils</artifactId>
         </dependency>
 		<!-- SWINGX -->
 		<dependency>

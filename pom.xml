@@ -128,8 +128,11 @@
                 <groupId>org.openflexo</groupId>
                 <artifactId>flexoutils</artifactId>
                 <version>${connie.version}</version>
-                <classifier>tests</classifier>
-                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.openflexo</groupId>
+                <artifactId>testutils</artifactId>
+                <version>${connie.version}</version>
             </dependency>
             <!-- SWINGX -->
             <dependency>

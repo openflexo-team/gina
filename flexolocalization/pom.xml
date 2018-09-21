@@ -31,10 +31,8 @@
         </dependency>
         <dependency>
             <groupId>org.openflexo</groupId>
-            <artifactId>flexoutils</artifactId>
-	     <classifier>tests</classifier>
-	     <scope>test</scope>
-        </dependency>
+            <artifactId>testutils</artifactId>
+       </dependency>
      </dependencies>
 </project>
 

@@ -17,13 +17,13 @@
         </plugins>
     </build>
     <dependencies>
-        <dependency>
+        <!--  <dependency>
             <groupId>org.openflexo</groupId>
             <artifactId>gina-core</artifactId>
             <version>${project.version}</version>
             <classifier>tests</classifier>
             <scope>test</scope>
-        </dependency>
+        </dependency>-->
         <!-- Declare dependencies for gina-swing -->
         <dependency>
             <groupId>org.openflexo</groupId>
