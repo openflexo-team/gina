@@ -28,13 +28,13 @@
 			<artifactId>gina-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-       <dependency>
+       <!--  <dependency>
             <groupId>org.openflexo</groupId>
             <artifactId>gina-core</artifactId>
 			<version>${project.version}</version>
             <classifier>tests</classifier>
             <scope>test</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.openflexo</groupId>
             <artifactId>testutils</artifactId>
