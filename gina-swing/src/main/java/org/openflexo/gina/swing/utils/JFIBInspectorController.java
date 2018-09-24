@@ -87,18 +87,28 @@ public class JFIBInspectorController implements Observer {
 		this(inspectorDirectory, fibLibrary, localizer, null);
 	}
 
+	private class MyInspectorGroup extends InspectorGroup {
+
+		private FIBEditorLoadingProgress progress;
+
+		public MyInspectorGroup(Resource inspectorDirectory, FIBLibrary fibLibrary, FIBEditorLoadingProgress progress) {
+			super(inspectorDirectory, fibLibrary, FIBModelObjectImpl.GINA_LOCALIZATION);
+			this.progress = progress;
+		}
+
+		@Override
+		public void progress(Resource f, FIBInspector inspector) {
+			super.progress(f, inspector);
+			if (progress != null) {
+				progress.progress(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("loaded_inspector") + " "
+						+ inspector.getDataClass().getSimpleName());
+			}
+		}
+	}
+
 	public JFIBInspectorController(Resource inspectorDirectory, FIBLibrary fibLibrary, LocalizedDelegate localizer,
 			final FIBEditorLoadingProgress progress) {
-		inspectorGroup = new InspectorGroup(inspectorDirectory, fibLibrary, FIBModelObjectImpl.GINA_LOCALIZATION) {
-			@Override
-			public void progress(Resource f, FIBInspector inspector) {
-				super.progress(f, inspector);
-				if (progress != null) {
-					progress.progress(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("loaded_inspector") + " "
-							+ inspector.getDataClass().getSimpleName());
-				}
-			}
-		};
+		inspectorGroup = new MyInspectorGroup(inspectorDirectory, fibLibrary, progress);
 		inspectorViews = new Hashtable<>();
 		this.localizer = localizer;
 
