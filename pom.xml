@@ -50,8 +50,8 @@
         <module>gina-core</module>
         <module>gina-events</module>
         <module>gina-replay</module>
-        <!--  <module>gina-swing</module>
-        <module>gina-swing-editor</module>-->
+        <!--  <module>gina-swing</module>-->
+        <module>gina-swing-editor</module>
     </modules>
     <build>
         <plugins>
