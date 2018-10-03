@@ -18,7 +18,12 @@
 	</build>
 	<dependencies>
 		<!-- Declare dependancies for gina -->
-		<dependency>
+       <dependency>
+            <groupId>org.openflexo</groupId>
+            <artifactId>gina-events</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+ 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>gina-api</artifactId>
 			<version>${project.version}</version>
