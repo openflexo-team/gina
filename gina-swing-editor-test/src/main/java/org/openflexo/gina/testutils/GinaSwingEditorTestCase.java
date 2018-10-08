@@ -125,6 +125,12 @@ public class GinaSwingEditorTestCase extends LaunchAdvancedFIBEditor {
 
 	public FIBEditor instanciateFIBEdition(String title, Resource fibResource, Object data) {
 
+		if (fibResource == null) {
+			// Prevent NPE later
+			System.err.println("Cannot find FIB " + title);
+			return null;
+		}
+
 		final FIBEditor editor = new FIBEditor(FIBLibraryImpl.createInstance(null)) {
 			@Override
 			public boolean activate(FIBEditorController editorController) {
@@ -241,6 +247,7 @@ public class GinaSwingEditorTestCase extends LaunchAdvancedFIBEditor {
 		paletteDialog.setVisible(true);*/
 
 		Resource fib = ResourceLocator.locateSourceCodeResource(fibResource);
+
 		// Unused FIBEditorController controller =
 		editor.loadFIB(fib, data, gcDelegate.getFrame());
 

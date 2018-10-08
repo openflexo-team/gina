@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.openflexo</groupId>
+		<artifactId>gina</artifactId>
+        	<version>2.1.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>flexolocalization</artifactId>
+	<name>Localization for Openflexo infrastructure</name>
+    <scm>
+        <connection>scm:git:ssh://git@github.com/openflexo-team/gina.git</connection>
+        <url>https://github.com/openflexo-team/gina</url>
+      <tag>1.4.1</tag>
+  </scm>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+    <dependencies>
+       <!-- 
+		Openflexo Infrastructure dependencies
+	-->
+        <dependency>
+            <groupId>org.openflexo</groupId>
+            <artifactId>pamela-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openflexo</groupId>
+            <artifactId>testutils</artifactId>
+       </dependency>
+     </dependencies>
+</project>
+
