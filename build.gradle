@@ -4,13 +4,13 @@ buildscript {
         maven { url uri('https://maven.openflexo.org/artifactory/openflexo-deps/') }
     }
     dependencies {
-        classpath group: 'org.openflexo', name: 'buildplugin', version: '0.2-SNAPSHOT'
-        classpath group: 'org.openflexo', name: 'buildconfig', version: '2.0.0-SNAPSHOT'
+        classpath group: 'org.openflexo', name: 'buildplugin', version: '0.2'
+        classpath group: 'org.openflexo', name: 'buildconfig', version: '2.0.0'
     }
 }
 
+version = "2.2"
 apply plugin: 'org.openflexo.buildconfig'
-allprojects { version = "2.2-SNAPSHOT" }
 
 task gitPull(type: Exec) {
     description 'Pulls git.'
