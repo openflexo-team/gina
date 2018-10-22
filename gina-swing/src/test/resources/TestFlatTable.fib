@@ -8,5 +8,7 @@
     <TextFieldColumn id="6" data="iterator.component.toString" resizable="true" title="toString" displayTitle="true" columnWidth="60" showIcon="false" name="col2" />
     <AddAction id="7" method="controller.sampleData.logString(&quot;Do something&quot;)" name="add_action" />
   </Table>
-  <LocalizedDictionary id="8" />
+  <Label id="8" label="selected" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="Label3" />
+  <TextField id="9" columns="7" data="Table.selected.toString" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" name="TextField2" />
+  <LocalizedDictionary id="10" />
 </Panel>

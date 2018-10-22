@@ -1,6 +1,7 @@
 package org.openflexo.gina.swing.view.widget;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -10,11 +11,19 @@ import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -34,7 +43,6 @@ import org.openflexo.gina.model.widget.FIBTableColumn;
 import org.openflexo.gina.utils.FIBIconLibrary;
 import org.openflexo.gina.view.widget.table.impl.FIBTableActionListener;
 import org.openflexo.gina.view.widget.table.impl.FIBTableModel;
-import org.openflexo.gina.view.widget.table.impl.FIBTableModel.ModelObjectHasChanged;
 
 @SuppressWarnings("serial")
 public class JFDTablePanel<T> extends JPanel {
@@ -73,6 +81,9 @@ public class JFDTablePanel<T> extends JPanel {
 		private FIBTableModel<T> dataModel;
 		private TableColumnModel columnModel;
 		private ListSelectionModel selectionModel;
+
+		private Map<T, List<JComponent>> componentsForValues = new HashMap<>();
+		private T focusedValue = null;
 
 		public JFDTable(JFDFIBTableWidget<T> widget) {
 			super();
@@ -204,11 +215,11 @@ public class JFDTablePanel<T> extends JPanel {
 		@Override
 		public void tableChanged(TableModelEvent e) {
 
-			System.out.println("Je recois TableModelEvent " + e);
+			/*System.out.println("Je recois TableModelEvent " + e);
 			System.out.println("rows=" + getModel().getRowCount());
 			if (e instanceof ModelObjectHasChanged) {
 				System.out.println(">>>>>>>>>> OK le model change pour celui la");
-			}
+			}*/
 
 			// Thread.dumpStack();
 
@@ -229,14 +240,14 @@ public class JFDTablePanel<T> extends JPanel {
 
 			// System.out.println("Et la faut dessiner les valeurs " + widget.getTableModel().getValues());
 
-			System.out.println(
-					/*"col=" + e.getColumn() +*/ " firstRow=" + e.getFirstRow() + " lastRow=" + e.getLastRow() + " type=" + e.getType());
+			// System.out.println(
+			// /*"col=" + e.getColumn() +*/ " firstRow=" + e.getFirstRow() + " lastRow=" + e.getLastRow() + " type=" + e.getType());
 
 			if (e == null || e.getFirstRow() == TableModelEvent.HEADER_ROW) {
 
-				System.out.println("HEADER");
+				// System.out.println("HEADER");
 
-				System.out.println("rows=" + getModel().getRowCount());
+				// System.out.println("rows=" + getModel().getRowCount());
 				// The whole thing changed
 				/*clearSelectionAndLeadAnchor();
 				
@@ -522,6 +533,7 @@ public class JFDTablePanel<T> extends JPanel {
 
 		private void refreshTable() {
 			removeAll();
+			componentsForValues.clear();
 
 			if (widget.getComponent().getShowHeader()) {
 				for (FIBTableColumn column : widget.getComponent().getColumns()) {
@@ -551,15 +563,12 @@ public class JFDTablePanel<T> extends JPanel {
 					titleLabel.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight() + 10));
 					titleLabel.setOpaque(true);
 					titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD));
-					titleLabel.setForeground(widget.getComponent().getTextSelectionColor());
-					titleLabel.setBackground(widget.getComponent().getBackgroundSelectionColor());
+					titleLabel.setForeground(Color.WHITE/*widget.getComponent().getTextSelectionColor()*/);
+					titleLabel.setBackground(Color.GRAY/*widget.getComponent().getBackgroundSelectionColor()*/);
+					// titleLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 					add(titleLabel, c);
 				}
 			}
-
-			// setPreferredSize(new Dimension(100, 100));
-
-			System.out.println("Et la faut dessiner les valeurs " + widget.getTableModel().getValues());
 
 			if (widget.getTableModel().getValues() != null) {
 				int row = 0;
@@ -599,29 +608,125 @@ public class JFDTablePanel<T> extends JPanel {
 
 		}
 
+		private void focusValue(T value) {
+			// System.out.println("focus " + value);
+			List<JComponent> componentList = componentsForValues.get(value);
+			if (componentList != null) {
+				for (JComponent jComponent : componentList) {
+					jComponent.setOpaque(true);
+					jComponent.setForeground(widget.getComponent().getTextSecondarySelectionColor());
+					jComponent.setBackground(widget.getComponent().getBackgroundSecondarySelectionColor());
+				}
+			}
+			focusedValue = value;
+		}
+
+		private void unfocusValue(T value) {
+			// System.out.println("unfocus " + value);
+			List<JComponent> componentList = componentsForValues.get(value);
+			if (componentList != null) {
+				for (JComponent jComponent : componentList) {
+					jComponent.setOpaque(false);
+					jComponent.setForeground(null);
+					jComponent.setBackground(null);
+				}
+			}
+			focusedValue = null;
+		}
+
+		private void selectValue(T value) {
+			List<JComponent> componentList = componentsForValues.get(value);
+			if (componentList != null) {
+				for (JComponent jComponent : componentList) {
+					jComponent.setOpaque(true);
+					jComponent.setForeground(widget.getComponent().getTextSelectionColor());
+					jComponent.setBackground(widget.getComponent().getBackgroundSelectionColor());
+				}
+			}
+			widget.setSelected(value);
+			widget.setSelection(Collections.singletonList(value));
+		}
+
+		private void unselectValue(T value) {
+			List<JComponent> componentList = componentsForValues.get(value);
+			if (componentList != null) {
+				for (JComponent jComponent : componentList) {
+					jComponent.setOpaque(false);
+					jComponent.setForeground(null);
+					jComponent.setBackground(null);
+				}
+			}
+			widget.setSelected(null);
+			widget.setSelection(Collections.emptyList());
+		}
+
 		private void buildTableForValue(T value, int row) {
+			List<JComponent> components = new ArrayList<>();
+
+			MouseAdapter mouseAdapter = new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					super.mouseEntered(e);
+					if (widget.getSelected() != value) {
+						focusValue(value);
+					}
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					super.mouseExited(e);
+					if (widget.getSelected() != value) {
+						unfocusValue(value);
+					}
+				}
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					super.mouseClicked(e);
+					selectValue(value);
+					repaint();
+				}
+			};
+
 			int col = 0;
 			for (FIBTableColumn column : widget.getComponent().getColumns()) {
 				boolean isFirst = (column == widget.getComponent().getColumns().get(0));
 				boolean isLast = (column == widget.getComponent().getColumns().get(widget.getComponent().getColumns().size() - 1));
 				GridBagConstraints c = new GridBagConstraints();
 				// c.insets = new Insets(5, 5, 5, 5);
-				c.fill = GridBagConstraints.NONE;
+				c.fill = GridBagConstraints.BOTH;
 				c.weightx = (column.getResizable() ? column.getColumnWidth() : 0);
 				c.weighty = 1.0;
 				c.gridwidth = (isLast ? GridBagConstraints.REMAINDER : 1);
 				// c.anchor = GridBagConstraints.CENTER;
 				c.anchor = GridBagConstraints.WEST;
+				c.ipadx = 0;
+				c.ipady = 6;
 
-				c.insets = new Insets(2, isFirst ? 2 : 0, 2, isLast ? 2 : 0);
+				c.insets = new Insets(0, isFirst ? 5 : 0, 0, isLast ? 5 : 0);
 
 				String valueToDisplay = widget.getTableModel().getValueAt(row, col).toString();
 
 				JLabel label = new JLabel(valueToDisplay);
 				label.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight()));
 				add(label, c);
+				components.add(label);
+				label.addMouseListener(mouseAdapter);
+
+				if (value == widget.getSelected()) {
+					label.setOpaque(true);
+					label.setForeground(widget.getComponent().getTextSelectionColor());
+					label.setBackground(widget.getComponent().getBackgroundSelectionColor());
+				}
+				else {
+					label.setOpaque(false);
+					label.setForeground(null);
+					label.setBackground(null);
+				}
+
 				col++;
 			}
+			componentsForValues.put(value, components);
 
 		}
 
