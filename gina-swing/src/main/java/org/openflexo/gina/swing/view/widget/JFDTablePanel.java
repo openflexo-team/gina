@@ -1,12 +1,17 @@
 package org.openflexo.gina.swing.view.widget;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.util.Enumeration;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -27,9 +32,9 @@ import javax.swing.table.TableModel;
 
 import org.openflexo.gina.model.widget.FIBTableColumn;
 import org.openflexo.gina.utils.FIBIconLibrary;
+import org.openflexo.gina.view.widget.table.impl.FIBTableActionListener;
 import org.openflexo.gina.view.widget.table.impl.FIBTableModel;
 import org.openflexo.gina.view.widget.table.impl.FIBTableModel.ModelObjectHasChanged;
-import org.openflexo.icon.IconFactory;
 
 @SuppressWarnings("serial")
 public class JFDTablePanel<T> extends JPanel {
@@ -75,7 +80,7 @@ public class JFDTablePanel<T> extends JPanel {
 			setLayout(gridBagLayout);
 			this.widget = widget;
 			setTableModel(widget.getTableModel());
-			rebuildTable();
+			buildTable();
 		}
 
 		/**
@@ -205,14 +210,24 @@ public class JFDTablePanel<T> extends JPanel {
 				System.out.println(">>>>>>>>>> OK le model change pour celui la");
 			}
 
-			Thread.dumpStack();
+			// Thread.dumpStack();
 
-			System.out.println("model=" + getModel());
+			/*System.out.println("model=" + getModel());
 			if (widget.getTableModel().getValues() != null) {
 				for (T value : widget.getTableModel().getValues()) {
-					System.out.println("On affiche la valeur " + value);
+					System.out.println("Ici On affiche la valeur " + value);
 				}
-			}
+				// revalidate();
+				// repaint();
+			}*/
+
+			// setPreferredSize(new Dimension((getPreferredSize() != null ? getPreferredSize().width : 100),
+			// (widget.getTableModel().getValues() != null ? widget.getTableModel().getValues().size() * 20 : 20)));
+			// revalidate();
+
+			// System.out.println("Hop: prefered=" + getPreferredSize());
+
+			// System.out.println("Et la faut dessiner les valeurs " + widget.getTableModel().getValues());
 
 			System.out.println(
 					/*"col=" + e.getColumn() +*/ " firstRow=" + e.getFirstRow() + " lastRow=" + e.getLastRow() + " type=" + e.getType());
@@ -302,8 +317,10 @@ public class JFDTablePanel<T> extends JPanel {
 				rowModel = null;
 			}*/
 
-			revalidate();
-			repaint();
+			// revalidate();
+			// repaint();
+
+			refreshTable();
 
 		}
 
@@ -475,19 +492,53 @@ public class JFDTablePanel<T> extends JPanel {
 		public void valueChanged(ListSelectionEvent e) {
 		}
 
-		private void rebuildTable() {
+		private JButton addButton;
+
+		private void buildTable() {
+			addButton = new JButton();
+			addButton.setBorder(BorderFactory.createEmptyBorder());
+			addButton.setRolloverIcon(FIBIconLibrary.ADD_FO_ICON);
+			addButton.setIcon(FIBIconLibrary.ADD_ICON);
+
+			addButton.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Enumeration<FIBTableActionListener<T>> en = widget.getFooter().getAddActionListeners();
+					while (en.hasMoreElements()) {
+						FIBTableActionListener<T> action = en.nextElement();
+						if (action.isAddAction()) {
+							System.out.println("Hop on execute " + action);
+							action.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null,
+									EventQueue.getMostRecentEventTime(), e.getModifiers()));
+							break;
+						}
+					}
+				}
+			});
+
+			refreshTable();
+		}
+
+		private void refreshTable() {
 			removeAll();
 
 			if (widget.getComponent().getShowHeader()) {
 				for (FIBTableColumn column : widget.getComponent().getColumns()) {
+					boolean isFirst = (column == widget.getComponent().getColumns().get(0));
 					boolean isLast = (column == widget.getComponent().getColumns().get(widget.getComponent().getColumns().size() - 1));
 					GridBagConstraints c = new GridBagConstraints();
 					// c.insets = new Insets(5, 5, 5, 5);
-					c.fill = GridBagConstraints.NONE;
+					c.fill = GridBagConstraints.BOTH;
 					c.weightx = (column.getResizable() ? column.getColumnWidth() : 0);
 					c.weighty = 1.0;
 					c.gridwidth = (isLast ? GridBagConstraints.REMAINDER : 1);
 					c.anchor = GridBagConstraints.CENTER;
+
+					c.insets = new Insets(3, isFirst ? 5 : 0, 3, isLast ? 5 : 0);
+					c.ipadx = 0;
+					c.ipady = 8;
+
 					/*if (twoColsConstraints.getExpandVertically()) {
 						// c.weighty = 1.0;
 						c.fill = GridBagConstraints.VERTICAL;
@@ -497,31 +548,34 @@ public class JFDTablePanel<T> extends JPanel {
 					}*/
 
 					JLabel titleLabel = new JLabel(column.getTitle());
+					titleLabel.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight() + 10));
+					titleLabel.setOpaque(true);
 					titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD));
+					titleLabel.setForeground(widget.getComponent().getTextSelectionColor());
+					titleLabel.setBackground(widget.getComponent().getBackgroundSelectionColor());
 					add(titleLabel, c);
 				}
 			}
 
+			// setPreferredSize(new Dimension(100, 100));
+
 			System.out.println("Et la faut dessiner les valeurs " + widget.getTableModel().getValues());
 
 			if (widget.getTableModel().getValues() != null) {
+				int row = 0;
 				for (T value : widget.getTableModel().getValues()) {
-					System.out.println("On affiche la valeur " + value);
+					buildTableForValue(value, row);
+					row++;
 				}
 			}
-
-			JButton addButton = new JButton();
-			addButton.setBorder(BorderFactory.createEmptyBorder());
-			addButton.setRolloverIcon(IconFactory.getDisabledIcon(FIBIconLibrary.ADD_ICON));
-			addButton.setIcon(FIBIconLibrary.ADD_ICON);
 
 			GridBagConstraints c = new GridBagConstraints();
 			// c.insets = new Insets(3, 3, 3, 3);
 			// System.out.println("twoColsConstraints=" + twoColsConstraints);
-			c.insets = new Insets(5, 5, 5, 5);
+			c.insets = new Insets(2, 5, 2, 5);
 			c.fill = GridBagConstraints.NONE;
-			c.weightx = 1.0;
-			c.weighty = 1.0;
+			c.weightx = 0.0;
+			c.weighty = 0.0;
 			c.gridwidth = 1;
 			c.anchor = GridBagConstraints.NORTHWEST;
 			/*if (twoColsConstraints.getExpandVertically()) {
@@ -534,26 +588,83 @@ public class JFDTablePanel<T> extends JPanel {
 
 			add(addButton, c);
 
+			setPreferredSize(getRequiredPreferredSize());
+
+			if (getParent() != null) {
+				getParent().revalidate();
+			}
+			else {
+				revalidate();
+			}
+
 		}
 
-		public int getVisibleRowCount() {
-			// TODO Auto-generated method stub
-			return 0;
+		private void buildTableForValue(T value, int row) {
+			int col = 0;
+			for (FIBTableColumn column : widget.getComponent().getColumns()) {
+				boolean isFirst = (column == widget.getComponent().getColumns().get(0));
+				boolean isLast = (column == widget.getComponent().getColumns().get(widget.getComponent().getColumns().size() - 1));
+				GridBagConstraints c = new GridBagConstraints();
+				// c.insets = new Insets(5, 5, 5, 5);
+				c.fill = GridBagConstraints.NONE;
+				c.weightx = (column.getResizable() ? column.getColumnWidth() : 0);
+				c.weighty = 1.0;
+				c.gridwidth = (isLast ? GridBagConstraints.REMAINDER : 1);
+				// c.anchor = GridBagConstraints.CENTER;
+				c.anchor = GridBagConstraints.WEST;
+
+				c.insets = new Insets(2, isFirst ? 2 : 0, 2, isLast ? 2 : 0);
+
+				String valueToDisplay = widget.getTableModel().getValueAt(row, col).toString();
+
+				JLabel label = new JLabel(valueToDisplay);
+				label.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight()));
+				add(label, c);
+				col++;
+			}
+
 		}
 
-		public void setVisibleRowCount(int visibleRowCount) {
-			// TODO Auto-generated method stub
+		private Dimension getRequiredPreferredSize() {
+			return new Dimension(getRequiredWidth(), getRequiredHeight());
 
+		}
+
+		private int getRequiredWidth() {
+			int returned = 0;
+			for (FIBTableColumn column : widget.getComponent().getColumns()) {
+				returned += column.getColumnWidth();
+			}
+			if (returned == 0) {
+				return 50;
+			}
+			return returned;
+		}
+
+		private int getRequiredHeight() {
+			return (widget.getComponent().getShowHeader() ? getRowHeight() + 10 : 0)
+					+ (widget.getTableModel().getValues() != null ? (widget.getTableModel().getValues().size()) * (getRowHeight()) : 0)
+					+ 20;
 		}
 
 		public int getRowHeight() {
-			// TODO Auto-generated method stub
-			return 0;
+			if (widget.getComponent().getRowHeight() != null) {
+				return widget.getComponent().getRowHeight();
+			}
+			return 20;
 		}
 
 		public void setRowHeight(int rowHeight) {
-			// TODO Auto-generated method stub
+			// Not applicable
+		}
 
+		public int getVisibleRowCount() {
+			// Not applicable
+			return 0;
+		}
+
+		public void setVisibleRowCount(int rowCount) {
+			// Not applicable
 		}
 
 		public ListSelectionModel getSelectionModel() {

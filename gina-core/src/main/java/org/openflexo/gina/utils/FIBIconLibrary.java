@@ -97,6 +97,7 @@ public class FIBIconLibrary {
 
 	// Flat-design icons
 	public static final ImageIcon ADD_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/GUI/Add.png"));
+	public static final ImageIcon ADD_FO_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/GUI/Add-flyover.png"));
 	public static final ImageIcon DELETE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/GUI/Delete.png"));
 	public static final ImageIcon EDIT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/GUI/Edit.png"));
 

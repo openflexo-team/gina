@@ -39,7 +39,6 @@
 
 package org.openflexo.gina.swing.view.widget;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseListener;
@@ -247,25 +246,27 @@ public class JFDFIBTableWidget<T> extends FIBTableWidgetImpl<JFDTablePanel<T>, T
 		getTechnologyComponent().updateTable();
 	}
 
-	@Override
+	/*@Override
 	public JFIBTableWidgetFooter<T> getFooter() {
 		return (JFIBTableWidgetFooter<T>) super.getFooter();
-	}
+	}*/
 
 	@Override
 	public JFIBTableWidgetFooter<T> makeFooter() {
-		JFIBTableWidgetFooter<T> returned = new JFIBTableWidgetFooter<>(this);
+		/*JFIBTableWidgetFooter<T> returned = new JFIBTableWidgetFooter<>(this);
 		getTechnologyComponent().add(returned.getFooterComponent(), BorderLayout.SOUTH);
-		return returned;
+		return returned;*/
+		return null;
 	}
 
 	@Override
 	public FIBTableWidgetFooter<?, T> removeFooter() {
-		FIBTableWidgetFooter<?, T> returned = getFooter();
+		/*FIBTableWidgetFooter<?, T> returned = getFooter();
 		if (getTechnologyComponent() != null && returned != null) {
 			getTechnologyComponent().remove((JComponent) returned.getFooterComponent());
 		}
-		return returned;
+		return returned;*/
+		return null;
 	}
 
 	@Override

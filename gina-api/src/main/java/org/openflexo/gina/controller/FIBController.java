@@ -867,6 +867,10 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 			families.add(makeFamily5());
 		}
 
+		public void logString(String s) {
+			System.out.println(s);
+		}
+
 		public Family addNewFamily() {
 			Person father, mother, child;
 			List<Person> children = new ArrayList<>();
