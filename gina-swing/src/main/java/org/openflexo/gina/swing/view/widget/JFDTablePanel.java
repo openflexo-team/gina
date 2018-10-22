@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -83,6 +84,8 @@ public class JFDTablePanel<T> extends JPanel {
 		private ListSelectionModel selectionModel;
 
 		private Map<T, List<JComponent>> componentsForValues = new HashMap<>();
+		private Map<T, JButton> removeButtons = new HashMap<>();
+		private Map<T, JButton> editButtons = new HashMap<>();
 		private T focusedValue = null;
 
 		public JFDTable(JFDFIBTableWidget<T> widget) {
@@ -534,6 +537,8 @@ public class JFDTablePanel<T> extends JPanel {
 		private void refreshTable() {
 			removeAll();
 			componentsForValues.clear();
+			removeButtons.clear();
+			editButtons.clear();
 
 			if (widget.getComponent().getShowHeader()) {
 				for (FIBTableColumn column : widget.getComponent().getColumns()) {
@@ -569,6 +574,34 @@ public class JFDTablePanel<T> extends JPanel {
 					add(titleLabel, c);
 				}
 			}
+
+			/*GridBagConstraints c2 = new GridBagConstraints();
+			c2.fill = GridBagConstraints.NONE;
+			c2.weightx = 0.0;
+			c2.weighty = 0.0;
+			c2.gridwidth = 1;
+			c2.anchor = GridBagConstraints.CENTER;
+			
+			JButton removeButton = new JButton();
+			removeButton.setBorder(BorderFactory.createEmptyBorder());
+			removeButton.setRolloverIcon(FIBIconLibrary.REMOVE_FO_ICON);
+			removeButton.setIcon(FIBIconLibrary.REMOVE_ICON);
+			
+			add(removeButton, c2);
+			
+			GridBagConstraints c3 = new GridBagConstraints();
+			c3.fill = GridBagConstraints.NONE;
+			c3.weightx = 0.0;
+			c3.weighty = 0.0;
+			c3.gridwidth = GridBagConstraints.REMAINDER;
+			c3.anchor = GridBagConstraints.CENTER;
+			
+			JButton editButton = new JButton();
+			editButton.setBorder(BorderFactory.createEmptyBorder());
+			editButton.setRolloverIcon(FIBIconLibrary.EDIT_FO_ICON);
+			editButton.setIcon(FIBIconLibrary.EDIT_ICON);
+			
+			add(editButton, c3);*/
 
 			if (widget.getTableModel().getValues() != null) {
 				int row = 0;
@@ -617,6 +650,8 @@ public class JFDTablePanel<T> extends JPanel {
 					jComponent.setForeground(widget.getComponent().getTextSecondarySelectionColor());
 					jComponent.setBackground(widget.getComponent().getBackgroundSecondarySelectionColor());
 				}
+				removeButtons.get(value).setVisible(true);
+				editButtons.get(value).setVisible(true);
 			}
 			focusedValue = value;
 		}
@@ -630,6 +665,8 @@ public class JFDTablePanel<T> extends JPanel {
 					jComponent.setForeground(null);
 					jComponent.setBackground(null);
 				}
+				removeButtons.get(value).setVisible(false);
+				editButtons.get(value).setVisible(false);
 			}
 			focusedValue = null;
 		}
@@ -642,6 +679,8 @@ public class JFDTablePanel<T> extends JPanel {
 					jComponent.setForeground(widget.getComponent().getTextSelectionColor());
 					jComponent.setBackground(widget.getComponent().getBackgroundSelectionColor());
 				}
+				removeButtons.get(value).setVisible(true);
+				editButtons.get(value).setVisible(true);
 			}
 			widget.setSelected(value);
 			widget.setSelection(Collections.singletonList(value));
@@ -697,13 +736,13 @@ public class JFDTablePanel<T> extends JPanel {
 				c.fill = GridBagConstraints.BOTH;
 				c.weightx = (column.getResizable() ? column.getColumnWidth() : 0);
 				c.weighty = 1.0;
-				c.gridwidth = (isLast ? GridBagConstraints.REMAINDER : 1);
+				c.gridwidth = 1; // (isLast ? GridBagConstraints.REMAINDER : 1);
 				// c.anchor = GridBagConstraints.CENTER;
 				c.anchor = GridBagConstraints.WEST;
 				c.ipadx = 0;
 				c.ipady = 6;
 
-				c.insets = new Insets(0, isFirst ? 5 : 0, 0, isLast ? 5 : 0);
+				c.insets = new Insets(0, isFirst ? 5 : 0, 0, 0/*isLast ? 5 : 0*/);
 
 				JComponent cellRenderer = widget.getTableModel().columnAt(col).makeCellRenderer(value);
 
@@ -725,7 +764,60 @@ public class JFDTablePanel<T> extends JPanel {
 
 				col++;
 			}
+
+			/*GridBagConstraints c2 = new GridBagConstraints();
+			c2.fill = GridBagConstraints.NONE;
+			c2.weightx = 0.0;
+			c2.weighty = 0.0;
+			c2.gridwidth = 1;
+			c2.anchor = GridBagConstraints.CENTER;*/
+
+			JButton removeButton = new JButton();
+			removeButton.setBorder(BorderFactory.createEmptyBorder());
+			removeButton.setRolloverIcon(FIBIconLibrary.REMOVE_FO_ICON);
+			removeButton.setIcon(FIBIconLibrary.REMOVE_ICON);
+
+			JButton editButton = new JButton();
+			editButton.setBorder(BorderFactory.createEmptyBorder());
+			editButton.setRolloverIcon(FIBIconLibrary.EDIT_FO_ICON);
+			editButton.setIcon(FIBIconLibrary.EDIT_ICON);
+
+			removeButton.addMouseListener(mouseAdapter);
+			editButton.addMouseListener(mouseAdapter);
+
+			JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, getRowHeight() - 18));
+			buttonsPanel.add(removeButton);
+			buttonsPanel.add(editButton);
+			components.add(buttonsPanel);
+
+			if (value == widget.getSelected()) {
+				buttonsPanel.setOpaque(true);
+				buttonsPanel.setForeground(widget.getComponent().getTextSelectionColor());
+				buttonsPanel.setBackground(widget.getComponent().getBackgroundSelectionColor());
+			}
+			else {
+				buttonsPanel.setOpaque(false);
+				buttonsPanel.setForeground(null);
+				buttonsPanel.setBackground(null);
+			}
+
+			GridBagConstraints c3 = new GridBagConstraints();
+			c3.fill = GridBagConstraints.NONE;
+			c3.weightx = 0.0;
+			c3.weighty = 0.0;
+			c3.gridwidth = GridBagConstraints.REMAINDER;
+			c3.anchor = GridBagConstraints.CENTER;
+			c3.ipadx = 0;
+			c3.ipady = 6;
+
+			add(buttonsPanel, c3);
+
+			removeButton.setVisible(value == widget.getSelected());
+			editButton.setVisible(value == widget.getSelected());
+
 			componentsForValues.put(value, components);
+			removeButtons.put(value, removeButton);
+			editButtons.put(value, editButton);
 
 		}
 
