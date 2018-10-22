@@ -559,7 +559,7 @@ public class JFDTablePanel<T> extends JPanel {
 						// c.insets = new Insets(5, 2, 0, 2);
 					}*/
 
-					JLabel titleLabel = new JLabel(column.getTitle());
+					JLabel titleLabel = new JLabel(column.getDisplayTitle() ? column.getTitle() : "");
 					titleLabel.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight() + 10));
 					titleLabel.setOpaque(true);
 					titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD));
@@ -705,23 +705,22 @@ public class JFDTablePanel<T> extends JPanel {
 
 				c.insets = new Insets(0, isFirst ? 5 : 0, 0, isLast ? 5 : 0);
 
-				String valueToDisplay = widget.getTableModel().getValueAt(row, col).toString();
+				JComponent cellRenderer = widget.getTableModel().columnAt(col).makeCellRenderer(value);
 
-				JLabel label = new JLabel(valueToDisplay);
-				label.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight()));
-				add(label, c);
-				components.add(label);
-				label.addMouseListener(mouseAdapter);
+				cellRenderer.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight()));
+				add(cellRenderer, c);
+				components.add(cellRenderer);
+				cellRenderer.addMouseListener(mouseAdapter);
 
 				if (value == widget.getSelected()) {
-					label.setOpaque(true);
-					label.setForeground(widget.getComponent().getTextSelectionColor());
-					label.setBackground(widget.getComponent().getBackgroundSelectionColor());
+					cellRenderer.setOpaque(true);
+					cellRenderer.setForeground(widget.getComponent().getTextSelectionColor());
+					cellRenderer.setBackground(widget.getComponent().getBackgroundSelectionColor());
 				}
 				else {
-					label.setOpaque(false);
-					label.setForeground(null);
-					label.setBackground(null);
+					cellRenderer.setOpaque(false);
+					cellRenderer.setForeground(null);
+					cellRenderer.setBackground(null);
 				}
 
 				col++;

@@ -51,6 +51,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
@@ -322,6 +324,21 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 	 */
 	public TableCellRenderer getCellRenderer() {
 		return getDefaultTableCellRenderer();
+	}
+
+	/**
+	 * Make cell renderer for supplied value<br>
+	 * Note that this renderer is not shared
+	 * 
+	 * @return
+	 */
+	// TODO: detach from SWING
+	public JComponent makeCellRenderer(T value) {
+
+		JLabel returned = new JLabel();
+		Object dataToRepresent = getValueFor(value);
+		returned.setText(getStringRepresentation(dataToRepresent));
+		return returned;
 	}
 
 	/**

@@ -42,12 +42,14 @@ package org.openflexo.gina.view.widget.table.impl;
 import java.awt.Component;
 
 import javax.swing.Icon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBIconColumn;
+import org.openflexo.icon.ImageIconResource;
 
 /**
  * Please comment this class
@@ -84,6 +86,26 @@ public class IconColumn<T> extends AbstractColumn<T, Icon> implements EditableCo
 	@Override
 	public boolean requireCellRenderer() {
 		return true;
+	}
+
+	/**
+	 * Make cell renderer for supplied value<br>
+	 * Note that this renderer is not shared
+	 * 
+	 * @return
+	 */
+	// TODO: detach from SWING
+	@Override
+	public JComponent makeCellRenderer(T value) {
+		JLabel returned = new JLabel();
+		Object dataToRepresent = getValueFor(value);
+		if (dataToRepresent instanceof ImageIconResource) {
+			returned.setIcon(((ImageIconResource) dataToRepresent));
+		}
+		else {
+			returned.setIcon(getIconRepresentation(dataToRepresent));
+		}
+		return returned;
 	}
 
 	/**
@@ -127,12 +149,14 @@ public class IconColumn<T> extends AbstractColumn<T, Icon> implements EditableCo
 		 * @return the default table cell renderer
 		 */
 		@Override
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row,
+				int column) {
 			Component returned = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			((JLabel) returned).setText(null);
 			if (value instanceof Icon) {
 				((JLabel) returned).setIcon((Icon) value);
-			} else {
+			}
+			else {
 				((JLabel) returned).setIcon(null);
 			}
 			return returned;
