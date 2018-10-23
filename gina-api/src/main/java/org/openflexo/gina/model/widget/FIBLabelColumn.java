@@ -62,5 +62,9 @@ public interface FIBLabelColumn extends FIBTableColumn {
 			return ColumnType.Label;
 		}
 
+		@Override
+		public boolean isEditable() {
+			return false;
+		}
 	}
 }

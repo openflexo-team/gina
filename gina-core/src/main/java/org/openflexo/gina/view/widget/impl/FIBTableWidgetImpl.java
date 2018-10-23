@@ -512,7 +512,9 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 	}
 
 	public void clearSelection() {
-		getListSelectionModel().clearSelection();
+		if (getListSelectionModel() != null) {
+			getListSelectionModel().clearSelection();
+		}
 	}
 
 	@Override

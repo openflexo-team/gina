@@ -17,7 +17,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +39,9 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+import org.openflexo.gina.model.widget.FIBTableAction;
+import org.openflexo.gina.model.widget.FIBTableAction.FIBAddAction;
+import org.openflexo.gina.model.widget.FIBTableAction.FIBRemoveAction;
 import org.openflexo.gina.model.widget.FIBTableColumn;
 import org.openflexo.gina.utils.FIBIconLibrary;
 import org.openflexo.gina.view.widget.table.impl.FIBTableActionListener;
@@ -88,6 +90,9 @@ public class JFDTablePanel<T> extends JPanel {
 		private Map<T, JButton> editButtons = new HashMap<>();
 		private T focusedValue = null;
 		private T editedValue = null;
+
+		private FIBTableActionListener<T> addActionListener;
+		private FIBTableActionListener<T> removeActionListener;
 
 		public JFDTable(JFDFIBTableWidget<T> widget) {
 			super();
@@ -508,26 +513,41 @@ public class JFDTablePanel<T> extends JPanel {
 		}
 
 		private JButton addButton;
+		private boolean hasAddAction = false;
+		private boolean hasRemoveAction = false;
+		private boolean hasEditAction = false;
 
 		private void buildTable() {
+
+			for (FIBTableAction fibAction : widget.getComponent().getActions()) {
+				if (fibAction instanceof FIBAddAction) {
+					addActionListener = new FIBTableActionListener<>(fibAction, widget);
+					hasAddAction = true;
+				}
+				if (fibAction instanceof FIBRemoveAction) {
+					removeActionListener = new FIBTableActionListener<>(fibAction, widget);
+					hasRemoveAction = true;
+				}
+			}
+
+			for (FIBTableColumn column : widget.getComponent().getColumns()) {
+				if (column.isEditable()) {
+					hasEditAction = true;
+				}
+			}
+
 			addButton = new JButton();
 			addButton.setBorder(BorderFactory.createEmptyBorder());
 			addButton.setRolloverIcon(FIBIconLibrary.ADD_FO_ICON);
 			addButton.setIcon(FIBIconLibrary.ADD_ICON);
 
 			addButton.addActionListener(new ActionListener() {
-
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					Enumeration<FIBTableActionListener<T>> en = widget.getFooter().getAddActionListeners();
-					while (en.hasMoreElements()) {
-						FIBTableActionListener<T> action = en.nextElement();
-						if (action.isAddAction()) {
-							System.out.println("Hop on execute " + action);
-							action.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null,
-									EventQueue.getMostRecentEventTime(), e.getModifiers()));
-							break;
-						}
+					if (addActionListener != null) {
+						System.out.println("On execute " + addActionListener);
+						addActionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null,
+								EventQueue.getMostRecentEventTime(), e.getModifiers()));
 					}
 				}
 			});
@@ -536,6 +556,7 @@ public class JFDTablePanel<T> extends JPanel {
 		}
 
 		private void refreshTable() {
+
 			removeAll();
 			componentsForValues.clear();
 			removeButtons.clear();
@@ -543,6 +564,8 @@ public class JFDTablePanel<T> extends JPanel {
 			remaindedOpaque.clear();
 			remaindedBackground.clear();
 			remaindedForeground.clear();
+
+			addButton.setVisible(hasAddAction);
 
 			if (widget.getComponent().getShowHeader()) {
 				for (FIBTableColumn column : widget.getComponent().getColumns()) {
@@ -697,8 +720,8 @@ public class JFDTablePanel<T> extends JPanel {
 			// System.out.println("focus " + value);
 			applyFocusProperties(value, widget.getComponent().getTextSecondarySelectionColor(),
 					widget.getComponent().getBackgroundSecondarySelectionColor());
-			removeButtons.get(value).setVisible(true);
-			editButtons.get(value).setVisible(true);
+			removeButtons.get(value).setVisible(hasRemoveAction);
+			editButtons.get(value).setVisible(hasEditAction);
 			focusedValue = value;
 		}
 
@@ -712,8 +735,8 @@ public class JFDTablePanel<T> extends JPanel {
 
 		private void selectValue(T value) {
 			applyFocusProperties(value, widget.getComponent().getTextSelectionColor(), widget.getComponent().getBackgroundSelectionColor());
-			removeButtons.get(value).setVisible(true);
-			editButtons.get(value).setVisible(true);
+			removeButtons.get(value).setVisible(hasRemoveAction);
+			editButtons.get(value).setVisible(hasEditAction);
 			widget.setSelected(value);
 			widget.setSelection(Collections.singletonList(value));
 		}
@@ -815,6 +838,16 @@ public class JFDTablePanel<T> extends JPanel {
 			removeButton.setBorder(BorderFactory.createEmptyBorder());
 			removeButton.setRolloverIcon(FIBIconLibrary.REMOVE_FO_ICON);
 			removeButton.setIcon(FIBIconLibrary.REMOVE_ICON);
+			removeButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (removeActionListener != null) {
+						removeActionListener.setSelectedObject(value);
+						removeActionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null,
+								EventQueue.getMostRecentEventTime(), e.getModifiers()));
+					}
+				}
+			});
 
 			JButton editButton = new JButton();
 			editButton.setBorder(BorderFactory.createEmptyBorder());
@@ -865,8 +898,8 @@ public class JFDTablePanel<T> extends JPanel {
 
 			add(buttonsPanel, c3);
 
-			removeButton.setVisible(value == widget.getSelected());
-			editButton.setVisible(value == widget.getSelected());
+			removeButton.setVisible(hasRemoveAction && value == widget.getSelected());
+			editButton.setVisible(hasEditAction && value == widget.getSelected());
 
 			componentsForValues.put(value, components);
 			removeButtons.put(value, removeButton);
@@ -951,6 +984,11 @@ public class JFDTablePanel<T> extends JPanel {
 
 		public void removeEditor() {
 		}
+
+		// protected Hashtable<FIBTableAction, FIBTableActionListener<T>> addActions;
+		// protected Hashtable<FIBTableAction, FIBTableActionListener<T>> removeActions;
+		// protected Hashtable<FIBTableAction, FIBTableActionListener<T>> otherActions;
+
 	}
 
 	private JFDTable makeJTable() {

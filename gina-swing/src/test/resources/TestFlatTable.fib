@@ -37,6 +37,9 @@
 		<AddAction id="8"
 			method="controller.sampleData.logString(&quot;Do something&quot;)"
 			name="add_action" />
+		<RemoveAction
+			method="controller.sampleData.logString(&quot;Remove &quot;+selected)"
+			name="remove_action" />
 	</Table>
 	<Label id="9" label="selected" align="left"
 		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)"

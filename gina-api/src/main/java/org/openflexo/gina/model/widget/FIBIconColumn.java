@@ -64,5 +64,10 @@ public interface FIBIconColumn extends FIBTableColumn {
 			return ColumnType.Icon;
 		}
 
+		@Override
+		public boolean isEditable() {
+			return false;
+		}
+
 	}
 }
