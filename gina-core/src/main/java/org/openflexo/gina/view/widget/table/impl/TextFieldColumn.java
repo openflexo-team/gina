@@ -43,6 +43,7 @@ import java.awt.Component;
 import java.awt.Font;
 
 import javax.swing.DefaultCellEditor;
+import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -109,6 +110,22 @@ public class TextFieldColumn<T> extends StringColumn<T> implements EditableColum
 			}
 		}
 		return editor;
+	}
+
+	/**
+	 * Make cell renderer for supplied value<br>
+	 * Note that this renderer is not shared
+	 * 
+	 * @return
+	 */
+	// TODO: detach from SWING
+	@Override
+	public JComponent makeCellEditor(T value) {
+
+		JTextField returned = new JTextField();
+		Object dataToRepresent = getValueFor(value);
+		returned.setText(getStringRepresentation(dataToRepresent));
+		return returned;
 	}
 
 	@Override

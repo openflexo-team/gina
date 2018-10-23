@@ -49,7 +49,6 @@ import javax.swing.table.TableCellRenderer;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBIconColumn;
-import org.openflexo.icon.ImageIconResource;
 
 /**
  * Please comment this class
@@ -99,8 +98,8 @@ public class IconColumn<T> extends AbstractColumn<T, Icon> implements EditableCo
 	public JComponent makeCellRenderer(T value) {
 		JLabel returned = new JLabel();
 		Object dataToRepresent = getValueFor(value);
-		if (dataToRepresent instanceof ImageIconResource) {
-			returned.setIcon(((ImageIconResource) dataToRepresent));
+		if (dataToRepresent instanceof Icon) {
+			returned.setIcon(((Icon) dataToRepresent));
 		}
 		else {
 			returned.setIcon(getIconRepresentation(dataToRepresent));

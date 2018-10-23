@@ -342,6 +342,18 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 	}
 
 	/**
+	 * Make cell editor for supplied value<br>
+	 * Note that this renderer is not shared
+	 * 
+	 * @return
+	 */
+	// TODO: detach from SWING
+	public JComponent makeCellEditor(T value) {
+
+		return makeCellRenderer(value);
+	}
+
+	/**
 	 * @return
 	 */
 	protected TableCellRenderer getDefaultTableCellRenderer() {

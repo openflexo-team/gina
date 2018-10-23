@@ -87,6 +87,7 @@ public class JFDTablePanel<T> extends JPanel {
 		private Map<T, JButton> removeButtons = new HashMap<>();
 		private Map<T, JButton> editButtons = new HashMap<>();
 		private T focusedValue = null;
+		private T editedValue = null;
 
 		public JFDTable(JFDFIBTableWidget<T> widget) {
 			super();
@@ -539,6 +540,9 @@ public class JFDTablePanel<T> extends JPanel {
 			componentsForValues.clear();
 			removeButtons.clear();
 			editButtons.clear();
+			remaindedOpaque.clear();
+			remaindedBackground.clear();
+			remaindedForeground.clear();
 
 			if (widget.getComponent().getShowHeader()) {
 				for (FIBTableColumn column : widget.getComponent().getColumns()) {
@@ -606,7 +610,7 @@ public class JFDTablePanel<T> extends JPanel {
 			if (widget.getTableModel().getValues() != null) {
 				int row = 0;
 				for (T value : widget.getTableModel().getValues()) {
-					buildTableForValue(value, row);
+					buildTableForValue(value, row, value == editedValue);
 					row++;
 				}
 			}
@@ -616,9 +620,9 @@ public class JFDTablePanel<T> extends JPanel {
 			// System.out.println("twoColsConstraints=" + twoColsConstraints);
 			c.insets = new Insets(2, 5, 2, 5);
 			c.fill = GridBagConstraints.NONE;
-			c.weightx = 0.0;
+			c.weightx = 1.0;
 			c.weighty = 0.0;
-			c.gridwidth = 1;
+			c.gridwidth = GridBagConstraints.REMAINDER;
 			c.anchor = GridBagConstraints.NORTHWEST;
 			/*if (twoColsConstraints.getExpandVertically()) {
 				// c.weighty = 1.0;
@@ -629,6 +633,17 @@ public class JFDTablePanel<T> extends JPanel {
 			}*/
 
 			add(addButton, c);
+
+			/*GridBagConstraints c2 = new GridBagConstraints();
+			// c.insets = new Insets(3, 3, 3, 3);
+			// System.out.println("twoColsConstraints=" + twoColsConstraints);
+			c2.insets = new Insets(2, 5, 2, 5);
+			c2.fill = GridBagConstraints.HORIZONTAL;
+			c2.weightx = 0.0;
+			c2.weighty = 0.0;
+			c2.gridwidth = GridBagConstraints.REMAINDER;
+			c2.anchor = GridBagConstraints.CENTER;
+			add(new JLabel(), c2);*/
 
 			setPreferredSize(getRequiredPreferredSize());
 
@@ -641,65 +656,85 @@ public class JFDTablePanel<T> extends JPanel {
 
 		}
 
-		private void focusValue(T value) {
-			// System.out.println("focus " + value);
+		private Map<JComponent, Boolean> remaindedOpaque = new HashMap<>();
+		private Map<JComponent, Color> remaindedBackground = new HashMap<>();
+		private Map<JComponent, Color> remaindedForeground = new HashMap<>();
+
+		private void applyFocusProperties(T value, Color foreground, Color background) {
 			List<JComponent> componentList = componentsForValues.get(value);
 			if (componentList != null) {
 				for (JComponent jComponent : componentList) {
-					jComponent.setOpaque(true);
-					jComponent.setForeground(widget.getComponent().getTextSecondarySelectionColor());
-					jComponent.setBackground(widget.getComponent().getBackgroundSecondarySelectionColor());
+					applyFocusPropertiesOnComponent(jComponent, foreground, background);
 				}
-				removeButtons.get(value).setVisible(true);
-				editButtons.get(value).setVisible(true);
 			}
+		}
+
+		private void resetFocusProperties(T value) {
+			List<JComponent> componentList = componentsForValues.get(value);
+			if (componentList != null) {
+				for (JComponent jComponent : componentList) {
+					resetFocusPropertiesOnComponent(jComponent);
+				}
+			}
+		}
+
+		private void applyFocusPropertiesOnComponent(JComponent jComponent, Color foreground, Color background) {
+			remaindedOpaque.put(jComponent, jComponent.isOpaque());
+			remaindedForeground.put(jComponent, jComponent.getForeground());
+			remaindedBackground.put(jComponent, jComponent.getBackground());
+			jComponent.setOpaque(true);
+			jComponent.setForeground(foreground);
+			jComponent.setBackground(background);
+		}
+
+		private void resetFocusPropertiesOnComponent(JComponent jComponent) {
+			jComponent.setOpaque(remaindedOpaque.get(jComponent) != null ? remaindedOpaque.get(jComponent) : false);
+			jComponent.setForeground(remaindedForeground.get(jComponent));
+			jComponent.setBackground(remaindedBackground.get(jComponent));
+		}
+
+		private void focusValue(T value) {
+			// System.out.println("focus " + value);
+			applyFocusProperties(value, widget.getComponent().getTextSecondarySelectionColor(),
+					widget.getComponent().getBackgroundSecondarySelectionColor());
+			removeButtons.get(value).setVisible(true);
+			editButtons.get(value).setVisible(true);
 			focusedValue = value;
 		}
 
 		private void unfocusValue(T value) {
 			// System.out.println("unfocus " + value);
-			List<JComponent> componentList = componentsForValues.get(value);
-			if (componentList != null) {
-				for (JComponent jComponent : componentList) {
-					jComponent.setOpaque(false);
-					jComponent.setForeground(null);
-					jComponent.setBackground(null);
-				}
-				removeButtons.get(value).setVisible(false);
-				editButtons.get(value).setVisible(false);
-			}
+			resetFocusProperties(value);
+			removeButtons.get(value).setVisible(false);
+			editButtons.get(value).setVisible(false);
 			focusedValue = null;
 		}
 
 		private void selectValue(T value) {
-			List<JComponent> componentList = componentsForValues.get(value);
-			if (componentList != null) {
-				for (JComponent jComponent : componentList) {
-					jComponent.setOpaque(true);
-					jComponent.setForeground(widget.getComponent().getTextSelectionColor());
-					jComponent.setBackground(widget.getComponent().getBackgroundSelectionColor());
-				}
-				removeButtons.get(value).setVisible(true);
-				editButtons.get(value).setVisible(true);
-			}
+			applyFocusProperties(value, widget.getComponent().getTextSelectionColor(), widget.getComponent().getBackgroundSelectionColor());
+			removeButtons.get(value).setVisible(true);
+			editButtons.get(value).setVisible(true);
 			widget.setSelected(value);
 			widget.setSelection(Collections.singletonList(value));
 		}
 
 		private void unselectValue(T value) {
-			List<JComponent> componentList = componentsForValues.get(value);
-			if (componentList != null) {
-				for (JComponent jComponent : componentList) {
-					jComponent.setOpaque(false);
-					jComponent.setForeground(null);
-					jComponent.setBackground(null);
-				}
-			}
+			resetFocusProperties(value);
 			widget.setSelected(null);
 			widget.setSelection(Collections.emptyList());
 		}
 
-		private void buildTableForValue(T value, int row) {
+		private void editValue(T value) {
+			editedValue = value;
+			refreshTable();
+		}
+
+		private void stopEditValue() {
+			editedValue = null;
+			refreshTable();
+		}
+
+		private void buildTableForValue(T value, int row, boolean isEdited) {
 			List<JComponent> components = new ArrayList<>();
 
 			MouseAdapter mouseAdapter = new MouseAdapter() {
@@ -744,22 +779,26 @@ public class JFDTablePanel<T> extends JPanel {
 
 				c.insets = new Insets(0, isFirst ? 5 : 0, 0, 0/*isLast ? 5 : 0*/);
 
-				JComponent cellRenderer = widget.getTableModel().columnAt(col).makeCellRenderer(value);
+				JComponent cellRenderer;
+
+				if (isEdited) {
+					cellRenderer = widget.getTableModel().columnAt(col).makeCellEditor(value);
+				}
+				else {
+					cellRenderer = widget.getTableModel().columnAt(col).makeCellRenderer(value);
+				}
 
 				cellRenderer.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight()));
 				add(cellRenderer, c);
 				components.add(cellRenderer);
 				cellRenderer.addMouseListener(mouseAdapter);
 
-				if (value == widget.getSelected()) {
-					cellRenderer.setOpaque(true);
-					cellRenderer.setForeground(widget.getComponent().getTextSelectionColor());
-					cellRenderer.setBackground(widget.getComponent().getBackgroundSelectionColor());
+				if (value == widget.getSelected() /*&& !isEdited*/) {
+					applyFocusPropertiesOnComponent(cellRenderer, widget.getComponent().getTextSelectionColor(),
+							widget.getComponent().getBackgroundSelectionColor());
 				}
 				else {
-					cellRenderer.setOpaque(false);
-					cellRenderer.setForeground(null);
-					cellRenderer.setBackground(null);
+					resetFocusPropertiesOnComponent(cellRenderer);
 				}
 
 				col++;
@@ -779,8 +818,25 @@ public class JFDTablePanel<T> extends JPanel {
 
 			JButton editButton = new JButton();
 			editButton.setBorder(BorderFactory.createEmptyBorder());
-			editButton.setRolloverIcon(FIBIconLibrary.EDIT_FO_ICON);
-			editButton.setIcon(FIBIconLibrary.EDIT_ICON);
+			if (isEdited) {
+				editButton.setIcon(FIBIconLibrary.DONE_ICON);
+				editButton.setRolloverIcon(FIBIconLibrary.DONE_ICON);
+			}
+			else {
+				editButton.setRolloverIcon(FIBIconLibrary.EDIT_FO_ICON);
+				editButton.setIcon(FIBIconLibrary.EDIT_ICON);
+			}
+			editButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (editedValue == value) {
+						stopEditValue();
+					}
+					else {
+						editValue(value);
+					}
+				}
+			});
 
 			removeButton.addMouseListener(mouseAdapter);
 			editButton.addMouseListener(mouseAdapter);
@@ -791,14 +847,11 @@ public class JFDTablePanel<T> extends JPanel {
 			components.add(buttonsPanel);
 
 			if (value == widget.getSelected()) {
-				buttonsPanel.setOpaque(true);
-				buttonsPanel.setForeground(widget.getComponent().getTextSelectionColor());
-				buttonsPanel.setBackground(widget.getComponent().getBackgroundSelectionColor());
+				applyFocusPropertiesOnComponent(buttonsPanel, widget.getComponent().getTextSelectionColor(),
+						widget.getComponent().getBackgroundSelectionColor());
 			}
 			else {
-				buttonsPanel.setOpaque(false);
-				buttonsPanel.setForeground(null);
-				buttonsPanel.setBackground(null);
+				resetFocusPropertiesOnComponent(buttonsPanel);
 			}
 
 			GridBagConstraints c3 = new GridBagConstraints();
