@@ -47,10 +47,17 @@ import org.openflexo.gina.utils.FIBIconLibrary;
 import org.openflexo.gina.view.widget.table.impl.FIBTableActionListener;
 import org.openflexo.gina.view.widget.table.impl.FIBTableModel;
 
+/**
+ * Implements Flat-Design table widget
+ * 
+ * @author sylvain
+ *
+ * @param <T>
+ */
 @SuppressWarnings("serial")
 public class JFDTablePanel<T> extends JPanel {
 
-	private JFDTable jTable;
+	private JFDTable<T> jTable;
 	private final JScrollPane scrollPane;
 	private final JFDFIBTableWidget<T> widget;
 
@@ -169,11 +176,6 @@ public class JFDTablePanel<T> extends JPanel {
 				this.columnModel = columnModel;
 				columnModel.addColumnModelListener(this);
 
-				// Set the column model of the header as well.
-				/*if (tableHeader != null) {
-					tableHeader.setColumnModel(columnModel);
-				}*/
-
 				firePropertyChange("columnModel", old, columnModel);
 				revalidate();
 				repaint();
@@ -221,6 +223,10 @@ public class JFDTablePanel<T> extends JPanel {
 			}
 		}
 
+		public T getFocusedValue() {
+			return focusedValue;
+		}
+
 		@Override
 		public void tableChanged(TableModelEvent e) {
 
@@ -229,28 +235,6 @@ public class JFDTablePanel<T> extends JPanel {
 			if (e instanceof ModelObjectHasChanged) {
 				System.out.println(">>>>>>>>>> OK le model change pour celui la");
 			}*/
-
-			// Thread.dumpStack();
-
-			/*System.out.println("model=" + getModel());
-			if (widget.getTableModel().getValues() != null) {
-				for (T value : widget.getTableModel().getValues()) {
-					System.out.println("Ici On affiche la valeur " + value);
-				}
-				// revalidate();
-				// repaint();
-			}*/
-
-			// setPreferredSize(new Dimension((getPreferredSize() != null ? getPreferredSize().width : 100),
-			// (widget.getTableModel().getValues() != null ? widget.getTableModel().getValues().size() * 20 : 20)));
-			// revalidate();
-
-			// System.out.println("Hop: prefered=" + getPreferredSize());
-
-			// System.out.println("Et la faut dessiner les valeurs " + widget.getTableModel().getValues());
-
-			// System.out.println(
-			// /*"col=" + e.getColumn() +*/ " firstRow=" + e.getFirstRow() + " lastRow=" + e.getLastRow() + " type=" + e.getType());
 
 			if (e == null || e.getFirstRow() == TableModelEvent.HEADER_ROW) {
 
@@ -572,7 +556,6 @@ public class JFDTablePanel<T> extends JPanel {
 					boolean isFirst = (column == widget.getComponent().getColumns().get(0));
 					boolean isLast = (column == widget.getComponent().getColumns().get(widget.getComponent().getColumns().size() - 1));
 					GridBagConstraints c = new GridBagConstraints();
-					// c.insets = new Insets(5, 5, 5, 5);
 					c.fill = GridBagConstraints.BOTH;
 					c.weightx = (column.getResizable() ? column.getColumnWidth() : 0);
 					c.weighty = 1.0;
@@ -583,52 +566,15 @@ public class JFDTablePanel<T> extends JPanel {
 					c.ipadx = 0;
 					c.ipady = 8;
 
-					/*if (twoColsConstraints.getExpandVertically()) {
-						// c.weighty = 1.0;
-						c.fill = GridBagConstraints.VERTICAL;
-					}
-					else {
-						// c.insets = new Insets(5, 2, 0, 2);
-					}*/
-
 					JLabel titleLabel = new JLabel(column.getDisplayTitle() ? column.getTitle() : "");
 					titleLabel.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight() + 10));
 					titleLabel.setOpaque(true);
 					titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD));
-					titleLabel.setForeground(Color.WHITE/*widget.getComponent().getTextSelectionColor()*/);
-					titleLabel.setBackground(Color.GRAY/*widget.getComponent().getBackgroundSelectionColor()*/);
-					// titleLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+					titleLabel.setForeground(Color.WHITE);
+					titleLabel.setBackground(Color.GRAY);
 					add(titleLabel, c);
 				}
 			}
-
-			/*GridBagConstraints c2 = new GridBagConstraints();
-			c2.fill = GridBagConstraints.NONE;
-			c2.weightx = 0.0;
-			c2.weighty = 0.0;
-			c2.gridwidth = 1;
-			c2.anchor = GridBagConstraints.CENTER;
-			
-			JButton removeButton = new JButton();
-			removeButton.setBorder(BorderFactory.createEmptyBorder());
-			removeButton.setRolloverIcon(FIBIconLibrary.REMOVE_FO_ICON);
-			removeButton.setIcon(FIBIconLibrary.REMOVE_ICON);
-			
-			add(removeButton, c2);
-			
-			GridBagConstraints c3 = new GridBagConstraints();
-			c3.fill = GridBagConstraints.NONE;
-			c3.weightx = 0.0;
-			c3.weighty = 0.0;
-			c3.gridwidth = GridBagConstraints.REMAINDER;
-			c3.anchor = GridBagConstraints.CENTER;
-			
-			JButton editButton = new JButton();
-			editButton.setBorder(BorderFactory.createEmptyBorder());
-			editButton.setRolloverIcon(FIBIconLibrary.EDIT_FO_ICON);
-			editButton.setIcon(FIBIconLibrary.EDIT_ICON);
-			
-			add(editButton, c3);*/
 
 			if (widget.getTableModel().getValues() != null) {
 				int row = 0;
@@ -639,34 +585,13 @@ public class JFDTablePanel<T> extends JPanel {
 			}
 
 			GridBagConstraints c = new GridBagConstraints();
-			// c.insets = new Insets(3, 3, 3, 3);
-			// System.out.println("twoColsConstraints=" + twoColsConstraints);
 			c.insets = new Insets(2, 5, 2, 5);
 			c.fill = GridBagConstraints.NONE;
 			c.weightx = 1.0;
 			c.weighty = 0.0;
 			c.gridwidth = GridBagConstraints.REMAINDER;
 			c.anchor = GridBagConstraints.NORTHWEST;
-			/*if (twoColsConstraints.getExpandVertically()) {
-				// c.weighty = 1.0;
-				c.fill = GridBagConstraints.VERTICAL;
-			}
-			else {
-				// c.insets = new Insets(5, 2, 0, 2);
-			}*/
-
 			add(addButton, c);
-
-			/*GridBagConstraints c2 = new GridBagConstraints();
-			// c.insets = new Insets(3, 3, 3, 3);
-			// System.out.println("twoColsConstraints=" + twoColsConstraints);
-			c2.insets = new Insets(2, 5, 2, 5);
-			c2.fill = GridBagConstraints.HORIZONTAL;
-			c2.weightx = 0.0;
-			c2.weighty = 0.0;
-			c2.gridwidth = GridBagConstraints.REMAINDER;
-			c2.anchor = GridBagConstraints.CENTER;
-			add(new JLabel(), c2);*/
 
 			setPreferredSize(getRequiredPreferredSize());
 
@@ -780,7 +705,12 @@ public class JFDTablePanel<T> extends JPanel {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					super.mouseClicked(e);
-					selectValue(value);
+					if (e.isShiftDown() && widget.getSelected() == value) {
+						unselectValue(value);
+					}
+					else {
+						selectValue(value);
+					}
 					repaint();
 				}
 			};
@@ -788,19 +718,16 @@ public class JFDTablePanel<T> extends JPanel {
 			int col = 0;
 			for (FIBTableColumn column : widget.getComponent().getColumns()) {
 				boolean isFirst = (column == widget.getComponent().getColumns().get(0));
-				boolean isLast = (column == widget.getComponent().getColumns().get(widget.getComponent().getColumns().size() - 1));
 				GridBagConstraints c = new GridBagConstraints();
-				// c.insets = new Insets(5, 5, 5, 5);
 				c.fill = GridBagConstraints.BOTH;
 				c.weightx = (column.getResizable() ? column.getColumnWidth() : 0);
 				c.weighty = 1.0;
-				c.gridwidth = 1; // (isLast ? GridBagConstraints.REMAINDER : 1);
-				// c.anchor = GridBagConstraints.CENTER;
+				c.gridwidth = 1;
 				c.anchor = GridBagConstraints.WEST;
 				c.ipadx = 0;
 				c.ipady = 6;
 
-				c.insets = new Insets(0, isFirst ? 5 : 0, 0, 0/*isLast ? 5 : 0*/);
+				c.insets = new Insets(0, isFirst ? 5 : 0, 0, 0);
 
 				JComponent cellRenderer;
 
@@ -826,13 +753,6 @@ public class JFDTablePanel<T> extends JPanel {
 
 				col++;
 			}
-
-			/*GridBagConstraints c2 = new GridBagConstraints();
-			c2.fill = GridBagConstraints.NONE;
-			c2.weightx = 0.0;
-			c2.weighty = 0.0;
-			c2.gridwidth = 1;
-			c2.anchor = GridBagConstraints.CENTER;*/
 
 			JButton removeButton = new JButton();
 			removeButton.setBorder(BorderFactory.createEmptyBorder());
@@ -985,114 +905,10 @@ public class JFDTablePanel<T> extends JPanel {
 		public void removeEditor() {
 		}
 
-		// protected Hashtable<FIBTableAction, FIBTableActionListener<T>> addActions;
-		// protected Hashtable<FIBTableAction, FIBTableActionListener<T>> removeActions;
-		// protected Hashtable<FIBTableAction, FIBTableActionListener<T>> otherActions;
-
 	}
 
-	private JFDTable makeJTable() {
-		JFDTable returned = new JFDTable(widget);
-
-		/*returned.setVisibleRowCount(0);
-		returned.setSortOrderCycle(SortOrder.ASCENDING, SortOrder.DESCENDING, SortOrder.UNSORTED);
-		returned.setAutoCreateRowSorter(true);
-		returned.setFillsViewportHeight(true);
-		returned.setShowHorizontalLines(false);
-		returned.setShowVerticalLines(false);
-		returned.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-		returned.addFocusListener(widget);
-		
-		for (int i = 0; i < widget.getTableModel().getColumnCount(); i++) {
-			TableColumn col = returned.getColumnModel().getColumn(i);
-			// FlexoLocalization.localizedForKey(getController().getLocalizer(),getTableModel().columnAt(i).getTitle());
-			col.setWidth(widget.getTableModel().getDefaultColumnSize(i));
-			col.setPreferredWidth(widget.getTableModel().getDefaultColumnSize(i));
-			if (widget.getTableModel().getColumnResizable(i)) {
-				col.setResizable(true);
-			}
-			else {
-				// L'idee, c'est d'etre vraiment sur ;-) !
-				col.setWidth(widget.getTableModel().getDefaultColumnSize(i));
-				col.setMinWidth(widget.getTableModel().getDefaultColumnSize(i));
-				col.setMaxWidth(widget.getTableModel().getDefaultColumnSize(i));
-				col.setResizable(false);
-			}
-			if (widget.getTableModel().columnAt(i).requireCellRenderer()) {
-				col.setCellRenderer(widget.getTableModel().columnAt(i).getCellRenderer());
-			}
-			if (widget.getTableModel().columnAt(i).requireCellEditor()) {
-				col.setCellEditor(widget.getTableModel().columnAt(i).getCellEditor());
-			}
-		}
-		if (widget.getTable().getRowHeight() != null) {
-			returned.setRowHeight(widget.getTable().getRowHeight());
-		}
-		if (widget.getTable().getVisibleRowCount() != null) {
-			returned.setVisibleRowCount(widget.getTable().getVisibleRowCount());
-			if (returned.getRowHeight() == 0) {
-				returned.setRowHeight(18);
-			}
-		}
-		
-		if (widget.getTable().getSelectionMode() != null) {
-			returned.setSelectionMode(widget.getTable().getSelectionMode().getMode());
-		}
-		
-		// jTable.getTableHeader().setReorderingAllowed(false);
-		
-		returned.getSelectionModel().addListSelectionListener(widget);
-		
-		// _listSelectionModel = jTable.getSelectionModel();
-		// _listSelectionModel.addListSelectionListener(this);
-		
-		if (widget.getWidget().getBoundToSelectionManager()) {
-			returned.registerKeyboardAction(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					widget.getController().performCopyAction(widget.getSelected(), widget.getSelection());
-				}
-			}, KeyStroke.getKeyStroke(KeyEvent.VK_C, JFIBTableWidget.META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-			returned.registerKeyboardAction(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					widget.getController().performCutAction(widget.getSelected(), widget.getSelection());
-				}
-			}, KeyStroke.getKeyStroke(KeyEvent.VK_X, JFIBTableWidget.META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-			returned.registerKeyboardAction(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					widget.getController().performPasteAction(widget.getSelected(), widget.getSelection());
-				}
-			}, KeyStroke.getKeyStroke(KeyEvent.VK_V, JFIBTableWidget.META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-		}
-		
-		if (widget.getTable().getCreateNewRowOnClick()) {
-			returned.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					if (jTable.getCellEditor() != null) {
-						jTable.getCellEditor().stopCellEditing();
-						e.consume();
-					}
-					if (widget.getTable().getCreateNewRowOnClick()) {
-						if (!e.isConsumed() && e.getClickCount() == 2) {
-							// System.out.println("OK, on essaie de gerer un new par double click");
-							Enumeration<FIBTableActionListener<T>> en = widget.getFooter().getAddActionListeners();
-							while (en.hasMoreElements()) {
-								FIBTableActionListener<T> action = en.nextElement();
-								if (action.isAddAction()) {
-									action.actionPerformed(new ActionEvent(jTable, ActionEvent.ACTION_PERFORMED, null,
-											EventQueue.getMostRecentEventTime(), e.getModifiers()));
-									break;
-								}
-							}
-						}
-					}
-				}
-			});
-		}*/
-
+	private JFDTable<T> makeJTable() {
+		JFDTable<T> returned = new JFDTable<T>(widget);
 		return returned;
 
 	}
@@ -1106,7 +922,7 @@ public class JFDTablePanel<T> extends JPanel {
 		}
 	}
 
-	public JFDTable getJTable() {
+	public JFDTable<T> getJTable() {
 		return jTable;
 	}
 }
