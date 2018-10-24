@@ -40,6 +40,10 @@
 package org.openflexo.gina.view.widget.table.impl;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -158,7 +162,7 @@ public class NumberColumn<T> extends AbstractColumn<T, Number> implements Editab
 						public boolean verify(JComponent input) {
 							if (input instanceof JTextField) {
 								String text = ((JTextField) input).getText();
-								return text == null || text.trim().length() == 0 || getValue(text) != null;
+								return text == null || text.trim().length() == 0 || parseValue(text) != null;
 							}
 							return true;
 						}
@@ -183,46 +187,125 @@ public class NumberColumn<T> extends AbstractColumn<T, Number> implements Editab
 				public Number getCellEditorValue() {
 					Object cellEditorValue = super.getCellEditorValue();
 					if (cellEditorValue != null && cellEditorValue.toString().trim().length() > 0) {
-						return getValue(cellEditorValue.toString().trim());
+						return parseValue(cellEditorValue.toString());
 					}
 					return null;
 				}
 
-				private Number getValue(String value) {
+				/*private Number getValue(String value) {
 					try {
-						return _getValue(value);
+						return parseValue(value);
 					} catch (NumberFormatException e) {
 						// Attempt with a comma instead of dot
 						try {
-							return _getValue(value.replace(",", "."));
+							return parseValue(value.replace(",", "."));
 						} catch (NumberFormatException e2) {
 							e.printStackTrace();
 							return null;
 						}
 					}
-				}
+				}*/
 
-				private Number _getValue(String value) throws NumberFormatException {
-					switch (getColumnModel().getNumberType()) {
-						case ByteType:
-							return Byte.parseByte(value);
-						case ShortType:
-							return Short.parseShort(value);
-						case IntegerType:
-							return Integer.parseInt(value);
-						case LongType:
-							return Long.parseLong(value);
-						case FloatType:
-							return Float.parseFloat(value);
-						case DoubleType:
-							return Double.parseDouble(value);
-						default:
-							return null;
-					}
-				}
+				/*private Number _getValue(String value) throws NumberFormatException {
+					return parseValue(value);
+				}*/
 			};
 		}
 		return editor;
+	}
+
+	/**
+	 * Make cell renderer for supplied value<br>
+	 * Note that this renderer is not shared
+	 * 
+	 * @return
+	 */
+	// TODO: detach from SWING
+	@Override
+	public JComponent makeCellEditor(T value, ActionListener actionListener) {
+
+		JTextField returned = new JTextField();
+
+		Number dataToRepresent = getValueFor(value);
+		returned.setText(getStringRepresentation(dataToRepresent));
+
+		returned.setInputVerifier(new InputVerifier() {
+
+			@Override
+			public boolean verify(JComponent input) {
+				if (input instanceof JTextField) {
+					String text = ((JTextField) input).getText();
+					return text == null || text.trim().length() == 0 || parseValue(text) != null;
+				}
+				return true;
+			}
+		});
+
+		returned.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				disableValueChangeNotification();
+				try {
+					if (returned.getText().trim().length() > 0) {
+						setValueFor(value, parseValue(returned.getText()));
+					}
+				} catch (NumberFormatException ex) {
+				}
+				enableValueChangeNotification();
+			}
+		});
+
+		if (actionListener != null) {
+			returned.addActionListener(actionListener);
+		}
+
+		returned.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				returned.selectAll();
+			}
+		});
+
+		return returned;
+	}
+
+	private Number parseValue(String value) {
+		try {
+			return _parseValue(value.trim());
+		} catch (NumberFormatException e) {
+			// Attempt with a comma instead of dot
+			try {
+				return _parseValue(value.trim().replace(",", "."));
+			} catch (NumberFormatException e2) {
+				// e.printStackTrace();
+				return null;
+			}
+		}
+	}
+
+	private Number _parseValue(String value) throws NumberFormatException {
+		switch (getColumnModel().getNumberType()) {
+			case ByteType:
+				return Byte.parseByte(value);
+			case ShortType:
+				return Short.parseShort(value);
+			case IntegerType:
+				return Integer.parseInt(value);
+			case LongType:
+				return Long.parseLong(value);
+			case FloatType:
+				return Float.parseFloat(value);
+			case DoubleType:
+				return Double.parseDouble(value);
+			default:
+				return null;
+		}
 	}
 
 	public static void main(String args[]) {
