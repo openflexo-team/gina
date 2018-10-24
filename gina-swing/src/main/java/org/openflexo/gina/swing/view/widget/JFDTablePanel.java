@@ -659,6 +659,9 @@ public class JFDTablePanel<T> extends JPanel {
 		}
 
 		private void selectValue(T value) {
+			if (editedValue != null && editedValue != value) {
+				stopEditValue();
+			}
 			applyFocusProperties(value, widget.getComponent().getTextSelectionColor(), widget.getComponent().getBackgroundSelectionColor());
 			removeButtons.get(value).setVisible(hasRemoveAction);
 			editButtons.get(value).setVisible(hasEditAction);
@@ -705,13 +708,25 @@ public class JFDTablePanel<T> extends JPanel {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					super.mouseClicked(e);
-					if (e.isShiftDown() && widget.getSelected() == value) {
+					if (e.getClickCount() == 2) {
+						editValue(value);
+					}
+					else if (e.isShiftDown() && widget.getSelected() == value) {
 						unselectValue(value);
 					}
 					else {
 						selectValue(value);
 					}
 					repaint();
+				}
+			};
+
+			ActionListener doneActionListener = new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// System.out.println("stopEditValue");
+					stopEditValue();
 				}
 			};
 
@@ -732,7 +747,7 @@ public class JFDTablePanel<T> extends JPanel {
 				JComponent cellRenderer;
 
 				if (isEdited) {
-					cellRenderer = widget.getTableModel().columnAt(col).makeCellEditor(value);
+					cellRenderer = widget.getTableModel().columnAt(col).makeCellEditor(value, doneActionListener);
 				}
 				else {
 					cellRenderer = widget.getTableModel().columnAt(col).makeCellRenderer(value);

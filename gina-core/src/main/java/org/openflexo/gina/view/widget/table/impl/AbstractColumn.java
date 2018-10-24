@@ -41,6 +41,7 @@ package org.openflexo.gina.view.widget.table.impl;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -348,7 +349,7 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 	 * @return
 	 */
 	// TODO: detach from SWING
-	public JComponent makeCellEditor(T value) {
+	public JComponent makeCellEditor(T value, ActionListener actionListener) {
 
 		return makeCellRenderer(value);
 	}
@@ -433,7 +434,21 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 		return getTableModel().getPropertyListColumnWithTitle(title);
 	}
 
+	private boolean valueChangeNotificationEnabled = true;
+
+	protected void disableValueChangeNotification() {
+		valueChangeNotificationEnabled = false;
+	}
+
+	protected void enableValueChangeNotification() {
+		valueChangeNotificationEnabled = false;
+	}
+
 	public void notifyValueChangedFor(T object, V value /*, BindingEvaluationContext evaluationContext*/) {
+		if (!valueChangeNotificationEnabled) {
+			return;
+		}
+
 		if (logger.isLoggable(Level.FINE)) {
 			logger.fine("notifyValueChangedFor " + object);
 		}

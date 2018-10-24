@@ -1,99 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel id="0" align="left" borderTop="0" borderLeft="0"
-	trackViewPortHeight="true" trackViewPortWidth="true" borderBottom="0"
-	border="empty" sizeAdjustment="OriginalSize" layout="twocols"
-	borderRight="0"
-	controllerClassName="org.openflexo.gina.swing.editor.widget.LibraryBrowserFIBController"
-	name="Panel">
-	<Label id="1" label="un textfield" align="left"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)"
-		name="Label" />
-	<TextField id="2" columns="7"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)"
-		name="TextField" />
-	<Label id="3" label="une table flat design" align="left"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)"
-		name="Label2" />
-	<Table id="4" backgroundSelectionColor="9,80,208"
-		visibleRowCount="3" backgroundNonSelectionColor="255,255,255"
-		showHeader="false" textSelectionColor="255,255,255"
-		backgroundSecondarySelectionColor="178,215,255"
-		iteratorClassName="org.openflexo.gina.view.FIBView&lt;? extends java.lang.Object,? extends java.lang.Object&gt;"
-		showFooter="false" textSecondarySelectionColor="0,0,0" lookAndFeel="FlatDesign"
-		textNonSelectionColor="0,0,0" selectionMode="MultipleIntervalSelection"
-		rowHeight="18" manageDynamicModel="true" data="controller.views"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)"
-		name="Table">
-		<IconColumn id="5"
-			data="controller.iconForObject(iterator.component)" resizable="false"
-			title="icon" displayTitle="false" columnWidth="20" showIcon="false"
-			name="icon" />
-		<TextFieldColumn id="6" data="iterator.component.name"
-			resizable="true" title="name" displayTitle="true" columnWidth="40"
-			showIcon="false" name="col1" />
-		<TextFieldColumn id="7" data="iterator.component.toString"
-			resizable="true" title="toString" displayTitle="true" columnWidth="60"
-			showIcon="false" name="col2" />
-		<AddAction id="8"
-			method="controller.sampleData.logString(&quot;Do something&quot;)"
-			name="add_action" />
-		<RemoveAction
-			method="controller.sampleData.logString(&quot;Remove &quot;+selected)"
-			name="remove_action" />
-	</Table>
-	<Label id="9" label="selected" align="left"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)"
-		name="Label3" />
-	<TextField id="10" columns="7" data="Table.selected.toString"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)"
-		name="TextField2" />
-	<Label id="11" label="empty" align="left"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)"
-		name="Label4" />
-	<Table id="12" backgroundSelectionColor="9,80,208"
-		visibleRowCount="3" backgroundNonSelectionColor="255,255,255"
-		showHeader="false" textSelectionColor="255,255,255"
-		backgroundSecondarySelectionColor="202,202,202" iteratorClassName="java.lang.Object"
-		textSecondarySelectionColor="0,0,0" lookAndFeel="FlatDesign"
-		textNonSelectionColor="0,0,0" selectionMode="MultipleIntervalSelection"
-		rowHeight="18" manageDynamicModel="true"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)"
-		name="Table2" />
-	<Label id="13" label="label" align="left"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)"
-		name="Label5" />
-	<Panel id="14" align="left" borderTop="0" borderLeft="0"
-		trackViewPortHeight="true" trackViewPortWidth="true" borderBottom="0"
-		border="rounded3d" sizeAdjustment="OriginalSize" layout="twocols"
-		borderRight="0"
-		constraints="twocols(expandHorizontally=true;expandVertically=true;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)"
-		name="Panel2">
-		<Label id="15" label="label" align="left"
-			constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)"
-			name="Label6" />
-		<Table id="16" backgroundSelectionColor="9,80,208"
-			visibleRowCount="3" backgroundNonSelectionColor="255,255,255"
-			showHeader="false" textSelectionColor="255,255,255"
-			backgroundSecondarySelectionColor="202,202,202"
-			iteratorClassName="org.openflexo.gina.view.FIBView&lt;? extends java.lang.Object,? extends java.lang.Object&gt;"
-			textSecondarySelectionColor="0,0,0" lookAndFeel="FlatDesign"
-			textNonSelectionColor="0,0,0" selectionMode="MultipleIntervalSelection"
-			rowHeight="18" manageDynamicModel="true" data="controller.views"
-			constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)"
-			name="Table3">
-			<IconColumn data="controller.iconForObject(iterator.component)"
-				resizable="false" title="icon" displayTitle="false" columnWidth="20"
-				showIcon="false" name="icon" />
-			<TextFieldColumn data="iterator.component.name"
-				resizable="true" title="name" displayTitle="true" columnWidth="40"
-				showIcon="false" name="col1" />
-			<TextFieldColumn data="iterator.component.toString"
-				resizable="true" title="toString" displayTitle="true" columnWidth="60"
-				showIcon="false" name="col2" />
-			<AddAction
-				method="controller.sampleData.logString(&quot;Do something&quot;)"
-				name="add_action" />
-		</Table>
-	</Panel>
-	<LocalizedDictionary id="17" />
+<Panel id="0" align="left" borderTop="0" borderLeft="0" trackViewPortHeight="true" trackViewPortWidth="true" borderBottom="0" border="empty" sizeAdjustment="OriginalSize" layout="twocols" borderRight="0" controllerClassName="org.openflexo.gina.swing.editor.widget.LibraryBrowserFIBController" name="Panel">
+  <Label id="1" label="un textfield" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="Label" />
+  <TextField id="2" columns="7" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" name="TextField" />
+  <Label id="3" label="une table flat design" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="Label2" />
+  <Table id="4" backgroundSelectionColor="9,80,208" visibleRowCount="3" backgroundNonSelectionColor="255,255,255" iteratorClassName="org.openflexo.gina.view.FIBView&lt;? extends java.lang.Object,? extends java.lang.Object&gt;" textSelectionColor="255,255,255" backgroundSecondarySelectionColor="178,215,255" showFooter="false" textSecondarySelectionColor="0,0,0" lookAndFeel="FlatDesign" textNonSelectionColor="0,0,0" selectionMode="MultipleIntervalSelection" rowHeight="18" manageDynamicModel="true" data="controller.views" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" name="Table">
+    <IconColumn id="5" data="controller.iconForObject(iterator.component)" resizable="false" title="icon" displayTitle="false" columnWidth="20" showIcon="false" name="icon" />
+    <TextFieldColumn id="6" data="iterator.component.name" resizable="true" title="name" displayTitle="true" columnWidth="40" showIcon="false" name="col1" />
+    <TextFieldColumn id="7" data="iterator.component.toString" resizable="true" title="toString" displayTitle="true" columnWidth="60" showIcon="false" name="col2" />
+    <DropDownColumn id="8" data="iterator.component.horizontalScrollbarPolicy" resizable="true" title="dropdown" displayTitle="true" columnWidth="100" showIcon="false" name="dropdown" />
+    <CheckBoxColumn id="9" data="iterator.component.isOperator" resizable="true" title="checkbox" displayTitle="true" columnWidth="100" showIcon="false" name="checkbox" />
+    <NumberColumn id="10" numberType="IntegerType" data="iterator.component.width" resizable="true" title="number" displayTitle="true" columnWidth="100" showIcon="false" name="number" />
+    <AddAction id="11" method="controller.sampleData.logString(&quot;Do something&quot;)" name="add_action" />
+    <RemoveAction id="12" method="controller.sampleData.logString((&quot;Remove &quot; + selected))" name="remove_action" />
+  </Table>
+  <Label id="13" label="selected" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="Label3" />
+  <TextField id="14" columns="7" data="Table.selected.toString" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" name="TextField2" />
+  <Label id="15" label="empty" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="Label4" />
+  <Table id="16" backgroundSelectionColor="9,80,208" visibleRowCount="3" backgroundNonSelectionColor="255,255,255" iteratorClassName="java.lang.Object" showHeader="false" textSelectionColor="255,255,255" backgroundSecondarySelectionColor="202,202,202" textSecondarySelectionColor="0,0,0" lookAndFeel="FlatDesign" textNonSelectionColor="0,0,0" selectionMode="MultipleIntervalSelection" rowHeight="18" manageDynamicModel="true" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" name="Table2" />
+  <Label id="17" label="label" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="Label5" />
+  <Panel id="18" align="left" borderTop="0" borderLeft="0" trackViewPortHeight="true" trackViewPortWidth="true" borderBottom="0" border="rounded3d" sizeAdjustment="OriginalSize" layout="twocols" borderRight="0" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" height="100" width="100" name="Panel2">
+    <Label id="19" label="label" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="Label6" />
+    <Table id="20" backgroundSelectionColor="9,80,208" visibleRowCount="3" backgroundNonSelectionColor="255,255,255" iteratorClassName="org.openflexo.gina.view.FIBView&lt;? extends java.lang.Object,? extends java.lang.Object&gt;" showHeader="false" textSelectionColor="255,255,255" backgroundSecondarySelectionColor="202,202,202" textSecondarySelectionColor="0,0,0" lookAndFeel="FlatDesign" textNonSelectionColor="0,0,0" selectionMode="MultipleIntervalSelection" rowHeight="18" manageDynamicModel="true" data="" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" name="Table3">
+      <IconColumn id="21" data="controller.iconForObject(iterator.component)" resizable="false" title="icon" displayTitle="false" columnWidth="20" showIcon="false" name="icon" />
+      <TextFieldColumn id="22" data="iterator.component.name" resizable="true" title="name" displayTitle="true" columnWidth="40" showIcon="false" name="col1" />
+      <TextFieldColumn id="23" data="iterator.component.toString" resizable="true" title="toString" displayTitle="true" columnWidth="60" showIcon="false" name="col2" />
+      <AddAction id="24" method="controller.sampleData.logString(&quot;Do something&quot;)" name="add_action" />
+    </Table>
+  </Panel>
+  <Label id="25" label="label" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="Label7" />
+  <Iteration id="26" iterator="iterator" iteratorClassName="java.lang.Object" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" name="Iteration" />
+  <LocalizedDictionary id="27" />
 </Panel>
