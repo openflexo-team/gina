@@ -868,9 +868,9 @@ public class JFDTablePanel<T> extends JPanel {
 		}
 
 		private int getRequiredHeight() {
-			return ((widget.getComponent().getShowHeader() ? getRowHeight() + 10 : 0)
+			return ((widget.getComponent().getShowHeader() ? getRowHeight() + 15 : 0)
 					+ (widget.getTableModel().getValues() != null ? (widget.getTableModel().getValues().size()) * (getRowHeight()) : 0))
-					+ 20;
+					+ 30;
 		}
 
 		public int getRowHeight() {
