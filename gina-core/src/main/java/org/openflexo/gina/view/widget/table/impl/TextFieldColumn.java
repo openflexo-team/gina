@@ -129,7 +129,7 @@ public class TextFieldColumn<T> extends StringColumn<T> implements EditableColum
 
 		JTextField returned = new JTextField();
 
-		Object dataToRepresent = getValueFor(value);
+		String dataToRepresent = getValueFor(value);
 		returned.setText(getStringRepresentation(dataToRepresent));
 
 		returned.getDocument().addDocumentListener(new DocumentListener() {
@@ -155,7 +155,9 @@ public class TextFieldColumn<T> extends StringColumn<T> implements EditableColum
 			}
 		});
 
-		returned.addActionListener(actionListener);
+		if (actionListener != null) {
+			returned.addActionListener(actionListener);
+		}
 
 		returned.addFocusListener(new FocusListener() {
 
