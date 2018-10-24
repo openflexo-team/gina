@@ -56,6 +56,7 @@ import javax.swing.border.Border;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
+import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NotSettableContextException;
@@ -421,7 +422,8 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V> implements Editable
 	public void fireApplyPerformed() {
 		logger.fine("fireApplyPerformed() for " + _editedRowObject);
 		setValueFor(_editedRowObject, _editCustomWidget.getEditedObject()/*, getBindingEvaluationContext()*/);
-		notifyValueChangedFor(_editedRowObject, _editCustomWidget.getEditedObject()/*, getBindingEvaluationContext()*/);
+		// This one is not required i think
+		// notifyValueChangedFor(_editedRowObject, _editCustomWidget.getEditedObject()/*, getBindingEvaluationContext()*/);
 	}
 
 	@Override
@@ -433,6 +435,88 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V> implements Editable
 			return "";
 		}
 		return getStringRepresentation(value);
+	}
+
+	/**
+	 * Make cell renderer for supplied value<br>
+	 * Note that this renderer is not shared
+	 * 
+	 * @return
+	 */
+	// TODO: detach from SWING
+	@Override
+	public JComponent makeCellEditor(T value, ActionListener actionListener) {
+
+		FIBCustomComponent<V> returned = makeCustomComponent((Class<FIBCustomComponent<V>>) getColumnModel().getComponentClass(),
+				(Class<V>) TypeUtils.getBaseClass(getColumnModel().getDataClass()));
+
+		if (returned == null) {
+			return new JLabel("???");
+		}
+
+		BindingEvaluationContext bve = new BindingEvaluationContext() {
+
+			@Override
+			public Object getValue(BindingVariable variable) {
+				if (variable.getVariableName().equals(FIBCustomImpl.COMPONENT_NAME)) {
+					return returned;
+				}
+				else {
+					return CustomColumn.this.getValue(variable);
+				}
+			}
+		};
+
+		for (FIBCustomAssignment assign : getColumnModel().getAssignments()) {
+			DataBinding<Object> variableDB = assign.getVariable();
+			DataBinding<Object> valueDB = assign.getValue();
+
+			// logger.info("Assignment " + variableDB + " to " + valueDB);
+			// logger.info("variableDB=" + variableDB + " valid=" + variableDB.isValid() + " reason=" + variableDB.invalidBindingReason());
+			// logger.info("valueDB=" + valueDB + " valid=" + valueDB.isValid() + " reason=" + valueDB.invalidBindingReason());
+			if (valueDB.isValid()) {
+				Object v = null;
+				try {
+					v = valueDB.getBindingValue(bve);
+					// logger.info("value="+value);
+					if (variableDB.isValid()) {
+						// System.out.println("Assignment "+assign+" set value with "+value);
+						variableDB.setBindingValue(v, bve);
+					}
+				} catch (TypeMismatchException e) {
+					e.printStackTrace();
+				} catch (NullReferenceException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				} catch (NotSettableContextException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		returned.setEditedObject(getValueFor(value));
+
+		returned.addApplyCancelListener(new ApplyCancelListener() {
+			@Override
+			public void fireApplyPerformed() {
+				logger.fine("fireApplyPerformed() for " + _editedRowObject);
+				setValueFor(value, returned.getEditedObject());
+				if (actionListener != null) {
+					actionListener.actionPerformed(null);
+				}
+			}
+
+			@Override
+			public void fireCancelPerformed() {
+				if (actionListener != null) {
+					actionListener.actionPerformed(null);
+				}
+			}
+
+		});
+
+		return (JComponent) returned;
 	}
 
 }
