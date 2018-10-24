@@ -117,8 +117,6 @@ public class CheckBoxColumn<T> extends AbstractColumn<T, Boolean> implements Edi
 
 		JCheckBox returned = new JCheckBox();
 
-		System.out.println("Hop le cellEditor pour " + this);
-
 		Boolean dataToRepresent = getValueFor(value);
 		if (dataToRepresent != null) {
 			returned.setSelected(dataToRepresent);
@@ -128,7 +126,6 @@ public class CheckBoxColumn<T> extends AbstractColumn<T, Boolean> implements Edi
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("On edite le CB avec la valeur " + returned.isSelected());
 				// disableValueChangeNotification();
 				setValueFor(value, returned.isSelected());
 				// enableValueChangeNotification();

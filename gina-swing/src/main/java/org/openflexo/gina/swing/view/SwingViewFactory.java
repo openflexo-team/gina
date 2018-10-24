@@ -353,7 +353,6 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 				case Classic:
 					return new JFIBTableWidget<>(widget, controller);
 				case FlatDesign:
-					System.out.println("Flat design !!!");
 					return new JFDFIBTableWidget<>(widget, controller);
 			}
 		}

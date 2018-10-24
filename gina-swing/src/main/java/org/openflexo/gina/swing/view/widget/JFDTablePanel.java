@@ -23,6 +23,7 @@ import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -558,7 +559,7 @@ public class JFDTablePanel<T> extends JPanel {
 					GridBagConstraints c = new GridBagConstraints();
 					c.fill = GridBagConstraints.BOTH;
 					c.weightx = (column.getResizable() ? column.getColumnWidth() : 0);
-					c.weighty = 1.0;
+					c.weighty = 0.0;// 1.0;
 					c.gridwidth = (isLast ? GridBagConstraints.REMAINDER : 1);
 					c.anchor = GridBagConstraints.CENTER;
 
@@ -567,7 +568,7 @@ public class JFDTablePanel<T> extends JPanel {
 					c.ipady = 8;
 
 					JLabel titleLabel = new JLabel(column.getDisplayTitle() ? column.getTitle() : "");
-					titleLabel.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight() + 10));
+					// titleLabel.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight() + 10));
 					titleLabel.setOpaque(true);
 					titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD));
 					titleLabel.setForeground(Color.WHITE);
@@ -627,6 +628,10 @@ public class JFDTablePanel<T> extends JPanel {
 		}
 
 		private void applyFocusPropertiesOnComponent(JComponent jComponent, Color foreground, Color background) {
+			// Hack: don't do it for JComboBox because LAF is not allowing it
+			if (jComponent instanceof JComboBox) {
+				return;
+			}
 			remaindedOpaque.put(jComponent, jComponent.isOpaque());
 			remaindedForeground.put(jComponent, jComponent.getForeground());
 			remaindedBackground.put(jComponent, jComponent.getBackground());
@@ -636,6 +641,10 @@ public class JFDTablePanel<T> extends JPanel {
 		}
 
 		private void resetFocusPropertiesOnComponent(JComponent jComponent) {
+			// Hack: don't do it for JComboBox because LAF is not allowing it
+			if (jComponent instanceof JComboBox) {
+				return;
+			}
 			jComponent.setOpaque(remaindedOpaque.get(jComponent) != null ? remaindedOpaque.get(jComponent) : false);
 			jComponent.setForeground(remaindedForeground.get(jComponent));
 			jComponent.setBackground(remaindedBackground.get(jComponent));
@@ -753,7 +762,7 @@ public class JFDTablePanel<T> extends JPanel {
 					cellRenderer = widget.getTableModel().columnAt(col).makeCellRenderer(value);
 				}
 
-				cellRenderer.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight()));
+				// cellRenderer.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight()));
 				add(cellRenderer, c);
 				components.add(cellRenderer);
 				cellRenderer.addMouseListener(mouseAdapter);
@@ -859,8 +868,8 @@ public class JFDTablePanel<T> extends JPanel {
 		}
 
 		private int getRequiredHeight() {
-			return (widget.getComponent().getShowHeader() ? getRowHeight() + 10 : 0)
-					+ (widget.getTableModel().getValues() != null ? (widget.getTableModel().getValues().size()) * (getRowHeight()) : 0)
+			return ((widget.getComponent().getShowHeader() ? getRowHeight() + 10 : 0)
+					+ (widget.getTableModel().getValues() != null ? (widget.getTableModel().getValues().size()) * (getRowHeight()) : 0))
 					+ 20;
 		}
 
