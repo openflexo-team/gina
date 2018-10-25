@@ -44,6 +44,7 @@ import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -842,9 +843,22 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		if (o1 == null) {
 			return o2 == null;
 		}
-		else {
-			return o1.equals(o2);
+		if (o2 == null) {
+			return o1 == null;
 		}
+		if (o1.equals(o2)) {
+			return true;
+		}
+		else if (o1 instanceof Collection && o2 instanceof Collection) {
+			return sameCollections((Collection) o1, (Collection) o2);
+		}
+		else {
+			return false;
+		}
+	}
+
+	public static boolean sameCollections(Collection c1, Collection c2) {
+		return c1.size() == c2.size() && c1.containsAll(c2);
 	}
 
 	public static boolean notEquals(Object o1, Object o2) {
