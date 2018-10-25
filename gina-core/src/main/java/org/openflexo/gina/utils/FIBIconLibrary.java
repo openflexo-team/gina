@@ -103,6 +103,7 @@ public class FIBIconLibrary {
 	public static final ImageIcon EDIT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/GUI/Edit.png"));
 	public static final ImageIcon EDIT_FO_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/GUI/Edit-flyover.png"));
 	public static final ImageIcon DONE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/GUI/Done.png"));
+	public static final ImageIcon EMPTY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/GUI/Empty.png"));
 
 	// Icons used in ClassSelector
 	public static final ImageIcon JAVA_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ClassSelector/Java.png"));

@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -96,6 +97,7 @@ public class JFDTablePanel<T> extends JPanel {
 		private Map<T, List<JComponent>> componentsForValues = new HashMap<>();
 		private Map<T, JButton> removeButtons = new HashMap<>();
 		private Map<T, JButton> editButtons = new HashMap<>();
+		private T selectedValue = null;
 		private T focusedValue = null;
 		private T editedValue = null;
 
@@ -108,6 +110,7 @@ public class JFDTablePanel<T> extends JPanel {
 			setLayout(gridBagLayout);
 			this.widget = widget;
 			setTableModel(widget.getTableModel());
+			selectionModel = new DefaultListSelectionModel();
 			buildTable();
 		}
 
@@ -228,6 +231,10 @@ public class JFDTablePanel<T> extends JPanel {
 			return focusedValue;
 		}
 
+		public T getSelectedValue() {
+			return selectedValue;
+		}
+
 		@Override
 		public void tableChanged(TableModelEvent e) {
 
@@ -325,7 +332,9 @@ public class JFDTablePanel<T> extends JPanel {
 			// revalidate();
 			// repaint();
 
-			refreshTable();
+			if (editedValue == null) {
+				refreshTable();
+			}
 
 		}
 
@@ -654,16 +663,29 @@ public class JFDTablePanel<T> extends JPanel {
 			// System.out.println("focus " + value);
 			applyFocusProperties(value, widget.getComponent().getTextSecondarySelectionColor(),
 					widget.getComponent().getBackgroundSecondarySelectionColor());
-			removeButtons.get(value).setVisible(hasRemoveAction);
-			editButtons.get(value).setVisible(hasEditAction);
+			if (getSelectedValue() != null) {
+				// In this case, we focus a value while another value is selected
+				if (getSelectedValue() != value) {
+					// This is not the same, temporary hide icons
+					getRemoveButton(getSelectedValue()).setIcon(FIBIconLibrary.EMPTY_ICON);
+					getEditButton(getSelectedValue()).setIcon(FIBIconLibrary.EMPTY_ICON);
+				}
+				else {
+					// When back to the value, show icons again
+					getRemoveButton(getSelectedValue()).setIcon(FIBIconLibrary.REMOVE_ICON);
+					getEditButton(getSelectedValue()).setIcon(FIBIconLibrary.EDIT_ICON);
+				}
+			}
+			getRemoveButton(value).setVisible(hasRemoveAction);
+			getEditButton(value).setVisible(hasEditAction);
 			focusedValue = value;
 		}
 
 		private void unfocusValue(T value) {
 			// System.out.println("unfocus " + value);
 			resetFocusProperties(value);
-			removeButtons.get(value).setVisible(false);
-			editButtons.get(value).setVisible(false);
+			getRemoveButton(value).setVisible(false);
+			getEditButton(value).setVisible(false);
 			focusedValue = null;
 		}
 
@@ -671,17 +693,18 @@ public class JFDTablePanel<T> extends JPanel {
 			if (editedValue != null && editedValue != value) {
 				stopEditValue();
 			}
+			if (focusedValue != null) {
+				unfocusValue(focusedValue);
+			}
+			selectedValue = value;
 			applyFocusProperties(value, widget.getComponent().getTextSelectionColor(), widget.getComponent().getBackgroundSelectionColor());
-			removeButtons.get(value).setVisible(hasRemoveAction);
-			editButtons.get(value).setVisible(hasEditAction);
-			widget.setSelected(value);
-			widget.setSelection(Collections.singletonList(value));
+			getRemoveButton(value).setVisible(hasRemoveAction);
+			getEditButton(value).setVisible(hasEditAction);
 		}
 
 		private void unselectValue(T value) {
+			selectedValue = null;
 			resetFocusProperties(value);
-			widget.setSelected(null);
-			widget.setSelection(Collections.emptyList());
 		}
 
 		private void editValue(T value) {
@@ -694,14 +717,12 @@ public class JFDTablePanel<T> extends JPanel {
 			refreshTable();
 		}
 
-		private void buildTableForValue(T value, int row, boolean isEdited) {
-			List<JComponent> components = new ArrayList<>();
-
-			MouseAdapter mouseAdapter = new MouseAdapter() {
+		private MouseAdapter makeMouseAdapter(T value) {
+			return new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					super.mouseEntered(e);
-					if (widget.getSelected() != value) {
+					if (selectedValue != value) {
 						focusValue(value);
 					}
 				}
@@ -709,7 +730,7 @@ public class JFDTablePanel<T> extends JPanel {
 				@Override
 				public void mouseExited(MouseEvent e) {
 					super.mouseExited(e);
-					if (widget.getSelected() != value) {
+					if (selectedValue != value) {
 						unfocusValue(value);
 					}
 				}
@@ -720,15 +741,22 @@ public class JFDTablePanel<T> extends JPanel {
 					if (e.getClickCount() == 2) {
 						editValue(value);
 					}
-					else if (e.isShiftDown() && widget.getSelected() == value) {
-						unselectValue(value);
+					else if (e.isShiftDown() && selectedValue == value) {
+						clearSelection();
 					}
 					else {
-						selectValue(value);
+						select(value);
 					}
 					repaint();
 				}
 			};
+
+		}
+
+		private void buildTableForValue(T value, int row, boolean isEdited) {
+			List<JComponent> components = new ArrayList<>();
+
+			MouseAdapter mouseAdapter = makeMouseAdapter(value);
 
 			ActionListener doneActionListener = new ActionListener() {
 
@@ -767,7 +795,7 @@ public class JFDTablePanel<T> extends JPanel {
 				components.add(cellRenderer);
 				cellRenderer.addMouseListener(mouseAdapter);
 
-				if (value == widget.getSelected() /*&& !isEdited*/) {
+				if (value == selectedValue /*&& !isEdited*/) {
 					applyFocusPropertiesOnComponent(cellRenderer, widget.getComponent().getTextSelectionColor(),
 							widget.getComponent().getBackgroundSelectionColor());
 				}
@@ -778,7 +806,9 @@ public class JFDTablePanel<T> extends JPanel {
 				col++;
 			}
 
-			JButton removeButton = new JButton();
+			JButton removeButton = getRemoveButton(value);
+
+			/*JButton removeButton = new JButton();
 			removeButton.setBorder(BorderFactory.createEmptyBorder());
 			removeButton.setRolloverIcon(FIBIconLibrary.REMOVE_FO_ICON);
 			removeButton.setIcon(FIBIconLibrary.REMOVE_ICON);
@@ -791,9 +821,9 @@ public class JFDTablePanel<T> extends JPanel {
 								EventQueue.getMostRecentEventTime(), e.getModifiers()));
 					}
 				}
-			});
+			});*/
 
-			JButton editButton = new JButton();
+			/*JButton editButton = new JButton();
 			editButton.setBorder(BorderFactory.createEmptyBorder());
 			if (isEdited) {
 				editButton.setIcon(FIBIconLibrary.DONE_ICON);
@@ -813,17 +843,19 @@ public class JFDTablePanel<T> extends JPanel {
 						editValue(value);
 					}
 				}
-			});
+			});*/
 
-			removeButton.addMouseListener(mouseAdapter);
-			editButton.addMouseListener(mouseAdapter);
+			JButton editButton = getEditButton(value);
+
+			// removeButton.addMouseListener(mouseAdapter);
+			// editButton.addMouseListener(mouseAdapter);
 
 			JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, getRowHeight() - 18));
 			buttonsPanel.add(removeButton);
 			buttonsPanel.add(editButton);
 			components.add(buttonsPanel);
 
-			if (value == widget.getSelected()) {
+			if (value == selectedValue) {
 				applyFocusPropertiesOnComponent(buttonsPanel, widget.getComponent().getTextSelectionColor(),
 						widget.getComponent().getBackgroundSelectionColor());
 			}
@@ -842,13 +874,80 @@ public class JFDTablePanel<T> extends JPanel {
 
 			add(buttonsPanel, c3);
 
-			removeButton.setVisible(hasRemoveAction && value == widget.getSelected());
-			editButton.setVisible(hasEditAction && value == widget.getSelected());
+			removeButton.setVisible(hasRemoveAction && value == selectedValue);
+			editButton.setVisible(hasEditAction && value == selectedValue);
 
 			componentsForValues.put(value, components);
-			removeButtons.put(value, removeButton);
-			editButtons.put(value, editButton);
+			// removeButtons.put(value, removeButton);
+			// editButtons.put(value, editButton);
 
+		}
+
+		private JButton getRemoveButton(T value) {
+
+			JButton returned = removeButtons.get(value);
+			if (returned == null) {
+				returned = makeRemoveButton(value);
+				removeButtons.put(value, returned);
+			}
+			return returned;
+		}
+
+		private JButton getEditButton(T value) {
+
+			JButton returned = editButtons.get(value);
+			if (returned == null) {
+				returned = makeEditButton(value);
+				editButtons.put(value, returned);
+			}
+			return returned;
+		}
+
+		private JButton makeRemoveButton(T value) {
+
+			JButton removeButton = new JButton();
+			removeButton.setBorder(BorderFactory.createEmptyBorder());
+			removeButton.setRolloverIcon(FIBIconLibrary.REMOVE_FO_ICON);
+			removeButton.setIcon(FIBIconLibrary.REMOVE_ICON);
+			removeButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (removeActionListener != null) {
+						removeActionListener.setSelectedObject(value);
+						removeActionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null,
+								EventQueue.getMostRecentEventTime(), e.getModifiers()));
+					}
+				}
+			});
+			removeButton.addMouseListener(makeMouseAdapter(value));
+			return removeButton;
+		}
+
+		private JButton makeEditButton(T value) {
+
+			JButton editButton = new JButton();
+			editButton.setBorder(BorderFactory.createEmptyBorder());
+			if (value == editedValue) {
+				editButton.setIcon(FIBIconLibrary.DONE_ICON);
+				editButton.setRolloverIcon(FIBIconLibrary.DONE_ICON);
+			}
+			else {
+				editButton.setRolloverIcon(FIBIconLibrary.EDIT_FO_ICON);
+				editButton.setIcon(FIBIconLibrary.EDIT_ICON);
+			}
+			editButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (editedValue == value) {
+						stopEditValue();
+					}
+					else {
+						editValue(value);
+					}
+				}
+			});
+			editButton.addMouseListener(makeMouseAdapter(value));
+			return editButton;
 		}
 
 		private Dimension getRequiredPreferredSize() {
@@ -868,9 +967,9 @@ public class JFDTablePanel<T> extends JPanel {
 		}
 
 		private int getRequiredHeight() {
-			return ((widget.getComponent().getShowHeader() ? getRowHeight() + 15 : 0)
+			return ((widget.getComponent().getShowHeader() ? getRowHeight() + 10 : 0)
 					+ (widget.getTableModel().getValues() != null ? (widget.getTableModel().getValues().size()) * (getRowHeight()) : 0))
-					+ 30;
+					+ 20;
 		}
 
 		public int getRowHeight() {
@@ -885,8 +984,7 @@ public class JFDTablePanel<T> extends JPanel {
 		}
 
 		public int getVisibleRowCount() {
-			// Not applicable
-			return 0;
+			return widget.getTableModel().getValues().size();
 		}
 
 		public void setVisibleRowCount(int rowCount) {
@@ -894,27 +992,25 @@ public class JFDTablePanel<T> extends JPanel {
 		}
 
 		public ListSelectionModel getSelectionModel() {
-			// TODO Auto-generated method stub
-			return null;
+			return selectionModel;
 		}
 
 		public boolean isEditing() {
-			// TODO Auto-generated method stub
-			return false;
+			return editedValue != null;
 		}
 
 		public int getEditingRow() {
-			// TODO Auto-generated method stub
-			return 0;
+			// Not applicable
+			return -1;
 		}
 
 		public int getEditingColumn() {
-			// TODO Auto-generated method stub
-			return 0;
+			// Not applicable
+			return -1;
 		}
 
 		public TableCellEditor getCellEditor() {
-			// TODO Auto-generated method stub
+			// Not applicable
 			return null;
 		}
 
@@ -929,10 +1025,33 @@ public class JFDTablePanel<T> extends JPanel {
 		public void removeEditor() {
 		}
 
+		public void select(T value) {
+			if (getFocusedValue() != null) {
+				unfocusValue(getFocusedValue());
+			}
+			if (getSelectedValue() != null) {
+				unselectValue(getSelectedValue());
+			}
+			selectValue(value);
+			widget.setSelected(value);
+			widget.setSelection(Collections.singletonList(value));
+			repaint();
+		}
+
+		public void clearSelection() {
+			if (getSelectedValue() != null) {
+				unselectValue(getSelectedValue());
+			}
+			widget.setSelected(null);
+			widget.setSelection(Collections.emptyList());
+			repaint();
+		}
+
 	}
 
 	private JFDTable<T> makeJTable() {
 		JFDTable<T> returned = new JFDTable<T>(widget);
+		// returned.getSelectionModel().addListSelectionListener(widget);
 		return returned;
 
 	}
@@ -949,4 +1068,5 @@ public class JFDTablePanel<T> extends JPanel {
 	public JFDTable<T> getJTable() {
 		return jTable;
 	}
+
 }
