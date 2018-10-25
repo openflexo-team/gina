@@ -44,6 +44,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.MouseListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -211,6 +212,14 @@ public class JFDFIBTableWidget<T> extends FIBTableWidgetImpl<JFDTablePanel<T>, T
 
 		super.updateTable();
 
+	}
+
+	@Override
+	public Collection<T> updateData() {
+		Collection<T> returned = super.updateData();
+		getTechnologyComponent().updateTable();
+		getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
+		return returned;
 	}
 
 	@Override

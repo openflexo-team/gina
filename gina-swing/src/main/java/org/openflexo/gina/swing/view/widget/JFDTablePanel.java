@@ -572,7 +572,7 @@ public class JFDTablePanel<T> extends JPanel {
 					c.gridwidth = (isLast ? GridBagConstraints.REMAINDER : 1);
 					c.anchor = GridBagConstraints.CENTER;
 
-					c.insets = new Insets(3, isFirst ? 5 : 0, 3, isLast ? 5 : 0);
+					c.insets = new Insets(3, isFirst ? 5 : 0, 3, 0);
 					c.ipadx = 0;
 					c.ipady = 8;
 
