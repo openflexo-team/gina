@@ -9,7 +9,7 @@ buildscript {
     }
 }
 
-version = "2.1.1"
+version = "2.1.2"
 apply plugin: 'org.openflexo.buildconfig'
 
 task gitPull(type: Exec) {
