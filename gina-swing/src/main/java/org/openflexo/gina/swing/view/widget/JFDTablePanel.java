@@ -666,30 +666,36 @@ public class JFDTablePanel<T> extends JPanel {
 			// System.out.println("focus " + value);
 			applyFocusProperties(value, widget.getComponent().getTextSecondarySelectionColor(),
 					widget.getComponent().getBackgroundSecondarySelectionColor());
-			if (getSelectedValue() != null) {
-				// In this case, we focus a value while another value is selected
-				if (getSelectedValue() != value) {
-					// This is not the same, temporary hide icons
-					getRemoveButton(getSelectedValue()).setIcon(FIBIconLibrary.EMPTY_ICON);
-					getEditButton(getSelectedValue()).setIcon(FIBIconLibrary.EMPTY_ICON);
-				}
-				else {
-					// When back to the value, show icons again
-					getRemoveButton(getSelectedValue()).setIcon(FIBIconLibrary.REMOVE_ICON);
-					getEditButton(getSelectedValue()).setIcon(FIBIconLibrary.EDIT_ICON);
-				}
-			}
-			getRemoveButton(value).setVisible(hasRemoveAction);
-			getEditButton(value).setVisible(hasEditAction);
+			showButtonsWhenRequired(value);
 			focusedValue = value;
 		}
 
 		private void unfocusValue(T value) {
 			// System.out.println("unfocus " + value);
 			resetFocusProperties(value);
+			hideButtons(value);
+			focusedValue = null;
+		}
+
+		private void showButtonsWhenRequired(T value) {
+			getRemoveButton(value).setIcon(FIBIconLibrary.REMOVE_ICON);
+			getRemoveButton(value).setRolloverIcon(FIBIconLibrary.REMOVE_FO_ICON);
+			getEditButton(value).setIcon(FIBIconLibrary.EDIT_ICON);
+			getEditButton(value).setRolloverIcon(FIBIconLibrary.EDIT_FO_ICON);
+			getRemoveButton(value).setVisible(hasRemoveAction);
+			getEditButton(value).setVisible(hasEditAction);
+		}
+
+		private void temporaryHideButtons(T value) {
+			getRemoveButton(value).setIcon(FIBIconLibrary.EMPTY_ICON);
+			getRemoveButton(value).setRolloverIcon(FIBIconLibrary.EMPTY_ICON);
+			getEditButton(value).setIcon(FIBIconLibrary.EMPTY_ICON);
+			getEditButton(value).setRolloverIcon(FIBIconLibrary.EMPTY_ICON);
+		}
+
+		private void hideButtons(T value) {
 			getRemoveButton(value).setVisible(false);
 			getEditButton(value).setVisible(false);
-			focusedValue = null;
 		}
 
 		private void selectValue(T value) {
@@ -701,6 +707,10 @@ public class JFDTablePanel<T> extends JPanel {
 			}
 			selectedValue = value;
 			applyFocusProperties(value, widget.getComponent().getTextSelectionColor(), widget.getComponent().getBackgroundSelectionColor());
+			getRemoveButton(value).setIcon(FIBIconLibrary.REMOVE_ICON);
+			getRemoveButton(value).setRolloverIcon(FIBIconLibrary.REMOVE_FO_ICON);
+			getEditButton(value).setIcon(FIBIconLibrary.EDIT_ICON);
+			getEditButton(value).setRolloverIcon(FIBIconLibrary.EDIT_FO_ICON);
 			getRemoveButton(value).setVisible(hasRemoveAction);
 			getEditButton(value).setVisible(hasEditAction);
 		}
@@ -727,6 +737,17 @@ public class JFDTablePanel<T> extends JPanel {
 					super.mouseEntered(e);
 					if (selectedValue != value) {
 						focusValue(value);
+					}
+					if (getSelectedValue() != null) {
+						// In this case, we focus a value while another value is selected
+						if (getSelectedValue() != value) {
+							// This is not the same, temporary hide icons
+							temporaryHideButtons(getSelectedValue());
+						}
+						else {
+							// When back to the value, show icons again
+							showButtonsWhenRequired(getSelectedValue());
+						}
 					}
 				}
 
@@ -827,8 +848,8 @@ public class JFDTablePanel<T> extends JPanel {
 			}
 
 			GridBagConstraints c3 = new GridBagConstraints();
-			c3.fill = GridBagConstraints.VERTICAL;
-			c3.weightx = 0.0;
+			c3.fill = GridBagConstraints.BOTH;
+			c3.weightx = 1.0;
 			c3.weighty = 1.0;
 			c3.gridwidth = GridBagConstraints.REMAINDER;
 			c3.anchor = GridBagConstraints.CENTER;
