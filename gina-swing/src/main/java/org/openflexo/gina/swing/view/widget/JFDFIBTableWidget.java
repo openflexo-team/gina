@@ -216,10 +216,14 @@ public class JFDFIBTableWidget<T> extends FIBTableWidgetImpl<JFDTablePanel<T>, T
 
 	@Override
 	public Collection<T> updateData() {
-		Collection<T> returned = super.updateData();
-		getTechnologyComponent().updateTable();
-		getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
-		return returned;
+
+		List<?> valuesBeforeUpdating = getTableModel().getValues();
+		Collection<T> newValues = super.updateData();
+		if (notEquals(newValues, valuesBeforeUpdating)) {
+			getTechnologyComponent().updateTable();
+			getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
+		}
+		return newValues;
 	}
 
 	@Override
