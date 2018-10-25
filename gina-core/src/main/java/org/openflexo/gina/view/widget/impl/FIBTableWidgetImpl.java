@@ -286,7 +286,7 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 			// returned = true;
 			setSelected(wasSelected);
 		}
-		else if (areSameValuesOrderIndifferent(getTableModel().getValues(), valuesBeforeUpdating)) {
+		else if (areSameValuesOrderIndifferent(getTableModel().getValues(), valuesBeforeUpdating) && wasSelected != null) {
 			// Same values, only order differs, in this case, still select right
 			// object
 			// returned = true;

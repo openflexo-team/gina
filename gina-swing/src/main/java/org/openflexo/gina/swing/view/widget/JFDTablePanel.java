@@ -562,8 +562,6 @@ public class JFDTablePanel<T> extends JPanel {
 
 		private void refreshTable() {
 
-			System.out.println("Hop, on refresh la table");
-
 			tablePanel.removeAll();
 			componentsForValues.clear();
 			removeButtons.clear();
