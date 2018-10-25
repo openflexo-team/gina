@@ -94,6 +94,8 @@ public class JFDTablePanel<T> extends JPanel {
 		private TableColumnModel columnModel;
 		private ListSelectionModel selectionModel;
 
+		private JPanel tablePanel;
+
 		private Map<T, List<JComponent>> componentsForValues = new HashMap<>();
 		private Map<T, JButton> removeButtons = new HashMap<>();
 		private Map<T, JButton> editButtons = new HashMap<>();
@@ -105,13 +107,17 @@ public class JFDTablePanel<T> extends JPanel {
 		private FIBTableActionListener<T> removeActionListener;
 
 		public JFDTable(JFDFIBTableWidget<T> widget) {
-			super();
+			super(new BorderLayout());
+
+			tablePanel = new JPanel();
 			gridBagLayout = new GridBagLayout();
-			setLayout(gridBagLayout);
+			tablePanel.setLayout(gridBagLayout);
 			this.widget = widget;
 			setTableModel(widget.getTableModel());
 			selectionModel = new DefaultListSelectionModel();
+			add(tablePanel, BorderLayout.CENTER);
 			buildTable();
+
 		}
 
 		/**
@@ -546,12 +552,19 @@ public class JFDTablePanel<T> extends JPanel {
 				}
 			});
 
+			JPanel addButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 2));
+			addButtonPanel.add(addButton);
+
+			add(addButtonPanel, BorderLayout.SOUTH);
+
 			refreshTable();
 		}
 
 		private void refreshTable() {
 
-			removeAll();
+			System.out.println("Hop, on refresh la table");
+
+			tablePanel.removeAll();
 			componentsForValues.clear();
 			removeButtons.clear();
 			editButtons.clear();
@@ -566,23 +579,27 @@ public class JFDTablePanel<T> extends JPanel {
 					boolean isFirst = (column == widget.getComponent().getColumns().get(0));
 					boolean isLast = (column == widget.getComponent().getColumns().get(widget.getComponent().getColumns().size() - 1));
 					GridBagConstraints c = new GridBagConstraints();
-					c.fill = GridBagConstraints.BOTH;
-					c.weightx = (column.getResizable() ? column.getColumnWidth() : 0);
+					c.fill = /*(column.getResizable() ?*/ GridBagConstraints.HORIZONTAL /*: GridBagConstraints.NONE)*/;
+					c.weightx = (column.getResizable() ? column.getColumnWidth() : 0.0);
 					c.weighty = 0.0;// 1.0;
 					c.gridwidth = (isLast ? GridBagConstraints.REMAINDER : 1);
 					c.anchor = GridBagConstraints.CENTER;
+					c.gridx = GridBagConstraints.RELATIVE;
+					c.gridy = GridBagConstraints.RELATIVE;
 
 					c.insets = new Insets(3, isFirst ? 5 : 0, 3, 0);
 					c.ipadx = 0;
-					c.ipady = 8;
+					c.ipady = 0;// 8;
 
-					JLabel titleLabel = new JLabel(column.getDisplayTitle() ? column.getTitle() : "");
-					// titleLabel.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight() + 10));
+					JLabel titleLabel = new JLabel(column.getDisplayTitle() ? widget.getLocalized(column.getTitle()) : "");
+					titleLabel.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight() + 5));
 					titleLabel.setOpaque(true);
 					titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD));
 					titleLabel.setForeground(Color.WHITE);
 					titleLabel.setBackground(Color.GRAY);
-					add(titleLabel, c);
+					tablePanel.add(titleLabel, c);
+					// titleLabel.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight() + 10));
+
 				}
 			}
 
@@ -594,16 +611,17 @@ public class JFDTablePanel<T> extends JPanel {
 				}
 			}
 
-			GridBagConstraints c = new GridBagConstraints();
+			/*GridBagConstraints c = new GridBagConstraints();
 			c.insets = new Insets(2, 5, 2, 5);
 			c.fill = GridBagConstraints.NONE;
-			c.weightx = 1.0;
+			c.weightx = 0.0;
 			c.weighty = 0.0;
 			c.gridwidth = GridBagConstraints.REMAINDER;
+			c.gridheight = GridBagConstraints.REMAINDER;
 			c.anchor = GridBagConstraints.NORTHWEST;
-			add(addButton, c);
+			add(addButton, c);*/
 
-			setPreferredSize(getRequiredPreferredSize());
+			// tablePanel.setPreferredSize(getRequiredPreferredSize());
 
 			if (getParent() != null) {
 				getParent().revalidate();
@@ -777,7 +795,7 @@ public class JFDTablePanel<T> extends JPanel {
 				c.gridwidth = 1;
 				c.anchor = GridBagConstraints.WEST;
 				c.ipadx = 0;
-				c.ipady = 6;
+				c.ipady = 0; // 6;
 
 				c.insets = new Insets(0, isFirst ? 5 : 0, 0, 0);
 
@@ -790,8 +808,8 @@ public class JFDTablePanel<T> extends JPanel {
 					cellRenderer = widget.getTableModel().columnAt(col).makeCellRenderer(value);
 				}
 
-				// cellRenderer.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight()));
-				add(cellRenderer, c);
+				cellRenderer.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight()));
+				tablePanel.add(cellRenderer, c);
 				components.add(cellRenderer);
 				cellRenderer.addMouseListener(mouseAdapter);
 
@@ -850,9 +868,17 @@ public class JFDTablePanel<T> extends JPanel {
 			// removeButton.addMouseListener(mouseAdapter);
 			// editButton.addMouseListener(mouseAdapter);
 
-			JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, getRowHeight() - 18));
-			buttonsPanel.add(removeButton);
-			buttonsPanel.add(editButton);
+			JPanel buttonsPanel = new JPanel(new GridBagLayout());
+			GridBagConstraints c4 = new GridBagConstraints();
+			/*c4.fill = GridBagConstraints.VERTICAL;
+			c4.weightx = 0.0;
+			c4.weighty = 1.0;
+			c4.gridwidth = GridBagConstraints.REMAINDER;
+			c4.anchor = GridBagConstraints.CENTER;
+			c4.ipadx = 0;
+			c4.ipady = 0;// 2;*/
+			buttonsPanel.add(removeButton, c4);
+			buttonsPanel.add(editButton, c4);
 			components.add(buttonsPanel);
 
 			if (value == selectedValue) {
@@ -864,15 +890,15 @@ public class JFDTablePanel<T> extends JPanel {
 			}
 
 			GridBagConstraints c3 = new GridBagConstraints();
-			c3.fill = GridBagConstraints.NONE;
+			c3.fill = GridBagConstraints.VERTICAL;
 			c3.weightx = 0.0;
-			c3.weighty = 0.0;
+			c3.weighty = 1.0;
 			c3.gridwidth = GridBagConstraints.REMAINDER;
 			c3.anchor = GridBagConstraints.CENTER;
 			c3.ipadx = 0;
-			c3.ipady = 6;
+			c3.ipady = 0;// 2;
 
-			add(buttonsPanel, c3);
+			tablePanel.add(buttonsPanel, c3);
 
 			removeButton.setVisible(hasRemoveAction && value == selectedValue);
 			editButton.setVisible(hasEditAction && value == selectedValue);
@@ -950,12 +976,12 @@ public class JFDTablePanel<T> extends JPanel {
 			return editButton;
 		}
 
-		private Dimension getRequiredPreferredSize() {
+		/*private Dimension getRequiredPreferredSize() {
 			return new Dimension(getRequiredWidth(), getRequiredHeight());
+		
+		}*/
 
-		}
-
-		private int getRequiredWidth() {
+		/*private int getRequiredWidth() {
 			int returned = 0;
 			for (FIBTableColumn column : widget.getComponent().getColumns()) {
 				returned += column.getColumnWidth();
@@ -965,12 +991,12 @@ public class JFDTablePanel<T> extends JPanel {
 			}
 			return returned;
 		}
-
+		
 		private int getRequiredHeight() {
 			return ((widget.getComponent().getShowHeader() ? getRowHeight() + 10 : 0)
 					+ (widget.getTableModel().getValues() != null ? (widget.getTableModel().getValues().size()) * (getRowHeight()) : 0))
 					+ 20;
-		}
+		}*/
 
 		public int getRowHeight() {
 			if (widget.getComponent().getRowHeight() != null) {
