@@ -474,9 +474,18 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 	}
 
 	public void clearSelection() {
+		List<T> oldSelection = this.selection;
+		this.selection = Collections.emptyList();
+
 		if (getListSelectionModel() != null) {
 			getListSelectionModel().clearSelection();
 		}
+
+		FIBController ctrl = getController();
+		if (ctrl != null && synchronizedWithSelection()) {
+			ctrl.updateSelection(this, oldSelection, selection);
+		}
+
 	}
 
 	@Override
@@ -488,6 +497,12 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 		List<T> oldSelection = this.selection;
 		this.selection = selection;
 		getPropertyChangeSupport().firePropertyChange(SELECTION, oldSelection, selection);
+
+		FIBController ctrl = getController();
+		if (ctrl != null && synchronizedWithSelection()) {
+			ctrl.updateSelection(this, oldSelection, selection);
+		}
+
 	}
 
 	private static boolean areSameValuesOrderIndifferent(List<?> l1, List<?> l2) {

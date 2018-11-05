@@ -41,10 +41,13 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.FIBMouseEvent;
 import org.openflexo.gina.model.widget.FIBTableAction;
 import org.openflexo.gina.model.widget.FIBTableAction.FIBAddAction;
 import org.openflexo.gina.model.widget.FIBTableAction.FIBRemoveAction;
 import org.openflexo.gina.model.widget.FIBTableColumn;
+import org.openflexo.gina.swing.view.SwingViewFactory.SwingFIBMouseEvent;
 import org.openflexo.gina.utils.FIBIconLibrary;
 import org.openflexo.gina.view.widget.table.impl.FIBTableActionListener;
 import org.openflexo.gina.view.widget.table.impl.FIBTableModel;
@@ -698,7 +701,17 @@ public class JFDTablePanel<T> extends JPanel {
 			getEditButton(value).setVisible(false);
 		}
 
+		private List<T> getSelection() {
+			if (selectedValue == null) {
+				return Collections.emptyList();
+			}
+			else {
+				return Collections.singletonList(selectedValue);
+			}
+		}
+
 		private void selectValue(T value) {
+
 			if (editedValue != null && editedValue != value) {
 				stopEditValue();
 			}
@@ -713,11 +726,20 @@ public class JFDTablePanel<T> extends JPanel {
 			getEditButton(value).setRolloverIcon(FIBIconLibrary.EDIT_FO_ICON);
 			getRemoveButton(value).setVisible(hasRemoveAction);
 			getEditButton(value).setVisible(hasEditAction);
+
 		}
 
 		private void unselectValue(T value) {
+
+			List<T> oldSelection = getSelection();
 			selectedValue = null;
 			resetFocusProperties(value);
+
+			FIBController ctrl = widget.getController();
+			if (ctrl != null) {
+				ctrl.updateSelection(widget, oldSelection, getSelection());
+			}
+
 		}
 
 		private void editValue(T value) {
@@ -759,18 +781,43 @@ public class JFDTablePanel<T> extends JPanel {
 					}
 				}
 
+				private FIBMouseEvent makeMouseEvent(MouseEvent e) {
+					return new SwingFIBMouseEvent(e);
+				}
+
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					super.mouseClicked(e);
-					if (e.getClickCount() == 2) {
-						editValue(value);
+					if (widget.synchronizedWithSelection()) {
+						widget.getController().setSelectionLeader(widget);
 					}
-					else if (e.isShiftDown() && selectedValue == value) {
-						clearSelection();
+
+					if (e.getClickCount() == 1) {
+						if (e.isShiftDown() && selectedValue == value) {
+							clearSelection();
+						}
+						else {
+							select(value);
+						}
+						if (widget.getWidget().hasRightClickAction() && (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3)) {
+							// Detected right-click associated with action
+							widget.applyRightClickAction(makeMouseEvent(e));
+						}
+						else if (widget.getWidget().hasClickAction()) {
+							// Detected click associated with action
+							widget.applySingleClickAction(makeMouseEvent(e));
+						}
 					}
-					else {
-						select(value);
+					else if (e.getClickCount() == 2) {
+						if (widget.getWidget().hasDoubleClickAction()) {
+							// Detected double-click associated with action
+							widget.applyDoubleClickAction(makeMouseEvent(e));
+						}
+						else {
+							editValue(value);
+						}
 					}
+
 					repaint();
 				}
 			};
