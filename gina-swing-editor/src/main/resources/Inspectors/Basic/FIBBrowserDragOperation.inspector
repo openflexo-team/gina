@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBBrowserDragOperation" name="Inspector">
+
+	<Label index="0" label="name" constraints="twocols(location=left;insetsTop=5)"
+		localize="true" />
+	<TextField index="1" data="data.name"
+		constraints="twocols(expandHorizontally=true;location=right;insetsTop=5)"
+		localize="true" columns="15" />
+	<Label index="2" label="target" constraints="twocols(location=left;insetsTop=5)"
+		localize="true" />
+	<DropDown index="3" data="data.targetElement" constraints="twocols(location=right)" list="data.owner.owner.elements"
+		localize="true" iteratorClassName="org.openflexo.gina.model.widget.FIBBrowserElement"
+		autoSelectFirstRow="false" format="object.name"/>
+	<Label index="6" label="action" constraints="twocols(location=left)"
+		localize="true" />
+	<Custom index="7" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.action"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data.dragOperationBindable" />
+	</Custom>
+	<Label index="8" label="is_available" constraints="twocols(location=left)"
+		localize="true" />
+	<Custom index="9" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.isAvailable"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data.dragOperationBindable" />
+	</Custom>
+
+	<Parameter name="title" value="Drag operation" />
+</Inspector>

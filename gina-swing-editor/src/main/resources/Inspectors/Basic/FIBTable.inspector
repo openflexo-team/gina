@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBTable" name="Inspector">
+
+	<Label label="look_and_feel" index="2" constraints="twocols(location=left)"
+		localize="true" />
+	<DropDown data="data.lookAndFeel" index="3"
+		constraints="twocols(location=right)" localize="true"
+		iteratorClassName="org.openflexo.gina.model.widget.FIBTable$TableLookAndFeel"
+		autoSelectFirstRow="true" />
+
+	<Label index="4" label="iterator_class"
+		constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=left)"
+		localize="true" />
+	<Custom index="5" componentClassName="org.openflexo.gina.swing.utils.TypeSelector"
+		localize="true" manageDynamicModel="true" data="data.iteratorType"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" >
+		<Assignment mandatory="true" variable="component.customTypeManager"
+			value="data.rootComponent.customTypeManager" />
+		<Assignment mandatory="true" variable="component.customTypeEditorProvider"
+			value="data.rootComponent.customTypeEditorProvider" />
+		</Custom>
+	<Label index="6" label="visible_row_count"
+		constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=left)"
+		localize="true" />
+	<Number index="7" minValue="1" maxValue="100" increment="1"
+		numberType="IntegerType" columns="3" data="data.visibleRowCount"
+		constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+		localize="true" />
+	<Label index="8" label="row_height"
+		constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=left)"
+		localize="true" />
+	<Number index="9" minValue="5" maxValue="100" increment="1"
+		numberType="IntegerType" columns="3" data="data.rowHeight"
+		constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+		localize="true" />
+	<CheckBox index="10" selected="false" data="data.autoSelectFirstRow"
+		constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=left)"
+		localize="true" />
+	<Label index="11" label="select_first_row"
+		constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+		localize="true" />
+	<CheckBox index="12" selected="false" data="data.createNewRowOnClick"
+		constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=left)"
+		localize="true" />
+	<Label index="13" label="create_new_row_on_click"
+		constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+		localize="true" />
+	<CheckBox index="14" selected="false" data="data.showHeader"
+		constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=left)"
+		localize="true" />
+	<Label index="15" label="show_header"
+		constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+		localize="true" />
+	<CheckBox index="16" selected="false" data="data.showFooter"
+		constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=left)"
+		localize="true" />
+	<Label index="17" label="show_footer"
+		constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+		localize="true" />
+	<LocalizedDictionary />
+	<Parameter name="title" value="Table" />
+</Inspector>

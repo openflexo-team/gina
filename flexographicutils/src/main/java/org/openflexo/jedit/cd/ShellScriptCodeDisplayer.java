@@ -21,7 +21,7 @@ package org.openflexo.jedit.cd;
 
 import org.openflexo.jedit.JEditTextArea;
 import org.openflexo.jedit.ShellScriptTokenMarker;
-import org.openflexo.toolbox.FontCst;
+import org.openflexo.uicst.FontCst;
 
 public class ShellScriptCodeDisplayer extends JEditTextArea {
 

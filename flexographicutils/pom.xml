@@ -4,14 +4,14 @@
     <parent>
         <groupId>org.openflexo</groupId>
         <artifactId>gina</artifactId>
-        <version>1.2-SNAPSHOT</version>
+        <version>2.1.1</version>
     </parent>
     <artifactId>flexographicutils</artifactId>
     <name>Flexo Graphical Utilities</name>
     <scm>
         <connection>scm:git:ssh://git@github.com/openflexo-team/gina.git</connection>
         <url>https://github.com/openflexo-team/gina</url>
-      <tag>HEAD</tag>
+      <tag>2.1.1</tag>
   </scm>
     <build>
         <plugins>
@@ -45,6 +45,11 @@
             <groupId>batik</groupId>
             <artifactId>batik-svggen</artifactId>
         </dependency>
+                    <dependency>
+                <groupId>com.fifesoft</groupId>
+                <artifactId>rsyntaxtextarea</artifactId>
+            </dependency>
+        
 	<dependency>
 	    <groupId>org.apache.commons</groupId>
 	    <artifactId>commons-lang3</artifactId>

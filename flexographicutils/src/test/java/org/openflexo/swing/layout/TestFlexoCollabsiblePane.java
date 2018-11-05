@@ -52,22 +52,19 @@ import org.openflexo.swing.FlexoCollabsiblePanelGroup;
 public class TestFlexoCollabsiblePane {
 
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				JFrame f = new JFrame("Test Flexo Collapsible Pane");
+		SwingUtilities.invokeLater(() -> {
+			JFrame f = new JFrame("Test Flexo Collapsible Pane");
 
-				FlexoCollabsiblePanelGroup contentsPane = new FlexoCollabsiblePanelGroup();
-				contentsPane.addContents("panel1", makeContents("prout", Color.red));
-				contentsPane.addContents("panel2", makeContents("yoplaboum", Color.yellow));
-				contentsPane.addContents("panel3", makeContents("zoubi", Color.blue));
+			FlexoCollabsiblePanelGroup contentsPane = new FlexoCollabsiblePanelGroup();
+			contentsPane.addContents("panel1", makeContents("prout", Color.red));
+			contentsPane.addContents("panel2", makeContents("yoplaboum", Color.yellow));
+			contentsPane.addContents("panel3", makeContents("zoubi", Color.blue));
 
-				f.add(contentsPane, BorderLayout.CENTER);
+			f.add(contentsPane, BorderLayout.CENTER);
 
-				f.setSize(640, 480);
-				f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				f.setVisible(true);
-			}
+			f.setSize(640, 480);
+			f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			f.setVisible(true);
 		});
 	}
 

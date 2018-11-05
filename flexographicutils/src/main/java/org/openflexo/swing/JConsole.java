@@ -52,7 +52,7 @@ import javax.swing.text.Utilities;
 import org.openflexo.jedit.JEditTextArea;
 import org.openflexo.jedit.TextAreaDefaults;
 import org.openflexo.jedit.TextAreaPainter;
-import org.openflexo.toolbox.FontCst;
+import org.openflexo.uicst.FontCst;
 
 public class JConsole extends JEditTextArea {
 	static final Logger logger = Logger.getLogger(JConsole.class.getPackage().getName());
@@ -74,7 +74,7 @@ public class JConsole extends JEditTextArea {
 		refresh();
 	}
 
-	Vector<Color> colors = new Vector<Color>();
+	Vector<Color> colors = new Vector<>();
 
 	public void log(String log, Color color) {
 		int i = 0;
@@ -110,17 +110,7 @@ public class JConsole extends JEditTextArea {
 
 	void refresh() {
 		if (!SwingUtilities.isEventDispatchThread() && getRefreshOnlyInSwingEventDispatchingThread()) {
-			SwingUtilities.invokeLater(new Runnable() {
-				/**
-				 * Overrides run
-				 * 
-				 * @see java.lang.Runnable#run()
-				 */
-				@Override
-				public void run() {
-					JConsole.this.refresh();
-				}
-			});
+			SwingUtilities.invokeLater(() -> JConsole.this.refresh());
 			return;
 		}
 		setCaretPosition(getDocument().getLength());

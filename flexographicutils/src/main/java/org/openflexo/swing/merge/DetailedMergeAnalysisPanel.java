@@ -228,7 +228,7 @@ public class DetailedMergeAnalysisPanel extends JDialog implements Observer {
 
 		/*controlPanel = mergePanelElements.getControlPanel();
 		add(controlPanel,BorderLayout.SOUTH);
-
+		
 		JButton doneButton = new JButton();
 		doneButton.setText("Done");
 		doneButton.addActionListener(new ActionListener() {
@@ -236,7 +236,7 @@ public class DetailedMergeAnalysisPanel extends JDialog implements Observer {
 				done();
 			}
 		});
-
+		
 		controlPanel.add(doneButton);*/
 
 		int maxRows = 0;
@@ -338,18 +338,20 @@ public class DetailedMergeAnalysisPanel extends JDialog implements Observer {
 		horizontalScrollBar.addAdjustmentListener(new AdjustmentListener() {
 			@Override
 			public void adjustmentValueChanged(AdjustmentEvent e) {
-				mergedText.getHorizontalScrollBar().setValue(
-						e.getValue()
+				mergedText.getHorizontalScrollBar()
+						.setValue(e.getValue()
 								* (mergedText.getHorizontalScrollBar().getMaximum() - mergedText.getHorizontalScrollBar().getMinimum())
 								/ (horizontalScrollBar.getMaximum() - horizontalScrollBar.getMinimum()));
-				leftText.getHorizontalScrollBar().setValue(
-						e.getValue() * (leftText.getHorizontalScrollBar().getMaximum() - leftText.getHorizontalScrollBar().getMinimum())
+				leftText.getHorizontalScrollBar()
+						.setValue(e.getValue()
+								* (leftText.getHorizontalScrollBar().getMaximum() - leftText.getHorizontalScrollBar().getMinimum())
 								/ (horizontalScrollBar.getMaximum() - horizontalScrollBar.getMinimum()));
-				rightText.getHorizontalScrollBar().setValue(
-						e.getValue() * (rightText.getHorizontalScrollBar().getMaximum() - rightText.getHorizontalScrollBar().getMinimum())
+				rightText.getHorizontalScrollBar()
+						.setValue(e.getValue()
+								* (rightText.getHorizontalScrollBar().getMaximum() - rightText.getHorizontalScrollBar().getMinimum())
 								/ (horizontalScrollBar.getMaximum() - horizontalScrollBar.getMinimum()));
-				originalText.getHorizontalScrollBar().setValue(
-						e.getValue()
+				originalText.getHorizontalScrollBar()
+						.setValue(e.getValue()
 								* (originalText.getHorizontalScrollBar().getMaximum() - originalText.getHorizontalScrollBar().getMinimum())
 								/ (horizontalScrollBar.getMaximum() - horizontalScrollBar.getMinimum()));
 			}
@@ -371,18 +373,20 @@ public class DetailedMergeAnalysisPanel extends JDialog implements Observer {
 			verticalScrollBar.addAdjustmentListener(new AdjustmentListener() {
 				@Override
 				public void adjustmentValueChanged(AdjustmentEvent e) {
-					mergedText.getVerticalScrollBar().setValue(
-							e.getValue()
+					mergedText.getVerticalScrollBar()
+							.setValue(e.getValue()
 									* (mergedText.getVerticalScrollBar().getMaximum() - mergedText.getVerticalScrollBar().getMinimum())
 									/ (verticalScrollBar.getMaximum() - verticalScrollBar.getMinimum()));
-					leftText.getVerticalScrollBar().setValue(
-							e.getValue() * (leftText.getVerticalScrollBar().getMaximum() - leftText.getVerticalScrollBar().getMinimum())
+					leftText.getVerticalScrollBar()
+							.setValue(e.getValue()
+									* (leftText.getVerticalScrollBar().getMaximum() - leftText.getVerticalScrollBar().getMinimum())
 									/ (verticalScrollBar.getMaximum() - verticalScrollBar.getMinimum()));
-					rightText.getVerticalScrollBar().setValue(
-							e.getValue() * (rightText.getVerticalScrollBar().getMaximum() - rightText.getVerticalScrollBar().getMinimum())
+					rightText.getVerticalScrollBar()
+							.setValue(e.getValue()
+									* (rightText.getVerticalScrollBar().getMaximum() - rightText.getVerticalScrollBar().getMinimum())
 									/ (verticalScrollBar.getMaximum() - verticalScrollBar.getMinimum()));
-					originalText.getVerticalScrollBar().setValue(
-							e.getValue()
+					originalText.getVerticalScrollBar()
+							.setValue(e.getValue()
 									* (originalText.getVerticalScrollBar().getMaximum() - originalText.getVerticalScrollBar().getMinimum())
 									/ (verticalScrollBar.getMaximum() - verticalScrollBar.getMinimum()));
 				}
@@ -398,7 +402,8 @@ public class DetailedMergeAnalysisPanel extends JDialog implements Observer {
 						direction = e.getWheelRotation() < 0 ? -1 : 1;
 						if (e.getScrollType() == MouseWheelEvent.WHEEL_UNIT_SCROLL) {
 							JEditTextArea.scrollByUnits(verticalScrollBar, direction, e.getScrollAmount());
-						} else if (e.getScrollType() == MouseWheelEvent.WHEEL_BLOCK_SCROLL) {
+						}
+						else if (e.getScrollType() == MouseWheelEvent.WHEEL_BLOCK_SCROLL) {
 							JEditTextArea.scrollByBlock(verticalScrollBar, direction);
 						}
 					}
@@ -449,38 +454,42 @@ public class DetailedMergeAnalysisPanel extends JDialog implements Observer {
 		originalText.getPainter().setSelectionColor(getColor(change));
 
 		if (change.getLast1() >= change.getFirst1()) {
-			originalText.selectArea(change.getMerge().getOriginalSource().tokenAt(change.getFirst1()).getTokenStartIndex(), change
-					.getMerge().getOriginalSource().tokenAt(change.getLast1()).getTokenEndIndex());
-		} else {
+			originalText.selectArea(change.getMerge().getOriginalSource().tokenAt(change.getFirst1()).getTokenStartIndex(),
+					change.getMerge().getOriginalSource().tokenAt(change.getLast1()).getTokenEndIndex());
+		}
+		else {
 			originalText.selectArea(0, 0);
 		}
 
 		if (change.getLast0() >= change.getFirst0()) {
 			if (change.getMerge().getLeftSource().tokenAt(change.getFirst0()) != null
 					&& change.getMerge().getLeftSource().tokenAt(change.getLast0()) != null) {
-				leftText.selectArea(change.getMerge().getLeftSource().tokenAt(change.getFirst0()).getTokenStartIndex(), change.getMerge()
-						.getLeftSource().tokenAt(change.getLast0()).getTokenEndIndex());
+				leftText.selectArea(change.getMerge().getLeftSource().tokenAt(change.getFirst0()).getTokenStartIndex(),
+						change.getMerge().getLeftSource().tokenAt(change.getLast0()).getTokenEndIndex());
 			}
-		} else {
+		}
+		else {
 			leftText.selectArea(0, 0);
 		}
 
 		if (change.getLast2() >= change.getFirst2()) {
 			if (change.getMerge().getRightSource().tokenAt(change.getFirst2()) != null
 					&& change.getMerge().getRightSource().tokenAt(change.getLast2()) != null) {
-				rightText.selectArea(change.getMerge().getRightSource().tokenAt(change.getFirst2()).getTokenStartIndex(), change.getMerge()
-						.getRightSource().tokenAt(change.getLast2()).getTokenEndIndex());
+				rightText.selectArea(change.getMerge().getRightSource().tokenAt(change.getFirst2()).getTokenStartIndex(),
+						change.getMerge().getRightSource().tokenAt(change.getLast2()).getTokenEndIndex());
 			}
-		} else {
+		}
+		else {
 			rightText.selectArea(0, 0);
 		}
 
 		if (change.getLastMergeIndex() >= change.getFirstMergeIndex()
 				&& change.getMerge().getMergedSource().tokenAt(change.getFirstMergeIndex()) != null
 				&& change.getMerge().getMergedSource().tokenAt(change.getLastMergeIndex()) != null) {
-			mergedText.selectArea(change.getMerge().getMergedSource().tokenAt(change.getFirstMergeIndex()).getTokenStartIndex(), change
-					.getMerge().getMergedSource().tokenAt(change.getLastMergeIndex()).getTokenEndIndex());
-		} else {
+			mergedText.selectArea(change.getMerge().getMergedSource().tokenAt(change.getFirstMergeIndex()).getTokenStartIndex(),
+					change.getMerge().getMergedSource().tokenAt(change.getLastMergeIndex()).getTokenEndIndex());
+		}
+		else {
 			mergedText.selectArea(0, 0);
 		}
 
@@ -525,11 +534,14 @@ public class DetailedMergeAnalysisPanel extends JDialog implements Observer {
 	private Color getColor(MergeChange change) {
 		if (change.getMergeChangeSource() == MergeChange.MergeChangeSource.Left) {
 			return MergeHighlight.MODIFICATION_SELECTED_COLOR;
-		} else if (change.getMergeChangeSource() == MergeChange.MergeChangeSource.Conflict) {
+		}
+		else if (change.getMergeChangeSource() == MergeChange.MergeChangeSource.Conflict) {
 			return MergeHighlight.REMOVAL_SELECTED_COLOR;
-		} else if (change.getMergeChangeSource() == MergeChange.MergeChangeSource.Right) {
+		}
+		else if (change.getMergeChangeSource() == MergeChange.MergeChangeSource.Right) {
 			return MergeHighlight.ADDITION_SELECTED_COLOR;
-		} else {
+		}
+		else {
 			return Color.YELLOW;
 		}
 	}

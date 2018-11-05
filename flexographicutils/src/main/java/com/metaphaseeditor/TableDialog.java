@@ -22,8 +22,8 @@
 
 package com.metaphaseeditor;
 
+import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
-import org.openflexo.toolbox.ImageIconResource;
 
 /**
  * 
@@ -32,8 +32,6 @@ import org.openflexo.toolbox.ImageIconResource;
 public class TableDialog extends javax.swing.JDialog {
 
 	private String tableHtml;
-
-	
 
 	private enum Alignment {
 		NONE("None", null), LEFT("Left", "left"), CENTER("Center", "center"), RIGHT("Right", "right");
@@ -143,9 +141,9 @@ public class TableDialog extends javax.swing.JDialog {
 		heightLabel = new javax.swing.JLabel();
 		heightSpinner = new javax.swing.JSpinner();
 		widthSpinner = new javax.swing.JSpinner();
-		widthTypeComboBox = new javax.swing.JComboBox();
+		widthTypeComboBox = new javax.swing.JComboBox<>();
 		headersLabel = new javax.swing.JLabel();
-		headersComboBox = new javax.swing.JComboBox();
+		headersComboBox = new javax.swing.JComboBox<>();
 		cellPaddingLabel = new javax.swing.JLabel();
 		cellPaddingSpinner = new javax.swing.JSpinner();
 		cellSpacingLabel = new javax.swing.JLabel();
@@ -153,7 +151,7 @@ public class TableDialog extends javax.swing.JDialog {
 		borderSizeLabel = new javax.swing.JLabel();
 		borderSizeSpinner = new javax.swing.JSpinner();
 		alignmentLabel = new javax.swing.JLabel();
-		alignmentComboBox = new javax.swing.JComboBox();
+		alignmentComboBox = new javax.swing.JComboBox<>();
 		captionLabel = new javax.swing.JLabel();
 		captionTextField = new javax.swing.JTextField();
 		summaryLabel = new javax.swing.JLabel();
@@ -180,11 +178,11 @@ public class TableDialog extends javax.swing.JDialog {
 
 		widthSpinner.setModel(new javax.swing.SpinnerNumberModel(200, 1, 2000, 1));
 
-		widthTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pixels", "Percent" }));
+		widthTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pixels", "Percent" }));
 
 		headersLabel.setText("Headers");
 
-		headersComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "First Row", "First Column", "Both" }));
+		headersComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "First Row", "First Column", "Both" }));
 
 		cellPaddingLabel.setText("Cell Padding");
 
@@ -200,7 +198,7 @@ public class TableDialog extends javax.swing.JDialog {
 
 		alignmentLabel.setText("Alignment");
 
-		alignmentComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "Left", "Center", "Right" }));
+		alignmentComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Left", "Center", "Right" }));
 
 		captionLabel.setText("Caption");
 
@@ -224,201 +222,116 @@ public class TableDialog extends javax.swing.JDialog {
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(
-						layout.createSequentialGroup()
-								.addContainerGap()
-								.addGroup(
-										layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-												.addGroup(
-														layout.createSequentialGroup()
-																.addGroup(
-																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING)
-																				.addComponent(headersLabel).addComponent(rowsLabel)
-																				.addComponent(borderSizeLabel).addComponent(columnsLabel))
-																.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addGroup(
-																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING)
-																				.addComponent(borderSizeSpinner,
-																						javax.swing.GroupLayout.PREFERRED_SIZE, 66,
-																						javax.swing.GroupLayout.PREFERRED_SIZE)
-																				.addGroup(
-																						layout.createParallelGroup(
-																								javax.swing.GroupLayout.Alignment.TRAILING,
-																								false)
-																								.addComponent(
-																										rowsSpinner,
-																										javax.swing.GroupLayout.Alignment.LEADING)
-																								.addComponent(
-																										columnsSpinner,
-																										javax.swing.GroupLayout.Alignment.LEADING,
-																										javax.swing.GroupLayout.DEFAULT_SIZE,
-																										64, Short.MAX_VALUE))
-																				.addComponent(headersComboBox,
-																						javax.swing.GroupLayout.PREFERRED_SIZE, 105,
-																						javax.swing.GroupLayout.PREFERRED_SIZE))
-																.addGap(18, 18, 18)
-																.addGroup(
-																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING)
-																				.addComponent(widthLabel)
-																				.addGroup(
-																						layout.createSequentialGroup()
-																								.addGroup(
-																										layout.createParallelGroup(
-																												javax.swing.GroupLayout.Alignment.LEADING)
-																												.addComponent(
-																														cellPaddingLabel)
-																												.addComponent(heightLabel)
-																												.addComponent(
-																														cellSpacingLabel))
-																								.addPreferredGap(
-																										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-																								.addGroup(
-																										layout.createParallelGroup(
-																												javax.swing.GroupLayout.Alignment.LEADING,
-																												false)
-																												.addComponent(heightSpinner)
-																												.addComponent(widthSpinner)
-																												.addComponent(
-																														cellPaddingSpinner)
-																												.addComponent(
-																														cellSpacingSpinner))))
-																.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(widthTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
-																		javax.swing.GroupLayout.DEFAULT_SIZE,
-																		javax.swing.GroupLayout.PREFERRED_SIZE))
-												.addGroup(
-														layout.createSequentialGroup()
-																.addGroup(
-																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING)
-																				.addComponent(alignmentLabel).addComponent(summaryLabel)
-																				.addComponent(captionLabel))
+		layout.setHorizontalGroup(
+				layout.createParallelGroup(
+						javax.swing.GroupLayout.Alignment.LEADING)
+						.addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout
+								.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
+										layout.createSequentialGroup()
+												.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+														.addComponent(headersLabel).addComponent(rowsLabel)
+														.addComponent(borderSizeLabel).addComponent(columnsLabel))
+												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+												.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+														.addComponent(borderSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 66,
+																javax.swing.GroupLayout.PREFERRED_SIZE)
+														.addGroup(layout
+																.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+																.addComponent(rowsSpinner, javax.swing.GroupLayout.Alignment.LEADING)
+																.addComponent(columnsSpinner, javax.swing.GroupLayout.Alignment.LEADING,
+																		javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE))
+														.addComponent(headersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 105,
+																javax.swing.GroupLayout.PREFERRED_SIZE))
+												.addGap(18, 18, 18)
+												.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+														.addComponent(widthLabel)
+														.addGroup(layout.createSequentialGroup()
+																.addGroup(layout
+																		.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+																		.addComponent(cellPaddingLabel).addComponent(heightLabel)
+																		.addComponent(cellSpacingLabel))
 																.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-																.addGroup(
-																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING)
-																				.addComponent(summaryTextField,
-																						javax.swing.GroupLayout.Alignment.TRAILING,
-																						javax.swing.GroupLayout.DEFAULT_SIZE, 325,
-																						Short.MAX_VALUE)
-																				.addComponent(captionTextField,
-																						javax.swing.GroupLayout.Alignment.TRAILING,
-																						javax.swing.GroupLayout.DEFAULT_SIZE, 325,
-																						Short.MAX_VALUE)
-																				.addComponent(alignmentComboBox,
-																						javax.swing.GroupLayout.PREFERRED_SIZE, 88,
-																						javax.swing.GroupLayout.PREFERRED_SIZE)))
-												.addGroup(
-														javax.swing.GroupLayout.Alignment.TRAILING,
-														layout.createSequentialGroup().addComponent(okButton)
-																.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(cancelButton))).addContainerGap()));
+																.addGroup(layout
+																		.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING,
+																				false)
+																		.addComponent(heightSpinner).addComponent(widthSpinner)
+																		.addComponent(cellPaddingSpinner)
+																		.addComponent(cellSpacingSpinner))))
+												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+												.addComponent(widthTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
+														javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+								.addGroup(layout.createSequentialGroup()
+										.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+												.addComponent(alignmentLabel).addComponent(summaryLabel).addComponent(captionLabel))
+										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+										.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+												.addComponent(summaryTextField, javax.swing.GroupLayout.Alignment.TRAILING,
+														javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
+												.addComponent(captionTextField, javax.swing.GroupLayout.Alignment.TRAILING,
+														javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
+												.addComponent(alignmentComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 88,
+														javax.swing.GroupLayout.PREFERRED_SIZE)))
+								.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addComponent(okButton)
+										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(cancelButton)))
+								.addContainerGap()));
 
 		layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] { cancelButton, okButton });
 
-		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				layout.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-										.addGroup(
-												layout.createSequentialGroup()
-														.addGroup(
-																layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-																		.addComponent(rowsLabel)
-																		.addComponent(rowsSpinner, javax.swing.GroupLayout.PREFERRED_SIZE,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				javax.swing.GroupLayout.PREFERRED_SIZE))
-														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-														.addGroup(
-																layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-																		.addComponent(columnsSpinner,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				javax.swing.GroupLayout.PREFERRED_SIZE)
-																		.addComponent(columnsLabel))
-														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-														.addGroup(
-																layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-																		.addComponent(headersLabel)
-																		.addComponent(headersComboBox,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				javax.swing.GroupLayout.PREFERRED_SIZE))
-														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-														.addGroup(
-																layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-																		.addComponent(borderSizeLabel)
-																		.addComponent(borderSizeSpinner,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				javax.swing.GroupLayout.PREFERRED_SIZE))
-														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-														.addGroup(
-																layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-																		.addComponent(alignmentLabel)
-																		.addComponent(alignmentComboBox,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				javax.swing.GroupLayout.PREFERRED_SIZE)))
-										.addGroup(
-												layout.createSequentialGroup()
-														.addGroup(
-																layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-																		.addComponent(widthLabel)
-																		.addComponent(widthSpinner, javax.swing.GroupLayout.PREFERRED_SIZE,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				javax.swing.GroupLayout.PREFERRED_SIZE)
-																		.addComponent(widthTypeComboBox,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				javax.swing.GroupLayout.PREFERRED_SIZE))
-														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-														.addGroup(
-																layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-																		.addComponent(heightLabel)
-																		.addComponent(heightSpinner,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				javax.swing.GroupLayout.PREFERRED_SIZE))
-														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-														.addGroup(
-																layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-																		.addComponent(cellPaddingLabel)
-																		.addComponent(cellPaddingSpinner,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				javax.swing.GroupLayout.PREFERRED_SIZE))
-														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-														.addGroup(
-																layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-																		.addComponent(cellSpacingLabel)
-																		.addComponent(cellSpacingSpinner,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				javax.swing.GroupLayout.PREFERRED_SIZE))))
+		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout
+				.createSequentialGroup().addContainerGap()
+				.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup()
+						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(rowsLabel)
+								.addComponent(rowsSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+										javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-						.addGroup(
-								layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(captionLabel)
-										.addComponent(captionTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(columnsSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addComponent(columnsLabel))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-						.addGroup(
-								layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(summaryLabel)
-										.addComponent(summaryTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
+						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(headersLabel)
+								.addComponent(headersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+										javax.swing.GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(borderSizeLabel)
+								.addComponent(borderSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(alignmentLabel)
+								.addComponent(alignmentComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+						.addGroup(layout.createSequentialGroup()
+								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(widthLabel)
+										.addComponent(widthSpinner, javax.swing.GroupLayout.PREFERRED_SIZE,
+												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addComponent(widthTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
 												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE,
-								Short.MAX_VALUE)
-						.addGroup(
-								layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(cancelButton)
-										.addComponent(okButton)).addContainerGap()));
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(heightLabel)
+										.addComponent(heightSpinner, javax.swing.GroupLayout.PREFERRED_SIZE,
+												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+										.addComponent(cellPaddingLabel).addComponent(cellPaddingSpinner,
+												javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+												javax.swing.GroupLayout.PREFERRED_SIZE))
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+										.addComponent(cellSpacingLabel).addComponent(cellSpacingSpinner,
+												javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+												javax.swing.GroupLayout.PREFERRED_SIZE))))
+				.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+				.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(captionLabel).addComponent(
+						captionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+						javax.swing.GroupLayout.PREFERRED_SIZE))
+				.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+				.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(summaryLabel).addComponent(
+						summaryTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+						javax.swing.GroupLayout.PREFERRED_SIZE))
+				.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+				.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(cancelButton)
+						.addComponent(okButton))
+				.addContainerGap()));
 
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
@@ -479,7 +392,8 @@ public class TableDialog extends javax.swing.JDialog {
 			for (int j = 0; j < columns; j++) {
 				if (i == 0 && rowHeaders || j == 0 && columnHeaders) {
 					buffer.append("<th>&nbsp;</th>");
-				} else {
+				}
+				else {
 					buffer.append("<td>&nbsp;</td>");
 				}
 			}

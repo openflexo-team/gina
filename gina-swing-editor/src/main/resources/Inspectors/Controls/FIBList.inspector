@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBList" name="Inspector">
+	<Label index="0" label="selected" constraints="twocols(location=left)"
+		localize="true" />
+	<Custom index="1" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.selected"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data" />
+	</Custom>
+	<CheckBox index="2" selected="false" data="data.boundToSelectionManager"
+		constraints="twocols(location=left)" localize="true" />
+	<Label index="3" label="bound_to_selection_manager" constraints="twocols(location=right)"
+		localize="true" />
+	<Label index="4" label="selectionMode" constraints="twocols(location=left)"
+		localize="true" />
+	<DropDown index="5" data="data.selectionMode" constraints="twocols(location=right)"
+		localize="true" iteratorClassName="java.lang.Object"
+		autoSelectFirstRow="false" />
+	<Parameter name="title" value="List" />
+</Inspector>

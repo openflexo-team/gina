@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBTableColumn" name="Inspector">
+	<Label name="NameLabel" index="0" label="name" constraints="twocols(location=left;insetsTop=5)"
+		localize="true" />
+	<TextField name="NameTF" index="1" data="data.name"
+		constraints="twocols(expandHorizontally=true;location=right;insetsTop=5;insetsRight=10)"
+		localize="true" columns="15" />
+	<Label label="title" index="2"
+		constraints="twocols(expandHorizontally=false;expandVertically=false;location=left)"
+		localize="true" />
+	<TextField index="3" data="data.title" name="TitleTF"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+		localize="true" columns="7" text="TextField" />
+	<Label label="type" index="4"
+		constraints="twocols(expandHorizontally=false;expandVertically=false;location=left)"
+		localize="true" />
+	<TextField index="5" data="data.columnType.name"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+		readOnly="true" localize="true" columns="7" />
+	<Label label="data" index="10"
+		constraints="twocols(expandHorizontally=false;expandVertically=false;location=left)"
+		localize="true" />
+	<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" index="11" data="data.data"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;location=right)">
+		<Assignment variable="component.bindable" value="data" />
+	</Custom>
+
+	<CheckBox index="12" selected="false" data="data.resizable"
+		name="ResizableCB" constraints="twocols(location=left)" localize="true" />
+	<Label index="13" label="resizable" constraints="twocols(location=right)"
+		localize="true" name="ResizableLabel" />
+
+	<CheckBox index="14" selected="false" data="data.displayTitle"
+		name="DisplayTitleCB" constraints="twocols(location=left)" localize="true" />
+	<Label index="15" label="display_title" constraints="twocols(location=right)"
+		localize="true" name="DisplayTitleLabel" />
+
+
+	<Label label="column_width" index="16"
+		constraints="twocols(expandHorizontally=false;expandVertically=false;location=left)"
+		localize="true" />
+	<Number minValue="10" maxValue="1000" increment="10" numberType="IntegerType"
+		columns="3" index="17" data="data.columnWidth" constraints="twocols(location=right)"
+		name="ColumnWidthNumber" localize="true"/>
+
+	<Label label="tooltip" index="18"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=12;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+		localize="true" />
+	<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" index="19" data="data.tooltip"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=13;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+		<Assignment variable="component.bindable" value="data" />
+	</Custom>
+	<Label label="format" index="20"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=14;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+		localize="true" />
+	<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" index="21" data="data.format"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=15;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+		<Assignment variable="component.bindable" value="data.formatter" />
+	</Custom>
+	<Label label="value_changed" index="22"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=16;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+		localize="true" />
+	<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" index="23"
+		data="data.valueChangedAction"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=17;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+		<Assignment variable="component.bindable" value="data" />
+	</Custom>
+	<Label label="action" index="24"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=22;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+		visible="data.class.simpleName == &quot;FIBButtonColumn&quot;"
+		localize="true" />
+	<Panel layout="border" titleFont="SansSerif,0,11" darkLevel="0"
+		index="25" data="($org.openflexo.gina.model.widget.FIBButtonColumn)data"
+		dataClassName="org.openflexo.gina.model.widget.FIBButtonColumn"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=23;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)"
+		visible="data.class.simpleName == &quot;FIBButtonColumn&quot;" name="buttonColumn">
+		<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+			localize="true" manageDynamicModel="true" name="actionvalue"
+			data="buttonColumn.data.action" constraints="border(location=center)">
+			<Assignment variable="component.bindable" value="buttonColumn.data" />
+		</Custom>
+	</Panel>
+	<Label label="enable" index="26"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=24;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+		visible="data.class.simpleName == &quot;FIBButtonColumn&quot;"
+		localize="true" />
+	<Panel layout="border" titleFont="SansSerif,0,11" darkLevel="0"
+		index="27" data="($org.openflexo.gina.model.widget.FIBButtonColumn)data"
+		dataClassName="org.openflexo.gina.model.widget.FIBButtonColumn"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=25;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)"
+		visible="data.class.simpleName == &quot;FIBButtonColumn&quot;" name="buttonColumnEnabled">
+		<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+			localize="true" manageDynamicModel="true" name="enabledvalue"
+			data="buttonColumnEnabled.data.enabled" constraints="border(location=center)">
+			<Assignment variable="component.bindable" value="buttonColumnEnabled.data" />
+		</Custom>
+	</Panel>
+	<Parameter name="title" value="Table column" />
+</Inspector>

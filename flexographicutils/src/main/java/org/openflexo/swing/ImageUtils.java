@@ -49,14 +49,16 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import org.apache.batik.dom.GenericDOMImplementation;
+import org.apache.batik.svggen.SVGGraphics2D;
+import org.openflexo.rm.Resource;
 import org.openflexo.toolbox.FileUtils;
 import org.w3c.dom.DOMImplementation;
-import org.apache.batik.svggen.SVGGraphics2D;
-import org.apache.batik.dom.GenericDOMImplementation;
 import org.w3c.dom.Document;
 
 public class ImageUtils {
@@ -84,13 +86,13 @@ public class ImageUtils {
 		if (!dest.exists()) {
 			FileUtils.createNewFile(dest);
 		}
-		if(type==ImageType.SVG){
-		    DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
-		    String svgNS = "http://www.w3.org/2000/svg";
-		    Document document = domImpl.createDocument(svgNS, "svg", null);
-		    SVGGraphics2D svgGenerator = new SVGGraphics2D(document);
-		    svgGenerator.drawRenderedImage(image, null);
-		    svgGenerator.stream(new FileWriter(dest));
+		if (type == ImageType.SVG) {
+			DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
+			String svgNS = "http://www.w3.org/2000/svg";
+			Document document = domImpl.createDocument(svgNS, "svg", null);
+			SVGGraphics2D svgGenerator = new SVGGraphics2D(document);
+			svgGenerator.drawRenderedImage(image, null);
+			svgGenerator.stream(new FileWriter(dest));
 		}
 		ImageIO.write(image, type.getExtension(), dest);
 	}
@@ -104,11 +106,29 @@ public class ImageUtils {
 		}
 	}
 
+	public static BufferedImage loadImageFromResource(Resource source) {
+		InputStream is = source.openInputStream();
+		try {
+
+			return ImageIO.read(is);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				is.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public static ImageIcon getThumbnail(ImageIcon src, int maxWidth) {
 		if (src != null) {
 			if (src.getIconWidth() > maxWidth) {
 				return new ImageIcon(src.getImage().getScaledInstance(maxWidth, -1, Image.SCALE_SMOOTH));
-			} else { // no need to miniaturize
+			}
+			else { // no need to miniaturize
 				return src;
 			}
 		}
@@ -121,7 +141,8 @@ public class ImageUtils {
 			double imageRatio = (double) src.getIconWidth() / src.getIconHeight();
 			if (ratio < imageRatio) {
 				return new ImageIcon(src.getImage().getScaledInstance(maxWidth, -1, Image.SCALE_SMOOTH));
-			} else {
+			}
+			else {
 				return new ImageIcon(src.getImage().getScaledInstance(-1, maxHeight, Image.SCALE_SMOOTH));
 			}
 
@@ -141,7 +162,8 @@ public class ImageUtils {
 		int imgHeight = img.getHeight();
 		if (imgWidth * height < imgHeight * width) {
 			width = imgWidth * height / imgHeight;
-		} else {
+		}
+		else {
 			height = imgHeight * width / imgWidth;
 		}
 		BufferedImage newImage = new BufferedImage(width, height, img.getType());

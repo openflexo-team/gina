@@ -173,7 +173,7 @@ public abstract class InputHandler extends KeyAdapter {
 			textArea.undo();
 		}
 	}
-
+	
 	public static class redo implements ActionListener,
 	InputHandler.NonRecordable
 	{
@@ -191,7 +191,7 @@ public abstract class InputHandler extends KeyAdapter {
 	private static Hashtable<String, ActionListener> actions;
 
 	static {
-		actions = new Hashtable<String, ActionListener>();
+		actions = new Hashtable<>();
 		actions.put("backspace", BACKSPACE);
 		actions.put("backspace-word", BACKSPACE_WORD);
 		actions.put("delete", DELETE);
@@ -386,7 +386,8 @@ public abstract class InputHandler extends KeyAdapter {
 		// execute the action
 		if (listener instanceof InputHandler.NonRepeatable) {
 			listener.actionPerformed(evt);
-		} else {
+		}
+		else {
 			for (int i = 0; i < Math.max(1, repeatCount); i++) {
 				listener.actionPerformed(evt);
 			}
@@ -432,12 +433,14 @@ public abstract class InputHandler extends KeyAdapter {
 				for (;;) {
 					if (c instanceof JEditTextArea) {
 						return (JEditTextArea) c;
-					} else if (c == null) {
+					}
+					else if (c == null) {
 						break;
 					}
 					if (c instanceof JPopupMenu) {
 						c = ((JPopupMenu) c).getInvoker();
-					} else {
+					}
+					else {
 						c = c.getParent();
 					}
 				}
@@ -509,7 +512,8 @@ public abstract class InputHandler extends KeyAdapter {
 
 			if (textArea.getSelectionStart() != textArea.getSelectionEnd()) {
 				textArea.setSelectedText("");
-			} else {
+			}
+			else {
 				int caret = textArea.getCaretPosition();
 				if (caret == 0) {
 					textArea.getToolkit().beep();
@@ -545,7 +549,8 @@ public abstract class InputHandler extends KeyAdapter {
 					return;
 				}
 				caret--;
-			} else {
+			}
+			else {
 				String noWordSep = (String) textArea.getDocument().getProperty("noWordSep");
 				caret = TextUtilities.findWordStart(lineText, caret, noWordSep);
 			}
@@ -570,7 +575,8 @@ public abstract class InputHandler extends KeyAdapter {
 
 			if (textArea.getSelectionStart() != textArea.getSelectionEnd()) {
 				textArea.setSelectedText("");
-			} else {
+			}
+			else {
 				int caret = textArea.getCaretPosition();
 				if (caret == textArea.getDocumentLength()) {
 					textArea.getToolkit().beep();
@@ -606,7 +612,8 @@ public abstract class InputHandler extends KeyAdapter {
 					return;
 				}
 				caret++;
-			} else {
+			}
+			else {
 				String noWordSep = (String) textArea.getDocument().getProperty("noWordSep");
 				caret = TextUtilities.findWordEnd(lineText, caret, noWordSep);
 			}
@@ -636,7 +643,8 @@ public abstract class InputHandler extends KeyAdapter {
 			int lastVisibleLine = textArea.getFirstLine() + textArea.getVisibleLines();
 			if (lastVisibleLine >= textArea.getLineCount()) {
 				lastVisibleLine = Math.min(textArea.getLineCount() - 1, lastVisibleLine);
-			} else {
+			}
+			else {
 				lastVisibleLine -= textArea.getElectricScroll() + 1;
 			}
 
@@ -646,19 +654,24 @@ public abstract class InputHandler extends KeyAdapter {
 			if (caret == lastDocument) {
 				textArea.getToolkit().beep();
 				return;
-			} else if (!Boolean.TRUE.equals(textArea.getClientProperty(SMART_HOME_END_PROPERTY))) {
+			}
+			else if (!Boolean.TRUE.equals(textArea.getClientProperty(SMART_HOME_END_PROPERTY))) {
 				caret = lastOfLine;
-			} else if (caret == lastVisible) {
+			}
+			else if (caret == lastVisible) {
 				caret = lastDocument;
-			} else if (caret == lastOfLine) {
+			}
+			else if (caret == lastOfLine) {
 				caret = lastVisible;
-			} else {
+			}
+			else {
 				caret = lastOfLine;
 			}
 
 			if (select) {
 				textArea.select(textArea.getMarkPosition(), caret);
-			} else {
+			}
+			else {
 				textArea.setCaretPosition(caret);
 			}
 		}
@@ -676,7 +689,8 @@ public abstract class InputHandler extends KeyAdapter {
 			JEditTextArea textArea = getTextArea(evt);
 			if (select) {
 				textArea.select(textArea.getMarkPosition(), textArea.getDocumentLength());
-			} else {
+			}
+			else {
 				textArea.setCaretPosition(textArea.getDocumentLength());
 			}
 		}
@@ -704,19 +718,24 @@ public abstract class InputHandler extends KeyAdapter {
 			if (caret == 0) {
 				textArea.getToolkit().beep();
 				return;
-			} else if (!Boolean.TRUE.equals(textArea.getClientProperty(SMART_HOME_END_PROPERTY))) {
+			}
+			else if (!Boolean.TRUE.equals(textArea.getClientProperty(SMART_HOME_END_PROPERTY))) {
 				caret = firstOfLine;
-			} else if (caret == firstVisible) {
+			}
+			else if (caret == firstVisible) {
 				caret = 0;
-			} else if (caret == firstOfLine) {
+			}
+			else if (caret == firstOfLine) {
 				caret = firstVisible;
-			} else {
+			}
+			else {
 				caret = firstOfLine;
 			}
 
 			if (select) {
 				textArea.select(textArea.getMarkPosition(), caret);
-			} else {
+			}
+			else {
 				textArea.setCaretPosition(caret);
 			}
 		}
@@ -734,7 +753,8 @@ public abstract class InputHandler extends KeyAdapter {
 			JEditTextArea textArea = getTextArea(evt);
 			if (select) {
 				textArea.select(textArea.getMarkPosition(), 0);
-			} else {
+			}
+			else {
 				textArea.setCaretPosition(0);
 			}
 		}
@@ -794,7 +814,8 @@ public abstract class InputHandler extends KeyAdapter {
 
 			if (select) {
 				textArea.select(textArea.getMarkPosition(), caret + 1);
-			} else {
+			}
+			else {
 				textArea.setCaretPosition(caret + 1);
 			}
 		}
@@ -826,7 +847,8 @@ public abstract class InputHandler extends KeyAdapter {
 			caret = textArea.getLineStartOffset(line + 1) + textArea.xToOffset(line + 1, magic);
 			if (select) {
 				textArea.select(textArea.getMarkPosition(), caret);
-			} else {
+			}
+			else {
 				textArea.setCaretPosition(caret);
 			}
 			textArea.setMagicCaretPosition(magic);
@@ -859,7 +881,8 @@ public abstract class InputHandler extends KeyAdapter {
 			int caret = textArea.getLineStartOffset(Math.min(textArea.getLineCount() - 1, line + visibleLines));
 			if (select) {
 				textArea.select(textArea.getMarkPosition(), caret);
-			} else {
+			}
+			else {
 				textArea.setCaretPosition(caret);
 			}
 		}
@@ -888,14 +911,16 @@ public abstract class InputHandler extends KeyAdapter {
 					return;
 				}
 				caret++;
-			} else {
+			}
+			else {
 				String noWordSep = (String) textArea.getDocument().getProperty("noWordSep");
 				caret = TextUtilities.findWordEnd(lineText, caret, noWordSep);
 			}
 
 			if (select) {
 				textArea.select(textArea.getMarkPosition(), lineStart + caret);
-			} else {
+			}
+			else {
 				textArea.setCaretPosition(lineStart + caret);
 			}
 		}
@@ -927,7 +952,8 @@ public abstract class InputHandler extends KeyAdapter {
 
 			if (select) {
 				textArea.select(textArea.getMarkPosition(), caret - 1);
-			} else {
+			}
+			else {
 				textArea.setCaretPosition(caret - 1);
 			}
 		}
@@ -959,7 +985,8 @@ public abstract class InputHandler extends KeyAdapter {
 			caret = textArea.getLineStartOffset(line - 1) + textArea.xToOffset(line - 1, magic);
 			if (select) {
 				textArea.select(textArea.getMarkPosition(), caret);
-			} else {
+			}
+			else {
 				textArea.setCaretPosition(caret);
 			}
 			textArea.setMagicCaretPosition(magic);
@@ -989,7 +1016,8 @@ public abstract class InputHandler extends KeyAdapter {
 			int caret = textArea.getLineStartOffset(Math.max(0, line - visibleLines));
 			if (select) {
 				textArea.select(textArea.getMarkPosition(), caret);
-			} else {
+			}
+			else {
 				textArea.setCaretPosition(caret);
 			}
 		}
@@ -1018,14 +1046,16 @@ public abstract class InputHandler extends KeyAdapter {
 					return;
 				}
 				caret--;
-			} else {
+			}
+			else {
 				String noWordSep = (String) textArea.getDocument().getProperty("noWordSep");
 				caret = TextUtilities.findWordStart(lineText, caret, noWordSep);
 			}
 
 			if (select) {
 				textArea.select(textArea.getMarkPosition(), lineStart + caret);
-			} else {
+			}
+			else {
 				textArea.setCaretPosition(lineStart + caret);
 			}
 		}
@@ -1064,7 +1094,8 @@ public abstract class InputHandler extends KeyAdapter {
 					buf.append(str);
 				}
 				textArea.overwriteSetSelectedText(buf.toString());
-			} else {
+			}
+			else {
 				textArea.getToolkit().beep();
 			}
 		}
@@ -1091,9 +1122,8 @@ public abstract class InputHandler extends KeyAdapter {
 			JEditTextArea textArea = getTextArea(evt);
 			textArea.toggleSyntaxColoring();
 			if (evt.getSource() instanceof JMenuItem) {
-				((JMenuItem) evt.getSource())
-						.setText(FlexoLocalization.localizedForKey(textArea.isSyntaxColoringEnabled() ? "disable_syntax_coloring"
-								: "enable_syntax_coloring"));
+				((JMenuItem) evt.getSource()).setText(FlexoLocalization.getMainLocalizer()
+						.localizedForKey(textArea.isSyntaxColoringEnabled() ? "disable_syntax_coloring" : "enable_syntax_coloring"));
 			}
 		}
 	}
@@ -1158,7 +1188,7 @@ public abstract class InputHandler extends KeyAdapter {
 		}
 	}
 
-	private Vector<InputListener> _listeners = new Vector<InputListener>();
+	private Vector<InputListener> _listeners = new Vector<>();
 
 	public void addToInputListener(InputListener l) {
 		_listeners.add(l);

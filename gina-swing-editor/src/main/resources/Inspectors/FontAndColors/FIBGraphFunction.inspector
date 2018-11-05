@@ -1,0 +1,24 @@
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.graph.FIBGraphFunction">
+	<Parameter name="title" value="Graph function" />
+
+	<Label label="foreground" index="0" constraints="twocols(location=left;insetsTop=5)"
+		localize="true" />
+	<Color index="1" data="data.foregroundColor" allowsNull="false"
+		allowsNullText="" constraints="twocols(location=right;insetsTop=5)" localize="true" />
+	<Label label="background_type" index="2" constraints="twocols(location=left)"
+		localize="true" />
+	<DropDown data="data.backgroundType" index="3"
+		constraints="twocols(location=right)" localize="true"
+		iteratorClassName="org.openflexo.gina.model.graph.FIBGraphFunction$FunctionBackgroundType"
+		autoSelectFirstRow="true" />
+	<Label label="background_1" index="4" constraints="twocols(location=left)"
+		localize="true" />
+	<Color index="5" data="data.backgroundColor1" allowsNull="false"
+		allowsNullText="" constraints="twocols(location=right)" localize="true" />
+	<Label label="background_2" index="6" constraints="twocols(location=left)"
+		localize="true" />
+	<Color index="7" data="data.backgroundColor2" allowsNull="false"
+		allowsNullText="" constraints="twocols(location=right)" localize="true" />
+
+</Inspector>

@@ -78,7 +78,7 @@ public class ButtonsControlPanel extends JPanel {
 	public ButtonsControlPanel() {
 		super();
 		setLayout(new FlowLayout());
-		_buttons = new Vector<JButton>();
+		_buttons = new Vector<>();
 		setFocusTraversalPolicyProvider(true);
 		setFocusTraversalPolicy(new ButtonsControlPanelFocusTraversalPolicy());
 
@@ -122,13 +122,10 @@ public class ButtonsControlPanel extends JPanel {
 	}
 
 	public void requestFocusInFirstButton() {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				Component button = getFocusTraversalPolicy().getFirstComponent(ButtonsControlPanel.this);
-				if (button != null) {
-					button.requestFocusInWindow();
-				}
+		SwingUtilities.invokeLater(() -> {
+			Component button = getFocusTraversalPolicy().getFirstComponent(ButtonsControlPanel.this);
+			if (button != null) {
+				button.requestFocusInWindow();
 			}
 		});
 	}
@@ -139,7 +136,7 @@ public class ButtonsControlPanel extends JPanel {
 		container.setFocusTraversalPolicy(getFocusTraversalPolicy());
 
 		Set<AWTKeyStroke> set = container.getFocusTraversalKeys(KeyboardFocusManager.DOWN_CYCLE_TRAVERSAL_KEYS);
-		set = new HashSet<AWTKeyStroke>(set);
+		set = new HashSet<>(set);
 		KeyStroke right = KeyStroke.getKeyStroke("RIGHT");
 		set.add(right);
 		KeyStroke down = KeyStroke.getKeyStroke("DOWN");
@@ -148,7 +145,7 @@ public class ButtonsControlPanel extends JPanel {
 		set.add(tab);
 		container.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, set);
 		set = container.getFocusTraversalKeys(KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS);
-		set = new HashSet<AWTKeyStroke>(set);
+		set = new HashSet<>(set);
 		KeyStroke left = KeyStroke.getKeyStroke("LEFT");
 		set.add(left);
 		KeyStroke up = KeyStroke.getKeyStroke("UP");
@@ -182,7 +179,8 @@ public class ButtonsControlPanel extends JPanel {
 			}
 			if (returned.isEnabled()) {
 				return returned;
-			} else {
+			}
+			else {
 				return getComponentAfter(aContainer, returned);
 			}
 		}
@@ -206,7 +204,8 @@ public class ButtonsControlPanel extends JPanel {
 			}
 			if (returned.isEnabled()) {
 				return returned;
-			} else {
+			}
+			else {
 				return getComponentBefore(aContainer, returned);
 			}
 		}
@@ -230,7 +229,8 @@ public class ButtonsControlPanel extends JPanel {
 			}
 			if (returned.isEnabled()) {
 				return returned;
-			} else {
+			}
+			else {
 				return getComponentAfter(aContainer, returned);
 			}
 		}
@@ -249,7 +249,8 @@ public class ButtonsControlPanel extends JPanel {
 			}
 			if (returned.isEnabled()) {
 				return returned;
-			} else {
+			}
+			else {
 				return getComponentBefore(aContainer, returned);
 			}
 		}

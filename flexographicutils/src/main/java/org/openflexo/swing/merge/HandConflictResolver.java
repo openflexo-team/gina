@@ -57,8 +57,8 @@ import org.openflexo.diff.merge.MergeChange;
 import org.openflexo.diff.merge.MergeChange.MergeChangeAction;
 import org.openflexo.jedit.JEditTextAreaWithHighlights;
 import org.openflexo.jedit.TokenMarker;
-import org.openflexo.toolbox.FontCst;
 import org.openflexo.toolbox.TokenMarkerStyle;
+import org.openflexo.uicst.FontCst;
 
 public class HandConflictResolver extends JDialog {
 

@@ -58,23 +58,24 @@ public class IncreaseIndentAction extends HTMLEditorKit.StyledTextAction {
 		MutableAttributeSet sas = new SimpleAttributeSet(htmlTextPane.getParagraphAttributes());
 		currentIndent = null;
 		if (sas.getAttribute(CSS.Attribute.MARGIN_LEFT) != null) {
-			currentIndent = new Float(sas.getAttribute(CSS.Attribute.MARGIN_LEFT).toString());
+			currentIndent = Float.valueOf(sas.getAttribute(CSS.Attribute.MARGIN_LEFT).toString());
 		}
 
 		if (currentIndent == null) {
 			newIndent = 30;
-		} else {
+		}
+		else {
 			newIndent = currentIndent.intValue() + 30;
-			currentIndent = new Float(newIndent);
+			currentIndent = Float.valueOf(newIndent);
 		}
 
 		if (newIndent < 0) {
 			newIndent = 0;
-			currentIndent = new Float(newIndent);
+			currentIndent = Float.valueOf(newIndent);
 		}
 
 		sas.removeAttribute(CSS.Attribute.MARGIN_LEFT);
-		sas.addAttribute(StyleConstants.LeftIndent, new Float(newIndent));
+		sas.addAttribute(StyleConstants.LeftIndent, Float.valueOf(newIndent));
 		setParagraphAttributes(htmlTextPane, sas, true);
 	}
 }

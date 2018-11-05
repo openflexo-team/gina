@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.operator.FIBIteration" name="Inspector">
+	<Label index="42" label="list" constraints="twocols(location=left)"
+		localize="true" name="ListLabel" />
+	<Custom index="43" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.list" name="ListBinding"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data" />
+	</Custom>
+	<Label name="IteratorNameLabel" index="44" label="iterator_name"
+		constraints="twocols(location=left)" />
+	<TextField name="IteratorNameTF" data="data.iteratorName"
+		index="45" constraints="twocols(location=right;expandHorizontally=true)"
+		columns="15" />
+	<Label index="46" label="iterator_type" constraints="twocols(location=left)"
+		localize="true" name="IteratorClassCB" />
+	<Custom index="47" componentClassName="org.openflexo.gina.swing.utils.TypeSelector"
+		localize="true" manageDynamicModel="true" data="data.iteratorType"
+		name="IteratorTypeSelector" constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment mandatory="true" variable="component.customTypeManager"
+			value="data.rootComponent.customTypeManager" />
+		<Assignment mandatory="true" variable="component.customTypeEditorProvider"
+			value="data.rootComponent.customTypeEditorProvider" />
+	</Custom>
+	<Parameter name="title" value="Iteration" />
+</Inspector>

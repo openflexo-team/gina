@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBMultipleValues" name="Inspector">
+	<Label index="40" label="static_list" constraints="twocols(location=left)"
+		localize="true" name="StaticListLabel" />
+	<TextField index="41" data="data.staticList"
+		constraints="twocols(expandHorizontally=true;location=right)"
+		localize="true" columns="15" name="StaticListTF" />
+	<Label index="42" label="list" constraints="twocols(location=left)"
+		localize="true" name="ListLabel" />
+	<Custom index="43" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.list" name="ListBinding"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data" />
+	</Custom>
+	<Label index="44" label="array" constraints="twocols(location=left)"
+		localize="true" name="ArrayLabel" />
+	<Custom index="45" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.array" name="ArrayBinding"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data" />
+	</Custom>
+	<Label index="46" label="iterator_type" constraints="twocols(location=left)"
+		localize="true" name="IteratorClassCB" />
+	<Custom index="47" componentClassName="org.openflexo.gina.swing.utils.TypeSelector"
+		localize="true" manageDynamicModel="true" data="data.iteratorType"
+		name="IteratorTypeSelector" constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment mandatory="true" variable="component.customTypeManager"
+			value="data.rootComponent.customTypeManager" />
+		<Assignment mandatory="true" variable="component.customTypeEditorProvider"
+			value="data.rootComponent.customTypeEditorProvider" />
+	</Custom>
+	<CheckBox index="48" selected="false" data="data.autoSelectFirstRow"
+		name="SelectFirstRowCB" constraints="twocols(location=left)" localize="true" />
+	<Label index="49" label="select_first_row" constraints="twocols(location=right)"
+		localize="true" name="SelectFirstRowLabel" />
+	<CheckBox index="50" selected="false" data="data.showText"
+		name="ShowTextCB" constraints="twocols(location=left)" localize="true" />
+	<Label index="51" label="show_text" name="ShowTextLabel"
+		constraints="twocols(expandHorizontally=true;location=right)"
+		localize="true" />
+	<CheckBox index="52" selected="false" data="data.showIcon"
+		name="ShowIconCB" constraints="twocols(location=left)" localize="true" />
+	<Label index="53" label="show_icon" name="ShowIconLabel"
+		constraints="twocols(expandHorizontally=true;location=right)"
+		localize="true" />
+	<Label index="54" label="icon" constraints="twocols(location=left)"
+		visible="data.showIcon" localize="true" name="IconLabel" />
+	<Custom index="55" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.icon"
+		constraints="twocols(expandHorizontally=true;location=right)" visible="data.showIcon">
+		<Assignment variable="component.bindable" value="data.formatter"
+			name="IconBinding" />
+	</Custom>
+	<Parameter name="title" value="Multiple Values Widget" />
+</Inspector>

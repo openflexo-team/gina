@@ -1,0 +1,4 @@
+<Image imageFile="ContinuousPolarGraph.png">
+	<Parameter name="x" value="10"/>
+	<Parameter name="y" value="80"/>
+</Image>

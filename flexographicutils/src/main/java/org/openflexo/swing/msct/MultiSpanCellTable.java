@@ -99,7 +99,7 @@ public class MultiSpanCellTable extends JTable {
 		cellFrame.y = getCumulativeRowHeight(0, row);
 		cellFrame.height = getCumulativeRowHeight(row, row + n[CellSpan.ROW]);
 
-		Enumeration eeration = getColumnModel().getColumns();
+		Enumeration<?> eeration = getColumnModel().getColumns();
 		while (eeration.hasMoreElements()) {
 			TableColumn aColumn = (TableColumn) eeration.nextElement();
 			cellFrame.width = aColumn.getWidth() + columnMargin;
@@ -130,7 +130,7 @@ public class MultiSpanCellTable extends JTable {
 
 	private int[] rowColumnAtPoint(Point point) {
 		int[] retValue = { -1, -1 };
-		int currentHeight = 0;
+		// Unused var int currentHeight = 0;
 		int row = super.rowAtPoint(point);
 		/*int row = 0;
 		while (point.y > currentHeight) {

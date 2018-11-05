@@ -1,0 +1,4 @@
+dependencies {
+  compile project(':gina-api')
+  compile project(':gina-swing')
+}

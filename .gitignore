@@ -1,10 +1,11 @@
 *.class
 
 # Package Files #
-*.jar
+#*.jar
 *.war
 *.ear
-target
+target/
+build/
 
 # IDE FILES #
 .idea
@@ -15,5 +16,6 @@ target
 .project
 .settings
 /.pmd
-/.gitignore
 /pom.xml~
+/.gradle/
+**/out/

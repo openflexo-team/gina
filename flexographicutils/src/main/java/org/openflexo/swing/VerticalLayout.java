@@ -154,7 +154,7 @@ public class VerticalLayout implements LayoutManager {
 		int width = target.getSize().width - left - insets.right - hmargin;
 		Component children[] = target.getComponents();
 		// available vertical space
-		int vroom = target.getSize().height - top - insets.bottom - vmargin * 2;
+		// Unused int vroom = target.getSize().height - top - insets.bottom - vmargin * 2;
 
 		top += vgap;
 		for (int i = 0; i < children.length; i++) {
@@ -164,7 +164,7 @@ public class VerticalLayout implements LayoutManager {
 			int h = children[i].getPreferredSize().height + vmargin * 2;
 			children[i].setBounds(left, top, width, h);
 			top += h + vgap;
-			vroom -= h + vgap;
+			// Unused vroom -= h + vgap;
 		}
 	}
 

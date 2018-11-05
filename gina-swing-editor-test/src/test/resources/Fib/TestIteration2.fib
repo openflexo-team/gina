@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Panel id="0" align="left" borderTop="0" borderLeft="0" trackViewPortHeight="true" trackViewPortWidth="true" borderBottom="0" border="empty" sizeAdjustment="OriginalSize" layout="border" borderRight="0">
+  <Panel id="1" align="left" borderTop="0" flowAlignment="CENTER" borderLeft="0" trackViewPortHeight="true" trackViewPortWidth="true" borderBottom="0" border="rounded3d" sizeAdjustment="OriginalSize" layout="flow" vGap="5" borderRight="0" hGap="5" constraints="border(location=center)" name="FIBPanel">
+    <Label id="2" label="Avant" align="left" constraints="flow()" name="Label2" />
+    <Iteration id="3" iteratorClassName="org.openflexo.gina.controller.FIBController$SampleData$Person" list="controller.sampleData.persons" constraints="flow(location=center)" name="FIBIteration">
+      <Label id="4" label="Le label qui itere" align="left" data="(&quot;Le label qui itere pour  &quot; + FIBIteration.iterator.name)" name="Label3" />
+    </Iteration>
+    <Label id="5" label="Apres" align="left" constraints="flow()" name="Label" />
+  </Panel>
+</Panel>

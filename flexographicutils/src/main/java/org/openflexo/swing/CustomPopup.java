@@ -140,9 +140,10 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 	public CustomPopup(T editedObject) {
 		super(new BorderLayout());
 		_editedObject = editedObject;
-		if (ToolBox.getPLATFORM() != ToolBox.MACOS) {
+		if (!ToolBox.isMacOS()) {
 			_downButton = new ImageButton(UtilsIconLibrary.CUSTOM_POPUP_BUTTON);
-		} else {
+		}
+		else {
 			_downButton = new ImageButton(UtilsIconLibrary.CUSTOM_POPUP_DOWN);
 			_downButton.setDisabledIcon(UtilsIconLibrary.CUSTOM_POPUP_DOWN_DISABLED);
 		}
@@ -153,13 +154,13 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			_downButton.setBorder(border);
 		}*/
 		setOpaque(false);
-		if (ToolBox.getPLATFORM() != ToolBox.MACOS) {
+		if (!ToolBox.isMacOS()) {
 			setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
 		}
 		_frontComponent = buildFrontComponent();
 		add(_frontComponent, BorderLayout.CENTER);
 
-		applyCancelListener = new Vector<ApplyCancelListener>();
+		applyCancelListener = new Vector<>();
 		setFocusTraversalPolicy(new FocusTraversalPolicy() {
 
 			@Override
@@ -232,7 +233,11 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 	}
 
 	public ResizablePanel getCustomPanel() {
-		if (_customPanel == null) {
+		return getCustomPanel(true);
+	}
+
+	public ResizablePanel getCustomPanel(boolean createWhenNonExistant) {
+		if (_customPanel == null && createWhenNonExistant) {
 			try {
 				_customPanel = createCustomPanel(getEditedObject());
 			} catch (ClassCastException e) {
@@ -268,10 +273,12 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 		int newWidth = -1;
 		if (getRequiredWidth() < 0) {
 			newWidth = getCustomPanel().getDefaultSize().width;
-		} else if (getCustomPanel().getDefaultSize() != null) {
+		}
+		else if (getCustomPanel().getDefaultSize() != null) {
 			if (getRequiredWidth() > getCustomPanel().getDefaultSize().width) {
 				newWidth = getRequiredWidth();
-			} else {
+			}
+			else {
 				newWidth = getCustomPanel().getDefaultSize().width;
 			}
 		}
@@ -344,7 +351,7 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 
 		public CustomJPopupMenu(CustomPopup<?> invoker) {
 			super((Window) SwingUtilities.getAncestorOfClass(Window.class, invoker));
-			_childs = new Vector<CustomJPopupMenu>();
+			_childs = new Vector<>();
 			parentListener = new ParentPopupMoveListener();
 			setUndecorated(true);
 			getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -357,7 +364,8 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("This popup is " + this.hashCode() + " Parent popup is "
 						+ (parentPopupMenu == null ? "null" : parentPopupMenu.hashCode()));
-				// logger.info("Made new popup: "+Integer.toHexString(hashCode())+(getParentPopupMenu()!=null?" with parent: "+Integer.toHexString(getParentPopupMenu().hashCode()):""));
+				// logger.info("Made new popup: "+Integer.toHexString(hashCode())+(getParentPopupMenu()!=null?" with parent:
+				// "+Integer.toHexString(getParentPopupMenu().hashCode()):""));
 			}
 		}
 
@@ -409,7 +417,8 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			}
 			if (aBoolean) {
 				_requestVisibility = true;
-			} else {
+			}
+			else {
 				for (CustomJPopupMenu child : _childs) {
 					child.setVisible(false);
 				}
@@ -427,7 +436,8 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			if (aBoolean) {
 				registerParentListener();
 				_requestVisibility = false;
-			} else {
+			}
+			else {
 				unregisterParentListener();
 			}
 		}
@@ -459,10 +469,12 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 		if (e.getSource() == _downButton) {
 			if (!popupIsShown()) {
 				openPopup();
-			} else {
+			}
+			else {
 				closePopup();
 			}
-		} else {
+		}
+		else {
 			additionalActions();
 		}
 	}
@@ -485,33 +497,31 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 		@Override
 		public void windowDeactivated(final WindowEvent e) {
 			// If this window is deactivated, it means that another window has been activated
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					if (_popup == null) {
-						return;
+			SwingUtilities.invokeLater(() -> {
+				if (_popup == null) {
+					return;
+				}
+				Window oppositeWindow = e.getOppositeWindow();
+				if (!(oppositeWindow instanceof CustomPopup.CustomJPopupMenu) && oppositeWindow != null
+						&& oppositeWindow.getOwner() instanceof CustomPopup.CustomJPopupMenu) {
+					oppositeWindow = oppositeWindow.getOwner();
+				}
+				if (oppositeWindow != _popup) {
+					if (_popup.isChildOf(oppositeWindow)) {
+						CustomPopup.CustomJPopupMenu w = _popup;
+						while (w != null && w != oppositeWindow) {
+							w.getCustomPopup().pointerLeavesPopup();
+							w = w.getParentPopupMenu();
+						}
 					}
-					Window oppositeWindow = e.getOppositeWindow();
-					if (!(oppositeWindow instanceof CustomPopup.CustomJPopupMenu) && oppositeWindow != null
-							&& oppositeWindow.getOwner() instanceof CustomPopup.CustomJPopupMenu) {
-						oppositeWindow = oppositeWindow.getOwner();
-					}
-					if (oppositeWindow != _popup) {
-						if (_popup.isChildOf(oppositeWindow)) {
-							CustomPopup.CustomJPopupMenu w = _popup;
-							while (w != null && w != oppositeWindow) {
-								w.getCustomPopup().pointerLeavesPopup();
-								w = w.getParentPopupMenu();
-							}
-						} else if (oppositeWindow != parentWindow || FocusManager.getCurrentManager().getFocusOwner() != null
-								&& !_frontComponent.hasFocus()) {
-							// This test is used to detect the case of the lost of focus is performed
-							// Because a child popup gained the focus: in this case, nothing should be performed
-							if (oppositeWindow != null) {
-								if (!(oppositeWindow instanceof CustomPopup.CustomJPopupMenu)
-										|| !((CustomPopup.CustomJPopupMenu) oppositeWindow).isChildOf(_popup)) {
-									pointerLeavesPopup();
-								}
+					else if (oppositeWindow != parentWindow
+							|| FocusManager.getCurrentManager().getFocusOwner() != null && !_frontComponent.hasFocus()) {
+						// This test is used to detect the case of the lost of focus is performed
+						// Because a child popup gained the focus: in this case, nothing should be performed
+						if (oppositeWindow != null) {
+							if (!(oppositeWindow instanceof CustomPopup.CustomJPopupMenu)
+									|| !((CustomPopup.CustomJPopupMenu) oppositeWindow).isChildOf(_popup)) {
+								pointerLeavesPopup();
 							}
 						}
 					}
@@ -624,23 +634,13 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			addPopupClosers(getWindow(this));
 			closersAdded = true;
 		}
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				if (!_frontComponent.hasFocus()) {
-					_frontComponent.grabFocus();
-				}
-				SwingUtilities.invokeLater(new Runnable() {
-
-					@Override
-					public void run() {
-						if (inspectorWindowListener != null) {
-							inspectorWindowListener.startListening();
-						}
-
-					}
-				});
-			}
+		SwingUtilities.invokeLater(() -> {
+			if (!_frontComponent.hasFocus())
+				_frontComponent.grabFocus();
+			SwingUtilities.invokeLater(() -> {
+				if (inspectorWindowListener != null)
+					inspectorWindowListener.startListening();
+			});
 		});
 		if (isShowing()) {
 			Point p = _downButton.getLocationOnScreen(); // This can have negative x or y if the secondary screen is on the right ir or on
@@ -677,7 +677,7 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			_popup.setLocation(position);
 			_popup.pack();
 			_popup.setVisible(true);
-			if (ToolBox.getPLATFORM() != ToolBox.MACOS) {
+			if (!ToolBox.isMacOS()) {
 				_downButton.setIcon(UtilsIconLibrary.CUSTOM_POPUP_OPEN_BUTTON);
 			}
 
@@ -696,8 +696,8 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 				public void mouseDragged(MouseEvent e) {
 					if (previous != null) {
 						Dimension size = getCustomPanel().getSize();
-						Dimension aDimension = new Dimension(size.width + e.getLocationOnScreen().x - previous.x, size.height
-								+ e.getLocationOnScreen().y - previous.y);
+						Dimension aDimension = new Dimension(size.width + e.getLocationOnScreen().x - previous.x,
+								size.height + e.getLocationOnScreen().y - previous.y);
 						getCustomPanel().setPreferredSize(aDimension);
 						_popup.pack();
 						previous = e.getLocationOnScreen();
@@ -711,7 +711,8 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 					}
 					if (getResizeRectangle().contains(e.getPoint())) {
 						_popup.setCursor(Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR));
-					} else {
+					}
+					else {
 						_popup.setCursor(Cursor.getDefaultCursor());
 					}
 				}
@@ -737,7 +738,8 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			};
 			_popup.addMouseListener(mouseListener);
 			_popup.addMouseMotionListener(mouseListener);
-		} else {
+		}
+		else {
 			logger.warning("Illegal component state: component is not showing on screen");
 			// _popup.show(this, 0, 0);
 		}
@@ -753,7 +755,7 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			return;
 		}
 		_popup.setVisible(false);
-		if (ToolBox.getPLATFORM() != ToolBox.MACOS) {
+		if (!ToolBox.isMacOS()) {
 			_downButton.setIcon(UtilsIconLibrary.CUSTOM_POPUP_BUTTON);
 		}
 		if (notifyObjectChanged) {
@@ -780,10 +782,12 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 		T currentValue = _editedObject;
 		if (value == null) {
 			return currentValue != null;
-		} else {
+		}
+		else {
 			if (useEqualsLookup()) {
 				return !value.equals(currentValue);
-			} else {
+			}
+			else {
 				return value != currentValue;
 			}
 		}
@@ -897,7 +901,7 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 		closePopup();
 	}
 
-	public void addApplyCancelListener(ApplyCancelListener l) {
+	public final void addApplyCancelListener(ApplyCancelListener l) {
 		applyCancelListener.add(l);
 	}
 

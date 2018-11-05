@@ -76,7 +76,7 @@ import sun.awt.image.InputStreamImageSource;
 public class AnimatedIcon implements Icon {
 
 	/** Cache results to reduce decoding overhead. */
-	private static Map decoded = new WeakHashMap();
+	private static Map<Object, Object> decoded = new WeakHashMap<>();
 
 	/** Returns whether the given icon is an animated GIF. */
 	public static boolean isAnimated(Icon icon) {
@@ -107,9 +107,9 @@ public class AnimatedIcon implements Icon {
 						// Be sure to catch security exceptions
 						ImageProducer p = image.getSource();
 						if (p instanceof InputStreamImageSource) {
-							Method m = InputStreamImageSource.class.getDeclaredMethod("getDecoder", null);
+							Method m = InputStreamImageSource.class.getDeclaredMethod("getDecoder");
 							m.setAccessible(true);
-							ImageDecoder d = (ImageDecoder) m.invoke(p, null);
+							ImageDecoder d = (ImageDecoder) m.invoke(p);
 							if (d instanceof GifImageDecoder) {
 								GifImageDecoder gd = (GifImageDecoder) d;
 								Field input = ImageDecoder.class.getDeclaredField("input");
@@ -135,7 +135,7 @@ public class AnimatedIcon implements Icon {
 	}
 
 	private ImageIcon original;
-	private Set repaints = new HashSet();
+	private Set<RepaintArea> repaints = new HashSet<>();
 
 	/** For use by derived classes that don't have an original. */
 	protected AnimatedIcon() {
@@ -153,8 +153,8 @@ public class AnimatedIcon implements Icon {
 	 * Trigger a repaint on all components on which we've previously been painted.
 	 */
 	protected synchronized void repaint() {
-		for (Iterator i = repaints.iterator(); i.hasNext();) {
-			((RepaintArea) i.next()).repaint();
+		for (Iterator<RepaintArea> i = repaints.iterator(); i.hasNext();) {
+			i.next().repaint();
 		}
 		repaints.clear();
 	}
@@ -259,23 +259,24 @@ public class AnimatedIcon implements Icon {
 	 * @author twall
 	 */
 	private static class AnimationObserver implements ImageObserver {
-		private WeakReference ref;
+		private WeakReference<AnimatedIcon> ref;
 		private ImageIcon original;
 
 		public AnimationObserver(AnimatedIcon animIcon, ImageIcon original) {
 			this.original = original;
 			this.original.setImageObserver(this);
-			ref = new WeakReference(animIcon);
+			ref = new WeakReference<>(animIcon);
 		}
 
 		/** Queue repaint requests for all known painted areas. */
 		@Override
 		public boolean imageUpdate(Image img, int flags, int x, int y, int width, int height) {
 			if ((flags & (FRAMEBITS | ALLBITS)) != 0) {
-				AnimatedIcon animIcon = (AnimatedIcon) ref.get();
+				AnimatedIcon animIcon = ref.get();
 				if (animIcon != null) {
 					animIcon.repaint();
-				} else {
+				}
+				else {
 					original.setImageObserver(null);
 				}
 			}

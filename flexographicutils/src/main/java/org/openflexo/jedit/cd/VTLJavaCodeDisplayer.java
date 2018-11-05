@@ -21,7 +21,7 @@ package org.openflexo.jedit.cd;
 
 import org.openflexo.jedit.JEditTextArea;
 import org.openflexo.jedit.VTLJavaTokenMarker;
-import org.openflexo.toolbox.FontCst;
+import org.openflexo.uicst.FontCst;
 
 public class VTLJavaCodeDisplayer extends JEditTextArea {
 

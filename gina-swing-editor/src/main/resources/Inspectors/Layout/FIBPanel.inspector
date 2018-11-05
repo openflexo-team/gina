@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.container.FIBPanel" name="Inspector">
+	<Panel layout="twocols" border="rounded3d" borderTop="2"
+		borderTitle="border" titleFont="SansSerif,0,10" borderBottom="2"
+		borderRight="2" darkLevel="1"
+		constraints="twocols(expandHorizontally=true;location=right;insetsTop=10;insetsRight=10)"
+		name="BorderPanel">
+		<Label label="border" constraints="twocols(location=left)"
+			localize="true" />
+		<Panel layout="flow" hGap="0" vGap="0" flowAlignment="LEADING"
+			titleFont="SansSerif,0,11" darkLevel="0" constraints="twocols(location=right)">
+			<DropDown data="data.border" constraints="flow()" localize="true"
+				autoSelectFirstRow="false" name="BorderDD" />
+			<Color data="data.borderColor" constraints="flow()"
+				visible="(data.border = &quot;line&quot;)" localize="true" />
+			<TextField data="data.borderTitle" constraints="flow()"
+				visible="((data.border = &quot;titled&quot;) | (data.border = &quot;rounded3d&quot;))"
+				localize="true" />
+		</Panel>
+		<Label label="title_font" constraints="twocols(location=left)"
+			visible="((data.border = &quot;titled&quot;) | (data.border = &quot;rounded3d&quot;))"
+			localize="true" />
+		<Font sampleText="Sample for this font" localize="true"
+			allowsNull="true" allowsNullText="" data="data.titleFont"
+			constraints="twocols(location=right)"
+			visible="((data.border = &quot;titled&quot;) | (data.border = &quot;rounded3d&quot;))" />
+		<Label label="dark_level" constraints="twocols(location=left)"
+			visible="(data.border = &quot;rounded3d&quot;)" localize="true" />
+		<Number numberType="IntegerType" columns="3" data="data.darkLevel"
+			constraints="twocols(location=right)" visible="(data.border = &quot;rounded3d&quot;)"
+			localize="true" />
+
+		<Label label="insets" constraints="twocols(location=left)"
+			localize="true" visible="((data.border = &quot;empty&quot;) | (data.border = &quot;rounded3d&quot;))"/>
+		<Panel align="left" borderTop="0" borderLeft="0" visible="((data.border = &quot;empty&quot;) | (data.border = &quot;rounded3d&quot;))"
+			trackViewPortHeight="true" trackViewPortWidth="true" cols="3"
+			borderBottom="0" border="etched" sizeAdjustment="OriginalSize" rows="3"
+			layout="grid" vGap="-3" borderRight="0" hGap="-3"
+			constraints="twocols(expandHorizontally=false;location=right)" name="BorderPanel">
+			<Number data="data.borderTop" minValue="0" numberType="IntegerType"
+				columns="3" maxValue="65535" increment="1" constraints="grid(x=1;y=0)"
+				name="Top" />
+			<Number data="data.borderLeft" minValue="0" numberType="IntegerType"
+				columns="3" maxValue="65535" increment="1" constraints="grid(x=0;y=1)"
+				name="Left" />
+			<Number data="data.borderRight" minValue="0" numberType="IntegerType"
+				columns="3" maxValue="65535" increment="1" constraints="grid(x=2;y=1)"
+				name="Right" />
+			<Number data="data.borderBottom" minValue="0" numberType="IntegerType"
+				columns="3" maxValue="65535" increment="1" constraints="grid(x=1;y=2)"
+				name="Bottom" />
+		</Panel>
+
+	</Panel>
+	<LocalizedDictionary>
+	</LocalizedDictionary>
+	<Parameter name="title" value="Panel" />
+</Inspector>

@@ -119,8 +119,8 @@ import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.search.view.ITextComponent;
 import org.openflexo.search.view.TextSearchPanel;
 import org.openflexo.swing.DialogFactory;
-import org.openflexo.toolbox.FontCst;
 import org.openflexo.toolbox.ToolBox;
+import org.openflexo.uicst.FontCst;
 
 /**
  * jEdit's text area component. It is more suited for editing program source code than JEditorPane, because it drops the unnecessary
@@ -230,7 +230,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 					direction = e.getWheelRotation() < 0 ? -1 : 1;
 					if (e.getScrollType() == MouseWheelEvent.WHEEL_UNIT_SCROLL) {
 						scrollByUnits(vertical, direction, e.getScrollAmount());
-					} else if (e.getScrollType() == MouseWheelEvent.WHEEL_BLOCK_SCROLL) {
+					}
+					else if (e.getScrollType() == MouseWheelEvent.WHEEL_BLOCK_SCROLL) {
 						scrollByBlock(vertical, direction);
 					}
 				}
@@ -293,7 +294,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 		for (int i = 0; i < units; i++) {
 			if (direction > 0) {
 				delta = scrollbar.getUnitIncrement(direction);
-			} else {
+			}
+			else {
 				delta = -scrollbar.getUnitIncrement(direction);
 			}
 
@@ -303,7 +305,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 			// Check for overflow.
 			if (delta > 0 && newValue < oldValue) {
 				newValue = scrollbar.getMaximum();
-			} else if (delta < 0 && newValue > oldValue) {
+			}
+			else if (delta < 0 && newValue > oldValue) {
 				newValue = scrollbar.getMinimum();
 			}
 			if (oldValue == newValue) {
@@ -327,7 +330,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 		// Check for overflow.
 		if (delta > 0 && newValue < oldValue) {
 			newValue = scrollbar.getMaximum();
-		} else if (delta < 0 && newValue > oldValue) {
+		}
+		else if (delta < 0 && newValue > oldValue) {
 			newValue = scrollbar.getMinimum();
 		}
 
@@ -415,7 +419,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 		if (caretBlinks) {
 			blink = !blink;
 			painter.invalidateSelectedLines();
-		} else {
+		}
+		else {
 			blink = true;
 		}
 	}
@@ -601,7 +606,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 
 		if (line < firstLine) { // line is above the first line
 			newFirstLine = Math.max(0, line);
-		} else if (line > firstLine + visibleLines) {// line is below the last line
+		}
+		else if (line > firstLine + visibleLines) {// line is below the last line
 			newFirstLine = Math.min(line - visibleLines, getLineCount() - visibleLines);// (line - visibleLines) + electricScroll + 1;
 		} // line is currently between first and last shown line--> we don't move
 		if (newFirstLine < 0) {
@@ -612,7 +618,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 
 		if (x < 0) {
 			newHorizontalOffset = Math.min(0, horizontalOffset - x + width + 5);
-		} else if (x + width >= painter.getWidth()) {
+		}
+		else if (x + width >= painter.getWidth()) {
 			newHorizontalOffset = horizontalOffset + painter.getWidth() - x - width - 5;
 		}
 
@@ -688,7 +695,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 			Token tokens;
 			if (painter.currentLineIndex == line && painter.currentLineTokens != null) {
 				tokens = painter.currentLineTokens;
-			} else {
+			}
+			else {
 				painter.currentLineIndex = line;
 				tokens = painter.currentLineTokens = tokenMarker.markTokens(lineSegment, line);
 			}
@@ -705,7 +713,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 
 				if (id == Token.NULL) {
 					fm = painter.getFontMetrics();
-				} else {
+				}
+				else {
 					fm = styles[id].getFontMetrics(defaultFont);
 				}
 
@@ -714,7 +723,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 				if (offset + segmentOffset < lineSegment.offset + length) {
 					lineSegment.count = offset - (lineSegment.offset - segmentOffset);
 					return x + Utilities.getTabbedTextWidth(lineSegment, fm, x, painter, 0);
-				} else {
+				}
+				else {
 					lineSegment.count = length;
 					x += Utilities.getTabbedTextWidth(lineSegment, fm, x, painter, 0);
 					lineSegment.offset += length;
@@ -752,7 +762,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 				int charWidth;
 				if (c == '\t') {
 					charWidth = (int) painter.nextTabStop(width, i) - width;
-				} else {
+				}
+				else {
 					charWidth = fm.charWidth(c);
 				}
 
@@ -760,7 +771,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 					if (x - charWidth <= width) {
 						return i;
 					}
-				} else {
+				}
+				else {
 					if (x - charWidth / 2 <= width) {
 						return i;
 					}
@@ -770,11 +782,13 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 			}
 
 			return segmentCount;
-		} else {
+		}
+		else {
 			Token tokens;
 			if (painter.currentLineIndex == line && painter.currentLineTokens != null) {
 				tokens = painter.currentLineTokens;
-			} else {
+			}
+			else {
 				painter.currentLineIndex = line;
 				tokens = painter.currentLineTokens = tokenMarker.markTokens(lineSegment, line);
 			}
@@ -792,7 +806,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 
 				if (id == Token.NULL) {
 					fm = painter.getFontMetrics();
-				} else {
+				}
+				else {
 					fm = styles[id].getFontMetrics(defaultFont);
 				}
 
@@ -803,7 +818,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 					int charWidth;
 					if (c == '\t') {
 						charWidth = (int) painter.nextTabStop(width, offset + i) - width;
-					} else {
+					}
+					else {
 						charWidth = fm.charWidth(c);
 					}
 
@@ -811,7 +827,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 						if (x - charWidth <= width) {
 							return offset + i;
 						}
-					} else {
+					}
+					else {
 						if (x - charWidth / 2 <= width) {
 							return offset + i;
 						}
@@ -923,7 +940,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 		Element lineElement = document.getDefaultRootElement().getElement(line);
 		if (lineElement == null) {
 			return -1;
-		} else {
+		}
+		else {
 			return lineElement.getStartOffset();
 		}
 	}
@@ -939,7 +957,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 		Element lineElement = document.getDefaultRootElement().getElement(line);
 		if (lineElement == null) {
 			return -1;
-		} else {
+		}
+		else {
 			return lineElement.getEndOffset();
 		}
 	}
@@ -954,7 +973,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 		Element lineElement = document.getDefaultRootElement().getElement(line);
 		if (lineElement == null) {
 			return -1;
-		} else {
+		}
+		else {
 			return lineElement.getEndOffset() - lineElement.getStartOffset() - 1;
 		}
 	}
@@ -1061,7 +1081,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 	public int getSelectionStart(int line) {
 		if (line == selectionStartLine) {
 			return selectionStart;
-		} else if (rectSelect) {
+		}
+		else if (rectSelect) {
 			Element map = document.getDefaultRootElement();
 			int start = selectionStart - map.getElement(selectionStartLine).getStartOffset();
 
@@ -1069,7 +1090,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 			int lineStart = lineElement.getStartOffset();
 			int lineEnd = lineElement.getEndOffset() - 1;
 			return Math.min(lineEnd, lineStart + start);
-		} else {
+		}
+		else {
 			return getLineStartOffset(line);
 		}
 	}
@@ -1106,7 +1128,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 	public int getSelectionEnd(int line) {
 		if (line == selectionEndLine) {
 			return selectionEnd;
-		} else if (rectSelect) {
+		}
+		else if (rectSelect) {
 			Element map = document.getDefaultRootElement();
 			int end = selectionEnd - map.getElement(selectionEndLine).getStartOffset();
 
@@ -1114,7 +1137,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 			int lineStart = lineElement.getStartOffset();
 			int lineEnd = lineElement.getEndOffset() - 1;
 			return Math.min(lineEnd, lineStart + end);
-		} else {
+		}
+		else {
 			return getLineEndOffset(line) - 1;
 		}
 	}
@@ -1211,7 +1235,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 			newStart = start;
 			newEnd = end;
 			newBias = false;
-		} else {
+		}
+		else {
 			newStart = end;
 			newEnd = start;
 			newBias = true;
@@ -1319,7 +1344,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 			}
 
 			return buf.toString();
-		} else {
+		}
+		else {
 			return getText(selectionStart, selectionEnd - selectionStart);
 		}
 	}
@@ -1381,7 +1407,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 					document.insertString(offset, "\n", null);
 					document.insertString(offset + 1, selectedText.substring(currNewline + 1), null);
 				}
-			} else {
+			}
+			else {
 				document.remove(selectionStart, selectionEnd - selectionStart);
 				if (selectedText != null) {
 					document.insertString(selectionStart, selectedText, null);
@@ -1646,7 +1673,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 		int insertionPoint;
 		if (down) {
 			insertionPoint = end;
-		} else {
+		}
+		else {
 			insertionPoint = start;
 		}
 		try {
@@ -1689,7 +1717,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 				insertionPoint++;
 			}
 			insertionPoint -= text.length();
-		} else {
+		}
+		else {
 			insertionPoint = start > 0 ? start - 1 : 0;
 			while (insertionPoint > 0 && s.charAt(insertionPoint - 1) != '\n') {
 				insertionPoint--;
@@ -1726,15 +1755,15 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 			return;
 		}
 		switch (evt.getID()) {
-		case KeyEvent.KEY_TYPED:
-			inputHandler.keyTyped(evt);
-			break;
-		case KeyEvent.KEY_PRESSED:
-			inputHandler.keyPressed(evt);
-			break;
-		case KeyEvent.KEY_RELEASED:
-			inputHandler.keyReleased(evt);
-			break;
+			case KeyEvent.KEY_TYPED:
+				inputHandler.keyTyped(evt);
+				break;
+			case KeyEvent.KEY_PRESSED:
+				inputHandler.keyPressed(evt);
+				break;
+			case KeyEvent.KEY_RELEASED:
+				inputHandler.keyReleased(evt);
+				break;
 		}
 	}
 
@@ -1835,7 +1864,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 		int count;
 		if (ch == null) {
 			count = 0;
-		} else {
+		}
+		else {
 			count = ch.getChildrenAdded().length - ch.getChildrenRemoved().length;
 		}
 
@@ -1859,11 +1889,14 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 		public void addLayoutComponent(String name, Component comp) {
 			if (name.equals(CENTER)) {
 				center = comp;
-			} else if (name.equals(RIGHT)) {
+			}
+			else if (name.equals(RIGHT)) {
 				right = comp;
-			} else if (name.equals(BOTTOM)) {
+			}
+			else if (name.equals(BOTTOM)) {
 				bottom = comp;
-			} else if (name.equals(LEFT_OF_SCROLLBAR)) {
+			}
+			else if (name.equals(LEFT_OF_SCROLLBAR)) {
 				leftOfScrollBar.addElement(comp);
 			}
 		}
@@ -1872,12 +1905,14 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 		public void removeLayoutComponent(Component comp) {
 			if (center == comp) {
 				center = null;
-			} else if (right == comp) {
+			}
+			else if (right == comp) {
 				// right = null;
 			}
 			if (bottom == comp) {
 				// bottom = null;
-			} else {
+			}
+			else {
 				leftOfScrollBar.removeElement(comp);
 			}
 		}
@@ -1953,7 +1988,7 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 		private Component center;
 		private Component right;
 		private Component bottom;
-		private final Vector<Component> leftOfScrollBar = new Vector<Component>();
+		private final Vector<Component> leftOfScrollBar = new Vector<>();
 	}
 
 	static class CaretBlinker implements ActionListener {
@@ -1996,7 +2031,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 				public void run() {
 					if (evt.getAdjustable() == vertical) {
 						setFirstLine(vertical.getValue());
-					} else {
+					}
+					else {
 						setHorizontalOffset(-horizontal.getValue());
 					}
 				}
@@ -2025,13 +2061,15 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 
 			if (selectionStart > offset || selectionStart == selectionEnd && selectionStart == offset) {
 				newStart = selectionStart + length;
-			} else {
+			}
+			else {
 				newStart = selectionStart;
 			}
 
 			if (selectionEnd >= offset) {
 				newEnd = selectionEnd + length;
-			} else {
+			}
+			else {
 				newEnd = selectionEnd;
 			}
 
@@ -2051,20 +2089,24 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 			if (selectionStart > offset) {
 				if (selectionStart > offset + length) {
 					newStart = selectionStart - length;
-				} else {
+				}
+				else {
 					newStart = offset;
 				}
-			} else {
+			}
+			else {
 				newStart = selectionStart;
 			}
 
 			if (selectionEnd > offset) {
 				if (selectionEnd > offset + length) {
 					newEnd = selectionEnd - length;
-				} else {
+				}
+				else {
 					newEnd = offset;
 				}
-			} else {
+			}
+			else {
 				newEnd = selectionEnd;
 			}
 
@@ -2132,21 +2174,21 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 			int dot = getLineStartOffset(line) + offset;
 
 			switch (evt.getClickCount()) {
-			case 1:
-				doSingleClick(evt, line, offset, dot);
-				break;
-			case 2:
-				// It uses the bracket matching stuff, so
-				// it can throw a BLE
-				try {
-					doDoubleClick(evt, line, offset, dot);
-				} catch (BadLocationException bl) {
-					bl.printStackTrace();
-				}
-				break;
-			case 3:
-				doTripleClick(evt, line, offset, dot);
-				break;
+				case 1:
+					doSingleClick(evt, line, offset, dot);
+					break;
+				case 2:
+					// It uses the bracket matching stuff, so
+					// it can throw a BLE
+					try {
+						doDoubleClick(evt, line, offset, dot);
+					} catch (BadLocationException bl) {
+						bl.printStackTrace();
+					}
+					break;
+				case 3:
+					doTripleClick(evt, line, offset, dot);
+					break;
 			}
 		}
 
@@ -2154,7 +2196,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 			if ((evt.getModifiers() & InputEvent.SHIFT_MASK) != 0) {
 				rectSelect = (evt.getModifiers() & InputEvent.CTRL_MASK) != 0;
 				select(getMarkPosition(), dot);
-			} else {
+			}
+			else {
 				setCaretPosition(dot);
 			}
 		}
@@ -2271,7 +2314,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 				cedit.die();
 
 				return true;
-			} else {
+			}
+			else {
 				return false;
 			}
 		}
@@ -2313,7 +2357,7 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 		painter.setRows(rows);
 	}
 
-	protected Vector<CursorPositionListener> _cursorPositionListeners = new Vector<CursorPositionListener>();
+	protected Vector<CursorPositionListener> _cursorPositionListeners = new Vector<>();
 
 	public void addToCursorPositionListener(CursorPositionListener listener) {
 		_cursorPositionListeners.add(listener);
@@ -2406,7 +2450,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 	public void showFindDialog() {
 		if (searchDialog == null) {
 			createSearchDialog();
-		} else if (SwingUtilities.getWindowAncestor(this) != null && searchDialog.getOwner() != SwingUtilities.getWindowAncestor(this)) {
+		}
+		else if (SwingUtilities.getWindowAncestor(this) != null && searchDialog.getOwner() != SwingUtilities.getWindowAncestor(this)) {
 			createSearchDialog();
 		}
 		if (getSelectedText() != null && getSelectedText().length() != 0) {
@@ -2417,16 +2462,16 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 	}
 
 	public void showGotoLineDialog() {
-		final Dialog dialog = createNewDialog(FlexoLocalization.localizedForKey("goto_line"));
+		final Dialog dialog = createNewDialog(FlexoLocalization.getMainLocalizer().localizedForKey("goto_line"));
 		dialog.setModal(true);
 		JPanel panel = new JPanel(new BorderLayout());
-		JLabel label = new JLabel(FlexoLocalization.localizedForKey("line:"));
+		JLabel label = new JLabel(FlexoLocalization.getMainLocalizer().localizedForKey("line:"));
 		panel.add(label, BorderLayout.WEST);
 		final JFormattedTextField lineNumberTf = new JFormattedTextField(NumberFormat.getIntegerInstance());
 		JPanel tfPanel = new JPanel();
 		tfPanel.add(lineNumberTf);
 		panel.add(tfPanel);
-		JButton go = new JButton(FlexoLocalization.localizedForKey("OK"));
+		JButton go = new JButton(FlexoLocalization.getMainLocalizer().localizedForKey("OK"));
 		ActionListener actionListener = new ActionListener() {
 
 			@Override
@@ -2454,13 +2499,16 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 			if (windowAncestor instanceof Dialog) {
 				if (DIALOG_FACTORY != null) {
 					dialog = DIALOG_FACTORY.getNewDialog((Dialog) windowAncestor, title, false);
-				} else {
+				}
+				else {
 					dialog = new Dialog((Dialog) windowAncestor, title, false);
 				}
-			} else if (windowAncestor instanceof Frame) {
+			}
+			else if (windowAncestor instanceof Frame) {
 				if (DIALOG_FACTORY != null) {
 					dialog = DIALOG_FACTORY.getNewDialog((Frame) windowAncestor, title, false);
-				} else {
+				}
+				else {
 					dialog = new Dialog((Frame) windowAncestor, title, false);
 				}
 			}
@@ -2468,7 +2516,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 		if (dialog == null) {
 			if (DIALOG_FACTORY != null) {
 				dialog = DIALOG_FACTORY.getNewDialog((Frame) windowAncestor, title, false);
-			} else {
+			}
+			else {
 				dialog = new Dialog((Frame) windowAncestor, title, false);
 			}
 		}
@@ -2479,15 +2528,16 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 		if (searchDialog != null) {
 			searchDialog.dispose();
 		}
-		searchDialog = createNewDialog(FlexoLocalization.localizedForKey("find_and_replace"));
+		searchDialog = createNewDialog(FlexoLocalization.getMainLocalizer().localizedForKey("find_and_replace"));
 		if (searchPanel == null) {
 			searchDialog.add(searchPanel = new TextSearchPanel() {
 				@Override
 				public String localizedForKey(String key) {
-					return FlexoLocalization.localizedForKey(key);
+					return FlexoLocalization.getMainLocalizer().localizedForKey(key);
 				}
 			});
-		} else {
+		}
+		else {
 			searchDialog.add(searchPanel);
 		}
 		searchPanel.setTextComponent(this);
@@ -2497,7 +2547,7 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 			((JDialog) searchDialog).getRootPane().setDefaultButton(searchPanel.getDefaultButton());
 		}
 		searchDialog.setMinimumSize(searchDialog.getSize());
-		if (ToolBox.getPLATFORM() == ToolBox.MACOS) {
+		if (ToolBox.isMacOS()) {
 			searchDialog.setResizable(false);
 		}
 	}
@@ -2520,7 +2570,8 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 	public void toggleSyntaxColoring() {
 		if (!isSyntaxColoringEnabled()) {
 			enableSyntaxColor();
-		} else {
+		}
+		else {
 			disableSyntaxColor();
 		}
 	}

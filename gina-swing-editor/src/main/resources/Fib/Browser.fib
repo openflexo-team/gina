@@ -1,13 +1,167 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel id="0" darkLevel="0" useScrollBar="false" protectContent="false" height="500" name="main" layout="border" controllerClassName="org.openflexo.fib.editor.widget.FIBBrowserController" border="empty" trackViewPortWidth="true" width="600" dataClassName="org.openflexo.fib.model.FIBComponent" titleFont="Lucida Grande,0,13" trackViewPortHeight="true">
-  <Browser id="1" deepExploration="true" showFooter="true" showRootsHandle="true" manageDynamicModel="true" root="data" selectionMode="DiscontiguousTreeSelection" rightClickAction="controller.rightClick(ComponentBrowser.selected,controller.mouseEvent)" boundToSelectionManager="true" localize="true" constraints="border(location=center;x=0;y=0)" iteratorClassName="org.openflexo.fib.model.FIBComponent" useScrollBar="false" selected="controller.editorController.selectedObject" name="ComponentBrowser" rootVisible="true" readOnly="false">
-    <BrowserElement id="2" icon="controller.iconFor(element)" filtered="false" label="controller.textFor(element)" defaultVisible="true" dataClassName="org.openflexo.fib.model.FIBComponent" name="element" isEditable="false" />
-    <BrowserElement id="3" icon="controller.iconFor(container)" filtered="false" label="controller.textFor(container)" defaultVisible="true" dataClassName="org.openflexo.fib.model.FIBContainer" name="container" isEditable="false">
-      <Children id="4" name="children" data="container.subComponents" />
-    </BrowserElement>
-  </Browser>
-  <Panel id="5" darkLevel="0" vGap="5" useScrollBar="false" protectContent="false" hGap="5" layout="border" border="empty" flowAlignment="LEADING" trackViewPortWidth="true" constraints="border(location=north)" trackViewPortHeight="true">
-    <TextField id="6" passwd="false" manageDynamicModel="false" useScrollBar="false" data="controller.searchedLabel" columns="7" text="TextField" localize="true" constraints="border(location=center)" readOnly="false" validateOnReturn="false" />
-    <Button id="7" manageDynamicModel="false" useScrollBar="false" buttonType="Trigger" action="controller.search()" localize="true" constraints="border(location=east)" label="search" readOnly="false" />
-  </Panel>
+<Panel id="0" darkLevel="0" useScrollBar="false" protectContent="false"
+	height="200" name="main" layout="border"
+	controllerClassName="org.openflexo.gina.swing.editor.widget.BrowserFIBController"
+	border="empty" trackViewPortWidth="true" width="300"
+	dataClassName="org.openflexo.gina.model.FIBComponent" titleFont="Lucida Grande,0,13"
+	trackViewPortHeight="true">
+	<Browser id="1" deepExploration="true" showFooter="true" allowsDragAndDrop="true"
+		rowHeight="18" showRootsHandle="true" manageDynamicModel="true" root="data"
+		selectionMode="DiscontiguousTreeSelection" rightClickAction="controller.rightClick(ComponentBrowser.selected,event)"
+		boundToSelectionManager="true" localize="true"
+		constraints="border(location=center;x=0;y=0)" iteratorClassName="org.openflexo.gina.model.FIBModelObject"
+		useScrollBar="false" selected="controller.editorController.selectedObject"
+		name="ComponentBrowser" rootVisible="true" readOnly="false">
+		<BrowserElement icon="controller.iconForObject(table)"
+			filtered="false" label="table.presentationName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.model.widget.FIBTable" name="table"
+			isEditable="true" editableLabel="table.name">
+			<Children name="columns" data="table.columns" />
+			<Children name="actions" data="table.actions" />
+			<BrowserAddAction name="new_label_column"
+				method="controller.createLabelColumn(selected)" />
+			<BrowserAddAction name="new_textfield_column"
+				method="controller.createTextFieldColumn(selected)" />
+			<BrowserAddAction name="new_checkbox_column"
+				method="controller.createCheckBoxColumn(selected)" />
+			<BrowserAddAction name="new_dropdown_column"
+				method="controller.createDropDownColumn(selected)" />
+			<BrowserAddAction name="new_number_column"
+				method="controller.createNumberColumn(selected)" />
+			<BrowserAddAction name="new_icon_column"
+				method="controller.createIconColumn(selected)" />
+			<BrowserAddAction name="new_custom_column"
+				method="controller.createCustomColumn(selected)" />
+			<BrowserAddAction name="new_button_column"
+				method="controller.createButtonColumn(selected)" />
+			<BrowserAddAction method="controller.createAddAction(selected)"
+				name="new_add_action" />
+			<BrowserAddAction method="controller.createRemoveAction(selected)"
+				name="new_remove_action" />
+			<BrowserAddAction method="controller.createCustomAction(selected)"
+				name="new_custom_action" />
+		</BrowserElement>
+		<BrowserElement icon="controller.iconForObject(browser)"
+			filtered="false" label="browser.presentationName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.model.widget.FIBBrowser" name="browser"
+			isEditable="true" editableLabel="browser.name">
+			<Children name="elements" data="browser.elements" />
+			<BrowserAddAction name="new_element"
+				method="controller.createElement(selected)" />
+		</BrowserElement>
+		<BrowserElement icon="controller.iconForObject(graph)"
+			filtered="false" label="graph.presentationName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.model.graph.FIBGraph" name="graph"
+			isEditable="true" editableLabel="graph.name">
+			<Children name="functions" data="graph.functions" />
+			<BrowserAddAction name="add_numeric_function"
+				method="controller.createNumericFunction(selected)" />
+			<BrowserAddAction name="add_discrete_function"
+				method="controller.createDiscreteFunction(selected)" />
+		</BrowserElement>
+		<BrowserElement id="3"
+			icon="controller.iconForObject(container)" filtered="false"
+			label="container.presentationName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.model.FIBContainer" name="container"
+			isEditable="true" editableLabel="container.name">
+			<Children id="4" name="children" data="container.subComponents" />
+			<DragOperation isAvailable="controller.canMoveComponent(dragged,target)"
+				targetElementName="container" action="controller.moveComponent(dragged,target)"
+				name="drag_operation" />
+		</BrowserElement>
+		<BrowserElement id="2" icon="controller.iconForObject(element)"
+			filtered="false" label="element.presentationName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.model.FIBComponent" name="element"
+			isEditable="true" editableLabel="element.name">
+			<DragOperation isAvailable="controller.canMoveComponent(dragged,target)"
+				targetElementName="container" action="controller.moveComponent(dragged,target)"
+				name="drag_operation" />
+		</BrowserElement>
+		<BrowserElement icon="controller.iconForObject(column)"
+			filtered="false" label="column.presentationName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.model.widget.FIBTableColumn" name="column"
+			isEditable="true" editableLabel="column.name">
+			<BrowserCustomAction name="move_to_top"
+				method="controller.moveToTop(selected)" />
+			<BrowserCustomAction name="move_up"
+				method="controller.moveUp(selected)" />
+			<BrowserCustomAction name="move_down"
+				method="controller.moveDown(selected)" />
+			<BrowserCustomAction name="move_to_bottom"
+				method="controller.moveToBottom(selected)" />
+			<BrowserRemoveAction name="remove_column"
+				method="controller.deleteColumn(selected)" />
+		</BrowserElement>
+		<BrowserElement icon="controller.iconForObject(action)"
+			filtered="false" label="action.presentationName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.model.widget.FIBTableAction" name="action"
+			isEditable="true" editableLabel="action.name">
+			<BrowserRemoveAction name="remove_action"
+				method="controller.deleteAction(selected)" />
+		</BrowserElement>
+		<BrowserElement icon="controller.iconForObject(element)"
+			filtered="false" label="element.presentationName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.model.widget.FIBBrowserElement"
+			name="element" isEditable="true" editableLabel="element.name">
+			<Children name="children" data="element.children" />
+			<Children name="actions" data="element.actions" />
+			<Children name="dragOperations" data="element.dragOperations" />
+			<BrowserAddAction method="controller.createChildren(selected)"
+				name="add_children" />
+			<BrowserAddAction method="controller.createBrowserAddAction(selected)"
+				name="new_add_action" />
+			<BrowserAddAction method="controller.createBrowserRemoveAction(selected)"
+				name="new_remove_action" />
+			<BrowserAddAction method="controller.createBrowserCustomAction(selected)"
+				name="new_custom_action" />
+			<BrowserAddAction method="controller.createBrowserDragOperation(selected)"
+				name="new_drag_operation" />
+			<BrowserRemoveAction name="remove_element"
+				method="controller.deleteElement(selected)" />
+		</BrowserElement>
+		<BrowserElement icon="controller.iconForObject(children)"
+			filtered="false" label="children.presentationName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.model.widget.FIBBrowserElementChildren"
+			name="children" isEditable="true" editableLabel="children.name">
+			<BrowserRemoveAction name="remove_children"
+				method="controller.deleteChildren(selected)" />
+		</BrowserElement>
+		<BrowserElement icon="controller.iconForObject(action)"
+			filtered="false" label="action.presentationName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.model.widget.FIBBrowserAction"
+			name="action" isEditable="true" editableLabel="action.name">
+			<BrowserRemoveAction name="remove_action"
+				method="controller.deleteBrowserAction(selected)" />
+		</BrowserElement>
+		<BrowserElement icon="controller.iconForObject(operation)"
+			filtered="false" label="operation.presentationName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.model.widget.FIBBrowserDragOperation"
+			name="operation" isEditable="true" editableLabel="operation.name">
+			<BrowserRemoveAction name="remove_drag_operation"
+				method="controller.deleteBrowserDragOperation(selected)" />
+		</BrowserElement>
+		<BrowserElement icon="controller.iconForObject(element)"
+			filtered="false" label="element.presentationName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.model.graph.FIBGraphFunction" name="element"
+			isEditable="true" editableLabel="element.name">
+			<BrowserRemoveAction name="remove_function"
+				method="controller.deleteFunction(selected)" />
+		</BrowserElement>
+		<BrowserElement icon="controller.iconForObject(element)"
+			filtered="false" label="element.presentationName" defaultVisible="true"
+			dataClassName="org.openflexo.gina.model.FIBModelObject" name="element"
+			isEditable="true" editableLabel="element.name" />
+	</Browser>
+	<Panel id="5" darkLevel="0" vGap="5" useScrollBar="false"
+		protectContent="false" hGap="5" layout="border" border="empty"
+		flowAlignment="LEADING" trackViewPortWidth="true" constraints="border(location=north)"
+		trackViewPortHeight="true">
+		<TextField id="6" passwd="false" manageDynamicModel="false"
+			useScrollBar="false" data="controller.searchedLabel" columns="7"
+			text="TextField" localize="true" constraints="border(location=center)"
+			readOnly="false" validateOnReturn="false" />
+		<Button id="7" manageDynamicModel="false" useScrollBar="false"
+			buttonType="Trigger" action="controller.search()" localize="true"
+			constraints="border(location=east)" label="search" readOnly="false" />
+	</Panel>
 </Panel>

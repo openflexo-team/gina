@@ -76,10 +76,10 @@ public class NodeListAdapter extends TypeAdapter<List<Node>> {
 			return null;
 		}
 
-		List<Node> collection = new ArrayList<Node>();
+		List<Node> collection = new ArrayList<>();
 		in.beginArray();
 		while (in.hasNext()) {
-			Node instance = nodeAdapter.read(in);
+			Node<?> instance = nodeAdapter.read(in);
 			collection.add(instance);
 		}
 		in.endArray();

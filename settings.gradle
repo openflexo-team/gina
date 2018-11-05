@@ -1,0 +1,11 @@
+include 'flexolocalization',
+	'gina-events',
+	'flexographicutils',
+	'gina-api',
+	'gina-test',
+	'gina-core',
+	'gina-swing',
+	'gina-replay',
+	'gina-replay-test',
+	'gina-swing-editor',
+	'gina-swing-editor-test'

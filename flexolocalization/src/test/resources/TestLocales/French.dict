@@ -1,0 +1,3 @@
+english_word=Mot anglais
+hello_($firstParameter)=Bonjour ($firstParameter) !
+hello_($0)_($1)_and_($2)=Bonjour ($0), ($1) et ($2) !

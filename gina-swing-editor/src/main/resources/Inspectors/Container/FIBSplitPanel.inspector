@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.container.FIBSplitPanel" name="Inspector">
+	<SplitPanel index="11"
+		constraints="twocols(expandHorizontally=true;expandVertically=true;index=11;insetsBottom=0;insetsLeft=2;insetsRight=10;insetsTop=5;location=center)">
+		<RowSplit name="RowSplit" weight="1.0">
+			<Leaf name="left" weight="0.5" />
+			<Divider />
+			<Leaf name="right" weight="0" />
+		</RowSplit>
+		<Panel layout="border" borderTitle="Panel" titleFont="SansSerif,0,11"
+			darkLevel="0" index="0" constraints="split(index=0;splitIdentifier=left)">
+			<Browser root="data.split"
+				iteratorClassName="org.openflexo.swing.layout.MultiSplitLayout$Node"
+				visibleRowCount="3" rowHeight="18" boundToSelectionManager="false"
+				selectionMode="DiscontiguousTreeSelection" showFooter="true"
+				rootVisible="true" showRootsHandle="true" textSelectionColor="255,255,255"
+				textNonSelectionColor="0,0,0" backgroundSelectionColor="41,90,209"
+				backgroundSecondarySelectionColor="173,215,255"
+				backgroundNonSelectionColor="255,255,255" borderSelectionColor="41,90,209"
+				localize="true" manageDynamicModel="true" name="LayoutBrowser"
+				index="0"
+				constraints="border(anchor=center;fill=vertical;gridHeight=0;gridWidth=1;gridX=1;gridY=0;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;splitIdentifier=left;weightX=0.0;weightY=1.0)"
+				width="80" height="100">
+				<BrowserElement
+					dataClassName="org.openflexo.swing.layout.MultiSplitLayout$ColSplit"
+					label="&quot;ColSplit&quot;" isEditable="false" filtered="false"
+					defaultVisible="true" name="colSplit">
+					<Children data="colSplit.children" name="children" />
+					<BrowserAddAction method="data.addDivider(selected)"
+						name="add_divider" />
+					<BrowserAddAction method="data.addLeaf(selected)"
+						name="add_leaf" />
+					<BrowserAddAction method="data.addDefaultVerticalSplit(selected)"
+						name="add_vertical_split" />
+					<BrowserAddAction method="data.addDefaultHorizontalSplit(selected)"
+						name="add_horizontal_split" />
+					<BrowserRemoveAction method="data.removeNode(selected)"
+						name="delete" />
+				</BrowserElement>
+				<BrowserElement
+					dataClassName="org.openflexo.swing.layout.MultiSplitLayout$RowSplit"
+					label="&quot;RowSplit&quot;" isEditable="false" filtered="false"
+					defaultVisible="true" name="rowSplit">
+					<Children data="rowSplit.children" name="children" />
+					<BrowserAddAction method="data.addDivider(selected)"
+						name="add_divider" />
+					<BrowserAddAction method="data.addLeaf(selected)"
+						name="add_leaf" />
+					<BrowserAddAction method="data.addDefaultVerticalSplit(selected)"
+						name="add_vertical_split" />
+					<BrowserAddAction method="data.addDefaultHorizontalSplit(selected)"
+						name="add_horizontal_split" />
+					<BrowserRemoveAction method="data.removeNode(selected)"
+						name="delete" />
+				</BrowserElement>
+				<BrowserElement
+					dataClassName="org.openflexo.swing.layout.MultiSplitLayout$Divider"
+					label="&quot;Divider&quot;" isEditable="false" filtered="false"
+					defaultVisible="true" name="divider">
+					<BrowserRemoveAction method="data.removeNode(selected)"
+						name="delete" />
+				</BrowserElement>
+				<BrowserElement dataClassName="org.openflexo.swing.layout.MultiSplitLayout$Leaf"
+					label="leaf.name" isEditable="false" filtered="false"
+					defaultVisible="true" name="leaf">
+					<BrowserRemoveAction method="data.removeNode(selected)"
+						name="delete" />
+				</BrowserElement>
+			</Browser>
+		</Panel>
+		<Panel layout="twocols" border="rounded3d" borderTop="2"
+			borderBottom="2" borderLeft="2" borderRight="2" titleFont="SansSerif,0,11"
+			darkLevel="0" index="1" constraints="split(index=1;splitIdentifier=right)">
+			<Label label="name" index="0"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=0;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<TextField index="1" data="LayoutBrowser.selected.name"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+				localize="true"
+				enable="((LayoutBrowser.selected != null) &amp; (LayoutBrowser.selected.class.simpleName = &quot;Leaf&quot;))"
+				columns="7" text="TextField" />
+			<Label label="weight" index="2"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=2;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<Number minValue="0" maxValue="1" increment="0.05" numberType="FloatType"
+				columns="3" index="3" data="LayoutBrowser.selected.weight"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+				name="Weight" localize="true" enable="(LayoutBrowser.selected != null)" />
+		</Panel>
+	</SplitPanel>
+	<Panel layout="flow" hGap="0" vGap="0" flowAlignment="LEADING"
+		boxLayoutAxis="Y_AXIS" borderTitle="" borderTop="2" borderBottom="2"
+		borderLeft="2" borderRight="2" titleFont="SansSerif,0,11" darkLevel="0"
+		index="1"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;location=center)">
+		<Button action="data.makeDefaultHorizontalLayout()" buttonType="Trigger"
+			label="horizontal" localize="true" index="0" constraints="flow()" />
+		<Button action="data.makeDefaultVerticalLayout()" buttonType="Trigger"
+			label="vertical" localize="true" index="1" constraints="flow()" />
+		<Button action="data.notifySplitLayoutChange()" buttonType="Trigger"
+			label="re-layout" localize="true" index="1" constraints="flow()" />
+	</Panel>
+	<Parameter name="title" value="Split panel" />
+</Inspector>

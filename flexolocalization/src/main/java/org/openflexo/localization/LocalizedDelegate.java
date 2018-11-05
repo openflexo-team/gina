@@ -39,8 +39,13 @@
 
 package org.openflexo.localization;
 
+import java.awt.Component;
 import java.io.File;
 import java.util.List;
+
+import javax.swing.JComponent;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.TableColumn;
 
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
@@ -52,29 +57,72 @@ import org.openflexo.toolbox.HasPropertyChangeSupport;
  * @author sylvain
  * 
  */
-public interface LocalizedDelegate {
+public interface LocalizedDelegate extends HasPropertyChangeSupport {
+
+	/**
+	 * Return String matching specified key and language set as default language<br>
+	 * 
+	 * This is general and main method to use localized in Flexo.<br>
+	 * Applicable language is chosen from the one defined in FlexoLocalization (configurable from GeneralPreferences).<br>
+	 * Use english names for keys, such as 'some_english_words'<br>
+	 * 
+	 * Usage example: <code>localizedForKey("some_english_words")</code>
+	 * 
+	 * @param key
+	 * @return String matching specified key and language defined as default in {@link FlexoLocalization}
+	 */
+	public String localizedForKey(String key);
+
+	/**
+	 * Return String matching specified key and language set as default language, asserting that the locale to translate contains some
+	 * parametered references<br>
+	 * 
+	 * Usage examples:<br>
+	 * <ul>
+	 * <li><code>localizedForKeyWithParams("hello_($firstParameter)", anObject)</code><br>
+	 * Return parametered locale such as "Hello World !", asserting that anObject respond to a getter method named firstParameter() or
+	 * getFirstParameter() whise value is "World" in run-time context</li>
+	 * <li><code>localizedForKeyWithParams("hello_($0)_($1)_and_($2)", "Pierre", "Paul", "Jacques")</code><br>
+	 * Return parametered locales, such as "Bonjour Pierre, Paul et Jacques !"</li>
+	 * </ul>
+	 *
+	 * @param key
+	 * @param objects
+	 * @return String matching specified key and language defined as default in {@link FlexoLocalization}
+	 */
+	public String localizedForKeyWithParams(String key, Object... objects);
 
 	/**
 	 * Return String matching specified key and language<br>
-	 * If this key is not localized, this method MUST return null, in order to forward request to parent delegate
 	 * 
 	 * @param key
 	 * @param language
 	 * @return
 	 */
-	public String getLocalizedForKeyAndLanguage(String key, Language language);
+	public String localizedForKeyAndLanguage(String key, Language language);
 
 	/**
 	 * Return String matching specified key and language<br>
+	 * If #createsNewEntryInFirstEditableParent set to true, will try to enter a new traduction.<br>
+	 * LocalizedDelegate are recursively requested to their parents, and the first one who respond true to
+	 * {@link #handleNewEntry(String, Language)} will add a new entry
 	 * 
 	 * @param key
 	 * @param language
 	 * @return
 	 */
-	public String getLocalizedForKeyAndLanguage(String key, Language language, boolean createsNewEntriesIfNonExistant);
+	public String localizedForKeyAndLanguage(String key, Language language, boolean createsNewEntryInFirstEditableParent);
 
 	/**
-	 * Return a boolean indicating if this delegate handle creation of new entries
+	 * Return boolean indicating if this delegate defines a translation for supplied key and language
+	 * 
+	 * @return
+	 */
+	public boolean hasKey(String key, Language language, boolean recursive);
+
+	/**
+	 * Return a boolean indicating if this delegate handle creation of new entries<br>
+	 * When returning true, indicates that this delegate might be edited in this context.
 	 * 
 	 * @param key
 	 * @param language
@@ -121,6 +169,20 @@ public interface LocalizedDelegate {
 	public void searchTranslation(LocalizedEntry entry);
 
 	public void searchLocalized();
+
+	public String localizedForKey(String key, Component component);
+
+	public String localizedTooltipForKey(String key, JComponent component);
+
+	public String localizedForKey(String key, TitledBorder border);
+
+	public String localizedForKey(String key, TableColumn column);
+
+	public void clearStoredLocalizedForComponents();
+
+	public void updateGUILocalized();
+
+	public LocalizedEntry addEntry(String key);
 
 	/**
 	 * Represents a localized entry<br>

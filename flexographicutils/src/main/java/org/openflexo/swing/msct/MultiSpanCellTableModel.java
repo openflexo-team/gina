@@ -39,7 +39,6 @@
 package org.openflexo.swing.msct;
 
 import java.awt.Dimension;
-import java.util.Enumeration;
 import java.util.Vector;
 
 import javax.swing.event.TableModelEvent;
@@ -54,21 +53,21 @@ public class MultiSpanCellTableModel extends DefaultTableModel {
 	protected CellAttribute cellAtt;
 
 	public MultiSpanCellTableModel() {
-		this((Vector) null, 0);
+		this((Vector<?>) null, 0);
 	}
 
 	public MultiSpanCellTableModel(int numRows, int numColumns) {
-		Vector names = new Vector(numColumns);
+		Vector<?> names = new Vector<>(numColumns);
 		names.setSize(numColumns);
 		setColumnIdentifiers(names);
-		dataVector = new Vector();
+		dataVector = new Vector<>();
 		setNumRows(numRows);
 		cellAtt = new DefaultCellAttribute(numRows, numColumns);
 	}
 
-	public MultiSpanCellTableModel(Vector columnNames, int numRows) {
+	public MultiSpanCellTableModel(Vector<?> columnNames, int numRows) {
 		setColumnIdentifiers(columnNames);
-		dataVector = new Vector();
+		dataVector = new Vector<>();
 		setNumRows(numRows);
 		cellAtt = new DefaultCellAttribute(numRows, columnNames.size());
 	}
@@ -77,7 +76,7 @@ public class MultiSpanCellTableModel extends DefaultTableModel {
 		this(convertToVector(columnNames), numRows);
 	}
 
-	public MultiSpanCellTableModel(Vector data, Vector columnNames) {
+	public MultiSpanCellTableModel(Vector<?> data, Vector<?> columnNames) {
 		setDataVector(data, columnNames);
 	}
 
@@ -89,7 +88,7 @@ public class MultiSpanCellTableModel extends DefaultTableModel {
 	public void setDataVector(Vector newData, Vector columnNames) {
 		if (newData == null)
 			throw new IllegalArgumentException("setDataVector() - Null parameter");
-		dataVector = new Vector(0);
+		dataVector = new Vector<>(0);
 		columnIdentifiers = columnNames;
 		// setColumnIdentifiers(columnNames);
 		dataVector = newData;
@@ -106,14 +105,14 @@ public class MultiSpanCellTableModel extends DefaultTableModel {
 			throw new IllegalArgumentException("addColumn() - null parameter");
 		columnIdentifiers.addElement(columnName);
 		int index = 0;
-		Enumeration eeration = dataVector.elements();
-		while (eeration.hasMoreElements()) {
+		for (Object o : dataVector) {
+			Vector v = (Vector) o;
 			Object value;
 			if ((columnData != null) && (index < columnData.size()))
 				value = columnData.elementAt(index);
 			else
 				value = null;
-			((Vector) eeration.nextElement()).addElement(value);
+			v.addElement(value);
 			index++;
 		}
 
@@ -125,10 +124,11 @@ public class MultiSpanCellTableModel extends DefaultTableModel {
 
 	@Override
 	public void addRow(Vector rowData) {
-		Vector newData = null;
+		Vector<?> newData = null;
 		if (rowData == null) {
-			newData = new Vector(getColumnCount());
-		} else {
+			newData = new Vector<>(getColumnCount());
+		}
+		else {
 			rowData.setSize(getColumnCount());
 		}
 		dataVector.addElement(newData);
@@ -142,8 +142,9 @@ public class MultiSpanCellTableModel extends DefaultTableModel {
 	@Override
 	public void insertRow(int row, Vector rowData) {
 		if (rowData == null) {
-			rowData = new Vector(getColumnCount());
-		} else {
+			rowData = new Vector<>(getColumnCount());
+		}
+		else {
 			rowData.setSize(getColumnCount());
 		}
 
@@ -173,7 +174,7 @@ public class MultiSpanCellTableModel extends DefaultTableModel {
 	public void changeCellAttribute(int row, int column, Object command) {
 	 cellAtt.changeAttribute(row, column, command);
 	}
-
+	
 	public void changeCellAttribute(int[] rows, int[] columns, Object command) {
 	 cellAtt.changeAttribute(rows, columns, command);
 	}

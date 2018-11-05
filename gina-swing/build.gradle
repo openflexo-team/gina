@@ -1,0 +1,26 @@
+dependencies {
+  compile connie()
+  compile project(':flexographicutils')
+  compile project(':gina-api')
+  compile project(':gina-core')
+  testCompile testUtils()
+}
+task nonuiTest(type: Test) {
+  ignoreFailures = true
+  exclude '**/FIBBrowserWidgetSelectionTest.class'
+  exclude '**/FIBBrowserWidgetSelectionTest2.class'
+  exclude '**/FIBBrowserWidgetTest.class'
+  exclude '**/TestWidgetsBindingModel.class'
+  jvmArgs += ["-Djava.awt.headless=true"]
+}
+
+task uiTest(type: Test,dependsOn: 'nonuiTest') {
+  ignoreFailures = true
+  include '**/FIBBrowserWidgetSelectionTest.class'
+  include '**/FIBBrowserWidgetSelectionTest2.class'
+  include '**/FIBBrowserWidgetTest.class'
+  include '**/TestWidgetsBindingModel.class'
+}
+
+task test(overwrite: true,dependsOn: 'uiTest') {
+}

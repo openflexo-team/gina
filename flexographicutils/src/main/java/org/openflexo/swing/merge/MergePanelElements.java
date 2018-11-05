@@ -351,7 +351,7 @@ public class MergePanelElements implements Observer {
 		ComparePanel() {
 			super(new BorderLayout());
 
-			_buttonForChanges = new Hashtable<MergeChange, MergeChangeButton>();
+			_buttonForChanges = new Hashtable<>();
 
 			JComponent separator = getSeparator();
 
@@ -492,7 +492,8 @@ public class MergePanelElements implements Observer {
 					validate();
 					repaint();
 					buttonsInitialized = true;
-				} else {
+				}
+				else {
 					// Not ready
 				}
 			}
@@ -571,10 +572,12 @@ public class MergePanelElements implements Observer {
 							}
 						}
 					};
-					if (change.getMergeChangeSource() == MergeChangeSource.Left || change.getMergeChangeSource() == MergeChangeSource.Right) {
+					if (change.getMergeChangeSource() == MergeChangeSource.Left
+							|| change.getMergeChangeSource() == MergeChangeSource.Right) {
 						popupMenu.add(new ChangeActionCheckBoxMenuItem(getChangeAction(change, MergeChangeAction.KeepChange)));
 						popupMenu.add(new ChangeActionCheckBoxMenuItem(getChangeAction(change, MergeChangeAction.IgnoreChange)));
-					} else if (change.getMergeChangeSource() == MergeChangeSource.Conflict) {
+					}
+					else if (change.getMergeChangeSource() == MergeChangeSource.Conflict) {
 						popupMenu.add(new ChangeActionCheckBoxMenuItem(getChangeAction(change, MergeChangeAction.AutomaticMergeResolving)));
 						popupMenu.add(new ChangeActionCheckBoxMenuItem(getChangeAction(change, MergeChangeAction.ChooseLeft)));
 						popupMenu.add(new ChangeActionCheckBoxMenuItem(getChangeAction(change, MergeChangeAction.ChooseRight)));
@@ -676,7 +679,8 @@ public class MergePanelElements implements Observer {
 			_ignoreButton.setAction(getChangeAction(getSelectedMergeChange(), MergeChangeAction.IgnoreChange));
 			_controlPanel.add(_ignoreButton, 0);
 			_controlPanel.add(_chooseButton, 0);
-		} else if (getSelectedMergeChange() != null && getSelectedMergeChange().getMergeChangeSource() == MergeChangeSource.Conflict) {
+		}
+		else if (getSelectedMergeChange() != null && getSelectedMergeChange().getMergeChangeSource() == MergeChangeSource.Conflict) {
 			_chooseLeftButton.setAction(getChangeAction(getSelectedMergeChange(), MergeChangeAction.ChooseLeft));
 			_chooseRightButton.setAction(getChangeAction(getSelectedMergeChange(), MergeChangeAction.ChooseRight));
 			_chooseNoneButton.setAction(getChangeAction(getSelectedMergeChange(), MergeChangeAction.ChooseNone));
@@ -715,38 +719,38 @@ public class MergePanelElements implements Observer {
 
 	static Icon iconForChangeCategory(MergeChange.ChangeCategory cat) {
 		switch (cat) {
-		case LEFT_ADDITION:
-			return UtilsIconLibrary.LEFT_ADDITION_ICON;
-		case LEFT_MODIFICATION:
-			return UtilsIconLibrary.LEFT_MODIFICATION_ICON;
-		case LEFT_REMOVAL:
-			return UtilsIconLibrary.LEFT_REMOVAL_ICON;
-		case SMART_CONFLICT_RESOLVED:
-			return UtilsIconLibrary.SMART_CONFLICT_RESOLVED_ICON;
-		case SMART_CONFLICT_UNRESOLVED:
-			return UtilsIconLibrary.SMART_CONFLICT_UNRESOLVED_ICON;
-		case CUSTOM_EDITING_RESOLVED:
-			return UtilsIconLibrary.CUSTOM_EDITING_RESOLVED_ICON;
-		case CUSTOM_EDITING_UNRESOLVED:
-			return UtilsIconLibrary.CUSTOM_EDITING_UNRESOLVED_ICON;
-		case ADD_CONFLICT_RESOLVED:
-			return UtilsIconLibrary.ADD_CONFLICT_RESOLVED_ICON;
-		case ADD_CONFLICT_UNRESOLVED:
-			return UtilsIconLibrary.ADD_CONFLICT_UNRESOLVED_ICON;
-		case CONFLICT_RESOLVED:
-			return UtilsIconLibrary.CONFLICT_RESOLVED_ICON;
-		case CONFLICT_UNRESOLVED:
-			return UtilsIconLibrary.CONFLICT_UNRESOLVED_ICON;
-		case DEL_CONFLICT_RESOLVED:
-			return UtilsIconLibrary.DEL_CONFLICT_RESOLVED_ICON;
-		case DEL_CONFLICT_UNRESOLVED:
-			return UtilsIconLibrary.DEL_CONFLICT_UNRESOLVED_ICON;
-		case RIGHT_ADDITION:
-			return UtilsIconLibrary.RIGHT_ADDITION_ICON;
-		case RIGHT_MODIFICATION:
-			return UtilsIconLibrary.RIGHT_MODIFICATION_ICON;
-		case RIGHT_REMOVAL:
-			return UtilsIconLibrary.RIGHT_REMOVAL_ICON;
+			case LEFT_ADDITION:
+				return UtilsIconLibrary.LEFT_ADDITION_ICON;
+			case LEFT_MODIFICATION:
+				return UtilsIconLibrary.LEFT_MODIFICATION_ICON;
+			case LEFT_REMOVAL:
+				return UtilsIconLibrary.LEFT_REMOVAL_ICON;
+			case SMART_CONFLICT_RESOLVED:
+				return UtilsIconLibrary.SMART_CONFLICT_RESOLVED_ICON;
+			case SMART_CONFLICT_UNRESOLVED:
+				return UtilsIconLibrary.SMART_CONFLICT_UNRESOLVED_ICON;
+			case CUSTOM_EDITING_RESOLVED:
+				return UtilsIconLibrary.CUSTOM_EDITING_RESOLVED_ICON;
+			case CUSTOM_EDITING_UNRESOLVED:
+				return UtilsIconLibrary.CUSTOM_EDITING_UNRESOLVED_ICON;
+			case ADD_CONFLICT_RESOLVED:
+				return UtilsIconLibrary.ADD_CONFLICT_RESOLVED_ICON;
+			case ADD_CONFLICT_UNRESOLVED:
+				return UtilsIconLibrary.ADD_CONFLICT_UNRESOLVED_ICON;
+			case CONFLICT_RESOLVED:
+				return UtilsIconLibrary.CONFLICT_RESOLVED_ICON;
+			case CONFLICT_UNRESOLVED:
+				return UtilsIconLibrary.CONFLICT_UNRESOLVED_ICON;
+			case DEL_CONFLICT_RESOLVED:
+				return UtilsIconLibrary.DEL_CONFLICT_RESOLVED_ICON;
+			case DEL_CONFLICT_UNRESOLVED:
+				return UtilsIconLibrary.DEL_CONFLICT_UNRESOLVED_ICON;
+			case RIGHT_ADDITION:
+				return UtilsIconLibrary.RIGHT_ADDITION_ICON;
+			case RIGHT_MODIFICATION:
+				return UtilsIconLibrary.RIGHT_MODIFICATION_ICON;
+			case RIGHT_REMOVAL:
+				return UtilsIconLibrary.RIGHT_REMOVAL_ICON;
 		}
 		return null;
 	}
@@ -807,7 +811,7 @@ public class MergePanelElements implements Observer {
 		return _controlPanel;
 	}
 
-	private Hashtable<MergeChange, Hashtable<MergeChangeAction, ChangeAction>> storedActions = new Hashtable<MergeChange, Hashtable<MergeChangeAction, ChangeAction>>();
+	private Hashtable<MergeChange, Hashtable<MergeChangeAction, ChangeAction>> storedActions = new Hashtable<>();
 
 	protected ChangeAction getChangeAction(MergeChange mergeChange, MergeChangeAction mergeChangeAction) {
 		if (storedActions.get(mergeChange) == null) {
@@ -833,7 +837,8 @@ public class MergePanelElements implements Observer {
 		public void actionPerformed(ActionEvent e) {
 			if (mergeChangeAction == MergeChangeAction.CustomEditing) {
 				new HandConflictResolver(mergeChange, style, mergeChange.getMergeChangeAction(), MergePanelElements.this);
-			} else {
+			}
+			else {
 				mergeChange.setMergeChangeAction(mergeChangeAction);
 			}
 			updateAfterMergeChangeActionChanging();
@@ -853,23 +858,32 @@ public class MergePanelElements implements Observer {
 	String localizedNameForMergeChangeAction(MergeChangeAction mergeChangeAction) {
 		if (mergeChangeAction == MergeChangeAction.KeepChange) {
 			return localizedForKey("keep_change");
-		} else if (mergeChangeAction == MergeChangeAction.IgnoreChange) {
+		}
+		else if (mergeChangeAction == MergeChangeAction.IgnoreChange) {
 			return localizedForKey("ignore_change");
-		} else if (mergeChangeAction == MergeChangeAction.ChooseLeft) {
+		}
+		else if (mergeChangeAction == MergeChangeAction.ChooseLeft) {
 			return localizedForKey("choose_left");
-		} else if (mergeChangeAction == MergeChangeAction.ChooseRight) {
+		}
+		else if (mergeChangeAction == MergeChangeAction.ChooseRight) {
 			return localizedForKey("choose_right");
-		} else if (mergeChangeAction == MergeChangeAction.ChooseNone) {
+		}
+		else if (mergeChangeAction == MergeChangeAction.ChooseNone) {
 			return localizedForKey("choose_none");
-		} else if (mergeChangeAction == MergeChangeAction.ChooseBothLeftFirst) {
+		}
+		else if (mergeChangeAction == MergeChangeAction.ChooseBothLeftFirst) {
 			return localizedForKey("choose_both_left_first");
-		} else if (mergeChangeAction == MergeChangeAction.ChooseBothRightFirst) {
+		}
+		else if (mergeChangeAction == MergeChangeAction.ChooseBothRightFirst) {
 			return localizedForKey("choose_both_right_first");
-		} else if (mergeChangeAction == MergeChangeAction.CustomEditing) {
+		}
+		else if (mergeChangeAction == MergeChangeAction.CustomEditing) {
 			return localizedForKey("resolve_by_hand");
-		} else if (mergeChangeAction == MergeChangeAction.AutomaticMergeResolving) {
+		}
+		else if (mergeChangeAction == MergeChangeAction.AutomaticMergeResolving) {
 			return localizedForKey("automatic_merge_resolving");
-		} else if (mergeChangeAction == MergeChangeAction.Undecided) {
+		}
+		else if (mergeChangeAction == MergeChangeAction.Undecided) {
 			return localizedForKey("unresolved_merge");
 		}
 		return null;
@@ -878,23 +892,32 @@ public class MergePanelElements implements Observer {
 	Icon iconForMergeChangeAction(MergeChangeAction mergeChangeAction) {
 		if (mergeChangeAction == MergeChangeAction.KeepChange) {
 			return UtilsIconLibrary.ACCEPT_ICON;
-		} else if (mergeChangeAction == MergeChangeAction.IgnoreChange) {
+		}
+		else if (mergeChangeAction == MergeChangeAction.IgnoreChange) {
 			return UtilsIconLibrary.REFUSE_ICON;
-		} else if (mergeChangeAction == MergeChangeAction.ChooseLeft) {
+		}
+		else if (mergeChangeAction == MergeChangeAction.ChooseLeft) {
 			return UtilsIconLibrary.CHOOSE_LEFT_ICON;
-		} else if (mergeChangeAction == MergeChangeAction.ChooseRight) {
+		}
+		else if (mergeChangeAction == MergeChangeAction.ChooseRight) {
 			return UtilsIconLibrary.CHOOSE_RIGHT_ICON;
-		} else if (mergeChangeAction == MergeChangeAction.ChooseNone) {
+		}
+		else if (mergeChangeAction == MergeChangeAction.ChooseNone) {
 			return UtilsIconLibrary.CHOOSE_NONE;
-		} else if (mergeChangeAction == MergeChangeAction.ChooseBothLeftFirst) {
+		}
+		else if (mergeChangeAction == MergeChangeAction.ChooseBothLeftFirst) {
 			return UtilsIconLibrary.CHOOSE_BOTH_LEFT_FIRST;
-		} else if (mergeChangeAction == MergeChangeAction.ChooseBothRightFirst) {
+		}
+		else if (mergeChangeAction == MergeChangeAction.ChooseBothRightFirst) {
 			return UtilsIconLibrary.CHOOSE_BOTH_RIGHT_FIRST;
-		} else if (mergeChangeAction == MergeChangeAction.CustomEditing) {
+		}
+		else if (mergeChangeAction == MergeChangeAction.CustomEditing) {
 			return UtilsIconLibrary.CUSTOM_EDITING_ICON;
-		} else if (mergeChangeAction == MergeChangeAction.AutomaticMergeResolving) {
+		}
+		else if (mergeChangeAction == MergeChangeAction.AutomaticMergeResolving) {
 			return UtilsIconLibrary.AUTOMATIC_MERGE_RESOLVING_ICON;
-		} else if (mergeChangeAction == MergeChangeAction.Undecided) {
+		}
+		else if (mergeChangeAction == MergeChangeAction.Undecided) {
 			return UtilsIconLibrary.CONFLICT_UNRESOLVED_ICON;
 		}
 		return null;
@@ -931,18 +954,18 @@ public class MergePanelElements implements Observer {
 		}
 	}
 
-	public JList getFilteredChangeList() {
+	public JList<?> getFilteredChangeList() {
 		return _changeListPanel.filteredChangeList();
 	}
 
 	public class FilterChangeList extends JPanel {
 
 		private Vector<MergeChange.ChangeCategory> selectedCategories;
-		JList _filteredList;
+		JList<Object> _filteredList;
 
 		public FilterChangeList(String noChangeLabel) {
 			super(new BorderLayout());
-			selectedCategories = new Vector<MergeChange.ChangeCategory>();
+			selectedCategories = new Vector<>();
 			for (MergeChange.ChangeCategory c : MergeChange.ChangeCategory.values()) {
 				selectedCategories.add(c);
 			}
@@ -956,11 +979,11 @@ public class MergePanelElements implements Observer {
 
 		private void initFilteredList(String noChangeLabel) {
 			if (_merge.getChanges().size() > 0) {
-				_filteredList = new JList(_merge.getChanges());
+				_filteredList = new JList<>(_merge.getChanges());
 				_filteredList.setVisibleRowCount(5);
 				_filteredList.setCellRenderer(new DefaultListCellRenderer() {
 					@Override
-					public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+					public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 							boolean cellHasFocus) {
 						JLabel returned = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 						returned.setIcon(iconForChange((MergeChange) value));
@@ -999,9 +1022,10 @@ public class MergePanelElements implements Observer {
 
 				});
 
-			} else {
+			}
+			else {
 				Object[] obj = { noChangeLabel };
-				_filteredList = new JList(obj);
+				_filteredList = new JList<>(obj);
 				_filteredList.setEnabled(false);
 			}
 
@@ -1029,13 +1053,13 @@ public class MergePanelElements implements Observer {
 		// selectedCategories.remove(category);
 		// refreshList();
 		// }
-		public JList filteredChangeList() {
+		public JList<?> filteredChangeList() {
 			return _filteredList;
 		}
 
 		public void refreshList() {
 			final Vector<MergeChange> listData = _merge.filteredChangeList(selectedCategories);
-			_filteredList.setModel(new AbstractListModel() {
+			_filteredList.setModel(new AbstractListModel<Object>() {
 				@Override
 				public int getSize() {
 					return listData.size();
@@ -1077,11 +1101,12 @@ public class MergePanelElements implements Observer {
 							_isSelected = !_isSelected;
 							if (_isSelected) {
 								addAllFilter(_categories);
-							} else {
+							}
+							else {
 								removeAllFilter(_categories);
 							}
-							setBorder(_isSelected ? BorderFactory.createEtchedBorder(EtchedBorder.LOWERED) : BorderFactory
-									.createEmptyBorder());
+							setBorder(_isSelected ? BorderFactory.createEtchedBorder(EtchedBorder.LOWERED)
+									: BorderFactory.createEmptyBorder());
 							System.out.println(getPreferredSize());
 						}
 

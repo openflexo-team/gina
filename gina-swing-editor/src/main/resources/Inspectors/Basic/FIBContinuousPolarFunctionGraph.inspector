@@ -1,0 +1,29 @@
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.graph.FIBContinuousPolarFunctionGraph">
+	<Parameter name="title" value="Continuous polar graph" />
+
+	<Label name="StepsNumberLabel" label="display_steps" index="10"
+		constraints="twocols(location=left)" localize="true" />
+	<Custom name="StepsNumberBinding" index="11"
+		componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.stepsNumber"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data" />
+	</Custom>
+
+	<Label name="AngleTickSpacingLabel" label="angle_tick_spacing"
+		index="12" constraints="twocols(location=left)" localize="true" />
+	<Panel layout="border" hGap="0" vGap="0" flowAlignment="LEADING"
+		borderTitle="Panel" borderLeft="2" titleFont="SansSerif,0,11"
+		darkLevel="0" index="13" constraints="twocols(expandHorizontally=true;location=right)">
+		<CheckBox selected="false" localize="true" constraints="border(location=west)"
+			name="AngleTickSpacingLabelCB" data="data.displayAngleTicks"
+			useScrollBar="false" />
+		<Custom name="AngleTickSpacingBinding" enable="data.displayAngleTicks"
+			constraints="border(location=center)" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+			localize="true" manageDynamicModel="true" data="data.angleTickSpacing">
+			<Assignment variable="component.bindable" value="data" />
+		</Custom>
+	</Panel>
+
+</Inspector>

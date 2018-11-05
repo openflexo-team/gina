@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.FIBContainer" name="Inspector">
+	<Label index="10" label="API" constraints="twocols(location=left)"
+		name="variablesLabel" localize="true" visible="!(data.isOperator)" />
+	<Panel layout="twocols" visible="!(data.isOperator)"
+		constraints="twocols(expandHorizontally=true;location=right;expandVertically=true)">
+		<Table index="11"
+			constraints="twocols(expandHorizontally=false;location=left;expandVertically=true)"
+			iteratorClassName="org.openflexo.gina.model.FIBVariable"
+			visibleRowCount="3" rowHeight="20" autoSelectFirstRow="true"
+			createNewRowOnClick="false" boundToSelectionManager="false"
+			showHeader="false" showFooter="true" selectionMode="MultipleIntervalSelection"
+			localize="true" manageDynamicModel="true" name="VariablesTable" data="data.variables"
+
+			useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED">
+			<TextFieldColumn data="iterator.name" title="name"
+				columnWidth="50" resizable="true" displayTitle="true" name="name" />
+			<!-- <CustomColumn componentClassName="org.openflexo.gina.swing.utils.TypeSelector" 
+				customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.type" 
+				format="" title="type" columnWidth="100" resizable="true" displayTitle="true" 
+				name="type"> <ColumnAssignment mandatory="true" variable="component.customTypeManager" 
+				value="data.rootComponent.customTypeManager" /> <ColumnAssignment mandatory="true" 
+				variable="component.customTypeEditorProvider" value="data.rootComponent.customTypeEditorProvider" 
+				/> </CustomColumn> <CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector" 
+				customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.value" 
+				title="Value" columnWidth="40" resizable="true" displayTitle="true" name="value"> 
+				<ColumnAssignment variable="component.bindable" value="iterator" /> </CustomColumn> -->
+			<AddAction method="data.createNewVariable()" isAvailable="data.isVariableAddable()"
+				name="make_new_variable" />
+			<RemoveAction method="data.deleteVariable(selected)"
+				isAvailable="data.isVariableDeletable(selected)" name="delete_variable" />
+		</Table>
+		<Panel layout="twocols"
+			constraints="twocols(expandHorizontally=true;location=right;expandVertically=true;insetsLeft=5)">
+			<Label name="NameLabel" index="-2" label="name"
+				constraints="twocols(location=left;insetsTop=5)" localize="true" />
+			<TextField name="NameTF" index="-1"
+				data="VariablesTable.selected.name"
+				constraints="twocols(expandHorizontally=true;location=right)"
+				localize="true" columns="15" />
+			<Label label="type" constraints="twocols(location=left)"
+				localize="true" name="ControllerClassLabel" />
+			<Custom componentClassName="org.openflexo.gina.swing.utils.TypeSelector"
+				localize="true" manageDynamicModel="true" data="VariablesTable.selected.type"
+				constraints="twocols(expandHorizontally=true;location=right)" name="ControllerClassSelector">
+				<Assignment variable="component.customTypeManager" value="data.rootComponent.customTypeManager" />
+				<Assignment variable="component.customTypeEditorProvider" value="data.rootComponent.customTypeEditorProvider" />
+			</Custom>
+			<Label label="value" constraints="twocols(location=left)" name="visibleLabel"
+				localize="true" />
+			<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+				localize="true" manageDynamicModel="true" name="visibleValue" data="VariablesTable.selected.value"
+				constraints="twocols(expandHorizontally=true;location=right)">
+				<Assignment variable="component.bindable" value="VariablesTable.selected" />
+			</Custom>
+			 <TextArea name="DescriptionTA" index="-1" data="VariablesTable.selected.description"
+				constraints="twocols(expandHorizontally=true;expandVertically=true;location=center)"
+				localize="true" columns="15" useScrollBar="true" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"/>
+
+		</Panel>
+	</Panel>
+	<LocalizedDictionary />
+	<Parameter name="title" value="Container" />
+</Inspector>

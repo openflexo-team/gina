@@ -65,7 +65,7 @@ public class RemoveAttributesAction extends StyledEditorKit.StyledTextAction {
 		Element element = htmlDocument.getParagraphElement(start);
 		AttributeSet attributeSet = element.getAttributes();
 		MutableAttributeSet newAttrs = new SimpleAttributeSet();
-		Enumeration enumeration = attributeSet.getAttributeNames();
+		Enumeration<?> enumeration = attributeSet.getAttributeNames();
 		while (enumeration.hasMoreElements()) {
 			Object attributeKey = enumeration.nextElement();
 			String attributeName = attributeKey.toString();
@@ -95,7 +95,7 @@ public class RemoveAttributesAction extends StyledEditorKit.StyledTextAction {
 				Element listElement = impliedParagraph.getParentElement();
 				if (listElement.getName().equals("li")) {
 					AttributeSet listElementAttrs = listElement.getAttributes();
-					Enumeration currentAttrEnum = listElementAttrs.getAttributeNames();
+					Enumeration<?> currentAttrEnum = listElementAttrs.getAttributeNames();
 					while (currentAttrEnum.hasMoreElements()) {
 						Object attrName = currentAttrEnum.nextElement();
 						Object attrValue = listElement.getAttributes().getAttribute(attrName);

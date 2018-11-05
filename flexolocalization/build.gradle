@@ -1,0 +1,9 @@
+dependencies {
+  compile flexoUtils()
+  compile connie()
+  compile pamela()
+  testCompile testUtils()
+}
+tasks.withType(Test) {
+	jvmArgs += ["-Djava.awt.headless=true"]
+}

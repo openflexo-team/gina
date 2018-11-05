@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBBrowserElementChildren" name="Inspector">
+
+	<Label index="0" label="name" constraints="twocols(location=left;insetsTop=5)"
+		localize="true" />
+	<TextField index="1" data="data.name"
+		constraints="twocols(expandHorizontally=true;location=right;insetsTop=5)"
+		localize="true" columns="15" />
+	<Label index="4" label="data" constraints="twocols(location=left)"
+		localize="true" />
+	<Custom index="5" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.data"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data.owner.iteratorBindable" />
+	</Custom>
+	<Label index="4" label="visible" constraints="twocols(location=left)"
+		localize="true" />
+	<Custom index="5" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.visible"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data.owner.iteratorBindable" />
+	</Custom>
+	<Label index="4" label="cast" constraints="twocols(location=left)"
+		localize="true" />
+	<Custom index="5" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.cast"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data.owner.iteratorBindable" />
+	</Custom>
+
+	<Parameter name="title" value="Browser element" />
+</Inspector>

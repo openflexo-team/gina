@@ -26,15 +26,14 @@ import java.awt.FlowLayout;
 
 import javax.swing.JOptionPane;
 
+import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
-import org.openflexo.toolbox.ImageIconResource;
 
 /**
  * 
  * @author Rudolf Visagie
  */
 public class LinkDialog extends javax.swing.JDialog {
-	
 
 	// TODO: other targets
 	// TODO: test
@@ -97,7 +96,7 @@ public class LinkDialog extends javax.swing.JDialog {
 		mainTabbedPane = new javax.swing.JTabbedPane();
 		linkInfoPanel = new javax.swing.JPanel();
 		linkTypeLabel = new javax.swing.JLabel();
-		linkTypeComboBox = new javax.swing.JComboBox();
+		linkTypeComboBox = new javax.swing.JComboBox<>();
 		mainPanel = new javax.swing.JPanel();
 		advancedPanel = new javax.swing.JPanel();
 		idLabel = new javax.swing.JLabel();
@@ -109,7 +108,7 @@ public class LinkDialog extends javax.swing.JDialog {
 		advisoryTitleLabel = new javax.swing.JLabel();
 		advisoryTitleTextField = new javax.swing.JTextField();
 		languageDirectionLabel = new javax.swing.JLabel();
-		languageDirectionComboBox = new javax.swing.JComboBox();
+		languageDirectionComboBox = new javax.swing.JComboBox<>();
 		languageCodeLabel = new javax.swing.JLabel();
 		languageCodeTextField = new javax.swing.JTextField();
 		advisoryContentTypeLabel = new javax.swing.JLabel();
@@ -129,7 +128,7 @@ public class LinkDialog extends javax.swing.JDialog {
 
 		linkTypeLabel.setText("Link Type");
 
-		linkTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "URL" }));
+		linkTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "URL" }));
 		linkTypeComboBox.addActionListener(new java.awt.event.ActionListener() {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -141,43 +140,30 @@ public class LinkDialog extends javax.swing.JDialog {
 
 		javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
 		mainPanel.setLayout(mainPanelLayout);
-		mainPanelLayout.setHorizontalGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 381,
-				Short.MAX_VALUE));
-		mainPanelLayout.setVerticalGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 311,
-				Short.MAX_VALUE));
+		mainPanelLayout.setHorizontalGroup(
+				mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 381, Short.MAX_VALUE));
+		mainPanelLayout.setVerticalGroup(
+				mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 311, Short.MAX_VALUE));
 
 		javax.swing.GroupLayout linkInfoPanelLayout = new javax.swing.GroupLayout(linkInfoPanel);
 		linkInfoPanel.setLayout(linkInfoPanelLayout);
-		linkInfoPanelLayout.setHorizontalGroup(linkInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				linkInfoPanelLayout
-						.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								linkInfoPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-										.addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addGroup(
-												linkInfoPanelLayout
-														.createSequentialGroup()
-														.addComponent(linkTypeLabel)
-														.addGap(18, 18, 18)
-														.addComponent(linkTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
-																javax.swing.GroupLayout.DEFAULT_SIZE,
-																javax.swing.GroupLayout.PREFERRED_SIZE))).addContainerGap()));
-		linkInfoPanelLayout.setVerticalGroup(linkInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				linkInfoPanelLayout
-						.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								linkInfoPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(linkTypeLabel)
+		linkInfoPanelLayout.setHorizontalGroup(linkInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(linkInfoPanelLayout.createSequentialGroup().addContainerGap()
+						.addGroup(linkInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+								.addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+										Short.MAX_VALUE)
+								.addGroup(linkInfoPanelLayout.createSequentialGroup().addComponent(linkTypeLabel).addGap(18, 18, 18)
 										.addComponent(linkTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-								Short.MAX_VALUE).addContainerGap()));
+												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+						.addContainerGap()));
+		linkInfoPanelLayout.setVerticalGroup(linkInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(linkInfoPanelLayout.createSequentialGroup().addContainerGap()
+						.addGroup(linkInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(linkTypeLabel).addComponent(linkTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(mainPanel,
+								javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addContainerGap()));
 
 		mainTabbedPane.addTab("Link Info", linkInfoPanel);
 
@@ -191,7 +177,8 @@ public class LinkDialog extends javax.swing.JDialog {
 
 		languageDirectionLabel.setText("Language Direction");
 
-		languageDirectionComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "Left to Right", "Right to Left" }));
+		languageDirectionComboBox
+				.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Left to Right", "Right to Left" }));
 
 		languageCodeLabel.setText("Language Code");
 
@@ -217,117 +204,85 @@ public class LinkDialog extends javax.swing.JDialog {
 
 		javax.swing.GroupLayout advancedPanelLayout = new javax.swing.GroupLayout(advancedPanel);
 		advancedPanel.setLayout(advancedPanelLayout);
-		advancedPanelLayout.setHorizontalGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				advancedPanelLayout
-						.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-										.addComponent(linkedResourceCharsetLabel).addComponent(advisoryContentTypeLabel)
-										.addComponent(advisoryTitleLabel).addComponent(styleClassesLabel).addComponent(styleLabel)
-										.addComponent(idLabel).addComponent(languageDirectionLabel).addComponent(languageCodeLabel)
-										.addComponent(accessKeyLabel).addComponent(tabIndexLabel))
+		advancedPanelLayout.setHorizontalGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(advancedPanelLayout.createSequentialGroup().addContainerGap()
+						.addGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+								.addComponent(linkedResourceCharsetLabel).addComponent(advisoryContentTypeLabel)
+								.addComponent(advisoryTitleLabel).addComponent(styleClassesLabel).addComponent(styleLabel)
+								.addComponent(idLabel).addComponent(languageDirectionLabel).addComponent(languageCodeLabel)
+								.addComponent(accessKeyLabel).addComponent(tabIndexLabel))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								advancedPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-										.addComponent(languageCodeTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
-										.addComponent(languageDirectionComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(idTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
-										.addComponent(styleTextField, javax.swing.GroupLayout.Alignment.TRAILING,
-												javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
-										.addComponent(styleClassesTextField, javax.swing.GroupLayout.Alignment.TRAILING,
-												javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
-										.addComponent(advisoryTitleTextField, javax.swing.GroupLayout.Alignment.TRAILING,
-												javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
-										.addComponent(advisoryContentTypeTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 262,
-												Short.MAX_VALUE)
-										.addComponent(linkedResourceCharsetTextField, javax.swing.GroupLayout.Alignment.TRAILING,
-												javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
-										.addGroup(
-												advancedPanelLayout
-														.createSequentialGroup()
-														.addComponent(tabIndexSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 38,
-																javax.swing.GroupLayout.PREFERRED_SIZE)
-														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addComponent(tabIndexToggleButton))
-										.addComponent(accessKeyTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 28,
-												javax.swing.GroupLayout.PREFERRED_SIZE)).addContainerGap()));
-		advancedPanelLayout.setVerticalGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				advancedPanelLayout
-						.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								advancedPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(idLabel)
-										.addComponent(idTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								advancedPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(styleClassesLabel)
-										.addComponent(styleClassesTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addGap(8, 8, 8)
-						.addGroup(
-								advancedPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(styleTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(styleLabel))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								advancedPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(advisoryTitleTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(advisoryTitleLabel))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								advancedPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(advisoryContentTypeLabel)
-										.addComponent(advisoryContentTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								advancedPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(languageDirectionLabel)
-										.addComponent(languageDirectionComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								advancedPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(languageCodeTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(languageCodeLabel))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								advancedPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(accessKeyLabel)
-										.addComponent(accessKeyTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								advancedPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(tabIndexLabel)
+						.addGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+								.addComponent(languageCodeTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
+								.addComponent(languageDirectionComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addComponent(idTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
+								.addComponent(styleTextField, javax.swing.GroupLayout.Alignment.TRAILING,
+										javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
+								.addComponent(styleClassesTextField, javax.swing.GroupLayout.Alignment.TRAILING,
+										javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
+								.addComponent(advisoryTitleTextField, javax.swing.GroupLayout.Alignment.TRAILING,
+										javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
+								.addComponent(advisoryContentTypeTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
+								.addComponent(linkedResourceCharsetTextField, javax.swing.GroupLayout.Alignment.TRAILING,
+										javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
+								.addGroup(advancedPanelLayout.createSequentialGroup()
 										.addComponent(tabIndexSpinner, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+												38, javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 										.addComponent(tabIndexToggleButton))
+								.addComponent(accessKeyTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 28,
+										javax.swing.GroupLayout.PREFERRED_SIZE))
+						.addContainerGap()));
+		advancedPanelLayout.setVerticalGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(advancedPanelLayout.createSequentialGroup().addContainerGap()
+						.addGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(idLabel)
+								.addComponent(idTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+										javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								advancedPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(linkedResourceCharsetLabel)
-										.addComponent(linkedResourceCharsetTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+						.addGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(styleClassesLabel).addComponent(styleClassesTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+						.addGap(8, 8, 8)
+						.addGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(styleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addComponent(styleLabel))
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+						.addGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(advisoryTitleTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addComponent(advisoryTitleLabel))
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+						.addGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(advisoryContentTypeLabel).addComponent(advisoryContentTypeTextField,
+										javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+										javax.swing.GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+						.addGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(languageDirectionLabel).addComponent(languageDirectionComboBox,
+										javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+										javax.swing.GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+						.addGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(languageCodeTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addComponent(languageCodeLabel))
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+						.addGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(accessKeyLabel).addComponent(accessKeyTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+						.addGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(tabIndexLabel)
+								.addComponent(tabIndexSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addComponent(tabIndexToggleButton))
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+						.addGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(linkedResourceCharsetLabel).addComponent(linkedResourceCharsetTextField,
+										javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+										javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addContainerGap(93, Short.MAX_VALUE)));
 
 		mainTabbedPane.addTab("Advanced", advancedPanel);
@@ -350,23 +305,20 @@ public class LinkDialog extends javax.swing.JDialog {
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(
-						javax.swing.GroupLayout.Alignment.TRAILING,
-						layout.createSequentialGroup().addContainerGap(264, Short.MAX_VALUE).addComponent(okButton)
-								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(cancelButton)
-								.addContainerGap()).addComponent(mainTabbedPane));
+		layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
+				javax.swing.GroupLayout.Alignment.TRAILING,
+				layout.createSequentialGroup().addContainerGap(264, Short.MAX_VALUE).addComponent(okButton)
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(cancelButton).addContainerGap())
+				.addComponent(mainTabbedPane));
 
 		layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] { cancelButton, okButton });
 
-		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				layout.createSequentialGroup()
-						.addComponent(mainTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(cancelButton)
-										.addComponent(okButton)).addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout
+				.createSequentialGroup()
+				.addComponent(mainTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)
+				.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout
+						.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(cancelButton).addComponent(okButton))
+				.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
@@ -388,69 +340,69 @@ public class LinkDialog extends javax.swing.JDialog {
 		StringBuffer buffer = new StringBuffer();
 		String linkText = null;
 		switch (linkType) {
-		case URL:
-			String url = urlLinkPanel.getUrl();
-			LinkTarget linkTarget = urlLinkPanel.getLinkTarget();
+			case URL:
+				String url = urlLinkPanel.getUrl();
+				LinkTarget linkTarget = urlLinkPanel.getLinkTarget();
 
-			if (url.length() == 0) {
-				JOptionPane.showMessageDialog(null, "The link URL must be specified.", "Error", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
+				if (url.length() == 0) {
+					JOptionPane.showMessageDialog(null, "The link URL must be specified.", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 
-			buffer.append("<a href='");
-			buffer.append(url);
-			buffer.append("'");
-
-			if (linkTarget.getAttrValue() != null) {
-				buffer.append(" target='");
-				buffer.append(linkTarget.getAttrValue());
+				buffer.append("<a href='");
+				buffer.append(url);
 				buffer.append("'");
-			}
 
-			linkText = url;
-			break;
+				if (linkTarget.getAttrValue() != null) {
+					buffer.append(" target='");
+					buffer.append(linkTarget.getAttrValue());
+					buffer.append("'");
+				}
 
-		case LINK_TO_ANCHOR_IN_TEXT:
-			String anchorName = anchorLinkPanel.getAnchorName();
+				linkText = url;
+				break;
 
-			if (anchorName.length() == 0) {
-				JOptionPane.showMessageDialog(null, "The anchor name must be specified.", "Error", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
+			case LINK_TO_ANCHOR_IN_TEXT:
+				String anchorName = anchorLinkPanel.getAnchorName();
 
-			buffer.append("<a href='#");
-			buffer.append(anchorName);
-			buffer.append("'");
+				if (anchorName.length() == 0) {
+					JOptionPane.showMessageDialog(null, "The anchor name must be specified.", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 
-			linkText = "#" + anchorName;
-			break;
-		case EMAIL:
-			String emailAddress = emailLinkPanel.getEmailAddress();
-			String messageSubject = emailLinkPanel.getMessageSubject();
-			String messageBody = emailLinkPanel.getMessageBody();
+				buffer.append("<a href='#");
+				buffer.append(anchorName);
+				buffer.append("'");
 
-			if (emailAddress.length() == 0) {
-				JOptionPane.showMessageDialog(null, "The e-mail address must be specified.", "Error", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
+				linkText = "#" + anchorName;
+				break;
+			case EMAIL:
+				String emailAddress = emailLinkPanel.getEmailAddress();
+				String messageSubject = emailLinkPanel.getMessageSubject();
+				String messageBody = emailLinkPanel.getMessageBody();
 
-			buffer.append("<a href='mailto:");
-			buffer.append(emailAddress);
-			if (messageSubject.length() > 0 || messageBody.length() > 0) {
-				buffer.append('?');
-			}
-			if (messageSubject.length() > 0) {
-				buffer.append("subject=");
-				buffer.append(messageSubject);
-				buffer.append("&amp;");
-			}
-			if (messageBody.length() > 0) {
-				buffer.append("body=");
-				buffer.append(messageBody);
-			}
-			buffer.append("'");
-			linkText = "mailto:" + emailAddress;
-			break;
+				if (emailAddress.length() == 0) {
+					JOptionPane.showMessageDialog(null, "The e-mail address must be specified.", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				buffer.append("<a href='mailto:");
+				buffer.append(emailAddress);
+				if (messageSubject.length() > 0 || messageBody.length() > 0) {
+					buffer.append('?');
+				}
+				if (messageSubject.length() > 0) {
+					buffer.append("subject=");
+					buffer.append(messageSubject);
+					buffer.append("&amp;");
+				}
+				if (messageBody.length() > 0) {
+					buffer.append("body=");
+					buffer.append(messageBody);
+				}
+				buffer.append("'");
+				linkText = "mailto:" + emailAddress;
+				break;
 		}
 
 		if (id.length() > 0) {
@@ -520,9 +472,11 @@ public class LinkDialog extends javax.swing.JDialog {
 		mainPanel.removeAll();
 		if (linkType == LinkType.URL) {
 			mainPanel.add(urlLinkPanel);
-		} else if (linkType == LinkType.LINK_TO_ANCHOR_IN_TEXT) {
+		}
+		else if (linkType == LinkType.LINK_TO_ANCHOR_IN_TEXT) {
 			mainPanel.add(anchorLinkPanel);
-		} else if (linkType == LinkType.EMAIL) {
+		}
+		else if (linkType == LinkType.EMAIL) {
 			mainPanel.add(emailLinkPanel);
 		}
 		pack();

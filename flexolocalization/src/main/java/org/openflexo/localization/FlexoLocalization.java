@@ -39,27 +39,14 @@
 
 package org.openflexo.localization;
 
-import java.awt.Component;
-import java.awt.Frame;
 import java.lang.ref.WeakReference;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
-import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.annotation.Nonnull;
-import javax.swing.AbstractButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JTabbedPane;
-import javax.swing.border.TitledBorder;
-import javax.swing.table.TableColumn;
 
 import org.openflexo.connie.BindingEvaluator;
 import org.openflexo.rm.Resource;
@@ -85,21 +72,21 @@ public class FlexoLocalization {
 
 	private static Language _currentLanguage;
 
-	private static List<WeakReference<LocalizationListener>> localizationListeners = new Vector<WeakReference<LocalizationListener>>();
+	private static List<WeakReference<LocalizationListener>> localizationListeners = new Vector<>();
 
-	private static final WeakHashMap<Component, String> _storedLocalizedForComponents = new WeakHashMap<Component, String>();
-
+	/*private static final WeakHashMap<Component, String> _storedLocalizedForComponents = new WeakHashMap<Component, String>();
+	
 	private static final WeakHashMap<JComponent, String> _storedLocalizedForComponentTooltips = new WeakHashMap<JComponent, String>();
-
+	
 	private static final WeakHashMap<TitledBorder, String> _storedLocalizedForBorders = new WeakHashMap<TitledBorder, String>();
-
+	
 	private static final WeakHashMap<TableColumn, String> _storedLocalizedForTableColumn = new WeakHashMap<TableColumn, String>();
-
-	private static final WeakHashMap<Component, String> _storedAdditionalStrings = new WeakHashMap<Component, String>();
+	
+	private static final WeakHashMap<Component, String> _storedAdditionalStrings = new WeakHashMap<Component, String>();*/
 
 	private static LocalizedDelegate mainLocalizer;
 
-	private static boolean uninitalizedLocalizationWarningDone = false;
+	// private static boolean uninitalizedLocalizationWarningDone = false;
 
 	/**
 	 * Initialize localization given a supplied localization delegate
@@ -107,13 +94,19 @@ public class FlexoLocalization {
 	 * @param delegate
 	 */
 	public static void initWith(LocalizedDelegate delegate) {
-		if (!FlexoLocalization.isInitialized()) {
-			mainLocalizer = delegate;
-		} else {
-			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Locales have already been initialized. Unless you know what you are doing, this should not happen is therefore prevented.");
-			}
+		if (FlexoLocalization.isInitialized()) {
+			logger.info("Redefine general locales with " + delegate);
 		}
+		mainLocalizer = delegate;
+		/*if (!FlexoLocalization.isInitialized()) {
+			mainLocalizer = delegate;
+		}
+		else {
+			if (logger.isLoggable(Level.WARNING)) {
+				logger.warning(
+						"Locales have already been initialized. Unless you know what you are doing, this should not happen is therefore prevented.");
+			}
+		}*/
 
 	}
 
@@ -145,7 +138,7 @@ public class FlexoLocalization {
 	 * @param key
 	 * @return localized String
 	 */
-	public static String localizedForKey(String key) {
+	/*public static String localizedForKey(String key) {
 		if (mainLocalizer == null) {
 			if (!uninitalizedLocalizationWarningDone) {
 				logger.warning("FlexoLocalization not initialized, returning key as localized key=" + key);
@@ -155,11 +148,11 @@ public class FlexoLocalization {
 		}
 		return localizedForKey(mainLocalizer, key);
 	}
-
+	
 	public static String localizedForKey(LocalizedDelegate delegate, String key) {
 		return localizedForKeyAndLanguage(delegate, key, getCurrentLanguage());
 	}
-
+	
 	public static String localizedForKeyAndLanguage(String key, Language language) {
 		if (mainLocalizer == null) {
 			if (!uninitalizedLocalizationWarningDone) {
@@ -170,22 +163,22 @@ public class FlexoLocalization {
 		}
 		return localizedForKeyAndLanguage(mainLocalizer, key, language);
 	}
-
+	
 	public static String localizedForKeyAndLanguage(LocalizedDelegate delegate, String key, Language language) {
 		return localizedForKeyAndLanguage(delegate, key, language, true);
 	}
-
+	
 	public static String localizedForKeyAndLanguage(LocalizedDelegate delegate, String key, Language language,
 			boolean createsNewEntriesIfNonExistant) {
-
+	
 		if (key == null) {
 			return null;
 		}
-
+	
 		if (delegate == null) {
 			return key;
 		}
-
+	
 		String returned = delegate.getLocalizedForKeyAndLanguage(key, language);
 		if (returned == null) {
 			// Not found
@@ -199,35 +192,39 @@ public class FlexoLocalization {
 						delegate.registerNewEntry(key, language, key);
 					}
 					return value;
-				} else {
+				}
+				else {
 					// No parent exists, we will use keys
 					for (Language l : Language.availableValues()) {
 						delegate.registerNewEntry(key, l, key);
 					}
 					return key;
 				}
-			} else {
+			}
+			else {
 				if (delegate.getParent() != null) {
 					return localizedForKeyAndLanguage(delegate.getParent(), key, language, false);
-				} else {
+				}
+				else {
 					// logger.warning("Not found and not handling new entries for localized for key " + key + " delegate=" + delegate);
 					return key;
 				}
 			}
-		} else {
+		}
+		else {
 			return returned;
 		}
 	}
-
+	
 	public static String localizedForKeyWithParams(String key, Object... object) {
 		String base = localizedForKey(key);
 		return replaceAllParamsInString(base, object);
 	}
-
+	
 	public static String localizedForKeyWithParams(LocalizedDelegate delegate, String key, Object... object) {
 		String base = localizedForKey(delegate, key);
 		return replaceAllParamsInString(base, object);
-	}
+	}*/
 
 	/**
 	 * Convenient methods localizing an array of keys
@@ -235,13 +232,13 @@ public class FlexoLocalization {
 	 * @param keys
 	 * @return
 	 */
-	public static String[] localizedForKey(String[] keys) {
+	/*public static String[] localizedForKey(String[] keys) {
 		String[] values = new String[keys.length];
 		for (int i = 0; i < keys.length; i++) {
 			values[i] = localizedForKey(keys[i]);
 		}
 		return values;
-	}
+	}*/
 
 	/**
 	 * Sets localized related to specified key and language
@@ -250,16 +247,17 @@ public class FlexoLocalization {
 	 *            , value, language
 	 * @return localized String
 	 */
-	public static void setLocalizedForKeyAndLanguage(String key, String value, Language language) {
+	/*public static void setLocalizedForKeyAndLanguage(String key, String value, Language language) {
 		if (mainLocalizer == null) {
 			if (!uninitalizedLocalizationWarningDone) {
 				logger.warning("FlexoLocalization not initialized, returning key as localized key=" + key);
 				uninitalizedLocalizationWarningDone = true;
 			}
-		} else {
+		}
+		else {
 			setLocalizedForKeyAndLanguage(mainLocalizer, key, value, language);
 		}
-	}
+	}*/
 
 	/**
 	 * Sets localized related to specified key and language
@@ -268,11 +266,11 @@ public class FlexoLocalization {
 	 *            , value, language
 	 * @return localized String
 	 */
-	public static void setLocalizedForKeyAndLanguage(@Nonnull LocalizedDelegate delegate, String key, String value, Language language) {
+	/*public static void setLocalizedForKeyAndLanguage(@Nonnull LocalizedDelegate delegate, String key, String value, Language language) {
 		if (delegate.handleNewEntry(key, language)) {
 			delegate.registerNewEntry(key, language, value);
 		}
-	}
+	}*/
 
 	/**
 	 * Sets localized related to specified key
@@ -281,23 +279,23 @@ public class FlexoLocalization {
 	 *            , value, language
 	 * @return localized String
 	 */
-	public static void setLocalizedForKey(String key, String value) {
+	/*public static void setLocalizedForKey(String key, String value) {
 		setLocalizedForKeyAndLanguage(key, value, getCurrentLanguage());
+	
+	}*/
 
-	}
-
-	public static String localizedForKey(LocalizedDelegate delegate, String key, Component component) {
+	/*public static String localizedForKey(LocalizedDelegate delegate, String key, Component component) {
 		if (logger.isLoggable(Level.FINE)) {
 			logger.finest("localizedForKey called with " + key + " for " + component.getClass().getName());
 		}
 		_storedLocalizedForComponents.put(component, key);
 		return localizedForKey(delegate, key);
 	}
-
+	
 	public static String localizedTooltipForKey(String key, JComponent component) {
 		return localizedTooltipForKey(mainLocalizer, key, component);
 	}
-
+	
 	public static String localizedTooltipForKey(LocalizedDelegate delegate, String key, JComponent component) {
 		if (logger.isLoggable(Level.FINE)) {
 			logger.finest("localizedForKey called with " + key + " for " + component.getClass().getName());
@@ -305,11 +303,11 @@ public class FlexoLocalization {
 		_storedLocalizedForComponentTooltips.put(component, key);
 		return localizedForKey(delegate, key);
 	}
-
+	
 	public static String localizedForKey(String key, Component component) {
 		return localizedForKey(mainLocalizer, key, component);
 	}
-
+	
 	public static String localizedForKey(String key, TitledBorder border) {
 		if (logger.isLoggable(Level.FINE)) {
 			logger.finest("localizedForKey called with " + key + " for border " + border.getClass().getName());
@@ -317,7 +315,7 @@ public class FlexoLocalization {
 		_storedLocalizedForBorders.put(border, key);
 		return localizedForKey(key);
 	}
-
+	
 	public static String localizedForKey(String key, TableColumn column) {
 		if (logger.isLoggable(Level.FINE)) {
 			logger.finest("localizedForKey called with " + key + " for border " + column.getClass().getName());
@@ -325,7 +323,7 @@ public class FlexoLocalization {
 		_storedLocalizedForTableColumn.put(column, key);
 		return localizedForKey(key);
 	}
-
+	
 	public static String localizedForKey(String key, String additionalString, Component component) {
 		if (key == null) {
 			return null;
@@ -337,7 +335,7 @@ public class FlexoLocalization {
 		_storedAdditionalStrings.put(component, additionalString);
 		return localizedForKey(key) + additionalString;
 	}
-
+	
 	public static void updateGUILocalized() {
 		for (Map.Entry<Component, String> e : _storedLocalizedForComponents.entrySet()) {
 			Component component = e.getKey();
@@ -362,8 +360,8 @@ public class FlexoLocalization {
 			}
 			if (component.getParent() != null && component.getParent().getParent() instanceof JTabbedPane) {
 				if (((JTabbedPane) component.getParent().getParent()).indexOfComponent(component) > -1) {
-					((JTabbedPane) component.getParent().getParent()).setTitleAt(
-							((JTabbedPane) component.getParent().getParent()).indexOfComponent(component), text);
+					((JTabbedPane) component.getParent().getParent())
+							.setTitleAt(((JTabbedPane) component.getParent().getParent()).indexOfComponent(component), text);
 				}
 			}
 		}
@@ -386,8 +384,8 @@ public class FlexoLocalization {
 		for (Frame f : Frame.getFrames()) {
 			f.repaint();
 		}
-
-	}
+	
+	}*/
 
 	/**
 	 * Returns a vector containing all available languages as a Vector of Language objects
@@ -405,7 +403,8 @@ public class FlexoLocalization {
 			LocalizationListener l = i.next().get();
 			if (l == null) {
 				i.remove();
-			} else {
+			}
+			else {
 				l.languageChanged(language);
 			}
 		}
@@ -422,18 +421,17 @@ public class FlexoLocalization {
 		return mainLocalizer;
 	}
 
-	public static void main(String[] args) {
-		System.out.println("Testing localizedForKeyWithParams(String,String...): "
-				+ localizedForKeyWithParams(
-						"Must display first param here ($0) and second one: ($1) and third one:($2) then repeat second one ($1)", "foo1",
-						"foo2", "foo3"));
-	}
+	/*public static void main(String[] args) {
+		System.out.println("Testing localizedForKeyWithParams(String,String...): " + localizedForKeyWithParams(
+				"Must display first param here ($0) and second one: ($1) and third one:($2) then repeat second one ($1)", "foo1", "foo2",
+				"foo3"));
+	}*/
 
 	/**
 	 * @param returned
 	 * @param object
 	 */
-	private static String replaceAllParamsInString(String aString, Object... object) {
+	/*private static String replaceAllParamsInString(String aString, Object... object) {
 		if (logger.isLoggable(Level.FINER)) {
 			logger.finer("replaceAllParamsInString() with " + aString + " and " + object);
 		}
@@ -459,10 +457,111 @@ public class FlexoLocalization {
 				if (object.length > index) {
 					if (object[index] != null) {
 						m.appendReplacement(returned, object[index].toString());
-					} else {
+					}
+					else {
 						m.appendReplacement(returned, "");
 					}
-				} else {
+				}
+				else {
+					if (logger.isLoggable(Level.WARNING)) {
+						logger.warning("Argument index " + index + " is greater than number of arguments");
+					}
+				}
+			} catch (NumberFormatException e) {
+				try {
+					m.appendReplacement(returned, valueForKeyAndObject(suffix, object[0]));
+				} catch (IllegalArgumentException e2) {
+					logger.warning("Unexpected IllegalArgumentException " + e2.getMessage());
+				}
+			}
+		}
+		m.appendTail(returned);
+		if (logger.isLoggable(Level.FINE)) {
+			logger.finer("Returning " + returned);
+		}
+		return returned.toString();
+	}*/
+
+	/*private static String valueForKeyAndObject(String key, Object object) {
+	
+		try {
+			return BindingEvaluator.evaluateBinding(key, object).toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return key;
+	}*/
+
+	public static void clearLocalizationListeners() {
+		/*_storedLocalizedForComponents.clear();
+		_storedLocalizedForBorders.clear();
+		_storedAdditionalStrings.clear();
+		_storedLocalizedForTableColumn.clear();*/
+		localizationListeners.clear();
+	}
+
+	public static void addToLocalizationListeners(LocalizationListener l) {
+		localizationListeners.add(new WeakReference<>(l));
+	}
+
+	public static void removeFromLocalizationListeners(LocalizationListener l) {
+		Iterator<WeakReference<LocalizationListener>> i = localizationListeners.iterator();
+		while (i.hasNext()) {
+			LocalizationListener l1 = i.next().get();
+			if (l1 == null || l1 == l) {
+				i.remove();
+			}
+		}
+	}
+
+	/*private static Map<Resource, LocalizedDelegate> loadedLocalizedDelegates = new HashMap<Resource, LocalizedDelegate>();
+	
+	public static LocalizedDelegate getLocalizedDelegate(Resource localizedDirectoryURL, LocalizedDelegate parent, boolean automaticSaving,
+			boolean editingSupport) {
+		LocalizedDelegate returned = loadedLocalizedDelegates.get(localizedDirectoryURL);
+		if (returned == null) {
+			returned = new LocalizedDelegateImpl(localizedDirectoryURL, parent, automaticSaving, editingSupport);
+			loadedLocalizedDelegates.put(localizedDirectoryURL, returned);
+		}
+		return returned;
+	}*/
+
+	/**
+	 * @param returned
+	 * @param object
+	 */
+	public static String replaceAllParamsInString(String aString, Object... object) {
+		if (logger.isLoggable(Level.FINER)) {
+			logger.finer("replaceAllParamsInString() with " + aString + " and " + object);
+		}
+		// Pattern p = Pattern.compile("*\\($[a-zA-Z]\\)*");
+		// Pattern p = Pattern.compile("\\p{Punct}\\bJava(\\w*)\\p{Punct}");
+		// Pattern p = Pattern.compile("\\(\\bJava(\\w*)\\)");
+		// Pattern p = Pattern.compile("\\(\\$(\\w*)\\)");
+		Pattern p = Pattern.compile("\\(\\$([_0-9a-zA-Z[\\.]]+)\\)");
+		Matcher m = p.matcher(aString);
+		StringBuffer returned = new StringBuffer();
+		while (m.find()) {
+			int nextIndex = m.start();
+			String foundPattern = m.group();
+			if (logger.isLoggable(Level.FINE)) {
+				logger.finest("Found '" + foundPattern + "' at position " + nextIndex);
+			}
+			String suffix = m.group(1);
+			if (logger.isLoggable(Level.FINE)) {
+				logger.finest("Suffix is " + suffix);
+			}
+			try {
+				int index = Integer.parseInt(suffix);
+				if (object.length > index) {
+					if (object[index] != null) {
+						m.appendReplacement(returned, object[index].toString());
+					}
+					else {
+						m.appendReplacement(returned, "");
+					}
+				}
+				else {
 					if (logger.isLoggable(Level.WARNING)) {
 						logger.warning("Argument index " + index + " is greater than number of arguments");
 					}
@@ -491,7 +590,7 @@ public class FlexoLocalization {
 		}
 		return key;
 		/*try {
-
+		
 			// Object objectForKey = BindingEvaluator.evaluateBinding(key, object);
 			Object objectForKey = KeyValueDecoder.valueForKey(object, key);
 			if (objectForKey != null) {
@@ -503,40 +602,6 @@ public class FlexoLocalization {
 			logger.warning(e.getMessage());
 			return key;
 		}*/
-	}
-
-	public static void clearStoredLocalizedForComponents() {
-		_storedLocalizedForComponents.clear();
-		_storedLocalizedForBorders.clear();
-		_storedAdditionalStrings.clear();
-		_storedLocalizedForTableColumn.clear();
-		localizationListeners.clear();
-	}
-
-	public static void addToLocalizationListeners(LocalizationListener l) {
-		localizationListeners.add(new WeakReference<LocalizationListener>(l));
-	}
-
-	public static void removeFromLocalizationListeners(LocalizationListener l) {
-		Iterator<WeakReference<LocalizationListener>> i = localizationListeners.iterator();
-		while (i.hasNext()) {
-			LocalizationListener l1 = i.next().get();
-			if (l1 == null || l1 == l) {
-				i.remove();
-			}
-		}
-	}
-
-	private static Map<Resource, LocalizedDelegate> loadedLocalizedDelegates = new HashMap<Resource, LocalizedDelegate>();
-
-	public static LocalizedDelegate getLocalizedDelegate(Resource localizedDirectoryURL, LocalizedDelegate parent, boolean automaticSaving,
-			boolean editingSupport) {
-		LocalizedDelegate returned = loadedLocalizedDelegates.get(localizedDirectoryURL);
-		if (returned == null) {
-			returned = new LocalizedDelegateImpl(localizedDirectoryURL, parent, automaticSaving, editingSupport);
-			loadedLocalizedDelegates.put(localizedDirectoryURL, returned);
-		}
-		return returned;
 	}
 
 }

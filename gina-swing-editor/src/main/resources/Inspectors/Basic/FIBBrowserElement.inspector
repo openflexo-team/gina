@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBBrowserElement" name="Inspector">
+
+	<Label index="0" label="name" constraints="twocols(location=left)"
+		localize="true" />
+	<TextField index="1" data="data.name"
+		constraints="twocols(expandHorizontally=true;location=right)"
+		localize="true" columns="15" />
+	<Label index="2" label="data_type" constraints="twocols(location=left)"
+		localize="true" />
+	<Custom index="3" componentClassName="org.openflexo.gina.swing.utils.TypeSelector"
+		localize="true" manageDynamicModel="true" data="data.dataType"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment mandatory="true" variable="component.customTypeManager" 
+		value="data.owner.rootComponent.customTypeManager" />
+		<Assignment mandatory="true" variable="component.customTypeEditorProvider" 
+		value="data.owner.rootComponent.customTypeEditorProvider"/>
+	</Custom>
+	<Label index="4" label="label" constraints="twocols(location=left)"
+		localize="true" />
+	<Custom index="5" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.label"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data.iteratorBindable" />
+	</Custom>
+	<Label index="6" label="icon" constraints="twocols(location=left)"
+		localize="true" />
+	<Custom index="7" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.icon"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data.iteratorBindable" />
+	</Custom>
+	<Label index="8" label="icon_file" constraints="twocols(location=left)"
+		localize="true" />
+	<File index="9" mode="OpenMode" isDirectory="false" localize="true"
+		data="data.imageIconFile" constraints="twocols(expandHorizontally=true;location=right)" />
+
+	<Label index="12" label="tooltip" constraints="twocols(location=left)"
+		localize="true" />
+	<Custom index="13" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.tooltip"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data.iteratorBindable" />
+	</Custom>
+	<Label index="14" label="enabled" constraints="twocols(location=left)"
+		localize="true" />
+	<Custom index="15" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.enabled"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data.iteratorBindable" />
+	</Custom>
+	<Label index="16" label="visible" constraints="twocols(location=left)"
+		localize="true" />
+	<Custom index="17" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.visible"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<Assignment variable="component.bindable" value="data.iteratorBindable" />
+	</Custom>
+	<Label index="18" label="is_label_editable" constraints="twocols(location=left)"
+		localize="true" />
+	<Panel index="19" layout="border" titleFont="SansSerif,0,11"
+		darkLevel="0" constraints="twocols(expandHorizontally=true;location=right)">
+		<CheckBox selected="false" data="data.isEditable"
+			constraints="border(location=west)" localize="true" />
+		<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+			localize="true" manageDynamicModel="true" data="data.editableLabel"
+			constraints="border(location=center)" visible="data.isEditable">
+			<Assignment variable="component.bindable" value="data.iteratorBindable" />
+		</Custom>
+	</Panel>
+	<Label index="20" label="filtered" constraints="twocols(location=left)"
+		localize="true" />
+	<Panel index="21" layout="flow" hGap="0" vGap="0" flowAlignment="LEADING"
+		titleFont="SansSerif,0,11" darkLevel="0"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<CheckBox selected="false" data="data.filtered" constraints="flow()"
+			localize="true" />
+		<Label label="visible_at_start_up" constraints="flow()" visible="data.filtered"
+			localize="true" />
+		<CheckBox selected="false" data="data.defaultVisible"
+			constraints="flow()" visible="data.filtered" localize="true" />
+	</Panel>
+	<Label index="22" label="use_specific_font" constraints="twocols(location=left)"
+		localize="true" />
+	<Panel index="23" layout="flow" hGap="0" vGap="0" flowAlignment="LEADING"
+		name="SpecificFontPanel" titleFont="SansSerif,0,11" darkLevel="0"
+		constraints="twocols(expandHorizontally=true;location=right)">
+		<CheckBox selected="false" data="data.hasSpecificFont"
+			constraints="flow()" localize="true" />
+		<Font sampleText="Sample for this font" localize="true" data="data.font"
+			constraints="flow()" visible="data.hasSpecificFont" />
+	</Panel>
+	<Label index="24" label="dynamic_font"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+		localize="true" />
+	<Custom index="25" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" data="data.dynamicFont"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=21;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+		<Assignment variable="component.bindable" value="data.iteratorBindable" />
+	</Custom>
+
+	<Parameter name="title" value="Browser element" />
+</Inspector>

@@ -37,7 +37,6 @@
  * 
  */
 
-
 package org.openflexo.swing;
 
 import java.awt.BorderLayout;
@@ -66,7 +65,6 @@ import org.openflexo.localization.FlexoLocalization;
  */
 public class FontSelector extends CustomPopup<Font> implements FontSelectionModel {
 
-	@SuppressWarnings("hiding")
 	static final Logger logger = Logger.getLogger(FontSelector.class.getPackage().getName());
 
 	private Font _revertValue;
@@ -86,7 +84,8 @@ public class FontSelector extends CustomPopup<Font> implements FontSelectionMode
 		// WARNING: we need here to clone to keep track back of previous data !!!
 		if (oldValue != null) {
 			_revertValue = new Font(oldValue.getFontName(), oldValue.getStyle(), oldValue.getSize());
-		} else {
+		}
+		else {
 			_revertValue = null;
 		}
 		if (logger.isLoggable(Level.FINE)) {
@@ -119,7 +118,8 @@ public class FontSelector extends CustomPopup<Font> implements FontSelectionMode
 	public Font getSelectedFont() {
 		if (getEditedObject() != null) {
 			return getEditedObject();
-		} else {
+		}
+		else {
 			return DEFAULT_FONT;
 		}
 	}
@@ -162,10 +162,10 @@ public class FontSelector extends CustomPopup<Font> implements FontSelectionMode
 	}
 
 	public class FontDetailsPanel extends ResizablePanel {
-		private JFontChooser fontChooser;
+		private final JFontChooser fontChooser;
 		private JButton _applyButton;
 		private JButton _cancelButton;
-		private JPanel _controlPanel;
+		private final JPanel _controlPanel;
 
 		protected FontDetailsPanel(Font editedFont) {
 			super();
@@ -177,8 +177,8 @@ public class FontSelector extends CustomPopup<Font> implements FontSelectionMode
 
 			_controlPanel = new JPanel();
 			_controlPanel.setLayout(new FlowLayout());
-			_controlPanel.add(_applyButton = new JButton(FlexoLocalization.localizedForKey("ok")));
-			_controlPanel.add(_cancelButton = new JButton(FlexoLocalization.localizedForKey("cancel")));
+			_controlPanel.add(_applyButton = new JButton(FlexoLocalization.getMainLocalizer().localizedForKey("ok")));
+			_controlPanel.add(_cancelButton = new JButton(FlexoLocalization.getMainLocalizer().localizedForKey("cancel")));
 			_applyButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -255,7 +255,7 @@ public class FontSelector extends CustomPopup<Font> implements FontSelectionMode
 	}*/
 
 	protected class FontPreviewPanel extends JPanel {
-		private JLabel previewLabel;
+		private final JLabel previewLabel;
 
 		protected FontPreviewPanel() {
 			super(new BorderLayout());
@@ -271,11 +271,27 @@ public class FontSelector extends CustomPopup<Font> implements FontSelectionMode
 			// logger.info("Update front panel with "+JFontChooser.fontDescription(getEditedObject())+" font="+getEditedObject());
 			previewLabel.setFont(getEditedObject());
 			if (FontSelector.super.getEditedObject() != null) {
-				previewLabel.setText(JFontChooser.fontDescription(getEditedObject()));
-			} else {
+				previewLabel.setText(fontDescription(getEditedObject()));
+			}
+			else {
 				previewLabel.setText("");
 			}
 		}
+
+		public String fontDescription(Font aFont) {
+			if (aFont == null) {
+				return "null";
+			}
+			String familyName = aFont.getFamily();
+			if (familyName.contains(" ")) {
+				familyName = familyName.substring(0, familyName.indexOf(" "));
+			}
+			if (familyName.length() > 10) {
+				familyName = familyName.substring(0, 10);
+			}
+			return familyName + "," + JFontChooser.localizedFontStyle(aFont) + "," + aFont.getSize() + "pt";
+		}
+
 	}
 
 }

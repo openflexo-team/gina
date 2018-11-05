@@ -22,16 +22,14 @@
 
 package com.metaphaseeditor;
 
+import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
-import org.openflexo.toolbox.ImageIconResource;
 
 /**
  * 
  * @author Rudolf Visagie
  */
 public class AboutDialog extends javax.swing.JDialog {
-	
-	
 
 	/** Creates new form AboutDialog */
 	public AboutDialog(java.awt.Frame parent, boolean modal) {
@@ -101,8 +99,8 @@ public class AboutDialog extends javax.swing.JDialog {
 			}
 		});
 
-		acknowledgementsLabel.setFont(acknowledgementsLabel.getFont().deriveFont(
-				acknowledgementsLabel.getFont().getStyle() | java.awt.Font.BOLD));
+		acknowledgementsLabel
+				.setFont(acknowledgementsLabel.getFont().deriveFont(acknowledgementsLabel.getFont().getStyle() | java.awt.Font.BOLD));
 		acknowledgementsLabel.setText("Acknowledgements:");
 
 		appLicenseLabel.setText("GNU LESSER GENERAL PUBLIC LICENSE, Version 3");
@@ -110,104 +108,71 @@ public class AboutDialog extends javax.swing.JDialog {
 		licenseLabel.setFont(licenseLabel.getFont().deriveFont(licenseLabel.getFont().getStyle() | java.awt.Font.BOLD));
 		licenseLabel.setText("License:");
 
-		jLabel1.setText("<html>Metaphase HTML Editor is based on the excellent web-based CKEditor. All the toolbar icons are also taken from CKEditor. (<a href=\"http://ckeditor.com\">http://ckeditor.com</a>).<br><br>\nCharles Bell for his HTMLDocumentEditor (<a href=\"http://www.artima.com/forums/flat.jsp?forum=1&thread=1276\">http://www.artima.com/forums/flat.jsp?forum=1&thread=1276</a>) that served as a good starting point.<br><br>Modified portions of code from Kafenio.editor has also been included. (<a href=\"http://editor.kafenio.org/\">http://editor.kafenio.org/</a>)<br><br>The spell checker functionality is provided by Jazzy - The Java Open Source Spell Checker. (<a href=\"http://jazzy.sourceforge.net/\">http://jazzy.sourceforge.net/</a>)<br><br>The image on the left representing cell metaphase is from WikiVisual. (<a href=\"http://en.wikivisual.com/index.php/Metaphase\">http://en.wikivisual.com/index.php/Metaphase</a>) ");
+		jLabel1.setText(
+				"<html>Metaphase HTML Editor is based on the excellent web-based CKEditor. All the toolbar icons are also taken from CKEditor. (<a href=\"http://ckeditor.com\">http://ckeditor.com</a>).<br><br>\nCharles Bell for his HTMLDocumentEditor (<a href=\"http://www.artima.com/forums/flat.jsp?forum=1&thread=1276\">http://www.artima.com/forums/flat.jsp?forum=1&thread=1276</a>) that served as a good starting point.<br><br>Modified portions of code from Kafenio.editor has also been included. (<a href=\"http://editor.kafenio.org/\">http://editor.kafenio.org/</a>)<br><br>The spell checker functionality is provided by Jazzy - The Java Open Source Spell Checker. (<a href=\"http://jazzy.sourceforge.net/\">http://jazzy.sourceforge.net/</a>)<br><br>The image on the left representing cell metaphase is from WikiVisual. (<a href=\"http://en.wikivisual.com/index.php/Metaphase\">http://en.wikivisual.com/index.php/Metaphase</a>) ");
 
 		javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
 		jPanel1.setLayout(jPanel1Layout);
-		jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				jPanel1Layout
-						.createSequentialGroup()
-						.addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-								javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(66, Short.MAX_VALUE)));
-		jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				jPanel1Layout
-						.createSequentialGroup()
-						.addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-								javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(86, Short.MAX_VALUE)));
+		jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(jPanel1Layout
+						.createSequentialGroup().addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE,
+								javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+						.addContainerGap(66, Short.MAX_VALUE)));
+		jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(jPanel1Layout
+						.createSequentialGroup().addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE,
+								javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+						.addContainerGap(86, Short.MAX_VALUE)));
 
 		jScrollPane2.setViewportView(jPanel1);
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(
-						layout.createSequentialGroup()
-								.addContainerGap()
-								.addGroup(
-										layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+		layout.setHorizontalGroup(
+				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout
+								.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup()
+										.addComponent(imageLabel).addGap(10, 10, 10).addGroup(layout
+												.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(appTitleLabel)
+												.addComponent(acknowledgementsLabel)
+												.addComponent(appDescLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
 												.addGroup(
 														layout.createSequentialGroup()
-																.addComponent(imageLabel)
-																.addGap(10, 10, 10)
-																.addGroup(
-																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING)
-																				.addComponent(appTitleLabel)
-																				.addComponent(acknowledgementsLabel)
-																				.addComponent(appDescLabel,
-																						javax.swing.GroupLayout.DEFAULT_SIZE, 432,
-																						Short.MAX_VALUE)
-																				.addGroup(
-																						layout.createSequentialGroup()
-																								.addGroup(
-																										layout.createParallelGroup(
-																												javax.swing.GroupLayout.Alignment.LEADING)
-																												.addComponent(versionLabel)
-																												.addComponent(authorLabel)
-																												.addComponent(homepageLabel)
-																												.addComponent(licenseLabel))
-																								.addPreferredGap(
-																										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																								.addGroup(
-																										layout.createParallelGroup(
-																												javax.swing.GroupLayout.Alignment.LEADING)
-																												.addComponent(
-																														appVersionLabel)
-																												.addComponent(
-																														appVendorLabel)
-																												.addComponent(
-																														appHomepageLabel)
-																												.addComponent(
-																														appLicenseLabel)))
-																				.addComponent(jScrollPane2,
-																						javax.swing.GroupLayout.DEFAULT_SIZE, 432,
-																						Short.MAX_VALUE)))
-												.addComponent(closeButton, javax.swing.GroupLayout.Alignment.TRAILING)).addContainerGap()));
-		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				layout.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-										.addComponent(imageLabel)
-										.addGroup(
-												layout.createSequentialGroup()
-														.addComponent(appTitleLabel)
-														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addComponent(appDescLabel, javax.swing.GroupLayout.PREFERRED_SIZE,
-																javax.swing.GroupLayout.DEFAULT_SIZE,
-																javax.swing.GroupLayout.PREFERRED_SIZE)
-														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addGroup(
-																layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-																		.addComponent(versionLabel).addComponent(appVersionLabel))
-														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addGroup(
-																layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-																		.addComponent(authorLabel).addComponent(appVendorLabel))
-														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addGroup(
-																layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-																		.addComponent(homepageLabel).addComponent(appHomepageLabel))
-														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addGroup(
-																layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-																		.addComponent(licenseLabel).addComponent(appLicenseLabel))
-														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addComponent(acknowledgementsLabel)
-														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addComponent(jScrollPane2, 0, 0, Short.MAX_VALUE)))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(closeButton).addContainerGap()));
+																.addGroup(layout
+																		.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+																		.addComponent(versionLabel)
+																		.addComponent(authorLabel).addComponent(homepageLabel)
+																		.addComponent(licenseLabel))
+																.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																.addGroup(layout
+																		.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+																		.addComponent(appVersionLabel).addComponent(appVendorLabel)
+																		.addComponent(appHomepageLabel).addComponent(appLicenseLabel)))
+												.addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)))
+								.addComponent(closeButton, javax.swing.GroupLayout.Alignment.TRAILING)).addContainerGap()));
+		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout
+				.createSequentialGroup().addContainerGap()
+				.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(imageLabel)
+						.addGroup(layout.createSequentialGroup().addComponent(appTitleLabel)
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(appDescLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(versionLabel)
+										.addComponent(appVersionLabel))
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(authorLabel)
+										.addComponent(appVendorLabel))
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(homepageLabel)
+										.addComponent(appHomepageLabel))
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(licenseLabel)
+										.addComponent(appLicenseLabel))
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(acknowledgementsLabel)
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(jScrollPane2, 0, 0, Short.MAX_VALUE)))
+				.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(closeButton).addContainerGap()));
 
 		pack();
 	}// </editor-fold>//GEN-END:initComponents

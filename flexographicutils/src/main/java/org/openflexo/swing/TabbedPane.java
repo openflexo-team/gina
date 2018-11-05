@@ -199,7 +199,8 @@ public class TabbedPane<J> {
 					title.setIcon(tabHeaderRenderer.getTabHeaderIcon(tab));
 					title.setText(tabHeaderRenderer.getTabHeaderTitle(tab));
 					title.setToolTipText(tabHeaderRenderer.getTabHeaderTooltip(tab));
-				} else {
+				}
+				else {
 					title.setIcon(null);
 					if (tab instanceof JComponent) {
 						title.setText(((JComponent) tab).getName());
@@ -217,11 +218,12 @@ public class TabbedPane<J> {
 					super.paintComponent(clippedG);
 					clippedG.dispose();
 					if (tab == selectedTab) {
-						((Graphics2D) g).setPaint(new GradientPaint(new Point2D.Double(0, 0), TRANSPARENT, new Point2D.Double(0,
-								getHeight() / 2), LIGHT_BLUE));
+						((Graphics2D) g).setPaint(new GradientPaint(new Point2D.Double(0, 0), TRANSPARENT,
+								new Point2D.Double(0, getHeight() / 2), LIGHT_BLUE));
 						g.fillRect(0, 0, getWidth(), getHeight());
 					}
-				} else {
+				}
+				else {
 					if (isOpaque()) {
 						g.setColor(getBackground());
 						g.fillRect(0, 0, getWidth(), getHeight());
@@ -330,7 +332,7 @@ public class TabbedPane<J> {
 
 		}
 
-		private final Map<J, TabHeader> headerComponents = new HashMap<J, TabHeader>();
+		private final Map<J, TabHeader> headerComponents = new HashMap<>();
 
 		private final JButton extraTabsButton;
 		private final JPopupMenu extraTabsPopup;
@@ -369,7 +371,8 @@ public class TabbedPane<J> {
 				if (extraTabsPopup != null) {
 					if (extraTabsPopup.isVisible()) {
 						extraTabsPopup.setVisible(false);
-					} else {
+					}
+					else {
 						extraTabsPopup.setVisible(true);
 						Point location = new Point(extraTabsButton.getWidth() - extraTabsPopup.getWidth(), extraTabsButton.getHeight());
 						SwingUtilities.convertPointToScreen(location, extraTabsButton);
@@ -394,7 +397,7 @@ public class TabbedPane<J> {
 				for (int i = 0; i < tabs.size(); i++) {
 					J tab = tabs.get(i);
 					TabHeader tabHeader = headerComponents.get(tab);
-					if(tabHeader!=null){
+					if (tabHeader != null) {
 						if (!tabHeader.isVisible()) {
 							tabHeader.setBounds(0, 0, 0, 0);
 							selectedHeaderDone |= tabHeader == selectedHeader;
@@ -403,13 +406,16 @@ public class TabbedPane<J> {
 						if (!moveToPopup) {
 							if (!selectedHeaderDone) {
 								if (tab != selectedTab) {
-									if (i + 2 == tabs.size()) { // in this case, we only need to put the current tab and the selected tab
-										moveToPopup = availableWidth
-												- (tabHeader.getPreferredSize().width + selectedHeader.getPreferredSize().width) < 0;
-									} else {
-										moveToPopup = availableWidth
-												- (tabHeader.getPreferredSize().width + selectedHeader.getPreferredSize().width + extraTabsButton
-														.getWidth()) < 0;
+									if (tabHeader != null && selectedHeader != null) {
+										if (i + 2 == tabs.size()) { // in this case, we only need to put the current tab and the selected
+																	// tab
+											moveToPopup = availableWidth
+													- (tabHeader.getPreferredSize().width + selectedHeader.getPreferredSize().width) < 0;
+										}
+										else {
+											moveToPopup = availableWidth - (tabHeader.getPreferredSize().width
+													+ selectedHeader.getPreferredSize().width + extraTabsButton.getWidth()) < 0;
+										}
 									}
 								}
 								if (moveToPopup) {
@@ -425,10 +431,12 @@ public class TabbedPane<J> {
 									xBorderStart = x + selectedHeader.getWidth();
 									selectedHeaderDone = true;
 								}
-							} else {
+							}
+							else {
 								if (i + 1 == tabs.size()) {
 									moveToPopup = availableWidth - tabHeader.getWidth() < 0;
-								} else {
+								}
+								else {
 									moveToPopup = availableWidth - (tabHeader.getWidth() + extraTabsButton.getWidth()) < 0;
 								}
 							}
@@ -441,7 +449,8 @@ public class TabbedPane<J> {
 							extraTabsButton.setLocation(getWidth() - extraTabsButton.getWidth(), 0);
 							extraTabsPopup.add(tabHeader);
 							extraTabsPopup.revalidate();
-						} else {
+						}
+						else {
 							if (tabHeader.getParent() != this) {
 								add(tabHeader);
 							}
@@ -454,7 +463,7 @@ public class TabbedPane<J> {
 						availableWidth = getWidth() - x;
 						selectedHeaderDone |= tab == selectedTab;
 					}
-					
+
 				}
 				if (selectedHeader != null) {
 					xBorderEnd = selectedHeader.getX();
@@ -498,6 +507,18 @@ public class TabbedPane<J> {
 			}
 		}
 
+		public void hideTab(J tab) {
+			if (headerComponents.get(tab) != null) {
+				headerComponents.get(tab).setVisible(false);
+			}
+		}
+
+		public void showTab(J tab) {
+			if (headerComponents.get(tab) != null) {
+				headerComponents.get(tab).setVisible(true);
+			}
+		}
+
 		public void addTab(J tab) {
 			headerComponents.put(tab, new TabHeader(tab));
 			doLayout();
@@ -512,7 +533,8 @@ public class TabbedPane<J> {
 				if (parent == this) {
 					doLayout();
 					repaint();
-				} else if (parent == extraTabsPopup) {
+				}
+				else if (parent == extraTabsPopup) {
 					extraTabsPopup.revalidate();
 					extraTabsPopup.pack();
 				}
@@ -533,8 +555,8 @@ public class TabbedPane<J> {
 	protected J selectedTab;
 
 	public TabbedPane() {
-		tabs = new ArrayList<J>();
-		tabListeners = new ArrayList<TabbedPane.TabListener<J>>();
+		tabs = new ArrayList<>();
+		tabListeners = new ArrayList<>();
 		tabHeaders = new TabHeaders();
 		tabBody = new JPanel(new BorderLayout());
 		tabBody.setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.LIGHT_GRAY));
@@ -596,7 +618,14 @@ public class TabbedPane<J> {
 		return tabs.contains(tab);
 	}
 
+	public List<J> getTabs() {
+		return tabs;
+	}
+
 	public void addTab(J tab) {
+
+		System.out.println(">>>>>>>>>>>>> On ajoute le tab " + tab);
+
 		if (tab != null && useTabBody && !JComponent.class.isAssignableFrom(tab.getClass())) {
 			throw new IllegalArgumentException("Tab must be an instanceof JComponent but received a " + tab.getClass().getName());
 		}
@@ -609,6 +638,14 @@ public class TabbedPane<J> {
 		}
 	}
 
+	public void hideTab(J tab) {
+		tabHeaders.hideTab(tab);
+	}
+
+	public void showTab(J tab) {
+		tabHeaders.showTab(tab);
+	}
+
 	public void removeTab(J tab) {
 		int indexOf = tabs.indexOf(tab);
 		if (tabs.remove(tab)) {
@@ -618,10 +655,12 @@ public class TabbedPane<J> {
 					if (tabHeaderRenderer == null) {
 						if (indexOf >= tabs.size()) {
 							selectTab(tabs.get(tabs.size() - 1));
-						} else {
+						}
+						else {
 							selectTab(tabs.get(indexOf));
 						}
-					} else {
+					}
+					else {
 						J tabToSelect = null;
 						for (int i = indexOf - 1; i > -1; i--) {
 							if (tabHeaderRenderer.isTabHeaderVisible(tabs.get(i))) {
@@ -639,7 +678,8 @@ public class TabbedPane<J> {
 						}
 						selectTab(tabToSelect);
 					}
-				} else {
+				}
+				else {
 					selectTab(null);
 				}
 			}
@@ -653,7 +693,8 @@ public class TabbedPane<J> {
 			return;
 		}
 		if (tab != null && !tabs.contains(tab)) {
-			throw new IllegalArgumentException("Tab must be added to the content pane first.");
+			// throw new IllegalArgumentException("Tab must be added to the content pane first.");
+			return;
 		}
 		if (useTabBody && selectedTab != null) {
 			tabBody.remove((JComponent) selectedTab);
@@ -662,7 +703,8 @@ public class TabbedPane<J> {
 		if (useTabBody) {
 			if (tab != null) {
 				tabBody.add((JComponent) tab, 0);
-			} else {
+			}
+			else {
 				tabBody.add(new JPanel(), 0);
 			}
 			tabBody.revalidate();
@@ -706,7 +748,7 @@ public class TabbedPane<J> {
 		}
 		JFrame frame = new JFrame("Test tabbed panes");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		TabbedPane<JLabel> tabbedPane = new TabbedPane<JLabel>();
+		TabbedPane<JLabel> tabbedPane = new TabbedPane<>();
 		tabbedPane.setTabHeaderRenderer(new TabHeaderRenderer<JLabel>() {
 
 			@Override

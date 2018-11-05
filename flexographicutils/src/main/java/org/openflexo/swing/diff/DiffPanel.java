@@ -90,7 +90,7 @@ public class DiffPanel extends JLayeredPane {
 	private DiffReport _report;
 	DiffTextArea _leftTextArea;
 	DiffTextArea _rightTextArea;
-	JList changesList;
+	JList<?> changesList;
 	private ListSelectionListener lsl;
 
 	private String NO_CHANGES_LABEL = "No structural changes";
@@ -98,9 +98,11 @@ public class DiffPanel extends JLayeredPane {
 	static Icon iconForChange(DiffChange value, boolean isLeftOriented) {
 		if (value instanceof ModificationChange) {
 			return isLeftOriented ? UtilsIconLibrary.MODIFICATION_LEFT_ICON : UtilsIconLibrary.MODIFICATION_RIGHT_ICON;
-		} else if (value instanceof AdditionChange) {
+		}
+		else if (value instanceof AdditionChange) {
 			return isLeftOriented ? UtilsIconLibrary.REMOVAL_LEFT_ICON : UtilsIconLibrary.ADDITION_RIGHT_ICON;
-		} else if (value instanceof RemovalChange) {
+		}
+		else if (value instanceof RemovalChange) {
 			return isLeftOriented ? UtilsIconLibrary.ADDITION_LEFT_ICON : UtilsIconLibrary.REMOVAL_RIGHT_ICON;
 		}
 		return null;
@@ -144,11 +146,12 @@ public class DiffPanel extends JLayeredPane {
 		// JLabel title = new JLabel("Diff panel",JLabel.CENTER);
 
 		if (_report.getChanges().size() > 0) {
-			changesList = new JList(_report.getChanges());
+			changesList = new JList<>(_report.getChanges());
 			changesList.setVisibleRowCount(5);
 			changesList.setCellRenderer(new DefaultListCellRenderer() {
 				@Override
-				public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+				public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+						boolean cellHasFocus) {
 					JLabel returned = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 					returned.setIcon(iconForChange((DiffChange) value, DiffPanel.this.isLeftOriented));
 					returned.setText(((DiffChange) value).toNiceString(DiffPanel.this.isLeftOriented));
@@ -173,12 +176,13 @@ public class DiffPanel extends JLayeredPane {
 					}
 				}
 			});
-		} else {
+		}
+		else {
 			if (noChangeLabel != null) {
 				NO_CHANGES_LABEL = noChangeLabel;
 			}
 			Object[] obj = { NO_CHANGES_LABEL };
-			changesList = new JList(obj);
+			changesList = new JList<>(obj);
 			changesList.setEnabled(false);
 			changesList.setVisibleRowCount(1);
 		}
@@ -269,14 +273,11 @@ public class DiffPanel extends JLayeredPane {
 			@Override
 			public void adjustmentValueChanged(AdjustmentEvent e) {
 				_rightTextArea.getHorizontalScrollBar().removeAdjustmentListener(rightSBAdjustementListener);
-				_rightTextArea.getHorizontalScrollBar().setValue(
-						e.getValue()
-								* (_rightTextArea.getHorizontalScrollBar().getMaximum()
-										- _rightTextArea.getHorizontalScrollBar().getVisibleAmount() - _rightTextArea
-										.getHorizontalScrollBar().getMinimum())
-								/ (_leftTextArea.getHorizontalScrollBar().getMaximum()
-										- _leftTextArea.getHorizontalScrollBar().getVisibleAmount() - _leftTextArea
-										.getHorizontalScrollBar().getMinimum()));
+				_rightTextArea.getHorizontalScrollBar().setValue(e.getValue()
+						* (_rightTextArea.getHorizontalScrollBar().getMaximum() - _rightTextArea.getHorizontalScrollBar().getVisibleAmount()
+								- _rightTextArea.getHorizontalScrollBar().getMinimum())
+						/ (_leftTextArea.getHorizontalScrollBar().getMaximum() - _leftTextArea.getHorizontalScrollBar().getVisibleAmount()
+								- _leftTextArea.getHorizontalScrollBar().getMinimum()));
 				_rightTextArea.getHorizontalScrollBar().addAdjustmentListener(rightSBAdjustementListener);
 			}
 		});
@@ -284,14 +285,11 @@ public class DiffPanel extends JLayeredPane {
 			@Override
 			public void adjustmentValueChanged(AdjustmentEvent e) {
 				_leftTextArea.getHorizontalScrollBar().removeAdjustmentListener(leftSBAdjustementListener);
-				_leftTextArea.getHorizontalScrollBar().setValue(
-						e.getValue()
-								* (_leftTextArea.getHorizontalScrollBar().getMaximum()
-										- _leftTextArea.getHorizontalScrollBar().getVisibleAmount() - _leftTextArea
-										.getHorizontalScrollBar().getMinimum())
-								/ (_rightTextArea.getHorizontalScrollBar().getMaximum()
-										- _rightTextArea.getHorizontalScrollBar().getVisibleAmount() - _rightTextArea
-										.getHorizontalScrollBar().getMinimum()));
+				_leftTextArea.getHorizontalScrollBar().setValue(e.getValue()
+						* (_leftTextArea.getHorizontalScrollBar().getMaximum() - _leftTextArea.getHorizontalScrollBar().getVisibleAmount()
+								- _leftTextArea.getHorizontalScrollBar().getMinimum())
+						/ (_rightTextArea.getHorizontalScrollBar().getMaximum() - _rightTextArea.getHorizontalScrollBar().getVisibleAmount()
+								- _rightTextArea.getHorizontalScrollBar().getMinimum()));
 				_leftTextArea.getHorizontalScrollBar().addAdjustmentListener(leftSBAdjustementListener);
 			}
 		});
@@ -307,12 +305,7 @@ public class DiffPanel extends JLayeredPane {
 		validate();
 		if (_report.getChanges().size() > 0) {
 			// selectChange(_report.getChanges().firstElement());
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					changesList.setSelectedIndex(0);
-				}
-			});
+			SwingUtilities.invokeLater(() -> changesList.setSelectedIndex(0));
 		}
 	}
 
@@ -366,8 +359,8 @@ public class DiffPanel extends JLayeredPane {
 				for (DiffChange c : _report.getChanges()) {
 					JButton button = new JButton(iconForChange(c, isLeftOriented));
 					button.addActionListener(new SelectChange(c));
-					button.setBorder(BorderFactory
-							.createEmptyBorder(0, 0, 0, _leftTextArea.getVerticalScrollBar().getPreferredSize().width));
+					button.setBorder(
+							BorderFactory.createEmptyBorder(0, 0, 0, _leftTextArea.getVerticalScrollBar().getPreferredSize().width));
 					int height = _leftTextArea.heightAboveChange(c, button.getPreferredSize().height);
 					_separator.add(Box.createRigidArea(new Dimension(0, height)));
 					_separator.add(button);
@@ -376,7 +369,8 @@ public class DiffPanel extends JLayeredPane {
 				}
 				_separator.add(Box.createRigidArea(new Dimension(0, remainderHeight)));
 				buttonsInitialized = true;
-			} else {
+			}
+			else {
 				// Not ready
 			}
 		}

@@ -26,8 +26,8 @@ import java.awt.Window;
 
 import javax.swing.JOptionPane;
 
+import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
-import org.openflexo.toolbox.ImageIconResource;
 
 /**
  * 
@@ -35,12 +35,13 @@ import org.openflexo.toolbox.ImageIconResource;
  */
 public class ImageDialog extends javax.swing.JDialog {
 
-	
-
 	private enum Alignment {
-		NONE("None", null), TOP("Top", "top"), BOTTOM("Bottom", "bottom"), MIDDLE("Middle", "middle"), LEFT("Left", "left"), RIGHT(
-				"Right",
-				"right");
+		NONE("None", null),
+		TOP("Top", "top"),
+		BOTTOM("Bottom", "bottom"),
+		MIDDLE("Middle", "middle"),
+		LEFT("Left", "left"),
+		RIGHT("Right", "right");
 
 		private String text;
 		private String attrValue;
@@ -121,14 +122,14 @@ public class ImageDialog extends javax.swing.JDialog {
 		vspaceLabel = new javax.swing.JLabel();
 		vspaceSpinner = new javax.swing.JSpinner();
 		alignLabel = new javax.swing.JLabel();
-		alignComboBox = new javax.swing.JComboBox();
+		alignComboBox = new javax.swing.JComboBox<>();
 		widthToggleButton = new javax.swing.JToggleButton();
 		heightToggleButton = new javax.swing.JToggleButton();
 		mLinkPanel = new javax.swing.JPanel();
 		linkUrlLabel = new javax.swing.JLabel();
 		linkUrlTextField = new javax.swing.JTextField();
 		targetLabel = new javax.swing.JLabel();
-		targetComboBox = new javax.swing.JComboBox();
+		targetComboBox = new javax.swing.JComboBox<>();
 		advancedPanel = new javax.swing.JPanel();
 		idTextField = new javax.swing.JTextField();
 		idLabel = new javax.swing.JLabel();
@@ -139,7 +140,7 @@ public class ImageDialog extends javax.swing.JDialog {
 		advisoryTitleTextField = new javax.swing.JTextField();
 		advisoryTitleLabel = new javax.swing.JLabel();
 		languageDirectionLabel = new javax.swing.JLabel();
-		languageDirectionComboBox = new javax.swing.JComboBox();
+		languageDirectionComboBox = new javax.swing.JComboBox<>();
 		styleClassesLabel = new javax.swing.JLabel();
 		styleClassesTextField = new javax.swing.JTextField();
 		longDescLabel = new javax.swing.JLabel();
@@ -180,7 +181,7 @@ public class ImageDialog extends javax.swing.JDialog {
 
 		alignLabel.setText("Align");
 
-		alignComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "Top", "Bottom", "Middle", "Left", "Right" }));
+		alignComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Top", "Bottom", "Middle", "Left", "Right" }));
 
 		widthToggleButton.setSelected(true);
 		widthToggleButton.setText("Default");
@@ -203,111 +204,66 @@ public class ImageDialog extends javax.swing.JDialog {
 		javax.swing.GroupLayout imageInfoPanelLayout = new javax.swing.GroupLayout(imageInfoPanel);
 		imageInfoPanel.setLayout(imageInfoPanelLayout);
 		imageInfoPanelLayout.setHorizontalGroup(imageInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(
-						imageInfoPanelLayout
-								.createSequentialGroup()
-								.addContainerGap()
-								.addGroup(
-										imageInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-												.addComponent(urlLabel).addComponent(alternativeTextLabel).addComponent(widthLabel)
-												.addComponent(heightLabel).addComponent(borderLabel).addComponent(hspaceLabel)
-												.addComponent(vspaceLabel).addComponent(alignLabel))
-								.addGap(31, 31, 31)
-								.addGroup(
-										imageInfoPanelLayout
-												.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-												.addComponent(alternativeTextTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 266,
-														Short.MAX_VALUE)
-												.addComponent(urlTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
-												.addComponent(alignComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-												.addGroup(
-														imageInfoPanelLayout
-																.createSequentialGroup()
-																.addGroup(
-																		imageInfoPanelLayout
-																				.createParallelGroup(
-																						javax.swing.GroupLayout.Alignment.TRAILING, false)
-																				.addComponent(vspaceSpinner,
-																						javax.swing.GroupLayout.Alignment.LEADING)
-																				.addComponent(hspaceSpinner,
-																						javax.swing.GroupLayout.Alignment.LEADING)
-																				.addComponent(borderSpinner,
-																						javax.swing.GroupLayout.Alignment.LEADING)
-																				.addComponent(heightSpinner,
-																						javax.swing.GroupLayout.Alignment.LEADING)
-																				.addComponent(widthSpinner,
-																						javax.swing.GroupLayout.Alignment.LEADING,
-																						javax.swing.GroupLayout.PREFERRED_SIZE, 68,
-																						javax.swing.GroupLayout.PREFERRED_SIZE))
-																.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addGroup(
-																		imageInfoPanelLayout
-																				.createParallelGroup(
-																						javax.swing.GroupLayout.Alignment.LEADING)
-																				.addComponent(heightToggleButton)
-																				.addComponent(widthToggleButton)))).addContainerGap()));
-		imageInfoPanelLayout.setVerticalGroup(imageInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				imageInfoPanelLayout
-						.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								imageInfoPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(urlLabel)
-										.addComponent(urlTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+				.addGroup(imageInfoPanelLayout.createSequentialGroup().addContainerGap()
+						.addGroup(imageInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(urlLabel)
+								.addComponent(alternativeTextLabel).addComponent(widthLabel).addComponent(heightLabel)
+								.addComponent(borderLabel).addComponent(hspaceLabel).addComponent(vspaceLabel).addComponent(alignLabel))
+						.addGap(31, 31, 31)
+						.addGroup(imageInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+								.addComponent(alternativeTextTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+								.addComponent(urlTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+								.addComponent(alignComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addGroup(imageInfoPanelLayout.createSequentialGroup()
+										.addGroup(imageInfoPanelLayout
+												.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+												.addComponent(vspaceSpinner, javax.swing.GroupLayout.Alignment.LEADING)
+												.addComponent(hspaceSpinner, javax.swing.GroupLayout.Alignment.LEADING)
+												.addComponent(borderSpinner, javax.swing.GroupLayout.Alignment.LEADING)
+												.addComponent(heightSpinner, javax.swing.GroupLayout.Alignment.LEADING)
+												.addComponent(widthSpinner, javax.swing.GroupLayout.Alignment.LEADING,
+														javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addGroup(imageInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+												.addComponent(heightToggleButton).addComponent(widthToggleButton))))
+						.addContainerGap()));
+		imageInfoPanelLayout.setVerticalGroup(imageInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(imageInfoPanelLayout.createSequentialGroup().addContainerGap()
+						.addGroup(imageInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(urlLabel).addComponent(urlTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								imageInfoPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(alternativeTextLabel)
-										.addComponent(alternativeTextTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+						.addGroup(imageInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(alternativeTextLabel).addComponent(alternativeTextTextField,
+										javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+										javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								imageInfoPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(widthLabel)
-										.addComponent(widthSpinner, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(widthToggleButton))
+						.addGroup(imageInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(widthLabel).addComponent(widthSpinner, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addComponent(widthToggleButton))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								imageInfoPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(heightLabel)
-										.addComponent(heightSpinner, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(heightToggleButton))
+						.addGroup(imageInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(heightLabel)
+								.addComponent(heightSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addComponent(heightToggleButton))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								imageInfoPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(borderLabel)
-										.addComponent(borderSpinner, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+						.addGroup(imageInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(borderLabel).addComponent(borderSpinner, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								imageInfoPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(hspaceLabel)
-										.addComponent(hspaceSpinner, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+						.addGroup(imageInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(hspaceLabel).addComponent(hspaceSpinner, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								imageInfoPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(vspaceLabel)
-										.addComponent(vspaceSpinner, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+						.addGroup(imageInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(vspaceLabel).addComponent(vspaceSpinner, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								imageInfoPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(alignLabel)
-										.addComponent(alignComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+						.addGroup(imageInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(alignLabel).addComponent(alignComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addContainerGap(54, Short.MAX_VALUE)));
 
 		mainTabbedPane.addTab("Image Info", imageInfoPanel);
@@ -316,42 +272,29 @@ public class ImageDialog extends javax.swing.JDialog {
 
 		targetLabel.setText("Target");
 
-		targetComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None" }));
+		targetComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None" }));
 
 		javax.swing.GroupLayout mLinkPanelLayout = new javax.swing.GroupLayout(mLinkPanel);
 		mLinkPanel.setLayout(mLinkPanelLayout);
-		mLinkPanelLayout.setHorizontalGroup(mLinkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				mLinkPanelLayout
-						.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								mLinkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(targetLabel)
-										.addComponent(linkUrlLabel))
+		mLinkPanelLayout.setHorizontalGroup(mLinkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(mLinkPanelLayout.createSequentialGroup().addContainerGap()
+						.addGroup(mLinkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(targetLabel)
+								.addComponent(linkUrlLabel))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-						.addGroup(
-								mLinkPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-										.addComponent(linkUrlTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
-										.addComponent(targetComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+						.addGroup(mLinkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+								.addComponent(linkUrlTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE).addComponent(
+										targetComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+										javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addContainerGap()));
-		mLinkPanelLayout.setVerticalGroup(mLinkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				mLinkPanelLayout
-						.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								mLinkPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(linkUrlLabel)
-										.addComponent(linkUrlTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+		mLinkPanelLayout.setVerticalGroup(mLinkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(mLinkPanelLayout.createSequentialGroup().addContainerGap()
+						.addGroup(mLinkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(linkUrlLabel).addComponent(linkUrlTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								mLinkPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(targetLabel)
-										.addComponent(targetComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+						.addGroup(mLinkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(targetLabel)
+								.addComponent(targetComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+										javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addContainerGap(216, Short.MAX_VALUE)));
 
 		mainTabbedPane.addTab("Link", mLinkPanel);
@@ -366,7 +309,8 @@ public class ImageDialog extends javax.swing.JDialog {
 
 		languageDirectionLabel.setText("Language Direction");
 
-		languageDirectionComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "Left to Right", "Right to Left" }));
+		languageDirectionComboBox
+				.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Left to Right", "Right to Left" }));
 
 		styleClassesLabel.setText("Style Classes");
 
@@ -374,83 +318,60 @@ public class ImageDialog extends javax.swing.JDialog {
 
 		javax.swing.GroupLayout advancedPanelLayout = new javax.swing.GroupLayout(advancedPanel);
 		advancedPanel.setLayout(advancedPanelLayout);
-		advancedPanelLayout.setHorizontalGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				advancedPanelLayout
-						.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(idLabel)
-										.addComponent(longDescLabel).addComponent(languageDirectionLabel).addComponent(advisoryTitleLabel)
-										.addComponent(styleClassesLabel).addComponent(styleLabel).addComponent(languageCodeLabel))
+		advancedPanelLayout.setHorizontalGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(advancedPanelLayout.createSequentialGroup().addContainerGap()
+						.addGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(idLabel)
+								.addComponent(longDescLabel).addComponent(languageDirectionLabel).addComponent(advisoryTitleLabel)
+								.addComponent(styleClassesLabel).addComponent(styleLabel).addComponent(languageCodeLabel))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-						.addGroup(
-								advancedPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-										.addComponent(languageCodeTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
-										.addComponent(styleTextField, javax.swing.GroupLayout.Alignment.TRAILING,
-												javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
-										.addComponent(advisoryTitleTextField, javax.swing.GroupLayout.Alignment.TRAILING,
-												javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
-										.addComponent(languageDirectionComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(styleClassesTextField, javax.swing.GroupLayout.Alignment.TRAILING,
-												javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
-										.addComponent(idTextField, javax.swing.GroupLayout.Alignment.TRAILING,
-												javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
-										.addComponent(longDescTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
+						.addGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+								.addComponent(languageCodeTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+								.addComponent(styleTextField, javax.swing.GroupLayout.Alignment.TRAILING,
+										javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+								.addComponent(advisoryTitleTextField, javax.swing.GroupLayout.Alignment.TRAILING,
+										javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+								.addComponent(languageDirectionComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addComponent(styleClassesTextField, javax.swing.GroupLayout.Alignment.TRAILING,
+										javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+								.addComponent(idTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE,
+										264, Short.MAX_VALUE)
+								.addComponent(longDescTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
 						.addContainerGap()));
-		advancedPanelLayout.setVerticalGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				advancedPanelLayout
-						.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								advancedPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(idLabel)
-										.addComponent(idTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+		advancedPanelLayout.setVerticalGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(advancedPanelLayout.createSequentialGroup().addContainerGap()
+						.addGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(idLabel)
+								.addComponent(idTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+										javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								advancedPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(longDescLabel)
-										.addComponent(longDescTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+						.addGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(longDescLabel).addComponent(longDescTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								advancedPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(styleClassesLabel)
-										.addComponent(styleClassesTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+						.addGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(styleClassesLabel).addComponent(styleClassesTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addGap(8, 8, 8)
-						.addGroup(
-								advancedPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(styleTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(styleLabel))
+						.addGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(styleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addComponent(styleLabel))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								advancedPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(advisoryTitleTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(advisoryTitleLabel))
+						.addGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(advisoryTitleTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addComponent(advisoryTitleLabel))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								advancedPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(languageDirectionComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(languageDirectionLabel))
+						.addGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(languageDirectionComboBox, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addComponent(languageDirectionLabel))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								advancedPanelLayout
-										.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(languageCodeTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(languageCodeLabel)).addContainerGap(84, Short.MAX_VALUE)));
+						.addGroup(advancedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(languageCodeTextField, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addComponent(languageCodeLabel))
+						.addContainerGap(84, Short.MAX_VALUE)));
 
 		mainTabbedPane.addTab("Advanced", advancedPanel);
 
@@ -472,24 +393,20 @@ public class ImageDialog extends javax.swing.JDialog {
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(
-						javax.swing.GroupLayout.Alignment.TRAILING,
-						layout.createSequentialGroup().addContainerGap(254, Short.MAX_VALUE).addComponent(okButton)
-								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(cancelButton)
-								.addContainerGap())
+		layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
+				javax.swing.GroupLayout.Alignment.TRAILING,
+				layout.createSequentialGroup().addContainerGap(254, Short.MAX_VALUE).addComponent(okButton)
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(cancelButton).addContainerGap())
 				.addComponent(mainTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE));
 
 		layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] { cancelButton, okButton });
 
-		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-				layout.createSequentialGroup()
-						.addComponent(mainTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(
-								layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(cancelButton)
-										.addComponent(okButton)).addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout
+				.createSequentialGroup()
+				.addComponent(mainTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
+				.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout
+						.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(cancelButton).addComponent(okButton))
+				.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
 		pack();
 	}// </editor-fold>//GEN-END:initComponents

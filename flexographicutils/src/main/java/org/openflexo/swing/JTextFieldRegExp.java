@@ -67,10 +67,10 @@ public class JTextFieldRegExp extends JTextField implements DocumentListener {
 	private Vector<String> errorMessages;
 
 	private void init() {
-		warningRegExp = new Vector<Pattern>();
-		warningMessages = new Vector<String>();
-		errorRegExp = new Vector<Pattern>();
-		errorMessages = new Vector<String>();
+		warningRegExp = new Vector<>();
+		warningMessages = new Vector<>();
+		errorRegExp = new Vector<>();
+		errorMessages = new Vector<>();
 		errorLevel = ERROR_FREE;
 		getDocument().addDocumentListener(this);
 	}
@@ -130,7 +130,8 @@ public class JTextFieldRegExp extends JTextField implements DocumentListener {
 				errorLevel = WARNING;
 			}
 			return err;
-		} else {
+		}
+		else {
 			errorLevel = REG_EXP_ERROR;
 		}
 		return err;

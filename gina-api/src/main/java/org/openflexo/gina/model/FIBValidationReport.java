@@ -1,0 +1,115 @@
+/**
+ * 
+ * Copyright (c) 2014-2015, Openflexo
+ * 
+ * This file is part of Flexo-foundation, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
+ *
+ *          Additional permission under GNU GPL version 3 section 7
+ *
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
+ *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
+ */
+
+package org.openflexo.gina.model;
+
+import java.util.Collection;
+import java.util.logging.Logger;
+
+import org.openflexo.connie.DataBinding;
+import org.openflexo.gina.model.FIBModelObject.BindingMustBeValid;
+import org.openflexo.model.validation.InformationIssue;
+import org.openflexo.model.validation.ValidationError;
+import org.openflexo.model.validation.ValidationIssue;
+import org.openflexo.model.validation.ValidationModel;
+import org.openflexo.model.validation.ValidationReport;
+import org.openflexo.model.validation.ValidationWarning;
+
+/**
+ * This is the {@link ValidationReport} for a {@link FIBComponent}
+ * 
+ * 
+ * @author sylvain
+ * 
+ */
+public class FIBValidationReport extends ValidationReport {
+
+	private static final Logger logger = Logger.getLogger(FIBValidationReport.class.getPackage().getName());
+
+	private FIBComponent fibComponent;
+
+	public FIBValidationReport(ValidationModel validationModel, FIBComponent fibComponent) {
+		super(validationModel, fibComponent);
+		this.fibComponent = fibComponent;
+	}
+
+	public boolean hasErrors(FIBModelObject object) {
+		Collection<ValidationError<?, ? super FIBModelObject>> errors = getErrors(object);
+		return errors.size() > 0;
+	}
+
+	public boolean hasWarnings(FIBModelObject object) {
+		Collection<ValidationWarning<?, ? super FIBModelObject>> warnings = getWarnings(object);
+		return warnings.size() > 0;
+	}
+
+	public boolean hasInfoIssues(FIBModelObject object) {
+		Collection<InformationIssue<?, ? super FIBModelObject>> infos = getInformationIssues(object);
+		return infos.size() > 0;
+	}
+
+	public Collection<ValidationError<?, ? super FIBModelObject>> getErrors(FIBModelObject object) {
+		return errorIssuesRegarding(object);
+	}
+
+	public Collection<ValidationWarning<?, ? super FIBModelObject>> getWarnings(FIBModelObject object) {
+		return warningIssuesRegarding(object);
+	}
+
+	public Collection<InformationIssue<?, ? super FIBModelObject>> getInformationIssues(FIBModelObject object) {
+		return infoIssuesRegarding(object);
+	}
+
+	private static <C extends FIBModelObject> void reanalyzeBinding(ValidationIssue<? extends BindingMustBeValid<C>, C> issue) {
+		DataBinding<?> db = issue.getCause().getBinding(issue.getValidable());
+		db.markedAsToBeReanalized();
+	}
+
+	@Override
+	public void revalidate() throws InterruptedException {
+
+		for (ValidationIssue issue : getAllIssues()) {
+			if (issue.getCause() instanceof BindingMustBeValid) {
+				reanalyzeBinding(issue);
+			}
+		}
+
+		super.revalidate();
+	}
+
+}

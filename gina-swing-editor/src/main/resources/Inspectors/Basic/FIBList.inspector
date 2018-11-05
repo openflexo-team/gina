@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBList" name="Inspector">
+	<Label index="2" label="visible_row_count" constraints="twocols(location=left)"
+		localize="true" />
+	<Number index="3" minValue="1" maxValue="100" increment="1"
+		numberType="IntegerType" columns="3" data="data.visibleRowCount"
+		constraints="twocols(location=right)" localize="true" />
+	<Label index="4" label="row_height" constraints="twocols(location=left)"
+		localize="true" />
+	<Number index="5" minValue="5" maxValue="100" increment="1"
+		numberType="IntegerType" columns="3" data="data.rowHeight"
+		constraints="twocols(location=right)" localize="true" />
+	<CheckBox index="6" selected="false" data="data.createNewRowOnClick"
+		constraints="twocols(location=left)" localize="true" />
+	<Label index="7" label="create_new_row_on_click" constraints="twocols(location=right)"
+		localize="true" />
+	<Label index="8" label="layout_orientation" constraints="twocols(location=left)"
+		localize="true" />
+	<DropDown index="9" data="data.layoutOrientation" constraints="twocols(location=right)"
+		localize="true" iteratorClassName="java.lang.Object"
+		autoSelectFirstRow="false" />
+	<Parameter name="title" value="List" />
+</Inspector>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Panel id="Panel" align="left" borderTop="0" borderLeft="0" trackViewPortHeight="true" trackViewPortWidth="true" borderBottom="0" border="empty" sizeAdjustment="OriginalSize" layout="twocols" borderRight="0" name="Panel">
+  <Label id="Label4" label="label" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="Label4" />
+  <FIBReferencedComponent id="ReferencedComponent" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" name="ReferencedComponent" />
+  <Label id="Label3" label="label" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="Label3" />
+  <Custom id="CustomSelector2" manageDynamicModel="true" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" name="CustomSelector2" />
+  <Label id="Label2" label="label" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="Label2" />
+  <Table id="Table" visibleRowCount="3" backgroundNonSelectionColor="255,255,255" iteratorClassName="java.lang.Object" backgroundSecondarySelectionColor="178,215,255" lookAndFeel="Classic" selectionMode="MultipleIntervalSelection" rowHeight="18" manageDynamicModel="true" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" name="Table">
+    <LabelColumn id="Table#label" resizable="true" title="label" displayTitle="true" columnWidth="100" showIcon="false" name="label" />
+    <IconColumn id="Table#icon" resizable="true" title="icon" displayTitle="true" columnWidth="100" showIcon="false" name="icon" />
+  </Table>
+  <Label id="Label" label="label" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="Label" />
+  <Browser id="Browser" backgroundSelectionColor="9,80,208" visibleRowCount="3" backgroundNonSelectionColor="255,255,255" iteratorClassName="java.lang.Object" textSelectionColor="255,255,255" backgroundSecondarySelectionColor="178,215,255" showRootsHandle="true" showFooter="true" textNonSelectionColor="0,0,0" selectionMode="DiscontiguousTreeSelection" rowHeight="18" manageDynamicModel="true" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" height="100" width="100" name="Browser">
+    <BrowserElement id="Browser#element" dataClassName="java.lang.Object" isEditable="false" name="element">
+      <DragOperation id="Browser#element#drag_operation" name="drag_operation" />
+      <Children id="Browser#element#children" name="children" />
+      <BrowserAddAction id="Browser#element#add_action" name="add_action" />
+      <BrowserRemoveAction id="Browser#element#delete_action" name="delete_action" />
+    </BrowserElement>
+  </Browser>
+  <HTMLEditor id="HTMLEditor" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center)" height="100" width="200" name="HTMLEditor">
+    <Line1Option id="0" name="TextEffectPanel" />
+    <Line1Option id="1" index="1" name="TextEffectPanel.BoldButton" />
+    <Line1Option id="2" index="2" name="TextEffectPanel.ItalicButton" />
+    <Line1Option id="3" index="3" name="TextEffectPanel.UnderlineButton" />
+    <Line1Option id="4" index="1" name="ColorPanel" />
+    <Line1Option id="5" index="5" name="ColorPanel.TextColorButton" />
+    <Line1Option id="6" index="6" name="ColorPanel.BackgroundColorButton" />
+    <Line1Option id="7" index="2" name="JustificationPanel" />
+    <Line1Option id="8" index="8" name="JustificationPanel.LeftJustifyButton" />
+    <Line1Option id="9" index="9" name="JustificationPanel.CenterJustifyButton" />
+    <Line1Option id="10" index="10" name="JustificationPanel.RightJustifyButton" />
+    <Line1Option id="11" index="11" name="JustificationPanel.BlockJustifyButton" />
+    <Line1Option id="12" index="3" name="LinkPanel" />
+    <Line1Option id="13" index="13" name="LinkPanel.LinkButton" />
+    <Line1Option id="14" index="14" name="LinkPanel.UnlinkButton" />
+    <Line1Option id="15" index="4" name="MiscPanel" />
+    <Line1Option id="16" index="16" name="MiscPanel.InsertImage" />
+  </HTMLEditor>
+  <LocalizedDictionary id="Panel#dict">
+    <Localized id="17" lang="English" value="Label" key="label" />
+    <Localized id="18" lang="Dutch" value="Label" key="label" />
+    <Localized id="19" lang="French" value="label" key="label" />
+    <Localized id="20" lang="English" value="Icon" key="icon" />
+    <Localized id="21" lang="Dutch" value="Icon" key="icon" />
+    <Localized id="22" lang="French" value="icon" key="icon" />
+    <Localized id="23" lang="English" value="Add action" key="add_action" />
+    <Localized id="24" lang="Dutch" value="Add action" key="add_action" />
+    <Localized id="25" lang="French" value="add_action" key="add_action" />
+    <Localized id="26" lang="English" value="Delete action" key="delete_action" />
+    <Localized id="27" lang="Dutch" value="Delete action" key="delete_action" />
+    <Localized id="28" lang="French" value="delete_action" key="delete_action" />
+  </LocalizedDictionary>
+</Panel>

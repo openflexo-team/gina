@@ -43,7 +43,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.print.PrinterException;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -51,7 +50,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -73,7 +71,6 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -104,10 +101,9 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
+import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.swing.layout.WrapLayout;
-import org.openflexo.toolbox.HTMLUtils;
-import org.openflexo.toolbox.ImageIconResource;
 
 import com.metaphaseeditor.action.AddAttributesAction;
 import com.metaphaseeditor.action.ClearFormattingAction;
@@ -119,9 +115,6 @@ import com.metaphaseeditor.action.InsertHtmlAction;
 import com.metaphaseeditor.action.InsertTextAction;
 import com.metaphaseeditor.action.RemoveAttributesAction;
 import com.metaphaseeditor.action.UnlinkAction;
-import com.swabunga.spell.engine.SpellDictionary;
-import com.swabunga.spell.engine.SpellDictionaryHashMap;
-import com.swabunga.spell.swing.JTextComponentSpellChecker;
 
 /**
  * 
@@ -129,8 +122,6 @@ import com.swabunga.spell.swing.JTextComponentSpellChecker;
  */
 public class MetaphaseEditorPanel extends JPanel {
 
-	
-	
 	public static final String SOURCE_PANEL_KEY = "SourcePanel";
 	public static final String SOURCE_BUTTON_KEY = "SourcePanel.SourceButton";
 
@@ -211,8 +202,9 @@ public class MetaphaseEditorPanel extends JPanel {
 	public static final String ABOUT_PANEL_KEY = "AboutPanel";
 	public static final String ABOUT_BUTTON_KEY = "AboutPanel.AboutButton";
 
-	private JTextComponentSpellChecker spellChecker = null;
-	private SpellDictionary dictionary = null;
+	// TODO, spelling needed? FD
+	// private JTextComponentSpellChecker spellChecker = null;
+	// private SpellDictionary dictionary = null;
 	private JTextArea htmlTextArea;
 	private boolean htmlSourceMode = false;
 	private SpecialCharacterDialog specialCharacterDialog = new SpecialCharacterDialog(null, true);
@@ -241,15 +233,20 @@ public class MetaphaseEditorPanel extends JPanel {
 		public void insertImage(JTextPane htmlTextPane);
 	}
 
-	private List<ContextMenuListener> contextMenuListeners = new ArrayList<ContextMenuListener>();
-	private List<EditorMouseMotionListener> editorMouseMotionListeners = new ArrayList<EditorMouseMotionListener>();
+	private List<ContextMenuListener> contextMenuListeners = new ArrayList<>();
+	private List<EditorMouseMotionListener> editorMouseMotionListeners = new ArrayList<>();
 
 	private enum ParagraphFormat {
-		PARAGRAPH_FORMAT("Format", null), NORMAL("Normal", Tag.P), HEADING1("Heading 1", Tag.H1), HEADING2("Heading 2", Tag.H2), HEADING3(
-
-		"Heading 3", Tag.H3), HEADING4("Heading 4", Tag.H4), HEADING5("Heading 5", Tag.H5), HEADING6("Heading 6", Tag.H6), FORMATTED(
-				"Formatted",
-				Tag.PRE), ADDRESS("Address", Tag.ADDRESS);
+		PARAGRAPH_FORMAT("Format", null),
+		NORMAL("Normal", Tag.P),
+		HEADING1("Heading 1", Tag.H1),
+		HEADING2("Heading 2", Tag.H2),
+		HEADING3("Heading 3", Tag.H3),
+		HEADING4("Heading 4", Tag.H4),
+		HEADING5("Heading 5", Tag.H5),
+		HEADING6("Heading 6", Tag.H6),
+		FORMATTED("Formatted", Tag.PRE),
+		ADDRESS("Address", Tag.ADDRESS);
 
 		private String text;
 		private Tag tag;
@@ -261,10 +258,6 @@ public class MetaphaseEditorPanel extends JPanel {
 
 		public Tag getTag() {
 			return tag;
-		}
-
-		public String getText() {
-			return text;
 		}
 
 		@Override
@@ -315,6 +308,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		SIZE11("11", 11),
 		SIZE12("12", 12),
 		SIZE14("14", 14),
+		SIZE16("16", 16),
 		SIZE18("18", 18),
 		SIZE20("20", 20),
 		SIZE22("22", 22),
@@ -422,9 +416,9 @@ public class MetaphaseEditorPanel extends JPanel {
 	private javax.swing.JButton insertHorizontalLineButton;
 	private javax.swing.JButton insertSpecialCharButton;
 
-	private javax.swing.JComboBox fontComboBox;
-	private javax.swing.JComboBox fontSizeComboBox;
-	private javax.swing.JComboBox paragraphFormatComboBox;
+	private javax.swing.JComboBox<FontItem> fontComboBox;
+	private javax.swing.JComboBox<FontSize> fontSizeComboBox;
+	private javax.swing.JComboBox<Object> paragraphFormatComboBox;
 
 	private javax.swing.JPanel colorPanel;
 	private javax.swing.JButton textColorButton;
@@ -500,7 +494,8 @@ public class MetaphaseEditorPanel extends JPanel {
 		replaceButton.setToolTipText("Replace");
 
 		clearFormattingButton.setAction(new ClearFormattingAction(this, "Remove Format"));
-		clearFormattingButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/removeformat.png")));
+		clearFormattingButton
+				.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/removeformat.png")));
 		clearFormattingButton.setText("");
 		clearFormattingButton.setToolTipText("Remove Format");
 
@@ -578,9 +573,10 @@ public class MetaphaseEditorPanel extends JPanel {
 
 		// TODO: horizontal rule - doesn't insert correctly if within anything
 		// other than P, ie. TD or H1
-		insertHorizontalLineButton.setAction(new HTMLEditorKit.InsertHTMLTextAction("Insert Horizontal Line", "<hr/>", Tag.P, Tag.HR,
-				Tag.BODY, Tag.HR));
-		insertHorizontalLineButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/horizontalline.png")));
+		insertHorizontalLineButton
+				.setAction(new HTMLEditorKit.InsertHTMLTextAction("Insert Horizontal Line", "<hr/>", Tag.P, Tag.HR, Tag.BODY, Tag.HR));
+		insertHorizontalLineButton
+				.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/horizontalline.png")));
 		insertHorizontalLineButton.setText("");
 		insertHorizontalLineButton.setToolTipText("Insert Horizontal Line");
 
@@ -650,7 +646,7 @@ public class MetaphaseEditorPanel extends JPanel {
 	// The following two methods allow us to find an
 	// action provided by the editor kit by its name.
 	private void createEditorKitActionTable() {
-		editorKitActions = new Hashtable<Object, Action>();
+		editorKitActions = new Hashtable<>();
 		Action[] actionsArray = editorKit.getActions();
 		for (int i = 0; i < actionsArray.length; i++) {
 			Action a = actionsArray[i];
@@ -686,7 +682,6 @@ public class MetaphaseEditorPanel extends JPanel {
 	 * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this
 	 * method is always regenerated by the Form Editor.
 	 */
-	@SuppressWarnings("unchecked")
 	private void initComponents() {
 
 		htmlDocument = new javax.swing.text.html.HTMLDocument();
@@ -728,9 +723,9 @@ public class MetaphaseEditorPanel extends JPanel {
 		insertHorizontalLineButton = new javax.swing.JButton();
 		insertSpecialCharButton = new javax.swing.JButton();
 		insertImage = new javax.swing.JButton();
-		paragraphFormatComboBox = new javax.swing.JComboBox();
-		fontComboBox = new javax.swing.JComboBox();
-		fontSizeComboBox = new javax.swing.JComboBox();
+		paragraphFormatComboBox = new javax.swing.JComboBox<>();
+		fontComboBox = new javax.swing.JComboBox<>();
+		fontSizeComboBox = new javax.swing.JComboBox<>();
 		textColorButton = new javax.swing.JButton();
 		backgroundColorButton = new javax.swing.JButton();
 		aboutButton = new javax.swing.JButton();
@@ -849,7 +844,8 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		selectAllButton.setName(SELECT_ALL_BUTTON_KEY);
 
-		clearFormattingButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/removeformat.png"))); // NOI18N
+		clearFormattingButton
+				.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/removeformat.png"))); // NOI18N
 		clearFormattingButton.setToolTipText("Remove Format");
 		clearFormattingButton.setName(CLEAR_FORMATTING_BUTTON_KEY);
 
@@ -877,7 +873,8 @@ public class MetaphaseEditorPanel extends JPanel {
 		superscriptButton.setToolTipText("Superscript");
 		superscriptButton.setName(SUPER_SCRIPT_BUTTON_KEY);
 
-		insertRemoveNumberedListButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/numberlist.png"))); // NOI18N
+		insertRemoveNumberedListButton
+				.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/numberlist.png"))); // NOI18N
 		insertRemoveNumberedListButton.setToolTipText("Insert/Remove Numbered List");
 		insertRemoveNumberedListButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -887,7 +884,8 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		insertRemoveNumberedListButton.setName(NUMBERED_LIST_BUTTON_KEY);
 
-		insertRemoveBulletedListButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/bulletlist.png"))); // NOI18N
+		insertRemoveBulletedListButton
+				.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/bulletlist.png"))); // NOI18N
 		insertRemoveBulletedListButton.setToolTipText("Insert/Remove Bulleted List");
 		insertRemoveBulletedListButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -919,7 +917,8 @@ public class MetaphaseEditorPanel extends JPanel {
 		blockQuoteButton.setToolTipText("Block Quote");
 		blockQuoteButton.setName(BLOCK_QUOTE_BUTTON_KEY);
 
-		createParagraphButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/createparagraph.png"))); // NOI18N
+		createParagraphButton
+				.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/createparagraph.png"))); // NOI18N
 		createParagraphButton.setToolTipText("Create Paragraph");
 		createParagraphButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -955,7 +954,8 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		insertTableButton.setName(TABLE_BUTTON_KEY);
 
-		insertHorizontalLineButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/horizontalline.png"))); // NOI18N
+		insertHorizontalLineButton
+				.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/horizontalline.png"))); // NOI18N
 		insertHorizontalLineButton.setToolTipText("Insert Horizontal Line");
 		insertHorizontalLineButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -985,7 +985,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		insertImage.setName(IMAGE_BUTTON_KEY);
 
-		paragraphFormatComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Normal", "Heading 1", "Heading 2",
+		paragraphFormatComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Normal", "Heading 1", "Heading 2",
 				"Heading 3", "Heading 4", "Heading 5", "Heading 6", "Formatted", "Address", "Normal (DIV)" }));
 		paragraphFormatComboBox.setToolTipText("Paragraph Format");
 		paragraphFormatComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -996,8 +996,9 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		paragraphFormatComboBox.setName(PARAGRAPH_FORMAT_PANEL_KEY);
 
-		fontComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Arial", "Comic Sans MS", "Courier New", "Georgia",
-				"Lucinda Sans Unicode", "Tahoma", "Times New Roman", "Trebuchet MS", "Verdana" }));
+		fontComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new FontItem[] { FontItem.ARIAL, FontItem.COMIC_SANS_MS,
+				FontItem.COURIER_NEW, FontItem.GEORGIA, FontItem.LUCINDA_SANS_UNICODE, FontItem.TAHOMA, FontItem.TIMES_NEW_ROMAN,
+				FontItem.TREBUCHET_MS, FontItem.VERDANA }));
 		fontComboBox.setToolTipText("Font");
 		fontComboBox.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -1007,8 +1008,9 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		fontComboBox.setName(FONT_PANEL_KEY);
 
-		fontSizeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "8", "9", "10", "11", "12", "14", "16", "18", "20",
-				"22", "24", "26", "28", "36", "48", "72" }));
+		fontSizeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new FontSize[] { FontSize.SIZE8, FontSize.SIZE9, FontSize.SIZE10,
+				FontSize.SIZE11, FontSize.SIZE12, FontSize.SIZE14, FontSize.SIZE16, FontSize.SIZE18, FontSize.SIZE20, FontSize.SIZE22,
+				FontSize.SIZE24, FontSize.SIZE26, FontSize.SIZE28, FontSize.SIZE36, FontSize.SIZE48, FontSize.SIZE72 }));
 		fontSizeComboBox.setToolTipText("Font Size");
 		fontSizeComboBox.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -1028,7 +1030,8 @@ public class MetaphaseEditorPanel extends JPanel {
 		});
 		textColorButton.setName(TEXT_COLOR_BUTTON_KEY);
 
-		backgroundColorButton.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/backgroundcolor.png"))); // NOI18N
+		backgroundColorButton
+				.setIcon(new ImageIconResource(ResourceLocator.locateResource("Icons/MetaphaseEditor/icons/backgroundcolor.png"))); // NOI18N
 		backgroundColorButton.setToolTipText("Background Color");
 		backgroundColorButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -1098,12 +1101,12 @@ public class MetaphaseEditorPanel extends JPanel {
 			public void keyPressed(java.awt.event.KeyEvent evt) {
 				htmlTextPaneKeyPressed(evt);
 			}
-
+		
 			@Override
 			public void keyReleased(java.awt.event.KeyEvent evt) {
 				htmlTextPaneKeyReleased(evt);
 			}
-
+		
 			@Override
 			public void keyTyped(java.awt.event.KeyEvent evt) {
 				htmlTextPaneKeyTyped(evt);
@@ -1209,7 +1212,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		toolbarPanel.repaint();
 	}
 
-	private JPanel makeGroup(String groupName, final MetaphaseEditorConfiguration configuration, JButton... buttons) {
+	private static JPanel makeGroup(String groupName, final MetaphaseEditorConfiguration configuration, JButton... buttons) {
 		JPanel returned = new JPanel();
 		returned.setOpaque(false);
 		returned.setName(groupName);
@@ -1217,7 +1220,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		returned.setBorder(BorderFactory.createEmptyBorder());
 		returned.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
 
-		Vector<JButton> buttonList = new Vector<JButton>();
+		Vector<JButton> buttonList = new Vector<>();
 
 		for (JButton b : buttons) {
 			if (configuration.hasOption(b.getName())) {
@@ -1239,7 +1242,7 @@ public class MetaphaseEditorPanel extends JPanel {
 	}
 
 	private JPanel makeLinePanel(int line, final MetaphaseEditorConfiguration configuration) {
-		Vector<JComponent> components = new Vector<JComponent>();
+		Vector<JComponent> components = new Vector<>();
 		if (configuration.hasOption(SOURCE_PANEL_KEY, line)) {
 			components.add(sourcePanel);
 		}
@@ -1364,7 +1367,7 @@ public class MetaphaseEditorPanel extends JPanel {
 				if (listElement.getName().equals("li")) {
 					// re-add the existing attributes to the list item
 					AttributeSet listElementAttrs = listElement.getAttributes();
-					Enumeration currentAttrEnum = listElementAttrs.getAttributeNames();
+					Enumeration<?> currentAttrEnum = listElementAttrs.getAttributeNames();
 					while (currentAttrEnum.hasMoreElements()) {
 						Object attrName = currentAttrEnum.nextElement();
 						Object attrValue = listElement.getAttributes().getAttribute(attrName);
@@ -1434,11 +1437,11 @@ public class MetaphaseEditorPanel extends JPanel {
 		}
 	}
 
-	private void insertRemoveNumberedListButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_insertRemoveNumberedListButtonActionPerformed
+	private static void insertRemoveNumberedListButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_insertRemoveNumberedListButtonActionPerformed
 		new HTMLEditorKit.InsertHTMLTextAction("Insert Bulleted List", "<ol><li></li></ol>", Tag.BODY, Tag.OL).actionPerformed(evt);
 	}// GEN-LAST:event_insertRemoveNumberedListButtonActionPerformed
 
-	private void textColorButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_textColorButtonActionPerformed
+	private static void textColorButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_textColorButtonActionPerformed
 		Color color = JColorChooser.showDialog(null, "Text Color", null);
 		if (color != null) {
 			new StyledEditorKit.ForegroundAction("Color", color).actionPerformed(evt);
@@ -1449,7 +1452,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		htmlTextPane.selectAll();
 	}// GEN-LAST:event_selectAllButtonActionPerformed
 
-	private void aboutButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_aboutButtonActionPerformed
+	private static void aboutButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_aboutButtonActionPerformed
 		AboutDialog aboutDialog = new AboutDialog(null, true);
 		aboutDialog.setVisible(true);
 	}// GEN-LAST:event_aboutButtonActionPerformed
@@ -1468,7 +1471,8 @@ public class MetaphaseEditorPanel extends JPanel {
 			htmlSourceMode = false;
 
 			setToolbarComponentEnable(this, true);
-		} else {
+		}
+		else {
 			htmlTextArea.setText(htmlTextPane.getText());
 			mainScrollPane.setViewportView(htmlTextArea);
 			htmlSourceMode = true;
@@ -1507,19 +1511,23 @@ public class MetaphaseEditorPanel extends JPanel {
 							fw.write(htmlTextPane.getText());
 							fw.close();
 							break;
-						} else if (option == JOptionPane.NO_OPTION) {
+						}
+						else if (option == JOptionPane.NO_OPTION) {
 							continue;
-						} else if (option == JOptionPane.CANCEL_OPTION) {
+						}
+						else if (option == JOptionPane.CANCEL_OPTION) {
 							break;
 						}
-					} else {
+					}
+					else {
 						File currentFile = new File(newFile.getAbsolutePath());
 						FileWriter fw = new FileWriter(currentFile);
 						fw.write(htmlTextPane.getText());
 						fw.close();
 						break;
 					}
-				} else {
+				}
+				else {
 					break;
 				}
 			}
@@ -1623,7 +1631,8 @@ public class MetaphaseEditorPanel extends JPanel {
 					htmlDocument.addUndoableEditListener(undoHandler);
 					htmlTextPane.setDocument(htmlDocument);
 					resetUndoManager();
-				} else {
+				}
+				else {
 					JOptionPane.showMessageDialog(null, "The selected file does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -1675,18 +1684,18 @@ public class MetaphaseEditorPanel extends JPanel {
 		insertImageRequestHandler.insertImage(htmlTextPane);
 	}// GEN-LAST:event_insertImageActionPerformed
 
-	private void insertRemoveBulletedListButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_insertRemoveBulletedListButtonActionPerformed
+	private static void insertRemoveBulletedListButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_insertRemoveBulletedListButtonActionPerformed
 		new HTMLEditorKit.InsertHTMLTextAction("Insert Bulleted List", "<ul><li></li></ul>", Tag.BODY, Tag.UL).actionPerformed(evt);
 	}// GEN-LAST:event_insertRemoveBulletedListButtonActionPerformed
 
-	private void htmlTextPaneKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_htmlTextPaneKeyPressed
+	private static void htmlTextPaneKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_htmlTextPaneKeyPressed
 	}// GEN-LAST:event_htmlTextPaneKeyPressed
 
-	private void htmlTextPaneKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_htmlTextPaneKeyReleased
+	private static void htmlTextPaneKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_htmlTextPaneKeyReleased
 
 	}// GEN-LAST:event_htmlTextPaneKeyReleased
 
-	private void htmlTextPaneKeyTyped(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_htmlTextPaneKeyTyped
+	private static void htmlTextPaneKeyTyped(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_htmlTextPaneKeyTyped
 		if (evt.getKeyChar() == KeyEvent.VK_ENTER) {
 
 		}
@@ -1715,14 +1724,15 @@ public class MetaphaseEditorPanel extends JPanel {
 		}
 	}// GEN-LAST:event_linkButtonActionPerformed
 
-	private void spellcheckButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_spellcheckButtonActionPerformed
+	private static void spellcheckButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_spellcheckButtonActionPerformed
 		// JOptionPane.showMessageDialog(null,
 		// "The spelling checker functionality is currently unavailable.");
 		Thread thread = new Thread() {
 			@Override
 			public void run() {
 				try {
-					spellChecker.spellCheck(htmlTextPane);
+					// TODO, spelling needed? FD
+					// spellChecker.spellCheck(htmlTextPane);
 					JOptionPane.showMessageDialog(null, "The spelling check is complete.", "Check Spelling",
 							JOptionPane.INFORMATION_MESSAGE);
 				} catch (Exception ex) {
@@ -1748,8 +1758,9 @@ public class MetaphaseEditorPanel extends JPanel {
 						htmlTextPane.requestFocusInWindow();
 					}
 				});
-			} else if (vComponents[i] instanceof JComboBox) {
-				JComboBox comboBox = (JComboBox) vComponents[i];
+			}
+			else if (vComponents[i] instanceof JComboBox) {
+				JComboBox<?> comboBox = (JComboBox<?>) vComponents[i];
 				comboBox.addActionListener(new ActionListener() {
 
 					@Override
@@ -1757,7 +1768,8 @@ public class MetaphaseEditorPanel extends JPanel {
 						htmlTextPane.requestFocusInWindow();
 					}
 				});
-			} else if (vComponents[i] instanceof JPanel) {
+			}
+			else if (vComponents[i] instanceof JPanel) {
 				JPanel panel = (JPanel) vComponents[i];
 				setToolbarFocusActionListener(panel);
 			}
@@ -1770,13 +1782,16 @@ public class MetaphaseEditorPanel extends JPanel {
 			if (vComponents[i] == sourceButton || vComponents[i] == newButton || vComponents[i] == previewButton
 					|| vComponents[i] == aboutButton) {
 				return;
-			} else if (vComponents[i] instanceof JButton) {
+			}
+			else if (vComponents[i] instanceof JButton) {
 				JButton button = (JButton) vComponents[i];
 				button.setEnabled(enabled);
-			} else if (vComponents[i] instanceof JComboBox) {
-				JComboBox comboBox = (JComboBox) vComponents[i];
+			}
+			else if (vComponents[i] instanceof JComboBox) {
+				JComboBox<?> comboBox = (JComboBox<?>) vComponents[i];
 				comboBox.setEnabled(enabled);
-			} else if (vComponents[i] instanceof JPanel) {
+			}
+			else if (vComponents[i] instanceof JPanel) {
 				JPanel panel = (JPanel) vComponents[i];
 				setToolbarComponentEnable(panel, enabled);
 			}
@@ -1798,7 +1813,8 @@ public class MetaphaseEditorPanel extends JPanel {
 	public void setInsertImageRequestHandler(ImageInsertRequestHandler insertImageRequestHandler) {
 		if (insertImageRequestHandler != null) {
 			this.insertImageRequestHandler = insertImageRequestHandler;
-		} else {
+		}
+		else {
 			this.insertImageRequestHandler = new DefaultImageInsertRequestHandler();
 		}
 	}
@@ -1813,13 +1829,15 @@ public class MetaphaseEditorPanel extends JPanel {
 							"The dictionary version has been set to CUSTOM but no custom dictionary file name has been specified.");
 				}
 				inputStream = new FileInputStream(customDictionaryFilename);
-			} else {
+			}
+			else {
 				inputStream = spellCheckDictionaryVersion.openStream();// this.getClass().getResourceAsStream(spellCheckDictionaryVersion.getFilename());
 			}
 			zipInputStream = new ZipInputStream(inputStream);
 			zipInputStream.getNextEntry();
-			dictionary = new SpellDictionaryHashMap(new BufferedReader(new InputStreamReader(zipInputStream)));
-			spellChecker = new JTextComponentSpellChecker(dictionary, null, "Check Spelling");
+			// TODO, spelling needed? FD
+			// dictionary = new SpellDictionaryHashMap(new BufferedReader(new InputStreamReader(zipInputStream)));
+			// spellChecker = new JTextComponentSpellChecker(dictionary, null, "Check Spelling");
 		} catch (FileNotFoundException e) {
 			throw new MetaphaseEditorException(e.getMessage(), e);
 		} catch (IOException e) {
@@ -1898,6 +1916,10 @@ public class MetaphaseEditorPanel extends JPanel {
 		}
 	}
 
+	private static String toHexString(Color color) {
+		return String.format("%1$02X%2$02X%3$02X", color.getRed(), color.getGreen(), color.getBlue());
+	}
+
 	class BackgroundColorAction extends StyledEditorKit.StyledTextAction {
 		private Color color;
 
@@ -1910,7 +1932,7 @@ public class MetaphaseEditorPanel extends JPanel {
 		public void actionPerformed(ActionEvent ae) {
 			JEditorPane editor = getEditor(ae);
 			// Add span Tag
-			String htmlStyle = "background-color: #" + HTMLUtils.toHexString(color);
+			String htmlStyle = "background-color: #" + toHexString(color);
 			SimpleAttributeSet attr = new SimpleAttributeSet();
 			attr.addAttribute(HTML.Attribute.STYLE, htmlStyle);
 			MutableAttributeSet outerAttr = new SimpleAttributeSet();
@@ -1955,13 +1977,15 @@ public class MetaphaseEditorPanel extends JPanel {
 						htmlDocument.insertAfterEnd(li, "<li></li>");
 						htmlTextPane.setText(getDocument());
 						htmlTextPane.setCaretPosition(end);
-					} else {
+					}
+					else {
 						deletePreviousCharAction.actionPerformed(ae);
 						htmlDocument.insertAfterEnd(parentListTag, "<p></p>");
 						htmlTextPane.setText(getDocument());
 						htmlTextPane.setCaretPosition(Math.min(Math.max(0, end - 1), htmlDocument.getLength()));
 					}
-				} else if (insertBreakAction != null) {
+				}
+				else if (insertBreakAction != null) {
 					insertBreakAction.actionPerformed(ae);
 				}
 			} catch (BadLocationException e) {
@@ -2005,7 +2029,8 @@ public class MetaphaseEditorPanel extends JPanel {
 		protected void update() {
 			if (undo.canUndo()) {
 				setEnabled(true);
-			} else {
+			}
+			else {
 				setEnabled(false);
 			}
 		}
@@ -2032,7 +2057,8 @@ public class MetaphaseEditorPanel extends JPanel {
 		protected void update() {
 			if (undo.canRedo()) {
 				setEnabled(true);
-			} else {
+			}
+			else {
 				setEnabled(false);
 			}
 		}
@@ -2052,14 +2078,14 @@ public class MetaphaseEditorPanel extends JPanel {
 
 	class ParagraphFormatListCellRenderer extends DefaultListCellRenderer {
 		@Override
-		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 			Component component = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			if (index == 0) {
 				component.setEnabled(false);
 			}
 			ParagraphFormat paragraphFormat = (ParagraphFormat) value;
 			if (paragraphFormat.getTag() != null) {
-				JLabel label = (JLabel) component;
+				// Unused JLabel label = (JLabel) component;
 				// label.setText("<html><" + paragraphFormat.getTag().toString()
 				// + ">" + label.getText() + "</" +
 				// paragraphFormat.getTag().toString() + ">");
@@ -2070,7 +2096,7 @@ public class MetaphaseEditorPanel extends JPanel {
 
 	class FontListCellRenderer extends DefaultListCellRenderer {
 		@Override
-		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 			Component component = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			if (index == 0) {
 				component.setEnabled(false);
@@ -2086,7 +2112,7 @@ public class MetaphaseEditorPanel extends JPanel {
 
 	class FontSizeListCellRenderer extends DefaultListCellRenderer {
 		@Override
-		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 			Component component = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			if (index == 0) {
 				component.setEnabled(false);
@@ -2144,7 +2170,8 @@ public class MetaphaseEditorPanel extends JPanel {
 				if (html != null) {
 					if (imageDialog.isLink()) {
 						editorKit.insertHTML(htmlDocument, htmlTextPane.getCaretPosition(), html, 0, 0, Tag.A);
-					} else {
+					}
+					else {
 						editorKit.insertHTML(htmlDocument, htmlTextPane.getCaretPosition(), html, 0, 0, Tag.IMG);
 					}
 					refreshAfterAction();

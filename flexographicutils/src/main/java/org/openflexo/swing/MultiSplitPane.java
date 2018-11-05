@@ -93,7 +93,8 @@ public class MultiSplitPane extends JPanel {
 				setSize(next, divider.next);
 				if (getModel().isRowLayout()) {
 					available = getWidth() - getLayout().getRequiredSize() /*- getComponentCount() * INSETS_SIZE*/;
-				} else {
+				}
+				else {
 					available = getHeight() - getLayout().getRequiredSize() /*- getComponentCount() * INSETS_SIZE*/;
 				}
 			}
@@ -103,7 +104,8 @@ public class MultiSplitPane extends JPanel {
 			if (node.getPercentage() < 0) {
 				if (getModel().isRowLayout()) {
 					node.setSize(comp.getWidth());
-				} else {
+				}
+				else {
 					node.setSize(comp.getHeight());
 				}
 			}
@@ -129,7 +131,8 @@ public class MultiSplitPane extends JPanel {
 				int offset;
 				if (divider.isVertical()) {
 					offset = p.x - last.x;
-				} else {
+				}
+				else {
 					offset = p.y - last.y;
 				}
 				updateNodeForComponent(offset, previous, divider.previous);
@@ -140,11 +143,13 @@ public class MultiSplitPane extends JPanel {
 		private void updateNodeForComponent(int offset, Node node, Component comp) {
 			if (node.getPercentage() < 0) {
 				node.setSize(node.getSize() + offset);
-			} else {
+			}
+			else {
 				int size;
 				if (getModel().isRowLayout()) {
 					size = comp.getWidth();
-				} else {
+				}
+				else {
 					size = comp.getHeight();
 				}
 				if (available > 0) {
@@ -180,10 +185,12 @@ public class MultiSplitPane extends JPanel {
 			if (d != null) {
 				if (getModel().isRowLayout()) {
 					setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
-				} else {
+				}
+				else {
 					setCursor(Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR));
 				}
-			} else {
+			}
+			else {
 				setCursor(Cursor.getDefaultCursor());
 			}
 
@@ -236,10 +243,12 @@ public class MultiSplitPane extends JPanel {
 			Node node = getLayout().getNodeForName(name);
 			if (node != null) {
 				super.addImpl(comp, getLayout().getConstraintForComponent(comp, node), node.getParent().getChildren().indexOf(node));
-			} else {
+			}
+			else {
 				throw new IllegalArgumentException("No such node with name " + name + " found in model");
 			}
-		} else {
+		}
+		else {
 			throw new IllegalArgumentException("Constraints cannot be null and must be a String");
 		}
 	}
@@ -282,7 +291,8 @@ public class MultiSplitPane extends JPanel {
 					}
 				}
 			}
-		} else {
+		}
+		else {
 			for (int i = 0; i < INSETS_SIZE * 2; i++) {
 				previous = getComponentAt(x, y - i);
 				if (previous != null && previous != MultiSplitPane.this) {
@@ -337,7 +347,8 @@ public class MultiSplitPane extends JPanel {
 			String name = components.inverse().get(comp);
 			if (name != null) {
 				return getNodeForName(name);
-			} else {
+			}
+			else {
 				return null;
 			}
 		}
@@ -384,7 +395,8 @@ public class MultiSplitPane extends JPanel {
 			comp.setVisible(n.isVisible());
 			if (n.isVisible()) {
 				setConstraints(comp, getConstraintForComponent(comp, n));
-			} else {
+			}
+			else {
 				super.removeLayoutComponent(comp);
 			}
 		}
@@ -395,7 +407,8 @@ public class MultiSplitPane extends JPanel {
 			if (rowLayout) {
 				gbc.gridx = n.getParent().getChildren().indexOf(n);
 				gbc.gridy = 0;
-			} else {
+			}
+			else {
 				gbc.gridx = 0;
 				gbc.gridy = n.getParent().getChildren().indexOf(n);
 			}
@@ -405,11 +418,13 @@ public class MultiSplitPane extends JPanel {
 				if (rowLayout) {
 					gbc.weightx = n.getPercentage() * PRECISION;
 					gbc.weighty = 1.0;
-				} else {
+				}
+				else {
 					gbc.weightx = 1.0;
 					gbc.weighty = n.getPercentage() * PRECISION;
 				}
-			} else {
+			}
+			else {
 				if (n.getSize() > 0) {
 					// Only width or height will be used in the layout process
 					comp.setPreferredSize(new Dimension(n.getSize(), n.getSize()));
@@ -431,7 +446,8 @@ public class MultiSplitPane extends JPanel {
 			if (c != null && c != comp) {
 				throw new IllegalArgumentException("This container alread has a component for name " + name);
 			}
-			String old = components.inverse().remove(comp);
+			// Unused var String old =
+			components.inverse().remove(comp);
 
 			components.put(name, comp);
 			Node node = getNodeForName(name);
@@ -455,14 +471,11 @@ public class MultiSplitPane extends JPanel {
 	}
 
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					initTestUI();
-				} catch (ModelDefinitionException e) {
-					e.printStackTrace();
-				}
+		SwingUtilities.invokeLater(() -> {
+			try {
+				initTestUI();
+			} catch (ModelDefinitionException e) {
+				e.printStackTrace();
 			}
 		});
 	}

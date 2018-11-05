@@ -1,0 +1,7 @@
+dependencies {
+  compile connie()
+  compile pamela()
+  compile project(':flexolocalization')
+  compile project(':flexographicutils')
+  compile project(':gina-events')
+}
