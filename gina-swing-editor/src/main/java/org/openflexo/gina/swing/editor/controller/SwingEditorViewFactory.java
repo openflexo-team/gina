@@ -239,12 +239,10 @@ public class SwingEditorViewFactory extends SwingViewFactory {
 	@Override
 	public FIBTableWidgetImpl<? extends JComponent, ?> makeTable(FIBTable widget, FIBController controller, RuntimeContext context) {
 		if (widget.getLookAndFeel() != null) {
-			System.out.println(">>>>>>>>>>>>>> Nouvelle table avec " + widget.getLookAndFeel());
 			switch (widget.getLookAndFeel()) {
 				case Classic:
 					return new JFIBEditableTableWidget<>(widget, fibEditorController);
 				case FlatDesign:
-					System.out.println("Flat design !!!");
 					return new JFDFIBEditableTableWidget<>(widget, fibEditorController);
 			}
 		}

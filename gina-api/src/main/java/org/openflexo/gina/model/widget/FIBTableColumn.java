@@ -234,6 +234,8 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 
 	public void searchLocalized(LocalizationEntryRetriever retriever);
 
+	public boolean isEditable();
+
 	public static abstract class FIBTableColumnImpl extends FIBModelObjectImpl implements FIBTableColumn {
 
 		private static final Logger logger = Logger.getLogger(FIBTableColumn.class.getPackage().getName());
@@ -674,6 +676,11 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 				return getTitle();
 			}
 			return returned;
+		}
+
+		@Override
+		public boolean isEditable() {
+			return true;
 		}
 
 	}

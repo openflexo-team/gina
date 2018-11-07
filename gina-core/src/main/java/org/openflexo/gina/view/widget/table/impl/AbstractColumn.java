@@ -41,6 +41,7 @@ package org.openflexo.gina.view.widget.table.impl;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -51,6 +52,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
@@ -325,6 +328,33 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 	}
 
 	/**
+	 * Make cell renderer for supplied value<br>
+	 * Note that this renderer is not shared
+	 * 
+	 * @return
+	 */
+	// TODO: detach from SWING
+	public JComponent makeCellRenderer(T value) {
+
+		JLabel returned = new JLabel();
+		Object dataToRepresent = getValueFor(value);
+		returned.setText(getStringRepresentation(dataToRepresent));
+		return returned;
+	}
+
+	/**
+	 * Make cell editor for supplied value<br>
+	 * Note that this renderer is not shared
+	 * 
+	 * @return
+	 */
+	// TODO: detach from SWING
+	public JComponent makeCellEditor(T value, ActionListener actionListener) {
+
+		return makeCellRenderer(value);
+	}
+
+	/**
 	 * @return
 	 */
 	protected TableCellRenderer getDefaultTableCellRenderer() {
@@ -404,7 +434,21 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 		return getTableModel().getPropertyListColumnWithTitle(title);
 	}
 
+	private boolean valueChangeNotificationEnabled = true;
+
+	protected void disableValueChangeNotification() {
+		valueChangeNotificationEnabled = false;
+	}
+
+	protected void enableValueChangeNotification() {
+		valueChangeNotificationEnabled = false;
+	}
+
 	public void notifyValueChangedFor(T object, V value /*, BindingEvaluationContext evaluationContext*/) {
+		if (!valueChangeNotificationEnabled) {
+			return;
+		}
+
 		if (logger.isLoggable(Level.FINE)) {
 			logger.fine("notifyValueChangedFor " + object);
 		}

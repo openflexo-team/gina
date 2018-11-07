@@ -98,10 +98,6 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 	public FIBTableWidgetImpl(FIBTable fibTable, FIBController controller, TableRenderingAdapter<C, T> RenderingAdapter) {
 		super(fibTable, controller, RenderingAdapter);
 
-		/*for (FIBTableColumn column : fibTable.getColumns()) {
-			column.getPropertyChangeSupport().addPropertyChangeListener(this);
-		}*/
-
 		updateFooter();
 	}
 
@@ -252,34 +248,9 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 		List<?> valuesBeforeUpdating = getTableModel().getValues();
 		T wasSelected = getSelected();
 
-		// boolean returned = false;
-
-		// logger.info("----------> updateWidgetFromModel() for " +
-		// getTable().getName());
-		// Not to be done anymore, this is performed by updateEnability()
-		/*
-		 * if (_fibTable.getEnable().isSet() && _fibTable.getEnable().isValid())
-		 * { Boolean enabledValue = true; try { enabledValue =
-		 * _fibTable.getEnable().getBindingValue(getBindingEvaluationContext());
-		 * } catch (TypeMismatchException e) { e.printStackTrace(); } catch
-		 * (NullReferenceException e) { e.printStackTrace(); } catch
-		 * (InvocationTargetException e) { e.printStackTrace(); }
-		 * _table.setEnabled(enabledValue != null && enabledValue); }
-		 */
-
 		Collection<T> newValues = super.updateData();
 
-		if (notEquals(newValues, getTableModel().getValues())) {
-
-			// returned = true;
-
-			// boolean debug = false;
-			// if (getWidget().getName() != null &&
-			// getWidget().getName().equals("PatternRoleTable")) debug=true;
-
-			// if (debug)
-			// System.out.println("valuesBeforeUpdating: "+valuesBeforeUpdating);
-			// if (debug) System.out.println("wasSelected: "+wasSelected);
+		if (notEquals(newValues, valuesBeforeUpdating)) {
 
 			if (getRenderingAdapter().isEditing(getTechnologyComponent())) {
 				if (LOGGER.isLoggable(Level.FINE)) {
@@ -310,21 +281,12 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 			}
 		}
 
-		/*
-		 * System.out.println("updateWidgetFromModel() for table " +
-		 * getComponent().getName());
-		 * System.out.println("getTableModel().getValues()=" +
-		 * getTableModel().getValues());
-		 * System.out.println("valuesBeforeUpdating=" + valuesBeforeUpdating);
-		 * System.out.println("wasSelected=" + wasSelected);
-		 */
-
 		// We restore value if and only if we represent same table
 		if (equals(getTableModel().getValues(), valuesBeforeUpdating) && wasSelected != null) {
 			// returned = true;
 			setSelected(wasSelected);
 		}
-		else if (areSameValuesOrderIndifferent(getTableModel().getValues(), valuesBeforeUpdating)) {
+		else if (areSameValuesOrderIndifferent(getTableModel().getValues(), valuesBeforeUpdating) && wasSelected != null) {
 			// Same values, only order differs, in this case, still select right
 			// object
 			// returned = true;
@@ -512,7 +474,18 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 	}
 
 	public void clearSelection() {
-		getListSelectionModel().clearSelection();
+		List<T> oldSelection = this.selection;
+		this.selection = Collections.emptyList();
+
+		if (getListSelectionModel() != null) {
+			getListSelectionModel().clearSelection();
+		}
+
+		FIBController ctrl = getController();
+		if (ctrl != null && synchronizedWithSelection()) {
+			ctrl.updateSelection(this, oldSelection, selection);
+		}
+
 	}
 
 	@Override
@@ -524,6 +497,12 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 		List<T> oldSelection = this.selection;
 		this.selection = selection;
 		getPropertyChangeSupport().firePropertyChange(SELECTION, oldSelection, selection);
+
+		FIBController ctrl = getController();
+		if (ctrl != null && synchronizedWithSelection()) {
+			ctrl.updateSelection(this, oldSelection, selection);
+		}
+
 	}
 
 	private static boolean areSameValuesOrderIndifferent(List<?> l1, List<?> l2) {

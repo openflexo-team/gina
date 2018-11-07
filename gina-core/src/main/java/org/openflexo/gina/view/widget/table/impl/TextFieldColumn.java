@@ -41,11 +41,17 @@ package org.openflexo.gina.view.widget.table.impl;
 
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.DefaultCellEditor;
+import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
@@ -109,6 +115,63 @@ public class TextFieldColumn<T> extends StringColumn<T> implements EditableColum
 			}
 		}
 		return editor;
+	}
+
+	/**
+	 * Make cell renderer for supplied value<br>
+	 * Note that this renderer is not shared
+	 * 
+	 * @return
+	 */
+	// TODO: detach from SWING
+	@Override
+	public JComponent makeCellEditor(T value, ActionListener actionListener) {
+
+		JTextField returned = new JTextField();
+
+		String dataToRepresent = getValueFor(value);
+		returned.setText(getStringRepresentation(dataToRepresent));
+
+		returned.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				disableValueChangeNotification();
+				setValueFor(value, returned.getText());
+				enableValueChangeNotification();
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				disableValueChangeNotification();
+				setValueFor(value, returned.getText());
+				enableValueChangeNotification();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				disableValueChangeNotification();
+				setValueFor(value, returned.getText());
+				enableValueChangeNotification();
+			}
+		});
+
+		if (actionListener != null) {
+			returned.addActionListener(actionListener);
+		}
+
+		returned.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				returned.selectAll();
+			}
+		});
+
+		return returned;
 	}
 
 	@Override

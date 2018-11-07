@@ -1,15 +1,31 @@
 package org.openflexo.gina.swing.view.widget;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -25,16 +41,28 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.model.FIBMouseEvent;
+import org.openflexo.gina.model.widget.FIBTableAction;
+import org.openflexo.gina.model.widget.FIBTableAction.FIBAddAction;
+import org.openflexo.gina.model.widget.FIBTableAction.FIBRemoveAction;
 import org.openflexo.gina.model.widget.FIBTableColumn;
+import org.openflexo.gina.swing.view.SwingViewFactory.SwingFIBMouseEvent;
 import org.openflexo.gina.utils.FIBIconLibrary;
+import org.openflexo.gina.view.widget.table.impl.FIBTableActionListener;
 import org.openflexo.gina.view.widget.table.impl.FIBTableModel;
-import org.openflexo.gina.view.widget.table.impl.FIBTableModel.ModelObjectHasChanged;
-import org.openflexo.icon.IconFactory;
 
+/**
+ * Implements Flat-Design table widget
+ * 
+ * @author sylvain
+ *
+ * @param <T>
+ */
 @SuppressWarnings("serial")
 public class JFDTablePanel<T> extends JPanel {
 
-	private JFDTable jTable;
+	private JFDTable<T> jTable;
 	private final JScrollPane scrollPane;
 	private final JFDFIBTableWidget<T> widget;
 
@@ -69,13 +97,30 @@ public class JFDTablePanel<T> extends JPanel {
 		private TableColumnModel columnModel;
 		private ListSelectionModel selectionModel;
 
+		private JPanel tablePanel;
+
+		private Map<T, List<JComponent>> componentsForValues = new HashMap<>();
+		private Map<T, JButton> removeButtons = new HashMap<>();
+		private Map<T, JButton> editButtons = new HashMap<>();
+		private T selectedValue = null;
+		private T focusedValue = null;
+		private T editedValue = null;
+
+		private FIBTableActionListener<T> addActionListener;
+		private FIBTableActionListener<T> removeActionListener;
+
 		public JFDTable(JFDFIBTableWidget<T> widget) {
-			super();
+			super(new BorderLayout());
+
+			tablePanel = new JPanel();
 			gridBagLayout = new GridBagLayout();
-			setLayout(gridBagLayout);
+			tablePanel.setLayout(gridBagLayout);
 			this.widget = widget;
 			setTableModel(widget.getTableModel());
-			rebuildTable();
+			selectionModel = new DefaultListSelectionModel();
+			add(tablePanel, BorderLayout.CENTER);
+			buildTable();
+
 		}
 
 		/**
@@ -144,11 +189,6 @@ public class JFDTablePanel<T> extends JPanel {
 				this.columnModel = columnModel;
 				columnModel.addColumnModelListener(this);
 
-				// Set the column model of the header as well.
-				/*if (tableHeader != null) {
-					tableHeader.setColumnModel(columnModel);
-				}*/
-
 				firePropertyChange("columnModel", old, columnModel);
 				revalidate();
 				repaint();
@@ -196,32 +236,28 @@ public class JFDTablePanel<T> extends JPanel {
 			}
 		}
 
+		public T getFocusedValue() {
+			return focusedValue;
+		}
+
+		public T getSelectedValue() {
+			return selectedValue;
+		}
+
 		@Override
 		public void tableChanged(TableModelEvent e) {
 
-			System.out.println("Je recois TableModelEvent " + e);
+			/*System.out.println("Je recois TableModelEvent " + e);
 			System.out.println("rows=" + getModel().getRowCount());
 			if (e instanceof ModelObjectHasChanged) {
 				System.out.println(">>>>>>>>>> OK le model change pour celui la");
-			}
-
-			Thread.dumpStack();
-
-			System.out.println("model=" + getModel());
-			if (widget.getTableModel().getValues() != null) {
-				for (T value : widget.getTableModel().getValues()) {
-					System.out.println("On affiche la valeur " + value);
-				}
-			}
-
-			System.out.println(
-					/*"col=" + e.getColumn() +*/ " firstRow=" + e.getFirstRow() + " lastRow=" + e.getLastRow() + " type=" + e.getType());
+			}*/
 
 			if (e == null || e.getFirstRow() == TableModelEvent.HEADER_ROW) {
 
-				System.out.println("HEADER");
+				// System.out.println("HEADER");
 
-				System.out.println("rows=" + getModel().getRowCount());
+				// System.out.println("rows=" + getModel().getRowCount());
 				// The whole thing changed
 				/*clearSelectionAndLeadAnchor();
 				
@@ -302,8 +338,12 @@ public class JFDTablePanel<T> extends JPanel {
 				rowModel = null;
 			}*/
 
-			revalidate();
-			repaint();
+			// revalidate();
+			// repaint();
+
+			if (editedValue == null) {
+				refreshTable();
+			}
 
 		}
 
@@ -393,6 +433,7 @@ public class JFDTablePanel<T> extends JPanel {
 
 		@Override
 		public void columnSelectionChanged(ListSelectionEvent e) {
+			// TODO Auto-generated method stub
 		}
 
 		/**
@@ -474,100 +515,509 @@ public class JFDTablePanel<T> extends JPanel {
 		public void valueChanged(ListSelectionEvent e) {
 		}
 
-		private void rebuildTable() {
-			removeAll();
+		private JButton addButton;
+		private boolean hasAddAction = false;
+		private boolean hasRemoveAction = false;
+		private boolean hasEditAction = false;
+
+		private void buildTable() {
+
+			for (FIBTableAction fibAction : widget.getComponent().getActions()) {
+				if (fibAction instanceof FIBAddAction) {
+					addActionListener = new FIBTableActionListener<>(fibAction, widget);
+					hasAddAction = true;
+				}
+				if (fibAction instanceof FIBRemoveAction) {
+					removeActionListener = new FIBTableActionListener<>(fibAction, widget);
+					hasRemoveAction = true;
+				}
+			}
+
+			for (FIBTableColumn column : widget.getComponent().getColumns()) {
+				if (column.isEditable()) {
+					hasEditAction = true;
+				}
+			}
+
+			addButton = new JButton();
+			addButton.setBorder(BorderFactory.createEmptyBorder());
+			addButton.setRolloverIcon(FIBIconLibrary.ADD_FO_ICON);
+			addButton.setIcon(FIBIconLibrary.ADD_ICON);
+
+			addButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (addActionListener != null) {
+						System.out.println("On execute " + addActionListener);
+						addActionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null,
+								EventQueue.getMostRecentEventTime(), e.getModifiers()));
+					}
+				}
+			});
+
+			JPanel addButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 2));
+			addButtonPanel.add(addButton);
+
+			add(addButtonPanel, BorderLayout.SOUTH);
+
+			refreshTable();
+		}
+
+		private void refreshTable() {
+
+			tablePanel.removeAll();
+			componentsForValues.clear();
+			removeButtons.clear();
+			editButtons.clear();
+			remaindedOpaque.clear();
+			remaindedBackground.clear();
+			remaindedForeground.clear();
+
+			addButton.setVisible(hasAddAction);
 
 			if (widget.getComponent().getShowHeader()) {
 				for (FIBTableColumn column : widget.getComponent().getColumns()) {
+					boolean isFirst = (column == widget.getComponent().getColumns().get(0));
 					boolean isLast = (column == widget.getComponent().getColumns().get(widget.getComponent().getColumns().size() - 1));
 					GridBagConstraints c = new GridBagConstraints();
-					// c.insets = new Insets(5, 5, 5, 5);
-					c.fill = GridBagConstraints.NONE;
-					c.weightx = (column.getResizable() ? column.getColumnWidth() : 0);
-					c.weighty = 1.0;
+					c.fill = GridBagConstraints.HORIZONTAL;
+					c.weightx = (column.getResizable() ? column.getColumnWidth() : 0.0);
+					c.weighty = 0.0;
 					c.gridwidth = (isLast ? GridBagConstraints.REMAINDER : 1);
 					c.anchor = GridBagConstraints.CENTER;
-					/*if (twoColsConstraints.getExpandVertically()) {
-						// c.weighty = 1.0;
-						c.fill = GridBagConstraints.VERTICAL;
-					}
-					else {
-						// c.insets = new Insets(5, 2, 0, 2);
-					}*/
+					c.gridx = GridBagConstraints.RELATIVE;
+					c.gridy = GridBagConstraints.RELATIVE;
 
-					JLabel titleLabel = new JLabel(column.getTitle());
+					c.insets = new Insets(3, isFirst ? 5 : 0, 3, 0);
+					c.ipadx = 0;
+					c.ipady = 0;
+
+					JLabel titleLabel = new JLabel(column.getDisplayTitle() ? widget.getLocalized(column.getTitle()) : "");
+					titleLabel.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight() + 5));
+					titleLabel.setOpaque(true);
 					titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD));
-					add(titleLabel, c);
+					titleLabel.setForeground(Color.WHITE);
+					titleLabel.setBackground(Color.GRAY);
+					tablePanel.add(titleLabel, c);
+
 				}
 			}
-
-			System.out.println("Et la faut dessiner les valeurs " + widget.getTableModel().getValues());
 
 			if (widget.getTableModel().getValues() != null) {
+				int row = 0;
 				for (T value : widget.getTableModel().getValues()) {
-					System.out.println("On affiche la valeur " + value);
+					buildTableForValue(value, row, value == editedValue);
+					row++;
 				}
 			}
 
-			JButton addButton = new JButton();
-			addButton.setBorder(BorderFactory.createEmptyBorder());
-			addButton.setRolloverIcon(IconFactory.getDisabledIcon(FIBIconLibrary.ADD_ICON));
-			addButton.setIcon(FIBIconLibrary.ADD_ICON);
-
-			GridBagConstraints c = new GridBagConstraints();
-			// c.insets = new Insets(3, 3, 3, 3);
-			// System.out.println("twoColsConstraints=" + twoColsConstraints);
-			c.insets = new Insets(5, 5, 5, 5);
-			c.fill = GridBagConstraints.NONE;
-			c.weightx = 1.0;
-			c.weighty = 1.0;
-			c.gridwidth = 1;
-			c.anchor = GridBagConstraints.NORTHWEST;
-			/*if (twoColsConstraints.getExpandVertically()) {
-				// c.weighty = 1.0;
-				c.fill = GridBagConstraints.VERTICAL;
+			if (getParent() != null) {
+				getParent().revalidate();
 			}
 			else {
-				// c.insets = new Insets(5, 2, 0, 2);
-			}*/
-
-			add(addButton, c);
+				revalidate();
+			}
 
 		}
 
-		public int getVisibleRowCount() {
-			return 0;
+		private Map<JComponent, Boolean> remaindedOpaque = new HashMap<>();
+		private Map<JComponent, Color> remaindedBackground = new HashMap<>();
+		private Map<JComponent, Color> remaindedForeground = new HashMap<>();
+
+		private void applyFocusProperties(T value, Color foreground, Color background) {
+			List<JComponent> componentList = componentsForValues.get(value);
+			if (componentList != null) {
+				for (JComponent jComponent : componentList) {
+					applyFocusPropertiesOnComponent(jComponent, foreground, background);
+				}
+			}
 		}
 
-		public void setVisibleRowCount(int visibleRowCount) {
+		private void resetFocusProperties(T value) {
+			List<JComponent> componentList = componentsForValues.get(value);
+			if (componentList != null) {
+				for (JComponent jComponent : componentList) {
+					resetFocusPropertiesOnComponent(jComponent);
+				}
+			}
+		}
 
+		private void applyFocusPropertiesOnComponent(JComponent jComponent, Color foreground, Color background) {
+			// Hack: don't do it for JComboBox because LAF is not allowing it
+			if (jComponent instanceof JComboBox) {
+				return;
+			}
+			remaindedOpaque.put(jComponent, jComponent.isOpaque());
+			remaindedForeground.put(jComponent, jComponent.getForeground());
+			remaindedBackground.put(jComponent, jComponent.getBackground());
+			jComponent.setOpaque(true);
+			jComponent.setForeground(foreground);
+			jComponent.setBackground(background);
+		}
+
+		private void resetFocusPropertiesOnComponent(JComponent jComponent) {
+			// Hack: don't do it for JComboBox because LAF is not allowing it
+			if (jComponent instanceof JComboBox) {
+				return;
+			}
+			jComponent.setOpaque(remaindedOpaque.get(jComponent) != null ? remaindedOpaque.get(jComponent) : false);
+			jComponent.setForeground(remaindedForeground.get(jComponent));
+			jComponent.setBackground(remaindedBackground.get(jComponent));
+		}
+
+		private void focusValue(T value) {
+			// System.out.println("focus " + value);
+			applyFocusProperties(value, widget.getComponent().getTextSecondarySelectionColor(),
+					widget.getComponent().getBackgroundSecondarySelectionColor());
+			showButtonsWhenRequired(value);
+			focusedValue = value;
+		}
+
+		private void unfocusValue(T value) {
+			// System.out.println("unfocus " + value);
+			resetFocusProperties(value);
+			hideButtons(value);
+			focusedValue = null;
+		}
+
+		private void showButtonsWhenRequired(T value) {
+			getRemoveButton(value).setIcon(FIBIconLibrary.REMOVE_ICON);
+			getRemoveButton(value).setRolloverIcon(FIBIconLibrary.REMOVE_FO_ICON);
+			getEditButton(value).setIcon(FIBIconLibrary.EDIT_ICON);
+			getEditButton(value).setRolloverIcon(FIBIconLibrary.EDIT_FO_ICON);
+			getRemoveButton(value).setVisible(hasRemoveAction);
+			getEditButton(value).setVisible(hasEditAction);
+		}
+
+		private void temporaryHideButtons(T value) {
+			getRemoveButton(value).setIcon(FIBIconLibrary.EMPTY_ICON);
+			getRemoveButton(value).setRolloverIcon(FIBIconLibrary.EMPTY_ICON);
+			getEditButton(value).setIcon(FIBIconLibrary.EMPTY_ICON);
+			getEditButton(value).setRolloverIcon(FIBIconLibrary.EMPTY_ICON);
+		}
+
+		private void hideButtons(T value) {
+			getRemoveButton(value).setVisible(false);
+			getEditButton(value).setVisible(false);
+		}
+
+		private List<T> getSelection() {
+			if (selectedValue == null) {
+				return Collections.emptyList();
+			}
+			else {
+				return Collections.singletonList(selectedValue);
+			}
+		}
+
+		private void selectValue(T value) {
+
+			if (editedValue != null && editedValue != value) {
+				stopEditValue();
+			}
+			if (focusedValue != null) {
+				unfocusValue(focusedValue);
+			}
+			selectedValue = value;
+			applyFocusProperties(value, widget.getComponent().getTextSelectionColor(), widget.getComponent().getBackgroundSelectionColor());
+			getRemoveButton(value).setIcon(FIBIconLibrary.REMOVE_ICON);
+			getRemoveButton(value).setRolloverIcon(FIBIconLibrary.REMOVE_FO_ICON);
+			getEditButton(value).setIcon(FIBIconLibrary.EDIT_ICON);
+			getEditButton(value).setRolloverIcon(FIBIconLibrary.EDIT_FO_ICON);
+			getRemoveButton(value).setVisible(hasRemoveAction);
+			getEditButton(value).setVisible(hasEditAction);
+
+		}
+
+		private void unselectValue(T value) {
+
+			List<T> oldSelection = getSelection();
+			selectedValue = null;
+			resetFocusProperties(value);
+
+			FIBController ctrl = widget.getController();
+			if (ctrl != null) {
+				ctrl.updateSelection(widget, oldSelection, getSelection());
+			}
+
+		}
+
+		private void editValue(T value) {
+			editedValue = value;
+			refreshTable();
+		}
+
+		private void stopEditValue() {
+			editedValue = null;
+			refreshTable();
+		}
+
+		private MouseAdapter makeMouseAdapter(T value) {
+			return new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					super.mouseEntered(e);
+					if (selectedValue != value) {
+						focusValue(value);
+					}
+					if (getSelectedValue() != null) {
+						// In this case, we focus a value while another value is selected
+						if (getSelectedValue() != value) {
+							// This is not the same, temporary hide icons
+							temporaryHideButtons(getSelectedValue());
+						}
+						else {
+							// When back to the value, show icons again
+							showButtonsWhenRequired(getSelectedValue());
+						}
+					}
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					super.mouseExited(e);
+					if (selectedValue != value) {
+						unfocusValue(value);
+					}
+				}
+
+				private FIBMouseEvent makeMouseEvent(MouseEvent e) {
+					return new SwingFIBMouseEvent(e);
+				}
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					super.mouseClicked(e);
+					if (widget.synchronizedWithSelection()) {
+						widget.getController().setSelectionLeader(widget);
+					}
+
+					if (e.getClickCount() == 1) {
+						if (e.isShiftDown() && selectedValue == value) {
+							clearSelection();
+						}
+						else {
+							select(value);
+						}
+						if (widget.getWidget().hasRightClickAction() && (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3)) {
+							// Detected right-click associated with action
+							widget.applyRightClickAction(makeMouseEvent(e));
+						}
+						else if (widget.getWidget().hasClickAction()) {
+							// Detected click associated with action
+							widget.applySingleClickAction(makeMouseEvent(e));
+						}
+					}
+					else if (e.getClickCount() == 2) {
+						if (widget.getWidget().hasDoubleClickAction()) {
+							// Detected double-click associated with action
+							widget.applyDoubleClickAction(makeMouseEvent(e));
+						}
+						else {
+							editValue(value);
+						}
+					}
+
+					repaint();
+				}
+			};
+
+		}
+
+		private void buildTableForValue(T value, int row, boolean isEdited) {
+			List<JComponent> components = new ArrayList<>();
+
+			MouseAdapter mouseAdapter = makeMouseAdapter(value);
+
+			ActionListener doneActionListener = new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// System.out.println("stopEditValue");
+					stopEditValue();
+				}
+			};
+
+			int col = 0;
+			for (FIBTableColumn column : widget.getComponent().getColumns()) {
+				boolean isFirst = (column == widget.getComponent().getColumns().get(0));
+				GridBagConstraints c = new GridBagConstraints();
+				c.fill = GridBagConstraints.BOTH;
+				c.weightx = (column.getResizable() ? column.getColumnWidth() : 0);
+				c.weighty = 1.0;
+				c.gridwidth = 1;
+				c.anchor = GridBagConstraints.WEST;
+				c.ipadx = 0;
+				c.ipady = 0;
+
+				c.insets = new Insets(0, isFirst ? 5 : 0, 0, 0);
+
+				JComponent cellRenderer;
+
+				if (isEdited) {
+					cellRenderer = widget.getTableModel().columnAt(col).makeCellEditor(value, doneActionListener);
+				}
+				else {
+					cellRenderer = widget.getTableModel().columnAt(col).makeCellRenderer(value);
+				}
+
+				cellRenderer.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight()));
+				tablePanel.add(cellRenderer, c);
+				components.add(cellRenderer);
+				cellRenderer.addMouseListener(mouseAdapter);
+
+				if (value == selectedValue /*&& !isEdited*/) {
+					applyFocusPropertiesOnComponent(cellRenderer, widget.getComponent().getTextSelectionColor(),
+							widget.getComponent().getBackgroundSelectionColor());
+				}
+				else {
+					resetFocusPropertiesOnComponent(cellRenderer);
+				}
+
+				col++;
+			}
+
+			JButton removeButton = getRemoveButton(value);
+			JButton editButton = getEditButton(value);
+
+			JPanel buttonsPanel = new JPanel(new GridBagLayout());
+			GridBagConstraints c4 = new GridBagConstraints();
+			buttonsPanel.add(removeButton, c4);
+			buttonsPanel.add(editButton, c4);
+			components.add(buttonsPanel);
+
+			if (value == selectedValue) {
+				applyFocusPropertiesOnComponent(buttonsPanel, widget.getComponent().getTextSelectionColor(),
+						widget.getComponent().getBackgroundSelectionColor());
+			}
+			else {
+				resetFocusPropertiesOnComponent(buttonsPanel);
+			}
+
+			GridBagConstraints c3 = new GridBagConstraints();
+			c3.fill = GridBagConstraints.BOTH;
+			c3.weightx = 1.0;
+			c3.weighty = 1.0;
+			c3.gridwidth = GridBagConstraints.REMAINDER;
+			c3.anchor = GridBagConstraints.CENTER;
+			c3.ipadx = 0;
+			c3.ipady = 0;
+
+			tablePanel.add(buttonsPanel, c3);
+
+			removeButton.setVisible(hasRemoveAction && value == selectedValue);
+			editButton.setVisible(hasEditAction && value == selectedValue);
+
+			componentsForValues.put(value, components);
+
+		}
+
+		private JButton getRemoveButton(T value) {
+
+			JButton returned = removeButtons.get(value);
+			if (returned == null) {
+				returned = makeRemoveButton(value);
+				removeButtons.put(value, returned);
+			}
+			return returned;
+		}
+
+		private JButton getEditButton(T value) {
+
+			JButton returned = editButtons.get(value);
+			if (returned == null) {
+				returned = makeEditButton(value);
+				editButtons.put(value, returned);
+			}
+			return returned;
+		}
+
+		private JButton makeRemoveButton(T value) {
+
+			JButton removeButton = new JButton();
+			removeButton.setBorder(BorderFactory.createEmptyBorder());
+			removeButton.setRolloverIcon(FIBIconLibrary.REMOVE_FO_ICON);
+			removeButton.setIcon(FIBIconLibrary.REMOVE_ICON);
+			removeButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (removeActionListener != null) {
+						removeActionListener.setSelectedObject(value);
+						removeActionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null,
+								EventQueue.getMostRecentEventTime(), e.getModifiers()));
+					}
+				}
+			});
+			removeButton.addMouseListener(makeMouseAdapter(value));
+			return removeButton;
+		}
+
+		private JButton makeEditButton(T value) {
+
+			JButton editButton = new JButton();
+			editButton.setBorder(BorderFactory.createEmptyBorder());
+			if (value == editedValue) {
+				editButton.setIcon(FIBIconLibrary.DONE_ICON);
+				editButton.setRolloverIcon(FIBIconLibrary.DONE_ICON);
+			}
+			else {
+				editButton.setRolloverIcon(FIBIconLibrary.EDIT_FO_ICON);
+				editButton.setIcon(FIBIconLibrary.EDIT_ICON);
+			}
+			editButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (editedValue == value) {
+						stopEditValue();
+					}
+					else {
+						editValue(value);
+					}
+				}
+			});
+			editButton.addMouseListener(makeMouseAdapter(value));
+			return editButton;
 		}
 
 		public int getRowHeight() {
-			return 0;
+			if (widget.getComponent().getRowHeight() != null) {
+				return widget.getComponent().getRowHeight();
+			}
+			return 20;
 		}
 
 		public void setRowHeight(int rowHeight) {
+			// Not applicable
+		}
 
+		public int getVisibleRowCount() {
+			return widget.getTableModel().getValues().size();
+		}
+
+		public void setVisibleRowCount(int rowCount) {
+			// Not applicable
 		}
 
 		public ListSelectionModel getSelectionModel() {
-			return null;
+			return selectionModel;
 		}
 
 		public boolean isEditing() {
-			return false;
+			return editedValue != null;
 		}
 
 		public int getEditingRow() {
-			return 0;
+			// Not applicable
+			return -1;
 		}
 
 		public int getEditingColumn() {
-			return 0;
+			// Not applicable
+			return -1;
 		}
 
 		public TableCellEditor getCellEditor() {
+			// Not applicable
 			return null;
 		}
 
@@ -581,110 +1031,34 @@ public class JFDTablePanel<T> extends JPanel {
 
 		public void removeEditor() {
 		}
+
+		public void select(T value) {
+			if (getFocusedValue() != null) {
+				unfocusValue(getFocusedValue());
+			}
+			if (getSelectedValue() != null) {
+				unselectValue(getSelectedValue());
+			}
+			selectValue(value);
+			widget.setSelected(value);
+			widget.setSelection(Collections.singletonList(value));
+			repaint();
+		}
+
+		public void clearSelection() {
+			if (getSelectedValue() != null) {
+				unselectValue(getSelectedValue());
+			}
+			widget.setSelected(null);
+			widget.setSelection(Collections.emptyList());
+			repaint();
+		}
+
 	}
 
-	private JFDTable makeJTable() {
-		JFDTable returned = new JFDTable(widget);
-
-		/*returned.setVisibleRowCount(0);
-		returned.setSortOrderCycle(SortOrder.ASCENDING, SortOrder.DESCENDING, SortOrder.UNSORTED);
-		returned.setAutoCreateRowSorter(true);
-		returned.setFillsViewportHeight(true);
-		returned.setShowHorizontalLines(false);
-		returned.setShowVerticalLines(false);
-		returned.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-		returned.addFocusListener(widget);
-		
-		for (int i = 0; i < widget.getTableModel().getColumnCount(); i++) {
-			TableColumn col = returned.getColumnModel().getColumn(i);
-			// FlexoLocalization.localizedForKey(getController().getLocalizer(),getTableModel().columnAt(i).getTitle());
-			col.setWidth(widget.getTableModel().getDefaultColumnSize(i));
-			col.setPreferredWidth(widget.getTableModel().getDefaultColumnSize(i));
-			if (widget.getTableModel().getColumnResizable(i)) {
-				col.setResizable(true);
-			}
-			else {
-				// L'idee, c'est d'etre vraiment sur ;-) !
-				col.setWidth(widget.getTableModel().getDefaultColumnSize(i));
-				col.setMinWidth(widget.getTableModel().getDefaultColumnSize(i));
-				col.setMaxWidth(widget.getTableModel().getDefaultColumnSize(i));
-				col.setResizable(false);
-			}
-			if (widget.getTableModel().columnAt(i).requireCellRenderer()) {
-				col.setCellRenderer(widget.getTableModel().columnAt(i).getCellRenderer());
-			}
-			if (widget.getTableModel().columnAt(i).requireCellEditor()) {
-				col.setCellEditor(widget.getTableModel().columnAt(i).getCellEditor());
-			}
-		}
-		if (widget.getTable().getRowHeight() != null) {
-			returned.setRowHeight(widget.getTable().getRowHeight());
-		}
-		if (widget.getTable().getVisibleRowCount() != null) {
-			returned.setVisibleRowCount(widget.getTable().getVisibleRowCount());
-			if (returned.getRowHeight() == 0) {
-				returned.setRowHeight(18);
-			}
-		}
-		
-		if (widget.getTable().getSelectionMode() != null) {
-			returned.setSelectionMode(widget.getTable().getSelectionMode().getMode());
-		}
-		
-		// jTable.getTableHeader().setReorderingAllowed(false);
-		
-		returned.getSelectionModel().addListSelectionListener(widget);
-		
-		// _listSelectionModel = jTable.getSelectionModel();
-		// _listSelectionModel.addListSelectionListener(this);
-		
-		if (widget.getWidget().getBoundToSelectionManager()) {
-			returned.registerKeyboardAction(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					widget.getController().performCopyAction(widget.getSelected(), widget.getSelection());
-				}
-			}, KeyStroke.getKeyStroke(KeyEvent.VK_C, JFIBTableWidget.META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-			returned.registerKeyboardAction(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					widget.getController().performCutAction(widget.getSelected(), widget.getSelection());
-				}
-			}, KeyStroke.getKeyStroke(KeyEvent.VK_X, JFIBTableWidget.META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-			returned.registerKeyboardAction(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					widget.getController().performPasteAction(widget.getSelected(), widget.getSelection());
-				}
-			}, KeyStroke.getKeyStroke(KeyEvent.VK_V, JFIBTableWidget.META_MASK, false), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-		}
-		
-		if (widget.getTable().getCreateNewRowOnClick()) {
-			returned.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					if (jTable.getCellEditor() != null) {
-						jTable.getCellEditor().stopCellEditing();
-						e.consume();
-					}
-					if (widget.getTable().getCreateNewRowOnClick()) {
-						if (!e.isConsumed() && e.getClickCount() == 2) {
-							// System.out.println("OK, on essaie de gerer un new par double click");
-							Enumeration<FIBTableActionListener<T>> en = widget.getFooter().getAddActionListeners();
-							while (en.hasMoreElements()) {
-								FIBTableActionListener<T> action = en.nextElement();
-								if (action.isAddAction()) {
-									action.actionPerformed(new ActionEvent(jTable, ActionEvent.ACTION_PERFORMED, null,
-											EventQueue.getMostRecentEventTime(), e.getModifiers()));
-									break;
-								}
-							}
-						}
-					}
-				}
-			});
-		}*/
-
+	private JFDTable<T> makeJTable() {
+		JFDTable<T> returned = new JFDTable<T>(widget);
+		// returned.getSelectionModel().addListSelectionListener(widget);
 		return returned;
 
 	}
@@ -698,7 +1072,8 @@ public class JFDTablePanel<T> extends JPanel {
 		}
 	}
 
-	public JFDTable getJTable() {
+	public JFDTable<T> getJTable() {
 		return jTable;
 	}
+
 }

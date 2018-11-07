@@ -39,12 +39,12 @@
 
 package org.openflexo.gina.swing.view.widget;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -215,6 +215,18 @@ public class JFDFIBTableWidget<T> extends FIBTableWidgetImpl<JFDTablePanel<T>, T
 	}
 
 	@Override
+	public Collection<T> updateData() {
+
+		List<?> valuesBeforeUpdating = getTableModel().getValues();
+		Collection<T> newValues = super.updateData();
+		if (notEquals(newValues, valuesBeforeUpdating)) {
+			getTechnologyComponent().updateTable();
+			getRenderingAdapter().revalidateAndRepaint(getTechnologyComponent());
+		}
+		return newValues;
+	}
+
+	@Override
 	public synchronized void delete() {
 		if (getTableModel() != null) {
 			getTableModel().removeTableModelListener(this);
@@ -247,25 +259,27 @@ public class JFDFIBTableWidget<T> extends FIBTableWidgetImpl<JFDTablePanel<T>, T
 		getTechnologyComponent().updateTable();
 	}
 
-	@Override
+	/*@Override
 	public JFIBTableWidgetFooter<T> getFooter() {
 		return (JFIBTableWidgetFooter<T>) super.getFooter();
-	}
+	}*/
 
 	@Override
 	public JFIBTableWidgetFooter<T> makeFooter() {
-		JFIBTableWidgetFooter<T> returned = new JFIBTableWidgetFooter<>(this);
+		/*JFIBTableWidgetFooter<T> returned = new JFIBTableWidgetFooter<>(this);
 		getTechnologyComponent().add(returned.getFooterComponent(), BorderLayout.SOUTH);
-		return returned;
+		return returned;*/
+		return null;
 	}
 
 	@Override
 	public FIBTableWidgetFooter<?, T> removeFooter() {
-		FIBTableWidgetFooter<?, T> returned = getFooter();
+		/*FIBTableWidgetFooter<?, T> returned = getFooter();
 		if (getTechnologyComponent() != null && returned != null) {
 			getTechnologyComponent().remove((JComponent) returned.getFooterComponent());
 		}
-		return returned;
+		return returned;*/
+		return null;
 	}
 
 	@Override
@@ -355,6 +369,10 @@ public class JFDFIBTableWidget<T> extends FIBTableWidgetImpl<JFDTablePanel<T>, T
 
 	@Override
 	public void performSelect(T object) {
+
+		// TODO
+		System.out.println("************ performSelect() " + object);
+
 		if (object == getSelected()) {
 			LOGGER.fine("FIBTableWidget: ignore performSelect " + object);
 			return;
@@ -369,21 +387,28 @@ public class JFDFIBTableWidget<T> extends FIBTableWidgetImpl<JFDTablePanel<T>, T
 				getListSelectionModel().setSelectionInterval(index, index);
 				// if (!notify)
 				// _table.getSelectionModel().addListSelectionListener(getTableModel());
+				getTechnologyComponent().getJTable().select(object);
 			}
 		}
 		else {
 			clearSelection();
+			getTechnologyComponent().getJTable().clearSelection();
 		}
 	}
 
 	@Override
 	public void objectAddedToSelection(T o) {
+
+		// TODO
+		System.out.println("************ objectAddedToSelection() " + o);
+
 		int index = getTableModel().getValues().indexOf(o);
 		if (index > -1) {
 			ignoreNotifications = true;
 			try {
 				index = getTechnologyComponent().getJTable().convertRowIndexToView(index);
 				getListSelectionModel().addSelectionInterval(index, index);
+				getTechnologyComponent().getJTable().select(o);
 			} catch (IndexOutOfBoundsException e) {
 				LOGGER.warning("Unexpected " + e);
 			}
@@ -393,6 +418,10 @@ public class JFDFIBTableWidget<T> extends FIBTableWidgetImpl<JFDTablePanel<T>, T
 
 	@Override
 	public void objectRemovedFromSelection(T o) {
+
+		// TODO
+		System.out.println("************ objectRemovedFromSelection() " + o);
+
 		int index = getTableModel().getValues().indexOf(o);
 		if (index > -1) {
 			ignoreNotifications = true;
@@ -402,28 +431,42 @@ public class JFDFIBTableWidget<T> extends FIBTableWidgetImpl<JFDTablePanel<T>, T
 				LOGGER.warning("Unexpected " + e);
 			}
 			getListSelectionModel().removeSelectionInterval(index, index);
+			getTechnologyComponent().getJTable().clearSelection();
 			ignoreNotifications = false;
 		}
 	}
 
 	@Override
 	public void selectionResetted() {
+		// TODO
+		System.out.println("************ selectionResetted() ");
+
 		ignoreNotifications = true;
 		getListSelectionModel().clearSelection();
+		getTechnologyComponent().getJTable().clearSelection();
 		ignoreNotifications = false;
 	}
 
 	@Override
 	public void addToSelection(T o) {
+
+		// TODO
+		System.out.println("************ addToSelection() " + o);
+
 		int index = getTableModel().getValues().indexOf(o);
 		if (index > -1) {
 			index = getTechnologyComponent().getJTable().convertRowIndexToView(index);
 			getListSelectionModel().addSelectionInterval(index, index);
+
 		}
 	}
 
 	@Override
 	public void removeFromSelection(T o) {
+
+		// TODO
+		System.out.println("************ removeFromSelection() " + o);
+
 		int index = getTableModel().getValues().indexOf(o);
 		if (index > -1) {
 			index = getTechnologyComponent().getJTable().convertRowIndexToView(index);
@@ -433,6 +476,10 @@ public class JFDFIBTableWidget<T> extends FIBTableWidgetImpl<JFDTablePanel<T>, T
 
 	@Override
 	public void resetSelection() {
+
+		// TODO
+		System.out.println("************ resetSelection() ");
+
 		getListSelectionModel().clearSelection();
 	}
 

@@ -40,6 +40,8 @@
 package org.openflexo.gina.view.widget.table.impl;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
@@ -306,4 +308,69 @@ public class DropDownColumn<T, V> extends AbstractColumn<T, V> implements Editab
 	public String toString() {
 		return "DropDownColumn " + "@" + Integer.toHexString(hashCode());
 	}
+
+	/**
+	 * Make cell renderer for supplied value<br>
+	 * Note that this renderer is not shared
+	 * 
+	 * @return
+	 */
+	// TODO: detach from SWING
+	@Override
+	public JComboBox<V> makeCellEditor(T value, ActionListener actionListener) {
+
+		V dataToRepresent = getValueFor(value);
+		List<V> values = getAvailableValues(value);
+
+		DefaultComboBoxModel<V> comboBoxModel = new DefaultComboBoxModel<V>(new Vector<V>(values));
+		comboBoxModel.setSelectedItem(dataToRepresent);
+
+		JComboBox<V> returned = new JComboBox<>(comboBoxModel);
+
+		returned.setRenderer(new DefaultListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(JList<?> list, Object valueToRepresent, int index, boolean isSelected,
+					boolean cellHasFocus) {
+
+				Component returned = super.getListCellRendererComponent(list, valueToRepresent, index, isSelected, cellHasFocus);
+
+				if (returned instanceof JLabel) {
+					((JLabel) returned).setText(renderValue((T) valueToRepresent));
+					((JLabel) returned).setFont(getFont());
+					if (getColumnModel().getShowIcon()) {
+						if (getColumnModel().getIcon() != null && getColumnModel().getIcon().isValid()) {
+							((JLabel) returned).setIcon(getIconRepresentation(valueToRepresent));
+						}
+					}
+				}
+				return returned;
+			}
+		});
+
+		/*SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				System.out.println("On selectionne bien " + dataToRepresent);
+				System.out.println("present dans la liste: " + values.contains(dataToRepresent));
+				returned.setSelectedItem(dataToRepresent);
+			}
+		});*/
+
+		returned.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				disableValueChangeNotification();
+				setValueFor(value, (V) returned.getSelectedItem());
+				enableValueChangeNotification();
+			}
+		});
+
+		if (actionListener != null) {
+			returned.addActionListener(actionListener);
+		}
+
+		return returned;
+	}
+
 }

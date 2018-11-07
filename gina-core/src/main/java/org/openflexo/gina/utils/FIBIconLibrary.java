@@ -97,8 +97,13 @@ public class FIBIconLibrary {
 
 	// Flat-design icons
 	public static final ImageIcon ADD_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/GUI/Add.png"));
-	public static final ImageIcon DELETE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/GUI/Delete.png"));
+	public static final ImageIcon ADD_FO_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/GUI/Add-flyover.png"));
+	public static final ImageIcon REMOVE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/GUI/Remove.png"));
+	public static final ImageIcon REMOVE_FO_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/GUI/Remove-flyover.png"));
 	public static final ImageIcon EDIT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/GUI/Edit.png"));
+	public static final ImageIcon EDIT_FO_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/GUI/Edit-flyover.png"));
+	public static final ImageIcon DONE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/GUI/Done.png"));
+	public static final ImageIcon EMPTY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/GUI/Empty.png"));
 
 	// Icons used in ClassSelector
 	public static final ImageIcon JAVA_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ClassSelector/Java.png"));

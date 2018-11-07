@@ -144,5 +144,10 @@ public interface FIBButtonColumn extends FIBTableColumn {
 			return ColumnType.Button;
 		}
 
+		@Override
+		public boolean isEditable() {
+			return false;
+		}
+
 	}
 }

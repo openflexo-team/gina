@@ -39,7 +39,12 @@
 
 package org.openflexo.gina.view.widget.table.impl;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.logging.Logger;
+
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBCheckBoxColumn;
@@ -80,34 +85,58 @@ public class CheckBoxColumn<T> extends AbstractColumn<T, Boolean> implements Edi
 		return true;
 	}
 
-	/* @Override
-	 public boolean requireCellRenderer() {
-	 	return true;
-	 }
+	/**
+	 * Make cell renderer for supplied value<br>
+	 * Note that this renderer is not shared
+	 * 
+	 * @return
+	 */
+	// TODO: detach from SWING
+	@Override
+	public JComponent makeCellRenderer(T value) {
+		JCheckBox returned = new JCheckBox();
 
-	 @Override
-	 public TableCellRenderer getCellRenderer() {
-	 	return getDefaultTableCellRenderer();
-	 }
-	 
-	 @Override
-	 public boolean requireCellEditor() {
-	 	return true;
-	 }
-	 
-	 @Override
-	 public TableCellEditor getCellEditor() {
-	 	if(editor==null) {
-	 		editor = new DefaultCellEditor(new JCheckBox()) {
-	 			@Override
-	 			public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-	 				final JCheckBox checkBox = (JCheckBox)super.getTableCellEditorComponent(table, value, isSelected, row, column);
-	 				return checkBox;
-	 			}   			
-	  		};
-	 	}
-	 	return editor;
-	 }
-	 
-	*/
+		Boolean dataToRepresent = getValueFor(value);
+		if (dataToRepresent != null) {
+			returned.setSelected(dataToRepresent);
+		}
+		returned.setEnabled(false);
+
+		return returned;
+	}
+
+	/**
+	 * Make cell renderer for supplied value<br>
+	 * Note that this renderer is not shared
+	 * 
+	 * @return
+	 */
+	// TODO: detach from SWING
+	@Override
+	public JCheckBox makeCellEditor(T value, ActionListener actionListener) {
+
+		JCheckBox returned = new JCheckBox();
+
+		Boolean dataToRepresent = getValueFor(value);
+		if (dataToRepresent != null) {
+			returned.setSelected(dataToRepresent);
+		}
+
+		returned.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// disableValueChangeNotification();
+				setValueFor(value, returned.isSelected());
+				// enableValueChangeNotification();
+			}
+		});
+
+		if (actionListener != null) {
+			returned.addActionListener(actionListener);
+		}
+
+		return returned;
+	}
+
 }
