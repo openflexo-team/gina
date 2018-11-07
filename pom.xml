@@ -8,7 +8,7 @@
     <!-- ************
    	Component identity and specific information
       -->
-    <version>2.1.2-SNAPSHOT</version>
+    <version>2.2-SNAPSHOT</version>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>gina</artifactId>
     <name>Gina</name>
@@ -18,8 +18,8 @@
       -->
     <properties>
     	<junit.version>4.11</junit.version>
-        <connie.version>1.4.2-SNAPSHOT</connie.version>
-        <pamela.version>1.4.2-SNAPSHOT</pamela.version>
+        <connie.version>1.5-SNAPSHOT</connie.version>
+        <pamela.version>1.5-SNAPSHOT</pamela.version>
         <swingx.version>1.6.5-1</swingx.version>
         <gina.logo>https://media.openflexo.org/images/gina_logo64x64.png</gina.logo>
 	    <sitedeploy.dir>/home/www/sites/gina</sitedeploy.dir>
