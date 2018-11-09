@@ -525,7 +525,8 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 			// If this is not the same component, trigger the selection modification
 			// See GINA-32
 			if (widgetView instanceof FIBSelectable && ((FIBSelectable) widgetView).synchronizedWithSelection()) {
-				if (widgetView.getController().getSelectionLeader() != widgetView) {
+				if (widgetView.getController().getSelectionLeader() != widgetView
+						&& widgetView.getController().getSelectionLeader() != null) {
 					List oldSelection = widgetView.getController().getSelectionLeader().getSelection();
 					widgetView.getController().setSelectionLeader((FIBSelectable) widgetView);
 					widgetView.getController().updateSelection((FIBSelectable) widgetView, oldSelection,
