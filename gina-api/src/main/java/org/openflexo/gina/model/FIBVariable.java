@@ -139,15 +139,15 @@ public interface FIBVariable<T> extends FIBModelObject {
 
 		@Override
 		public Type getType() {
+			// Type returned = (Type) performSuperGetter(TYPE_KEY);
+			if (variableType != null) {
+				return variableType;
+			}
 			// System.out.println("On me demande mon type " + getName() + " value=" + getValue());
 			if (variableType == null && !isCreatedByCloning() && getOwner() != null && getOwner().getRootComponent() != null
 					&& !getOwner().getRootComponent().isDeserializing() && !getOwner().getRootComponent().isCreatedByCloning()
 					&& getValue() != null && getValue().isSet() && getValue().isValid()) {
 				analyzedVariableType = getValue().getAnalyzedType();
-			}
-			// Type returned = (Type) performSuperGetter(TYPE_KEY);
-			if (variableType != null) {
-				return variableType;
 			}
 			if (analyzedVariableType != null) {
 				return analyzedVariableType;
@@ -181,7 +181,7 @@ public interface FIBVariable<T> extends FIBModelObject {
 						/*getPropertyChangeSupport().firePropertyChange(TYPE_KEY, null, getType());
 						getPropertyChangeSupport().firePropertyChange("typeClass", null, getTypeClass());*/
 						if (isSet() && isValid()) {
-							setType(getAnalyzedType());
+							analyzedVariableType = getAnalyzedType();
 						}
 					}
 				};
