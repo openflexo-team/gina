@@ -36,7 +36,7 @@
 			font="SansSerif,0,10" name="Label5" />
 	</Panel>
 	<Table id="88" visibleRowCount="5" backgroundNonSelectionColor="255,255,255"
-		iteratorClassName="org.openflexo.model.validation.ValidationIssue"
+		iteratorClassName="org.openflexo.pamela.validation.ValidationIssue"
 		backgroundSecondarySelectionColor="178,215,255" showFooter="false"
 		lookAndFeel="Classic" selectionMode="MultipleIntervalSelection"
 		rowHeight="18" manageDynamicModel="true"

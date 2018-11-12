@@ -94,7 +94,7 @@
 			name="Label7" />
 		<Table id="23" visibleRowCount="3" boundToSelectionManager="true"
 			backgroundNonSelectionColor="255,255,255"
-			iteratorClassName="org.openflexo.model.validation.FixProposal"
+			iteratorClassName="org.openflexo.pamela.validation.FixProposal"
 			backgroundSecondarySelectionColor="178,215,255" showFooter="false"
 			autoSelectFirstRow="true" lookAndFeel="Classic" selectionMode="MultipleIntervalSelection"
 			selected="data.fixProposal" rowHeight="18" localize="true"
