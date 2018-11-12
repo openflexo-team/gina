@@ -48,8 +48,8 @@ import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.gina.swing.editor.widget.FIBEditorBrowser;
 import org.openflexo.gina.testutils.FIBComponentGraphicalContextDelegate;
-import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.validation.ValidationReport;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.validation.ValidationReport;
 
 /**
  * Test the structural and behavioural features of FIBEditorBrowser

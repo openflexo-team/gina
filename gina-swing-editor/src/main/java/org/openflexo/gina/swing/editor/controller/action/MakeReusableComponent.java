@@ -74,7 +74,7 @@ import org.openflexo.gina.swing.utils.JFIBDialog;
 import org.openflexo.gina.swing.utils.JFIBPreferences;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.logging.FlexoLogger;
-import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.toolbox.StringUtils;
 

@@ -65,7 +65,7 @@ import org.openflexo.gina.model.widget.FIBTextField;
 import org.openflexo.gina.model.widget.FIBTextFieldColumn;
 import org.openflexo.kvc.KeyValueLibrary;
 import org.openflexo.logging.FlexoLogger;
-import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
 
 /**
  * Provides a JUnit 4 generic environment for FIB testing purposes

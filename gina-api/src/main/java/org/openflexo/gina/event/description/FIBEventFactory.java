@@ -5,9 +5,9 @@ import javax.swing.*;
 import org.openflexo.gina.event.GinaEvent;
 import org.openflexo.gina.event.description.item.DescriptionIntegerItem;
 import org.openflexo.gina.event.description.item.DescriptionItem;
-import org.openflexo.model.ModelContext;
-import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.pamela.ModelContext;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.factory.ModelFactory;
 
 public class FIBEventFactory {
 	static private FIBEventFactory instance;

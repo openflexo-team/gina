@@ -13,7 +13,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.openflexo.gina.event.GinaEvent;
 import org.openflexo.gina.event.GinaEvent.KIND;
 import org.openflexo.gina.event.description.EventDescription;
-import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.pamela.factory.ModelFactory;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 /**

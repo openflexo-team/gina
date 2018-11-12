@@ -58,10 +58,10 @@ import org.openflexo.gina.FIBFolder.FIBFolderImpl;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelFactory;
 import org.openflexo.gina.model.bindings.FIBBindingFactory;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.exceptions.InvalidDataException;
-import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.exceptions.InvalidDataException;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 

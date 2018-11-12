@@ -43,8 +43,8 @@ import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.localization.LocalizedDelegateImpl;
-import org.openflexo.model.validation.Validable;
-import org.openflexo.model.validation.ValidationModel;
+import org.openflexo.pamela.validation.Validable;
+import org.openflexo.pamela.validation.ValidationModel;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 
@@ -67,7 +67,7 @@ public class FIBValidationModel extends ValidationModel {
 	/**
 	 * Overrides shouldNotifyValidation
 	 * 
-	 * @see org.openflexo.model.validation.ValidationModel#shouldNotifyValidation(org.openflexo.model.validation.Validable)
+	 * @see org.openflexo.pamela.validation.ValidationModel#shouldNotifyValidation(org.openflexo.pamela.validation.Validable)
 	 */
 	@Override
 	protected boolean shouldNotifyValidation(Validable next) {
@@ -88,7 +88,7 @@ public class FIBValidationModel extends ValidationModel {
 	/**
 	 * Overrides fixAutomaticallyIfOneFixProposal
 	 * 
-	 * @see org.openflexo.model.validation.ValidationModel#fixAutomaticallyIfOneFixProposal()
+	 * @see org.openflexo.pamela.validation.ValidationModel#fixAutomaticallyIfOneFixProposal()
 	 */
 	@Override
 	public boolean fixAutomaticallyIfOneFixProposal() {

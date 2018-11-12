@@ -72,7 +72,7 @@ import org.openflexo.gina.model.widget.FIBTextFieldColumn;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.gina.view.GinaViewFactory;
-import org.openflexo.model.ModelEntity;
+import org.openflexo.pamela.ModelEntity;
 import org.openflexo.toolbox.StringUtils;
 
 /**

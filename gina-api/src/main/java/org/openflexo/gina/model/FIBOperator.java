@@ -40,8 +40,8 @@
 package org.openflexo.gina.model;
 
 import org.openflexo.gina.model.container.FIBPanel.Layout;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
 
 /**
  * Represent a control operator in GINA model

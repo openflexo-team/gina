@@ -43,10 +43,10 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.swing.utils.FIBJPanel;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.localization.LocalizedDelegate;
-import org.openflexo.model.validation.Validable;
-import org.openflexo.model.validation.ValidationIssue;
-import org.openflexo.model.validation.ValidationModel;
-import org.openflexo.model.validation.ValidationReport;
+import org.openflexo.pamela.validation.Validable;
+import org.openflexo.pamela.validation.ValidationIssue;
+import org.openflexo.pamela.validation.ValidationModel;
+import org.openflexo.pamela.validation.ValidationReport;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 

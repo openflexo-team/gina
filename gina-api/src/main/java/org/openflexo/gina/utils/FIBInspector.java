@@ -47,9 +47,9 @@ import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBTabPanel;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.XMLElement;
 
 /**
  * Extends {@link FIBPanel} by providing composition facilities using a multiple inheritance scheme based on inspected object type, for

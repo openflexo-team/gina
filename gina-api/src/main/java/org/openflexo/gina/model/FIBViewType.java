@@ -53,7 +53,7 @@ import org.openflexo.connie.type.CustomType;
 import org.openflexo.connie.type.CustomTypeFactory;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.logging.FlexoLogger;
-import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.pamela.annotations.PropertyIdentifier;
 import org.openflexo.toolbox.PropertyChangedSupportDefaultImplementation;
 
 /**

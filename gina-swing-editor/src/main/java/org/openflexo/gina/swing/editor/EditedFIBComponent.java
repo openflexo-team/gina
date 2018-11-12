@@ -7,7 +7,7 @@ import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelFactory;
 import org.openflexo.logging.FlexoLogger;
-import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;
 import org.openflexo.toolbox.PropertyChangedSupportDefaultImplementation;

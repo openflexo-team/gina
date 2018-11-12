@@ -45,10 +45,10 @@ import java.util.List;
 import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
 
-import org.openflexo.model.StringConverterLibrary;
-import org.openflexo.model.StringConverterLibrary.Converter;
-import org.openflexo.model.converter.AWTRectangleConverter;
-import org.openflexo.model.exceptions.InvalidDataException;
+import org.openflexo.pamela.StringConverterLibrary;
+import org.openflexo.pamela.StringConverterLibrary.Converter;
+import org.openflexo.pamela.converter.AWTRectangleConverter;
+import org.openflexo.pamela.exceptions.InvalidDataException;
 import org.openflexo.rm.ResourceLocator;
 
 public class JFIBPreferences {

@@ -48,7 +48,7 @@ import javax.swing.event.ChangeListener;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController.FIBEditorPanel;
 import org.openflexo.gina.swing.editor.validation.ValidationPanel;
-import org.openflexo.model.validation.ValidationIssue;
+import org.openflexo.pamela.validation.ValidationIssue;
 
 /**
  * A {@link JTabbedPane} that represents all {@link EditedFIBComponent} of an editor<br>

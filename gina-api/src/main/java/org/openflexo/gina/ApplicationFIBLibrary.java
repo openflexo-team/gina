@@ -46,9 +46,9 @@ import org.openflexo.connie.type.CustomType;
 import org.openflexo.connie.type.CustomTypeFactory;
 import org.openflexo.connie.type.CustomTypeManager;
 import org.openflexo.gina.model.FIBModelFactory;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
 
 /**
  * {@link ApplicationFIBLibrary} is the FIBLibrary that is used in the application.<br>

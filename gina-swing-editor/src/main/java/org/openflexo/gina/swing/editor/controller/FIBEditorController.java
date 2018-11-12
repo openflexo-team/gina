@@ -80,7 +80,7 @@ import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.localization.Language;
 import org.openflexo.logging.FlexoLogger;
-import org.openflexo.model.undo.UndoManager;
+import org.openflexo.pamela.undo.UndoManager;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 /**

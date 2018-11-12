@@ -10,9 +10,9 @@ import org.openflexo.gina.event.description.ApplicationEventDescription;
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.event.description.GinaTaskEventDescription;
 import org.openflexo.gina.event.description.NotifyMethodEventDescription;
-import org.openflexo.model.ModelContext;
-import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.pamela.ModelContext;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.factory.ModelFactory;
 
 /**
  * This factory creates NotifiyMethodEvent, TaskEvent, EventDescription and GinaEvents from an EventDescription

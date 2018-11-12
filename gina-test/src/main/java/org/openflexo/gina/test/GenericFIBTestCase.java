@@ -47,8 +47,8 @@ import java.util.logging.Logger;
 import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
 import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.model.FIBComponent;
-import org.openflexo.model.validation.ValidationError;
-import org.openflexo.model.validation.ValidationReport;
+import org.openflexo.pamela.validation.ValidationError;
+import org.openflexo.pamela.validation.ValidationReport;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 

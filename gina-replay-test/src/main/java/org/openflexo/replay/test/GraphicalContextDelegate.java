@@ -54,7 +54,7 @@ import javax.swing.event.ChangeListener;
 
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBModelFactory;
-import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
 
 public class GraphicalContextDelegate implements ChangeListener {
 

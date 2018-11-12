@@ -52,30 +52,30 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.localization.LocalizedDelegateImpl;
-import org.openflexo.model.annotations.Adder;
-import org.openflexo.model.annotations.CloningStrategy;
-import org.openflexo.model.annotations.CloningStrategy.StrategyType;
-import org.openflexo.model.annotations.Getter;
-import org.openflexo.model.annotations.Getter.Cardinality;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.PropertyIdentifier;
-import org.openflexo.model.annotations.Remover;
-import org.openflexo.model.annotations.Setter;
-import org.openflexo.model.annotations.XMLAttribute;
-import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.model.factory.AccessibleProxyObject;
-import org.openflexo.model.factory.CloneableProxyObject;
-import org.openflexo.model.factory.DeletableProxyObject;
-import org.openflexo.model.factory.EmbeddingType;
-import org.openflexo.model.validation.FixProposal;
-import org.openflexo.model.validation.ProblemIssue;
-import org.openflexo.model.validation.Validable;
-import org.openflexo.model.validation.ValidationError;
-import org.openflexo.model.validation.ValidationIssue;
-import org.openflexo.model.validation.ValidationReport;
-import org.openflexo.model.validation.ValidationRule;
-import org.openflexo.model.validation.ValidationWarning;
+import org.openflexo.pamela.annotations.Adder;
+import org.openflexo.pamela.annotations.CloningStrategy;
+import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.PropertyIdentifier;
+import org.openflexo.pamela.annotations.Remover;
+import org.openflexo.pamela.annotations.Setter;
+import org.openflexo.pamela.annotations.XMLAttribute;
+import org.openflexo.pamela.annotations.XMLElement;
+import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
+import org.openflexo.pamela.annotations.Getter.Cardinality;
+import org.openflexo.pamela.factory.AccessibleProxyObject;
+import org.openflexo.pamela.factory.CloneableProxyObject;
+import org.openflexo.pamela.factory.DeletableProxyObject;
+import org.openflexo.pamela.factory.EmbeddingType;
+import org.openflexo.pamela.validation.FixProposal;
+import org.openflexo.pamela.validation.ProblemIssue;
+import org.openflexo.pamela.validation.Validable;
+import org.openflexo.pamela.validation.ValidationError;
+import org.openflexo.pamela.validation.ValidationIssue;
+import org.openflexo.pamela.validation.ValidationReport;
+import org.openflexo.pamela.validation.ValidationRule;
+import org.openflexo.pamela.validation.ValidationWarning;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.StringUtils;
 
@@ -451,7 +451,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 		@Override
 		public String getPresentationName() {
 			if (getComponent() != null) {
-				org.openflexo.model.ModelEntity<?> e = getComponent().getModelFactory().getModelEntityForInstance(this);
+				org.openflexo.pamela.ModelEntity<?> e = getComponent().getModelFactory().getModelEntityForInstance(this);
 				if (getName() != null) {
 					return getName() + " (" + e.getImplementedInterface().getSimpleName() + ")";
 				}
