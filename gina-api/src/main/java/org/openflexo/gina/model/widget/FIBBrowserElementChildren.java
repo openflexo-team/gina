@@ -226,10 +226,20 @@ public interface FIBBrowserElementChildren extends FIBModelObject {
 		public void setOwner(FIBBrowserElement browserElement) {
 			performSuperSetter(OWNER_KEY, browserElement);
 			if (data != null) {
-				data.setOwner(browserElement.getIteratorBindable());
+				if (browserElement != null) {
+					data.setOwner(browserElement.getIteratorBindable());
+				}
+				else {
+					data.setOwner(null);
+				}
 			}
 			if (visible != null) {
-				visible.setOwner(browserElement.getIteratorBindable());
+				if (browserElement != null) {
+					visible.setOwner(browserElement.getIteratorBindable());
+				}
+				else {
+					visible.setOwner(null);
+				}
 			}
 		}
 
