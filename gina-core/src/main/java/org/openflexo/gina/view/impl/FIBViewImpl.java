@@ -54,6 +54,7 @@ import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.binding.BindingValueChangeListener;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBVariable;
@@ -242,7 +243,13 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			dataBindingValueChangeListener = new BindingValueChangeListener<T>(variable.getValue(), getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
-					setVariableValue(variable, newValue);
+					if (TypeUtils.isOfType(newValue, variable.getType())) {
+						setVariableValue(variable, newValue);
+					}
+					else {
+						// When type does not match expected, set variable value to null
+						setVariableValue(variable, null);
+					}
 				}
 			};
 			variableListeners.put(variable.getName(), dataBindingValueChangeListener);
@@ -251,11 +258,10 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			try {
 				T newValue = variable.getValue().getBindingValue(getBindingEvaluationContext());
 				setVariableValue(variable, newValue);
-
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				// e.printStackTrace();
+				e.printStackTrace();
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
 			}
