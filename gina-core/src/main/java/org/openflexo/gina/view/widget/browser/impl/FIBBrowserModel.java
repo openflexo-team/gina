@@ -1218,25 +1218,24 @@ public class FIBBrowserModel extends DefaultTreeModel {
 
 	}
 
+	@SuppressWarnings("serial")
 	public static class TransferedBrowserCell implements Serializable {
-		// private final Point offset;
 
-		// private final ShapeNode<?> transfered;
+		// private BrowserCell browserCell;
 
-		public TransferedBrowserCell(/*ShapeNode<?> element, Point dragOffset*/) {
+		public TransferedBrowserCell(/*BrowserCell browserCell*/) {
 			super();
-			// transfered = element;
-			// offset = dragOffset;
+			// this.browserCell = browserCell;
 		}
 
-		/*public Point getOffset() {
-			return offset;
+		/*public BrowserCell getBrowserCell() {
+			return browserCell;
 		}
 		
-		public ShapeNode<?> getTransferedElement() {
-			return transfered;
+		@Override
+		public String toString() {
+			return "TransferedBrowserCell for " + browserCell + " object=" + browserCell.getRepresentedObject();
 		}*/
-
 	}
 
 }
