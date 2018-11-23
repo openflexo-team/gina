@@ -243,13 +243,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			dataBindingValueChangeListener = new BindingValueChangeListener<T>(variable.getValue(), getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
-					if (TypeUtils.isOfType(newValue, variable.getType())) {
-						setVariableValue(variable, newValue);
-					}
-					else {
-						// When type does not match expected, set variable value to null
-						setVariableValue(variable, null);
-					}
+					updateVariableValueWhenConsistent(variable, newValue);
 				}
 			};
 			variableListeners.put(variable.getName(), dataBindingValueChangeListener);
@@ -257,7 +251,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			// We force a first computing and notification of the value of variable
 			try {
 				T newValue = variable.getValue().getBindingValue(getBindingEvaluationContext());
-				setVariableValue(variable, newValue);
+				updateVariableValueWhenConsistent(variable, newValue);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
@@ -326,16 +320,29 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 		// System.out.println("setVariableValue " + variable.getName() + " de " + oldValue + " a " + value);
 
 		if (notEquals(oldValue, value)) {
-			variables.put(variable.getName(), value);
-			// Fixed DIANA-23
-			// Caution: modifications subject to regression: please report any regression
-			try {
-				if (isComponentVisible()) {
-					fireVariableChanged(variable, oldValue, value);
-				}
-			} catch (NullReferenceException e) {
-				// In this case, do nothing
+			if (value != null) {
+				variables.put(variable.getName(), value);
 			}
+			else {
+				variables.remove(variable.getName());
+			}
+			// Following line was initially commented as a fix of DIANA-23
+			// But this was a really bad idea and caused some regressions somewhere in the code
+			// The bug has been fixed while using updateVariableValueWhenConsistent when type
+			// checking is performed first
+			// if (isComponentVisible()) {
+			fireVariableChanged(variable, oldValue, value);
+			// }
+		}
+	}
+
+	private <T> void updateVariableValueWhenConsistent(FIBVariable<T> variable, T newValue) {
+		if (TypeUtils.isOfType(newValue, variable.getType())) {
+			setVariableValue(variable, newValue);
+		}
+		else {
+			// When type does not match expected, set variable value to null
+			setVariableValue(variable, null);
 		}
 	}
 
