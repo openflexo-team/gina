@@ -43,8 +43,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.dnd.DragGestureListener;
-import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
@@ -349,37 +347,17 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 	}
 
 	/**
-	 * Instantiate when not instantiated yet, and activate a {@link DropTarget} for supplied dropContainer, given a
-	 * {@link DropTargetListener} and a {@link DragGestureListener}
+	 * Register {@link DragGestureListener} for this JTree
 	 * 
-	 * @param dropContainer
-	 * @param dropTargetListener
 	 * @param dgListener
-	 * @return the {@link DropTarget} already existing or newly created
 	 */
-	public void activateDropTargetListener(JComponent dropContainer, DropTargetListener dropTargetListener,
-			DragGestureListener dgListener) {
+	public void registerDragGestureListener(DragGestureListener dgListener) {
 		if (getComponent().getAllowsExternalDragAndDrop()) {
-			((ExternalDnDJTree) getTechnologyComponent().getJTree()).activateDropTargetListener(dropContainer, dropTargetListener,
+			((ExternalDnDJTree) getTechnologyComponent().getJTree()).registerDragGestureListener(/*dropContainer, dropTargetListener,*/
 					dgListener);
 		}
 		else {
 			LOGGER.warning("Cannot activateDropTargetListener() for a component that does not support it");
-		}
-	}
-
-	/**
-	 * Disactivate eventually existing {@link DropTarget} for supplied dropContainer<br>
-	 * When not existing, do nothing
-	 * 
-	 * @param dropContainer
-	 */
-	public void disactivateDropTargetListener(JComponent dropContainer) {
-		if (getComponent().getAllowsExternalDragAndDrop()) {
-			((ExternalDnDJTree) getTechnologyComponent().getJTree()).disactivateDropTargetListener(dropContainer);
-		}
-		else {
-			LOGGER.warning("Cannot disactivateDropTargetListener() for a component that does not support it");
 		}
 	}
 
