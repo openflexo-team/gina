@@ -151,7 +151,7 @@ public class FIBTableActionListener<T> implements ActionListener, BindingEvaluat
 			// logger.info("Perform action " + tableAction.getName() + " method " + tableAction.getMethod());
 			// logger.info("controller="+getController()+" of "+getController().getClass().getSimpleName());
 
-			if (tableWidget.getSelection().size() > 1 && tableAction.getAllowsBatchExecution()) {
+			if (tableWidget.getSelection() != null && tableWidget.getSelection().size() > 1 && tableAction.getAllowsBatchExecution()) {
 				// Multiple selection, do action by batch
 				for (T object : tableWidget.getSelection()) {
 					this.selectedObject = object;
