@@ -622,7 +622,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			}
 			return false;
 		}
-		*/
+		 */
 	}
 
 	@Override
@@ -731,27 +731,37 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			if (entry.getKey().equals(englishTranslation)) {
 				englishTranslation = automaticEnglishTranslation(entry.getKey());
 			}
-			entry.setEnglish(englishTranslation);
+			if (entry.getKey().equals(entry.getEnglish())) {
+				entry.setEnglish(englishTranslation);
+			}
 			// System.out.println("englishTranslation=" + englishTranslation);
 			String dutchTranslation = parent.localizedForKeyAndLanguage(entry.getKey(), Language.DUTCH, false);
 			if (entry.getKey().equals(dutchTranslation)) {
 				dutchTranslation = automaticDutchTranslation(entry.getKey());
 			}
-			entry.setDutch(dutchTranslation);
+			if (entry.getKey().equals(entry.getDutch())) {
+				entry.setDutch(dutchTranslation);
+			}
 			// System.out.println("dutchTranslation=" + dutchTranslation);
 			String frenchTranslation = parent.localizedForKeyAndLanguage(entry.getKey(), Language.FRENCH, false);
 			if (entry.getKey().equals(frenchTranslation)) {
 				frenchTranslation = automaticFrenchTranslation(entry.getKey());
 			}
-			entry.setFrench(frenchTranslation);
+			if (entry.getKey().equals(entry.getFrench())) {
+				entry.setFrench(frenchTranslation);
+			}
 			// System.out.println("frenchTranslation=" + frenchTranslation);
 		}
 		else {
 			String englishTranslation = entry.getKey().toString();
 			englishTranslation = englishTranslation.replace("_", " ");
 			englishTranslation = englishTranslation.substring(0, 1).toUpperCase() + englishTranslation.substring(1);
-			entry.setEnglish(englishTranslation);
-			entry.setDutch(englishTranslation);
+			if (entry.getKey().equals(entry.getEnglish())) {
+				entry.setEnglish(englishTranslation);
+			}
+			if (entry.getKey().equals(entry.getDutch())) {
+				entry.setDutch(englishTranslation);
+			}
 		}
 	}
 
