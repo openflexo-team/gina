@@ -573,9 +573,13 @@ public class JFDTablePanel<T> extends JPanel {
 			remaindedBackground.clear();
 			remaindedForeground.clear();
 
+			if (widget == null || widget.getComponent() == null) {
+				return;
+			}
+
 			addButton.setVisible(hasAddAction);
 
-			if (widget != null && widget.getComponent() != null && widget.getComponent().getShowHeader()) {
+			if (widget.getComponent().getShowHeader()) {
 				for (FIBTableColumn column : widget.getComponent().getColumns()) {
 					boolean isFirst = (column == widget.getComponent().getColumns().get(0));
 					boolean isLast = (column == widget.getComponent().getColumns().get(widget.getComponent().getColumns().size() - 1));
@@ -826,6 +830,10 @@ public class JFDTablePanel<T> extends JPanel {
 
 		private void buildTableForValue(T value, int row, boolean isEdited) {
 			List<JComponent> components = new ArrayList<>();
+
+			if (widget == null || widget.getComponent() == null) {
+				return;
+			}
 
 			MouseAdapter mouseAdapter = makeMouseAdapter(value);
 
