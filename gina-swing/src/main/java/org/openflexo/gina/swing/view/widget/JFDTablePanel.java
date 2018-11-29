@@ -575,7 +575,7 @@ public class JFDTablePanel<T> extends JPanel {
 
 			addButton.setVisible(hasAddAction);
 
-			if (widget.getComponent().getShowHeader()) {
+			if (widget != null && widget.getComponent() != null && widget.getComponent().getShowHeader()) {
 				for (FIBTableColumn column : widget.getComponent().getColumns()) {
 					boolean isFirst = (column == widget.getComponent().getColumns().get(0));
 					boolean isLast = (column == widget.getComponent().getColumns().get(widget.getComponent().getColumns().size() - 1));
