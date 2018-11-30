@@ -656,12 +656,14 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 			if (oldSelection != null) {
 				objectsToRemoveFromSelection.addAll(oldSelection);
 			}
-			for (Object o : newSelection) {
-				if (oldSelection != null && oldSelection.contains(o)) {
-					objectsToRemoveFromSelection.remove(o);
-				}
-				else {
-					objectsToAddToSelection.add(o);
+			if (newSelection != null) {
+				for (Object o : newSelection) {
+					if (oldSelection != null && oldSelection.contains(o)) {
+						objectsToRemoveFromSelection.remove(o);
+					}
+					else {
+						objectsToAddToSelection.add(o);
+					}
 				}
 			}
 
