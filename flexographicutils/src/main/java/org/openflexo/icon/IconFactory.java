@@ -73,6 +73,9 @@ public class IconFactory {
 	private static final Hashtable<ImageIcon, Hashtable<Integer, ImageIcon>> _storedIcons = new Hashtable<>();
 
 	public static ImageIcon getImageIcon(ImageIcon icon, IconMarker... iconMarkers) {
+		if (icon == null) {
+			return null;
+		}
 		Hashtable<Integer, ImageIcon> knownIcons = _storedIcons.get(icon);
 		if (knownIcons == null) {
 			knownIcons = new Hashtable<>();
