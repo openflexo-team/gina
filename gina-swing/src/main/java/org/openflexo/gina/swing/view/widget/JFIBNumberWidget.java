@@ -305,24 +305,30 @@ public class JFIBNumberWidget<T extends Number> extends FIBNumberWidgetImpl<Numb
 		public abstract T getEditedValue();
 
 		public void setEditedValue(T aValue) {
-			switch (widget.getWidget().getNumberType()) {
-				case DoubleType:
-					valueChooser.setValue(aValue.doubleValue());
-					break;
-				case FloatType:
-					valueChooser.setValue(aValue.floatValue());
-					break;
-				case ShortType:
-					valueChooser.setValue(aValue.shortValue());
-					break;
-				case IntegerType:
-					valueChooser.setValue(aValue.intValue());
-					break;
-				case LongType:
-					valueChooser.setValue(aValue.longValue());
-					break;
-				default:
-					valueChooser.setValue(aValue);
+			try {
+				switch (widget.getWidget().getNumberType()) {
+					case DoubleType:
+						valueChooser.setValue(aValue.doubleValue());
+						break;
+					case FloatType:
+						valueChooser.setValue(aValue.floatValue());
+						break;
+					case ShortType:
+						valueChooser.setValue(aValue.shortValue());
+						break;
+					case IntegerType:
+						valueChooser.setValue(aValue.intValue());
+						break;
+					case LongType:
+						valueChooser.setValue(aValue.longValue());
+						break;
+					default:
+						valueChooser.setValue(aValue);
+				}
+			} catch (ClassCastException e) {
+				// Reported in some Swing UI implementations
+				// See https://bugs.openflexo.org/browse/OP-17
+				logger.warning("Unexpected ClassCastException, see https://bugs.openflexo.org/browse/OP-17");
 			}
 
 		}
