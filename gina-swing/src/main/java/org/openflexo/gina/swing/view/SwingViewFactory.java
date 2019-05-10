@@ -239,7 +239,8 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 				}
 			});
 			if (StringUtils.isNotEmpty(fibWidget.getTooltipText())) {
-				dynamicJComponent.setToolTipText(fibWidget.getTooltipText());
+				dynamicJComponent.setToolTipText(
+						fibWidget.getLocalize() ? returned.getLocalized(fibWidget.getTooltipText()) : fibWidget.getTooltipText());
 			}
 		}
 		// returned.updateGraphicalProperties();
