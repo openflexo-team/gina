@@ -15,11 +15,13 @@ dependencies {
 }
 
 // To be able to use private apple api
-compileJava {
-    options.compilerArgs << "-XDignore.symbol.file=true"
-    options.fork = true
-    options.forkOptions.executable = 'javac'
-}
+if (!JavaVersion.current().isJava9Compatible()) {
+	tasks.withType(JavaCompile) {
+	    options.compilerArgs << "-XDignore.symbol.file=true"
+    	options.fork = true
+	    options.forkOptions.executable = 'javac'
+    }
+}  
 if (JavaVersion.current().isJava9Compatible()) {
 	tasks.withType(JavaCompile) {
 		options.compilerArgs.addAll(['--add-exports', 'java.desktop/sun.awt.image=ALL-UNNAMED'])
