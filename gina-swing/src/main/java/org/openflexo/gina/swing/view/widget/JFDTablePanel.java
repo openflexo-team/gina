@@ -541,6 +541,7 @@ public class JFDTablePanel<T> extends JPanel {
 
 			addButton = new JButton();
 			addButton.setBorder(BorderFactory.createEmptyBorder());
+			addButton.setContentAreaFilled(false);
 			addButton.setRolloverIcon(FIBIconLibrary.ADD_FO_ICON);
 			addButton.setIcon(FIBIconLibrary.ADD_ICON);
 
