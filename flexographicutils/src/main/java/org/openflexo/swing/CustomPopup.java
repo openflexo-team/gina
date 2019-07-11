@@ -147,6 +147,10 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			_downButton = new ImageButton(UtilsIconLibrary.CUSTOM_POPUP_DOWN);
 			_downButton.setDisabledIcon(UtilsIconLibrary.CUSTOM_POPUP_DOWN_DISABLED);
 		}
+
+		_downButton.setBorder(BorderFactory.createEmptyBorder());
+		_downButton.setContentAreaFilled(false);
+
 		_downButton.addActionListener(this);
 		add(_downButton, BorderLayout.WEST);
 		/*Border border = getDownButtonBorder();
@@ -154,9 +158,9 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			_downButton.setBorder(border);
 		}*/
 		setOpaque(false);
-		if (!ToolBox.isMacOS()) {
+		/*if (!ToolBox.isMacOS()) {
 			setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
-		}
+		}*/
 		_frontComponent = buildFrontComponent();
 		add(_frontComponent, BorderLayout.CENTER);
 

@@ -64,6 +64,7 @@ import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeWillExpandListener;
+import javax.swing.plaf.IconUIResource;
 import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreePath;
@@ -78,6 +79,8 @@ import org.openflexo.gina.view.widget.browser.impl.FIBBrowserCellEditor;
 import org.openflexo.gina.view.widget.browser.impl.FIBBrowserCellRenderer;
 import org.openflexo.gina.view.widget.browser.impl.FIBBrowserModel.BrowserCell;
 import org.openflexo.gina.view.widget.impl.FIBBrowserWidgetImpl;
+import org.openflexo.icon.ImageIconResource;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.ToolBox;
 
 /**
@@ -93,6 +96,17 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 		implements FocusListener, JFIBView<FIBBrowser, JTreePanel<T>> {
 
 	private static final Logger LOGGER = Logger.getLogger(JFIBBrowserWidget.class.getPackage().getName());
+
+	public static final ImageIconResource ARROW_RIGHT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ArrowRight.png"));
+	public static final ImageIconResource ARROW_DOWN_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ArrowDown.png"));
+
+	static {
+		// UIManager.put("Tree.closedIcon", ARROW_RIGHT_ICON);
+		// UIManager.put("Tree.openIcon", ARROW_DOWN_ICON);
+		UIManager.put("Tree.collapsedIcon", new IconUIResource(ARROW_RIGHT_ICON));
+		UIManager.put("Tree.expandedIcon", new IconUIResource(ARROW_DOWN_ICON));
+		UIManager.put("Tree.paintLines", Boolean.FALSE);
+	}
 
 	/**
 	 * A {@link RenderingAdapter} implementation dedicated for Swing JTable<br>

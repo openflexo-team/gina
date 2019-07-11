@@ -53,14 +53,11 @@ public class UtilsIconLibrary {
 
 	// Common icons used in the context of utils
 
-	public static final ImageIcon CUSTOM_POPUP_DOWN = new ImageIconResource(ResourceLocator.locateResource("Icons/CustomPopupDown.png"));
-	public static final ImageIcon CUSTOM_POPUP_DOWN_DISABLED = new ImageIconResource(
-			ResourceLocator.locateResource("Icons/CustomPopupDownDisabled.png"));
+	public static final ImageIcon CUSTOM_POPUP_DOWN = new ImageIconResource(ResourceLocator.locateResource("Icons/ArrowDown.png"));
+	public static final ImageIcon CUSTOM_POPUP_DOWN_DISABLED = new ImageIconResource(ResourceLocator.locateResource("Icons/ArrowDown.png"));
 
-	public static final ImageIcon CUSTOM_POPUP_BUTTON = new ImageIconResource(
-			ResourceLocator.locateResource("Icons/CustomPopupButton.png"));
-	public static final ImageIcon CUSTOM_POPUP_OPEN_BUTTON = new ImageIconResource(
-			ResourceLocator.locateResource("Icons/CustomPopupOpenButton.png"));
+	public static final ImageIcon CUSTOM_POPUP_BUTTON = new ImageIconResource(ResourceLocator.locateResource("Icons/ArrowRight.png"));
+	public static final ImageIcon CUSTOM_POPUP_OPEN_BUTTON = new ImageIconResource(ResourceLocator.locateResource("Icons/ArrowDown.png"));
 
 	public static final ImageIcon CLOSE_TAB_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Actions/CloseTab.png"));
 	public static final ImageIcon CLOSE_TAB_HOVER_ICON = new ImageIconResource(
