@@ -140,13 +140,14 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 	public CustomPopup(T editedObject) {
 		super(new BorderLayout());
 		_editedObject = editedObject;
-		if (!ToolBox.isMacOS()) {
+		//if (!ToolBox.isMacOS()) {
 			_downButton = new ImageButton(UtilsIconLibrary.CUSTOM_POPUP_BUTTON);
-		}
+			_downButton.setDisabledIcon(UtilsIconLibrary.CUSTOM_POPUP_BUTTON_DISABLED);
+		/*}
 		else {
 			_downButton = new ImageButton(UtilsIconLibrary.CUSTOM_POPUP_DOWN);
 			_downButton.setDisabledIcon(UtilsIconLibrary.CUSTOM_POPUP_DOWN_DISABLED);
-		}
+		}*/
 
 		_downButton.setBorder(BorderFactory.createEmptyBorder());
 		_downButton.setContentAreaFilled(false);
@@ -681,9 +682,9 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			_popup.setLocation(position);
 			_popup.pack();
 			_popup.setVisible(true);
-			if (!ToolBox.isMacOS()) {
+			//if (!ToolBox.isMacOS()) {
 				_downButton.setIcon(UtilsIconLibrary.CUSTOM_POPUP_OPEN_BUTTON);
-			}
+			//}
 
 			MouseAdapter mouseListener = new MouseAdapter() {
 
@@ -759,9 +760,9 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			return;
 		}
 		_popup.setVisible(false);
-		if (!ToolBox.isMacOS()) {
+		//if (!ToolBox.isMacOS()) {
 			_downButton.setIcon(UtilsIconLibrary.CUSTOM_POPUP_BUTTON);
-		}
+		//}
 		if (notifyObjectChanged) {
 			fireEditedObjectChanged();
 		}
