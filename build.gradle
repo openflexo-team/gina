@@ -11,8 +11,3 @@ buildscript {
 
 version = "2.2"
 apply plugin: 'org.openflexo.buildconfig'
-
-task gitPull(type: Exec) {
-    description 'Pulls git.'
-    commandLine "git", "pull"
-}
