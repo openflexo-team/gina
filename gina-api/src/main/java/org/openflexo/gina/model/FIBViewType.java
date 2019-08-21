@@ -50,7 +50,6 @@ import org.openflexo.connie.exception.InvocationTargetTransformException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.CustomType;
-import org.openflexo.connie.type.CustomTypeFactory;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.pamela.annotations.PropertyIdentifier;
@@ -125,7 +124,7 @@ public class FIBViewType<F extends FIBComponent> implements CustomType {
 	}
 
 	@Override
-	public void resolve(CustomTypeFactory<?> factory) {
+	public void resolve() {
 		// We never try to serialize this, yet
 		// Otherwise we should find a way to serialize a FIBComponent
 	}
