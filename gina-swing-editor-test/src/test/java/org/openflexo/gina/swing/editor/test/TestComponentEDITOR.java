@@ -41,12 +41,15 @@ package org.openflexo.gina.swing.editor.test;
 import java.util.Vector;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.openflexo.gina.testutils.GinaSwingEditorTestCase;
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.test.UITest;
 
 public class TestComponentEDITOR extends GinaSwingEditorTestCase {
 
 	@Test
+	@Category(UITest.class)
 	public void testComponent() {
 
 		instanciateFIBEdition("TestComponent", ResourceLocator.locateSourceCodeResource("TestFIB/TestComponent.fib"),

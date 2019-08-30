@@ -42,13 +42,16 @@ import java.beans.PropertyChangeSupport;
 import java.util.Vector;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.openflexo.gina.testutils.GinaSwingEditorTestCase;
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.test.UITest;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 public class TestFIBTable extends GinaSwingEditorTestCase {
 
 	@Test
+	@Category(UITest.class)
 	public void testComponent() {
 		final User user1 = new User("John", "Doe", "john.doe@yahoo.com");
 		final User user2 = new User("Thomas", "Smith", "thomas.smith@google.com");

@@ -1,11 +1,9 @@
 dependencies {
   compile project(':gina-replay')
   compile group: 'junit', name: 'junit', version: '4.+'
-
-  testCompile testUtils()
 }
 
 test {
-  exclude '**/Tester*'
-  exclude '**/DrawindTreeNodeCaseTest*'
+   exclude '**/Tester*'
+   exclude '**/DrawindTreeNodeCaseTest*'
 }

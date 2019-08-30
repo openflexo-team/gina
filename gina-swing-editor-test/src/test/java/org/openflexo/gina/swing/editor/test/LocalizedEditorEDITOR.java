@@ -39,13 +39,16 @@
 package org.openflexo.gina.swing.editor.test;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.utils.localization.LocalizedPanel;
 import org.openflexo.gina.testutils.GinaSwingEditorTestCase;
+import org.openflexo.test.UITest;
 
 public class LocalizedEditorEDITOR extends GinaSwingEditorTestCase {
 
 	@Test
+	@Category(UITest.class)
 	public void testLocalizedEditor() {
 		instanciateFIBEdition("LocalizedEditor", LocalizedPanel.lOCALIZED_PANEL_FIB, FIBEditor.EDITOR_LOCALIZATION);
 	}

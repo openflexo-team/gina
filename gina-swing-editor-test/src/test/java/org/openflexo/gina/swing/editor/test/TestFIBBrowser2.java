@@ -42,13 +42,16 @@ import java.beans.PropertyChangeSupport;
 import java.util.Vector;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.openflexo.gina.testutils.GinaSwingEditorTestCase;
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.test.UITest;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 public class TestFIBBrowser2 extends GinaSwingEditorTestCase {
 
 	@Test
+	@Category(UITest.class)
 	public void testComponent() {
 		final TestClass mainClass = new TestClass("Main");
 		final TestMethod method11 = new TestMethod("method1");

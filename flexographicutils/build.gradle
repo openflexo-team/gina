@@ -27,7 +27,3 @@ if (JavaVersion.current().isJava9Compatible()) {
 		options.compilerArgs.addAll(['--add-exports', 'java.desktop/sun.awt.image=ALL-UNNAMED'])
     }
 }  
-
-tasks.withType(Test) {
-	jvmArgs += ["-Djava.awt.headless=true"]
-}

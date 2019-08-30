@@ -39,13 +39,16 @@
 package org.openflexo.gina.swing.editor.test;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.openflexo.gina.sampleData.Family;
 import org.openflexo.gina.testutils.GinaSwingEditorTestCase;
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.test.UITest;
 
 public class TestPerson extends GinaSwingEditorTestCase {
 
 	@Test
+	@Category(UITest.class)
 	public void testComponent() {
 		instanciateFIBEdition("TestPerson", ResourceLocator.locateSourceCodeResource("TestFIB/TestPerson.fib"),
 				new Family().getBiggestParent());

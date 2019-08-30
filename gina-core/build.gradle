@@ -3,6 +3,3 @@ dependencies {
   compile project(':gina-test')
   testCompile testUtils()
 }
-tasks.withType(Test) {
-	jvmArgs += ["-Djava.awt.headless=true"]
-}
