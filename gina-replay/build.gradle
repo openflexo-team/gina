@@ -1,5 +1,4 @@
 dependencies {
   compile project(':gina-events')
-  compile project(':gina-test')
   compile project(':gina-swing')
 }

@@ -1,6 +1,6 @@
 dependencies {
   compile project(':gina-api')
-  compile project(':gina-test')
+  testCompile project(':gina-test')
   testCompile testUtils()
 }
 tasks.withType(Test) {
