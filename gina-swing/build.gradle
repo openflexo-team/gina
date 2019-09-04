@@ -3,6 +3,7 @@ dependencies {
   compile project(':flexographicutils')
   compile project(':gina-api')
   compile project(':gina-core')
+  testCompile project(':gina-test')
   testCompile testUtils()
 }
 task nonuiTest(type: Test) {
