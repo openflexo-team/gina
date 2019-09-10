@@ -1,6 +1,7 @@
 dependencies {
   compile project(':gina-replay')
   compile project(':gina-test')
+  compile testUtils()
 }
 
 test {
