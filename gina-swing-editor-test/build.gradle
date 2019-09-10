@@ -1,19 +1,5 @@
 dependencies {
   compile project(':gina-swing-editor')
   compile project(':gina-test')
+  compile testUtils()
 }
-// task nonuiTest(type: Test) {
-//   ignoreFailures = true
-//   include '**/TestEditorFibs.class'
-//   include '**/TestFIBEditorInspectors.class'
-//   jvmArgs += ["-Djava.awt.headless=true"]
-// }
-// 
-// task uiTest(type: Test,dependsOn: 'nonuiTest') {
-//   ignoreFailures = true
-//   exclude '**/TestEditorFibs.class'
-//   exclude '**/TestFIBEditorInspectors.class'
-// }
-// 
-// task test(overwrite: true,dependsOn: 'uiTest') {
-// }
