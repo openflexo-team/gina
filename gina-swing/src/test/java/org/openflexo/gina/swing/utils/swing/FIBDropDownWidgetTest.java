@@ -246,6 +246,7 @@ public class FIBDropDownWidgetTest extends FIBTestCase {
 	 */
 	@Test
 	@TestOrder(5)
+	@Category(UITest.class)
 	public void test5ModifyListValueInModel() {
 
 		JFIBDropDownWidget<?> w5 = (JFIBDropDownWidget<?>) controller.viewForComponent(dropDown5);
