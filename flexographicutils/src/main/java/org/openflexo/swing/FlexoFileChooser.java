@@ -118,6 +118,16 @@ public class FlexoFileChooser {
 		}
 	}
 
+	public String getDialogTitle() {
+		if (getImplementationType() == ImplementationType.JFileChooserImplementation) {
+			return _fileChooser.getDialogTitle();
+		}
+		else if (getImplementationType() == ImplementationType.FileDialogImplementation) {
+			return _fileDialog.getTitle();
+		}
+		return null;
+	}
+
 	public void setDialogTitle(String title) {
 		if (getImplementationType() == ImplementationType.JFileChooserImplementation) {
 			_fileChooser.setDialogTitle(title);
