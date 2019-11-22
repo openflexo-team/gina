@@ -1062,7 +1062,7 @@ public interface FIBTable extends FIBWidget {
 		}
 
 		@Override
-		public Collection<? extends FIBModelObject> getEmbeddedObjects() {
+		public Collection<? extends FIBModelObject> getEmbeddedFIBModelObjects() {
 			return new ChainedCollection<>(getColumns(), getActions());
 		}
 

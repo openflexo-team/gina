@@ -132,7 +132,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 	public ValidationReport validate() throws InterruptedException;
 
-	public Collection<? extends FIBModelObject> getEmbeddedObjects();
+	public Collection<? extends FIBModelObject> getEmbeddedFIBModelObjects();
 
 	public List<FIBModelObject> getObjectsWithName(String aName);
 
@@ -188,7 +188,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 		 * 
 		 */
 		@Override
-		public Collection<? extends FIBModelObject> getEmbeddedObjects() {
+		public Collection<? extends FIBModelObject> getEmbeddedFIBModelObjects() {
 			return (Collection) getModelFactory().getEmbeddedObjects(this, EmbeddingType.CLOSURE);
 		}
 
@@ -416,8 +416,8 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 			if (object.getName() != null && object.getName().equals(aName)) {
 				return true;
 			}
-			if (object.getEmbeddedObjects() != null) {
-				for (FIBModelObject o : object.getEmbeddedObjects()) {
+			if (object.getEmbeddedFIBModelObjects() != null) {
+				for (FIBModelObject o : object.getEmbeddedFIBModelObjects()) {
 					if (isNameUsedInHierarchy(aName, o)) {
 						return true;
 					}
@@ -435,8 +435,8 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 			if (object.getName() != null && object.getName().equals(aName)) {
 				list.add(object);
 			}
-			if (object.getEmbeddedObjects() != null) {
-				for (FIBModelObject o : object.getEmbeddedObjects()) {
+			if (object.getEmbeddedFIBModelObjects() != null) {
+				for (FIBModelObject o : object.getEmbeddedFIBModelObjects()) {
 					retrieveObjectsWithName(aName, o, list);
 				}
 			}

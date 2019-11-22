@@ -805,7 +805,7 @@ public interface FIBBrowser extends FIBWidget {
 		}
 
 		@Override
-		public Collection<? extends FIBModelObject> getEmbeddedObjects() {
+		public Collection<? extends FIBModelObject> getEmbeddedFIBModelObjects() {
 			return getElements();
 		}
 

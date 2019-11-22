@@ -775,7 +775,7 @@ public abstract interface FIBContainer extends FIBComponent {
 		}
 
 		@Override
-		public Collection<? extends FIBModelObject> getEmbeddedObjects() {
+		public Collection<? extends FIBModelObject> getEmbeddedFIBModelObjects() {
 			return getSubComponents();
 		}
 

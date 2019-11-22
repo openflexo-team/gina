@@ -1032,7 +1032,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		}
 
 		@Override
-		public Collection<? extends FIBModelObject> getEmbeddedObjects() {
+		public Collection<? extends FIBModelObject> getEmbeddedFIBModelObjects() {
 			return getChildren();
 		}
 
