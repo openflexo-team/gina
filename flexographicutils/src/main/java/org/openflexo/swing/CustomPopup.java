@@ -81,7 +81,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.openflexo.icon.UtilsIconLibrary;
-import org.openflexo.toolbox.ToolBox;
 
 /**
  * Abstract widget allowing to edit a complex object with a popup
@@ -140,9 +139,9 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 	public CustomPopup(T editedObject) {
 		super(new BorderLayout());
 		_editedObject = editedObject;
-		//if (!ToolBox.isMacOS()) {
-			_downButton = new ImageButton(UtilsIconLibrary.CUSTOM_POPUP_BUTTON);
-			_downButton.setDisabledIcon(UtilsIconLibrary.CUSTOM_POPUP_BUTTON_DISABLED);
+		// if (!ToolBox.isMacOS()) {
+		_downButton = new ImageButton(UtilsIconLibrary.CUSTOM_POPUP_BUTTON);
+		_downButton.setDisabledIcon(UtilsIconLibrary.CUSTOM_POPUP_BUTTON_DISABLED);
 		/*}
 		else {
 			_downButton = new ImageButton(UtilsIconLibrary.CUSTOM_POPUP_DOWN);
@@ -359,6 +358,8 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			_childs = new Vector<>();
 			parentListener = new ParentPopupMoveListener();
 			setUndecorated(true);
+			setAutoRequestFocus(true);
+			setAlwaysOnTop(true);
 			getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			getContentPane().add(invoker.getCustomPanel());
 
@@ -682,9 +683,9 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			_popup.setLocation(position);
 			_popup.pack();
 			_popup.setVisible(true);
-			//if (!ToolBox.isMacOS()) {
-				_downButton.setIcon(UtilsIconLibrary.CUSTOM_POPUP_OPEN_BUTTON);
-			//}
+			// if (!ToolBox.isMacOS()) {
+			_downButton.setIcon(UtilsIconLibrary.CUSTOM_POPUP_OPEN_BUTTON);
+			// }
 
 			MouseAdapter mouseListener = new MouseAdapter() {
 
@@ -760,9 +761,9 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			return;
 		}
 		_popup.setVisible(false);
-		//if (!ToolBox.isMacOS()) {
-			_downButton.setIcon(UtilsIconLibrary.CUSTOM_POPUP_BUTTON);
-		//}
+		// if (!ToolBox.isMacOS()) {
+		_downButton.setIcon(UtilsIconLibrary.CUSTOM_POPUP_BUTTON);
+		// }
 		if (notifyObjectChanged) {
 			fireEditedObjectChanged();
 		}
