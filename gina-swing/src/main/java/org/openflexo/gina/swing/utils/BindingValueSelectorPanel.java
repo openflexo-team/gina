@@ -759,6 +759,11 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					if (index < 0) {
 						return;
 					}
+
+					if (list.getModel().getSize() == 1) {
+						valueSelected(index, list);
+					}
+
 					_selectedPathElementIndex = index;
 					updateMethodCallPanel();
 				}
