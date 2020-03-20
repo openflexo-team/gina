@@ -656,8 +656,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 				LOGGER.warning("Unable to evaluate " + getComponent().getVisible());
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				LOGGER.warning("NullReferenceException while evaluating " + getComponent().getVisible());
-				componentVisible = true;
+				throw e;
 			} catch (InvocationTargetException e) {
 				componentVisible = true;
 			}
