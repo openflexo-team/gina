@@ -158,6 +158,9 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 	@Override
 	protected void componentBecomesVisible() {
+
+		getWidget().getData().clearCacheForBindingEvaluationContext(getBindingEvaluationContext());
+		getWidget().getEnable().clearCacheForBindingEvaluationContext(getBindingEvaluationContext());
 		super.componentBecomesVisible();
 		listenDataValueChange();
 		listenEnableValueChange();
@@ -579,7 +582,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 		representedValue = aValue;
 
-		if (getWidget().getData() == null || getWidget().getData().isUnset()) {}
+		if (getWidget().getData() == null || getWidget().getData().isUnset()) {
+		}
 		else {
 			try {
 				/*System.out.println("On tente un set " + getWidget().getData() + " avec " + aValue);
