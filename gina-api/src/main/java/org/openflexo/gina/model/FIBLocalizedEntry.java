@@ -67,7 +67,7 @@ public interface FIBLocalizedEntry extends FIBModelObject {
 	@PropertyIdentifier(type = String.class)
 	public static final String VALUE_KEY = "value";
 
-	@Getter(value = DICTIONARY_KEY /*, inverse = FIBLocalizedDictionary.ENTRIES_KEY*/)
+	@Getter(value = DICTIONARY_KEY /*, inverse = FIBLocalizedDictionary.ENTRIES_KEY*/, ignoreForEquality = true)
 	public FIBLocalizedDictionary getLocalizedDictionary();
 
 	@Setter(DICTIONARY_KEY)
