@@ -2,6 +2,7 @@ package org.openflexo.gina.swing.view.widget;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
@@ -30,6 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -77,6 +79,7 @@ public class JFDTablePanel<T> extends JPanel {
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
 		scrollPane.setOpaque(false);
+		scrollPane.getViewport().setOpaque(false);
 
 		add(scrollPane, BorderLayout.CENTER);
 	}
@@ -111,7 +114,7 @@ public class JFDTablePanel<T> extends JPanel {
 
 		public JFDTable(JFDFIBTableWidget<T> widget) {
 			super(new BorderLayout());
-
+			setOpaque(false);
 			tablePanel = new JPanel();
 			gridBagLayout = new GridBagLayout();
 			tablePanel.setLayout(gridBagLayout);
@@ -557,6 +560,28 @@ public class JFDTablePanel<T> extends JPanel {
 			});
 
 			JPanel addButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 2));
+			addButtonPanel.setOpaque(false);
+
+			/*SwingUtilities.invokeLater(new Runnable() {
+
+				@Override
+				public void run() {
+					System.out.println("Display component stack");
+					Component current = addButtonPanel;
+					while (current != null) {
+						if (current instanceof JComponent) {
+							JComponent c = (JComponent) current;
+							System.out
+									.println(" > " + c.getClass().getSimpleName() + " opaque:" + c.isOpaque() + " bg=" + c.getBackground());
+						}
+						else {
+							System.out.println(" > " + current.getClass().getSimpleName());
+						}
+						current = current.getParent();
+					}
+				}
+			});*/
+
 			addButtonPanel.add(addButton);
 
 			add(addButtonPanel, BorderLayout.SOUTH);
