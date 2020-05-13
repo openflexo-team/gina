@@ -2,7 +2,6 @@ package org.openflexo.gina.swing.view.widget;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
@@ -31,7 +30,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -116,6 +114,7 @@ public class JFDTablePanel<T> extends JPanel {
 			super(new BorderLayout());
 			setOpaque(false);
 			tablePanel = new JPanel();
+			tablePanel.setOpaque(false);
 			gridBagLayout = new GridBagLayout();
 			tablePanel.setLayout(gridBagLayout);
 			this.widget = widget;
@@ -562,26 +561,6 @@ public class JFDTablePanel<T> extends JPanel {
 			JPanel addButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 2));
 			addButtonPanel.setOpaque(false);
 
-			/*SwingUtilities.invokeLater(new Runnable() {
-
-				@Override
-				public void run() {
-					System.out.println("Display component stack");
-					Component current = addButtonPanel;
-					while (current != null) {
-						if (current instanceof JComponent) {
-							JComponent c = (JComponent) current;
-							System.out
-									.println(" > " + c.getClass().getSimpleName() + " opaque:" + c.isOpaque() + " bg=" + c.getBackground());
-						}
-						else {
-							System.out.println(" > " + current.getClass().getSimpleName());
-						}
-						current = current.getParent();
-					}
-				}
-			});*/
-
 			addButtonPanel.add(addButton);
 
 			add(addButtonPanel, BorderLayout.SOUTH);
@@ -624,7 +603,7 @@ public class JFDTablePanel<T> extends JPanel {
 
 					JLabel titleLabel = new JLabel(column.getDisplayTitle() ? widget.getLocalized(column.getTitle()) : "");
 					titleLabel.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight() + 5));
-					titleLabel.setOpaque(true);
+					titleLabel.setOpaque(false);
 					titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD));
 					titleLabel.setForeground(Color.WHITE);
 					titleLabel.setBackground(Color.GRAY);
@@ -895,6 +874,7 @@ public class JFDTablePanel<T> extends JPanel {
 					cellRenderer = widget.getTableModel().columnAt(col).makeCellRenderer(value);
 				}
 
+				cellRenderer.setOpaque(false);
 				cellRenderer.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight()));
 				tablePanel.add(cellRenderer, c);
 				components.add(cellRenderer);
@@ -915,6 +895,7 @@ public class JFDTablePanel<T> extends JPanel {
 			JButton editButton = getEditButton(value);
 
 			JPanel buttonsPanel = new JPanel(new GridBagLayout());
+			buttonsPanel.setOpaque(false);
 			GridBagConstraints c4 = new GridBagConstraints();
 			buttonsPanel.add(removeButton, c4);
 			buttonsPanel.add(editButton, c4);
@@ -943,6 +924,26 @@ public class JFDTablePanel<T> extends JPanel {
 			editButton.setVisible(hasEditAction && value == selectedValue);
 
 			componentsForValues.put(value, components);
+
+			/*SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				System.out.println("Display component stack");
+				Component current = addButtonPanel;
+				while (current != null) {
+					if (current instanceof JComponent) {
+						JComponent c = (JComponent) current;
+						System.out
+								.println(" > " + c.getClass().getSimpleName() + " opaque:" + c.isOpaque() + " bg=" + c.getBackground());
+					}
+					else {
+						System.out.println(" > " + current.getClass().getSimpleName());
+					}
+					current = current.getParent();
+				}
+			}
+			});*/
 
 		}
 
