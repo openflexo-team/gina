@@ -44,11 +44,11 @@ import java.util.logging.Logger;
 import org.openflexo.gina.model.FIBValidationModel;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.logging.FlexoLogger;
-import org.openflexo.model.validation.FixProposal;
-import org.openflexo.model.validation.ProblemIssue;
-import org.openflexo.model.validation.Validable;
-import org.openflexo.model.validation.ValidationRule;
-import org.openflexo.model.validation.ValidationWarning;
+import org.openflexo.pamela.validation.FixProposal;
+import org.openflexo.pamela.validation.ProblemIssue;
+import org.openflexo.pamela.validation.Validable;
+import org.openflexo.pamela.validation.ValidationRule;
+import org.openflexo.pamela.validation.ValidationWarning;
 import org.openflexo.toolbox.PropertyChangedSupportDefaultImplementation;
 
 public class IssueFixing<R extends ValidationRule<R, V>, V extends Validable> extends PropertyChangedSupportDefaultImplementation {

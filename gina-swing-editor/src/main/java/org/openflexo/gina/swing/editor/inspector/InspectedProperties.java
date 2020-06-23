@@ -55,9 +55,9 @@ import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.model.FIBProperty;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.logging.FlexoLogger;
-import org.openflexo.model.factory.CloneableProxyObject;
-import org.openflexo.model.factory.KeyValueCoding;
-import org.openflexo.model.undo.CompoundEdit;
+import org.openflexo.pamela.factory.CloneableProxyObject;
+import org.openflexo.pamela.factory.KeyValueCoding;
+import org.openflexo.pamela.undo.CompoundEdit;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 /**

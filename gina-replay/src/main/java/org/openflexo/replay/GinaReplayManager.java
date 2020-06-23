@@ -7,7 +7,7 @@ import org.openflexo.gina.manager.EventManager;
 import org.openflexo.gina.manager.GinaEventFactory;
 import org.openflexo.gina.manager.GinaEventListener;
 import org.openflexo.gina.manager.GinaStackEvent;
-import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.pamela.factory.ModelFactory;
 
 /**
  * This class manages manages :

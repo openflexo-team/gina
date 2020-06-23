@@ -46,7 +46,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.gina.model.widget.FIBTable;
-import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.pamela.annotations.PropertyIdentifier;
 
 /**
  * A FIBProperty encodes a typed property access associated to a class of FIB model

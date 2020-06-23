@@ -43,13 +43,15 @@ import static org.junit.Assert.assertEquals;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.openflexo.gina.model.FIBModelFactory;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.widget.FIBLabel;
 import org.openflexo.gina.swing.editor.widget.FIBEditorBrowser;
 import org.openflexo.gina.testutils.FIBComponentGraphicalContextDelegate;
-import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.validation.ValidationReport;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.validation.ValidationReport;
+import org.openflexo.test.UITest;
 
 /**
  * Test the structural and behavioural features of FIBEditorBrowser
@@ -65,6 +67,7 @@ public class TestFIBEditorBrowser {
 	private static FIBPanel component;
 
 	@Test
+	@Category(UITest.class)
 	public void test1InstanciateWidget() throws ModelDefinitionException, InterruptedException {
 
 		factory = new FIBModelFactory(null);
@@ -81,6 +84,7 @@ public class TestFIBEditorBrowser {
 	}
 
 	@Test
+	@Category(UITest.class)
 	public void test2AddSubComponents() throws ModelDefinitionException {
 
 		factory = new FIBModelFactory(null);
@@ -103,5 +107,4 @@ public class TestFIBEditorBrowser {
 			gcDelegate.tearDown();
 		}
 	}
-
 }

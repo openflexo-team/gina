@@ -150,22 +150,43 @@ public class FIBTableActionListener<T> implements ActionListener, BindingEvaluat
 		if (tableAction != null && tableAction.getMethod() != null && tableAction.getMethod().isValid()) {
 			// logger.info("Perform action " + tableAction.getName() + " method " + tableAction.getMethod());
 			// logger.info("controller="+getController()+" of "+getController().getClass().getSimpleName());
-			this.selectedObject = selectedObject;
-			T newObject = null;
-			try {
-				newObject = (T) tableAction.getMethod().getBindingValue(this);
-			} catch (TypeMismatchException e) {
-				e.printStackTrace();
-			} catch (NullReferenceException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-				e.getCause().printStackTrace();
-			}
 
-			if (tableWidget != null) {
-				tableWidget.update();
-				tableWidget.performSelect(newObject);
+			if (tableWidget.getSelection() != null && tableWidget.getSelection().size() > 1 && tableAction.getAllowsBatchExecution()) {
+				// Multiple selection, do action by batch
+				for (T object : tableWidget.getSelection()) {
+					this.selectedObject = object;
+					try {
+						tableAction.getMethod().getBindingValue(this);
+					} catch (TypeMismatchException e) {
+						e.printStackTrace();
+					} catch (NullReferenceException e) {
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						e.printStackTrace();
+						e.getCause().printStackTrace();
+					}
+				}
+			}
+			else {
+				// Do it for selected value only
+
+				this.selectedObject = selectedObject;
+				T newObject = null;
+				try {
+					newObject = (T) tableAction.getMethod().getBindingValue(this);
+				} catch (TypeMismatchException e) {
+					e.printStackTrace();
+				} catch (NullReferenceException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+					e.getCause().printStackTrace();
+				}
+
+				if (tableWidget != null) {
+					tableWidget.update();
+					tableWidget.performSelect(newObject);
+				}
 			}
 
 		}

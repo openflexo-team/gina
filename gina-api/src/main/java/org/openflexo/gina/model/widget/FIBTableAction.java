@@ -45,19 +45,19 @@ import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.gina.model.FIBComponent.LocalizationEntryRetriever;
 import org.openflexo.gina.model.FIBModelObject;
-import org.openflexo.model.annotations.CloningStrategy;
-import org.openflexo.model.annotations.CloningStrategy.StrategyType;
-import org.openflexo.model.annotations.DefineValidationRule;
-import org.openflexo.model.annotations.DeserializationFinalizer;
-import org.openflexo.model.annotations.Getter;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.Import;
-import org.openflexo.model.annotations.Imports;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.PropertyIdentifier;
-import org.openflexo.model.annotations.Setter;
-import org.openflexo.model.annotations.XMLAttribute;
-import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.pamela.annotations.CloningStrategy;
+import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
+import org.openflexo.pamela.annotations.DefineValidationRule;
+import org.openflexo.pamela.annotations.DeserializationFinalizer;
+import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.Import;
+import org.openflexo.pamela.annotations.Imports;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.PropertyIdentifier;
+import org.openflexo.pamela.annotations.Setter;
+import org.openflexo.pamela.annotations.XMLAttribute;
+import org.openflexo.pamela.annotations.XMLElement;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(FIBTableAction.FIBTableActionImpl.class)
@@ -76,6 +76,8 @@ public abstract interface FIBTableAction extends FIBModelObject {
 	public static final String METHOD_KEY = "method";
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String IS_AVAILABLE_KEY = "isAvailable";
+	@PropertyIdentifier(type = Boolean.class)
+	public static final String ALLOWS_BATCH_EXECUTION_KEY = "allowsBatchExecution";
 
 	@Getter(value = OWNER_KEY /*, inverse = FIBTable.ACTIONS_KEY*/)
 	@CloningStrategy(StrategyType.IGNORE)
@@ -104,6 +106,13 @@ public abstract interface FIBTableAction extends FIBModelObject {
 	public void finalizeDeserialization();
 
 	public void searchLocalized(LocalizationEntryRetriever retriever);
+
+	@Getter(value = ALLOWS_BATCH_EXECUTION_KEY, defaultValue = "true")
+	@XMLAttribute
+	public boolean getAllowsBatchExecution();
+
+	@Setter(ALLOWS_BATCH_EXECUTION_KEY)
+	public void setAllowsBatchExecution(boolean allowsBatchExecution);
 
 	public static abstract class FIBTableActionImpl extends FIBModelObjectImpl implements FIBTableAction {
 

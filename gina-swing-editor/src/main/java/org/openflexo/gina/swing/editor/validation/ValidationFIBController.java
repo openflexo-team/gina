@@ -50,12 +50,12 @@ import org.openflexo.gina.model.FIBValidationReport;
 import org.openflexo.gina.swing.editor.ComponentSwingEditorFIBController;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.view.GinaViewFactory;
-import org.openflexo.model.validation.FixProposal;
-import org.openflexo.model.validation.ProblemIssue;
-import org.openflexo.model.validation.Validable;
-import org.openflexo.model.validation.ValidationIssue;
-import org.openflexo.model.validation.ValidationModel;
-import org.openflexo.model.validation.ValidationRule;
+import org.openflexo.pamela.validation.FixProposal;
+import org.openflexo.pamela.validation.ProblemIssue;
+import org.openflexo.pamela.validation.Validable;
+import org.openflexo.pamela.validation.ValidationIssue;
+import org.openflexo.pamela.validation.ValidationModel;
+import org.openflexo.pamela.validation.ValidationRule;
 
 public class ValidationFIBController extends ComponentSwingEditorFIBController {
 

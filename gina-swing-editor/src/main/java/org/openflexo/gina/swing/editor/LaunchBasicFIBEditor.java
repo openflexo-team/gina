@@ -92,7 +92,6 @@ public class LaunchBasicFIBEditor {
 				FlexoLoggingManager.initialize(-1, true, null, Level.INFO, null);
 				FlexoLocalization.initWith(FIBEditor.EDITOR_LOCALIZATION);
 			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -159,16 +158,12 @@ public class LaunchBasicFIBEditor {
 			paletteDialog.setVisible(true);
 
 		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (InstantiationException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IllegalAccessException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 

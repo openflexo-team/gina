@@ -40,8 +40,8 @@
 package org.openflexo.gina.model.operator;
 
 import org.openflexo.gina.model.FIBOperator;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
 
 /**
  * Represent a conditional operator in GINA model

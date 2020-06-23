@@ -44,6 +44,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -57,8 +58,8 @@ import org.openflexo.rm.ResourceLocator;
 
 public class FlexoCollabsiblePanel extends JPanel {
 
-	public static final ImageIconResource ARROW_RIGHT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ArrowRight.gif"));
-	public static final ImageIconResource ARROW_DOWN_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ArrowDown.gif"));
+	public static final ImageIconResource ARROW_RIGHT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ArrowRight.png"));
+	public static final ImageIconResource ARROW_DOWN_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ArrowDown.png"));
 
 	private final FlexoCollabsiblePanelHeader header;
 	private final JXCollapsiblePane collabsiblePane;
@@ -116,7 +117,9 @@ public class FlexoCollabsiblePanel extends JPanel {
 					toggleState();
 				}
 			});
-			button.setBorder(null);
+			button.setBorder(BorderFactory.createEmptyBorder());
+			button.setContentAreaFilled(false);
+			button.setFocusable(false);
 			label = new JLabel("<html><font color=\"#000099\"<u>" + title + "</u></font></html>");
 			// label.setText("<HTML>Click the <FONT color=\"#000099\"><U>link</U></FONT>" + " to go to the Java website.</HTML>");
 			label.addMouseListener(new MouseAdapter() {
@@ -132,7 +135,7 @@ public class FlexoCollabsiblePanel extends JPanel {
 
 		public void setCollapsed(boolean val) {
 			button.setIcon(val ? ARROW_RIGHT_ICON : ARROW_DOWN_ICON);
-			button.setBorder(null);
+			// button.setBorder(null);
 		}
 
 	}

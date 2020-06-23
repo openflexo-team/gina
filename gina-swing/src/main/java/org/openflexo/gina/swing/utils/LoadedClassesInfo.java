@@ -335,7 +335,6 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 		@Override
 		public String getDeletedProperty() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 

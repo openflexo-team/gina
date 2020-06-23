@@ -87,7 +87,6 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 
 	@Override
 	protected void performUpdate() {
-		// TODO Auto-generated method stub
 		super.performUpdate();
 		updateMultipleValues();
 		updateVisibleRowCount();
@@ -197,13 +196,10 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 				performSelect(objectToSelect);
 
 			} catch (TypeMismatchException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

@@ -44,14 +44,17 @@ import java.util.Vector;
 import javax.swing.ImageIcon;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.openflexo.gina.swing.editor.controller.FIBEditorIconLibrary;
 import org.openflexo.gina.testutils.GinaSwingEditorTestCase;
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.test.UITest;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 public class TestList extends GinaSwingEditorTestCase {
 
 	@Test
+	@Category(UITest.class)
 	public void testComponent() {
 		final User user1 = new User("John", "Doe", "john.doe@yahoo.com");
 		final User user2 = new User("Thomas", "Smith", "thomas.smith@google.com");
@@ -127,7 +130,6 @@ public class TestList extends GinaSwingEditorTestCase {
 
 		@Override
 		public String getDeletedProperty() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
@@ -179,7 +181,6 @@ public class TestList extends GinaSwingEditorTestCase {
 
 		@Override
 		public String getDeletedProperty() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 

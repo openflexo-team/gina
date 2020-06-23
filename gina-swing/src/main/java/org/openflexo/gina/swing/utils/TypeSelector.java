@@ -445,7 +445,8 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 			}
 
 			if (getEditedObject() instanceof ParameterizedType) {
-				updateGenericParameters(baseClass);
+				setChoice(JAVA_TYPE);
+				updateGenericParameters(baseClass, getEditedObject());
 			}
 			else if (getEditedObject() instanceof WildcardType) {
 				setChoice(JAVA_WILDCARD);
@@ -504,12 +505,13 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 		makeWildcardType();
 	}
 
-	private void updateGenericParameters(Class<?> baseClass) {
+	private void updateGenericParameters(Class<?> baseClass, Type actualType) {
 		if (baseClass == null || baseClass.getTypeParameters().length == 0) {
 			genericParameters.clear();
 		}
 		else {
 			List<GenericParameter> genericParametersToRemove = new ArrayList<>(genericParameters);
+			int index = 0;
 			for (TypeVariable<?> tv : baseClass.getTypeParameters()) {
 				GenericParameter foundGenericParameter = null;
 				for (GenericParameter gp : genericParameters) {
@@ -520,8 +522,14 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 					}
 				}
 				if (foundGenericParameter == null) {
-					genericParameters.add(new GenericParameter(tv));
+					if (actualType != null) {
+						genericParameters.add(new GenericParameter(tv, TypeUtils.getTypeArgument(actualType, baseClass, index)));
+					}
+					else {
+						genericParameters.add(new GenericParameter(tv));
+					}
 				}
+				index++;
 			}
 			for (GenericParameter gpToRemove : genericParametersToRemove) {
 				genericParameters.remove(gpToRemove);
@@ -562,7 +570,7 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 
 		if (baseClass != getBaseClass()) {
 
-			updateGenericParameters(baseClass);
+			updateGenericParameters(baseClass, null);
 
 			if (choice == JAVA_LIST) {
 				if (hasGenericParameters()) {

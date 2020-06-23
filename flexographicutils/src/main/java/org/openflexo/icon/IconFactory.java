@@ -70,21 +70,24 @@ public class IconFactory {
 		return new ImageIcon(result);
 	}
 
-	private static final Hashtable<ImageIcon, Hashtable<Integer, ImageIcon>> _storedIcons = new Hashtable<>();
+	private static final Hashtable<ImageIcon, Hashtable<Long, ImageIcon>> _storedIcons = new Hashtable<>();
 
 	public static ImageIcon getImageIcon(ImageIcon icon, IconMarker... iconMarkers) {
-		Hashtable<Integer, ImageIcon> knownIcons = _storedIcons.get(icon);
+		if (icon == null) {
+			return null;
+		}
+		Hashtable<Long, ImageIcon> knownIcons = _storedIcons.get(icon);
 		if (knownIcons == null) {
 			knownIcons = new Hashtable<>();
 			_storedIcons.put(icon, knownIcons);
 		}
-		int code = 0;
+		long code = 0;
 		for (int i = 0; i < iconMarkers.length; i++) {
 			code += iconMarkers[i].getID();
 		}
 		ImageIcon returned = knownIcons.get(code);
 		if (returned == null) {
-			// logger.info("Compute icon "+code);
+			// logger.info("Compute icon " + code);
 			ImageIcon resultImage = icon;
 			for (int i = 0; i < iconMarkers.length; i++) {
 				resultImage = mergeImageIcon(resultImage, iconMarkers[i]);

@@ -103,9 +103,14 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 
 	@Override
 	protected void componentBecomesVisible() {
+		getWidget().getList().clearCacheForBindingEvaluationContext(getBindingEvaluationContext());
+		getWidget().getArray().clearCacheForBindingEvaluationContext(getBindingEvaluationContext());
 		super.componentBecomesVisible();
 		listenListValueChange();
 		listenArrayValueChange();
+		if (getTechnologyComponent() != null) {
+			performUpdate();
+		}
 	}
 
 	@Override
@@ -232,14 +237,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 			list = null;
 			array = null;
 
-			if (getWidget() != null && getWidget().getList() != null && getWidget().getList().isValid() /*
-																										* &&
-																										* getDataObject
-																										* (
-																										* )
-																										* !=
-																										* null
-																										*/) {
+			if (getWidget() != null && getWidget().getList() != null && getWidget().getList().isValid()) {
 
 				List<?> accessedList = null;
 				try {
@@ -255,16 +253,69 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 					list = (List<I>) accessedList;
 				}
 
+				/*if (DEBUG) {
+					System.out.println("list=" + list);
+					System.out.println("getWidget().getList()=" + getWidget().getList());
+				
+					DataBinding db = new DataBinding("data", getWidget().getList().getOwner(), Object.class, BindingDefinitionType.GET);
+					System.out.println("db=" + db);
+					System.out.println("valid=" + db.isValid());
+					System.out.println("context=" + getBindingEvaluationContext());
+					try {
+						System.out.println("value=" + db.getBindingValue(getBindingEvaluationContext()));
+					} catch (TypeMismatchException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NullReferenceException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
+					DataBinding db2 = new DataBinding("data.availableShapeRoles", getWidget().getList().getOwner(), Object.class,
+							BindingDefinitionType.GET);
+					System.out.println("db2=" + db2);
+					System.out.println("valid=" + db2.isValid());
+					System.out.println("context=" + getBindingEvaluationContext());
+					try {
+						System.out.println("value2=" + db2.getBindingValue(getBindingEvaluationContext()));
+					} catch (TypeMismatchException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NullReferenceException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
+					getWidget().getList().forceRevalidate();
+					getWidget().getList().clearCacheForBindingEvaluationContext(getBindingEvaluationContext());
+				
+					try {
+						accessedList = getWidget().getList().getBindingValue(getBindingEvaluationContext());
+						System.out.println("accessedList=" + accessedList);
+					} catch (TypeMismatchException e) {
+						e.printStackTrace();
+					} catch (NullReferenceException e) {
+						// e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						e.printStackTrace();
+					}
+					if (accessedList instanceof List) {
+						list = (List<I>) accessedList;
+					}
+				
+					System.out.println("J'ai maintenant " + list);
+				
+				}*/
+
 			}
 
-			else if (getWidget() != null && getWidget().getArray() != null && getWidget().getArray().isValid() /*
-																												* &&
-																												* getDataObject
-																												* (
-																												* )
-																												* !=
-																												* null
-																												*/) {
+			else if (getWidget() != null && getWidget().getArray() != null && getWidget().getArray().isValid()) {
 
 				Object accessedArray = null;
 				try {
@@ -276,45 +327,14 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 				} catch (InvocationTargetException e1) {
 					e1.printStackTrace();
 				}
-				// System.out.println("accessedArray="+accessedArray);
 				try {
 					array = (I[]) accessedArray;
 				} catch (ClassCastException e) {
 					LOGGER.warning("ClassCastException " + e.getMessage());
 				}
-				/*
-				 * for (int i=0; i<array.length; i++) {
-				 * System.out.println("> "+array[i]); }
-				 */
 			}
 
-			else if (getWidget() != null && getWidget().getData() != null && getWidget().getData().isValid() /*
-																												* &&
-																												* getDataObject
-																												* (
-																												* )
-																												* !=
-																												* null
-																												*/) {
-				/*
-				 * System.out.println("Binding: "+getWidget().getData().getBinding
-				 * ());
-				 * System.out.println("isBindingValid: "+getWidget().getData
-				 * ().getBinding().isBindingValid()); if
-				 * (!getWidget().getData().getBinding().isBindingValid()) {
-				 * System
-				 * .out.println("Owner: "+getWidget().getData().getOwner());
-				 * System
-				 * .out.println("BindingModel: "+getWidget().getData().getOwner
-				 * ().getBindingModel());
-				 * 
-				 * BindingExpression.logger.setLevel(Level.FINE);
-				 * AbstractBinding binding =
-				 * AbstractBinding.abstractBindingConverter
-				 * .convertFromString(getWidget
-				 * ().getData().getBinding().toString());
-				 * binding.isBindingValid(); }
-				 */
+			else if (getWidget() != null && getWidget().getData() != null && getWidget().getData().isValid()) {
 				Type type = getWidget().getData().getAnalyzedType();
 				if (type instanceof Class && ((Class<?>) type).isEnum()) {
 					array = (I[]) ((Class<?>) type).getEnumConstants();
@@ -334,57 +354,9 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 				}
 			}
 
-			// logger.info("Built list model: " + this);
-
 			fireContentsChanged(this, 0, getSize());
 
 		}
-
-		/*
-		 * private boolean requireChange = true;
-		 * 
-		 * private boolean requireChange() { if (requireChange) { if
-		 * (getWidget().getList() != null && !getWidget().getList().isSet() &&
-		 * getWidget().getArray() != null && !getWidget().getArray().isSet()) {
-		 * requireChange = false; } // Always return true first time return
-		 * true; } requireChange = false;
-		 * 
-		 * if (getWidget().getList() != null && getWidget().getList().isSet() &&
-		 * getDataObject() != null) {
-		 * 
-		 * Object accessedList = null; try { accessedList =
-		 * getWidget().getList().getBindingValue(getBindingEvaluationContext());
-		 * } catch (TypeMismatchException e) { e.printStackTrace(); } catch
-		 * (NullReferenceException e) { e.printStackTrace(); } catch
-		 * (InvocationTargetException e) { e.printStackTrace(); } return
-		 * accessedList != null && !accessedList.equals(list);
-		 * 
-		 * }
-		 * 
-		 * else if (getWidget().getArray() != null &&
-		 * getWidget().getArray().isSet() && getDataObject() != null) {
-		 * 
-		 * try { Object accessedArray =
-		 * getWidget().getArray().getBindingValue(getBindingEvaluationContext
-		 * ()); } catch (TypeMismatchException e) { e.printStackTrace(); } catch
-		 * (NullReferenceException e) { e.printStackTrace(); } catch
-		 * (InvocationTargetException e) { e.printStackTrace(); } // TODO: you
-		 * can do better return true; }
-		 * 
-		 * else if (getWidget().getData() != null &&
-		 * getWidget().getData().isValid() && getDataObject() != null) { Type
-		 * type = getWidget().getData().getAnalyzedType(); if (type instanceof
-		 * Class && ((Class<?>) type).isEnum()) { return false; } }
-		 * 
-		 * else if (StringUtils.isNotEmpty(getWidget().getStaticList())) {
-		 * return false; }
-		 * 
-		 * if (getWidget().getList() != null && !getWidget().getList().isSet()
-		 * && getWidget().getArray() != null && !getWidget().getArray().isSet())
-		 * { return false; }
-		 * 
-		 * return true; }
-		 */
 
 		@Override
 		public int getSize() {

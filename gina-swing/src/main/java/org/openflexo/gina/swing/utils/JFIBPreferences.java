@@ -45,10 +45,10 @@ import java.util.List;
 import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
 
-import org.openflexo.model.StringConverterLibrary;
-import org.openflexo.model.StringConverterLibrary.Converter;
-import org.openflexo.model.converter.AWTRectangleConverter;
-import org.openflexo.model.exceptions.InvalidDataException;
+import org.openflexo.pamela.StringConverterLibrary;
+import org.openflexo.pamela.StringConverterLibrary.Converter;
+import org.openflexo.pamela.converter.AWTRectangleConverter;
+import org.openflexo.pamela.exceptions.InvalidDataException;
 import org.openflexo.rm.ResourceLocator;
 
 public class JFIBPreferences {
@@ -58,6 +58,7 @@ public class JFIBPreferences {
 	public static final String FRAME = "Frame";
 	public static final String PALETTE = "Palette";
 	public static final String INSPECTOR = "Inspector";
+	public static final String PREFERENCES = "Preferences";
 	public static final String LAST_DIR = "LastDirectory";
 	public static final String LAST_FILES_COUNT = "LAST_FILES_COUNT";
 	public static final String LAST_FILE = "LAST_FILE";
@@ -117,6 +118,14 @@ public class JFIBPreferences {
 
 	public static void setInspectorBounds(Rectangle bounds) {
 		setPreferredBounds(INSPECTOR, bounds);
+	}
+
+	public static Rectangle getPreferencesBounds() {
+		return getPreferredBounds(PREFERENCES, new Rectangle(300, 400, 600, 600));
+	}
+
+	public static void setPreferencesBounds(Rectangle bounds) {
+		setPreferredBounds(PREFERENCES, bounds);
 	}
 
 	public static Rectangle getPaletteBounds() {

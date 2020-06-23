@@ -45,6 +45,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
+import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
@@ -63,13 +64,7 @@ import org.openflexo.gina.view.FIBView.RenderingAdapter;
  */
 public abstract class SwingRenderingAdapter<J extends JComponent> implements RenderingAdapter<J> {
 
-	// private JScrollPane scrolledComponent;
-
-	/*
-	 * private final JFIBView<?, J> view;
-	 * 
-	 * public SwingRenderingAdapter(JFIBView<?, J> view) { this.view = view; }
-	 */
+	static final Logger logger = Logger.getLogger(SwingRenderingAdapter.class.getPackage().getName());
 
 	/**
 	 * Return the effective component to be added to swing hierarchy<br>
@@ -200,8 +195,15 @@ public abstract class SwingRenderingAdapter<J extends JComponent> implements Ren
 				return;
 			}
 		}
-		component.setEnabled(true);
-		// System.out.println("Enable component " + component);
+		try {
+			component.setEnabled(true);
+		} catch (ClassCastException e) {
+			// Reported in some Swing UI implementations
+			// See https://bugs.openflexo.org/browse/OP-17
+			// System.out.println("Enable component " + component);
+			logger.warning("Unexpected ClassCastException, see https://bugs.openflexo.org/browse/OP-17");
+		}
+
 		if (component instanceof Container) {
 			for (Component c : ((Container) component).getComponents()) {
 				enableComponent(c);
@@ -217,8 +219,14 @@ public abstract class SwingRenderingAdapter<J extends JComponent> implements Ren
 			}
 		}
 		if (component != null) {
-			component.setEnabled(false);
-			// System.out.println("Disable component " + component);
+			try {
+				// System.out.println("Disable component " + component);
+				component.setEnabled(false);
+			} catch (ClassCastException e) {
+				// Reported in some Swing UI implementations
+				// See https://bugs.openflexo.org/browse/OP-17
+				logger.warning("Unexpected ClassCastException, see https://bugs.openflexo.org/browse/OP-17");
+			}
 		}
 		if (component instanceof Container) {
 			for (Component c : ((Container) component).getComponents()) {
@@ -345,7 +353,6 @@ public abstract class SwingRenderingAdapter<J extends JComponent> implements Ren
 
 	@Override
 	public boolean newFocusedComponentIsDescendingFrom(J component, FocusEvent event) {
-		// TODO Auto-generated method stub
 		return event.getOppositeComponent() != null
 				&& SwingUtilities.isDescendingFrom(event.getOppositeComponent(), getJComponent(component));
 	}

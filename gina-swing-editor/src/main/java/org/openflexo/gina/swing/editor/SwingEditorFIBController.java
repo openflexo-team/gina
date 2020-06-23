@@ -87,12 +87,12 @@ import org.openflexo.gina.swing.utils.FIBUtilsIconLibrary;
 import org.openflexo.gina.swing.view.SwingViewFactory;
 import org.openflexo.gina.utils.FIBIconLibrary;
 import org.openflexo.icon.IconFactory;
-import org.openflexo.model.validation.FixProposal;
-import org.openflexo.model.validation.InformationIssue;
-import org.openflexo.model.validation.ValidationError;
-import org.openflexo.model.validation.ValidationModel;
-import org.openflexo.model.validation.ValidationReport;
-import org.openflexo.model.validation.ValidationWarning;
+import org.openflexo.pamela.validation.FixProposal;
+import org.openflexo.pamela.validation.InformationIssue;
+import org.openflexo.pamela.validation.ValidationError;
+import org.openflexo.pamela.validation.ValidationModel;
+import org.openflexo.pamela.validation.ValidationReport;
+import org.openflexo.pamela.validation.ValidationWarning;
 import org.openflexo.rm.Resource;
 
 /**

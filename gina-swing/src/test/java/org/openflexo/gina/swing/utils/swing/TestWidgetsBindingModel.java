@@ -49,6 +49,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
@@ -76,6 +77,7 @@ import org.openflexo.gina.test.SwingGraphicalContextDelegate;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
+import org.openflexo.test.UITest;
 
 /**
  * Test {@link BindingModel} management on some widgets (focus on derived {@link BindingModel})
@@ -100,6 +102,7 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 	 */
 	@Test
 	@TestOrder(1)
+	@Category(UITest.class)
 	public void test1CreateBrowser() {
 
 		log("test1CreateBrowser()");
@@ -119,6 +122,7 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 
 	@Test
 	@TestOrder(2)
+	@Category(UITest.class)
 	public void test2TestFormat() {
 
 		log("test2TestFormat()");
@@ -160,6 +164,7 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 
 	@Test
 	@TestOrder(3)
+	@Category(UITest.class)
 	public void test3TestValueBindable() {
 
 		log("test3TestValueBindable()");
@@ -179,6 +184,7 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 
 	@Test
 	@TestOrder(4)
+	@Category(UITest.class)
 	public void test4TestEventListener() {
 
 		log("test4TestEventListener()");
@@ -196,6 +202,7 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 
 	@Test
 	@TestOrder(5)
+	@Category(UITest.class)
 	public void test5TestFIBBrowser() {
 
 		FIBBrowserElement rootElement = newFIBBrowserElement();
@@ -276,6 +283,7 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 
 	@Test
 	@TestOrder(6)
+	@Category(UITest.class)
 	public void test6TestFIBTable() {
 
 		table = newFIBTable();
@@ -365,6 +373,7 @@ public class TestWidgetsBindingModel extends FIBTestCase {
 	 */
 	@Test
 	@TestOrder(10)
+	@Category(UITest.class)
 	public void test10InstanciateComponent() {
 
 		log("test2InstanciateComponent()");

@@ -93,7 +93,6 @@ public class JFIBTabView extends JFIBPanelView implements FIBTabView<JPanel, JCo
 							}
 						}
 					} catch (NullReferenceException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}

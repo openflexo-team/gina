@@ -180,7 +180,7 @@ public abstract class ComponentConstraints extends PropertyChangedSupportDefault
 				return en;
 			}
 		}
-		LOGGER.warning("Found inconsistent value '" + stringValue + "' as " + enumType);
+		// LOGGER.warning("Found inconsistent value '" + stringValue + "' as " + enumType);
 		return defaultValue;
 	}
 

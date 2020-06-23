@@ -40,8 +40,8 @@ package org.openflexo.swing.converter;
 
 import java.util.Enumeration;
 
-import org.openflexo.model.StringConverterLibrary.Converter;
-import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.pamela.StringConverterLibrary.Converter;
+import org.openflexo.pamela.factory.ModelFactory;
 import org.openflexo.swing.LookAndFeel;
 
 public class LookAndFeelConverter extends Converter<LookAndFeel> {

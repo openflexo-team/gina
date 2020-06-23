@@ -158,6 +158,9 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 	@Override
 	protected void componentBecomesVisible() {
+
+		getWidget().getData().clearCacheForBindingEvaluationContext(getBindingEvaluationContext());
+		getWidget().getEnable().clearCacheForBindingEvaluationContext(getBindingEvaluationContext());
 		super.componentBecomesVisible();
 		listenDataValueChange();
 		listenEnableValueChange();
@@ -579,7 +582,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 		representedValue = aValue;
 
-		if (getWidget().getData() == null || getWidget().getData().isUnset()) {}
+		if (getWidget().getData() == null || getWidget().getData().isUnset()) {
+		}
 		else {
 			try {
 				/*System.out.println("On tente un set " + getWidget().getData() + " avec " + aValue);
@@ -712,8 +716,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 						((FIBViewImpl<?, ?>) v).performUpdate();
 					}
 				} catch (NullReferenceException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					LOGGER.warning("NullReferenceException while evaluating " + c.getVisible());
+					// e.printStackTrace();
 				}
 			}
 			else {
@@ -803,25 +807,34 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		if (value == null) {
 			return "";
 		}
-		if (getWidget().getFormat() != null && getWidget().getFormat().isValid()) {
-			formatter.setValue(value);
-			String returned = null;
-			try {
-				returned = getWidget().getFormat().getBindingValue(formatter);
-			} catch (TypeMismatchException e) {
-				e.printStackTrace();
-			} catch (NullReferenceException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
+		if (getWidget().getFormat() != null && getWidget().getFormat().isSet()) {
+
+			if (!getWidget().getFormat().isValid()) {
+				// Please investigate:
+				// We try to force the revalidation of format when object type of formatted object is still Object for example
+				// In this case, format binding is not valid and should be recomputed
+				// We should notify the change of getDataType() in FIBWidget
+				getWidget().getFormat().forceRevalidate();
+				if (getWidget().getFormat().isValid()) {
+					LOGGER.warning("Format binding has been force revalidated and is now valid. Please investigate.");
+				}
 			}
-			// We don't want to localize the values
-			/*if (getWidget().getLocalize() && returned != null) {
-				return getLocalized(returned);
+
+			if (getWidget().getFormat().isValid()) {
+
+				formatter.setValue(value);
+				String returned = null;
+				try {
+					returned = getWidget().getFormat().getBindingValue(formatter);
+				} catch (TypeMismatchException e) {
+					e.printStackTrace();
+				} catch (NullReferenceException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				}
+				return returned;
 			}
-			else {*/
-			return returned;
-			// }
 		}
 		if (value instanceof Enum) {
 			String returned = ((Enum<?>) value).name();

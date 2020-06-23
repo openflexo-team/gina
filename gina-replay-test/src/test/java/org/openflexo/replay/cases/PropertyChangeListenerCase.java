@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Dimension;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
@@ -20,6 +21,7 @@ import org.openflexo.replay.test.GraphicalContextDelegate;
 import org.openflexo.replay.test.Window;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
+import org.openflexo.test.UITest;
 
 @RunWith(OrderedRunner.class)
 public class PropertyChangeListenerCase extends Case {
@@ -33,6 +35,7 @@ public class PropertyChangeListenerCase extends Case {
 
 	@Test
 	@TestOrder(1)
+	@Category(UITest.class)
 	public void testInit() {
 		main(null);
 
@@ -41,6 +44,7 @@ public class PropertyChangeListenerCase extends Case {
 
 	@Test
 	@TestOrder(2)
+	@Category(UITest.class)
 	public void testModify() {
 		getPersonA().setAge(20);
 		getPersonA().setFirstName("Alex");
@@ -48,11 +52,11 @@ public class PropertyChangeListenerCase extends Case {
 
 	@Test
 	@TestOrder(3)
+	@Category(UITest.class)
 	public void testWait() {
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

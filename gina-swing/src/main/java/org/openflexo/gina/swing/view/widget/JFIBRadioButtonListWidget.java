@@ -80,22 +80,32 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 
 		@Override
 		public T getSelectedItem(JRadioButtonPanel<T> component) {
-			return component.getSelectedValue();
+			if (component != null) {
+				return component.getSelectedValue();
+			}
+			return null;
 		}
 
 		@Override
 		public void setSelectedItem(JRadioButtonPanel<T> component, T item) {
-			component.setSelectedValue(item);
+			if (component != null) {
+				component.setSelectedValue(item);
+			}
 		}
 
 		@Override
 		public int getSelectedIndex(JRadioButtonPanel<T> component) {
-			return component.getSelectedIndex();
+			if (component != null) {
+				return component.getSelectedIndex();
+			}
+			return -1;
 		}
 
 		@Override
 		public void setSelectedIndex(JRadioButtonPanel<T> component, int index) {
-			component.setSelectedIndex(index);
+			if (component != null) {
+				component.setSelectedIndex(index);
+			}
 		}
 
 		@Override

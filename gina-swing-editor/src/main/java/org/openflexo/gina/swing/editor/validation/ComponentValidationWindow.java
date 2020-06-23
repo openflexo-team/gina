@@ -47,7 +47,7 @@ import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.swing.editor.EditedFIBComponent;
 import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
-import org.openflexo.model.validation.ValidationIssue;
+import org.openflexo.pamela.validation.ValidationIssue;
 
 public class ComponentValidationWindow extends JDialog {
 

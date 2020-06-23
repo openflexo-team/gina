@@ -253,7 +253,7 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 				} catch (TypeMismatchException e) {
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
-					e.printStackTrace();
+					// e.printStackTrace();
 				} catch (InvocationTargetException e) {
 					e.printStackTrace();
 				}
@@ -311,13 +311,10 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 			try {
 				returned = getComponent().getControllerFactory().getBindingValue(getBindingEvaluationContext());
 			} catch (TypeMismatchException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			// System.out.println("factory " + getComponent().getControllerFactory() + " gives " + returned);
@@ -426,7 +423,6 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 				fibModelFactory = new FIBModelFactory();
 				System.out.println(fibModelFactory.stringRepresentation(embeddedFIBController.getRootComponent()));
 			} catch (ModelDefinitionException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}*/
 

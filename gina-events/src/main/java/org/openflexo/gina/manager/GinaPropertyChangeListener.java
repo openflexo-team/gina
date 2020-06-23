@@ -35,31 +35,26 @@ public class GinaPropertyChangeListener implements PropertyChangeListener, Regis
 
 	@Override
 	public String getBaseIdentifier() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public URID getURID() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void setURID(URID urid) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public EventManager getEventManager() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void setEventManager(EventManager manager) {
-		// TODO Auto-generated method stub
 
 	}
 

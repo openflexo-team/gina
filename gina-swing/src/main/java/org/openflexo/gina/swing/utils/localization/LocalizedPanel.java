@@ -109,7 +109,6 @@ public class LocalizedPanel extends FIBJPanel<LocalizedDelegate> {
 
 	@Override
 	public void delete() {
-		// TODO Auto-generated method stub
 	}
 
 	public boolean displaySaveButton() {

@@ -528,6 +528,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		if (bindingSelector.areCompoundBindingAllowed()) {
 			showHideCompoundBindingsButton = new MouseOverButton();
 			showHideCompoundBindingsButton.setBorder(BorderFactory.createEmptyBorder());
+			showHideCompoundBindingsButton.setContentAreaFilled(false);
 			showHideCompoundBindingsButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -758,6 +759,11 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					if (index < 0) {
 						return;
 					}
+
+					if (list.getModel().getSize() == 1) {
+						valueSelected(index, list);
+					}
+
 					_selectedPathElementIndex = index;
 					updateMethodCallPanel();
 				}
@@ -1511,7 +1517,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 						if (TypeUtils.isResolved(columnElement.getResultingType()) && bindingSelector.getBindable() != null) {
 							// if (columnElement.getElement().getAccessibleBindingPathElements().size() > 0) {
 							if (bindingSelector.getBindable().getBindingFactory()
-									.getAccessibleSimplePathElements(columnElement.getElement()).size() > 0) {}
+									.getAccessibleSimplePathElements(columnElement.getElement()).size() > 0) {
+							}
 							else {
 								if (!TypeUtils.isTypeAssignableFrom(binding.getDeclaredType(), columnElement.getResultingType(), true)) {
 									return true;

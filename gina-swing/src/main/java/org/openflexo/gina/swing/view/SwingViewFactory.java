@@ -49,6 +49,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
@@ -57,6 +58,7 @@ import javax.swing.SwingUtilities;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.controller.FIBSelectable;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.FIBMouseEvent;
@@ -237,7 +239,8 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 				}
 			});
 			if (StringUtils.isNotEmpty(fibWidget.getTooltipText())) {
-				dynamicJComponent.setToolTipText(fibWidget.getTooltipText());
+				dynamicJComponent.setToolTipText(
+						fibWidget.getLocalize() ? returned.getLocalized(fibWidget.getTooltipText()) : fibWidget.getTooltipText());
 			}
 		}
 		// returned.updateGraphicalProperties();
@@ -512,6 +515,26 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 
 		private FIBMouseEvent makeMouseEvent(MouseEvent e) {
 			return new SwingFIBMouseEvent(e);
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			super.mousePressed(e);
+
+			// If we press in a component which is selectable and declared to be synchronized with selection
+			// We should handle the case where another component (which is not focusable) represent the current selection
+			// If this is not the same component, trigger the selection modification
+			// See GINA-32
+			if (widgetView instanceof FIBSelectable && ((FIBSelectable) widgetView).synchronizedWithSelection()) {
+				if (widgetView.getController().getSelectionLeader() != widgetView
+						&& widgetView.getController().getSelectionLeader() != null) {
+					List oldSelection = widgetView.getController().getSelectionLeader().getSelection();
+					widgetView.getController().setSelectionLeader((FIBSelectable) widgetView);
+					widgetView.getController().updateSelection((FIBSelectable) widgetView, oldSelection,
+							widgetView.getController().getSelectionLeader().getSelection());
+				}
+			}
+
 		}
 
 		@Override

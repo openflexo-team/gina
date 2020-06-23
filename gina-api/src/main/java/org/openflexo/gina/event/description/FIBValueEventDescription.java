@@ -1,9 +1,9 @@
 package org.openflexo.gina.event.description;
 
-import org.openflexo.model.annotations.Initializer;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.Parameter;
-import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.pamela.annotations.Initializer;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.Parameter;
+import org.openflexo.pamela.annotations.XMLElement;
 
 @ModelEntity
 @XMLElement(xmlTag = "ValueEvent")

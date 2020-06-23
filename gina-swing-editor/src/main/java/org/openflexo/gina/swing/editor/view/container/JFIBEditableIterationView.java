@@ -199,13 +199,11 @@ public class JFIBEditableIterationView extends JFIBIterationView implements FIBS
 
 	@Override
 	public List<PlaceHolder> makePlaceHolders(Dimension preferredSize) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<OperatorDecorator> makeOperatorDecorators() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

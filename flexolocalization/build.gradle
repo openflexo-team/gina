@@ -4,6 +4,3 @@ dependencies {
   compile pamela()
   testCompile testUtils()
 }
-tasks.withType(Test) {
-	jvmArgs += ["-Djava.awt.headless=true"]
-}

@@ -55,22 +55,22 @@ import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.gina.model.FIBWidget;
-import org.openflexo.model.annotations.Adder;
-import org.openflexo.model.annotations.CloningStrategy;
-import org.openflexo.model.annotations.CloningStrategy.StrategyType;
-import org.openflexo.model.annotations.DefineValidationRule;
-import org.openflexo.model.annotations.Embedded;
-import org.openflexo.model.annotations.Finder;
-import org.openflexo.model.annotations.Getter;
-import org.openflexo.model.annotations.Getter.Cardinality;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.PastingPoint;
-import org.openflexo.model.annotations.PropertyIdentifier;
-import org.openflexo.model.annotations.Remover;
-import org.openflexo.model.annotations.Setter;
-import org.openflexo.model.annotations.XMLAttribute;
-import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.pamela.annotations.Adder;
+import org.openflexo.pamela.annotations.CloningStrategy;
+import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
+import org.openflexo.pamela.annotations.DefineValidationRule;
+import org.openflexo.pamela.annotations.Embedded;
+import org.openflexo.pamela.annotations.Finder;
+import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.Getter.Cardinality;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.PastingPoint;
+import org.openflexo.pamela.annotations.PropertyIdentifier;
+import org.openflexo.pamela.annotations.Remover;
+import org.openflexo.pamela.annotations.Setter;
+import org.openflexo.pamela.annotations.XMLAttribute;
+import org.openflexo.pamela.annotations.XMLElement;
 
 @ModelEntity
 @ImplementationClass(FIBBrowser.FIBBrowserImpl.class)
@@ -89,6 +89,8 @@ public interface FIBBrowser extends FIBWidget {
 	public static final String BOUND_TO_SELECTION_MANAGER_KEY = "boundToSelectionManager";
 	@PropertyIdentifier(type = boolean.class)
 	public static final String ALLOWS_DRAG_AND_DROP_KEY = "allowsDragAndDrop";
+	@PropertyIdentifier(type = boolean.class)
+	public static final String ALLOWS_EXTERNAL_DRAG_AND_DROP_KEY = "allowsExternalDragAndDrop";
 	@PropertyIdentifier(type = boolean.class)
 	public static final String DEEP_EXPLORATION_KEY = "deepExploration";
 	@PropertyIdentifier(type = TreeSelectionMode.class)
@@ -166,6 +168,13 @@ public interface FIBBrowser extends FIBWidget {
 
 	@Setter(ALLOWS_DRAG_AND_DROP_KEY)
 	public void setAllowsDragAndDrop(boolean allowsDragAndDrop);
+
+	@Getter(value = ALLOWS_EXTERNAL_DRAG_AND_DROP_KEY, defaultValue = "false")
+	@XMLAttribute
+	public boolean getAllowsExternalDragAndDrop();
+
+	@Setter(ALLOWS_EXTERNAL_DRAG_AND_DROP_KEY)
+	public void setAllowsExternalDragAndDrop(boolean allowsExternalDragAndDrop);
 
 	@Getter(value = SELECTION_MODE_KEY)
 	@XMLAttribute(xmlTag = "selectionMode")
@@ -796,7 +805,7 @@ public interface FIBBrowser extends FIBWidget {
 		}
 
 		@Override
-		public Collection<? extends FIBModelObject> getEmbeddedObjects() {
+		public Collection<? extends FIBModelObject> getEmbeddedFIBModelObjects() {
 			return getElements();
 		}
 

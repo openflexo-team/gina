@@ -49,7 +49,6 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingModel;
@@ -60,22 +59,22 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.gina.model.FIBWidget;
-import org.openflexo.model.annotations.Adder;
-import org.openflexo.model.annotations.CloningStrategy;
-import org.openflexo.model.annotations.CloningStrategy.StrategyType;
-import org.openflexo.model.annotations.DefineValidationRule;
-import org.openflexo.model.annotations.DeserializationFinalizer;
-import org.openflexo.model.annotations.Embedded;
-import org.openflexo.model.annotations.Finder;
-import org.openflexo.model.annotations.Getter;
-import org.openflexo.model.annotations.Getter.Cardinality;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.PropertyIdentifier;
-import org.openflexo.model.annotations.Remover;
-import org.openflexo.model.annotations.Setter;
-import org.openflexo.model.annotations.XMLAttribute;
-import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.pamela.annotations.Adder;
+import org.openflexo.pamela.annotations.CloningStrategy;
+import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
+import org.openflexo.pamela.annotations.DefineValidationRule;
+import org.openflexo.pamela.annotations.DeserializationFinalizer;
+import org.openflexo.pamela.annotations.Embedded;
+import org.openflexo.pamela.annotations.Finder;
+import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.Getter.Cardinality;
+import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.PropertyIdentifier;
+import org.openflexo.pamela.annotations.Remover;
+import org.openflexo.pamela.annotations.Setter;
+import org.openflexo.pamela.annotations.XMLAttribute;
+import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 
 @ModelEntity
@@ -178,12 +177,8 @@ public interface FIBCustom extends FIBWidget {
 
 		private Class<?> componentClass;
 		private Class<?> dataClassForComponent;
-		// Unused private final Class<?> defaultDataClass = null;
-
-		private List<FIBCustomAssignment> assignments;
 
 		public FIBCustomImpl() {
-			assignments = new Vector<>();
 		}
 
 		@Override
@@ -193,10 +188,6 @@ public interface FIBCustom extends FIBWidget {
 
 		@Override
 		public Type getDataType() {
-			/*
-			 * if (getData() != null && getData().isSet() &&
-			 * getData().isValid()) { return getData().getAnalyzedType(); }
-			 */
 			return getDefaultDataType();
 
 		}
@@ -274,7 +265,7 @@ public interface FIBCustom extends FIBWidget {
 
 		@Override
 		public FIBCustomAssignment getAssignent(String variableName) {
-			for (FIBCustomAssignment a : assignments) {
+			for (FIBCustomAssignment a : getAssignments()) {
 				if (variableName != null && variableName.equals(a.getVariable().toString())) {
 					return a;
 				}
@@ -283,36 +274,16 @@ public interface FIBCustom extends FIBWidget {
 		}
 
 		@Override
-		public List<FIBCustomAssignment> getAssignments() {
-			return assignments;
-		}
-
-		@Override
-		public void setAssignments(List<FIBCustomAssignment> assignments) {
-			this.assignments = assignments;
-		}
-
-		@Override
 		public void addToAssignments(FIBCustomAssignment a) {
+
 			if (getAssignent(a.getVariable().toString()) != null) {
 				removeFromAssignments(getAssignent(a.getVariable().toString()));
 				performSuperAdder(ASSIGNMENTS_KEY, a);
 				return;
 			}
-			/*
-			 * a.setOwner(this); assignments.add(a);
-			 * getPropertyChangeSupport().firePropertyChange(ASSIGNMENTS_KEY,
-			 * null, assignments);
-			 */
 			performSuperAdder(ASSIGNMENTS_KEY, a);
-		}
 
-		/*
-		 * @Override public void removeFromAssignments(FIBCustomAssignment a) {
-		 * a.setOwner(null); assignments.remove(a);
-		 * getPropertyChangeSupport().firePropertyChange(ASSIGNMENTS_KEY, null,
-		 * assignments); }
-		 */
+		}
 
 		private BindingModel customComponentBindingModel;
 
@@ -363,6 +334,7 @@ public interface FIBCustom extends FIBWidget {
 			logger.info("Called createAssignment()");
 			FIBCustomAssignment newAssignment = getModelFactory().newInstance(FIBCustomAssignment.class);
 			addToAssignments(newAssignment);
+			System.out.println("assignments= " + getAssignments());
 			return newAssignment;
 		}
 
@@ -396,20 +368,15 @@ public interface FIBCustom extends FIBWidget {
 							customComponent = (FIBCustomComponent<?>) constructor.newInstance(args);
 							break;
 						} catch (IllegalArgumentException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 							logger.warning("While trying to instanciate " + componentClass + " with null");
 						} catch (InstantiationException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						} catch (IllegalAccessException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						} catch (InvocationTargetException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						} catch (ClassCastException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
@@ -427,7 +394,7 @@ public interface FIBCustom extends FIBWidget {
 		}
 
 		@Override
-		public Collection<? extends FIBModelObject> getEmbeddedObjects() {
+		public Collection<? extends FIBModelObject> getEmbeddedFIBModelObjects() {
 			return getAssignments();
 		}
 

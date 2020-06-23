@@ -69,7 +69,6 @@ public class JRadioButtonWithIcon extends JRadioButton {
 					// Retrieve the current label text
 					+ text + "</td></tr></table></html>";
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		setText(label);

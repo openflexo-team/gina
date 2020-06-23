@@ -428,24 +428,6 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		resetSelectionNoNotification();
 	}
 
-	/*@Override
-	public boolean update() {
-		super.update();
-		updateSelectionMode();
-		updateSelected(false);
-		updateSelection(false);
-		// TODO: this should be not necessary
-		// Vincent : It causes many notifications and for big browsers such as
-		// archimate emf metamodel one
-		// it is tool long to produce the browser (35 seconds for this one).
-		// Thus according to the TODO above, I commented it
-		// getBrowserModel().fireTreeRestructured();
-		if (selectedBindingValueChangeListener != null) {
-			selectedBindingValueChangeListener.refreshObserving();
-		}
-		return true;
-	}*/
-
 	protected abstract void updateSelectionMode();
 
 	private final void updateSelected(boolean force) {
