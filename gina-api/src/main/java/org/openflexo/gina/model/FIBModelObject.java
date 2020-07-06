@@ -52,6 +52,9 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.localization.LocalizedDelegateImpl;
+import org.openflexo.pamela.AccessibleProxyObject;
+import org.openflexo.pamela.CloneableProxyObject;
+import org.openflexo.pamela.DeletableProxyObject;
 import org.openflexo.pamela.annotations.Adder;
 import org.openflexo.pamela.annotations.CloningStrategy;
 import org.openflexo.pamela.annotations.Getter;
@@ -64,9 +67,6 @@ import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
 import org.openflexo.pamela.annotations.Getter.Cardinality;
-import org.openflexo.pamela.factory.AccessibleProxyObject;
-import org.openflexo.pamela.factory.CloneableProxyObject;
-import org.openflexo.pamela.factory.DeletableProxyObject;
 import org.openflexo.pamela.factory.EmbeddingType;
 import org.openflexo.pamela.validation.FixProposal;
 import org.openflexo.pamela.validation.ProblemIssue;
@@ -451,7 +451,7 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 		@Override
 		public String getPresentationName() {
 			if (getComponent() != null) {
-				org.openflexo.pamela.ModelEntity<?> e = getComponent().getModelFactory().getModelEntityForInstance(this);
+				org.openflexo.pamela.model.ModelEntity<?> e = getComponent().getModelFactory().getModelEntityForInstance(this);
 				if (getName() != null) {
 					return getName() + " (" + e.getImplementedInterface().getSimpleName() + ")";
 				}

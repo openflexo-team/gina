@@ -49,8 +49,8 @@ import org.openflexo.gina.model.container.layout.GridBagLayoutConstraints;
 import org.openflexo.gina.model.container.layout.GridLayoutConstraints;
 import org.openflexo.gina.model.container.layout.SplitLayoutConstraints;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
-import org.openflexo.pamela.StringConverterLibrary.Converter;
 import org.openflexo.pamela.factory.ModelFactory;
+import org.openflexo.pamela.model.StringConverterLibrary.Converter;
 
 public class ComponentConstraintsConverter extends Converter<ComponentConstraints> {
 

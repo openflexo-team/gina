@@ -39,8 +39,8 @@
 package org.openflexo.localization.converter;
 
 import org.openflexo.localization.Language;
-import org.openflexo.pamela.StringConverterLibrary.Converter;
 import org.openflexo.pamela.factory.ModelFactory;
+import org.openflexo.pamela.model.StringConverterLibrary.Converter;
 
 public class LanguageConverter extends Converter<Language> {
 

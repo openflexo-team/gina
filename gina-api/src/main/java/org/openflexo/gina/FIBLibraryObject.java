@@ -39,12 +39,12 @@
 
 package org.openflexo.gina;
 
+import org.openflexo.pamela.AccessibleProxyObject;
+import org.openflexo.pamela.DeletableProxyObject;
 import org.openflexo.pamela.ModelContextLibrary;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
-import org.openflexo.pamela.factory.AccessibleProxyObject;
-import org.openflexo.pamela.factory.DeletableProxyObject;
 import org.openflexo.pamela.factory.ModelFactory;
 
 /**

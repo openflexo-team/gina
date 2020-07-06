@@ -2114,7 +2114,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			/*else if (getIdentifier() != null) {
 				return getIdentifier() + " (" + e.getImplementedInterface().getSimpleName() + ")";
 			}*/
-			org.openflexo.pamela.ModelEntity<?> e = getModelFactory().getModelEntityForInstance(this);
+			org.openflexo.pamela.model.ModelEntity<?> e = getModelFactory().getModelEntityForInstance(this);
 			return "<" + e.getImplementedInterface().getSimpleName() + ">";
 		}
 

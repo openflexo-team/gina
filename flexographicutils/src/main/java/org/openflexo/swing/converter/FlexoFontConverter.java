@@ -38,8 +38,8 @@
 
 package org.openflexo.swing.converter;
 
-import org.openflexo.pamela.StringConverterLibrary.Converter;
 import org.openflexo.pamela.factory.ModelFactory;
+import org.openflexo.pamela.model.StringConverterLibrary.Converter;
 import org.openflexo.swing.FlexoFont;
 
 public class FlexoFontConverter extends Converter<FlexoFont> {
