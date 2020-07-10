@@ -1,4 +1,6 @@
 dependencies {
-  compile project(':gina-events')
-  compile project(':gina-swing')
+  implementation project(':gina-events')
+  api project(':gina-api')
+  api project(':gina-core')
+  api project(':gina-swing')
 }

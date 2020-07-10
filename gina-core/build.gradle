@@ -1,5 +1,5 @@
 dependencies {
-  compile project(':gina-api')
-  testCompile project(':gina-test')
-  testCompile testUtils()
+  implementation project(':gina-api')
+  testImplementation project(':gina-test')
+  testImplementation testUtils()
 }

@@ -1,6 +1,6 @@
 dependencies {
-  compile flexoUtils()
-  compile connie()
-  compile pamela()
-  testCompile testUtils()
+  implementation flexoUtils()
+  api connie()
+  api pamela()
+  testImplementation testUtils()
 }

@@ -1,7 +1,7 @@
 dependencies {
-  compile connie()
-  compile pamela()
-  compile project(':flexolocalization')
-  compile project(':flexographicutils')
-  compile project(':gina-events')
+  api connie()
+  implementation pamela()
+  api project(':flexolocalization')
+  api project(':flexographicutils')
+  api project(':gina-events')
 }

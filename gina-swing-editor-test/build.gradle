@@ -1,5 +1,6 @@
 dependencies {
-  compile project(':gina-swing-editor')
-  compile project(':gina-test')
-  compile testUtils()
+  implementation project(':gina-core')
+  implementation project(':gina-swing-editor')
+  implementation project(':gina-test')
+  implementation testUtils()
 }

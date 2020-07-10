@@ -1,8 +1,8 @@
 dependencies {
-  compile connie()
-  compile project(':flexographicutils')
-  compile project(':gina-api')
-  compile project(':gina-core')
-  testCompile project(':gina-test')
-  testCompile testUtils()
+  implementation connie()
+  implementation project(':flexographicutils')
+  implementation project(':gina-api')
+  implementation project(':gina-core')
+  testImplementation project(':gina-test')
+  testImplementation testUtils()
 }
