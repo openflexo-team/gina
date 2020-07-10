@@ -1,8 +1,8 @@
 dependencies {
   implementation connie()
   implementation project(':flexographicutils')
-  implementation project(':gina-api')
-  implementation project(':gina-core')
+  api project(':gina-api')
+  api project(':gina-core')
   testImplementation project(':gina-test')
   testImplementation testUtils()
 }
