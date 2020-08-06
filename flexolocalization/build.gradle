@@ -2,5 +2,4 @@ dependencies {
   implementation flexoUtils()
   api connie()
   api pamela()
-  testImplementation testUtils()
 }

@@ -4,5 +4,4 @@ dependencies {
   api project(':gina-api')
   api project(':gina-core')
   testImplementation project(':gina-test')
-  testImplementation testUtils()
 }

@@ -11,8 +11,6 @@ dependencies {
   api group: 'org.swinglabs.swingx', name: 'swingx-core', version: '1.6.5-1'
 
   api group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '2.6.1'
-
-  testImplementation testUtils()
 }
 
 // To be able to use private apple api
