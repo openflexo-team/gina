@@ -3,7 +3,6 @@ dependencies {
 
   implementation flexoUtils()
 
-  //compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
   api group: 'org.apache.xmlgraphics', name: 'batik-dom', version: '1.9.1'
   api group: 'org.apache.xmlgraphics', name: 'batik-svggen', version: '1.9.1'
   implementation group: 'org.apache.xmlgraphics', name: 'batik-codec', version: '1.9.1'
