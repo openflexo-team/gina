@@ -603,7 +603,7 @@ public class JFDTablePanel<T> extends JPanel {
 
 					JLabel titleLabel = new JLabel(column.getDisplayTitle() ? widget.getLocalized(column.getTitle()) : "");
 					titleLabel.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight() + 5));
-					titleLabel.setOpaque(false);
+					titleLabel.setOpaque(true);
 					titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD));
 					titleLabel.setForeground(Color.WHITE);
 					titleLabel.setBackground(Color.GRAY);
