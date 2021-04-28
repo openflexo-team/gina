@@ -41,7 +41,6 @@ package org.openflexo.gina.swing.utils;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -51,13 +50,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -67,127 +64,37 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
+import org.openflexo.connie.BindingEvaluationContext;
+import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.connie.expr.ArithmeticBinaryOperator;
-import org.openflexo.connie.expr.ArithmeticUnaryOperator;
 import org.openflexo.connie.expr.BinaryOperator;
 import org.openflexo.connie.expr.BinaryOperatorExpression;
 import org.openflexo.connie.expr.BindingValue;
-import org.openflexo.connie.expr.BooleanBinaryOperator;
-import org.openflexo.connie.expr.BooleanUnaryOperator;
 import org.openflexo.connie.expr.ConditionalExpression;
 import org.openflexo.connie.expr.Constant;
-import org.openflexo.connie.expr.DefaultExpressionPrettyPrinter;
 import org.openflexo.connie.expr.Expression;
+import org.openflexo.connie.expr.ExpressionEvaluator;
+import org.openflexo.connie.expr.ExpressionPrettyPrinter;
 import org.openflexo.connie.expr.Operator;
 import org.openflexo.connie.expr.OperatorNotSupportedException;
 import org.openflexo.connie.expr.SymbolicConstant;
 import org.openflexo.connie.expr.UnaryOperator;
 import org.openflexo.connie.expr.UnaryOperatorExpression;
-import org.openflexo.connie.pp.ExpressionPrettyPrinter;
+import org.openflexo.connie.java.expr.JavaExpressionEvaluator;
+import org.openflexo.connie.java.expr.JavaPrettyPrinter;
 import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.gina.utils.FIBIconLibrary;
+import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 import org.openflexo.swing.MouseOverButton;
 
 public class BindingExpressionPanel extends JPanel implements FocusListener {
 
 	static final Logger LOGGER = Logger.getLogger(BindingExpressionPanel.class.getPackage().getName());
 
-	DataBinding<?> dataBinding;
-
-	protected static ImageIcon iconForOperator(Operator op) {
-		if (op == ArithmeticBinaryOperator.ADDITION) {
-			return FIBIconLibrary.ADDITION_ICON;
-		}
-		else if (op == ArithmeticBinaryOperator.SUBSTRACTION) {
-			return FIBIconLibrary.SUBSTRACTION_ICON;
-		}
-		else if (op == ArithmeticBinaryOperator.MULTIPLICATION) {
-			return FIBIconLibrary.MULTIPLICATION_ICON;
-		}
-		else if (op == ArithmeticBinaryOperator.DIVISION) {
-			return FIBIconLibrary.DIVISION_ICON;
-		}
-		else if (op == ArithmeticBinaryOperator.POWER) {
-			return FIBIconLibrary.POWER_ICON;
-		}
-		else if (op == BooleanBinaryOperator.EQUALS) {
-			return FIBIconLibrary.EQUALS_ICON;
-		}
-		else if (op == BooleanBinaryOperator.NOT_EQUALS) {
-			return FIBIconLibrary.NOT_EQUALS_ICON;
-		}
-		else if (op == BooleanBinaryOperator.LESS_THAN) {
-			return FIBIconLibrary.LESS_THAN_ICON;
-		}
-		else if (op == BooleanBinaryOperator.LESS_THAN_OR_EQUALS) {
-			return FIBIconLibrary.LESS_THAN_OR_EQUALS_ICON;
-		}
-		else if (op == BooleanBinaryOperator.GREATER_THAN) {
-			return FIBIconLibrary.GREATER_THAN_ICON;
-		}
-		else if (op == BooleanBinaryOperator.GREATER_THAN_OR_EQUALS) {
-			return FIBIconLibrary.GREATER_THAN_OR_EQUALS_ICON;
-		}
-		else if (op == BooleanBinaryOperator.AND) {
-			return FIBIconLibrary.AND_ICON;
-		}
-		else if (op == BooleanBinaryOperator.OR) {
-			return FIBIconLibrary.OR_ICON;
-		}
-		else if (op == BooleanUnaryOperator.NOT) {
-			return FIBIconLibrary.NOT_ICON;
-		}
-		else if (op == ArithmeticUnaryOperator.UNARY_MINUS) {
-			return FIBIconLibrary.SUBSTRACTION_ICON;
-		}
-		else if (op == ArithmeticUnaryOperator.SIN) {
-			return FIBIconLibrary.SIN_ICON;
-		}
-		else if (op == ArithmeticUnaryOperator.ASIN) {
-			return FIBIconLibrary.ASIN_ICON;
-		}
-		else if (op == ArithmeticUnaryOperator.COS) {
-			return FIBIconLibrary.COS_ICON;
-		}
-		else if (op == ArithmeticUnaryOperator.ACOS) {
-			return FIBIconLibrary.ACOS_ICON;
-		}
-		else if (op == ArithmeticUnaryOperator.TAN) {
-			return FIBIconLibrary.TAN_ICON;
-		}
-		else if (op == ArithmeticUnaryOperator.ATAN) {
-			return FIBIconLibrary.ATAN_ICON;
-		}
-		else if (op == ArithmeticUnaryOperator.EXP) {
-			return FIBIconLibrary.EXP_ICON;
-		}
-		else if (op == ArithmeticUnaryOperator.LOG) {
-			return FIBIconLibrary.LOG_ICON;
-		}
-		else if (op == ArithmeticUnaryOperator.SQRT) {
-			return FIBIconLibrary.SQRT_ICON;
-		}
-		return null;
-	}
-
-	public BindingExpressionPanel(DataBinding<?> aDataBinding) {
-		super();
-		// logger.info("Instanciate BindingExpressionPanel with " + aDataBinding);
-		setLayout(new BorderLayout());
-		dataBinding = aDataBinding;
-		init();
-	}
-
-	public void delete() {
-		if (rootExpressionPanel != null) {
-			rootExpressionPanel.delete();
-		}
-		rootExpressionPanel = null;
-		dataBinding = null;
-	}
+	private BindingSelector bindingSelector;
+	private DataBinding<?> dataBinding;
 
 	// private JTextArea expressionTA;
 	private JPanel controls;
@@ -210,11 +117,32 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 	private JTextArea evaluationTA;
 	protected JPanel evaluationPanel;
 
-	protected ExpressionPrettyPrinter pp = new DefaultExpressionPrettyPrinter();
+	protected ExpressionPrettyPrinter pp = JavaPrettyPrinter.getInstance(); // new DefaultExpressionPrettyPrinter();
 
 	private ExpressionInnerPanel focusReceiver = null;
 
 	private boolean avoidLoop = false;
+
+	public BindingExpressionPanel(BindingSelector bindingSelector) {
+		super();
+		// logger.info("Instanciate BindingExpressionPanel with " + aDataBinding);
+		setLayout(new BorderLayout());
+		this.bindingSelector = bindingSelector;
+		dataBinding = bindingSelector.getEditedObject();
+		init();
+	}
+
+	public void delete() {
+		if (rootExpressionPanel != null) {
+			rootExpressionPanel.delete();
+		}
+		rootExpressionPanel = null;
+		dataBinding = null;
+	}
+
+	public BindingSelector getBindingSelector() {
+		return bindingSelector;
+	}
 
 	public void setEditedExpression(DataBinding<?> bindingExpression) {
 		if (avoidLoop) {
@@ -291,7 +219,19 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 		else {
 			try {
 				if (evaluationPanel != null && evaluationTA != null && evaluationPanel.isVisible() && dataBinding != null) {
-					Expression evaluatedExpression = dataBinding.getExpression().evaluate(null);
+					Expression evaluatedExpression = dataBinding.getExpression().evaluate(new BindingEvaluationContext() {
+
+						@Override
+						public Object getValue(BindingVariable variable) {
+							// TODO Auto-generated method stub
+							return null;
+						}
+
+						@Override
+						public ExpressionEvaluator getEvaluator() {
+							return new JavaExpressionEvaluator(this);
+						}
+					});
 					if (evaluatedExpression != null) {
 						evaluationTA.setText(evaluatedExpression.toString());
 					}
@@ -303,7 +243,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 			} catch (NullReferenceException e) {
 				status = ExpressionParsingStatus.INVALID;
 				message = e.getHTMLLocalizedMessage();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				status = ExpressionParsingStatus.INVALID;
 				message = e.getLocalizedMessage();
 			}
@@ -466,15 +406,11 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 		final JPanel commonControls = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
 		final JPanel mathControls = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
 
-		commonControls
-				.add(createOperatorGroupPanel("logical", BooleanBinaryOperator.AND, BooleanBinaryOperator.OR, BooleanUnaryOperator.NOT));
+		commonControls.add(createOperatorGroupPanel("logical", getBindingSelector().getExpressionGrammar().getLogicalOperators()));
 
-		commonControls.add(createOperatorGroupPanel("comparison", BooleanBinaryOperator.EQUALS, BooleanBinaryOperator.NOT_EQUALS,
-				BooleanBinaryOperator.LESS_THAN, BooleanBinaryOperator.LESS_THAN_OR_EQUALS, BooleanBinaryOperator.GREATER_THAN,
-				BooleanBinaryOperator.GREATER_THAN_OR_EQUALS));
+		commonControls.add(createOperatorGroupPanel("comparison", getBindingSelector().getExpressionGrammar().getComparisonOperators()));
 
-		commonControls.add(createOperatorGroupPanel("arithmetic", ArithmeticBinaryOperator.ADDITION, ArithmeticBinaryOperator.SUBSTRACTION,
-				ArithmeticBinaryOperator.MULTIPLICATION, ArithmeticBinaryOperator.DIVISION, ArithmeticUnaryOperator.UNARY_MINUS));
+		commonControls.add(createOperatorGroupPanel("arithmetic", getBindingSelector().getExpressionGrammar().getArithmeticOperators()));
 
 		final MouseOverButton moreButton = new MouseOverButton();
 		moreButton.setBorder(BorderFactory.createEmptyBorder());
@@ -505,14 +441,24 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 
 		commonControls.add(moreButton);
 
-		mathControls.add(createOperatorGroupPanel("scientific", ArithmeticBinaryOperator.POWER, ArithmeticUnaryOperator.SQRT,
-				ArithmeticUnaryOperator.EXP, ArithmeticUnaryOperator.LOG));
-
-		mathControls.add(createOperatorGroupPanel("trigonometric", ArithmeticUnaryOperator.SIN, ArithmeticUnaryOperator.ASIN,
-				ArithmeticUnaryOperator.COS, ArithmeticUnaryOperator.ACOS, ArithmeticUnaryOperator.TAN, ArithmeticUnaryOperator.ATAN));
-
 		controls.add(commonControls, BorderLayout.CENTER);
-		controls.add(mathControls, BorderLayout.SOUTH);
+
+		boolean requiresMathControls = false;
+		if (getBindingSelector().getExpressionGrammar().getScientificOperators() != null) {
+			commonControls
+					.add(createOperatorGroupPanel("scientific", getBindingSelector().getExpressionGrammar().getScientificOperators()));
+			requiresMathControls = true;
+		}
+
+		if (getBindingSelector().getExpressionGrammar().getTrigonometricOperators() != null) {
+			commonControls.add(
+					createOperatorGroupPanel("trigonometric", getBindingSelector().getExpressionGrammar().getTrigonometricOperators()));
+			requiresMathControls = true;
+		}
+
+		if (requiresMathControls) {
+			controls.add(mathControls, BorderLayout.SOUTH);
+		}
 
 		mathControls.setVisible(false);
 
@@ -525,7 +471,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 		returned.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
 
 		for (final Operator o : operators) {
-			JButton b = new JButton(iconForOperator(o));
+			JButton b = new JButton(getBindingSelector().iconForOperator(o));
 			b.setBorder(BorderFactory.createEmptyBorder());
 			b.setToolTipText(o.getLocalizedName());
 			returned.add(b);
@@ -694,7 +640,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 				super();
 				setLayout(new BorderLayout());
 
-				currentOperatorIcon = new JButton(iconForOperator(operator));
+				currentOperatorIcon = new JButton(getBindingSelector().iconForOperator(operator));
 				currentOperatorIcon.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 				currentOperatorIcon.setToolTipText(operator.getLocalizedName());
 
@@ -1052,31 +998,47 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 				if (LOGGER.isLoggable(Level.FINE)) {
 					LOGGER.fine("Building BindingSelector with " + _representedExpression);
 				}
-				_bindingSelector = new BindingSelector(innerDataBinding) {
+
+				_bindingSelector = getBindingSelector().makeSubBindingSelector(innerDataBinding, new ApplyCancelListener() {
+
 					@Override
-					public void apply() {
-
-						// This method is called whenever the inner DataBinding has been applied
-
-						super.apply();
-
+					public void fireApplyPerformed() {
 						innerDataBinding.setExpression(_bindingSelector.getEditedObject().getExpression());
 						setRepresentedExpression(_bindingSelector.getEditedObject().getExpression());
-
 						fireEditedExpressionChanged(dataBinding);
 					}
 
 					@Override
+					public void fireCancelPerformed() {
+					}
+
+				});
+
+				/*_bindingSelector = new BindingSelector(innerDataBinding) {
+					@Override
+					public void apply() {
+				
+						// This method is called whenever the inner DataBinding has been applied
+				
+						super.apply();
+				
+						innerDataBinding.setExpression(_bindingSelector.getEditedObject().getExpression());
+						setRepresentedExpression(_bindingSelector.getEditedObject().getExpression());
+				
+						fireEditedExpressionChanged(dataBinding);
+					}
+				
+					@Override
 					public void cancel() {
 						super.cancel();
 					}
-
+				
 					@Override
 					public Dimension getPreferredSize() {
 						Dimension parentDim = super.getPreferredSize();
 						return new Dimension(100, parentDim.height);
 					}
-				};
+				};*/
 
 				if (innerDataBinding != null) {
 					_bindingSelector.setRevertValue(innerDataBinding.clone());
@@ -1137,9 +1099,11 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 	protected void appendBinaryOperator(BinaryOperator operator) {
 		// System.out.println("appendBinaryOperator " + operator);
 		if (focusReceiver != null) {
-			BindingValue variable = new BindingValue();
-			variable.setDataBinding(dataBinding);
-			Expression newExpression = new BinaryOperatorExpression(operator, focusReceiver.getRepresentedExpression(), variable);
+			BindingValue variable = getBindingSelector().makeBinding();// new BindingValue();
+			// variable.setDataBinding(dataBinding);
+			Expression newExpression = getBindingSelector().getExpressionGrammar().makeBinaryOperatorExpression(operator,
+					focusReceiver.getRepresentedExpression(), variable);
+			// Expression newExpression = new JavaBinaryOperatorExpression(operator, focusReceiver.getRepresentedExpression(), variable);
 			/*logger.info("variable="+variable.getBindingValue());
 			logger.info("owner="+variable.getBindingValue().getOwner());
 			logger.info("bd="+variable.getBindingValue().getBindingDefinition());*/
@@ -1150,7 +1114,9 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 	protected void appendUnaryOperator(UnaryOperator operator) {
 		// System.out.println("appendUnaryOperator " + operator);
 		if (focusReceiver != null) {
-			Expression newExpression = new UnaryOperatorExpression(operator, focusReceiver.getRepresentedExpression());
+			Expression newExpression = getBindingSelector().getExpressionGrammar().makeUnaryOperatorExpression(operator,
+					focusReceiver.getRepresentedExpression());
+			// Expression newExpression = new UnaryOperatorExpression(operator, focusReceiver.getRepresentedExpression());
 			focusReceiver.setRepresentedExpression(newExpression);
 		}
 	}
@@ -1158,11 +1124,12 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 	protected void appendConditional() {
 		// System.out.println("appendConditional");
 		if (focusReceiver != null) {
-			BindingValue condition = new BindingValue();
-			condition.setDataBinding(dataBinding);
-			BindingValue elseExpression = new BindingValue();
-			elseExpression.setDataBinding(dataBinding);
-			Expression newExpression = new ConditionalExpression(condition, focusReceiver.getRepresentedExpression(), elseExpression);
+			BindingValue condition = getBindingSelector().makeBinding();// new BindingValue();
+			// condition.setDataBinding(dataBinding);
+			BindingValue elseExpression = getBindingSelector().makeBinding();// new BindingValue();
+			// elseExpression.setDataBinding(dataBinding);
+			Expression newExpression = getBindingSelector().getExpressionGrammar().makeConditionalExpression(condition,
+					focusReceiver.getRepresentedExpression(), elseExpression);
 			focusReceiver.setRepresentedExpression(newExpression);
 		}
 	}

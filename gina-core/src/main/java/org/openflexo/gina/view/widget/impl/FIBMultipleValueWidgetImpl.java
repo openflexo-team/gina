@@ -42,7 +42,6 @@ package org.openflexo.gina.view.widget.impl;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -246,7 +245,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
 					// e.printStackTrace();
-				} catch (InvocationTargetException e) {
+				} catch (ReflectiveOperationException e) {
 					e.printStackTrace();
 				}
 				if (accessedList instanceof List) {
@@ -324,7 +323,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 					e1.printStackTrace();
 				} catch (NullReferenceException e1) {
 					e1.printStackTrace();
-				} catch (InvocationTargetException e1) {
+				} catch (ReflectiveOperationException e1) {
 					e1.printStackTrace();
 				}
 				try {

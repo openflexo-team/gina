@@ -42,6 +42,7 @@ import java.util.logging.Logger;
 
 import org.junit.After;
 import org.junit.BeforeClass;
+import org.openflexo.connie.binding.javareflect.KeyValueLibrary;
 import org.openflexo.gina.model.FIBModelFactory;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBTab;
@@ -63,7 +64,6 @@ import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTextArea;
 import org.openflexo.gina.model.widget.FIBTextField;
 import org.openflexo.gina.model.widget.FIBTextFieldColumn;
-import org.openflexo.kvc.KeyValueLibrary;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
 

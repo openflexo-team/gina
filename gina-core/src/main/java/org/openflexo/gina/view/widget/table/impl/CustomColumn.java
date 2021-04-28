@@ -62,6 +62,8 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.connie.expr.ExpressionEvaluator;
+import org.openflexo.connie.java.expr.JavaExpressionEvaluator;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent;
@@ -398,7 +400,7 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V> implements Editable
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
 					e.printStackTrace();
-				} catch (InvocationTargetException e) {
+				} catch (ReflectiveOperationException e) {
 					e.printStackTrace();
 				} catch (NotSettableContextException e) {
 					e.printStackTrace();
@@ -457,6 +459,11 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V> implements Editable
 		BindingEvaluationContext bve = new BindingEvaluationContext() {
 
 			@Override
+			public ExpressionEvaluator getEvaluator() {
+				return new JavaExpressionEvaluator(this);
+			}
+
+			@Override
 			public Object getValue(BindingVariable variable) {
 				if (variable.getVariableName().equals(FIBCustomImpl.COMPONENT_NAME)) {
 					return returned;
@@ -465,6 +472,7 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V> implements Editable
 					return CustomColumn.this.getValue(variable);
 				}
 			}
+
 		};
 
 		for (FIBCustomAssignment assign : getColumnModel().getAssignments()) {
@@ -487,7 +495,7 @@ public class CustomColumn<T, V> extends AbstractColumn<T, V> implements Editable
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
 					e.printStackTrace();
-				} catch (InvocationTargetException e) {
+				} catch (ReflectiveOperationException e) {
 					e.printStackTrace();
 				} catch (NotSettableContextException e) {
 					e.printStackTrace();

@@ -48,7 +48,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.openflexo.connie.BindingEvaluator;
+import org.openflexo.connie.java.util.JavaBindingEvaluator;
 import org.openflexo.rm.Resource;
 
 /**
@@ -584,7 +584,7 @@ public class FlexoLocalization {
 	private static String valueForKeyAndObject(String key, Object object) {
 
 		try {
-			return BindingEvaluator.evaluateBinding(key, object).toString();
+			return JavaBindingEvaluator.evaluateBinding(key, object).toString();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -43,7 +43,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseListener;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -333,7 +332,7 @@ public class JFIBTableWidget<T> extends FIBTableWidgetImpl<JTablePanel<T>, T>
 				e1.printStackTrace();
 			} catch (NullReferenceException e1) {
 				e1.printStackTrace();
-			} catch (InvocationTargetException e1) {
+			} catch (ReflectiveOperationException e1) {
 				e1.printStackTrace();
 			} catch (NotSettableContextException e1) {
 				e1.printStackTrace();

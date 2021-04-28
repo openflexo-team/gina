@@ -97,7 +97,7 @@ public class FIBValidationReport extends ValidationReport {
 
 	private static <C extends FIBModelObject> void reanalyzeBinding(ValidationIssue<? extends BindingMustBeValid<C>, C> issue) {
 		DataBinding<?> db = issue.getCause().getBinding(issue.getValidable());
-		db.markedAsToBeReanalized();
+		db.revalidate();
 	}
 
 	@Override

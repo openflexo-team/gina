@@ -140,7 +140,7 @@ public class BindingExpressionSelectorPanel extends AbstractBindingSelectorPanel
 					+ " expression=" + bindingSelector.getEditedObject().getExpression());
 		}
 
-		_expressionPanel = new BindingExpressionPanel(bindingSelector.getEditedObject()) {
+		_expressionPanel = new BindingExpressionPanel(bindingSelector) {
 			@Override
 			protected void fireEditedExpressionChanged(DataBinding<?> expression) {
 				// Called when the binding represented by the panel has changed

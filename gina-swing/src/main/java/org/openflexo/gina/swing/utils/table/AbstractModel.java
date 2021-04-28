@@ -55,6 +55,7 @@ import javax.swing.table.TableModel;
 
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.gina.view.widget.table.impl.EditableColumn;
+import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 /**
  * Represents a TableModel used by a TabularView
@@ -62,7 +63,7 @@ import org.openflexo.gina.view.widget.table.impl.EditableColumn;
  * @author sguerin
  * 
  */
-public abstract class AbstractModel<M extends Observable, D> extends DefaultTableModel implements Observer {
+public abstract class AbstractModel<M extends HasPropertyChangeSupport, D> extends DefaultTableModel implements Observer {
 
 	private static final Logger LOGGER = Logger.getLogger(AbstractModel.class.getPackage().getName());
 

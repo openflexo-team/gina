@@ -55,6 +55,8 @@ import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
+import org.openflexo.connie.expr.ExpressionEvaluator;
+import org.openflexo.connie.java.expr.JavaExpressionEvaluator;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBBrowserElement;
@@ -87,6 +89,11 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 		pcSupport = new PropertyChangeSupport(this);
 
 		browserElementDefinition.getPropertyChangeSupport().addPropertyChangeListener(this);
+	}
+
+	@Override
+	public ExpressionEvaluator getEvaluator() {
+		return new JavaExpressionEvaluator(this);
 	}
 
 	@Override
@@ -508,6 +515,11 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 
 		private CastFunction(FIBBrowserElementChildren children) {
 			this.children = children;
+		}
+
+		@Override
+		public ExpressionEvaluator getEvaluator() {
+			return new JavaExpressionEvaluator(this);
 		}
 
 		@Override

@@ -48,7 +48,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -232,7 +231,7 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 							e1.printStackTrace();
 						} catch (NullReferenceException e1) {
 							e1.printStackTrace();
-						} catch (InvocationTargetException e1) {
+						} catch (ReflectiveOperationException e1) {
 							e1.printStackTrace();
 						}
 					}

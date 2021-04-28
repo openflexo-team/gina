@@ -103,7 +103,6 @@ public class JFIBCheckboxListWidget<T> extends FIBCheckboxListWidgetImpl<JCheckB
 
 	public JFIBCheckboxListWidget(FIBCheckboxList model, FIBController controller) {
 		super(model, controller, new SwingCheckboxListRenderingAdapter<T>());
-
 	}
 
 	@Override

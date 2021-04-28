@@ -40,7 +40,6 @@
 package org.openflexo.gina.view.widget.impl;
 
 import java.beans.PropertyChangeEvent;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -322,7 +321,7 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 		}
@@ -383,7 +382,7 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 			e.printStackTrace();
 		} catch (NullReferenceException e) {
 			e.printStackTrace();
-		} catch (InvocationTargetException e) {
+		} catch (ReflectiveOperationException e) {
 			e.printStackTrace();
 		}
 	}

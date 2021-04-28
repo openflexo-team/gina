@@ -50,6 +50,7 @@ import java.util.logging.Logger;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingValueChangeListener;
+import org.openflexo.connie.binding.javareflect.InvalidKeyValuePropertyException;
 import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -60,7 +61,6 @@ import org.openflexo.gina.model.widget.FIBCustom.FIBCustomAssignment;
 import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent;
 import org.openflexo.gina.view.impl.FIBWidgetViewImpl;
 import org.openflexo.gina.view.widget.FIBCustomWidget;
-import org.openflexo.kvc.InvalidKeyValuePropertyException;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 
 /**
@@ -230,7 +230,7 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 						e.printStackTrace();
 					} catch (NullReferenceException e) {
 						e.printStackTrace();
-					} catch (InvocationTargetException e) {
+					} catch (ReflectiveOperationException e) {
 						e.printStackTrace();
 					}
 					// return true;
@@ -273,7 +273,7 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 							e.printStackTrace();
 						} catch (NullReferenceException e) {
 							// e.printStackTrace();
-						} catch (InvocationTargetException e) {
+						} catch (ReflectiveOperationException e) {
 							e.printStackTrace();
 						} catch (NotSettableContextException e) {
 							e.printStackTrace();
@@ -307,7 +307,7 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 						e.printStackTrace();
 					} catch (NullReferenceException e) {
 						// e.printStackTrace();
-					} catch (InvocationTargetException e) {
+					} catch (ReflectiveOperationException e) {
 						e.printStackTrace();
 					} catch (NotSettableContextException e) {
 						e.printStackTrace();

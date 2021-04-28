@@ -43,7 +43,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -256,7 +255,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 		}
@@ -373,7 +372,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 								e.printStackTrace();
 							} catch (NullReferenceException e) {
 								e.printStackTrace();
-							} catch (InvocationTargetException e) {
+							} catch (ReflectiveOperationException e) {
 								e.printStackTrace();
 							}
 
@@ -657,7 +656,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				throw e;
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				componentVisible = true;
 			}
 		}

@@ -1,5 +1,5 @@
 dependencies {
   implementation flexoUtils()
-  api connie()
+  api connieJava()
   api pamela()
 }

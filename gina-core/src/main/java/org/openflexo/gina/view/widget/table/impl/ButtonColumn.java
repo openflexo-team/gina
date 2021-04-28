@@ -40,7 +40,6 @@
 package org.openflexo.gina.view.widget.table.impl;
 
 import java.awt.event.ActionEvent;
-import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
@@ -83,7 +82,7 @@ public class ButtonColumn<T, V> extends AbstractColumn<T, V> implements Editable
 						e1.printStackTrace();
 					} catch (NullReferenceException e1) {
 						e1.printStackTrace();
-					} catch (InvocationTargetException e1) {
+					} catch (ReflectiveOperationException e1) {
 						e1.printStackTrace();
 					}
 				}
@@ -102,7 +101,7 @@ public class ButtonColumn<T, V> extends AbstractColumn<T, V> implements Editable
 					} catch (NullReferenceException e) {
 						e.printStackTrace();
 						return false;
-					} catch (InvocationTargetException e) {
+					} catch (ReflectiveOperationException e) {
 						e.printStackTrace();
 					}
 					if (enabled instanceof Boolean) {

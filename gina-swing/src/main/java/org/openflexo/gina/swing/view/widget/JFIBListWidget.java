@@ -41,7 +41,6 @@ package org.openflexo.gina.swing.view.widget;
 
 import java.awt.Color;
 import java.awt.event.FocusListener;
-import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
@@ -234,7 +233,7 @@ public class JFIBListWidget<T> extends FIBListWidgetImpl<JList<T>, T> implements
 				} catch (TypeMismatchException e) {
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
-				} catch (InvocationTargetException e) {
+				} catch (ReflectiveOperationException e) {
 					e.printStackTrace();
 				}
 			}

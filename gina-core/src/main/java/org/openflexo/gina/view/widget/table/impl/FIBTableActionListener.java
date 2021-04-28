@@ -43,13 +43,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.connie.expr.ExpressionEvaluator;
+import org.openflexo.connie.java.expr.JavaExpressionEvaluator;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBTableAction;
@@ -79,6 +80,11 @@ public class FIBTableActionListener<T> implements ActionListener, BindingEvaluat
 		this.tableAction = tableAction;
 		selectedObject = null;
 		tableAction.getPropertyChangeSupport().addPropertyChangeListener(this);
+	}
+
+	@Override
+	public ExpressionEvaluator getEvaluator() {
+		return new JavaExpressionEvaluator(this);
 	}
 
 	public void delete() {
@@ -133,7 +139,7 @@ public class FIBTableActionListener<T> implements ActionListener, BindingEvaluat
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				// e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 			if (returned == null) {
@@ -161,7 +167,7 @@ public class FIBTableActionListener<T> implements ActionListener, BindingEvaluat
 						e.printStackTrace();
 					} catch (NullReferenceException e) {
 						e.printStackTrace();
-					} catch (InvocationTargetException e) {
+					} catch (ReflectiveOperationException e) {
 						e.printStackTrace();
 						e.getCause().printStackTrace();
 					}
@@ -178,7 +184,7 @@ public class FIBTableActionListener<T> implements ActionListener, BindingEvaluat
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
 					e.printStackTrace();
-				} catch (InvocationTargetException e) {
+				} catch (ReflectiveOperationException e) {
 					e.printStackTrace();
 					e.getCause().printStackTrace();
 				}

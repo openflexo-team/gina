@@ -39,7 +39,6 @@
 
 package org.openflexo.gina.model.widget;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,7 +51,9 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBComponent.LocalizationEntryRetriever;
+import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.pamela.annotations.CloningStrategy;
+import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
 import org.openflexo.pamela.annotations.DefineValidationRule;
 import org.openflexo.pamela.annotations.DeserializationFinalizer;
 import org.openflexo.pamela.annotations.Getter;
@@ -64,8 +65,6 @@ import org.openflexo.pamela.annotations.PropertyIdentifier;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
-import org.openflexo.gina.model.FIBModelObject;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(FIBBrowserAction.FIBBrowserActionImpl.class)
@@ -232,7 +231,7 @@ public abstract interface FIBBrowserAction extends FIBModelObject {
 				} catch (NullReferenceException e) {
 					e.printStackTrace();
 					return null;
-				} catch (InvocationTargetException e) {
+				} catch (ReflectiveOperationException e) {
 					e.printStackTrace();
 					return null;
 				}

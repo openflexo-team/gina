@@ -54,7 +54,7 @@ import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.type.ParameterizedTypeImpl;
-import org.openflexo.connie.type.WilcardTypeImpl;
+import org.openflexo.connie.type.WildcardTypeImpl;
 import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.gina.model.FIBWidget;
@@ -63,9 +63,11 @@ import org.openflexo.gina.model.widget.FIBTableAction.FIBCustomAction;
 import org.openflexo.gina.model.widget.FIBTableAction.FIBRemoveAction;
 import org.openflexo.pamela.annotations.Adder;
 import org.openflexo.pamela.annotations.CloningStrategy;
+import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
 import org.openflexo.pamela.annotations.Embedded;
 import org.openflexo.pamela.annotations.Finder;
 import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.Getter.Cardinality;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.PastingPoint;
@@ -74,8 +76,6 @@ import org.openflexo.pamela.annotations.Remover;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
-import org.openflexo.pamela.annotations.Getter.Cardinality;
 import org.openflexo.toolbox.ChainedCollection;
 
 @ModelEntity
@@ -592,7 +592,7 @@ public interface FIBTable extends FIBWidget {
 		@Override
 		public Type getDefaultDataType() {
 			Type[] args = new Type[1];
-			args[0] = new WilcardTypeImpl(getIteratorType());
+			args[0] = WildcardTypeImpl.makeUpperBoundWilcard(getIteratorType());
 			return new ParameterizedTypeImpl(Collection.class, args);
 		}
 

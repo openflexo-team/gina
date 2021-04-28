@@ -44,7 +44,7 @@ import java.util.Vector;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import org.openflexo.kvc.ChoiceList;
+import org.openflexo.connie.type.ChoiceList;
 
 /**
  * @author gpolet
@@ -94,7 +94,7 @@ public class LookAndFeel implements ChoiceList<LookAndFeel> {
 	/**
 	 * Overrides getAvailableValues
 	 * 
-	 * @see org.openflexo.kvc.ChoiceList#getAvailableValues()
+	 * @see org.openflexo.connie.type.ChoiceList#getAvailableValues()
 	 */
 	@Override
 	public Vector<LookAndFeel> getAvailableValues() {

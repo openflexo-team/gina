@@ -70,7 +70,7 @@ import org.openflexo.connie.type.GenericArrayTypeImpl;
 import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.connie.type.PrimitiveType;
 import org.openflexo.connie.type.TypeUtils;
-import org.openflexo.connie.type.WilcardTypeImpl;
+import org.openflexo.connie.type.WildcardTypeImpl;
 import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
 import org.openflexo.gina.controller.CustomTypeEditor;
 import org.openflexo.gina.controller.CustomTypeEditorProvider;
@@ -622,7 +622,7 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 		Type[] lower = new Type[lowerBounds.size()];
 		for (int i = 0; i < lowerBounds.size(); i++)
 			lower[i] = lowerBounds.get(i).getType();
-		setEditedObject(new WilcardTypeImpl(upper, lower));
+		setEditedObject(new WildcardTypeImpl(upper, lower));
 	}
 
 	private void updateWildcardBounds() {
