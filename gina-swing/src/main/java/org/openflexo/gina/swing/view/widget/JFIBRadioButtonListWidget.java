@@ -40,6 +40,7 @@
 package org.openflexo.gina.swing.view.widget;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -207,6 +208,8 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 
 				JLabel label = new JLabel(widget.getWidget().getTrimText() ? "<html>" + widget.getStringRepresentation(object) + "</html>"
 						: widget.getStringRepresentation(object));
+
+				label.setFont(getFont());
 				labelsArray[i] = label;
 
 				// Handle the case of icon should be displayed
@@ -258,6 +261,16 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 
 		public void setSelectedIndex(int index) {
 			setSelectedValue(widget.getMultipleValueModel().getElementAt(index));
+		}
+
+		@Override
+		public void setFont(Font font) {
+			super.setFont(font);
+			if (labelsArray != null) {
+				for (JLabel label : labelsArray) {
+					label.setFont(font);
+				}
+			}
 		}
 
 		private class RadioButtonListener implements ActionListener {
