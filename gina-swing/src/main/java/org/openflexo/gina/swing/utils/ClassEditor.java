@@ -110,24 +110,6 @@ public class ClassEditor extends PropertyChangedSupportDefaultImplementation {
 		if (filteredClassName == null || !filteredClassName.equals(this.filteredClassName)) {
 			String oldValue = this.filteredClassName;
 			this.filteredClassName = filteredClassName;
-			/*Vector<Class> foundClasses = new Vector<Class>();
-			try {
-				Class foundClass = Class.forName(getFilteredPackageName()+"."+filteredClassName);
-				foundClasses.add(foundClass);
-				logger.info("Found class "+foundClass);
-			} catch (ClassNotFoundException e) {
-			}
-			for (Package p : packages.keySet()) {
-				try {
-					Class foundClass = Class.forName(p.getName()+"."+filteredClassName);
-					foundClasses.add(foundClass);
-					logger.info("Found class "+foundClass);
-				} catch (ClassNotFoundException e) {
-				}
-			}
-			for (Class c : foundClasses) {
-				registerClass(c);
-			}*/
 			getPropertyChangeSupport().firePropertyChange("filteredClassName", oldValue, filteredClassName);
 			if (searchMode) {
 				updateMatchingClasses();
