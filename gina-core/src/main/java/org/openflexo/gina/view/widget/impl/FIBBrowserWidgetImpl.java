@@ -65,6 +65,7 @@ import org.openflexo.gina.view.impl.FIBWidgetViewImpl;
 import org.openflexo.gina.view.widget.FIBBrowserWidget;
 import org.openflexo.gina.view.widget.browser.impl.FIBBrowserModel;
 import org.openflexo.gina.view.widget.browser.impl.FIBBrowserModel.BrowserCell;
+import org.openflexo.kvc.InvalidKeyValuePropertyException;
 
 /**
  * Base implementation for a browser (a tree of various objects)
@@ -673,6 +674,8 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 				} catch (InvocationTargetException e1) {
 					e1.printStackTrace();
 				} catch (NotSettableContextException e1) {
+					e1.printStackTrace();
+				} catch (InvalidKeyValuePropertyException e1) {
 					e1.printStackTrace();
 				}
 			}
