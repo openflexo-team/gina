@@ -13,27 +13,27 @@
 			<DropDown data="data.border" constraints="flow()" localize="true"
 				autoSelectFirstRow="false" name="BorderDD" />
 			<Color data="data.borderColor" constraints="flow()"
-				visible="(data.border = &quot;line&quot;)" localize="true" />
+				visible="(data.border == &quot;line&quot;)" localize="true" />
 			<TextField data="data.borderTitle" constraints="flow()"
-				visible="((data.border = &quot;titled&quot;) | (data.border = &quot;rounded3d&quot;))"
+				visible="((data.border == &quot;titled&quot;) | (data.border == &quot;rounded3d&quot;))"
 				localize="true" />
 		</Panel>
 		<Label label="title_font" constraints="twocols(location=left)"
-			visible="((data.border = &quot;titled&quot;) | (data.border = &quot;rounded3d&quot;))"
+			visible="((data.border == &quot;titled&quot;) | (data.border == &quot;rounded3d&quot;))"
 			localize="true" />
 		<Font sampleText="Sample for this font" localize="true"
 			allowsNull="true" allowsNullText="" data="data.titleFont"
 			constraints="twocols(location=right)"
-			visible="((data.border = &quot;titled&quot;) | (data.border = &quot;rounded3d&quot;))" />
+			visible="((data.border == &quot;titled&quot;) | (data.border == &quot;rounded3d&quot;))" />
 		<Label label="dark_level" constraints="twocols(location=left)"
-			visible="(data.border = &quot;rounded3d&quot;)" localize="true" />
+			visible="(data.border == &quot;rounded3d&quot;)" localize="true" />
 		<Number numberType="IntegerType" columns="3" data="data.darkLevel"
-			constraints="twocols(location=right)" visible="(data.border = &quot;rounded3d&quot;)"
+			constraints="twocols(location=right)" visible="(data.border == &quot;rounded3d&quot;)"
 			localize="true" />
 
 		<Label label="insets" constraints="twocols(location=left)"
-			localize="true" visible="((data.border = &quot;empty&quot;) | (data.border = &quot;rounded3d&quot;))"/>
-		<Panel align="left" borderTop="0" borderLeft="0" visible="((data.border = &quot;empty&quot;) | (data.border = &quot;rounded3d&quot;))"
+			localize="true" visible="((data.border == &quot;empty&quot;) | (data.border == &quot;rounded3d&quot;))"/>
+		<Panel align="left" borderTop="0" borderLeft="0" visible="((data.border == &quot;empty&quot;) | (data.border == &quot;rounded3d&quot;))"
 			trackViewPortHeight="true" trackViewPortWidth="true" cols="3"
 			borderBottom="0" border="etched" sizeAdjustment="OriginalSize" rows="3"
 			layout="grid" vGap="-3" borderRight="0" hGap="-3"
