@@ -104,12 +104,14 @@ import org.openflexo.gina.model.widget.FIBTextArea;
 import org.openflexo.gina.model.widget.FIBTextField;
 import org.openflexo.pamela.annotations.Adder;
 import org.openflexo.pamela.annotations.CloningStrategy;
+import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
 import org.openflexo.pamela.annotations.DefineValidationRule;
 import org.openflexo.pamela.annotations.DeserializationFinalizer;
 import org.openflexo.pamela.annotations.DeserializationInitializer;
 import org.openflexo.pamela.annotations.Embedded;
 import org.openflexo.pamela.annotations.Finder;
 import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.Getter.Cardinality;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.Import;
 import org.openflexo.pamela.annotations.Imports;
@@ -120,8 +122,6 @@ import org.openflexo.pamela.annotations.Remover;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
-import org.openflexo.pamela.annotations.Getter.Cardinality;
 import org.openflexo.pamela.validation.FixProposal;
 import org.openflexo.pamela.validation.ValidationIssue;
 import org.openflexo.pamela.validation.ValidationRule;
@@ -200,6 +200,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				return "always";
 			}
 		};
+
 		public abstract int getPolicy();
 
 		public abstract String getPresentationName();
@@ -239,6 +240,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				return "always";
 			}
 		};
+
 		public abstract int getPolicy();
 
 		public abstract String getPresentationName();
@@ -750,6 +752,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			explicitDependancies = new Vector<>();
 			mayDepends = new Vector<>();
 			mayAlters = new Vector<>();
+			componentChanged();
 		}
 
 		@Override
@@ -1825,18 +1828,6 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 		}
 
 		private Vector<FIBDependancy> explicitDependancies;
-
-		// private Vector<FIBComponentDependancy> componentDependancies;
-
-		/*
-		 * public Vector<FIBComponentDependancy> getComponentDependancies() { if
-		 * (componentDependancies == null) { componentDependancies = new
-		 * Vector<FIBComponentDependancy>(); for (Iterator<FIBComponent>
-		 * it=getMayDependsIterator(); it.hasNext();) {
-		 * componentDependancies.add(new DynamicFIBDependancy(this,it.next()));
-		 * } componentDependancies.addAll(explicitDependancies); } return
-		 * componentDependancies; }
-		 */
 
 		@Override
 		public Vector<FIBDependancy> getExplicitDependancies() {
