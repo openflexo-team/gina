@@ -8,21 +8,21 @@
 		data="data.componentActualFile" constraints="twocols(expandHorizontally=true;location=right)" />
 	<Label index="4" label="dynamic_file" constraints="twocols(location=left)"
 		localize="true" />
-	<Custom index="5" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom index="5" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.dynamicComponentFile"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data" />
 	</Custom>
 	<Label index="6" label="dynamic_component" constraints="twocols(location=left)"
 		localize="true" />
-	<Custom index="7" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom index="7" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.dynamicComponent"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data" />
 	</Custom>
 	<Label index="8" label="controller_factory" constraints="twocols(location=left)"
 		localize="true" />
-	<Custom index="9" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom index="9" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.controllerFactory"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data" />
@@ -36,14 +36,14 @@
 		showFooter="true" selectionMode="MultipleIntervalSelection" localize="true"
 		manageDynamicModel="true" name="AssignmentsTable" data="data.assignments"
 		constraints="twocols(expandHorizontally=true;expandVertically=true;location=right)">
-		<CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		<CustomColumn componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 			customRendering="false" disableTerminateEditOnFocusLost="false"
 			data="iterator.variable" title="Variable" columnWidth="30"
 			resizable="true" displayTitle="true">
 			<ColumnAssignment variable="component.bindable"
 				value="iterator" />
 		</CustomColumn>
-		<CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		<CustomColumn componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 			customRendering="false" disableTerminateEditOnFocusLost="false"
 			data="iterator.value" title="Value" columnWidth="30" resizable="true"
 			displayTitle="true">

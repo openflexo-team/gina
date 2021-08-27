@@ -13,7 +13,7 @@
 		constraints="twocols(expandHorizontally=true;location=right)" visible="data.isRootComponent" name="ControllerClassSelector"/>
 	<Label index="32" label="visible" constraints="twocols(location=left)"
 		name="visibleLabel" localize="true" />
-	<Custom index="33" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom index="33" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" name="visibleValue" data="data.visible"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data" />

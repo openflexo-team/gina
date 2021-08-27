@@ -10,7 +10,7 @@
 		data="data.imageActualFile" constraints="twocols(expandHorizontally=true;location=right)" />
 	<Label index="4" label="dynamic_image" constraints="twocols(location=left)"
 		localize="true" />
-	<Custom index="5" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom index="5" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.dynamicBackgroundImage"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data" />

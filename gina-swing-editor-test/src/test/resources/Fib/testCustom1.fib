@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Panel id="0" borderLeft="0" layout="border" controllerClassName="org.openflexo.gina.controller.FIBController" border="empty" borderRight="0" trackViewPortWidth="true" borderBottom="0" dataClassName="java.lang.Object" borderTop="0" trackViewPortHeight="true">
   <LocalizedDictionary id="1" />
-  <Custom id="2" manageDynamicModel="true" dataClassForComponent="org.openflexo.connie.DataBinding" componentClassName="org.openflexo.gina.swing.utils.BindingSelector" name="CustomSelector" constraints="border(location=north)">
+  <Custom id="2" manageDynamicModel="true" dataClassForComponent="org.openflexo.connie.DataBinding" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector" name="CustomSelector" constraints="border(location=north)">
     <Assignment id="3" mandatory="true" variable="component.bindable" />
   </Custom>
   <Panel id="4" borderLeft="0" name="FIBPanel" layout="twocols" border="empty" borderRight="0" trackViewPortWidth="true" constraints="border(location=center)" borderBottom="0" dataClassName="java.lang.Object" borderTop="0" trackViewPortHeight="true">
     <Label id="5" name="Label" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" label="label" />
-    <Custom id="6" manageDynamicModel="true" dataClassForComponent="org.openflexo.connie.DataBinding" componentClassName="org.openflexo.gina.swing.utils.BindingSelector" name="CustomSelector2" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)">
+    <Custom id="6" manageDynamicModel="true" dataClassForComponent="org.openflexo.connie.DataBinding" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector" name="CustomSelector2" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)">
       <Assignment id="7" mandatory="true" variable="component.bindable" />
     </Custom>
     <FIBVariable id="8" name="data" type="java.lang.Object" />

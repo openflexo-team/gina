@@ -3,7 +3,7 @@
 	dataClassName="org.openflexo.gina.model.widget.FIBBrowser" name="Inspector">
 	<Label index="2" label="root" constraints="twocols(location=left)"
 		localize="true" />
-	<Custom index="3" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom index="3" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.root"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data" />

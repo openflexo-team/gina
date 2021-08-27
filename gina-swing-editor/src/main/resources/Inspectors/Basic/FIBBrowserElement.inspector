@@ -19,14 +19,14 @@
 	</Custom>
 	<Label index="4" label="label" constraints="twocols(location=left)"
 		localize="true" />
-	<Custom index="5" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom index="5" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.label"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data.iteratorBindable" />
 	</Custom>
 	<Label index="6" label="icon" constraints="twocols(location=left)"
 		localize="true" />
-	<Custom index="7" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom index="7" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.icon"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data.iteratorBindable" />
@@ -38,21 +38,21 @@
 
 	<Label index="12" label="tooltip" constraints="twocols(location=left)"
 		localize="true" />
-	<Custom index="13" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom index="13" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.tooltip"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data.iteratorBindable" />
 	</Custom>
 	<Label index="14" label="enabled" constraints="twocols(location=left)"
 		localize="true" />
-	<Custom index="15" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom index="15" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.enabled"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data.iteratorBindable" />
 	</Custom>
 	<Label index="16" label="visible" constraints="twocols(location=left)"
 		localize="true" />
-	<Custom index="17" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom index="17" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.visible"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data.iteratorBindable" />
@@ -63,7 +63,7 @@
 		darkLevel="0" constraints="twocols(expandHorizontally=true;location=right)">
 		<CheckBox selected="false" data="data.isEditable"
 			constraints="border(location=west)" localize="true" />
-		<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		<Custom componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 			localize="true" manageDynamicModel="true" data="data.editableLabel"
 			constraints="border(location=center)" visible="data.isEditable">
 			<Assignment variable="component.bindable" value="data.iteratorBindable" />
@@ -94,7 +94,7 @@
 	<Label index="24" label="dynamic_font"
 		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 		localize="true" />
-	<Custom index="25" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom index="25" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.dynamicFont"
 		constraints="twocols(expandHorizontally=true;expandVertically=false;index=21;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
 		<Assignment variable="component.bindable" value="data.iteratorBindable" />

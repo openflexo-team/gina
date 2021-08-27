@@ -8,14 +8,14 @@
 		localize="true" columns="15" />
 	<Label index="4" label="dynamic_label" constraints="twocols(location=left)"
 		localize="true" />
-	<Custom index="5" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom index="5" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.dynamicLabel"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data" />
 	</Custom>
 	<Label index="6" label="button_icon" constraints="twocols(location=left)"
 		localize="true" />
-	<Custom index="7" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom index="7" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.buttonIcon"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data" />
