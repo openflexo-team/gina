@@ -132,6 +132,7 @@ public interface FIBBrowserDragOperation extends FIBModelObject {
 		@Override
 		public void setOwner(FIBBrowserElement browserElement) {
 			performSuperSetter(OWNER_KEY, browserElement);
+			componentChanged();
 			dragOperationBindable.updateBindingModel();
 		}
 

@@ -752,7 +752,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			explicitDependancies = new Vector<>();
 			mayDepends = new Vector<>();
 			mayAlters = new Vector<>();
-			componentChanged();
+			//componentChanged(); // Too early
 		}
 
 		@Override

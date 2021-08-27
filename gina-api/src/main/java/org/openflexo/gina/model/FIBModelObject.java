@@ -294,12 +294,12 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 		}
 
 		@Override
-		public final BindingFactory getBindingFactory() {
+		public BindingFactory getBindingFactory() {
 			if (getComponent() != null) {
 				return getComponent().getBindingFactory();
 			}
-			return null;
-			// return FIBLibrary.instance().getBindingFactory();
+			// We really have found nothing
+			return ApplicationFIBLibraryImpl.instance().getBindingFactory();
 		}
 
 		/**
