@@ -311,7 +311,7 @@ public class TabularPanel extends JPanel implements TableModelListener, ListSele
 				// event.getOldModel().deleteObserver(this);
 			}
 			if (event.getNewModel() != null) {
-				event.getOldModel().getPropertyChangeSupport().addPropertyChangeListener(this);
+				event.getNewModel().getPropertyChangeSupport().addPropertyChangeListener(this);
 				// event.getNewModel().addObserver(this);
 			}
 		}
