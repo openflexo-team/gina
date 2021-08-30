@@ -83,6 +83,7 @@ import org.openflexo.connie.expr.SymbolicConstant;
 import org.openflexo.connie.expr.UnaryOperator;
 import org.openflexo.connie.expr.UnaryOperatorExpression;
 import org.openflexo.connie.java.expr.JavaExpressionEvaluator;
+import org.openflexo.connie.java.expr.JavaInstanceOfExpression;
 import org.openflexo.connie.java.expr.JavaPrettyPrinter;
 import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.gina.utils.FIBIconLibrary;
@@ -964,6 +965,68 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 			isHorizontallyLayouted = true;
 		}
 
+		private void addJavaInstanceOfExpressionHorizontalLayout() {
+			GridBagLayout gridbag = new GridBagLayout();
+			GridBagConstraints c = new GridBagConstraints();
+
+			setLayout(gridbag);
+
+			final JavaInstanceOfExpression exp = (JavaInstanceOfExpression) _representedExpression;
+			final ExpressionInnerPanel me = this;
+
+			JLabel operatorPanel = new JLabel("instanceof");
+			operatorPanel.setFont(operatorPanel.getFont().deriveFont(9.0f));
+			
+			ExpressionInnerPanel leftArg = new ExpressionInnerPanel(exp.getArgument()) {
+				@Override
+				public void representedExpressionChanged(Expression newExpression) {
+					exp.setArgument(newExpression);
+					// Take care that we have here a recursion with inner classes
+					// (I known this is not recommanded)
+					// We should here access embedding instance !
+					me.representedExpressionChanged(exp);
+				}
+			};
+
+			c.weightx = 1.0;
+			c.weighty = 1.0;
+			c.anchor = GridBagConstraints.NORTH;
+			c.fill = GridBagConstraints.HORIZONTAL;
+			gridbag.setConstraints(leftArg, c);
+			add(leftArg);
+
+			c.weightx = 0.0;
+			c.weighty = 1.0;
+			c.anchor = GridBagConstraints.NORTH;
+			c.fill = GridBagConstraints.VERTICAL;
+			gridbag.setConstraints(operatorPanel, c);
+			add(operatorPanel);
+
+			/*ExpressionInnerPanel rightArg = new ExpressionInnerPanel(exp.getRightArgument()) {
+				@Override
+				public void representedExpressionChanged(Expression newExpression) {
+					exp.setRightArgument(newExpression);
+					// Take care that we have here a recursion with inner classes
+					// (I known this is not recommanded)
+					// We should here access embedding instance !
+					me.representedExpressionChanged(exp);
+				}
+			};*/
+			
+			TypeSelector right = new TypeSelector(exp.getType());
+
+			c.weightx = 1.0;
+			c.weighty = 1.0;
+			c.anchor = GridBagConstraints.NORTH;
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.gridwidth = GridBagConstraints.REMAINDER;
+			gridbag.setConstraints(right, c);
+			add(right);
+
+			isHorizontallyLayouted = true;
+
+		}
+
 		private void update() {
 			ExpressionInnerPanel parent = (ExpressionInnerPanel) SwingUtilities.getAncestorOfClass(ExpressionInnerPanel.class, this);
 			if (parent != null && parent.isHorizontallyLayouted && parent._representedExpression.getDepth() > 1) {
@@ -1071,6 +1134,15 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 				addConditionalExpressionVerticalLayout();
 			}
 
+			else if (_representedExpression instanceof JavaInstanceOfExpression) {
+				if (_representedExpression.getDepth() > 1) {
+					//addBinaryExpressionVerticalLayout();
+				}
+				else {
+					addJavaInstanceOfExpressionHorizontalLayout();
+				}
+			}
+			
 			addFocusListeners();
 			revalidate();
 			repaint();
