@@ -82,6 +82,7 @@ import org.openflexo.connie.expr.OperatorNotSupportedException;
 import org.openflexo.connie.expr.SymbolicConstant;
 import org.openflexo.connie.expr.UnaryOperator;
 import org.openflexo.connie.expr.UnaryOperatorExpression;
+import org.openflexo.connie.java.expr.JavaCastExpression;
 import org.openflexo.connie.java.expr.JavaExpressionEvaluator;
 import org.openflexo.connie.java.expr.JavaInstanceOfExpression;
 import org.openflexo.connie.java.expr.JavaPrettyPrinter;
@@ -1081,17 +1082,6 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 			gridbag.setConstraints(operatorPanel, c);
 			add(operatorPanel);
 
-			/*ExpressionInnerPanel rightArg = new ExpressionInnerPanel(exp.getRightArgument()) {
-				@Override
-				public void representedExpressionChanged(Expression newExpression) {
-					exp.setRightArgument(newExpression);
-					// Take care that we have here a recursion with inner classes
-					// (I known this is not recommanded)
-					// We should here access embedding instance !
-					me.representedExpressionChanged(exp);
-				}
-			};*/
-
 			TypeSelector right = new TypeSelector(exp.getType()) {
 				public void apply() {
 					super.apply();
@@ -1106,6 +1096,179 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 			c.gridwidth = GridBagConstraints.REMAINDER;
 			gridbag.setConstraints(right, c);
 			add(right);
+
+			isHorizontallyLayouted = true;
+
+		}
+
+		private void addJavaCastExpressionVerticalLayout() {
+			GridBagLayout gridbag2 = new GridBagLayout();
+			GridBagConstraints c2 = new GridBagConstraints();
+			setLayout(gridbag2);
+
+			final JavaCastExpression exp = (JavaCastExpression) _representedExpression;
+			final ExpressionInnerPanel me = this;
+
+			JLabel operatorPanel = new JLabel("(cast) ");
+			operatorPanel.setFont(operatorPanel.getFont().deriveFont(11.0f));
+
+			c2.weightx = 0.0;
+			c2.weighty = 0.0;
+			c2.anchor = GridBagConstraints.CENTER;
+			c2.fill = GridBagConstraints.VERTICAL;
+			gridbag2.setConstraints(operatorPanel, c2);
+			add(operatorPanel);
+
+			JPanel argsPanel = new JPanel();
+
+			GridBagLayout gridbag = new GridBagLayout();
+			GridBagConstraints c = new GridBagConstraints();
+
+			argsPanel.setLayout(gridbag);
+
+			JLabel openParenthesis = new JLabel("(");
+			openParenthesis.setFont(openParenthesis.getFont().deriveFont(14.0f));
+			openParenthesis.setVerticalAlignment(SwingConstants.TOP);
+			c.weightx = 0.0;
+			c.weighty = 1.0;
+			c.anchor = GridBagConstraints.NORTH;
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.insets.top = 4;
+			gridbag.setConstraints(openParenthesis, c);
+			argsPanel.add(openParenthesis);
+
+			TypeSelector typeSelector = new TypeSelector(exp.getCastType()) {
+				public void apply() {
+					super.apply();
+					exp.setCastType(getEditedObject());
+				}
+			};
+
+			c.weightx = 1.0;
+			c.weighty = 1.0;
+			c.anchor = GridBagConstraints.NORTH;
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.insets.top = 0;
+			gridbag.setConstraints(typeSelector, c);
+			argsPanel.add(typeSelector);
+
+			JLabel closeParenthesis = new JLabel(")");
+			closeParenthesis.setFont(closeParenthesis.getFont().deriveFont(14.0f));
+			closeParenthesis.setVerticalAlignment(SwingConstants.TOP);
+			c.weightx = 0.0;
+			c.weighty = 1.0;
+			c.anchor = GridBagConstraints.NORTH;
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.insets.top = 4;
+			c.gridwidth = GridBagConstraints.REMAINDER;
+			gridbag.setConstraints(closeParenthesis, c);
+			argsPanel.add(closeParenthesis);
+
+			ExpressionInnerPanel argPanel = new ExpressionInnerPanel(exp.getArgument()) {
+				@Override
+				public void representedExpressionChanged(Expression newExpression) {
+					exp.setArgument(newExpression);
+					// Take care that we have here a recursion with inner classes
+					// (I known this is not recommanded)
+					// We should here access embedding instance !
+					me.representedExpressionChanged(exp);
+				}
+			};
+
+			c.weightx = 1.0;
+			c.weighty = 1.0;
+			c.anchor = GridBagConstraints.NORTH;
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.gridwidth = GridBagConstraints.REMAINDER;
+			c.insets.top = 0;
+			gridbag.setConstraints(argPanel, c);
+			argsPanel.add(argPanel);
+
+			c2.weightx = 1.0;
+			c2.weighty = 0.0;
+			c2.anchor = GridBagConstraints.NORTH;
+			c2.fill = GridBagConstraints.BOTH;
+			c2.gridwidth = GridBagConstraints.REMAINDER;
+			gridbag2.setConstraints(argsPanel, c2);
+			add(argsPanel);
+
+			Box box = Box.createHorizontalBox();
+			c2.weightx = 1.0;
+			c2.weighty = 1.0;
+			c2.anchor = GridBagConstraints.SOUTH;
+			c2.fill = GridBagConstraints.BOTH;
+			c2.gridwidth = GridBagConstraints.REMAINDER;
+			gridbag2.setConstraints(box, c2);
+			add(box);
+
+			isHorizontallyLayouted = false;
+		}
+
+		private void addJavaCastExpressionHorizontalLayout() {
+			GridBagLayout gridbag = new GridBagLayout();
+			GridBagConstraints c = new GridBagConstraints();
+
+			setLayout(gridbag);
+
+			final JavaCastExpression exp = (JavaCastExpression) _representedExpression;
+			final ExpressionInnerPanel me = this;
+
+			JLabel openParenthesis = new JLabel("(");
+			openParenthesis.setFont(openParenthesis.getFont().deriveFont(14.0f));
+			openParenthesis.setVerticalAlignment(SwingConstants.TOP);
+			c.weightx = 0.0;
+			c.weighty = 1.0;
+			c.anchor = GridBagConstraints.NORTH;
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.insets.top = 4;
+			gridbag.setConstraints(openParenthesis, c);
+			add(openParenthesis);
+
+			TypeSelector typeSelector = new TypeSelector(exp.getCastType()) {
+				public void apply() {
+					super.apply();
+					exp.setCastType(getEditedObject());
+				}
+			};
+
+			c.weightx = 1.0;
+			c.weighty = 1.0;
+			c.anchor = GridBagConstraints.NORTH;
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.insets.top = 0;
+			gridbag.setConstraints(typeSelector, c);
+			add(typeSelector);
+
+			JLabel closeParenthesis = new JLabel(")");
+			closeParenthesis.setFont(closeParenthesis.getFont().deriveFont(14.0f));
+			closeParenthesis.setVerticalAlignment(SwingConstants.TOP);
+			c.weightx = 0.0;
+			c.weighty = 1.0;
+			c.anchor = GridBagConstraints.NORTH;
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.insets.top = 4;
+			gridbag.setConstraints(closeParenthesis, c);
+			add(closeParenthesis);
+
+			ExpressionInnerPanel arg = new ExpressionInnerPanel(exp.getArgument()) {
+				@Override
+				public void representedExpressionChanged(Expression newExpression) {
+					exp.setArgument(newExpression);
+					// Take care that we have here a recursion with inner classes
+					// (I known this is not recommanded)
+					// We should here access embedding instance !
+					me.representedExpressionChanged(exp);
+				}
+			};
+
+			c.weightx = 1.0;
+			c.weighty = 1.0;
+			c.anchor = GridBagConstraints.NORTH;
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.insets.top = 0;
+			c.gridwidth = GridBagConstraints.REMAINDER;
+			gridbag.setConstraints(arg, c);
+			add(arg);
 
 			isHorizontallyLayouted = true;
 
@@ -1198,6 +1361,14 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 				}
 				else {
 					addJavaInstanceOfExpressionHorizontalLayout();
+				}
+			}
+			else if (_representedExpression instanceof JavaCastExpression) {
+				if (_representedExpression.getDepth() > 1) {
+					addJavaCastExpressionVerticalLayout();
+				}
+				else {
+					addJavaCastExpressionHorizontalLayout();
 				}
 			}
 
