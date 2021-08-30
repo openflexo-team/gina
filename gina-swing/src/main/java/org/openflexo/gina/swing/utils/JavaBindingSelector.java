@@ -40,8 +40,11 @@ package org.openflexo.gina.swing.utils;
 
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -214,6 +217,26 @@ public class JavaBindingSelector extends BindingSelector {
 				DataBinding.BindingDefinitionType.GET);
 		// DataBinding binding = new DataBinding<String>(testBindable,
 		// Object.class, DataBinding.BindingDefinitionType.EXECUTE);
+
+		KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+		focusManager.addPropertyChangeListener(new PropertyChangeListener() {
+
+			@Override
+			public void propertyChange(PropertyChangeEvent arg0) {
+				if (focusManager.getFocusOwner() != null) {
+					System.out.println(
+							"Nouveau focusOwner: " + focusManager.getFocusOwner().getName() + " : " + focusManager.getFocusOwner());
+					System.out.println("parent:" + focusManager.getFocusOwner().getParent());
+					/*if (focusManager.getFocusOwner().getParent() instanceof TypeSelector) {
+						System.out.println("Hop la");
+						Thread.dumpStack();
+					}*/
+				}
+				else {
+					System.out.println("Nouveau focusOwner: " + focusManager.getFocusOwner());
+				}
+			}
+		});
 
 		final JavaBindingSelector _selector = new JavaBindingSelector(null) {
 			@Override

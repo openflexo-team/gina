@@ -62,6 +62,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.openflexo.connie.type.CustomType;
 import org.openflexo.connie.type.CustomTypeFactory;
@@ -160,8 +161,9 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 	public TypeSelector(Type editedObject) {
 		super(editedObject);
 
+		setName("TypeSelector");
 		setRevertValue(editedObject);
-		setFocusable(true);
+		// setFocusable(true);
 		pcSupport = new PropertyChangeSupport(this);
 		choices = new ArrayList<>();
 
@@ -721,6 +723,7 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 	@Override
 	protected ResizablePanel createCustomPanel(Type editedObject) {
 		_selectorPanel = makeCustomPanel(editedObject);
+		_selectorPanel.setName("TypeSelector-panel");
 		return _selectorPanel;
 	}
 
@@ -743,6 +746,8 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 		protected TypeSelectorDetailsPanel(Type editedObject) {
 			super();
 
+			setName("TypeSelectorDetailsPanel");
+
 			fibComponent = ApplicationFIBLibraryImpl.instance().retrieveFIBComponent(FIB_FILE_NAME, true);
 			controller = new CustomFIBController(fibComponent);
 			fibView = (JFIBView<?, ?>) controller.buildView(fibComponent, null, true);
@@ -751,6 +756,7 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 
 			setLayout(new BorderLayout());
 			add(fibView.getResultingJComponent(), BorderLayout.CENTER);
+			fibView.getResultingJComponent().setName("TypeSelectorDetailsPanel-content");
 
 			fireEditedObjectChanged();
 		}
@@ -835,6 +841,20 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 		}
 		_selectorPanel = null;
 		super.deletePopup();
+	}
+
+	@Override
+	protected void openPopup() {
+		super.openPopup();
+		/*System.out.println("openPopup for popup: " + _popup);
+		System.out.println("getFocusableWindowState: " + _popup.getFocusableWindowState());
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				System.out.println("On tente de choper le focus");
+				_popup.requestFocusInWindow();
+			}
+		});*/
 	}
 
 	public TypeSelectorDetailsPanel getSelectorPanel() {
