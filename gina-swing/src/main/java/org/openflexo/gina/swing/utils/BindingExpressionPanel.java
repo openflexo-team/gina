@@ -965,6 +965,85 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 			isHorizontallyLayouted = true;
 		}
 
+		private void addJavaInstanceOfExpressionVerticalLayout() {
+			GridBagLayout gridbag2 = new GridBagLayout();
+			GridBagConstraints c2 = new GridBagConstraints();
+			setLayout(gridbag2);
+
+			final JavaInstanceOfExpression exp = (JavaInstanceOfExpression) _representedExpression;
+			final ExpressionInnerPanel me = this;
+
+			JLabel operatorPanel = new JLabel("instanceof");
+			operatorPanel.setFont(operatorPanel.getFont().deriveFont(9.0f));
+
+			c2.weightx = 0.0;
+			c2.weighty = 0.0;
+			c2.anchor = GridBagConstraints.CENTER;
+			c2.fill = GridBagConstraints.VERTICAL;
+			gridbag2.setConstraints(operatorPanel, c2);
+			add(operatorPanel);
+
+			JPanel argsPanel = new JPanel();
+
+			GridBagLayout gridbag = new GridBagLayout();
+			GridBagConstraints c = new GridBagConstraints();
+
+			argsPanel.setLayout(gridbag);
+
+			ExpressionInnerPanel leftArg = new ExpressionInnerPanel(exp.getArgument()) {
+				@Override
+				public void representedExpressionChanged(Expression newExpression) {
+					exp.setArgument(newExpression);
+					// Take care that we have here a recursion with inner classes
+					// (I known this is not recommanded)
+					// We should here access embedding instance !
+					me.representedExpressionChanged(exp);
+				}
+			};
+
+			c.weightx = 1.0;
+			c.weighty = 1.0;
+			c.anchor = GridBagConstraints.NORTH;
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.gridwidth = GridBagConstraints.REMAINDER;
+			gridbag.setConstraints(leftArg, c);
+			argsPanel.add(leftArg);
+
+			TypeSelector right = new TypeSelector(exp.getType()) {
+				public void apply() {
+					super.apply();
+					exp.setType(getEditedObject());
+				}
+			};
+
+			c.weightx = 1.0;
+			c.weighty = 1.0;
+			c.anchor = GridBagConstraints.NORTH;
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.gridwidth = GridBagConstraints.REMAINDER;
+			gridbag.setConstraints(right, c);
+			argsPanel.add(right);
+
+			c2.weightx = 1.0;
+			c2.weighty = 0.0;
+			c2.anchor = GridBagConstraints.NORTH;
+			c2.fill = GridBagConstraints.BOTH;
+			c2.gridwidth = GridBagConstraints.REMAINDER;
+			gridbag2.setConstraints(argsPanel, c2);
+			add(argsPanel);
+
+			Box box = Box.createHorizontalBox();
+			c2.weightx = 1.0;
+			c2.weighty = 1.0;
+			c2.anchor = GridBagConstraints.SOUTH;
+			c2.fill = GridBagConstraints.BOTH;
+			c2.gridwidth = GridBagConstraints.REMAINDER;
+			gridbag2.setConstraints(box, c2);
+			add(box);
+
+			isHorizontallyLayouted = false;
+		}
+
 		private void addJavaInstanceOfExpressionHorizontalLayout() {
 			GridBagLayout gridbag = new GridBagLayout();
 			GridBagConstraints c = new GridBagConstraints();
@@ -976,7 +1055,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 
 			JLabel operatorPanel = new JLabel("instanceof");
 			operatorPanel.setFont(operatorPanel.getFont().deriveFont(9.0f));
-			
+
 			ExpressionInnerPanel leftArg = new ExpressionInnerPanel(exp.getArgument()) {
 				@Override
 				public void representedExpressionChanged(Expression newExpression) {
@@ -1012,8 +1091,13 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 					me.representedExpressionChanged(exp);
 				}
 			};*/
-			
-			TypeSelector right = new TypeSelector(exp.getType());
+
+			TypeSelector right = new TypeSelector(exp.getType()) {
+				public void apply() {
+					super.apply();
+					exp.setType(getEditedObject());
+				}
+			};
 
 			c.weightx = 1.0;
 			c.weighty = 1.0;
@@ -1077,32 +1161,6 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 
 				});
 
-				/*_bindingSelector = new BindingSelector(innerDataBinding) {
-					@Override
-					public void apply() {
-				
-						// This method is called whenever the inner DataBinding has been applied
-				
-						super.apply();
-				
-						innerDataBinding.setExpression(_bindingSelector.getEditedObject().getExpression());
-						setRepresentedExpression(_bindingSelector.getEditedObject().getExpression());
-				
-						fireEditedExpressionChanged(dataBinding);
-					}
-				
-					@Override
-					public void cancel() {
-						super.cancel();
-					}
-				
-					@Override
-					public Dimension getPreferredSize() {
-						Dimension parentDim = super.getPreferredSize();
-						return new Dimension(100, parentDim.height);
-					}
-				};*/
-
 				if (innerDataBinding != null) {
 					_bindingSelector.setRevertValue(innerDataBinding.clone());
 				}
@@ -1136,13 +1194,13 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 
 			else if (_representedExpression instanceof JavaInstanceOfExpression) {
 				if (_representedExpression.getDepth() > 1) {
-					//addBinaryExpressionVerticalLayout();
+					addJavaInstanceOfExpressionVerticalLayout();
 				}
 				else {
 					addJavaInstanceOfExpressionHorizontalLayout();
 				}
 			}
-			
+
 			addFocusListeners();
 			revalidate();
 			repaint();
