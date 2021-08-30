@@ -251,7 +251,7 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 				e.printStackTrace();
 				getRenderingAdapter().setIcon(getTechnologyComponent(), null);
 			} catch (NullReferenceException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 				getRenderingAdapter().setIcon(getTechnologyComponent(), null);
 			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();

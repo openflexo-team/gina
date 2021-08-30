@@ -320,7 +320,8 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
+				clearSelection();
 			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
@@ -381,7 +382,7 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 		} catch (TypeMismatchException e) {
 			e.printStackTrace();
 		} catch (NullReferenceException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		} catch (ReflectiveOperationException e) {
 			e.printStackTrace();
 		}
