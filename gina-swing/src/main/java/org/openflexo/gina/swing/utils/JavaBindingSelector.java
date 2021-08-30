@@ -40,11 +40,8 @@ package org.openflexo.gina.swing.utils;
 
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -194,6 +191,9 @@ public class JavaBindingSelector extends BindingSelector {
 
 	}
 
+	// static JComponent currentFocusOwner;
+	// static Border lastBorder;
+
 	/**
 	 * This main allows to launch an application testing the BindingSelector
 	 * 
@@ -218,25 +218,29 @@ public class JavaBindingSelector extends BindingSelector {
 		// DataBinding binding = new DataBinding<String>(testBindable,
 		// Object.class, DataBinding.BindingDefinitionType.EXECUTE);
 
-		KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+		/*KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 		focusManager.addPropertyChangeListener(new PropertyChangeListener() {
-
+		
 			@Override
 			public void propertyChange(PropertyChangeEvent arg0) {
 				if (focusManager.getFocusOwner() != null) {
 					System.out.println(
 							"Nouveau focusOwner: " + focusManager.getFocusOwner().getName() + " : " + focusManager.getFocusOwner());
 					System.out.println("parent:" + focusManager.getFocusOwner().getParent());
-					/*if (focusManager.getFocusOwner().getParent() instanceof TypeSelector) {
-						System.out.println("Hop la");
-						Thread.dumpStack();
-					}*/
+					if (focusManager.getFocusOwner() instanceof JComponent) {
+						if (currentFocusOwner != null) {
+							currentFocusOwner.setBorder(lastBorder);
+						}
+						currentFocusOwner = (JComponent) focusManager.getFocusOwner();
+						lastBorder = ((JComponent) focusManager.getFocusOwner()).getBorder();
+						((JComponent) focusManager.getFocusOwner()).setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+					}
 				}
 				else {
 					System.out.println("Nouveau focusOwner: " + focusManager.getFocusOwner());
 				}
 			}
-		});
+		});*/
 
 		final JavaBindingSelector _selector = new JavaBindingSelector(null) {
 			@Override

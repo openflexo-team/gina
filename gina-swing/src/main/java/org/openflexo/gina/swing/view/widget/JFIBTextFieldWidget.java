@@ -156,7 +156,7 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField> impl
 
 	@Override
 	protected JTextField makeTechnologyComponent() {
-		JTextField textField = null;
+		JTextField textField;
 		if (getWidget().isPasswd()) {
 			textField = new JPasswordField() {
 				@Override
@@ -248,6 +248,35 @@ public class JFIBTextFieldWidget extends FIBTextFieldWidgetImpl<JTextField> impl
 				}
 			}
 		});
+
+		/*textField.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				System.out.println("On vient de cliquer sur le TF: " + textField);
+				System.out.println("Focusable: " + textField.isFocusable());
+				System.out.println("displayable: " + textField.isDisplayable());
+				System.out.println("visible: " + textField.isVisible());
+		
+				PlatformLogger logger2 = PlatformLogger.getLogger("java.awt.focus.Component");
+				logger2.setLevel(PlatformLogger.Level.FINEST);
+		
+				System.out.println("Je tente de choper le focus");
+				if (textField.requestFocusInWindow()) {
+					System.out.println("J'y arrive, c'est cool");
+				}
+				else {
+					System.out.println("Je n'y arrive pas");
+					KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+					System.out.println("focusOwner=" + focusManager.getFocusOwner());
+					System.out.println("permanentFocusOwner=" + focusManager.getPermanentFocusOwner());
+					focusManager.clearGlobalFocusOwner();
+					focusManager.clearFocusOwner();
+					System.out.println("Je retente: " + textField.requestFocusInWindow());
+				}
+				textField.requestFocus();
+			}
+		});*/
 
 		textField.addFocusListener(this);
 
