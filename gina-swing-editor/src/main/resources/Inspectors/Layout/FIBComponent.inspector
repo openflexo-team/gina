@@ -5,13 +5,13 @@
 		borderTitle="free_location_constraints" titleFont="SansSerif,0,10"
 		darkLevel="1"
 		constraints="twocols(expandHorizontally=true;location=right;insetsTop=5;insetsRight=10)"
-		visible="(!(data.isOperator) &amp; (data.parent != null) &amp; (data.parent.layout == &quot;none&quot;))"
+		visible="(!(data.isOperator) &amp;&amp; (data.parent != null) &amp;&amp; (data.parent.layout == &quot;none&quot;))"
 		opaque="false" name="NoneConstraints" />
 	<Panel index="1" layout="twocols" border="rounded3d"
 		borderTitle="flow_layout_constraints" titleFont="SansSerif,0,10"
 		darkLevel="1"
 		constraints="twocols(expandHorizontally=true;location=right;insetsTop=5;insetsRight=10)"
-		visible="(!(data.isOperator) &amp; (data.parent != null) &amp; (data.parent.layout == &quot;flow&quot;))"
+		visible="(!(data.isOperator) &amp;&amp; (data.parent != null) &amp;&amp; (data.parent.layout == &quot;flow&quot;))"
 		opaque="false" name="FlowConstraints">
 		<!-- <Label label="index" constraints="twocols(location=left)" localize="true" 
 			/> <Number numberType="IntegerType" data="data.index" constraints="twocols(location=right)" 
@@ -20,7 +20,7 @@
 	<Panel index="2" layout="twocols" border="rounded3d" darkLevel="1"
 		borderTitle="border_layout_constraints" titleFont="SansSerif,0,10"
 		constraints="twocols(expandHorizontally=true;location=right;insetsTop=5;insetsRight=10)"
-		visible="(!(data.isOperator) &amp; (data.parent != null) &amp; (data.parent.layout == &quot;border&quot;))"
+		visible="(!(data.isOperator) &amp;&amp; (data.parent != null) &amp;&amp; (data.parent.layout == &quot;border&quot;))"
 		opaque="false" name="BorderConstraints">
 		<FIBVariable name="borderLayout"
 			type="org.openflexo.gina.model.container.layout.BorderLayoutConstraints"
@@ -36,7 +36,7 @@
 		borderTitle="grid_layout_constraints" titleFont="SansSerif,0,10"
 		constraints="twocols(expandHorizontally=true;location=right;insetsTop=5;insetsRight=10)"
 		darkLevel="1"
-		visible="(!(data.isOperator) &amp; (data.parent != null) &amp; (data.parent.layout == &quot;grid&quot;))"
+		visible="(!(data.isOperator) &amp;&amp; (data.parent != null) &amp;&amp; (data.parent.layout == &quot;grid&quot;))"
 		opaque="false" name="GridConstraints">
 		<FIBVariable name="gridLayout"
 			type="org.openflexo.gina.model.container.layout.GridLayoutConstraints"
@@ -55,7 +55,7 @@
 	<Panel index="5" layout="twocols" border="rounded3d" borderTitle="box_layout_constraints"
 		titleFont="SansSerif,0,10" darkLevel="1"
 		constraints="twocols(expandHorizontally=true;location=right;insetsTop=5;insetsRight=10)"
-		visible="(!(data.isOperator) &amp; (data.parent != null) &amp; (data.parent.layout == &quot;box&quot;))"
+		visible="(!(data.isOperator) &amp;&amp; (data.parent != null) &amp;&amp; (data.parent.layout == &quot;box&quot;))"
 		opaque="false" name="BoxConstraints">
 		<FIBVariable name="boxLayout"
 			type="org.openflexo.gina.model.container.layout.BoxLayoutConstraints"
@@ -86,7 +86,7 @@
 		borderTitle="two_cols_layout_constraints" titleFont="SansSerif,0,10"
 		darkLevel="1"
 		constraints="twocols(expandHorizontally=true;location=right;insetsTop=5;insetsRight=10)"
-		visible="(!(data.isOperator) &amp; (data.parent != null) &amp; (data.parent.layout == &quot;twocols&quot;))"
+		visible="(!(data.isOperator) &amp;&amp; (data.parent != null) &amp;&amp; (data.parent.layout == &quot;twocols&quot;))"
 		opaque="false" name="TwoColsConstraints">
 		<FIBVariable name="twoColsLayout"
 			type="org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints"
@@ -130,7 +130,7 @@
 		borderTitle="grid_bag_layout_constraints" titleFont="SansSerif,0,10"
 		darkLevel="1"
 		constraints="twocols(expandHorizontally=true;location=right;insetsTop=5;insetsRight=10)"
-		visible="(!(data.isOperator) &amp; (data.parent != null) &amp; (data.parent.layout == &quot;gridbag&quot;))"
+		visible="(!(data.isOperator) &amp;&amp; (data.parent != null) &amp;&amp; (data.parent.layout == &quot;gridbag&quot;))"
 		opaque="false" name="GridBagConstraints">
 		<FIBVariable name="gridBagLayout"
 			type="org.openflexo.gina.model.container.layout.GridBagLayoutConstraints"
@@ -259,7 +259,7 @@
 		borderTitle="split_layout_constraints" titleFont="SansSerif,0,10"
 		darkLevel="0"
 		constraints="twocols(expandHorizontally=true;location=right;insetsTop=5;insetsRight=10)"
-		visible="(!(data.isOperator) &amp; (data.parent != null) &amp; (data.parent.layout == &quot;split&quot;))"
+		visible="(!(data.isOperator) &amp;&amp; (data.parent != null) &amp;&amp; (data.parent.layout == &quot;split&quot;))"
 		opaque="false" name="SplitLayoutConstraints">
 		<FIBVariable name="splitLayout"
 			type="org.openflexo.gina.model.container.layout.SplitLayoutConstraints"

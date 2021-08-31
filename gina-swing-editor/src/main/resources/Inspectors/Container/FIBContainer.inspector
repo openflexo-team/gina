@@ -23,20 +23,20 @@
 			titleFont="SansSerif,0,11" darkLevel="0" constraints="border(location=east)">
 			<Button action="data.componentFirst(ComponentsTable.selected)"
 				buttonType="Trigger" label="First" localize="true"
-				enable="((ComponentsTable.selected != null) &amp; (ComponentsTable.selected.parent.getIndex(ComponentsTable.selected) &gt; 0))"
+				enable="((ComponentsTable.selected != null) &amp;&amp; (ComponentsTable.selected.parent.getIndex(ComponentsTable.selected) &gt; 0))"
 				name="firstButton" index="0"
 				constraints="box(alignmentX=0.5;alignmentY=0.5;index=0)" />
 			<Button action="data.componentUp(ComponentsTable.selected)"
 				buttonType="Trigger" label="Up" localize="true"
-				enable="((ComponentsTable.selected != null) &amp; (ComponentsTable.selected.parent.getIndex(ComponentsTable.selected) &gt; 0))"
+				enable="((ComponentsTable.selected != null) &amp;&amp; (ComponentsTable.selected.parent.getIndex(ComponentsTable.selected) &gt; 0))"
 				name="upButton" index="0" constraints="box(alignmentX=0.5;alignmentY=0.5;index=0)" />
 			<Button action="data.componentDown(ComponentsTable.selected)"
 				buttonType="Trigger" label="Down" localize="true"
-				enable="((ComponentsTable.selected != null) &amp; (ComponentsTable.selected.parent.getIndex(ComponentsTable.selected) &lt; (data.subComponents.size - 1)))"
+				enable="((ComponentsTable.selected != null) &amp;&amp; (ComponentsTable.selected.parent.getIndex(ComponentsTable.selected) &lt; (data.subComponents.size - 1)))"
 				name="downButton" index="0" constraints="box(alignmentX=0.5;alignmentY=0.5;index=0)" />
 			<Button action="data.componentLast(ComponentsTable.selected)"
 				buttonType="Trigger" label="Last" localize="true"
-				enable="((ComponentsTable.selected != null) &amp; (ComponentsTable.selected.parent.getIndex(ComponentsTable.selected) &lt; (data.subComponents.size - 1)))"
+				enable="((ComponentsTable.selected != null) &amp;&amp; (ComponentsTable.selected.parent.getIndex(ComponentsTable.selected) &lt; (data.subComponents.size - 1)))"
 				name="lastButton" index="0" constraints="box(alignmentX=0.5;alignmentY=0.5;index=0)" />
 		</Panel>
 	</Panel>

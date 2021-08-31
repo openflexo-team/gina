@@ -28,7 +28,7 @@
 		<CheckBox selected="false" data="data.hasSpecificFont"
 			constraints="flow()" localize="true" />
 		<Font sampleText="Sample for this font" localize="true"
-			enable="((data != null) &amp; data.hasSpecificFont)"
+			enable="((data != null) &amp;&amp; data.hasSpecificFont)"
 			data="data.font" constraints="flow()" />
 	</Panel>
 	<Parameter name="title" value="Table column" />

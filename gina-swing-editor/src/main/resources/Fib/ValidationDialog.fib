@@ -137,7 +137,7 @@
 				rows="5" readOnly="false" validateOnReturn="true"
 				horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" />
 			<Panel id="61" darkLevel="0"
-				visible="((IssuesTable.selected != null) &amp; IssuesTable.selected.isProblemIssue)"
+				visible="((IssuesTable.selected != null) &amp;&amp; IssuesTable.selected.isProblemIssue)"
 				useScrollBar="false" protectContent="false" name="DetailPanel"
 				layout="border" controllerClassName="org.openflexo.gina.controller.FIBController"
 				border="empty" trackViewPortWidth="true" index="3"
@@ -277,7 +277,7 @@
 		borderTitle="Panel" titleFont="Lucida Grande,0,13"
 		trackViewPortHeight="true">
 		<Button id="87" manageDynamicModel="false" useScrollBar="false"
-			enable="((IssuesTable.selected != null) | (FixProposalTable.selected != null))"
+			enable="((IssuesTable.selected != null) || (FixProposalTable.selected != null))"
 			buttonType="Trigger" name="FixIssueButton"
 			action="controller.fixIssues(IssuesTable.selection,FixProposalTable.selected)"
 			controllerClassName="org.openflexo.gina.controller.FIBController"
@@ -290,7 +290,7 @@
 			index="0" localize="true" constraints="flow(index=0)" label="fix_all"
 			readOnly="false" />
 		<Button id="89" manageDynamicModel="false" useScrollBar="false"
-			enable="((IssuesTable.selected != null) &amp; IssuesTable.selected.cause.isEnabled)"
+			enable="((IssuesTable.selected != null) &amp;&amp; IssuesTable.selected.cause.isEnabled)"
 			buttonType="Trigger" name="DisableRuleButton"
 			action="controller.disableRule(IssuesTable.selected.cause)"
 			controllerClassName="org.openflexo.gina.controller.FIBController"
