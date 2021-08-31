@@ -142,7 +142,7 @@ public class TestBindingModel extends FIBTestCase {
 		assertEquals(TestCustomFIBController.class, panel1.getBindingModel().getControllerBindingVariable().getType());
 
 		// Gives a name to the root panel
-		panel1.setName("RootPanel");
+		panel1.setName("rootPanel");
 
 		// BindingModel remains the same
 		assertEquals(2, panel1.getBindingModel().getBindingVariablesCount());
@@ -203,7 +203,7 @@ public class TestBindingModel extends FIBTestCase {
 
 		// Gives a name to the widget, BindingModel should remain with 3
 		// BindingVariable
-		textfield1.setName("TextField");
+		textfield1.setName("textField");
 		assertEquals(3, textfield1.getBindingModel().getBindingVariablesCount());
 
 		// Sets widget to have dynamic access, BindingModel should be augmented
@@ -219,7 +219,7 @@ public class TestBindingModel extends FIBTestCase {
 		assertNotNull(textfield1.getBindingModel().bindingVariableNamed(textfield1.getName()));
 
 		// Changes name of the widget, BindingModel should be update with TextField1 name
-		textfield1.setName("TextField1");
+		textfield1.setName("textField1");
 
 		System.out.println("BindingModel for textfield1 =" + textfield1.getBindingModel());
 
@@ -269,7 +269,7 @@ public class TestBindingModel extends FIBTestCase {
 		FIBLabel l2 = newFIBLabel("checkbox");
 		panel2.addToSubComponents(l2, new TwoColsLayoutConstraints(TwoColsLayoutLocation.left, false, false));
 		checkbox = newFIBCheckBox();
-		checkbox.setData(new DataBinding<Boolean>("person.firstName = 'Robert'", checkbox, Boolean.class, BindingDefinitionType.GET));
+		checkbox.setData(new DataBinding<Boolean>("person.firstName == \"Robert\"", checkbox, Boolean.class, BindingDefinitionType.GET));
 		panel2.addToSubComponents(checkbox, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, true, false));
 
 		FIBLabel l3 = newFIBLabel("number");
@@ -286,7 +286,7 @@ public class TestBindingModel extends FIBTestCase {
 
 		// Gives a name to the root panel, dynamic access should now be
 		// accessible and a third BindingVariable should be managed
-		panel2.setName("Panel");
+		panel2.setName("panel");
 
 		System.out.println("BindingModel for panel2 =" + panel2.getBindingModel());
 
@@ -350,7 +350,7 @@ public class TestBindingModel extends FIBTestCase {
 		assertTrue(number.getData().isValid());
 
 		// We change name to panel2
-		panel2.setName("Panel2");
+		panel2.setName("panel2");
 
 		// We remove now widgets from panel2
 		panel2.removeFromSubComponents(l1);
@@ -385,7 +385,7 @@ public class TestBindingModel extends FIBTestCase {
 		assertEquals(Person.class, panel2.getBindingModel().bindingVariableNamed("person").getType());
 
 		// Changing widget name does not change anything
-		textfield2.setName("TextField2");
+		textfield2.setName("textField2");
 		assertEquals(2, panel2.getBindingModel().getBindingVariablesCount());
 		assertSame(panel2.getBindingModel().getControllerBindingVariable(), panel2.getBindingModel().bindingVariableNamed("controller"));
 		assertTrue(panel2.getBindingModel().bindingVariableNamed("person") instanceof FIBVariableBindingVariable);
@@ -409,13 +409,13 @@ public class TestBindingModel extends FIBTestCase {
 		assertSame(((FIBChildBindingVariable) panel2.getBindingModel().bindingVariableNamed(textfield2.getName())).getComponent(),
 				textfield2);
 
-		textfield2.setName("TextField3");
+		textfield2.setName("textField3");
 		assertTrue(panel2.getBindingModel().bindingVariableNamed(textfield2.getName()) instanceof FIBChildBindingVariable);
 		assertSame(((FIBChildBindingVariable) panel2.getBindingModel().bindingVariableNamed(textfield2.getName())).getComponent(),
 				textfield2);
-		textfield2.setName("TextField2");
+		textfield2.setName("textField2");
 
-		checkbox.setName("CheckBox");
+		checkbox.setName("checkBox");
 		checkbox.setManageDynamicModel(true);
 
 		System.out.println("bm=" + panel2.getBindingModel());
@@ -434,7 +434,7 @@ public class TestBindingModel extends FIBTestCase {
 		assertTrue(panel2.getBindingModel().bindingVariableNamed(checkbox.getName()) instanceof FIBChildBindingVariable);
 		assertSame(((FIBChildBindingVariable) panel2.getBindingModel().bindingVariableNamed(checkbox.getName())).getComponent(), checkbox);
 
-		number.setName("Number");
+		number.setName("number");
 		number.setManageDynamicModel(true);
 
 		assertEquals(5, panel2.getBindingModel().getBindingVariablesCount());
@@ -492,11 +492,11 @@ public class TestBindingModel extends FIBTestCase {
 		assertTrue(number.getData().isValid());
 
 		assertEquals("person.firstName", textfield2.getData().toString());
-		assertEquals("(person.firstName = \"Robert\")", checkbox.getData().toString());
+		assertEquals("person.firstName == \"Robert\"", checkbox.getData().toString());
 		assertEquals("person.age", number.getData().toString());
 
 		// We change the name of Panel2
-		panel2.setName("Panel3");
+		panel2.setName("panel3");
 
 		// The bindings should remain valid, but serialization has changed
 		assertTrue(textfield2.getData().isValid());
@@ -505,7 +505,7 @@ public class TestBindingModel extends FIBTestCase {
 
 		// We check that the serialization has changed
 		assertEquals("person.firstName", textfield2.getData().toString());
-		assertEquals("(person.firstName = \"Robert\")", checkbox.getData().toString());
+		assertEquals("person.firstName == \"Robert\"", checkbox.getData().toString());
 		assertEquals("person.age", number.getData().toString());
 
 		FIBVariable<Person> personVariable = panel2.getVariable("person");
