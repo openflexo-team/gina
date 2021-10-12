@@ -172,4 +172,13 @@ public class FIBVariablePathElement extends SimplePathElement implements Propert
 		}
 	}
 
+	@Override
+	public boolean isResolved() {
+		return true;
+	}
+
+	@Override
+	public void resolve() {
+	}
+
 }

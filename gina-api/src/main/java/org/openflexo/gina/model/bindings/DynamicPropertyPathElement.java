@@ -160,4 +160,13 @@ public class DynamicPropertyPathElement<W extends FIBComponent> extends SimplePa
 		dynamicProperty.setBindingValue(value, target, context);
 	}
 
+	@Override
+	public boolean isResolved() {
+		return true;
+	}
+
+	@Override
+	public void resolve() {
+	}
+
 }

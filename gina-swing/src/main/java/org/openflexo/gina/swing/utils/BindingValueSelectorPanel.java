@@ -318,7 +318,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			addToColumns(new BindingValueColumn<Function.FunctionArgument>("value", 250, true) {
 				@Override
 				public DataBinding getValue(Function.FunctionArgument arg) {
-					return getFunctionPathElement().getParameter(arg);
+					return getFunctionPathElement().getArgumentValue(arg);
 				}
 
 				/**
@@ -333,12 +333,12 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					if (arg != null && getFunctionPathElement() != null) {
 
 						// OK, we first set the parameter value
-						getFunctionPathElement().setParameter(arg, aValue);
+						getFunctionPathElement().setArgumentValue(arg, aValue);
 
 						// We need to update parsed binding path according to this new value (important if the binding is still not
 						// parseable)
 						BindingValue bv = (BindingValue) bindingSelector.getEditedObject().getExpression();
-						bv.updateParsedBindingPathFromBindingPath();
+						// bv.updateParsedBindingPathFromBindingPath();
 
 						// Then, we explicitely force the DataBinding to be reanalyzed (we cannot rely anymore on validity status)
 						bindingSelector.getEditedObject().revalidate();
@@ -863,7 +863,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					+ " _selectedPathElementIndex=" + _selectedPathElementIndex);
 		}
 		if (bindingSelector.editionMode == EditionMode.COMPOUND_BINDING && bindingSelector.getEditedObject().isBindingValue()) {
-			if (((BindingValue) bindingSelector.getEditedObject().getExpression()).isCompoundBinding() && _selectedPathElementIndex == -1) {
+			if (((BindingValue) bindingSelector.getEditedObject().getExpression()).containsAMethodCall()
+					&& _selectedPathElementIndex == -1) {
 				_selectedPathElementIndex = ((BindingValue) bindingSelector.getEditedObject().getExpression()).getBindingPathElementCount();
 			}
 			if (_selectedPathElementIndex >= _lists.size()) {
@@ -2364,8 +2365,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			// System.out.println("Selecting " + last.getElement());
 
 			if (last.getElement() instanceof FunctionPathElement) {
-				for (FunctionArgument arg : ((FunctionPathElement<?>) last.getElement()).getArguments()) {
-					DataBinding<?> argValue = ((FunctionPathElement) last.getElement()).getParameter(arg);
+				for (FunctionArgument arg : ((FunctionPathElement<?>) last.getElement()).getFunctionArguments()) {
+					DataBinding<?> argValue = ((FunctionPathElement) last.getElement()).getArgumentValue(arg);
 					if (argValue == null) {
 						if (TypeUtils.isNumber(arg.getArgumentType())) {
 							argValue = new DataBinding<>("0", bindingSelector.getBindable(), arg.getArgumentType(),
@@ -2375,7 +2376,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 							argValue = new DataBinding<>("null", bindingSelector.getBindable(), arg.getArgumentType(),
 									BindingDefinitionType.GET);
 						}
-						((FunctionPathElement) last.getElement()).setParameter(arg, argValue);
+						((FunctionPathElement) last.getElement()).setArgumentValue(arg, argValue);
 					}
 					// System.out.println("> ARG " + arg + " = " + ((FunctionPathElement) last.getElement()).getParameter(arg));
 				}
@@ -2424,6 +2425,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		if (index == 0 && selectedValue.getElement() instanceof BindingVariable) { // ICI
 			if (list.getSelectedValue() != bindingValue.getBindingVariable()) {
 				bindingSelector.disconnect();
+				bindingValue.clearBindingPathElements();
 				bindingValue.setBindingVariable((BindingVariable) selectedValue.getElement());
 				binding.setExpression(bindingValue);
 				bindingSelector.fireEditedObjectChanged();
@@ -2463,8 +2465,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 						}
 					}
 					FunctionPathElement newFunctionPathElement = bindingSelector.getBindable().getBindingFactory().makeFunctionPathElement(
-							currentElement != null ? currentElement.getParent() : bindingValue.getLastBindingPathElement(), function, null,
-							args);
+							currentElement != null ? currentElement.getParent() : bindingValue.getLastBindingPathElement(),
+							function.getName(), args);
 
 					if (newFunctionPathElement != null) {
 						// TODO: we need to handle here generic FunctionPathElement and not only JavaMethodPathElement

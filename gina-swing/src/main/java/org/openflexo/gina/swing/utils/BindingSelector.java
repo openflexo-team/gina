@@ -546,7 +546,7 @@ public abstract class BindingSelector extends TextFieldCustomPopup<DataBinding>
 				newEditionMode = EditionMode.STATIC_BINDING;
 			}
 			else if (newDataBinding.isBindingValue()) {
-				if (((BindingValue) newDataBinding.getExpression()).isCompoundBinding() || newDataBinding.isExecutable()) {
+				if (((BindingValue) newDataBinding.getExpression()).containsAMethodCall() || newDataBinding.isExecutable()) {
 					newEditionMode = EditionMode.COMPOUND_BINDING;
 				}
 				else if (oldEditionMode != EditionMode.NORMAL_BINDING && oldEditionMode != EditionMode.COMPOUND_BINDING) {
