@@ -67,23 +67,31 @@ import org.openflexo.gina.model.FIBWidgetType;
  * @author sylvain
  *
  */
-public class DynamicPropertyPathElement<W extends FIBComponent> extends SimplePathElement implements PropertyChangeListener {
+public class DynamicPropertyPathElement<W extends FIBComponent> extends SimplePathElement<DynamicProperty>
+		implements PropertyChangeListener {
 
 	private static final Logger logger = Logger.getLogger(DynamicPropertyPathElement.class.getPackage().getName());
 
 	private Type lastKnownType = null;
 	private final W widget;
-	private final DynamicProperty dynamicProperty;
+	// private final DynamicProperty dynamicProperty;
 
 	public DynamicPropertyPathElement(IBindingPathElement parent, W widget, DynamicProperty dynamicProperty) {
 		super(parent, "", Object.class);
-		this.dynamicProperty = dynamicProperty;
+		// this.dynamicProperty = dynamicProperty;
 		this.widget = widget;
-		if (dynamicProperty != null) {
+		setProperty(dynamicProperty);
+		/*if (dynamicProperty != null) {
 			setPropertyName(dynamicProperty.getName());
 			setType(dynamicProperty.getType());
 			lastKnownType = getType();
-		}
+		}*/
+	}
+
+	@Override
+	public void setProperty(DynamicProperty property) {
+		super.setProperty(property);
+		lastKnownType = getType();
 	}
 
 	@Override
@@ -113,17 +121,17 @@ public class DynamicPropertyPathElement<W extends FIBComponent> extends SimplePa
 
 	@Override
 	public String getLabel() {
-		return dynamicProperty.getName();
+		return getProperty().getName();
 	}
 
 	@Override
 	public Type getType() {
-		return dynamicProperty.getType();
+		return getProperty().getType();
 	}
 
 	@Override
 	public String getTooltipText(Type resultingType) {
-		return dynamicProperty.getTooltip();
+		return getProperty().getTooltip();
 	}
 
 	@Override
@@ -151,18 +159,18 @@ public class DynamicPropertyPathElement<W extends FIBComponent> extends SimplePa
 	@Override
 	public Object getBindingValue(Object target, BindingEvaluationContext context)
 			throws TypeMismatchException, NullReferenceException, InvocationTargetTransformException {
-		return dynamicProperty.getBindingValue(target, context);
+		return getProperty().getBindingValue(target, context);
 	}
 
 	@Override
 	public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
 			throws TypeMismatchException, NullReferenceException {
-		dynamicProperty.setBindingValue(value, target, context);
+		getProperty().setBindingValue(value, target, context);
 	}
 
 	@Override
 	public boolean isResolved() {
-		return true;
+		return getProperty() != null;
 	}
 
 	@Override
