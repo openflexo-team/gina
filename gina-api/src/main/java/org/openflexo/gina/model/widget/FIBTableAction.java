@@ -183,9 +183,9 @@ public abstract interface FIBTableAction extends FIBModelObject {
 		@Override
 		public void finalizeDeserialization() {
 			logger.fine("finalizeDeserialization() for FIBTableAction " + getName());
-			if (method != null) {
+			/*if (method != null) {
 				method.decode();
-			}
+			}*/
 		}
 
 		@Override

@@ -205,7 +205,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 		}
 
 		if (dataBinding.getExpression() == null) {
-			message = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("cannot_parse") + " " + dataBinding.getUnparsedBinding();
+			message = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("cannot_parse") + " " + dataBinding;
 			status = ExpressionParsingStatus.INVALID;
 		}
 		else if ((undefinedOperator = firstOperatorWithUndefinedOperand(dataBinding.getExpression())) != null) {
@@ -1011,6 +1011,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 			argsPanel.add(leftArg);
 
 			TypeSelector right = new TypeSelector(exp.getType()) {
+				@Override
 				public void apply() {
 					super.apply();
 					exp.setType(getEditedObject());
@@ -1083,6 +1084,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 			add(operatorPanel);
 
 			TypeSelector right = new TypeSelector(exp.getType()) {
+				@Override
 				public void apply() {
 					super.apply();
 					exp.setType(getEditedObject());
@@ -1138,6 +1140,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 			argsPanel.add(openParenthesis);
 
 			TypeSelector typeSelector = new TypeSelector(exp.getCastType()) {
+				@Override
 				public void apply() {
 					super.apply();
 					exp.setCastType(getEditedObject());
@@ -1225,6 +1228,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 			add(openParenthesis);
 
 			TypeSelector typeSelector = new TypeSelector(exp.getCastType()) {
+				@Override
 				public void apply() {
 					super.apply();
 					exp.setCastType(getEditedObject());

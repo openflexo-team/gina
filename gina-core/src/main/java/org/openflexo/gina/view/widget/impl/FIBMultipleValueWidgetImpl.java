@@ -134,14 +134,15 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 		// Binding should be notified and we should not force revalidate
 		if (getComponent().getList() != null && getComponent().getList().isSet() && !getComponent().getList().isValid()) {
 			String invalidBindingReason = getComponent().getList().invalidBindingReason();
-			getComponent().getList().forceRevalidate();
+			// TODO: is this still required ?
+			getComponent().getList().revalidate();
 			LOGGER.warning("binding was not valid: " + getComponent().getList() + " reason: " + invalidBindingReason);
 			if (getComponent().getList().isValid()) {
 				LOGGER.warning("Binding has been force revalidated and is now valid. Please investigate.");
 			}
 		}
 
-		if (getComponent().getList() != null && getComponent().getList().forceRevalidate()) {
+		if (getComponent().getList() != null && getComponent().getList().revalidate()) {
 			listBindingValueChangeListener = new BindingValueListChangeListener<Object, List<Object>>(
 					((DataBinding) getComponent().getList()), getBindingEvaluationContext()) {
 

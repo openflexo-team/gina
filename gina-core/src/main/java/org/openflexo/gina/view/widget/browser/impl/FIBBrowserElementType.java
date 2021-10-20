@@ -529,7 +529,8 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 
 				// Quick and dirty hack: please fix this
 				if (!children.getCast().isValid() && !bindingWasForceRevalidated) {
-					children.getCast().forceRevalidate();
+					// TODO: is this still required ?
+					children.getCast().revalidate();
 					bindingWasForceRevalidated = true;
 				}
 				Object result = null;

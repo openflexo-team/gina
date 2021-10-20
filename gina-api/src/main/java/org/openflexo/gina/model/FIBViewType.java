@@ -157,7 +157,7 @@ public class FIBViewType<F extends FIBComponent> implements CustomType {
 		return true;
 	}
 
-	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement parent) {
+	public List<? extends SimplePathElement<?>> getAccessibleSimplePathElements(IBindingPathElement parent) {
 		return Collections.emptyList();
 	}
 

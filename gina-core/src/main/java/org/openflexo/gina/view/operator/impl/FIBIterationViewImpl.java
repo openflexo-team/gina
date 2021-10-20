@@ -409,14 +409,16 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 		// Binding should be notified and we should not force revalidate
 		if (getComponent().getList() != null && getComponent().getList().isSet() && !getComponent().getList().isValid()) {
 			String invalidBindingReason = getComponent().getList().invalidBindingReason();
-			getComponent().getList().forceRevalidate();
+			// TODO: is this still required ?
+			getComponent().getList().revalidate();
 			logger.warning("binding was not valid: " + getComponent().getList() + " reason: " + invalidBindingReason);
 			if (getComponent().getList().isValid()) {
 				logger.warning("Binding has been force revalidated and is now valid. Please investigate.");
 			}
 		}
 
-		if (getComponent().getList() != null && getComponent().getList().forceRevalidate()) {
+		// TODO: is this still required ?
+		if (getComponent().getList() != null && getComponent().getList().revalidate()) {
 			listBindingValueChangeListener = new BindingValueListChangeListener<Object, List<Object>>(
 					((DataBinding) getComponent().getList()), getBindingEvaluationContext()) {
 

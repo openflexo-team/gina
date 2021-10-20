@@ -108,10 +108,10 @@ public interface FIBContinuousPolarFunctionGraph extends FIBPolarFunctionGraph {
 		public void revalidateBindings() {
 			super.revalidateBindings();
 			if (angleTickSpacing != null) {
-				angleTickSpacing.forceRevalidate();
+				angleTickSpacing.revalidate();
 			}
 			if (stepsNumber != null) {
-				stepsNumber.forceRevalidate();
+				stepsNumber.revalidate();
 			}
 		}
 

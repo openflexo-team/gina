@@ -524,7 +524,7 @@ public interface FIBTable extends FIBWidget {
 				column.revalidateBindings();
 			}
 			if (selected != null) {
-				selected.forceRevalidate();
+				selected.revalidate();
 			}
 		}
 
@@ -540,9 +540,9 @@ public interface FIBTable extends FIBWidget {
 			for (FIBTableColumn column : getColumns()) {
 				column.finalizeTableDeserialization();
 			}
-			if (selected != null) {
+			/*if (selected != null) {
 				selected.decode();
-			}
+			}*/
 		}
 
 		@Override

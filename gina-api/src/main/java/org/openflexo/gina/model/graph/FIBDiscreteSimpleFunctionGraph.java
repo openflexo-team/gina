@@ -107,10 +107,10 @@ public interface FIBDiscreteSimpleFunctionGraph extends FIBSimpleFunctionGraph {
 		public void revalidateBindings() {
 			super.revalidateBindings();
 			if (values != null) {
-				values.forceRevalidate();
+				values.revalidate();
 			}
 			if (labels != null) {
-				labels.forceRevalidate();
+				labels.revalidate();
 			}
 		}
 
@@ -192,7 +192,7 @@ public interface FIBDiscreteSimpleFunctionGraph extends FIBSimpleFunctionGraph {
 			// System.out.println("Hop, on vient de decoder " + dataBinding);
 			super.notifiedBindingDecoded(dataBinding);
 			if (dataBinding == values) {
-					if (parameterBindingVariable != null) {
+				if (parameterBindingVariable != null) {
 					// System.out.println("On vient de decoder " + dataBinding + " Changing type to " + getParameterType());
 					parameterBindingVariable.setType(getParameterType());
 				}

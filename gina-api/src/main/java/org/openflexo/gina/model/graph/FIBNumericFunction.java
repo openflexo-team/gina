@@ -146,19 +146,19 @@ public interface FIBNumericFunction extends FIBGraphFunction {
 		public void revalidateBindings() {
 			super.revalidateBindings();
 			if (minValue != null) {
-				minValue.forceRevalidate();
+				minValue.revalidate();
 			}
 			if (maxValue != null) {
-				maxValue.forceRevalidate();
+				maxValue.revalidate();
 			}
 			if (minorTickSpacing != null) {
-				minorTickSpacing.forceRevalidate();
+				minorTickSpacing.revalidate();
 			}
 			if (majorTickSpacing != null) {
-				majorTickSpacing.forceRevalidate();
+				majorTickSpacing.revalidate();
 			}
 			if (stepsNumber != null) {
-				stepsNumber.forceRevalidate();
+				stepsNumber.revalidate();
 			}
 		}
 

@@ -82,13 +82,13 @@ public class FIBBindingFactory extends JavaBindingFactory {
 	}
 
 	@Override
-	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement parent) {
+	public List<? extends SimplePathElement<?>> getAccessibleSimplePathElements(IBindingPathElement parent) {
 
 		if (parent != null) {
 			Type pType = parent.getType();
 
 			if (pType instanceof FIBViewType) {
-				List<SimplePathElement> returned = new ArrayList<>();
+				List<SimplePathElement<?>> returned = new ArrayList<>();
 				FIBComponent concept = ((FIBViewType<?>) pType).getFIBComponent();
 
 				if (concept != null) {

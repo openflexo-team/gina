@@ -401,10 +401,10 @@ public interface FIBBrowser extends FIBWidget {
 				element.revalidateBindings();
 			}
 			if (selected != null) {
-				selected.forceRevalidate();
+				selected.revalidate();
 			}
 			if (selection != null) {
-				selection.forceRevalidate();
+				selection.revalidate();
 			}
 		}
 
@@ -416,12 +416,12 @@ public interface FIBBrowser extends FIBWidget {
 			for (FIBBrowserElement element : getElements()) {
 				element.finalizeBrowserDeserialization();
 			}
-			if (selected != null) {
+			/*if (selected != null) {
 				selected.decode();
 			}
 			if (selection != null) {
 				selection.decode();
-			}
+			}*/
 		}
 
 		@Override

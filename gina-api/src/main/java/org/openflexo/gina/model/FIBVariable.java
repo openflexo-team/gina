@@ -45,6 +45,7 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.expr.Expression;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.pamela.annotations.CloningStrategy;
+import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
 import org.openflexo.pamela.annotations.DefineValidationRule;
 import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.ImplementationClass;
@@ -53,7 +54,6 @@ import org.openflexo.pamela.annotations.PropertyIdentifier;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
 
 /**
  * A {@link FIBVariable} allows to define an accessible and named value in a {@link FIBComponent}<br>
@@ -194,7 +194,8 @@ public interface FIBVariable<T> extends FIBModelObject {
 		public void setValue(DataBinding<T> value) {
 
 			if (value != null) {
-				getValue().setUnparsedBinding(value.getUnparsedBinding());
+				// getValue().setUnparsedBinding(value.getUnparsedBinding());
+				getValue().setExpression(value.getExpression());
 			}
 			else {
 				this.value = null;
@@ -252,7 +253,7 @@ public interface FIBVariable<T> extends FIBModelObject {
 		@Override
 		public void revalidateBindings() {
 			if (value != null) {
-				value.forceRevalidate();
+				value.revalidate();
 			}
 		}
 

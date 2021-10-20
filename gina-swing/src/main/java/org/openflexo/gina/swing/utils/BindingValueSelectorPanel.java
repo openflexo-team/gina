@@ -2464,7 +2464,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 									BindingDefinitionType.GET));
 						}
 					}
-					FunctionPathElement newFunctionPathElement = bindingSelector.getBindable().getBindingFactory().makeFunctionPathElement(
+					FunctionPathElement newFunctionPathElement = bindingSelector.getBindable().getBindingFactory().makeSimpleMethodPathElement(
 							currentElement != null ? currentElement.getParent() : bindingValue.getLastBindingPathElement(),
 							function.getName(), args);
 

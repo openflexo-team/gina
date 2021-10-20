@@ -223,10 +223,10 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		@Override
 		public void revalidateBindings() {
 			if (list != null) {
-				list.forceRevalidate();
+				list.revalidate();
 			}
 			if (array != null) {
-				array.forceRevalidate();
+				array.revalidate();
 			}
 			super.revalidateBindings();
 		}
@@ -234,12 +234,12 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		@Override
 		public void finalizeDeserialization() {
 			super.finalizeDeserialization();
-			if (list != null) {
+			/*if (list != null) {
 				list.decode();
 			}
 			if (array != null) {
 				array.decode();
-			}
+			}*/
 		}
 
 		public boolean isStaticList() {

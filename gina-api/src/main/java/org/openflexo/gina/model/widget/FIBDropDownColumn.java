@@ -149,12 +149,12 @@ public interface FIBDropDownColumn extends FIBTableColumn {
 		@Override
 		public void finalizeTableDeserialization() {
 			super.finalizeTableDeserialization();
-			if (list != null) {
+			/*if (list != null) {
 				list.decode();
 			}
 			if (array != null) {
 				array.decode();
-			}
+			}*/
 		}
 
 		@Override

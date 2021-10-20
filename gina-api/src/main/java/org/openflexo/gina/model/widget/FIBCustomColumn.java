@@ -53,12 +53,15 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent.CustomComponentParameter;
+import org.openflexo.gina.model.widget.FIBCustom.FIBCustomImpl;
 import org.openflexo.pamela.annotations.Adder;
 import org.openflexo.pamela.annotations.CloningStrategy;
+import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
 import org.openflexo.pamela.annotations.DefineValidationRule;
 import org.openflexo.pamela.annotations.DeserializationFinalizer;
 import org.openflexo.pamela.annotations.Embedded;
 import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.Getter.Cardinality;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.PropertyIdentifier;
@@ -66,9 +69,6 @@ import org.openflexo.pamela.annotations.Remover;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
-import org.openflexo.pamela.annotations.Getter.Cardinality;
-import org.openflexo.gina.model.widget.FIBCustom.FIBCustomImpl;
 
 @ModelEntity
 @ImplementationClass(FIBCustomColumn.FIBCustomColumnImpl.class)
@@ -366,11 +366,11 @@ public interface FIBCustomColumn extends FIBTableColumn {
 					variable.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET_SET);
 				}
 				this.variable = variable;
-				if (getBindingFactory() != null) {
+				/*if (getBindingFactory() != null) {
 					if (getOwner() != null && variable != null) {
 						variable.decode();
 					}
-				}
+				}*/
 			}
 
 			@Override
@@ -397,12 +397,12 @@ public interface FIBCustomColumn extends FIBTableColumn {
 			@Override
 			public void finalizeDeserialization() {
 
-				if (variable != null) {
+				/*if (variable != null) {
 					variable.decode();
-				}
+				}*/
 				if (value != null) {
 					value.setOwner(getOwner());
-					value.decode();
+					// value.decode();
 				}
 			}
 

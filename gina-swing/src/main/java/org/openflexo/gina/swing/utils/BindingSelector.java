@@ -212,7 +212,7 @@ public abstract class BindingSelector extends TextFieldCustomPopup<DataBinding>
 					// Little hook used to automatically apply a valid value
 					// which has generally been edited
 					// By typing text in text field
-					if (getEditedObject() != null && getEditedObject().forceRevalidate()) {
+					if (getEditedObject() != null && getEditedObject().revalidate()) {
 						try {
 							apply();
 						} catch (InvalidKeyValuePropertyException e) {
@@ -268,7 +268,7 @@ public abstract class BindingSelector extends TextFieldCustomPopup<DataBinding>
 										&& selectorPanel.isKeyPathFromPanelValid()) {
 									getEditedObject().setExpression(selectorPanel.makeBindingValueFromPanel());
 									fireEditedObjectChanged();
-									if (getEditedObject().forceRevalidate()) {
+									if (getEditedObject().revalidate()) {
 										apply();
 									}
 								}
@@ -406,7 +406,7 @@ public abstract class BindingSelector extends TextFieldCustomPopup<DataBinding>
 			System.out.println("Reason:" + newEditedBinding.invalidBindingReason());
 
 			if (newEditedBinding != null) {
-				if (newEditedBinding.forceRevalidate()) {
+				if (newEditedBinding.revalidate()) {
 					if (LOGGER.isLoggable(Level.FINE)) {
 						LOGGER.fine("Decoded as VALID binding: " + newEditedBinding);
 					}
@@ -487,7 +487,7 @@ public abstract class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		}
 
 		setEditedObject(dataBinding, true);
-		if (dataBinding != null && dataBinding.forceRevalidate()) {
+		if (dataBinding != null && dataBinding.revalidate()) {
 			isConnected = true;
 		}
 
@@ -520,7 +520,7 @@ public abstract class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		}
 		super.setEditedObject(dataBinding);
 
-		if (getEditedObject() != null && getEditedObject().forceRevalidate()) {
+		if (getEditedObject() != null && getEditedObject().revalidate()) {
 			getTextField().setForeground(defaultForeground);
 			getTextField().setSelectedTextColor(defaultSelectedColor);
 		}
@@ -615,7 +615,7 @@ public abstract class BindingSelector extends TextFieldCustomPopup<DataBinding>
 	}
 
 	public void connect() {
-		if (getEditedObject().forceRevalidate()) {
+		if (getEditedObject().revalidate()) {
 			// logger.info("Is connected = TRUE");
 			isConnected = true;
 		}
@@ -646,7 +646,7 @@ public abstract class BindingSelector extends TextFieldCustomPopup<DataBinding>
 
 	@Override
 	public void fireEditedObjectChanged() {
-		if (getEditedObject() == null || !getEditedObject().forceRevalidate()) {
+		if (getEditedObject() == null || !getEditedObject().revalidate()) {
 			disconnect();
 		}
 		updateCustomPanel(getEditedObject());
@@ -902,7 +902,7 @@ public abstract class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		}
 		if (editedObject != null) {
 			if (editedObject.isSet()) {
-				if (editedObject.forceRevalidate()) {
+				if (editedObject.revalidate()) {
 					getLabel().setVisible(true);
 					getLabel().setIcon(UtilsIconLibrary.OK_ICON);
 				}
@@ -1282,7 +1282,7 @@ public abstract class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		}
 		DataBinding<?> dataBinding = getEditedObject();
 		if (dataBinding != null) {
-			if (dataBinding.forceRevalidate()) {
+			if (dataBinding.revalidate()) {
 				/*
 				 * if (bindingValue instanceof BindingValue) { ((BindingValue)
 				 * bindingValue).connect(); }
@@ -1311,7 +1311,7 @@ public abstract class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		GinaStackEvent stackElement = GENotifier.notifyMethod();
 
 		if (_revertBindingValue != null) {
-			if (_revertBindingValue.getOwner() != null && _revertBindingValue.forceRevalidate()) {
+			if (_revertBindingValue.getOwner() != null && _revertBindingValue.revalidate()) {
 				setEditedObject(_revertBindingValue);
 			}
 		}
@@ -1451,7 +1451,7 @@ public abstract class BindingSelector extends TextFieldCustomPopup<DataBinding>
 	DataBinding<?> makeBindingFromString(String stringValue) {
 
 		DataBinding<?> returned = new DataBinding<>(stringValue, getBindable(), getEditedObject());
-		returned.decode();
+		// returned.decode();
 		return returned;
 
 		/*

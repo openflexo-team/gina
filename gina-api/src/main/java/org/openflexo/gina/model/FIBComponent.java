@@ -752,7 +752,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 			explicitDependancies = new Vector<>();
 			mayDepends = new Vector<>();
 			mayAlters = new Vector<>();
-			//componentChanged(); // Too early
+			// componentChanged(); // Too early
 		}
 
 		@Override
@@ -1261,9 +1261,9 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 
 		@Override
 		public void finalizeDeserialization() {
-			if (visible != null) {
+			/*if (visible != null) {
 				visible.decode();
-			}
+			}*/
 		}
 
 		@Override
@@ -1272,7 +1272,7 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 				v.revalidateBindings();
 			}
 			if (visible != null) {
-				visible.forceRevalidate();
+				visible.revalidate();
 			}
 		}
 

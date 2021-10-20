@@ -309,11 +309,11 @@ public interface FIBBrowserElementChildren extends FIBModelObject {
 		public void revalidateBindings() {
 			if (data != null) {
 				data.setOwner(getOwner().getIteratorBindable());
-				data.forceRevalidate();
+				data.revalidate();
 			}
 			if (visible != null) {
 				visible.setOwner(getOwner().getIteratorBindable());
-				visible.forceRevalidate();
+				visible.revalidate();
 			}
 		}
 
@@ -322,11 +322,11 @@ public interface FIBBrowserElementChildren extends FIBModelObject {
 			logger.fine("finalizeBrowserDeserialization() for FIBBrowserElementChildren ");
 			if (data != null) {
 				data.setOwner(getOwner().getIteratorBindable());
-				data.decode();
+				// data.decode();
 			}
 			if (visible != null) {
 				visible.setOwner(getOwner().getIteratorBindable());
-				visible.decode();
+				// visible.decode();
 			}
 		}
 

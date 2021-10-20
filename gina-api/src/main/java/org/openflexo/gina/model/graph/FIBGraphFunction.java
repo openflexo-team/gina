@@ -47,6 +47,7 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.pamela.annotations.CloningStrategy;
+import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
 import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.Import;
@@ -55,7 +56,6 @@ import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.PropertyIdentifier;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
-import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(FIBGraphFunction.FIBGraphFunctionImpl.class)
@@ -291,7 +291,7 @@ public interface FIBGraphFunction extends FIBModelObject {
 		@Override
 		public void revalidateBindings() {
 			if (expression != null) {
-				expression.forceRevalidate();
+				expression.revalidate();
 			}
 		}
 

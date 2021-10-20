@@ -233,11 +233,11 @@ public interface FIBBrowserDragOperation extends FIBModelObject {
 		public void revalidateBindings() {
 			if (action != null) {
 				action.setOwner(getOwner().getIteratorBindable());
-				action.forceRevalidate();
+				action.revalidate();
 			}
 			if (isAvailable != null) {
 				isAvailable.setOwner(getOwner().getIteratorBindable());
-				isAvailable.forceRevalidate();
+				isAvailable.revalidate();
 			}
 		}
 
@@ -246,11 +246,11 @@ public interface FIBBrowserDragOperation extends FIBModelObject {
 			logger.fine("finalizeBrowserDeserialization() for FIBBrowserDragOperation");
 			if (action != null) {
 				action.setOwner(getDragOperationBindable());
-				action.decode();
+				// action.decode();
 			}
 			if (isAvailable != null) {
 				isAvailable.setOwner(getDragOperationBindable());
-				isAvailable.decode();
+				// isAvailable.decode();
 			}
 		}
 

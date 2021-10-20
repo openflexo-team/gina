@@ -820,7 +820,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 				// We try to force the revalidation of format when object type of formatted object is still Object for example
 				// In this case, format binding is not valid and should be recomputed
 				// We should notify the change of getDataType() in FIBWidget
-				getWidget().getFormat().forceRevalidate();
+				// TODO: is this still required ?
+				getWidget().getFormat().revalidate();
 				if (getWidget().getFormat().isValid()) {
 					LOGGER.warning("Format binding has been force revalidated and is now valid. Please investigate.");
 				}

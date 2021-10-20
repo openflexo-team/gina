@@ -213,12 +213,12 @@ public abstract interface FIBBrowserAction extends FIBModelObject {
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("finalizeDeserialization() for FIBTableAction " + getName());
 			}
-			if (method != null) {
+			/*if (method != null) {
 				method.decode();
 			}
 			if (isAvailable != null) {
 				isAvailable.decode();
-			}
+			}*/
 		}
 
 		public Object performAction(BindingEvaluationContext context, Object selectedObject) {
