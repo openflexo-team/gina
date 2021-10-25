@@ -47,7 +47,7 @@ import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.binding.IBindingPathElement;
-import org.openflexo.connie.binding.SimplePathElement;
+import org.openflexo.connie.binding.SimplePathElementImpl;
 import org.openflexo.connie.exception.InvocationTargetTransformException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -67,7 +67,7 @@ import org.openflexo.gina.model.FIBWidgetType;
  * @author sylvain
  *
  */
-public class DynamicPropertyPathElement<W extends FIBComponent> extends SimplePathElement<DynamicProperty>
+public class DynamicPropertyPathElement<W extends FIBComponent> extends SimplePathElementImpl<DynamicProperty>
 		implements PropertyChangeListener {
 
 	private static final Logger logger = Logger.getLogger(DynamicPropertyPathElement.class.getPackage().getName());

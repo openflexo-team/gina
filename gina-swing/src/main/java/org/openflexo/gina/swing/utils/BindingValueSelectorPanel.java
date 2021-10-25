@@ -284,8 +284,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		return null;
 	}
 
-	protected class MethodCallBindingsModel extends AbstractModel<FunctionPathElement, Function.FunctionArgument> {
-		public MethodCallBindingsModel(FunctionPathElement functionPathElement) {
+	protected class MethodCallBindingsModel extends AbstractModel<FunctionPathElement<?>, Function.FunctionArgument> {
+		public MethodCallBindingsModel(FunctionPathElement<?> functionPathElement) {
 			super(functionPathElement);
 			addToColumns(new IconColumn<Function.FunctionArgument>("icon", 25) {
 				@Override
@@ -378,7 +378,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		 * )bindingValue.getBindingDefinition()).getParam(); } return null; }
 		 */
 
-		public FunctionPathElement getFunctionPathElement() {
+		public FunctionPathElement<?> getFunctionPathElement() {
 			return getModel();
 		}
 
@@ -399,7 +399,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		}
 
 		@Override
-		public void setModel(FunctionPathElement model) {
+		public void setModel(FunctionPathElement<?> model) {
 			// logger.info("Setting MethodCallBindingsModel with " + model);
 			if (model != null) {
 				model.instanciateParameters(bindingSelector.getBindable());
@@ -882,12 +882,13 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				int newSelectedIndex = list.getSelectedIndex();
 				if (newSelectedIndex > 0) {
 					BindingColumnElement selectedValue = (BindingColumnElement) list.getSelectedValue();
-					if (selectedValue.getElement() instanceof FunctionPathElement) {
+					if (selectedValue.getElement() instanceof FunctionPathElement<?>) {
 						BindingPathElement currentElement = bindingValue.getBindingPathElementAtIndex(_selectedPathElementIndex - 1);
-						if (currentElement instanceof FunctionPathElement && ((FunctionPathElement) currentElement).getFunction() != null
-								&& ((FunctionPathElement) currentElement).getFunction()
-										.equals(((FunctionPathElement) selectedValue.getElement()).getFunction())) {
-							getMethodCallBindingsModel().setModel((FunctionPathElement) currentElement);
+						if (currentElement instanceof FunctionPathElement<?>
+								&& ((FunctionPathElement<?>) currentElement).getFunction() != null
+								&& ((FunctionPathElement<?>) currentElement).getFunction()
+										.equals(((FunctionPathElement<?>) selectedValue.getElement()).getFunction())) {
+							getMethodCallBindingsModel().setModel((FunctionPathElement<?>) currentElement);
 							return;
 						}
 					}
@@ -1382,10 +1383,10 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				if (getElementAt(i).getElement().equals(element)) {
 					return getElementAt(i);
 				}
-				if (element instanceof FunctionPathElement && getElementAt(i).getElement() instanceof FunctionPathElement) {
+				if (element instanceof FunctionPathElement<?> && getElementAt(i).getElement() instanceof FunctionPathElement<?>) {
 					// Special equals, we try to find a FunctionPathElement even if parameters are different
-					FunctionPathElement f1 = (FunctionPathElement) element;
-					FunctionPathElement f2 = (FunctionPathElement) getElementAt(i).getElement();
+					FunctionPathElement<?> f1 = (FunctionPathElement<?>) element;
+					FunctionPathElement<?> f2 = (FunctionPathElement<?>) getElementAt(i).getElement();
 					if (f1.getFunction() != null && f1.getFunction().equals(f2.getFunction())) {
 						// We decide here that both FunctionPathElement are equivalent
 						return getElementAt(i);
@@ -2364,9 +2365,9 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			last = (BindingColumnElement) listAtIndex(i).getSelectedValue();
 			// System.out.println("Selecting " + last.getElement());
 
-			if (last.getElement() instanceof FunctionPathElement) {
+			if (last.getElement() instanceof FunctionPathElement<?>) {
 				for (FunctionArgument arg : ((FunctionPathElement<?>) last.getElement()).getFunctionArguments()) {
-					DataBinding<?> argValue = ((FunctionPathElement) last.getElement()).getArgumentValue(arg);
+					DataBinding<?> argValue = ((FunctionPathElement<?>) last.getElement()).getArgumentValue(arg);
 					if (argValue == null) {
 						if (TypeUtils.isNumber(arg.getArgumentType())) {
 							argValue = new DataBinding<>("0", bindingSelector.getBindable(), arg.getArgumentType(),
@@ -2376,7 +2377,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 							argValue = new DataBinding<>("null", bindingSelector.getBindable(), arg.getArgumentType(),
 									BindingDefinitionType.GET);
 						}
-						((FunctionPathElement) last.getElement()).setArgumentValue(arg, argValue);
+						((FunctionPathElement<?>) last.getElement()).setArgumentValue(arg, argValue);
 					}
 					// System.out.println("> ARG " + arg + " = " + ((FunctionPathElement) last.getElement()).getParameter(arg));
 				}
@@ -2432,7 +2433,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			}
 		}
 		else {
-			if (selectedValue.getElement() instanceof SimplePathElement) {
+			if (selectedValue.getElement() instanceof SimplePathElement<?>) {
 				// FIXED invalid type object comparison
 				if (selectedValue.getElement() != bindingValue.getBindingPathElementAtIndex(index - 1)) {
 					bindingSelector.disconnect();
@@ -2441,17 +2442,17 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					bindingSelector.fireEditedObjectChanged();
 				}
 			}
-			else if (selectedValue.getElement() instanceof FunctionPathElement) {
+			else if (selectedValue.getElement() instanceof FunctionPathElement<?>) {
 
 				BindingPathElement currentElement = bindingValue.getBindingPathElementAtIndex(index - 1);
 
 				LOGGER.info("Selecting currentElement " + currentElement + " selectedValue=" + selectedValue);
 
-				if (currentElement == null || !(currentElement instanceof FunctionPathElement)
-						|| ((FunctionPathElement) currentElement).getFunction() == null || !((FunctionPathElement) currentElement)
-								.getFunction().equals(((FunctionPathElement) selectedValue.getElement()).getFunction())) {
+				if (currentElement == null || !(currentElement instanceof FunctionPathElement<?>)
+						|| ((FunctionPathElement<?>) currentElement).getFunction() == null || !((FunctionPathElement<?>) currentElement)
+								.getFunction().equals(((FunctionPathElement<?>) selectedValue.getElement()).getFunction())) {
 					bindingSelector.disconnect();
-					Function function = ((FunctionPathElement) selectedValue.getElement()).getFunction();
+					Function function = ((FunctionPathElement<?>) selectedValue.getElement()).getFunction();
 					LOGGER.info("Selecting function " + function);
 					List<DataBinding<?>> args = new ArrayList<>();
 					for (FunctionArgument arg : function.getArguments()) {
@@ -2464,9 +2465,10 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 									BindingDefinitionType.GET));
 						}
 					}
-					FunctionPathElement newFunctionPathElement = bindingSelector.getBindable().getBindingFactory().makeSimpleMethodPathElement(
-							currentElement != null ? currentElement.getParent() : bindingValue.getLastBindingPathElement(),
-							function.getName(), args);
+					FunctionPathElement<?> newFunctionPathElement = bindingSelector.getBindable().getBindingFactory()
+							.makeSimpleMethodPathElement(
+									currentElement != null ? currentElement.getParent() : bindingValue.getLastBindingPathElement(),
+									function.getName(), args);
 
 					if (newFunctionPathElement != null) {
 						// TODO: we need to handle here generic FunctionPathElement and not only JavaMethodPathElement

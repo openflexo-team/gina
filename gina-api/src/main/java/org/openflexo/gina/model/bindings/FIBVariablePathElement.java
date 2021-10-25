@@ -46,14 +46,14 @@ import java.util.logging.Logger;
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.binding.IBindingPathElement;
-import org.openflexo.connie.binding.SimplePathElement;
+import org.openflexo.connie.binding.SimplePathElementImpl;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.model.FIBVariable;
 import org.openflexo.gina.view.FIBView;
 
-public class FIBVariablePathElement extends SimplePathElement implements PropertyChangeListener {
+public class FIBVariablePathElement extends SimplePathElementImpl implements PropertyChangeListener {
 
 	private static final Logger logger = Logger.getLogger(FIBVariablePathElement.class.getPackage().getName());
 
