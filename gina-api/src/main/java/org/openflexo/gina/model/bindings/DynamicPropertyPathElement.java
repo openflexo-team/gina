@@ -43,6 +43,7 @@ import java.beans.PropertyChangeListener;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.Bindable;
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.binding.BindingPathElement;
@@ -76,8 +77,8 @@ public class DynamicPropertyPathElement<W extends FIBComponent> extends SimplePa
 	private final W widget;
 	// private final DynamicProperty dynamicProperty;
 
-	public DynamicPropertyPathElement(IBindingPathElement parent, W widget, DynamicProperty dynamicProperty) {
-		super(parent, "", Object.class);
+	public DynamicPropertyPathElement(IBindingPathElement parent, W widget, DynamicProperty dynamicProperty, Bindable bindable) {
+		super(parent, "", Object.class, bindable);
 		// this.dynamicProperty = dynamicProperty;
 		this.widget = widget;
 		setProperty(dynamicProperty);

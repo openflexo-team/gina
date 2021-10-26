@@ -45,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.Bindable;
 import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.gina.model.bindings.DynamicPropertyPathElement;
 import org.openflexo.gina.view.FIBOperatorView;
@@ -74,7 +75,7 @@ public class FIBOperatorType<O extends FIBOperator> extends FIBViewType<O> {
 	}
 
 	@Override
-	public List<DynamicPropertyPathElement<? super O>> getAccessibleSimplePathElements(IBindingPathElement parent) {
+	public List<DynamicPropertyPathElement<? super O>> getAccessibleSimplePathElements(IBindingPathElement parent, Bindable bindable) {
 
 		if (parent != null && parent.getType() instanceof FIBOperatorType) {
 
@@ -82,7 +83,7 @@ public class FIBOperatorType<O extends FIBOperator> extends FIBViewType<O> {
 			if (returned == null) {
 				returned = new ArrayList<>();
 				for (DynamicProperty p : getDynamicProperties()) {
-					returned.add(new DynamicPropertyPathElement<FIBOperator>(parent, getFIBComponent(), p));
+					returned.add(new DynamicPropertyPathElement<FIBOperator>(parent, getFIBComponent(), p, bindable));
 				}
 				pathElements.put(parent, returned);
 			}

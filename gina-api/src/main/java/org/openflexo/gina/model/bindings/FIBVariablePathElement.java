@@ -43,6 +43,7 @@ import java.beans.PropertyChangeListener;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.Bindable;
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.binding.IBindingPathElement;
@@ -60,8 +61,8 @@ public class FIBVariablePathElement extends SimplePathElementImpl implements Pro
 	private Type lastKnownType = null;
 	private final FIBVariable<?> fibVariable;
 
-	public FIBVariablePathElement(IBindingPathElement parent, FIBVariable<?> fibVariable) {
-		super(parent, fibVariable.getName(), fibVariable.getType());
+	public FIBVariablePathElement(IBindingPathElement parent, FIBVariable<?> fibVariable, Bindable bindable) {
+		super(parent, fibVariable.getName(), fibVariable.getType(), bindable);
 
 		this.fibVariable = fibVariable;
 		lastKnownType = fibVariable.getType();

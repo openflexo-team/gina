@@ -1523,7 +1523,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 						if (TypeUtils.isResolved(columnElement.getResultingType()) && bindingSelector.getBindable() != null) {
 							// if (columnElement.getElement().getAccessibleBindingPathElements().size() > 0) {
 							if (bindingSelector.getBindable().getBindingFactory()
-									.getAccessibleSimplePathElements(columnElement.getElement()).size() > 0) {
+									.getAccessibleSimplePathElements(columnElement.getElement(), bindingSelector.getBindable())
+									.size() > 0) {
 							}
 							else {
 								if (!TypeUtils.isTypeAssignableFrom(binding.getDeclaredType(), columnElement.getResultingType(), true)) {
@@ -1678,11 +1679,11 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			if (bdable != null) {
 				BindingFactory bf = bdable.getBindingFactory();
 				if (bf != null) {
-					_accessibleProperties.addAll(bf.getAccessibleSimplePathElements(_element));
+					_accessibleProperties.addAll(bf.getAccessibleSimplePathElements(_element, bdable));
 
 					if (bindingSelector.editionMode == EditionMode.COMPOUND_BINDING) {
-						_accessibleProperties
-								.addAll(bindingSelector.getBindable().getBindingFactory().getAccessibleFunctionPathElements(_element));
+						_accessibleProperties.addAll(
+								bindingSelector.getBindable().getBindingFactory().getAccessibleFunctionPathElements(_element, bdable));
 					}
 
 					for (BindingPathElement p : _accessibleProperties) {
@@ -1889,10 +1890,11 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 							if (TypeUtils.isResolved(columnElement.getResultingType()) && bindingSelector.getBindable() != null) {
 								// if (columnElement.getElement().getAccessibleBindingPathElements().size() > 0) {
 								if (bindingSelector.getBindable().getBindingFactory() != null
+										&& bindingSelector.getBindable().getBindingFactory().getAccessibleSimplePathElements(
+												columnElement.getElement(), bindingSelector.getBindable()) != null
 										&& bindingSelector.getBindable().getBindingFactory()
-												.getAccessibleSimplePathElements(columnElement.getElement()) != null
-										&& bindingSelector.getBindable().getBindingFactory()
-												.getAccessibleSimplePathElements(columnElement.getElement()).size() > 0) {
+												.getAccessibleSimplePathElements(columnElement.getElement(), bindingSelector.getBindable())
+												.size() > 0) {
 									returned = getIconLabelComponent(label, FIBIconLibrary.ARROW_RIGHT_ICON);
 								}
 								else {
@@ -2468,7 +2470,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					FunctionPathElement<?> newFunctionPathElement = bindingSelector.getBindable().getBindingFactory()
 							.makeSimpleMethodPathElement(
 									currentElement != null ? currentElement.getParent() : bindingValue.getLastBindingPathElement(),
-									function.getName(), args);
+									function.getName(), args, bindingSelector.getBindable());
 
 					if (newFunctionPathElement != null) {
 						// TODO: we need to handle here generic FunctionPathElement and not only JavaMethodPathElement
