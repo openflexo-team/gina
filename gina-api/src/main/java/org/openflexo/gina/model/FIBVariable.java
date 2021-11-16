@@ -194,12 +194,13 @@ public interface FIBVariable<T> extends FIBModelObject {
 		public void setValue(DataBinding<T> value) {
 
 			if (value != null) {
-				// getValue().setUnparsedBinding(value.getUnparsedBinding());
-				getValue().setExpression(value.getExpression());
+				value.setOwner(getOwner());
+				value.setDeclaredType(Object.class);
+				value.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				value.setBindingName(getName());
+				this.value = value;
 			}
-			else {
-				this.value = null;
-			}
+			this.value = value;
 		}
 
 		// private BindingVariable bindingVariable;
