@@ -40,11 +40,11 @@
 		backgroundSecondarySelectionColor="178,215,255" showFooter="false"
 		lookAndFeel="Classic" selectionMode="MultipleIntervalSelection"
 		rowHeight="18" manageDynamicModel="true"
-		doubleClickAction="controller.fixIssue(IssuesTable.selected)"
+		doubleClickAction="controller.fixIssue(issuesTable.selected)"
 		data="controller.getValidationReport(data).issuesRegarding(data)"
-		clickAction="controller.showIssue(IssuesTable.selected)" visible="controller.showErrorsWarnings"
+		clickAction="controller.showIssue(issuesTable.selected)" visible="controller.showErrorsWarnings"
 		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=5;insetsLeft=0;insetsRight=5;insetsTop=0;location=right)"
-		name="IssuesTable">
+		name="issuesTable">
 		<IconColumn id="89" data="controller.iconForObject(iterator)"
 			resizable="false" title="icon" displayTitle="false" columnWidth="20"
 			showIcon="false" name="icon" />
