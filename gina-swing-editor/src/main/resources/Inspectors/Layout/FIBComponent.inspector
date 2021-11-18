@@ -24,7 +24,7 @@
 		opaque="false" name="BorderConstraints">
 		<FIBVariable name="borderLayout"
 			type="org.openflexo.gina.model.container.layout.BorderLayoutConstraints"
-			value="($org.openflexo.gina.model.container.layout.BorderLayoutConstraints)data.constraints" />
+			value="(org.openflexo.gina.model.container.layout.BorderLayoutConstraints)data.constraints" />
 		<Label label="location" constraints="twocols(location=left)"
 			localize="true" />
 		<DropDown data="borderLayout.location" constraints="twocols(location=right)"
@@ -40,7 +40,7 @@
 		opaque="false" name="GridConstraints">
 		<FIBVariable name="gridLayout"
 			type="org.openflexo.gina.model.container.layout.GridLayoutConstraints"
-			value="($org.openflexo.gina.model.container.layout.GridLayoutConstraints)data.constraints" />
+			value="(org.openflexo.gina.model.container.layout.GridLayoutConstraints)data.constraints" />
 		<Panel layout="flow" hGap="5" vGap="0" flowAlignment="LEADING"
 			titleFont="SansSerif,0,10" darkLevel="0" constraints="twocols()"
 			opaque="false">
@@ -59,7 +59,7 @@
 		opaque="false" name="BoxConstraints">
 		<FIBVariable name="boxLayout"
 			type="org.openflexo.gina.model.container.layout.BoxLayoutConstraints"
-			value="($org.openflexo.gina.model.container.layout.BoxLayoutConstraints)data.constraints" />
+			value="(org.openflexo.gina.model.container.layout.BoxLayoutConstraints)data.constraints" />
 		<Label label="index" constraints="twocols(location=left)"
 			localize="true" />
 		<Number numberType="IntegerType" data="boxLayout.index"
@@ -80,7 +80,7 @@
 			localize="true" />
 
 	</Panel>
-	<!-- data="($org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints)data.constraints" 
+	<!-- data="(org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints)data.constraints" 
 		dataClassName="org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints" -->
 	<Panel index="6" layout="twocols" border="rounded3d"
 		borderTitle="two_cols_layout_constraints" titleFont="SansSerif,0,10"
@@ -90,7 +90,7 @@
 		opaque="false" name="TwoColsConstraints">
 		<FIBVariable name="twoColsLayout"
 			type="org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints"
-			value="($org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints)data.constraints" />
+			value="(org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints)data.constraints" />
 		<Label label="location" constraints="twocols(location=left)"
 			localize="true" />
 		<DropDown data="twoColsLayout.location" constraints="twocols(location=right)"
@@ -134,7 +134,7 @@
 		opaque="false" name="GridBagConstraints">
 		<FIBVariable name="gridBagLayout"
 			type="org.openflexo.gina.model.container.layout.GridBagLayoutConstraints"
-			value="($org.openflexo.gina.model.container.layout.GridBagLayoutConstraints)data.constraints" />
+			value="(org.openflexo.gina.model.container.layout.GridBagLayoutConstraints)data.constraints" />
 		<Label label="index" constraints="twocols(location=left)"
 			localize="true" />
 		<Number numberType="IntegerType" data="gridBagLayout.index"
@@ -253,7 +253,7 @@
 				name="Bottom" />
 		</Panel>
 	</Panel>
-	<!-- data="($org.openflexo.gina.model.container.layout.SplitLayoutConstraints)data.constraints" 
+	<!-- data="(org.openflexo.gina.model.container.layout.SplitLayoutConstraints)data.constraints" 
 		dataClassName="org.openflexo.gina.model.container.layout.SplitLayoutConstraints" -->
 	<Panel index="8" layout="twocols" border="titled"
 		borderTitle="split_layout_constraints" titleFont="SansSerif,0,10"
@@ -263,7 +263,7 @@
 		opaque="false" name="SplitLayoutConstraints">
 		<FIBVariable name="splitLayout"
 			type="org.openflexo.gina.model.container.layout.SplitLayoutConstraints"
-			value="($org.openflexo.gina.model.container.layout.SplitLayoutConstraints)data.constraints" />
+			value="(org.openflexo.gina.model.container.layout.SplitLayoutConstraints)data.constraints" />
 		<Label label="identifier" index="0"
 			constraints="twocols(expandHorizontally=false;expandVertically=false;index=0;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 			localize="true" />

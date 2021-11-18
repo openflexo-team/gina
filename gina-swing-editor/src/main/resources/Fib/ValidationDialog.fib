@@ -166,7 +166,7 @@
 						resizable="true" />
 				</Table>
 				<FIBVariable name="problemIssue"
-					value="($org.openflexo.pamela.validation.ProblemIssue)IssuesTable.selected"
+					value="(org.openflexo.pamela.validation.ProblemIssue)IssuesTable.selected"
 					type="org.openflexo.pamela.validation.ProblemIssue" />
 			</Panel>
 		</Tab>
