@@ -638,7 +638,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 
-		if (evt.getPropertyName().equals(FIBWidget.VALUE_KEY)) {
+		if (evt.getPropertyName().equals(FIBWidget.VALUE_KEY) && getTechnologyComponent() != null) {
 			updateData();
 		}
 		/*if (evt.getPropertyName().equals(FIBWidget.MANAGE_DYNAMIC_MODEL_KEY)) {
