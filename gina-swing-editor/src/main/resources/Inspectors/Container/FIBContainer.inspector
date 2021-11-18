@@ -9,7 +9,7 @@
 			visibleRowCount="5" rowHeight="18" autoSelectFirstRow="false"
 			createNewRowOnClick="false" boundToSelectionManager="false"
 			showFooter="true" selectionMode="MultipleIntervalSelection" localize="true"
-			manageDynamicModel="true" name="ComponentsTable" data="data.subComponents"
+			manageDynamicModel="true" name="componentsTable" data="data.subComponents"
 			constraints="border(location=center)" font="SansSerif,0,11"
 			useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
 			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED">
@@ -21,22 +21,22 @@
 		</Table>
 		<Panel layout="box" hGap="5" vGap="5" boxLayoutAxis="Y_AXIS"
 			titleFont="SansSerif,0,11" darkLevel="0" constraints="border(location=east)">
-			<Button action="data.componentFirst(ComponentsTable.selected)"
+			<Button action="data.componentFirst(componentsTable.selected)"
 				buttonType="Trigger" label="First" localize="true"
-				enable="((ComponentsTable.selected != null) &amp;&amp; (ComponentsTable.selected.parent.getIndex(ComponentsTable.selected) &gt; 0))"
+				enable="((componentsTable.selected != null) &amp;&amp; (componentsTable.selected.parent.getIndex(componentsTable.selected) &gt; 0))"
 				name="firstButton" index="0"
 				constraints="box(alignmentX=0.5;alignmentY=0.5;index=0)" />
-			<Button action="data.componentUp(ComponentsTable.selected)"
+			<Button action="data.componentUp(componentsTable.selected)"
 				buttonType="Trigger" label="Up" localize="true"
-				enable="((ComponentsTable.selected != null) &amp;&amp; (ComponentsTable.selected.parent.getIndex(ComponentsTable.selected) &gt; 0))"
+				enable="((componentsTable.selected != null) &amp;&amp; (componentsTable.selected.parent.getIndex(componentsTable.selected) &gt; 0))"
 				name="upButton" index="0" constraints="box(alignmentX=0.5;alignmentY=0.5;index=0)" />
-			<Button action="data.componentDown(ComponentsTable.selected)"
+			<Button action="data.componentDown(componentsTable.selected)"
 				buttonType="Trigger" label="Down" localize="true"
-				enable="((ComponentsTable.selected != null) &amp;&amp; (ComponentsTable.selected.parent.getIndex(ComponentsTable.selected) &lt; (data.subComponents.size - 1)))"
+				enable="((componentsTable.selected != null) &amp;&amp; (componentsTable.selected.parent.getIndex(componentsTable.selected) &lt; (data.subComponents.size - 1)))"
 				name="downButton" index="0" constraints="box(alignmentX=0.5;alignmentY=0.5;index=0)" />
-			<Button action="data.componentLast(ComponentsTable.selected)"
+			<Button action="data.componentLast(componentsTable.selected)"
 				buttonType="Trigger" label="Last" localize="true"
-				enable="((ComponentsTable.selected != null) &amp;&amp; (ComponentsTable.selected.parent.getIndex(ComponentsTable.selected) &lt; (data.subComponents.size - 1)))"
+				enable="((componentsTable.selected != null) &amp;&amp; (componentsTable.selected.parent.getIndex(componentsTable.selected) &lt; (data.subComponents.size - 1)))"
 				name="lastButton" index="0" constraints="box(alignmentX=0.5;alignmentY=0.5;index=0)" />
 		</Panel>
 	</Panel>
