@@ -274,8 +274,8 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 		public void componentChanged() {
 			if (getComponent() != lastKnownComponent) {
-				System.out.println("Je detecte dans " + getClass().getSimpleName() + " que le component change de " + lastKnownComponent
-						+ " a " + getComponent());
+				//System.out.println("Je detecte dans " + getClass().getSimpleName() + " que le component change de " + lastKnownComponent
+				//		+ " a " + getComponent());
 				getPropertyChangeSupport().firePropertyChange("component", lastKnownComponent, getComponent());
 			}
 			bindingFactoryChanged();
@@ -285,8 +285,8 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 		public void bindingFactoryChanged() {
 			if (getBindingFactory() != lastKnownBindingFactory) {
-				System.out.println("Je detecte dans " + getClass().getSimpleName() + " que la BindingFactory a change de "
-						+ lastKnownBindingFactory + " a " + getBindingFactory());
+				//System.out.println("Je detecte dans " + getClass().getSimpleName() + " que la BindingFactory a change de "
+				//		+ lastKnownBindingFactory + " a " + getBindingFactory());
 				getPropertyChangeSupport().firePropertyChange(Bindable.BINDING_FACTORY_PROPERTY, lastKnownBindingFactory,
 						getBindingFactory());
 
