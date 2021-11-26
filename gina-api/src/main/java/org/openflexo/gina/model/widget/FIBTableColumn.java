@@ -277,6 +277,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		public DataBinding<?> getData() {
 			if (data == null) {
 				data = new DataBinding<>(this, Object.class, DataBinding.BindingDefinitionType.GET);
+				data.setBindingName(DATA_KEY);
 				data.setCachingStrategy(CachingStrategy.NO_CACHING);
 			}
 			return data;
@@ -289,6 +290,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 				data.setDeclaredType(Object.class);
 				data.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 				data.setCachingStrategy(CachingStrategy.NO_CACHING);
+				data.setBindingName(DATA_KEY);
 			}
 			this.data = data;
 		}
