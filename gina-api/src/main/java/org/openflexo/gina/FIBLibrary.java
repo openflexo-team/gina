@@ -160,7 +160,9 @@ public interface FIBLibrary extends FIBLibraryContainer {
 			// "In FIBLibrary [" + Integer.toHexString(hashCode()) + "] loading " + resource + " " + resource.getRelativePath());
 
 			FIBFolder returned = ensureFolderedOrganization(sourceResource);
-			returned.addToResources(sourceResource);
+			if (returned != null) {
+				returned.addToResources(sourceResource);
+			}
 
 			return returned;
 		}
@@ -339,7 +341,8 @@ public interface FIBLibrary extends FIBLibraryContainer {
 					if (inputStream != null) {
 						try {
 							inputStream.close();
-						} catch (IOException e) {}
+						} catch (IOException e) {
+						}
 					}
 				}
 			}
@@ -377,7 +380,8 @@ public interface FIBLibrary extends FIBLibraryContainer {
 			} finally {
 				try {
 					stream.close();
-				} catch (IOException e) {}
+				} catch (IOException e) {
+				}
 			}
 		}
 
