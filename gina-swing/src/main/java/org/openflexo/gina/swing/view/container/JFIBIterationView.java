@@ -47,6 +47,8 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
+import org.openflexo.connie.expr.ExpressionEvaluator;
+import org.openflexo.connie.java.expr.JavaExpressionEvaluator;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.bindings.RuntimeContext;
 import org.openflexo.gina.model.operator.FIBIteration;
@@ -61,6 +63,11 @@ public class JFIBIterationView extends FIBIterationViewImpl<JPanel, JComponent> 
 
 	public JFIBIterationView(FIBIteration model, FIBController controller, RuntimeContext context) {
 		super(model, controller, context);
+	}
+
+	@Override
+	public ExpressionEvaluator getEvaluator() {
+		return new JavaExpressionEvaluator(this);
 	}
 
 	@Override

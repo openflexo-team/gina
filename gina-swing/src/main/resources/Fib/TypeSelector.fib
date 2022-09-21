@@ -2,7 +2,7 @@
 <Panel id="0" borderLeft="0" height="400" sizeAdjustment="OriginalSize"
 	controllerClassName="org.openflexo.gina.swing.utils.TypeSelector$TypeSelectorDetailsPanel$CustomFIBController"
 	borderRight="0" border="empty" trackViewPortWidth="true" align="left"
-	width="400" borderBottom="0" borderTop="0" trackViewPortHeight="true"
+	width="500" borderBottom="0" borderTop="0" trackViewPortHeight="true"
 	layout="border">
 	<Panel id="1" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED"
 		borderLeft="0" sizeAdjustment="OriginalSize" borderRight="0" border="empty"

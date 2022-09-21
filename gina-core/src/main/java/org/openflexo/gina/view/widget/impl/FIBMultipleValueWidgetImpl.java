@@ -42,7 +42,6 @@ package org.openflexo.gina.view.widget.impl;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -135,14 +134,15 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 		// Binding should be notified and we should not force revalidate
 		if (getComponent().getList() != null && getComponent().getList().isSet() && !getComponent().getList().isValid()) {
 			String invalidBindingReason = getComponent().getList().invalidBindingReason();
-			getComponent().getList().forceRevalidate();
+			// TODO: is this still required ?
+			getComponent().getList().revalidate();
 			LOGGER.warning("binding was not valid: " + getComponent().getList() + " reason: " + invalidBindingReason);
 			if (getComponent().getList().isValid()) {
 				LOGGER.warning("Binding has been force revalidated and is now valid. Please investigate.");
 			}
 		}
 
-		if (getComponent().getList() != null && getComponent().getList().forceRevalidate()) {
+		if (getComponent().getList() != null && getComponent().getList().revalidate()) {
 			listBindingValueChangeListener = new BindingValueListChangeListener<Object, List<Object>>(
 					((DataBinding) getComponent().getList()), getBindingEvaluationContext()) {
 
@@ -246,7 +246,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
 					// e.printStackTrace();
-				} catch (InvocationTargetException e) {
+				} catch (ReflectiveOperationException e) {
 					e.printStackTrace();
 				}
 				if (accessedList instanceof List) {
@@ -324,7 +324,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 					e1.printStackTrace();
 				} catch (NullReferenceException e1) {
 					e1.printStackTrace();
-				} catch (InvocationTargetException e1) {
+				} catch (ReflectiveOperationException e1) {
 					e1.printStackTrace();
 				}
 				try {

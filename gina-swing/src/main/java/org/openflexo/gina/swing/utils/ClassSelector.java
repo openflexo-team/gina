@@ -84,7 +84,8 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 	public ClassSelector(Class<?> editedObject) {
 		super(editedObject);
 		setRevertValue(editedObject);
-		setFocusable(true);
+		// setFocusable(true);
+		setName("ClassSelector");
 	}
 
 	@Override
@@ -124,6 +125,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 	@Override
 	protected ResizablePanel createCustomPanel(Class editedObject) {
 		_selectorPanel = makeCustomPanel(editedObject);
+		_selectorPanel.setName("ClassSelector-panel");
 		return _selectorPanel;
 	}
 
@@ -148,6 +150,8 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 		protected ClassSelectorDetailsPanel(Class<?> aClass) {
 			super();
 
+			setName("ClassSelectorDetailsPanel");
+
 			fibComponent = ApplicationFIBLibraryImpl.instance().retrieveFIBComponent(FIB_FILE_NAME, true);
 			controller = new CustomFIBController(fibComponent, SwingViewFactory.INSTANCE);
 			fibView = (JFIBView<?, ?>) controller.buildView(fibComponent, null, true);
@@ -158,6 +162,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 
 			setLayout(new BorderLayout());
 			add(fibView.getResultingJComponent(), BorderLayout.CENTER);
+			fibView.getResultingJComponent().setName("ClassSelectorDetailsPanel-content");
 
 		}
 

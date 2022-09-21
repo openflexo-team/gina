@@ -8,14 +8,14 @@
 		localize="true" columns="15" name="StaticListTF" />
 	<Label index="42" label="list" constraints="twocols(location=left)"
 		localize="true" name="ListLabel" />
-	<Custom index="43" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom index="43" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.list" name="ListBinding"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data" />
 	</Custom>
 	<Label index="44" label="array" constraints="twocols(location=left)"
 		localize="true" name="ArrayLabel" />
-	<Custom index="45" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom index="45" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.array" name="ArrayBinding"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data" />
@@ -46,7 +46,7 @@
 		localize="true" />
 	<Label index="54" label="icon" constraints="twocols(location=left)"
 		visible="data.showIcon" localize="true" name="IconLabel" />
-	<Custom index="55" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom index="55" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.icon"
 		constraints="twocols(expandHorizontally=true;location=right)" visible="data.showIcon">
 		<Assignment variable="component.bindable" value="data.formatter"

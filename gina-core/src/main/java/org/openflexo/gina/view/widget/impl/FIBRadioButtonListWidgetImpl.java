@@ -43,11 +43,11 @@ import java.beans.PropertyChangeEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.binding.javareflect.InvalidKeyValuePropertyException;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBWidget;
 import org.openflexo.gina.model.widget.FIBRadioButtonList;
 import org.openflexo.gina.view.widget.FIBRadioButtonListWidget;
-import org.openflexo.kvc.InvalidKeyValuePropertyException;
 
 /**
  * Base implementation for a widget able to select an item in a radio button panel

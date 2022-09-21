@@ -50,6 +50,7 @@ import org.openflexo.gina.model.FIBOperator;
 import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.gina.model.bindings.FIBIterationBindingModel;
 import org.openflexo.pamela.annotations.CloningStrategy;
+import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
 import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
@@ -57,7 +58,6 @@ import org.openflexo.pamela.annotations.PropertyIdentifier;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
 
 import com.google.common.reflect.TypeToken;
 
@@ -241,7 +241,7 @@ public interface FIBIteration extends FIBOperator {
 				}
 			}
 			if (list != null) {
-				list.forceRevalidate();
+				list.revalidate();
 			}
 		}
 

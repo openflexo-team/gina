@@ -5,7 +5,7 @@
 	<Label name="MinValueLabel" label="minimum" index="6"
 		constraints="twocols(location=left)" localize="true" />
 	<Custom name="MinValueBinding" index="7"
-		componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.minValue"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data" />
@@ -13,7 +13,7 @@
 	<Label name="MaxValueLabel" label="maximum" index="8"
 		constraints="twocols(location=left)" localize="true" />
 	<Custom name="MaxValueBinding" index="9"
-		componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.maxValue"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data" />
@@ -21,7 +21,7 @@
 	<Label name="StepsNumberLabel" label="display_steps" index="10"
 		constraints="twocols(location=left)" localize="true" />
 	<Custom name="StepsNumberBinding" index="11"
-		componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.stepsNumber"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data" />
@@ -36,7 +36,7 @@
 			name="MajorTickSpacingLabelCB" data="data.displayMajorTicks"
 			useScrollBar="false" />
 		<Custom name="MajorTickSpacingBinding" enable="data.displayMajorTicks"
-			constraints="border(location=center)" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+			constraints="border(location=center)" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 			localize="true" manageDynamicModel="true" data="data.majorTickSpacing">
 			<Assignment variable="component.bindable" value="data" />
 		</Custom>
@@ -50,7 +50,7 @@
 			name="MinorTickSpacingLabelCB" data="data.displayMinorTicks"
 			useScrollBar="false" />
 		<Custom name="MinorTickSpacingBinding" enable="data.displayMinorTicks"
-			componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+			componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 			localize="true" manageDynamicModel="true" data="data.minorTickSpacing"
 			constraints="twocols(expandHorizontally=true;location=right)">
 			<Assignment variable="component.bindable" value="data" />

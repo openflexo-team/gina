@@ -39,13 +39,13 @@
 package org.openflexo.gina.view.widget.impl;
 
 import java.beans.PropertyChangeEvent;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingValueChangeListener;
+import org.openflexo.connie.binding.javareflect.InvalidKeyValuePropertyException;
 import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -61,7 +61,6 @@ import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.FIBWidgetView;
 import org.openflexo.gina.view.impl.FIBWidgetViewImpl;
 import org.openflexo.gina.view.widget.FIBReferencedComponentWidget;
-import org.openflexo.kvc.InvalidKeyValuePropertyException;
 import org.openflexo.rm.Resource;
 
 /**
@@ -206,7 +205,7 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
 					e.printStackTrace();
-				} catch (InvocationTargetException e) {
+				} catch (ReflectiveOperationException e) {
 					e.printStackTrace();
 				}
 			}
@@ -254,7 +253,7 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
 					// e.printStackTrace();
-				} catch (InvocationTargetException e) {
+				} catch (ReflectiveOperationException e) {
 					e.printStackTrace();
 				}
 				return null;
@@ -314,7 +313,7 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 			// System.out.println("factory " + getComponent().getControllerFactory() + " gives " + returned);
@@ -385,7 +384,7 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
 					// e.printStackTrace();
-				} catch (InvocationTargetException e) {
+				} catch (ReflectiveOperationException e) {
 					e.printStackTrace();
 				} catch (NotSettableContextException e) {
 					e.printStackTrace();

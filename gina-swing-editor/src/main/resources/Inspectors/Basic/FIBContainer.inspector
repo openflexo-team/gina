@@ -11,7 +11,7 @@
 			visibleRowCount="3" rowHeight="20" autoSelectFirstRow="true"
 			createNewRowOnClick="false" boundToSelectionManager="false"
 			showHeader="false" showFooter="true" selectionMode="MultipleIntervalSelection"
-			localize="true" manageDynamicModel="true" name="VariablesTable" data="data.variables"
+			localize="true" manageDynamicModel="true" name="variablesTable" data="data.variables"
 
 			useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
 			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED">
@@ -23,7 +23,7 @@
 				name="type"> <ColumnAssignment mandatory="true" variable="component.customTypeManager" 
 				value="data.rootComponent.customTypeManager" /> <ColumnAssignment mandatory="true" 
 				variable="component.customTypeEditorProvider" value="data.rootComponent.customTypeEditorProvider" 
-				/> </CustomColumn> <CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector" 
+				/> </CustomColumn> <CustomColumn componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector" 
 				customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.value" 
 				title="Value" columnWidth="40" resizable="true" displayTitle="true" name="value"> 
 				<ColumnAssignment variable="component.bindable" value="iterator" /> </CustomColumn> -->
@@ -37,25 +37,25 @@
 			<Label name="NameLabel" index="-2" label="name"
 				constraints="twocols(location=left;insetsTop=5)" localize="true" />
 			<TextField name="NameTF" index="-1"
-				data="VariablesTable.selected.name"
+				data="variablesTable.selected.name"
 				constraints="twocols(expandHorizontally=true;location=right)"
 				localize="true" columns="15" />
 			<Label label="type" constraints="twocols(location=left)"
 				localize="true" name="ControllerClassLabel" />
 			<Custom componentClassName="org.openflexo.gina.swing.utils.TypeSelector"
-				localize="true" manageDynamicModel="true" data="VariablesTable.selected.type"
+				localize="true" manageDynamicModel="true" data="variablesTable.selected.type"
 				constraints="twocols(expandHorizontally=true;location=right)" name="ControllerClassSelector">
 				<Assignment variable="component.customTypeManager" value="data.rootComponent.customTypeManager" />
 				<Assignment variable="component.customTypeEditorProvider" value="data.rootComponent.customTypeEditorProvider" />
 			</Custom>
 			<Label label="value" constraints="twocols(location=left)" name="visibleLabel"
 				localize="true" />
-			<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
-				localize="true" manageDynamicModel="true" name="visibleValue" data="VariablesTable.selected.value"
+			<Custom componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
+				localize="true" manageDynamicModel="true" name="visibleValue" data="variablesTable.selected.value"
 				constraints="twocols(expandHorizontally=true;location=right)">
-				<Assignment variable="component.bindable" value="VariablesTable.selected" />
+				<Assignment variable="component.bindable" value="variablesTable.selected" />
 			</Custom>
-			 <TextArea name="DescriptionTA" index="-1" data="VariablesTable.selected.description"
+			 <TextArea name="DescriptionTA" index="-1" data="variablesTable.selected.description"
 				constraints="twocols(expandHorizontally=true;expandVertically=true;location=center)"
 				localize="true" columns="15" useScrollBar="true" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"/>
 

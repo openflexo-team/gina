@@ -142,7 +142,7 @@ public class JFIBEditableLabelWidget extends JFIBLabelWidget implements FIBSwing
 			updateLabel();
 			relayoutParentBecauseLabelChanged();
 		}*/
-		if (((EditableJLabelPanel) getTechnologyComponent()).isEditing()) {
+		if (getTechnologyComponent() != null && ((EditableJLabelPanel) getTechnologyComponent()).isEditing()) {
 			return;
 		}
 		super.propertyChange(evt);

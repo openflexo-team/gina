@@ -40,7 +40,6 @@
 package org.openflexo.gina.view.operator.impl;
 
 import java.beans.PropertyChangeEvent;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -55,6 +54,8 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingValueListChangeListener;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.connie.expr.ExpressionEvaluator;
+import org.openflexo.connie.java.expr.JavaExpressionEvaluator;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBContainer;
@@ -105,6 +106,11 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 		public IteratedContentsImpl(I iteratedValue) {
 			this.iteratedValue = iteratedValue;
 			subViewsMap = new HashMap<>();
+		}
+
+		@Override
+		public ExpressionEvaluator getEvaluator() {
+			return new JavaExpressionEvaluator(this);
 		}
 
 		@Override
@@ -199,7 +205,7 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 			e.printStackTrace();
 		} catch (NullReferenceException e) {
 			// e.printStackTrace();
-		} catch (InvocationTargetException e) {
+		} catch (ReflectiveOperationException e) {
 			e.printStackTrace();
 		}
 
@@ -236,7 +242,7 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 			e.printStackTrace();
 		} catch (NullReferenceException e) {
 			// e.printStackTrace();
-		} catch (InvocationTargetException e) {
+		} catch (ReflectiveOperationException e) {
 			e.printStackTrace();
 		}
 
@@ -403,14 +409,16 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 		// Binding should be notified and we should not force revalidate
 		if (getComponent().getList() != null && getComponent().getList().isSet() && !getComponent().getList().isValid()) {
 			String invalidBindingReason = getComponent().getList().invalidBindingReason();
-			getComponent().getList().forceRevalidate();
+			// TODO: is this still required ?
+			getComponent().getList().revalidate();
 			logger.warning("binding was not valid: " + getComponent().getList() + " reason: " + invalidBindingReason);
 			if (getComponent().getList().isValid()) {
 				logger.warning("Binding has been force revalidated and is now valid. Please investigate.");
 			}
 		}
 
-		if (getComponent().getList() != null && getComponent().getList().forceRevalidate()) {
+		// TODO: is this still required ?
+		if (getComponent().getList() != null && getComponent().getList().revalidate()) {
 			listBindingValueChangeListener = new BindingValueListChangeListener<Object, List<Object>>(
 					((DataBinding) getComponent().getList()), getBindingEvaluationContext()) {
 

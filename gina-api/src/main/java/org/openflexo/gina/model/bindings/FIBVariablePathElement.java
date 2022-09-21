@@ -43,25 +43,26 @@ import java.beans.PropertyChangeListener;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.Bindable;
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.binding.IBindingPathElement;
-import org.openflexo.connie.binding.SimplePathElement;
+import org.openflexo.connie.binding.SimplePathElementImpl;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.model.FIBVariable;
 import org.openflexo.gina.view.FIBView;
 
-public class FIBVariablePathElement extends SimplePathElement implements PropertyChangeListener {
+public class FIBVariablePathElement extends SimplePathElementImpl implements PropertyChangeListener {
 
 	private static final Logger logger = Logger.getLogger(FIBVariablePathElement.class.getPackage().getName());
 
 	private Type lastKnownType = null;
 	private final FIBVariable<?> fibVariable;
 
-	public FIBVariablePathElement(IBindingPathElement parent, FIBVariable<?> fibVariable) {
-		super(parent, fibVariable.getName(), fibVariable.getType());
+	public FIBVariablePathElement(IBindingPathElement parent, FIBVariable<?> fibVariable, Bindable bindable) {
+		super(parent, fibVariable.getName(), fibVariable.getType(), bindable);
 
 		this.fibVariable = fibVariable;
 		lastKnownType = fibVariable.getType();
@@ -170,6 +171,15 @@ public class FIBVariablePathElement extends SimplePathElement implements Propert
 				lastKnownType = getType();
 			}
 		}
+	}
+
+	@Override
+	public boolean isResolved() {
+		return true;
+	}
+
+	@Override
+	public void resolve() {
 	}
 
 }

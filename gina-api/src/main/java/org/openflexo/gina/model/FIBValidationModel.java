@@ -38,7 +38,7 @@
 
 package org.openflexo.gina.model;
 
-import org.openflexo.connie.BindingEvaluator;
+import org.openflexo.connie.java.util.JavaBindingEvaluator;
 import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
@@ -101,7 +101,7 @@ public class FIBValidationModel extends ValidationModel {
 		if (localized != null && localized.contains("($")) {
 			String asBindingExpression = asBindingExpression(localized);
 			try {
-				return (String) BindingEvaluator.evaluateBinding(asBindingExpression, context);
+				return (String) JavaBindingEvaluator.evaluateBinding(asBindingExpression, context);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return localized;

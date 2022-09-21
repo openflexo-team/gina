@@ -41,7 +41,6 @@ package org.openflexo.gina.view.widget.impl;
 
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -112,7 +111,7 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 			selectedBindingValueChangeListener.delete();
 		}
 
-		if (getComponent().getSelected() != null && getComponent().getSelected().forceRevalidate()) {
+		if (getComponent().getSelected() != null && getComponent().getSelected().revalidate()) {
 			selectedBindingValueChangeListener = new BindingValueChangeListener<Object>(getComponent().getSelected(),
 					getBindingEvaluationContext(), true) {
 
@@ -199,7 +198,7 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 		}
@@ -344,7 +343,7 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 					e1.printStackTrace();
 				} catch (NullReferenceException e1) {
 					e1.printStackTrace();
-				} catch (InvocationTargetException e1) {
+				} catch (ReflectiveOperationException e1) {
 					e1.printStackTrace();
 				} catch (NotSettableContextException e1) {
 					e1.printStackTrace();

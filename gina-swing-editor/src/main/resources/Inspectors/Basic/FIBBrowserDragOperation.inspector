@@ -14,14 +14,14 @@
 		autoSelectFirstRow="false" format="object.name"/>
 	<Label index="6" label="action" constraints="twocols(location=left)"
 		localize="true" />
-	<Custom index="7" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom index="7" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.action"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data.dragOperationBindable" />
 	</Custom>
 	<Label index="8" label="is_available" constraints="twocols(location=left)"
 		localize="true" />
-	<Custom index="9" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom index="9" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.isAvailable"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data.dragOperationBindable" />

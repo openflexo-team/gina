@@ -42,7 +42,7 @@
 				backgroundSelectionColor="26,96,206"
 				backgroundSecondarySelectionColor="173,215,255"
 				backgroundNonSelectionColor="255,255,255" localize="true"
-				manageDynamicModel="true" name="OptionsInLine1Table" index="0"
+				manageDynamicModel="true" name="optionsInLine1Table" index="0"
 				data="data.firstLevelOptionsInLine1"
 				constraints="gridbag(anchor=center;expandHorizontally=true;expandVertically=true;fill=both;gridHeight=0;gridWidth=1;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)"
 				font="SansSerif,0,11">
@@ -57,17 +57,17 @@
 				darkLevel="0" index="1"
 				constraints="gridbag(anchor=center;fill=vertical;gridHeight=0;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=1.0)">
 				<Button
-					action="data.addToOptionsInLine1(AvailableOptionsInLine1Table.selection)"
+					action="data.addToOptionsInLine1(availableOptionsInLine1Table.selection)"
 					buttonType="Trigger" label="&lt;" localize="true"
-					enable="(AvailableOptionsInLine1Table.selected != null)" name="AddButton"
+					enable="(availableOptionsInLine1Table.selected != null)" name="AddButton"
 					index="0" constraints="box(alignmentX=0.5;alignmentY=0.5;index=0)" />
 				<Button action="data.addToOptionsInLine1(data.visibleAndUnusedOptions)"
 					buttonType="Trigger" label="&lt;&lt;" localize="true" name="AddAllButton"
 					index="1" constraints="box(alignmentX=0.5;alignmentY=0.5;index=1)" />
 				<Button
-					action="data.removeFromOptionsInLine1(OptionsInLine1Table.selection)"
+					action="data.removeFromOptionsInLine1(optionsInLine1Table.selection)"
 					buttonType="Trigger" label="&gt;" localize="true"
-					enable="(OptionsInLine1Table.selected != null)" name="RemoveButton"
+					enable="(optionsInLine1Table.selected != null)" name="RemoveButton"
 					index="2" constraints="box(alignmentX=0.5;alignmentY=0.5;index=2)" />
 				<Button action="data.removeFromOptionsInLine1(data.optionsInLine1)"
 					buttonType="Trigger" label="&gt;&gt;" localize="true" name="RemoveAllButton"
@@ -81,7 +81,7 @@
 				backgroundSelectionColor="26,96,206"
 				backgroundSecondarySelectionColor="173,215,255"
 				backgroundNonSelectionColor="255,255,255" localize="true"
-				manageDynamicModel="true" name="AvailableOptionsInLine1Table" index="2"
+				manageDynamicModel="true" name="availableOptionsInLine1Table" index="2"
 				data="data.visibleAndUnusedOptions"
 				constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=2;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=1.0)">
 				<LabelColumn data="iterator.name" title="available_options"
@@ -98,7 +98,7 @@
 				backgroundSelectionColor="26,96,206"
 				backgroundSecondarySelectionColor="173,215,255"
 				backgroundNonSelectionColor="255,255,255" localize="true"
-				manageDynamicModel="true" name="OptionsInLine2Table" index="0"
+				manageDynamicModel="true" name="optionsInLine2Table" index="0"
 				data="data.firstLevelOptionsInLine2"
 				constraints="gridbag(anchor=center;expandHorizontally=true;expandVertically=true;fill=both;gridHeight=0;gridWidth=1;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)"
 				font="SansSerif,0,11">
@@ -113,17 +113,17 @@
 				darkLevel="0" index="1"
 				constraints="gridbag(anchor=center;fill=vertical;gridHeight=0;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=1.0)">
 				<Button
-					action="data.addToOptionsInLine2(AvailableOptionsInLine2Table.selection)"
+					action="data.addToOptionsInLine2(availableOptionsInLine2Table.selection)"
 					buttonType="Trigger" label="&lt;" localize="true"
-					enable="(AvailableOptionsInLine2Table.selected != null)" name="AddButton"
+					enable="(availableOptionsInLine2Table.selected != null)" name="AddButton"
 					index="0" constraints="box(alignmentX=0.5;alignmentY=0.5;index=0)" />
 				<Button action="data.addToOptionsInLine2(data.visibleAndUnusedOptions)"
 					buttonType="Trigger" label="&lt;&lt;" localize="true" name="AddAllButton"
 					index="1" constraints="box(alignmentX=0.5;alignmentY=0.5;index=1)" />
 				<Button
-					action="data.removeFromOptionsInLine2(OptionsInLine2Table.selection)"
+					action="data.removeFromOptionsInLine2(optionsInLine2Table.selection)"
 					buttonType="Trigger" label="&gt;" localize="true"
-					enable="(OptionsInLine2Table.selected != null)" name="RemoveButton"
+					enable="(optionsInLine2Table.selected != null)" name="RemoveButton"
 					index="2" constraints="box(alignmentX=0.5;alignmentY=0.5;index=2)" />
 				<Button action="data.removeFromOptionsInLine2(data.optionsInLine2)"
 					buttonType="Trigger" label="&gt;&gt;" localize="true" name="RemoveAllButton"
@@ -137,7 +137,7 @@
 				backgroundSelectionColor="26,96,206"
 				backgroundSecondarySelectionColor="173,215,255"
 				backgroundNonSelectionColor="255,255,255" localize="true"
-				manageDynamicModel="true" name="AvailableOptionsInLine2Table" index="2"
+				manageDynamicModel="true" name="availableOptionsInLine2Table" index="2"
 				data="data.visibleAndUnusedOptions"
 				constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=2;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=1.0)">
 				<LabelColumn data="iterator.name" title="available_options"
@@ -154,7 +154,7 @@
 				backgroundSelectionColor="26,96,206"
 				backgroundSecondarySelectionColor="173,215,255"
 				backgroundNonSelectionColor="255,255,255" localize="true"
-				manageDynamicModel="true" name="OptionsInLine3Table" index="0"
+				manageDynamicModel="true" name="optionsInLine3Table" index="0"
 				data="data.firstLevelOptionsInLine3"
 				constraints="gridbag(anchor=center;expandHorizontally=true;expandVertically=true;fill=both;gridHeight=0;gridWidth=1;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)"
 				font="SansSerif,0,11">
@@ -169,17 +169,17 @@
 				darkLevel="0" index="1"
 				constraints="gridbag(anchor=center;fill=vertical;gridHeight=0;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=1.0)">
 				<Button
-					action="data.addToOptionsInLine3(AvailableOptionsInLine3Table.selection)"
+					action="data.addToOptionsInLine3(availableOptionsInLine3Table.selection)"
 					buttonType="Trigger" label="&lt;" localize="true"
-					enable="(AvailableOptionsInLine3Table.selected != null)" name="AddButton"
+					enable="(availableOptionsInLine3Table.selected != null)" name="AddButton"
 					index="0" constraints="box(alignmentX=0.5;alignmentY=0.5;index=0)" />
 				<Button action="data.addToOptionsInLine3(data.visibleAndUnusedOptions)"
 					buttonType="Trigger" label="&lt;&lt;" localize="true" name="AddAllButton"
 					index="1" constraints="box(alignmentX=0.5;alignmentY=0.5;index=1)" />
 				<Button
-					action="data.removeFromOptionsInLine3(OptionsInLine3Table.selection)"
+					action="data.removeFromOptionsInLine3(optionsInLine3Table.selection)"
 					buttonType="Trigger" label="&gt;" localize="true"
-					enable="(OptionsInLine3Table.selected != null)" name="RemoveButton"
+					enable="(optionsInLine3Table.selected != null)" name="RemoveButton"
 					index="2" constraints="box(alignmentX=0.5;alignmentY=0.5;index=2)" />
 				<Button action="data.removeFromOptionsInLine3(data.optionsInLine3)"
 					buttonType="Trigger" label="&gt;&gt;" localize="true" name="RemoveAllButton"
@@ -193,7 +193,7 @@
 				backgroundSelectionColor="26,96,206"
 				backgroundSecondarySelectionColor="173,215,255"
 				backgroundNonSelectionColor="255,255,255" localize="true"
-				manageDynamicModel="true" name="AvailableOptionsInLine3Table" index="2"
+				manageDynamicModel="true" name="availableOptionsInLine3Table" index="2"
 				data="data.visibleAndUnusedOptions"
 				constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=2;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=1.0)">
 				<LabelColumn data="iterator.name" title="available_options"

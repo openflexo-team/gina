@@ -43,8 +43,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.Bindable;
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.binding.IBindingPathElement;
+import org.openflexo.connie.binding.Property;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.exception.InvocationTargetTransformException;
 import org.openflexo.connie.exception.NullReferenceException;
@@ -156,7 +158,7 @@ public class FIBViewType<F extends FIBComponent> implements CustomType {
 		return true;
 	}
 
-	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement parent) {
+	public List<? extends SimplePathElement<?>> getAccessibleSimplePathElements(IBindingPathElement parent, Bindable bindable) {
 		return Collections.emptyList();
 	}
 
@@ -164,15 +166,17 @@ public class FIBViewType<F extends FIBComponent> implements CustomType {
 		return Collections.emptyList();
 	}
 
-	public static abstract class DynamicProperty extends PropertyChangedSupportDefaultImplementation {
+	public static abstract class DynamicProperty extends PropertyChangedSupportDefaultImplementation implements Property {
 
 		@PropertyIdentifier(type = String.class)
 		public static final String NAME_KEY = "name";
 		@PropertyIdentifier(type = Type.class)
 		public static final String TYPE_KEY = "type";
 
+		@Override
 		public abstract String getName();
 
+		@Override
 		public abstract Type getType();
 
 		// private BindingVariable bindingVariable;

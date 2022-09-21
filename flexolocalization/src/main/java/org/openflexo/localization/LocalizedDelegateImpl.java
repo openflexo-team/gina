@@ -176,8 +176,8 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			}
 			else {
 				try {
-					if (logger.isLoggable(Level.INFO)) {
-						logger.info(
+					if (logger.isLoggable(Level.FINE)) {
+						logger.fine(
 								"Loading dictionary for language " + language.getName() + " Dir=" + localizedDirectoryResource.toString());
 					}
 					loadedDict.load(dict);

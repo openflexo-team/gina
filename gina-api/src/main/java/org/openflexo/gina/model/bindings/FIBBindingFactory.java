@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.Bindable;
 import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.connie.java.JavaBindingFactory;
@@ -57,53 +58,53 @@ public class FIBBindingFactory extends JavaBindingFactory {
 
 	static final Logger logger = Logger.getLogger(FIBBindingFactory.class.getPackage().getName());
 
-	private final Map<IBindingPathElement, Map<Object, SimplePathElement>> storedBindingPathElements = new HashMap<>();
+	private final Map<IBindingPathElement, Map<Object, SimplePathElement<?>>> storedBindingPathElements = new HashMap<>();
 
-	protected SimplePathElement getSimplePathElement(Object object, IBindingPathElement parent) {
-		Map<Object, SimplePathElement> storedValues = storedBindingPathElements.get(parent);
+	protected SimplePathElement<?> getSimplePathElement(Object object, IBindingPathElement parent, Bindable bindable) {
+		Map<Object, SimplePathElement<?>> storedValues = storedBindingPathElements.get(parent);
 		if (storedValues == null) {
 			storedValues = new HashMap<>();
 			storedBindingPathElements.put(parent, storedValues);
 		}
-		SimplePathElement returned = storedValues.get(object);
+		SimplePathElement<?> returned = storedValues.get(object);
 		if (returned == null) {
-			returned = makeSimplePathElement(object, parent);
+			returned = makeSimplePathElement(object, parent, bindable);
 			storedValues.put(object, returned);
 		}
 		return returned;
 	}
 
-	protected SimplePathElement makeSimplePathElement(Object object, IBindingPathElement parent) {
+	protected SimplePathElement<?> makeSimplePathElement(Object object, IBindingPathElement parent, Bindable bindable) {
 		if (object instanceof FIBVariable) {
-			return new FIBVariablePathElement(parent, (FIBVariable<?>) object);
+			return new FIBVariablePathElement(parent, (FIBVariable<?>) object, bindable);
 		}
 		logger.warning("Unexpected " + object + " for parent=" + parent);
 		return null;
 	}
 
 	@Override
-	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement parent) {
+	public List<? extends SimplePathElement<?>> getAccessibleSimplePathElements(IBindingPathElement parent, Bindable bindable) {
 
 		if (parent != null) {
 			Type pType = parent.getType();
 
 			if (pType instanceof FIBViewType) {
-				List<SimplePathElement> returned = new ArrayList<>();
+				List<SimplePathElement<?>> returned = new ArrayList<>();
 				FIBComponent concept = ((FIBViewType<?>) pType).getFIBComponent();
 
 				if (concept != null) {
 					for (FIBVariable<?> variable : concept.getVariables()) {
-						returned.add(getSimplePathElement(variable, parent));
+						returned.add(getSimplePathElement(variable, parent, bindable));
 					}
 				}
 
-				returned.addAll(((FIBViewType<?>) pType).getAccessibleSimplePathElements(parent));
+				returned.addAll(((FIBViewType<?>) pType).getAccessibleSimplePathElements(parent, bindable));
 
 				return returned;
 			}
 
 			// In all other cases, consider it using Java rules
-			return super.getAccessibleSimplePathElements(parent);
+			return super.getAccessibleSimplePathElements(parent, bindable);
 		}
 		else {
 			logger.warning("Trying to find accessible path elements for a NULL parent");
@@ -112,12 +113,12 @@ public class FIBBindingFactory extends JavaBindingFactory {
 	}
 
 	@Override
-	public SimplePathElement makeSimplePathElement(IBindingPathElement parent, String propertyName) {
+	public SimplePathElement<?> makeSimplePathElement(IBindingPathElement parent, String propertyName, Bindable bindable) {
 		// We want to avoid code duplication, so iterate on all accessible simple path element and choose the right one
-		SimplePathElement returned = null;
-		List<? extends SimplePathElement> accessibleSimplePathElements = getAccessibleSimplePathElements(parent);
+		SimplePathElement<?> returned = null;
+		List<? extends SimplePathElement<?>> accessibleSimplePathElements = getAccessibleSimplePathElements(parent, bindable);
 		if (accessibleSimplePathElements != null) {
-			for (SimplePathElement e : accessibleSimplePathElements) {
+			for (SimplePathElement<?> e : accessibleSimplePathElements) {
 				if (e.getLabel() != null && e.getLabel().equals(propertyName)) {
 					returned = e;
 				}
@@ -125,7 +126,7 @@ public class FIBBindingFactory extends JavaBindingFactory {
 		}
 		// We cannot find a simple path element at this level, retrieve from java
 		if (returned == null) {
-			returned = super.makeSimplePathElement(parent, propertyName);
+			returned = super.makeSimplePathElement(parent, propertyName, bindable);
 		}
 
 		return returned;

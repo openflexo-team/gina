@@ -46,7 +46,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.InputEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -63,6 +62,8 @@ import org.openflexo.connie.binding.BindingValueChangeListener;
 import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.connie.expr.ExpressionEvaluator;
+import org.openflexo.connie.java.expr.JavaExpressionEvaluator;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.event.GinaEvent.KIND;
 import org.openflexo.gina.event.GinaEventNotifier;
@@ -154,6 +155,11 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 		};
 
+	}
+
+	@Override
+	public final ExpressionEvaluator getEvaluator() {
+		return new JavaExpressionEvaluator(this);
 	}
 
 	@Override
@@ -513,7 +519,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			// logger.warning("Widget " + getWidget() +
 			// " NullReferenceException: " + e.getMessage());
 			return null;
-		} catch (InvocationTargetException e) {
+		} catch (ReflectiveOperationException e) {
 			// LOGGER.warning("Widget " + getWidget() + " InvocationTargetException: " + e.getMessage());
 			return null;
 		}
@@ -546,7 +552,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			} catch (NullReferenceException e) {
 				LOGGER.warning("Unexpected NullReferenceException while evaluating " + getWidget().getValueTransform() + e.getMessage());
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				LOGGER.warning("Unexpected InvocationTargetException while evaluating " + getWidget().getValueTransform() + e.getMessage());
 				e.printStackTrace();
 			}
@@ -563,7 +569,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			} catch (NullReferenceException e) {
 				LOGGER.warning("Unexpected NullReferenceException while evaluating " + getWidget().getValueValidator() + e.getMessage());
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				LOGGER.warning("Unexpected InvocationTargetException while evaluating " + getWidget().getValueValidator() + e.getMessage());
 				e.printStackTrace();
 			}
@@ -601,7 +607,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 				// LOGGER.warning("Unexpected " + e + " cannot setValue() with " + getWidget().getData() + " and value " + aValue + "
 				// message="
 				// + e.getMessage());
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			} catch (NotSettableContextException e) {
 				e.printStackTrace();
@@ -623,7 +629,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 		}
@@ -632,7 +638,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 
-		if (evt.getPropertyName().equals(FIBWidget.VALUE_KEY)) {
+		if (evt.getPropertyName().equals(FIBWidget.VALUE_KEY) && getTechnologyComponent() != null) {
 			updateData();
 		}
 		/*if (evt.getPropertyName().equals(FIBWidget.MANAGE_DYNAMIC_MODEL_KEY)) {
@@ -779,7 +785,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 				// NullReferenceException is allowed, in this case, default
 				// enability is true
 				componentEnabled = true;
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 				componentEnabled = true;
 			}
@@ -796,7 +802,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 		}
@@ -814,7 +820,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 				// We try to force the revalidation of format when object type of formatted object is still Object for example
 				// In this case, format binding is not valid and should be recomputed
 				// We should notify the change of getDataType() in FIBWidget
-				getWidget().getFormat().forceRevalidate();
+				// TODO: is this still required ?
+				getWidget().getFormat().revalidate();
 				if (getWidget().getFormat().isValid()) {
 					LOGGER.warning("Format binding has been force revalidated and is now valid. Please investigate.");
 				}
@@ -830,7 +837,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
 					e.printStackTrace();
-				} catch (InvocationTargetException e) {
+				} catch (ReflectiveOperationException e) {
 					e.printStackTrace();
 				}
 				return returned;
@@ -864,7 +871,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				// e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 		}
@@ -886,7 +893,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			e.printStackTrace();
 		} catch (NullReferenceException e) {
 			e.printStackTrace();
-		} catch (InvocationTargetException e) {
+		} catch (ReflectiveOperationException e) {
 			e.printStackTrace();
 		}
 	}
@@ -906,7 +913,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			e.printStackTrace();
 		} catch (NullReferenceException e) {
 			e.printStackTrace();
-		} catch (InvocationTargetException e) {
+		} catch (ReflectiveOperationException e) {
 			e.printStackTrace();
 		}
 	}
@@ -926,7 +933,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			e.printStackTrace();
 		} catch (NullReferenceException e) {
 			e.printStackTrace();
-		} catch (InvocationTargetException e) {
+		} catch (ReflectiveOperationException e) {
 			e.printStackTrace();
 		}
 	}
@@ -998,6 +1005,11 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		@Override
 		public String getDeletedProperty() {
 			return null;
+		}
+
+		@Override
+		public ExpressionEvaluator getEvaluator() {
+			return new JavaExpressionEvaluator(this);
 		}
 
 	}

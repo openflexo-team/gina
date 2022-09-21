@@ -105,7 +105,7 @@
 			border="empty" flowAlignment="CENTER" trackViewPortWidth="true"
 			titleFont="SansSerif,0,11" trackViewPortHeight="true">
 			<Table id="56" showFooter="false" manageDynamicModel="true"
-				doubleClickAction="controller.fixIssue(FixProposalTable.selected)"
+				doubleClickAction="controller.fixIssue(fixProposalTable.selected)"
 				selectionMode="MultipleIntervalSelection" boundToSelectionManager="true"
 				controllerClassName="org.openflexo.gina.controller.FIBController"
 				index="2" localize="true" font="Lucida Grande,0,11"
@@ -115,7 +115,7 @@
 				backgroundSelectionColor="41,90,209" useScrollBar="false"
 				backgroundNonSelectionColor="255,255,255" data="data.filteredIssues"
 				selected="controller.selectedValidationIssue" autoSelectFirstRow="false"
-				name="IssuesTable" textNonSelectionColor="0,0,0" readOnly="false"
+				name="issuesTable" textNonSelectionColor="0,0,0" readOnly="false"
 				backgroundSecondarySelectionColor="173,215,255">
 				<IconColumn id="57" data="controller.iconForObject(iterator)"
 					displayTitle="false" title="icon" name="icon" columnWidth="20"
@@ -130,14 +130,14 @@
 			</Table>
 			<TextArea id="60" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED"
 				manageDynamicModel="false" useScrollBar="true"
-				data="data.validationModel.localizedIssueDetailedInformations(IssuesTable.selected)"
+				data="data.validationModel.localizedIssueDetailedInformations(issuesTable.selected)"
 				columns="8" controllerClassName="org.openflexo.gina.controller.FIBController"
 				text="TextArea" index="2" localize="true" font="SansSerif,0,11"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center)"
 				rows="5" readOnly="false" validateOnReturn="true"
 				horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" />
 			<Panel id="61" darkLevel="0"
-				visible="((IssuesTable.selected != null) &amp; IssuesTable.selected.isProblemIssue)"
+				visible="((issuesTable.selected != null) &amp;&amp; issuesTable.selected.isProblemIssue)"
 				useScrollBar="false" protectContent="false" name="DetailPanel"
 				layout="border" controllerClassName="org.openflexo.gina.controller.FIBController"
 				border="empty" trackViewPortWidth="true" index="3"
@@ -145,7 +145,7 @@
 				borderTitle="Panel"
 				titleFont="Lucida Grande,0,13" trackViewPortHeight="true">
 				<Table id="62" showFooter="false" manageDynamicModel="true"
-					doubleClickAction="controller.fixIssue(FixProposalTable.selected)"
+					doubleClickAction="controller.fixIssue(fixProposalTable.selected)"
 					selectionMode="MultipleIntervalSelection" boundToSelectionManager="false"
 					controllerClassName="org.openflexo.gina.controller.FIBController"
 					index="3" localize="true"
@@ -154,7 +154,7 @@
 					textSelectionColor="255,255,255" iteratorClassName="org.openflexo.pamela.validation.FixProposal"
 					backgroundSelectionColor="41,90,209" useScrollBar="false"
 					backgroundNonSelectionColor="255,255,255" data="problemIssue.fixProposals"
-					autoSelectFirstRow="true" name="FixProposalTable"
+					autoSelectFirstRow="true" name="fixProposalTable"
 					textNonSelectionColor="0,0,0" readOnly="false"
 					backgroundSecondarySelectionColor="173,215,255">
 					<IconColumn id="63" data="controller.iconForObject(iterator)"
@@ -166,7 +166,7 @@
 						resizable="true" />
 				</Table>
 				<FIBVariable name="problemIssue"
-					value="($org.openflexo.pamela.validation.ProblemIssue)IssuesTable.selected"
+					value="(org.openflexo.pamela.validation.ProblemIssue)issuesTable.selected"
 					type="org.openflexo.pamela.validation.ProblemIssue" />
 			</Panel>
 		</Tab>
@@ -185,7 +185,7 @@
 					constraints="split(anchor=center;fill=both;gridHeight=2;gridWidth=1;gridX=-1;gridY=-1;index=3;insetsBottom=0;insetsLeft=10;insetsRight=10;insetsTop=0;padX=0;padY=0;splitIdentifier=classes;weightX=1.0;weightY=1.0)"
 					createNewRowOnClick="false" iteratorClassName="java.lang.Class"
 					useScrollBar="false" data="data.validationModel.sortedClasses"
-					autoSelectFirstRow="false" name="ClassesTable" readOnly="false">
+					autoSelectFirstRow="false" name="classesTable" readOnly="false">
 					<LabelColumn id="68" data="iterator.simpleName"
 						displayTitle="true" title="classes" name="label" columnWidth="100"
 						resizable="true" />
@@ -197,8 +197,8 @@
 					constraints="split(anchor=center;fill=both;gridHeight=2;gridWidth=1;gridX=-1;gridY=-1;index=3;insetsBottom=0;insetsLeft=10;insetsRight=10;insetsTop=0;padX=0;padY=0;splitIdentifier=rules;weightX=1.0;weightY=1.0)"
 					createNewRowOnClick="false" iteratorClassName="org.openflexo.pamela.validation.ValidationRule"
 					useScrollBar="false"
-					data="data.validationModel.getGenericRuleSet(ClassesTable.selected).rules"
-					autoSelectFirstRow="true" name="RulesTable" readOnly="false">
+					data="data.validationModel.getGenericRuleSet(classesTable.selected).rules"
+					autoSelectFirstRow="true" name="rulesTable" readOnly="false">
 					<LabelColumn id="70" data="iterator.class.simpleName"
 						displayTitle="true" title="validation_rule"
 						color="controller.getValidationRuleColor(iterator)" name="label"
@@ -217,7 +217,7 @@
 						label="validation_rule" readOnly="false" />
 					<TextField id="73" passwd="false" manageDynamicModel="false"
 						useScrollBar="false"
-						data="data.validationModel.localizedRuleName(RulesTable.selected)"
+						data="data.validationModel.localizedRuleName(rulesTable.selected)"
 						columns="7" controllerClassName="org.openflexo.gina.controller.FIBController"
 						text="TextField" localize="true"
 						constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)"
@@ -234,23 +234,23 @@
 						constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)"
 						borderTitle="Panel" trackViewPortHeight="true">
 						<TextField id="76" passwd="false" manageDynamicModel="false"
-							useScrollBar="false" data="RulesTable.selected.objectType.simpleName"
+							useScrollBar="false" data="rulesTable.selected.objectType.simpleName"
 							columns="7" controllerClassName="org.openflexo.gina.controller.FIBController"
 							text="TextField" localize="true"
 							constraints="border(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center)"
 							readOnly="false" validateOnReturn="false" />
-						<Button id="77" visible="(RulesTable.selected != null)"
+						<Button id="77" visible="(rulesTable.selected != null)"
 							manageDynamicModel="false" useScrollBar="false"
-							data="(RulesTable.selected.isEnabled ? &quot;disable_rule&quot; : &quot;enable_rule&quot;)"
+							data="(rulesTable.selected.isEnabled ? &quot;disable_rule&quot; : &quot;enable_rule&quot;)"
 							buttonType="Trigger"
-							action="(RulesTable.selected.isEnabled ? controller.disableRule(RulesTable.selected) : controller.enableRule(RulesTable.selected))"
+							action="(rulesTable.selected.isEnabled ? controller.disableRule(rulesTable.selected) : controller.enableRule(rulesTable.selected))"
 							controllerClassName="org.openflexo.gina.controller.FIBController"
 							localize="true" constraints="border(location=east)" label=""
 							readOnly="false" />
 					</Panel>
 					<TextArea id="78" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED"
 						manageDynamicModel="false" useScrollBar="true"
-						data="data.validationModel.localizedRuleDescription(RulesTable.selected)"
+						data="data.validationModel.localizedRuleDescription(rulesTable.selected)"
 						columns="8" controllerClassName="org.openflexo.gina.controller.FIBController"
 						text="TextArea" localize="true"
 						constraints="twocols(expandHorizontally=true;expandVertically=true;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center)"
@@ -277,9 +277,9 @@
 		borderTitle="Panel" titleFont="Lucida Grande,0,13"
 		trackViewPortHeight="true">
 		<Button id="87" manageDynamicModel="false" useScrollBar="false"
-			enable="((IssuesTable.selected != null) | (FixProposalTable.selected != null))"
+			enable="((issuesTable.selected != null) || (fixProposalTable.selected != null))"
 			buttonType="Trigger" name="FixIssueButton"
-			action="controller.fixIssues(IssuesTable.selection,FixProposalTable.selected)"
+			action="controller.fixIssues(issuesTable.selection,fixProposalTable.selected)"
 			controllerClassName="org.openflexo.gina.controller.FIBController"
 			index="0" localize="true" constraints="flow(index=0)" label="fix_issue_s"
 			readOnly="false" />
@@ -290,9 +290,9 @@
 			index="0" localize="true" constraints="flow(index=0)" label="fix_all"
 			readOnly="false" />
 		<Button id="89" manageDynamicModel="false" useScrollBar="false"
-			enable="((IssuesTable.selected != null) &amp; IssuesTable.selected.cause.isEnabled)"
+			enable="((issuesTable.selected != null) &amp;&amp; issuesTable.selected.cause.isEnabled)"
 			buttonType="Trigger" name="DisableRuleButton"
-			action="controller.disableRule(IssuesTable.selected.cause)"
+			action="controller.disableRule(issuesTable.selected.cause)"
 			controllerClassName="org.openflexo.gina.controller.FIBController"
 			index="0" localize="true" constraints="flow(index=0)" label="disable_rule"
 			readOnly="false" />

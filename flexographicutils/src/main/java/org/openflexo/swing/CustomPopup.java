@@ -358,7 +358,8 @@ public abstract class CustomPopup<T> extends JPanel implements ActionListener, M
 			_childs = new Vector<>();
 			parentListener = new ParentPopupMoveListener();
 			setUndecorated(true);
-			setAutoRequestFocus(true);
+			// when set to true it causes focus issue
+			setAutoRequestFocus(false);
 			setAlwaysOnTop(true);
 			getRootPane().setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			getContentPane().add(invoker.getCustomPanel());

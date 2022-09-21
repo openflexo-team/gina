@@ -75,6 +75,8 @@ import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingValueChangeListener;
 import org.openflexo.connie.binding.BindingValueListChangeListener;
+import org.openflexo.connie.expr.ExpressionEvaluator;
+import org.openflexo.connie.java.expr.JavaExpressionEvaluator;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBBrowserElement;
@@ -629,6 +631,11 @@ public class FIBBrowserModel extends DefaultTreeModel {
 
 			private DynamicBindingEvaluationContextForBrowserCell(/*Object representedObject*/) {
 				// this.representedObject = representedObject;
+			}
+
+			@Override
+			public ExpressionEvaluator getEvaluator() {
+				return new JavaExpressionEvaluator(this);
 			}
 
 			@Override

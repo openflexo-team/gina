@@ -60,6 +60,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
+import org.openflexo.connie.expr.ExpressionEvaluator;
+import org.openflexo.connie.java.expr.JavaExpressionEvaluator;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.model.container.FIBPanel.Layout;
@@ -132,6 +134,11 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> implemen
 		super(model, controller, new SwingPanelRenderingAdapter());
 
 		// updateBorder();
+	}
+
+	@Override
+	public ExpressionEvaluator getEvaluator() {
+		return new JavaExpressionEvaluator(this);
 	}
 
 	@Override
@@ -308,10 +315,45 @@ public class JFIBPanelView extends FIBPanelViewImpl<JPanel, JComponent> implemen
 		}
 
 		ScrollablePanel panel = new ScrollablePanel() {
+			/**
+			 * @param g
+			 */
 			@Override
 			public void paint(Graphics g) {
-				super.paint(g);
-				paintAdditionalInfo(g);
+				try {
+					super.paint(g);
+					paintAdditionalInfo(g);
+				} catch (IndexOutOfBoundsException e) {
+					// May happen in production
+					// Continue
+					logger.warning("Unexpected " + e);
+					Thread.dumpStack();
+					/*				java.lang.IndexOutOfBoundsException: valid viewIndex: 0 <= index < 2 but was: 2
+											at org.jdesktop.swingx.sort.DefaultSortController.convertRowIndexToModel(DefaultSortController.java:311)
+											at javax.swing.JTable.convertRowIndexToModel(JTable.java:2645)
+											at javax.swing.JTable.getValueAt(JTable.java:2720)
+											at javax.swing.JTable.prepareRenderer(JTable.java:5712)
+											at org.jdesktop.swingx.JXTable.prepareRenderer(JXTable.java:3537)
+											at javax.swing.plaf.basic.BasicTableUI.paintCell(BasicTableUI.java:2114)
+											at javax.swing.plaf.basic.BasicTableUI.paintCells(BasicTableUI.java:2016)
+											at javax.swing.plaf.basic.BasicTableUI.paint(BasicTableUI.java:1812)
+											at javax.swing.plaf.ComponentUI.update(ComponentUI.java:161)
+											at javax.swing.JComponent.paintComponent(JComponent.java:780)
+											at javax.swing.JComponent.paint(JComponent.java:1056)
+											at javax.swing.JComponent.paintChildren(JComponent.java:889)
+											at javax.swing.JComponent.paint(JComponent.java:1065)
+											at javax.swing.JViewport.paint(JViewport.java:728)
+											at javax.swing.JComponent.paintChildren(JComponent.java:889)
+											at javax.swing.JComponent.paint(JComponent.java:1065)
+											at javax.swing.JComponent.paintChildren(JComponent.java:889)
+											at javax.swing.JComponent.paint(JComponent.java:1065)
+											at javax.swing.JComponent.paintChildren(JComponent.java:889)
+											at javax.swing.JComponent.paint(JComponent.java:1065)
+											at org.openflexo.gina.swing.view.container.JFIBPanelView$1.paint(JFIBPanelView.java:320)
+											at javax.swing.JComponent.paintChildren(JComponent.java:889)
+											at javax.swing.JComponent.paint(JComponent.java:1065)
+					*/
+				}
 			}
 		};
 		panel.setOpaque(false);

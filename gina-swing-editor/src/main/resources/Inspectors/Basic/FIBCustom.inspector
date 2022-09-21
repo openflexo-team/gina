@@ -14,14 +14,14 @@
 		showFooter="true" selectionMode="MultipleIntervalSelection" localize="true"
 		manageDynamicModel="true" name="AssignmentsTable" data="data.assignments"
 		constraints="twocols(expandHorizontally=true;expandVertically=true;location=right)">
-		<CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		<CustomColumn componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 			customRendering="false" disableTerminateEditOnFocusLost="false"
 			data="iterator.variable" title="Variable" columnWidth="30"
 			resizable="true" displayTitle="true">
 			<ColumnAssignment variable="component.bindable"
 				value="iterator" />
 		</CustomColumn>
-		<CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		<CustomColumn componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 			customRendering="false" disableTerminateEditOnFocusLost="false"
 			data="iterator.value" title="Value" columnWidth="30" resizable="true"
 			displayTitle="true">

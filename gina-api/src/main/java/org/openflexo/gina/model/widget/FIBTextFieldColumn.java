@@ -90,9 +90,9 @@ public interface FIBTextFieldColumn extends FIBTableColumn {
 		@Override
 		public void finalizeTableDeserialization() {
 			super.finalizeTableDeserialization();
-			if (isEditable != null) {
+			/*if (isEditable != null) {
 				isEditable.decode();
-			}
+			}*/
 		}
 
 		@Override

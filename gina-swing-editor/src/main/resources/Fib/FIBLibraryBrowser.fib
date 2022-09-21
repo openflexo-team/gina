@@ -8,12 +8,12 @@
 	<Browser id="1" deepExploration="true" showFooter="true" rowHeight="18" 
 		showRootsHandle="true" manageDynamicModel="true" root="data"
 		selectionMode="DiscontiguousTreeSelection"
-		rightClickAction="controller.rightClick(LibraryBrowser.selected,event)"
-		doubleClickAction="controller.doubleClickOnComponentResource(LibraryBrowser.selected)"
+		rightClickAction="controller.rightClick(libraryBrowser.selected,event)"
+		doubleClickAction="controller.doubleClickOnComponentResource(libraryBrowser.selected)"
 		boundToSelectionManager="true" localize="true"
 		constraints="border(location=center;x=0;y=0)" iteratorClassName="org.openflexo.rm.Resource"
 		useScrollBar="false" selected="controller.selectedComponentResource"
-		name="LibraryBrowser" rootVisible="true" readOnly="false">
+		name="libraryBrowser" rootVisible="true" readOnly="false">
 		<BrowserElement id="2" icon="controller.iconForObject(library)"
 			filtered="false" label="controller.textFor(library)" defaultVisible="true"
 			dataClassName="org.openflexo.gina.FIBLibrary" name="library"

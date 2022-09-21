@@ -10,7 +10,7 @@
 		data="data.imageActualFile" constraints="twocols(expandHorizontally=true;location=right)" />
 	<Label index="4" label="dynamic_image" constraints="twocols(location=left)"
 		localize="true" />
-	<Custom index="5" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom index="5" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.dynamicBackgroundImage"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data" />
@@ -26,18 +26,18 @@
 		localize="true" iteratorClassName="org.openflexo.gina.model.widget.FIBImage$SizeAdjustment"
 		autoSelectFirstRow="false" />
 	<Label index="10" label="image_width" constraints="twocols(location=left)"
-		visible="((data.sizeAdjustment = &quot;AdjustWidth&quot;) | (data.sizeAdjustment = &quot;AdjustDimensions&quot;))"
+		visible="((data.sizeAdjustment == &quot;AdjustWidth&quot;) || (data.sizeAdjustment == &quot;AdjustDimensions&quot;))"
 		localize="true" />
 	<Number index="11" numberType="IntegerType" columns="3"
 		data="data.imageWidth" constraints="twocols(location=right)"
-		visible="((data.sizeAdjustment = &quot;AdjustWidth&quot;) | (data.sizeAdjustment = &quot;AdjustDimensions&quot;))"
+		visible="((data.sizeAdjustment == &quot;AdjustWidth&quot;) || (data.sizeAdjustment == &quot;AdjustDimensions&quot;))"
 		localize="true" />
 	<Label index="12" label="image_height" constraints="twocols(location=left)"
-		visible="((data.sizeAdjustment = &quot;AdjustHeight&quot;) | (data.sizeAdjustment = &quot;AdjustDimensions&quot;))"
+		visible="((data.sizeAdjustment == &quot;AdjustHeight&quot;) || (data.sizeAdjustment == &quot;AdjustDimensions&quot;))"
 		localize="true" />
 	<Number index="13" numberType="IntegerType" columns="3"
 		data="data.imageHeight" constraints="twocols(location=right)"
-		visible="((data.sizeAdjustment = &quot;AdjustHeight&quot;) | (data.sizeAdjustment = &quot;AdjustDimensions&quot;))"
+		visible="((data.sizeAdjustment == &quot;AdjustHeight&quot;) || (data.sizeAdjustment == &quot;AdjustDimensions&quot;))"
 		localize="true" />
 	</Panel>
 	<LocalizedDictionary>

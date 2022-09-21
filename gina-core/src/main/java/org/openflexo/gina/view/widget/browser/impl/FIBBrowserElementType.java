@@ -55,6 +55,8 @@ import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
+import org.openflexo.connie.expr.ExpressionEvaluator;
+import org.openflexo.connie.java.expr.JavaExpressionEvaluator;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBBrowser;
 import org.openflexo.gina.model.widget.FIBBrowserElement;
@@ -87,6 +89,11 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 		pcSupport = new PropertyChangeSupport(this);
 
 		browserElementDefinition.getPropertyChangeSupport().addPropertyChangeListener(this);
+	}
+
+	@Override
+	public ExpressionEvaluator getEvaluator() {
+		return new JavaExpressionEvaluator(this);
 	}
 
 	@Override
@@ -511,13 +518,19 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 		}
 
 		@Override
+		public ExpressionEvaluator getEvaluator() {
+			return new JavaExpressionEvaluator(this);
+		}
+
+		@Override
 		public synchronized Object apply(Object arg0) {
 			child = arg0;
 			try {
 
 				// Quick and dirty hack: please fix this
 				if (!children.getCast().isValid() && !bindingWasForceRevalidated) {
-					children.getCast().forceRevalidate();
+					// TODO: is this still required ?
+					children.getCast().revalidate();
 					bindingWasForceRevalidated = true;
 				}
 				Object result = null;

@@ -57,11 +57,6 @@ import javax.swing.event.ChangeListener;
 
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.expr.Constant;
-import org.openflexo.connie.expr.Constant.BooleanConstant;
-import org.openflexo.connie.expr.Constant.FloatConstant;
-import org.openflexo.connie.expr.Constant.IntegerConstant;
-import org.openflexo.connie.expr.Constant.ObjectSymbolicConstant;
-import org.openflexo.connie.expr.Constant.StringConstant;
 import org.openflexo.connie.expr.EvaluationType;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
@@ -78,6 +73,10 @@ import org.openflexo.toolbox.ToolBox;
 class ConstantValuePanel extends JPanel {
 
 	public static final Font SMALL_FONT = new Font("SansSerif", Font.PLAIN, 9);
+
+	final String UNSELECTED = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("select_a_value");
+	final String TRUE = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("true");
+	final String FALSE = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("false");
 
 	/**
 	 * 
@@ -99,6 +98,10 @@ class ConstantValuePanel extends JPanel {
 		setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		initConstantValuePanel();
 		updateConstantValuePanel();
+	}
+
+	public BindingSelector getBindingSelector() {
+		return bindingValueSelectorPanel.getBindingSelector();
 	}
 
 	final private void initConstantValuePanel() {
@@ -129,9 +132,6 @@ class ConstantValuePanel extends JPanel {
 		else {
 			currentType = kindOf(bindingValueSelectorPanel.bindingSelector.getEditedObject().getDeclaredType());
 			if (currentType == EvaluationType.BOOLEAN) {
-				final String UNSELECTED = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("select_a_value");
-				final String TRUE = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("true");
-				final String FALSE = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("false");
 				String[] availableValues = { UNSELECTED, TRUE, FALSE };
 				selectValueCB = new JComboBox<>(availableValues);
 				selectValueCB.setFont(SMALL_FONT);
@@ -142,11 +142,13 @@ class ConstantValuePanel extends JPanel {
 							return;
 						}
 						if (selectValueCB.getSelectedItem().equals(TRUE)) {
-							bindingValueSelectorPanel.bindingSelector.getEditedObject().setExpression(BooleanConstant.TRUE);
+							bindingValueSelectorPanel.bindingSelector.getEditedObject()
+									.setExpression(getBindingSelector().getExpressionGrammar().getConstant(true));
 							bindingValueSelectorPanel.bindingSelector.fireEditedObjectChanged();
 						}
 						else if (selectValueCB.getSelectedItem().equals(FALSE)) {
-							bindingValueSelectorPanel.bindingSelector.getEditedObject().setExpression(BooleanConstant.FALSE);
+							bindingValueSelectorPanel.bindingSelector.getEditedObject()
+									.setExpression(getBindingSelector().getExpressionGrammar().getConstant(false));
 							bindingValueSelectorPanel.bindingSelector.fireEditedObjectChanged();
 						}
 					}
@@ -168,7 +170,7 @@ class ConstantValuePanel extends JPanel {
 						Object v = integerValueChooser.getValue();
 						if (v instanceof Number) {
 							bindingValueSelectorPanel.bindingSelector.getEditedObject()
-									.setExpression(new Constant.IntegerConstant(((Number) v).longValue()));
+									.setExpression(getBindingSelector().getExpressionGrammar().getConstant(((Number) v).longValue()));
 							bindingValueSelectorPanel.bindingSelector.fireEditedObjectChanged();
 						}
 					}
@@ -275,23 +277,28 @@ class ConstantValuePanel extends JPanel {
 						return;
 					}
 					if (typeCB.getSelectedItem().equals(BOOLEAN)) {
-						bindingValueSelectorPanel.bindingSelector.getEditedObject().setExpression(Constant.BooleanConstant.TRUE);
+						bindingValueSelectorPanel.bindingSelector.getEditedObject()
+								.setExpression(getBindingSelector().getExpressionGrammar().getConstant(true));
 						bindingValueSelectorPanel.bindingSelector.fireEditedObjectChanged();
 					}
 					else if (typeCB.getSelectedItem().equals(INTEGER)) {
-						bindingValueSelectorPanel.bindingSelector.getEditedObject().setExpression(new Constant.IntegerConstant(0));
+						bindingValueSelectorPanel.bindingSelector.getEditedObject()
+								.setExpression(getBindingSelector().getExpressionGrammar().getConstant(0));
 						bindingValueSelectorPanel.bindingSelector.fireEditedObjectChanged();
 					}
 					else if (typeCB.getSelectedItem().equals(FLOAT)) {
-						bindingValueSelectorPanel.bindingSelector.getEditedObject().setExpression(new Constant.FloatConstant(0));
+						bindingValueSelectorPanel.bindingSelector.getEditedObject()
+								.setExpression(getBindingSelector().getExpressionGrammar().getConstant(0.0));
 						bindingValueSelectorPanel.bindingSelector.fireEditedObjectChanged();
 					}
 					else if (typeCB.getSelectedItem().equals(STRING)) {
-						bindingValueSelectorPanel.bindingSelector.getEditedObject().setExpression(new Constant.StringConstant(""));
+						bindingValueSelectorPanel.bindingSelector.getEditedObject()
+								.setExpression(getBindingSelector().getExpressionGrammar().getConstant(""));
 						bindingValueSelectorPanel.bindingSelector.fireEditedObjectChanged();
 					}
 					else if (typeCB.getSelectedItem().equals(NULL)) {
-						bindingValueSelectorPanel.bindingSelector.getEditedObject().setExpression(ObjectSymbolicConstant.NULL);
+						bindingValueSelectorPanel.bindingSelector.getEditedObject()
+								.setExpression(getBindingSelector().getExpressionGrammar().getConstant(null));
 						bindingValueSelectorPanel.bindingSelector.fireEditedObjectChanged();
 					}
 				}
@@ -320,8 +327,8 @@ class ConstantValuePanel extends JPanel {
 			}
 			isUpdatingPanel = false;
 
-			if (bindingValueSelectorPanel.bindingSelector.getEditedObject() != null
-					&& bindingValueSelectorPanel.bindingSelector.getEditedObject().getExpression() == ObjectSymbolicConstant.NULL) {
+			if (bindingValueSelectorPanel.bindingSelector.getEditedObject() != null && bindingValueSelectorPanel.bindingSelector
+					.getEditedObject().getExpression() == getBindingSelector().getExpressionGrammar().getConstant(null)) {
 				isUpdatingPanel = true;
 				typeCB.setSelectedItem(NULL);
 				isUpdatingPanel = false;
@@ -382,22 +389,19 @@ class ConstantValuePanel extends JPanel {
 
 		if (edited != null && edited.isConstant()) {
 
-			if (currentType == EvaluationType.BOOLEAN && (edited.getExpression() instanceof BooleanConstant)) {
-				selectValueCB.setSelectedItem(edited.getExpression().toString());
+			Object value = (edited.getExpression());
+
+			if (currentType == EvaluationType.BOOLEAN && value instanceof Boolean) {
+				selectValueCB.setSelectedItem(((Boolean) value) ? TRUE : FALSE);
 			}
-			else if (currentType == EvaluationType.ARITHMETIC_INTEGER && (edited.getExpression() instanceof IntegerConstant)) {
-				integerValueChooser.setValue(((IntegerConstant) edited.getExpression()).getValue());
+			else if (currentType == EvaluationType.ARITHMETIC_INTEGER && value instanceof Number) {
+				integerValueChooser.setValue(value);
 			}
 			else if (currentType == EvaluationType.ARITHMETIC_FLOAT) {
-				if (edited.getExpression() instanceof FloatConstant) {
-					enterValueTF.setText("" + ((FloatConstant) edited.getExpression()).getValue());
-				}
-				else if (edited.getExpression() instanceof IntegerConstant) {
-					enterValueTF.setText("" + ((IntegerConstant) edited.getExpression()).getValue());
-				}
+				enterValueTF.setText(value.toString());
 			}
-			else if (currentType == EvaluationType.STRING && (edited.getExpression() instanceof StringConstant)) {
-				enterValueTF.setText(((StringConstant) edited.getExpression()).getValue());
+			else if (currentType == EvaluationType.STRING && value instanceof String) {
+				enterValueTF.setText(value.toString());
 			}
 		}
 

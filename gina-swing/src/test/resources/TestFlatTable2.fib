@@ -40,7 +40,7 @@
 			<TextFieldColumn id="22" data="iterator.component.name"
 				resizable="true" title="name" displayTitle="true" columnWidth="40"
 				showIcon="false" name="col1" />
-			<CustomColumn id="23" data="iterator.component.visible" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+			<CustomColumn id="23" data="iterator.component.visible" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 				resizable="true" title="visible" displayTitle="true" columnWidth="100"
 				showIcon="false" name="custom">
 					<ColumnAssignment variable="component.bindable"

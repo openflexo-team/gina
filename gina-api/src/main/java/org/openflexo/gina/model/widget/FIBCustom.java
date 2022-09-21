@@ -496,9 +496,9 @@ public interface FIBCustom extends FIBWidget {
 					variable.setBindingName("variable");
 				}
 				this.variable = variable;
-				if (getOwner() != null && variable != null) {
+				/*if (getOwner() != null && variable != null) {
 					variable.decode();
-				}
+				}*/
 			}
 
 			@Override
@@ -528,23 +528,23 @@ public interface FIBCustom extends FIBWidget {
 			@Override
 			public void revalidateBindings() {
 				if (variable != null) {
-					variable.forceRevalidate();
+					variable.revalidate();
 				}
 				if (value != null) {
 					value.setOwner(getOwner());
-					value.forceRevalidate();
+					value.revalidate();
 				}
 			}
 
 			@Override
 			public void finalizeDeserialization() {
 
-				if (variable != null) {
+				/*if (variable != null) {
 					variable.decode();
-				}
+				}*/
 				if (value != null) {
 					value.setOwner(getOwner());
-					value.decode();
+					// value.decode();
 				}
 			}
 

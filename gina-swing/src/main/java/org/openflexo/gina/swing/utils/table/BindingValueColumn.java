@@ -46,6 +46,7 @@ import java.util.logging.Logger;
 import org.openflexo.connie.Bindable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.gina.swing.utils.BindingSelector;
+import org.openflexo.gina.swing.utils.JavaBindingSelector;
 
 /**
  * Please comment this class
@@ -105,7 +106,7 @@ public abstract class BindingValueColumn<D> extends CustomColumn<D, DataBinding>
 		}
 		BindingSelector returned = viewSelectors.get(value);
 		if (returned == null) {
-			returned = new BindingSelector(value);
+			returned = new JavaBindingSelector(value);
 			returned.setFont(MEDIUM_FONT);
 			updateSelectorWith(returned, rowObject, value);
 			viewSelectors.put(value, returned);
@@ -122,7 +123,7 @@ public abstract class BindingValueColumn<D> extends CustomColumn<D, DataBinding>
 		}
 		BindingSelector returned = editSelectors.get(value);
 		if (returned == null) {
-			returned = new BindingSelector(value) {
+			returned = new JavaBindingSelector(value) {
 				@Override
 				public void apply() {
 					super.apply();

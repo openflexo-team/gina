@@ -5,7 +5,7 @@
 	<Label name="ValuesLabel" label="values" index="6"
 		constraints="twocols(location=left)" localize="true" />
 	<Custom name="ValuesBinding" index="7"
-		componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.values"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<!--  <Assignment variable="component.bindable" value="data" /> -->
@@ -14,7 +14,7 @@
 	<Label name="LabelsLabel" label="labels" index="8"
 		constraints="twocols(location=left)" localize="true" />
 	<Custom name="LabelsBinding" index="9"
-		componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.labels"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<!-- <Assignment variable="component.bindable" value="data.parameterExpressionDelegate" 
@@ -24,7 +24,7 @@
 	<Label name="AngleExtentLabel" label="angle_extent" index="10"
 		constraints="twocols(location=left)" localize="true" />
 	<Custom name="AngleExtentBinding" index="11"
-		componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.angleExtent"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<!-- <Assignment variable="component.bindable" value="data.parameterExpressionDelegate" 

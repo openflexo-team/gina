@@ -47,6 +47,8 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import org.openflexo.connie.expr.ExpressionEvaluator;
+import org.openflexo.connie.java.expr.JavaExpressionEvaluator;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.container.FIBSplitPanel;
@@ -97,6 +99,11 @@ public class JFIBSplitPanelView extends FIBSplitPanelViewImpl<JXMultiSplitPane, 
 	public JFIBSplitPanelView(FIBSplitPanel model, FIBController controller) {
 		super(model, controller, new SwingSplitPanelRenderingAdapter());
 		// updateLayout();
+	}
+
+	@Override
+	public ExpressionEvaluator getEvaluator() {
+		return new JavaExpressionEvaluator(this);
 	}
 
 	@Override

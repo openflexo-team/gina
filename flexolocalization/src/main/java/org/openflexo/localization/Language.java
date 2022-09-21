@@ -44,7 +44,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.openflexo.kvc.ChoiceList;
+import org.openflexo.connie.type.ChoiceList;
 
 /**
  * Represents a language in Flexo Application

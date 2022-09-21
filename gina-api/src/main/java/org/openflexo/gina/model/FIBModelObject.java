@@ -57,7 +57,9 @@ import org.openflexo.pamela.CloneableProxyObject;
 import org.openflexo.pamela.DeletableProxyObject;
 import org.openflexo.pamela.annotations.Adder;
 import org.openflexo.pamela.annotations.CloningStrategy;
+import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
 import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.Getter.Cardinality;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.PropertyIdentifier;
@@ -65,8 +67,6 @@ import org.openflexo.pamela.annotations.Remover;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
-import org.openflexo.pamela.annotations.Getter.Cardinality;
 import org.openflexo.pamela.factory.EmbeddingType;
 import org.openflexo.pamela.validation.FixProposal;
 import org.openflexo.pamela.validation.ProblemIssue;
@@ -270,13 +270,36 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 			return null;
 		}
 
+		private FIBComponent lastKnownComponent = null;
+
+		public void componentChanged() {
+			if (getComponent() != lastKnownComponent) {
+				//System.out.println("Je detecte dans " + getClass().getSimpleName() + " que le component change de " + lastKnownComponent
+				//		+ " a " + getComponent());
+				getPropertyChangeSupport().firePropertyChange("component", lastKnownComponent, getComponent());
+			}
+			bindingFactoryChanged();
+		}
+
+		private FIBComponent lastKnownBindingFactory = null;
+
+		public void bindingFactoryChanged() {
+			if (getBindingFactory() != lastKnownBindingFactory) {
+				//System.out.println("Je detecte dans " + getClass().getSimpleName() + " que la BindingFactory a change de "
+				//		+ lastKnownBindingFactory + " a " + getBindingFactory());
+				getPropertyChangeSupport().firePropertyChange(Bindable.BINDING_FACTORY_PROPERTY, lastKnownBindingFactory,
+						getBindingFactory());
+
+			}
+		}
+
 		@Override
 		public BindingFactory getBindingFactory() {
 			if (getComponent() != null) {
 				return getComponent().getBindingFactory();
 			}
-			return null;
-			// return FIBLibrary.instance().getBindingFactory();
+			// We really have found nothing
+			return ApplicationFIBLibraryImpl.instance().getBindingFactory();
 		}
 
 		/**

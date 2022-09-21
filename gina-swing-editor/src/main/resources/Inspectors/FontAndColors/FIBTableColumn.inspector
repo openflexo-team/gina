@@ -4,7 +4,7 @@
 	<Label label="foreground_color" index="18"
 		constraints="twocols(expandHorizontally=true;expandVertically=false;index=18;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 		localize="true" />
-	<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" index="19"
 		data="data.color"
 		constraints="twocols(expandHorizontally=true;expandVertically=false;index=19;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
@@ -13,7 +13,7 @@
 	<Label label="background_color" index="20"
 		constraints="twocols(expandHorizontally=true;expandVertically=false;index=20;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 		localize="true" />
-	<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" index="21"
 		data="data.bgColor"
 		constraints="twocols(expandHorizontally=true;expandVertically=false;index=21;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
@@ -28,7 +28,7 @@
 		<CheckBox selected="false" data="data.hasSpecificFont"
 			constraints="flow()" localize="true" />
 		<Font sampleText="Sample for this font" localize="true"
-			enable="((data != null) &amp; data.hasSpecificFont)"
+			enable="((data != null) &amp;&amp; data.hasSpecificFont)"
 			data="data.font" constraints="flow()" />
 	</Panel>
 	<Parameter name="title" value="Table column" />

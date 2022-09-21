@@ -11,6 +11,9 @@ import java.util.logging.Logger;
 
 import javax.swing.JTree;
 
+import org.openflexo.connie.expr.ExpressionEvaluator;
+import org.openflexo.connie.java.expr.JavaExpressionEvaluator;
+
 /**
  * Swing implementation of a {@link JTree} supporting external drag&drop<br>
  * It suppose that some elements of the tree may be dragged somewhere
@@ -29,6 +32,11 @@ public class ExternalDnDJTree extends DnDJTree {
 	public ExternalDnDJTree(JFIBBrowserWidget<?> widget) {
 		super(widget);
 
+	}
+
+	@Override
+	public ExpressionEvaluator getEvaluator() {
+		return new JavaExpressionEvaluator(this);
 	}
 
 	/**

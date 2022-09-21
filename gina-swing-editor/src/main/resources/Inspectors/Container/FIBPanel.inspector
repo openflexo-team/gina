@@ -8,43 +8,43 @@
 		autoSelectFirstRow="false" name="LayoutDD" index="1" />
 
 	<Label label="alignment" index="2" constraints="twocols(location=left)"
-		visible="(data.layout = &quot;flow&quot;) | (data.layout = &quot;buttons&quot;)"
+		visible="(data.layout == &quot;flow&quot;) || (data.layout == &quot;buttons&quot;)"
 		localize="true" />
 	<DropDown showReset="false" index="3" data="data.flowAlignment"
 		constraints="twocols(location=right)"
-		visible="(data.layout = &quot;flow&quot;) | (data.layout = &quot;buttons&quot;)"
+		visible="(data.layout == &quot;flow&quot;) || (data.layout == &quot;buttons&quot;)"
 		localize="true" iteratorClassName="java.lang.Object"
 		autoSelectFirstRow="false" name="FlowAlignmentDD" />
 	<Label label="axis" index="4" constraints="twocols(location=left)"
-		visible="(data.layout = &quot;box&quot;)" localize="true" />
+		visible="(data.layout == &quot;box&quot;)" localize="true" />
 	<DropDown data="data.boxLayoutAxis" index="5"
-		constraints="twocols(location=right)" visible="(data.layout = &quot;box&quot;)"
+		constraints="twocols(location=right)" visible="(data.layout == &quot;box&quot;)"
 		localize="true" iteratorClassName="java.lang.Object"
 		autoSelectFirstRow="false" name="BoxLayoutAxisDD" />
 
 	<Label label="hGap" index="6" constraints="twocols(location=left)"
 		localize="true"
-		visible="((data.layout = &quot;flow&quot;) | (data.layout = &quot;grid&quot;))" />
+		visible="((data.layout == &quot;flow&quot;) || (data.layout == &quot;grid&quot;))" />
 	<Number index="7" numberType="IntegerType" columns="3" data="data.hGap"
 		constraints="twocols(location=right)" localize="true"
-		visible="((data.layout = &quot;flow&quot;) | (data.layout = &quot;grid&quot;))" />
+		visible="((data.layout == &quot;flow&quot;) || (data.layout == &quot;grid&quot;))" />
 	<Label index="8" label="vGap" constraints="twocols(location=left)"
 		localize="true"
-		visible="((data.layout = &quot;flow&quot;) | (data.layout = &quot;grid&quot;))" />
+		visible="((data.layout == &quot;flow&quot;) || (data.layout == &quot;grid&quot;))" />
 	<Number index="9" numberType="IntegerType" columns="3" data="data.vGap"
 		constraints="twocols(location=right)" localize="true"
-		visible="((data.layout = &quot;flow&quot;) | (data.layout = &quot;grid&quot;))" />
+		visible="((data.layout == &quot;flow&quot;) || (data.layout == &quot;grid&quot;))" />
 
 	<Label index="10" label="columns" constraints="twocols(location=left)"
-		localize="true" visible="(data.layout = &quot;grid&quot;)" />
+		localize="true" visible="(data.layout == &quot;grid&quot;)" />
 	<Number index="11" numberType="IntegerType" columns="3" data="data.cols"
 		constraints="twocols(location=right)" localize="true"
-		visible="(data.layout = &quot;grid&quot;)" />
+		visible="(data.layout == &quot;grid&quot;)" />
 	<Label index="12" label="rows" constraints="twocols(location=left)"
-		localize="true" visible="(data.layout = &quot;grid&quot;)" />
+		localize="true" visible="(data.layout == &quot;grid&quot;)" />
 	<Number index="13" numberType="IntegerType" columns="3" data="data.rows"
 		constraints="twocols(location=right)" localize="true"
-		visible="(data.layout = &quot;grid&quot;)" />
+		visible="(data.layout == &quot;grid&quot;)" />
 
 	<CheckBox selected="false" data="data.protectContent" index="100"
 		constraints="twocols(location=left)" localize="true" />

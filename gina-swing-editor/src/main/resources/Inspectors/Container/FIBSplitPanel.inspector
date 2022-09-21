@@ -18,7 +18,7 @@
 				textNonSelectionColor="0,0,0" backgroundSelectionColor="41,90,209"
 				backgroundSecondarySelectionColor="173,215,255"
 				backgroundNonSelectionColor="255,255,255" borderSelectionColor="41,90,209"
-				localize="true" manageDynamicModel="true" name="LayoutBrowser"
+				localize="true" manageDynamicModel="true" name="layoutBrowser"
 				index="0"
 				constraints="border(anchor=center;fill=vertical;gridHeight=0;gridWidth=1;gridX=1;gridY=0;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;splitIdentifier=left;weightX=0.0;weightY=1.0)"
 				width="80" height="100">
@@ -75,18 +75,18 @@
 			<Label label="name" index="0"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=0;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 				localize="true" />
-			<TextField index="1" data="LayoutBrowser.selected.name"
+			<TextField index="1" data="layoutBrowser.selected.name"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
 				localize="true"
-				enable="((LayoutBrowser.selected != null) &amp; (LayoutBrowser.selected.class.simpleName = &quot;Leaf&quot;))"
+				enable="((layoutBrowser.selected != null) &amp;&amp; (layoutBrowser.selected.class.simpleName == &quot;Leaf&quot;))"
 				columns="7" text="TextField" />
 			<Label label="weight" index="2"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=2;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 				localize="true" />
 			<Number minValue="0" maxValue="1" increment="0.05" numberType="FloatType"
-				columns="3" index="3" data="LayoutBrowser.selected.weight"
+				columns="3" index="3" data="layoutBrowser.selected.weight"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
-				name="Weight" localize="true" enable="(LayoutBrowser.selected != null)" />
+				name="Weight" localize="true" enable="(layoutBrowser.selected != null)" />
 		</Panel>
 	</SplitPanel>
 	<Panel layout="flow" hGap="0" vGap="0" flowAlignment="LEADING"

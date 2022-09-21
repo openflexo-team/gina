@@ -1,5 +1,5 @@
 dependencies {
-  api connie()
+  api connieJava()
   implementation pamela()
   api project(':flexolocalization')
   api project(':flexographicutils')

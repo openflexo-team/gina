@@ -40,52 +40,44 @@ package org.openflexo.gina.swing.utils;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
+import javax.swing.ImageIcon;
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.openflexo.connie.Bindable;
-import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.BindingModel;
-import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.DefaultBindable;
+import org.openflexo.connie.ParseException;
 import org.openflexo.connie.binding.BindingModelChanged;
+import org.openflexo.connie.binding.javareflect.InvalidKeyValuePropertyException;
 import org.openflexo.connie.expr.BindingValue;
 import org.openflexo.connie.expr.Constant;
-import org.openflexo.connie.expr.Constant.BooleanConstant;
-import org.openflexo.connie.expr.Constant.FloatConstant;
-import org.openflexo.connie.expr.Constant.IntegerConstant;
-import org.openflexo.connie.expr.Constant.StringConstant;
 import org.openflexo.connie.expr.Expression;
-import org.openflexo.connie.expr.parser.ExpressionParser;
-import org.openflexo.connie.expr.parser.ParseException;
-import org.openflexo.connie.java.JavaBindingFactory;
+import org.openflexo.connie.expr.ExpressionGrammar;
+import org.openflexo.connie.expr.Operator;
+import org.openflexo.connie.java.expr.JavaConstant.BooleanConstant;
+import org.openflexo.connie.java.expr.JavaConstant.FloatConstant;
+import org.openflexo.connie.java.expr.JavaConstant.IntegerConstant;
+import org.openflexo.connie.java.expr.JavaConstant.StringConstant;
+import org.openflexo.connie.java.expr.JavaPrettyPrinter;
+import org.openflexo.connie.java.parser.ExpressionParser;
 import org.openflexo.connie.type.TypeUtils;
-import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.event.GinaEvent.KIND;
 import org.openflexo.gina.event.GinaEventNotifier;
@@ -93,16 +85,10 @@ import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.gina.model.widget.FIBCustom;
 import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent;
-import org.openflexo.gina.swing.utils.logging.FlexoLoggingViewer;
 import org.openflexo.icon.UtilsIconLibrary;
-import org.openflexo.kvc.InvalidKeyValuePropertyException;
-import org.openflexo.logging.FlexoLoggingManager;
-import org.openflexo.rm.Resource;
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.swing.ButtonsControlPanel;
 import org.openflexo.swing.SwingUtils;
 import org.openflexo.swing.TextFieldCustomPopup;
-import org.openflexo.swing.VerticalLayout;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.StringUtils;
 
@@ -112,7 +98,7 @@ import org.openflexo.toolbox.StringUtils;
  * @author sguerin
  * 
  */
-public class BindingSelector extends TextFieldCustomPopup<DataBinding>
+public abstract class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		implements FIBCustomComponent<DataBinding>, Observer, PropertyChangeListener {
 	static final Logger LOGGER = Logger.getLogger(BindingSelector.class.getPackage().getName());
 
@@ -129,6 +115,8 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 	private boolean textIsEditing = false;
 
 	private boolean isConnected = false;
+
+	Bindable _bindable;
 
 	protected KeyEventDispatcher tabDispatcher = new KeyEventDispatcher() {
 		@Override
@@ -168,12 +156,16 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 
 	protected GinaEventNotifier<EventDescription> GENotifier;
 
-	public BindingSelector(DataBinding<?> editedObject) {
-		this(editedObject, -1);
+	private ExpressionGrammar expressionGrammar;
+
+	public BindingSelector(DataBinding<?> editedObject, ExpressionGrammar expressionGrammar) {
+		this(editedObject, -1, expressionGrammar);
 	}
 
-	public BindingSelector(DataBinding<?> editedObject, int cols) {
+	public BindingSelector(DataBinding<?> editedObject, int cols, ExpressionGrammar expressionGrammar) {
 		super(null, cols);
+
+		this.expressionGrammar = expressionGrammar;
 
 		GENotifier = new GinaEventNotifier<EventDescription>(null, null) {
 
@@ -220,7 +212,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 					// Little hook used to automatically apply a valid value
 					// which has generally been edited
 					// By typing text in text field
-					if (getEditedObject() != null && getEditedObject().forceRevalidate()) {
+					if (getEditedObject() != null && getEditedObject().revalidate()) {
 						try {
 							apply();
 						} catch (InvalidKeyValuePropertyException e) {
@@ -276,7 +268,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 										&& selectorPanel.isKeyPathFromPanelValid()) {
 									getEditedObject().setExpression(selectorPanel.makeBindingValueFromPanel());
 									fireEditedObjectChanged();
-									if (getEditedObject().forceRevalidate()) {
+									if (getEditedObject().revalidate()) {
 										apply();
 									}
 								}
@@ -378,6 +370,14 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 
 	}
 
+	public ExpressionGrammar getExpressionGrammar() {
+		return expressionGrammar;
+	}
+
+	public abstract ImageIcon iconForOperator(Operator op);
+
+	public abstract BindingSelector makeSubBindingSelector(DataBinding<?> dataBinding, ApplyCancelListener applyCancelListener);
+
 	@Override
 	final public void updateUI() {
 		super.updateUI();
@@ -402,10 +402,11 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 
 			DataBinding<?> newEditedBinding = makeBindingFromString(textValue);
 
-			// System.out.println("Decoding binding as " + newEditedBinding + " valid=" + newEditedBinding.isValid());
+			System.out.println("Decoding binding as " + newEditedBinding + " valid=" + newEditedBinding.isValid());
+			System.out.println("Reason:" + newEditedBinding.invalidBindingReason());
 
 			if (newEditedBinding != null) {
-				if (newEditedBinding.forceRevalidate()) {
+				if (newEditedBinding.revalidate()) {
 					if (LOGGER.isLoggable(Level.FINE)) {
 						LOGGER.fine("Decoded as VALID binding: " + newEditedBinding);
 					}
@@ -471,14 +472,6 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 
 	}
 
-	/*
-	 * public void setEditedObjectAndUpdateBDAndOwner(AbstractBinding object) {
-	 * setEditedObject(object); if (object != null) { if
-	 * (object.getBindingDefinition() != null)
-	 * setBindingDefinition(object.getBindingDefinition()); if
-	 * (object.getOwner() != null) setBindable((Bindable)object.getOwner()); } }
-	 */
-
 	@Override
 	public void setEditedObject(DataBinding dataBinding) {
 
@@ -494,7 +487,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		}
 
 		setEditedObject(dataBinding, true);
-		if (dataBinding != null && dataBinding.forceRevalidate()) {
+		if (dataBinding != null && dataBinding.revalidate()) {
 			isConnected = true;
 		}
 
@@ -527,7 +520,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		}
 		super.setEditedObject(dataBinding);
 
-		if (getEditedObject() != null && getEditedObject().forceRevalidate()) {
+		if (getEditedObject() != null && getEditedObject().revalidate()) {
 			getTextField().setForeground(defaultForeground);
 			getTextField().setSelectedTextColor(defaultSelectedColor);
 		}
@@ -553,7 +546,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 				newEditionMode = EditionMode.STATIC_BINDING;
 			}
 			else if (newDataBinding.isBindingValue()) {
-				if (((BindingValue) newDataBinding.getExpression()).isCompoundBinding() || newDataBinding.isExecutable()) {
+				if (((BindingValue) newDataBinding.getExpression()).containsAMethodCall() || newDataBinding.isExecutable()) {
 					newEditionMode = EditionMode.COMPOUND_BINDING;
 				}
 				else if (oldEditionMode != EditionMode.NORMAL_BINDING && oldEditionMode != EditionMode.COMPOUND_BINDING) {
@@ -622,7 +615,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 	}
 
 	public void connect() {
-		if (getEditedObject().forceRevalidate()) {
+		if (getEditedObject().revalidate()) {
 			// logger.info("Is connected = TRUE");
 			isConnected = true;
 		}
@@ -653,7 +646,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 
 	@Override
 	public void fireEditedObjectChanged() {
-		if (getEditedObject() == null || !getEditedObject().forceRevalidate()) {
+		if (getEditedObject() == null || !getEditedObject().revalidate()) {
 			disconnect();
 		}
 		updateCustomPanel(getEditedObject());
@@ -909,7 +902,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		}
 		if (editedObject != null) {
 			if (editedObject.isSet()) {
-				if (editedObject.forceRevalidate()) {
+				if (editedObject.revalidate()) {
 					getLabel().setVisible(true);
 					getLabel().setIcon(UtilsIconLibrary.OK_ICON);
 				}
@@ -968,7 +961,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 	}
 
 	public Bindable getBindable() {
-		if (_bindable == null && getEditedObject() != null) {
+		if (getEditedObject() != null) {
 			return getEditedObject().getOwner();
 		}
 		return _bindable;
@@ -1148,37 +1141,12 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 	 * Variable(""); }
 	 */
 
-	protected Expression makeBinding() {
+	protected /*Expression*/ BindingValue makeBinding() {
 
-		BindingValue newBindingValue = new BindingValue();
-		newBindingValue.setDataBinding(getEditedObject());
+		BindingValue newBindingValue = new BindingValue(getBindable(), JavaPrettyPrinter.getInstance());
+		// newBindingValue.setDataBinding(getEditedObject());
 		return newBindingValue;
 
-		/*
-		 * Expression returned = null; if (editionMode ==
-		 * EditionMode.BINDING_EXPRESSION) { if (getBindingDefinition() != null
-		 * && getBindable() != null) { returned = makeBindingExpression(); } }
-		 * else if (editionMode == EditionMode.STATIC_BINDING) { if
-		 * (getBindingDefinition() != null && getBindable() != null) { if
-		 * (getBindingDefinition().getType() != null) { if
-		 * (TypeUtils.isBoolean(getBindingDefinition().getType())) { return
-		 * BooleanConstant.FALSE; } else if
-		 * (TypeUtils.isInteger(getBindingDefinition().getType()) ||
-		 * TypeUtils.isLong(getBindingDefinition().getType()) ||
-		 * TypeUtils.isShort(getBindingDefinition().getType()) ||
-		 * TypeUtils.isChar(getBindingDefinition().getType()) ||
-		 * TypeUtils.isByte(getBindingDefinition().getType())) { returned = new
-		 * Constant.IntegerConstant(0); } else if
-		 * (TypeUtils.isFloat(getBindingDefinition().getType()) ||
-		 * TypeUtils.isDouble(getBindingDefinition().getType())) { returned =
-		 * new Constant.FloatConstant(0); } } else if
-		 * (TypeUtils.isString(getBindingDefinition().getType())) { returned =
-		 * new Constant.StringConstant(""); } } } else if (editionMode ==
-		 * EditionMode.NORMAL_BINDING || editionMode ==
-		 * EditionMode.COMPOUND_BINDING) { // Normal or compound binding if
-		 * (getBindingDefinition() != null && getBindable() != null) { returned
-		 * = new BindingValue(); } } return returned;
-		 */
 	}
 
 	void recreateBindingValue() {
@@ -1186,8 +1154,6 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		fireEditedObjectChanged();
 		LOGGER.info("Recreating Binding with mode " + editionMode + " as " + getEditedObject());
 	}
-
-	Bindable _bindable;
 
 	@Override
 	protected CustomJPopupMenu makePopup() {
@@ -1316,7 +1282,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		}
 		DataBinding<?> dataBinding = getEditedObject();
 		if (dataBinding != null) {
-			if (dataBinding.forceRevalidate()) {
+			if (dataBinding.revalidate()) {
 				/*
 				 * if (bindingValue instanceof BindingValue) { ((BindingValue)
 				 * bindingValue).connect(); }
@@ -1345,7 +1311,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		GinaStackEvent stackElement = GENotifier.notifyMethod();
 
 		if (_revertBindingValue != null) {
-			if (_revertBindingValue.getOwner() != null && _revertBindingValue.forceRevalidate()) {
+			if (_revertBindingValue.getOwner() != null && _revertBindingValue.revalidate()) {
 				setEditedObject(_revertBindingValue);
 			}
 		}
@@ -1472,7 +1438,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 	Constant<?> makeStaticBindingFromString(String stringValue) {
 		Expression e;
 		try {
-			e = ExpressionParser.parse(stringValue);
+			e = ExpressionParser.parse(stringValue, getBindable());
 			if (e instanceof Constant) {
 				return (Constant<?>) e;
 			}
@@ -1485,7 +1451,7 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 	DataBinding<?> makeBindingFromString(String stringValue) {
 
 		DataBinding<?> returned = new DataBinding<>(stringValue, getBindable(), getEditedObject());
-		returned.decode();
+		// returned.decode();
 		return returned;
 
 		/*
@@ -1515,106 +1481,4 @@ public class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		return !textFieldSynchWithEditedObject();
 	}
 
-	public static class TestBindable extends DefaultBindable {
-		private final BindingFactory bindingFactory = new JavaBindingFactory();
-		private final BindingModel bindingModel = new BindingModel();
-
-		public TestBindable() {
-			bindingModel.addToBindingVariables(new BindingVariable("aString", String.class));
-			bindingModel.addToBindingVariables(new BindingVariable("anInteger", Integer.class));
-			bindingModel.addToBindingVariables(new BindingVariable("aFloat", Float.TYPE));
-		}
-
-		@Override
-		public BindingModel getBindingModel() {
-			return bindingModel;
-		}
-
-		@Override
-		public BindingFactory getBindingFactory() {
-			return bindingFactory;
-		}
-
-		@Override
-		public void notifiedBindingChanged(DataBinding<?> dataBinding) {
-		}
-
-		@Override
-		public void notifiedBindingDecoded(DataBinding<?> dataBinding) {
-		}
-	}
-
-	/**
-	 * This main allows to launch an application testing the BindingSelector
-	 * 
-	 * @param args
-	 * @throws SecurityException
-	 * @throws IOException
-	 */
-	public static void main(String[] args) throws SecurityException, IOException {
-
-		Resource loggingFile = ResourceLocator.locateResource("Config/logging_INFO.properties");
-		FlexoLoggingManager.initialize(-1, true, loggingFile, Level.INFO, null);
-		final JDialog dialog = new JDialog((Frame) null, false);
-
-		// TODO GinaManager.getInstance().setup();
-
-		Bindable testBindable = new TestBindable();
-
-		// Unused BindingFactory factory =
-		new JavaBindingFactory();
-		DataBinding<String> binding = new DataBinding<>("aString.toString", testBindable, String.class,
-				DataBinding.BindingDefinitionType.GET);
-		// DataBinding binding = new DataBinding<String>(testBindable,
-		// Object.class, DataBinding.BindingDefinitionType.EXECUTE);
-
-		final BindingSelector _selector = new BindingSelector(null) {
-			@Override
-			public void apply() {
-				super.apply();
-				// System.out.println("Apply, getEditedObject()=" +
-				// getEditedObject());
-			}
-
-			@Override
-			public void cancel() {
-				super.cancel();
-				// System.out.println("Cancel, getEditedObject()=" +
-				// getEditedObject());
-			}
-		};
-		_selector.setBindable(testBindable);
-		_selector.setEditedObject(binding);
-		_selector.setRevertValue(binding.clone());
-
-		JButton closeButton = new JButton("Close");
-		closeButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				_selector.delete();
-				dialog.dispose();
-				System.exit(0);
-			}
-		});
-
-		JButton logButton = new JButton("Logs");
-		logButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				FlexoLoggingViewer.showLoggingViewer(FlexoLoggingManager.instance(), ApplicationFIBLibraryImpl.instance(), dialog);
-			}
-		});
-
-		JPanel panel = new JPanel(new VerticalLayout());
-		panel.add(_selector);
-
-		panel.add(closeButton);
-		panel.add(logButton);
-
-		dialog.setPreferredSize(new Dimension(550, 600));
-		dialog.getContentPane().add(panel);
-		dialog.pack();
-
-		dialog.setVisible(true);
-	}
 }

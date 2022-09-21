@@ -45,7 +45,6 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
@@ -62,6 +61,8 @@ import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.connie.expr.ExpressionEvaluator;
+import org.openflexo.connie.java.expr.JavaExpressionEvaluator;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTableColumn;
@@ -126,6 +127,11 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 
 		columnModel.getPropertyChangeSupport().addPropertyChangeListener(this);
 
+	}
+
+	@Override
+	public ExpressionEvaluator getEvaluator() {
+		return new JavaExpressionEvaluator(this);
 	}
 
 	@Override
@@ -258,7 +264,7 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 			// logger.warning("Unexpected " + e.getMessage());
 			// e.printStackTrace();
 			return null;
-		} catch (InvocationTargetException e) {
+		} catch (ReflectiveOperationException e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -274,7 +280,7 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 			e.printStackTrace();
 		} catch (NullReferenceException e) {
 			e.printStackTrace();
-		} catch (InvocationTargetException e) {
+		} catch (ReflectiveOperationException e) {
 			e.printStackTrace();
 		} catch (NotSettableContextException e) {
 			e.printStackTrace();
@@ -382,7 +388,7 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 		}
@@ -398,7 +404,7 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 		}
@@ -414,7 +420,7 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 		}
@@ -467,7 +473,7 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 		}
@@ -500,7 +506,7 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 		}
@@ -529,7 +535,7 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 			}
 		}
@@ -543,6 +549,11 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 
 		public ColumnDynamicFormatter() {
 			pcSupport = new PropertyChangeSupport(this);
+		}
+
+		@Override
+		public ExpressionEvaluator getEvaluator() {
+			return new JavaExpressionEvaluator(this);
 		}
 
 		@Override

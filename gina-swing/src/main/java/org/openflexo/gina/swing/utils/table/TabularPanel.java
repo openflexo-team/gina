@@ -43,8 +43,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Observable;
-import java.util.Observer;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,13 +61,15 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
+import org.openflexo.toolbox.HasPropertyChangeSupport;
+
 /**
  * Tabular view representing an AbstractModel
  * 
  * @author sguerin
  * 
  */
-public class TabularPanel extends JPanel implements TableModelListener, ListSelectionListener, Observer {
+public class TabularPanel extends JPanel implements TableModelListener, ListSelectionListener, PropertyChangeListener {
 
 	protected static final Logger LOGGER = Logger.getLogger(TabularPanel.class.getPackage().getName());
 
@@ -93,7 +95,8 @@ public class TabularPanel extends JPanel implements TableModelListener, ListSele
 
 		model.addTableModelListener(this);
 		if (model.getModel() != null) {
-			model.getModel().addObserver(this);
+			// model.getModel().addObserver(this);
+			model.getModel().getPropertyChangeSupport().addPropertyChangeListener(this);
 		}
 		model.fireTableDataChanged();
 
@@ -270,23 +273,23 @@ public class TabularPanel extends JPanel implements TableModelListener, ListSele
 		return getSelectedObjects();
 	}
 
-	public Observable getObject() {
+	public HasPropertyChangeSupport getObject() {
 		return _model.getModel();
 	}
 
-	/**
-	 * Overrides
-	 * 
-	 * @see org.openflexo.foundation.FlexoObserver#update(org.openflexo.foundation.FlexoObservable,
-	 *      org.openflexo.foundation.DataModification)
-	 * @see org.openflexo.foundation.FlexoObserver#update(org.openflexo.foundation.FlexoObservable,
-	 *      org.openflexo.foundation.DataModification)
-	 */
-	@Override
+	/*@Override
 	public void update(Observable o, Object dataModification) {
 		if (LOGGER.isLoggable(Level.FINE)) {
 			LOGGER.fine("update received in TabularPanel for " + o + " dataModification=" + dataModification);
 		}
+		_model.fireTableDataChanged();
+	}*/
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		// if (LOGGER.isLoggable(Level.FINE)) {
+		// LOGGER.fine("update received in TabularPanel for " + o + " dataModification=" + dataModification);
+		// }
 		_model.fireTableDataChanged();
 	}
 
@@ -304,10 +307,12 @@ public class TabularPanel extends JPanel implements TableModelListener, ListSele
 				LOGGER.fine("Model has changed from " + event.getOldModel() + " to " + event.getNewModel());
 			}
 			if (event.getOldModel() != null) {
-				event.getOldModel().deleteObserver(this);
+				event.getOldModel().getPropertyChangeSupport().removePropertyChangeListener(this);
+				// event.getOldModel().deleteObserver(this);
 			}
 			if (event.getNewModel() != null) {
-				event.getNewModel().addObserver(this);
+				event.getNewModel().getPropertyChangeSupport().addPropertyChangeListener(this);
+				// event.getNewModel().addObserver(this);
 			}
 		}
 		else if (e instanceof AbstractModel.SelectObjectEvent) {

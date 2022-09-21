@@ -55,7 +55,10 @@ import org.openflexo.connie.DataBinding.CachingStrategy;
 import org.openflexo.connie.DefaultBindable;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBComponent.LocalizationEntryRetriever;
+import org.openflexo.gina.model.FIBModelObject;
+import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.pamela.annotations.CloningStrategy;
+import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
 import org.openflexo.pamela.annotations.DefineValidationRule;
 import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.ImplementationClass;
@@ -65,9 +68,6 @@ import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.PropertyIdentifier;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
-import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
-import org.openflexo.gina.model.FIBModelObject;
-import org.openflexo.gina.model.FIBPropertyNotification;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(FIBTableColumn.FIBTableColumnImpl.class)
@@ -277,6 +277,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		public DataBinding<?> getData() {
 			if (data == null) {
 				data = new DataBinding<>(this, Object.class, DataBinding.BindingDefinitionType.GET);
+				data.setBindingName(DATA_KEY);
 				data.setCachingStrategy(CachingStrategy.NO_CACHING);
 			}
 			return data;
@@ -289,6 +290,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 				data.setDeclaredType(Object.class);
 				data.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 				data.setCachingStrategy(CachingStrategy.NO_CACHING);
+				data.setBindingName(DATA_KEY);
 			}
 			this.data = data;
 		}
@@ -296,22 +298,22 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		@Override
 		public void revalidateBindings() {
 			if (data != null) {
-				data.forceRevalidate();
+				data.revalidate();
 			}
 			if (tooltip != null) {
-				tooltip.forceRevalidate();
+				tooltip.revalidate();
 			}
 		}
 
 		@Override
 		public void finalizeTableDeserialization() {
 			logger.fine("finalizeDeserialization() for FIBTableColumn " + title);
-			if (data != null) {
+			/*if (data != null) {
 				data.decode();
 			}
 			if (tooltip != null) {
 				tooltip.decode();
-			}
+			}*/
 		}
 
 		@Override

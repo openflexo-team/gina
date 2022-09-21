@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.Bindable;
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.exception.NullReferenceException;
@@ -116,7 +117,7 @@ public class FIBWidgetType<W extends FIBWidget> extends FIBViewType<W> {
 	}
 
 	@Override
-	public List<DynamicPropertyPathElement<? super W>> getAccessibleSimplePathElements(IBindingPathElement parent) {
+	public List<DynamicPropertyPathElement<? super W>> getAccessibleSimplePathElements(IBindingPathElement parent, Bindable bindable) {
 
 		if (parent != null && parent.getType() instanceof FIBWidgetType) {
 
@@ -124,7 +125,7 @@ public class FIBWidgetType<W extends FIBWidget> extends FIBViewType<W> {
 			if (returned == null) {
 				returned = new ArrayList<>();
 				for (DynamicProperty p : getDynamicProperties()) {
-					returned.add(new DynamicPropertyPathElement<FIBWidget>(parent, getFIBComponent(), p));
+					returned.add(new DynamicPropertyPathElement<FIBWidget>(parent, getFIBComponent(), p, bindable));
 				}
 				pathElements.put(parent, returned);
 			}

@@ -5,7 +5,7 @@
 		iteratorClassName="org.openflexo.rm.Resource"
 		useScrollBar="false" rootVisible="false" readOnly="false">
 		<BrowserElement id="2"
-			filtered="false" label="'Root'" defaultVisible="true"
+			filtered="false" label="&quot;Root&quot;" defaultVisible="true"
 			dataClassName="org.openflexo.gina.swing.editor.palette.FIBEditorPalettes$AdvancedPaletteData" name="sampleData"
 			isEditable="false">
 			<Children id="5" name="folders" data="sampleData.browserFolders" />

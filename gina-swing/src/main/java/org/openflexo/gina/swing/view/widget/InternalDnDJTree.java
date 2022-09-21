@@ -17,13 +17,14 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.InputEvent;
-import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JTree;
 import javax.swing.tree.TreePath;
 
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.connie.expr.ExpressionEvaluator;
+import org.openflexo.connie.java.expr.JavaExpressionEvaluator;
 import org.openflexo.gina.model.widget.FIBBrowserDragOperation;
 import org.openflexo.gina.view.widget.browser.impl.FIBBrowserModel;
 import org.openflexo.gina.view.widget.browser.impl.FIBBrowserModel.BrowserCell;
@@ -61,6 +62,11 @@ public class InternalDnDJTree extends DnDJTree implements DropTargetListener, Dr
 			new DropTarget(this, this);
 		}
 
+	}
+
+	@Override
+	public ExpressionEvaluator getEvaluator() {
+		return new JavaExpressionEvaluator(this);
 	}
 
 	/** DropTargetListener interface method - What we do when drag is released */
@@ -201,7 +207,7 @@ public class InternalDnDJTree extends DnDJTree implements DropTargetListener, Dr
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
 					e.printStackTrace();
-				} catch (InvocationTargetException e) {
+				} catch (ReflectiveOperationException e) {
 					e.printStackTrace();
 				}
 				if (applicable != null && applicable) {
@@ -236,7 +242,7 @@ public class InternalDnDJTree extends DnDJTree implements DropTargetListener, Dr
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
 					e.printStackTrace();
-				} catch (InvocationTargetException e) {
+				} catch (ReflectiveOperationException e) {
 					e.printStackTrace();
 				}
 			}

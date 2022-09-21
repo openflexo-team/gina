@@ -67,9 +67,11 @@ import org.openflexo.gina.model.widget.FIBBrowserAction.FIBCustomAction;
 import org.openflexo.gina.model.widget.FIBBrowserAction.FIBRemoveAction;
 import org.openflexo.pamela.annotations.Adder;
 import org.openflexo.pamela.annotations.CloningStrategy;
+import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
 import org.openflexo.pamela.annotations.DefineValidationRule;
 import org.openflexo.pamela.annotations.Embedded;
 import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.Getter.Cardinality;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.PastingPoint;
@@ -78,8 +80,6 @@ import org.openflexo.pamela.annotations.Remover;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
-import org.openflexo.pamela.annotations.Getter.Cardinality;
 import org.openflexo.rm.BasicResourceImpl;
 import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
 import org.openflexo.rm.FileResourceImpl;
@@ -579,22 +579,22 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public void revalidateBindings() {
 			if (label != null) {
-				label.forceRevalidate();
+				label.revalidate();
 			}
 			if (icon != null) {
-				icon.forceRevalidate();
+				icon.revalidate();
 			}
 			if (tooltip != null) {
-				tooltip.forceRevalidate();
+				tooltip.revalidate();
 			}
 			if (enabled != null) {
-				enabled.forceRevalidate();
+				enabled.revalidate();
 			}
 			if (visible != null) {
-				visible.forceRevalidate();
+				visible.revalidate();
 			}
 			if (editableLabel != null) {
-				editableLabel.forceRevalidate();
+				editableLabel.revalidate();
 			}
 			for (FIBBrowserElementChildren c : getChildren()) {
 				c.revalidateBindings();
@@ -604,7 +604,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 		@Override
 		public void finalizeBrowserDeserialization() {
 			logger.fine("finalizeBrowserDeserialization() for FIBBrowserElement " + getDataType());
-			if (label != null) {
+			/*if (label != null) {
 				label.decode();
 			}
 			if (icon != null) {
@@ -621,7 +621,7 @@ public interface FIBBrowserElement extends FIBModelObject {
 			}
 			if (editableLabel != null) {
 				editableLabel.decode();
-			}
+			}*/
 			for (FIBBrowserElementChildren c : getChildren()) {
 				c.finalizeBrowserDeserialization();
 			}

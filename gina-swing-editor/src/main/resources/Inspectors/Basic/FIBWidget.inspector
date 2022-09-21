@@ -4,7 +4,7 @@
 	<Label name="ValueLabel" label="value" index="0"
 		constraints="twocols(location=left;insetsTop=5)" localize="true" />
 	<Custom name="ValueBinding" index="1"
-		componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.data"
 		constraints="twocols(expandHorizontally=true;location=right;insetsTop=5)">
 		<Assignment variable="component.bindable" value="data" />
@@ -12,7 +12,7 @@
 	<Label name="EnableLabel" label="enable" index="62"
 		constraints="twocols(location=left)" localize="true" />
 	<Custom name="EnableBinding" index="63"
-		componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.enable"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data" />
@@ -24,7 +24,7 @@
 		localize="true" />
 	<Label index="70" label="format" constraints="twocols(location=left)"
 		localize="true" name="FormatLabel"/>
-	<Custom index="71" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+	<Custom index="71" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
 		localize="true" manageDynamicModel="true" data="data.format" name="FormatBinding"
 		constraints="twocols(expandHorizontally=true;location=right)">
 		<Assignment variable="component.bindable" value="data.formatter" />

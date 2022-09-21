@@ -50,10 +50,11 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBindingFactory;
 import org.openflexo.connie.type.GenericArrayTypeImpl;
 import org.openflexo.connie.type.TypeUtils;
-import org.openflexo.connie.type.WilcardTypeImpl;
+import org.openflexo.connie.type.WildcardTypeImpl;
 import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.gina.model.FIBWidget;
 import org.openflexo.pamela.annotations.CloningStrategy;
+import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
 import org.openflexo.pamela.annotations.DefineValidationRule;
 import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.ImplementationClass;
@@ -61,7 +62,6 @@ import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.PropertyIdentifier;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
-import org.openflexo.pamela.annotations.CloningStrategy.StrategyType;
 import org.openflexo.pamela.validation.FixProposal;
 import org.openflexo.pamela.validation.ValidationError;
 import org.openflexo.pamela.validation.ValidationIssue;
@@ -194,7 +194,8 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		public void setList(DataBinding<List<?>> list) {
 			if (list != null) {
 				list.setOwner(this);
-				list.setDeclaredType(new TypeToken<List<?>>() {}.getType());
+				list.setDeclaredType(new TypeToken<List<?>>() {
+				}.getType());
 				list.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 			}
 			this.list = list;
@@ -203,8 +204,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		@Override
 		public DataBinding<Object[]> getArray() {
 			if (array == null) {
-				array = new DataBinding<>(this, new GenericArrayTypeImpl(new WilcardTypeImpl(Object.class)) /* TypeToken<Object[]>() {
-																													}.getType()*/,
+				array = new DataBinding<>(this, new GenericArrayTypeImpl(WildcardTypeImpl.makeUpperBoundWilcard(Object.class)),
 						DataBinding.BindingDefinitionType.GET);
 			}
 			return array;
@@ -214,8 +214,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		public void setArray(DataBinding<Object[]> array) {
 			if (array != null) {
 				array.setOwner(this);
-				array.setDeclaredType(new GenericArrayTypeImpl(new WilcardTypeImpl(Object.class)) /* TypeToken<Object[]>() {
-																									}.getType()*/);
+				array.setDeclaredType(new GenericArrayTypeImpl(WildcardTypeImpl.makeUpperBoundWilcard(Object.class)));
 				array.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 			}
 			this.array = array;
@@ -224,10 +223,10 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		@Override
 		public void revalidateBindings() {
 			if (list != null) {
-				list.forceRevalidate();
+				list.revalidate();
 			}
 			if (array != null) {
-				array.forceRevalidate();
+				array.revalidate();
 			}
 			super.revalidateBindings();
 		}
@@ -235,12 +234,12 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		@Override
 		public void finalizeDeserialization() {
 			super.finalizeDeserialization();
-			if (list != null) {
+			/*if (list != null) {
 				list.decode();
 			}
 			if (array != null) {
 				array.decode();
-			}
+			}*/
 		}
 
 		public boolean isStaticList() {

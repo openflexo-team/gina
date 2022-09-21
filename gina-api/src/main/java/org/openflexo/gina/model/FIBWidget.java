@@ -390,40 +390,40 @@ public abstract interface FIBWidget extends FIBComponent {
 		public void revalidateBindings() {
 			super.revalidateBindings();
 			if (data != null) {
-				data.forceRevalidate();
+				data.revalidate();
 			}
 			if (enable != null) {
-				enable.forceRevalidate();
+				enable.revalidate();
 			}
 			if (format != null) {
-				format.forceRevalidate();
+				format.revalidate();
 			}
 			if (icon != null) {
-				icon.forceRevalidate();
+				icon.revalidate();
 			}
 			if (tooltip != null) {
-				tooltip.forceRevalidate();
+				tooltip.revalidate();
 			}
 			if (clickAction != null) {
-				clickAction.forceRevalidate();
+				clickAction.revalidate();
 			}
 			if (doubleClickAction != null) {
-				doubleClickAction.forceRevalidate();
+				doubleClickAction.revalidate();
 			}
 			if (rightClickAction != null) {
-				rightClickAction.forceRevalidate();
+				rightClickAction.revalidate();
 			}
 			if (enterPressedAction != null) {
-				enterPressedAction.forceRevalidate();
+				enterPressedAction.revalidate();
 			}
 			if (valueChangedAction != null) {
-				valueChangedAction.forceRevalidate();
+				valueChangedAction.revalidate();
 			}
 			if (valueTransform != null) {
-				valueTransform.forceRevalidate();
+				valueTransform.revalidate();
 			}
 			if (valueValidator != null) {
-				valueValidator.forceRevalidate();
+				valueValidator.revalidate();
 			}
 
 		}
@@ -433,7 +433,7 @@ public abstract interface FIBWidget extends FIBComponent {
 
 			super.finalizeDeserialization();
 			getEventListener().createEventListenerBindingModel();
-			if (data != null) {
+			/*if (data != null) {
 				data.decode();
 			}
 			if (enable != null) {
@@ -468,7 +468,7 @@ public abstract interface FIBWidget extends FIBComponent {
 			}
 			if (valueValidator != null) {
 				valueValidator.decode();
-			}
+			}*/
 		}
 
 		@Override
@@ -550,7 +550,8 @@ public abstract interface FIBWidget extends FIBComponent {
 		public void setValueTransform(DataBinding<Object> valueTransform) {
 
 			if (valueTransform != null) {
-				getValueTransform().setUnparsedBinding(valueTransform.getUnparsedBinding());
+				getValueTransform().setExpression(valueTransform.getExpression());
+				// getValueTransform().setUnparsedBinding(valueTransform.getUnparsedBinding());
 			}
 			else {
 				this.valueTransform = null;

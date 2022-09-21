@@ -165,6 +165,9 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 		}
 
 		public void update() {
+			if (isRebuildingRadioButtons) {
+				return;
+			}
 			removeAll();
 			rebuildRadioButtons();
 		}
@@ -182,7 +185,11 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 			return super.getPreferredSize();
 		}*/
 
+		boolean isRebuildingRadioButtons = false;
+
 		private void rebuildRadioButtons() {
+
+			isRebuildingRadioButtons = true;
 
 			buttonGroup = new ButtonGroup();
 
@@ -235,6 +242,7 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 				}
 			}
 			revalidate();
+			isRebuildingRadioButtons = false;
 		}
 
 		public T getSelectedValue() {
