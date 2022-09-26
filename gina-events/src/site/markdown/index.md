@@ -61,24 +61,28 @@ How to create a new event kind for a new FIB Widget ?
 (in the second option, please remember to register your model when instantiating the EventManager)
 
 * Override the executeEvent method (in gina-core/gina.view.widget.impl) as follow
-	@Override
-	public void executeEvent(EventDescription e) \{
-		widgetExecuting = true;
-	
-		switch (e.getAction()) \{
-			case FIBMyEventDescription.MY_ACTION:
-				// do something
-				break;
-		}
-	
-		widgetExecuting = false;
+```
+@Override
+public void executeEvent(EventDescription e) \{
+	widgetExecuting = true;
+
+	switch (e.getAction()) \{
+		case FIBMyEventDescription.MY_ACTION:
+			// do something
+			break;
 	}
 
+	widgetExecuting = false;
+}
+```
+
 * Add code to throw events whenever a certain action is performed (in gina-swing/gina.swing.view.widget)
-	GinaStackEvent stack = CLASSNAME.this.GENotifier.raise(FIBEventFactory.getInstance().createMyEvent(
-			FIBMyEventDescription.MY_ACTION, ...));
-	...
-	stack.end();
+```
+GinaStackEvent stack = CLASSNAME.this.GENotifier.raise(FIBEventFactory.getInstance().createMyEvent(
+		FIBMyEventDescription.MY_ACTION, ...));
+...
+stack.end();
+```
 
 Technical information
 =====================
@@ -139,10 +143,12 @@ The GinaEventNotifier uses the raise method to through a GinaEvent.
 This method will also create a new stack of events used to determine causality of events, so it is important
 to close this event stacks once finished (usally just before leaving the scope where you called the raise method).
 
-\{
+```
+{
 ...
 GinaStackEvent stack = ginaEventNotifier.raise(eventDescription, this);
 ...[all events raised here are considered as consequences of our first event,
 ... that could also be a consequence of another event]
 stack.end();
 }
+```
