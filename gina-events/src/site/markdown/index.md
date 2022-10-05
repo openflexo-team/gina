@@ -25,7 +25,7 @@ To use this library you should :
 
 * And register them to the EventManager with addListener(GinaEventListener l)
 
-* Your listener will receive all the notifications by the eventPerformed(GinaEvent e, Stack<GinaStackEvent> stack) method
+* Your listener will receive all the notifications by the eventPerformed(GinaEvent e, Stack*GinaStackEvent* stack) method
 
 For detailed information on the different elements, see the rest of this document. You can also find examples
 in gina-replay/src/test/java/cases.
@@ -49,7 +49,7 @@ To use this library you should :
 
 * And register them to the EventManager with addListener(GinaEventListener l)
 
-* Your listener will receive all the notifications by the eventPerformed(GinaEvent e, Stack<GinaStackEvent> stack) method
+* Your listener will receive all the notifications by the eventPerformed(GinaEvent e, Stack*GinaStackEvent* stack) method
 
 
 How to create a new event kind for a new FIB Widget ?
