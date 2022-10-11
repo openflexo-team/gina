@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel id="0" borderLeft="0" height="400" sizeAdjustment="OriginalSize"
+<Panel id="0" borderLeft="0" height="460" sizeAdjustment="OriginalSize"
 	controllerClassName="org.openflexo.gina.swing.utils.TypeSelector$TypeSelectorDetailsPanel$CustomFIBController"
 	borderRight="0" border="empty" trackViewPortWidth="true" align="left"
 	width="500" borderBottom="0" borderTop="0" trackViewPortHeight="true"
@@ -11,7 +11,7 @@
 		trackViewPortHeight="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_NEVER"
 		useScrollBar="true" layout="border" name="FIBPanel">
 		<RadioButtonList id="2" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED"
-			data="data.choice" index="2" localize="true"
+			data="data.choice" index="2" localize="true" font="Dialog,0,10" 
 			constraints="border(anchor=center;expandHorizontally=true;expandVertically=true;fill=none;gridHeight=0;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=north;padX=0;padY=0;weightX=0.0;weightY=0.0)"
 			format="data.getPresentationName(object)" showText="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
