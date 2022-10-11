@@ -10,18 +10,24 @@ Getting started
 To use this library you should :
 
 * instantiate a GinaReplayManager
-manager = new GinaReplayManager();
+
+```manager = new GinaReplayManager();```
 
 * add the different EventDescription you want it to manage
-manager.addEventDescriptionModels(FIBEventDescription.class);
+
+```manager.addEventDescriptionModels(FIBEventDescription.class);```
 
 * create a GinaReplaySession and register it in the GinaReplayManager
+
+```
 GinaReplaySession session = new GinaReplaySession(manager);
 session.setCurrentSession(recorder);
+```
 
 * start the GinaReplaySession, it will be by default in recording mode except if it is started externally in
 replay mode
-session.start();
+
+```session.start();```
 
 * you can use GinaReplaySession.isRecording() to check if the system is in recording mode
 
@@ -32,20 +38,27 @@ Replay Mode
 
 To start a replay mode :
 * instantiate a ReplayTestConfiguration
-	ReplayTestConfiguration testConfiguration = new ReplayTestConfiguration();
+
+```ReplayTestConfiguration testConfiguration = new ReplayTestConfiguration();```
 
 * load a scenario File into it
-	File scenarioDir = ((FileResourceImpl) ResourceLocator.locateResource("scenarii/last-scenario")).getFile();
-	testConfiguration.loadScenario(scenarioDir);
+
+```
+File scenarioDir = ((FileResourceImpl) ResourceLocator.locateResource("scenarii/last-scenario")).getFile();
+testConfiguration.loadScenario(scenarioDir);
+```
 
 * use runMain method to start the main of the target application, this will init and configure the GinaReplayManager
-	testConfiguration.runMain();
+
+```testConfiguration.runMain();```
 
 * you can know how many events there are to be played by using Scenario.size
-	testConfiguration.getSession().getScenario().size();
+
+```testConfiguration.getSession().getScenario().size();```
 
 * use GinaReplaySession.checkNextStep to play and check the next event of your scenario
-	testConfiguration.getSession().checkNextStep(true);
+
+```testConfiguration.getSession().checkNextStep(true);```
 
 GinaReplaySession
 -----------------
