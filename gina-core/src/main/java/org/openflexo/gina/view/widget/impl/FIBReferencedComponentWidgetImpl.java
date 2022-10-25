@@ -204,7 +204,7 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 				} catch (TypeMismatchException e) {
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
-					e.printStackTrace();
+					//e.printStackTrace();
 				} catch (ReflectiveOperationException e) {
 					e.printStackTrace();
 				}
