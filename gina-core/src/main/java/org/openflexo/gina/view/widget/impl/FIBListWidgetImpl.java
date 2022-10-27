@@ -51,7 +51,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.openflexo.connie.binding.BindingValueChangeListener;
+import org.openflexo.connie.binding.BindingPathChangeListener;
 import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -73,7 +73,7 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 
 	private List<T> selection;
 
-	private BindingValueChangeListener<Object> selectedBindingValueChangeListener;
+	private BindingPathChangeListener<Object> selectedBindingValueChangeListener;
 
 	public FIBListWidgetImpl(FIBList model, FIBController controller, ListRenderingAdapter<C, T> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
@@ -112,7 +112,7 @@ public abstract class FIBListWidgetImpl<C, T> extends FIBMultipleValueWidgetImpl
 		}
 
 		if (getComponent().getSelected() != null && getComponent().getSelected().revalidate()) {
-			selectedBindingValueChangeListener = new BindingValueChangeListener<Object>(getComponent().getSelected(),
+			selectedBindingValueChangeListener = new BindingPathChangeListener<Object>(getComponent().getSelected(),
 					getBindingEvaluationContext(), true) {
 
 				@Override

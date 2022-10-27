@@ -44,7 +44,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingValueChangeListener;
+import org.openflexo.connie.binding.BindingPathChangeListener;
 import org.openflexo.connie.binding.javareflect.InvalidKeyValuePropertyException;
 import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
@@ -88,8 +88,8 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 	protected FIBController embeddedFIBController;
 	private final boolean isComponentLoading = false;
 
-	private BindingValueChangeListener<Resource> dynamicComponentFileBindingValueChangeListener;
-	private BindingValueChangeListener<FIBComponent> dynamicComponentBindingValueChangeListener;
+	private BindingPathChangeListener<Resource> dynamicComponentFileBindingValueChangeListener;
+	private BindingPathChangeListener<FIBComponent> dynamicComponentBindingValueChangeListener;
 
 	public FIBReferencedComponentWidgetImpl(FIBReferencedComponent model, FIBController controller,
 			ReferencedComponentRenderingAdapter<C> RenderingAdapter) {
@@ -127,7 +127,7 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 			dynamicComponentFileBindingValueChangeListener.delete();
 		}
 		if (getComponent().getDynamicComponentFile() != null && getComponent().getDynamicComponentFile().isValid()) {
-			dynamicComponentFileBindingValueChangeListener = new BindingValueChangeListener<Resource>(
+			dynamicComponentFileBindingValueChangeListener = new BindingPathChangeListener<Resource>(
 					getComponent().getDynamicComponentFile(), getBindingEvaluationContext()) {
 
 				@Override
@@ -155,7 +155,7 @@ public abstract class FIBReferencedComponentWidgetImpl<C> extends FIBWidgetViewI
 			dynamicComponentBindingValueChangeListener.delete();
 		}
 		if (getComponent().getDynamicComponent() != null && getComponent().getDynamicComponent().isValid()) {
-			dynamicComponentBindingValueChangeListener = new BindingValueChangeListener<FIBComponent>(getComponent().getDynamicComponent(),
+			dynamicComponentBindingValueChangeListener = new BindingPathChangeListener<FIBComponent>(getComponent().getDynamicComponent(),
 					getBindingEvaluationContext()) {
 
 				@Override

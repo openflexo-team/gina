@@ -58,7 +58,7 @@ import javax.swing.Icon;
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingValueChangeListener;
+import org.openflexo.connie.binding.BindingPathChangeListener;
 import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -117,7 +117,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	private DynamicValueBindingContext valueBindingContext;
 	private final DynamicEventListener eventListener;
 
-	private BindingValueChangeListener<Boolean> enableBindingValueChangeListener;
+	private BindingPathChangeListener<Boolean> enableBindingValueChangeListener;
 
 	private boolean eventListeningLocked;
 
@@ -125,7 +125,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 
 	protected GinaEventNotifier<FIBEventDescription> GENotifier;
 
-	private BindingValueChangeListener<T> dataBindingValueChangeListener;
+	private BindingPathChangeListener<T> dataBindingValueChangeListener;
 
 	protected FIBWidgetViewImpl(M model, FIBController aController, RenderingAdapter<C> RenderingAdapter) {
 		super(model, aController, RenderingAdapter);
@@ -223,7 +223,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 		DataBinding<T> data = (DataBinding<T>) getComponent().getData();
 
 		if (data != null && data.isValid()) {
-			dataBindingValueChangeListener = new BindingValueChangeListener<T>(data, getBindingEvaluationContext()) {
+			dataBindingValueChangeListener = new BindingPathChangeListener<T>(data, getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
 					// System.out.println(" **** bindingValueChanged() detected for data=" + getComponent().getData() + " with newValue="
@@ -248,7 +248,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			enableBindingValueChangeListener.delete();
 		}
 		if (getComponent().getEnable() != null && getComponent().getEnable().isValid()) {
-			enableBindingValueChangeListener = new BindingValueChangeListener<Boolean>(getComponent().getEnable(),
+			enableBindingValueChangeListener = new BindingPathChangeListener<Boolean>(getComponent().getEnable(),
 					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, Boolean newValue) {
@@ -597,7 +597,7 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 				System.out.println("reason=" + getWidget().getData().invalidBindingReason());
 				if (getWidget().getData().isBindingValue()) {
 					System.out.println(
-							"Hop: " + ((BindingValue) getWidget().getData().getExpression()).getLastBindingPathElement().getClass());
+							"Hop: " + ((BindingPath) getWidget().getData().getExpression()).getLastBindingPathElement().getClass());
 				}*/
 				getWidget().getData().setBindingValue(aValue, getBindingEvaluationContext());
 			} catch (TypeMismatchException e) {

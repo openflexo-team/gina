@@ -45,7 +45,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingValueListChangeListener;
+import org.openflexo.connie.binding.BindingPathListChangeListener;
 import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBWidget;
 import org.openflexo.gina.model.widget.FIBCheckboxList;
@@ -57,7 +57,7 @@ public abstract class FIBCheckboxListWidgetImpl<C, T> extends FIBMultipleValueWi
 
 	static final Logger logger = Logger.getLogger(FIBCheckboxListWidgetImpl.class.getPackage().getName());
 
-	private BindingValueListChangeListener<T, List<T>> listenerToDataAsListValue;
+	private BindingPathListChangeListener<T, List<T>> listenerToDataAsListValue;
 
 	public FIBCheckboxListWidgetImpl(FIBCheckboxList model, FIBController controller, CheckboxListRenderingAdapter<C, T> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
@@ -86,7 +86,7 @@ public abstract class FIBCheckboxListWidgetImpl<C, T> extends FIBMultipleValueWi
 			listenerToDataAsListValue.delete();
 		}
 		if (getComponent().getData() != null && getComponent().getData().isValid()) {
-			listenerToDataAsListValue = new BindingValueListChangeListener<T, List<T>>(((DataBinding) getComponent().getData()),
+			listenerToDataAsListValue = new BindingPathListChangeListener<T, List<T>>(((DataBinding) getComponent().getData()),
 					getBindingEvaluationContext()) {
 
 				@Override

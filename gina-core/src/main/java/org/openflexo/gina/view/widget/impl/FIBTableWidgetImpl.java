@@ -51,8 +51,8 @@ import java.util.logging.Logger;
 import javax.swing.ListSelectionModel;
 
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingValueChangeListener;
-import org.openflexo.connie.binding.BindingValueListChangeListener;
+import org.openflexo.connie.binding.BindingPathChangeListener;
+import org.openflexo.connie.binding.BindingPathListChangeListener;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.controller.FIBController;
@@ -90,9 +90,9 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 	protected List<T> selection;
 	protected T selectedObject;
 
-	private BindingValueChangeListener<T> selectedBindingValueChangeListener;
+	private BindingPathChangeListener<T> selectedBindingValueChangeListener;
 
-	private BindingValueListChangeListener<T, Collection<T>> listenerToDataAsListValue;
+	private BindingPathListChangeListener<T, Collection<T>> listenerToDataAsListValue;
 
 	public FIBTableWidgetImpl(FIBTable fibTable, FIBController controller, TableRenderingAdapter<C, T> RenderingAdapter) {
 		super(fibTable, controller, RenderingAdapter);
@@ -144,7 +144,7 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 			listenerToDataAsListValue.delete();
 		}
 		if (getComponent().getData() != null && getComponent().getData().isValid()) {
-			listenerToDataAsListValue = new BindingValueListChangeListener<T, Collection<T>>(((DataBinding) getComponent().getData()),
+			listenerToDataAsListValue = new BindingPathListChangeListener<T, Collection<T>>(((DataBinding) getComponent().getData()),
 					getBindingEvaluationContext()) {
 
 				@Override
@@ -173,7 +173,7 @@ public abstract class FIBTableWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBTabl
 			selectedBindingValueChangeListener.delete();
 		}
 		if (getComponent().getSelected() != null && getComponent().getSelected().isValid()) {
-			selectedBindingValueChangeListener = new BindingValueChangeListener<T>((DataBinding<T>) getComponent().getSelected(),
+			selectedBindingValueChangeListener = new BindingPathChangeListener<T>((DataBinding<T>) getComponent().getSelected(),
 					getBindingEvaluationContext()) {
 
 				@Override

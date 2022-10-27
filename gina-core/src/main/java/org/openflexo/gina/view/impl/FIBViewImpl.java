@@ -50,7 +50,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingVariable;
-import org.openflexo.connie.binding.BindingValueChangeListener;
+import org.openflexo.connie.binding.BindingPathChangeListener;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.TypeUtils;
@@ -100,14 +100,14 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 
 	private final PropertyChangeSupport pcSupport;
 
-	private BindingValueChangeListener<Boolean> visibleBindingValueChangeListener;
+	private BindingPathChangeListener<Boolean> visibleBindingValueChangeListener;
 
 	private final RenderingAdapter<C> renderingAdapter;
 
 	// Values of variable
 	// Lookup is performed on the name of the variable
 	private final Map<String, Object> variables;
-	private final Map<String, BindingValueChangeListener<?>> variableListeners;
+	private final Map<String, BindingPathChangeListener<?>> variableListeners;
 
 	public FIBViewImpl(M model, FIBController controller, RenderingAdapter<C> renderingAdapter) {
 		super();
@@ -232,14 +232,14 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	@SuppressWarnings("unchecked")
 	private <T> void listenVariableValueChange(final FIBVariable<T> variable) {
 
-		BindingValueChangeListener<T> dataBindingValueChangeListener = (BindingValueChangeListener<T>) variableListeners.get(variable);
+		BindingPathChangeListener<T> dataBindingValueChangeListener = (BindingPathChangeListener<T>) variableListeners.get(variable);
 
 		if (dataBindingValueChangeListener != null) {
 			stopListenVariableValueChange(variable);
 		}
 
 		if (variable.getValue() != null && variable.getValue().isValid()) {
-			dataBindingValueChangeListener = new BindingValueChangeListener<T>(variable.getValue(), getBindingEvaluationContext()) {
+			dataBindingValueChangeListener = new BindingPathChangeListener<T>(variable.getValue(), getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, T newValue) {
 					updateVariableValueWhenConsistent(variable, newValue);
@@ -264,7 +264,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 	@SuppressWarnings("unchecked")
 	private <T> void stopListenVariableValueChange(final FIBVariable<T> variable) {
 
-		BindingValueChangeListener<T> dataBindingValueChangeListener = (BindingValueChangeListener<T>) variableListeners.get(variable);
+		BindingPathChangeListener<T> dataBindingValueChangeListener = (BindingPathChangeListener<T>) variableListeners.get(variable);
 
 		if (dataBindingValueChangeListener != null) {
 			dataBindingValueChangeListener.stopObserving();
@@ -356,7 +356,7 @@ public abstract class FIBViewImpl<M extends FIBComponent, C> implements FIBView<
 			visibleBindingValueChangeListener.delete();
 		}
 		if (getComponent().getVisible() != null && getComponent().getVisible().isValid()) {
-			visibleBindingValueChangeListener = new BindingValueChangeListener<Boolean>(getComponent().getVisible(),
+			visibleBindingValueChangeListener = new BindingPathChangeListener<Boolean>(getComponent().getVisible(),
 					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, Boolean newValue) {

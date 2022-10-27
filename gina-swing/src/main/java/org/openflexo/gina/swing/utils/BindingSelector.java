@@ -66,7 +66,7 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.ParseException;
 import org.openflexo.connie.binding.BindingModelChanged;
 import org.openflexo.connie.binding.javareflect.InvalidKeyValuePropertyException;
-import org.openflexo.connie.expr.BindingValue;
+import org.openflexo.connie.expr.BindingPath;
 import org.openflexo.connie.expr.Constant;
 import org.openflexo.connie.expr.Expression;
 import org.openflexo.connie.expr.ExpressionGrammar;
@@ -545,8 +545,8 @@ public abstract class BindingSelector extends TextFieldCustomPopup<DataBinding>
 			if (newDataBinding.isConstant()) {
 				newEditionMode = EditionMode.STATIC_BINDING;
 			}
-			else if (newDataBinding.isBindingValue()) {
-				if (((BindingValue) newDataBinding.getExpression()).containsAMethodCall() || newDataBinding.isExecutable()) {
+			else if (newDataBinding.isBindingPath()) {
+				if (((BindingPath) newDataBinding.getExpression()).containsAMethodCall() || newDataBinding.isExecutable()) {
 					newEditionMode = EditionMode.COMPOUND_BINDING;
 				}
 				else if (oldEditionMode != EditionMode.NORMAL_BINDING && oldEditionMode != EditionMode.COMPOUND_BINDING) {
@@ -748,7 +748,7 @@ public abstract class BindingSelector extends TextFieldCustomPopup<DataBinding>
 				showAgain = true;
 				closePopup(false);
 			}
-			if (getEditedObject() != null && !getEditedObject().isBindingValue()) {
+			if (getEditedObject() != null && !getEditedObject().isBindingPath()) {
 				_editedObject.setExpression(makeBinding()); // I dont want to
 															// notify it !!!
 				fireEditedObjectChanged();
@@ -911,8 +911,8 @@ public abstract class BindingSelector extends TextFieldCustomPopup<DataBinding>
 					editedObject.getOwner();
 					LOGGER.info("Binding not valid: " + editedObject + " reason=" + editedObject.invalidBindingReason());
 					/*
-					 * if (editedObject.isBindingValue()) { BindingValue bv =
-					 * (BindingValue) (editedObject.getExpression());
+					 * if (editedObject.isBindingValue()) { BindingPath bv =
+					 * (BindingPath) (editedObject.getExpression());
 					 * System.out.println("BV=" + bv);
 					 * System.out.println("valid=" + bv.isValid());
 					 * System.out.println("reason=" +
@@ -1141,9 +1141,9 @@ public abstract class BindingSelector extends TextFieldCustomPopup<DataBinding>
 	 * Variable(""); }
 	 */
 
-	protected /*Expression*/ BindingValue makeBinding() {
+	protected /*Expression*/ BindingPath makeBinding() {
 
-		BindingValue newBindingValue = new BindingValue(getBindable(), JavaPrettyPrinter.getInstance());
+		BindingPath newBindingValue = new BindingPath(getBindable(), JavaPrettyPrinter.getInstance());
 		// newBindingValue.setDataBinding(getEditedObject());
 		return newBindingValue;
 
@@ -1284,7 +1284,7 @@ public abstract class BindingSelector extends TextFieldCustomPopup<DataBinding>
 		if (dataBinding != null) {
 			if (dataBinding.revalidate()) {
 				/*
-				 * if (bindingValue instanceof BindingValue) { ((BindingValue)
+				 * if (bindingValue instanceof BindingPath) { ((BindingPath)
 				 * bindingValue).connect(); }
 				 */
 				connect();

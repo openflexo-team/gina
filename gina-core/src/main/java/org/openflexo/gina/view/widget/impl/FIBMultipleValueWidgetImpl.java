@@ -54,8 +54,8 @@ import javax.swing.JComponent;
 import javax.swing.JList;
 
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingValueArrayChangeListener;
-import org.openflexo.connie.binding.BindingValueListChangeListener;
+import org.openflexo.connie.binding.BindingPathArrayChangeListener;
+import org.openflexo.connie.binding.BindingPathListChangeListener;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.controller.FIBController;
@@ -91,8 +91,8 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 	private FIBMultipleValueCellRenderer listCellRenderer;
 	protected FIBMultipleValueModel<I> multipleValueModel;
 
-	private BindingValueListChangeListener<Object, List<Object>> listBindingValueChangeListener;
-	private BindingValueArrayChangeListener<Object> arrayBindingValueChangeListener;
+	private BindingPathListChangeListener<Object, List<Object>> listBindingValueChangeListener;
+	private BindingPathArrayChangeListener<Object> arrayBindingValueChangeListener;
 
 	public FIBMultipleValueWidgetImpl(M model, FIBController controller, MultipleValueRenderingAdapter<C, I> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
@@ -143,7 +143,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 		}
 
 		if (getComponent().getList() != null && getComponent().getList().revalidate()) {
-			listBindingValueChangeListener = new BindingValueListChangeListener<Object, List<Object>>(
+			listBindingValueChangeListener = new BindingPathListChangeListener<Object, List<Object>>(
 					((DataBinding) getComponent().getList()), getBindingEvaluationContext()) {
 
 				@Override
@@ -171,7 +171,7 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 			arrayBindingValueChangeListener.delete();
 		}
 		if (getComponent().getArray() != null && getComponent().getArray().isValid()) {
-			arrayBindingValueChangeListener = new BindingValueArrayChangeListener<Object>(getComponent().getArray(),
+			arrayBindingValueChangeListener = new BindingPathArrayChangeListener<Object>(getComponent().getArray(),
 					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, Object[] newValue) {
