@@ -722,7 +722,8 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 						((FIBViewImpl<?, ?>) v).performUpdate();
 					}
 				} catch (NullReferenceException e) {
-					LOGGER.warning("NullReferenceException while evaluating " + c.getVisible());
+					// This can be silently caught
+					// LOGGER.warning("NullReferenceException while evaluating " + c.getVisible());
 					// e.printStackTrace();
 				}
 			}
