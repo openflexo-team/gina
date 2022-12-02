@@ -122,7 +122,7 @@ public class FIBEditor {
 	private ComponentValidationWindow componentValidationWindow;
 	private ComponentLocalizationWindow componentLocalizationWindow;
 
-	final FileSystemResourceLocatorImpl resourceLocator;
+	private FileSystemResourceLocatorImpl resourceLocator;
 
 	static ApplicationFIBLibrary APP_FIB_LIBRARY = ApplicationFIBLibraryImpl.instance();
 	private final FIBLibrary fibLibrary;
@@ -150,12 +150,15 @@ public class FIBEditor {
 		this.fibLibrary = fibLibrary;
 		this.progress = progress;
 
-		resourceLocator = new FileSystemResourceLocatorImpl();
+		resourceLocator = ResourceLocator.getDelegate(FileSystemResourceLocatorImpl.class);
+		if (resourceLocator == null) {
+			resourceLocator = new FileSystemResourceLocatorImpl();
+			ResourceLocator.appendDelegate(resourceLocator);
+		}
 		if (JFIBPreferences.getLastDirectory() != null) {
 			resourceLocator.appendToDirectories(JFIBPreferences.getLastDirectory().getAbsolutePath());
 		}
 		resourceLocator.appendToDirectories(System.getProperty("user.home"));
-		ResourceLocator.appendDelegate(resourceLocator);
 
 	}
 
