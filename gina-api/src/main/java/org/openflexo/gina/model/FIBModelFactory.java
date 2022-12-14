@@ -103,7 +103,7 @@ public class FIBModelFactory extends PamelaModelFactory {
 
 	public FIBModelFactory(Resource containerResource, CustomTypeManager customTypeManager, Class<?>... additionalClasses)
 			throws ModelDefinitionException {
-		super(PamelaMetaModelLibrary.getCompoundModelContext(FIBComponent.class, additionalClasses));
+		super(PamelaMetaModelLibrary.retrieveMetaModel(FIBComponent.class, additionalClasses));
 		relativePathResourceConverter = new RelativePathResourceConverter(null);
 		relativePathResourceConverter.setContainerResource(containerResource);
 

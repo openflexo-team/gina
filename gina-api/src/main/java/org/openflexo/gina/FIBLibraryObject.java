@@ -64,7 +64,7 @@ public abstract interface FIBLibraryObject extends AccessibleProxyObject, Deleta
 		static {
 			try {
 				FOLDER_FACTORY = new PamelaModelFactory(
-						PamelaMetaModelLibrary.getCompoundModelContext(FIBLibrary.class, ApplicationFIBLibrary.class, FIBFolder.class));
+						PamelaMetaModelLibrary.retrieveMetaModel(FIBLibrary.class, ApplicationFIBLibrary.class, FIBFolder.class));
 			} catch (ModelDefinitionException e) {
 				e.printStackTrace();
 			}
