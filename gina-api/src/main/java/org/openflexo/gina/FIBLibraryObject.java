@@ -41,11 +41,11 @@ package org.openflexo.gina;
 
 import org.openflexo.pamela.AccessibleProxyObject;
 import org.openflexo.pamela.DeletableProxyObject;
-import org.openflexo.pamela.ModelContextLibrary;
+import org.openflexo.pamela.PamelaMetaModelLibrary;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
-import org.openflexo.pamela.factory.ModelFactory;
+import org.openflexo.pamela.factory.PamelaModelFactory;
 
 /**
  * A {@link FIBLibraryObject} is the base interface for FIBLibrary
@@ -59,12 +59,12 @@ public abstract interface FIBLibraryObject extends AccessibleProxyObject, Deleta
 
 	public static abstract class FIBLibraryObjectImpl implements FIBLibraryObject {
 
-		protected static ModelFactory FOLDER_FACTORY;
+		protected static PamelaModelFactory FOLDER_FACTORY;
 
 		static {
 			try {
-				FOLDER_FACTORY = new ModelFactory(
-						ModelContextLibrary.getCompoundModelContext(FIBLibrary.class, ApplicationFIBLibrary.class, FIBFolder.class));
+				FOLDER_FACTORY = new PamelaModelFactory(
+						PamelaMetaModelLibrary.getCompoundModelContext(FIBLibrary.class, ApplicationFIBLibrary.class, FIBFolder.class));
 			} catch (ModelDefinitionException e) {
 				e.printStackTrace();
 			}

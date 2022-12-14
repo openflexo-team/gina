@@ -38,7 +38,7 @@
 
 package org.openflexo.swing.converter;
 
-import org.openflexo.pamela.factory.ModelFactory;
+import org.openflexo.pamela.factory.PamelaModelFactory;
 import org.openflexo.pamela.model.StringConverterLibrary.Converter;
 import org.openflexo.swing.FlexoFont;
 
@@ -49,7 +49,7 @@ public class FlexoFontConverter extends Converter<FlexoFont> {
 	}
 
 	@Override
-	public FlexoFont convertFromString(String value, ModelFactory factory) {
+	public FlexoFont convertFromString(String value, PamelaModelFactory factory) {
 		return FlexoFont.stringToFont(value);
 	}
 

@@ -49,7 +49,7 @@ import org.openflexo.gina.model.container.layout.GridBagLayoutConstraints;
 import org.openflexo.gina.model.container.layout.GridLayoutConstraints;
 import org.openflexo.gina.model.container.layout.SplitLayoutConstraints;
 import org.openflexo.gina.model.container.layout.TwoColsLayoutConstraints;
-import org.openflexo.pamela.factory.ModelFactory;
+import org.openflexo.pamela.factory.PamelaModelFactory;
 import org.openflexo.pamela.model.StringConverterLibrary.Converter;
 
 public class ComponentConstraintsConverter extends Converter<ComponentConstraints> {
@@ -61,7 +61,7 @@ public class ComponentConstraintsConverter extends Converter<ComponentConstraint
 	}
 
 	@Override
-	public ComponentConstraints convertFromString(String aValue, ModelFactory factory) {
+	public ComponentConstraints convertFromString(String aValue, PamelaModelFactory factory) {
 		try {
 			// System.out.println("aValue="+aValue);
 			String constraintType = aValue.substring(0, aValue.indexOf("("));

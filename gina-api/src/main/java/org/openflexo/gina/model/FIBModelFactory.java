@@ -61,12 +61,12 @@ import org.openflexo.gina.model.widget.FIBCheckBox;
 import org.openflexo.gina.model.widget.FIBCheckboxList;
 import org.openflexo.gina.model.widget.FIBCustom;
 import org.openflexo.gina.model.widget.FIBCustom.FIBCustomAssignment;
-import org.openflexo.pamela.ModelContextLibrary;
+import org.openflexo.pamela.PamelaMetaModelLibrary;
 import org.openflexo.pamela.converter.DataBindingConverter;
 import org.openflexo.pamela.converter.RelativePathResourceConverter;
 import org.openflexo.pamela.converter.TypeConverter;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
-import org.openflexo.pamela.factory.ModelFactory;
+import org.openflexo.pamela.factory.PamelaModelFactory;
 import org.openflexo.gina.model.widget.FIBDate;
 import org.openflexo.gina.model.widget.FIBDropDown;
 import org.openflexo.gina.model.widget.FIBDropDownColumn;
@@ -85,13 +85,13 @@ import org.openflexo.gina.model.widget.FIBTextFieldColumn;
 import org.openflexo.rm.Resource;
 
 /**
- * {@link ModelFactory} used to handle FIB models<br>
+ * {@link PamelaModelFactory} used to handle FIB models<br>
  * One instance is declared for the {@link FIBLibrary}
  * 
  * @author sylvain
  * 
  */
-public class FIBModelFactory extends ModelFactory {
+public class FIBModelFactory extends PamelaModelFactory {
 
 	private final FIBValidationModel validationModel;
 
@@ -103,7 +103,7 @@ public class FIBModelFactory extends ModelFactory {
 
 	public FIBModelFactory(Resource containerResource, CustomTypeManager customTypeManager, Class<?>... additionalClasses)
 			throws ModelDefinitionException {
-		super(ModelContextLibrary.getCompoundModelContext(FIBComponent.class, additionalClasses));
+		super(PamelaMetaModelLibrary.getCompoundModelContext(FIBComponent.class, additionalClasses));
 		relativePathResourceConverter = new RelativePathResourceConverter(null);
 		relativePathResourceConverter.setContainerResource(containerResource);
 

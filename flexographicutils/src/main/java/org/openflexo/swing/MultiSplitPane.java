@@ -58,9 +58,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import org.openflexo.pamela.ModelContext;
+import org.openflexo.pamela.PamelaMetaModel;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
-import org.openflexo.pamela.factory.ModelFactory;
+import org.openflexo.pamela.factory.PamelaModelFactory;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -483,7 +483,7 @@ public class MultiSplitPane extends JPanel {
 	protected static void initTestUI() throws ModelDefinitionException {
 		JFrame frame = new JFrame("Test multi split");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		ModelFactory factory = new ModelFactory(new ModelContext(Node.class));
+		PamelaModelFactory factory = new PamelaModelFactory(new PamelaMetaModel(Node.class));
 		Node root = factory.newInstance(Node.class);
 		root.setName("root");
 		root.setRowLayout(true);
@@ -519,7 +519,7 @@ public class MultiSplitPane extends JPanel {
 		}
 	}
 
-	private static Node getVerticalSplit(ModelFactory factory, String name) {
+	private static Node getVerticalSplit(PamelaModelFactory factory, String name) {
 		Node node = factory.newInstance(Node.class);
 		node.setName(name);
 		node.setRowLayout(false);

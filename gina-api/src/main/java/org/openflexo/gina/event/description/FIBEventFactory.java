@@ -5,14 +5,14 @@ import javax.swing.*;
 import org.openflexo.gina.event.GinaEvent;
 import org.openflexo.gina.event.description.item.DescriptionIntegerItem;
 import org.openflexo.gina.event.description.item.DescriptionItem;
-import org.openflexo.pamela.ModelContext;
+import org.openflexo.pamela.PamelaMetaModel;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
-import org.openflexo.pamela.factory.ModelFactory;
+import org.openflexo.pamela.factory.PamelaModelFactory;
 
 public class FIBEventFactory {
 	static private FIBEventFactory instance;
-	private ModelFactory factory;
-	private ModelContext context;
+	private PamelaModelFactory factory;
+	private PamelaMetaModel context;
 	
 	static public FIBEventFactory getInstance() {
 		if (instance == null)
@@ -28,11 +28,11 @@ public class FIBEventFactory {
 		this.context = null;
 	}
 
-	public ModelFactory getModelFactory() {
+	public PamelaModelFactory getModelFactory() {
 		if (factory == null) {
 			try {
-				context = new ModelContext(Arrays.asList(GinaEvent.class, EventDescription.class, DescriptionItem.class, FIBEventDescription.class));
-				factory = new ModelFactory(context);
+				context = new PamelaMetaModel(Arrays.asList(GinaEvent.class, EventDescription.class, DescriptionItem.class, FIBEventDescription.class));
+				factory = new PamelaModelFactory(context);
 			} catch (ModelDefinitionException e) {
 				e.printStackTrace();
 			}

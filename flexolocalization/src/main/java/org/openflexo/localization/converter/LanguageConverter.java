@@ -39,7 +39,7 @@
 package org.openflexo.localization.converter;
 
 import org.openflexo.localization.Language;
-import org.openflexo.pamela.factory.ModelFactory;
+import org.openflexo.pamela.factory.PamelaModelFactory;
 import org.openflexo.pamela.model.StringConverterLibrary.Converter;
 
 public class LanguageConverter extends Converter<Language> {
@@ -49,7 +49,7 @@ public class LanguageConverter extends Converter<Language> {
 	}
 
 	@Override
-	public Language convertFromString(String value, ModelFactory factory) {
+	public Language convertFromString(String value, PamelaModelFactory factory) {
 		return Language.get(value);
 	}
 

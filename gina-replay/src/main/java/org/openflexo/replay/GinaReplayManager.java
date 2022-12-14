@@ -7,7 +7,7 @@ import org.openflexo.gina.manager.EventManager;
 import org.openflexo.gina.manager.GinaEventFactory;
 import org.openflexo.gina.manager.GinaEventListener;
 import org.openflexo.gina.manager.GinaStackEvent;
-import org.openflexo.pamela.factory.ModelFactory;
+import org.openflexo.pamela.factory.PamelaModelFactory;
 
 /**
  * This class manages manages :
@@ -83,7 +83,7 @@ public class GinaReplayManager implements GinaEventListener {
 		return factory;
 	}
 	
-	public ModelFactory getModelFactory() {
+	public PamelaModelFactory getModelFactory() {
 		return getFactory().getModelFactory();
 	}
 
