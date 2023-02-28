@@ -47,7 +47,7 @@
 				manageDynamicModel="true" opaque="false" name="CustomTypeEditorPanel"
 				data="data.currentCustomTypeEditor" controllerFactory="data.currentCustomTypeEditor.makeFIBController()"
 				index="4" localize="true"
-				dynamicComponentFile="data.currentCustomTypeEditor.FIBComponentResource"
+				dynamicComponentFile="data.currentCustomTypeEditor.fIBComponentResource"
 				constraints="border(location=center)">
 				<ReferenceAssignment id="8" mandatory="true"
 					value="controller.flexoController" variable="controller.flexoController" />
