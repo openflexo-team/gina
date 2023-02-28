@@ -54,7 +54,7 @@ import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.type.ParameterizedTypeImpl;
-import org.openflexo.connie.type.WildcardTypeImpl;
+import org.openflexo.connie.type.WildcardTypeImpl.DefaultWildcardType;
 import org.openflexo.gina.model.FIBModelObject;
 import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.gina.model.FIBWidget;
@@ -592,7 +592,7 @@ public interface FIBTable extends FIBWidget {
 		@Override
 		public Type getDefaultDataType() {
 			Type[] args = new Type[1];
-			args[0] = WildcardTypeImpl.makeUpperBoundWilcard(getIteratorType());
+			args[0] = DefaultWildcardType.makeUpperBoundWilcard(getIteratorType());
 			return new ParameterizedTypeImpl(Collection.class, args);
 		}
 

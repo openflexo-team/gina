@@ -62,7 +62,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import org.openflexo.connie.type.CustomType;
 import org.openflexo.connie.type.CustomTypeFactory;
@@ -71,7 +70,7 @@ import org.openflexo.connie.type.GenericArrayTypeImpl;
 import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.connie.type.PrimitiveType;
 import org.openflexo.connie.type.TypeUtils;
-import org.openflexo.connie.type.WildcardTypeImpl;
+import org.openflexo.connie.type.WildcardTypeImpl.DefaultWildcardType;
 import org.openflexo.gina.ApplicationFIBLibrary.ApplicationFIBLibraryImpl;
 import org.openflexo.gina.controller.CustomTypeEditor;
 import org.openflexo.gina.controller.CustomTypeEditorProvider;
@@ -624,7 +623,7 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 		Type[] lower = new Type[lowerBounds.size()];
 		for (int i = 0; i < lowerBounds.size(); i++)
 			lower[i] = lowerBounds.get(i).getType();
-		setEditedObject(new WildcardTypeImpl(upper, lower));
+		setEditedObject(new DefaultWildcardType(upper, lower));
 	}
 
 	private void updateWildcardBounds() {
