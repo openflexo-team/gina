@@ -44,6 +44,7 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.logging.Logger;
@@ -138,6 +139,17 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 		instances = new ArrayList<>();
 		registeredClassesForName = new Hashtable<>();
+
+		primitives = new PackageInfo();
+		registerClass(Boolean.TYPE);
+		registerClass(Character.TYPE);
+		registerClass(Byte.TYPE);
+		registerClass(Short.TYPE);
+		registerClass(Integer.TYPE);
+		registerClass(Long.TYPE);
+		registerClass(Float.TYPE);
+		registerClass(Double.TYPE);
+
 		packages = new Hashtable<Package, PackageInfo>() {
 			@Override
 			public synchronized PackageInfo put(Package key, PackageInfo value) {
@@ -168,6 +180,10 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 				// System.out.println("" + classesBeeingRegistered + " - " + "Registered class: " + className + " from " + classLocation);
 			}
 		}
+
+		registerClass(String.class);
+		registerClass(Date.class);
+
 	}
 
 	/**
@@ -256,6 +272,12 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		return registerClass(c);
 	}
 
+	private PackageInfo primitives;
+
+	public List<ClassInfo> getPrimitives() {
+		return primitives.getClasses();
+	}
+
 	public ClassInfo registerClass(Class<?> c) {
 		if (c == null) {
 			// LOGGER.warning("Null class " + c);
@@ -268,12 +290,19 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 			return null;
 		}
 
-		if (c.getPackage() == null) {
+		PackageInfo p = null;
+
+		if (c.isPrimitive()) {
+			p = primitives;
+		}
+		else if (c.getPackage() == null) {
 			LOGGER.warning("No package for class " + c);
+			Thread.dumpStack();
 			return null;
 		}
-
-		PackageInfo p = registerPackage(c.getPackage());
+		else {
+			p = registerPackage(c.getPackage());
+		}
 
 		LOGGER.fine("Register class " + c);
 		if (!c.isMemberClass() && !c.isAnonymousClass() && !c.isLocalClass()) {
@@ -318,6 +347,11 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 		private List<ClassInfo> classesList;
 		private boolean needsReordering = true;
 		private final PropertyChangeSupport pcSupport;
+
+		private PackageInfo() {
+			pcSupport = new PropertyChangeSupport(this);
+			packageName = "primitives";
+		}
 
 		public PackageInfo(Package aPackage) {
 			pcSupport = new PropertyChangeSupport(this);
@@ -424,7 +458,12 @@ public class LoadedClassesInfo implements HasPropertyChangeSupport {
 				tp.append(">");
 				displayableName = displayableName + tp.toString();
 			}
-			packageName = aClass.getPackage().getName();
+			if (aClass.isPrimitive()) {
+				packageName = "primitives";
+			}
+			else {
+				packageName = aClass.getPackage().getName();
+			}
 			fullQualifiedName = aClass.getName();
 			clazz = aClass;
 			LOGGER.fine("Instanciate new ClassInfo for " + aClass);

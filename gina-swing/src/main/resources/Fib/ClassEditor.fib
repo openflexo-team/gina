@@ -99,6 +99,7 @@
 		<BrowserElement id="21" icon="data.javaIcon" label="&quot;Java Classes&quot;"
 			dataClassName="org.openflexo.gina.swing.utils.LoadedClassesInfo"
 			name="loadedClasses" isEditable="false">
+			<Children name="primitives" data="loadedClasses.primitives" />
 			<Children id="22" name="children" data="loadedClasses.packages" />
 		</BrowserElement>
 		<BrowserElement id="23" icon="class.icon" label="class.displayableName"
