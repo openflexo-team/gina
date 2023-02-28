@@ -40,6 +40,7 @@ package org.openflexo.gina.controller;
 
 import org.openflexo.connie.type.CustomType;
 import org.openflexo.rm.Resource;
+import org.openflexo.toolbox.HasPropertyChangeSupport;
 
 /**
  * Represent editor suitable to edit a given CustomTypeClass, in the context of the {@link TypeSelector}
@@ -47,7 +48,7 @@ import org.openflexo.rm.Resource;
  * @author sylvain
  *
  */
-public interface CustomTypeEditor<T extends CustomType> {
+public interface CustomTypeEditor<T extends CustomType> extends HasPropertyChangeSupport {
 
 	public String getPresentationName();
 
