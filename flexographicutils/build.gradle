@@ -9,7 +9,12 @@ dependencies {
   api group: 'com.google.code.gson', name: 'gson', version: '2.8.2'
   api group: 'org.swinglabs.swingx', name: 'swingx-core', version: '1.6.5-1'
 
-  api group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '2.6.1'
+  //api group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '2.6.1'
+  api group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.0.4'
+  api group: 'com.fifesoft', name: 'autocomplete', version: '3.3.1'
+  api group: 'com.fifesoft', name: 'rstaui', version: '3.3.1'
+  api group: 'com.fifesoft', name: 'languagesupport', version: '3.3.0'
+  
 }
 
 // To be able to use private apple api
