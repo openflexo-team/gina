@@ -50,6 +50,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
@@ -79,6 +80,7 @@ import org.openflexo.gina.view.GinaViewFactory;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
+import org.openflexo.test.UITest;
 
 /**
  * Test BindingModel computation according to a dynamic component structure
@@ -109,6 +111,7 @@ public class TestBindingModel extends FIBTestCase {
 	 */
 	@Test
 	@TestOrder(1)
+	@Category(UITest.class)
 	public void test1CreateRootPanel() {
 
 		log("test1CreateRootPanel");
@@ -153,6 +156,7 @@ public class TestBindingModel extends FIBTestCase {
 	 */
 	@Test
 	@TestOrder(2)
+	@Category(UITest.class)
 	public void test2TestBindingModelOnSingleWidget() {
 
 		log("test2TestBindingModelOnSingleWidget");
@@ -237,6 +241,7 @@ public class TestBindingModel extends FIBTestCase {
 	 */
 	@Test
 	@TestOrder(3)
+	@Category(UITest.class)
 	public void test3TestBindingModelWithMultipleWidgetsInContainer() {
 
 		log("test3TestBindingModelWithMultipleWidgetsInContainer");
@@ -460,6 +465,7 @@ public class TestBindingModel extends FIBTestCase {
 	 */
 	@Test
 	@TestOrder(4)
+	@Category(UITest.class)
 	public void test4TestComponentHierarchy() {
 
 		log("test4TestComponentHierarchy");
@@ -572,6 +578,7 @@ public class TestBindingModel extends FIBTestCase {
 	 */
 	@Test
 	@TestOrder(10)
+	@Category(UITest.class)
 	public void testInstanciateComponent() {
 
 		log("testInstanciateComponent");

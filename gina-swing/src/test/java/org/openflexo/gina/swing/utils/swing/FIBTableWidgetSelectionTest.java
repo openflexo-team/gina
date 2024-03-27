@@ -49,6 +49,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
@@ -77,6 +78,7 @@ import org.openflexo.gina.test.SwingGraphicalContextDelegate;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
+import org.openflexo.test.UITest;
 
 /**
  * Test the structural and behavioural features of a simple master-detail pattern driven by a table widget
@@ -108,6 +110,7 @@ public class FIBTableWidgetSelectionTest extends FIBTestCase {
 	 */
 	@Test
 	@TestOrder(1)
+	@Category(UITest.class)
 	public void test1CreateComponent() {
 
 		component = newFIBPanel();
@@ -181,6 +184,7 @@ public class FIBTableWidgetSelectionTest extends FIBTestCase {
 	 */
 	@Test
 	@TestOrder(2)
+	@Category(UITest.class)
 	public void test2InstanciateComponent() {
 		controller = FIBController.instanciateController(component, SwingViewFactory.INSTANCE, FlexoLocalization.getMainLocalizer());
 		assertNotNull(controller);
@@ -203,6 +207,7 @@ public class FIBTableWidgetSelectionTest extends FIBTestCase {
 	 */
 	@Test
 	@TestOrder(3)
+	@Category(UITest.class)
 	public void test3SelectEditAndCheckValues() {
 
 		JFIBTableWidget<?> w = (JFIBTableWidget<?>) controller.viewForComponent(table);
@@ -230,6 +235,7 @@ public class FIBTableWidgetSelectionTest extends FIBTestCase {
 	 */
 	@Test
 	@TestOrder(4)
+	@Category(UITest.class)
 	public void test4SelectMultipleValues() {
 
 		JFIBTableWidget<?> w = (JFIBTableWidget<?>) controller.viewForComponent(table);
