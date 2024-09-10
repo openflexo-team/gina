@@ -122,7 +122,7 @@ public class SwingGraphicalContextDelegate implements ChangeListener {
 
 	public void waitGUI() {
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(50);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
