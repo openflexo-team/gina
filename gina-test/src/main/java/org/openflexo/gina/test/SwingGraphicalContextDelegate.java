@@ -127,7 +127,7 @@ public class SwingGraphicalContextDelegate implements ChangeListener {
 			e1.printStackTrace();
 		}
 
-		if (dontDestroyMe) {
+		/*if (dontDestroyMe) {
 			while (true) {
 				try {
 					synchronized (SwingGraphicalContextDelegate.class) {
@@ -137,7 +137,7 @@ public class SwingGraphicalContextDelegate implements ChangeListener {
 					e.printStackTrace();
 				}
 			}
-		}
+		}*/
 
 		if (frame != null) {
 			System.out.println("Disposing frame...");
