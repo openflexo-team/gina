@@ -7,6 +7,6 @@ dependencies {
 }
 
 test {
-   exclude '**/*'
-   //exclude '**/DrawindTreeNodeCaseTest*'
+   exclude '**/Test*'
+   exclude '**/FIB*'
 }
