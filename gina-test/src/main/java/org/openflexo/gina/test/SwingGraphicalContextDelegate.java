@@ -122,12 +122,12 @@ public class SwingGraphicalContextDelegate implements ChangeListener {
 
 	public void waitGUI() {
 		try {
-			Thread.sleep(50);
+			Thread.sleep(2000);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
 
-		/*if (dontDestroyMe) {
+		if (dontDestroyMe) {
 			while (true) {
 				try {
 					synchronized (SwingGraphicalContextDelegate.class) {
@@ -137,7 +137,7 @@ public class SwingGraphicalContextDelegate implements ChangeListener {
 					e.printStackTrace();
 				}
 			}
-		}*/
+		}
 
 		if (frame != null) {
 			System.out.println("Disposing frame...");
