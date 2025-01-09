@@ -574,6 +574,17 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		getTreeSelectionModel().clearSelection();
 	}
 
+	private boolean isCurrentlySelectedInWidget(T object) {
+		for (TreePath treePath : getTreeSelectionModel().getSelectionPaths()) {
+			if (treePath.getLastPathComponent() instanceof BrowserCell) {
+				if (((BrowserCell) treePath.getLastPathComponent()).getRepresentedObject() == object) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public synchronized void valueChanged(TreeSelectionEvent e) {
 
@@ -605,6 +616,13 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		List<T> oldSelection = new ArrayList<>(selection);
 		T newSelectedObject;
 		List<T> newSelection = new ArrayList<>(selection);
+
+		// We now remove all selected elements that are not directely selected in current browser widget
+		for (T object : selection) {
+			if (!isCurrentlySelectedInWidget(object)) {
+				newSelection.remove(object);
+			}
+		}
 
 		if (e.getNewLeadSelectionPath() == null || e.getNewLeadSelectionPath().getLastPathComponent() == null) {
 			newSelectedObject = null;
