@@ -64,6 +64,7 @@ import org.openflexo.toolbox.HasPropertyChangeSupport;
  * @author sylvain
  * 
  */
+@Deprecated // Use LoadedClassesInfo in connie-core instead (and remove all Icon dependancies)
 public class LoadedClassesInfo implements HasPropertyChangeSupport {
 
 	private static final Logger LOGGER = Logger.getLogger(LoadedClassesInfo.class.getPackage().getName());
