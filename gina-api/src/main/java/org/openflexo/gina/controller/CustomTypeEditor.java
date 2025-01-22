@@ -63,6 +63,8 @@ public interface CustomTypeEditor<T extends CustomType> extends HasPropertyChang
 
 	public T getEditedType();
 
+	public void updateEditedType(T type);
+
 	/**
 	 * Factory for a FIBController managing component given by {@link #getEditor()} method
 	 * 

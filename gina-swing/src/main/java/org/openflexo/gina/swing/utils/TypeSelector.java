@@ -377,7 +377,9 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 
 	public CustomTypeEditor<?> getCurrentCustomTypeEditor() {
 		if (isCustomType()) {
-			return customTypeEditors.get(choice);
+			CustomTypeEditor returned = customTypeEditors.get(choice);
+			returned.updateEditedType((CustomType) getEditedObject());
+			return returned;
 		}
 		return null;
 	}
