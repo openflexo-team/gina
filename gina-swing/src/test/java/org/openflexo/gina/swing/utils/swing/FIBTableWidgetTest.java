@@ -42,8 +42,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.After;
@@ -86,7 +84,6 @@ import org.openflexo.test.UITest;
  * 
  */
 @RunWith(OrderedRunner.class)
-@Ignore
 public class FIBTableWidgetTest extends FIBTestCase {
 
 	private static SwingGraphicalContextDelegate gcDelegate;
@@ -200,42 +197,42 @@ public class FIBTableWidgetTest extends FIBTestCase {
 	/**
 	 * Update the widget, and check that model has well reacted
 	 */
-	@Test
+	/*@Test
 	@TestOrder(4)
 	@Category(UITest.class)
 	public void test4ModifyValueInWidget() {
-
+	
 		JFIBTableWidget<?> w = (JFIBTableWidget<?>) controller.viewForComponent(table);
-
+	
 		w.getTableModel().setValueAt("Jeannot", 2, 0);
 		w.getTableModel().setValueAt("Lapin", 2, 1);
 		w.getTableModel().setValueAt(6, 2, 2);
 		w.getTableModel().setValueAt(Gender.Female, 2, 3);
-
+	
 		Person child = family.getChildren().get(2);
-
+	
 		assertEquals("Jeannot", child.getFirstName());
 		assertEquals("Lapin", child.getLastName());
 		assertEquals(6, child.getAge());
 		assertEquals(Gender.Female, child.getGender());
 		assertEquals("Jeannot Lapin aged 6 (Female)", w.getTableModel().getValueAt(2, 4));
-
-	}
+	
+	}*/
 
 	/**
 	 * Try to select some objects, check that selection is in sync with it
 	 */
-	@Test
+	/*@Test
 	@TestOrder(5)
 	@Category(UITest.class)
 	public void test5PerfomSomeTestsWithSelection() {
-
+	
 		JFIBTableWidget<?> w = (JFIBTableWidget<?>) controller.viewForComponent(table);
 		assertEquals(6, w.getTechnologyComponent().getJTable().getModel().getRowCount());
-
+	
 		// w.getDynamicJComponent().getSelectionModel().addSelectionInterval(0, 1);
 		assertEquals(Collections.singletonList(family.getChildren().get(0)), w.getSelection());
-
+	
 		// int[] indices = new int[3];
 		// indices[0] = 1;
 		// indices[1] = 2;
@@ -244,18 +241,18 @@ public class FIBTableWidgetTest extends FIBTestCase {
 		w.getTechnologyComponent().getJTable().getSelectionModel().clearSelection();
 		w.getTechnologyComponent().getJTable().getSelectionModel().addSelectionInterval(1, 2);
 		w.getTechnologyComponent().getJTable().getSelectionModel().addSelectionInterval(4, 4);
-
+	
 		List<Person> expectedSelection = new ArrayList<>();
 		expectedSelection.add(family.getChildren().get(1));
 		expectedSelection.add(family.getChildren().get(2));
 		expectedSelection.add(family.getChildren().get(4));
-
+	
 		assertEquals(expectedSelection, w.getSelection());
-
+	
 		controller.setFocusedWidget(w);
 		assertEquals(expectedSelection, controller.getSelectionLeader().getSelection());
-
-	}
+	
+	}*/
 
 	@BeforeClass
 	public static void initGUI() {
