@@ -42,12 +42,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -199,6 +202,7 @@ public class FIBTableWidgetTest extends FIBTestCase {
 	@Test
 	@TestOrder(4)
 	@Category(UITest.class)
+	@Ignore("Freeze jenkins, please investigate")
 	public void test4ModifyValueInWidget() {
 
 		JFIBTableWidget<?> w = (JFIBTableWidget<?>) controller.viewForComponent(table);
@@ -221,17 +225,18 @@ public class FIBTableWidgetTest extends FIBTestCase {
 	/**
 	 * Try to select some objects, check that selection is in sync with it
 	 */
-	/*@Test
+	@Test
 	@TestOrder(5)
 	@Category(UITest.class)
+	@Ignore("Freeze jenkins, please investigate")
 	public void test5PerfomSomeTestsWithSelection() {
-	
+
 		JFIBTableWidget<?> w = (JFIBTableWidget<?>) controller.viewForComponent(table);
 		assertEquals(6, w.getTechnologyComponent().getJTable().getModel().getRowCount());
-	
+
 		// w.getDynamicJComponent().getSelectionModel().addSelectionInterval(0, 1);
 		assertEquals(Collections.singletonList(family.getChildren().get(0)), w.getSelection());
-	
+
 		// int[] indices = new int[3];
 		// indices[0] = 1;
 		// indices[1] = 2;
@@ -240,18 +245,18 @@ public class FIBTableWidgetTest extends FIBTestCase {
 		w.getTechnologyComponent().getJTable().getSelectionModel().clearSelection();
 		w.getTechnologyComponent().getJTable().getSelectionModel().addSelectionInterval(1, 2);
 		w.getTechnologyComponent().getJTable().getSelectionModel().addSelectionInterval(4, 4);
-	
+
 		List<Person> expectedSelection = new ArrayList<>();
 		expectedSelection.add(family.getChildren().get(1));
 		expectedSelection.add(family.getChildren().get(2));
 		expectedSelection.add(family.getChildren().get(4));
-	
+
 		assertEquals(expectedSelection, w.getSelection());
-	
+
 		controller.setFocusedWidget(w);
 		assertEquals(expectedSelection, controller.getSelectionLeader().getSelection());
-	
-	}*/
+
+	}
 
 	@BeforeClass
 	public static void initGUI() {
