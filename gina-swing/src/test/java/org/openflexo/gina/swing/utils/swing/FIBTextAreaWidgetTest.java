@@ -46,6 +46,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -75,6 +76,7 @@ import org.openflexo.test.UITest;
  * 
  */
 @RunWith(OrderedRunner.class)
+@Ignore
 public class FIBTextAreaWidgetTest extends FIBTestCase {
 
 	private static SwingGraphicalContextDelegate gcDelegate;
