@@ -48,7 +48,6 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -197,27 +196,27 @@ public class FIBTableWidgetTest extends FIBTestCase {
 	/**
 	 * Update the widget, and check that model has well reacted
 	 */
-	/*@Test
+	@Test
 	@TestOrder(4)
 	@Category(UITest.class)
 	public void test4ModifyValueInWidget() {
-	
+
 		JFIBTableWidget<?> w = (JFIBTableWidget<?>) controller.viewForComponent(table);
-	
+
 		w.getTableModel().setValueAt("Jeannot", 2, 0);
 		w.getTableModel().setValueAt("Lapin", 2, 1);
 		w.getTableModel().setValueAt(6, 2, 2);
 		w.getTableModel().setValueAt(Gender.Female, 2, 3);
-	
+
 		Person child = family.getChildren().get(2);
-	
+
 		assertEquals("Jeannot", child.getFirstName());
 		assertEquals("Lapin", child.getLastName());
 		assertEquals(6, child.getAge());
 		assertEquals(Gender.Female, child.getGender());
 		assertEquals("Jeannot Lapin aged 6 (Female)", w.getTableModel().getValueAt(2, 4));
-	
-	}*/
+
+	}
 
 	/**
 	 * Try to select some objects, check that selection is in sync with it
