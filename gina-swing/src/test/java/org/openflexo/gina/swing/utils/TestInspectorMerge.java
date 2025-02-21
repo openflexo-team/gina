@@ -44,7 +44,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.connie.DataBinding;
@@ -66,7 +65,6 @@ import org.openflexo.test.TestOrder;
  * 
  */
 @RunWith(OrderedRunner.class)
-@Ignore
 public class TestInspectorMerge extends FIBTestCase {
 
 	public static InspectorGroup inspectorGroup;
