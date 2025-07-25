@@ -19,3 +19,4 @@ build/
 /pom.xml~
 /.gradle/
 **/out/
+.java-version

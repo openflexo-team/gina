@@ -50,8 +50,8 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingValueChangeListener;
-import org.openflexo.connie.binding.BindingValueListChangeListener;
+import org.openflexo.connie.binding.BindingPathChangeListener;
+import org.openflexo.connie.binding.BindingPathListChangeListener;
 import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -89,9 +89,9 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 	private T selectedObject;
 	private List<T> selection;
 
-	private BindingValueChangeListener<T> selectedBindingValueChangeListener;
-	private BindingValueListChangeListener<T, List<T>> selectionBindingValueChangeListener;
-	private BindingValueChangeListener<Object> rootBindingValueChangeListener;
+	private BindingPathChangeListener<T> selectedBindingValueChangeListener;
+	private BindingPathListChangeListener<T, List<T>> selectionBindingValueChangeListener;
+	private BindingPathChangeListener<Object> rootBindingValueChangeListener;
 
 	public FIBBrowserWidgetImpl(FIBBrowser fibBrowser, FIBController controller, BrowserRenderingAdapter<C, T> RenderingAdapter) {
 		super(fibBrowser, controller, RenderingAdapter);
@@ -137,7 +137,7 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 			selectedBindingValueChangeListener.delete();
 		}
 		if (getComponent().getSelected() != null && getComponent().getSelected().isValid()) {
-			selectedBindingValueChangeListener = new BindingValueChangeListener<T>((DataBinding<T>) getComponent().getSelected(),
+			selectedBindingValueChangeListener = new BindingPathChangeListener<T>((DataBinding<T>) getComponent().getSelected(),
 					getBindingEvaluationContext()) {
 
 				@Override
@@ -168,7 +168,7 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 			selectionBindingValueChangeListener.delete();
 		}
 		if (getComponent().getSelection() != null && getComponent().getSelection().isValid()) {
-			selectionBindingValueChangeListener = new BindingValueListChangeListener<T, List<T>>(
+			selectionBindingValueChangeListener = new BindingPathListChangeListener<T, List<T>>(
 					((DataBinding) getComponent().getSelection()), getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, List<T> newValue) {
@@ -198,7 +198,7 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 
 		if (getComponent().getRoot() != null && getComponent().getRoot().isValid()) {
 
-			rootBindingValueChangeListener = new BindingValueChangeListener<Object>(getComponent().getRoot(),
+			rootBindingValueChangeListener = new BindingPathChangeListener<Object>(getComponent().getRoot(),
 					getBindingEvaluationContext()) {
 
 				@Override
@@ -574,6 +574,17 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		getTreeSelectionModel().clearSelection();
 	}
 
+	private boolean isCurrentlySelectedInWidget(T object) {
+		for (TreePath treePath : getTreeSelectionModel().getSelectionPaths()) {
+			if (treePath.getLastPathComponent() instanceof BrowserCell) {
+				if (((BrowserCell) treePath.getLastPathComponent()).getRepresentedObject() == object) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public synchronized void valueChanged(TreeSelectionEvent e) {
 
@@ -605,6 +616,13 @@ public abstract class FIBBrowserWidgetImpl<C, T> extends FIBWidgetViewImpl<FIBBr
 		List<T> oldSelection = new ArrayList<>(selection);
 		T newSelectedObject;
 		List<T> newSelection = new ArrayList<>(selection);
+
+		// We now remove all selected elements that are not directely selected in current browser widget
+		for (T object : selection) {
+			if (!isCurrentlySelectedInWidget(object)) {
+				newSelection.remove(object);
+			}
+		}
 
 		if (e.getNewLeadSelectionPath() == null || e.getNewLeadSelectionPath().getLastPathComponent() == null) {
 			newSelectedObject = null;

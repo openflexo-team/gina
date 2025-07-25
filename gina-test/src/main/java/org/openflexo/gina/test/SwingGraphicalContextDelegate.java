@@ -45,7 +45,11 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Vector;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
@@ -174,12 +178,14 @@ public class SwingGraphicalContextDelegate implements ChangeListener {
 	}
 
 	public boolean handleException(Exception e) {
+		// sdffds
 		return true;
 	}
 
 	public class EventProcessor extends java.awt.EventQueue {
 
 		private Throwable exception = null;
+		private final Vector<String> exceptions = new Vector<String>();
 
 		public EventProcessor() {
 			Toolkit.getDefaultToolkit().getSystemEventQueue().push(this);
@@ -202,8 +208,10 @@ public class SwingGraphicalContextDelegate implements ChangeListener {
 					logger.info(el.toString());
 				}*/
 				// exception.printStackTrace();
-				if (handleException(exception)) {
-					this.exception = exception;
+				if (!isIgnorable(exception)) {
+					if (handleException(exception)) {
+						this.exception = exception;
+					}
 				}
 			}
 		}
@@ -211,6 +219,92 @@ public class SwingGraphicalContextDelegate implements ChangeListener {
 		public Throwable getException() {
 			return exception;
 		}
+
+		/**
+		 * Determines if exception can be ignored.
+		 */
+		private boolean isIgnorable(Throwable exception) {
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			exception.printStackTrace(pw);
+			pw.flush();
+			String bug = sw.toString();
+			return isIgnorable(exception, bug);
+		}
+
+		/**
+		 * Determines if the message can be ignored. (Note: this code comes from Gnutella).
+		 */
+		private boolean isIgnorable(Throwable bug, String msg) {
+			// OutOfMemory error should definitely not be ignored. First, they can give a hint on where there is a problem. Secondly,
+			// if we ran out of memory, Flexo will not work anymore and bogus behaviour will appear everywhere. So definitely, no, we don't
+			// ignore.
+			/*if (bug instanceof OutOfMemoryError) {
+				return false;
+			}*/
+			// We are going to store 100 exceptions (although it is not going to hold a lot)
+			// and we ignore the ones with identical stacktraces
+			if (!exceptions.contains(msg)) {
+				exceptions.add(msg);
+				if (exceptions.size() > 100) {
+					exceptions.remove(100);
+				}
+			}
+			else {
+				return true;
+			}
+
+			// no bug? kinda impossible, but shouldn't report.
+			if (msg == null) {
+				return true;
+			}
+
+			// if the bug came from the FileChooser (Windows or Metal)
+			// or the AquaDirectoryModel, ignore it.
+			/*if (bug instanceof NullPointerException && (msg.indexOf("MetalFileChooserUI") != -1 || msg.indexOf("WindowsFileChooserUI") != -1
+					|| msg.indexOf("AquaDirectoryModel") != -1)) {
+				return true;
+			}*/
+
+			// See Bug DS-016
+			/*if (bug instanceof ArrayIndexOutOfBoundsException && msg.indexOf("SunDisplayChanger") != -1) {
+				return true;
+			}*/
+
+			// An other swing known bug !
+			/*if (bug instanceof ClassCastException && msg.indexOf("apple.laf.AquaImageFactory.drawTextBorder") != -1) {
+				return true;
+			 */
+
+			// if we're not somewhere in the bug, ignore it.
+			// no need for us to debug sun's internal errors.
+			if (msg.indexOf("org.openflexo") == -1) {
+				if (logger.isLoggable(Level.WARNING)) {
+					logger.warning("Internal JVM Exception occured. See logs for details.");
+				}
+				bug.printStackTrace();
+				return true;
+			}
+			else {
+				// Same for exceptions where org.openflexo appear only as
+				// org.openflexo.gina.test.SwingGraphicalContextDelegate$EventProcessor.dispatchEvent()
+				int index = msg.indexOf("org.openflexo");
+				String searchedString = "org.openflexo.gina.test.SwingGraphicalContextDelegate$EventProcessor.dispatchEvent";
+				if (msg.substring(index, index + searchedString.length()).equals(searchedString)) {
+					if (msg.indexOf("org.openflexo", index + 1) == -1) {
+						// The only occurence of org.openflexo was in searchedString
+						if (logger.isLoggable(Level.WARNING)) {
+							logger.warning("Internal JVM Exception occured. See logs for details.");
+						}
+						bug.printStackTrace();
+						return true;
+					}
+				}
+			}
+
+			return false;
+		}
+
 	}
 
 }

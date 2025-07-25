@@ -96,7 +96,7 @@ import org.openflexo.connie.binding.Function.FunctionArgument;
 import org.openflexo.connie.binding.FunctionPathElement;
 import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
-import org.openflexo.connie.expr.BindingValue;
+import org.openflexo.connie.expr.BindingPath;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.connie.type.Typed;
 import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
@@ -115,7 +115,7 @@ import org.openflexo.toolbox.StringUtils;
 import org.openflexo.toolbox.ToolBox;
 
 /**
- * This class encodes the panel representing a {@link BindingValue}<br>
+ * This class encodes the panel representing a {@link BindingPath}<br>
  * Such a panel is always used in a context of a {@link BindingSelector} and thus always provides access to its {@link BindingSelector}
  * 
  * @author sylvain
@@ -337,7 +337,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 						// We need to update parsed binding path according to this new value (important if the binding is still not
 						// parseable)
-						BindingValue bv = (BindingValue) bindingSelector.getEditedObject().getExpression();
+						BindingPath bv = (BindingPath) bindingSelector.getEditedObject().getExpression();
 						// bv.updateParsedBindingPathFromBindingPath();
 
 						// Then, we explicitely force the DataBinding to be reanalyzed (we cannot rely anymore on validity status)
@@ -799,12 +799,12 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 						return;
 					}
 					DataBinding<?> dataBinding = bindingSelector.getEditedObject();
-					if (dataBinding.isBindingValue()) {
+					if (dataBinding.isBindingPath()) {
 						int i = _lists.indexOf(e.getSource());
 						if (i > -1 && i < _lists.size() && listAtIndex(i + 1) != null
 								&& listAtIndex(i + 1).getModel().getElementAt(0) != null
 								&& listAtIndex(i + 1).getModel().getElementAt(0).getElement() instanceof BindingPathElement) {
-							((BindingValue) dataBinding.getExpression()).setBindingPathElementAtIndex(
+							((BindingPath) dataBinding.getExpression()).setBindingPathElementAtIndex(
 									(BindingPathElement) listAtIndex(i + 1).getModel().getElementAt(0).getElement(), i);
 							bindingSelector.setEditedObject(dataBinding);
 							bindingSelector.fireEditedObjectChanged();
@@ -818,11 +818,11 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 						return;
 					}
 					DataBinding<?> dataBinding = bindingSelector.getEditedObject();
-					if (dataBinding.isBindingValue()) {
+					if (dataBinding.isBindingPath()) {
 						int i = _lists.indexOf(e.getSource()) - 1;
-						if (((BindingValue) dataBinding.getExpression()).getBindingPath().size() > i && i > -1 && i < _lists.size()) {
-							((BindingValue) dataBinding.getExpression()).removeBindingPathAt(i);
-							// ((BindingValue) dataBinding.getExpression()).disconnect();
+						if (((BindingPath) dataBinding.getExpression()).getBindingPath().size() > i && i > -1 && i < _lists.size()) {
+							((BindingPath) dataBinding.getExpression()).removeBindingPathAt(i);
+							// ((BindingPath) dataBinding.getExpression()).disconnect();
 							// _bindingSelector.disconnect();
 							bindingSelector.setEditedObject(dataBinding);
 							bindingSelector.fireEditedObjectChanged();
@@ -847,12 +847,12 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 	protected void resetMethodCallPanel() {
 		if (bindingSelector.getEditedObject() == null || bindingSelector.getEditedObject().isConstant()
-				|| bindingSelector.getEditedObject().isBindingValue()
-						&& ((BindingValue) bindingSelector.getEditedObject().getExpression()).getBindingPath().size() == 0) {
+				|| bindingSelector.getEditedObject().isBindingPath()
+						&& ((BindingPath) bindingSelector.getEditedObject().getExpression()).getBindingPath().size() == 0) {
 			_selectedPathElementIndex = -1;
 		}
-		else if (bindingSelector.getEditedObject().isBindingValue()) {
-			_selectedPathElementIndex = ((BindingValue) bindingSelector.getEditedObject().getExpression()).getBindingPath().size();
+		else if (bindingSelector.getEditedObject().isBindingPath()) {
+			_selectedPathElementIndex = ((BindingPath) bindingSelector.getEditedObject().getExpression()).getBindingPath().size();
 		}
 		updateMethodCallPanel();
 	}
@@ -862,28 +862,28 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			LOGGER.fine("updateMethodCallPanel with " + bindingSelector.editionMode + " binding=" + bindingSelector.getEditedObject()
 					+ " _selectedPathElementIndex=" + _selectedPathElementIndex);
 		}
-		if (bindingSelector.editionMode == EditionMode.COMPOUND_BINDING && bindingSelector.getEditedObject().isBindingValue()) {
-			if (((BindingValue) bindingSelector.getEditedObject().getExpression()).containsAMethodCall()
+		if (bindingSelector.editionMode == EditionMode.COMPOUND_BINDING && bindingSelector.getEditedObject().isBindingPath()) {
+			if (((BindingPath) bindingSelector.getEditedObject().getExpression()).containsAMethodCall()
 					&& _selectedPathElementIndex == -1) {
-				_selectedPathElementIndex = ((BindingValue) bindingSelector.getEditedObject().getExpression()).getBindingPathElementCount();
+				_selectedPathElementIndex = ((BindingPath) bindingSelector.getEditedObject().getExpression()).getBindingPathElementCount();
 			}
 			if (_selectedPathElementIndex >= _lists.size()) {
 				_selectedPathElementIndex = -1;
 			}
-			BindingValue bindingValue = (BindingValue) bindingSelector.getEditedObject().getExpression();
-			if (bindingValue == null) {
+			BindingPath bindingPath = (BindingPath) bindingSelector.getEditedObject().getExpression();
+			if (bindingPath == null) {
 				_selectedPathElementIndex = -1;
 			}
-			else if (_selectedPathElementIndex > bindingValue.getBindingPath().size()) {
+			else if (_selectedPathElementIndex > bindingPath.getBindingPath().size()) {
 				_selectedPathElementIndex = -1;
 			}
-			if (_selectedPathElementIndex > -1 && bindingValue != null) {
+			if (_selectedPathElementIndex > -1 && bindingPath != null) {
 				JList<?> list = _lists.get(_selectedPathElementIndex);
 				int newSelectedIndex = list.getSelectedIndex();
 				if (newSelectedIndex > 0) {
 					BindingColumnElement selectedValue = (BindingColumnElement) list.getSelectedValue();
 					if (selectedValue.getElement() instanceof FunctionPathElement<?>) {
-						BindingPathElement currentElement = bindingValue.getBindingPathElementAtIndex(_selectedPathElementIndex - 1);
+						BindingPathElement currentElement = bindingPath.getBindingPathElementAtIndex(_selectedPathElementIndex - 1);
 						if (currentElement instanceof FunctionPathElement<?>
 								&& ((FunctionPathElement<?>) currentElement).getFunction() != null
 								&& ((FunctionPathElement<?>) currentElement).getFunction()
@@ -984,30 +984,30 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				setEditStaticValue(false);
 			}
 		}
-		else if (binding.isBindingValue()) {
-			BindingValue bindingValue = (BindingValue) binding.getExpression();
+		else if (binding.isBindingPath()) {
+			BindingPath bindingPath = (BindingPath) binding.getExpression();
 			listAtIndex(0).setModel(getRootColumnListModel());
 			int lastUpdatedList = 0;
 
 			// logger.info("bindingValue.getBindingVariable()="+bindingValue.getBindingVariable());
 
-			if (bindingValue.getBindingVariable() != null) {
-				if (bindingValue.getBindingVariable().getType() != null) {
+			if (bindingPath.getBindingVariable() != null) {
+				if (bindingPath.getBindingVariable().getType() != null) {
 					listAtIndex(1)
-							.setModel(getColumnListModel(bindingValue.getBindingVariable(), bindingValue.getBindingVariable().getType()));
+							.setModel(getColumnListModel(bindingPath.getBindingVariable(), bindingPath.getBindingVariable().getType()));
 				}
 				else {
 					listAtIndex(1).setModel(EMPTY_MODEL);
 				}
 				listAtIndex(0).removeListSelectionListener(this);
-				BindingColumnElement elementToSelect = listAtIndex(0).getModel().getElementFor(bindingValue.getBindingVariable());
+				BindingColumnElement elementToSelect = listAtIndex(0).getModel().getElementFor(bindingPath.getBindingVariable());
 
 				listAtIndex(0).setSelectedValue(elementToSelect, true);
 				listAtIndex(0).addListSelectionListener(this);
 				lastUpdatedList = 1;
 
-				for (int i = 0; i < bindingValue.getBindingPath().size(); i++) {
-					BindingPathElement pathElement = bindingValue.getBindingPath().get(i);
+				for (int i = 0; i < bindingPath.getBindingPath().size(); i++) {
+					BindingPathElement pathElement = bindingPath.getBindingPath().get(i);
 					if (i + 2 == getVisibleColsCount()) {
 						final JList<?> l = makeNewJList();
 						SwingUtilities.invokeLater(new Runnable() {
@@ -1025,8 +1025,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					// Please report any regression
 					// if (!(bindingValue.isValid() && bindingValue.isLastBindingPathElement(pathElement) && bindingSelector.isConnected()))
 					// {
-					Type resultingType = bindingValue.getBindingPath().get(i).getType();
-					listAtIndex(i + 2).setModel(getColumnListModel(bindingValue.getBindingPath().get(i), resultingType));
+					Type resultingType = bindingPath.getBindingPath().get(i).getType();
+					listAtIndex(i + 2).setModel(getColumnListModel(bindingPath.getBindingPath().get(i), resultingType));
 					lastUpdatedList = i + 2;
 					// }
 					listAtIndex(i + 1).removeListSelectionListener(this);
@@ -1035,7 +1035,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					listAtIndex(i + 1).setSelectedValue(theElementToSelect, true);
 
 					listAtIndex(i + 1).addListSelectionListener(this);
-					if (i < bindingValue.getBindingPath().size() - 1) {
+					if (i < bindingPath.getBindingPath().size() - 1) {
 						listAtIndex(i).setFilter(null);
 					}
 				}
@@ -1091,7 +1091,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				staticBindingPanel.updateConstantValuePanel();
 			}
 
-			if (binding.isBindingValue()) {
+			if (binding.isBindingPath()) {
 				setEditStaticValue(false);
 			}
 			else if (binding.isConstant()) {
@@ -1512,10 +1512,10 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			}
 			else if (columnElement.getElement() != null) {
 				DataBinding<?> binding = bindingSelector.getEditedObject();
-				if (binding != null && binding.isBindingValue()) {
-					BindingValue bindingValue = (BindingValue) binding.getExpression();
-					if (bindingValue.isValid()
-							&& bindingValue.isLastBindingPathElement(columnElement.getElement()/*, getIndexOfList(this) - 1*/)
+				if (binding != null && binding.isBindingPath()) {
+					BindingPath bindingPath = (BindingPath) binding.getExpression();
+					if (bindingPath.isValid()
+							&& bindingPath.isLastBindingPathElement(columnElement.getElement()/*, getIndexOfList(this) - 1*/)
 							&& bindingSelector.isConnected()) {
 						// setIcon(label, CONNECTED_ICON, list);
 					}
@@ -1543,8 +1543,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				* KeyValueProperty property = (KeyValueProperty)
 				* columnElement.getElement(); AbstractBinding binding =
 				* _bindingSelector.getEditedObject(); if
-				* ((binding != null) && binding instanceof BindingValue) {
-				* BindingValue bindingValue = (BindingValue)binding; if
+				* ((binding != null) && binding instanceof BindingPath) {
+				* BindingPath bindingValue = (BindingPath)binding; if
 				* (bindingValue.isConnected() &&
 				* (bindingValue.isLastBindingPathElement(property,
 				* getIndexOfList(this) - 1))) { //setIcon(label, CONNECTED_ICON,
@@ -1579,8 +1579,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				* //method.getSimplifiedSignatureInContext(context); }
 				* 
 				* AbstractBinding binding = _bindingSelector.getEditedObject(); if
-				* (binding instanceof BindingValue) { BindingValue bindingValue =
-				* (BindingValue)binding; BindingPathElement bpe =
+				* (binding instanceof BindingPath) { BindingPath bindingValue =
+				* (BindingPath)binding; BindingPathElement bpe =
 				* bindingValue.getBindingPathElementAtIndex(getIndexOfList(this) -
 				* 1); if ((bindingValue.isConnected()) &&
 				* (bindingValue.isLastBindingPathElement(bpe, getIndexOfList(this)
@@ -1877,11 +1877,11 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					}
 
 					DataBinding<?> binding = bindingSelector.getEditedObject();
-					if (binding != null && binding.isBindingValue()) {
-						BindingValue bindingValue = (BindingValue) binding.getExpression();
+					if (binding != null && binding.isBindingPath()) {
+						BindingPath bindingPath = (BindingPath) binding.getExpression();
 						// System.out.println("bindingValue=" + bindingValue + " valid=" + isValid());
-						if (bindingValue.isValid()
-								&& bindingValue.isLastBindingPathElement(columnElement.getElement()/*, _lists.indexOf(list) - 1*/)
+						if (bindingPath.isValid()
+								&& bindingPath.isLastBindingPathElement(columnElement.getElement()/*, _lists.indexOf(list) - 1*/)
 								&& bindingSelector.isConnected()) {
 							// System.out.println("connecte");
 							returned = getIconLabelComponent(label, FIBIconLibrary.CONNECTED_ICON);
@@ -1953,7 +1953,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 		if (dataBinding.getExpression() == null) {
 			// if (bindingSelector.getBindingDefinition() != null && bindingSelector.getBindable() != null) {
-			BindingValue newBindingValue = getBindingSelector().makeBinding(); // new BindingValue();
+			BindingPath newBindingValue = getBindingSelector().makeBinding(); // new BindingPath();
 			newBindingValue.setBindingVariable(getSelectedBindingVariable());
 			// newBindingValue.setDataBinding(dataBinding);
 			// System.out.println("getSelectedBindingVariable()=" + getSelectedBindingVariable());
@@ -2037,8 +2037,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			}
 
 			if (bindingSelector.getTextField().hasFocus()) {
-				if (bindingSelector.getEditedObject() != null && bindingSelector.getEditedObject().isBindingValue()) {
-					// ((BindingValue) _bindingSelector.getEditedObject()).disconnect();
+				if (bindingSelector.getEditedObject() != null && bindingSelector.getEditedObject().isBindingPath()) {
+					// ((BindingPath) _bindingSelector.getEditedObject()).disconnect();
 				}
 				if (bindingSelector._selectorPanel != null) {
 					filterWithCurrentInput(textValue);
@@ -2357,8 +2357,8 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 		return false;
 	}
 
-	BindingValue makeBindingValueFromPanel() {
-		if (bindingSelector.getEditedObject() == null || !bindingSelector.getEditedObject().isBindingValue()) {
+	BindingPath makeBindingValueFromPanel() {
+		if (bindingSelector.getEditedObject() == null || !bindingSelector.getEditedObject().isBindingPath()) {
 			return null;
 		}
 		int i = 1;
@@ -2385,15 +2385,15 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 				}
 			}
 
-			((BindingValue) bindingSelector.getEditedObject().getExpression())
+			((BindingPath) bindingSelector.getEditedObject().getExpression())
 					.setBindingPathElementAtIndex((BindingPathElement) last.getElement(), i - 1);
 			i++;
 		}
 		if (last != null) {
-			((BindingValue) bindingSelector.getEditedObject().getExpression())
+			((BindingPath) bindingSelector.getEditedObject().getExpression())
 					.removeBindingPathElementAfter((BindingPathElement) last.getElement());
 		}
-		return (BindingValue) bindingSelector.getEditedObject().getExpression();
+		return (BindingPath) bindingSelector.getEditedObject().getExpression();
 	}
 
 	protected void valueSelected(int index, JList<?> list) {
@@ -2402,19 +2402,19 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 
 		// Unused boolean bindingRecreated = false;
 
-		if (!binding.isBindingValue()) {
+		if (!binding.isBindingPath()) {
 
 			bindingSelector.editionMode = EditionMode.NORMAL_BINDING;
-			binding.setExpression(bindingSelector.makeBinding()); // Should create a BindingValue instance !!!
+			binding.setExpression(bindingSelector.makeBinding()); // Should create a BindingPath instance !!!
 			// Unused bindingRecreated = true;
-			if (!binding.isBindingValue()) {
-				LOGGER.severe("Should never happen: valueSelected() called for a non-BindingValue instance !");
+			if (!binding.isBindingPath()) {
+				LOGGER.severe("Should never happen: valueSelected() called for a non-BindingPath instance !");
 				return;
 			}
 		}
-		BindingValue bindingValue = (BindingValue) binding.getExpression();
+		BindingPath bindingPath = (BindingPath) binding.getExpression();
 		if (LOGGER.isLoggable(Level.FINE)) {
-			LOGGER.fine("Value selected: index=" + index + " list=" + list + " bindingValue=" + bindingValue);
+			LOGGER.fine("Value selected: index=" + index + " list=" + list + " bindingValue=" + bindingPath);
 		}
 		BindingValueSelectorPanel.BindingColumnElement selectedValue = (BindingValueSelectorPanel.BindingColumnElement) list
 				.getSelectedValue();
@@ -2426,27 +2426,27 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			return;
 		}
 		if (index == 0 && selectedValue.getElement() instanceof BindingVariable) { // ICI
-			if (list.getSelectedValue() != bindingValue.getBindingVariable()) {
+			if (list.getSelectedValue() != bindingPath.getBindingVariable()) {
 				bindingSelector.disconnect();
-				bindingValue.clearBindingPathElements();
-				bindingValue.setBindingVariable((BindingVariable) selectedValue.getElement());
-				binding.setExpression(bindingValue);
+				bindingPath.clearBindingPathElements();
+				bindingPath.setBindingVariable((BindingVariable) selectedValue.getElement());
+				binding.setExpression(bindingPath);
 				bindingSelector.fireEditedObjectChanged();
 			}
 		}
 		else {
 			if (selectedValue.getElement() instanceof SimplePathElement<?>) {
 				// FIXED invalid type object comparison
-				if (selectedValue.getElement() != bindingValue.getBindingPathElementAtIndex(index - 1)) {
+				if (selectedValue.getElement() != bindingPath.getBindingPathElementAtIndex(index - 1)) {
 					bindingSelector.disconnect();
-					bindingValue.setBindingPathElementAtIndex((BindingPathElement) selectedValue.getElement(), index - 1);
-					binding.setExpression(bindingValue);
+					bindingPath.setBindingPathElementAtIndex((BindingPathElement) selectedValue.getElement(), index - 1);
+					binding.setExpression(bindingPath);
 					bindingSelector.fireEditedObjectChanged();
 				}
 			}
 			else if (selectedValue.getElement() instanceof FunctionPathElement<?>) {
 
-				BindingPathElement currentElement = bindingValue.getBindingPathElementAtIndex(index - 1);
+				BindingPathElement currentElement = bindingPath.getBindingPathElementAtIndex(index - 1);
 
 				LOGGER.info("Selecting currentElement " + currentElement + " selectedValue=" + selectedValue);
 
@@ -2469,7 +2469,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 					}
 					FunctionPathElement<?> newFunctionPathElement = bindingSelector.getBindable().getBindingFactory()
 							.makeSimpleMethodPathElement(
-									currentElement != null ? currentElement.getParent() : bindingValue.getLastBindingPathElement(),
+									currentElement != null ? currentElement.getParent() : bindingPath.getLastBindingPathElement(),
 									function.getName(), args, bindingSelector.getBindable());
 
 					if (newFunctionPathElement != null) {
@@ -2477,13 +2477,13 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 						/*JavaMethodPathElement newMethodCall = new JavaMethodPathElement(bindingValue.getLastBindingPathElement(),
 								(MethodDefinition) ((FunctionPathElement) selectedValue.getElement()).getFunction(),
 								new ArrayList<DataBinding<?>>());*/
-						bindingValue.setBindingPathElementAtIndex(newFunctionPathElement, index - 1);
-						binding.setExpression(bindingValue);
+						bindingPath.setBindingPathElementAtIndex(newFunctionPathElement, index - 1);
+						binding.setExpression(bindingPath);
 						bindingSelector.fireEditedObjectChanged();
 
 					}
 					else {
-						LOGGER.warning("Cannot retrieve new FunctionPathElement for " + bindingValue.getLastBindingPathElement()
+						LOGGER.warning("Cannot retrieve new FunctionPathElement for " + bindingPath.getLastBindingPathElement()
 								+ " function=" + function);
 					}
 				}

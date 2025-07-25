@@ -71,7 +71,7 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.expr.BinaryOperator;
 import org.openflexo.connie.expr.BinaryOperatorExpression;
-import org.openflexo.connie.expr.BindingValue;
+import org.openflexo.connie.expr.BindingPath;
 import org.openflexo.connie.expr.ConditionalExpression;
 import org.openflexo.connie.expr.Constant;
 import org.openflexo.connie.expr.Expression;
@@ -194,7 +194,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 				return;
 			}
 			else {
-				for (BindingValue bv : dataBinding.getExpression().getAllBindingValues()) {
+				for (BindingPath bv : dataBinding.getExpression().getAllBindingValues()) {
 					if (!bv.isValid()) {
 						message = FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("invalid_binding") + " " + bv;
 						status = ExpressionParsingStatus.INVALID;
@@ -254,11 +254,11 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 	}
 
 	private static boolean expressionIsUndefined(Expression expression) {
-		return expression instanceof BindingValue && ((BindingValue) expression).getBindingVariable() == null;
+		return expression instanceof BindingPath && ((BindingPath) expression).getBindingVariable() == null;
 	}
 
 	private Operator firstOperatorWithUndefinedOperand(Expression expression) {
-		if (expression instanceof BindingValue) {
+		if (expression instanceof BindingPath) {
 			return null;
 		}
 		else if (expression instanceof Constant) {
@@ -300,8 +300,8 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 		// try {
 		Expression newExpression = null;
 		/*if (expressionTA.getText().trim().equals("")) {
-			newExpression = new BindingValue();
-			((BindingValue) newExpression).setDataBinding(dataBinding);
+			newExpression = new BindingPath();
+			((BindingPath) newExpression).setDataBinding(dataBinding);
 			// newExpression = new BindingExpression.BindingValueVariable("", _bindingExpression.getOwner());
 		} else {
 			newExpression = ExpressionParser.parse(expressionTA.getText());
@@ -1304,7 +1304,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 				add(symbolicConstantLabel);
 			}
 
-			else if (_representedExpression instanceof BindingValue || _representedExpression instanceof Constant) {
+			else if (_representedExpression instanceof BindingPath || _representedExpression instanceof Constant) {
 				GridBagLayout gridbag = new GridBagLayout();
 				GridBagConstraints c = new GridBagConstraints();
 				setLayout(gridbag);
@@ -1404,7 +1404,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 	protected void appendBinaryOperator(BinaryOperator operator) {
 		// System.out.println("appendBinaryOperator " + operator);
 		if (focusReceiver != null) {
-			BindingValue variable = getBindingSelector().makeBinding();// new BindingValue();
+			BindingPath variable = getBindingSelector().makeBinding();// new BindingPath();
 			// variable.setDataBinding(dataBinding);
 			Expression newExpression = getBindingSelector().getExpressionGrammar().makeBinaryOperatorExpression(operator,
 					focusReceiver.getRepresentedExpression(), variable);
@@ -1429,9 +1429,9 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 	protected void appendConditional() {
 		// System.out.println("appendConditional");
 		if (focusReceiver != null) {
-			BindingValue condition = getBindingSelector().makeBinding();// new BindingValue();
+			BindingPath condition = getBindingSelector().makeBinding();// new BindingPath();
 			// condition.setDataBinding(dataBinding);
-			BindingValue elseExpression = getBindingSelector().makeBinding();// new BindingValue();
+			BindingPath elseExpression = getBindingSelector().makeBinding();// new BindingPath();
 			// elseExpression.setDataBinding(dataBinding);
 			Expression newExpression = getBindingSelector().getExpressionGrammar().makeConditionalExpression(condition,
 					focusReceiver.getRepresentedExpression(), elseExpression);

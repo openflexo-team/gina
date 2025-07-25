@@ -10,9 +10,9 @@ import org.openflexo.gina.event.description.ApplicationEventDescription;
 import org.openflexo.gina.event.description.EventDescription;
 import org.openflexo.gina.event.description.GinaTaskEventDescription;
 import org.openflexo.gina.event.description.NotifyMethodEventDescription;
-import org.openflexo.pamela.ModelContext;
+import org.openflexo.pamela.PamelaMetaModel;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
-import org.openflexo.pamela.factory.ModelFactory;
+import org.openflexo.pamela.factory.PamelaModelFactory;
 
 /**
  * This factory creates NotifiyMethodEvent, TaskEvent, EventDescription and GinaEvents from an EventDescription
@@ -21,8 +21,8 @@ import org.openflexo.pamela.factory.ModelFactory;
  */
 
 public class GinaEventFactory {
-	private ModelFactory factory;
-	private ModelContext context;
+	private PamelaModelFactory factory;
+	private PamelaMetaModel context;
 	private List<Class<?>> eventDescriptionModelClasses;
 
 	public GinaEventFactory() {
@@ -36,11 +36,11 @@ public class GinaEventFactory {
 			this.eventDescriptionModelClasses.add(cls);
 	}
 
-	public ModelFactory getModelFactory() {
+	public PamelaModelFactory getModelFactory() {
 		if (factory == null) {
 			try {
-				context = new ModelContext(this.eventDescriptionModelClasses);
-				factory = new ModelFactory(context);
+				context = new PamelaMetaModel(this.eventDescriptionModelClasses);
+				factory = new PamelaModelFactory(context);
 			} catch (ModelDefinitionException e) {
 				e.printStackTrace();
 			}

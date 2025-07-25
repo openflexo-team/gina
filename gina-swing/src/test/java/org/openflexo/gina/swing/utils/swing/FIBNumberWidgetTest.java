@@ -47,6 +47,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
@@ -65,6 +66,7 @@ import org.openflexo.gina.test.SwingGraphicalContextDelegate;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
+import org.openflexo.test.UITest;
 
 /**
  * Test the structural and behavioural features of FIBNumber widget
@@ -117,6 +119,7 @@ public class FIBNumberWidgetTest extends FIBTestCase {
 	 */
 	@Test
 	@TestOrder(1)
+	@Category(UITest.class)
 	public void test1CreateComponent() {
 
 		log("FIBNumberWidgetTest test1CreateComponent() on thread " + Thread.currentThread());
@@ -251,6 +254,7 @@ public class FIBNumberWidgetTest extends FIBTestCase {
 	 */
 	@Test
 	@TestOrder(2)
+	@Category(UITest.class)
 	public void test2InstanciateComponent() {
 
 		log("FIBNumberWidgetTest test2InstanciateComponent() on thread " + Thread.currentThread());
@@ -324,6 +328,7 @@ public class FIBNumberWidgetTest extends FIBTestCase {
 	 */
 	@Test
 	@TestOrder(3)
+	@Category(UITest.class)
 	public void test3ModifyValueInModel() {
 		numbers.setByteP((byte) 101);
 		numbers.setByteO(Byte.valueOf((byte) 107));
@@ -368,6 +373,7 @@ public class FIBNumberWidgetTest extends FIBTestCase {
 	 */
 	@Test
 	@TestOrder(4)
+	@Category(UITest.class)
 	public void test4ModifyValueInWidget() {
 
 		JFIBNumberWidget<Byte> bytePWidgetView = (JFIBNumberWidget<Byte>) controller.viewForComponent(bytePWidget);

@@ -5,3 +5,8 @@ dependencies {
   api project(':gina-core')
   testImplementation project(':gina-test')
 }
+
+test {
+   exclude '**/Test*'
+   exclude '**/FIB*'
+}

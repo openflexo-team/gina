@@ -73,8 +73,8 @@ import javax.swing.tree.TreePath;
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingValueChangeListener;
-import org.openflexo.connie.binding.BindingValueListChangeListener;
+import org.openflexo.connie.binding.BindingPathChangeListener;
+import org.openflexo.connie.binding.BindingPathListChangeListener;
 import org.openflexo.connie.expr.ExpressionEvaluator;
 import org.openflexo.connie.java.expr.JavaExpressionEvaluator;
 import org.openflexo.gina.controller.FIBController;
@@ -390,18 +390,18 @@ public class FIBBrowserModel extends DefaultTreeModel {
 
 		}
 
-		private BindingValueChangeListener<String> labelBindingValueChangeListener;
-		private BindingValueChangeListener<Icon> iconBindingValueChangeListener;
-		private BindingValueChangeListener<String> tooltipBindingValueChangeListener;
-		private BindingValueChangeListener<Boolean> enabledBindingValueChangeListener;
-		private BindingValueChangeListener<Boolean> visibleBindingValueChangeListener;
-		private Map<FIBBrowserElementChildren, BindingValueChangeListener<?>> childrenDataBindingValueChangeListeners;
-		private Map<FIBBrowserElementChildren, BindingValueChangeListener<?>> childrenCastBindingValueChangeListeners;
-		private Map<FIBBrowserElementChildren, BindingValueChangeListener<Boolean>> childrenVisibleBindingValueChangeListeners;
+		private BindingPathChangeListener<String> labelBindingValueChangeListener;
+		private BindingPathChangeListener<Icon> iconBindingValueChangeListener;
+		private BindingPathChangeListener<String> tooltipBindingValueChangeListener;
+		private BindingPathChangeListener<Boolean> enabledBindingValueChangeListener;
+		private BindingPathChangeListener<Boolean> visibleBindingValueChangeListener;
+		private Map<FIBBrowserElementChildren, BindingPathChangeListener<?>> childrenDataBindingValueChangeListeners;
+		private Map<FIBBrowserElementChildren, BindingPathChangeListener<?>> childrenCastBindingValueChangeListeners;
+		private Map<FIBBrowserElementChildren, BindingPathChangeListener<Boolean>> childrenVisibleBindingValueChangeListeners;
 
 		private void listenChildrenDataBindingValueChange(final Object representedObject) {
 			if (childrenDataBindingValueChangeListeners != null) {
-				for (BindingValueChangeListener<?> l : childrenDataBindingValueChangeListeners.values()) {
+				for (BindingPathChangeListener<?> l : childrenDataBindingValueChangeListeners.values()) {
 					l.stopObserving();
 					l.delete();
 				}
@@ -416,12 +416,12 @@ public class FIBBrowserModel extends DefaultTreeModel {
 			if (browserElementType.getBrowserElement() != null) {
 				for (final FIBBrowserElementChildren children : browserElementType.getBrowserElement().getChildren()) {
 					if (children.getData().isValid()) {
-						BindingValueChangeListener<?> l;
+						BindingPathChangeListener<?> l;
 						if (children.isMultipleAccess()) {
-							l = new BindingValueListChangeListener<Object, List<Object>>((DataBinding) children.getData(),
+							l = new BindingPathListChangeListener<Object, List<Object>>((DataBinding) children.getData(),
 									/* browserElementType */
 									// Instead of using browserElementType and to avoid to share it between multiple
-									// BindingValueListChangeListener
+									// BindingPathListChangeListener
 									// using the same BindingEvaluationContext, we have to use here a proper instance of a
 									// BindingEvaluationContext
 									// dedicated to current BrowserCell
@@ -453,7 +453,7 @@ public class FIBBrowserModel extends DefaultTreeModel {
 
 		private void listenChildrenCastBindingValueChange(Object representedObject) {
 			if (childrenCastBindingValueChangeListeners != null) {
-				for (BindingValueChangeListener<?> l : childrenCastBindingValueChangeListeners.values()) {
+				for (BindingPathChangeListener<?> l : childrenCastBindingValueChangeListeners.values()) {
 					l.stopObserving();
 					l.delete();
 				}
@@ -468,10 +468,10 @@ public class FIBBrowserModel extends DefaultTreeModel {
 			if (browserElementType.getBrowserElement() != null) {
 				for (final FIBBrowserElementChildren children : browserElementType.getBrowserElement().getChildren()) {
 					if (children.getCast().isValid()) {
-						BindingValueChangeListener<?> l = new BrowserCellBindingValueChangeListener<>(children.getCast(),
+						BindingPathChangeListener<?> l = new BrowserCellBindingValueChangeListener<>(children.getCast(),
 								/* browserElementType */
 								// Instead of using browserElementType and to avoid to share it between multiple
-								// BindingValueListChangeListener
+								// BindingPathListChangeListener
 								// using the same BindingEvaluationContext, we have to use here a proper instance of a
 								// BindingEvaluationContext
 								// dedicated to current BrowserCell
@@ -484,7 +484,7 @@ public class FIBBrowserModel extends DefaultTreeModel {
 
 		private void listenChildrenVisibleBindingValueChange(Object representedObject) {
 			if (childrenVisibleBindingValueChangeListeners != null) {
-				for (BindingValueChangeListener<?> l : childrenVisibleBindingValueChangeListeners.values()) {
+				for (BindingPathChangeListener<?> l : childrenVisibleBindingValueChangeListeners.values()) {
 					l.stopObserving();
 					l.delete();
 				}
@@ -501,10 +501,10 @@ public class FIBBrowserModel extends DefaultTreeModel {
 			if (browserElementType.getBrowserElement() != null) {
 				for (final FIBBrowserElementChildren children : browserElementType.getBrowserElement().getChildren()) {
 					if (children.getVisible().isValid()) {
-						BindingValueChangeListener<Boolean> l = new BrowserCellBindingValueChangeListener<>(children.getVisible(),
+						BindingPathChangeListener<Boolean> l = new BrowserCellBindingValueChangeListener<>(children.getVisible(),
 								/* browserElementType */
 								// Instead of using browserElementType and to avoid to share it between multiple
-								// BindingValueListChangeListener
+								// BindingPathListChangeListener
 								// using the same BindingEvaluationContext, we have to use here a proper instance of a
 								// BindingEvaluationContext
 								// dedicated to current BrowserCell
@@ -530,7 +530,7 @@ public class FIBBrowserModel extends DefaultTreeModel {
 				labelBindingValueChangeListener = new BrowserCellBindingValueChangeListener<>(
 						browserElementType.getBrowserElement().getLabel(), /* browserElementType */
 						// Instead of using browserElementType and to avoid to share it between multiple
-						// BindingValueListChangeListener
+						// BindingPathListChangeListener
 						// using the same BindingEvaluationContext, we have to use here a proper instance of a
 						// BindingEvaluationContext
 						// dedicated to current BrowserCell
@@ -551,7 +551,7 @@ public class FIBBrowserModel extends DefaultTreeModel {
 				iconBindingValueChangeListener = new BrowserCellBindingValueChangeListener<>(
 						browserElementType.getBrowserElement().getIcon(), /* browserElementType */
 						// Instead of using browserElementType and to avoid to share it between multiple
-						// BindingValueListChangeListener
+						// BindingPathListChangeListener
 						// using the same BindingEvaluationContext, we have to use here a proper instance of a
 						// BindingEvaluationContext
 						// dedicated to current BrowserCell
@@ -571,7 +571,7 @@ public class FIBBrowserModel extends DefaultTreeModel {
 				tooltipBindingValueChangeListener = new BrowserCellBindingValueChangeListener<>(
 						browserElementType.getBrowserElement().getTooltip(), /* browserElementType */
 						// Instead of using browserElementType and to avoid to share it between multiple
-						// BindingValueListChangeListener
+						// BindingPathListChangeListener
 						// using the same BindingEvaluationContext, we have to use here a proper instance of a
 						// BindingEvaluationContext
 						// dedicated to current BrowserCell
@@ -591,7 +591,7 @@ public class FIBBrowserModel extends DefaultTreeModel {
 				enabledBindingValueChangeListener = new BrowserCellBindingValueChangeListener<>(
 						browserElementType.getBrowserElement().getEnabled(), /* browserElementType */
 						// Instead of using browserElementType and to avoid to share it between multiple
-						// BindingValueListChangeListener
+						// BindingPathListChangeListener
 						// using the same BindingEvaluationContext, we have to use here a proper instance of a
 						// BindingEvaluationContext
 						// dedicated to current BrowserCell
@@ -611,7 +611,7 @@ public class FIBBrowserModel extends DefaultTreeModel {
 				visibleBindingValueChangeListener = new BrowserCellBindingValueChangeListener<>(
 						browserElementType.getBrowserElement().getVisible(), /* browserElementType */
 						// Instead of using browserElementType and to avoid to share it between multiple
-						// BindingValueListChangeListener
+						// BindingPathListChangeListener
 						// using the same BindingEvaluationContext, we have to use here a proper instance of a
 						// BindingEvaluationContext
 						// dedicated to current BrowserCell
@@ -658,7 +658,7 @@ public class FIBBrowserModel extends DefaultTreeModel {
 		}
 
 		/**
-		 * Specific implementation of {@link BindingValueChangeListener} for BrowserCell<br>
+		 * Specific implementation of {@link BindingPathChangeListener} for BrowserCell<br>
 		 * 
 		 * The main difficulty is caused by the fact that iterator object is really dynamic<br>
 		 * To efficiently observe modifications of values, we should here ignore the setIteratorObject() calls
@@ -667,7 +667,7 @@ public class FIBBrowserModel extends DefaultTreeModel {
 		 * 
 		 * @param <T>
 		 */
-		protected class BrowserCellBindingValueChangeListener<T> extends BindingValueChangeListener<T> {
+		protected class BrowserCellBindingValueChangeListener<T> extends BindingPathChangeListener<T> {
 
 			public BrowserCellBindingValueChangeListener(DataBinding<T> dataBinding, BindingEvaluationContext context) {
 				super(dataBinding, context);
@@ -789,21 +789,21 @@ public class FIBBrowserModel extends DefaultTreeModel {
 			}
 
 			if (childrenDataBindingValueChangeListeners != null) {
-				for (BindingValueChangeListener<?> l : childrenDataBindingValueChangeListeners.values()) {
+				for (BindingPathChangeListener<?> l : childrenDataBindingValueChangeListeners.values()) {
 					l.stopObserving();
 					l.delete();
 				}
 				childrenDataBindingValueChangeListeners.clear();
 			}
 			if (childrenCastBindingValueChangeListeners != null) {
-				for (BindingValueChangeListener<?> l : childrenCastBindingValueChangeListeners.values()) {
+				for (BindingPathChangeListener<?> l : childrenCastBindingValueChangeListeners.values()) {
 					l.stopObserving();
 					l.delete();
 				}
 				childrenCastBindingValueChangeListeners.clear();
 			}
 			if (childrenVisibleBindingValueChangeListeners != null) {
-				for (BindingValueChangeListener<?> l : childrenVisibleBindingValueChangeListeners.values()) {
+				for (BindingPathChangeListener<?> l : childrenVisibleBindingValueChangeListeners.values()) {
 					l.stopObserving();
 					l.delete();
 				}

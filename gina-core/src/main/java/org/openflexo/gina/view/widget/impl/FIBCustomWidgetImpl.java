@@ -49,7 +49,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingValueChangeListener;
+import org.openflexo.connie.binding.BindingPathChangeListener;
 import org.openflexo.connie.binding.javareflect.InvalidKeyValuePropertyException;
 import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
@@ -284,7 +284,7 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 		}
 	}
 
-	private final List<BindingValueChangeListener<?>> assignmentValueBindingValueChangeListeners;
+	private final List<BindingPathChangeListener<?>> assignmentValueBindingValueChangeListeners;
 
 	/**
 	 * Internally called to listen to an assignment change
@@ -293,9 +293,9 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 	 * @param valueDB
 	 * @return
 	 */
-	private <T2> BindingValueChangeListener<T2> makeAssignmentValueBindingValueChangeListener(final DataBinding<?> variableDB,
+	private <T2> BindingPathChangeListener<T2> makeAssignmentValueBindingValueChangeListener(final DataBinding<?> variableDB,
 			final DataBinding<T2> valueDB) {
-		return new BindingValueChangeListener<T2>(valueDB, getBindingEvaluationContext()) {
+		return new BindingPathChangeListener<T2>(valueDB, getBindingEvaluationContext()) {
 			@Override
 			public void bindingValueChanged(Object source, T2 newValue) {
 				// System.out.println(" bindingValueChanged() detected for assignment value =" + valueDB + " with newValue=" + newValue);
@@ -329,7 +329,7 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 			DataBinding<?> variableDB = assign.getVariable();
 			DataBinding<?> valueDB = assign.getValue();
 			if (valueDB != null && valueDB.isValid()) {
-				BindingValueChangeListener<?> l = makeAssignmentValueBindingValueChangeListener(variableDB, valueDB);
+				BindingPathChangeListener<?> l = makeAssignmentValueBindingValueChangeListener(variableDB, valueDB);
 				assignmentValueBindingValueChangeListeners.add(l);
 			}
 		}
@@ -339,7 +339,7 @@ public abstract class FIBCustomWidgetImpl<C, CC extends FIBCustomComponent<T>, T
 	 * Internally called to stop listening all data changes of assignment values
 	 */
 	private void stopListenAssignmentValuesChange() {
-		for (BindingValueChangeListener<?> l : assignmentValueBindingValueChangeListeners) {
+		for (BindingPathChangeListener<?> l : assignmentValueBindingValueChangeListeners) {
 			if (l != null) {
 				l.stopObserving();
 				l.delete();

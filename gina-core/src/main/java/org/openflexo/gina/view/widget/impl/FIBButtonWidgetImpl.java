@@ -46,7 +46,7 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingValueChangeListener;
+import org.openflexo.connie.binding.BindingPathChangeListener;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.controller.FIBController;
@@ -70,8 +70,8 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 
 	private static final Logger logger = Logger.getLogger(FIBButtonWidgetImpl.class.getPackage().getName());
 
-	private BindingValueChangeListener<String> dynamicLabelBindingValueChangeListener;
-	private BindingValueChangeListener<Icon> buttonIconBindingValueChangeListener;
+	private BindingPathChangeListener<String> dynamicLabelBindingValueChangeListener;
+	private BindingPathChangeListener<Icon> buttonIconBindingValueChangeListener;
 
 	public FIBButtonWidgetImpl(FIBButton model, FIBController controller, ButtonWidgetRenderingAdapter<C> RenderingAdapter) {
 		super(model, controller, RenderingAdapter);
@@ -109,7 +109,7 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 			dynamicLabelBindingValueChangeListener.delete();
 		}
 		if (getComponent().getDynamicLabel() != null && getComponent().getDynamicLabel().isValid()) {
-			dynamicLabelBindingValueChangeListener = new BindingValueChangeListener<String>(getComponent().getDynamicLabel(),
+			dynamicLabelBindingValueChangeListener = new BindingPathChangeListener<String>(getComponent().getDynamicLabel(),
 					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, String newValue) {
@@ -136,7 +136,7 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 			buttonIconBindingValueChangeListener.delete();
 		}
 		if (getComponent().getButtonIcon() != null && getComponent().getButtonIcon().isValid()) {
-			buttonIconBindingValueChangeListener = new BindingValueChangeListener<Icon>(getComponent().getButtonIcon(),
+			buttonIconBindingValueChangeListener = new BindingPathChangeListener<Icon>(getComponent().getButtonIcon(),
 					getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, Icon newValue) {

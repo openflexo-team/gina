@@ -50,6 +50,7 @@ import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElementImpl;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.connie.expr.BindingPath;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.model.FIBVariable;
 import org.openflexo.gina.view.FIBView;
@@ -69,8 +70,8 @@ public class FIBVariablePathElement extends SimplePathElementImpl implements Pro
 	}
 
 	@Override
-	public void activate() {
-		super.activate();
+	public void activate(BindingPath bindingPath) {
+		super.activate(bindingPath);
 		if (fibVariable != null && fibVariable.getPropertyChangeSupport() != null) {
 			fibVariable.getPropertyChangeSupport().addPropertyChangeListener(this);
 		}

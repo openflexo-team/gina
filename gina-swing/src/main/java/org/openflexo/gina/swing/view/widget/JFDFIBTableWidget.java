@@ -131,7 +131,9 @@ public class JFDFIBTableWidget<T> extends FIBTableWidgetImpl<JFDTablePanel<T>, T
 
 		@Override
 		public void cancelCellEditing(JFDTablePanel<T> component) {
-			component.getJTable().getCellEditor().cancelCellEditing();
+			if (component.getJTable().getCellEditor() != null) {
+				component.getJTable().getCellEditor().cancelCellEditing();
+			}
 		}
 
 		@Override

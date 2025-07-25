@@ -43,7 +43,7 @@ import java.awt.Image;
 import java.beans.PropertyChangeEvent;
 import java.util.logging.Logger;
 
-import org.openflexo.connie.binding.BindingValueChangeListener;
+import org.openflexo.connie.binding.BindingPathChangeListener;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.gina.controller.FIBController;
@@ -72,7 +72,7 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 
 	private FIBLayoutManager<C, C2, ?> layoutManager;
 
-	private BindingValueChangeListener<Image> dynamicBackgroundImageBindingValueChangeListener;
+	private BindingPathChangeListener<Image> dynamicBackgroundImageBindingValueChangeListener;
 
 	public FIBPanelViewImpl(FIBPanel model, FIBController controller, PanelRenderingAdapter<C, C2> renderingAdapter) {
 		super(model, controller, renderingAdapter);
@@ -99,7 +99,7 @@ public abstract class FIBPanelViewImpl<C, C2> extends FIBContainerViewImpl<FIBPa
 			dynamicBackgroundImageBindingValueChangeListener.delete();
 		}
 		if (getComponent().getDynamicBackgroundImage() != null && getComponent().getDynamicBackgroundImage().isValid()) {
-			dynamicBackgroundImageBindingValueChangeListener = new BindingValueChangeListener<Image>(
+			dynamicBackgroundImageBindingValueChangeListener = new BindingPathChangeListener<Image>(
 					getComponent().getDynamicBackgroundImage(), getBindingEvaluationContext()) {
 				@Override
 				public void bindingValueChanged(Object source, Image newValue) {

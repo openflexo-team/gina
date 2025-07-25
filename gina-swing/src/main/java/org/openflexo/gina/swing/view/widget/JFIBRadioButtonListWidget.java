@@ -40,6 +40,7 @@
 package org.openflexo.gina.swing.view.widget;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -64,7 +65,7 @@ import org.openflexo.gina.view.impl.FIBViewImpl;
 import org.openflexo.gina.view.widget.impl.FIBRadioButtonListWidgetImpl;
 
 public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<JRadioButtonPanel<T>, T>
-		implements JFIBView<FIBRadioButtonList, JRadioButtonPanel<T>> {
+implements JFIBView<FIBRadioButtonList, JRadioButtonPanel<T>> {
 
 	static final Logger LOGGER = Logger.getLogger(JFIBRadioButtonListWidget.class.getPackage().getName());
 
@@ -76,7 +77,7 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 	 * 
 	 */
 	public static class SwingRadioButtonRenderingAdapter<T> extends SwingRenderingAdapter<JRadioButtonPanel<T>>
-			implements RadioButtonRenderingAdapter<JRadioButtonPanel<T>, T> {
+	implements RadioButtonRenderingAdapter<JRadioButtonPanel<T>, T> {
 
 		@Override
 		public T getSelectedItem(JRadioButtonPanel<T> component) {
@@ -214,6 +215,8 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 
 				JLabel label = new JLabel(widget.getWidget().getTrimText() ? "<html>" + widget.getStringRepresentation(object) + "</html>"
 						: widget.getStringRepresentation(object));
+
+				label.setFont(getFont());
 				labelsArray[i] = label;
 
 				// Handle the case of icon should be displayed
@@ -268,6 +271,16 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 			setSelectedValue(widget.getMultipleValueModel().getElementAt(index));
 		}
 
+		@Override
+		public void setFont(Font font) {
+			super.setFont(font);
+			if (labelsArray != null) {
+				for (JLabel label : labelsArray) {
+					label.setFont(font);
+				}
+			}
+		}
+
 		private class RadioButtonListener implements ActionListener {
 
 			private final T value;
@@ -292,7 +305,9 @@ public class JFIBRadioButtonListWidget<T> extends FIBRadioButtonListWidgetImpl<J
 
 	@Override
 	protected void updateRadioButtonListLayout() {
-		getTechnologyComponent().update();
+		if (getTechnologyComponent() != null) {
+			getTechnologyComponent().update();
+		}
 	}
 
 }

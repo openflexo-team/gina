@@ -51,7 +51,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.binding.BindingValueListChangeListener;
+import org.openflexo.connie.binding.BindingPathListChangeListener;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.expr.ExpressionEvaluator;
@@ -82,7 +82,7 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 
 	private static final Logger logger = Logger.getLogger(FIBIterationViewImpl.class.getPackage().getName());
 
-	private BindingValueListChangeListener<Object, List<Object>> listBindingValueChangeListener;
+	private BindingPathListChangeListener<Object, List<Object>> listBindingValueChangeListener;
 
 	public FIBIterationViewImpl(FIBIteration model, FIBController controller, RuntimeContext context) {
 		super(model, controller);
@@ -419,7 +419,7 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 
 		// TODO: is this still required ?
 		if (getComponent().getList() != null && getComponent().getList().revalidate()) {
-			listBindingValueChangeListener = new BindingValueListChangeListener<Object, List<Object>>(
+			listBindingValueChangeListener = new BindingPathListChangeListener<Object, List<Object>>(
 					((DataBinding) getComponent().getList()), getBindingEvaluationContext()) {
 
 				@Override

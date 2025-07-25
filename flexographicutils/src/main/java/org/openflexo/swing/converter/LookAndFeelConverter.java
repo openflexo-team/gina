@@ -40,7 +40,7 @@ package org.openflexo.swing.converter;
 
 import java.util.Enumeration;
 
-import org.openflexo.pamela.factory.ModelFactory;
+import org.openflexo.pamela.factory.PamelaModelFactory;
 import org.openflexo.pamela.model.StringConverterLibrary.Converter;
 import org.openflexo.swing.LookAndFeel;
 
@@ -51,7 +51,7 @@ public class LookAndFeelConverter extends Converter<LookAndFeel> {
 	}
 
 	@Override
-	public LookAndFeel convertFromString(String value, ModelFactory factory) {
+	public LookAndFeel convertFromString(String value, PamelaModelFactory factory) {
 		Enumeration<LookAndFeel> en = LookAndFeel.availableValues().elements();
 		while (en.hasMoreElements()) {
 			LookAndFeel laf = en.nextElement();

@@ -206,6 +206,10 @@ public class BindingExpressionSelectorPanel extends AbstractBindingSelectorPanel
 	@Override
 	protected void updateStatus(DataBinding<?> bindingExpression) {
 
+		if (bindingExpression == null) {
+			return;
+		}
+
 		boolean isValid = bindingExpression.revalidate();
 
 		// Update apply button state

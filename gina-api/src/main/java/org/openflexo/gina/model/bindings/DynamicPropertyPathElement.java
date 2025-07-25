@@ -52,6 +52,7 @@ import org.openflexo.connie.binding.SimplePathElementImpl;
 import org.openflexo.connie.exception.InvocationTargetTransformException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.connie.expr.BindingPath;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBViewType.DynamicProperty;
 import org.openflexo.gina.model.FIBWidgetType;
@@ -101,8 +102,8 @@ public class DynamicPropertyPathElement<W extends FIBComponent> extends SimplePa
 	}
 
 	@Override
-	public void activate() {
-		super.activate();
+	public void activate(BindingPath bindingPath) {
+		super.activate(bindingPath);
 		if (widget != null && widget.getPropertyChangeSupport() != null) {
 			widget.getPropertyChangeSupport().addPropertyChangeListener(this);
 		}

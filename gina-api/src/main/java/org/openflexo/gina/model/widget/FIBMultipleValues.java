@@ -50,7 +50,7 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBindingFactory;
 import org.openflexo.connie.type.GenericArrayTypeImpl;
 import org.openflexo.connie.type.TypeUtils;
-import org.openflexo.connie.type.WildcardTypeImpl;
+import org.openflexo.connie.type.WildcardTypeImpl.DefaultWildcardType;
 import org.openflexo.gina.model.FIBPropertyNotification;
 import org.openflexo.gina.model.FIBWidget;
 import org.openflexo.pamela.annotations.CloningStrategy;
@@ -204,7 +204,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		@Override
 		public DataBinding<Object[]> getArray() {
 			if (array == null) {
-				array = new DataBinding<>(this, new GenericArrayTypeImpl(WildcardTypeImpl.makeUpperBoundWilcard(Object.class)),
+				array = new DataBinding<>(this, new GenericArrayTypeImpl(DefaultWildcardType.makeUpperBoundWilcard(Object.class)),
 						DataBinding.BindingDefinitionType.GET);
 			}
 			return array;
@@ -214,7 +214,7 @@ public abstract interface FIBMultipleValues extends FIBWidget {
 		public void setArray(DataBinding<Object[]> array) {
 			if (array != null) {
 				array.setOwner(this);
-				array.setDeclaredType(new GenericArrayTypeImpl(WildcardTypeImpl.makeUpperBoundWilcard(Object.class)));
+				array.setDeclaredType(new GenericArrayTypeImpl(DefaultWildcardType.makeUpperBoundWilcard(Object.class)));
 				array.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 			}
 			this.array = array;
