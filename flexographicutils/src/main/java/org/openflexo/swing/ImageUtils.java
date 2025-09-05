@@ -50,6 +50,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.function.IntUnaryOperator;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -72,7 +73,8 @@ public class ImageUtils {
 	}
 
 	public static BufferedImage createImageFromComponent(Component componentToPrint) {
-		BufferedImage bi = new BufferedImage(componentToPrint.getWidth(), componentToPrint.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		BufferedImage bi = new BufferedImage(componentToPrint.getWidth(), componentToPrint.getHeight(),
+				BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics = bi.createGraphics();
 		componentToPrint.print(graphics);
 		graphics.dispose();
@@ -127,8 +129,7 @@ public class ImageUtils {
 		if (src != null) {
 			if (src.getIconWidth() > maxWidth) {
 				return new ImageIcon(src.getImage().getScaledInstance(maxWidth, -1, Image.SCALE_SMOOTH));
-			}
-			else { // no need to miniaturize
+			} else { // no need to miniaturize
 				return src;
 			}
 		}
@@ -141,8 +142,7 @@ public class ImageUtils {
 			double imageRatio = (double) src.getIconWidth() / src.getIconHeight();
 			if (ratio < imageRatio) {
 				return new ImageIcon(src.getImage().getScaledInstance(maxWidth, -1, Image.SCALE_SMOOTH));
-			}
-			else {
+			} else {
 				return new ImageIcon(src.getImage().getScaledInstance(-1, maxHeight, Image.SCALE_SMOOTH));
 			}
 
@@ -162,8 +162,7 @@ public class ImageUtils {
 		int imgHeight = img.getHeight();
 		if (imgWidth * height < imgHeight * width) {
 			width = imgWidth * height / imgHeight;
-		}
-		else {
+		} else {
 			height = imgHeight * width / imgWidth;
 		}
 		BufferedImage newImage = new BufferedImage(width, height, img.getType());
@@ -175,5 +174,92 @@ public class ImageUtils {
 			g.dispose();
 		}
 		return newImage;
+	}
+
+	/**
+	 * Build a new {@link BufferedImage} from any source image
+	 * 
+	 * @param img
+	 * @return
+	 */
+	public static BufferedImage toBufferedImage(Image img) {
+		// If it's already a BufferedImage, just return it
+		if (img instanceof BufferedImage) {
+			return (BufferedImage) img;
+		}
+
+		// Ensure the image is loaded (otherwise width/height may be -1)
+		img = new ImageIcon(img).getImage();
+
+		// Create a compatible BufferedImage
+		BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+		// Draw the Image into the BufferedImage
+		Graphics2D g = bimage.createGraphics();
+		g.drawImage(img, 0, 0, null);
+		g.dispose();
+
+		return bimage;
+	}
+
+	/**
+	 * Apply a filter directly on the pixel array of a BufferedImage.
+	 */
+	public static BufferedImage applyFilter(Image sourceImage, IntUnaryOperator filter) {
+
+		BufferedImage src = ImageUtils.toBufferedImage(sourceImage);
+
+		int width = src.getWidth();
+		int height = src.getHeight();
+
+		// Copy pixel data out of the source image
+		int[] pixels = src.getRGB(0, 0, width, height, null, 0, width);
+
+		// Apply transformation in bulk
+		for (int i = 0; i < pixels.length; i++) {
+			pixels[i] = filter.applyAsInt(pixels[i]);
+		}
+
+		// Create the destination image and write modified pixels back
+		BufferedImage dst = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		dst.setRGB(0, 0, width, height, pixels, 0, width);
+
+		return dst;
+	}
+
+	/**
+	 * Apply a filter directly on the pixel array of a BufferedImage.
+	 */
+	public static BufferedImage applyFilter(Image sourceImage, RGBFilter filter) {
+
+		BufferedImage src = ImageUtils.toBufferedImage(sourceImage);
+
+		int width = src.getWidth();
+		int height = src.getHeight();
+
+		// Copy pixel data out of the source image
+		int[] pixels = src.getRGB(0, 0, width, height, null, 0, width);
+
+		// Apply transformation
+		int index = 0;
+		for (int cy = 0; cy < height; cy++) {
+			for (int cx = 0; cx < width; cx++) {
+				pixels[index] = filter.filterRGB(cx, cy, pixels[index]);
+				index++;
+			}
+		}
+
+		// Create the destination image and write modified pixels back
+		BufferedImage dst = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		dst.setRGB(0, 0, width, height, pixels, 0, width);
+
+		return dst;
+	}
+
+	/**
+	 * Simple RGB filter
+	 */
+	public static interface RGBFilter {
+		int filterRGB(int x, int y, int rgb);
 	}
 }
