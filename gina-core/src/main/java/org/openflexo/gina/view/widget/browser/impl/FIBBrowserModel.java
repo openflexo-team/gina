@@ -52,6 +52,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.EmptyStackException;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -355,27 +356,22 @@ public class FIBBrowserModel extends DefaultTreeModel {
 
 			if (browserElementType != null) {
 
-				// System.out.println("Build BrowserCell for " + representedObject);
-				// System.out.println("elementType=" + browserElementType.getBrowserElement().getName());
-
 				final List<?> newChildrenObjects = browserElementType.getChildrenFor(getRepresentedObject());
 
-				// System.out.println("newChildrenObjects=" + newChildrenObjects);
-
 				if (newChildrenObjects.size() > 0) {
-					// System.out.println("For " + representedObject + " found " + newChildrenObjects.size() + " children: " +
-					// newChildrenObjects);
 					add(new LoadingCell());
 				}
+				else {
+					// Leaf cell — nothing to discover later, so mark as loaded immediately.
+					// This prevents cellsToForceUpdate from queuing a pointless updateSync
+					// that would fire nodeChanged for every leaf, causing O(n²) repaints.
+					loaded = true;
+				}
 
-				/*if (getBrowserElement().getName() != null && getBrowserElement().getName().equals("diagramSpecification")) {
-					logger.info("---------------> Created new DiagramSpecification browser element");
-				}*/
-
-				// dependingObjects = new DependingObjects(this);
-				// dependingObjects.refreshObserving(browserElementType);
-
-				browserElementType.getLabelFor(representedObject);
+				cachedLabel   = browserElementType.getLabelFor(representedObject);
+				cachedIcon    = browserElementType.getIconFor(representedObject);
+				cachedTooltip = browserElementType.getTooltipFor(representedObject);
+				cachedEnabled = browserElementType.isEnabled(representedObject);
 
 				listenLabelBindingValueChange(representedObject);
 				listenIconBindingValueChange(representedObject);
@@ -388,6 +384,27 @@ public class FIBBrowserModel extends DefaultTreeModel {
 
 			}
 
+		}
+
+		private String  cachedLabel;
+		private Icon    cachedIcon;
+		private String  cachedTooltip;
+		private boolean cachedEnabled = true;
+
+		public String  getCachedLabel()   { return cachedLabel; }
+		public Icon    getCachedIcon()    { return cachedIcon; }
+		public String  getCachedTooltip() { return cachedTooltip; }
+		public boolean getCachedEnabled() { return cachedEnabled; }
+
+		/**
+		 * Override toString() to return the cached label rather than calling
+		 * representedObject.toString() (which can be very expensive for Spoon domain
+		 * objects). DefaultTreeCellRenderer calls value.toString() on every repaint
+		 * via JTree.convertValueToText() — this keeps that path O(1).
+		 */
+		@Override
+		public String toString() {
+			return cachedLabel != null ? cachedLabel : "";
 		}
 
 		private BindingPathChangeListener<String> labelBindingValueChangeListener;
@@ -523,18 +540,20 @@ public class FIBBrowserModel extends DefaultTreeModel {
 
 			// This is really important to this now
 			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
-			browserElementType.getLabelFor(representedObject);
+			cachedLabel = browserElementType.getLabelFor(representedObject);
 
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getLabel().isValid()) {
 
-				labelBindingValueChangeListener = new BrowserCellBindingValueChangeListener<>(
-						browserElementType.getBrowserElement().getLabel(), /* browserElementType */
-						// Instead of using browserElementType and to avoid to share it between multiple
-						// BindingPathListChangeListener
-						// using the same BindingEvaluationContext, we have to use here a proper instance of a
-						// BindingEvaluationContext
-						// dedicated to current BrowserCell
-						dynamicBindingEvaluationContext);
+				labelBindingValueChangeListener = new BrowserCellBindingValueChangeListener<String>(
+						browserElementType.getBrowserElement().getLabel(),
+						dynamicBindingEvaluationContext) {
+					@Override
+					public void updateBrowserCell() {
+						// Only re-cache the label and repaint this node — no need for a full updateSync
+						cachedLabel = browserElementType.getLabelFor(getRepresentedObject());
+						nodeChanged(BrowserCell.this);
+					}
+				};
 
 			}
 		}
@@ -546,16 +565,18 @@ public class FIBBrowserModel extends DefaultTreeModel {
 			}
 			// This is really important to this now
 			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
-			browserElementType.getIconFor(representedObject);
+			cachedIcon = browserElementType.getIconFor(representedObject);
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getIcon().isValid()) {
-				iconBindingValueChangeListener = new BrowserCellBindingValueChangeListener<>(
-						browserElementType.getBrowserElement().getIcon(), /* browserElementType */
-						// Instead of using browserElementType and to avoid to share it between multiple
-						// BindingPathListChangeListener
-						// using the same BindingEvaluationContext, we have to use here a proper instance of a
-						// BindingEvaluationContext
-						// dedicated to current BrowserCell
-						dynamicBindingEvaluationContext);
+				iconBindingValueChangeListener = new BrowserCellBindingValueChangeListener<Icon>(
+						browserElementType.getBrowserElement().getIcon(),
+						dynamicBindingEvaluationContext) {
+					@Override
+					public void updateBrowserCell() {
+						// Only re-cache the icon and repaint this node — no need for a full updateSync
+						cachedIcon = browserElementType.getIconFor(getRepresentedObject());
+						nodeChanged(BrowserCell.this);
+					}
+				};
 			}
 		}
 
@@ -566,16 +587,17 @@ public class FIBBrowserModel extends DefaultTreeModel {
 			}
 			// This is really important to this now
 			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
-			browserElementType.getTooltipFor(representedObject);
+			cachedTooltip = browserElementType.getTooltipFor(representedObject);
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getTooltip().isValid()) {
-				tooltipBindingValueChangeListener = new BrowserCellBindingValueChangeListener<>(
-						browserElementType.getBrowserElement().getTooltip(), /* browserElementType */
-						// Instead of using browserElementType and to avoid to share it between multiple
-						// BindingPathListChangeListener
-						// using the same BindingEvaluationContext, we have to use here a proper instance of a
-						// BindingEvaluationContext
-						// dedicated to current BrowserCell
-						dynamicBindingEvaluationContext);
+				tooltipBindingValueChangeListener = new BrowserCellBindingValueChangeListener<String>(
+						browserElementType.getBrowserElement().getTooltip(),
+						dynamicBindingEvaluationContext) {
+					@Override
+					public void updateBrowserCell() {
+						cachedTooltip = browserElementType.getTooltipFor(getRepresentedObject());
+						nodeChanged(BrowserCell.this);
+					}
+				};
 			}
 		}
 
@@ -586,16 +608,17 @@ public class FIBBrowserModel extends DefaultTreeModel {
 			}
 			// This is really important to this now
 			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
-			browserElementType.isEnabled(representedObject);
+			cachedEnabled = browserElementType.isEnabled(representedObject);
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getEnabled().isValid()) {
-				enabledBindingValueChangeListener = new BrowserCellBindingValueChangeListener<>(
-						browserElementType.getBrowserElement().getEnabled(), /* browserElementType */
-						// Instead of using browserElementType and to avoid to share it between multiple
-						// BindingPathListChangeListener
-						// using the same BindingEvaluationContext, we have to use here a proper instance of a
-						// BindingEvaluationContext
-						// dedicated to current BrowserCell
-						dynamicBindingEvaluationContext);
+				enabledBindingValueChangeListener = new BrowserCellBindingValueChangeListener<Boolean>(
+						browserElementType.getBrowserElement().getEnabled(),
+						dynamicBindingEvaluationContext) {
+					@Override
+					public void updateBrowserCell() {
+						cachedEnabled = browserElementType.isEnabled(getRepresentedObject());
+						nodeChanged(BrowserCell.this);
+					}
+				};
 			}
 		}
 
@@ -883,11 +906,6 @@ public class FIBBrowserModel extends DefaultTreeModel {
 
 		private void updateSync(boolean recursively) {
 
-			/*if (getParent() != null) {
-				System.out.println("updateSync for " + getRepresentedObject() + " parent=" + getParent().getRepresentedObject()
-						+ " isUpdating=" + getParent().isUpdating);
-			}*/
-
 			try {
 
 				isUpdating = true;
@@ -931,15 +949,18 @@ public class FIBBrowserModel extends DefaultTreeModel {
 					removedChildren = Collections.emptyList();
 				}
 				else {
+					// Capture before removeAllChildren() so the LoadingCell placeholder is
+					// recorded as a removed child and Swing gets proper nodesWereRemoved +
+					// nodesWereInserted notifications instead of a nodeStructureChanged that
+					// confuses VariableHeightLayoutCache (causes ArrayIndexOutOfBoundsException).
+					oldChildren = new ArrayList<>(children);
+					removedChildren = new ArrayList<>(children);
 					if (children.size() == 1 && children.firstElement() instanceof LoadingCell) {
 						removeAllChildren();
 					}
-					oldChildren = new ArrayList<>(children);
-					removedChildren = new ArrayList<>(children);
 				}
 
-				final List<?> newChildrenObjects = /*(isEnabled ?*/browserElementType
-						.getChildrenFor(getRepresentedObject()) /*: new Vector())*/;
+				final List<?> newChildrenObjects = browserElementType.getChildrenFor(getRepresentedObject());
 				int index = 0;
 
 				if (!newChildrenObjects.isEmpty()) {
@@ -965,7 +986,13 @@ public class FIBBrowserModel extends DefaultTreeModel {
 
 										// OK, child still here
 										removedChildren.remove(cell);
-										if (recursively) {
+										if (recursively && !cell.isLoaded()) {
+											// Only force-recurse into cells that haven't been fully loaded yet.
+											// Already-loaded cells are either leaf cells (nothing to discover)
+											// or non-leaf cells whose children updates are driven by their own
+											// binding change listeners.  Unconditionally queueing loaded cells
+											// causes an O(n²) cascade: every existing child is re-updated,
+											// each firing nodeChanged which repaints all visible rows.
 											cellsToForceUpdate.add(cell);
 										}
 										index = children.indexOf(cell) + 1;
@@ -1008,53 +1035,50 @@ public class FIBBrowserModel extends DefaultTreeModel {
 						((BrowserCell) c).delete();
 				}
 
+				// Build an identity-based index map once — O(n), avoids calling equals() on domain objects
+				final IdentityHashMap<Object, Integer> indexMap = new IdentityHashMap<>(newChildrenObjects.size());
+				for (int i = 0; i < newChildrenObjects.size(); i++) {
+					indexMap.put(newChildrenObjects.get(i), i);
+				}
 				boolean requireSorting = false;
 				if (children != null) {
-					for (int i = 0; i < children.size() - 1; i++) {
+					for (int i = 0; i < children.size() - 1 && !requireSorting; i++) {
 						BrowserCell c1 = (BrowserCell) children.elementAt(i);
 						BrowserCell c2 = (BrowserCell) children.elementAt(i + 1);
-						if (c1 != null && c2 != null && newChildrenObjects
-								.indexOf(c1.getRepresentedObject()) != newChildrenObjects.indexOf(c2.getRepresentedObject()) - 1) {
-							requireSorting = true;
+						if (c1 != null && c2 != null) {
+							Integer idx1 = indexMap.get(c1.getRepresentedObject());
+							Integer idx2 = indexMap.get(c2.getRepresentedObject());
+							if (idx1 == null || idx2 == null || idx1 != idx2 - 1) {
+								requireSorting = true;
+							}
 						}
 					}
 				}
-
 				if (requireSorting) {
 					if (LOGGER.isLoggable(Level.FINE)) {
 						LOGGER.fine("Detected sorting required");
 					}
-					// Sort children according to supplied list
+					// Sort using the pre-built index map — comparator is now O(1) per pair
 					Collections.sort(children, new Comparator<TreeNode>() {
 						@Override
 						public int compare(TreeNode o1, TreeNode o2) {
-							Object obj1 = ((BrowserCell) o1).getRepresentedObject();
-							Object obj2 = ((BrowserCell) o2).getRepresentedObject();
-							return newChildrenObjects.indexOf(obj1) - newChildrenObjects.indexOf(obj2);
+							Integer i1 = indexMap.get(((BrowserCell) o1).getRepresentedObject());
+							Integer i2 = indexMap.get(((BrowserCell) o2).getRepresentedObject());
+							if (i1 == null) return 1;
+							if (i2 == null) return -1;
+							return i1 - i2;
 						}
 					});
 				}
 
-				// System.out.println("removedChildren ["+removedChildren.size()+"] "+removedChildren);
-				// System.out.println("newChildren ["+newChildren.size()+"] "+newChildren);
-				// System.out.println("children ["+children.size()+"] "+children);
-
-				// Unused boolean structureChanged = false;
-
 				if (removedChildren.size() > 0 || newChildren.size() > 0) {
-					// Unused structureChanged = true;
 					exhaustiveContentsIsUpToDate = false;
 					if (oldChildren.size() == 0) {
-						// Special case, i don't undertand why (SGU)
-						// OK, issue seems to be MacOS only but workaround works on all platforms.
-						// To observe the issue, load WKF module on a project that imports other projects
-						// Imported workflow tree is not correctly initiated after reload of project.
+						// Special case: no previous children (first population or MacOS workaround).
+						// Use nodeStructureChanged to let Swing rebuild the subtree from scratch.
 						try {
 							nodeStructureChanged(this);
 						} catch (Exception e) {
-							// Might happen when a structural modification will call parent's nodeChanged()
-							// An Exception might be raised here
-							// We should investigate further, but since no real consequences are raised here, we just ignore exception
 							e.printStackTrace();
 							LOGGER.warning("Unexpected " + e.getClass().getSimpleName()
 									+ " when refreshing browser, no severity but please investigate");
@@ -1093,22 +1117,19 @@ public class FIBBrowserModel extends DefaultTreeModel {
 					}
 				}
 
-				try {
-					nodeChanged(this);
-				} catch (ArrayIndexOutOfBoundsException e) {
-					// Might happen when a structural modification will call parent's nodeChanged()
-					// An ArrayIndexOutOfBoundsException might be raised here
-					// We should investigate further, but since no real consequences are raised here, we just ignore exception
-					// e.printStackTrace();
-					LOGGER.warning("Unexpected ArrayIndexOutOfBoundsException when refreshing browser, no severity but please investigate");
-					e.printStackTrace(System.out);
-					nodeStructureChanged(this);
-				} catch (NullPointerException e) {
-					// Might happen when a structural modification will call parent's nodeChanged()
-					// An NullPointerException might be raised here
-					// We should investigate further, but since no real consequences are raised here, we just ignore exception
-					// e.printStackTrace();
-					LOGGER.warning("Unexpected NullPointerException when refreshing browser, no severity but please investigate");
+				// Only call nodeChanged if this cell is attached to the tree.
+				// During initial tree construction a cell may have getParent()==null because
+				// its parent's updateSync hasn't finished yet — calling nodeChanged on an
+				// unattached cell causes VariableHeightLayoutCache to throw AIOOBE.
+				if (getParent() != null) {
+					try {
+						nodeChanged(this);
+					} catch (ArrayIndexOutOfBoundsException e) {
+						LOGGER.warning("Unexpected ArrayIndexOutOfBoundsException when refreshing browser, no severity but please investigate");
+						nodeStructureChanged(this);
+					} catch (NullPointerException e) {
+						LOGGER.warning("Unexpected NullPointerException when refreshing browser, no severity but please investigate");
+					}
 				}
 
 				if (requireSorting) {
@@ -1136,18 +1157,12 @@ public class FIBBrowserModel extends DefaultTreeModel {
 
 				}
 
-				/*if (wasSelected) {
-					widget.addToSelection(representedObject);
-				}*/
-
-				// dependingObjects.refreshObserving(browserElementType);
-
 				if (cellsToForceUpdate != null) {
 					for (BrowserCell cell : cellsToForceUpdate) {
-						if (cell != this) // prevent multiple update of same cell
-							// Update recursively only if node is Expanded or if recursively called, otherwise only the children are
-							// updated
+						if (cell != this) {
+							// Update recursively only if node is expanded or if recursively called
 							cell.update(isExpanded || recursively);
+						}
 					}
 				}
 
