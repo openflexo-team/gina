@@ -875,6 +875,12 @@ public class JFDTablePanel<T> extends JPanel {
 				}
 
 				cellRenderer.setOpaque(false);
+				// Apply the (cascaded) FIB font so FlatDesign rows match the container font
+				// instead of the look-and-feel default; the renderer is a plain component built
+				// here with no font of its own.
+				if (widget.getFont() != null) {
+					cellRenderer.setFont(widget.getFont());
+				}
 				cellRenderer.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight()));
 				tablePanel.add(cellRenderer, c);
 				components.add(cellRenderer);
