@@ -604,7 +604,10 @@ public class JFDTablePanel<T> extends JPanel {
 					JLabel titleLabel = new JLabel(column.getDisplayTitle() ? widget.getLocalized(column.getTitle()) : "");
 					titleLabel.setPreferredSize(new Dimension(column.getColumnWidth(), getRowHeight() + 5));
 					titleLabel.setOpaque(true);
-					titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD));
+					// Apply the (cascaded) FIB font (like the row cell renderers above) so the
+					// header matches the container font instead of the look-and-feel default.
+					Font baseFont = widget.getFont() != null ? widget.getFont() : titleLabel.getFont();
+					titleLabel.setFont(baseFont.deriveFont(Font.BOLD));
 					titleLabel.setForeground(Color.WHITE);
 					titleLabel.setBackground(Color.GRAY);
 					tablePanel.add(titleLabel, c);
