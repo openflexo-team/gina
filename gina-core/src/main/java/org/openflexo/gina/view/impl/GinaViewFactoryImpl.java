@@ -34,6 +34,7 @@ import org.openflexo.gina.model.widget.FIBList;
 import org.openflexo.gina.model.widget.FIBNumber;
 import org.openflexo.gina.model.widget.FIBRadioButtonList;
 import org.openflexo.gina.model.widget.FIBReferencedComponent;
+import org.openflexo.gina.model.widget.FIBSpacer;
 import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTextArea;
 import org.openflexo.gina.model.widget.FIBTextField;
@@ -67,6 +68,7 @@ import org.openflexo.gina.view.widget.impl.FIBListWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBNumberWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBRadioButtonListWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBReferencedComponentWidgetImpl;
+import org.openflexo.gina.view.widget.impl.FIBSpacerWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBTableWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBTextAreaWidgetImpl;
 
@@ -252,6 +254,9 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 			return (FIBWidgetView<F, ? extends C, ?>) makeReferencedComponentWidget((FIBReferencedComponent) fibWidget, controller,
 					context);
 		}
+		if (fibWidget instanceof FIBSpacer) {
+			return (FIBWidgetView<F, ? extends C, ?>) makeSpacer((FIBSpacer) fibWidget, controller, context);
+		}
 		return null;
 	}
 
@@ -319,5 +324,7 @@ public abstract class GinaViewFactoryImpl<C> implements GinaViewFactory<C> {
 
 	public abstract FIBReferencedComponentWidgetImpl<? extends C> makeReferencedComponentWidget(FIBReferencedComponent widget,
 			FIBController controller, RuntimeContext context);
+
+	public abstract FIBSpacerWidgetImpl<? extends C> makeSpacer(FIBSpacer widget, FIBController controller, RuntimeContext context);
 
 }

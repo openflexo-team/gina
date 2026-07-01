@@ -99,6 +99,7 @@ import org.openflexo.gina.model.widget.FIBList;
 import org.openflexo.gina.model.widget.FIBNumber;
 import org.openflexo.gina.model.widget.FIBRadioButtonList;
 import org.openflexo.gina.model.widget.FIBReferencedComponent;
+import org.openflexo.gina.model.widget.FIBSpacer;
 import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTextArea;
 import org.openflexo.gina.model.widget.FIBTextField;
@@ -162,7 +163,7 @@ import org.openflexo.toolbox.StringUtils;
 		@Import(FIBHtmlEditor.class), @Import(FIBImage.class), @Import(FIBLabel.class), @Import(FIBCheckboxList.class),
 		@Import(FIBDropDown.class), @Import(FIBList.class), @Import(FIBRadioButtonList.class), @Import(FIBNumber.class),
 		@Import(FIBReferencedComponent.class), @Import(FIBTable.class), @Import(FIBEditor.class), @Import(FIBTextArea.class),
-		@Import(FIBTextField.class), @Import(FIBEditorPane.class), @Import(FIBGraph.class) })
+		@Import(FIBTextField.class), @Import(FIBEditorPane.class), @Import(FIBGraph.class), @Import(FIBSpacer.class) })
 @Modify(forward = FIBComponent.PARENT_KEY)
 public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBaseIdentifier {
 

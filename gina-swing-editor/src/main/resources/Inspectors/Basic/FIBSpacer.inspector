@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Inspector layout="twocols" darkLevel="0" font="SansSerif,0,11"
+	dataClassName="org.openflexo.gina.model.widget.FIBSpacer" name="Inspector">
+	<Label name="ValueLabel" label="value" index="0"
+		constraints="twocols(location=left;insetsTop=5)" localize="true" visible="false" />
+	<Custom name="ValueBinding" index="1"
+		componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
+		localize="true" manageDynamicModel="true" data="data.data"
+		constraints="twocols(expandHorizontally=true;location=right;insetsTop=5)" visible="false">
+		<Assignment variable="component.bindable" value="data" />
+	</Custom>
+	<Label name="EnableLabel" label="enable" index="62"
+		constraints="twocols(location=left)" localize="true" visible="false" />
+	<Custom name="EnableBinding" index="63"
+		componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
+		localize="true" manageDynamicModel="true" data="data.enable"
+		constraints="twocols(expandHorizontally=true;location=right)" visible="false">
+		<Assignment variable="component.bindable" value="data" />
+	</Custom>
+	<CheckBox name="ReadOnlyCB" index="64" selected="false"
+		data="data.readOnly" constraints="twocols(location=left)" localize="true" visible="false" />
+	<Label name="ReadOnlyLabel" index="65" label="read_only_component"
+		constraints="twocols(expandHorizontally=true;location=right)"
+		localize="true" visible="false" />
+	<Label index="70" label="format" constraints="twocols(location=left)"
+		localize="true" name="FormatLabel" visible="false"/>
+	<Custom index="71" componentClassName="org.openflexo.gina.swing.utils.JavaBindingSelector"
+		localize="true" manageDynamicModel="true" data="data.format" name="FormatBinding"
+		constraints="twocols(expandHorizontally=true;location=right)" visible="false">
+		<Assignment variable="component.bindable" value="data.formatter" />
+	</Custom>
+	<LocalizedDictionary>
+	</LocalizedDictionary>
+	<Parameter name="title" value="Spacer" />
+</Inspector>

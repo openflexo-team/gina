@@ -78,6 +78,7 @@ import org.openflexo.gina.model.widget.FIBNumber;
 import org.openflexo.gina.model.widget.FIBNumberColumn;
 import org.openflexo.gina.model.widget.FIBRadioButtonList;
 import org.openflexo.gina.model.widget.FIBReferencedComponent;
+import org.openflexo.gina.model.widget.FIBSpacer;
 import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTextArea;
 import org.openflexo.gina.model.widget.FIBTextField;
@@ -260,6 +261,10 @@ public class FIBModelFactory extends PamelaModelFactory {
 
 	public FIBButton newFIBButton() {
 		return newInstance(FIBButton.class);
+	}
+
+	public FIBSpacer newFIBSpacer() {
+		return newInstance(FIBSpacer.class);
 	}
 
 	public FIBTab newFIBTab() {

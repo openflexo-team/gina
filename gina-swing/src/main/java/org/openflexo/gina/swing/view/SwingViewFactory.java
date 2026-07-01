@@ -87,6 +87,7 @@ import org.openflexo.gina.model.widget.FIBList;
 import org.openflexo.gina.model.widget.FIBNumber;
 import org.openflexo.gina.model.widget.FIBRadioButtonList;
 import org.openflexo.gina.model.widget.FIBReferencedComponent;
+import org.openflexo.gina.model.widget.FIBSpacer;
 import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTextArea;
 import org.openflexo.gina.model.widget.FIBTextField;
@@ -115,6 +116,7 @@ import org.openflexo.gina.swing.view.widget.JFIBListWidget;
 import org.openflexo.gina.swing.view.widget.JFIBNumberWidget;
 import org.openflexo.gina.swing.view.widget.JFIBRadioButtonListWidget;
 import org.openflexo.gina.swing.view.widget.JFIBReferencedComponentWidget;
+import org.openflexo.gina.swing.view.widget.JFIBSpacerWidget;
 import org.openflexo.gina.swing.view.widget.JFIBTableWidget;
 import org.openflexo.gina.swing.view.widget.JFIBTextAreaWidget;
 import org.openflexo.gina.swing.view.widget.JFIBTextFieldWidget;
@@ -148,6 +150,7 @@ import org.openflexo.gina.view.widget.impl.FIBListWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBNumberWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBRadioButtonListWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBReferencedComponentWidgetImpl;
+import org.openflexo.gina.view.widget.impl.FIBSpacerWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBTableWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBTextAreaWidgetImpl;
 import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
@@ -401,6 +404,11 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 	public FIBReferencedComponentWidgetImpl<? extends JComponent> makeReferencedComponentWidget(FIBReferencedComponent widget,
 			FIBController controller, RuntimeContext context) {
 		return new JFIBReferencedComponentWidget(widget, controller);
+	}
+
+	@Override
+	public FIBSpacerWidgetImpl<? extends JComponent> makeSpacer(FIBSpacer widget, FIBController controller, RuntimeContext context) {
+		return new JFIBSpacerWidget(widget, controller);
 	}
 
 	@Override

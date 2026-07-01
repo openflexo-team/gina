@@ -252,6 +252,11 @@ public class TestFIBEditorInspectors extends FIBInspectorTestCase {
 	}
 
 	@Test
+	public void testFIBSpacerBasicInspector() {
+		validateFIB("Inspectors/Basic/FIBSpacer.inspector");
+	}
+
+	@Test
 	public void testFIBTabBasicInspector() {
 		validateFIB("Inspectors/Basic/FIBTab.inspector");
 	}
@@ -329,6 +334,11 @@ public class TestFIBEditorInspectors extends FIBInspectorTestCase {
 	@Test
 	public void testFIBListControlsInspector() {
 		validateFIB("Inspectors/Controls/FIBList.inspector");
+	}
+
+	@Test
+	public void testFIBSpacerControlsInspector() {
+		validateFIB("Inspectors/Controls/FIBSpacer.inspector");
 	}
 
 	@Test
