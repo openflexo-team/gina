@@ -345,6 +345,9 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 		JLabel returned = new JLabel();
 		Object dataToRepresent = getValueFor(value);
 		returned.setText(getStringRepresentation(dataToRepresent));
+		if (getColumnModel().getAlignment() != null) {
+			returned.setHorizontalAlignment(getColumnModel().getAlignment().getAlign());
+		}
 		return returned;
 	}
 
