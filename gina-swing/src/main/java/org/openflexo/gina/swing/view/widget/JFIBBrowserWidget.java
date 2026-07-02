@@ -262,8 +262,11 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 
 			if (cells == null || cells.size() == 0) {
 				LOGGER.warning("POTENTIAL PERFS ISSUE HERE: Not found object " + object + " perform explore whole contents");
-				// TODO: implements a method which explicitely search 'object'
-				getBrowserModel().recursivelyExploreModelToRetrieveContents();
+				// The first attempt (above) can be a silent no-op: exhaustiveContentsIsUpToDate
+				// is only invalidated by a live change reaching an already-loaded cell in THIS
+				// widget, so a subtree never visited by this browser (no listener yet) cannot
+				// invalidate it. Since we already know the lookup failed, force a real re-walk.
+				getBrowserModel().forceRecursivelyExploreModelToRetrieveContents();
 				cells = getBrowserModel().getBrowserCell(object);
 			}
 

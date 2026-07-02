@@ -293,6 +293,25 @@ public class FIBBrowserModel extends DefaultTreeModel {
 	}
 
 	/**
+	 * Forces a full deep exploration of the model, even when
+	 * {@link #exhaustiveContentsIsUpToDate} claims to be up-to-date.
+	 *
+	 * <p>{@code exhaustiveContentsIsUpToDate} is only invalidated by a live
+	 * {@code PropertyChangeEvent} reaching a cell that is <em>already loaded</em> in
+	 * <em>this specific</em> browser widget (see {@code updateSync}). A subtree that
+	 * this widget never visited/loaded has no such listener, so a change occurring
+	 * entirely within it cannot invalidate the flag — {@code
+	 * recursivelyExploreModelToRetrieveContents()} would then silently no-op and
+	 * miss the change forever. Callers that already know a lookup failed (e.g.
+	 * {@code performSelect}'s "object not found" fallback) should use this method
+	 * instead, to guarantee a real re-walk.</p>
+	 */
+	public Iterator<Object> forceRecursivelyExploreModelToRetrieveContents() {
+		exhaustiveContentsIsUpToDate = false;
+		return recursivelyExploreModelToRetrieveContents();
+	}
+
+	/**
 	 * This set is used during exploration of all exhaustive contents, in order not no enter in an infinite loop
 	 */
 	private final Set<Object> computedExhaustiveContents = new HashSet<>();
