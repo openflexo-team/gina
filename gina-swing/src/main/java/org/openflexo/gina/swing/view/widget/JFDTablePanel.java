@@ -29,7 +29,9 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JViewport;
 import javax.swing.ListSelectionModel;
+import javax.swing.Scrollable;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -62,6 +64,18 @@ import org.openflexo.gina.view.widget.table.impl.FIBTableModel;
 @SuppressWarnings("serial")
 public class JFDTablePanel<T> extends JPanel {
 
+	/**
+	 * Diagnostic flag for the width-squeeze / permanent-scrollbar investigation. Inert and
+	 * zero-cost unless the system property is set. Enable with {@code -Dgina.tablediag=true},
+	 * reproduce the resize glitch in the running app, and inspect stderr for the
+	 * {@code [gina.tablediag]}-prefixed lines: they trace, at every actual layout pass, the
+	 * granted size of this panel vs. the scroll pane vs. the viewport's extent/view size vs.
+	 * the inner table's own (declared and real) preferred size — the same
+	 * measure-don't-guess approach already used for Diana's drag-performance work
+	 * ({@code -Ddiana.paintdebug}).
+	 */
+	static final boolean TABLE_DEBUG = Boolean.getBoolean("gina.tablediag");
+
 	private JFDTable<T> jTable;
 	private final JScrollPane scrollPane;
 	private final JFDFIBTableWidget<T> widget;
@@ -88,7 +102,41 @@ public class JFDTablePanel<T> extends JPanel {
 		scrollPane.setViewportView(jTable);
 	}
 
-	public static class JFDTable<T> extends JPanel implements TableModelListener, TableColumnModelListener, ListSelectionListener {
+	@Override
+	public void doLayout() {
+		super.doLayout();
+		if (TABLE_DEBUG) {
+			System.err.println("[gina.tablediag] JFDTablePanel.doLayout() this.size=" + getSize()
+					+ " this.minimumSize=" + getMinimumSize()
+					+ " scrollPane.size=" + scrollPane.getSize()
+					+ " viewport.extentSize=" + scrollPane.getViewport().getExtentSize()
+					+ " viewport.viewSize=" + scrollPane.getViewport().getViewSize()
+					+ " jTable.size=" + jTable.getSize()
+					+ " jTable.preferredSize=" + jTable.getPreferredSize()
+					+ " jTable.scrollableFloor=" + jTable.getPreferredScrollableViewportSize());
+		}
+	}
+
+	/**
+	 * Asymmetric minimum size: width may shrink a lot (a horizontal scrollbar is the intended,
+	 * desired behaviour when the window is narrower than the columns) but height must never drop
+	 * below the table's real content floor. Without this, this panel has no explicit minimum size
+	 * at all, so when the ancestor "twocols" GridBagLayout (JTwoColsLayout, real java.awt.GridBagLayout)
+	 * cannot satisfy every row's preferred WIDTH, it falls back toward MINIMUM sizes for its
+	 * over-constrained-shrink computation — and since nothing declared a minimum here, that
+	 * fallback also crushed the (unrelated) HEIGHT axis down to near zero. This is the actual
+	 * root cause of the width-squeeze collapse (confirmed by instrumentation: tablePanel's own
+	 * GridBagLayout never collapses; only the ancestor's does, and only because this component
+	 * had no minimum size to anchor to).
+	 */
+	@Override
+	public Dimension getMinimumSize() {
+		Dimension floor = jTable.getPreferredScrollableViewportSize();
+		return new Dimension(Math.min(50, floor.width), floor.height);
+	}
+
+	public static class JFDTable<T> extends JPanel
+			implements TableModelListener, TableColumnModelListener, ListSelectionListener, Scrollable {
 
 		private GridBagLayout gridBagLayout;
 
@@ -123,6 +171,18 @@ public class JFDTablePanel<T> extends JPanel {
 			add(tablePanel, BorderLayout.CENTER);
 			buildTable();
 
+		}
+
+		@Override
+		public void doLayout() {
+			super.doLayout();
+			if (JFDTablePanel.TABLE_DEBUG) {
+				System.err.println("[gina.tablediag]   JFDTable.doLayout() this.size=" + getSize()
+						+ " this.preferredSize(real)=" + super.getPreferredSize()
+						+ " tablePanel.size=" + tablePanel.getSize()
+						+ " tablePanel.preferredSize=" + tablePanel.getPreferredSize()
+						+ " rowCount=" + (dataModel != null && dataModel.getValues() != null ? dataModel.getValues().size() : -1));
+			}
 		}
 
 		/**
@@ -563,7 +623,15 @@ public class JFDTablePanel<T> extends JPanel {
 
 			addButtonPanel.add(addButton);
 
-			add(addButtonPanel, BorderLayout.SOUTH);
+			// showFooter="false" must actually remove the footer strip, not just hide the add
+			// button inside it: an empty FlowLayout panel still contributes a small non-zero
+			// preferred height (its vgap), which was previously always added at BorderLayout.SOUTH
+			// unconditionally. That untracked height is exactly what made getPreferredScrollableViewportSize()
+			// (computed from the header+rows only) under-report this component's real preferred
+			// size, causing a permanent, un-clearable vertical scrollbar regardless of window size.
+			if (widget.getComponent().getShowFooter()) {
+				add(addButtonPanel, BorderLayout.SOUTH);
+			}
 
 			refreshTable();
 		}
@@ -1040,6 +1108,89 @@ public class JFDTablePanel<T> extends JPanel {
 
 		public void setVisibleRowCount(int rowCount) {
 			// Not applicable
+		}
+
+		// -------------------------------------------------------------------
+		// Scrollable
+		//
+		// Without this, JScrollPane has no floor to fall back on: it sizes this
+		// panel to tablePanel's raw GridBagLayout preferred size, which is not
+		// reliable once the container is squeezed narrower than the sum of the
+		// (weightx-driven) column widths — the table can end up laid out with an
+		// almost-null height plus a spurious vertical scrollbar. Implementing
+		// Scrollable gives JViewport an explicit, independent floor to honor
+		// (header height + rowHeight * visibleRowCount), exactly like JTable/
+		// JList/JTree already do natively — and, as a side effect, finally makes
+		// the FIB "visibleRowCount" attribute do something (it was a no-op here).
+		// -------------------------------------------------------------------
+
+		@Override
+		public Dimension getPreferredScrollableViewportSize() {
+			int width = 0;
+			for (FIBTableColumn column : widget.getComponent().getColumns()) {
+				width += column.getColumnWidth();
+			}
+			width += 10; // small margin (insets + trailing add/remove-buttons column)
+
+			int rowHeight = getRowHeight();
+			int headerHeight = widget.getComponent().getShowHeader() ? rowHeight + 5 : 0;
+			// Deliberately NOT capped/floored to the FIB "visibleRowCount" attribute: that
+			// attribute has always been a no-op for FlatDesign tables (see setVisibleRowCount
+			// below), and introducing it here as a floor made small tables claim height for
+			// rows they don't have (eating into a sibling "expandVertically" spacer, and
+			// triggering a spurious vertical scrollbar when that inflated height didn't fit).
+			// This mirrors the pre-existing, uncapped "grow to fit content" behavior exactly —
+			// only the *computation* changes (independent of GridBagLayout), not the semantics.
+			int rowCount = (dataModel != null && dataModel.getValues() != null) ? dataModel.getValues().size() : 0;
+
+			// Take the max with the real (super) preferred size: logging showed tablePanel's own
+			// GridBagLayout never actually collapses under a width squeeze (only the ancestor
+			// "twocols" GridBagLayout does — see JTwoColsLayout), so it's safe to trust it here,
+			// and it catches anything this independent computation doesn't account for (e.g. the
+			// footer strip when shown, button-row quirks, small rounding differences) — this is
+			// what closed a small, constant ~6px gap that caused a permanent vertical scrollbar.
+			Dimension computed = new Dimension(width, headerHeight + rowHeight * rowCount);
+			Dimension real = super.getPreferredSize();
+			Dimension returned = new Dimension(Math.max(computed.width, real.width), Math.max(computed.height, real.height));
+			if (JFDTablePanel.TABLE_DEBUG) {
+				System.err.println("[gina.tablediag]   JFDTable.getPreferredScrollableViewportSize() -> " + returned
+						+ " (computed=" + computed + ", real=" + real + ", columns width=" + (width - 10) + ", headerHeight="
+						+ headerHeight + ", rowHeight=" + rowHeight + ", rowCount=" + rowCount + ")");
+			}
+			return returned;
+		}
+
+		@Override
+		public boolean getScrollableTracksViewportWidth() {
+			// Stretch to fill the viewport ONLY when there is slack (viewport wider than our
+			// natural width): tablePanel's own GridBagLayout then redistributes the extra width
+			// among resizable columns via their weightx, so the table visibly grows to use the
+			// available space — the behaviour this Scrollable implementation had otherwise
+			// removed (a flat "false" never stretches, even when there's plenty of room). When
+			// the viewport is narrower than our natural width, stay unstretched (false) so a
+			// horizontal scrollbar appears instead of squeezing columns below their content —
+			// the standard "grow OR scroll, never shrink" Scrollable idiom.
+			if (getParent() instanceof JViewport) {
+				return ((JViewport) getParent()).getWidth() > getPreferredScrollableViewportSize().width;
+			}
+			return false;
+		}
+
+		@Override
+		public boolean getScrollableTracksViewportHeight() {
+			return false;
+		}
+
+		@Override
+		public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
+			return getRowHeight();
+		}
+
+		@Override
+		public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
+			return orientation == javax.swing.SwingConstants.VERTICAL
+					? visibleRect.height - getRowHeight()
+					: visibleRect.width - getRowHeight();
 		}
 
 		public ListSelectionModel getSelectionModel() {
