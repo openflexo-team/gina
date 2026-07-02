@@ -51,6 +51,7 @@ import org.openflexo.gina.model.widget.FIBTableAction.FIBRemoveAction;
 import org.openflexo.gina.model.widget.FIBTableColumn;
 import org.openflexo.gina.swing.view.SwingViewFactory.SwingFIBMouseEvent;
 import org.openflexo.gina.utils.FIBIconLibrary;
+import org.openflexo.gina.utils.GinaMouseDiagnostics;
 import org.openflexo.gina.view.widget.table.impl.FIBTableActionListener;
 import org.openflexo.gina.view.widget.table.impl.FIBTableModel;
 
@@ -865,35 +866,122 @@ public class JFDTablePanel<T> extends JPanel {
 					return new SwingFIBMouseEvent(e);
 				}
 
+				private String widgetLabel() {
+					try {
+						return "JFDTablePanel.row[" + widget.getWidget().getName() + "]";
+					} catch (RuntimeException ex) {
+						return "JFDTablePanel.row[" + widget + "]";
+					}
+				}
+
+				// Guards against a double dispatch of rightClickAction when isPopupTrigger()
+				// is honoured on mousePressed/mouseReleased AND mouseClicked still fires for
+				// the same physical gesture. Scoped to this row's adapter instance (one per
+				// value, see makeMouseAdapter), so it naturally resets per row.
+				private boolean rightClickDispatchedForCurrentGesture = false;
+
+				/**
+				 * See {@code SwingViewFactory.SwingMouseAdapter#maybeDispatchRightClickOnPopupTrigger}:
+				 * checking {@link MouseEvent#isPopupTrigger()} directly on press/release (rather
+				 * than solely inside {@code mouseClicked}) is the platform-recommended, robust way
+				 * to detect a context-menu gesture - {@code mouseClicked} is a synthesized AWT
+				 * event some native peers skip (observed on macOS with zero pixel drift, diagnosed
+				 * via {@code -Dgina.mousediag=true}).
+				 */
+				private void maybeDispatchRightClickOnPopupTrigger(MouseEvent e, String phase) {
+					if (rightClickDispatchedForCurrentGesture) {
+						return;
+					}
+					if (e.isPopupTrigger() && widget.getWidget().hasRightClickAction()) {
+						rightClickDispatchedForCurrentGesture = true;
+						if (!(e.isShiftDown() && selectedValue == value)) {
+							select(value);
+						}
+						if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+							GinaMouseDiagnostics.logDispatch(widgetLabel(), "rightClickAction", true, "via " + phase + " isPopupTrigger");
+						}
+						widget.applyRightClickAction(makeMouseEvent(e));
+						repaint();
+					}
+				}
+
+				@Override
+				public void mousePressed(MouseEvent e) {
+					super.mousePressed(e);
+					rightClickDispatchedForCurrentGesture = false;
+					if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+						GinaMouseDiagnostics.logPressed(e.getComponent(), e, widgetLabel());
+					}
+					maybeDispatchRightClickOnPopupTrigger(e, "mousePressed");
+				}
+
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					super.mouseReleased(e);
+					if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+						GinaMouseDiagnostics.logReleased(e.getComponent(), e, widgetLabel());
+					}
+					maybeDispatchRightClickOnPopupTrigger(e, "mouseReleased");
+				}
+
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					super.mouseClicked(e);
+
+					if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+						GinaMouseDiagnostics.logClicked(e.getComponent(), e, widgetLabel());
+					}
+
 					if (widget.synchronizedWithSelection()) {
 						widget.getController().setSelectionLeader(widget);
 					}
 
 					if (e.getClickCount() == 1) {
-						if (e.isShiftDown() && selectedValue == value) {
-							clearSelection();
+						if (rightClickDispatchedForCurrentGesture) {
+							// Already handled from mousePressed/mouseReleased popup-trigger detection.
 						}
 						else {
-							select(value);
-						}
-						if (widget.getWidget().hasRightClickAction() && (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3)) {
-							// Detected right-click associated with action
-							widget.applyRightClickAction(makeMouseEvent(e));
-						}
-						else if (widget.getWidget().hasClickAction()) {
-							// Detected click associated with action
-							widget.applySingleClickAction(makeMouseEvent(e));
+							if (e.isShiftDown() && selectedValue == value) {
+								clearSelection();
+							}
+							else {
+								select(value);
+							}
+							if (widget.getWidget().hasRightClickAction() && (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3)) {
+								// Detected right-click associated with action
+								rightClickDispatchedForCurrentGesture = true;
+								if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+									GinaMouseDiagnostics.logDispatch(widgetLabel(), "rightClickAction", true, "via mouseClicked");
+								}
+								widget.applyRightClickAction(makeMouseEvent(e));
+							}
+							else if (widget.getWidget().hasClickAction()) {
+								// Detected click associated with action
+								if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+									GinaMouseDiagnostics.logDispatch(widgetLabel(), "clickAction", true, "via mouseClicked");
+								}
+								widget.applySingleClickAction(makeMouseEvent(e));
+							}
+							else if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+								GinaMouseDiagnostics.logDispatch(widgetLabel(), "clickAction/rightClickAction", false,
+										"hasRightClickAction=" + widget.getWidget().hasRightClickAction() + " hasClickAction="
+												+ widget.getWidget().hasClickAction() + " button=" + e.getButton() + " popupTrigger="
+												+ e.isPopupTrigger());
+							}
 						}
 					}
 					else if (e.getClickCount() == 2) {
 						if (widget.getWidget().hasDoubleClickAction()) {
 							// Detected double-click associated with action
+							if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+								GinaMouseDiagnostics.logDispatch(widgetLabel(), "doubleClickAction", true, null);
+							}
 							widget.applyDoubleClickAction(makeMouseEvent(e));
 						}
 						else {
+							if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+								GinaMouseDiagnostics.logDispatch(widgetLabel(), "doubleClickAction", false, "falls back to editValue()");
+							}
 							editValue(value);
 						}
 					}

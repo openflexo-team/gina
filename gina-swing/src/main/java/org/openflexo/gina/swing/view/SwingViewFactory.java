@@ -153,6 +153,7 @@ import org.openflexo.gina.view.widget.impl.FIBReferencedComponentWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBSpacerWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBTableWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBTextAreaWidgetImpl;
+import org.openflexo.gina.utils.GinaMouseDiagnostics;
 import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.toolbox.StringUtils;
@@ -516,6 +517,11 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 
 		private final FIBWidgetView<?, ? extends JComponent, ?> widgetView;
 
+		// Guards against a double dispatch of rightClickAction when isPopupTrigger() is
+		// honoured on mousePressed/mouseReleased (see maybeDispatchRightClickOnPopupTrigger)
+		// AND mouseClicked still manages to fire for the same physical gesture.
+		private boolean rightClickDispatchedForCurrentGesture = false;
+
 		public SwingMouseAdapter(FIBWidgetView<?, ? extends JComponent, ?> widgetView, FIBWidget fibWidget) {
 			this.widgetView = widgetView;
 		}
@@ -524,9 +530,46 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 			return new SwingFIBMouseEvent(e);
 		}
 
+		private String widgetLabel() {
+			try {
+				return widgetView.getWidget().getClass().getSimpleName() + "[" + widgetView.getWidget().getName() + "]";
+			} catch (RuntimeException ex) {
+				return String.valueOf(widgetView);
+			}
+		}
+
+		/**
+		 * Cross-platform popup-trigger handling (see {@link MouseEvent#isPopupTrigger()}):
+		 * the native platform reports the popup trigger on {@code mousePressed} (Windows,
+		 * macOS) or {@code mouseReleased} (X11/Motif) - never rely on {@code mouseClicked}
+		 * alone. {@code mouseClicked} is a <em>synthesized</em> AWT event that some native
+		 * peers skip when the press/release don't reconcile cleanly (observed on macOS: a
+		 * BUTTON3-down press followed by a release whose extended modifiers had flipped to a
+		 * stray Cmd-down flag, zero pixel drift, no CLICKED ever delivered - diagnosed via
+		 * {@code -Dgina.mousediag=true}). Checking the trigger directly on press/release, as
+		 * Oracle's own "Bringing Up a Popup Menu" tutorial prescribes, is immune to that.
+		 */
+		private void maybeDispatchRightClickOnPopupTrigger(MouseEvent e, String phase) {
+			if (rightClickDispatchedForCurrentGesture) {
+				return;
+			}
+			if (e.isPopupTrigger() && widgetView.getWidget().hasRightClickAction()) {
+				rightClickDispatchedForCurrentGesture = true;
+				if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+					GinaMouseDiagnostics.logDispatch(widgetLabel(), "rightClickAction", true, "via " + phase + " isPopupTrigger");
+				}
+				widgetView.applyRightClickAction(makeMouseEvent(e));
+			}
+		}
+
 		@Override
 		public void mousePressed(MouseEvent e) {
 			super.mousePressed(e);
+			rightClickDispatchedForCurrentGesture = false;
+
+			if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+				GinaMouseDiagnostics.logPressed(e.getComponent(), e, widgetLabel());
+			}
 
 			// If we press in a component which is selectable and declared to be synchronized with selection
 			// We should handle the case where another component (which is not focusable) represent the current selection
@@ -542,26 +585,62 @@ public class SwingViewFactory extends GinaViewFactoryImpl<JComponent> {
 				}
 			}
 
+			maybeDispatchRightClickOnPopupTrigger(e, "mousePressed");
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			super.mouseReleased(e);
+			if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+				GinaMouseDiagnostics.logReleased(e.getComponent(), e, widgetLabel());
+			}
+			maybeDispatchRightClickOnPopupTrigger(e, "mouseReleased");
 		}
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
 
+			if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+				GinaMouseDiagnostics.logClicked(e.getComponent(), e, widgetLabel());
+			}
+
 			widgetView.getController().fireMouseClicked(widgetView, e.getClickCount());
 			if (e.getClickCount() == 1) {
-				if (widgetView.getWidget().hasRightClickAction() && (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3)) {
+				if (rightClickDispatchedForCurrentGesture) {
+					// Already handled from mousePressed/mouseReleased popup-trigger detection.
+				}
+				else if (widgetView.getWidget().hasRightClickAction() && (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3)) {
 					// Detected right-click associated with action
+					rightClickDispatchedForCurrentGesture = true;
+					if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+						GinaMouseDiagnostics.logDispatch(widgetLabel(), "rightClickAction", true, "via mouseClicked");
+					}
 					widgetView.applyRightClickAction(makeMouseEvent(e));
 				}
 				else if (widgetView.getWidget().hasClickAction()) {
 					// Detected click associated with action
+					if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+						GinaMouseDiagnostics.logDispatch(widgetLabel(), "clickAction", true, "via mouseClicked");
+					}
 					widgetView.applySingleClickAction(makeMouseEvent(e));
+				}
+				else if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+					GinaMouseDiagnostics.logDispatch(widgetLabel(), "clickAction/rightClickAction", false,
+							"hasRightClickAction=" + widgetView.getWidget().hasRightClickAction() + " hasClickAction="
+									+ widgetView.getWidget().hasClickAction() + " button=" + e.getButton() + " popupTrigger="
+									+ e.isPopupTrigger());
 				}
 			}
 			else if (e.getClickCount() == 2) {
 				if (widgetView.getWidget().hasDoubleClickAction()) {
 					// Detected double-click associated with action
+					if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+						GinaMouseDiagnostics.logDispatch(widgetLabel(), "doubleClickAction", true, null);
+					}
 					widgetView.applyDoubleClickAction(makeMouseEvent(e));
+				}
+				else if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+					GinaMouseDiagnostics.logDispatch(widgetLabel(), "doubleClickAction", false, "hasDoubleClickAction=false");
 				}
 			}
 		}
