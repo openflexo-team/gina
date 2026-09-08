@@ -403,7 +403,12 @@ public class FIBEditorController extends Observable implements HasPropertyChange
 			super(new BorderLayout());
 
 			fibPanel = (JFIBView<?, ?>) controller.buildView();
-			add(fibPanel.getJComponent(), BorderLayout.CENTER);
+			// getResultingJComponent(), NOT getJComponent(): for a component that scrolls, the former wraps it in a
+			// JScrollPane, and it is IDEMPOTENT only once that wrapping exists (it recognises the JViewport parent).
+			// Adding the raw component here left the wrapping to be done later by paintFocusedAndSelected(), which
+			// REPARENTED the component out of this panel the first time focus or selection was painted - emptying the
+			// editor and making nothing focusable ever again.
+			add(fibPanel.getResultingJComponent(), BorderLayout.CENTER);
 		}
 
 		public FIBEditorController getEditorController() {
