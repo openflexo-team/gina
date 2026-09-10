@@ -95,7 +95,24 @@ public interface FIBLibrary extends FIBLibraryContainer {
 
 	public boolean save(FIBComponent component, Resource resourceToSave);
 
+	/**
+	 * Save supplied component, serializing it with supplied factory.
+	 *
+	 * <p>
+	 * Symmetric of {@link #retrieveFIBComponent(Resource, boolean, FIBModelFactory)}: a caller that had to read a component with a factory
+	 * of its own has to write it back with that same factory. The factory built by {@link #save(FIBComponent, Resource)} knows the entities
+	 * reachable from {@link FIBComponent} and nothing else, so a component whose entity lives outside that hierarchy - a
+	 * <code>FIBInspector</code>, typically - would otherwise be serialized as its upper entity, with a <code>p:modelEntity</code> attribute
+	 * standing in for what the factory could not name.
+	 */
+	public boolean save(FIBComponent component, Resource resourceToSave, FIBModelFactory factory);
+
 	public void saveComponentToStream(FIBComponent component, Resource resourceToSave, OutputStream stream);
+
+	/**
+	 * Serialize supplied component to supplied stream, with supplied factory - see {@link #save(FIBComponent, Resource, FIBModelFactory)}.
+	 */
+	public void saveComponentToStream(FIBComponent component, Resource resourceToSave, OutputStream stream, FIBModelFactory factory);
 
 	public String stringRepresentation(FIBComponent object);
 
@@ -351,10 +368,15 @@ public interface FIBLibrary extends FIBLibraryContainer {
 
 		@Override
 		public boolean save(FIBComponent component, Resource resourceToSave) {
+			return save(component, resourceToSave, null);
+		}
+
+		@Override
+		public boolean save(FIBComponent component, Resource resourceToSave, FIBModelFactory factory) {
 			LOGGER.info("Save to resourceToSave " + resourceToSave);
 			try (OutputStream out = resourceToSave.openOutputStream()) {
 				if (out != null) {
-					saveComponentToStream(component, resourceToSave, out);
+					saveComponentToStream(component, resourceToSave, out, factory);
 				}
 				else {
 					LOGGER.warning("Could not openOutStream for resource " + resourceToSave);
@@ -368,11 +390,20 @@ public interface FIBLibrary extends FIBLibraryContainer {
 
 		@Override
 		public void saveComponentToStream(FIBComponent component, Resource resourceToSave, OutputStream stream) {
+			saveComponentToStream(component, resourceToSave, stream, null);
+		}
+
+		@Override
+		public void saveComponentToStream(FIBComponent component, Resource resourceToSave, OutputStream stream, FIBModelFactory factory) {
 
 			try {
-				FIBModelFactory factory = new FIBModelFactory(resourceToSave.getContainer(), component.getCustomTypeManager());
+				// Note that the default factory knows the entities reachable from FIBComponent only: a component read with a factory
+				// declaring more than that has to be written back with that same factory, or the entities it alone knows serialize as
+				// their upper entity plus a p:modelEntity attribute
+				FIBModelFactory serializationFactory = factory != null ? factory
+						: new FIBModelFactory(resourceToSave.getContainer(), component.getCustomTypeManager());
 
-				factory.serialize(component, stream);
+				serializationFactory.serialize(component, stream);
 				LOGGER.info("Succeeded to save: " + resourceToSave);
 			} catch (Exception e) {
 				LOGGER.warning("Failed to save: " + resourceToSave + " unexpected exception: " + e.getMessage());

@@ -44,6 +44,8 @@ import java.util.List;
 
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.model.container.FIBPanel;
+import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.container.FIBTabPanel;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
@@ -268,9 +270,22 @@ public interface FIBInspector extends FIBPanel {
 			return "Inspector[" + getDataClass() + "]";
 		}
 
+		/**
+		 * The TabPanel holding the tabs of this inspector, or null when it has none.
+		 *
+		 * <p>
+		 * Searched for rather than assumed to be the first sub-component: an inspector assembled by merging - see
+		 * {@link FIBContainer#append(FIBContainer)} - may receive components in front of it, and a blind cast of the first one turned that
+		 * into a ClassCastException raised far from its cause, in whichever panel next displayed the inspector.
+		 */
 		@Override
 		public FIBTabPanel getTabPanel() {
-			return (FIBTabPanel) getSubComponents().get(0);
+			for (FIBComponent component : getSubComponents()) {
+				if (component instanceof FIBTabPanel) {
+					return (FIBTabPanel) component;
+				}
+			}
+			return null;
 		}
 
 		@Override
