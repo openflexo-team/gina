@@ -104,7 +104,7 @@ public class FIBBrowserCellRenderer<T> extends DefaultTreeCellRenderer {
 	public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row,
 			boolean hasFocus) {
 		if (widget.getWidget() != null && value instanceof BrowserCell) {
-			Object representedObject = ((BrowserCell) value).getRepresentedObject();
+			BrowserCell cell = (BrowserCell) value;
 
 			if (sel) {
 				if (widget.isLastFocusedSelectable()) {
@@ -126,9 +126,10 @@ public class FIBBrowserCellRenderer<T> extends DefaultTreeCellRenderer {
 			}
 
 			JLabel returned = (JLabel) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+			// All visual properties are cached in BrowserCell — avoids Connie evaluation on every repaint
 			if (widget.isEnabled()) {
-				if (isEnabled(representedObject)) {
-					if (widget.getWidget() != null && widget.getWidget().getTextNonSelectionColor() != null) {
+				if (cell.getCachedEnabled()) {
+					if (widget.getWidget().getTextNonSelectionColor() != null) {
 						setTextNonSelectionColor(widget.getWidget().getTextNonSelectionColor());
 					}
 				}
@@ -137,9 +138,9 @@ public class FIBBrowserCellRenderer<T> extends DefaultTreeCellRenderer {
 				}
 			}
 
+			Object representedObject = cell.getRepresentedObject();
 			Font font = getFont(representedObject);
 			if (font != null) {
-				// System.out.println("on met la fonte a " + font);
 				returned.setFont(font);
 			}
 			if (sel) {
@@ -155,9 +156,9 @@ public class FIBBrowserCellRenderer<T> extends DefaultTreeCellRenderer {
 				}
 			}
 
-			returned.setText(getLabel(representedObject));
-			returned.setIcon(getIcon(representedObject));
-			returned.setToolTipText(getTooltip(representedObject));
+			returned.setText(cell.getCachedLabel());
+			returned.setIcon(cell.getCachedIcon());
+			returned.setToolTipText(cell.getCachedTooltip());
 			return returned;
 
 		}

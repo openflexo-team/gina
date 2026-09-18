@@ -110,6 +110,8 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 	public static final String TOOLTIP_TEXT_KEY = "tooltipText";
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String VALUE_CHANGED_ACTION_KEY = "valueChangedAction";
+	@PropertyIdentifier(type = FIBLabel.Align.class)
+	public static final String ALIGNMENT_KEY = "alignment";
 
 	@Getter(value = OWNER_KEY/*, inverse = FIBTable.COLUMNS_KEY*/)
 	@CloningStrategy(StrategyType.IGNORE)
@@ -216,6 +218,17 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 	@Setter(VALUE_CHANGED_ACTION_KEY)
 	public void setValueChangedAction(DataBinding<?> valueChangedAction);
 
+	/**
+	 * Horizontal alignment of the cell content (FlatDesign tables). Defaults to {@code left}
+	 * (unchanged behaviour for existing FIBs that don't set it).
+	 */
+	@Getter(value = ALIGNMENT_KEY)
+	@XMLAttribute
+	public FIBLabel.Align getAlignment();
+
+	@Setter(ALIGNMENT_KEY)
+	public void setAlignment(FIBLabel.Align alignment);
+
 	public void revalidateBindings();
 
 	public void finalizeTableDeserialization();
@@ -254,6 +267,7 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 		private Font font;
 		private DataBinding<?> valueChangedAction;
 		private boolean showIcon = false;
+		private FIBLabel.Align alignment = FIBLabel.Align.left;
 
 		private final FIBFormatter formatter;
 
@@ -658,6 +672,20 @@ public abstract interface FIBTableColumn extends FIBModelObject {
 				valueChangedAction.setBindingName("valueChangedAction");
 			}
 			this.valueChangedAction = valueChangedAction;
+		}
+
+		@Override
+		public FIBLabel.Align getAlignment() {
+			return alignment;
+		}
+
+		@Override
+		public void setAlignment(FIBLabel.Align alignment) {
+			FIBPropertyNotification<FIBLabel.Align> notification = requireChange(ALIGNMENT_KEY, alignment);
+			if (notification != null && alignment != null) {
+				this.alignment = alignment;
+				hasChanged(notification);
+			}
 		}
 
 		@Override

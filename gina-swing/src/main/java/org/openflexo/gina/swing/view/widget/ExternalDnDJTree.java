@@ -13,6 +13,7 @@ import javax.swing.JTree;
 
 import org.openflexo.connie.expr.ExpressionEvaluator;
 import org.openflexo.connie.java.expr.JavaExpressionEvaluator;
+import org.openflexo.gina.utils.GinaMouseDiagnostics;
 
 /**
  * Swing implementation of a {@link JTree} supporting external drag&drop<br>
@@ -61,10 +62,27 @@ public class ExternalDnDJTree extends DnDJTree {
 
 		dgr.setSourceActions(dgr.getSourceActions() & ~InputEvent.BUTTON3_MASK);
 
+		if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+			// createDefaultDragGestureRecognizer registers its own MouseListener/MouseMotionListener
+			// directly on this JTree (see java.awt.dnd.DragGestureRecognizer.registerListeners()),
+			// on top of the click/right-click dispatcher installed by SwingViewFactory. Both sets
+			// of listeners see every raw mouse event on this component; sourceActions excludes
+			// BUTTON3 from actually starting a drag, but logging registration + every recognized
+			// gesture confirms this empirically instead of trusting the mask alone.
+			GinaMouseDiagnostics.logDragGesture(this, "registered",
+					"sourceActions=" + dgr.getSourceActions() + " (BUTTON3_MASK excluded=" + ((dgr.getSourceActions()
+							& InputEvent.BUTTON3_MASK) == 0) + ")");
+		}
 	}
 
 	@Override
 	public void dragGestureRecognized(DragGestureEvent dge) {
+		if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+			GinaMouseDiagnostics.logDragGesture(this, "recognized",
+					"triggerButton=" + (dge.getTriggerEvent() instanceof java.awt.event.MouseEvent
+							? ((java.awt.event.MouseEvent) dge.getTriggerEvent()).getButton() : "?") + " dragAction=" + dge
+									.getDragAction() + " origin=" + dge.getDragOrigin());
+		}
 		dgListener.dragGestureRecognized(dge);
 	}
 

@@ -135,6 +135,22 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 	}
 
+	/**
+	 * Build a localizer held in memory only: it reads from no directory and never writes one.<br>
+	 * New entries are registered in it as in any other localizer, and therefore do not reach the parent - which is what a localizer whose
+	 * storage does not exist yet needs, since the default policy (see {@link #handleNewEntry(String, Language)}) registers a missing key in
+	 * the first localizer of the chain.
+	 *
+	 * @param parent
+	 */
+	protected LocalizedDelegateImpl(LocalizedDelegate parent) {
+		this.automaticSaving = false;
+		this.parent = parent;
+		pcSupport = new PropertyChangeSupport(this);
+		localizedDirectoryResource = null;
+		_localizedDictionaries = new Hashtable<>();
+	}
+
 	@Override
 	public PropertyChangeSupport getPropertyChangeSupport() {
 		return pcSupport;
@@ -170,9 +186,21 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 	private Properties loadDictionary(Language language) {
 		Properties loadedDict = new FlexoProperties();
+		// Cached even when nothing could be read: an entry registered afterwards must land in the dictionary returned next time, not in a
+		// throwaway one
+		_localizedDictionaries.put(language, loadedDict);
+		if (localizedDirectoryResource == null) {
+			// Held in memory only
+			return loadedDict;
+		}
 		try (InputStream dict = getInputStreamForLanguage(language)) {
 			if (dict == null) {
-				logger.warning("Could not find dictionary for " + language + " in " + localizedDirectoryResource);
+				if (createsMissingDictionaryFiles()) {
+					logger.warning("Could not find dictionary for " + language + " in " + localizedDirectoryResource);
+				}
+				else {
+					logger.fine("No dictionary yet for " + language + " in " + localizedDirectoryResource);
+				}
 			}
 			else {
 				try {
@@ -181,7 +209,6 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 								"Loading dictionary for language " + language.getName() + " Dir=" + localizedDirectoryResource.toString());
 					}
 					loadedDict.load(dict);
-					_localizedDictionaries.put(language, loadedDict);
 				} catch (IOException e) {
 					if (logger.isLoggable(Level.WARNING)) {
 						logger.warning("Unable to load Dictionary Resource for Language" + language.getName());
@@ -195,11 +222,14 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	}
 
 	private InputStream getInputStreamForLanguage(Language language) {
+		if (localizedDirectoryResource == null) {
+			return null;
+		}
 		Resource dictResource = (ResourceLocator.locateResourceWithBaseLocation(localizedDirectoryResource, language.getName() + ".dict"));
 		if (dictResource != null) {
 			return dictResource.openInputStream();
 		}
-		if (localizedDirectoryResource instanceof FileResourceImpl) {
+		if (localizedDirectoryResource instanceof FileResourceImpl && createsMissingDictionaryFiles()) {
 			// Dictionary was not found, creates it from parent file
 			File newFile = new File(((FileResourceImpl) localizedDirectoryResource).getFile(), language.getName() + ".dict");
 			if (!newFile.exists()) {
@@ -218,8 +248,18 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	}
 
 	private File getDictionaryFileForLanguage(Language language) {
-		return ResourceLocator.retrieveResourceAsFile(
-				ResourceLocator.locateResourceWithBaseLocation(localizedDirectoryResource, language.getName() + ".dict"));
+		if (localizedDirectoryResource == null) {
+			// Held in memory only
+			return null;
+		}
+		Resource dictResource = ResourceLocator.locateResourceWithBaseLocation(localizedDirectoryResource, language.getName() + ".dict");
+		if (dictResource == null && localizedDirectoryResource instanceof FileResourceImpl) {
+			// Not written yet (a localizer that does not create its files on reading): this is the file to create
+			File directory = ((FileResourceImpl) localizedDirectoryResource).getFile();
+			directory.mkdirs();
+			return new File(directory, language.getName() + ".dict");
+		}
+		return ResourceLocator.retrieveResourceAsFile(dictResource);
 	}
 
 	private void saveDictionary(Language language, Properties dict) {
@@ -285,6 +325,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			}
 			dict.setProperty(key, value);
 			// saveDictionary(language, dict);
+			dictionariesChanged();
 		}
 	}
 
@@ -328,6 +369,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 				dict.remove(key);
 				// saveDictionary(language, dict);
 			}
+			dictionariesChanged();
 			// entries = null;
 			if (entries != null) {
 				entries.remove(entryToRemove);
@@ -355,6 +397,25 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	@Override
 	public boolean handleNewEntry(String key, Language language) {
 		return true;
+	}
+
+	/**
+	 * Whether a dictionary file missing from a file-based localized directory is created as soon as that dictionary is read.<br>
+	 * True by default. A localizer whose storage is managed by an owner - written only when that owner saves it - answers false: the files
+	 * are then created by the first save.
+	 *
+	 * @return
+	 */
+	protected boolean createsMissingDictionaryFiles() {
+		return true;
+	}
+
+	/**
+	 * Called whenever the contents of a dictionary of this localizer change: an entry added, removed or renamed, or a translation changed.
+	 * <br>
+	 * Does nothing by default. An owner storing this localizer uses it to know its storage is out of date.
+	 */
+	protected void dictionariesChanged() {
 	}
 
 	/*@Override
@@ -387,6 +448,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		Properties currentLanguageDict = getDictionary(language);
 		currentLanguageDict.setProperty(key, value);
 		// saveDictionary(language, currentLanguageDict);
+		dictionariesChanged();
 	}
 
 	public class Entry implements LocalizedEntry {
@@ -489,6 +551,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 				}
 				key = aNewKey;
 				entries = null;
+				dictionariesChanged();
 				getPropertyChangeSupport().firePropertyChange("key", oldKey, aNewKey);
 			}
 		}
@@ -727,7 +790,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	@Override
 	public void searchTranslation(LocalizedEntry entry) {
 		if (getParent() != null) {
-			String englishTranslation = parent.localizedForKeyAndLanguage(entry.getKey(), Language.ENGLISH, false);
+			String englishTranslation = getParent().localizedForKeyAndLanguage(entry.getKey(), Language.ENGLISH, false);
 			if (entry.getKey().equals(englishTranslation)) {
 				englishTranslation = automaticEnglishTranslation(entry.getKey());
 			}
@@ -735,7 +798,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 				entry.setEnglish(englishTranslation);
 			}
 			// System.out.println("englishTranslation=" + englishTranslation);
-			String dutchTranslation = parent.localizedForKeyAndLanguage(entry.getKey(), Language.DUTCH, false);
+			String dutchTranslation = getParent().localizedForKeyAndLanguage(entry.getKey(), Language.DUTCH, false);
 			if (entry.getKey().equals(dutchTranslation)) {
 				dutchTranslation = automaticDutchTranslation(entry.getKey());
 			}
@@ -743,7 +806,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 				entry.setDutch(dutchTranslation);
 			}
 			// System.out.println("dutchTranslation=" + dutchTranslation);
-			String frenchTranslation = parent.localizedForKeyAndLanguage(entry.getKey(), Language.FRENCH, false);
+			String frenchTranslation = getParent().localizedForKeyAndLanguage(entry.getKey(), Language.FRENCH, false);
 			if (entry.getKey().equals(frenchTranslation)) {
 				frenchTranslation = automaticFrenchTranslation(entry.getKey());
 			}
@@ -804,7 +867,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	 */
 	@Override
 	public File getLocalizedDirectory() {
-		return ResourceLocator.retrieveResourceAsFile(localizedDirectoryResource);
+		return localizedDirectoryResource != null ? ResourceLocator.retrieveResourceAsFile(localizedDirectoryResource) : null;
 	}
 
 	/*public String getParentDelegateDescription() {

@@ -76,6 +76,7 @@ import org.openflexo.gina.manager.GinaStackEvent;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBMouseEvent;
 import org.openflexo.gina.model.FIBWidget;
+import org.openflexo.gina.utils.GinaMouseDiagnostics;
 import org.openflexo.gina.view.FIBView;
 import org.openflexo.gina.view.FIBWidgetView;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
@@ -887,14 +888,27 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	 */
 	@Override
 	public void applySingleClickAction(FIBMouseEvent event) {
+		if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+			GinaMouseDiagnostics.logDispatch(String.valueOf(getWidget()), "clickAction:execute", true,
+					"binding=" + getWidget().getClickAction());
+		}
 		eventListener.setEvent(event);
 		try {
 			getWidget().getClickAction().execute(eventListener);
 		} catch (TypeMismatchException e) {
+			if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+				GinaMouseDiagnostics.logDispatchFailed(String.valueOf(getWidget()), "clickAction", e);
+			}
 			e.printStackTrace();
 		} catch (NullReferenceException e) {
+			if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+				GinaMouseDiagnostics.logDispatchFailed(String.valueOf(getWidget()), "clickAction", e);
+			}
 			e.printStackTrace();
 		} catch (ReflectiveOperationException e) {
+			if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+				GinaMouseDiagnostics.logDispatchFailed(String.valueOf(getWidget()), "clickAction", e);
+			}
 			e.printStackTrace();
 		}
 	}
@@ -907,14 +921,27 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	 */
 	@Override
 	public void applyDoubleClickAction(FIBMouseEvent event) {
+		if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+			GinaMouseDiagnostics.logDispatch(String.valueOf(getWidget()), "doubleClickAction:execute", true,
+					"binding=" + getWidget().getDoubleClickAction());
+		}
 		eventListener.setEvent(event);
 		try {
 			getWidget().getDoubleClickAction().execute(eventListener);
 		} catch (TypeMismatchException e) {
+			if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+				GinaMouseDiagnostics.logDispatchFailed(String.valueOf(getWidget()), "doubleClickAction", e);
+			}
 			e.printStackTrace();
 		} catch (NullReferenceException e) {
+			if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+				GinaMouseDiagnostics.logDispatchFailed(String.valueOf(getWidget()), "doubleClickAction", e);
+			}
 			e.printStackTrace();
 		} catch (ReflectiveOperationException e) {
+			if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+				GinaMouseDiagnostics.logDispatchFailed(String.valueOf(getWidget()), "doubleClickAction", e);
+			}
 			e.printStackTrace();
 		}
 	}
@@ -927,14 +954,27 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 	 */
 	@Override
 	public void applyRightClickAction(FIBMouseEvent event) {
+		if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+			GinaMouseDiagnostics.logDispatch(String.valueOf(getWidget()), "rightClickAction:execute", true,
+					"binding=" + getWidget().getRightClickAction());
+		}
 		eventListener.setEvent(event);
 		try {
 			getWidget().getRightClickAction().execute(eventListener);
 		} catch (TypeMismatchException e) {
+			if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+				GinaMouseDiagnostics.logDispatchFailed(String.valueOf(getWidget()), "rightClickAction", e);
+			}
 			e.printStackTrace();
 		} catch (NullReferenceException e) {
+			if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+				GinaMouseDiagnostics.logDispatchFailed(String.valueOf(getWidget()), "rightClickAction", e);
+			}
 			e.printStackTrace();
 		} catch (ReflectiveOperationException e) {
+			if (GinaMouseDiagnostics.MOUSE_DEBUG) {
+				GinaMouseDiagnostics.logDispatchFailed(String.valueOf(getWidget()), "rightClickAction", e);
+			}
 			e.printStackTrace();
 		}
 	}

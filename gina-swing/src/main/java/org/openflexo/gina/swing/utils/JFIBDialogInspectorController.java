@@ -111,12 +111,17 @@ public class JFIBDialogInspectorController extends JFIBInspectorController imple
 				// System.out.println("removeChangeListener for "+tabPanelView.getJComponent());
 			}
 
-			tabPanelView = (JFIBTabPanelView) currentInspectorView.getController().viewForComponent(currentInspector.getTabPanel());
-			tabPanelViewJComponent = tabPanelView.getJComponent();
-			if (lastInspectedTabIndex >= 0 && lastInspectedTabIndex < tabPanelViewJComponent.getTabCount()) {
-				tabPanelViewJComponent.setSelectedIndex(lastInspectedTabIndex);
+			// An inspector without a TabPanel has no selected tab to remember: getTabPanel() answers null for it, rather than failing
+			tabPanelView = currentInspector.getTabPanel() != null
+					? (JFIBTabPanelView) currentInspectorView.getController().viewForComponent(currentInspector.getTabPanel())
+					: null;
+			if (tabPanelView != null) {
+				tabPanelViewJComponent = tabPanelView.getJComponent();
+				if (lastInspectedTabIndex >= 0 && lastInspectedTabIndex < tabPanelViewJComponent.getTabCount()) {
+					tabPanelViewJComponent.setSelectedIndex(lastInspectedTabIndex);
+				}
+				tabPanelViewJComponent.addChangeListener(this);
 			}
-			tabPanelViewJComponent.addChangeListener(this);
 		}
 
 		return returned;
@@ -127,6 +132,9 @@ public class JFIBDialogInspectorController extends JFIBInspectorController imple
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
+		if (tabPanelView == null) {
+			return;
+		}
 		JTabbedPane tabPanelViewJComponent = tabPanelView.getJComponent();
 		lastInspectedTabIndex = tabPanelViewJComponent.getSelectedIndex();
 		// System.out.println("Change for index "+lastInspectedTabIndex);

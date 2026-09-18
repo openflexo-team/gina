@@ -1,0 +1,5 @@
+<Spacer width="40" height="20">
+	<Parameter name="x" value="10"/>
+	<Parameter name="y" value="10"/>
+	<Parameter name="isPaletteElement" value="true"/>
+</Spacer>

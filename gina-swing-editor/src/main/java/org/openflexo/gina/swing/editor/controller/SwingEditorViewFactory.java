@@ -65,6 +65,7 @@ import org.openflexo.gina.model.widget.FIBList;
 import org.openflexo.gina.model.widget.FIBNumber;
 import org.openflexo.gina.model.widget.FIBRadioButtonList;
 import org.openflexo.gina.model.widget.FIBReferencedComponent;
+import org.openflexo.gina.model.widget.FIBSpacer;
 import org.openflexo.gina.model.widget.FIBTable;
 import org.openflexo.gina.model.widget.FIBTextArea;
 import org.openflexo.gina.model.widget.FIBTextField;
@@ -92,6 +93,7 @@ import org.openflexo.gina.swing.editor.view.widget.JFIBEditableListWidget;
 import org.openflexo.gina.swing.editor.view.widget.JFIBEditableNumberWidget;
 import org.openflexo.gina.swing.editor.view.widget.JFIBEditableRadioButtonListWidget;
 import org.openflexo.gina.swing.editor.view.widget.JFIBEditableReferencedComponentWidget;
+import org.openflexo.gina.swing.editor.view.widget.JFIBEditableSpacerWidget;
 import org.openflexo.gina.swing.editor.view.widget.JFIBEditableTableWidget;
 import org.openflexo.gina.swing.editor.view.widget.JFIBEditableTextAreaWidget;
 import org.openflexo.gina.swing.editor.view.widget.JFIBEditableTextFieldWidget;
@@ -120,6 +122,7 @@ import org.openflexo.gina.view.widget.impl.FIBListWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBNumberWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBRadioButtonListWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBReferencedComponentWidgetImpl;
+import org.openflexo.gina.view.widget.impl.FIBSpacerWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBTableWidgetImpl;
 import org.openflexo.gina.view.widget.impl.FIBTextAreaWidgetImpl;
 
@@ -289,6 +292,11 @@ public class SwingEditorViewFactory extends SwingViewFactory {
 	public FIBReferencedComponentWidgetImpl<? extends JComponent> makeReferencedComponentWidget(FIBReferencedComponent widget,
 			FIBController controller, RuntimeContext context) {
 		return new JFIBEditableReferencedComponentWidget(widget, fibEditorController);
+	}
+
+	@Override
+	public FIBSpacerWidgetImpl<? extends JComponent> makeSpacer(FIBSpacer widget, FIBController controller, RuntimeContext context) {
+		return new JFIBEditableSpacerWidget(widget, fibEditorController);
 	}
 
 }

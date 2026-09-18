@@ -172,6 +172,26 @@ public class JFIBCustomWidget<CC extends JComponent & FIBCustomComponent<T>, T>
 			return customComponent;
 		}
 
+		/**
+		 * Forward the font to the embedded custom component. This panel is the "technology
+		 * component" the widget view applies the (cascaded) FIB font to (see
+		 * {@code FIBWidgetViewImpl.updateFont()}); a plain {@code JPanel.setFont(...)} would not
+		 * reach the nested component (e.g. the {@code JTextField} of a {@code TextFieldCustomPopup}
+		 * selector keeps its look-and-feel default font otherwise). Forwarding lets the custom
+		 * component's own {@code setFont} propagate to its sub-widgets.
+		 */
+		@Override
+		public void setFont(java.awt.Font font) {
+			super.setFont(font);
+			// May be called from the JPanel super-constructor, before fields are assigned.
+			if (customComponent != null) {
+				customComponent.setFont(font);
+			}
+			if (invalidComponentlabel != null) {
+				invalidComponentlabel.setFont(font);
+			}
+		}
+
 		protected void updateCustomComponent() {
 			removeAll();
 			if (widget.getComponent().getComponentClass() == null) {
@@ -189,6 +209,10 @@ public class JFIBCustomWidget<CC extends JComponent & FIBCustomComponent<T>, T>
 				else {
 					add(customComponent, BorderLayout.CENTER);
 					setBorder(null);
+					// Apply the already-cascaded font to a freshly (re)created custom component.
+					if (getFont() != null) {
+						customComponent.setFont(getFont());
+					}
 				}
 			}
 			revalidate();

@@ -52,6 +52,22 @@ public class JTablePanel<T> extends JPanel {
 		scrollPane.setViewportView(jTable);
 	}
 
+	/**
+	 * Forward the font to the inner {@link JXTable}. This panel is the "technology component" the
+	 * widget view applies the (cascaded) FIB font to ({@code FIBWidgetViewImpl.updateFont()}); a
+	 * plain {@code JPanel.setFont(...)} would not reach the table, so the rows would keep the
+	 * look-and-feel default font (e.g. 12pt) instead of the inspector's font. {@code DefaultTableCellRenderer}
+	 * applies {@code table.getFont()} per cell, so setting the table font is enough for the rows.
+	 */
+	@Override
+	public void setFont(java.awt.Font font) {
+		super.setFont(font);
+		// May be called from the JPanel super-constructor, before jTable is assigned.
+		if (jTable != null) {
+			jTable.setFont(font);
+		}
+	}
+
 	private JXTable makeJTable() {
 		JXTable returned = new JXTable(widget.getTableModel()) {
 
@@ -107,6 +123,11 @@ public class JTablePanel<T> extends JPanel {
 
 		if (widget.getTable().getSelectionMode() != null) {
 			returned.setSelectionMode(widget.getTable().getSelectionMode().getMode());
+		}
+
+		// Apply the already-cascaded font to a freshly (re)created table (e.g. updateTable()).
+		if (getFont() != null) {
+			returned.setFont(getFont());
 		}
 
 		// jTable.getTableHeader().setReorderingAllowed(false);
