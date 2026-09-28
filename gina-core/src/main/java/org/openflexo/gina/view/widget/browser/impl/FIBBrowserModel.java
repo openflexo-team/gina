@@ -577,13 +577,19 @@ public class FIBBrowserModel extends DefaultTreeModel {
 		}
 
 		/**
-		 * Re-cache what supplied action computes and repaint this node, LATER, even on the event dispatch thread.
+		 * Re-cache what supplied action computes and repaint this node, LATER, on the event dispatch thread - even when already on it.
 		 *
 		 * <p>
-		 * The notification that triggers this may come from inside a critical section of the model: a resource fires that it is loaded
-		 * while still holding its loading lock. Repainting the node right away revalidates the tree, which takes the AWT tree lock -
-		 * under the model's lock. Any thread holding the tree lock and waiting for that resource then deadlocks with this one (measured
-		 * 2026-09-28: the free modelling editor, loading a project). Deferred, the repaint runs once the notifying code has returned.
+		 * The notification that triggers this comes from the model, on any thread, and possibly from inside one of its critical sections:
+		 * a resource fires that it is loaded from the thread loading it, while still holding its loading lock. Measured 2026-09-28, the
+		 * free modelling editor loading a project:
+		 * <ul>
+		 * <li>from another thread, the tree model was changed concurrently with the event dispatch thread painting it
+		 * (<code>ArrayIndexOutOfBoundsException</code> in <code>VariableHeightLayoutCache.treeNodesChanged</code>);</li>
+		 * <li>on the event dispatch thread, repainting right away revalidates the tree, which takes the AWT tree lock under the model's
+		 * lock - and deadlocks with any thread holding the tree lock and waiting for that resource.</li>
+		 * </ul>
+		 * Deferred, the repaint runs on the event dispatch thread, once the notifying code has returned.
 		 */
 		private void refreshLater(Runnable recache) {
 			if (UPDATE_BROWSER_SYNCHRONOUSLY) {
@@ -634,8 +640,7 @@ public class FIBBrowserModel extends DefaultTreeModel {
 						dynamicBindingEvaluationContext) {
 					@Override
 					public void updateBrowserCell() {
-						cachedTooltip = browserElementType.getTooltipFor(getRepresentedObject());
-						nodeChanged(BrowserCell.this);
+						refreshLater(() -> cachedTooltip = browserElementType.getTooltipFor(getRepresentedObject()));
 					}
 				};
 			}
@@ -655,8 +660,8 @@ public class FIBBrowserModel extends DefaultTreeModel {
 						dynamicBindingEvaluationContext) {
 					@Override
 					public void updateBrowserCell() {
-						cachedEnabled = browserElementType.isEnabled(getRepresentedObject());
-						nodeChanged(BrowserCell.this);
+						// Typically resource.isLoaded: notified by whatever thread loads the resource
+						refreshLater(() -> cachedEnabled = browserElementType.isEnabled(getRepresentedObject()));
 					}
 				};
 			}
