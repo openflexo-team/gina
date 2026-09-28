@@ -569,12 +569,34 @@ public class FIBBrowserModel extends DefaultTreeModel {
 					@Override
 					public void updateBrowserCell() {
 						// Only re-cache the label and repaint this node — no need for a full updateSync
-						cachedLabel = browserElementType.getLabelFor(getRepresentedObject());
-						nodeChanged(BrowserCell.this);
+						refreshLater(() -> cachedLabel = browserElementType.getLabelFor(getRepresentedObject()));
 					}
 				};
 
 			}
+		}
+
+		/**
+		 * Re-cache what supplied action computes and repaint this node, LATER, even on the event dispatch thread.
+		 *
+		 * <p>
+		 * The notification that triggers this may come from inside a critical section of the model: a resource fires that it is loaded
+		 * while still holding its loading lock. Repainting the node right away revalidates the tree, which takes the AWT tree lock -
+		 * under the model's lock. Any thread holding the tree lock and waiting for that resource then deadlocks with this one (measured
+		 * 2026-09-28: the free modelling editor, loading a project). Deferred, the repaint runs once the notifying code has returned.
+		 */
+		private void refreshLater(Runnable recache) {
+			if (UPDATE_BROWSER_SYNCHRONOUSLY) {
+				recache.run();
+				nodeChanged(BrowserCell.this);
+				return;
+			}
+			SwingUtilities.invokeLater(() -> {
+				if (!isDeleted) {
+					recache.run();
+					nodeChanged(BrowserCell.this);
+				}
+			});
 		}
 
 		private void listenIconBindingValueChange(Object representedObject) {
@@ -592,8 +614,7 @@ public class FIBBrowserModel extends DefaultTreeModel {
 					@Override
 					public void updateBrowserCell() {
 						// Only re-cache the icon and repaint this node — no need for a full updateSync
-						cachedIcon = browserElementType.getIconFor(getRepresentedObject());
-						nodeChanged(BrowserCell.this);
+						refreshLater(() -> cachedIcon = browserElementType.getIconFor(getRepresentedObject()));
 					}
 				};
 			}
