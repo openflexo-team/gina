@@ -63,7 +63,7 @@ public class FlexoCollabsiblePanel extends JPanel {
 
 	private final FlexoCollabsiblePanelHeader header;
 	private final JXCollapsiblePane collabsiblePane;
-	private final String title;
+	private String title;
 	private final JComponent contents;
 
 	public FlexoCollabsiblePanel(String title, JComponent contents) {
@@ -99,6 +99,14 @@ public class FlexoCollabsiblePanel extends JPanel {
 		return title;
 	}
 
+	/**
+	 * Changes the title displayed in the header of this panel
+	 */
+	public void setTitle(String title) {
+		this.title = title;
+		header.setTitle(title);
+	}
+
 	public JComponent getContents() {
 		return contents;
 	}
@@ -120,7 +128,7 @@ public class FlexoCollabsiblePanel extends JPanel {
 			button.setBorder(BorderFactory.createEmptyBorder());
 			button.setContentAreaFilled(false);
 			button.setFocusable(false);
-			label = new JLabel("<html><font color=\"#000099\"<u>" + title + "</u></font></html>");
+			label = new JLabel(titleAsHTML(title));
 			// label.setText("<HTML>Click the <FONT color=\"#000099\"><U>link</U></FONT>" + " to go to the Java website.</HTML>");
 			label.addMouseListener(new MouseAdapter() {
 				@Override
@@ -131,6 +139,14 @@ public class FlexoCollabsiblePanel extends JPanel {
 			});
 			add(button, BorderLayout.WEST);
 			add(label, BorderLayout.CENTER);
+		}
+
+		private String titleAsHTML(String title) {
+			return "<html><font color=\"#000099\"<u>" + title + "</u></font></html>";
+		}
+
+		public void setTitle(String title) {
+			label.setText(titleAsHTML(title));
 		}
 
 		public void setCollapsed(boolean val) {
