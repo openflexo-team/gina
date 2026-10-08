@@ -127,7 +127,10 @@ public abstract interface FIBContainer extends FIBComponent {
 	 * 2. If child has a negative index, we insert before any subcomponent with a null or positive index, or a negative index that is equal
 	 * or greater than the child index<br>
 	 * 3. If the child has a positive index, we insert after all subcomponents with a negative or null index, or a positive index which is
-	 * smaller or equal to the child index
+	 * smaller or equal to the child index: on EQUAL indexes, the component already there stays first (so, when a descendant is appended
+	 * to its ancestors' contributions, the ancestor's widget comes first)<br>
+	 * Components with no index are kept in the order they are appended: the child's go after the ones this container already holds
+	 * without index, and before any positive index
 	 * 
 	 * Moreover, when inserting, we always verify that we are not inserting ourselves in a consecutive series of indexed components.
 	 * Finally, when we insert the child, we also insert all the consecutive indexed components (two components with a null index are
@@ -501,12 +504,13 @@ public abstract interface FIBContainer extends FIBComponent {
 
 					int indexInsertion;
 					if (child.getIndex() == null) {
-						indexInsertion = getSubComponents().size();
+						// After the last component with no index or a negative one: components without index keep their
+						// append order, and stay after the negative ones and before the positive ones
+						indexInsertion = 0;
 						for (int j = 0; j < getSubComponents().size(); j++) {
 							FIBComponent c = getSubComponents().get(j);
-							if (c.getIndex() == null || c.getIndex() > -1) {
-								indexInsertion = j;
-								break;
+							if (c.getIndex() == null || c.getIndex() < 0) {
+								indexInsertion = j + 1;
 							}
 						}
 					}
@@ -553,7 +557,7 @@ public abstract interface FIBContainer extends FIBComponent {
 						indexInsertion = getSubComponents().size();
 						for (int j = 0; j < getSubComponents().size(); j++) {
 							FIBComponent c = getSubComponents().get(j);
-							if (c.getIndex() != null && c.getIndex() > -1 && c.getIndex() >= child.getIndex()) {
+							if (c.getIndex() != null && c.getIndex() > -1 && c.getIndex() > child.getIndex()) {
 								indexInsertion = j;
 								if (j > 0) {
 									// This is a complex case
