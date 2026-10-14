@@ -210,12 +210,13 @@ public class JFIBTabPanelView extends FIBTabPanelViewImpl<JTabbedPane, JComponen
 	@Override
 	public void updateLanguage() {
 		super.updateLanguage();
-		int index = 0;
 		for (FIBView<?, JComponent> v : getSubViews()) {
 			if (v.getComponent() instanceof FIBTab) {
-				if (v.getTechnologyComponent().getParent() != null) {
+				// Look the tab up by its component: the tabs actually present in the JTabbedPane
+				// may differ from the sub-views (not built yet, or being rebuilt)
+				int index = getTechnologyComponent().indexOfComponent(((JFIBView<?, JComponent>) v).getResultingJComponent());
+				if (index > -1) {
 					getTechnologyComponent().setTitleAt(index, getLocalized(((FIBTab) v.getComponent()).getTitle()));
-					index++;
 				}
 			}
 			else {
