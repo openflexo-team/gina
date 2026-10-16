@@ -68,6 +68,7 @@ import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.pamela.factory.EmbeddingType;
+import org.openflexo.pamela.model.ModelProperty;
 import org.openflexo.pamela.validation.FixProposal;
 import org.openflexo.pamela.validation.ProblemIssue;
 import org.openflexo.pamela.validation.Validable;
@@ -128,6 +129,16 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 	public FIBModelFactory getModelFactory();
 
+	/**
+	 * Rebuild every {@link DataBinding} this object declares, and every one declared by the objects it embeds, by parsing again their
+	 * textual representation.
+	 * 
+	 * Unlike a revalidation, this builds the binding path elements again: a path element cannot change nature once built, so a binding
+	 * analyzed under other rules - typically a call to an FML behaviour, analyzed with the default binding factory when the component was
+	 * deserialized - stays invalid until it is parsed again with the current {@link org.openflexo.connie.BindingFactory}.
+	 */
+	public void rebuildBindings();
+
 	public boolean isValid();
 
 	public ValidationReport validate() throws InterruptedException;
@@ -171,6 +182,37 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 		public FIBModelObjectImpl() {
 			super();
+		}
+
+		@Override
+		public void rebuildBindings() {
+			rebuildDeclaredBindings(this);
+			for (FIBModelObject embedded : getEmbeddedFIBModelObjects()) {
+				embedded.rebuildBindings();
+			}
+		}
+
+		/**
+		 * Rebuild the bindings supplied object declares, found as the PAMELA properties whose type is a {@link DataBinding}
+		 */
+		private static void rebuildDeclaredBindings(FIBModelObject object) {
+			org.openflexo.pamela.model.ModelEntity<?> entity = object.getModelFactory().getModelEntityForInstance(object);
+			if (entity == null) {
+				return;
+			}
+			for (ModelProperty<?> property : entity.getPropertiesAssignableFrom(DataBinding.class)) {
+				if (property.getGetterMethod() == null) {
+					continue;
+				}
+				try {
+					Object value = property.getGetterMethod().invoke(object);
+					if (value instanceof DataBinding) {
+						((DataBinding<?>) value).rebuild();
+					}
+				} catch (ReflectiveOperationException e) {
+					LOGGER.log(Level.WARNING, "Could not rebuild binding " + property.getPropertyIdentifier() + " of " + object, e);
+				}
+			}
 		}
 
 		@Override
