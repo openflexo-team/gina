@@ -1,4 +1,5 @@
 dependencies {
+  compileOnly jsr305() // javax.annotation.Nonnull / Nullable
   implementation connie()
   implementation project(':flexographicutils')
   api project(':gina-api')
