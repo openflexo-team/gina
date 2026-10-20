@@ -30,4 +30,4 @@ Status legend: `TODO` · `IN PROGRESS` · `BLOCKED` · `DONE` · `DEFERRED`.
 
 **Test.** `gina-swing` `ClassScopeTest` (headless-safe): 4 failures before the fix, 5 successes after.
 
-**Same defect elsewhere (not fixed here).** `connie-core` carries an identical copy of `ClassScope` and `LoadedClassesInfo` (`org.openflexo.connie.type`), used by `TypeMustBeResolved` in `flexo-foundation` (the fix proposal for an unresolved type), and a test copy in `gina-swing-editor-test`. The connie copy throws the same way on Java 9+.
+**Same defect elsewhere.** `connie-core` carries a copy of `ClassScope` and `LoadedClassesInfo` (`org.openflexo.connie.type`), used by `TypeMustBeResolved`; fixed there as `CONNIE-D-2`. Removing the duplication is `CONNIE-F-1`. A test copy in `gina-swing-editor-test` still calls `ClassScope.getLoadedClasses` (empty on Java 9+).
