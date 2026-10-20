@@ -4,7 +4,7 @@ dependencies {
 
   implementation flexoUtils()
 
-  implementation group: 'org.apache.xmlgraphics', name: 'batik-codec', version: '1.13',  {
+  implementation(batikCodec()) {
        exclude group: "xml-apis", module: "xml-apis"
   }
 
