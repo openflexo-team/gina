@@ -12,10 +12,10 @@ dependencies {
   api group: 'org.swinglabs.swingx', name: 'swingx-core', version: '1.6.5-1'
 
   //api group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '2.6.1'
-  api group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.0.4'
-  api group: 'com.fifesoft', name: 'autocomplete', version: '3.3.1'
-  api group: 'com.fifesoft', name: 'rstaui', version: '3.3.1'
-  api group: 'com.fifesoft', name: 'languagesupport', version: '3.3.0'
+  api group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.6.3'
+  api group: 'com.fifesoft', name: 'autocomplete', version: '3.3.3'
+  api group: 'com.fifesoft', name: 'rstaui', version: '3.3.2'
+  api group: 'com.fifesoft', name: 'languagesupport', version: '3.4.1'
   
 }
 
