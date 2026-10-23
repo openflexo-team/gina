@@ -46,9 +46,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
-import org.openflexo.connie.type.ClassScope;
-import org.openflexo.connie.type.LoadedClassesInfo;
-import org.openflexo.connie.type.LoadedClassesInfo.ClassInfo;
+import org.openflexo.toolbox.ClassScope;
+import org.openflexo.toolbox.LoadedClassesInfo;
+import org.openflexo.toolbox.LoadedClassesInfo.ClassInfo;
 
 /**
  * Tests {@link ClassScope} and {@link LoadedClassesInfo}: the list of classes must be available on any JRE, in particular on Java 9+ where

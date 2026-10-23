@@ -48,9 +48,9 @@ import java.util.regex.PatternSyntaxException;
 
 import javax.swing.Icon;
 
-import org.openflexo.connie.type.LoadedClassesInfo;
-import org.openflexo.connie.type.LoadedClassesInfo.ClassInfo;
-import org.openflexo.connie.type.LoadedClassesInfo.PackageInfo;
+import org.openflexo.toolbox.LoadedClassesInfo;
+import org.openflexo.toolbox.LoadedClassesInfo.ClassInfo;
+import org.openflexo.toolbox.LoadedClassesInfo.PackageInfo;
 import org.openflexo.gina.utils.FIBIconLibrary;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.UtilsIconLibrary;
