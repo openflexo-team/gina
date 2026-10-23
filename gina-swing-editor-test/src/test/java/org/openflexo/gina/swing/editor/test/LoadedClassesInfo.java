@@ -54,7 +54,7 @@ import java.util.regex.PatternSyntaxException;
 
 import javax.swing.Icon;
 
-import org.openflexo.gina.swing.utils.ClassScope;
+import org.openflexo.connie.type.ClassScope;
 import org.openflexo.gina.utils.FIBIconLibrary;
 import org.openflexo.toolbox.StringUtils;
 

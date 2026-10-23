@@ -54,6 +54,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.Icon;
 
+import org.openflexo.connie.type.ClassScope;
 import org.openflexo.gina.utils.FIBIconLibrary;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 

@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
+import org.openflexo.connie.type.ClassScope;
 import org.openflexo.gina.swing.utils.LoadedClassesInfo.ClassInfo;
 
 /**
