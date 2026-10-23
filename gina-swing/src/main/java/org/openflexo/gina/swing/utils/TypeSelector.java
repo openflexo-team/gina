@@ -78,7 +78,7 @@ import org.openflexo.gina.controller.FIBController;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.widget.FIBCustom;
 import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent;
-import org.openflexo.gina.swing.utils.LoadedClassesInfo.ClassInfo;
+import org.openflexo.connie.type.LoadedClassesInfo.ClassInfo;
 import org.openflexo.gina.swing.utils.logging.FlexoLoggingViewer;
 import org.openflexo.gina.swing.view.JFIBView;
 import org.openflexo.gina.swing.view.SwingViewFactory;

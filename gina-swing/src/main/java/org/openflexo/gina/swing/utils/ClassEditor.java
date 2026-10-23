@@ -48,8 +48,9 @@ import java.util.regex.PatternSyntaxException;
 
 import javax.swing.Icon;
 
-import org.openflexo.gina.swing.utils.LoadedClassesInfo.ClassInfo;
-import org.openflexo.gina.swing.utils.LoadedClassesInfo.PackageInfo;
+import org.openflexo.connie.type.LoadedClassesInfo;
+import org.openflexo.connie.type.LoadedClassesInfo.ClassInfo;
+import org.openflexo.connie.type.LoadedClassesInfo.PackageInfo;
 import org.openflexo.gina.utils.FIBIconLibrary;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.UtilsIconLibrary;
@@ -271,6 +272,23 @@ public class ClassEditor extends PropertyChangedSupportDefaultImplementation {
 		if (selectedClassInfo != null) {
 			setFilteredClassName(selectedClassInfo.getClazz().getName());
 		}
+	}
+
+	public Icon getPackageIcon() {
+		return FIBIconLibrary.PACKAGE_ICON;
+	}
+
+	public Icon getClassIcon(ClassInfo classInfo) {
+		if (classInfo == null) {
+			return FIBIconLibrary.CLASS_ICON;
+		}
+		if (classInfo.getClazz().isEnum()) {
+			return FIBIconLibrary.ENUM_ICON;
+		}
+		if (classInfo.getClazz().isInterface()) {
+			return FIBIconLibrary.INTERFACE_ICON;
+		}
+		return FIBIconLibrary.CLASS_ICON;
 	}
 
 	public Icon getSearchIcon() {

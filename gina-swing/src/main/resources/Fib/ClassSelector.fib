@@ -41,7 +41,7 @@
 		data="data.loadedClassesInfo.ignoredPatterns" index="1"
 		constraints="twocols(expandHorizontally=true;expandVertically=true;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)"
 		visibleRowCount="3" rowHeight="18"
-		iteratorClassName="org.openflexo.gina.swing.utils.LoadedClassesInfo$IgnoredPattern"
+		iteratorClassName="org.openflexo.connie.type.LoadedClassesInfo$IgnoredPattern"
 		backgroundNonSelectionColor="255,255,255" name="FiltersTable"
 		backgroundSecondarySelectionColor="178,215,255">
 		<IconColumn id="9" data="data.filterIcon" displayTitle="false"
@@ -61,11 +61,11 @@
 		index="1" localize="true"
 		constraints="twocols(expandHorizontally=true;expandVertically=true;index=1;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=center)"
 		visibleRowCount="3" rowHeight="18" textSelectionColor="255,255,255"
-		iteratorClassName="org.openflexo.gina.swing.utils.LoadedClassesInfo$ClassInfo"
+		iteratorClassName="org.openflexo.connie.type.LoadedClassesInfo$ClassInfo"
 		backgroundSelectionColor="26,96,206" backgroundNonSelectionColor="255,255,255"
 		selected="data.selectedClassInfo" name="potentialMatches"
 		textNonSelectionColor="0,0,0" backgroundSecondarySelectionColor="173,215,255">
-		<IconColumn id="14" data="iterator.icon" displayTitle="true"
+		<IconColumn id="14" data="data.getClassIcon(iterator)" displayTitle="true"
 			title="" name="icon" columnWidth="20" resizable="false" showIcon="false" />
 		<LabelColumn id="15" data="iterator.displayableName"
 			displayTitle="true" title="class" name="label" columnWidth="50"
@@ -81,26 +81,26 @@
 		constraints="twocols(expandHorizontally=true;expandVertically=true;index=2;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=center)"
 		visibleRowCount="8" deepExploration="true" rowHeight="18"
 		textSelectionColor="255,255,255"
-		iteratorClassName="org.openflexo.gina.swing.utils.LoadedClassesInfo$ClassInfo"
+		iteratorClassName="org.openflexo.connie.type.LoadedClassesInfo$ClassInfo"
 		backgroundSelectionColor="9,80,208" backgroundNonSelectionColor="255,255,255"
 		selected="data.selectedClassInfo" name="classesBrowser"
 		textNonSelectionColor="0,0,0" rootVisible="true"
 		backgroundSecondarySelectionColor="178,215,255">
 		<Dependancy id="18" />
-		<BrowserElement id="19" icon="package.icon" filtered="true"
+		<BrowserElement id="19" icon="data.packageIcon" filtered="true"
 			visible="((!(package.isFiltered())) &amp;&amp; (package.classes.size &gt; 0))"
-			label="package.packageName" dataClassName="org.openflexo.gina.swing.utils.LoadedClassesInfo$PackageInfo"
+			label="package.packageName" dataClassName="org.openflexo.connie.type.LoadedClassesInfo$PackageInfo"
 			name="package" isEditable="false">
 			<Children id="20" name="children" data="package.classes" />
 		</BrowserElement>
 		<BrowserElement id="21" icon="data.javaIcon" label="&quot;Java Classes&quot;"
-			dataClassName="org.openflexo.gina.swing.utils.LoadedClassesInfo"
+			dataClassName="org.openflexo.connie.type.LoadedClassesInfo"
 			name="loadedClasses" isEditable="false">
 			<Children name="primitives" data="loadedClasses.primitives" />
 			<Children id="22" name="children" data="loadedClasses.packages" />
 		</BrowserElement>
-		<BrowserElement id="23" icon="class.icon" label="class.displayableName"
-			dataClassName="org.openflexo.gina.swing.utils.LoadedClassesInfo$ClassInfo"
+		<BrowserElement id="23" icon="data.getClassIcon(class)" label="class.displayableName"
+			dataClassName="org.openflexo.connie.type.LoadedClassesInfo$ClassInfo"
 			name="class" isEditable="false">
 			<Children id="24" name="children" data="class.memberClasses" />
 		</BrowserElement>
