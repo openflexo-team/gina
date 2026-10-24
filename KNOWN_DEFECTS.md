@@ -31,3 +31,11 @@ Status legend: `TODO` · `IN PROGRESS` · `BLOCKED` · `DONE` · `DEFERRED`.
 **Test.** `gina-swing` `ClassScopeTest` (headless-safe): 4 failures before the fix, 5 successes after.
 
 **Same defect elsewhere.** `connie-core` carries a copy of `ClassScope` and `LoadedClassesInfo` (`org.openflexo.connie.type`), used by `TypeMustBeResolved`; fixed there as `CONNIE-D-2`. Removing the duplication is `CONNIE-F-1`. A test copy in `gina-swing-editor-test` still calls `ClassScope.getLoadedClasses` (empty on Java 9+).
+
+### GINA-D-2 — `FIBListWidgetTest.test2InstanciateComponent` fails when the event queue is slow  ·  `DONE`
+
+**Symptom.** On Jenkins, `gina-2.4-ui-test` #29 to #32 failed on one assertion: `expected:<Robert Smith aged 39 (Male)> but was:<null>` (`FIBListWidgetTest`, the line reading the represented value of `list5`). The same class passed locally, and #33 passed on Jenkins without any change of the test.
+
+**Cause.** `JFIBListWidget.performSelect` selects the row with `SwingUtilities.invokeLater`, so the represented value is only set once the event dispatch thread has run that task. The test reads it from the JUnit thread right after `buildView()`: it passes when the event queue is fast and fails when it is not. Verified by blocking the event dispatch thread for one second before `buildView()`: the test then failed (and `test6PerfomSomeTestsWithSelection` with it).
+
+**Fix.** The test waits for the event dispatch thread (`SwingUtilities.invokeAndWait`) after the steps that select a row: the view is built, the model is changed in `test3` and `test5`. With the same one-second block and the fix, the 6 tests pass. The widget keeps its asynchronous selection: a caller on the event dispatch thread that reads the value right after `buildView()` still sees the previous one (existing behaviour, see the commit "Improve selected management in FIBList").

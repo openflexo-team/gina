@@ -42,9 +42,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.swing.SwingUtilities;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -177,6 +180,22 @@ public class FIBListWidgetTest extends FIBTestCase {
 	}
 
 	/**
+	 * The list widgets select their row with SwingUtilities.invokeLater (see JFIBListWidget.performSelect): wait for the event dispatch thread
+	 * before reading the represented value from the test thread, otherwise the result depends on how fast the event queue is processed.
+	 */
+	private static void flushEventQueue() {
+		try {
+			SwingUtilities.invokeAndWait(() -> {
+			});
+		} catch (InvocationTargetException e) {
+			throw new AssertionError(e.getCause());
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			throw new AssertionError(e);
+		}
+	}
+
+	/**
 	 * Instanciate component, while instanciating view AFTER data has been set
 	 */
 	@Test
@@ -190,6 +209,7 @@ public class FIBListWidgetTest extends FIBTestCase {
 		controller.buildView();
 
 		gcDelegate.addTab("Test2", controller);
+		flushEventQueue();
 
 		assertNotNull(controller.getRootView());
 		assertNotNull(controller.viewForComponent(listLabel1));
@@ -223,6 +243,7 @@ public class FIBListWidgetTest extends FIBTestCase {
 
 		family.setBiggestChild(family.getChildren().get(0));
 		family.getFather().setGender(Gender.Female);
+		flushEventQueue();
 		assertEquals(family.getChildren().get(0), controller.viewForWidget(list5).getRepresentedValue());
 		assertEquals(Gender.Female, controller.viewForWidget(list6).getRepresentedValue());
 	}
@@ -258,6 +279,7 @@ public class FIBListWidgetTest extends FIBTestCase {
 		assertEquals(5, w5.getTechnologyComponent().getModel().getSize());
 
 		Person junior = family.createChild();
+		flushEventQueue();
 
 		assertEquals(6, w5.getTechnologyComponent().getModel().getSize());
 
@@ -265,6 +287,7 @@ public class FIBListWidgetTest extends FIBTestCase {
 		// System.out.println("List model = " + w5.getDynamicJComponent().getModel());
 
 		family.setBiggestChild(junior);
+		flushEventQueue();
 		assertEquals(junior, controller.viewForWidget(list5).getRepresentedValue());
 		assertEquals(junior, w5.getTechnologyComponent().getSelectedValue());
 
