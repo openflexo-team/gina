@@ -38,7 +38,10 @@
 
 package org.openflexo.gina.test;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
+
+import javax.swing.SwingUtilities;
 
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -76,6 +79,25 @@ public abstract class FIBTestCase {
 	private static final Logger logger = FlexoLogger.getLogger(FIBTestCase.class.getPackage().getName());
 
 	protected static FIBModelFactory factory;
+
+	/**
+	 * Waits until the event dispatch thread has processed everything that was posted before this call.
+	 * 
+	 * Many Swing widgets update their state with <code>SwingUtilities.invokeLater</code> (for instance the selection of a list, see
+	 * <code>JFIBListWidget.performSelect()</code>): a test running on its own thread must call this method before reading the state of a widget
+	 * after the view has been built or the model changed, otherwise the result depends on how fast the event queue is processed.
+	 */
+	protected static void flushEventQueue() {
+		try {
+			SwingUtilities.invokeAndWait(() -> {
+			});
+		} catch (InvocationTargetException e) {
+			throw new AssertionError(e.getCause());
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			throw new AssertionError(e);
+		}
+	}
 
 	@BeforeClass
 	public static void setUpClass() {

@@ -42,12 +42,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javax.swing.SwingUtilities;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -177,22 +174,6 @@ public class FIBListWidgetTest extends FIBTestCase {
 		component.addToSubComponents(list7, new TwoColsLayoutConstraints(TwoColsLayoutLocation.right, false, false));
 		assertTrue(list7.getList().isValid());
 
-	}
-
-	/**
-	 * The list widgets select their row with SwingUtilities.invokeLater (see JFIBListWidget.performSelect): wait for the event dispatch thread
-	 * before reading the represented value from the test thread, otherwise the result depends on how fast the event queue is processed.
-	 */
-	private static void flushEventQueue() {
-		try {
-			SwingUtilities.invokeAndWait(() -> {
-			});
-		} catch (InvocationTargetException e) {
-			throw new AssertionError(e.getCause());
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-			throw new AssertionError(e);
-		}
 	}
 
 	/**
