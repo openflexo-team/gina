@@ -10,13 +10,13 @@ dependencies {
   }
 
   api gson()
-  api group: 'org.swinglabs.swingx', name: 'swingx-core', version: '1.6.5-1'
+  api 'org.swinglabs.swingx:swingx-core:1.6.5-1'
 
   //api group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '2.6.1'
-  api group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.6.3'
-  api group: 'com.fifesoft', name: 'autocomplete', version: '3.3.3'
-  api group: 'com.fifesoft', name: 'rstaui', version: '3.3.2'
-  api group: 'com.fifesoft', name: 'languagesupport', version: '3.4.1'
+  api 'com.fifesoft:rsyntaxtextarea:3.6.3'
+  api 'com.fifesoft:autocomplete:3.3.3'
+  api 'com.fifesoft:rstaui:3.3.2'
+  api 'com.fifesoft:languagesupport:3.4.1'
   
 }
 

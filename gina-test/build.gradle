@@ -1,4 +1,4 @@
 dependencies {
   api project(':gina-api')
-  api group: 'junit', name: 'junit', version: '4.13.2'
+  api 'junit:junit:4.13.2'
 }
