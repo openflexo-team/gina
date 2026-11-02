@@ -219,8 +219,8 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 
 	@SuppressWarnings("serial")
 	public class FIBMultipleValueModelImpl extends AbstractListModel<I> implements FIBMultipleValueModel<I> {
-		private List<I> list = null;
-		private I[] array = null;
+		private volatile List<I> list = null;
+		private volatile I[] array = null;
 
 		protected FIBMultipleValueModelImpl() {
 			super();
@@ -234,8 +234,10 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 				return;
 			}
 
-			list = null;
-			array = null;
+			// The contents are computed in local variables, then published at once: update() may run on another thread than the one
+			// reading the model (the event dispatch thread), which must never see the fields cleared (GINA-D-4)
+			List<I> list = null;
+			I[] array = null;
 
 			if (getWidget() != null && getWidget().getList() != null && getWidget().getList().isValid()) {
 
@@ -354,15 +356,20 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 				}
 			}
 
+			this.list = list;
+			this.array = array;
 			fireContentsChanged(this, 0, getSize());
 
 		}
 
 		@Override
 		public int getSize() {
+			// Read each field once: another thread may publish new contents meanwhile (GINA-D-4)
+			List<I> list = this.list;
 			if (list != null) {
 				return list.size();
 			}
+			I[] array = this.array;
 			if (array != null) {
 				return array.length;
 			}
@@ -371,9 +378,11 @@ public abstract class FIBMultipleValueWidgetImpl<M extends FIBMultipleValues, C,
 
 		@Override
 		public I getElementAt(int index) {
-			if (list != null && index >= 0 && index < list.size()) {
-				return list.get(index);
+			List<I> list = this.list;
+			if (list != null) {
+				return index >= 0 && index < list.size() ? list.get(index) : null;
 			}
+			I[] array = this.array;
 			if (array != null && index >= 0 && index < array.length) {
 				return array[index];
 			}

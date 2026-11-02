@@ -39,3 +39,103 @@ Status legend: `TODO` · `IN PROGRESS` · `BLOCKED` · `DONE` · `DEFERRED`.
 **Cause.** `JFIBListWidget.performSelect` selects the row with `SwingUtilities.invokeLater`, so the represented value is only set once the event dispatch thread has run that task. The test reads it from the JUnit thread right after `buildView()`: it passes when the event queue is fast and fails when it is not. Verified by blocking the event dispatch thread for one second before `buildView()`: the test then failed (and `test6PerfomSomeTestsWithSelection` with it).
 
 **Fix.** The test waits for the event dispatch thread (`flushEventQueue()`, now a method of `FIBTestCase` that every widget test can call) after the steps that select a row: the view is built, the model is changed in `test3` and `test5`. The other UI tests of `gina-swing` (77 tests) were run with the event dispatch thread kept busy (40 and 100 ms): none failed, and the same simulation makes the original `FIBListWidgetTest` fail, so this was the only test depending on the timing. With the same one-second block and the fix, the 6 tests pass. The widget keeps its asynchronous selection: a caller on the event dispatch thread that reads the value right after `buildView()` still sees the previous one (existing behaviour, see the commit "Improve selected management in FIBList").
+
+## Browser
+
+### GINA-D-3 — A browser cell sometimes shows no children although its object has some  ·  `DONE`
+
+**Symptom.** In the slide browser of the PowerPoint technology adapter, a text box ("Market drivers", slide 3 of
+`CycloCity-Company-Presentation.pptx`) was sometimes shown as a leaf, without the 4 paragraphs that its inspector listed;
+in other runs of the application they were shown. Not reproducible on demand.
+
+**Cause (verified).** Two defects of `FIBBrowserModel` / `FIBBrowserElementType` combined:
+- `FIBBrowserElementType` evaluated every binding of an element (children, label, icon, visibility…) on itself, after
+  storing the object in a field (`setIteratorObject`). The element type is shared by all the cells of its element, and the
+  bindings are evaluated from the event dispatch thread and from the threads notifying changes of the model: two
+  evaluations at the same time could evaluate one object with the other's (an object without children, here). The
+  listener of a single children binding also observed it in the shared element type rather than in the context of its
+  cell. Measured: 4 threads evaluating the children and label of two objects, 5139 wrong results of 8000.
+- A `BrowserCell` whose children are found empty when it is created is marked loaded and stays a leaf: its parent only
+  updates again the cells that are not loaded yet, and a binding listener only fires when the list changes. One wrong
+  evaluation at creation was therefore permanent.
+
+**Fix.**
+- Each evaluation runs in a context of its own (`FIBBrowserElementType.ObjectContext`, holding the object); the shared
+  iterator object is gone, and the listeners of a cell observe in the context of the cell. The cast of the children is
+  still evaluated in its `CastFunction`, which gives `child` and delegates the other variables to the context of the
+  object (a first version evaluated it in that context, where `child` does not exist: every cast threw a
+  `NullReferenceException`, e.g. `child.rootFolder` in the resource browser at start-up).
+- When a cell is updated, its loaded children without children look them up again, cheaply: a cell is only updated when
+  children appear (`BrowserCell.updateIfChildrenAppeared`), so that leaves do not cause the repaints the loaded state
+  was avoiding.
+
+**Test.** `gina-swing` `FIBBrowserLeafCellTest` (UI test): the first two checks fail on the former code (a cell staying
+without its new child; 5139 mixed evaluations) and pass after the fix; a third one checks the cast of the children (the
+child, and a variable of the component), and fails on the first version of the fix.
+
+### GINA-D-5 — A browser chooses the element of a super type for some objects, depending on the run  ·  `DONE`
+
+**Symptom.** In the slide browser of the PowerPoint technology adapter, the text boxes sometimes showed no paragraphs
+(the remaining cause of the symptom of GINA-D-3, still seen after its fix). Inspected in the running application with
+a read-only agent: the text boxes (`PowerpointTextBox`) had the element `shape`, without children, instead of
+`textShape`, while the auto-shapes had `textShape`.
+
+**Cause (verified).** `FIBBrowser.elementForObject` / `elementForType` used `TypeUtils.objectForClass` (connie) on
+the table of the declared types, with caching: the classes met during a lookup were stored in that same table. The
+table of the running application held `PowerpointTextShapeImpl -> shape` and `PowerpointSimpleShapeImpl -> shape`. Such
+cached implementation classes then compete with the declared interfaces: a class whose super class is cached and whose
+interface is declared has two direct matches, and `objectForClass` returns "the first" of a `HashMap` keyed by
+classes, whose order changes from one run to the next. Hence `PowerpointTextBox$$Pamela -> shape`.
+
+**Fix.** The browser no longer writes into the table of its declared types. It looks up the most specialized declared
+type of the class (assignable from it, and not a super type of another candidate; among unrelated ones, the element
+declared first wins), and caches the result in a table of its own, cleared when the elements change.
+
+**Test.** `gina-swing` `BrowserElementLookupTest` (headless): six hierarchies shaped like the PAMELA classes, a picture
+looked up before a text box; fails on the former code (twice out of two runs, `shape0` instead of `textShape0`),
+passes after the fix.
+
+**Same defect elsewhere.** `TypeUtils.objectForClass` with caching is also used by `InspectorGroup.inspectorForClass`:
+an inspector may be chosen the same way. Not fixed here.
+
+### GINA-D-6 — A browser node misses children added while it was being updated  ·  `DONE`
+
+**Symptom.** In the resource browser of Openflexo, the folder `PPT/Business` of the PowerPoint test resource center
+showed 6 or 7 of its 8 presentations, depending on the run (PPTX-D-3 of openflexo-pptx). Inspected in the running
+application with a read-only agent: the 8 resources were registered everywhere (resource center, its folder, the
+repositories of the technology adapter, the resource manager), and the element of the `Business` node gave 8 children,
+but the node had 6: the last two registered were missing.
+
+**Cause (verified).** `BrowserCell.update()` dropped a request when an update of the cell was running (`isUpdating`) or
+already pending (`updateRequested`). The resources are registered by the thread scanning the resource center, each
+registration notifying the folder; the update running or pending on the event dispatch thread may have read the
+children before the last registrations, whose notifications were then dropped.
+
+**Fix.** A request arriving while an update is running or pending is recorded (`updateAgain`, recursively or not) and
+the cell is updated again once that update ends. The flags are guarded by a lock, as the requests come from any thread.
+
+**Test.** `gina-swing` `FIBBrowserLeafCellTest.test5ChangeNotifiedDuringAnUpdateIsNotLost` (UI test): a node adds and
+notifies a child while its children are being read; fails on the former code (2 children instead of 3), passes after.
+
+## Lists
+
+### GINA-D-4 — A list widget sometimes throws a `NullPointerException` while it is painted or selected  ·  `DONE`
+
+**Symptom.** At start-up of Openflexo (2026-11-02), on the event dispatch thread:
+
+    java.lang.NullPointerException: Cannot invoke "java.util.List.get(int)" because "this.list" is null
+        at org.openflexo.gina.view.widget.impl.FIBMultipleValueWidgetImpl$FIBMultipleValueModelImpl.getElementAt(FIBMultipleValueWidgetImpl.java:375)
+        at javax.swing.plaf.basic.BasicListUI.updateLayoutState(BasicListUI.java:1443)
+        ...
+        at org.openflexo.gina.swing.view.widget.JFIBListWidget$1.run(JFIBListWidget.java:257)
+
+**Cause (verified).** `FIBMultipleValueModelImpl.update()` cleared its `list` and `array` fields, then computed them again.
+It runs on the thread notifying a change of the list binding, while the event dispatch thread reads the model:
+`getElementAt` tested `list != null`, then read it again, cleared meanwhile. Measured: one thread updating the model
+20000 times while three threads read it, 215610 failed reads (exceptions or null elements).
+
+**Fix.** `update()` computes the contents in local variables and publishes them at once, in `volatile` fields;
+`getSize` and `getElementAt` read each field once.
+
+**Test.** `gina-swing` `FIBListModelConcurrencyTest` (UI test): fails on the former code, passes after the fix.
+

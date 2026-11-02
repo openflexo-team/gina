@@ -182,9 +182,9 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			return "???" + object.toString();
 		}
 		if (browserElementDefinition.getLabel().isSet()) {
-			setIteratorObject(object);
+			ObjectContext context = new ObjectContext(object);
 			try {
-				return browserElementDefinition.getLabel().getBindingValue(this);
+				return browserElementDefinition.getLabel().getBindingValue(context);
 			} catch (NullReferenceException e) {
 				// Silently escape
 			} catch (Exception e) {
@@ -200,9 +200,9 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			return "???" + object.toString();
 		}
 		if (browserElementDefinition.getTooltip().isSet()) {
-			setIteratorObject(object);
+			ObjectContext context = new ObjectContext(object);
 			try {
-				return browserElementDefinition.getTooltip().getBindingValue(this);
+				return browserElementDefinition.getTooltip().getBindingValue(context);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -215,10 +215,10 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			return null;
 		}
 		if (browserElementDefinition.getIcon().isSet()) {
-			setIteratorObject(object);
+			ObjectContext context = new ObjectContext(object);
 			Object returned = null;
 			try {
-				returned = browserElementDefinition.getIcon().getBindingValue(this);
+				returned = browserElementDefinition.getIcon().getBindingValue(context);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -237,10 +237,10 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			return false;
 		}
 		if (browserElementDefinition.getEnabled().isSet()) {
-			setIteratorObject(object);
+			ObjectContext context = new ObjectContext(object);
 			Object enabledValue = null;
 			try {
-				enabledValue = browserElementDefinition.getEnabled().getBindingValue(this);
+				enabledValue = browserElementDefinition.getEnabled().getBindingValue(context);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -262,9 +262,9 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			return false;
 		}
 		if (browserElementDefinition.getVisible().isSet()) {
-			setIteratorObject(object);
+			ObjectContext context = new ObjectContext(object);
 			try {
-				Boolean returned = browserElementDefinition.getVisible().getBindingValue(this);
+				Boolean returned = browserElementDefinition.getVisible().getBindingValue(context);
 				if (returned != null) {
 					return returned;
 				}
@@ -305,11 +305,11 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 
 	protected Object getChildrenFor(FIBBrowserElementChildren children, final Object object) {
 		if (children.getData().isSet()) {
-			setIteratorObject(object);
+			ObjectContext context = new ObjectContext(object);
 			if (children.getVisible().isSet()) {
 				boolean visible;
 				try {
-					Boolean bindingValue = children.getVisible().getBindingValue(this);
+					Boolean bindingValue = children.getVisible().getBindingValue(context);
 					visible = bindingValue != null ? bindingValue : false;
 				} catch (Exception e) {
 					visible = true;
@@ -321,12 +321,12 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			}
 			Object result = null;
 			try {
-				result = children.getData().getBindingValue(this);
+				result = children.getData().getBindingValue(context);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			if (children.getCast().isSet()) {
-				return new CastFunction(children).apply(result);
+				return new CastFunction(children, context).apply(result);
 			}
 			return result;
 		}
@@ -337,11 +337,11 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 
 	protected List<?> getChildrenListFor(final FIBBrowserElementChildren children, final Object object) {
 		if (children.getData().isSet() && children.isMultipleAccess()) {
-			setIteratorObject(object);
+			ObjectContext context = new ObjectContext(object);
 			if (children.getVisible().isSet()) {
 				boolean visible;
 				try {
-					Boolean bindingValue = children.getVisible().getBindingValue(this);
+					Boolean bindingValue = children.getVisible().getBindingValue(context);
 					visible = bindingValue != null ? bindingValue : false;
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -354,7 +354,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			}
 			Object bindingValue = null;
 			try {
-				bindingValue = children.getData().getBindingValue(this);
+				bindingValue = children.getData().getBindingValue(context);
 			} catch (NullReferenceException e) {
 				// Silently escape
 			} catch (Exception e) {
@@ -362,7 +362,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 			}
 			List<?> list = ToolBox.getListFromIterable(bindingValue);
 			if (list != null && children.getCast().isSet()) {
-				list = Lists.transform(list, new CastFunction(children));
+				list = Lists.transform(list, new CastFunction(children, context));
 				List returned = list;
 				// Remove all occurences of null (caused by cast)
 				/*while (list.contains(null)) {
@@ -393,11 +393,11 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 				&& getBrowserElement().getEditableLabel().isSettable();
 	}
 
-	public synchronized String getEditableLabelFor(final Object object) {
+	public String getEditableLabelFor(final Object object) {
 		if (isLabelEditable()) {
-			setIteratorObject(object);
+			ObjectContext context = new ObjectContext(object);
 			try {
-				return browserElementDefinition.getEditableLabel().getBindingValue(this);
+				return browserElementDefinition.getEditableLabel().getBindingValue(context);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -405,41 +405,53 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 		return object.toString();
 	}
 
-	public synchronized void setEditableLabelFor(final Object object, String value) {
+	public void setEditableLabelFor(final Object object, String value) {
 		if (isLabelEditable()) {
-			setIteratorObject(object);
+			ObjectContext context = new ObjectContext(object);
 			try {
-				browserElementDefinition.getEditableLabel().setBindingValue(value, this);
+				browserElementDefinition.getEditableLabel().setBindingValue(value, context);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	protected Object iteratorObject;
+	/**
+	 * The context in which the bindings of this element are evaluated for one object (the object represented by a cell of the browser).
+	 * <br>
+	 * Each evaluation creates its own context: the element type is shared by all the cells of the browser representing objects of this
+	 * element, and possibly by several threads (the event dispatch thread, and the threads notifying changes of the model), so that it
+	 * must not hold the object being evaluated (GINA-D-3).
+	 */
+	private final class ObjectContext implements BindingEvaluationContext {
 
-	private void setIteratorObject(Object iteratorObject) {
-		Object oldIteratorObject = this.iteratorObject;
-		if (iteratorObject != oldIteratorObject) {
-			this.iteratorObject = iteratorObject;
-			// Sylvain:
-			// This is not necessary anymore to fire this, since we will not track the modification of
-			// a variable which is intrinsically temporary. Firing this causes huge performance issues
-			// getPropertyChangeSupport().firePropertyChange(browserElementDefinition.getName(), oldIteratorObject, iteratorObject);
+		private final Object object;
+
+		private ObjectContext(Object object) {
+			this.object = object;
+		}
+
+		@Override
+		public ExpressionEvaluator getEvaluator() {
+			return new JavaExpressionEvaluator(this);
+		}
+
+		@Override
+		public Object getValue(BindingVariable variable) {
+			if (variable.getVariableName().equals(browserElementDefinition.getName()) || variable.getVariableName().equals("object")) {
+				return object;
+			}
+			return FIBBrowserElementType.this.getValue(variable);
 		}
 	}
 
+	/**
+	 * Return the value of a variable which does not depend on the represented object (the variables of the browser and of its
+	 * component). The represented object is only known by an {@link ObjectContext}.
+	 */
 	@Override
-	public synchronized Object getValue(BindingVariable variable) {
-		if (variable.getVariableName().equals(browserElementDefinition.getName())) {
-			return iteratorObject;
-		}
-		else if (variable.getVariableName().equals("object")) {
-			return iteratorObject;
-		}
-		else {
-			return getBrowserModel().getWidget().getValue(variable);
-		}
+	public Object getValue(BindingVariable variable) {
+		return getBrowserModel().getWidget().getValue(variable);
 	}
 
 	public FIBBrowserElement getBrowserElement() {
@@ -448,9 +460,9 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 
 	public Font getFont(final Object object) {
 		if (browserElementDefinition.getDynamicFont().isSet()) {
-			setIteratorObject(object);
+			ObjectContext context = new ObjectContext(object);
 			try {
-				return browserElementDefinition.getDynamicFont().getBindingValue(this);
+				return browserElementDefinition.getDynamicFont().getBindingValue(context);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
@@ -466,9 +478,9 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 
 	public Color getSelectedColor(final Object object) {
 		if (browserElementDefinition.getSelectedDynamicColor().isSet()) {
-			setIteratorObject(object);
+			ObjectContext context = new ObjectContext(object);
 			try {
-				return browserElementDefinition.getSelectedDynamicColor().getBindingValue(this);
+				return browserElementDefinition.getSelectedDynamicColor().getBindingValue(context);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
@@ -481,9 +493,9 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 
 	public Color getNonSelectedColor(final Object object) {
 		if (browserElementDefinition.getNonSelectedDynamicColor().isSet()) {
-			setIteratorObject(object);
+			ObjectContext context = new ObjectContext(object);
 			try {
-				return browserElementDefinition.getNonSelectedDynamicColor().getBindingValue(this);
+				return browserElementDefinition.getNonSelectedDynamicColor().getBindingValue(context);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
@@ -508,13 +520,15 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 
 	private final class CastFunction implements Function<Object, Object>, BindingEvaluationContext {
 		private final FIBBrowserElementChildren children;
+		private final ObjectContext context;
 
 		private Object child;
 
 		private boolean bindingWasForceRevalidated = false;
 
-		private CastFunction(FIBBrowserElementChildren children) {
+		private CastFunction(FIBBrowserElementChildren children, ObjectContext context) {
 			this.children = children;
+			this.context = context;
 		}
 
 		@Override
@@ -535,6 +549,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 				}
 				Object result = null;
 				try {
+					// Evaluated in this function, which gives the child and delegates the other variables to the context of the object
 					result = children.getCast().getBindingValue(this);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -551,7 +566,7 @@ public class FIBBrowserElementType implements HasPropertyChangeSupport, BindingE
 				return child;
 			}
 			else {
-				return FIBBrowserElementType.this.getValue(variable);
+				return context.getValue(variable);
 			}
 		}
 	}

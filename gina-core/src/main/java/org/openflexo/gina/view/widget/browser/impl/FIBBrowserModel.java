@@ -446,9 +446,6 @@ public class FIBBrowserModel extends DefaultTreeModel {
 			else {
 				childrenDataBindingValueChangeListeners = new HashMap<>();
 			}
-			// This is really important to this now
-			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
-			browserElementType.getChildrenFor(representedObject);
 			if (browserElementType.getBrowserElement() != null) {
 				for (final FIBBrowserElementChildren children : browserElementType.getBrowserElement().getChildren()) {
 					if (children.getData().isValid()) {
@@ -468,10 +465,6 @@ public class FIBBrowserModel extends DefaultTreeModel {
 											+ " bindingValueChanged() detected for data (as list) of children " + children.getName()
 											+ " of " + browserElementType + " " + children.getData() + " with newValue=" + newValue
 											+ " source=" + source);*/
-									if (source == browserElementType) {
-										// Ignore setIteratorObject() notification
-										return;
-									}
 									if (!isDeleted) {
 										BrowserCell.this.update(true);
 									}
@@ -479,7 +472,7 @@ public class FIBBrowserModel extends DefaultTreeModel {
 							};
 						}
 						else {
-							l = new BrowserCellBindingValueChangeListener<>(children.getData(), browserElementType);
+							l = new BrowserCellBindingValueChangeListener<>(children.getData(), dynamicBindingEvaluationContext);
 						}
 						childrenDataBindingValueChangeListeners.put(children, l);
 					}
@@ -498,9 +491,6 @@ public class FIBBrowserModel extends DefaultTreeModel {
 			else {
 				childrenCastBindingValueChangeListeners = new HashMap<>();
 			}
-			// This is really important to this now
-			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
-			browserElementType.getChildrenFor(representedObject);
 			if (browserElementType.getBrowserElement() != null) {
 				for (final FIBBrowserElementChildren children : browserElementType.getBrowserElement().getChildren()) {
 					if (children.getCast().isValid()) {
@@ -530,9 +520,6 @@ public class FIBBrowserModel extends DefaultTreeModel {
 				childrenVisibleBindingValueChangeListeners = new HashMap<>();
 			}
 
-			// This is really important to this now
-			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
-			browserElementType.getChildrenFor(representedObject);
 
 			if (browserElementType.getBrowserElement() != null) {
 				for (final FIBBrowserElementChildren children : browserElementType.getBrowserElement().getChildren()) {
@@ -557,8 +544,6 @@ public class FIBBrowserModel extends DefaultTreeModel {
 				labelBindingValueChangeListener.delete();
 			}
 
-			// This is really important to this now
-			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
 			cachedLabel = browserElementType.getLabelFor(representedObject);
 
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getLabel().isValid()) {
@@ -610,8 +595,6 @@ public class FIBBrowserModel extends DefaultTreeModel {
 				iconBindingValueChangeListener.stopObserving();
 				iconBindingValueChangeListener.delete();
 			}
-			// This is really important to this now
-			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
 			cachedIcon = browserElementType.getIconFor(representedObject);
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getIcon().isValid()) {
 				iconBindingValueChangeListener = new BrowserCellBindingValueChangeListener<Icon>(
@@ -631,8 +614,6 @@ public class FIBBrowserModel extends DefaultTreeModel {
 				tooltipBindingValueChangeListener.stopObserving();
 				tooltipBindingValueChangeListener.delete();
 			}
-			// This is really important to this now
-			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
 			cachedTooltip = browserElementType.getTooltipFor(representedObject);
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getTooltip().isValid()) {
 				tooltipBindingValueChangeListener = new BrowserCellBindingValueChangeListener<String>(
@@ -651,8 +632,6 @@ public class FIBBrowserModel extends DefaultTreeModel {
 				enabledBindingValueChangeListener.stopObserving();
 				enabledBindingValueChangeListener.delete();
 			}
-			// This is really important to this now
-			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
 			cachedEnabled = browserElementType.isEnabled(representedObject);
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getEnabled().isValid()) {
 				enabledBindingValueChangeListener = new BrowserCellBindingValueChangeListener<Boolean>(
@@ -672,9 +651,6 @@ public class FIBBrowserModel extends DefaultTreeModel {
 				visibleBindingValueChangeListener.stopObserving();
 				visibleBindingValueChangeListener.delete();
 			}
-			// This is really important to this now
-			// This will set the representedObject as iteratorObject, allowing to perform a correct observing
-			browserElementType.isVisible(representedObject);
 			if (browserElementType.getBrowserElement() != null && browserElementType.getBrowserElement().getVisible().isValid()) {
 				visibleBindingValueChangeListener = new BrowserCellBindingValueChangeListener<>(
 						browserElementType.getBrowserElement().getVisible(), /* browserElementType */
@@ -728,8 +704,7 @@ public class FIBBrowserModel extends DefaultTreeModel {
 		/**
 		 * Specific implementation of {@link BindingPathChangeListener} for BrowserCell<br>
 		 * 
-		 * The main difficulty is caused by the fact that iterator object is really dynamic<br>
-		 * To efficiently observe modifications of values, we should here ignore the setIteratorObject() calls
+		 * It observes a binding in the context dedicated to its cell, which holds the represented object
 		 * 
 		 * @author sylvain
 		 * 
@@ -742,20 +717,7 @@ public class FIBBrowserModel extends DefaultTreeModel {
 			}
 
 			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getSource() == browserElementType) {
-					// Ignore setIteratorObject() notification
-					return;
-				}
-				super.propertyChange(evt);
-			}
-
-			@Override
 			public void bindingValueChanged(Object source, T newValue) {
-				if (source == browserElementType) {
-					// Ignore setIteratorObject() notification
-					return;
-				}
 				if (!isDeleted) {
 					updateBrowserCell();
 				}
@@ -789,6 +751,17 @@ public class FIBBrowserModel extends DefaultTreeModel {
 
 		public boolean isLoaded() {
 			return loaded;
+		}
+
+		/**
+		 * Update this cell when it has no children yet while its element now gives some: a cell is created as a leaf when its children
+		 * are found empty, and nothing else would look them up again (GINA-D-3)
+		 */
+		private void updateIfChildrenAppeared() {
+			if (!isDeleted && getChildCount() == 0 && browserElementType != null
+					&& !browserElementType.getChildrenFor(getRepresentedObject()).isEmpty()) {
+				update(false);
+			}
 		}
 
 		/*@Override
@@ -928,32 +901,63 @@ public class FIBBrowserModel extends DefaultTreeModel {
 			isDeleted = true;
 		}
 
+		private final Object updateLock = new Object();
 		private boolean updateRequested = false;
+		private boolean isUpdating;
+
+		/**
+		 * Set when an update is asked while another one is running or pending: that one may have read the children before the change
+		 * that asks for the new update, which must therefore run after it, not be dropped (GINA-D-6)
+		 */
+		private boolean updateAgain;
+		private boolean updateAgainRecursively;
 
 		public void update(boolean recursively) {
-			if (isUpdating) {
-				return;
+			synchronized (updateLock) {
+				if (isUpdating || updateRequested) {
+					updateAgain = true;
+					updateAgainRecursively |= recursively;
+					return;
+				}
+				updateRequested = true;
 			}
 
 			if (SwingUtilities.isEventDispatchThread() || UPDATE_BROWSER_SYNCHRONOUSLY) {
-				if (!updateRequested) {
-					updateRequested = true;
-					updateSync(recursively);
-				}
+				updateSync(recursively);
 			}
-			else if (!updateRequested) {
-				updateRequested = true;
+			else {
 				SwingUtilities.invokeLater(() -> updateSync(recursively));
 			}
 		}
 
-		private boolean isUpdating;
+		/**
+		 * Run the update asked while the previous one was running or pending, if any (GINA-D-6)
+		 */
+		private void updateAgainWhenRequested() {
+			boolean recursively;
+			synchronized (updateLock) {
+				if (!updateAgain || isDeleted) {
+					return;
+				}
+				recursively = updateAgainRecursively;
+				updateAgain = false;
+				updateAgainRecursively = false;
+			}
+			if (UPDATE_BROWSER_SYNCHRONOUSLY) {
+				update(recursively);
+			}
+			else {
+				SwingUtilities.invokeLater(() -> update(recursively));
+			}
+		}
 
 		private void updateSync(boolean recursively) {
 
 			try {
 
-				isUpdating = true;
+				synchronized (updateLock) {
+					isUpdating = true;
+				}
 				loaded = true;
 
 				// During exploration of all exhaustive contents, in order not no enter in an infinite loop
@@ -988,6 +992,7 @@ public class FIBBrowserModel extends DefaultTreeModel {
 				List<TreeNode> removedChildren = null;
 				List<BrowserCell> newChildren = null;
 				List<BrowserCell> cellsToForceUpdate = null;
+				List<BrowserCell> leavesToCheck = null;
 
 				if (children == null) {
 					oldChildren = Collections.emptyList();
@@ -1039,6 +1044,14 @@ public class FIBBrowserModel extends DefaultTreeModel {
 											// causes an O(n²) cascade: every existing child is re-updated,
 											// each firing nodeChanged which repaints all visible rows.
 											cellsToForceUpdate.add(cell);
+										}
+										else if (cell.isLoaded() && cell.getChildCount() == 0) {
+											// A cell found without children is not frozen as a leaf: its children are looked up again,
+											// cheaply, and the cell is only updated when some appear (GINA-D-3)
+											if (leavesToCheck == null) {
+												leavesToCheck = new ArrayList<>();
+											}
+											leavesToCheck.add(cell);
 										}
 										index = children.indexOf(cell) + 1;
 									}
@@ -1202,6 +1215,12 @@ public class FIBBrowserModel extends DefaultTreeModel {
 
 				}
 
+				if (leavesToCheck != null) {
+					for (BrowserCell cell : leavesToCheck) {
+						cell.updateIfChildrenAppeared();
+					}
+				}
+
 				if (cellsToForceUpdate != null) {
 					for (BrowserCell cell : cellsToForceUpdate) {
 						if (cell != this) {
@@ -1212,8 +1231,11 @@ public class FIBBrowserModel extends DefaultTreeModel {
 				}
 
 			} finally {
-				updateRequested = false;
-				isUpdating = false;
+				synchronized (updateLock) {
+					updateRequested = false;
+					isUpdating = false;
+				}
+				updateAgainWhenRequested();
 			}
 		}
 

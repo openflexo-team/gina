@@ -43,9 +43,12 @@ import java.awt.Color;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 import javax.swing.UIManager;
@@ -324,10 +327,20 @@ public interface FIBBrowser extends FIBWidget {
 
 		private Type iteratorType;
 
+		/**
+		 * The elements declared for each class, as given by their data type. Only {@link #updateElementsForClasses()} writes it.
+		 */
 		private final Hashtable<Class<?>, List<FIBBrowserElement>> elementsForClasses;
+
+		/**
+		 * The elements found for a class of represented object, cached apart from {@link #elementsForClasses}: storing them there would
+		 * make the cached classes compete with the declared ones in later lookups (GINA-D-5)
+		 */
+		private final Map<Class<?>, List<FIBBrowserElement>> elementsForObjectClasses;
 
 		public FIBBrowserImpl() {
 			elementsForClasses = new Hashtable<>();
+			elementsForObjectClasses = new ConcurrentHashMap<>();
 		}
 
 		@Override
@@ -595,6 +608,7 @@ public interface FIBBrowser extends FIBWidget {
 		}
 
 		protected void updateElementsForClasses() {
+			elementsForObjectClasses.clear();
 			elementsForClasses.clear();
 			for (FIBBrowserElement e : getElements()) {
 				Class<?> baseClass = TypeUtils.getBaseClass(e.getDataType());
@@ -607,12 +621,63 @@ public interface FIBBrowser extends FIBWidget {
 			}
 		}
 
+		/**
+		 * Return the elements declared for the most specialized class of supplied class: among the declared classes it is assignable
+		 * to, the one that is not a super type of another. When several remain (unrelated interfaces), the one declared first in the
+		 * browser wins. The lookup does not depend on the order of the previous lookups nor of a hash table (GINA-D-5).
+		 * 
+		 * @param aClass
+		 * @return the elements, possibly empty
+		 */
+		private List<FIBBrowserElement> elementsForObjectClass(Class<?> aClass) {
+			if (aClass == null) {
+				return Collections.emptyList();
+			}
+			List<FIBBrowserElement> returned = elementsForObjectClasses.get(aClass);
+			if (returned != null) {
+				return returned;
+			}
+			List<Class<?>> candidates = new ArrayList<>();
+			for (Class<?> declaredClass : new ArrayList<>(elementsForClasses.keySet())) {
+				if (declaredClass.isAssignableFrom(aClass)) {
+					candidates.add(declaredClass);
+				}
+			}
+			List<Class<?>> mostSpecialized = new ArrayList<>();
+			for (Class<?> candidate : candidates) {
+				boolean superTypeOfAnother = false;
+				for (Class<?> other : candidates) {
+					if (other != candidate && candidate.isAssignableFrom(other)) {
+						superTypeOfAnother = true;
+						break;
+					}
+				}
+				if (!superTypeOfAnother) {
+					mostSpecialized.add(candidate);
+				}
+			}
+			returned = Collections.emptyList();
+			int bestIndex = Integer.MAX_VALUE;
+			for (Class<?> c : mostSpecialized) {
+				List<FIBBrowserElement> elements = elementsForClasses.get(c);
+				if (elements != null && !elements.isEmpty()) {
+					int index = getElements().indexOf(elements.get(0));
+					if (index < bestIndex || (index == bestIndex && returned.isEmpty())) {
+						bestIndex = index;
+						returned = elements;
+					}
+				}
+			}
+			elementsForObjectClasses.put(aClass, returned);
+			return returned;
+		}
+
 		@Override
 		public FIBBrowserElement elementForObject(Object anObject) {
 
-			List<FIBBrowserElement> elementsForClass = TypeUtils.objectForClass(anObject.getClass(), elementsForClasses);
+			List<FIBBrowserElement> elementsForClass = elementsForObjectClass(anObject.getClass());
 
-			if (elementsForClass != null) {
+			if (!elementsForClass.isEmpty()) {
 				if (elementsForClass.size() == 1) {
 					return elementsForClass.get(0);
 				}
@@ -632,7 +697,7 @@ public interface FIBBrowser extends FIBWidget {
 		@Override
 		public FIBBrowserElement elementForType(Type aType) {
 
-			List<FIBBrowserElement> elementsForClass = TypeUtils.objectForClass(TypeUtils.getBaseClass(aType), elementsForClasses);
+			List<FIBBrowserElement> elementsForClass = elementsForObjectClass(TypeUtils.getBaseClass(aType));
 
 			if (elementsForClass.size() == 1) {
 				return elementsForClass.get(0);
