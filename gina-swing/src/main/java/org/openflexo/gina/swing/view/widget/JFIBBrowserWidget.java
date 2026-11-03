@@ -58,6 +58,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.event.TreeExpansionEvent;
@@ -542,7 +543,9 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 						// Only one cell and roots are hidden, expand this first
 						// cell
 
-						widget.invokeLater(new Runnable() {
+						// widget.invokeLater() runs its runnable in a thread of its own: the tree must be expanded on the event dispatch
+						// thread, or it reads the children of the cell while an update changes them (GINA-D-7)
+						widget.invokeLater(() -> SwingUtilities.invokeLater(new Runnable() {
 							@Override
 							public void run() {
 								// See issue OPENFLEXO-516. Sometimes, the
@@ -553,7 +556,7 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 											((BrowserCell) widget.getBrowserModel().getRoot()).getChildAt(0) }));
 								}
 							}
-						}, 1000);
+						}), 1000);
 					}
 				}
 

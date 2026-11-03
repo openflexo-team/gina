@@ -46,6 +46,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+
+import javax.swing.JTree;
+import javax.swing.SwingUtilities;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeWillExpandListener;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -326,6 +336,124 @@ public class FIBBrowserLeafCellTest extends FIBTestCase {
 		folderCell.update(false);
 		assertEquals(3, folderCell.getChildCount());
 		assertEquals("r3", ((BrowserCell) folderCell.getChildAt(2)).getRepresentedObject().toString());
+	}
+
+	@Test
+	@TestOrder(6)
+	@Category(UITest.class)
+	public void test6TreeOutOfSyncIsRebuilt() {
+		Node a0 = new Node("a0");
+		Node syncRoot = new Node("syncRoot", a0);
+		FIBController syncController = FIBController.instanciateController(component, SwingViewFactory.INSTANCE,
+				FlexoLocalization.getMainLocalizer());
+		syncController.setDataObject(syncRoot);
+		syncController.buildView();
+		gcDelegate.addTab("Test6", syncController);
+		JFIBBrowserWidget<?> w = (JFIBBrowserWidget<?>) syncController.viewForComponent(browser);
+		JTree tree = w.getTechnologyComponent().getJTree();
+		BrowserCell rootCell = (BrowserCell) w.getBrowserModel().getRoot();
+		tree.expandPath(rootCell.getTreePath());
+		assertEquals(1, rootCell.getChildCount());
+
+		// The expanded root loses its only child: the tree keeps it as expanded once, with no children
+		syncRoot.getChildren().remove(a0);
+		rootCell.update(false);
+		assertEquals(0, rootCell.getChildCount());
+
+		// A child then reaches the cell without the tree being told, as when a former notification was lost
+		rootCell.add(new DefaultMutableTreeNode("ghost"));
+		Node c = new Node("c");
+		syncRoot.getChildren().add(c);
+
+		List<LogRecord> warnings = new ArrayList<>();
+		Handler handler = new Handler() {
+			@Override
+			public void publish(LogRecord record) {
+				if (record.getLevel().intValue() >= Level.WARNING.intValue()) {
+					warnings.add(record);
+				}
+			}
+
+			@Override
+			public void flush() {
+			}
+
+			@Override
+			public void close() {
+			}
+		};
+		Logger logger = Logger.getLogger(FIBBrowserModel.class.getPackage().getName());
+		logger.addHandler(handler);
+		try {
+			// Removing the ghost cannot be applied by the tree, which does not know it: the subtree is rebuilt instead
+			rootCell.update(false);
+		} finally {
+			logger.removeHandler(handler);
+		}
+		assertTrue(warnings.stream().noneMatch(r -> r.getMessage().startsWith("Unexpected exception")));
+		assertTrue(warnings.stream().anyMatch(r -> r.getMessage().contains("GINA-D-7")));
+		assertEquals(1, rootCell.getChildCount());
+		BrowserCell cCell = (BrowserCell) rootCell.getChildAt(0);
+		assertEquals(c, cCell.getRepresentedObject());
+		tree.expandPath(rootCell.getTreePath());
+		assertEquals((tree.isRootVisible() ? 1 : 0) + 1, tree.getRowCount());
+		assertTrue(tree.getRowForPath(cCell.getTreePath()) >= 0);
+	}
+
+	@Test
+	@TestOrder(7)
+	@Category(UITest.class)
+	public void test7SingleChildOfHiddenRootIsExpandedOnTheEventDispatchThread() throws Exception {
+		FIBPanel hiddenRootComponent = newFIBPanel();
+		hiddenRootComponent.setLayout(Layout.twocols);
+		hiddenRootComponent.setDataClass(Node.class);
+		FIBBrowser hiddenRootBrowser = newFIBBrowser();
+		hiddenRootBrowser.setRoot(new DataBinding<>("data", hiddenRootBrowser, Object.class, BindingDefinitionType.GET));
+		hiddenRootBrowser.setIteratorType(Node.class);
+		hiddenRootBrowser.setRootVisible(false);
+		FIBBrowserElement nodeElement = newFIBBrowserElement();
+		nodeElement.setName("node");
+		nodeElement.setDataType(Node.class);
+		nodeElement.setLabel(new DataBinding<>("node.name", hiddenRootBrowser, String.class, BindingDefinitionType.GET));
+		FIBBrowserElementChildren children = newFIBBrowserElementChildren();
+		children.setData(new DataBinding<>("node.children", hiddenRootBrowser, Object.class, BindingDefinitionType.GET));
+		nodeElement.addToChildren(children);
+		hiddenRootBrowser.addToElements(nodeElement);
+		hiddenRootComponent.addToSubComponents(hiddenRootBrowser, new TwoColsLayoutConstraints(TwoColsLayoutLocation.center, true, true));
+
+		Node only = new Node("only", new Node("x"), new Node("y"));
+		Node hiddenRoot = new Node("hiddenRoot", only);
+		FIBController hiddenRootController = FIBController.instanciateController(hiddenRootComponent, SwingViewFactory.INSTANCE,
+				FlexoLocalization.getMainLocalizer());
+		hiddenRootController.setDataObject(hiddenRoot);
+		hiddenRootController.buildView();
+		gcDelegate.addTab("Test7", hiddenRootController);
+		JFIBBrowserWidget<?> w = (JFIBBrowserWidget<?>) hiddenRootController.viewForComponent(hiddenRootBrowser);
+		JTree tree = w.getTechnologyComponent().getJTree();
+
+		// The single child of a hidden root is expanded about one second after it is inserted: the tree may only be expanded on the
+		// event dispatch thread, or it reads the children of a cell while an update changes them (GINA-D-7)
+		List<Boolean> onEventDispatchThread = Collections.synchronizedList(new ArrayList<>());
+		tree.addTreeWillExpandListener(new TreeWillExpandListener() {
+			@Override
+			public void treeWillExpand(TreeExpansionEvent event) {
+				onEventDispatchThread.add(SwingUtilities.isEventDispatchThread());
+			}
+
+			@Override
+			public void treeWillCollapse(TreeExpansionEvent event) {
+			}
+		});
+		BrowserCell rootCell = (BrowserCell) w.getBrowserModel().getRoot();
+		w.getBrowserModel().nodeStructureChanged(rootCell);
+		long end = System.currentTimeMillis() + 10000;
+		while (onEventDispatchThread.isEmpty() && System.currentTimeMillis() < end) {
+			Thread.sleep(100);
+			SwingUtilities.invokeAndWait(() -> {
+			});
+		}
+		assertTrue("the single child was not expanded", !onEventDispatchThread.isEmpty());
+		assertTrue("expanded outside the event dispatch thread", onEventDispatchThread.stream().allMatch(b -> b));
 	}
 
 	@BeforeClass

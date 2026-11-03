@@ -1143,6 +1143,7 @@ public class FIBBrowserModel extends DefaultTreeModel {
 						}
 					}
 					else {
+						boolean resynchronized = false;
 						if (removedChildren.size() > 0) {
 							int[] childIndices = new int[removedChildren.size()];
 							Object[] removedChildrenObjects = new Object[removedChildren.size()];
@@ -1153,11 +1154,13 @@ public class FIBBrowserModel extends DefaultTreeModel {
 							try {
 								nodesWereRemoved(this, childIndices, removedChildrenObjects);
 							} catch (Exception e) {
-								e.printStackTrace();
-								LOGGER.warning("Unexpected exception: " + e);
+								// The tree no longer knows the children of this cell as they were: a former notification was lost. Rebuild
+								// the subtree from the children as they are now, the inserted ones included (GINA-D-7)
+								resynchronizeTree(e);
+								resynchronized = true;
 							}
 						}
-						if (newChildren.size() > 0) {
+						if (newChildren.size() > 0 && !resynchronized) {
 							int[] childIndices = new int[newChildren.size()];
 							for (int i = 0; i < newChildren.size(); i++) {
 								childIndices[i] = children.indexOf(newChildren.get(i));
@@ -1168,8 +1171,7 @@ public class FIBBrowserModel extends DefaultTreeModel {
 								// TODO: please investigate
 								LOGGER.warning("Unexpected exception: " + e);
 							} catch (Exception e) {
-								e.printStackTrace();
-								LOGGER.warning("Unexpected exception: " + e);
+								resynchronizeTree(e);
 							}
 						}
 					}
@@ -1236,6 +1238,20 @@ public class FIBBrowserModel extends DefaultTreeModel {
 					isUpdating = false;
 				}
 				updateAgainWhenRequested();
+			}
+		}
+
+		/**
+		 * Rebuild the subtree of this cell in the tree, after a notification of a change of its children that the tree could not apply,
+		 * because it did not know them as they were (GINA-D-7)
+		 */
+		private void resynchronizeTree(Exception e) {
+			LOGGER.warning("Browser tree out of sync with the children of " + getRepresentedObject() + " (" + e
+					+ "), its subtree is rebuilt (GINA-D-7)");
+			try {
+				nodeStructureChanged(this);
+			} catch (Exception e2) {
+				LOGGER.log(Level.WARNING, "Could not rebuild the subtree of " + getRepresentedObject() + " (GINA-D-7)", e2);
 			}
 		}
 

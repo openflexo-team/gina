@@ -117,6 +117,32 @@ the cell is updated again once that update ends. The flags are guarded by a lock
 **Test.** `gina-swing` `FIBBrowserLeafCellTest.test5ChangeNotifiedDuringAnUpdateIsNotLost` (UI test): a node adds and
 notifies a child while its children are being read; fails on the former code (2 children instead of 3), passes after.
 
+### GINA-D-7 — A browser update throws `ArrayIndexOutOfBoundsException: node has no children`  ·  `DONE`
+
+**Symptom.** In Openflexo, after opening a free-modelling project and focusing its free model several times in a row,
+a browser cell update logged `ArrayIndexOutOfBoundsException: node has no children`, thrown by
+`VariableHeightLayoutCache.treeNodesRemoved` from `BrowserCell.updateSync` (`nodesWereRemoved`). Not on every run.
+
+**Cause (verified).** Watched in the running application with a passive agent recording, for every browser, the
+notifications, the expansions with their stacks, and the layout cache of the `JTree` before each notification. In the
+browser of the free model (hidden root `Example`, single child `Velo`), `JFIBBrowserWidget.ensureRootExpanded` expands
+that single child through `FIBWidgetViewImpl.invokeLater(Runnable, long)`, which runs its runnable in a thread of its
+own (`InvokeLaterThread`), not on the event dispatch thread. The tree, expanded from that thread, read the children of
+`Velo` while the event dispatch thread was updating them: after `updateSync` had removed the `Loading...` placeholder,
+before it inserted the real children. The layout cache recorded `Velo` as expanded with no children, and the
+notification of the removal of the placeholder then referred to a child it did not hold.
+
+**Fix.** The delayed expansion of `ensureRootExpanded` is sent back to the event dispatch thread
+(`SwingUtilities.invokeLater`). As a safety net, when a removal or insertion notification cannot be applied by the tree,
+the subtree of the cell is now rebuilt (`nodeStructureChanged`) from its current children, with a warning naming
+GINA-D-7, instead of leaving the tree out of sync.
+
+**Tests.** `gina-swing` `FIBBrowserLeafCellTest` (UI tests), both failing on the former code:
+- `test7SingleChildOfHiddenRootIsExpandedOnTheEventDispatchThread`: the single child of a hidden root is expanded on the
+  event dispatch thread;
+- `test6TreeOutOfSyncIsRebuilt`: an expanded node loses its only child, then gets a child the tree is not told about;
+  the next update rebuilds the subtree instead of failing.
+
 ## Lists
 
 ### GINA-D-4 — A list widget sometimes throws a `NullPointerException` while it is painted or selected  ·  `DONE`
