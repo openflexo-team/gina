@@ -152,7 +152,7 @@ public class FlexoCollabsiblePanelGroup extends JScrollPane {
 	}
 
 	public void insertContentsAtIndex(FlexoCollabsiblePanel collabsiblePanel, int index) {
-		panels.set(index, collabsiblePanel);
+		panels.add(index, collabsiblePanel);
 		mainPane.add(collabsiblePanel, index);
 		setOpenedPanel(collabsiblePanel);
 	}

@@ -143,6 +143,24 @@ GINA-D-7, instead of leaving the tree out of sync.
 - `test6TreeOutOfSyncIsRebuilt`: an expanded node loses its only child, then gets a child the tree is not told about;
   the next update rebuilds the subtree instead of failing.
 
+## Panels
+
+### GINA-D-8 — `FlexoCollabsiblePanelGroup.insertContentsAtIndex` throws on an empty group, and replaces a panel otherwise  ·  `DONE`
+
+**Symptom.** In the FreeModellingEditor, opening the annotation of a PowerPoint slideshow showed neither the browsers of the left
+column nor the right column; the error log holds:
+
+    java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+        at java.util.ArrayList.set(ArrayList.java:441)
+        at org.openflexo.swing.FlexoCollabsiblePanelGroup.insertContentsAtIndex(FlexoCollabsiblePanelGroup.java:155)
+        at org.openflexo.fme.controller.FMEPerspective.getInspectorPanelGroup(FMEPerspective.java:128)
+
+**Cause (verified).** `insertContentsAtIndex(panel, index)` did `panels.set(index, panel)` instead of `panels.add(index, panel)`:
+on an empty group it threw; on a group holding panels it took the place of a panel in the list of the group while the
+component stayed displayed, so that panel was no longer collapsed when another one was opened.
+
+**Fix.** `panels.add(index, panel)`. Checked by `TestFlexoCollabsiblePanelGroup`.
+
 ## Lists
 
 ### GINA-D-4 — A list widget sometimes throws a `NullPointerException` while it is painted or selected  ·  `DONE`
