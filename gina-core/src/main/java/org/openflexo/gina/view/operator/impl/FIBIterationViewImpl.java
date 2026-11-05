@@ -115,6 +115,10 @@ public abstract class FIBIterationViewImpl<C, C2> extends FIBOperatorViewImpl<FI
 
 		@Override
 		public Object getValue(BindingVariable variable) {
+			if (getComponent() == null) {
+				// The iteration view has been deleted, but a binding listener still evaluates in this context (GINA-D-9)
+				return null;
+			}
 			if (variable.getVariableName().equals(getComponent().getIteratorName())) {
 				return getIteratedValue();
 			}
