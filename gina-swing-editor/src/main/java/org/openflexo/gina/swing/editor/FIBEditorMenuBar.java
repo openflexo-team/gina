@@ -23,6 +23,7 @@ import org.openflexo.gina.swing.utils.JFIBPreferences;
 import org.openflexo.gina.swing.utils.localization.LocalizedEditor;
 import org.openflexo.gina.swing.utils.logging.FlexoLoggingViewer;
 import org.openflexo.localization.Language;
+import org.openflexo.localization.LocalizedSwing;
 import org.openflexo.logging.FlexoLoggingManager;
 
 public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListener {
@@ -58,12 +59,12 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 	public FIBEditorMenuBar(FIBEditor aFIBEditor, JFrame aFrame) {
 		this.fibEditor = aFIBEditor;
 		this.frame = aFrame;
-		fileMenu = new JMenu(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("file"));
-		editMenu = new JMenu(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("edit"));
-		toolsMenu = new JMenu(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("tools"));
-		helpMenu = new JMenu(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("help"));
+		fileMenu = LocalizedSwing.bind(new JMenu(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("file")), FIBEditor.EDITOR_LOCALIZATION, "file");
+		editMenu = LocalizedSwing.bind(new JMenu(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("edit")), FIBEditor.EDITOR_LOCALIZATION, "edit");
+		toolsMenu = LocalizedSwing.bind(new JMenu(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("tools")), FIBEditor.EDITOR_LOCALIZATION, "tools");
+		helpMenu = LocalizedSwing.bind(new JMenu(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("help")), FIBEditor.EDITOR_LOCALIZATION, "help");
 
-		newItem = new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("new_component"));
+		newItem = LocalizedSwing.bind(new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("new_component")), FIBEditor.EDITOR_LOCALIZATION, "new_component");
 		newItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -71,7 +72,7 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 			}
 		});
 
-		loadItem = new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("open_component"));
+		loadItem = LocalizedSwing.bind(new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("open_component")), FIBEditor.EDITOR_LOCALIZATION, "open_component");
 		loadItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -79,10 +80,10 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 			}
 		});
 
-		openRecent = new JMenu(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("open_recent"));
+		openRecent = LocalizedSwing.bind(new JMenu(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("open_recent")), FIBEditor.EDITOR_LOCALIZATION, "open_recent");
 		JFIBPreferences.addPreferenceChangeListener(this);
 		updateOpenRecent();
-		saveItem = new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("save_component"));
+		saveItem = LocalizedSwing.bind(new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("save_component")), FIBEditor.EDITOR_LOCALIZATION, "save_component");
 		saveItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -92,7 +93,7 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 			}
 		});
 
-		saveAsItem = new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("save_component_as"));
+		saveAsItem = LocalizedSwing.bind(new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("save_component_as")), FIBEditor.EDITOR_LOCALIZATION, "save_component_as");
 		saveAsItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -102,7 +103,7 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 			}
 		});
 
-		closeItem = new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("close"));
+		closeItem = LocalizedSwing.bind(new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("close")), FIBEditor.EDITOR_LOCALIZATION, "close");
 		closeItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -112,14 +113,14 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 			}
 		});
 
-		quitItem = new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("quit"));
+		quitItem = LocalizedSwing.bind(new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("quit")), FIBEditor.EDITOR_LOCALIZATION, "quit");
 		quitItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				fibEditor.quit();
 			}
 		});
-		testInterfaceItem = new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("test_component"));
+		testInterfaceItem = LocalizedSwing.bind(new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("test_component")), FIBEditor.EDITOR_LOCALIZATION, "test_component");
 		testInterfaceItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -129,7 +130,7 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 			}
 		});
 
-		componentLocalizationItem = new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("component_localization"));
+		componentLocalizationItem = LocalizedSwing.bind(new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("component_localization")), FIBEditor.EDITOR_LOCALIZATION, "component_localization");
 		componentLocalizationItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -139,7 +140,7 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 			}
 		});
 
-		final JMenu lafsItem = new JMenu(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("look_and_feel"));
+		final JMenu lafsItem = LocalizedSwing.bind(new JMenu(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("look_and_feel")), FIBEditor.EDITOR_LOCALIZATION, "look_and_feel");
 		final Vector<LAFMenuItem> lafsItems = new Vector<>();
 		for (final LookAndFeelInfo laf : UIManager.getInstalledLookAndFeels()) {
 			LAFMenuItem lafItem = new LAFMenuItem(laf);
@@ -182,9 +183,9 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 		fileMenu.add(componentLocalizationItem);
 
 		fileMenu.add(lafsItem);
-		languagesItem = new JMenu(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("switch_to_language"));
+		languagesItem = LocalizedSwing.bind(new JMenu(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("switch_to_language")), FIBEditor.EDITOR_LOCALIZATION, "switch_to_language");
 		for (Language lang : Language.availableValues()) {
-			JMenuItem languageItem = new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey(lang.getName()));
+			JMenuItem languageItem = LocalizedSwing.bind(new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey(lang.getName())), FIBEditor.EDITOR_LOCALIZATION, lang.getName());
 			final Language language = lang;
 			languageItem.addActionListener(new ActionListener() {
 				@Override
@@ -216,7 +217,7 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 				FIBEditorMenuBar.this.fibEditor.getPalettes().setVisible(true);
 			}
 		});*/
-		logsItem = new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("logs"));
+		logsItem = LocalizedSwing.bind(new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("logs")), FIBEditor.EDITOR_LOCALIZATION, "logs");
 		logsItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -224,7 +225,7 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 			}
 		});
 
-		localizedItem = new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("localized_editor"));
+		localizedItem = LocalizedSwing.bind(new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("localized_editor")), FIBEditor.EDITOR_LOCALIZATION, "localized_editor");
 		localizedItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -236,7 +237,7 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 			}
 		});
 
-		displayFileItem = new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("display_file"));
+		displayFileItem = LocalizedSwing.bind(new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("display_file")), FIBEditor.EDITOR_LOCALIZATION, "display_file");
 		displayFileItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -247,7 +248,7 @@ public class FIBEditorMenuBar extends JMenuBar implements PreferenceChangeListen
 			}
 		});
 
-		componentValidationItem = new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("validate_component"));
+		componentValidationItem = LocalizedSwing.bind(new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("validate_component")), FIBEditor.EDITOR_LOCALIZATION, "validate_component");
 		componentValidationItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

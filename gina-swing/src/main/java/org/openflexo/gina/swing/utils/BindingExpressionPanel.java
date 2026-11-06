@@ -362,21 +362,21 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 		showEvaluationButton.setBorder(BorderFactory.createEmptyBorder());
 		showEvaluationButton.setNormalIcon(FIBIconLibrary.TOGGLE_ARROW_BOTTOM_ICON);
 		showEvaluationButton.setMouseOverIcon(FIBIconLibrary.TOGGLE_ARROW_BOTTOM_SELECTED_ICON);
-		showEvaluationButton.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("show_evaluation"));
+		showEvaluationButton.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedTooltipForKey("show_evaluation", showEvaluationButton));
 		showEvaluationButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!evaluationPanel.isVisible()) {
 					showEvaluationButton.setNormalIcon(FIBIconLibrary.TOGGLE_ARROW_TOP_ICON);
 					showEvaluationButton.setMouseOverIcon(FIBIconLibrary.TOGGLE_ARROW_TOP_SELECTED_ICON);
-					showEvaluationButton.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("hide_evaluation"));
+					showEvaluationButton.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedTooltipForKey("hide_evaluation", showEvaluationButton));
 					evaluationPanel.setVisible(true);
 					_checkEditedExpression();
 				}
 				else {
 					showEvaluationButton.setNormalIcon(FIBIconLibrary.TOGGLE_ARROW_BOTTOM_ICON);
 					showEvaluationButton.setMouseOverIcon(FIBIconLibrary.TOGGLE_ARROW_BOTTOM_SELECTED_ICON);
-					showEvaluationButton.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("show_evaluation"));
+					showEvaluationButton.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedTooltipForKey("show_evaluation", showEvaluationButton));
 					evaluationPanel.setVisible(false);
 				}
 			}
@@ -418,14 +418,14 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 		moreButton.setBorder(BorderFactory.createEmptyBorder());
 		moreButton.setNormalIcon(FIBIconLibrary.TOGGLE_ARROW_BOTTOM_ICON);
 		moreButton.setMouseOverIcon(FIBIconLibrary.TOGGLE_ARROW_BOTTOM_SELECTED_ICON);
-		moreButton.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("show_more_operators"));
+		moreButton.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedTooltipForKey("show_more_operators", moreButton));
 		moreButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!mathControls.isVisible()) {
 					moreButton.setNormalIcon(FIBIconLibrary.TOGGLE_ARROW_TOP_ICON);
 					moreButton.setMouseOverIcon(FIBIconLibrary.TOGGLE_ARROW_TOP_SELECTED_ICON);
-					moreButton.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("hide_extra_operators"));
+					moreButton.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedTooltipForKey("hide_extra_operators", moreButton));
 					commonControls.remove(moreButton);
 					mathControls.add(moreButton);
 					mathControls.setVisible(true);
@@ -433,7 +433,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 				else {
 					moreButton.setNormalIcon(FIBIconLibrary.TOGGLE_ARROW_BOTTOM_ICON);
 					moreButton.setMouseOverIcon(FIBIconLibrary.TOGGLE_ARROW_BOTTOM_SELECTED_ICON);
-					moreButton.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("show_more_operators"));
+					moreButton.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedTooltipForKey("show_more_operators", moreButton));
 					mathControls.remove(moreButton);
 					commonControls.add(moreButton);
 					mathControls.setVisible(false);
@@ -493,7 +493,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 		if (title.equals("logical")) {
 			JButton b = new JButton(FIBIconLibrary.IF_ICON);
 			b.setBorder(BorderFactory.createEmptyBorder());
-			b.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("conditional"));
+			b.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedTooltipForKey("conditional", b));
 			returned.add(b);
 			b.addActionListener(new ActionListener() {
 				@Override
@@ -659,7 +659,7 @@ public class BindingExpressionPanel extends JPanel implements FocusListener {
 
 				currentOperatorIcon = new JButton(FIBIconLibrary.IF_ICON);
 				currentOperatorIcon.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-				currentOperatorIcon.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("conditional"));
+				currentOperatorIcon.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedTooltipForKey("conditional", currentOperatorIcon));
 
 				add(currentOperatorIcon, BorderLayout.CENTER);
 			}

@@ -208,6 +208,7 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 	public void delete() {
 		if (!deleted) {
 			if (getRootView() != null) {
+				FlexoLocalization.removeFromLocalizationListeners(getRootView());
 				getRootView().delete();
 			}
 			// Next for-block should not be necessary because deletion is
@@ -406,13 +407,19 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 	}
 
 	public final <M extends FIBComponent> FIBView<M, ?> buildView(M fibComponent, RuntimeContext context, boolean updateNow) {
+		FIBView<M, ?> returned = null;
 		if (fibComponent instanceof FIBContainer) {
-			return (FIBView<M, ?>) getViewFactory().makeContainer((FIBContainer) fibComponent, this, context, updateNow);
+			returned = (FIBView<M, ?>) getViewFactory().makeContainer((FIBContainer) fibComponent, this, context, updateNow);
 		}
 		else if (fibComponent instanceof FIBWidget) {
-			return (FIBView<M, ?>) getViewFactory().makeWidget((FIBWidget) fibComponent, this, context, updateNow);
+			returned = (FIBView<M, ?>) getViewFactory().makeWidget((FIBWidget) fibComponent, this, context, updateNow);
 		}
-		return null;
+		if (returned != null && fibComponent == rootComponent) {
+			// The view of the root component follows the language and the edition of the dictionaries, as every view built here does:
+			// it passes the change to its children
+			FlexoLocalization.addToLocalizationListeners(returned);
+		}
+		return returned;
 	}
 
 	public void show() {

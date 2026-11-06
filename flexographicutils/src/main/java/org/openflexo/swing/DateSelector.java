@@ -83,6 +83,7 @@ import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.localization.LocalizedDelegateImpl;
+import org.openflexo.localization.LocalizedSwing;
 import org.openflexo.rm.ResourceLocator;
 
 public class DateSelector extends TextFieldCustomPopup<Date> {
@@ -429,7 +430,7 @@ public class DateSelector extends TextFieldCustomPopup<Date> {
 
 			for (int i = 0; i < 7; i++) {
 				c.gridx = i;
-				JLabel l = new JLabel(DATE_LOCALIZATION.localizedForKey(days[i]), SwingConstants.CENTER);
+				JLabel l = LocalizedSwing.bind(new JLabel(DATE_LOCALIZATION.localizedForKey(days[i]), SwingConstants.CENTER), DATE_LOCALIZATION, days[i]);
 				l.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 				// Make the Day of the week bold if it is today
 				if (i == dayOfWeek && getCalendar().get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR)

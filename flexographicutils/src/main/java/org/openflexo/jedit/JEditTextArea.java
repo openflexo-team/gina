@@ -116,6 +116,7 @@ import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoableEdit;
 
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.localization.LocalizedSwing;
 import org.openflexo.search.view.ITextComponent;
 import org.openflexo.search.view.TextSearchPanel;
 import org.openflexo.swing.DialogFactory;
@@ -2465,13 +2466,13 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 		final Dialog dialog = createNewDialog(FlexoLocalization.getMainLocalizer().localizedForKey("goto_line"));
 		dialog.setModal(true);
 		JPanel panel = new JPanel(new BorderLayout());
-		JLabel label = new JLabel(FlexoLocalization.getMainLocalizer().localizedForKey("line:"));
+		JLabel label = LocalizedSwing.bind(new JLabel(FlexoLocalization.getMainLocalizer().localizedForKey("line:")), FlexoLocalization.getMainLocalizer(), "line:");
 		panel.add(label, BorderLayout.WEST);
 		final JFormattedTextField lineNumberTf = new JFormattedTextField(NumberFormat.getIntegerInstance());
 		JPanel tfPanel = new JPanel();
 		tfPanel.add(lineNumberTf);
 		panel.add(tfPanel);
-		JButton go = new JButton(FlexoLocalization.getMainLocalizer().localizedForKey("OK"));
+		JButton go = LocalizedSwing.bind(new JButton(FlexoLocalization.getMainLocalizer().localizedForKey("OK")), FlexoLocalization.getMainLocalizer(), "OK");
 		ActionListener actionListener = new ActionListener() {
 
 			@Override

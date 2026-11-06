@@ -40,6 +40,7 @@
 package org.openflexo.localization;
 
 import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.Frame;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
@@ -54,6 +55,7 @@ import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
@@ -69,6 +71,7 @@ import javax.swing.AbstractButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.TableColumn;
 
@@ -89,7 +92,7 @@ import org.openflexo.toolbox.StringUtils;
  * @author sylvain
  * 
  */
-public class LocalizedDelegateImpl extends Observable implements LocalizedDelegate {
+public class LocalizedDelegateImpl extends Observable implements LocalizedDelegate, LocalizationListener {
 
 	private static final Logger logger = Logger.getLogger(LocalizedDelegateImpl.class.getPackage().getName());
 
@@ -136,7 +139,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			localizedDirectoryResource = localizedDirectory;
 		}
 		_localizedDictionaries = new Hashtable<>();
-
+		FlexoLocalization.addToLocalizationListeners(this);
 	}
 
 	/**
@@ -153,6 +156,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		pcSupport = new PropertyChangeSupport(this);
 		localizedDirectoryResource = null;
 		_localizedDictionaries = new Hashtable<>();
+		FlexoLocalization.addToLocalizationListeners(this);
 	}
 
 	@Override
@@ -351,9 +355,15 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		entries = null;
 		// setChanged();
 		// notifyObservers();
-		Entry returned = getEntry(key);
+		creatingEntry = true;
+		Entry returned;
+		try {
+			returned = getEntry(key);
+			searchTranslation(returned);
+		} finally {
+			creatingEntry = false;
+		}
 		// System.out.println("Added entry " + returned + " " + returned.getKey() + " english=" + returned.getEnglish());
-		searchTranslation(returned);
 		getPropertyChangeSupport().firePropertyChange("entries", null, getEntries());
 		if (automaticSaving) {
 			logger.info("************** Save because added: " + key + " in " + this);
@@ -361,6 +371,17 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			save();
 		}
 		return returned;
+	}
+
+	private boolean creatingEntry = false;
+
+	/**
+	 * A translation was edited: tell the screens. Not while an entry is being created, which sets its translations itself.
+	 */
+	private void entryEdited() {
+		if (!creatingEntry) {
+			FlexoLocalization.fireLocalizationChanged();
+		}
 	}
 
 	public void removeEntry(String key) {
@@ -487,6 +508,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			String oldValue = getEnglish();
 			setLocalizedForKeyAndLanguage(key, value, Language.ENGLISH);
 			pcSupport.firePropertyChange("english", oldValue, value);
+			entryEdited();
 		}
 
 		@Override
@@ -505,6 +527,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			String oldValue = getFrench();
 			setLocalizedForKeyAndLanguage(key, value, Language.FRENCH);
 			pcSupport.firePropertyChange("french", oldValue, value);
+			entryEdited();
 		}
 
 		@Override
@@ -523,6 +546,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 			String oldValue = getDutch();
 			setLocalizedForKeyAndLanguage(key, value, Language.DUTCH);
 			pcSupport.firePropertyChange("dutch", oldValue, value);
+			entryEdited();
 		}
 
 		@Override
@@ -1152,7 +1176,9 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		if (logger.isLoggable(Level.FINE)) {
 			logger.finest("localizedForKey called with " + key + " for " + component.getClass().getName());
 		}
-		_storedLocalizedForComponents.put(component, key);
+		synchronized (_storedLocalizedForComponents) {
+			_storedLocalizedForComponents.put(component, key);
+		}
 		return localizedForKey(key);
 	}
 
@@ -1161,7 +1187,9 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		if (logger.isLoggable(Level.FINE)) {
 			logger.finest("localizedForKey called with " + key + " for " + component.getClass().getName());
 		}
-		_storedLocalizedForComponentTooltips.put(component, key);
+		synchronized (_storedLocalizedForComponentTooltips) {
+			_storedLocalizedForComponentTooltips.put(component, key);
+		}
 		return localizedForKey(key);
 	}
 
@@ -1170,7 +1198,9 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		if (logger.isLoggable(Level.FINE)) {
 			logger.finest("localizedForKey called with " + key + " for border " + border.getClass().getName());
 		}
-		_storedLocalizedForBorders.put(border, key);
+		synchronized (_storedLocalizedForBorders) {
+			_storedLocalizedForBorders.put(border, key);
+		}
 		return localizedForKey(key);
 	}
 
@@ -1179,7 +1209,9 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		if (logger.isLoggable(Level.FINE)) {
 			logger.finest("localizedForKey called with " + key + " for border " + column.getClass().getName());
 		}
-		_storedLocalizedForTableColumn.put(column, key);
+		synchronized (_storedLocalizedForTableColumn) {
+			_storedLocalizedForTableColumn.put(column, key);
+		}
 		return localizedForKey(key);
 	}
 
@@ -1190,7 +1222,9 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		if (logger.isLoggable(Level.FINE)) {
 			logger.finest("localizedForKey called with " + key + " for " + component.getClass().getName());
 		}
-		_storedLocalizedForComponents.put(component, key);
+		synchronized (_storedLocalizedForComponents) {
+			_storedLocalizedForComponents.put(component, key);
+		}
 		_storedAdditionalStrings.put(component, additionalString);
 		return localizedForKey(key) + additionalString;
 	}*/
@@ -1204,21 +1238,41 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		// localizationListeners.clear();
 	}
 
+	/**
+	 * What the screens show follows the language and the edition of the dictionaries: this localizer updates the components it was asked
+	 * a text for (see {@link #localizedForKey(String, Component)}) whenever one of them occurs.
+	 */
+	@Override
+	public void languageChanged(Language language) {
+		updateGUILocalized();
+	}
+
+	private static <K> Map<K, String> snapshot(Map<K, String> registry) {
+		synchronized (registry) {
+			return new LinkedHashMap<>(registry);
+		}
+	}
+
 	@Override
 	public void updateGUILocalized() {
-		for (Map.Entry<Component, String> e : _storedLocalizedForComponents.entrySet()) {
+		if (!SwingUtilities.isEventDispatchThread()) {
+			SwingUtilities.invokeLater(this::updateGUILocalized);
+			return;
+		}
+		for (Map.Entry<Component, String> e : snapshot(_storedLocalizedForComponents).entrySet()) {
 			Component component = e.getKey();
-			String string = e.getValue();
-			String text = localizedForKey(string);
-			/*String additionalString = _storedAdditionalStrings.get(component);
-			if (additionalString != null) {
-				text = text + additionalString;
-			}*/
+			String text = localizedForKey(e.getValue());
 			if (component instanceof AbstractButton) {
 				((AbstractButton) component).setText(text);
 			}
 			if (component instanceof JLabel) {
 				((JLabel) component).setText(text);
+			}
+			if (component instanceof Frame) {
+				((Frame) component).setTitle(text);
+			}
+			if (component instanceof Dialog) {
+				((Dialog) component).setTitle(text);
 			}
 			component.setName(text);
 			if (component.getParent() instanceof JTabbedPane) {
@@ -1234,26 +1288,18 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 				}
 			}
 		}
-		for (Map.Entry<JComponent, String> e : _storedLocalizedForComponentTooltips.entrySet()) {
-			JComponent component = e.getKey();
-			String string = e.getValue();
-			String text = localizedForKey(string);
-			component.setToolTipText(text);
+		for (Map.Entry<JComponent, String> e : snapshot(_storedLocalizedForComponentTooltips).entrySet()) {
+			e.getKey().setToolTipText(localizedForKey(e.getValue()));
 		}
-		for (Map.Entry<TitledBorder, String> e : _storedLocalizedForBorders.entrySet()) {
-			String string = e.getValue();
-			String text = localizedForKey(string);
-			e.getKey().setTitle(text);
+		for (Map.Entry<TitledBorder, String> e : snapshot(_storedLocalizedForBorders).entrySet()) {
+			e.getKey().setTitle(localizedForKey(e.getValue()));
 		}
-		for (Map.Entry<TableColumn, String> e : _storedLocalizedForTableColumn.entrySet()) {
-			String string = e.getValue();
-			String text = localizedForKey(string);
-			e.getKey().setHeaderValue(text);
+		for (Map.Entry<TableColumn, String> e : snapshot(_storedLocalizedForTableColumn).entrySet()) {
+			e.getKey().setHeaderValue(localizedForKey(e.getValue()));
 		}
 		for (Frame f : Frame.getFrames()) {
 			f.repaint();
 		}
-
 	}
 
 }

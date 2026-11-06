@@ -72,6 +72,7 @@ import org.openflexo.gina.swing.editor.controller.action.PasteAction;
 import org.openflexo.gina.swing.editor.controller.action.WrapWithPanelAction;
 import org.openflexo.gina.swing.editor.controller.action.WrapWithSplitPanelAction;
 import org.openflexo.logging.FlexoLogger;
+import org.openflexo.localization.LocalizedSwing;
 
 public class ContextualMenu {
 	@SuppressWarnings("unused")
@@ -100,11 +101,11 @@ public class ContextualMenu {
 		// addToActions(new RedoAction(editorController));
 		// menu.addSeparator();
 
-		JMenu wrapWith = new JMenu(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("wrap_with"));
+		JMenu wrapWith = LocalizedSwing.bind(new JMenu(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("wrap_with")), FIBEditor.EDITOR_LOCALIZATION, "wrap_with");
 		menu.add(wrapWith);
 		addToActions(new WrapWithPanelAction(editorController), wrapWith);
 		addToActions(new WrapWithSplitPanelAction(editorController), wrapWith);
-		JMenu moveTo = new JMenu(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("move"));
+		JMenu moveTo = LocalizedSwing.bind(new JMenu(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("move")), FIBEditor.EDITOR_LOCALIZATION, "move");
 		menu.add(moveTo);
 		addToActions(new MoveToTop(editorController), moveTo);
 		addToActions(new MoveUp(editorController), moveTo);

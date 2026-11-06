@@ -62,6 +62,7 @@ import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
 import org.openflexo.swing.DateSelector;
 import org.openflexo.toolbox.ToolBox;
+import org.openflexo.localization.LocalizedSwing;
 
 /**
  * This panel allows to select or edit a constant value in the context of a {@link BindingValueSelectorPanel}
@@ -111,7 +112,7 @@ class ConstantValuePanel extends JPanel {
 		dateSelector = null;
 		durationSelector = null;
 		integerValueChooser = null;
-		selectStaticBindingCB = new JCheckBox(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("define_a_constant_value"));
+		selectStaticBindingCB = LocalizedSwing.bind(new JCheckBox(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("define_a_constant_value")), FIBModelObjectImpl.GINA_LOCALIZATION, "define_a_constant_value");
 		selectStaticBindingCB.setFont(SMALL_FONT);
 		selectStaticBindingCB.setSelected(false);
 		selectStaticBindingCB.addActionListener(new ActionListener() {
@@ -410,7 +411,7 @@ class ConstantValuePanel extends JPanel {
 	}
 
 	void enableStaticBindingPanel() {
-		bindingValueSelectorPanel.connectButton.setText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("validate"));
+		bindingValueSelectorPanel.connectButton.setText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("validate", bindingValueSelectorPanel.connectButton));
 		selectStaticBindingCB.setSelected(true);
 		if (selectValueCB != null) {
 			selectValueCB.setEnabled(true);
@@ -430,7 +431,7 @@ class ConstantValuePanel extends JPanel {
 	}
 
 	void disableStaticBindingPanel() {
-		bindingValueSelectorPanel.connectButton.setText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("connect"));
+		bindingValueSelectorPanel.connectButton.setText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("connect", bindingValueSelectorPanel.connectButton));
 		selectStaticBindingCB.setSelected(false);
 		if (selectValueCB != null) {
 			selectValueCB.setEnabled(false);

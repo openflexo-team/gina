@@ -40,13 +40,16 @@
 package org.openflexo.localization;
 
 import java.lang.ref.WeakReference;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.swing.SwingUtilities;
 
 import org.openflexo.connie.java.util.JavaBindingEvaluator;
 import org.openflexo.rm.Resource;
@@ -398,15 +401,43 @@ public class FlexoLocalization {
 
 	public static void setCurrentLanguage(Language language) {
 		_currentLanguage = language;
-		Iterator<WeakReference<LocalizationListener>> i = localizationListeners.iterator();
-		while (i.hasNext()) {
-			LocalizationListener l = i.next().get();
-			if (l == null) {
-				i.remove();
+		notifyLocalizationListeners(language);
+	}
+
+	/**
+	 * Tell the listeners that what they display may have changed: the language was changed, or the translation of a key was edited (see
+	 * {@link #fireLocalizationChanged()}). A listener whose failure would prevent the others from being notified is logged and skipped.
+	 */
+	private static void notifyLocalizationListeners(Language language) {
+		List<WeakReference<LocalizationListener>> snapshot;
+		synchronized (localizationListeners) {
+			localizationListeners.removeIf(ref -> ref.get() == null);
+			snapshot = new ArrayList<>(localizationListeners);
+		}
+		for (WeakReference<LocalizationListener> ref : snapshot) {
+			LocalizationListener l = ref.get();
+			if (l != null) {
+				try {
+					l.languageChanged(language);
+				} catch (RuntimeException e) {
+					logger.log(Level.WARNING, "Could not update " + l + " after a change of localization", e);
+				}
 			}
-			else {
-				l.languageChanged(language);
-			}
+		}
+	}
+
+	private static final AtomicBoolean localizationChangeScheduled = new AtomicBoolean(false);
+
+	/**
+	 * Tell every listener that the translation of a key was edited. The notification is asynchronous, on the event dispatch thread, and
+	 * several changes made before it runs give a single notification: editing a dictionary does not update the screens once per entry.
+	 */
+	public static void fireLocalizationChanged() {
+		if (localizationChangeScheduled.compareAndSet(false, true)) {
+			SwingUtilities.invokeLater(() -> {
+				localizationChangeScheduled.set(false);
+				notifyLocalizationListeners(getCurrentLanguage());
+			});
 		}
 	}
 
@@ -501,16 +532,19 @@ public class FlexoLocalization {
 	}
 
 	public static void addToLocalizationListeners(LocalizationListener l) {
-		localizationListeners.add(new WeakReference<>(l));
+		synchronized (localizationListeners) {
+			for (WeakReference<LocalizationListener> ref : localizationListeners) {
+				if (ref.get() == l) {
+					return;
+				}
+			}
+			localizationListeners.add(new WeakReference<>(l));
+		}
 	}
 
 	public static void removeFromLocalizationListeners(LocalizationListener l) {
-		Iterator<WeakReference<LocalizationListener>> i = localizationListeners.iterator();
-		while (i.hasNext()) {
-			LocalizationListener l1 = i.next().get();
-			if (l1 == null || l1 == l) {
-				i.remove();
-			}
+		synchronized (localizationListeners) {
+			localizationListeners.removeIf(ref -> ref.get() == null || ref.get() == l);
 		}
 	}
 

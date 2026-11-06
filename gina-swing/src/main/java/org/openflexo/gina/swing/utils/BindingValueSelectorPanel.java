@@ -550,7 +550,7 @@ public class BindingValueSelectorPanel extends AbstractBindingSelectorPanel impl
 			if (bindingSelector.editionMode == EditionMode.COMPOUND_BINDING) {
 				showHideCompoundBindingsButton.setNormalIcon(FIBIconLibrary.TOGGLE_ARROW_TOP_ICON);
 				showHideCompoundBindingsButton.setMouseOverIcon(FIBIconLibrary.TOGGLE_ARROW_TOP_SELECTED_ICON);
-				showHideCompoundBindingsButton.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey(SPECIFY_BASIC_BINDING));
+				showHideCompoundBindingsButton.setToolTipText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedTooltipForKey(SPECIFY_BASIC_BINDING, showHideCompoundBindingsButton));
 				showHideCompoundBindingsButtonLabel
 						.setText(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey(SPECIFY_BASIC_BINDING) + "  ");
 			}

@@ -57,6 +57,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.localization.LocalizedSwing;
 
 /**
  * Widget allowing to view and edit a Color
@@ -133,8 +134,8 @@ public class ColorSelector extends CustomPopup<Color> implements ColorSelectionM
 
 			_controlPanel = new JPanel();
 			_controlPanel.setLayout(new FlowLayout());
-			_controlPanel.add(_applyButton = new JButton(FlexoLocalization.getMainLocalizer().localizedForKey("ok")));
-			_controlPanel.add(_cancelButton = new JButton(FlexoLocalization.getMainLocalizer().localizedForKey("cancel")));
+			_controlPanel.add(_applyButton = LocalizedSwing.bind(new JButton(FlexoLocalization.getMainLocalizer().localizedForKey("ok")), FlexoLocalization.getMainLocalizer(), "ok"));
+			_controlPanel.add(_cancelButton = LocalizedSwing.bind(new JButton(FlexoLocalization.getMainLocalizer().localizedForKey("cancel")), FlexoLocalization.getMainLocalizer(), "cancel"));
 			_applyButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
