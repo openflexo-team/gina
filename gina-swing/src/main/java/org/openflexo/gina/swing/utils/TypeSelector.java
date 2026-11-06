@@ -90,6 +90,8 @@ import org.openflexo.swing.TextFieldCustomPopup;
 import org.openflexo.swing.VerticalLayout;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
 import org.openflexo.toolbox.PropertyChangedSupportDefaultImplementation;
+import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
+import org.openflexo.localization.LocalizedSwing;
 
 /**
  * Widget allowing to edit a binding
@@ -1025,7 +1027,7 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 		final TypeSelector typeSelector = new TypeSelector(typeToEdit);
 		typeSelector.setRevertValue(Object.class);
 
-		JButton closeButton = new JButton("Close");
+		JButton closeButton = LocalizedSwing.bind(new JButton(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("close")), FIBModelObjectImpl.GINA_LOCALIZATION, "close");
 		closeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -1035,7 +1037,7 @@ public class TypeSelector extends TextFieldCustomPopup<Type>
 			}
 		});
 
-		JButton logButton = new JButton("Logs");
+		JButton logButton = LocalizedSwing.bind(new JButton(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("logs")), FIBModelObjectImpl.GINA_LOCALIZATION, "logs");
 		logButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

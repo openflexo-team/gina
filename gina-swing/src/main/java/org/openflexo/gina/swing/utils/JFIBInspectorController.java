@@ -60,6 +60,7 @@ import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.rm.Resource;
+import org.openflexo.localization.LocalizedSwing;
 
 /**
  * Base implementation of an inspector controller in the context of a set of inspectors beeing displayed<br>
@@ -115,7 +116,7 @@ public class JFIBInspectorController implements Observer {
 		// GPO: Isn't there a bit too much panels here?
 		EMPTY_CONTENT = new JPanel(new BorderLayout());
 		// EMPTY_CONTENT.setPreferredSize(new Dimension(400,400));
-		EMPTY_CONTENT.add(new JLabel("No selection", SwingConstants.CENTER), BorderLayout.CENTER);
+		EMPTY_CONTENT.add(LocalizedSwing.bind(new JLabel(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("no_selection"), SwingConstants.CENTER), FIBModelObjectImpl.GINA_LOCALIZATION, "no_selection"), BorderLayout.CENTER);
 
 		rootPane = new JPanel(new BorderLayout());
 

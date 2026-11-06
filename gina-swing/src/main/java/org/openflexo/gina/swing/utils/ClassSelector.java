@@ -65,6 +65,8 @@ import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.swing.TextFieldCustomPopup;
 import org.openflexo.swing.VerticalLayout;
+import org.openflexo.gina.model.FIBModelObject.FIBModelObjectImpl;
+import org.openflexo.localization.LocalizedSwing;
 
 /**
  * Widget allowing to select a class in a popup panel
@@ -306,7 +308,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 		};
 		selector.setRevertValue(Object.class);
 
-		JButton closeButton = new JButton("Close");
+		JButton closeButton = LocalizedSwing.bind(new JButton(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("close")), FIBModelObjectImpl.GINA_LOCALIZATION, "close");
 		closeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -316,7 +318,7 @@ public class ClassSelector extends TextFieldCustomPopup<Class> implements FIBCus
 			}
 		});
 
-		JButton logButton = new JButton("Logs");
+		JButton logButton = LocalizedSwing.bind(new JButton(FIBModelObjectImpl.GINA_LOCALIZATION.localizedForKey("logs")), FIBModelObjectImpl.GINA_LOCALIZATION, "logs");
 		logButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

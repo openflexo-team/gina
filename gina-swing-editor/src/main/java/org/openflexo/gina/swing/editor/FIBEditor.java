@@ -476,7 +476,7 @@ public class FIBEditor {
 	public FIBEditorController loadFIB(File fibFile, Object dataObject, JFrame frame) {
 
 		if (fibFile != null && !fibFile.exists()) {
-			JOptionPane.showMessageDialog(frame, "File " + fibFile.getAbsolutePath() + " does not exist anymore");
+			JOptionPane.showMessageDialog(frame, EDITOR_LOCALIZATION.localizedForKeyWithParams("file_($0)_does_not_exist_anymore", fibFile.getAbsolutePath()));
 			return null;
 		}
 		JFIBPreferences.setLastFile(fibFile);
