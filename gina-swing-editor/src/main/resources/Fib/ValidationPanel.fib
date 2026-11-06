@@ -67,7 +67,7 @@
 			value="&lt;html&gt;&lt;a href=&quot;&quot;&gt;Hide errors/warnings&lt;/a&gt;&lt;/html&gt;"
 			key="&lt;html&gt;&lt;a href=&quot;&quot;&gt;hide_errors_warnings&lt;/a&gt;&lt;/html&gt;" />
 		<Localized id="154" lang="Dutch"
-			value="&lt;html&gt;&lt;a href=&quot;&quot;&gt;Hide errors/warnings&lt;/a&gt;&lt;/html&gt;"
+			value="&lt;html&gt;&lt;a href=&quot;&quot;&gt;Fouten/waarschuwingen verbergen&lt;/a&gt;&lt;/html&gt;"
 			key="&lt;html&gt;&lt;a href=&quot;&quot;&gt;hide_errors_warnings&lt;/a&gt;&lt;/html&gt;" />
 		<Localized id="155" lang="French"
 			value="&lt;html&gt;&lt;a href=&quot;&quot;&gt;Cacher les erreurs&lt;/a&gt;&lt;/html&gt;"
@@ -76,17 +76,17 @@
 			value="&lt;html&gt;&lt;a href=&quot;&quot;&gt;Revalidate&lt;/a&gt;&lt;/html&gt;"
 			key="&lt;html&gt;&lt;a href=&quot;&quot;&gt;revalidate&lt;/a&gt;&lt;/html&gt;" />
 		<Localized id="157" lang="Dutch"
-			value="&lt;html&gt;&lt;a href=&quot;&quot;&gt;Revalidate&lt;/a&gt;&lt;/html&gt;"
+			value="&lt;html&gt;&lt;a href=&quot;&quot;&gt;opnieuw valideren&lt;/a&gt;&lt;/html&gt;"
 			key="&lt;html&gt;&lt;a href=&quot;&quot;&gt;revalidate&lt;/a&gt;&lt;/html&gt;" />
 		<Localized id="158" lang="French"
 			value="&lt;html&gt;&lt;a href=&quot;&quot;&gt;Revalider&lt;/a&gt;&lt;/html&gt;"
 			key="&lt;html&gt;&lt;a href=&quot;&quot;&gt;revalidate&lt;/a&gt;&lt;/html&gt;" />
 		<Localized id="159" lang="English" value="Icon" key="icon" />
-		<Localized id="160" lang="Dutch" value="Icon" key="icon" />
+		<Localized id="160" lang="Dutch" value="Pictogram" key="icon" />
 		<Localized id="161" lang="French" value="Icône" key="icon" />
 		<Localized id="162" lang="English" value="Errors/warnings"
 			key="errors/warnings" />
-		<Localized id="163" lang="Dutch" value="Errors/warnings"
+		<Localized id="163" lang="Dutch" value="Fouten/waarschuwingen"
 			key="errors/warnings" />
 		<Localized id="164" lang="French" value="Erreurs/avertissements"
 			key="errors/warnings" />

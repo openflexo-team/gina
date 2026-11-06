@@ -25,18 +25,18 @@
 		<Localized id="17" value="Disable rule" lang="English" key="disable_rule" />
 		<Localized id="18" value="Désactiver la règle" lang="French"
 			key="disable_rule" />
-		<Localized id="19" value="disable_rule" lang="Dutch" key="disable_rule" />
+		<Localized id="19" value="Regel uitschakelen" lang="Dutch" key="disable_rule" />
 		<Localized id="20" value="Fix all" lang="English" key="fix_all" />
 		<Localized id="21" value="Corriger tout" lang="French" key="fix_all" />
-		<Localized id="22" value="fix_all" lang="Dutch" key="fix_all" />
+		<Localized id="22" value="Alles herstellen" lang="Dutch" key="fix_all" />
 		<Localized id="23" value="Fix issue s" lang="English" key="fix_issue_s" />
 		<Localized id="24" value="Corriger le(s) problème(s)" lang="French"
 			key="fix_issue_s" />
-		<Localized id="25" value="fix_issue_s" lang="Dutch" key="fix_issue_s" />
+		<Localized id="25" value="Probleem/problemen herstellen" lang="Dutch" key="fix_issue_s" />
 		<Localized id="26" value="Fix proposal" lang="English" key="fix_proposal" />
 		<Localized id="27" value="Corrections proposées" lang="French"
 			key="fix_proposal" />
-		<Localized id="28" value="fix_proposal" lang="Dutch" key="fix_proposal" />
+		<Localized id="28" value="Herstelvoorstel" lang="Dutch" key="fix_proposal" />
 		<Localized id="29" value="Message" lang="English" key="message" />
 		<Localized id="30" value="Message" lang="French" key="message" />
 		<Localized id="31" value="Bericht" lang="Dutch" key="message" />
@@ -45,12 +45,12 @@
 		<Localized id="34" value="Object" lang="Dutch" key="object" />
 		<Localized id="35" value="Classes" lang="English" key="classes" />
 		<Localized id="36" value="Classes" lang="French" key="classes" />
-		<Localized id="37" value="classes" lang="Dutch" key="classes" />
+		<Localized id="37" value="Klassen" lang="Dutch" key="classes" />
 		<Localized id="38" value="Validation rule" lang="English"
 			key="validation_rule" />
 		<Localized id="39" value="Règle de validation" lang="French"
 			key="validation_rule" />
-		<Localized id="40" value="validation_rule" lang="Dutch"
+		<Localized id="40" value="Validatieregel" lang="Dutch"
 			key="validation_rule" />
 		<Localized id="41" value="Defined in : " lang="English" key="defined_in" />
 		<Localized id="42" value="Défini dans : " lang="French" key="defined_in" />
@@ -66,7 +66,7 @@
 			key="errors_warnings" />
 		<Localized id="48" value="Erreurs/Avertissements" lang="French"
 			key="errors_warnings" />
-		<Localized id="49" value="errors_warnings" lang="Dutch"
+		<Localized id="49" value="Fouten/waarschuwingen" lang="Dutch"
 			key="errors_warnings" />
 	</LocalizedDictionary>
 	<Panel id="50" darkLevel="0" useScrollBar="false" protectContent="false"

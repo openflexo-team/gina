@@ -32,8 +32,8 @@
 		<Localized key="Basic" lang="French" value="Basique" />
 		<Localized key="Advanced" lang="French" value="Avancé" />
 		<Localized key="Graphics" lang="French" value="Graphisme" />
-		<Localized key="name" lang="Dutch" value="Name" />
-		<Localized key="value" lang="Dutch" value="Value" />
+		<Localized key="name" lang="Dutch" value="Naam" />
+		<Localized key="value" lang="Dutch" value="Waarde" />
 		<Localized key="delete_parameter" lang="French"
 			value="Supprimer le paramètre" />
 		<Localized key="Depends" lang="French" value="Dépendances" />

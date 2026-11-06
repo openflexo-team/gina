@@ -114,7 +114,7 @@
 		type="org.openflexo.gina.swing.editor.validation.IssueFixing" name="data" />
 	<LocalizedDictionary id="27">
 		<Localized id="28" lang="English" value="Fix issue" key="fix_issue" />
-		<Localized id="29" lang="Dutch" value="Fix issue" key="fix_issue" />
+		<Localized id="29" lang="Dutch" value="Probleem herstellen" key="fix_issue" />
 		<Localized id="30" lang="French" value="Résoudre le problème"
 			key="fix_issue" />
 		<Localized id="31" lang="English" value="Label" key="label" />
@@ -140,13 +140,13 @@
 		<Localized id="51" lang="French" value="Détails" key="details" />
 		<Localized id="52" lang="English" value="Available fixes"
 			key="available fixes" />
-		<Localized id="53" lang="Dutch" value="Available fixes" key="available fixes" />
+		<Localized id="53" lang="Dutch" value="Beschikbare herstellingen" key="available fixes" />
 		<Localized id="54" lang="French" value="Solutions" key="available fixes" />
 		<Localized id="55" lang="English" value="Icon" key="icon" />
 		<Localized id="56" lang="Dutch" value="icoon" key="icon" />
 		<Localized id="57" lang="French" value="icône" key="icon" />
 		<Localized id="58" lang="English" value="Fix proposals" key="fix_proposals" />
-		<Localized id="59" lang="Dutch" value="Fix proposals" key="fix_proposals" />
+		<Localized id="59" lang="Dutch" value="Herstelvoorstellen" key="fix_proposals" />
 		<Localized id="60" lang="French" value="Propositions" key="fix_proposals" />
 	</LocalizedDictionary>
 </Panel>

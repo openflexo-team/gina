@@ -55,12 +55,12 @@
 			value="Localize component" />
 		<Localized key="read_only_component" lang="English"
 			value="Read-only component" />
-		<Localized key="value_changed" lang="Dutch" value="Value changed" />
+		<Localized key="value_changed" lang="Dutch" value="Waarde gewijzigd" />
 		<Localized key="read_only_component" lang="Dutch"
-			value="Read-only component" />
+			value="Onderdeel alleen-lezen" />
 		<Localized key="localize_component" lang="Dutch"
-			value="Localize component" />
-		<Localized key="dynamic_model" lang="Dutch" value="Dynamic model" />
+			value="Onderdeel lokaliseren" />
+		<Localized key="dynamic_model" lang="Dutch" value="Dynamisch model" />
 	</LocalizedDictionary>
 	<Parameter name="title" value="Widget" />
 </Inspector>
