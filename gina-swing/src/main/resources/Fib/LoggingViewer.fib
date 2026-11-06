@@ -284,36 +284,12 @@
     <Localized id="263" lang="English" value="severe" key="severe" />
     <Localized id="264" lang="French" value="grave" key="severe" />
     <Localized id="265" lang="Dutch" value="ernstig" key="severe" />
-    <Localized id="266" lang="English" value="Use a default logging configuration" key="Use a default logging configuration" />
-    <Localized id="267" lang="French" value="Utiliser une configuration de journalisation par défaut" key="Use a default logging configuration" />
-    <Localized id="268" lang="Dutch" value="Een standaardlogconfiguratie gebruiken" key="Use a default logging configuration" />
     <Localized id="269" lang="English" value="Use a custom logging configuration" key="Use a custom logging configuration" />
     <Localized id="270" lang="French" value="Utiliser une configuration de journalisation personnalisée" key="Use a custom logging configuration" />
     <Localized id="271" lang="Dutch" value="Een aangepaste logconfiguratie gebruiken" key="Use a custom logging configuration" />
-    <Localized id="272" lang="English" value="Logs severe (memory impact insignifiant; performance impact insignifiant)" key="Logs severe (memory impact insignifiant; performance impact insignifiant)" />
-    <Localized id="273" lang="French" value="Journalise les erreurs graves (impact mémoire insignifiant ; impact performance insignifiant)" key="Logs severe (memory impact insignifiant; performance impact insignifiant)" />
-    <Localized id="274" lang="Dutch" value="Logt ernstige fouten (verwaarloosbare geheugenimpact; verwaarloosbare prestatie-impact)" key="Logs severe (memory impact insignifiant; performance impact insignifiant)" />
-    <Localized id="275" lang="English" value="Logs warning (memory impact reasonnable; performance impact reasonnable)" key="Logs warning (memory impact reasonnable; performance impact reasonnable)" />
-    <Localized id="276" lang="French" value="Journalise les avertissements (impact mémoire raisonnable ; impact performance raisonnable)" key="Logs warning (memory impact reasonnable; performance impact reasonnable)" />
-    <Localized id="277" lang="Dutch" value="Logt waarschuwingen (redelijke geheugenimpact; redelijke prestatie-impact)" key="Logs warning (memory impact reasonnable; performance impact reasonnable)" />
-    <Localized id="278" lang="English" value="Logs info (memory impact medium; performance impact medium)" key="Logs info (memory impact medium; performance impact medium)" />
-    <Localized id="279" lang="French" value="Journalise les informations (impact mémoire moyen ; impact performance moyen)" key="Logs info (memory impact medium; performance impact medium)" />
-    <Localized id="280" lang="Dutch" value="Logt informatie (gemiddelde geheugenimpact; gemiddelde prestatie-impact)" key="Logs info (memory impact medium; performance impact medium)" />
-    <Localized id="281" lang="English" value="Logs fine (memory impact high; performance impact high)" key="Logs fine (memory impact high; performance impact high)" />
-    <Localized id="282" lang="French" value="Journalise le niveau fin (impact mémoire élevé ; impact performance élevé)" key="Logs fine (memory impact high; performance impact high)" />
-    <Localized id="283" lang="Dutch" value="Logt het niveau fijn (hoge geheugenimpact; hoge prestatie-impact)" key="Logs fine (memory impact high; performance impact high)" />
-    <Localized id="284" lang="English" value="Logs finer (memory impact very high; performance impact very high)" key="Logs finer (memory impact very high; performance impact very high)" />
-    <Localized id="285" lang="French" value="Journalise le niveau plus fin (impact mémoire très élevé ; impact performance très élevé)" key="Logs finer (memory impact very high; performance impact very high)" />
-    <Localized id="286" lang="Dutch" value="Logt het niveau fijner (zeer hoge geheugenimpact; zeer hoge prestatie-impact)" key="Logs finer (memory impact very high; performance impact very high)" />
-    <Localized id="287" lang="English" value="Logs finest (memory impact huge; performance impact huge)" key="Logs finest (memory impact huge; performance impact huge)" />
-    <Localized id="288" lang="French" value="Journalise le niveau le plus fin (impact mémoire énorme ; impact performance énorme)" key="Logs finest (memory impact huge; performance impact huge)" />
-    <Localized id="289" lang="Dutch" value="Logt het fijnste niveau (enorme geheugenimpact; enorme prestatie-impact)" key="Logs finest (memory impact huge; performance impact huge)" />
     <Localized id="290" lang="English" value="open_logs_file" key="open_logs_file" />
     <Localized id="291" lang="French" value="Ouvrir le fichier de journaux" key="open_logs_file" />
     <Localized id="292" lang="Dutch" value="Logbestand openen" key="open_logs_file" />
-    <Localized id="293" lang="English" value="Open logs file..." key="Open logs file..." />
-    <Localized id="294" lang="French" value="Ouvrir le fichier de journaux..." key="Open logs file..." />
-    <Localized id="295" lang="Dutch" value="Logbestand openen..." key="Open logs file..." />
     <Localized id="296" lang="English" value="Filter name" key="filter_name" />
     <Localized id="297" lang="French" value="Nom du filtre" key="filter_name" />
     <Localized id="298" lang="Dutch" value="Naam van het filter" key="filter_name" />
