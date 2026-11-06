@@ -85,6 +85,7 @@ expand_horizontally=\u00c9tendre horizontalement
 expand_vertically=\u00c9tendre verticalement
 expression=Expression
 file=Fichier
+file_($0)_does_not_exist_anymore=Le fichier ($0) n'existe plus
 fill=Remplissage
 font_and_colors=Police et couleurs
 foreground=Premier plan

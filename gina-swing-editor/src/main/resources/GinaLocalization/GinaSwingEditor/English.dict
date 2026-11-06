@@ -85,6 +85,7 @@ expand_horizontally=Expand horizontally
 expand_vertically=Expand vertically
 expression=Expression
 file=File
+file_($0)_does_not_exist_anymore=File ($0) does not exist anymore
 fill=Fill
 font_and_colors=Font and colors
 foreground=Foreground

@@ -85,6 +85,7 @@ expand_horizontally=Horizontaal uitbreiden
 expand_vertically=Verticaal uitbreiden
 expression=Expressie
 file=Bestand
+file_($0)_does_not_exist_anymore=Het bestand ($0) bestaat niet meer
 fill=Vulling
 font_and_colors=Lettertype en kleuren
 foreground=Voorgrond
