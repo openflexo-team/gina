@@ -13,3 +13,13 @@ Status legend: `TODO` · `IN PROGRESS` · `BLOCKED` · `DONE` · `DEFERRED`.
 **Problem.** The colour widget (`<Color>`) cannot be a table column. A `CustomColumn` needs a custom component, and the existing `ColorSelector` (flexographicutils) is not one; used as a rendering component it also showed white cells, because the table renderer sets the background of the component, which is how the selector shows its colour.
 
 **Done.** `org.openflexo.gina.swing.utils.FIBColorSelector`: a `ColorSelector` that is a `FIBCustomComponent<Color>` and keeps its colour when the renderer sets colours on it. Use it as `<CustomColumn componentClassName="org.openflexo.gina.swing.utils.FIBColorSelector" customRendering="true" …/>`, or as a `<Custom>` widget.
+
+### GINA-F-2 — Localizers with several parents and a context for the creation of entries  ·  `IN PROGRESS`
+
+**Problem.** A localizer has a single parent, and a key it does not know is created in the localizer which was asked. A component that relies on several dictionaries (a module and the technology adapters it uses, a component and the VirtualModel it is bound to) cannot say where a new entry belongs; in an installation, where dictionaries are read-only, an unknown key still modified the in-memory dictionaries.
+
+**Done.** `LocalizedDelegate.getParents()` (ordered; `getParent()` stays the first), `getContext()` and `localizedForKeyInContext(context, key)`: a key is looked up in the localizer, then in each parent in order; an unknown key is created in the first localizer, searching the ancestors depth-first, whose context is the one asked, else in the localizer asked. `LocalizedDelegateImpl.addParent(...)` and `setContext(...)`. A localizer creates entries only in development (automatic saving of the source dictionaries) or when held in memory; otherwise an unknown key answers its text as English words (`some_key` gives `Some key`) and nothing changes.
+
+**Contexts wired** (openflexo-core, openflexo-ui): `platform` (main dictionary), `flexo`, `ta:<identifier>`, `module:<name>`, `plugin:<controller>`, `vm:<uri>` (dictionary of a VirtualModel, which always accepts new entries since its resource saves them). A localizer opened from a jar no longer tries to save: the constructor reset the parameter instead of the field.
+
+**Left.** Give the GINA, diana and pamela-editor static dictionaries their contexts, and the modules their technology adapters as extra parents; the call sites that must create in another dictionary (`localizedForKeyInContext`); apply the same resolution to `FIBLocalizedDictionary` through a common base class; the hot update of Swing components.

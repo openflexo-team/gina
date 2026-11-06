@@ -41,6 +41,7 @@ package org.openflexo.localization;
 
 import java.awt.Component;
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JComponent;
@@ -146,6 +147,44 @@ public interface LocalizedDelegate extends HasPropertyChangeSupport {
 	 * @return
 	 */
 	public LocalizedDelegate getParent();
+
+	/**
+	 * Return the delegates this one falls back on, in the order they are asked: a key is looked up in this delegate, then in each parent
+	 * (and recursively in their own parents) until one defines it.<br>
+	 * By default the sole {@link #getParent()}.
+	 *
+	 * @return
+	 */
+	default List<LocalizedDelegate> getParents() {
+		LocalizedDelegate parent = getParent();
+		return parent != null ? Collections.singletonList(parent) : Collections.emptyList();
+	}
+
+	/**
+	 * Return the identifier of this delegate in the context of creation of entries (for example <code>platform</code>, <code>ta:xlsx</code>,
+	 * <code>module:formod</code>, <code>fib:MyPanel.fib</code>, <code>vm:http://...</code>), or null when it has none.<br>
+	 * See {@link #localizedForKeyInContext(String, String)}.
+	 *
+	 * @return
+	 */
+	default String getContext() {
+		return null;
+	}
+
+	/**
+	 * Return String matching specified key for the current language.<br>
+	 * If the key is unknown and entries may be created, the new entry is created in the first delegate, among this one and its ancestors,
+	 * whose {@link #getContext()} is <code>context</code>. When no delegate has that context, or when the context is null, the entry is
+	 * created as {@link #localizedForKey(String)} does.
+	 *
+	 * @param context
+	 *            identifier of the delegate which should receive the entry, if it has to be created
+	 * @param key
+	 * @return
+	 */
+	default String localizedForKeyInContext(String context, String key) {
+		return localizedForKey(key);
+	}
 
 	/**
 	 * Return all entries declared for this {@link LocalizedDelegate}

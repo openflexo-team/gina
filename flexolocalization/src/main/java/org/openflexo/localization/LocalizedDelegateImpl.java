@@ -52,13 +52,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Properties;
+import java.util.Set;
 import java.util.Vector;
 import java.util.WeakHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -119,8 +122,9 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		if (editingSupport) {
 			Resource sourceCodeResource = ResourceLocator.locateSourceCodeResource(localizedDirectory);
 			if (sourceCodeResource == null) {
+				// The dictionaries are not those of the source code (running from a jar): they are read-only
 				localizedDirectoryResource = localizedDirectory;
-				automaticSaving = false;
+				this.automaticSaving = false;
 			}
 			else {
 				localizedDirectoryResource = sourceCodeResource;
@@ -789,8 +793,8 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 
 	@Override
 	public void searchTranslation(LocalizedEntry entry) {
-		if (getParent() != null) {
-			String englishTranslation = getParent().localizedForKeyAndLanguage(entry.getKey(), Language.ENGLISH, false);
+		if (!getParents().isEmpty()) {
+			String englishTranslation = parentsTranslation(entry.getKey(), Language.ENGLISH);
 			if (entry.getKey().equals(englishTranslation)) {
 				englishTranslation = automaticEnglishTranslation(entry.getKey());
 			}
@@ -798,7 +802,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 				entry.setEnglish(englishTranslation);
 			}
 			// System.out.println("englishTranslation=" + englishTranslation);
-			String dutchTranslation = getParent().localizedForKeyAndLanguage(entry.getKey(), Language.DUTCH, false);
+			String dutchTranslation = parentsTranslation(entry.getKey(), Language.DUTCH);
 			if (entry.getKey().equals(dutchTranslation)) {
 				dutchTranslation = automaticDutchTranslation(entry.getKey());
 			}
@@ -806,7 +810,7 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 				entry.setDutch(dutchTranslation);
 			}
 			// System.out.println("dutchTranslation=" + dutchTranslation);
-			String frenchTranslation = getParent().localizedForKeyAndLanguage(entry.getKey(), Language.FRENCH, false);
+			String frenchTranslation = parentsTranslation(entry.getKey(), Language.FRENCH);
 			if (entry.getKey().equals(frenchTranslation)) {
 				frenchTranslation = automaticFrenchTranslation(entry.getKey());
 			}
@@ -826,6 +830,18 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 				entry.setDutch(englishTranslation);
 			}
 		}
+	}
+
+	/**
+	 * The translation of a key in the first parent which defines it, or the key itself.
+	 */
+	private String parentsTranslation(String key, Language language) {
+		for (LocalizedDelegate parent : getParents()) {
+			if (parent.hasKey(key, language, true)) {
+				return parent.localizedForKeyAndLanguage(key, language, false);
+			}
+		}
+		return key;
 	}
 
 	private static String automaticEnglishTranslation(String key) {
@@ -966,39 +982,141 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	 */
 	@Override
 	public String localizedForKeyAndLanguage(String key, Language language, boolean createsNewEntryInFirstEditableParent) {
+		return resolve(key, language, createsNewEntryInFirstEditableParent, null);
+	}
+
+	@Override
+	public String localizedForKeyInContext(String context, String key) {
+		Language language = FlexoLocalization.getCurrentLanguage();
+		return resolve(key, language, handleNewEntry(key, language), context);
+	}
+
+	/**
+	 * Look a key up in this localizer, then in its parents in the order of {@link #getParents()}. A key unknown everywhere is created, when
+	 * <code>creates</code> is true, in the localizer chosen by {@link #findCreationTarget(String, Language, String)}.
+	 */
+	private String resolve(String key, Language language, boolean creates, String context) {
 
 		if (key == null || StringUtils.isEmpty(key)) {
 			return null;
 		}
 
-		Properties currentLanguageDict = getDictionary(language);
-		String localized = currentLanguageDict.getProperty(key);
-
-		if (localized == null) {
-			// Not found in this localizer what about parent ?
-			if (getParent() != null) {
-				if (getParent().hasKey(key, language, true)) {
-					// This is defined in parent localizer
-					// Nice, we forward the request to the parent
-					return getParent().localizedForKeyAndLanguage(key, language, false);
-				}
-				else if (createsNewEntryInFirstEditableParent && handleNewEntry(key, language)) {
-					addEntry(key);
-					return currentLanguageDict.getProperty(key);
-				}
-				else {
-					return getParent().localizedForKeyAndLanguage(key, language, createsNewEntryInFirstEditableParent);
-				}
-			}
-			// parent is null
-			if (createsNewEntryInFirstEditableParent && handleNewEntry(key, language)) {
-				addEntry(key);
-				return currentLanguageDict.getProperty(key);
-			}
-			return key;
+		String localized = getDictionary(language).getProperty(key);
+		if (localized != null) {
+			return localized;
 		}
 
-		return localized;
+		// Not found in this localizer: what about the parents ? One which defines it answers
+		List<LocalizedDelegate> parents = getParents();
+		for (LocalizedDelegate parent : parents) {
+			if (parent.hasKey(key, language, true)) {
+				return parent.localizedForKeyAndLanguage(key, language, false);
+			}
+		}
+
+		if (creates) {
+			LocalizedDelegate target = findCreationTarget(key, language, context);
+			if (target == this) {
+				addEntry(key);
+				return getDictionary(language).getProperty(key);
+			}
+			if (target != null) {
+				target.addEntry(key);
+				return target.localizedForKeyAndLanguage(key, language, false);
+			}
+		}
+
+		return defaultValueForUnknownKey(key);
+	}
+
+	/**
+	 * Return the localizer which receives a new entry: the first one, searching this localizer and then its ancestors depth-first, which is
+	 * able to create entries and accepts the key ({@link #handleNewEntry(String, Language)}).<br>
+	 * When <code>context</code> is not null, only the localizers whose {@link #getContext()} equals it are candidates; if there is none,
+	 * the search is done as if there were no context.
+	 *
+	 * @return the target localizer, or null when no localizer may create the entry
+	 */
+	protected LocalizedDelegate findCreationTarget(String key, Language language, String context) {
+		LocalizedDelegate returned = null;
+		if (context != null) {
+			returned = searchCreationTarget(this, key, language, context, new HashSet<>());
+		}
+		if (returned == null) {
+			returned = searchCreationTarget(this, key, language, null, new HashSet<>());
+		}
+		return returned;
+	}
+
+	private static LocalizedDelegate searchCreationTarget(LocalizedDelegate delegate, String key, Language language, String context,
+			Set<LocalizedDelegate> visited) {
+		if (!visited.add(delegate)) {
+			return null;
+		}
+		boolean contextMatches = context == null || context.equals(delegate.getContext());
+		if (contextMatches && delegate.handleNewEntry(key, language)
+				&& (!(delegate instanceof LocalizedDelegateImpl) || ((LocalizedDelegateImpl) delegate).isCreationAllowed())) {
+			return delegate;
+		}
+		for (LocalizedDelegate parent : delegate.getParents()) {
+			LocalizedDelegate returned = searchCreationTarget(parent, key, language, context, visited);
+			if (returned != null) {
+				return returned;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Whether this localizer may create entries for the keys it does not know: it is the development situation, where its dictionaries are
+	 * those of the source code and are saved automatically, or a localizer held in memory (its entries are the ones of an owner which saves
+	 * them). In a running installation the dictionaries are read-only and an unknown key does not change them.
+	 */
+	protected boolean isCreationAllowed() {
+		return automaticSaving || localizedDirectoryResource == null;
+	}
+
+	/**
+	 * The text shown for a key which is in no dictionary and was not created: the key read as English words (<code>some_key</code> gives
+	 * <code>Some key</code>), or the key itself when it does not look like one.
+	 */
+	protected String defaultValueForUnknownKey(String key) {
+		if (key.indexOf('_') > 0 && key.indexOf(' ') < 0) {
+			return automaticEnglishTranslation(key);
+		}
+		return key;
+	}
+
+	private final List<LocalizedDelegate> additionalParents = new CopyOnWriteArrayList<>();
+	private String context;
+
+	/**
+	 * Add a parent after the ones already there: a key unknown to this localizer is looked up in it last. This is for a localizer which
+	 * must rely on several dictionaries (a technology adapter used by a module, for example).
+	 */
+	public void addParent(LocalizedDelegate parent) {
+		if (parent != null && parent != this && !additionalParents.contains(parent)) {
+			additionalParents.add(parent);
+		}
+	}
+
+	@Override
+	public List<LocalizedDelegate> getParents() {
+		if (additionalParents.isEmpty()) {
+			return LocalizedDelegate.super.getParents();
+		}
+		List<LocalizedDelegate> returned = new ArrayList<>(LocalizedDelegate.super.getParents());
+		returned.addAll(additionalParents);
+		return returned;
+	}
+
+	@Override
+	public String getContext() {
+		return context;
+	}
+
+	public void setContext(String context) {
+		this.context = context;
 	}
 
 	/**
@@ -1013,8 +1131,12 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 		if (localized != null) {
 			return true;
 		}
-		if (recursive && getParent() != null) {
-			return getParent().hasKey(key, language, recursive);
+		if (recursive) {
+			for (LocalizedDelegate parent : getParents()) {
+				if (parent.hasKey(key, language, recursive)) {
+					return true;
+				}
+			}
 		}
 		return false;
 	}

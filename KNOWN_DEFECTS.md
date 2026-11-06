@@ -195,3 +195,13 @@ It runs on the thread notifying a change of the list binding, while the event di
 **Done.** `IteratedContentsImpl.getValue` returns null once its iteration view is deleted.
 
 **Left.** Find which listener outlives its view: the bindings of the views built for each iterated element (`subViewsMap`) may not be stopped by `FIBIterationViewImpl.delete()`. Alternatively fire `DELETED` before deleting the views.
+
+## Localization
+
+### GINA-D-10 — The merge panels display raw keys  ·  `DEFERRED`
+
+**Symptom.** The merge UI of `flexographicutils` (`org.openflexo.swing.merge`: `MergePanelElements`, `DetailedMergeAnalysisPanel`, `HandConflictResolver`) shows keys such as `choose_left`, `merged_result` or `please_resolve_conflict` instead of text.
+
+**Verified.** `MergePanelElements.localizedForKey` returns its argument and nothing overrides it; the 25 keys it uses are in no dictionary. `MergeEditor` and `DefaultMergePanel` have no caller in the workspace, so the code may be dead.
+
+**Decision.** Left as is (2026-11-06). Either delete the package, or route `localizedForKey` to a localizer and add the keys to a dictionary.
