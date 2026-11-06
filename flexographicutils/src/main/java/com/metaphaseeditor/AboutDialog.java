@@ -69,7 +69,7 @@ public class AboutDialog extends javax.swing.JDialog {
 		setIconImage(null);
 
 		homepageLabel.setFont(homepageLabel.getFont().deriveFont(homepageLabel.getFont().getStyle() | java.awt.Font.BOLD));
-		homepageLabel.setText("Homepage:");
+		homepageLabel.setText(MetaphaseLocalization.locales().localizedForKey("homepage:", homepageLabel));
 
 		appHomepageLabel.setText("http://www.metaphaseeditor.com/");
 
@@ -78,12 +78,12 @@ public class AboutDialog extends javax.swing.JDialog {
 		imageLabel.setIcon(new ImageIconResource(ResourceLocator.locateResource("MetaphaseEditor/images/Metaphase-flourescent.JPG"))); // NOI18N
 
 		versionLabel.setFont(versionLabel.getFont().deriveFont(versionLabel.getFont().getStyle() | java.awt.Font.BOLD));
-		versionLabel.setText("Product Version:");
+		versionLabel.setText(MetaphaseLocalization.locales().localizedForKey("product_version:", versionLabel));
 
 		appVersionLabel.setText("1.0");
 
 		authorLabel.setFont(authorLabel.getFont().deriveFont(authorLabel.getFont().getStyle() | java.awt.Font.BOLD));
-		authorLabel.setText("Author:");
+		authorLabel.setText(MetaphaseLocalization.locales().localizedForKey("author:", authorLabel));
 
 		appVendorLabel.setText("Rudolf Visagie");
 
@@ -91,7 +91,7 @@ public class AboutDialog extends javax.swing.JDialog {
 				appTitleLabel.getFont().getSize() + 4));
 		appTitleLabel.setText("Metaphase HTML Editor");
 
-		closeButton.setText("Close");
+		closeButton.setText(MetaphaseLocalization.locales().localizedForKey("close", closeButton));
 		closeButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -101,12 +101,12 @@ public class AboutDialog extends javax.swing.JDialog {
 
 		acknowledgementsLabel
 				.setFont(acknowledgementsLabel.getFont().deriveFont(acknowledgementsLabel.getFont().getStyle() | java.awt.Font.BOLD));
-		acknowledgementsLabel.setText("Acknowledgements:");
+		acknowledgementsLabel.setText(MetaphaseLocalization.locales().localizedForKey("acknowledgements:", acknowledgementsLabel));
 
 		appLicenseLabel.setText("GNU LESSER GENERAL PUBLIC LICENSE, Version 3");
 
 		licenseLabel.setFont(licenseLabel.getFont().deriveFont(licenseLabel.getFont().getStyle() | java.awt.Font.BOLD));
-		licenseLabel.setText("License:");
+		licenseLabel.setText(MetaphaseLocalization.locales().localizedForKey("license:", licenseLabel));
 
 		jLabel1.setText(
 				"<html>Metaphase HTML Editor is based on the excellent web-based CKEditor. All the toolbar icons are also taken from CKEditor. (<a href=\"http://ckeditor.com\">http://ckeditor.com</a>).<br><br>\nCharles Bell for his HTMLDocumentEditor (<a href=\"http://www.artima.com/forums/flat.jsp?forum=1&thread=1276\">http://www.artima.com/forums/flat.jsp?forum=1&thread=1276</a>) that served as a good starting point.<br><br>Modified portions of code from Kafenio.editor has also been included. (<a href=\"http://editor.kafenio.org/\">http://editor.kafenio.org/</a>)<br><br>The spell checker functionality is provided by Jazzy - The Java Open Source Spell Checker. (<a href=\"http://jazzy.sourceforge.net/\">http://jazzy.sourceforge.net/</a>)<br><br>The image on the left representing cell metaphase is from WikiVisual. (<a href=\"http://en.wikivisual.com/index.php/Metaphase\">http://en.wikivisual.com/index.php/Metaphase</a>) ");

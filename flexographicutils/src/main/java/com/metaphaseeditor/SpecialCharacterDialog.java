@@ -93,7 +93,7 @@ public class SpecialCharacterDialog extends javax.swing.JDialog {
 		mainPanelLayout.setVerticalGroup(
 				mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 251, Short.MAX_VALUE));
 
-		cancelButton.setText("Cancel");
+		cancelButton.setText(MetaphaseLocalization.locales().localizedForKey("cancel", cancelButton));
 		cancelButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {

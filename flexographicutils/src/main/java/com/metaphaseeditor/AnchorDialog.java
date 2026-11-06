@@ -58,9 +58,9 @@ public class AnchorDialog extends javax.swing.JDialog {
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("Insert Anchor");
 
-		anchorLabel.setText("Name");
+		anchorLabel.setText(MetaphaseLocalization.locales().localizedForKey("name", anchorLabel));
 
-		cancelButton.setText("Cancel");
+		cancelButton.setText(MetaphaseLocalization.locales().localizedForKey("cancel", cancelButton));
 		cancelButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -108,7 +108,7 @@ public class AnchorDialog extends javax.swing.JDialog {
 
 	private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_okButtonActionPerformed
 		if (nameTextField.getText().trim().length() == 0) {
-			JOptionPane.showMessageDialog(this, "Please supply an anchor name.", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, MetaphaseLocalization.locales().localizedForKey("please_supply_an_anchor_name."), MetaphaseLocalization.locales().localizedForKey("error"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		StringBuffer buffer = new StringBuffer();

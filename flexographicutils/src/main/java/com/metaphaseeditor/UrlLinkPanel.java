@@ -54,7 +54,7 @@ public class UrlLinkPanel extends javax.swing.JPanel {
 
 		urlLabel.setText("URL");
 
-		linkTargetLabel.setText("Link Target");
+		linkTargetLabel.setText(MetaphaseLocalization.locales().localizedForKey("link_target", linkTargetLabel));
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
 		this.setLayout(layout);

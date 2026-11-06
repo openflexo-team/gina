@@ -126,7 +126,7 @@ public class LinkDialog extends javax.swing.JDialog {
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("Link");
 
-		linkTypeLabel.setText("Link Type");
+		linkTypeLabel.setText(MetaphaseLocalization.locales().localizedForKey("link_type", linkTypeLabel));
 
 		linkTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "URL" }));
 		linkTypeComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -169,32 +169,32 @@ public class LinkDialog extends javax.swing.JDialog {
 
 		idLabel.setText("ID");
 
-		styleClassesLabel.setText("Style Classes");
+		styleClassesLabel.setText(MetaphaseLocalization.locales().localizedForKey("style_classes", styleClassesLabel));
 
-		styleLabel.setText("Style");
+		styleLabel.setText(MetaphaseLocalization.locales().localizedForKey("style", styleLabel));
 
-		advisoryTitleLabel.setText("Advisory Title");
+		advisoryTitleLabel.setText(MetaphaseLocalization.locales().localizedForKey("advisory_title", advisoryTitleLabel));
 
-		languageDirectionLabel.setText("Language Direction");
+		languageDirectionLabel.setText(MetaphaseLocalization.locales().localizedForKey("language_direction", languageDirectionLabel));
 
 		languageDirectionComboBox
 				.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Left to Right", "Right to Left" }));
 
-		languageCodeLabel.setText("Language Code");
+		languageCodeLabel.setText(MetaphaseLocalization.locales().localizedForKey("language_code", languageCodeLabel));
 
-		advisoryContentTypeLabel.setText("Advisory Content Type");
+		advisoryContentTypeLabel.setText(MetaphaseLocalization.locales().localizedForKey("advisory_content_type", advisoryContentTypeLabel));
 
-		accessKeyLabel.setText("Access Key");
+		accessKeyLabel.setText(MetaphaseLocalization.locales().localizedForKey("access_key", accessKeyLabel));
 
-		tabIndexLabel.setText("Tab Index");
+		tabIndexLabel.setText(MetaphaseLocalization.locales().localizedForKey("tab_index", tabIndexLabel));
 
 		tabIndexSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
 		tabIndexSpinner.setEnabled(false);
 
-		linkedResourceCharsetLabel.setText("Linked Resource Charset");
+		linkedResourceCharsetLabel.setText(MetaphaseLocalization.locales().localizedForKey("linked_resource_charset", linkedResourceCharsetLabel));
 
 		tabIndexToggleButton.setSelected(true);
-		tabIndexToggleButton.setText("Default");
+		tabIndexToggleButton.setText(MetaphaseLocalization.locales().localizedForKey("default", tabIndexToggleButton));
 		tabIndexToggleButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -295,7 +295,7 @@ public class LinkDialog extends javax.swing.JDialog {
 			}
 		});
 
-		cancelButton.setText("Cancel");
+		cancelButton.setText(MetaphaseLocalization.locales().localizedForKey("cancel", cancelButton));
 		cancelButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -345,7 +345,7 @@ public class LinkDialog extends javax.swing.JDialog {
 				LinkTarget linkTarget = urlLinkPanel.getLinkTarget();
 
 				if (url.length() == 0) {
-					JOptionPane.showMessageDialog(null, "The link URL must be specified.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, MetaphaseLocalization.locales().localizedForKey("the_link_url_must_be_specified."), MetaphaseLocalization.locales().localizedForKey("error"), JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 
@@ -366,7 +366,7 @@ public class LinkDialog extends javax.swing.JDialog {
 				String anchorName = anchorLinkPanel.getAnchorName();
 
 				if (anchorName.length() == 0) {
-					JOptionPane.showMessageDialog(null, "The anchor name must be specified.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, MetaphaseLocalization.locales().localizedForKey("the_anchor_name_must_be_specified."), MetaphaseLocalization.locales().localizedForKey("error"), JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 
@@ -382,7 +382,7 @@ public class LinkDialog extends javax.swing.JDialog {
 				String messageBody = emailLinkPanel.getMessageBody();
 
 				if (emailAddress.length() == 0) {
-					JOptionPane.showMessageDialog(null, "The e-mail address must be specified.", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, MetaphaseLocalization.locales().localizedForKey("the_e-mail_address_must_be_specified."), MetaphaseLocalization.locales().localizedForKey("error"), JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 

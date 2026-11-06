@@ -49,11 +49,11 @@ public class EmailLinkPanel extends javax.swing.JPanel {
 		jScrollPane1 = new javax.swing.JScrollPane();
 		messageBodyTextArea = new javax.swing.JTextArea();
 
-		emailAddressLabel.setText("E-mail Address");
+		emailAddressLabel.setText(MetaphaseLocalization.locales().localizedForKey("e-mail_address", emailAddressLabel));
 
-		messageSubjectLabel.setText("Message Subject");
+		messageSubjectLabel.setText(MetaphaseLocalization.locales().localizedForKey("message_subject", messageSubjectLabel));
 
-		messageBodyLabel.setText("Message Body");
+		messageBodyLabel.setText(MetaphaseLocalization.locales().localizedForKey("message_body", messageBodyLabel));
 
 		messageBodyTextArea.setColumns(20);
 		messageBodyTextArea.setRows(5);

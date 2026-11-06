@@ -82,7 +82,7 @@ public class DivDialog extends javax.swing.JDialog {
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("Create Div");
 
-		stylesheetClassesLabel.setText("Stylesheet Classes");
+		stylesheetClassesLabel.setText(MetaphaseLocalization.locales().localizedForKey("stylesheet_classes", stylesheetClassesLabel));
 
 		javax.swing.GroupLayout generalPanelLayout = new javax.swing.GroupLayout(generalPanel);
 		generalPanel.setLayout(generalPanelLayout);
@@ -103,13 +103,13 @@ public class DivDialog extends javax.swing.JDialog {
 
 		idLabel.setText("ID");
 
-		languageCodeLabel.setText("Language Code");
+		languageCodeLabel.setText(MetaphaseLocalization.locales().localizedForKey("language_code", languageCodeLabel));
 
-		styleLabel.setText("Style");
+		styleLabel.setText(MetaphaseLocalization.locales().localizedForKey("style", styleLabel));
 
-		advisoryTitleLabel.setText("Advisory Title");
+		advisoryTitleLabel.setText(MetaphaseLocalization.locales().localizedForKey("advisory_title", advisoryTitleLabel));
 
-		languageDirectionLabel.setText("Language Direction");
+		languageDirectionLabel.setText(MetaphaseLocalization.locales().localizedForKey("language_direction", languageDirectionLabel));
 
 		languageDirectionComboBox
 				.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Left to Right", "Right to Left" }));
@@ -172,7 +172,7 @@ public class DivDialog extends javax.swing.JDialog {
 			}
 		});
 
-		cancelButton.setText("Cancel");
+		cancelButton.setText(MetaphaseLocalization.locales().localizedForKey("cancel", cancelButton));
 		cancelButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {

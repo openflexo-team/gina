@@ -75,7 +75,7 @@ public class FindReplaceDialog extends javax.swing.JDialog {
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("Find/Replace");
 
-		findWhatLabel.setText("Find What");
+		findWhatLabel.setText(MetaphaseLocalization.locales().localizedForKey("find_what", findWhatLabel));
 
 		findWhatTextField.addKeyListener(new java.awt.event.KeyAdapter() {
 			@Override
@@ -84,11 +84,11 @@ public class FindReplaceDialog extends javax.swing.JDialog {
 			}
 		});
 
-		replaceWithLabel.setText("Replace With");
+		replaceWithLabel.setText(MetaphaseLocalization.locales().localizedForKey("replace_with", replaceWithLabel));
 
-		matchCaseCheckBox.setText("Match Case");
+		matchCaseCheckBox.setText(MetaphaseLocalization.locales().localizedForKey("match_case", matchCaseCheckBox));
 
-		closeButton.setText("Close");
+		closeButton.setText(MetaphaseLocalization.locales().localizedForKey("close", closeButton));
 		closeButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -96,7 +96,7 @@ public class FindReplaceDialog extends javax.swing.JDialog {
 			}
 		});
 
-		replaceAllButton.setText("Replace All");
+		replaceAllButton.setText(MetaphaseLocalization.locales().localizedForKey("replace_all", replaceAllButton));
 		replaceAllButton.setEnabled(false);
 		replaceAllButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -105,7 +105,7 @@ public class FindReplaceDialog extends javax.swing.JDialog {
 			}
 		});
 
-		replaceButton.setText("Replace");
+		replaceButton.setText(MetaphaseLocalization.locales().localizedForKey("replace", replaceButton));
 		replaceButton.setEnabled(false);
 		replaceButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -114,7 +114,7 @@ public class FindReplaceDialog extends javax.swing.JDialog {
 			}
 		});
 
-		findButton.setText("Find");
+		findButton.setText(MetaphaseLocalization.locales().localizedForKey("find", findButton));
 		findButton.setEnabled(false);
 		findButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -194,7 +194,7 @@ public class FindReplaceDialog extends javax.swing.JDialog {
 
 	private void findButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_findButtonActionPerformed
 		if (!findNext()) {
-			JOptionPane.showMessageDialog(this, "The specified search text could not be found.");
+			JOptionPane.showMessageDialog(this, MetaphaseLocalization.locales().localizedForKey("the_specified_search_text_could_not_be_found."));
 		}
 	}// GEN-LAST:event_findButtonActionPerformed
 
@@ -241,7 +241,7 @@ public class FindReplaceDialog extends javax.swing.JDialog {
 			replacePerformed = true;
 		}
 		else {
-			JOptionPane.showMessageDialog(this, "The specified search text could not be found.");
+			JOptionPane.showMessageDialog(this, MetaphaseLocalization.locales().localizedForKey("the_specified_search_text_could_not_be_found."));
 		}
 	}// GEN-LAST:event_replaceButtonActionPerformed
 
@@ -251,7 +251,7 @@ public class FindReplaceDialog extends javax.swing.JDialog {
 			replaceSelection();
 			count++;
 		}
-		JOptionPane.showMessageDialog(this, count + " replacements have been made.");
+		JOptionPane.showMessageDialog(this, MetaphaseLocalization.locales().localizedForKeyWithParams("($0)_replacements_have_been_made", count));
 	}// GEN-LAST:event_replaceAllButtonActionPerformed
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables

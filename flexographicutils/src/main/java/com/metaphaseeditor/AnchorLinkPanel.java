@@ -48,7 +48,7 @@ public class AnchorLinkPanel extends javax.swing.JPanel {
 		anchorNameLabel = new javax.swing.JLabel();
 		anchorNameTextField = new javax.swing.JTextField();
 
-		anchorNameLabel.setText("Anchor Name");
+		anchorNameLabel.setText(MetaphaseLocalization.locales().localizedForKey("anchor_name", anchorNameLabel));
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
 		this.setLayout(layout);

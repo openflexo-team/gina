@@ -155,36 +155,36 @@ public class ImageDialog extends javax.swing.JDialog {
 
 		urlLabel.setText("URL");
 
-		alternativeTextLabel.setText("Alternative Text");
+		alternativeTextLabel.setText(MetaphaseLocalization.locales().localizedForKey("alternative_text", alternativeTextLabel));
 
-		widthLabel.setText("Width");
+		widthLabel.setText(MetaphaseLocalization.locales().localizedForKey("width", widthLabel));
 
 		widthSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
 		widthSpinner.setEnabled(false);
 
-		heightLabel.setText("Height");
+		heightLabel.setText(MetaphaseLocalization.locales().localizedForKey("height", heightLabel));
 
 		heightSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
 		heightSpinner.setEnabled(false);
 
-		borderLabel.setText("Border");
+		borderLabel.setText(MetaphaseLocalization.locales().localizedForKey("border", borderLabel));
 
 		borderSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
 
-		hspaceLabel.setText("HSpace");
+		hspaceLabel.setText(MetaphaseLocalization.locales().localizedForKey("hspace", hspaceLabel));
 
 		hspaceSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
 
-		vspaceLabel.setText("VSpace");
+		vspaceLabel.setText(MetaphaseLocalization.locales().localizedForKey("vspace", vspaceLabel));
 
 		vspaceSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
 
-		alignLabel.setText("Align");
+		alignLabel.setText(MetaphaseLocalization.locales().localizedForKey("align", alignLabel));
 
 		alignComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Top", "Bottom", "Middle", "Left", "Right" }));
 
 		widthToggleButton.setSelected(true);
-		widthToggleButton.setText("Default");
+		widthToggleButton.setText(MetaphaseLocalization.locales().localizedForKey("default", widthToggleButton));
 		widthToggleButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -193,7 +193,7 @@ public class ImageDialog extends javax.swing.JDialog {
 		});
 
 		heightToggleButton.setSelected(true);
-		heightToggleButton.setText("Default");
+		heightToggleButton.setText(MetaphaseLocalization.locales().localizedForKey("default", heightToggleButton));
 		heightToggleButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -270,7 +270,7 @@ public class ImageDialog extends javax.swing.JDialog {
 
 		linkUrlLabel.setText("URL");
 
-		targetLabel.setText("Target");
+		targetLabel.setText(MetaphaseLocalization.locales().localizedForKey("target", targetLabel));
 
 		targetComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None" }));
 
@@ -301,20 +301,20 @@ public class ImageDialog extends javax.swing.JDialog {
 
 		idLabel.setText("ID");
 
-		languageCodeLabel.setText("Language Code");
+		languageCodeLabel.setText(MetaphaseLocalization.locales().localizedForKey("language_code", languageCodeLabel));
 
-		styleLabel.setText("Style");
+		styleLabel.setText(MetaphaseLocalization.locales().localizedForKey("style", styleLabel));
 
-		advisoryTitleLabel.setText("Advisory Title");
+		advisoryTitleLabel.setText(MetaphaseLocalization.locales().localizedForKey("advisory_title", advisoryTitleLabel));
 
-		languageDirectionLabel.setText("Language Direction");
+		languageDirectionLabel.setText(MetaphaseLocalization.locales().localizedForKey("language_direction", languageDirectionLabel));
 
 		languageDirectionComboBox
 				.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Left to Right", "Right to Left" }));
 
-		styleClassesLabel.setText("Style Classes");
+		styleClassesLabel.setText(MetaphaseLocalization.locales().localizedForKey("style_classes", styleClassesLabel));
 
-		longDescLabel.setText("Long Description URL");
+		longDescLabel.setText(MetaphaseLocalization.locales().localizedForKey("long_description_url", longDescLabel));
 
 		javax.swing.GroupLayout advancedPanelLayout = new javax.swing.GroupLayout(advancedPanel);
 		advancedPanel.setLayout(advancedPanelLayout);
@@ -375,7 +375,7 @@ public class ImageDialog extends javax.swing.JDialog {
 
 		mainTabbedPane.addTab("Advanced", advancedPanel);
 
-		cancelButton.setText("Cancel");
+		cancelButton.setText(MetaphaseLocalization.locales().localizedForKey("cancel", cancelButton));
 		cancelButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -439,7 +439,7 @@ public class ImageDialog extends javax.swing.JDialog {
 		String languageCode = languageCodeTextField.getText();
 
 		if (url.length() == 0) {
-			JOptionPane.showMessageDialog(null, "The image URL must be specified.", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, MetaphaseLocalization.locales().localizedForKey("the_image_url_must_be_specified."), MetaphaseLocalization.locales().localizedForKey("error"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 

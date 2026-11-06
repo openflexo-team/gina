@@ -162,17 +162,17 @@ public class TableDialog extends javax.swing.JDialog {
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("Insert Table");
 
-		rowsLabel.setText("Rows");
+		rowsLabel.setText(MetaphaseLocalization.locales().localizedForKey("rows", rowsLabel));
 
 		rowsSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 50, 1));
 
-		columnsLabel.setText("Columns");
+		columnsLabel.setText(MetaphaseLocalization.locales().localizedForKey("columns", columnsLabel));
 
 		columnsSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 50, 1));
 
-		widthLabel.setText("Width");
+		widthLabel.setText(MetaphaseLocalization.locales().localizedForKey("width", widthLabel));
 
-		heightLabel.setText("Height");
+		heightLabel.setText(MetaphaseLocalization.locales().localizedForKey("height", heightLabel));
 
 		heightSpinner.setModel(new javax.swing.SpinnerNumberModel(100, 1, 2000, 1));
 
@@ -180,31 +180,31 @@ public class TableDialog extends javax.swing.JDialog {
 
 		widthTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pixels", "Percent" }));
 
-		headersLabel.setText("Headers");
+		headersLabel.setText(MetaphaseLocalization.locales().localizedForKey("headers", headersLabel));
 
 		headersComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "First Row", "First Column", "Both" }));
 
-		cellPaddingLabel.setText("Cell Padding");
+		cellPaddingLabel.setText(MetaphaseLocalization.locales().localizedForKey("cell_padding", cellPaddingLabel));
 
 		cellPaddingSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(0), null, Integer.valueOf(1)));
 
-		cellSpacingLabel.setText("Cell Spacing");
+		cellSpacingLabel.setText(MetaphaseLocalization.locales().localizedForKey("cell_spacing", cellSpacingLabel));
 
 		cellSpacingSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(0), null, Integer.valueOf(1)));
 
-		borderSizeLabel.setText("Border Size");
+		borderSizeLabel.setText(MetaphaseLocalization.locales().localizedForKey("border_size", borderSizeLabel));
 
 		borderSizeSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(0), null, Integer.valueOf(1)));
 
-		alignmentLabel.setText("Alignment");
+		alignmentLabel.setText(MetaphaseLocalization.locales().localizedForKey("alignment", alignmentLabel));
 
 		alignmentComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Left", "Center", "Right" }));
 
-		captionLabel.setText("Caption");
+		captionLabel.setText(MetaphaseLocalization.locales().localizedForKey("caption", captionLabel));
 
-		summaryLabel.setText("Summary");
+		summaryLabel.setText(MetaphaseLocalization.locales().localizedForKey("summary", summaryLabel));
 
-		cancelButton.setText("Cancel");
+		cancelButton.setText(MetaphaseLocalization.locales().localizedForKey("cancel", cancelButton));
 		cancelButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
