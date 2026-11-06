@@ -89,7 +89,7 @@ import org.openflexo.rm.ResourceLocator;
 public class DateSelector extends TextFieldCustomPopup<Date> {
 
 	public static LocalizedDelegate DATE_LOCALIZATION = new LocalizedDelegateImpl(
-			ResourceLocator.locateResource("Localization/DateSelector"), null, true, true);
+			ResourceLocator.locateResource("Localization/DateSelector"), null, true, true).withContext("component:date");
 
 	public static final ImageIconResource DECREASE_YEAR_SELECTED_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/DateSelector/DecreaseYearSelected.png"));

@@ -14,7 +14,7 @@ Status legend: `TODO` · `IN PROGRESS` · `BLOCKED` · `DONE` · `DEFERRED`.
 
 **Done.** `org.openflexo.gina.swing.utils.FIBColorSelector`: a `ColorSelector` that is a `FIBCustomComponent<Color>` and keeps its colour when the renderer sets colours on it. Use it as `<CustomColumn componentClassName="org.openflexo.gina.swing.utils.FIBColorSelector" customRendering="true" …/>`, or as a `<Custom>` widget.
 
-### GINA-F-2 — Localizers with several parents and a context for the creation of entries  ·  `IN PROGRESS`
+### GINA-F-2 — Localizers with several parents and a context for the creation of entries  ·  `DONE`
 
 **Problem.** A localizer has a single parent, and a key it does not know is created in the localizer which was asked. A component that relies on several dictionaries (a module and the technology adapters it uses, a component and the VirtualModel it is bound to) cannot say where a new entry belongs; in an installation, where dictionaries are read-only, an unknown key still modified the in-memory dictionaries.
 
@@ -22,9 +22,11 @@ Status legend: `TODO` · `IN PROGRESS` · `BLOCKED` · `DONE` · `DEFERRED`.
 
 **Contexts wired** (openflexo-core, openflexo-ui): `platform` (main dictionary), `flexo`, `ta:<identifier>`, `module:<name>`, `plugin:<controller>`, `vm:<uri>` (dictionary of a VirtualModel, which always accepts new entries since its resource saves them). A localizer opened from a jar no longer tries to save: the constructor reset the parameter instead of the field.
 
-**Left.** Give the GINA, diana and pamela-editor static dictionaries their contexts, and the modules their technology adapters as extra parents; the call sites that must create in another dictionary (`localizedForKeyInContext`); apply the same resolution to `FIBLocalizedDictionary` through a common base class; the hot update of Swing components.
+**Also done.** Every static localizer (GINA, GINA editor and validation, diana and its three editors, pamela-editor, FML validation) has its context (`LocalizedDelegateImpl.withContext(...)`), as the platform, technology adapter, module, plugin and VirtualModel dictionaries have.
 
-### GINA-F-3 — Swing components follow the language and the edition of the dictionaries  ·  `IN PROGRESS`
+**Left.** The rest is in GINA-F-4.
+
+### GINA-F-3 — Swing components follow the language and the edition of the dictionaries  ·  `DONE`
 
 **Problem.** Only the views of the inspectors were updated when the language changed. The components a localizer was asked a text for (`localizedForKey(key, component)`, tooltips, borders, table columns) were registered but nothing ever asked the localizer to update them, the registries were read from any thread, and editing a translation updated nothing on screen.
 
@@ -32,4 +34,16 @@ Status legend: `TODO` · `IN PROGRESS` · `BLOCKED` · `DONE` · `DEFERRED`.
 
 **Migrated.** `LocalizedSwing.bind(component, localizer, key)` and `LocalizedSwing.titledBorder(localizer, key)` register a component built from a key; the menus, labels and buttons of the FIB editor, of the diana editors (drawing, GeomEdit, PowerPoint), of the binding panels of gina, of the print preview, of the project save and auto-save dialogs and of the FML terminal use them, as do the tooltips and the titles of a few dialogs (about 100 sites; frames and dialogs are updated too). Not registered on purpose: a text that is set again later (a label showing a changing value, a text area), which an update would reset, and the 40 calls of the merge panels (GINA-D-10). The other calls of `localizedForKey` build messages and dialogs shown once.
 
-**Left.** A binder that also carries the parameters of a text (`localizedForKeyWithParams`) and removes a component when it leaves the screen; the buttons and labels set with `setText(localizedForKey(...))` (about 20) which may later get another text: check each before registering it.
+**Left.** The rest is in GINA-F-4.
+
+### GINA-F-4 — Finish the localization model  ·  `TODO`
+
+**Problem.** What GINA-F-2 and GINA-F-3 did not reach:
+- `FIBLocalizedDictionary` (the dictionary embedded in a `.fib`) has its own copy of the resolution of `LocalizedDelegateImpl`: it has neither several parents nor a context. A common base class would give it both.
+- No module has its technology adapters as extra parents (`addParent`), and no call creates a key in another dictionary (`localizedForKeyInContext`): nothing needed it so far, but a component bound to a VirtualModel could.
+- A binder that carries the parameters of a text (`localizedForKeyWithParams`) and forgets a component that left the screen.
+- 54 snake_case keys of the embedded dictionaries have no reference found in the code: they may be built dynamically (a key followed by `_description`, an enumeration name); each one has to be checked.
+- The merge panels of flexographicutils show raw keys (GINA-D-10).
+
+**Acceptance.** A `.fib` with a dictionary resolves a key in its parents in the same order as a platform localizer; the 54 keys are kept or removed with a reason.
+

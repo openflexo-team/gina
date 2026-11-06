@@ -1144,6 +1144,14 @@ public class LocalizedDelegateImpl extends Observable implements LocalizedDelega
 	}
 
 	/**
+	 * Same as {@link #setContext(String)}, returning this localizer: for the declaration of a static localizer.
+	 */
+	public LocalizedDelegateImpl withContext(String context) {
+		setContext(context);
+		return this;
+	}
+
+	/**
 	 * Return boolean indicating if this delegate defines a translation for supplied key and language
 	 * 
 	 * @return

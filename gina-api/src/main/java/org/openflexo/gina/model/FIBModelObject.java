@@ -176,9 +176,9 @@ public interface FIBModelObject extends Validable, Bindable, AccessibleProxyObje
 
 		// Locales for GINA
 		public static LocalizedDelegate GINA_LOCALIZATION = new LocalizedDelegateImpl(
-				ResourceLocator.locateResource("GinaLocalization/General"), null, true, true);
+				ResourceLocator.locateResource("GinaLocalization/General"), null, true, true).withContext("gina");
 		public static LocalizedDelegate READ_ONLY_GINA_LOCALIZATION = new LocalizedDelegateImpl(
-				ResourceLocator.locateResource("GinaLocalization/General"), null, false, false);
+				ResourceLocator.locateResource("GinaLocalization/General"), null, false, false).withContext("gina:read-only");
 
 		public FIBModelObjectImpl() {
 			super();

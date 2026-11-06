@@ -108,7 +108,7 @@ public abstract class AbstractColumn<T, V> implements HasPropertyChangeSupport, 
 	private final PropertyChangeSupport pcSupport;
 
 	public static LocalizedDelegate DATE_LOCALIZATION = new LocalizedDelegateImpl(
-			ResourceLocator.locateResource("Localization/DateSelector"), null, true, true);
+			ResourceLocator.locateResource("Localization/DateSelector"), null, true, true).withContext("component:date");
 
 	private SimpleDateFormat dateFormatter;
 

@@ -58,7 +58,7 @@ public class FIBValidationModel extends ValidationModel {
 
 	private static Resource fibValidationLocalizedDelegate = ResourceLocator.locateResource("GinaLocalization/FIBValidation");
 	public static LocalizedDelegate VALIDATION_LOCALIZATION = new LocalizedDelegateImpl(fibValidationLocalizedDelegate,
-			FIBModelObjectImpl.GINA_LOCALIZATION, true, true);
+			FIBModelObjectImpl.GINA_LOCALIZATION, true, true).withContext("gina:validation");
 
 	public FIBValidationModel(FIBModelFactory fibModelFactory) {
 		super(fibModelFactory.getModelContext());

@@ -105,7 +105,7 @@ public class FIBEditor {
 	static final Logger logger = FlexoLogger.getLogger(FIBEditor.class.getPackage().getName());
 
 	public static LocalizedDelegate EDITOR_LOCALIZATION = new LocalizedDelegateImpl(
-			ResourceLocator.locateResource("GinaLocalization/GinaSwingEditor"), FIBModelObjectImpl.GINA_LOCALIZATION, true, true);
+			ResourceLocator.locateResource("GinaLocalization/GinaSwingEditor"), FIBModelObjectImpl.GINA_LOCALIZATION, true, true).withContext("gina:editor");
 
 	public static Resource COMPONENT_LOCALIZATION_FIB = ResourceLocator.locateResource("Fib/LocalizedPanel.fib");
 
