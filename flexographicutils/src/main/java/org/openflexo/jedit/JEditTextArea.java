@@ -115,7 +115,6 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoableEdit;
 
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedSwing;
 import org.openflexo.search.view.ITextComponent;
 import org.openflexo.search.view.TextSearchPanel;
@@ -2463,16 +2462,16 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 	}
 
 	public void showGotoLineDialog() {
-		final Dialog dialog = createNewDialog(FlexoLocalization.getMainLocalizer().localizedForKey("goto_line"));
+		final Dialog dialog = createNewDialog(JEditLocalization.locales().localizedForKey("goto_line"));
 		dialog.setModal(true);
 		JPanel panel = new JPanel(new BorderLayout());
-		JLabel label = LocalizedSwing.bind(new JLabel(FlexoLocalization.getMainLocalizer().localizedForKey("line:")), FlexoLocalization.getMainLocalizer(), "line:");
+		JLabel label = LocalizedSwing.bind(new JLabel(JEditLocalization.locales().localizedForKey("line:")), JEditLocalization.locales(), "line:");
 		panel.add(label, BorderLayout.WEST);
 		final JFormattedTextField lineNumberTf = new JFormattedTextField(NumberFormat.getIntegerInstance());
 		JPanel tfPanel = new JPanel();
 		tfPanel.add(lineNumberTf);
 		panel.add(tfPanel);
-		JButton go = LocalizedSwing.bind(new JButton(FlexoLocalization.getMainLocalizer().localizedForKey("OK")), FlexoLocalization.getMainLocalizer(), "OK");
+		JButton go = LocalizedSwing.bind(new JButton(JEditLocalization.locales().localizedForKey("OK")), JEditLocalization.locales(), "OK");
 		ActionListener actionListener = new ActionListener() {
 
 			@Override
@@ -2529,12 +2528,12 @@ public class JEditTextArea extends JComponent implements ITextComponent {
 		if (searchDialog != null) {
 			searchDialog.dispose();
 		}
-		searchDialog = createNewDialog(FlexoLocalization.getMainLocalizer().localizedForKey("find_and_replace"));
+		searchDialog = createNewDialog(JEditLocalization.locales().localizedForKey("find_and_replace"));
 		if (searchPanel == null) {
 			searchDialog.add(searchPanel = new TextSearchPanel() {
 				@Override
 				public String localizedForKey(String key) {
-					return FlexoLocalization.getMainLocalizer().localizedForKey(key);
+					return JEditLocalization.locales().localizedForKey(key);
 				}
 			});
 		}
