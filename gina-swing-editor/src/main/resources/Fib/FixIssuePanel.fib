@@ -125,7 +125,7 @@
 		<Localized id="36" lang="French" value="Annuler" key="cancel" />
 		<Localized id="37" lang="English" value="Ignore" key="ignore" />
 		<Localized id="38" lang="Dutch" value="Negeren" key="ignore" />
-		<Localized id="39" lang="French" value="Ignore" key="ignore" />
+		<Localized id="39" lang="French" value="Ignorer" key="ignore" />
 		<Localized id="40" lang="English" value="Fix issue" key="fix" />
 		<Localized id="41" lang="Dutch" value="Los probleem op" key="fix" />
 		<Localized id="42" lang="French" value="Corriger" key="fix" />

@@ -174,13 +174,13 @@
     <Localized id="153" lang="French" value="Méthode" key="method" />
     <Localized id="154" lang="Dutch" value="Method" key="method" />
     <Localized id="155" lang="English" value="seq" key="seq" />
-    <Localized id="156" lang="French" value="seq" key="seq" />
+    <Localized id="156" lang="French" value="séq" key="seq" />
     <Localized id="157" lang="Dutch" value="seq" key="seq" />
     <Localized id="158" lang="English" value="Date" key="date" />
     <Localized id="159" lang="French" value="Date" key="date" />
     <Localized id="160" lang="Dutch" value="Date" key="date" />
     <Localized id="161" lang="English" value="millis" key="millis" />
-    <Localized id="162" lang="French" value="millis" key="millis" />
+    <Localized id="162" lang="French" value="ms" key="millis" />
     <Localized id="163" lang="Dutch" value="millis" key="millis" />
     <Localized id="164" lang="English" value="thread" key="thread" />
     <Localized id="165" lang="French" value="thread" key="thread" />
@@ -195,10 +195,10 @@
     <Localized id="174" lang="French" value="Rafraichir" key="refresh" />
     <Localized id="175" lang="Dutch" value="Refresh" key="refresh" />
     <Localized id="176" lang="English" value="Logs" key="logs" />
-    <Localized id="177" lang="French" value="Logs" key="logs" />
+    <Localized id="177" lang="French" value="Journaux" key="logs" />
     <Localized id="178" lang="Dutch" value="Logs" key="logs" />
     <Localized id="179" lang="English" value="Sequence" key="Sequence" />
-    <Localized id="180" lang="French" value="Sequence" key="Sequence" />
+    <Localized id="180" lang="French" value="Séquence" key="Sequence" />
     <Localized id="181" lang="Dutch" value="Sequence" key="Sequence" />
     <Localized id="182" lang="English" value="Level" key="level" />
     <Localized id="183" lang="French" value="Niveau" key="level" />
@@ -207,7 +207,7 @@
     <Localized id="186" lang="French" value="nombre de logs à conserver" key="number_of_logs_to_keep" />
     <Localized id="187" lang="Dutch" value="Number of logs to keep" key="number_of_logs_to_keep" />
     <Localized id="188" lang="English" value="infinite" key="infinite" />
-    <Localized id="189" lang="French" value="infinite" key="infinite" />
+    <Localized id="189" lang="French" value="infini" key="infinite" />
     <Localized id="190" lang="Dutch" value="infinite" key="infinite" />
     <Localized id="191" lang="English" value="Keep log trace in memory" key="keep_log_trace_in_memory" />
     <Localized id="192" lang="French" value="Conserver les traces en mémoire" key="keep_log_trace_in_memory" />
@@ -216,13 +216,13 @@
     <Localized id="195" lang="French" value="Configuration" key="configuration" />
     <Localized id="196" lang="Dutch" value="Configuration" key="configuration" />
     <Localized id="197" lang="English" value="Configuration file" key="configuration_file" />
-    <Localized id="198" lang="French" value="Configuration file" key="configuration_file" />
+    <Localized id="198" lang="French" value="Fichier de configuration" key="configuration_file" />
     <Localized id="199" lang="Dutch" value="Configuration file" key="configuration_file" />
     <Localized id="200" lang="English" value="Log level" key="log_level" />
     <Localized id="201" lang="French" value="Niveau de log" key="log_level" />
     <Localized id="202" lang="Dutch" value="Log level" key="log_level" />
     <Localized id="203" lang="English" value="Logging configuration" key="Logging configuration" />
-    <Localized id="204" lang="French" value="Logging configuration" key="Logging configuration" />
+    <Localized id="204" lang="French" value="Configuration des journaux" key="Logging configuration" />
     <Localized id="205" lang="Dutch" value="Logging configuration" key="Logging configuration" />
     <Localized id="206" lang="English" value="Please select columns to show in logs table" key="display_option_description" />
     <Localized id="207" lang="French" value="Sélectionner les colonnes à afficher" key="display_option_description" />
@@ -234,16 +234,16 @@
     <Localized id="213" lang="French" value="millisecondes" key="milliseconds" />
     <Localized id="214" lang="Dutch" value="milliseconds" key="milliseconds" />
     <Localized id="215" lang="English" value="Display options" key="Display options" />
-    <Localized id="216" lang="French" value="Display options" key="Display options" />
+    <Localized id="216" lang="French" value="Options d'affichage" key="Display options" />
     <Localized id="217" lang="Dutch" value="Display options" key="Display options" />
     <Localized id="218" lang="English" value="col1" key="col1" />
-    <Localized id="219" lang="French" value="col1" key="col1" />
+    <Localized id="219" lang="French" value="Colonne 1" key="col1" />
     <Localized id="220" lang="Dutch" value="col1" key="col1" />
     <Localized id="221" lang="English" value="col2" key="col2" />
-    <Localized id="222" lang="French" value="col2" key="col2" />
+    <Localized id="222" lang="French" value="Colonne 2" key="col2" />
     <Localized id="223" lang="Dutch" value="col2" key="col2" />
     <Localized id="224" lang="English" value="Filters" key="Filters" />
-    <Localized id="225" lang="French" value="Filters" key="Filters" />
+    <Localized id="225" lang="French" value="Filtres" key="Filters" />
     <Localized id="226" lang="Dutch" value="Filters" key="Filters" />
     <Localized id="227" lang="English" value="Options" key="options" />
     <Localized id="228" lang="French" value="Options" key="options" />
@@ -255,163 +255,157 @@
     <Localized id="234" lang="French" value="Utiliser une configuration de log personnalisée" key="use_a_custom_logging_configuration" />
     <Localized id="235" lang="Dutch" value="Use a custom logging configuration" key="use_a_custom_logging_configuration" />
     <Localized id="236" lang="English" value="Logs severe (memory impact insignifiant; performance impact insignifiant)" key="SEVERE_description" />
-    <Localized id="237" lang="French" value="SEVERE_description" key="SEVERE_description" />
+    <Localized id="237" lang="French" value="Journalise les erreurs graves (impact mémoire insignifiant ; impact performance insignifiant)" key="SEVERE_description" />
     <Localized id="238" lang="Dutch" value="Logs severe (memory impact insignifiant; performance impact insignifiant)" key="SEVERE_description" />
     <Localized id="239" lang="English" value="Logs warning (memory impact reasonnable; performance impact reasonnable)" key="WARNING_description" />
-    <Localized id="240" lang="French" value="WARNING_description" key="WARNING_description" />
+    <Localized id="240" lang="French" value="Journalise les avertissements (impact mémoire raisonnable ; impact performance raisonnable)" key="WARNING_description" />
     <Localized id="241" lang="Dutch" value="Logs warning (memory impact reasonnable; performance impact reasonnable)" key="WARNING_description" />
     <Localized id="242" lang="English" value="Logs info (memory impact medium; performance impact medium)" key="INFO_description" />
-    <Localized id="243" lang="French" value="INFO_description" key="INFO_description" />
+    <Localized id="243" lang="French" value="Journalise les informations (impact mémoire moyen ; impact performance moyen)" key="INFO_description" />
     <Localized id="244" lang="Dutch" value="Logs info (memory impact medium; performance impact medium)" key="INFO_description" />
     <Localized id="245" lang="English" value="Logs fine (memory impact high; performance impact high)" key="FINE_description" />
-    <Localized id="246" lang="French" value="FINE_description" key="FINE_description" />
+    <Localized id="246" lang="French" value="Journalise le niveau fin (impact mémoire élevé ; impact performance élevé)" key="FINE_description" />
     <Localized id="247" lang="Dutch" value="Logs fine (memory impact high; performance impact high)" key="FINE_description" />
     <Localized id="248" lang="English" value="Logs finer (memory impact very high; performance impact very high)" key="FINER_description" />
-    <Localized id="249" lang="French" value="FINER_description" key="FINER_description" />
+    <Localized id="249" lang="French" value="Journalise le niveau plus fin (impact mémoire très élevé ; impact performance très élevé)" key="FINER_description" />
     <Localized id="250" lang="Dutch" value="Logs finer (memory impact very high; performance impact very high)" key="FINER_description" />
     <Localized id="251" lang="English" value="Logs finest (memory impact huge; performance impact huge)" key="FINEST_description" />
-    <Localized id="252" lang="French" value="FINEST_description" key="FINEST_description" />
+    <Localized id="252" lang="French" value="Journalise le niveau le plus fin (impact mémoire énorme ; impact performance énorme)" key="FINEST_description" />
     <Localized id="253" lang="Dutch" value="Logs finest (memory impact huge; performance impact huge)" key="FINEST_description" />
     <Localized id="254" lang="English" value="Apply filters" key="apply_filters" />
     <Localized id="255" lang="French" value="Appliquer les filtres" key="apply_filters" />
     <Localized id="256" lang="Dutch" value="Apply filters" key="apply_filters" />
     <Localized id="257" lang="English" value="logs," key="logs," />
-    <Localized id="258" lang="French" value="logs," key="logs," />
+    <Localized id="258" lang="French" value="journaux," key="logs," />
     <Localized id="259" lang="Dutch" value="logs," key="logs," />
     <Localized id="260" lang="English" value="warnings," key="warnings," />
-    <Localized id="261" lang="French" value="warnings," key="warnings," />
+    <Localized id="261" lang="French" value="avertissements," key="warnings," />
     <Localized id="262" lang="Dutch" value="warnings," key="warnings," />
     <Localized id="263" lang="English" value="severe" key="severe" />
-    <Localized id="264" lang="French" value="severe" key="severe" />
+    <Localized id="264" lang="French" value="grave" key="severe" />
     <Localized id="265" lang="Dutch" value="severe" key="severe" />
     <Localized id="266" lang="English" value="Use a default logging configuration" key="Use a default logging configuration" />
-    <Localized id="267" lang="French" value="Use a default logging configuration" key="Use a default logging configuration" />
+    <Localized id="267" lang="French" value="Utiliser une configuration de journalisation par défaut" key="Use a default logging configuration" />
     <Localized id="268" lang="Dutch" value="Use a default logging configuration" key="Use a default logging configuration" />
     <Localized id="269" lang="English" value="Use a custom logging configuration" key="Use a custom logging configuration" />
-    <Localized id="270" lang="French" value="Use a custom logging configuration" key="Use a custom logging configuration" />
+    <Localized id="270" lang="French" value="Utiliser une configuration de journalisation personnalisée" key="Use a custom logging configuration" />
     <Localized id="271" lang="Dutch" value="Use a custom logging configuration" key="Use a custom logging configuration" />
     <Localized id="272" lang="English" value="Logs severe (memory impact insignifiant; performance impact insignifiant)" key="Logs severe (memory impact insignifiant; performance impact insignifiant)" />
-    <Localized id="273" lang="French" value="Logs severe (memory impact insignifiant; performance impact insignifiant)" key="Logs severe (memory impact insignifiant; performance impact insignifiant)" />
+    <Localized id="273" lang="French" value="Journalise les erreurs graves (impact mémoire insignifiant ; impact performance insignifiant)" key="Logs severe (memory impact insignifiant; performance impact insignifiant)" />
     <Localized id="274" lang="Dutch" value="Logs severe (memory impact insignifiant; performance impact insignifiant)" key="Logs severe (memory impact insignifiant; performance impact insignifiant)" />
     <Localized id="275" lang="English" value="Logs warning (memory impact reasonnable; performance impact reasonnable)" key="Logs warning (memory impact reasonnable; performance impact reasonnable)" />
-    <Localized id="276" lang="French" value="Logs warning (memory impact reasonnable; performance impact reasonnable)" key="Logs warning (memory impact reasonnable; performance impact reasonnable)" />
+    <Localized id="276" lang="French" value="Journalise les avertissements (impact mémoire raisonnable ; impact performance raisonnable)" key="Logs warning (memory impact reasonnable; performance impact reasonnable)" />
     <Localized id="277" lang="Dutch" value="Logs warning (memory impact reasonnable; performance impact reasonnable)" key="Logs warning (memory impact reasonnable; performance impact reasonnable)" />
     <Localized id="278" lang="English" value="Logs info (memory impact medium; performance impact medium)" key="Logs info (memory impact medium; performance impact medium)" />
-    <Localized id="279" lang="French" value="Logs info (memory impact medium; performance impact medium)" key="Logs info (memory impact medium; performance impact medium)" />
+    <Localized id="279" lang="French" value="Journalise les informations (impact mémoire moyen ; impact performance moyen)" key="Logs info (memory impact medium; performance impact medium)" />
     <Localized id="280" lang="Dutch" value="Logs info (memory impact medium; performance impact medium)" key="Logs info (memory impact medium; performance impact medium)" />
     <Localized id="281" lang="English" value="Logs fine (memory impact high; performance impact high)" key="Logs fine (memory impact high; performance impact high)" />
-    <Localized id="282" lang="French" value="Logs fine (memory impact high; performance impact high)" key="Logs fine (memory impact high; performance impact high)" />
+    <Localized id="282" lang="French" value="Journalise le niveau fin (impact mémoire élevé ; impact performance élevé)" key="Logs fine (memory impact high; performance impact high)" />
     <Localized id="283" lang="Dutch" value="Logs fine (memory impact high; performance impact high)" key="Logs fine (memory impact high; performance impact high)" />
     <Localized id="284" lang="English" value="Logs finer (memory impact very high; performance impact very high)" key="Logs finer (memory impact very high; performance impact very high)" />
-    <Localized id="285" lang="French" value="Logs finer (memory impact very high; performance impact very high)" key="Logs finer (memory impact very high; performance impact very high)" />
+    <Localized id="285" lang="French" value="Journalise le niveau plus fin (impact mémoire très élevé ; impact performance très élevé)" key="Logs finer (memory impact very high; performance impact very high)" />
     <Localized id="286" lang="Dutch" value="Logs finer (memory impact very high; performance impact very high)" key="Logs finer (memory impact very high; performance impact very high)" />
     <Localized id="287" lang="English" value="Logs finest (memory impact huge; performance impact huge)" key="Logs finest (memory impact huge; performance impact huge)" />
-    <Localized id="288" lang="French" value="Logs finest (memory impact huge; performance impact huge)" key="Logs finest (memory impact huge; performance impact huge)" />
+    <Localized id="288" lang="French" value="Journalise le niveau le plus fin (impact mémoire énorme ; impact performance énorme)" key="Logs finest (memory impact huge; performance impact huge)" />
     <Localized id="289" lang="Dutch" value="Logs finest (memory impact huge; performance impact huge)" key="Logs finest (memory impact huge; performance impact huge)" />
     <Localized id="290" lang="English" value="open_logs_file" key="open_logs_file" />
-    <Localized id="291" lang="French" value="open_logs_file" key="open_logs_file" />
+    <Localized id="291" lang="French" value="Ouvrir le fichier de journaux" key="open_logs_file" />
     <Localized id="292" lang="Dutch" value="open_logs_file" key="open_logs_file" />
     <Localized id="293" lang="English" value="Open logs file..." key="Open logs file..." />
-    <Localized id="294" lang="French" value="Open logs file..." key="Open logs file..." />
+    <Localized id="294" lang="French" value="Ouvrir le fichier de journaux..." key="Open logs file..." />
     <Localized id="295" lang="Dutch" value="Open logs file..." key="Open logs file..." />
     <Localized id="296" lang="English" value="Filter name" key="filter_name" />
-    <Localized id="297" lang="French" value="filter_name" key="filter_name" />
+    <Localized id="297" lang="French" value="Nom du filtre" key="filter_name" />
     <Localized id="298" lang="Dutch" value="Filter name" key="filter_name" />
     <Localized id="299" lang="English" value="Dropdown" key="dropdown" />
     <Localized id="300" lang="French" value="Liste déroulante" key="dropdown" />
     <Localized id="301" lang="Dutch" value="Dropdown" key="dropdown" />
     <Localized id="302" lang="English" value="add_action" key="add_action" />
-    <Localized id="303" lang="French" value="add_action" key="add_action" />
+    <Localized id="303" lang="French" value="Ajouter une action" key="add_action" />
     <Localized id="304" lang="Dutch" value="add_action" key="add_action" />
     <Localized id="305" lang="English" value="Delete action" key="delete_action" />
     <Localized id="306" lang="French" value="Supprimer l'action" key="delete_action" />
     <Localized id="307" lang="Dutch" value="Delete action" key="delete_action" />
     <Localized id="308" lang="English" value="Filter" key="filter" />
-    <Localized id="309" lang="French" value="filter" key="filter" />
+    <Localized id="309" lang="French" value="Filtre" key="filter" />
     <Localized id="310" lang="Dutch" value="Filter" key="filter" />
     <Localized id="311" lang="English" value="Type" key="type" />
     <Localized id="312" lang="French" value="Type" key="type" />
     <Localized id="313" lang="Dutch" value="Type" key="type" />
     <Localized id="314" lang="English" value="Highlight" key="Highlight" />
-    <Localized id="315" lang="French" value="Highlight" key="Highlight" />
+    <Localized id="315" lang="French" value="Surligner" key="Highlight" />
     <Localized id="316" lang="Dutch" value="Highlight" key="Highlight" />
     <Localized id="317" lang="English" value="Dismiss" key="Dismiss" />
-    <Localized id="318" lang="French" value="Dismiss" key="Dismiss" />
+    <Localized id="318" lang="French" value="Écarter" key="Dismiss" />
     <Localized id="319" lang="Dutch" value="Dismiss" key="Dismiss" />
     <Localized id="320" lang="English" value="Filter message" key="filter_message" />
-    <Localized id="321" lang="French" value="filter_message" key="filter_message" />
+    <Localized id="321" lang="French" value="Filtrer par message" key="filter_message" />
     <Localized id="322" lang="Dutch" value="Filter message" key="filter_message" />
     <Localized id="323" lang="English" value="Contains" key="Contains" />
-    <Localized id="324" lang="French" value="Contains" key="Contains" />
+    <Localized id="324" lang="French" value="Contient" key="Contains" />
     <Localized id="325" lang="Dutch" value="Contains" key="Contains" />
     <Localized id="326" lang="English" value="StartsWith" key="StartsWith" />
-    <Localized id="327" lang="French" value="StartsWith" key="StartsWith" />
+    <Localized id="327" lang="French" value="Commence par" key="StartsWith" />
     <Localized id="328" lang="Dutch" value="StartsWith" key="StartsWith" />
     <Localized id="329" lang="English" value="EndsWith" key="EndsWith" />
-    <Localized id="330" lang="French" value="EndsWith" key="EndsWith" />
+    <Localized id="330" lang="French" value="Finit par" key="EndsWith" />
     <Localized id="331" lang="Dutch" value="EndsWith" key="EndsWith" />
     <Localized id="332" lang="English" value="Filter log level" key="filter_log_level" />
-    <Localized id="333" lang="French" value="filter_log_level" key="filter_log_level" />
+    <Localized id="333" lang="French" value="Filtrer par niveau" key="filter_log_level" />
     <Localized id="334" lang="Dutch" value="Filter log level" key="filter_log_level" />
     <Localized id="335" lang="English" value="SEVERE" key="SEVERE" />
-    <Localized id="336" lang="French" value="SEVERE" key="SEVERE" />
+    <Localized id="336" lang="French" value="GRAVE" key="SEVERE" />
     <Localized id="337" lang="Dutch" value="SEVERE" key="SEVERE" />
     <Localized id="338" lang="English" value="WARNING" key="WARNING" />
-    <Localized id="339" lang="French" value="WARNING" key="WARNING" />
+    <Localized id="339" lang="French" value="AVERTISSEMENT" key="WARNING" />
     <Localized id="340" lang="Dutch" value="WARNING" key="WARNING" />
     <Localized id="341" lang="English" value="INFO" key="INFO" />
     <Localized id="342" lang="French" value="INFO" key="INFO" />
     <Localized id="343" lang="Dutch" value="INFO" key="INFO" />
     <Localized id="344" lang="English" value="FINE" key="FINE" />
-    <Localized id="345" lang="French" value="FINE" key="FINE" />
+    <Localized id="345" lang="French" value="FIN" key="FINE" />
     <Localized id="346" lang="Dutch" value="FINE" key="FINE" />
     <Localized id="347" lang="English" value="FINER" key="FINER" />
-    <Localized id="348" lang="French" value="FINER" key="FINER" />
+    <Localized id="348" lang="French" value="PLUS FIN" key="FINER" />
     <Localized id="349" lang="Dutch" value="FINER" key="FINER" />
     <Localized id="350" lang="English" value="FINEST" key="FINEST" />
-    <Localized id="351" lang="French" value="FINEST" key="FINEST" />
+    <Localized id="351" lang="French" value="LE PLUS FIN" key="FINEST" />
     <Localized id="352" lang="Dutch" value="FINEST" key="FINEST" />
     <Localized id="353" lang="English" value="Filter source" key="filter_source" />
-    <Localized id="354" lang="French" value="filter_source" key="filter_source" />
+    <Localized id="354" lang="French" value="Filtrer par source" key="filter_source" />
     <Localized id="355" lang="Dutch" value="Filter source" key="filter_source" />
     <Localized id="356" lang="English" value="Package" key="Package" />
     <Localized id="357" lang="French" value="Paquetage" key="Package" />
     <Localized id="358" lang="Dutch" value="Package" key="Package" />
     <Localized id="359" lang="English" value="Class" key="Class" />
-    <Localized id="360" lang="French" value="Class" key="Class" />
+    <Localized id="360" lang="French" value="Classe" key="Class" />
     <Localized id="361" lang="Dutch" value="Class" key="Class" />
     <Localized id="362" lang="English" value="Method" key="Method" />
     <Localized id="363" lang="French" value="Méthode" key="Method" />
     <Localized id="364" lang="Dutch" value="Method" key="Method" />
     <Localized id="365" lang="English" value="Filter date" key="filter_date" />
-    <Localized id="366" lang="French" value="filter_date" key="filter_date" />
+    <Localized id="366" lang="French" value="Filtrer par date" key="filter_date" />
     <Localized id="367" lang="Dutch" value="Filter date" key="filter_date" />
     <Localized id="368" lang="English" value="Before" key="Before" />
-    <Localized id="369" lang="French" value="Before" key="Before" />
+    <Localized id="369" lang="French" value="Avant" key="Before" />
     <Localized id="370" lang="Dutch" value="Before" key="Before" />
     <Localized id="371" lang="English" value="After" key="After" />
-    <Localized id="372" lang="French" value="After" key="After" />
+    <Localized id="372" lang="French" value="Après" key="After" />
     <Localized id="373" lang="Dutch" value="After" key="After" />
     <Localized id="374" lang="English" value="Between" key="Between" />
-    <Localized id="375" lang="French" value="Between" key="Between" />
+    <Localized id="375" lang="French" value="Entre" key="Between" />
     <Localized id="376" lang="Dutch" value="Between" key="Between" />
     <Localized id="377" lang="English" value="and" key="and" />
     <Localized id="378" lang="French" value="et" key="and" />
     <Localized id="379" lang="Dutch" value="and" key="and" />
     <Localized id="380" lang="English" value="Filter thread" key="filter_thread" />
-    <Localized id="381" lang="French" value="filter_thread" key="filter_thread" />
+    <Localized id="381" lang="French" value="Filtrer par thread" key="filter_thread" />
     <Localized id="382" lang="Dutch" value="Filter thread" key="filter_thread" />
     <Localized id="383" lang="English" value="Filter stacktrace" key="filter_stacktrace" />
-    <Localized id="384" lang="French" value="filter_stacktrace" key="filter_stacktrace" />
+    <Localized id="384" lang="French" value="Filtrer par trace d'appels" key="filter_stacktrace" />
     <Localized id="385" lang="Dutch" value="Filter stacktrace" key="filter_stacktrace" />
-    <Localized id="386" lang="English" value="Utiliser une configuration de log par défaut" key="Utiliser une configuration de log par défaut" />
-    <Localized id="387" lang="French" value="Utiliser une configuration de log par défaut" key="Utiliser une configuration de log par défaut" />
-    <Localized id="388" lang="Dutch" value="Utiliser une configuration de log par défaut" key="Utiliser une configuration de log par défaut" />
-    <Localized id="389" lang="English" value="Utiliser une configuration de log personnalisée" key="Utiliser une configuration de log personnalisée" />
-    <Localized id="390" lang="French" value="Utiliser une configuration de log personnalisée" key="Utiliser une configuration de log personnalisée" />
-    <Localized id="391" lang="Dutch" value="Utiliser une configuration de log personnalisée" key="Utiliser une configuration de log personnalisée" />
     <Localized id="392" lang="English" value="Filter type" key="filter_type" />
-    <Localized id="393" lang="French" value="filter_type" key="filter_type" />
+    <Localized id="393" lang="French" value="Filtrer par type" key="filter_type" />
     <Localized id="394" lang="Dutch" value="Filter type" key="filter_type" />
     <Localized id="395" lang="English" value="Done" key="done" />
     <Localized id="396" lang="French" value="Effectué" key="done" />
@@ -420,10 +414,10 @@
     <Localized id="399" lang="French" value="Ne plus filtrer" key="dismiss_filters" />
     <Localized id="400" lang="Dutch" value="Dismiss filters" key="dismiss_filters" />
     <Localized id="401" lang="English" value="(filtered)" key="(filtered)" />
-    <Localized id="402" lang="French" value="(filtered)" key="(filtered)" />
+    <Localized id="402" lang="French" value="(filtré)" key="(filtered)" />
     <Localized id="403" lang="Dutch" value="(filtered)" key="(filtered)" />
     <Localized id="404" lang="English" value="filter_sequence" key="filter_sequence" />
-    <Localized id="405" lang="French" value="filter_sequence" key="filter_sequence" />
+    <Localized id="405" lang="French" value="Filtrer par séquence" key="filter_sequence" />
     <Localized id="406" lang="Dutch" value="filter_sequence" key="filter_sequence" />
     <Localized id="407" lang="English" value="Default configuration file" key="default_configuration_file" />
     <Localized id="408" lang="French" value="Fichier de configuration par défaut" key="default_configuration_file" />
@@ -435,7 +429,7 @@
     <Localized id="414" lang="French" value="Description" key="description" />
     <Localized id="415" lang="Dutch" value="Description" key="description" />
     <Localized id="416" lang="English" value="OnlyKeep" key="OnlyKeep" />
-    <Localized id="417" lang="French" value="OnlyKeep" key="OnlyKeep" />
+    <Localized id="417" lang="French" value="Garder seulement" key="OnlyKeep" />
     <Localized id="418" lang="Dutch" value="OnlyKeep" key="OnlyKeep" />
   </LocalizedDictionary>
 </Panel>

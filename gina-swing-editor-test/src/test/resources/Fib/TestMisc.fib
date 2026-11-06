@@ -40,15 +40,15 @@
   <LocalizedDictionary id="Panel#dict">
     <Localized id="17" lang="English" value="Label" key="label" />
     <Localized id="18" lang="Dutch" value="Label" key="label" />
-    <Localized id="19" lang="French" value="label" key="label" />
+    <Localized id="19" lang="French" value="Libellé" key="label" />
     <Localized id="20" lang="English" value="Icon" key="icon" />
     <Localized id="21" lang="Dutch" value="Icon" key="icon" />
-    <Localized id="22" lang="French" value="icon" key="icon" />
+    <Localized id="22" lang="French" value="Icône" key="icon" />
     <Localized id="23" lang="English" value="Add action" key="add_action" />
     <Localized id="24" lang="Dutch" value="Add action" key="add_action" />
-    <Localized id="25" lang="French" value="add_action" key="add_action" />
+    <Localized id="25" lang="French" value="Ajouter une action" key="add_action" />
     <Localized id="26" lang="English" value="Delete action" key="delete_action" />
     <Localized id="27" lang="Dutch" value="Delete action" key="delete_action" />
-    <Localized id="28" lang="French" value="delete_action" key="delete_action" />
+    <Localized id="28" lang="French" value="Supprimer l'action" key="delete_action" />
   </LocalizedDictionary>
 </Panel>

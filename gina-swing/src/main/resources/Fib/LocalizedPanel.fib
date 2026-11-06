@@ -313,7 +313,7 @@
     <Localized id="280" lang="French" value="Anglais" key="english" />
     <Localized id="281" lang="English" value="Add action" key="add_action" />
     <Localized id="282" lang="Dutch" value="add_action" key="add_action" />
-    <Localized id="283" lang="French" value="add_action" key="add_action" />
+    <Localized id="283" lang="French" value="Ajouter une action" key="add_action" />
     <Localized id="284" lang="English" value="Close" key="close" />
     <Localized id="285" lang="Dutch" value="Sluiten" key="close" />
     <Localized id="286" lang="French" value="Fermer" key="close" />
@@ -331,13 +331,13 @@
     <Localized id="298" lang="French" value="Supprimer les entrées inutiles" key="remove_unecessary_localized" />
     <Localized id="299" lang="English" value="Apply localized" key="apply_localized" />
     <Localized id="300" lang="Dutch" value="apply_localized" key="apply_localized" />
-    <Localized id="301" lang="French" value="apply_localized" key="apply_localized" />
+    <Localized id="301" lang="French" value="Appliquer les traductions" key="apply_localized" />
     <Localized id="302" lang="English" value="French" key="french" />
     <Localized id="303" lang="Dutch" value="Frans" key="french" />
     <Localized id="304" lang="French" value="Francais" key="french" />
     <Localized id="305" lang="English" value="Dutch" key="dutch" />
     <Localized id="306" lang="Dutch" value="dutch" key="dutch" />
-    <Localized id="307" lang="French" value="dutch" key="dutch" />
+    <Localized id="307" lang="French" value="Néerlandais" key="dutch" />
   </LocalizedDictionary>
   <FIBVariable id="308" type="org.openflexo.localization.LocalizedDelegate" name="data" />
 </Panel>

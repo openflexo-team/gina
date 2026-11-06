@@ -61,7 +61,7 @@
 			value="&lt;html&gt;&lt;a href=&quot;&quot;&gt;Voir les erreurs&lt;/a&gt;&lt;/html&gt;"
 			key="&lt;html&gt;&lt;a href=&quot;&quot;&gt;show_errors_warnings&lt;/a&gt;&lt;/html&gt;" />
 		<Localized id="152" lang="French"
-			value="&lt;html&gt;&lt;a href=&quot;&quot;&gt;Show errors/warnings&lt;/a&gt;&lt;/html&gt;"
+			value="&lt;html&gt;&lt;a href=&quot;&quot;&gt;Afficher les erreurs/avertissements&lt;/a&gt;&lt;/html&gt;"
 			key="&lt;html&gt;&lt;a href=&quot;&quot;&gt;show_errors_warnings&lt;/a&gt;&lt;/html&gt;" />
 		<Localized id="153" lang="English"
 			value="&lt;html&gt;&lt;a href=&quot;&quot;&gt;Hide errors/warnings&lt;/a&gt;&lt;/html&gt;"
@@ -83,12 +83,12 @@
 			key="&lt;html&gt;&lt;a href=&quot;&quot;&gt;revalidate&lt;/a&gt;&lt;/html&gt;" />
 		<Localized id="159" lang="English" value="Icon" key="icon" />
 		<Localized id="160" lang="Dutch" value="Icon" key="icon" />
-		<Localized id="161" lang="French" value="icon" key="icon" />
+		<Localized id="161" lang="French" value="Icône" key="icon" />
 		<Localized id="162" lang="English" value="Errors/warnings"
 			key="errors/warnings" />
 		<Localized id="163" lang="Dutch" value="Errors/warnings"
 			key="errors/warnings" />
-		<Localized id="164" lang="French" value="errors/warnings"
+		<Localized id="164" lang="French" value="Erreurs/avertissements"
 			key="errors/warnings" />
 	</LocalizedDictionary>
 </Panel>
