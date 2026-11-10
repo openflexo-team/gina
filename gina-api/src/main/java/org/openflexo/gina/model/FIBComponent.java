@@ -306,14 +306,15 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	public static final String DEFINE_MAX_DIMENSIONS = "defineMaxDimensions";
 	public static final String DEFINE_MIN_DIMENSIONS = "defineMinDimensions";
 
-	@Getter(value = FIB_LIBRARY_KEY, ignoreType = true)
+	@Getter(value = FIB_LIBRARY_KEY, ignoreType = true, isTransient = true)
+	@CloningStrategy(StrategyType.REFERENCE)
 	public FIBLibrary getFIBLibrary();
 
 	@Setter(FIB_LIBRARY_KEY)
 	public void setFIBLibrary(FIBLibrary fibLibrary);
 
 	@Override
-	@Getter(value = PARENT_KEY/* , inverse = FIBContainer.SUB_COMPONENTS_KEY */)
+	@Getter(value = PARENT_KEY/* , inverse = FIBContainer.SUB_COMPONENTS_KEY */, isTransient = true)
 	@CloningStrategy(StrategyType.IGNORE)
 	public FIBContainer getParent();
 
@@ -334,7 +335,9 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	@Setter(CONTROLLER_CLASS_NAME_KEY)
 	void setControllerClassName(String controllerClassName);
 
-	@Getter(value = CONTROLLER_CLASS_KEY)
+	// Transient: resolved from the controller class name
+	@Getter(value = CONTROLLER_CLASS_KEY, isTransient = true)
+	@CloningStrategy(StrategyType.REFERENCE)
 	public Class<? extends FIBController> getControllerClass();
 
 	@Setter(CONTROLLER_CLASS_KEY)
@@ -479,7 +482,8 @@ public abstract interface FIBComponent extends FIBModelObject, TreeNode, HasBase
 	@Setter(LOCALIZED_DICTIONARY_KEY)
 	public void setLocalizedDictionary(FIBLocalizedDictionary localizedDictionary);
 
-	@Getter(value = CUSTOM_TYPE_MANAGER_KEY, ignoreType = true)
+	@Getter(value = CUSTOM_TYPE_MANAGER_KEY, ignoreType = true, isTransient = true)
+	@CloningStrategy(StrategyType.REFERENCE)
 	public CustomTypeManager getCustomTypeManager();
 
 	@Setter(CUSTOM_TYPE_MANAGER_KEY)
