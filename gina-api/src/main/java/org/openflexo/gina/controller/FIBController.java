@@ -55,6 +55,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.Icon;
@@ -794,15 +795,15 @@ public class FIBController implements HasPropertyChangeSupport, Registrable {
 	}
 
 	/**
-	 * Called when a throwable has been raised during model code invocation. Requires to be overriden, this base implementation just log
-	 * exception
+	 * Called when a throwable has been raised during model code invocation: the action of a button, the setting of the data of a widget,
+	 * a value-changed action, a click action, the action of a table or a browser. The view goes on (GINA is lenient); an application
+	 * overrides this method to report the failure its own way. This base implementation logs it, once, with its stack
 	 * 
 	 * @param t
 	 * @return true is exception was correctely handled
 	 */
 	public boolean handleException(Throwable t) {
-		LOGGER.warning("Unexpected exception raised: " + t.getMessage());
-		t.printStackTrace();
+		LOGGER.log(Level.WARNING, "Unexpected exception raised: " + t.getMessage(), t);
 		return false;
 	}
 

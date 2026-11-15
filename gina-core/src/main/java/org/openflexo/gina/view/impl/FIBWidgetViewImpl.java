@@ -59,6 +59,7 @@ import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.binding.BindingPathChangeListener;
+import org.openflexo.connie.binding.javareflect.AccessorInvocationException;
 import org.openflexo.connie.exception.NotSettableContextException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -602,16 +603,22 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 				}*/
 				getWidget().getData().setBindingValue(aValue, getBindingEvaluationContext());
 			} catch (TypeMismatchException e) {
-				e.printStackTrace();
+				// Reported by the controller (CORE-F-11)
+				getController().handleException(e);
 			} catch (NullReferenceException e) {
 				// Do not warn it: it happens sometimes
 				// LOGGER.warning("Unexpected " + e + " cannot setValue() with " + getWidget().getData() + " and value " + aValue + "
 				// message="
 				// + e.getMessage());
 			} catch (ReflectiveOperationException e) {
-				e.printStackTrace();
+				// Reported by the controller (CORE-F-11)
+				getController().handleException(e);
 			} catch (NotSettableContextException e) {
-				e.printStackTrace();
+				// Reported by the controller (CORE-F-11)
+				getController().handleException(e);
+			} catch (AccessorInvocationException e) {
+				// The setter of the model failed: reported by the controller, the view goes on (CORE-F-11)
+				getController().handleException(e);
 			}
 
 		}
@@ -627,11 +634,14 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			try {
 				getWidget().getValueChangedAction().execute(getBindingEvaluationContext());
 			} catch (TypeMismatchException e) {
-				e.printStackTrace();
+				// Reported by the controller (CORE-F-11)
+				getController().handleException(e);
 			} catch (NullReferenceException e) {
-				e.printStackTrace();
+				// Reported by the controller (CORE-F-11)
+				getController().handleException(e);
 			} catch (ReflectiveOperationException e) {
-				e.printStackTrace();
+				// Reported by the controller (CORE-F-11)
+				getController().handleException(e);
 			}
 		}
 	}
@@ -899,17 +909,20 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			if (GinaMouseDiagnostics.MOUSE_DEBUG) {
 				GinaMouseDiagnostics.logDispatchFailed(String.valueOf(getWidget()), "clickAction", e);
 			}
-			e.printStackTrace();
+			// Reported by the controller (CORE-F-11)
+			getController().handleException(e);
 		} catch (NullReferenceException e) {
 			if (GinaMouseDiagnostics.MOUSE_DEBUG) {
 				GinaMouseDiagnostics.logDispatchFailed(String.valueOf(getWidget()), "clickAction", e);
 			}
-			e.printStackTrace();
+			// Reported by the controller (CORE-F-11)
+			getController().handleException(e);
 		} catch (ReflectiveOperationException e) {
 			if (GinaMouseDiagnostics.MOUSE_DEBUG) {
 				GinaMouseDiagnostics.logDispatchFailed(String.valueOf(getWidget()), "clickAction", e);
 			}
-			e.printStackTrace();
+			// Reported by the controller (CORE-F-11)
+			getController().handleException(e);
 		}
 	}
 
@@ -932,17 +945,20 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			if (GinaMouseDiagnostics.MOUSE_DEBUG) {
 				GinaMouseDiagnostics.logDispatchFailed(String.valueOf(getWidget()), "doubleClickAction", e);
 			}
-			e.printStackTrace();
+			// Reported by the controller (CORE-F-11)
+			getController().handleException(e);
 		} catch (NullReferenceException e) {
 			if (GinaMouseDiagnostics.MOUSE_DEBUG) {
 				GinaMouseDiagnostics.logDispatchFailed(String.valueOf(getWidget()), "doubleClickAction", e);
 			}
-			e.printStackTrace();
+			// Reported by the controller (CORE-F-11)
+			getController().handleException(e);
 		} catch (ReflectiveOperationException e) {
 			if (GinaMouseDiagnostics.MOUSE_DEBUG) {
 				GinaMouseDiagnostics.logDispatchFailed(String.valueOf(getWidget()), "doubleClickAction", e);
 			}
-			e.printStackTrace();
+			// Reported by the controller (CORE-F-11)
+			getController().handleException(e);
 		}
 	}
 
@@ -965,17 +981,20 @@ public abstract class FIBWidgetViewImpl<M extends FIBWidget, C, T> extends FIBVi
 			if (GinaMouseDiagnostics.MOUSE_DEBUG) {
 				GinaMouseDiagnostics.logDispatchFailed(String.valueOf(getWidget()), "rightClickAction", e);
 			}
-			e.printStackTrace();
+			// Reported by the controller (CORE-F-11)
+			getController().handleException(e);
 		} catch (NullReferenceException e) {
 			if (GinaMouseDiagnostics.MOUSE_DEBUG) {
 				GinaMouseDiagnostics.logDispatchFailed(String.valueOf(getWidget()), "rightClickAction", e);
 			}
-			e.printStackTrace();
+			// Reported by the controller (CORE-F-11)
+			getController().handleException(e);
 		} catch (ReflectiveOperationException e) {
 			if (GinaMouseDiagnostics.MOUSE_DEBUG) {
 				GinaMouseDiagnostics.logDispatchFailed(String.valueOf(getWidget()), "rightClickAction", e);
 			}
-			e.printStackTrace();
+			// Reported by the controller (CORE-F-11)
+			getController().handleException(e);
 		}
 	}
 

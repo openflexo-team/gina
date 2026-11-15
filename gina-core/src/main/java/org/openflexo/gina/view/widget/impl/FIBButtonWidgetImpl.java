@@ -194,11 +194,14 @@ public abstract class FIBButtonWidgetImpl<C> extends FIBWidgetViewImpl<FIBButton
 			try {
 				action.execute(getBindingEvaluationContext());
 			} catch (TypeMismatchException e) {
-				e.printStackTrace();
+				// Reported by the controller (CORE-F-11)
+				getController().handleException(e);
 			} catch (NullReferenceException e) {
-				e.printStackTrace();
+				// Reported by the controller (CORE-F-11)
+				getController().handleException(e);
 			} catch (ReflectiveOperationException e) {
-				e.printStackTrace();
+				// Reported by the controller (CORE-F-11)
+				getController().handleException(e);
 			}
 		}
 

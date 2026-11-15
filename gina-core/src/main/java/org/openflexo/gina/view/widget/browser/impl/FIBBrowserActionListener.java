@@ -180,11 +180,14 @@ public class FIBBrowserActionListener<T> implements ActionListener, BindingEvalu
 					}
 				});
 			} catch (TypeMismatchException e) {
-				e.printStackTrace();
+				// Reported by the controller (CORE-F-11)
+				getController().handleException(e);
 			} catch (NullReferenceException e) {
-				e.printStackTrace();
+				// Reported by the controller (CORE-F-11)
+				getController().handleException(e);
 			} catch (ReflectiveOperationException e) {
-				e.printStackTrace();
+				// Reported by the controller (CORE-F-11)
+				getController().handleException(e);
 			}
 		}
 	}

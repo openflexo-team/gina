@@ -2,34 +2,34 @@
 <Scenario id="0">
   <InteractionCycle id="1">
     <UserInteraction_UserInteraction id="2">
-      <ApplicationEvent id="3" delay="108" mainClass="java.lang.Thread" action="application-started" />
+      <ApplicationEvent id="3" mainClass="worker.org.gradle.process.internal.worker.GradleWorkerMain" delay="1267" action="application-started" />
     </UserInteraction_UserInteraction>
   </InteractionCycle>
   <InteractionCycle id="4">
     <UserInteraction_UserInteraction id="5">
-      <TextEvent id="6" absoluteValue="Smith" delay="2053" widgetID="lastnameTextField" length="5" widgetClass="TextField" action="text-inserted" parentIdentifier="FIBPanel:WindowFIB*0" value="Smith" />
+      <TextEvent id="6" length="6" widgetID="firstnameTextField" widgetClass="TextField" delay="6842" absoluteValue="Robert" action="text-inserted" parentIdentifier="Panel:WindowFIB*0" value="Robert" />
     </UserInteraction_UserInteraction>
   </InteractionCycle>
   <InteractionCycle id="7">
     <UserInteraction_UserInteraction id="8">
-      <TextEvent id="9" absoluteValue="Robert" delay="2057" widgetID="firstnameTextField" length="6" widgetClass="TextField" action="text-inserted" parentIdentifier="FIBPanel:WindowFIB*0" value="Robert" />
+      <TextEvent id="9" length="5" widgetID="lastnameTextField" widgetClass="TextField" delay="6847" absoluteValue="Smith" action="text-inserted" parentIdentifier="Panel:WindowFIB*0" value="Smith" />
     </UserInteraction_UserInteraction>
   </InteractionCycle>
   <InteractionCycle id="10">
-    <UserInteraction_UserInteraction id="11">
-      <GinaNotifyMethodEvent id="12" delay="2063" methodClass="org.openflexo.gina.manager.GinaPropertyChangeListener" methodName="propertyChange" action="method-notified" info="firstName" />
-    </UserInteraction_UserInteraction>
-    <SystemEvent_SystemEventNode id="13">
-      <SystemEventNode id="14">
-        <SystemEvent id="15">
-          <TextEvent id="16" absoluteValue="Alex" delay="2065" widgetID="firstnameTextField" length="6" widgetClass="TextField" action="text-removed" parentIdentifier="FIBPanel:WindowFIB*0" value="" />
+    <SystemEvent_SystemEventNode id="11">
+      <SystemEventNode id="12">
+        <SystemEvent id="13">
+          <TextEvent id="14" length="6" widgetID="firstnameTextField" widgetClass="TextField" delay="6910" absoluteValue="Alex" action="text-removed" parentIdentifier="Panel:WindowFIB*0" value="" />
         </SystemEvent>
       </SystemEventNode>
-      <SystemEventNode id="17">
-        <SystemEvent id="18">
-          <TextEvent id="19" absoluteValue="Alex" delay="2070" widgetID="firstnameTextField" length="4" widgetClass="TextField" action="text-inserted" parentIdentifier="FIBPanel:WindowFIB*0" value="Alex" />
+      <SystemEventNode id="15">
+        <SystemEvent id="16">
+          <TextEvent id="17" length="4" widgetID="firstnameTextField" widgetClass="TextField" delay="6939" absoluteValue="Alex" action="text-inserted" parentIdentifier="Panel:WindowFIB*0" value="Alex" />
         </SystemEvent>
       </SystemEventNode>
     </SystemEvent_SystemEventNode>
+    <UserInteraction_UserInteraction id="18">
+      <GinaNotifyMethodEvent id="19" methodClass="org.openflexo.gina.manager.GinaPropertyChangeListener" methodName="propertyChange" info="firstName" delay="6896" action="method-notified" />
+    </UserInteraction_UserInteraction>
   </InteractionCycle>
 </Scenario>
