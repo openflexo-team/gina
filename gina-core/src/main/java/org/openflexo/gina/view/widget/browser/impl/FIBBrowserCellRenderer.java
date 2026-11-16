@@ -49,6 +49,7 @@ import java.awt.Font;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JTree;
+import javax.swing.UIManager;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.openflexo.gina.view.widget.browser.impl.FIBBrowserModel.BrowserCell;
@@ -157,7 +158,17 @@ public class FIBBrowserCellRenderer<T> extends DefaultTreeCellRenderer {
 			}
 
 			returned.setText(cell.getCachedLabel());
-			returned.setIcon(cell.getCachedIcon());
+			Icon icon = cell.getCachedIcon();
+			returned.setIcon(icon);
+			// A disabled element greys its label only: its icon stays as it is, a greyed icon being hard to read.
+			// When the whole tree is disabled, the icon is greyed as usual by the look and feel.
+			// Always set explicitly: once setDisabledIcon() is called, JLabel no longer resets it when the icon changes
+			if (tree.isEnabled() || icon == null) {
+				returned.setDisabledIcon(icon);
+			}
+			else {
+				returned.setDisabledIcon(UIManager.getLookAndFeel().getDisabledIcon(tree, icon));
+			}
 			returned.setToolTipText(cell.getCachedTooltip());
 			return returned;
 
