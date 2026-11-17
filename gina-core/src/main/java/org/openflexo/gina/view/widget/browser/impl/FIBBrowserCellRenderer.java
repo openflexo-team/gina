@@ -42,11 +42,18 @@
 
 package org.openflexo.gina.view.widget.browser.impl;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.util.Collections;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.UIManager;
@@ -160,11 +167,11 @@ public class FIBBrowserCellRenderer<T> extends DefaultTreeCellRenderer {
 			returned.setText(cell.getCachedLabel());
 			Icon icon = cell.getCachedIcon();
 			returned.setIcon(icon);
-			// A disabled element greys its label only: its icon stays as it is, a greyed icon being hard to read.
-			// When the whole tree is disabled, the icon is greyed as usual by the look and feel.
+			// A disabled element greys its label; its icon keeps its colours, only lightened: a grey icon (the look and feel one)
+			// is hard to read. When the whole tree is disabled, the icon is greyed as usual by the look and feel.
 			// Always set explicitly: once setDisabledIcon() is called, JLabel no longer resets it when the icon changes
 			if (tree.isEnabled() || icon == null) {
-				returned.setDisabledIcon(icon);
+				returned.setDisabledIcon(lightened(icon));
 			}
 			else {
 				returned.setDisabledIcon(UIManager.getLookAndFeel().getDisabledIcon(tree, icon));
@@ -176,6 +183,33 @@ public class FIBBrowserCellRenderer<T> extends DefaultTreeCellRenderer {
 
 		return super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 
+	}
+
+	/** Opacity of the icon of a disabled element: its colours stay recognizable, lighter than the enabled ones. */
+	private static final float DISABLED_ICON_OPACITY = 0.45f;
+
+	/** Lightened icons, by original icon: the same icon instance is rendered at each repaint, the copy is built once. */
+	private static final Map<Icon, Icon> LIGHTENED_ICONS = Collections.synchronizedMap(new WeakHashMap<>());
+
+	/**
+	 * Return a lighter version of the passed icon (same colours, partly transparent, so lighter on the light background of a browser).
+	 */
+	private static Icon lightened(Icon icon) {
+		if (icon == null || icon.getIconWidth() <= 0 || icon.getIconHeight() <= 0) {
+			return icon;
+		}
+		return LIGHTENED_ICONS.computeIfAbsent(icon, i -> {
+			BufferedImage image = new BufferedImage(i.getIconWidth(), i.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g = image.createGraphics();
+			try {
+				g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, DISABLED_ICON_OPACITY));
+				i.paintIcon(null, g, 0, 0);
+			}
+			finally {
+				g.dispose();
+			}
+			return new ImageIcon(image);
+		});
 	}
 
 	/*  protected Color getCellBackground(JTree tree, boolean isSelected, boolean hasFocus)
