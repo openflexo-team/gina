@@ -10,11 +10,15 @@ Status legend: `TODO` · `IN PROGRESS` · `BLOCKED` · `DONE` · `DEFERRED`.
 
 ### GINA-F-1 — A colour selector for the cells of a table  ·  `DONE`
 
+**GitHub:** [openflexo-team/gina#16](https://github.com/openflexo-team/gina/issues/16)
+
 **Problem.** The colour widget (`<Color>`) cannot be a table column. A `CustomColumn` needs a custom component, and the existing `ColorSelector` (flexographicutils) is not one; used as a rendering component it also showed white cells, because the table renderer sets the background of the component, which is how the selector shows its colour.
 
 **Done.** `org.openflexo.gina.swing.utils.FIBColorSelector`: a `ColorSelector` that is a `FIBCustomComponent<Color>` and keeps its colour when the renderer sets colours on it. Use it as `<CustomColumn componentClassName="org.openflexo.gina.swing.utils.FIBColorSelector" customRendering="true" …/>`, or as a `<Custom>` widget.
 
 ### GINA-F-2 — Localizers with several parents and a context for the creation of entries  ·  `DONE`
+
+**GitHub:** [openflexo-team/gina#17](https://github.com/openflexo-team/gina/issues/17)
 
 **Problem.** A localizer has a single parent, and a key it does not know is created in the localizer which was asked. A component that relies on several dictionaries (a module and the technology adapters it uses, a component and the VirtualModel it is bound to) cannot say where a new entry belongs; in an installation, where dictionaries are read-only, an unknown key still modified the in-memory dictionaries.
 
@@ -28,6 +32,8 @@ Status legend: `TODO` · `IN PROGRESS` · `BLOCKED` · `DONE` · `DEFERRED`.
 
 ### GINA-F-3 — Swing components follow the language and the edition of the dictionaries  ·  `DONE`
 
+**GitHub:** [openflexo-team/gina#18](https://github.com/openflexo-team/gina/issues/18)
+
 **Problem.** Only the views of the inspectors were updated when the language changed. The components a localizer was asked a text for (`localizedForKey(key, component)`, tooltips, borders, table columns) were registered but nothing ever asked the localizer to update them, the registries were read from any thread, and editing a translation updated nothing on screen.
 
 **Done.** One event, `LocalizationListener.languageChanged`, sent when the language changes and, once for a group of edits, on the event dispatch thread when a translation is edited (`FlexoLocalization.fireLocalizationChanged()`); the listeners list is safe to use from several threads, registers a listener once, and a failing listener no longer stops the others. Every `LocalizedDelegateImpl` listens to it and updates the components it knows (on the event dispatch thread, from a copy of its registries). The view of the root component of every FIB built by a `FIBController` listens to it too, and stops when the controller is deleted.
@@ -38,6 +44,8 @@ Status legend: `TODO` · `IN PROGRESS` · `BLOCKED` · `DONE` · `DEFERRED`.
 
 ### GINA-F-4 — Finish the localization model  ·  `TODO`
 
+**GitHub:** [openflexo-team/gina#19](https://github.com/openflexo-team/gina/issues/19)
+
 **Problem.** What GINA-F-2 and GINA-F-3 did not reach:
 - `FIBLocalizedDictionary` (the dictionary embedded in a `.fib`) has its own copy of the resolution of `LocalizedDelegateImpl`: it has neither several parents nor a context. A common base class would give it both.
 - No module has its technology adapters as extra parents (`addParent`), and no call creates a key in another dictionary (`localizedForKeyInContext`): nothing needed it so far, but a component bound to a VirtualModel could.
@@ -46,4 +54,3 @@ Status legend: `TODO` · `IN PROGRESS` · `BLOCKED` · `DONE` · `DEFERRED`.
 - The merge panels of flexographicutils show raw keys (GINA-D-10).
 
 **Acceptance.** A `.fib` with a dictionary resolves a key in its parents in the same order as a platform localizer; the 54 keys are kept or removed with a reason.
-

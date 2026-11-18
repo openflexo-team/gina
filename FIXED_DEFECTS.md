@@ -9,6 +9,8 @@ with what was verified, the cause and the fix. Identifiers are those of `KNOWN_D
 
 ### GINA-D-1 — `ClassScope` cannot list classes on Java 9+: the type field of the inspector throws  ·  `DONE`
 
+**GitHub:** [openflexo-team/gina#8](https://github.com/openflexo-team/gina/issues/8)
+
 **Symptom (Java 17).** Selecting an object in a browser makes the inspector build a `TypeSelector`, which opens a `ClassEditor`; the exception is thrown on the Swing thread:
 
     java.lang.RuntimeException: ClassScope::getLoadedClasses() cannot be used in this JRE
@@ -31,6 +33,8 @@ with what was verified, the cause and the fix. Identifiers are those of `KNOWN_D
 
 ### GINA-D-2 — `FIBListWidgetTest.test2InstanciateComponent` fails when the event queue is slow  ·  `DONE`
 
+**GitHub:** [openflexo-team/gina#9](https://github.com/openflexo-team/gina/issues/9)
+
 **Symptom.** On Jenkins, `gina-2.4-ui-test` #29 to #32 failed on one assertion: `expected:<Robert Smith aged 39 (Male)> but was:<null>` (`FIBListWidgetTest`, the line reading the represented value of `list5`). The same class passed locally, and #33 passed on Jenkins without any change of the test.
 
 **Cause.** `JFIBListWidget.performSelect` selects the row with `SwingUtilities.invokeLater`, so the represented value is only set once the event dispatch thread has run that task. The test reads it from the JUnit thread right after `buildView()`: it passes when the event queue is fast and fails when it is not. Verified by blocking the event dispatch thread for one second before `buildView()`: the test then failed (and `test6PerfomSomeTestsWithSelection` with it).
@@ -42,6 +46,8 @@ with what was verified, the cause and the fix. Identifiers are those of `KNOWN_D
 ## Browser
 
 ### GINA-D-3 — A browser cell sometimes shows no children although its object has some  ·  `DONE`
+
+**GitHub:** [openflexo-team/gina#10](https://github.com/openflexo-team/gina/issues/10)
 
 **Symptom.** In the slide browser of the PowerPoint technology adapter, a text box ("Market drivers", slide 3 of
 `CycloCity-Company-Presentation.pptx`) was sometimes shown as a leaf, without the 4 paragraphs that its inspector listed;
@@ -74,6 +80,8 @@ child, and a variable of the component), and fails on the first version of the f
 
 ### GINA-D-5 — A browser chooses the element of a super type for some objects, depending on the run  ·  `DONE`
 
+**GitHub:** [openflexo-team/gina#11](https://github.com/openflexo-team/gina/issues/11)
+
 **Symptom.** In the slide browser of the PowerPoint technology adapter, the text boxes sometimes showed no paragraphs
 (the remaining cause of the symptom of GINA-D-3, still seen after its fix). Inspected in the running application with
 a read-only agent: the text boxes (`PowerpointTextBox`) had the element `shape`, without children, instead of
@@ -99,6 +107,8 @@ an inspector may be chosen the same way. Not fixed here.
 
 ### GINA-D-6 — A browser node misses children added while it was being updated  ·  `DONE`
 
+**GitHub:** [openflexo-team/gina#12](https://github.com/openflexo-team/gina/issues/12)
+
 **Symptom.** In the resource browser of Openflexo, the folder `PPT/Business` of the PowerPoint test resource center
 showed 6 or 7 of its 8 presentations, depending on the run (PPTX-D-3 of openflexo-pptx). Inspected in the running
 application with a read-only agent: the 8 resources were registered everywhere (resource center, its folder, the
@@ -117,6 +127,8 @@ the cell is updated again once that update ends. The flags are guarded by a lock
 notifies a child while its children are being read; fails on the former code (2 children instead of 3), passes after.
 
 ### GINA-D-7 — A browser update throws `ArrayIndexOutOfBoundsException: node has no children`  ·  `DONE`
+
+**GitHub:** [openflexo-team/gina#13](https://github.com/openflexo-team/gina/issues/13)
 
 **Symptom.** In Openflexo, after opening a free-modelling project and focusing its free model several times in a row,
 a browser cell update logged `ArrayIndexOutOfBoundsException: node has no children`, thrown by
@@ -148,6 +160,8 @@ GINA-D-7, instead of leaving the tree out of sync.
 
 ### GINA-D-4 — A list widget sometimes throws a `NullPointerException` while it is painted or selected  ·  `DONE`
 
+**GitHub:** [openflexo-team/gina#14](https://github.com/openflexo-team/gina/issues/14)
+
 **Symptom.** At start-up of Openflexo (2026-11-02), on the event dispatch thread:
 
     java.lang.NullPointerException: Cannot invoke "java.util.List.get(int)" because "this.list" is null
@@ -171,6 +185,8 @@ It runs on the thread notifying a change of the list binding, while the event di
 ## Panels
 
 ### GINA-D-8 — `FlexoCollabsiblePanelGroup.insertContentsAtIndex` throws on an empty group, and replaces a panel otherwise  ·  `DONE`
+
+**GitHub:** [openflexo-team/gina#15](https://github.com/openflexo-team/gina/issues/15)
 
 **Symptom.** In the FreeModellingEditor, opening the annotation of a PowerPoint slideshow showed neither the browsers of the left
 column nor the right column; the error log holds:
