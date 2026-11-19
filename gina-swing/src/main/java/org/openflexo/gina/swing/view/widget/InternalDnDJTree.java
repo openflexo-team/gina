@@ -76,8 +76,10 @@ public class InternalDnDJTree extends DnDJTree implements DropTargetListener, Dr
 		Transferable tr = e.getTransferable();
 
 		// flavor not supported, reject drop
-		if (!tr.isDataFlavorSupported(FIBBrowserModel.BROWSER_CELL_FLAVOR))
+		if (!tr.isDataFlavorSupported(FIBBrowserModel.BROWSER_CELL_FLAVOR)) {
 			e.rejectDrop();
+			return;
+		}
 
 		// cast into appropriate data type
 		// BrowserCell childInfo = (BrowserCell) tr.getTransferData(FIBBrowserModel.BROWSER_CELL_FLAVOR);

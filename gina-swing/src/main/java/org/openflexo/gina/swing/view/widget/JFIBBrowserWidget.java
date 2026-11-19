@@ -379,6 +379,15 @@ public class JFIBBrowserWidget<T> extends FIBBrowserWidgetImpl<JTreePanel<T>, T>
 		}
 	}
 
+	/**
+	 * Unregister the {@link DragGestureListener} registered by {@link #registerDragGestureListener(DragGestureListener)}
+	 */
+	public void unregisterDragGestureListener() {
+		if (getComponent().getAllowsExternalDragAndDrop()) {
+			((ExternalDnDJTree) getTechnologyComponent().getJTree()).unregisterDragGestureListener();
+		}
+	}
+
 	@SuppressWarnings("serial")
 	public static class JTreePanel<T> extends JPanel {
 

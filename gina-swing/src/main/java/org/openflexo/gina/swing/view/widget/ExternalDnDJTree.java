@@ -11,20 +11,21 @@ import java.util.logging.Logger;
 
 import javax.swing.JTree;
 
-import org.openflexo.connie.expr.ExpressionEvaluator;
-import org.openflexo.connie.java.expr.JavaExpressionEvaluator;
 import org.openflexo.gina.utils.GinaMouseDiagnostics;
 
 /**
  * Swing implementation of a {@link JTree} supporting external drag&drop<br>
- * It suppose that some elements of the tree may be dragged somewhere
+ * It suppose that some elements of the tree may be dragged somewhere.<br>
+ * It extends {@link InternalDnDJTree}: the drops between elements of the tree (the {@code DragOperation}s of the browser) keep working.
+ * While an external {@link DragGestureListener} is registered, it receives the drag gestures; otherwise the gestures are handled by the
+ * internal drag and drop (when the browser allows it)
  * 
  * @see DropTargetListener
  * 
  * @author sylvain
  */
 @SuppressWarnings("serial")
-public class ExternalDnDJTree extends DnDJTree {
+public class ExternalDnDJTree extends InternalDnDJTree {
 
 	private static final Logger logger = Logger.getLogger(ExternalDnDJTree.class.getPackage().getName());
 
@@ -33,11 +34,6 @@ public class ExternalDnDJTree extends DnDJTree {
 	public ExternalDnDJTree(JFIBBrowserWidget<?> widget) {
 		super(widget);
 
-	}
-
-	@Override
-	public ExpressionEvaluator getEvaluator() {
-		return new JavaExpressionEvaluator(this);
 	}
 
 	/**
@@ -53,6 +49,13 @@ public class ExternalDnDJTree extends DnDJTree {
 		}
 
 		this.dgListener = dgListener;
+
+		if (dragSource != null) {
+			// The internal drag and drop already listens to the drag gestures of this tree (and routes them here): a second recognizer
+			// would start every drag twice
+			return;
+		}
+
 		dragSource = DragSource.getDefaultDragSource();
 
 		DragGestureRecognizer dgr = dragSource.createDefaultDragGestureRecognizer(this, // DragSource
@@ -83,7 +86,20 @@ public class ExternalDnDJTree extends DnDJTree {
 							? ((java.awt.event.MouseEvent) dge.getTriggerEvent()).getButton() : "?") + " dragAction=" + dge
 									.getDragAction() + " origin=" + dge.getDragOrigin());
 		}
-		dgListener.dragGestureRecognized(dge);
+		if (dgListener != null) {
+			dgListener.dragGestureRecognized(dge);
+		}
+		else if (dragSource != null && getWidget().getComponent().getAllowsDragAndDrop()) {
+			// No external listener (any more): drag between elements of this tree
+			super.dragGestureRecognized(dge);
+		}
+	}
+
+	/**
+	 * Unregister the external {@link DragGestureListener}: the drag gestures are then handled by the internal drag and drop
+	 */
+	public void unregisterDragGestureListener() {
+		this.dgListener = null;
 	}
 
 }
