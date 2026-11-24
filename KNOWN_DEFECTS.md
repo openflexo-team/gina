@@ -10,22 +10,6 @@ Fixed defects are moved to [`FIXED_DEFECTS.md`](./FIXED_DEFECTS.md) once their s
 
 ---
 
-## Lists
-
-### GINA-D-9 — Deleting a controller throws a `NullPointerException` in an iteration  ·  `IN PROGRESS`
-
-**GitHub:** [openflexo-team/gina#6](https://github.com/openflexo-team/gina/issues/6)
-
-**Symptom.** On quit (Free Modelling Editor, `FIBModuleView.deleteModuleView` → `FIBController.delete`), `FIBIterationViewImpl$IteratedContentsImpl.getValue` throws `NullPointerException: … getComponent() is null`.
-
-**Verified.** `FIBController.delete()` deletes every view (which sets their component to null) and only then fires `DELETED`. A `BindingPathChangeListener` still observing the controller re-evaluates its binding, whose context is an iterated element of an iteration view already deleted.
-
-**Done.** `IteratedContentsImpl.getValue` returns null once its iteration view is deleted.
-
-**Left.** Find which listener outlives its view: the bindings of the views built for each iterated element (`subViewsMap`) may not be stopped by `FIBIterationViewImpl.delete()`. Alternatively fire `DELETED` before deleting the views.
-
----
-
 ## Localization
 
 ### GINA-D-10 — The merge panels display raw keys  ·  `DEFERRED`

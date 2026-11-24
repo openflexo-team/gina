@@ -180,6 +180,18 @@ It runs on the thread notifying a change of the list binding, while the event di
 
 **Test.** `gina-swing` `FIBListModelConcurrencyTest` (UI test): fails on the former code, passes after the fix.
 
+### GINA-D-9 — Deleting a controller throws a `NullPointerException` in an iteration  ·  `DONE`
+
+**GitHub:** [openflexo-team/gina#6](https://github.com/openflexo-team/gina/issues/6)
+
+**Symptom.** On quit (Free Modelling Editor, `FIBModuleView.deleteModuleView` → `FIBController.delete`), `FIBIterationViewImpl$IteratedContentsImpl.getValue` throws `NullPointerException: … getComponent() is null`.
+
+**Verified.** `FIBController.delete()` deletes every view (which sets their component to null) and only then fires `DELETED`. A `BindingPathChangeListener` still observing the controller re-evaluates its binding, whose context is an iterated element of an iteration view already deleted.
+
+**Fix.** `IteratedContentsImpl.getValue` returns null once its iteration view is deleted.
+
+**Resolution (2026-11-24).** Closed by decision of the user: the symptom is gone. Accepted: the listener that outlives its view (the bindings of the views built for each iterated element, `subViewsMap`, possibly not stopped by `FIBIterationViewImpl.delete()`) was not identified, and `FIBController.delete()` still fires `DELETED` after deleting the views.
+
 ---
 
 ## Panels
